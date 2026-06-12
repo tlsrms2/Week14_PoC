@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae857a587e828c243bd56669879742bf, type: 3}
+  m_Name: EnemyData
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.EnemyData
+  displayName: 
+  category: 0
+  maxDurability: 60
+  durabilityDepletedSeconds: 2
+  maxHeat: 100
+  heatCoolingPerSecond: 8
+  overheatSeconds: 4
+  heatAfterOverheatRatio: 0.2
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  overheatedColor: {r: 0.45, g: 0.65, b: 1, a: 1}
+  durabilityDepletedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  detectionRange: 10
+  fieldOfViewAngle: 160
+  moveSpeed: 2.8
+  patrolMode: 0
+  patrolWaitTime: 1
+  attackRange: 8
+  windupSeconds: 0.35
+  recoverySeconds: 0.35
+  heatPerShot: 34
+  heatCoolingDelayAfterShot: 0.6
+  attackTimelines: []
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 7
+  projectileLifetime: 3
+  projectileRadius: 0.12
+  projectileColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+  projectileTrailSeconds: 0.1
+  projectileTrailWidthMultiplier: 3
+  projectileGlowScale: 3.2
+  statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
+  durabilityBarColor: {r: 0.75, g: 0.95, b: 1, a: 1}
+  heatBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  overheatedBarColor: {r: 1, g: 0, b: 0, a: 1}
+  lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
+  executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
