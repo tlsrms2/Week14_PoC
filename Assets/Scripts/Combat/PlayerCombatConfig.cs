@@ -23,13 +23,13 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float attackHeat = 16f;
         [SerializeField, Min(0f)] private float attackRange = 7f;
         [SerializeField, Min(0f)] private float attackCooldown = 0.28f;
+        [SerializeField, Min(1)] private int shotgunPelletCount = 5;
+        [SerializeField, Range(0f, 180f)] private float shotgunSpreadAngle = 28f;
         [SerializeField, Min(0f)] private float projectileSpeed = 12f;
         [SerializeField, Min(0f)] private float projectileLifetime = 1f;
         [SerializeField, Min(0f)] private float projectileRadius = 0.08f;
         [SerializeField, Min(0.01f)] private float projectileTrailSeconds = 0.08f;
         [SerializeField, Min(0.1f)] private float projectileTrailWidthMultiplier = 2.8f;
-        [SerializeField, Min(1f)] private float projectileGlowScale = 3f;
-        [SerializeField, Min(0f)] private float combatEffectSeconds = 0.08f;
         [SerializeField, Min(0f)] private float gunAimHoldSeconds = 0.5f;
         [SerializeField] private Color attackEffectColor = new Color(1f, 0.35f, 0.12f, 0.55f);
 
@@ -81,13 +81,13 @@ namespace Week14.Combat
         public float AttackHeat => attackHeat;
         public float AttackRange => attackRange;
         public float AttackCooldown => attackCooldown;
+        public int ShotgunPelletCount => shotgunPelletCount;
+        public float ShotgunSpreadAngle => shotgunSpreadAngle;
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;
         public float ProjectileRadius => projectileRadius;
         public float ProjectileTrailSeconds => projectileTrailSeconds;
         public float ProjectileTrailWidthMultiplier => projectileTrailWidthMultiplier;
-        public float ProjectileGlowScale => projectileGlowScale;
-        public float CombatEffectSeconds => combatEffectSeconds;
         public float GunAimHoldSeconds => gunAimHoldSeconds;
         public Color AttackEffectColor => attackEffectColor;
         public float ParryAimAngleDegrees => parryAimAngleDegrees;

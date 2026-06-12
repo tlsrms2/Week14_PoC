@@ -21,6 +21,7 @@ namespace Week14.Enemy
         [SerializeField] private Transform projectileOrigin;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private EnemyStatusView statusView;
+        [SerializeField] private AttackTimingOutline attackTimingOutline;
         [SerializeField] private LayerMask obstacleMask;
 
         [Header("순찰 웨이포인트 (Patrol 모드 전용)")]
@@ -166,6 +167,7 @@ namespace Week14.Enemy
             // 사망 체크
             if (health.IsDead)
             {
+                HideAttackTiming();
                 if (stateMachine.CurrentState != deadState)
                     stateMachine.ChangeState(deadState, this);
                 return;
@@ -174,6 +176,7 @@ namespace Week14.Enemy
             // 처형 잠금
             if (isExecutionLocked)
             {
+                HideAttackTiming();
                 Stop();
                 return;
             }
@@ -181,6 +184,7 @@ namespace Week14.Enemy
             // 내구도 고갈 처리
             if (isDurabilityDepleted || health.IsDurabilityDepleted)
             {
+                HideAttackTiming();
                 TickDurabilityDepleted();
                 return;
             }
@@ -188,6 +192,7 @@ namespace Week14.Enemy
             // 과열 시 행동 정지
             if (heat.IsOverheated)
             {
+                HideAttackTiming();
                 Stop();
                 CancelAttack();
                 return;
@@ -219,6 +224,27 @@ namespace Week14.Enemy
             {
                 CancelAttack();
                 Stop();
+            }
+        }
+
+        // ── 공격 타이밍 표시 ─────────────────────────
+        public void ShowAttackTiming(float remainingSeconds, float durationSeconds)
+        {
+            if (remainingSeconds <= 0f || durationSeconds <= 0f)
+            {
+                HideAttackTiming();
+                return;
+            }
+
+            EnsureAttackTimingOutline();
+            attackTimingOutline.Show(remainingSeconds, durationSeconds);
+        }
+
+        public void HideAttackTiming()
+        {
+            if (attackTimingOutline != null)
+            {
+                attackTimingOutline.Hide();
             }
         }
 
@@ -373,14 +399,11 @@ namespace Week14.Enemy
                 EnemyProjectile.Spawn(
                     data.ProjectilePrefab,
                     data,
+                    heat,
                     origin.position,
                     dir,
                     evt.Damage);
             }
-
-            // 열 게이지
-            heat.AddHeat(data.HeatPerShot);
-            heat.SuppressCooling(data.HeatCoolingDelayAfterShot);
         }
 
         // ── 시각 처리 ─────────────────────────────────
@@ -483,6 +506,21 @@ namespace Week14.Enemy
 
             statusView.Configure(data);
             statusView.SetTargets(health, heat);
+        }
+
+        private void EnsureAttackTimingOutline()
+        {
+            if (attackTimingOutline == null)
+            {
+                attackTimingOutline = GetComponent<AttackTimingOutline>();
+            }
+
+            if (attackTimingOutline == null)
+            {
+                attackTimingOutline = gameObject.AddComponent<AttackTimingOutline>();
+            }
+
+            attackTimingOutline.SetTarget(bodyRoot);
         }
 
         private static void RotateRight(Transform target, Vector2 direction)

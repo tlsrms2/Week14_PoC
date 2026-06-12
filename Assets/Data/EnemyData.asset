@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae857a587e828c243bd56669879742bf, type: 3}
   m_Name: EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.EnemyData
-  displayName: 
+  displayName: "\uAE30\uBCF8 \uC801"
   category: 0
   maxDurability: 60
   durabilityDepletedSeconds: 2
-  maxHeat: 100
-  heatCoolingPerSecond: 8
-  overheatSeconds: 4
+  maxHeat: 200
+  heatCoolingPerSecond: 10
+  overheatSeconds: 2
   heatAfterOverheatRatio: 0.2
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  overheatedColor: {r: 0.45, g: 0.65, b: 1, a: 1}
+  normalColor: {r: 1, g: 0.4666667, b: 0.44705886, a: 1}
+  overheatedColor: {r: 1, g: 0.5071429, b: 0, a: 1}
   durabilityDepletedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-  detectionRange: 10
+  detectionRange: 4.5
   fieldOfViewAngle: 160
   moveSpeed: 2.8
   patrolMode: 0
@@ -31,17 +31,18 @@ MonoBehaviour:
   attackRange: 8
   windupSeconds: 0.35
   recoverySeconds: 0.35
-  heatPerShot: 34
+  heatPerShot: 10
   heatCoolingDelayAfterShot: 0.6
-  attackTimelines: []
-  projectilePrefab: {fileID: 0}
-  projectileSpeed: 7
-  projectileLifetime: 3
-  projectileRadius: 0.12
+  attackTimelines:
+  - {fileID: 11400000, guid: 1b1cca80b15ae4b4e87b705e40a63573, type: 2}
+  projectilePrefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+  projectileSpeed: 5
+  projectileLifetime: 1.2
+  projectileRadius: 0.08
   projectileColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-  projectileTrailSeconds: 0.1
-  projectileTrailWidthMultiplier: 3
-  projectileGlowScale: 3.2
+  projectileTrailSeconds: 0.08
+  projectileTrailWidthMultiplier: 2.4
+  projectileGlowScale: 3
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   durabilityBarColor: {r: 0.75, g: 0.95, b: 1, a: 1}
   heatBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}

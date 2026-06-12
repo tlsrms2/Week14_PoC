@@ -50,8 +50,7 @@ namespace Week14.Combat
                     color,
                     radius,
                     config.ProjectileTrailSeconds,
-                    config.ProjectileTrailWidthMultiplier,
-                    config.ProjectileGlowScale);
+                    config.ProjectileTrailWidthMultiplier);
             }
 
             return projectile;

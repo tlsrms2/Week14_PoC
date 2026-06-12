@@ -24,9 +24,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
   attackDamage: 10
   attackHeat: 10
-  attackRange: 3.8
+  attackRange: 4.5
   attackCooldown: 0.5
-  projectileSpeed: 25
+  projectileSpeed: 60
   projectileLifetime: 1.2
   projectileRadius: 0.08
   projectileTrailSeconds: 0.08
@@ -36,30 +36,30 @@ MonoBehaviour:
   gunAimHoldSeconds: 0.5
   attackEffectColor: {r: 1, g: 0.35, b: 0.12, a: 0.55}
   parryAimAngleDegrees: 45
-  parryShotCooldown: 0.2
+  parryShotCooldown: 0.15
   parryEffectColor: {r: 0.34901962, g: 0.85098046, b: 1, a: 0.45}
   parrySparkColor: {r: 1, g: 0.88, b: 0.35, a: 1}
   parryRingColor: {r: 1, g: 0.76081353, b: 0.45098042, a: 0.75}
   parryRingGlitterColor: {r: 1, g: 0.96, b: 0.68, a: 1}
   parrySparkSeconds: 0.22
   parryRingSeconds: 0.32
-  parryRingGlitterSeconds: 0.2
+  parryRingGlitterSeconds: 0.25
   parrySparkCount: 45
-  parryRingGlitterCount: 18
+  parryRingGlitterCount: 30
   hitHeatToPlayer: 15
   lockOnSearchRadius: 2
   lockOnBreakDistance: 9
   executionRange: 1.2
   executionHeatRecovery: 30
   destroyTargetOnExecute: 1
-  executionStandOffDistance: 0.8
-  executionAimSeconds: 1.2
+  executionStandOffDistance: 1
+  executionAimSeconds: 1
   executionShotDelaySeconds: 0.12
   executionKillDelaySeconds: 0.08
   executionFinishSeconds: 0.12
   executionShotColor: {r: 1, g: 1, b: 1, a: 1}
   executionImpactColor: {r: 0.9, g: 0.02, b: 0.04, a: 1}
   executionAbsorbColor: {r: 0.35, g: 0.85, b: 1, a: 1}
-  executionImpactParticleSeconds: 0.8
-  executionImpactParticleCount: 45
-  executionAbsorbParticleCount: 45
+  executionImpactParticleSeconds: 1
+  executionImpactParticleCount: 60
+  executionAbsorbParticleCount: 35

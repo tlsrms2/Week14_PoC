@@ -66,7 +66,6 @@ namespace Week14.Enemy
         [SerializeField] private Color projectileColor = new(1f, 0.95f, 0.25f, 1f);
         [SerializeField, Min(0.01f)] private float projectileTrailSeconds = 0.1f;
         [SerializeField, Min(0.1f)] private float projectileTrailWidthMultiplier = 3f;
-        [SerializeField, Min(1f)] private float projectileGlowScale = 3.2f;
 
         // ── 상태 UI 색상 ──────────────────────────────
         [Header("상태바 UI")]
@@ -120,7 +119,6 @@ namespace Week14.Enemy
         public Color ProjectileColor => projectileColor;
         public float ProjectileTrailSeconds => projectileTrailSeconds;
         public float ProjectileTrailWidthMultiplier => projectileTrailWidthMultiplier;
-        public float ProjectileGlowScale => projectileGlowScale;
 
         // 상태바 UI
         public Color StatusBarBackgroundColor => statusBarBackgroundColor;

@@ -7,7 +7,7 @@ namespace Week14.Combat
         private const int RingSegments = 48;
         private static Material spriteMaterial;
 
-        public static void ApplyVisibility(GameObject owner, Color color, float radius, float trailSeconds, float trailWidthMultiplier, float glowScale)
+        public static void ApplyVisibility(GameObject owner, Color color, float radius, float trailSeconds, float trailWidthMultiplier)
         {
             if (owner == null)
             {

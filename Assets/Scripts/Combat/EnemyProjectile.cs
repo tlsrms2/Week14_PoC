@@ -13,6 +13,9 @@ namespace Week14.Combat
         private float projectileRadius;
         private Color projectileColor;
         private Rigidbody2D body;
+        private HeatGauge ownerHeat;
+        private float parryHeat;
+        private float parryHeatCoolingDelay;
         private float damage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
@@ -25,32 +28,37 @@ namespace Week14.Combat
         public static EnemyProjectile Spawn(
             EnemyProjectile prefab,
             EnemyData data,
+            HeatGauge ownerHeat,
             Vector3 position,
             Vector2 direction,
             float damage)
         {
             if (prefab == null || data == null) return null;
 
-            return SpawnInternal(prefab, position, direction, damage,
+            return SpawnInternal(prefab, ownerHeat, position, direction, damage,
+                data.HeatPerShot, data.HeatCoolingDelayAfterShot,
                 data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
-                data.ProjectileTrailWidthMultiplier, data.ProjectileGlowScale);
+                data.ProjectileTrailWidthMultiplier);
         }
 
         private static EnemyProjectile SpawnInternal(
             EnemyProjectile prefab,
+            HeatGauge ownerHeat,
             Vector3 position,
             Vector2 direction,
             float damage,
+            float parryHeat,
+            float parryHeatCoolingDelay,
             float speed, float lifetime, float radius,
-            Color color, float trailSeconds, float trailWidth, float glowScale)
+            Color color, float trailSeconds, float trailWidth)
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, damage, speed, lifetime, radius, color);
+            projectile.Initialize(direction, damage, ownerHeat, parryHeat, parryHeatCoolingDelay, speed, lifetime, radius, color);
             ProjectileVfx.ApplyVisibility(
-                projectile.gameObject, color, radius, trailSeconds, trailWidth, glowScale);
+                projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
         }
 
@@ -62,12 +70,18 @@ namespace Week14.Combat
         private void Initialize(
             Vector2 direction,
             float nextDamage,
+            HeatGauge nextOwnerHeat,
+            float nextParryHeat,
+            float nextParryHeatCoolingDelay,
             float speed, float lifetime, float radius, Color color)
         {
             projectileSpeed = speed;
             projectileLifetime = lifetime;
             projectileRadius = radius;
             projectileColor = color;
+            ownerHeat = nextOwnerHeat;
+            parryHeat = nextParryHeat;
+            parryHeatCoolingDelay = nextParryHeatCoolingDelay;
             damage = nextDamage;
             destroyAt = Time.time + lifetime;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
@@ -120,9 +134,21 @@ namespace Week14.Combat
             }
 
             resolved = true;
+            AddOwnerHeatOnParry();
             player?.PlayParryImpact(transform.position, flightDirection);
             Destroy(gameObject);
             return true;
+        }
+
+        private void AddOwnerHeatOnParry()
+        {
+            if (ownerHeat == null)
+            {
+                return;
+            }
+
+            ownerHeat.AddHeat(parryHeat);
+            ownerHeat.SuppressCooling(parryHeatCoolingDelay);
         }
 
         private void EnsureProjectileShape()
