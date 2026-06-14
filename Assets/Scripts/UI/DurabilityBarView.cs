@@ -12,8 +12,11 @@ namespace Week14.UI
         [SerializeField] private Text valueText;
         [SerializeField] private string textFormat = "{0:0}/{1:0}";
 
+        private readonly BarFillChangeFeedback changeFeedback = new();
+
         private void OnEnable()
         {
+            changeFeedback.Configure(fillImage);
             TryBindPlayer();
             Subscribe();
             Refresh();
@@ -26,6 +29,8 @@ namespace Week14.UI
 
         private void Update()
         {
+            changeFeedback.Tick();
+
             if (target != null || !bindPlayerOnStart)
             {
                 return;
@@ -53,6 +58,7 @@ namespace Week14.UI
         {
             fillImage = image;
             valueText = text;
+            changeFeedback.Configure(fillImage);
             Refresh();
         }
 
@@ -89,27 +95,28 @@ namespace Week14.UI
 
         private void HandleChanged(float current, float max)
         {
-            SetValue(current, max);
+            SetValue(current, max, true);
         }
 
         private void Refresh()
         {
             if (target == null)
             {
-                SetValue(0f, 1f);
+                SetValue(0f, 1f, false);
                 return;
             }
 
-            SetValue(target.CurrentDurability, target.MaxDurability);
+            SetValue(target.CurrentDurability, target.MaxDurability, false);
         }
 
-        private void SetValue(float current, float max)
+        private void SetValue(float current, float max, bool animate)
         {
             float safeMax = Mathf.Max(1f, max);
 
             if (fillImage != null)
             {
-                fillImage.fillAmount = Mathf.Clamp01(current / safeMax);
+                float nextAmount = Mathf.Clamp01(current / safeMax);
+                changeFeedback.SetAmount(nextAmount, animate);
             }
 
             if (valueText != null)

@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3256fdfa4661fac4c980de8adb75f84a, type: 3}
+  m_Name: BossEnemyData
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossEnemyData
+  displayName: "\uBCF4\uC2A4_01"
+  category: 1
+  effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+  maxDurability: 400
+  durabilityDepletedSeconds: 3
+  maxHeat: 500
+  heatCoolingPerSecond: 15
+  overheatSeconds: 4
+  normalColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+  overheatedColor: {r: 1, g: 0.5058824, b: 0, a: 1}
+  durabilityDepletedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  detectionRange: 9
+  moveSpeed: 3
+  patrolMode: 0
+  patrolWaitTime: 1
+  attackRange: 9
+  windupSeconds: 0
+  recoverySeconds: 0
+  heatPerShot: 25
+  heatCoolingDelayAfterShot: 1.75
+  attackTimelines:
+  - {fileID: 11400000, guid: 1b1cca80b15ae4b4e87b705e40a63573, type: 2}
+  - {fileID: 11400000, guid: 1b1cca80b15ae4b4e87b705e40a63573, type: 2}
+  projectilePrefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+  projectileDamage: 10
+  projectileSpeed: 20
+  projectileLifetime: 2
+  projectileRadius: 0.08
+  statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
+  durabilityBarColor: {r: 0.19607843, g: 0.9019608, b: 0.34509805, a: 1}
+  heatBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  overheatedBarColor: {r: 1, g: 0, b: 0, a: 1}
+  lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
+  executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
+  canParryPlayerAttacks: 1
+  playerAttackParryChance: 0.2
+  playerAttackParryChanceIncrease: 0.15
+  maxPlayerAttackParryChance: 1
+  playerAttackPressureResetSeconds: 1.2
+  playerAttackParryAngleDegrees: 60
+  playerAttackParryCooldown: 0.35
+  playerHeatOnBossParry: 10
+  playerAttackParryCounterTimeline: {fileID: 11400000, guid: b5b39a54494df754f8142662dc80eb1e, type: 2}
+  canDefendPlayerAttacks: 0
+  playerAttackDefenseChance: 0.25
+  playerAttackDefenseAngleDegrees: 60
+  playerAttackDefenseCooldown: 0.12
+  bossHeatOnDefense: 15
+  playerHeatCoolingSuppressSeconds: 0.35

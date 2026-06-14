@@ -10,23 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47cb344f012732c42b9fcbcd3764c664, type: 3}
-  m_Name: AttackTimeline
+  m_Name: 02_AttackTimeline
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackTimeline
-  timelineName: "\uAE30\uBCF8 \uACF5\uACA9"
-  cooldownAfter: 1
+  timelineName: "\uAE30\uBCF8 \uACF5\uACA9_02"
+  cooldownAfter: 1.2
   events:
   - fireTime: 0
     bulletCount: 1
     spreadAngle: 0
-    bulletSpeed: 5
-    damage: 10
   - fireTime: 0.3
     bulletCount: 1
     spreadAngle: 0
-    bulletSpeed: 5
-    damage: 10
   - fireTime: 0.6
     bulletCount: 1
     spreadAngle: 0
-    bulletSpeed: 5
-    damage: 10

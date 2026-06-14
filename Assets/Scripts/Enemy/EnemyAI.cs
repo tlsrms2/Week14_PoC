@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.UI;
 
@@ -14,6 +15,8 @@ namespace Week14.Enemy
     [RequireComponent(typeof(Health), typeof(HeatGauge))]
     public sealed class EnemyAI : MonoBehaviour
     {
+        private const float BossParryInterceptDelaySeconds = 0.035f;
+
         // ── 직렬화 필드 ───────────────────────────────
         [SerializeField] private EnemyData data;
         [SerializeField] private Transform bodyRoot;
@@ -22,6 +25,7 @@ namespace Week14.Enemy
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private EnemyStatusView statusView;
         [SerializeField] private AttackTimingOutline attackTimingOutline;
+        [SerializeField] private GunRecoilMotion gunRecoil;
         [SerializeField] private LayerMask obstacleMask;
 
         [Header("순찰 웨이포인트 (Patrol 모드 전용)")]
@@ -47,7 +51,16 @@ namespace Week14.Enemy
         private bool isDurabilityDepleted;
         private bool isExecutionLocked;
         private float durabilityDepletedEndsAt;
+        private float nextBossParryTime;
+        private float nextBossDefenseTime;
+        private float lastBossPlayerAttackTime;
+        private int bossPlayerAttackPressureCount;
         private int nextTimelineIndex;
+        private bool isBodyHitColorActive;
+        private float bodyHitColorEndsAt;
+        private bool isStaggered;
+        private float staggerEndsAt;
+        private Vector3 staggerBaseLocalPosition;
 
         // ── 공개 프로퍼티 ─────────────────────────────
         public EnemyData Data => data;
@@ -59,6 +72,7 @@ namespace Week14.Enemy
         public IReadOnlyList<Vector3> PatrolWaypoints => patrolWaypoints;
         public bool IsAttacking => attackCoroutine != null;
         public bool IsOverheated => heat != null && heat.IsOverheated;
+        public bool IsStaggered => isStaggered;
         public bool IsDurabilityDepleted => isDurabilityDepleted || (health != null && health.IsDurabilityDepleted);
         public bool IsExecutionLocked => isExecutionLocked;
         public LayerMask ObstacleMask => obstacleMask;
@@ -85,6 +99,8 @@ namespace Week14.Enemy
             if (fireOrigin == null) fireOrigin = FindChild("Gun") ?? bodyRoot;
             if (projectileOrigin == null)
                 projectileOrigin = FindChild("FireOrigin") ?? FindChild("Muzzle") ?? fireOrigin;
+            if (gunRecoil == null && fireOrigin != null)
+                gunRecoil = fireOrigin.GetComponentInChildren<GunRecoilMotion>();
 
             renderers = GetComponentsInChildren<SpriteRenderer>(true);
 
@@ -124,6 +140,7 @@ namespace Week14.Enemy
                 health.DurabilityDepleted -= HandleDurabilityDepleted;
                 health.Died -= HandleDied;
             }
+
         }
 
         private void Start()
@@ -143,7 +160,6 @@ namespace Week14.Enemy
                 data.MaxHeat,
                 data.HeatCoolingPerSecond,
                 data.OverheatSeconds,
-                data.HeatAfterOverheatRatio,
                 true);
 
             // 상태바 UI
@@ -163,6 +179,9 @@ namespace Week14.Enemy
         private void Update()
         {
             if (data == null) return;
+
+            UpdateBodyHitColor();
+            UpdateStagger();
 
             // 사망 체크
             if (health.IsDead)
@@ -198,6 +217,13 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (isStaggered)
+            {
+                HideAttackTiming();
+                Stop();
+                return;
+            }
+
             ResolvePlayer();
             RotateToTarget();
             stateMachine.Tick(this);
@@ -225,6 +251,438 @@ namespace Week14.Enemy
                 CancelAttack();
                 Stop();
             }
+        }
+
+        public bool CanHandleBossParryOnShotFired(Vector3 shotPosition, Vector2 shotDirection)
+        {
+            BossEnemyData bossData = data as BossEnemyData;
+            return bossData != null
+                && bossData.CanParryPlayerAttacks
+                && heat != null
+                && !heat.IsOverheated
+                && !isExecutionLocked
+                && !IsDurabilityDepleted
+                && Time.time >= nextBossParryTime
+                && IsPlayerAttackInFront(shotDirection, bossData.PlayerAttackParryAngleDegrees)
+                && IsShotAimedAtBoss(shotPosition, shotDirection);
+        }
+
+        public bool HandleBossParryOnShotFired(Vector3 shotPosition, Vector2 shotDirection)
+        {
+            BossEnemyData bossData = data as BossEnemyData;
+            if (!CanHandleBossParryOnShotFired(shotPosition, shotDirection))
+            {
+                return false;
+            }
+
+            int pressureCount = GetBossPlayerAttackPressureCount(bossData);
+            RegisterBossPlayerAttackPressure();
+            nextBossParryTime = Time.time + bossData.PlayerAttackParryCooldown;
+
+            if (Random.value > GetBossParryChance(bossData, pressureCount))
+            {
+                return false;
+            }
+
+            HandleBossParryPlayerAttack(bossData, transform.position, shotDirection);
+            return true;
+        }
+
+        public bool ReceivePlayerHit(float damage, float heatAmount, float heatCoolingSuppressSeconds, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            if (health == null || health.IsDead || health.IsDurabilityDepleted)
+            {
+                return false;
+            }
+
+            if (TryHandleBossPlayerAttackResponse(hitPosition, hitDirection))
+            {
+                return true;
+            }
+
+            health.TakeDamage(damage);
+            BeginStagger(hitDirection);
+            if (strongHit)
+            {
+                FlashBodyHitColor();
+            }
+
+            if (heat != null && heatAmount > 0f)
+            {
+                heat.AddHeat(heatAmount, HeatChangeSource.Hit);
+                heat.SuppressCooling(heatCoolingSuppressSeconds);
+                CancelAttack();
+                Stop();
+            }
+
+            ProjectileVfx.PlayPlayerAttackImpact(
+                hitPosition,
+                hitDirection,
+                strongHit ? GetAttackImpactSparkColor(hitColor) : GetWeakAttackImpactSparkColor(),
+                strongHit ? GetAttackImpactBackSparkColor(hitColor) : GetWeakAttackImpactBackSparkColor(),
+                strongHit ? GetAttackImpactFlameColor(hitColor) : GetWeakAttackImpactFlameColor(),
+                strongHit ? GetAttackImpactRingColor(hitColor) : GetWeakAttackImpactRingColor(),
+                data != null ? (strongHit ? data.AttackImpactSparkCount : data.WeakAttackImpactSparkCount) : 14,
+                data != null ? (strongHit ? data.AttackImpactBackSparkCount : data.WeakAttackImpactBackSparkCount) : 6,
+                data != null ? (strongHit ? data.AttackImpactFlameCount : data.WeakAttackImpactFlameCount) : 8,
+                data != null ? (strongHit ? data.AttackImpactEffectScale : data.WeakAttackImpactEffectScale) : 0.65f);
+
+            if (strongHit)
+            {
+                PlayEnemyHitCameraImpact(hitDirection);
+            }
+
+            return true;
+        }
+
+        // ── 피격 이펙트 색상 ─────────────────────────
+        private bool TryHandleBossPlayerAttackResponse(Vector3 hitPosition, Vector2 hitDirection)
+        {
+            BossEnemyData bossData = data as BossEnemyData;
+            if (bossData == null || heat == null || heat.IsOverheated || isExecutionLocked || IsDurabilityDepleted)
+            {
+                return false;
+            }
+
+            int pressureCount = GetBossPlayerAttackPressureCount(bossData);
+            bool canParry = bossData.CanParryPlayerAttacks
+                && Time.time >= nextBossParryTime
+                && IsPlayerAttackInFront(hitDirection, bossData.PlayerAttackParryAngleDegrees)
+                && Random.value <= GetBossParryChance(bossData, pressureCount);
+            bool canDefend = bossData.CanDefendPlayerAttacks
+                && Time.time >= nextBossDefenseTime
+                && IsPlayerAttackInFront(hitDirection, bossData.PlayerAttackDefenseAngleDegrees)
+                && Random.value <= bossData.PlayerAttackDefenseChance;
+
+            RegisterBossPlayerAttackPressure();
+
+            if (canParry)
+            {
+                nextBossParryTime = Time.time + bossData.PlayerAttackParryCooldown;
+                HandleBossParryPlayerAttack(bossData, hitPosition, hitDirection);
+                return true;
+            }
+
+            if (canDefend)
+            {
+                nextBossDefenseTime = Time.time + bossData.PlayerAttackDefenseCooldown;
+                HandleBossDefendPlayerAttack(bossData, hitPosition, hitDirection);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsPlayerAttackInFront(Vector2 hitDirection, float angleDegrees)
+        {
+            if (angleDegrees >= 359.5f)
+            {
+                return true;
+            }
+
+            Vector2 toAttacker = hitDirection.sqrMagnitude > 0.0001f ? -hitDirection.normalized : -GetFacingDirection();
+            return Vector2.Angle(GetFacingDirection(), toAttacker) <= angleDegrees * 0.5f;
+        }
+
+        private bool IsShotAimedAtBoss(Vector3 shotPosition, Vector2 shotDirection)
+        {
+            if (shotDirection.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            Vector2 direction = shotDirection.normalized;
+            Vector2 toBoss = (Vector2)transform.position - (Vector2)shotPosition;
+            float forwardDistance = Vector2.Dot(direction, toBoss);
+            if (forwardDistance <= 0f)
+            {
+                return false;
+            }
+
+            float sideDistance = Mathf.Abs(Vector2.Dot(new Vector2(-direction.y, direction.x), toBoss));
+            return sideDistance <= GetBossDefenseRadius();
+        }
+
+        private int GetBossPlayerAttackPressureCount(BossEnemyData bossData)
+        {
+            if (bossData.PlayerAttackPressureResetSeconds > 0f
+                && Time.time - lastBossPlayerAttackTime > bossData.PlayerAttackPressureResetSeconds)
+            {
+                bossPlayerAttackPressureCount = 0;
+            }
+
+            return bossPlayerAttackPressureCount;
+        }
+
+        private void RegisterBossPlayerAttackPressure()
+        {
+            lastBossPlayerAttackTime = Time.time;
+            bossPlayerAttackPressureCount++;
+        }
+
+        private void ResetBossPlayerAttackPressure()
+        {
+            bossPlayerAttackPressureCount = 0;
+            lastBossPlayerAttackTime = Time.time;
+        }
+
+        private static float GetBossParryChance(BossEnemyData bossData, int pressureCount)
+        {
+            float maxChance = Mathf.Max(bossData.PlayerAttackParryChance, bossData.MaxPlayerAttackParryChance);
+            float chance = bossData.PlayerAttackParryChance
+                + Mathf.Max(0, pressureCount) * bossData.PlayerAttackParryChanceIncrease;
+            return Mathf.Clamp(chance, 0f, maxChance);
+        }
+
+        private void HandleBossParryPlayerAttack(BossEnemyData bossData, Vector3 hitPosition, Vector2 hitDirection)
+        {
+            ResetBossPlayerAttackPressure();
+            Vector2 responseDirection = hitDirection.sqrMagnitude > 0.0001f ? -hitDirection.normalized : GetFacingDirection();
+            ProjectileVfx.PlayParry(
+                hitPosition,
+                responseDirection,
+                data.BossParrySparkColor,
+                data.BossParryRingColor,
+                data.BossParryGlitterColor,
+                Mathf.Max(18, data.AttackImpactSparkCount + data.AttackImpactBackSparkCount),
+                10,
+                0.16f,
+                0.24f,
+                0.14f,
+                Mathf.Max(6, data.AttackImpactFlameCount),
+                Mathf.Max(0.7f, data.AttackImpactEffectScale));
+            StartCoroutine(DelayedBossParryIntercept(responseDirection));
+            AddHeatToPlayerWithoutOverheat(bossData.PlayerHeatOnBossParry, bossData.PlayerHeatCoolingSuppressSeconds);
+            PlayEnemyHitCameraImpact(responseDirection);
+        }
+
+        private void HandleBossDefendPlayerAttack(BossEnemyData bossData, Vector3 hitPosition, Vector2 hitDirection)
+        {
+            Vector2 responseDirection = hitDirection.sqrMagnitude > 0.0001f ? -hitDirection.normalized : GetFacingDirection();
+            PlayBossDefenseArc(bossData, responseDirection, hitPosition);
+            ProjectileVfx.PlayDefense(
+                hitPosition,
+                responseDirection,
+                data.BossDefenseSparkColor,
+                data.BossDefenseRingColor,
+                Mathf.Max(8, data.WeakAttackImpactSparkCount + data.WeakAttackImpactBackSparkCount),
+                0.18f,
+                Mathf.Max(0.45f, data.WeakAttackImpactEffectScale));
+            AddHeatToBoss(bossData.BossHeatOnDefense);
+            PlayEnemyHitCameraImpact(responseDirection);
+        }
+
+        private void DestroyAllPlayerProjectilesByBossParry(Vector2 responseDirection)
+        {
+            PlayerProjectile[] projectiles = FindObjectsByType<PlayerProjectile>(FindObjectsSortMode.None);
+            for (int i = 0; i < projectiles.Length; i++)
+            {
+                PlayerProjectile projectile = projectiles[i];
+                if (projectile == null)
+                {
+                    continue;
+                }
+
+                FireBossParryInterceptShot(projectile.transform.position);
+                ProjectileVfx.PlayParry(
+                    projectile.transform.position,
+                    responseDirection,
+                    data.BossParrySparkColor,
+                    data.BossParryRingColor,
+                    Mathf.Max(8, data.AttackImpactSparkCount),
+                    0.12f);
+                projectile.DestroyAfterParryResolved();
+            }
+        }
+
+        private IEnumerator DelayedBossParryIntercept(Vector2 responseDirection)
+        {
+            yield return new WaitForSeconds(BossParryInterceptDelaySeconds);
+
+            if (data == null || heat == null || heat.IsOverheated || isExecutionLocked || IsDurabilityDepleted)
+            {
+                yield break;
+            }
+
+            DestroyAllPlayerProjectilesByBossParry(responseDirection);
+        }
+
+        private void FireBossParryInterceptShot(Vector3 targetPosition)
+        {
+            Transform origin = projectileOrigin != null ? projectileOrigin : fireOrigin != null ? fireOrigin : transform;
+            Vector2 direction = targetPosition - origin.position;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = GetFacingDirection();
+            }
+
+            Vector2 normalizedDirection = direction.normalized;
+            RotateRight(fireOrigin, normalizedDirection);
+            ProjectileVfx.PlayMuzzleFlash(origin.position, normalizedDirection, data.BossParrySparkColor, 0.85f);
+            ProjectileVfx.PlayShotLine(origin.position, targetPosition, data.BossParryRingColor, 0.09f, 0.035f);
+            gunRecoil?.Play(normalizedDirection);
+        }
+
+        private void PlayBossDefenseArc(BossEnemyData bossData, Vector2 responseDirection, Vector3 hitPosition)
+        {
+            Vector3 center = transform.position;
+            float radius = GetBossDefenseRadius();
+            Color color = data.BossDefenseRingColor;
+            color.a = Mathf.Max(color.a, 0.85f);
+            ProjectileVfx.PlayDefenseArc(
+                center,
+                responseDirection,
+                360f,
+                radius,
+                color,
+                0.65f,
+                0.035f);
+        }
+
+        private float GetBossDefenseRadius()
+        {
+            Bounds bounds = new(transform.position, Vector3.zero);
+            bool hasBounds = false;
+
+            if (renderers != null)
+            {
+                for (int i = 0; i < renderers.Length; i++)
+                {
+                    SpriteRenderer spriteRenderer = renderers[i];
+                    if (spriteRenderer == null || !spriteRenderer.enabled)
+                    {
+                        continue;
+                    }
+
+                    if (statusView != null && statusView.OwnsRenderer(spriteRenderer))
+                    {
+                        continue;
+                    }
+
+                    if (fireOrigin != null && fireOrigin != bodyRoot
+                        && (spriteRenderer.transform == fireOrigin || spriteRenderer.transform.IsChildOf(fireOrigin)))
+                    {
+                        continue;
+                    }
+
+                    if (!hasBounds)
+                    {
+                        bounds = spriteRenderer.bounds;
+                        hasBounds = true;
+                    }
+                    else
+                    {
+                        bounds.Encapsulate(spriteRenderer.bounds);
+                    }
+                }
+            }
+
+            float radius = hasBounds
+                ? Mathf.Max(bounds.extents.x, bounds.extents.y)
+                : 0.45f;
+            return Mathf.Max(0.55f, radius + 0.18f);
+        }
+
+        private void AddHeatToPlayerWithoutOverheat(float amount, float suppressSeconds)
+        {
+            PlayerCombatController playerCombat = PlayerCombatController.Active;
+            if (playerCombat == null && player != null)
+            {
+                playerCombat = player.GetComponent<PlayerCombatController>();
+            }
+
+            if (playerCombat == null)
+            {
+                return;
+            }
+
+            if (amount > 0f)
+            {
+                playerCombat.Heat?.AddHeatWithoutOverheat(amount, HeatChangeSource.Parry);
+            }
+
+            if (suppressSeconds > 0f)
+            {
+                playerCombat.SuppressHeatCooling(suppressSeconds);
+            }
+        }
+
+        private void AddHeatToBoss(float amount)
+        {
+            if (heat == null || amount <= 0f)
+            {
+                return;
+            }
+
+            heat.AddHeat(amount, HeatChangeSource.Defense);
+        }
+
+        private Color GetAttackImpactSparkColor(Color hitColor)
+        {
+            if (data != null)
+            {
+                return data.AttackImpactSparkColor;
+            }
+
+            Color color = Color.Lerp(hitColor, Color.white, 0.35f);
+            color.a = hitColor.a;
+            return color;
+        }
+
+        private Color GetAttackImpactBackSparkColor(Color hitColor)
+        {
+            if (data != null)
+            {
+                return data.AttackImpactBackSparkColor;
+            }
+
+            Color color = Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
+            color.a = hitColor.a;
+            return color;
+        }
+
+        private Color GetAttackImpactFlameColor(Color hitColor)
+        {
+            if (data != null)
+            {
+                return data.AttackImpactFlameColor;
+            }
+
+            Color color = Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
+            color.a = hitColor.a;
+            return color;
+        }
+
+        private Color GetAttackImpactRingColor(Color hitColor)
+        {
+            if (data != null)
+            {
+                return data.AttackImpactRingColor;
+            }
+
+            Color color = Color.Lerp(hitColor, Color.white, 0.35f);
+            color.a = hitColor.a * 0.72f;
+            return color;
+        }
+
+        private Color GetWeakAttackImpactSparkColor()
+        {
+            return data != null ? data.WeakAttackImpactSparkColor : new Color(0.82f, 0.88f, 1f, 0.35f);
+        }
+
+        private Color GetWeakAttackImpactBackSparkColor()
+        {
+            return data != null ? data.WeakAttackImpactBackSparkColor : new Color(0.55f, 0.66f, 0.85f, 0.35f);
+        }
+
+        private Color GetWeakAttackImpactFlameColor()
+        {
+            return data != null ? data.WeakAttackImpactFlameColor : new Color(0.58f, 0.68f, 0.9f, 0.35f);
+        }
+
+        private Color GetWeakAttackImpactRingColor()
+        {
+            return data != null ? data.WeakAttackImpactRingColor : new Color(0.82f, 0.88f, 1f, 0.18f);
         }
 
         // ── 공격 타이밍 표시 ─────────────────────────
@@ -256,19 +714,14 @@ namespace Week14.Enemy
             return Vector2.Distance(transform.position, player.position) <= data.DetectionRange;
         }
 
-        /// <summary>시야각 + 장애물 레이캐스트 통과 여부</summary>
+        /// <summary>감지 거리 + 장애물 레이캐스트 통과 여부</summary>
         public bool CanSeePlayer()
         {
             if (player == null) return false;
             float dist = Vector2.Distance(transform.position, player.position);
             if (dist > data.DetectionRange) return false;
 
-            // 시야각 검사
             Vector2 dirToPlayer = (player.position - transform.position).normalized;
-            Vector2 forward = GetFacingDirection();
-            if (Vector2.Angle(forward, dirToPlayer) > data.FieldOfViewAngle * 0.5f)
-                return false;
-
             // 장애물 레이캐스트
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToPlayer, dist, obstacleMask);
             return hit.collider == null;
@@ -396,13 +849,17 @@ namespace Week14.Enemy
                     Mathf.Cos(angle * Mathf.Deg2Rad),
                     Mathf.Sin(angle * Mathf.Deg2Rad));
 
-                EnemyProjectile.Spawn(
+                EnemyProjectile projectile = EnemyProjectile.Spawn(
                     data.ProjectilePrefab,
                     data,
                     heat,
                     origin.position,
-                    dir,
-                    evt.Damage);
+                    dir);
+                if (projectile != null)
+                {
+                    ProjectileVfx.PlayMuzzleFlash(origin.position, dir, data.ProjectileColor, 0.9f);
+                    gunRecoil?.Play(dir);
+                }
             }
         }
 
@@ -427,7 +884,11 @@ namespace Week14.Enemy
             if (data == null || renderers == null) return;
 
             Color color = data.NormalColor;
-            if (isExecutionLocked || (health != null && health.IsDurabilityDepleted))
+            if (isStaggered)
+                color = data.StaggeredColor;
+            else if (isBodyHitColorActive)
+                color = data.BodyHitColor;
+            else if (isExecutionLocked || (health != null && health.IsDurabilityDepleted))
                 color = data.DurabilityDepletedColor;
             else if (heat != null && heat.IsOverheated)
                 color = data.OverheatedColor;
@@ -450,6 +911,99 @@ namespace Week14.Enemy
 
                 renderers[i].color = color;
             }
+        }
+
+        private void FlashBodyHitColor()
+        {
+            if (data == null)
+            {
+                return;
+            }
+
+            isBodyHitColorActive = true;
+            bodyHitColorEndsAt = Time.time + data.BodyHitColorSeconds;
+            ApplyHeatStateColor();
+        }
+
+        private void UpdateBodyHitColor()
+        {
+            if (!isBodyHitColorActive || Time.time < bodyHitColorEndsAt)
+            {
+                return;
+            }
+
+            isBodyHitColorActive = false;
+            ApplyHeatStateColor();
+        }
+
+        private void BeginStagger(Vector2 hitDirection)
+        {
+            if (data == null || data.StaggerSeconds <= 0f || isExecutionLocked || IsDurabilityDepleted)
+            {
+                return;
+            }
+
+            if (!isStaggered)
+            {
+                staggerBaseLocalPosition = bodyRoot != null ? bodyRoot.localPosition : Vector3.zero;
+            }
+
+            isStaggered = true;
+            staggerEndsAt = Time.time + data.StaggerSeconds;
+            CancelAttack();
+            Stop();
+            ApplyHeatStateColor();
+        }
+
+        private void UpdateStagger()
+        {
+            if (!isStaggered)
+            {
+                return;
+            }
+
+            Transform target = bodyRoot != null ? bodyRoot : transform;
+            if (Time.time >= staggerEndsAt)
+            {
+                isStaggered = false;
+                if (bodyRoot != null)
+                {
+                    bodyRoot.localPosition = staggerBaseLocalPosition;
+                }
+
+                ApplyHeatStateColor();
+                return;
+            }
+
+            float distance = data != null ? data.StaggerShakeDistance : 0f;
+            float frequency = data != null ? data.StaggerShakeFrequency : 0f;
+            if (target == null || distance <= 0f || frequency <= 0f)
+            {
+                return;
+            }
+
+            float sign = Mathf.Sin(Time.time * frequency * Mathf.PI * 2f) >= 0f ? 1f : -1f;
+            Vector3 offset = Vector3.right * (distance * sign);
+            if (bodyRoot != null)
+            {
+                bodyRoot.localPosition = staggerBaseLocalPosition + offset;
+            }
+            else
+            {
+                target.position += offset * Time.deltaTime;
+            }
+        }
+
+        private static void PlayEnemyHitCameraImpact(Vector2 direction)
+        {
+            Camera mainCamera = Camera.main;
+            if (mainCamera == null)
+            {
+                return;
+            }
+
+            CameraFollow2D cameraFollow = mainCamera.GetComponent<CameraFollow2D>();
+            cameraFollow?.PlayImpact(direction, 0.08f, 0.12f, 0.05f);
         }
 
         // ── 이벤트 핸들러 ─────────────────────────────

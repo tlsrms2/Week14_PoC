@@ -20,13 +20,21 @@ namespace Week14.Combat
 
         public static void PlayParry(Vector3 position, Color sparkColor, Color ringColor, int sparkCount, float duration)
         {
+            position.z = 0f;
             PlayBidirectionalSpark(position, Vector2.right, sparkColor, sparkCount, duration);
+            int flameCount = Mathf.Max(8, sparkCount / 2);
+            PlayFlameBurst(position, Vector2.right, sparkColor, Color.white, flameCount, duration * 1.15f);
+            PlayFlameBurst(position, Vector2.left, sparkColor, Color.white, flameCount, duration * 1.15f);
             PlayRing(position, ringColor, duration);
         }
 
         public static void PlayParry(Vector3 position, Vector2 direction, Color sparkColor, Color ringColor, int sparkCount, float duration)
         {
+            position.z = 0f;
             PlayBidirectionalSpark(position, direction, sparkColor, sparkCount, duration);
+            int flameCount = Mathf.Max(8, sparkCount / 2);
+            PlayFlameBurst(position, direction, sparkColor, Color.white, flameCount, duration * 1.15f);
+            PlayFlameBurst(position, -direction, sparkColor, Color.white, flameCount, duration * 1.15f);
             PlayRing(position, ringColor, duration);
         }
 
@@ -40,16 +48,183 @@ namespace Week14.Combat
             int glitterCount,
             float sparkSeconds,
             float ringSeconds,
-            float glitterSeconds)
+            float glitterSeconds,
+            int flameCount = -1,
+            float effectScale = 1f)
         {
-            PlayBidirectionalSpark(position, direction, sparkColor, sparkCount, sparkSeconds);
-            PlayRing(position, ringColor, ringSeconds);
-            PlayRingGlitter(position, direction, glitterColor, glitterCount, glitterSeconds);
+            position.z = 0f;
+            float scale = Mathf.Max(0.25f, effectScale);
+            int nextSparkCount = Mathf.Max(8, sparkCount);
+            int nextGlitterCount = Mathf.Max(4, glitterCount);
+            int nextFlameCount = flameCount > 0 ? flameCount : Mathf.Max(10, nextSparkCount / 2 + nextGlitterCount);
+            float nextSparkSeconds = Mathf.Max(0.12f, sparkSeconds);
+            float nextRingSeconds = Mathf.Max(0.16f, ringSeconds);
+            float nextGlitterSeconds = Mathf.Max(0.1f, glitterSeconds);
+
+            PlayBidirectionalSpark(position, direction, sparkColor, nextSparkCount, nextSparkSeconds, scale);
+            PlayFlameBurst(
+                position,
+                direction,
+                sparkColor,
+                Color.Lerp(glitterColor, Color.white, 0.35f),
+                nextFlameCount,
+                Mathf.Max(nextSparkSeconds, nextGlitterSeconds) * 1.2f,
+                scale);
+            PlayFlameBurst(
+                position,
+                -direction,
+                sparkColor,
+                Color.Lerp(glitterColor, Color.white, 0.35f),
+                nextFlameCount,
+                Mathf.Max(nextSparkSeconds, nextGlitterSeconds) * 1.2f,
+                scale);
+            PlayRing(position, ringColor, nextRingSeconds, scale);
+            PlayRingGlitter(position, direction, glitterColor, nextGlitterCount, nextGlitterSeconds, scale);
+        }
+
+        public static void PlayDefense(Vector3 position, Vector2 incomingDirection, Color sparkColor, Color ringColor, int sparkCount, float seconds, float effectScale = 1f)
+        {
+            position.z = 0f;
+            float scale = Mathf.Max(0f, effectScale);
+            int forwardCount = Mathf.CeilToInt(Mathf.Max(0, sparkCount) * 0.65f);
+            int backwardCount = Mathf.Max(0, sparkCount / 4);
+            float duration = Mathf.Max(0.05f, seconds * 0.55f);
+
+            PlayDirectionalSpark(position, incomingDirection, sparkColor, forwardCount, duration, 28f, 2.8f, 6.4f, scale);
+            PlayDirectionalSpark(position, -incomingDirection, sparkColor, backwardCount, duration, 45f, 1.2f, 3.2f, scale);
+            PlayRing(position, ringColor, duration * 0.65f, scale);
+        }
+
+        public static void PlayDefenseArc(Vector3 center, Vector2 direction, float angleDegrees, float radius, Color color, float seconds, float width = 0.03f)
+        {
+            center.z = 0f;
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float clampedAngle = Mathf.Clamp(angleDegrees, 1f, 360f);
+            bool fullCircle = clampedAngle >= 359.5f;
+            int pointCount = fullCircle ? 73 : Mathf.Max(3, Mathf.CeilToInt(clampedAngle / 4f) + 1);
+            float centerAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+            float startAngle = fullCircle ? 0f : centerAngle - clampedAngle * 0.5f;
+
+            GameObject arcObject = new GameObject("DefenseArcVfx");
+            arcObject.transform.position = center;
+            LineRenderer line = arcObject.AddComponent<LineRenderer>();
+            line.useWorldSpace = false;
+            line.loop = fullCircle;
+            line.positionCount = pointCount;
+            line.startWidth = width;
+            line.endWidth = width;
+            line.startColor = color;
+            line.endColor = color;
+            line.numCornerVertices = 2;
+            line.numCapVertices = 2;
+            line.material = GetSpriteMaterial();
+            line.sortingOrder = 72;
+
+            float safeRadius = Mathf.Max(0.05f, radius);
+            for (int i = 0; i < pointCount; i++)
+            {
+                float t = pointCount <= 1 ? 0f : (float)i / (pointCount - 1);
+                float angle = (startAngle + clampedAngle * t) * Mathf.Deg2Rad;
+                line.SetPosition(i, new Vector3(Mathf.Cos(angle) * safeRadius, Mathf.Sin(angle) * safeRadius, 0f));
+            }
+
+            Object.Destroy(arcObject, Mathf.Max(0.05f, seconds));
+        }
+
+        public static void PlayShotLine(Vector3 start, Vector3 end, Color color, float seconds, float width = 0.035f)
+        {
+            start.z = 0f;
+            end.z = 0f;
+            GameObject lineObject = new GameObject("ShotLineVfx");
+            LineRenderer line = lineObject.AddComponent<LineRenderer>();
+            line.useWorldSpace = true;
+            line.positionCount = 2;
+            line.startWidth = width;
+            line.endWidth = width * 0.45f;
+            line.startColor = color;
+            line.endColor = color;
+            line.numCapVertices = 2;
+            line.material = GetSpriteMaterial();
+            line.sortingOrder = 73;
+            line.SetPosition(0, start);
+            line.SetPosition(1, end);
+            Object.Destroy(lineObject, Mathf.Max(0.04f, seconds));
         }
 
         public static void PlayBulletImpact(Vector3 position, Vector2 direction, Color color)
         {
             PlayDirectionalSpark(position, direction, color, 10, 0.16f, 36f, 2.5f, 6f);
+        }
+
+        public static void PlayMuzzleFlash(Vector3 position, Vector2 direction, Color color, float effectScale = 1f)
+        {
+            position.z = 0f;
+            float scale = Mathf.Max(0.25f, effectScale);
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            Color coreColor = Color.Lerp(color, Color.white, 0.62f);
+            coreColor.a = 1f;
+            Color flameColor = Color.Lerp(color, new Color(1f, 0.58f, 0.08f, 1f), 0.35f);
+            flameColor.a = 1f;
+
+            PlayDirectionalSpark(position, forward, coreColor, 5, 0.08f, 22f, 2.2f, 5.4f, 0.75f * scale);
+            PlayFlameBurst(
+                position + (Vector3)(forward * 0.06f * scale),
+                forward,
+                flameColor,
+                coreColor,
+                9,
+                0.1f,
+                0.7f * scale);
+        }
+
+        public static void PlayPlayerAttackImpact(
+            Vector3 position,
+            Vector2 direction,
+            Color color,
+            int sparkCount = 14,
+            int backSparkCount = 6,
+            int flameCount = 8,
+            float effectScale = 0.65f)
+        {
+            Color flashColor = Color.Lerp(color, Color.white, 0.35f);
+            flashColor.a = color.a;
+            Color emberColor = Color.Lerp(color, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
+            emberColor.a = color.a;
+            Color ringColor = flashColor;
+            ringColor.a *= 0.72f;
+
+            PlayPlayerAttackImpact(
+                position,
+                direction,
+                flashColor,
+                emberColor,
+                emberColor,
+                ringColor,
+                sparkCount,
+                backSparkCount,
+                flameCount,
+                effectScale);
+        }
+
+        public static void PlayPlayerAttackImpact(
+            Vector3 position,
+            Vector2 direction,
+            Color sparkColor,
+            Color backSparkColor,
+            Color flameColor,
+            Color ringColor,
+            int sparkCount = 14,
+            int backSparkCount = 6,
+            int flameCount = 8,
+            float effectScale = 0.65f)
+        {
+            position.z = 0f;
+            float scale = Mathf.Max(0f, effectScale);
+
+            PlayDirectionalSpark(position, direction, sparkColor, sparkCount, 0.26f, 72f, 4.5f, 13f, scale);
+            PlayDirectionalSpark(position, -direction, backSparkColor, backSparkCount, 0.22f, 112f, 1.8f, 6.5f, scale);
+            PlayFlameBurst(position, direction, flameColor, sparkColor, flameCount, 0.24f, scale);
+            PlayRing(position, ringColor, 0.18f, scale);
         }
 
         private static void RemoveFireballGlow(Transform owner)
@@ -93,8 +268,10 @@ namespace Week14.Combat
             float duration,
             float spreadDegrees,
             float minSpeed,
-            float maxSpeed)
+            float maxSpeed,
+            float sizeScale = 1f)
         {
+            float scale = Mathf.Max(0f, sizeScale);
             Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
             GameObject sparkObject = new GameObject("ParrySparkVfx");
             sparkObject.transform.position = position;
@@ -107,7 +284,7 @@ namespace Week14.Combat
             main.loop = false;
             main.startLifetime = new ParticleSystem.MinMaxCurve(0.08f, 0.22f);
             main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.018f, 0.055f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.018f * scale, 0.055f * scale);
             main.startColor = color;
             main.gravityModifier = 0f;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -131,28 +308,87 @@ namespace Week14.Combat
             for (int i = 0; i < emitCount; i++)
             {
                 float angle = (baseAngle + Random.Range(-spreadDegrees * 0.5f, spreadDegrees * 0.5f)) * Mathf.Deg2Rad;
-                float speed = Random.Range(minSpeed, maxSpeed);
+                float speed = Random.Range(minSpeed, maxSpeed) * scale;
                 ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
                 {
                     position = position,
                     velocity = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * speed,
                     startLifetime = Random.Range(0.08f, Mathf.Max(0.09f, duration)),
-                    startSize = Random.Range(0.018f, 0.055f),
+                    startSize = Random.Range(0.018f, 0.055f) * scale,
                     startColor = color
                 };
                 particles.Emit(emitParams, 1);
             }
         }
 
-        private static void PlayBidirectionalSpark(Vector3 position, Vector2 direction, Color color, int count, float duration)
+        private static void PlayBidirectionalSpark(Vector3 position, Vector2 direction, Color color, int count, float duration, float sizeScale = 1f)
         {
             int forwardCount = Mathf.CeilToInt(Mathf.Max(0, count) * 0.5f);
             int backwardCount = Mathf.Max(0, count) - forwardCount;
-            PlayDirectionalSpark(position, direction, color, forwardCount, duration, 38f, 4.6f, 10.5f);
-            PlayDirectionalSpark(position, -direction, color, backwardCount, duration, 38f, 4.6f, 10.5f);
+            PlayDirectionalSpark(position, direction, color, forwardCount, duration, 38f, 4.6f, 10.5f, sizeScale);
+            PlayDirectionalSpark(position, -direction, color, backwardCount, duration, 38f, 4.6f, 10.5f, sizeScale);
         }
 
-        private static void PlayRing(Vector3 position, Color color, float duration)
+        private static void PlayFlameBurst(
+            Vector3 position,
+            Vector2 direction,
+            Color baseColor,
+            Color coreColor,
+            int count,
+            float duration,
+            float sizeScale = 1f)
+        {
+            float scale = Mathf.Max(0f, sizeScale);
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            GameObject flameObject = new GameObject("ParryFlameVfx");
+            flameObject.transform.position = position;
+
+            ParticleSystem particles = flameObject.AddComponent<ParticleSystem>();
+            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ParticleSystem.MainModule main = particles.main;
+            main.playOnAwake = false;
+            main.duration = Mathf.Max(0.01f, duration);
+            main.loop = false;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.08f, Mathf.Max(0.1f, duration));
+            main.startSpeed = 0f;
+            main.startSize = new ParticleSystem.MinMaxCurve(0.035f * scale, 0.13f * scale);
+            main.startColor = baseColor;
+            main.gravityModifier = 0f;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.stopAction = ParticleSystemStopAction.Destroy;
+
+            ParticleSystem.EmissionModule emission = particles.emission;
+            emission.enabled = false;
+
+            ParticleSystem.ShapeModule shape = particles.shape;
+            shape.enabled = false;
+
+            ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+            renderer.sortingOrder = 72;
+            renderer.sharedMaterial = GetSpriteMaterial();
+
+            particles.Play();
+            float baseAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+            int emitCount = Mathf.Max(0, count);
+            for (int i = 0; i < emitCount; i++)
+            {
+                float angle = (baseAngle + Random.Range(-92f, 92f)) * Mathf.Deg2Rad;
+                float speed = Random.Range(1.2f, 7.8f) * scale;
+                Color particleColor = Color.Lerp(baseColor, coreColor, Random.Range(0.2f, 0.85f));
+                particleColor.a *= Random.Range(0.72f, 1f);
+                ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
+                {
+                    position = position + (Vector3)(Random.insideUnitCircle * 0.035f * scale),
+                    velocity = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * speed,
+                    startLifetime = Random.Range(0.08f, Mathf.Max(0.1f, duration)),
+                    startSize = Random.Range(0.035f, 0.13f) * scale,
+                    startColor = particleColor
+                };
+                particles.Emit(emitParams, 1);
+            }
+        }
+
+        private static void PlayRing(Vector3 position, Color color, float duration, float sizeScale = 1f)
         {
             GameObject ringObject = new GameObject("ParryRingVfx");
             ringObject.transform.position = position;
@@ -174,11 +410,12 @@ namespace Week14.Combat
             }
 
             ParryRingVfx ring = ringObject.AddComponent<ParryRingVfx>();
-            ring.Play(line, duration, color);
+            ring.Play(line, duration, color, sizeScale);
         }
 
-        private static void PlayRingGlitter(Vector3 position, Vector2 direction, Color color, int count, float duration)
+        private static void PlayRingGlitter(Vector3 position, Vector2 direction, Color color, int count, float duration, float sizeScale = 1f)
         {
+            float scale = Mathf.Max(0f, sizeScale);
             Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
             Vector2 side = new Vector2(-forward.y, forward.x);
             GameObject glitterObject = new GameObject("ParryRingGlitterVfx");
@@ -192,7 +429,7 @@ namespace Week14.Combat
             main.loop = false;
             main.startLifetime = new ParticleSystem.MinMaxCurve(0.06f, Mathf.Max(0.07f, duration));
             main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.035f, 0.11f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.035f * scale, 0.11f * scale);
             main.startColor = color;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.stopAction = ParticleSystemStopAction.Destroy;
@@ -209,16 +446,16 @@ namespace Week14.Combat
             for (int i = 0; i < emitCount; i++)
             {
                 float sideSign = i % 2 == 0 ? 1f : -1f;
-                float radius = Random.Range(0.16f, 0.52f);
+                float radius = Random.Range(0.16f, 0.52f) * scale;
                 Vector2 radial = (side * sideSign + forward * Random.Range(-0.35f, 0.35f)).normalized;
                 Color particleColor = color;
                 particleColor.a *= Random.Range(0.65f, 1f);
                 ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
                 {
                     position = position + (Vector3)(radial * radius),
-                    velocity = radial * Random.Range(0.15f, 0.85f),
+                    velocity = radial * Random.Range(0.15f, 0.85f) * scale,
                     startLifetime = Random.Range(0.06f, Mathf.Max(0.07f, duration)),
-                    startSize = Random.Range(0.035f, 0.11f),
+                    startSize = Random.Range(0.035f, 0.11f) * scale,
                     startColor = particleColor
                 };
                 particles.Emit(emitParams, 1);

@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03aa3498441c3004d8c63c5906c08cae, type: 3}
+  m_Name: CombatEffectData
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.CombatEffectData
+  attackEffectColor: {r: 1, g: 0.35, b: 0.12, a: 0.55}
+  parryEffectColor: {r: 0.2, g: 0.65, b: 1, a: 0.45}
+  executionShotColor: {r: 1, g: 0.84050083, b: 0, a: 1}
+  playerProjectileTrailSeconds: 0.08
+  playerProjectileTrailWidthMultiplier: 2.6
+  enemyProjectileColor: {r: 0.7830189, g: 0.10970438, b: 0.08495018, a: 1}
+  enemyProjectileTrailSeconds: 0.08
+  enemyProjectileTrailWidthMultiplier: 2.6
+  parrySparkColor: {r: 1, g: 0.88, b: 0.35, a: 1}
+  parryRingColor: {r: 1, g: 0.6789097, b: 0.34901965, a: 0.75}
+  parryRingGlitterColor: {r: 1, g: 0.96, b: 0.68, a: 1}
+  parrySparkSeconds: 0.32
+  parryRingSeconds: 0.22
+  parryRingGlitterSeconds: 0.2
+  parrySparkCount: 7
+  parryRingGlitterCount: 5
+  parryFlameCount: 5
+  parryEffectScale: 0.7
+  defenseSparkCount: 5
+  defenseEffectScale: 0.6
+  bossParrySparkColor: {r: 1, g: 0.2539345, b: 0.18039215, a: 1}
+  bossParryRingColor: {r: 1, g: 0.07843137, b: 0.17857185, a: 0.85}
+  bossParryGlitterColor: {r: 1, g: 0.7364814, b: 0.52156866, a: 1}
+  bossDefenseSparkColor: {r: 0.52156866, g: 0.59909517, b: 1, a: 1}
+  bossDefenseRingColor: {r: 0.3710432, g: 0.27843142, b: 1, a: 0.9}
+  attackImpactSparkColor: {r: 1, g: 0.92, b: 0.62, a: 1}
+  attackImpactBackSparkColor: {r: 1, g: 0.52, b: 0.12, a: 1}
+  attackImpactFlameColor: {r: 1, g: 0.48, b: 0.08, a: 1}
+  attackImpactRingColor: {r: 1, g: 0.92, b: 0.62, a: 0.72}
+  attackImpactSparkCount: 7
+  attackImpactBackSparkCount: 12
+  attackImpactFlameCount: 8
+  attackImpactEffectScale: 0.65
+  weakAttackImpactSparkColor: {r: 0.82, g: 0.88, b: 1, a: 1}
+  weakAttackImpactBackSparkColor: {r: 0.55, g: 0.66, b: 0.85, a: 1}
+  weakAttackImpactFlameColor: {r: 0.58, g: 0.68, b: 0.9, a: 1}
+  weakAttackImpactRingColor: {r: 0.82, g: 0.88, b: 1, a: 0.5}
+  weakAttackImpactSparkCount: 3
+  weakAttackImpactBackSparkCount: 1
+  weakAttackImpactFlameCount: 0
+  weakAttackImpactEffectScale: 0.35
+  weakAttackImpactAlpha: 0.9
+  playerHitSparkCount: 5
+  playerHitBackSparkCount: 12
+  playerHitFlameCount: 6
+  playerHitEffectScale: 0.6
+  playerBodyOverheatedColor: {r: 1, g: 0.2, b: 0.12, a: 1}
+  playerBodyHitColor: {r: 0, g: 0.40418056, b: 0.7169812, a: 1}
+  enemyBodyHitColor: {r: 1, g: 0.35, b: 0.25, a: 1}
+  bodyHitColorSeconds: 0.08
+  heatParryOutlineColor: {r: 1, g: 1, b: 1, a: 1}
+  heatDefenseOutlineColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
+  heatHitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  heatOverheatBlinkOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  heatOverheatBlinkFillColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  heatOverheatBlinkFrequency: 4.5
+  heatOverheatBlinkMinAlpha: 0.9
+  executionImpactColor: {r: 0.9, g: 0.02, b: 0.04, a: 1}
+  executionAbsorbColor: {r: 0.35, g: 0.85, b: 1, a: 1}
+  executionImpactParticleSeconds: 0.5
+  executionImpactParticleCount: 15
+  executionAbsorbParticleCount: 10

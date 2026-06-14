@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Bootstrap;
+using Week14.Enemy;
 using Week14.Input;
 using Week14.UI;
 
@@ -10,6 +11,7 @@ namespace Week14.Combat
     public interface IAttackSource
     {
         Transform SourceTransform { get; }
+        Vector2 IncomingDirection { get; }
         bool TryParry(PlayerCombatController player);
     }
 
@@ -24,6 +26,7 @@ namespace Week14.Combat
         private const string AttackRangeIndicatorName = "AttackRangeIndicator";
         private const string ParryRangeIndicatorName = "ParryRangeIndicator";
         private const int RangeDashCount = 48;
+        private const int ExecutionDimSortingOrder = 65;
 
         public static PlayerCombatController Active { get; private set; }
 
@@ -33,6 +36,8 @@ namespace Week14.Combat
         [SerializeField] private Transform leftGunFireOrigin;
         [SerializeField] private Transform rightGunOrigin;
         [SerializeField] private Transform rightGunFireOrigin;
+        [SerializeField] private GunRecoilMotion leftGunRecoil;
+        [SerializeField] private GunRecoilMotion rightGunRecoil;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private LayerMask parryMask = ~0;
         [SerializeField] private Rigidbody2D body;
@@ -53,7 +58,14 @@ namespace Week14.Combat
         private Transform rangeIndicatorRoot;
         private LineRenderer[] attackRangeDashes;
         private LineRenderer parryRangeLine;
+        private Transform executionFocusPoint;
+        private SpriteRenderer executionDimRenderer;
+        private Coroutine executionDimRoutine;
+        private SpriteRenderer[] bodyRenderers;
+        private Color[] bodyBaseColors;
+        private float bodyHitColorEndsAt;
         private static Material rangeIndicatorMaterial;
+        private static Sprite executionDimSprite;
 
         public Health Health => health;
         public HeatGauge Heat => heat;
@@ -74,6 +86,7 @@ namespace Week14.Combat
             }
 
             ResolveRigReferences();
+            CacheBodyRenderers();
 
             if (cameraFollow == null && Camera.main != null)
             {
@@ -84,21 +97,35 @@ namespace Week14.Combat
         private void OnEnable()
         {
             Active = this;
+            if (heat != null)
+            {
+                heat.Overheated += HandleOverheated;
+                heat.Recovered += HandleHeatRecovered;
+            }
         }
 
         private void OnDisable()
         {
+            if (heat != null)
+            {
+                heat.Overheated -= HandleOverheated;
+                heat.Recovered -= HandleHeatRecovered;
+            }
+
             if (Active == this)
             {
                 Active = null;
             }
 
-            if (cameraFollow != null)
+            CameraFollow2D activeCamera = GetCameraFollow();
+            if (activeCamera != null)
             {
-                cameraFollow.SetFocusTarget(null);
+                activeCamera.EndCinematicFocus();
+                activeCamera.SetFocusTarget(null);
             }
 
             HideAttackTimingOutline();
+            StopExecutionShotDim();
         }
 
         private void Start()
@@ -114,13 +141,22 @@ namespace Week14.Combat
                 config.MaxHeat,
                 config.HeatCoolingPerSecond,
                 config.OverheatSeconds,
-                config.HeatAfterOverheatRatio,
                 true);
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
         {
             config = nextConfig;
+        }
+
+        private void HandleOverheated(HeatGauge _)
+        {
+            UpdateBodyColor(true);
+        }
+
+        private void HandleHeatRecovered(HeatGauge _)
+        {
+            UpdateBodyColor(true);
         }
 
         private void Update()
@@ -153,6 +189,7 @@ namespace Week14.Combat
             ClearInvalidLockOnTarget();
             RotateToAim();
             UpdateRangeIndicators();
+            UpdateBodyColor();
 
             if (GameInput.GetMouseButtonDown(0) && CanAct)
             {
@@ -162,7 +199,8 @@ namespace Week14.Combat
                 }
             }
 
-            if (GameInput.GetMouseButtonDown(1) && CanAct)
+            bool defended = GameInput.GetMouseButton(1) && CanAct && TryDefendProjectile();
+            if (!defended && GameInput.GetMouseButtonDown(1) && CanAct)
             {
                 TryParryProjectile();
             }
@@ -172,19 +210,84 @@ namespace Week14.Combat
 
         public bool ReceiveAttack(float damage)
         {
-            if (health.IsDead || config == null)
+            return ReceiveAttack(damage, transform.position, Vector2.right);
+        }
+
+        public bool ReceiveAttack(float damage, Vector3 hitPosition, Vector2 hitDirection)
+        {
+            if (isExecuting || health.IsDead || config == null)
             {
                 return false;
             }
 
             health.TakeDamage(damage);
-            heat.AddHeat(HitHeatToPlayer);
+            heat.AddHeat(HitHeatToPlayer, HeatChangeSource.Hit);
+            FlashBodyHitColor();
+            ProjectileVfx.PlayPlayerAttackImpact(
+                hitPosition,
+                hitDirection,
+                config.EnemyProjectileColor,
+                config.PlayerHitSparkCount,
+                config.PlayerHitBackSparkCount,
+                config.PlayerHitFlameCount,
+                config.PlayerHitEffectScale);
+            GetCameraFollow()?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
             return true;
         }
 
         public void SuppressHeatCooling(float seconds)
         {
             heat?.SuppressCooling(seconds);
+        }
+
+        private void FlashBodyHitColor()
+        {
+            if (config == null)
+            {
+                return;
+            }
+
+            bodyHitColorEndsAt = Time.time + config.BodyHitColorSeconds;
+            UpdateBodyColor(true);
+        }
+
+        private void UpdateBodyColor(bool force = false)
+        {
+            if (bodyRenderers == null || bodyRenderers.Length == 0 || config == null)
+            {
+                return;
+            }
+
+            Color? overrideColor = null;
+            if (Time.time < bodyHitColorEndsAt)
+            {
+                overrideColor = config.PlayerBodyHitColor;
+            }
+            else if (heat != null && heat.IsOverheated)
+            {
+                overrideColor = config.PlayerBodyOverheatedColor;
+            }
+
+            for (int i = 0; i < bodyRenderers.Length; i++)
+            {
+                if (bodyRenderers[i] == null)
+                {
+                    continue;
+                }
+
+                Color targetColor = overrideColor ?? GetBodyBaseColor(i);
+                if (force || bodyRenderers[i].color != targetColor)
+                {
+                    bodyRenderers[i].color = targetColor;
+                }
+            }
+        }
+
+        private Color GetBodyBaseColor(int index)
+        {
+            return bodyBaseColors != null && index >= 0 && index < bodyBaseColors.Length
+                ? bodyBaseColors[index]
+                : Color.white;
         }
 
         public void PlayParryImpact(Vector3 position)
@@ -199,6 +302,8 @@ namespace Week14.Combat
                 return;
             }
 
+            heat.AddHeatWithoutOverheat(config.ParryHeat, HeatChangeSource.Parry);
+            SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
             ProjectileVfx.PlayParry(
                 position,
                 direction,
@@ -209,7 +314,10 @@ namespace Week14.Combat
                 config.ParryRingGlitterCount,
                 config.ParrySparkSeconds,
                 config.ParryRingSeconds,
-                config.ParryRingGlitterSeconds);
+                config.ParryRingGlitterSeconds,
+                config.ParryFlameCount,
+                config.ParryEffectScale);
+            GetCameraFollow()?.PlayImpact(direction, 0.32f, 0.24f, 0.22f);
         }
 
         private bool TryShootEnemy()
@@ -231,42 +339,56 @@ namespace Week14.Combat
             Vector2 direction = AimGunAndGetDirection(leftGunOrigin, fireOrigin, GetAimDirection(leftGunOrigin));
             LockLeftGunAim(direction);
 
-            int pelletCount = Mathf.Max(1, config.ShotgunPelletCount);
-            float pelletDamage = PlayerAttackDamage / pelletCount;
-            float pelletHeat = PlayerAttackHeat / pelletCount;
-            float spread = config.ShotgunSpreadAngle;
-            float startAngle = -spread * 0.5f;
-            float step = pelletCount > 1 ? spread / (pelletCount - 1) : 0f;
-            bool fired = false;
+            PlayerProjectile projectile = PlayerProjectile.Spawn(
+                config.ProjectilePrefab,
+                fireOrigin.position,
+                direction,
+                this,
+                config.ProjectileSpeed,
+                config.ProjectileLifetime,
+                config.ProjectileRadius,
+                PlayerAttackDamage,
+                PlayerAttackHeat,
+                AttackEffectColor,
+                true);
 
-            for (int i = 0; i < pelletCount; i++)
-            {
-                float angle = startAngle + step * i;
-                Vector2 pelletDirection = RotateDirection(direction, angle);
-                PlayerProjectile projectile = PlayerProjectile.Spawn(
-                    config.ProjectilePrefab,
-                    fireOrigin.position,
-                    pelletDirection,
-                    this,
-                    config.ProjectileSpeed,
-                    config.ProjectileLifetime,
-                    config.ProjectileRadius,
-                    PlayerAttackRange,
-                    pelletDamage,
-                    pelletHeat,
-                    AttackEffectColor,
-                    true);
-
-                fired |= projectile != null;
-            }
-
-            if (!fired)
+            if (projectile == null)
             {
                 return false;
             }
 
+            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
+            leftGunRecoil?.Play(direction);
+            TryTriggerBossParryOnShotFired(fireOrigin.position, direction);
             SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
             return true;
+        }
+
+        private static void TryTriggerBossParryOnShotFired(Vector3 shotPosition, Vector2 shotDirection)
+        {
+            EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+            EnemyAI bestBoss = null;
+            float bestDistance = float.PositiveInfinity;
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                EnemyAI enemy = enemies[i];
+                if (enemy == null || !enemy.CanHandleBossParryOnShotFired(shotPosition, shotDirection))
+                {
+                    continue;
+                }
+
+                float distance = Vector2.Distance(shotPosition, enemy.transform.position);
+                if (distance >= bestDistance)
+                {
+                    continue;
+                }
+
+                bestDistance = distance;
+                bestBoss = enemy;
+            }
+
+            bestBoss?.HandleBossParryOnShotFired(shotPosition, shotDirection);
         }
 
         private void UpdateAttackTimingOutline()
@@ -406,10 +528,18 @@ namespace Week14.Combat
             }
 
             transform.position = executionPosition;
+            UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
+            CameraFollow2D activeCamera = GetCameraFollow();
+            activeCamera?.BeginCinematicFocus(
+                executionFocusPoint != null ? executionFocusPoint : executionTarget.transform,
+                config.ExecutionCameraFocusWeight,
+                config.ExecutionCameraZoomMultiplier);
+            activeCamera?.PlayImpact(standDirection, 0.08f, 0.14f, 0.12f);
 
             Transform leftFireOrigin = GetLeftFireOrigin();
             Vector2 aimDirection = targetPosition - (Vector2)leftGunOrigin.position;
             AimExecutionPose(aimDirection);
+            leftGunRecoil?.PlayKick(aimDirection, config.ExecutionGunKickSeconds);
 
             yield return new WaitForSeconds(config.ExecutionAimSeconds);
             if (executionTarget == null)
@@ -430,10 +560,13 @@ namespace Week14.Combat
             }
 
             leftFireOrigin = GetLeftFireOrigin();
-            float shotDistance = Mathf.Max(0.01f, Vector2.Distance(leftFireOrigin.position, executionTarget.transform.position));
             aimDirection = AimGunAndGetDirection(leftGunOrigin, leftFireOrigin, (Vector2)executionTarget.transform.position - (Vector2)leftGunOrigin.position);
             LockLeftGunAim(aimDirection);
-            PlayerProjectile.Spawn(
+            UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
+            leftGunRecoil?.ReturnToBase(config.ExecutionGunReturnSeconds);
+            PlayExecutionShotDim();
+
+            PlayerProjectile executionShot = PlayerProjectile.Spawn(
                 config.ProjectilePrefab,
                 leftFireOrigin.position,
                 aimDirection,
@@ -441,11 +574,17 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                shotDistance,
                 0f,
                 0f,
                 config.ExecutionShotColor,
                 false);
+            if (executionShot != null)
+            {
+                Color muzzleFlashColor = Color.Lerp(config.ExecutionShotColor, Color.white, 0.65f);
+                muzzleFlashColor.a = 1f;
+                ProjectileVfx.PlayMuzzleFlash(leftFireOrigin.position, aimDirection, muzzleFlashColor, 1.55f);
+                activeCamera?.PlayImpact(aimDirection, 0.12f, 0.14f, 0.08f);
+            }
 
             yield return new WaitForSeconds(config.ExecutionKillDelaySeconds);
             if (executionTarget == null)
@@ -468,6 +607,7 @@ namespace Week14.Combat
                 config.ExecutionAbsorbColor,
                 config.ExecutionAbsorbParticleCount,
                 config.ExecutionImpactParticleSeconds);
+            GetCameraFollow()?.PlayImpact(aimDirection, 0.18f, 0.18f, 0.1f);
             SetLockOnTarget(null);
 
             yield return new WaitForSeconds(config.ExecutionFinishSeconds);
@@ -485,7 +625,142 @@ namespace Week14.Combat
         {
             isExecuting = false;
             executionRoutine = null;
+            leftGunRecoil?.ReturnToBase(config != null ? config.ExecutionGunReturnSeconds : 0.045f);
+            GetCameraFollow()?.EndCinematicFocus();
             ClearInvalidLockOnTarget();
+        }
+
+        private void UpdateExecutionFocusPoint(Vector3 playerPosition, Vector3 targetPosition)
+        {
+            if (executionFocusPoint == null)
+            {
+                GameObject focusObject = new GameObject("ExecutionCameraFocus")
+                {
+                    hideFlags = HideFlags.HideAndDontSave
+                };
+                executionFocusPoint = focusObject.transform;
+            }
+
+            Vector3 focusPosition = (playerPosition + targetPosition) * 0.5f;
+            focusPosition.z = playerPosition.z;
+            executionFocusPoint.position = focusPosition;
+        }
+
+        private void PlayExecutionShotDim()
+        {
+            if (config == null || config.ExecutionShotDimSeconds <= 0f || config.ExecutionShotDimAlpha <= 0f)
+            {
+                return;
+            }
+
+            Camera targetCamera = Camera.main;
+            if (targetCamera == null)
+            {
+                return;
+            }
+
+            if (executionDimRoutine != null)
+            {
+                StopCoroutine(executionDimRoutine);
+            }
+
+            executionDimRoutine = StartCoroutine(PlayExecutionShotDimRoutine(targetCamera));
+        }
+
+        private IEnumerator PlayExecutionShotDimRoutine(Camera targetCamera)
+        {
+            SpriteRenderer renderer = EnsureExecutionDimRenderer(targetCamera);
+            if (renderer == null)
+            {
+                yield break;
+            }
+
+            float duration = Mathf.Max(0.01f, config.ExecutionShotDimSeconds);
+            float maxAlpha = Mathf.Clamp01(config.ExecutionShotDimAlpha);
+            renderer.enabled = true;
+
+            float elapsed = 0f;
+            while (elapsed < duration && targetCamera != null)
+            {
+                elapsed += Time.deltaTime;
+                UpdateExecutionDimTransform(targetCamera, renderer.transform);
+                float t = Mathf.Clamp01(elapsed / duration);
+                renderer.color = new Color(0f, 0f, 0f, maxAlpha * (1f - t));
+                yield return null;
+            }
+
+            renderer.enabled = false;
+            executionDimRoutine = null;
+        }
+
+        private SpriteRenderer EnsureExecutionDimRenderer(Camera targetCamera)
+        {
+            if (targetCamera == null)
+            {
+                return null;
+            }
+
+            if (executionDimRenderer == null)
+            {
+                GameObject dimObject = new GameObject("ExecutionShotDim")
+                {
+                    hideFlags = HideFlags.HideAndDontSave
+                };
+                executionDimRenderer = dimObject.AddComponent<SpriteRenderer>();
+                executionDimRenderer.sprite = GetExecutionDimSprite();
+                executionDimRenderer.sortingOrder = ExecutionDimSortingOrder;
+                executionDimRenderer.enabled = false;
+            }
+
+            executionDimRenderer.transform.SetParent(targetCamera.transform, false);
+            UpdateExecutionDimTransform(targetCamera, executionDimRenderer.transform);
+            return executionDimRenderer;
+        }
+
+        private static void UpdateExecutionDimTransform(Camera targetCamera, Transform dimTransform)
+        {
+            if (targetCamera == null || dimTransform == null)
+            {
+                return;
+            }
+
+            float height = targetCamera.orthographic ? targetCamera.orthographicSize * 2f : 50f;
+            float width = height * targetCamera.aspect;
+            dimTransform.localPosition = new Vector3(0f, 0f, targetCamera.nearClipPlane + 0.05f);
+            dimTransform.localRotation = Quaternion.identity;
+            dimTransform.localScale = new Vector3(width, height, 1f);
+        }
+
+        private static Sprite GetExecutionDimSprite()
+        {
+            if (executionDimSprite != null)
+            {
+                return executionDimSprite;
+            }
+
+            Texture2D texture = new Texture2D(1, 1, TextureFormat.RGBA32, false)
+            {
+                filterMode = FilterMode.Point,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            texture.SetPixel(0, 0, Color.white);
+            texture.Apply();
+            executionDimSprite = Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
+            return executionDimSprite;
+        }
+
+        private void StopExecutionShotDim()
+        {
+            if (executionDimRoutine != null)
+            {
+                StopCoroutine(executionDimRoutine);
+                executionDimRoutine = null;
+            }
+
+            if (executionDimRenderer != null)
+            {
+                executionDimRenderer.enabled = false;
+            }
         }
 
         private bool TryParryProjectile()
@@ -496,6 +771,14 @@ namespace Week14.Combat
                 return false;
             }
 
+            Transform rightFireOrigin = GetRightFireOrigin();
+            Vector2 aimDirection = GetAimDirection(rightGunOrigin);
+            IAttackSource target = FindClosestParryTarget(aimDirection);
+            if (target?.SourceTransform == null)
+            {
+                return false;
+            }
+
             if (Time.time < nextParryTime)
             {
                 return false;
@@ -503,43 +786,30 @@ namespace Week14.Combat
 
             nextParryTime = Time.time + ParryShotCooldown;
 
-            Transform rightFireOrigin = GetRightFireOrigin();
-            Vector2 aimDirection = GetAimDirection(rightGunOrigin);
-            IAttackSource target = FindClosestParryTarget(aimDirection);
-            if (target?.SourceTransform == null)
-            {
-                FireParryShot(rightFireOrigin, aimDirection, PlayerAttackRange);
-                return true;
-            }
-
             Vector3 targetPosition = target.SourceTransform.position;
             rightFireOrigin = GetRightFireOrigin();
-            float parryShotDistance = Mathf.Min(PlayerAttackRange, Vector2.Distance(rightFireOrigin.position, targetPosition));
             Vector2 direction = AimGunAndGetDirection(rightGunOrigin, rightFireOrigin, (Vector2)(targetPosition - rightGunOrigin.position));
-            bool parried = target.TryParry(this);
-            if (!parried)
+            PlayerProjectile parryShot = FireParryShot(rightFireOrigin, direction);
+            if (parryShot != null && target is EnemyProjectile enemyProj)
             {
-                FireParryShot(rightFireOrigin, aimDirection, PlayerAttackRange);
-                return true;
+                parryShot.SetForcedParryTarget(enemyProj);
             }
 
-            FireParryShot(rightFireOrigin, direction, parryShotDistance);
-
-            return true;
+            return parryShot != null;
         }
 
-        private void FireParryShot(Transform fireOrigin, Vector2 aimDirection, float distance)
+        private PlayerProjectile FireParryShot(Transform fireOrigin, Vector2 aimDirection)
         {
             if (fireOrigin == null)
             {
-                return;
+                return null;
             }
 
             Vector2 direction = AimGunAndGetDirection(rightGunOrigin, fireOrigin, aimDirection);
             LockRightGunAim(direction);
             SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
 
-            PlayerProjectile.Spawn(
+            PlayerProjectile projectile = PlayerProjectile.Spawn(
                 config.ProjectilePrefab,
                 fireOrigin.position,
                 direction,
@@ -547,17 +817,114 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                Mathf.Max(0.01f, distance),
                 0f,
                 0f,
                 ParryEffectColor,
-                false);
+                false,
+                true);
+            if (projectile != null)
+            {
+                ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, ParryEffectColor, 1f);
+                rightGunRecoil?.Play(direction);
+            }
+
+            return projectile;
+        }
+
+        private bool TryDefendProjectile()
+        {
+            EnemyProjectile target = FindClosestDefenseTarget();
+            if (target == null)
+            {
+                return false;
+            }
+
+            if (!target.TryReserveDefense())
+            {
+                return false;
+            }
+
+            Vector3 targetPosition = target.transform.position;
+            Vector2 incomingDirection = target.IncomingDirection;
+            Transform rightFireOrigin = GetRightFireOrigin();
+            Vector2 direction = AimGunAndGetDirection(rightGunOrigin, rightFireOrigin, (Vector2)(targetPosition - rightGunOrigin.position));
+            PlayerProjectile defenseShot = FireParryShot(rightFireOrigin, direction);
+            if (defenseShot == null)
+            {
+                target.CancelDefenseReservation();
+                return false;
+            }
+
+            defenseShot.SetForcedDefenseTarget(target);
+            HandleDefense(targetPosition, incomingDirection);
+            return true;
+        }
+
+        private void HandleDefense(Vector3 position, Vector2 incomingDirection)
+        {
+            AddDefenseHeat();
+            ProjectileVfx.PlayDefense(
+                position,
+                incomingDirection,
+                config.ParrySparkColor,
+                config.ParryRingColor,
+                config.DefenseSparkCount,
+                config.ParrySparkSeconds,
+                config.DefenseEffectScale);
+        }
+
+        private void AddDefenseHeat()
+        {
+            heat.AddHeat(config.DefenseHeat, HeatChangeSource.Defense);
+            SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
+        }
+
+        private EnemyProjectile FindClosestDefenseTarget()
+        {
+            float defenseRange = config.DefenseRange;
+            if (defenseRange <= 0f)
+            {
+                return null;
+            }
+
+            Vector2 parryCenter = GetParryCenter();
+            Vector2 aimDirection = GetParryIndicatorDirection();
+            Transform aimOrigin = rightGunOrigin != null ? rightGunOrigin : transform;
+            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, defenseRange, parryMask);
+            EnemyProjectile bestTarget = null;
+            float bestDistance = float.PositiveInfinity;
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                EnemyProjectile source = hits[i].GetComponentInParent<EnemyProjectile>();
+                if (source == null || !source.CanReserveDefense)
+                {
+                    continue;
+                }
+
+                Vector2 toSource = (Vector2)(source.transform.position - aimOrigin.position);
+                if (!IsInsideAimAngle(toSource, aimDirection, config.ParryAimAngleDegrees))
+                {
+                    continue;
+                }
+
+                float distance = Vector2.Distance(parryCenter, source.transform.position);
+                if (distance >= bestDistance)
+                {
+                    continue;
+                }
+
+                bestTarget = source;
+                bestDistance = distance;
+            }
+
+            return bestTarget;
         }
 
         private IAttackSource FindClosestParryTarget(Vector2 aimDirection)
         {
             Vector2 parryCenter = GetParryCenter();
-            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, PlayerAttackRange, parryMask);
+            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, ParryRange, parryMask);
             IAttackSource bestTarget = null;
             float bestDistance = float.PositiveInfinity;
 
@@ -676,10 +1043,21 @@ namespace Week14.Combat
             }
 
             lockOnTarget = nextTarget;
-            if (cameraFollow != null)
+            CameraFollow2D activeCamera = GetCameraFollow();
+            if (activeCamera != null)
             {
-                cameraFollow.SetFocusTarget(lockOnTarget != null ? lockOnTarget.transform : null);
+                activeCamera.SetFocusTarget(lockOnTarget != null ? lockOnTarget.transform : null);
             }
+        }
+
+        private CameraFollow2D GetCameraFollow()
+        {
+            if (cameraFollow == null && Camera.main != null)
+            {
+                cameraFollow = Camera.main.GetComponent<CameraFollow2D>();
+            }
+
+            return cameraFollow;
         }
 
         private bool IsValidLockOnTarget(Health targetHealth)
@@ -803,8 +1181,14 @@ namespace Week14.Combat
         {
             EnsureRangeIndicators();
             SetRangeIndicatorsVisible(true);
-            UpdateAttackRangeIndicator(PlayerAttackRange);
-            UpdateParryRangeIndicator(PlayerAttackRange, GetParryIndicatorDirection());
+            Vector2 indicatorDirection = GetParryIndicatorDirection();
+            UpdateAttackRangeIndicator(config.DefenseRange, indicatorDirection);
+            bool showActiveDefense = GameInput.GetMouseButton(1) && CanAct;
+            parryRangeLine.enabled = showActiveDefense;
+            if (showActiveDefense)
+            {
+                UpdateParryRangeIndicator(config.DefenseRange, indicatorDirection);
+            }
         }
 
         private void EnsureRangeIndicators()
@@ -820,7 +1204,9 @@ namespace Week14.Combat
                 {
                     GameObject dashObject = new GameObject($"Dash_{i:00}");
                     dashObject.transform.SetParent(attackRoot.transform, false);
-                    attackRangeDashes[i] = CreateRangeLine(dashObject, new Color(0.65f, 0.65f, 0.65f, 0.42f), 0.025f, 2);
+                    Color failRangeColor = ParryEffectColor;
+                    failRangeColor.a = 0.32f;
+                    attackRangeDashes[i] = CreateRangeLine(dashObject, failRangeColor, 0.012f, 2);
                 }
             }
 
@@ -830,12 +1216,12 @@ namespace Week14.Combat
                 parryObject.transform.SetParent(rangeIndicatorRoot != null ? rangeIndicatorRoot : transform, false);
                 Color parryColor = ParryEffectColor;
                 parryColor.a = Mathf.Max(parryColor.a, 0.85f);
-                parryRangeLine = CreateRangeLine(parryObject, parryColor, 0.04f, 32);
-                parryRangeLine.sortingOrder = 4;
+                parryRangeLine = CreateRangeLine(parryObject, parryColor, 0.03f, 32);
+                parryRangeLine.sortingOrder = 5;
             }
         }
 
-        private void UpdateAttackRangeIndicator(float radius)
+        private void UpdateAttackRangeIndicator(float radius, Vector2 direction)
         {
             if (attackRangeDashes == null)
             {
@@ -843,7 +1229,10 @@ namespace Week14.Combat
             }
 
             Vector3 center = GetRangeIndicatorCenter();
-            float segmentAngle = Mathf.PI * 2f / attackRangeDashes.Length;
+            float angleDegrees = Mathf.Clamp(config.ParryAimAngleDegrees, 1f, 360f);
+            float centerAngle = Mathf.Atan2(direction.y, direction.x);
+            float startRangeAngle = angleDegrees >= 359.5f ? 0f : centerAngle - angleDegrees * 0.5f * Mathf.Deg2Rad;
+            float segmentAngle = angleDegrees * Mathf.Deg2Rad / attackRangeDashes.Length;
             float dashAngle = segmentAngle * 0.45f;
             for (int i = 0; i < attackRangeDashes.Length; i++)
             {
@@ -853,7 +1242,11 @@ namespace Week14.Combat
                     continue;
                 }
 
-                float startAngle = segmentAngle * i;
+                Color failRangeColor = ParryEffectColor;
+                failRangeColor.a = 0.32f;
+                dash.startColor = failRangeColor;
+                dash.endColor = failRangeColor;
+                float startAngle = startRangeAngle + segmentAngle * i;
                 float endAngle = startAngle + dashAngle;
                 float midAngle = (startAngle + endAngle) * 0.5f;
                 dash.positionCount = 3;
@@ -894,12 +1287,14 @@ namespace Week14.Combat
 
         private Vector2 GetParryIndicatorDirection()
         {
-            if (lockOnTarget == null && Time.time <= rightGunAimLockedUntil && rightGunLockedDirection.sqrMagnitude > 0.0001f)
+            Vector2 origin = GetParryCenter();
+            Vector2 direction = GetMouseWorldPosition() - origin;
+            if (direction.sqrMagnitude > 0.0001f)
             {
-                return rightGunLockedDirection;
+                return direction.normalized;
             }
 
-            return GetAimDirection(rightGunOrigin);
+            return bodyRoot != null ? (Vector2)bodyRoot.right : (Vector2)transform.right;
         }
 
         private void SetRangeIndicatorsVisible(bool visible)
@@ -1008,10 +1403,68 @@ namespace Week14.Combat
                 rightGunFireOrigin = FindFireOrigin(rightGunOrigin);
             }
 
+            if (leftGunRecoil == null && leftGunOrigin != null)
+            {
+                leftGunRecoil = leftGunOrigin.GetComponentInChildren<GunRecoilMotion>();
+            }
+
+            if (rightGunRecoil == null && rightGunOrigin != null)
+            {
+                rightGunRecoil = rightGunOrigin.GetComponentInChildren<GunRecoilMotion>();
+            }
+
             leftGunOrigin ??= transform;
             rightGunOrigin ??= leftGunOrigin;
             leftGunFireOrigin ??= leftGunOrigin;
             rightGunFireOrigin ??= rightGunOrigin;
+        }
+
+        private void CacheBodyRenderers()
+        {
+            Transform targetRoot = bodyRoot != null ? bodyRoot : transform;
+            SpriteRenderer[] renderers = targetRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            int count = 0;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (ShouldTintBodyRenderer(renderers[i]))
+                {
+                    count++;
+                }
+            }
+
+            bodyRenderers = new SpriteRenderer[count];
+            bodyBaseColors = new Color[count];
+            int index = 0;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (!ShouldTintBodyRenderer(renderers[i]))
+                {
+                    continue;
+                }
+
+                bodyRenderers[index] = renderers[i];
+                bodyBaseColors[index] = renderers[i].color;
+                index++;
+            }
+        }
+
+        private bool ShouldTintBodyRenderer(SpriteRenderer renderer)
+        {
+            if (renderer == null)
+            {
+                return false;
+            }
+
+            Transform rendererTransform = renderer.transform;
+            return !IsUnderTransform(rendererTransform, leftGunOrigin)
+                && !IsUnderTransform(rendererTransform, rightGunOrigin)
+                && !IsUnderTransform(rendererTransform, leftGunFireOrigin)
+                && !IsUnderTransform(rendererTransform, rightGunFireOrigin);
+        }
+
+        private static bool IsUnderTransform(Transform target, Transform root)
+        {
+            return target != null && root != null && (target == root || target.IsChildOf(root));
         }
 
         private bool IsPhysicsRoot(Transform target)
@@ -1136,15 +1589,15 @@ namespace Week14.Combat
             }
 
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(leftOrigin.position, leftOrigin.position + leftOrigin.right * PlayerAttackRange);
+            Gizmos.DrawLine(leftOrigin.position, leftOrigin.position + leftOrigin.right * ParryRange);
             Gizmos.color = Color.cyan;
             Vector3 parryCenter = bodyRoot != null ? bodyRoot.position : transform.position;
-            Gizmos.DrawWireSphere(parryCenter, PlayerAttackRange);
+            Gizmos.DrawWireSphere(parryCenter, ParryRange);
         }
 
         private float PlayerAttackDamage => config.AttackDamage;
         private float PlayerAttackHeat => config.AttackHeat;
-        private float PlayerAttackRange => config.AttackRange;
+        private float ParryRange => config.ParryRange;
         private float PlayerAttackCooldown => config.AttackCooldown;
         private float GunAimHoldSeconds => config.GunAimHoldSeconds;
         private Color AttackEffectColor => config.AttackEffectColor;

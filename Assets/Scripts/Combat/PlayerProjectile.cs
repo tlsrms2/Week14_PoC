@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -9,15 +11,22 @@ namespace Week14.Combat
 
         private PlayerCombatController owner;
         private Rigidbody2D body;
+        private float projectileSpeed;
         private float damage;
         private float heat;
-        private float maxDistance;
+        private Vector3 spawnPosition;
+        private float collisionRadius;
         private float destroyAt;
-        private Vector2 spawnPosition;
+        private Vector2 previousPosition;
+        private EnemyProjectile forcedParryTarget;
+        private float forcedParryResolveAt;
+        private bool forcedTargetIsDefense;
         private Vector2 flightDirection = Vector2.right;
         private Color projectileColor = Color.white;
         private bool canDamageHealth;
+        private bool canClashWithEnemyProjectile;
         private bool resolved;
+        private bool isDestroying;
 
         public static PlayerProjectile Spawn(
             PlayerProjectile prefab,
@@ -27,11 +36,11 @@ namespace Week14.Combat
             float speed,
             float lifetime,
             float radius,
-            float maxDistance,
             float damage,
             float heat,
             Color color,
-            bool canDamageHealth)
+            bool canDamageHealth,
+            bool canClashWithEnemyProjectile = false)
         {
             if (prefab == null)
             {
@@ -41,7 +50,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, maxDistance, damage, heat, color, canDamageHealth);
+            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, damage, heat, color, canDamageHealth, canClashWithEnemyProjectile);
             PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (config != null)
             {
@@ -67,19 +76,22 @@ namespace Week14.Combat
             float speed,
             float lifetime,
             float radius,
-            float nextMaxDistance,
             float nextDamage,
             float nextHeat,
             Color color,
-            bool nextCanDamageHealth)
+            bool nextCanDamageHealth,
+            bool nextCanClashWithEnemyProjectile)
         {
             owner = nextOwner;
+            projectileSpeed = speed;
             damage = nextDamage;
             heat = nextHeat;
-            maxDistance = nextMaxDistance;
-            canDamageHealth = nextCanDamageHealth;
             spawnPosition = transform.position;
+            collisionRadius = radius;
+            canDamageHealth = nextCanDamageHealth;
+            canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
             destroyAt = Time.time + lifetime;
+            previousPosition = transform.position;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             projectileColor = color;
 
@@ -98,33 +110,317 @@ namespace Week14.Combat
 
         private void Update()
         {
-            if (Time.time >= destroyAt || Vector2.Distance(spawnPosition, transform.position) >= maxDistance)
+            if (isDestroying)
             {
-                Destroy(gameObject);
+                return;
             }
+
+            SweepForMissedCollisions();
+            if (isDestroying)
+            {
+                return;
+            }
+
+            TryResolveForcedParryTarget();
+            if (isDestroying)
+            {
+                return;
+            }
+
+            if (Time.time >= destroyAt)
+            {
+                DestroyProjectile();
+                return;
+            }
+
+            previousPosition = transform.position;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (resolved || !canDamageHealth)
+            TryResolveCollision(other);
+        }
+
+        private void SweepForMissedCollisions()
+        {
+            Vector2 currentPosition = transform.position;
+            Vector2 delta = currentPosition - previousPosition;
+            float distance = delta.magnitude;
+            if (distance <= 0.0001f)
             {
                 return;
+            }
+
+            RaycastHit2D[] hits = Physics2D.CircleCastAll(
+                previousPosition,
+                Mathf.Max(0.001f, collisionRadius),
+                delta / distance,
+                distance);
+
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Collider2D hitCollider = hits[i].collider;
+                if (hitCollider == null || hitCollider.transform.IsChildOf(transform))
+                {
+                    continue;
+                }
+
+                if (TryResolveCollision(hitCollider))
+                {
+                    return;
+                }
+            }
+
+            Collider2D[] overlaps = Physics2D.OverlapCircleAll(currentPosition, Mathf.Max(0.001f, collisionRadius));
+            for (int i = 0; i < overlaps.Length; i++)
+            {
+                if (TryResolveCollision(overlaps[i]))
+                {
+                    return;
+                }
+            }
+        }
+
+        public void SetForcedParryTarget(EnemyProjectile enemyProjectile)
+        {
+            SetForcedTarget(enemyProjectile, false);
+        }
+
+        public void SetForcedDefenseTarget(EnemyProjectile enemyProjectile)
+        {
+            SetForcedTarget(enemyProjectile, true);
+        }
+
+        private void SetForcedTarget(EnemyProjectile enemyProjectile, bool defense)
+        {
+            forcedParryTarget = enemyProjectile;
+            forcedTargetIsDefense = defense;
+            if (forcedParryTarget == null || projectileSpeed <= 0f)
+            {
+                forcedParryResolveAt = 0f;
+                return;
+            }
+
+            float distance = Vector2.Distance(transform.position, forcedParryTarget.transform.position);
+            forcedParryResolveAt = Time.time + Mathf.Max(0.02f, distance / projectileSpeed);
+        }
+
+        private bool TryResolveForcedParryTarget()
+        {
+            if (!canClashWithEnemyProjectile || forcedParryTarget == null || resolved || isDestroying)
+            {
+                return false;
+            }
+
+            Vector2 targetPosition = forcedParryTarget.transform.position;
+            float hitRadius = Mathf.Max(0.12f, collisionRadius * 2.5f);
+            bool closeEnough = Vector2.Distance(transform.position, targetPosition) <= hitRadius;
+            bool reachedExpectedTime = forcedParryResolveAt > 0f && Time.time >= forcedParryResolveAt;
+            bool crossedTarget = Vector2.Dot(flightDirection, targetPosition - (Vector2)transform.position) <= 0f;
+            if (!closeEnough && !reachedExpectedTime && !crossedTarget)
+            {
+                return false;
+            }
+
+            transform.position = forcedParryTarget.transform.position;
+            if (forcedTargetIsDefense)
+            {
+                if (!forcedParryTarget.TryDestroyByDefense())
+                {
+                    return false;
+                }
+
+                DestroyByClash();
+                return true;
+            }
+
+            if (TryDestroyByEnemyProjectileClash(forcedParryTarget))
+            {
+                forcedParryTarget.TryDestroyByParryShot();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool TryResolveCollision(Collider2D other)
+        {
+            if (other == null || isDestroying || other.transform.IsChildOf(transform))
+            {
+                return false;
+            }
+
+            if (owner != null && other.transform.IsChildOf(owner.transform))
+            {
+                return false;
+            }
+
+            EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
+            if (enemyProjectile != null)
+            {
+                if (canClashWithEnemyProjectile && forcedTargetIsDefense && enemyProjectile == forcedParryTarget)
+                {
+                    if (!enemyProjectile.TryDestroyByDefense())
+                    {
+                        return false;
+                    }
+
+                    DestroyByClash();
+                    return true;
+                }
+
+                if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
+                {
+                    enemyProjectile.TryDestroyByParryShot();
+                    return true;
+                }
+
+                return false;
             }
 
             Health targetHealth = other.GetComponentInParent<Health>();
-            if (targetHealth == null || targetHealth == owner.Health)
+            if (targetHealth == null)
+            {
+                if (forcedParryTarget != null)
+                {
+                    return false;
+                }
+
+                if (other.GetComponentInParent<PlayerProjectile>() != null
+                    || other.GetComponentInParent<EnemyProjectile>() != null)
+                {
+                    return false;
+                }
+
+                DestroyProjectile();
+                return true;
+            }
+
+            if (resolved || !canDamageHealth || (owner != null && targetHealth == owner.Health))
+            {
+                return false;
+            }
+
+            resolved = true;
+            EnemyAI enemy = targetHealth.GetComponent<EnemyAI>();
+            PlayerCombatConfig config = owner != null ? owner.Config : null;
+            bool strongHit = IsWithinHeatEffectiveRange(config);
+            bool canApplyHeat = config == null || strongHit;
+            float effectiveDamage = strongHit ? damage : 0f;
+            float effectiveHeat = canApplyHeat ? heat : 0f;
+            float heatCoolingSuppressSeconds = canApplyHeat && config != null ? config.TargetHeatCoolingSuppressSeconds : 0f;
+            if (enemy != null)
+            {
+                enemy.ReceivePlayerHit(effectiveDamage, effectiveHeat, heatCoolingSuppressSeconds, strongHit, transform.position, flightDirection, projectileColor);
+                DestroyProjectile();
+                return true;
+            }
+
+            targetHealth.TakeDamage(effectiveDamage);
+            Color impactColor = projectileColor;
+            if (!strongHit)
+            {
+                impactColor.a *= 0.35f;
+            }
+
+            ProjectileVfx.PlayPlayerAttackImpact(
+                transform.position,
+                flightDirection,
+                impactColor,
+                strongHit ? 10 : 4,
+                strongHit ? 0 : 1,
+                strongHit ? 0 : 0,
+                strongHit ? 0.45f : 0.18f);
+
+            HeatGauge targetHeat = targetHealth.GetComponent<HeatGauge>();
+            if (targetHeat != null && canApplyHeat)
+            {
+                targetHeat.AddHeat(effectiveHeat, HeatChangeSource.Hit);
+                targetHeat.SuppressCooling(heatCoolingSuppressSeconds);
+            }
+
+            DestroyProjectile();
+            return true;
+        }
+
+        private bool IsWithinHeatEffectiveRange(PlayerCombatConfig config)
+        {
+            if (config == null)
+            {
+                return true;
+            }
+
+            float distance = Vector2.Distance(spawnPosition, transform.position);
+            return distance <= config.HeatEffectiveRange;
+        }
+
+        public bool TryDestroyByEnemyProjectileClash(EnemyProjectile enemyProjectile)
+        {
+            if (!canClashWithEnemyProjectile || resolved || isDestroying)
+            {
+                return false;
+            }
+
+            if (forcedTargetIsDefense && enemyProjectile == forcedParryTarget)
+            {
+                if (enemyProjectile == null || !enemyProjectile.TryDestroyByDefense())
+                {
+                    return false;
+                }
+
+                DestroyByClash();
+                return false;
+            }
+
+            if (enemyProjectile != null)
+            {
+                owner?.PlayParryImpact(enemyProjectile.transform.position, enemyProjectile.IncomingDirection);
+            }
+
+            DestroyByClash();
+            return true;
+        }
+
+        public void DestroyAfterParryResolved()
+        {
+            if (isDestroying)
             {
                 return;
             }
 
-            resolved = true;
-            targetHealth.TakeDamage(damage);
-            ProjectileVfx.PlayBulletImpact(transform.position, flightDirection, projectileColor);
+            DestroyByClash();
+        }
 
-            HeatGauge targetHeat = targetHealth.GetComponent<HeatGauge>();
-            if (targetHeat != null)
+        private void DestroyByClash()
+        {
+            resolved = true;
+            DestroyProjectile();
+        }
+
+        private void DestroyProjectile()
+        {
+            if (isDestroying)
             {
-                targetHeat.AddHeat(heat);
+                return;
+            }
+
+            isDestroying = true;
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = false;
             }
 
             Destroy(gameObject);

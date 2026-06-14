@@ -14,14 +14,19 @@ namespace Week14.Combat
         private Color projectileColor;
         private Rigidbody2D body;
         private HeatGauge ownerHeat;
+        private EnemyAI ownerEnemy;
         private float parryHeat;
         private float parryHeatCoolingDelay;
         private float damage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
         private bool resolved;
+        private bool isDestroying;
+        private bool defenseReserved;
 
         public Transform SourceTransform => transform;
+        public Vector2 IncomingDirection => flightDirection;
+        public bool CanReserveDefense => !resolved && !isDestroying && !defenseReserved;
 
 
         /// <summary>EnemyData 기반 스폰 (신규 AI 시스템용)</summary>
@@ -30,12 +35,11 @@ namespace Week14.Combat
             EnemyData data,
             HeatGauge ownerHeat,
             Vector3 position,
-            Vector2 direction,
-            float damage)
+            Vector2 direction)
         {
             if (prefab == null || data == null) return null;
 
-            return SpawnInternal(prefab, ownerHeat, position, direction, damage,
+            return SpawnInternal(prefab, ownerHeat, position, direction, data.ProjectileDamage,
                 data.HeatPerShot, data.HeatCoolingDelayAfterShot,
                 data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
@@ -80,6 +84,7 @@ namespace Week14.Combat
             projectileRadius = radius;
             projectileColor = color;
             ownerHeat = nextOwnerHeat;
+            ownerEnemy = ownerHeat != null ? ownerHeat.GetComponentInParent<EnemyAI>() : null;
             parryHeat = nextParryHeat;
             parryHeatCoolingDelay = nextParryHeatCoolingDelay;
             damage = nextDamage;
@@ -103,27 +108,54 @@ namespace Week14.Combat
         {
             if (Time.time >= destroyAt)
             {
-                Destroy(gameObject);
+                DestroyProjectile();
             }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (resolved)
+            PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
+            if (playerProjectile != null)
             {
+                if (playerProjectile.TryDestroyByEnemyProjectileClash(this))
+                {
+                    TryDestroyByParryShot();
+                }
+
                 return;
             }
 
             PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
             if (player == null)
             {
+                EnemyAI hitEnemy = other.GetComponentInParent<EnemyAI>();
+                if (hitEnemy != null)
+                {
+                    if (hitEnemy == ownerEnemy)
+                    {
+                        return;
+                    }
+
+                    DestroyProjectile();
+                    return;
+                }
+
+                if (other.GetComponentInParent<EnemyProjectile>() == null)
+                {
+                    DestroyProjectile();
+                }
+
+                return;
+            }
+
+            if (resolved)
+            {
                 return;
             }
 
             resolved = true;
-            player.ReceiveAttack(damage);
-            ProjectileVfx.PlayBulletImpact(transform.position, flightDirection, projectileColor);
-            Destroy(gameObject);
+            player.ReceiveAttack(damage, transform.position, flightDirection);
+            DestroyProjectile();
         }
 
         public bool TryParry(PlayerCombatController player)
@@ -135,9 +167,83 @@ namespace Week14.Combat
 
             resolved = true;
             AddOwnerHeatOnParry();
-            player?.PlayParryImpact(transform.position, flightDirection);
-            Destroy(gameObject);
+            DestroyProjectile();
             return true;
+        }
+
+        public bool TryDestroyByParryShot()
+        {
+            if (resolved || isDestroying)
+            {
+                return false;
+            }
+
+            resolved = true;
+            defenseReserved = false;
+            AddOwnerHeatOnParry();
+            DestroyProjectile();
+            return true;
+        }
+
+        public bool TryReserveDefense()
+        {
+            if (!CanReserveDefense)
+            {
+                return false;
+            }
+
+            defenseReserved = true;
+            return true;
+        }
+
+        public void CancelDefenseReservation()
+        {
+            if (!resolved && !isDestroying)
+            {
+                defenseReserved = false;
+            }
+        }
+
+        public bool TryDestroyByDefense()
+        {
+            if (resolved || isDestroying)
+            {
+                return false;
+            }
+
+            resolved = true;
+            defenseReserved = false;
+            DestroyProjectile();
+            return true;
+        }
+
+        private void DestroyProjectile()
+        {
+            if (isDestroying)
+            {
+                return;
+            }
+
+            isDestroying = true;
+            defenseReserved = false;
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = false;
+            }
+
+            Destroy(gameObject);
         }
 
         private void AddOwnerHeatOnParry()
@@ -147,7 +253,7 @@ namespace Week14.Combat
                 return;
             }
 
-            ownerHeat.AddHeat(parryHeat);
+            ownerHeat.AddHeat(parryHeat, HeatChangeSource.Parry);
             ownerHeat.SuppressCooling(parryHeatCoolingDelay);
         }
 

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae857a587e828c243bd56669879742bf, type: 3}
+  m_Name: 02_EnemyData
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.EnemyData
+  displayName: "\uAE30\uBCF8 \uC801_02"
+  category: 0
+  effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+  maxDurability: 200
+  durabilityDepletedSeconds: 3
+  maxHeat: 250
+  heatCoolingPerSecond: 10
+  overheatSeconds: 3
+  normalColor: {r: 1, g: 0.4666667, b: 0.44705886, a: 1}
+  overheatedColor: {r: 1, g: 0.5071429, b: 0, a: 1}
+  durabilityDepletedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  detectionRange: 8
+  moveSpeed: 2.8
+  patrolMode: 0
+  patrolWaitTime: 1
+  attackRange: 8
+  windupSeconds: 0
+  recoverySeconds: 0
+  heatPerShot: 35
+  heatCoolingDelayAfterShot: 1.75
+  attackTimelines:
+  - {fileID: 11400000, guid: 1b1cca80b15ae4b4e87b705e40a63573, type: 2}
+  projectilePrefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+  projectileDamage: 10
+  projectileSpeed: 20
+  projectileLifetime: 2
+  projectileRadius: 0.08
+  statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
+  durabilityBarColor: {r: 0.19607845, g: 0.90196085, b: 0.34509805, a: 1}
+  heatBarColor: {r: 1, g: 0.54901963, b: 0.10980393, a: 1}
+  overheatedBarColor: {r: 1, g: 0, b: 0, a: 1}
+  lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
+  executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}

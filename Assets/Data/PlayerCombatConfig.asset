@@ -12,54 +12,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0ef1d8e86ae264f9639400a96ddea2, type: 3}
   m_Name: PlayerCombatConfig
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatConfig
-  maxDurability: 100
-  maxHeat: 100
-  heatCoolingPerSecond: 2
+  maxDurability: 120000
+  maxHeat: 350
+  heatCoolingPerSecond: 10
   overheatSeconds: 2
-  heatAfterOverheatRatio: 0.35
-  moveSpeed: 3.5
+  moveSpeed: 3
   sprintSpeedMultiplier: 1.5
-  sprintHeatCoolingSuppressSeconds: 0.5
-  actionHeatCoolingSuppressSeconds: 0.5
+  sprintHeatCoolingSuppressSeconds: 0.75
+  actionHeatCoolingSuppressSeconds: 0.75
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
+  effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   attackDamage: 10
   attackHeat: 10
-  attackRange: 4.5
-  attackCooldown: 0.5
+  attackCooldown: 0.8
+  heatEffectiveRange: 6.5
+  targetHeatCoolingSuppressSeconds: 1.75
   projectileSpeed: 60
-  projectileLifetime: 1.2
+  projectileLifetime: 2
   projectileRadius: 0.08
-  projectileTrailSeconds: 0.08
-  projectileTrailWidthMultiplier: 2.4
-  projectileGlowScale: 3
-  combatEffectSeconds: 12
-  gunAimHoldSeconds: 0.5
-  attackEffectColor: {r: 1, g: 0.35, b: 0.12, a: 0.55}
-  parryAimAngleDegrees: 45
-  parryShotCooldown: 0.15
-  parryEffectColor: {r: 0.34901962, g: 0.85098046, b: 1, a: 0.45}
-  parrySparkColor: {r: 1, g: 0.88, b: 0.35, a: 1}
-  parryRingColor: {r: 1, g: 0.76081353, b: 0.45098042, a: 0.75}
-  parryRingGlitterColor: {r: 1, g: 0.96, b: 0.68, a: 1}
-  parrySparkSeconds: 0.22
-  parryRingSeconds: 0.32
-  parryRingGlitterSeconds: 0.25
-  parrySparkCount: 45
-  parryRingGlitterCount: 30
-  hitHeatToPlayer: 15
+  gunAimHoldSeconds: 0.15
+  parryRange: 10
+  defenseRange: 2
+  defenseHeat: 15
+  parryHeat: 5
+  parryAimAngleDegrees: 60
+  parryShotCooldown: 0.1
+  hitHeatToPlayer: 25
   lockOnSearchRadius: 2
   lockOnBreakDistance: 9
-  executionRange: 1.2
-  executionHeatRecovery: 30
+  executionRange: 2.5
+  executionHeatRecovery: 150
   destroyTargetOnExecute: 1
-  executionStandOffDistance: 1
+  executionStandOffDistance: 2
   executionAimSeconds: 1
-  executionShotDelaySeconds: 0.12
+  executionShotDelaySeconds: 0.3
   executionKillDelaySeconds: 0.08
   executionFinishSeconds: 0.12
-  executionShotColor: {r: 1, g: 1, b: 1, a: 1}
-  executionImpactColor: {r: 0.9, g: 0.02, b: 0.04, a: 1}
-  executionAbsorbColor: {r: 0.35, g: 0.85, b: 1, a: 1}
-  executionImpactParticleSeconds: 1
-  executionImpactParticleCount: 60
-  executionAbsorbParticleCount: 35
+  executionCameraFocusWeight: 1
+  executionCameraZoomMultiplier: 0.35
+  executionGunKickSeconds: 1
+  executionGunReturnSeconds: 0.2
+  executionShotDimSeconds: 0.5
+  executionShotDimAlpha: 1

@@ -13,11 +13,13 @@ namespace Week14.Combat
 
         public static void PlayImpact(Vector3 position, Vector2 direction, Color color, int count, float duration)
         {
-            ParticleSystem particles = CreateParticleSystem("ExecutionImpactVfx", position, duration);
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            Vector3 emitPosition = position + (Vector3)(forward * 0.08f);
+            ParticleSystem particles = CreateParticleSystem("ExecutionImpactVfx", emitPosition, duration);
             ParticleSystem.MainModule main = particles.main;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.14f, 0.3f);
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.15f, 0.22f);
             main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.04f, 0.13f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.055f, 0.08f);
             main.startColor = color;
             main.gravityModifier = 0f;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -34,19 +36,18 @@ namespace Week14.Combat
             renderer.sortingOrder = 60;
             AssignParticleMaterial(renderer);
 
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
             int particleCount = Mathf.Max(0, count);
             for (int i = 0; i < particleCount; i++)
             {
-                float angle = Random.Range(-32f, 32f);
-                float speed = Random.Range(3.2f, 7.2f);
+                float angle = Random.Range(-12f, 12f);
+                float speed = Random.Range(5f, 8f);
                 Vector3 velocity = Quaternion.Euler(0f, 0f, angle) * (Vector3)forward * speed;
                 ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
                 {
-                    position = position,
+                    position = emitPosition,
                     velocity = velocity,
-                    startLifetime = Random.Range(0.14f, 0.3f),
-                    startSize = Random.Range(0.04f, 0.13f),
+                    startLifetime = Random.Range(0.22f, 0.48f),
+                    startSize = Random.Range(0.055f, 0.1f),
                     startColor = color
                 };
                 particles.Emit(emitParams, 1);
@@ -111,7 +112,7 @@ namespace Week14.Combat
 
         private sealed class AbsorbToTarget : MonoBehaviour
         {
-            private const float ArriveDistance = 0.08f;
+            private const float ArriveDistance = 0.01f;
             private const float PullStrength = 12f;
             private const float SpreadSeconds = 0.14f;
 

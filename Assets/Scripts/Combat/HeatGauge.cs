@@ -3,12 +3,20 @@ using UnityEngine;
 
 namespace Week14.Combat
 {
+    public enum HeatChangeSource
+    {
+        None,
+        Generic,
+        Hit,
+        Parry,
+        Defense
+    }
+
     public sealed class HeatGauge : MonoBehaviour
     {
         private float maxHeat = 1f;
         private float coolingPerSecond;
         private float overheatSeconds;
-        private float heatAfterOverheatRatio;
 
         private float currentHeat;
         private float overheatTimer;
@@ -20,6 +28,10 @@ namespace Week14.Combat
 
         public float CurrentHeat => currentHeat;
         public float MaxHeat => maxHeat;
+        public float OverheatRemainingRatio => IsOverheated && overheatSeconds > 0f
+            ? Mathf.Clamp01(overheatTimer / overheatSeconds)
+            : 0f;
+        public HeatChangeSource LastChangeSource { get; private set; }
         public bool IsOverheated { get; private set; }
 
         private void Update()
@@ -42,12 +54,11 @@ namespace Week14.Combat
             }
         }
 
-        public void Configure(float maxValue, float cooling, float overheatDuration, float recoveryRatio, bool resetHeat)
+        public void Configure(float maxValue, float cooling, float overheatDuration, bool resetHeat)
         {
             maxHeat = Mathf.Max(1f, maxValue);
             coolingPerSecond = Mathf.Max(0f, cooling);
             overheatSeconds = Mathf.Max(0f, overheatDuration);
-            heatAfterOverheatRatio = Mathf.Clamp01(recoveryRatio);
 
             if (resetHeat)
             {
@@ -55,13 +66,14 @@ namespace Week14.Combat
                 IsOverheated = false;
                 overheatTimer = 0f;
                 coolingSuppressedTimer = 0f;
+                LastChangeSource = HeatChangeSource.None;
             }
 
             currentHeat = Mathf.Clamp(currentHeat, 0f, maxHeat);
             Changed?.Invoke(currentHeat, maxHeat);
         }
 
-        public void AddHeat(float amount)
+        public void AddHeat(float amount, HeatChangeSource source = HeatChangeSource.Generic)
         {
             if (amount <= 0f || IsOverheated)
             {
@@ -69,12 +81,25 @@ namespace Week14.Combat
             }
 
             currentHeat = Mathf.Min(maxHeat, currentHeat + amount);
+            LastChangeSource = source;
             Changed?.Invoke(currentHeat, maxHeat);
 
             if (currentHeat >= maxHeat)
             {
                 BeginOverheat();
             }
+        }
+
+        public void AddHeatWithoutOverheat(float amount, HeatChangeSource source = HeatChangeSource.Generic)
+        {
+            if (amount <= 0f || IsOverheated)
+            {
+                return;
+            }
+
+            currentHeat = Mathf.Min(maxHeat, currentHeat + amount);
+            LastChangeSource = source;
+            Changed?.Invoke(currentHeat, maxHeat);
         }
 
         public void ReduceHeat(float amount)
@@ -85,6 +110,7 @@ namespace Week14.Combat
             }
 
             currentHeat = Mathf.Max(0f, currentHeat - amount);
+            LastChangeSource = HeatChangeSource.None;
             Changed?.Invoke(currentHeat, maxHeat);
         }
 
@@ -102,7 +128,8 @@ namespace Week14.Combat
             }
 
             IsOverheated = false;
-            currentHeat = maxHeat * heatAfterOverheatRatio;
+            currentHeat = 0f;
+            LastChangeSource = HeatChangeSource.None;
             Changed?.Invoke(currentHeat, maxHeat);
             Recovered?.Invoke(this);
         }
@@ -112,6 +139,7 @@ namespace Week14.Combat
             IsOverheated = true;
             overheatTimer = overheatSeconds;
             currentHeat = maxHeat;
+            LastChangeSource = HeatChangeSource.Generic;
             Changed?.Invoke(currentHeat, maxHeat);
             Overheated?.Invoke(this);
 
