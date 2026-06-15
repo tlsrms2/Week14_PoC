@@ -25,17 +25,18 @@ MonoBehaviour:
   attackDamage: 10
   attackHeat: 10
   attackCooldown: 0.8
-  heatEffectiveRange: 6.5
   targetHeatCoolingSuppressSeconds: 1.75
   projectileSpeed: 60
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
-  parryRange: 10
-  defenseRange: 1.5
+  parryRange: 6.5
   defenseHeat: 15
   parryHeat: 5
-  parryAimAngleDegrees: 60
+  parryAimAngleDegrees: 30
+  minParryAimAngleDegrees: 5
+  parryAimAnglePenaltyPerClick: 5
+  parryAimAngleRecoveryPerSecond: 10
   parryShotCooldown: 0.1
   hitHeatToPlayer: 25
   lockOnSearchRadius: 2

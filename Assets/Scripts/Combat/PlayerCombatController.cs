@@ -8,13 +8,6 @@ using Week14.UI;
 
 namespace Week14.Combat
 {
-    public interface IAttackSource
-    {
-        Transform SourceTransform { get; }
-        Vector2 IncomingDirection { get; }
-        bool TryParry(PlayerCombatController player);
-    }
-
     [RequireComponent(typeof(Health), typeof(HeatGauge))]
     public sealed class PlayerCombatController : MonoBehaviour
     {
@@ -25,6 +18,7 @@ namespace Week14.Combat
         private const string MuzzleName = "Muzzle";
         private const string AttackRangeIndicatorName = "AttackRangeIndicator";
         private const string ParryRangeIndicatorName = "ParryRangeIndicator";
+        private const string ProjectileLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const int RangeDashCount = 48;
         private const int ExecutionDimSortingOrder = 65;
 
@@ -47,6 +41,7 @@ namespace Week14.Combat
         private HeatGauge heat;
         private CameraFollow2D cameraFollow;
         private Health lockOnTarget;
+        private EnemyProjectile projectileLockOnTarget;
         private Coroutine executionRoutine;
         private bool isExecuting;
         private float nextAttackTime;
@@ -58,12 +53,14 @@ namespace Week14.Combat
         private Transform rangeIndicatorRoot;
         private LineRenderer[] attackRangeDashes;
         private LineRenderer parryRangeLine;
+        private LineRenderer projectileLockOnLine;
         private Transform executionFocusPoint;
         private SpriteRenderer executionDimRenderer;
         private Coroutine executionDimRoutine;
         private SpriteRenderer[] bodyRenderers;
         private Color[] bodyBaseColors;
         private float bodyHitColorEndsAt;
+        private float parryAimPenaltyDegrees;
         private static Material rangeIndicatorMaterial;
         private static Sprite executionDimSprite;
 
@@ -73,7 +70,7 @@ namespace Week14.Combat
         public bool IsExecuting => isExecuting;
         public PlayerCombatConfig Config => config;
         public bool CanMove => CanAct;
-        private bool CanAct => !isExecuting && !health.IsDead && !heat.IsOverheated;
+        private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead && !heat.IsOverheated;
 
         private void Awake()
         {
@@ -125,6 +122,7 @@ namespace Week14.Combat
             }
 
             HideAttackTimingOutline();
+            SetProjectileLockOnIndicatorVisible(false);
             StopExecutionShotDim();
         }
 
@@ -165,6 +163,7 @@ namespace Week14.Combat
             {
                 StopBody();
                 SetRangeIndicatorsVisible(false);
+                SetProjectileLockOnIndicatorVisible(false);
                 SetLockOnTarget(null);
                 HideAttackTimingOutline();
                 return;
@@ -174,6 +173,7 @@ namespace Week14.Combat
             {
                 StopBody();
                 SetRangeIndicatorsVisible(false);
+                SetProjectileLockOnIndicatorVisible(false);
                 HideAttackTimingOutline();
                 return;
             }
@@ -181,14 +181,18 @@ namespace Week14.Combat
             if (config == null)
             {
                 SetRangeIndicatorsVisible(false);
+                SetProjectileLockOnIndicatorVisible(false);
                 HideAttackTimingOutline();
                 return;
             }
 
+            RecoverParryAimPenalty();
             UpdateLockOnInput();
             ClearInvalidLockOnTarget();
             RotateToAim();
+            UpdateProjectileLockOnTarget();
             UpdateRangeIndicators();
+            UpdateProjectileLockOnIndicator();
             UpdateBodyColor();
 
             if (GameInput.GetMouseButtonDown(0) && CanAct)
@@ -199,10 +203,13 @@ namespace Week14.Combat
                 }
             }
 
-            bool defended = GameInput.GetMouseButton(1) && CanAct && TryDefendProjectile();
-            if (!defended && GameInput.GetMouseButtonDown(1) && CanAct)
+            if (GameInput.GetMouseButtonDown(1) && CanAct)
             {
-                TryParryProjectile();
+                bool fired = TryParryProjectile(out bool applyImmediatePenalty);
+                if (!fired && applyImmediatePenalty)
+                {
+                    ApplyParryAimPenalty();
+                }
             }
 
             UpdateAttackTimingOutline();
@@ -769,19 +776,24 @@ namespace Week14.Combat
             }
         }
 
-        private bool TryParryProjectile()
+        private bool TryParryProjectile(out bool applyImmediatePenalty)
         {
+            applyImmediatePenalty = false;
             if (config.ProjectilePrefab == null)
             {
                 Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", this);
+                applyImmediatePenalty = true;
                 return false;
             }
 
             Transform rightFireOrigin = GetRightFireOrigin();
-            Vector2 aimDirection = GetAimDirection(rightGunOrigin);
-            IAttackSource target = FindClosestParryTarget(aimDirection);
-            if (target?.SourceTransform == null)
+            Vector2 aimDirection = GetParryIndicatorDirection();
+            EnemyProjectile target = projectileLockOnTarget != null && projectileLockOnTarget.CanBeIntercepted
+                ? projectileLockOnTarget
+                : FindClosestInterceptTarget(aimDirection);
+            if (target == null)
             {
+                applyImmediatePenalty = true;
                 return false;
             }
 
@@ -792,16 +804,26 @@ namespace Week14.Combat
 
             nextParryTime = Time.time + ParryShotCooldown;
 
-            Vector3 targetPosition = target.SourceTransform.position;
+            Vector3 targetPosition = target.transform.position;
             rightFireOrigin = GetRightFireOrigin();
             Vector2 direction = AimGunAndGetDirection(rightGunOrigin, rightFireOrigin, (Vector2)(targetPosition - rightGunOrigin.position));
             PlayerProjectile parryShot = FireParryShot(rightFireOrigin, direction);
-            if (parryShot != null && target is EnemyProjectile enemyProj)
+            if (parryShot != null)
             {
-                parryShot.SetForcedParryTarget(enemyProj);
+                parryShot.SetForcedParryTarget(target);
+                parryShot.SetInterceptResolutionCallback(HandleParryShotResolved);
             }
 
+            applyImmediatePenalty = parryShot == null;
             return parryShot != null;
+        }
+
+        private void HandleParryShotResolved(bool parried)
+        {
+            if (!parried)
+            {
+                ApplyParryAimPenalty();
+            }
         }
 
         private PlayerProjectile FireParryShot(Transform fireOrigin, Vector2 aimDirection)
@@ -837,46 +859,23 @@ namespace Week14.Combat
             return projectile;
         }
 
-        private bool TryDefendProjectile()
+        public void PlayDefenseImpact(Vector3 position, Vector2 incomingDirection)
         {
-            EnemyProjectile target = FindClosestDefenseTarget();
-            if (target == null)
+            if (config == null)
             {
-                return false;
+                return;
             }
 
-            if (!target.TryReserveDefense())
-            {
-                return false;
-            }
-
-            Vector3 targetPosition = target.transform.position;
-            Vector2 incomingDirection = target.IncomingDirection;
-            Transform rightFireOrigin = GetRightFireOrigin();
-            Vector2 direction = AimGunAndGetDirection(rightGunOrigin, rightFireOrigin, (Vector2)(targetPosition - rightGunOrigin.position));
-            PlayerProjectile defenseShot = FireParryShot(rightFireOrigin, direction);
-            if (defenseShot == null)
-            {
-                target.CancelDefenseReservation();
-                return false;
-            }
-
-            defenseShot.SetForcedDefenseTarget(target);
-            HandleDefense(targetPosition, incomingDirection);
-            return true;
-        }
-
-        private void HandleDefense(Vector3 position, Vector2 incomingDirection)
-        {
             AddDefenseHeat();
             ProjectileVfx.PlayDefense(
                 position,
                 incomingDirection,
-                config.ParrySparkColor,
-                config.ParryRingColor,
+                config.DefenseSparkColor,
+                config.DefenseRingColor,
                 config.DefenseSparkCount,
                 config.ParrySparkSeconds,
                 config.DefenseEffectScale);
+            GetCameraFollow()?.PlayImpact(incomingDirection, 0.18f, 0.18f, 0.1f);
         }
 
         private void AddDefenseHeat()
@@ -885,31 +884,25 @@ namespace Week14.Combat
             SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
         }
 
-        private EnemyProjectile FindClosestDefenseTarget()
+        private EnemyProjectile FindClosestInterceptTarget(Vector2 aimDirection)
         {
-            float defenseRange = config.DefenseRange;
-            if (defenseRange <= 0f)
-            {
-                return null;
-            }
-
             Vector2 parryCenter = GetParryCenter();
-            Vector2 aimDirection = GetParryIndicatorDirection();
-            Transform aimOrigin = rightGunOrigin != null ? rightGunOrigin : transform;
-            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, defenseRange, parryMask);
+            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, ParryRange, parryMask);
             EnemyProjectile bestTarget = null;
             float bestDistance = float.PositiveInfinity;
+            Transform aimOrigin = rightGunOrigin != null ? rightGunOrigin : transform;
+            float aimAngle = GetCurrentParryAimAngleDegrees();
 
             for (int i = 0; i < hits.Length; i++)
             {
                 EnemyProjectile source = hits[i].GetComponentInParent<EnemyProjectile>();
-                if (source == null || !source.CanReserveDefense)
+                if (source == null || !source.CanBeIntercepted)
                 {
                     continue;
                 }
 
                 Vector2 toSource = (Vector2)(source.transform.position - aimOrigin.position);
-                if (!IsInsideAimAngle(toSource, aimDirection, config.ParryAimAngleDegrees))
+                if (!IsInsideAimAngle(toSource, aimDirection, aimAngle))
                 {
                     continue;
                 }
@@ -927,46 +920,41 @@ namespace Week14.Combat
             return bestTarget;
         }
 
-        private IAttackSource FindClosestParryTarget(Vector2 aimDirection)
-        {
-            Vector2 parryCenter = GetParryCenter();
-            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, ParryRange, parryMask);
-            IAttackSource bestTarget = null;
-            float bestDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                MonoBehaviour[] behaviours = hits[i].GetComponentsInParent<MonoBehaviour>();
-                for (int j = 0; j < behaviours.Length; j++)
-                {
-                    if (behaviours[j] is not IAttackSource source || source.SourceTransform == null)
-                    {
-                        continue;
-                    }
-
-                    Vector2 toSource = (Vector2)(source.SourceTransform.position - rightGunOrigin.position);
-                    if (!IsInsideAimAngle(toSource, aimDirection, config.ParryAimAngleDegrees))
-                    {
-                        continue;
-                    }
-
-                    float distance = Vector2.Distance(parryCenter, source.SourceTransform.position);
-                    if (distance >= bestDistance)
-                    {
-                        continue;
-                    }
-
-                    bestTarget = source;
-                    bestDistance = distance;
-                }
-            }
-
-            return bestTarget;
-        }
-
         private Vector2 GetParryCenter()
         {
             return bodyRoot != null ? bodyRoot.position : transform.position;
+        }
+
+        private float GetCurrentParryAimAngleDegrees()
+        {
+            if (config == null)
+            {
+                return 360f;
+            }
+
+            float minAngle = Mathf.Min(config.ParryAimAngleDegrees, config.MinParryAimAngleDegrees);
+            return Mathf.Clamp(config.ParryAimAngleDegrees - parryAimPenaltyDegrees, minAngle, config.ParryAimAngleDegrees);
+        }
+
+        private void ApplyParryAimPenalty()
+        {
+            if (config == null)
+            {
+                return;
+            }
+
+            float maxPenalty = Mathf.Max(0f, config.ParryAimAngleDegrees - config.MinParryAimAngleDegrees);
+            parryAimPenaltyDegrees = Mathf.Min(maxPenalty, parryAimPenaltyDegrees + config.ParryAimAnglePenaltyPerClick);
+        }
+
+        private void RecoverParryAimPenalty()
+        {
+            if (config == null || parryAimPenaltyDegrees <= 0f)
+            {
+                return;
+            }
+
+            parryAimPenaltyDegrees = Mathf.Max(0f, parryAimPenaltyDegrees - config.ParryAimAngleRecoveryPerSecond * Time.deltaTime);
         }
 
         private void UpdateLockOnInput()
@@ -1183,17 +1171,83 @@ namespace Week14.Combat
             target.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
+        private void UpdateProjectileLockOnTarget()
+        {
+            projectileLockOnTarget = FindClosestInterceptTarget(GetParryIndicatorDirection());
+        }
+
+        private void UpdateProjectileLockOnIndicator()
+        {
+            if (projectileLockOnTarget == null || !projectileLockOnTarget.CanBeIntercepted)
+            {
+                SetProjectileLockOnIndicatorVisible(false);
+                return;
+            }
+
+            EnsureProjectileLockOnIndicator();
+            if (projectileLockOnLine == null)
+            {
+                return;
+            }
+
+            Color color = ParryEffectColor;
+            color.a = Mathf.Max(color.a, projectileLockOnTarget.IsCharging ? 0.95f : 0.72f);
+            projectileLockOnLine.enabled = true;
+            projectileLockOnLine.startColor = color;
+            projectileLockOnLine.endColor = color;
+            projectileLockOnLine.startWidth = projectileLockOnTarget.IsCharging ? 0.035f : 0.026f;
+            projectileLockOnLine.endWidth = projectileLockOnLine.startWidth;
+
+            Vector3 center = projectileLockOnTarget.transform.position;
+            float radius = projectileLockOnTarget.LockOnRadius;
+            projectileLockOnLine.SetPosition(0, center + Vector3.up * radius);
+            projectileLockOnLine.SetPosition(1, center + Vector3.right * radius);
+            projectileLockOnLine.SetPosition(2, center + Vector3.down * radius);
+            projectileLockOnLine.SetPosition(3, center + Vector3.left * radius);
+        }
+
+        private void EnsureProjectileLockOnIndicator()
+        {
+            if (projectileLockOnLine != null)
+            {
+                return;
+            }
+
+            GameObject indicatorObject = new GameObject(ProjectileLockOnIndicatorName);
+            indicatorObject.transform.SetParent(transform, false);
+            projectileLockOnLine = indicatorObject.AddComponent<LineRenderer>();
+            projectileLockOnLine.useWorldSpace = true;
+            projectileLockOnLine.loop = true;
+            projectileLockOnLine.positionCount = 4;
+            projectileLockOnLine.numCornerVertices = 2;
+            projectileLockOnLine.numCapVertices = 2;
+            projectileLockOnLine.material = GetRangeIndicatorMaterial();
+            projectileLockOnLine.sortingOrder = 45;
+            projectileLockOnLine.enabled = false;
+        }
+
+        private void SetProjectileLockOnIndicatorVisible(bool visible)
+        {
+            if (projectileLockOnLine != null)
+            {
+                projectileLockOnLine.enabled = visible;
+            }
+
+            if (!visible)
+            {
+                projectileLockOnTarget = null;
+            }
+        }
+
         private void UpdateRangeIndicators()
         {
             EnsureRangeIndicators();
-            SetRangeIndicatorsVisible(true);
+            SetAttackRangeDashesVisible(false);
             Vector2 indicatorDirection = GetParryIndicatorDirection();
-            UpdateAttackRangeIndicator(config.DefenseRange, indicatorDirection);
-            bool showActiveDefense = GameInput.GetMouseButton(1) && CanAct;
-            parryRangeLine.enabled = showActiveDefense;
-            if (showActiveDefense)
+            UpdateParryRangeIndicator(ParryRange, indicatorDirection);
+            if (parryRangeLine != null)
             {
-                UpdateParryRangeIndicator(config.DefenseRange, indicatorDirection);
+                parryRangeLine.enabled = true;
             }
         }
 
@@ -1235,7 +1289,7 @@ namespace Week14.Combat
             }
 
             Vector3 center = GetRangeIndicatorCenter();
-            float angleDegrees = Mathf.Clamp(config.ParryAimAngleDegrees, 1f, 360f);
+            float angleDegrees = Mathf.Clamp(GetCurrentParryAimAngleDegrees(), 1f, 360f);
             float centerAngle = Mathf.Atan2(direction.y, direction.x);
             float startRangeAngle = angleDegrees >= 359.5f ? 0f : centerAngle - angleDegrees * 0.5f * Mathf.Deg2Rad;
             float segmentAngle = angleDegrees * Mathf.Deg2Rad / attackRangeDashes.Length;
@@ -1274,7 +1328,7 @@ namespace Week14.Combat
             parryRangeLine.startColor = parryColor;
             parryRangeLine.endColor = parryColor;
 
-            float angleDegrees = Mathf.Clamp(config.ParryAimAngleDegrees, 1f, 360f);
+            float angleDegrees = Mathf.Clamp(GetCurrentParryAimAngleDegrees(), 1f, 360f);
             bool fullCircle = angleDegrees >= 359.5f;
             int pointCount = fullCircle ? 73 : Mathf.Max(3, Mathf.CeilToInt(angleDegrees / 4f) + 1);
             float centerAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -1294,15 +1348,6 @@ namespace Week14.Combat
         private Vector2 GetParryIndicatorDirection()
         {
             Vector2 origin = GetParryCenter();
-            if (lockOnTarget != null && !lockOnTarget.IsDead && !IsLockOnTooFar(lockOnTarget))
-            {
-                Vector2 toLockOnTarget = (Vector2)lockOnTarget.transform.position - origin;
-                if (toLockOnTarget.sqrMagnitude > 0.0001f)
-                {
-                    return toLockOnTarget.normalized;
-                }
-            }
-
             Vector2 direction = GetMouseWorldPosition() - origin;
             if (direction.sqrMagnitude > 0.0001f)
             {
@@ -1312,19 +1357,25 @@ namespace Week14.Combat
             return bodyRoot != null ? (Vector2)bodyRoot.right : (Vector2)transform.right;
         }
 
-        private void SetRangeIndicatorsVisible(bool visible)
+        private void SetAttackRangeDashesVisible(bool visible)
         {
-            if (attackRangeDashes != null)
+            if (attackRangeDashes == null)
             {
-                for (int i = 0; i < attackRangeDashes.Length; i++)
-                {
-                    if (attackRangeDashes[i] != null)
-                    {
-                        attackRangeDashes[i].enabled = visible;
-                    }
-                }
+                return;
             }
 
+            for (int i = 0; i < attackRangeDashes.Length; i++)
+            {
+                if (attackRangeDashes[i] != null)
+                {
+                    attackRangeDashes[i].enabled = visible;
+                }
+            }
+        }
+
+        private void SetRangeIndicatorsVisible(bool visible)
+        {
+            SetAttackRangeDashesVisible(visible);
             if (parryRangeLine != null)
             {
                 parryRangeLine.enabled = visible;

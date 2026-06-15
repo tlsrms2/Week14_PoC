@@ -21,6 +21,7 @@ namespace Week14.Combat
         private float currentHeat;
         private float overheatTimer;
         private float coolingSuppressedTimer;
+        private Health health;
 
         public event Action<HeatGauge> Overheated;
         public event Action<HeatGauge> Recovered;
@@ -33,6 +34,11 @@ namespace Week14.Combat
             : 0f;
         public HeatChangeSource LastChangeSource { get; private set; }
         public bool IsOverheated { get; private set; }
+
+        private void Awake()
+        {
+            health = GetComponent<Health>();
+        }
 
         private void Update()
         {
@@ -50,7 +56,7 @@ namespace Week14.Combat
 
             if (coolingPerSecond > 0f && currentHeat > 0f)
             {
-                ReduceHeat(coolingPerSecond * Time.deltaTime);
+                ReduceHeat(coolingPerSecond * GetHealthCoolingMultiplier() * Time.deltaTime);
             }
         }
 
@@ -117,6 +123,16 @@ namespace Week14.Combat
         public void SuppressCooling(float seconds)
         {
             coolingSuppressedTimer = Mathf.Max(coolingSuppressedTimer, seconds);
+        }
+
+        private float GetHealthCoolingMultiplier()
+        {
+            if (health == null)
+            {
+                return 1f;
+            }
+
+            return Mathf.Clamp01(health.CurrentDurability / Mathf.Max(1f, health.MaxDurability));
         }
 
         private void TickOverheat()

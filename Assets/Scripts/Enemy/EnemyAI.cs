@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Week14.Bootstrap;
 using Week14.Combat;
@@ -33,9 +32,6 @@ namespace Week14.Enemy
         [SerializeField] private DurabilityBarView bossDurabilityBarView;
         [SerializeField] private HeatBarView bossHeatBarView;
 
-        [Header("순찰 웨이포인트 (Patrol 모드 전용)")]
-        [SerializeField] private List<Vector3> patrolWaypoints = new();
-
         // ── 캐시 ─────────────────────────────────────
         private Health health;
         private HeatGauge heat;
@@ -45,7 +41,6 @@ namespace Week14.Enemy
         // ── FSM ──────────────────────────────────────
         private EnemyStateMachine stateMachine;
         private IdleState idleState;
-        private PatrolState patrolState;
         private ChaseState chaseState;
         private EngageState engageState;
         private FlankState flankState;
@@ -69,6 +64,7 @@ namespace Week14.Enemy
         private float staggerEndsAt;
         private Vector3 staggerBaseLocalPosition;
         private bool isBossCombatUiActive;
+        private bool destroyAfterDeathQueued;
 
         // ── 공개 프로퍼티 ─────────────────────────────
         public EnemyData Data => data;
@@ -77,7 +73,6 @@ namespace Week14.Enemy
         public Health Health => health;
         public HeatGauge Heat => heat;
         public Vector3 SpawnPosition { get; private set; }
-        public IReadOnlyList<Vector3> PatrolWaypoints => patrolWaypoints;
         public bool IsAttacking => attackCoroutine != null;
         public bool IsOverheated => heat != null && heat.IsOverheated;
         public bool IsStaggered => isStaggered;
@@ -87,7 +82,6 @@ namespace Week14.Enemy
 
         // 상태 접근자 (상태 클래스에서 사용)
         public IdleState IdleState => idleState;
-        public PatrolState PatrolState => patrolState;
         public ChaseState ChaseState => chaseState;
         public EngageState EngageState => engageState;
         public FlankState FlankState => flankState;
@@ -114,7 +108,6 @@ namespace Week14.Enemy
 
             // 상태 인스턴스 생성
             idleState = new IdleState();
-            patrolState = new PatrolState();
             chaseState = new ChaseState();
             engageState = new EngageState();
             flankState = new FlankState();
@@ -187,11 +180,7 @@ namespace Week14.Enemy
             // 플레이어 참조
             ResolvePlayer();
 
-            // 초기 상태 결정
-            IEnemyState initialState = data.PatrolMode == PatrolMode.Patrol && patrolWaypoints.Count > 0
-                ? patrolState
-                : idleState;
-            stateMachine.Initialize(initialState, this);
+            stateMachine.Initialize(idleState, this);
         }
 
         private void Update()
@@ -252,12 +241,6 @@ namespace Week14.Enemy
         public void SetData(EnemyData nextData)
         {
             data = nextData;
-        }
-
-        /// <summary>스폰 시 웨이포인트 설정</summary>
-        public void SetPatrolWaypoints(List<Vector3> waypoints)
-        {
-            patrolWaypoints = waypoints ?? new List<Vector3>();
         }
 
         public void SetExecutionLocked(bool locked)
@@ -330,21 +313,20 @@ namespace Week14.Enemy
             {
                 heat.AddHeat(heatAmount, HeatChangeSource.Hit);
                 heat.SuppressCooling(heatCoolingSuppressSeconds);
-                CancelAttack();
                 Stop();
             }
 
             ProjectileVfx.PlayPlayerAttackImpact(
                 hitPosition,
                 hitDirection,
-                strongHit ? GetAttackImpactSparkColor(hitColor) : GetWeakAttackImpactSparkColor(),
-                strongHit ? GetAttackImpactBackSparkColor(hitColor) : GetWeakAttackImpactBackSparkColor(),
-                strongHit ? GetAttackImpactFlameColor(hitColor) : GetWeakAttackImpactFlameColor(),
-                strongHit ? GetAttackImpactRingColor(hitColor) : GetWeakAttackImpactRingColor(),
-                data != null ? (strongHit ? data.AttackImpactSparkCount : data.WeakAttackImpactSparkCount) : 14,
-                data != null ? (strongHit ? data.AttackImpactBackSparkCount : data.WeakAttackImpactBackSparkCount) : 6,
-                data != null ? (strongHit ? data.AttackImpactFlameCount : data.WeakAttackImpactFlameCount) : 8,
-                data != null ? (strongHit ? data.AttackImpactEffectScale : data.WeakAttackImpactEffectScale) : 0.65f);
+                GetAttackImpactSparkColor(hitColor),
+                GetAttackImpactBackSparkColor(hitColor),
+                GetAttackImpactFlameColor(hitColor),
+                GetAttackImpactRingColor(hitColor),
+                data != null ? data.AttackImpactSparkCount : 14,
+                data != null ? data.AttackImpactBackSparkCount : 6,
+                data != null ? data.AttackImpactFlameCount : 8,
+                data != null ? data.AttackImpactEffectScale : 0.65f);
 
             if (strongHit)
             {
@@ -484,9 +466,9 @@ namespace Week14.Enemy
                 responseDirection,
                 data.BossDefenseSparkColor,
                 data.BossDefenseRingColor,
-                Mathf.Max(8, data.WeakAttackImpactSparkCount + data.WeakAttackImpactBackSparkCount),
+                Mathf.Max(8, data.AttackImpactSparkCount + data.AttackImpactBackSparkCount),
                 0.18f,
-                Mathf.Max(0.45f, data.WeakAttackImpactEffectScale));
+                Mathf.Max(0.45f, data.AttackImpactEffectScale));
             AddHeatToBoss(bossData.BossHeatOnDefense);
             PlayEnemyHitCameraImpact(responseDirection);
         }
@@ -684,26 +666,6 @@ namespace Week14.Enemy
             return color;
         }
 
-        private Color GetWeakAttackImpactSparkColor()
-        {
-            return data != null ? data.WeakAttackImpactSparkColor : new Color(0.82f, 0.88f, 1f, 0.35f);
-        }
-
-        private Color GetWeakAttackImpactBackSparkColor()
-        {
-            return data != null ? data.WeakAttackImpactBackSparkColor : new Color(0.55f, 0.66f, 0.85f, 0.35f);
-        }
-
-        private Color GetWeakAttackImpactFlameColor()
-        {
-            return data != null ? data.WeakAttackImpactFlameColor : new Color(0.58f, 0.68f, 0.9f, 0.35f);
-        }
-
-        private Color GetWeakAttackImpactRingColor()
-        {
-            return data != null ? data.WeakAttackImpactRingColor : new Color(0.82f, 0.88f, 1f, 0.18f);
-        }
-
         // ── 공격 타이밍 표시 ─────────────────────────
         public void ShowAttackTiming(float remainingSeconds, float durationSeconds)
         {
@@ -859,24 +821,23 @@ namespace Week14.Enemy
             // Windup
             if (data.WindupSeconds > 0f)
             {
-                Stop();
                 yield return new WaitForSeconds(data.WindupSeconds);
             }
 
             // 이벤트 순차 실행
-            float elapsed = 0f;
+            float timelineStartedAt = Time.time;
             int eventIndex = 0;
 
             while (eventIndex < events.Count)
             {
-                float nextTime = events[eventIndex].FireTime;
-                if (nextTime > elapsed)
+                AttackEvent evt = events[eventIndex];
+                float waitSeconds = timelineStartedAt + evt.FireTime - Time.time;
+                if (waitSeconds > 0f)
                 {
-                    yield return new WaitForSeconds(nextTime - elapsed);
-                    elapsed = nextTime;
+                    yield return new WaitForSeconds(waitSeconds);
                 }
 
-                FireProjectiles(events[eventIndex]);
+                yield return ExecuteAttackEvent(evt);
                 currentAttackBulletRemaining = Mathf.Max(0, currentAttackBulletRemaining - 1);
                 ShowCurrentAttackBullets();
                 eventIndex++;
@@ -885,7 +846,6 @@ namespace Week14.Enemy
             // Recovery
             if (data.RecoverySeconds > 0f)
             {
-                Stop();
                 yield return new WaitForSeconds(data.RecoverySeconds);
             }
 
@@ -901,6 +861,32 @@ namespace Week14.Enemy
 
         /// <summary>단일 AttackEvent의 발사체 생성</summary>
         public void FireProjectiles(AttackEvent evt)
+        {
+            FireDirectSpread(evt);
+        }
+
+        private IEnumerator ExecuteAttackEvent(AttackEvent evt)
+        {
+            if (evt == null)
+            {
+                yield break;
+            }
+
+            switch (evt.PatternKind)
+            {
+                case EnemyAttackPatternKind.LeftCircleSweep:
+                    yield return FireLeftCircleSweep(evt);
+                    break;
+                case EnemyAttackPatternKind.DashTrail:
+                    yield return FireDashTrail(evt);
+                    break;
+                default:
+                    FireDirectSpread(evt);
+                    break;
+            }
+        }
+
+        private void FireDirectSpread(AttackEvent evt)
         {
             if (data.ProjectilePrefab == null || player == null) return;
 
@@ -921,21 +907,149 @@ namespace Week14.Enemy
                     Mathf.Cos(angle * Mathf.Deg2Rad),
                     Mathf.Sin(angle * Mathf.Deg2Rad));
 
-                EnemyProjectile projectile = EnemyProjectile.Spawn(
-                    data.ProjectilePrefab,
-                    data,
-                    heat,
-                    origin.position,
-                    dir);
-                if (projectile != null)
+                SpawnEnemyProjectile(origin.position, dir, true);
+            }
+        }
+
+        // ── 공격 패턴 처리 ─────────────────────────────
+        private IEnumerator FireLeftCircleSweep(AttackEvent evt)
+        {
+            if (data.ProjectilePrefab == null || player == null)
+            {
+                yield break;
+            }
+
+            int count = Mathf.Max(1, evt.BulletCount);
+            float duration = Mathf.Max(0f, evt.PatternDuration);
+            float interval = count > 1 && duration > 0f ? duration / (count - 1) : 0f;
+            Vector2 center = transform.position;
+            Vector2 toPlayer = (Vector2)player.position - center;
+            if (toPlayer.sqrMagnitude <= 0.0001f)
+            {
+                toPlayer = Vector2.left;
+            }
+
+            float radius = Mathf.Max(data.ProjectileRadius * 3f, toPlayer.magnitude);
+            float baseAngle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
+            float arcAngle = evt.SpreadAngle > 0f ? evt.SpreadAngle : 180f;
+            float startAngle = baseAngle + 90f;
+            float step = count > 1 ? arcAngle / (count - 1) : 0f;
+
+            for (int i = 0; i < count; i++)
+            {
+                float angle = startAngle - step * i;
+                Vector2 radialDirection = AngleToDirection(angle);
+                Vector3 spawnPosition = center + radialDirection * radius;
+                Vector2 direction = GetProjectileDirection(spawnPosition);
+                SpawnEnemyProjectile(spawnPosition, direction, false);
+
+                if (interval > 0f && i < count - 1)
                 {
-                    ProjectileVfx.PlayMuzzleFlash(origin.position, dir, data.ProjectileColor, 0.9f);
-                    gunRecoil?.Play(dir);
+                    yield return new WaitForSeconds(interval);
                 }
             }
         }
 
-        // ── 시각 처리 ─────────────────────────────────
+        private IEnumerator FireDashTrail(AttackEvent evt)
+        {
+            if (data.ProjectilePrefab == null || player == null)
+            {
+                yield break;
+            }
+
+            if (body == null)
+            {
+                FireDirectSpread(evt);
+                yield break;
+            }
+
+            int maxBulletCount = Mathf.Max(1, evt.BulletCount);
+            float duration = Mathf.Max(0.05f, evt.PatternDuration);
+            float dashSpeed = data.MoveSpeed * Mathf.Max(1f, evt.DashSpeedMultiplier);
+            float spacing = Mathf.Max(0.05f, evt.TrailBulletSpacing);
+            Vector2 dashDirection = (Vector2)player.position - (Vector2)transform.position;
+            if (dashDirection.sqrMagnitude <= 0.0001f)
+            {
+                yield break;
+            }
+
+            dashDirection.Normalize();
+
+            float elapsed = 0f;
+            float distanceSinceLastBullet = spacing;
+            int spawnedBulletCount = 0;
+            Vector2 previousPosition = transform.position;
+
+            while (elapsed < duration)
+            {
+                Vector2 currentPosition = transform.position;
+                distanceSinceLastBullet += Vector2.Distance(previousPosition, currentPosition);
+
+                while (spawnedBulletCount < maxBulletCount && distanceSinceLastBullet >= spacing)
+                {
+                    Vector2 direction = GetProjectileDirection(currentPosition);
+                    SpawnEnemyProjectile(currentPosition, direction, false);
+                    spawnedBulletCount++;
+                    distanceSinceLastBullet -= spacing;
+                }
+
+                body.linearVelocity = dashDirection * dashSpeed;
+                previousPosition = currentPosition;
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            body.linearVelocity = Vector2.zero;
+        }
+
+        private EnemyProjectile SpawnEnemyProjectile(Vector3 position, Vector2 direction, bool playRecoil)
+        {
+            EnemyProjectile projectile = EnemyProjectile.Spawn(
+                data.ProjectilePrefab,
+                data,
+                heat,
+                position,
+                direction);
+
+            if (projectile != null)
+            {
+                ProjectileVfx.PlayMuzzleFlash(position, direction, data.ProjectileColor, 0.9f);
+                if (playRecoil)
+                {
+                    gunRecoil?.Play(direction);
+                }
+            }
+
+            return projectile;
+        }
+
+        private Vector2 GetProjectileDirection(Vector3 originPosition)
+        {
+            Vector2 direction = GetPredictedProjectileTargetPosition(originPosition) - (Vector2)originPosition;
+            if (direction.sqrMagnitude > 0.0001f)
+            {
+                return direction.normalized;
+            }
+
+            if (player != null)
+            {
+                direction = (Vector2)player.position - (Vector2)transform.position;
+                if (direction.sqrMagnitude > 0.0001f)
+                {
+                    return direction.normalized;
+                }
+            }
+
+            return Vector2.left;
+        }
+
+        private static Vector2 AngleToDirection(float degrees)
+        {
+            float radians = degrees * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        // ── 조준 처리 ─────────────────────────────────
         private Vector2 GetPredictedProjectileTargetPosition(Vector3 originPosition)
         {
             if (player == null)
@@ -1042,7 +1156,6 @@ namespace Week14.Enemy
 
             isStaggered = true;
             staggerEndsAt = Time.time + data.StaggerSeconds;
-            CancelAttack();
             Stop();
             ApplyHeatStateColor();
         }
@@ -1123,14 +1236,33 @@ namespace Week14.Enemy
             durabilityDepletedEndsAt = Time.time + data.DurabilityDepletedSeconds;
             ApplyHeatStateColor();
 
-            if (data.DurabilityDepletedSeconds <= 0f) health.Kill();
+            if (data.DurabilityDepletedSeconds <= 0f)
+            {
+                health.Kill();
+                QueueDestroyAfterDeath();
+            }
         }
 
         private void TickDurabilityDepleted()
         {
             if (!isDurabilityDepleted) BeginDurabilityDepleted();
             Stop();
-            if (!health.IsDead && Time.time >= durabilityDepletedEndsAt) health.Kill();
+            if (!health.IsDead && Time.time >= durabilityDepletedEndsAt)
+            {
+                health.Kill();
+                QueueDestroyAfterDeath();
+            }
+        }
+
+        private void QueueDestroyAfterDeath()
+        {
+            if (destroyAfterDeathQueued || isExecutionLocked)
+            {
+                return;
+            }
+
+            destroyAfterDeathQueued = true;
+            Destroy(gameObject);
         }
 
         // ── 유틸리티 ─────────────────────────────────
@@ -1158,7 +1290,7 @@ namespace Week14.Enemy
         private bool UsesBossCombatUi()
         {
             return data != null
-                && data.Category == EnemyCategory.Boss
+                && data is BossEnemyData
                 && (bossCombatUiRoot != null || bossDurabilityBarView != null || bossHeatBarView != null);
         }
 
@@ -1314,17 +1446,6 @@ namespace Week14.Enemy
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, data.DetectionRange);
 
-            // 웨이포인트
-            if (patrolWaypoints is { Count: > 0 })
-            {
-                Gizmos.color = Color.cyan;
-                for (int i = 0; i < patrolWaypoints.Count; i++)
-                {
-                    Gizmos.DrawWireSphere(patrolWaypoints[i], 0.2f);
-                    int next = (i + 1) % patrolWaypoints.Count;
-                    Gizmos.DrawLine(patrolWaypoints[i], patrolWaypoints[next]);
-                }
-            }
         }
     }
 }

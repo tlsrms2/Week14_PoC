@@ -138,13 +138,6 @@ namespace Week14.Encounter
                     {
                         Debug.LogWarning($"{spawnPoint.EnemyPrefab.name} requires {nameof(Week14.Enemy.EnemyAI)}.", enemy);
                     }
-                    else
-                    {
-                        // 웨이포인트 주입
-                        var ai = enemy.GetComponentInChildren<Week14.Enemy.EnemyAI>();
-                        var waypoints = spawnPoint.GetPatrolWaypoints();
-                        if (waypoints.Count > 0) ai.SetPatrolWaypoints(waypoints);
-                    }
 
                     aliveEnemies.Add(enemyHealth);
                     enemyObjectByHealth.Add(enemyHealth, enemy);

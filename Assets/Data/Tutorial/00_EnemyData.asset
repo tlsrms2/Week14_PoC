@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae857a587e828c243bd56669879742bf, type: 3}
-  m_Name: 01_EnemyData
+  m_Name: 00_EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.EnemyData
-  displayName: "\uAE30\uBCF8 \uC801_01"
+  displayName: "\uD29C\uD1A0\uB9AC\uC5BC \uC801"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   maxDurability: 150
   durabilityDepletedSeconds: 3
@@ -38,7 +38,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5b39a54494df754f8142662dc80eb1e, type: 2}
   projectilePrefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
   projectileDamage: 5
-  projectileChargeSeconds: 1
+  projectileChargeSeconds: 2.5
   projectileSpeed: 30
   projectileLifetime: 2
   projectileRadius: 0.08

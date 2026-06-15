@@ -16,8 +16,6 @@ namespace Week14.Enemy
         [Header("메타")]
         [Tooltip("인스펙터와 UI에서 사용할 적 표시 이름입니다. 비워두면 에셋 이름을 사용합니다.")]
         [SerializeField] private string displayName;
-        [Tooltip("적의 분류입니다. 일반 적, 보스 등 분기 처리에 사용합니다.")]
-        [SerializeField] private EnemyCategory category = EnemyCategory.Normal;
         [Tooltip("이 적이 사용할 공통 전투 이펙트 데이터입니다.")]
         [SerializeField] private CombatEffectData effectData;
 
@@ -56,12 +54,6 @@ namespace Week14.Enemy
         [Header("이동")]
         [Tooltip("적의 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 2.8f;
-        [Tooltip("적의 순찰 방식입니다. 정지, 순찰 등 상태 선택에 사용합니다.")]
-        [SerializeField] private PatrolMode patrolMode = PatrolMode.Stationary;
-
-        [Tooltip("Patrol 모드: 웨이포인트 도착 후 대기 시간")]
-        [SerializeField, Min(0f)] private float patrolWaitTime = 1f;
-
         // ── 공격 ──────────────────────────────────────
         [Header("공격")]
         [Tooltip("플레이어가 이 거리 안에 있으면 공격 상태로 진입할 수 있습니다.")]
@@ -93,6 +85,8 @@ namespace Week14.Enemy
         [SerializeField] private EnemyProjectile projectilePrefab;
         [Tooltip("적 탄이 플레이어에게 맞았을 때 주는 데미지입니다.")]
         [SerializeField, Min(0f)] private float projectileDamage = 18f;
+        [Tooltip("적 총알이 생성 위치에서 멈춰 기를 모으는 시간입니다.")]
+        [SerializeField, Min(0f)] private float projectileChargeSeconds = 0.35f;
         [Tooltip("적 탄의 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float projectileSpeed = 7f;
         [Tooltip("적 탄이 자동으로 사라지기까지의 시간입니다.")]
@@ -124,7 +118,6 @@ namespace Week14.Enemy
         // ── 공개 프로퍼티 ─────────────────────────────
         // 메타
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
-        public virtual EnemyCategory Category => category;
 
         // 내구도/열
         public float MaxDurability => maxDurability;
@@ -143,8 +136,6 @@ namespace Week14.Enemy
 
         // 이동
         public float MoveSpeed => moveSpeed;
-        public PatrolMode PatrolMode => patrolMode;
-        public float PatrolWaitTime => patrolWaitTime;
 
         // 공격
         public float AttackRange => attackRange;
@@ -161,6 +152,7 @@ namespace Week14.Enemy
         // 발사체
         public EnemyProjectile ProjectilePrefab => projectilePrefab;
         public float ProjectileDamage => projectileDamage;
+        public float ProjectileChargeSeconds => projectileChargeSeconds;
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;
         public float ProjectileRadius => projectileRadius;
@@ -178,15 +170,6 @@ namespace Week14.Enemy
         public Color AttackImpactBackSparkColor => effectData != null ? effectData.AttackImpactBackSparkColor : new Color(1f, 0.52f, 0.12f, 1f);
         public Color AttackImpactFlameColor => effectData != null ? effectData.AttackImpactFlameColor : new Color(1f, 0.48f, 0.08f, 1f);
         public Color AttackImpactRingColor => effectData != null ? effectData.AttackImpactRingColor : new Color(1f, 0.92f, 0.62f, 0.72f);
-        public int WeakAttackImpactSparkCount => effectData != null ? effectData.WeakAttackImpactSparkCount : 4;
-        public int WeakAttackImpactBackSparkCount => effectData != null ? effectData.WeakAttackImpactBackSparkCount : 1;
-        public int WeakAttackImpactFlameCount => effectData != null ? effectData.WeakAttackImpactFlameCount : 0;
-        public float WeakAttackImpactEffectScale => effectData != null ? effectData.WeakAttackImpactEffectScale : 0.18f;
-        public float WeakAttackImpactAlpha => effectData != null ? effectData.WeakAttackImpactAlpha : 0.35f;
-        public Color WeakAttackImpactSparkColor => effectData != null ? effectData.WeakAttackImpactSparkColor : new Color(0.82f, 0.88f, 1f, 0.35f);
-        public Color WeakAttackImpactBackSparkColor => effectData != null ? effectData.WeakAttackImpactBackSparkColor : new Color(0.55f, 0.66f, 0.85f, 0.35f);
-        public Color WeakAttackImpactFlameColor => effectData != null ? effectData.WeakAttackImpactFlameColor : new Color(0.58f, 0.68f, 0.9f, 0.35f);
-        public Color WeakAttackImpactRingColor => effectData != null ? effectData.WeakAttackImpactRingColor : new Color(0.82f, 0.88f, 1f, 0.18f);
         public Color BossParrySparkColor => effectData != null ? effectData.BossParrySparkColor : new Color(1f, 0.78f, 0.18f, 1f);
         public Color BossParryRingColor => effectData != null ? effectData.BossParryRingColor : new Color(1f, 0.42f, 0.08f, 0.85f);
         public Color BossParryGlitterColor => effectData != null ? effectData.BossParryGlitterColor : new Color(1f, 0.95f, 0.52f, 1f);

@@ -4,17 +4,22 @@ using Week14.Enemy;
 namespace Week14.Combat
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-    public sealed class EnemyProjectile : MonoBehaviour, IAttackSource
+    public sealed class EnemyProjectile : MonoBehaviour
     {
         private const string BulletVisualName = "BulletVisual";
+        private const string ChargeVfxName = "ChargeVfx";
 
         private float projectileSpeed;
         private float projectileLifetime;
         private float projectileRadius;
+        private float projectileChargeSeconds;
         private Color projectileColor;
         private float homingTurnDegreesPerSecond;
+        private float homingSeconds;
         private float homingEndsAt;
+        private float chargeEndsAt;
         private Rigidbody2D body;
+        private LineRenderer chargeVfx;
         private HeatGauge ownerHeat;
         private EnemyAI ownerEnemy;
         private float parryHeat;
@@ -24,11 +29,13 @@ namespace Week14.Combat
         private Vector2 flightDirection = Vector2.left;
         private bool resolved;
         private bool isDestroying;
-        private bool defenseReserved;
+        private bool launched;
+        private static Material chargeVfxMaterial;
 
-        public Transform SourceTransform => transform;
         public Vector2 IncomingDirection => flightDirection;
-        public bool CanReserveDefense => !resolved && !isDestroying && !defenseReserved;
+        public bool IsCharging => !resolved && !isDestroying && !launched;
+        public bool CanBeIntercepted => !resolved && !isDestroying;
+        public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
 
 
         /// <summary>EnemyData 기반 스폰 (신규 AI 시스템용)</summary>
@@ -43,7 +50,7 @@ namespace Week14.Combat
 
             return SpawnInternal(prefab, ownerHeat, position, direction, data.ProjectileDamage,
                 data.HeatPerShot, data.HeatCoolingDelayAfterShot,
-                data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
+                data.ProjectileChargeSeconds, data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
                 data.ProjectileTrailWidthMultiplier,
                 data.ProjectileHomingSeconds,
@@ -58,6 +65,7 @@ namespace Week14.Combat
             float damage,
             float parryHeat,
             float parryHeatCoolingDelay,
+            float chargeSeconds,
             float speed, float lifetime, float radius,
             Color color, float trailSeconds, float trailWidth,
             float homingSeconds, float homingTurnDegrees)
@@ -65,7 +73,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, damage, ownerHeat, parryHeat, parryHeatCoolingDelay, speed, lifetime, radius, color, homingSeconds, homingTurnDegrees);
+            projectile.Initialize(direction, damage, ownerHeat, parryHeat, parryHeatCoolingDelay, chargeSeconds, speed, lifetime, radius, color, homingSeconds, homingTurnDegrees);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
@@ -82,22 +90,28 @@ namespace Week14.Combat
             HeatGauge nextOwnerHeat,
             float nextParryHeat,
             float nextParryHeatCoolingDelay,
+            float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
             float homingSeconds, float nextHomingTurnDegrees)
         {
             projectileSpeed = speed;
             projectileLifetime = lifetime;
             projectileRadius = radius;
+            projectileChargeSeconds = Mathf.Max(0f, chargeSeconds);
             projectileColor = color;
+            this.homingSeconds = Mathf.Max(0f, homingSeconds);
             homingTurnDegreesPerSecond = Mathf.Max(0f, nextHomingTurnDegrees);
-            homingEndsAt = Time.time + Mathf.Max(0f, homingSeconds);
             ownerHeat = nextOwnerHeat;
             ownerEnemy = ownerHeat != null ? ownerHeat.GetComponentInParent<EnemyAI>() : null;
             parryHeat = nextParryHeat;
             parryHeatCoolingDelay = nextParryHeatCoolingDelay;
             damage = nextDamage;
-            destroyAt = Time.time + lifetime;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
+            launched = projectileChargeSeconds <= 0f;
+            chargeEndsAt = Time.time + projectileChargeSeconds;
+            float launchTime = launched ? Time.time : chargeEndsAt;
+            homingEndsAt = launchTime + this.homingSeconds;
+            destroyAt = launchTime + lifetime;
 
             if (body == null)
             {
@@ -109,17 +123,79 @@ namespace Week14.Combat
             body.freezeRotation = true;
             body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
-            body.linearVelocity = flightDirection * projectileSpeed;
+            body.linearVelocity = launched ? flightDirection * projectileSpeed : Vector2.zero;
+
+            if (launched)
+            {
+                SetChargeVfxVisible(false);
+            }
+            else
+            {
+                UpdateChargeVfx();
+            }
         }
 
         private void Update()
         {
-            TickHoming();
+            if (isDestroying)
+            {
+                return;
+            }
+
+            if (!launched)
+            {
+                TickCharge();
+            }
+            else
+            {
+                TickHoming();
+            }
 
             if (Time.time >= destroyAt)
             {
                 DestroyProjectile();
             }
+        }
+
+        private void TickCharge()
+        {
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+
+            AimAtPlayerWhileCharging();
+            UpdateChargeVfx();
+            if (Time.time < chargeEndsAt)
+            {
+                return;
+            }
+
+            launched = true;
+            SetChargeVfxVisible(false);
+            if (body != null)
+            {
+                body.linearVelocity = flightDirection * projectileSpeed;
+            }
+        }
+
+        private void AimAtPlayerWhileCharging()
+        {
+            PlayerCombatController target = PlayerCombatController.Active;
+            if (target == null || target.Health == null || target.Health.IsDead)
+            {
+                return;
+            }
+
+            Vector2 toTarget = (Vector2)target.transform.position - (Vector2)transform.position;
+            if (toTarget.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            flightDirection = toTarget.normalized;
+            float angle = Mathf.Atan2(flightDirection.y, flightDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
         private void TickHoming()
@@ -154,11 +230,12 @@ namespace Week14.Combat
             PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
             if (playerProjectile != null)
             {
-                if (playerProjectile.TryDestroyByEnemyProjectileClash(this))
-                {
-                    TryDestroyByParryShot();
-                }
+                playerProjectile.TryDestroyByEnemyProjectileClash(this);
+                return;
+            }
 
+            if (IsCharging)
+            {
                 return;
             }
 
@@ -195,61 +272,21 @@ namespace Week14.Combat
             DestroyProjectile();
         }
 
-        public bool TryParry(PlayerCombatController player)
-        {
-            if (resolved)
-            {
-                return false;
-            }
-
-            resolved = true;
-            AddOwnerHeatOnParry();
-            DestroyProjectile();
-            return true;
-        }
-
-        public bool TryDestroyByParryShot()
+        public bool TryDestroyByInterceptShot(out bool parried)
         {
             if (resolved || isDestroying)
             {
+                parried = false;
                 return false;
             }
 
+            parried = IsCharging;
             resolved = true;
-            defenseReserved = false;
-            AddOwnerHeatOnParry();
-            DestroyProjectile();
-            return true;
-        }
-
-        public bool TryReserveDefense()
-        {
-            if (!CanReserveDefense)
+            if (parried)
             {
-                return false;
+                AddOwnerHeatOnParry();
             }
 
-            defenseReserved = true;
-            return true;
-        }
-
-        public void CancelDefenseReservation()
-        {
-            if (!resolved && !isDestroying)
-            {
-                defenseReserved = false;
-            }
-        }
-
-        public bool TryDestroyByDefense()
-        {
-            if (resolved || isDestroying)
-            {
-                return false;
-            }
-
-            resolved = true;
-            defenseReserved = false;
             DestroyProjectile();
             return true;
         }
@@ -262,11 +299,12 @@ namespace Week14.Combat
             }
 
             isDestroying = true;
-            defenseReserved = false;
             if (body != null)
             {
                 body.linearVelocity = Vector2.zero;
             }
+
+            SetChargeVfxVisible(false);
 
             Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
             for (int i = 0; i < colliders.Length; i++)
@@ -336,6 +374,84 @@ namespace Week14.Combat
             circleCollider.isTrigger = true;
             circleCollider.radius = projectileRadius;
             transform.localScale = Vector3.one;
+        }
+
+        private void UpdateChargeVfx()
+        {
+            LineRenderer line = EnsureChargeVfx();
+            if (line == null)
+            {
+                return;
+            }
+
+            float t = projectileChargeSeconds <= 0f
+                ? 1f
+                : 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds);
+            float pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 24f);
+            float radius = Mathf.Lerp(projectileRadius * 1.9f, projectileRadius * 3.1f, pulse);
+            Color chargeColor = Color.Lerp(projectileColor, Color.white, 0.55f + 0.25f * pulse);
+            chargeColor.a = Mathf.Lerp(0.35f, 0.95f, t);
+
+            line.enabled = true;
+            line.startColor = chargeColor;
+            line.endColor = chargeColor;
+            line.startWidth = Mathf.Max(0.012f, projectileRadius * 0.22f);
+            line.endWidth = line.startWidth;
+            line.positionCount = 5;
+            line.SetPosition(0, new Vector3(0f, radius, 0f));
+            line.SetPosition(1, new Vector3(radius, 0f, 0f));
+            line.SetPosition(2, new Vector3(0f, -radius, 0f));
+            line.SetPosition(3, new Vector3(-radius, 0f, 0f));
+            line.SetPosition(4, new Vector3(0f, radius, 0f));
+        }
+
+        private LineRenderer EnsureChargeVfx()
+        {
+            if (chargeVfx != null)
+            {
+                return chargeVfx;
+            }
+
+            Transform existing = transform.Find(ChargeVfxName);
+            GameObject vfxObject = existing != null ? existing.gameObject : new GameObject(ChargeVfxName);
+            vfxObject.transform.SetParent(transform, false);
+            vfxObject.transform.localPosition = Vector3.zero;
+            vfxObject.transform.localRotation = Quaternion.identity;
+            vfxObject.transform.localScale = Vector3.one;
+
+            chargeVfx = vfxObject.GetComponent<LineRenderer>();
+            if (chargeVfx == null)
+            {
+                chargeVfx = vfxObject.AddComponent<LineRenderer>();
+            }
+
+            chargeVfx.useWorldSpace = false;
+            chargeVfx.loop = false;
+            chargeVfx.numCornerVertices = 2;
+            chargeVfx.numCapVertices = 2;
+            chargeVfx.sortingOrder = 24;
+            chargeVfx.material = GetChargeVfxMaterial();
+            return chargeVfx;
+        }
+
+        private static Material GetChargeVfxMaterial()
+        {
+            if (chargeVfxMaterial != null)
+            {
+                return chargeVfxMaterial;
+            }
+
+            Shader shader = Shader.Find("Sprites/Default");
+            chargeVfxMaterial = shader != null ? new Material(shader) : null;
+            return chargeVfxMaterial;
+        }
+
+        private void SetChargeVfxVisible(bool visible)
+        {
+            if (chargeVfx != null)
+            {
+                chargeVfx.enabled = visible;
+            }
         }
 
         private static Sprite CreateRuntimeSprite()

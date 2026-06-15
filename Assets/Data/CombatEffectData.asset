@@ -20,17 +20,19 @@ MonoBehaviour:
   enemyProjectileColor: {r: 0.7830189, g: 0.10970438, b: 0.08495018, a: 1}
   enemyProjectileTrailSeconds: 0.08
   enemyProjectileTrailWidthMultiplier: 2.6
-  parrySparkColor: {r: 1, g: 0.88, b: 0.35, a: 1}
-  parryRingColor: {r: 1, g: 0.6789097, b: 0.34901965, a: 0.75}
-  parryRingGlitterColor: {r: 1, g: 0.96, b: 0.68, a: 1}
+  parrySparkColor: {r: 0.20000002, g: 0.6509804, b: 1, a: 1}
+  parryRingColor: {r: 0.19999999, g: 0.37010992, b: 1, a: 0.75}
+  parryRingGlitterColor: {r: 0.19999999, g: 1, b: 0.9525625, a: 1}
   parrySparkSeconds: 0.32
   parryRingSeconds: 0.22
   parryRingGlitterSeconds: 0.2
-  parrySparkCount: 7
-  parryRingGlitterCount: 5
-  parryFlameCount: 5
-  parryEffectScale: 0.7
-  defenseSparkCount: 5
+  parrySparkCount: 12
+  parryRingGlitterCount: 8
+  parryFlameCount: 8
+  parryEffectScale: 0.75
+  defenseSparkCount: 4
+  defenseSparkColor: {r: 0.81960785, g: 0.8784314, b: 1, a: 1}
+  defenseRingColor: {r: 0.6391955, g: 0.6645604, b: 0.7169812, a: 0.75}
   defenseEffectScale: 0.6
   bossParrySparkColor: {r: 1, g: 0.2539345, b: 0.18039215, a: 1}
   bossParryRingColor: {r: 1, g: 0.07843137, b: 0.17857185, a: 0.85}
@@ -45,15 +47,6 @@ MonoBehaviour:
   attackImpactBackSparkCount: 12
   attackImpactFlameCount: 8
   attackImpactEffectScale: 0.65
-  weakAttackImpactSparkColor: {r: 0.82, g: 0.88, b: 1, a: 1}
-  weakAttackImpactBackSparkColor: {r: 0.55, g: 0.66, b: 0.85, a: 1}
-  weakAttackImpactFlameColor: {r: 0.58, g: 0.68, b: 0.9, a: 1}
-  weakAttackImpactRingColor: {r: 0.82, g: 0.88, b: 1, a: 0.5}
-  weakAttackImpactSparkCount: 3
-  weakAttackImpactBackSparkCount: 1
-  weakAttackImpactFlameCount: 0
-  weakAttackImpactEffectScale: 0.35
-  weakAttackImpactAlpha: 0.9
   playerHitSparkCount: 5
   playerHitBackSparkCount: 12
   playerHitFlameCount: 6
@@ -71,6 +64,6 @@ MonoBehaviour:
   heatOverheatBlinkMinAlpha: 0.9
   executionImpactColor: {r: 0.9, g: 0.02, b: 0.04, a: 1}
   executionAbsorbColor: {r: 0.35, g: 0.85, b: 1, a: 1}
-  executionImpactParticleSeconds: 0.5
-  executionImpactParticleCount: 15
-  executionAbsorbParticleCount: 10
+  executionImpactParticleSeconds: 0.45
+  executionImpactParticleCount: 20
+  executionAbsorbParticleCount: 5

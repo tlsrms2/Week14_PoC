@@ -10,15 +10,21 @@ namespace Week14.Enemy
     public sealed class EngageState : IEnemyState
     {
         private const float MagazinePreloadSeconds = 0.15f;
+        private const float DirectionChangeInterval = 1.2f;
+        private const float InnerRangeRatio = 0.45f;
+        private const float OuterRangeRatio = 0.85f;
 
         private float cooldownTimer;
         private float cooldownDuration;
+        private float directionChangeTimer;
+        private int strafeDirection;
 
         public void Enter(EnemyAI enemy)
         {
-            enemy.Stop();
             cooldownDuration = enemy.Data != null ? enemy.Data.InitialAttackDelaySeconds : 0f;
             cooldownTimer = cooldownDuration;
+            strafeDirection = Random.value > 0.5f ? 1 : -1;
+            directionChangeTimer = DirectionChangeInterval;
             enemy.HideAttackTiming();
         }
 
@@ -40,7 +46,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            enemy.Stop();
+            MoveWhileEngaged(enemy);
 
             if (enemy.IsAttacking)
             {
@@ -68,6 +74,50 @@ namespace Week14.Enemy
             enemy.StartAttack(timeline);
             cooldownDuration = timeline.CooldownAfter;
             cooldownTimer = cooldownDuration;
+        }
+
+        private void MoveWhileEngaged(EnemyAI enemy)
+        {
+            if (enemy.Player == null || enemy.Data == null)
+            {
+                return;
+            }
+
+            directionChangeTimer -= Time.deltaTime;
+            if (directionChangeTimer <= 0f)
+            {
+                directionChangeTimer = DirectionChangeInterval;
+                strafeDirection *= -1;
+            }
+
+            Vector2 toPlayer = (Vector2)enemy.Player.position - (Vector2)enemy.transform.position;
+            if (toPlayer.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            float distance = toPlayer.magnitude;
+            Vector2 toPlayerDirection = toPlayer / distance;
+            Vector2 strafe = new Vector2(-toPlayerDirection.y, toPlayerDirection.x) * strafeDirection;
+            Vector2 distanceCorrection = Vector2.zero;
+            float attackRange = Mathf.Max(0.01f, enemy.Data.AttackRange);
+
+            if (distance < attackRange * InnerRangeRatio)
+            {
+                distanceCorrection = -toPlayerDirection;
+            }
+            else if (distance > attackRange * OuterRangeRatio)
+            {
+                distanceCorrection = toPlayerDirection * 0.6f;
+            }
+
+            Vector2 moveDirection = (strafe + distanceCorrection).normalized;
+            if (moveDirection.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            enemy.MoveToward((Vector2)enemy.transform.position + moveDirection);
         }
 
         public void Exit(EnemyAI enemy)

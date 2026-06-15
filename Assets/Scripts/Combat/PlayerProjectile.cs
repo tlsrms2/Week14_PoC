@@ -14,13 +14,12 @@ namespace Week14.Combat
         private float projectileSpeed;
         private float damage;
         private float heat;
-        private Vector3 spawnPosition;
         private float collisionRadius;
         private float destroyAt;
         private Vector2 previousPosition;
         private EnemyProjectile forcedParryTarget;
+        private Action<bool> interceptResolutionCallback;
         private float forcedParryResolveAt;
-        private bool forcedTargetIsDefense;
         private Vector2 flightDirection = Vector2.right;
         private Color projectileColor = Color.white;
         private bool canDamageHealth;
@@ -86,7 +85,6 @@ namespace Week14.Combat
             projectileSpeed = speed;
             damage = nextDamage;
             heat = nextHeat;
-            spawnPosition = transform.position;
             collisionRadius = radius;
             canDamageHealth = nextCanDamageHealth;
             canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
@@ -184,18 +182,17 @@ namespace Week14.Combat
 
         public void SetForcedParryTarget(EnemyProjectile enemyProjectile)
         {
-            SetForcedTarget(enemyProjectile, false);
+            SetForcedTarget(enemyProjectile);
         }
 
-        public void SetForcedDefenseTarget(EnemyProjectile enemyProjectile)
+        public void SetInterceptResolutionCallback(Action<bool> callback)
         {
-            SetForcedTarget(enemyProjectile, true);
+            interceptResolutionCallback = callback;
         }
 
-        private void SetForcedTarget(EnemyProjectile enemyProjectile, bool defense)
+        private void SetForcedTarget(EnemyProjectile enemyProjectile)
         {
             forcedParryTarget = enemyProjectile;
-            forcedTargetIsDefense = defense;
             if (forcedParryTarget == null || projectileSpeed <= 0f)
             {
                 forcedParryResolveAt = 0f;
@@ -224,24 +221,7 @@ namespace Week14.Combat
             }
 
             transform.position = forcedParryTarget.transform.position;
-            if (forcedTargetIsDefense)
-            {
-                if (!forcedParryTarget.TryDestroyByDefense())
-                {
-                    return false;
-                }
-
-                DestroyByClash();
-                return true;
-            }
-
-            if (TryDestroyByEnemyProjectileClash(forcedParryTarget))
-            {
-                forcedParryTarget.TryDestroyByParryShot();
-                return true;
-            }
-
-            return false;
+            return TryDestroyByEnemyProjectileClash(forcedParryTarget);
         }
 
         private bool TryResolveCollision(Collider2D other)
@@ -259,20 +239,8 @@ namespace Week14.Combat
             EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
             if (enemyProjectile != null)
             {
-                if (canClashWithEnemyProjectile && forcedTargetIsDefense && enemyProjectile == forcedParryTarget)
-                {
-                    if (!enemyProjectile.TryDestroyByDefense())
-                    {
-                        return false;
-                    }
-
-                    DestroyByClash();
-                    return true;
-                }
-
                 if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
                 {
-                    enemyProjectile.TryDestroyByParryShot();
                     return true;
                 }
 
@@ -305,54 +273,35 @@ namespace Week14.Combat
             resolved = true;
             EnemyAI enemy = targetHealth.GetComponent<EnemyAI>();
             PlayerCombatConfig config = owner != null ? owner.Config : null;
-            bool strongHit = IsWithinHeatEffectiveRange(config);
-            bool canApplyHeat = config == null || strongHit;
-            float effectiveDamage = strongHit ? damage : 0f;
-            float effectiveHeat = canApplyHeat ? heat : 0f;
-            float heatCoolingSuppressSeconds = canApplyHeat && config != null ? config.TargetHeatCoolingSuppressSeconds : 0f;
+            float heatCoolingSuppressSeconds = config != null ? config.TargetHeatCoolingSuppressSeconds : 0f;
             if (enemy != null)
             {
-                enemy.ReceivePlayerHit(effectiveDamage, effectiveHeat, heatCoolingSuppressSeconds, strongHit, transform.position, flightDirection, projectileColor);
+                enemy.ReceivePlayerHit(damage, heat, heatCoolingSuppressSeconds, true, transform.position, flightDirection, projectileColor);
                 DestroyProjectile();
                 return true;
             }
 
-            targetHealth.TakeDamage(effectiveDamage);
+            targetHealth.TakeDamage(damage);
             Color impactColor = projectileColor;
-            if (!strongHit)
-            {
-                impactColor.a *= 0.35f;
-            }
 
             ProjectileVfx.PlayPlayerAttackImpact(
                 transform.position,
                 flightDirection,
                 impactColor,
-                strongHit ? 10 : 4,
-                strongHit ? 0 : 1,
-                strongHit ? 0 : 0,
-                strongHit ? 0.45f : 0.18f);
+                10,
+                0,
+                0,
+                0.45f);
 
             HeatGauge targetHeat = targetHealth.GetComponent<HeatGauge>();
-            if (targetHeat != null && canApplyHeat)
+            if (targetHeat != null)
             {
-                targetHeat.AddHeat(effectiveHeat, HeatChangeSource.Hit);
+                targetHeat.AddHeat(heat, HeatChangeSource.Hit);
                 targetHeat.SuppressCooling(heatCoolingSuppressSeconds);
             }
 
             DestroyProjectile();
             return true;
-        }
-
-        private bool IsWithinHeatEffectiveRange(PlayerCombatConfig config)
-        {
-            if (config == null)
-            {
-                return true;
-            }
-
-            float distance = Vector2.Distance(spawnPosition, transform.position);
-            return distance <= config.HeatEffectiveRange;
         }
 
         public bool TryDestroyByEnemyProjectileClash(EnemyProjectile enemyProjectile)
@@ -362,22 +311,28 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (forcedTargetIsDefense && enemyProjectile == forcedParryTarget)
+            if (enemyProjectile == null)
             {
-                if (enemyProjectile == null || !enemyProjectile.TryDestroyByDefense())
-                {
-                    return false;
-                }
-
-                DestroyByClash();
                 return false;
             }
 
-            if (enemyProjectile != null)
+            Vector3 impactPosition = enemyProjectile.transform.position;
+            Vector2 incomingDirection = enemyProjectile.IncomingDirection;
+            if (!enemyProjectile.TryDestroyByInterceptShot(out bool parried))
             {
-                owner?.PlayParryImpact(enemyProjectile.transform.position, enemyProjectile.IncomingDirection);
+                return false;
             }
 
+            if (parried)
+            {
+                owner?.PlayParryImpact(impactPosition, incomingDirection);
+            }
+            else
+            {
+                owner?.PlayDefenseImpact(impactPosition, incomingDirection);
+            }
+
+            ReportInterceptResolved(parried);
             DestroyByClash();
             return true;
         }
@@ -405,6 +360,11 @@ namespace Week14.Combat
                 return;
             }
 
+            if (canClashWithEnemyProjectile && !resolved)
+            {
+                ReportInterceptResolved(false);
+            }
+
             isDestroying = true;
             if (body != null)
             {
@@ -424,6 +384,13 @@ namespace Week14.Combat
             }
 
             Destroy(gameObject);
+        }
+
+        private void ReportInterceptResolved(bool parried)
+        {
+            Action<bool> callback = interceptResolutionCallback;
+            interceptResolutionCallback = null;
+            callback?.Invoke(parried);
         }
 
         private void EnsureProjectileShape(Color color, float radius)

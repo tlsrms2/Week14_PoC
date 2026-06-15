@@ -38,8 +38,6 @@ namespace Week14.Enemy
         [Tooltip("보스가 플레이어 공격을 패링했을 때 플레이어 열기 자연 감소를 멈추는 시간입니다.")]
         [SerializeField, Min(0f)] private float playerHeatCoolingSuppressSeconds = 0.35f;
 
-        public override EnemyCategory Category => EnemyCategory.Boss;
-
         public bool CanParryPlayerAttacks => canParryPlayerAttacks;
         public float PlayerAttackParryChance => Mathf.Clamp01(playerAttackParryChance);
         public float PlayerAttackParryChanceIncrease => Mathf.Clamp01(playerAttackParryChanceIncrease);

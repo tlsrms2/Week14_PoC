@@ -12,9 +12,11 @@ namespace Week14.UI
         private const int StatusRingTextureSize = 128;
         private const int DefaultSortingOrder = 40;
         private const string BarsName = "EnemyStatusBars";
+        private const float StatusArcDegrees = 125f;
         private static readonly Vector2 RingBarsSize = new(2.3f, 2.3f);
         private static Sprite durabilityRingSprite;
         private static Sprite heatRingSprite;
+        private static Sprite lockOnDiamondSprite;
 
         [SerializeField, HideInInspector] private Health durability;
         [SerializeField, HideInInspector] private HeatGauge heat;
@@ -241,7 +243,7 @@ namespace Week14.UI
             heatBarView = heatRow.gameObject.AddComponent<HeatBarView>();
             heatBarView.SetBindPlayerOnStart(false);
             heatBarView.SetChangeOutlineEnabled(false);
-            heatBarView.SetOverheatDrainEnabled(false);
+            heatBarView.SetOverheatDrainEnabled(true);
             heatBarView.Configure(heatFillImage);
             ApplyRingBarLayout();
         }
@@ -290,7 +292,7 @@ namespace Week14.UI
             {
                 heatBarView.SetBindPlayerOnStart(false);
                 heatBarView.SetChangeOutlineEnabled(false);
-                heatBarView.SetOverheatDrainEnabled(false);
+                heatBarView.SetOverheatDrainEnabled(true);
                 ConfigureFillMode(heatFillImage, false);
                 heatBarView.Configure(heatFillImage);
             }
@@ -654,8 +656,8 @@ namespace Week14.UI
                 return;
             }
 
-            image.fillMethod = Image.FillMethod.Radial360;
-            image.fillOrigin = (int)Image.Origin360.Top;
+            image.fillMethod = Image.FillMethod.Horizontal;
+            image.fillOrigin = (int)Image.OriginHorizontal.Left;
             image.fillClockwise = false;
         }
 
@@ -693,6 +695,7 @@ namespace Week14.UI
             float center = (StatusRingTextureSize - 1) * 0.5f;
             float outerRadius = center * Mathf.Clamp01(outerScale);
             float innerRadius = center * Mathf.Clamp01(innerScale);
+            float arcCenterAngle = 90f;
             const float edgeSoftness = 1.8f;
 
             for (int y = 0; y < StatusRingTextureSize; y++)
@@ -704,7 +707,9 @@ namespace Week14.UI
                     float distance = Mathf.Sqrt(dx * dx + dy * dy);
                     float outerAlpha = Mathf.Clamp01((outerRadius - distance) / edgeSoftness);
                     float innerAlpha = Mathf.Clamp01((distance - innerRadius) / edgeSoftness);
-                    float alpha = outerAlpha * innerAlpha;
+                    float angle = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
+                    float arcAlpha = Mathf.Clamp01((StatusArcDegrees * 0.5f - Mathf.Abs(Mathf.DeltaAngle(arcCenterAngle, angle))) / edgeSoftness);
+                    float alpha = outerAlpha * innerAlpha * arcAlpha;
                     texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
                 }
             }
@@ -732,9 +737,13 @@ namespace Week14.UI
                 return;
             }
 
-            if (renderer.sprite == null)
+            if (renderer == lockOnRenderer)
             {
-                renderer.sprite = renderer == lockOnRenderer ? CreateRingSprite() : CreateFilledCircleSprite();
+                renderer.sprite = CreateRingSprite();
+            }
+            else if (renderer.sprite == null)
+            {
+                renderer.sprite = CreateFilledCircleSprite();
             }
 
             renderer.color = color;
@@ -742,6 +751,11 @@ namespace Week14.UI
 
         private static Sprite CreateRingSprite()
         {
+            if (lockOnDiamondSprite != null)
+            {
+                return lockOnDiamondSprite;
+            }
+
             Texture2D texture = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false);
             float center = (TextureSize - 1) * 0.5f;
             float outer = center;
@@ -751,13 +765,14 @@ namespace Week14.UI
             {
                 for (int x = 0; x < TextureSize; x++)
                 {
-                    float distance = Vector2.Distance(new Vector2(x, y), new Vector2(center, center));
+                    float distance = Mathf.Abs(x - center) + Mathf.Abs(y - center);
                     texture.SetPixel(x, y, distance <= outer && distance >= inner ? Color.white : Color.clear);
                 }
             }
 
             texture.Apply();
-            return Sprite.Create(texture, new Rect(0f, 0f, TextureSize, TextureSize), new Vector2(0.5f, 0.5f), TextureSize);
+            lockOnDiamondSprite = Sprite.Create(texture, new Rect(0f, 0f, TextureSize, TextureSize), new Vector2(0.5f, 0.5f), TextureSize);
+            return lockOnDiamondSprite;
         }
 
         private static Sprite CreateFilledCircleSprite()

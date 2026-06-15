@@ -5779,4 +5779,3 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2958469296149594014, guid: 7c38b8f21396cfa47b1f333416fb9eb9, type: 3}
   count: 1
   radius: 0
-  patrolWaypointTransforms: []

@@ -31,13 +31,11 @@ namespace Week14.Combat
         [SerializeField] private CombatEffectData effectData;
         [Tooltip("왼손 권총의 데미지입니다.")]
         [SerializeField, Min(0f)] private float attackDamage = 12f;
-        [Tooltip("유효 거리 안에서 맞췄을 때 적에게 추가되는 열기량입니다.")]
+        [Tooltip("플레이어 공격이 적에게 맞았을 때 추가되는 열기량입니다.")]
         [SerializeField, Min(0f)] private float attackHeat = 16f;
         [Tooltip("왼손 권총을 다시 쏠 수 있을 때까지의 쿨다운입니다.")]
         [SerializeField, Min(0f)] private float attackCooldown = 0.28f;
-        [Tooltip("이 거리 안에서 쏜 탄에 맞아야 적 열기 증가, 냉각 지연, 공격 끊김, 일반 피격 이펙트가 발생합니다.")]
-        [SerializeField, FormerlySerializedAs("damageFalloffDistance"), Min(0f)] private float heatEffectiveRange = 5f;
-        [Tooltip("유효 거리 안에서 맞은 적의 열기 자연 감소를 멈추는 시간입니다.")]
+        [Tooltip("플레이어 공격에 맞은 적의 열기 자연 감소를 멈추는 시간입니다.")]
         [SerializeField, Min(0f)] private float targetHeatCoolingSuppressSeconds = 0.35f;
         [Tooltip("플레이어 탄의 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float projectileSpeed = 12f;
@@ -51,14 +49,18 @@ namespace Week14.Combat
         [Header("오른손 패링 권총")]
         [Tooltip("오른손 패링탄으로 적 탄을 노릴 수 있는 최대 거리입니다.")]
         [SerializeField, FormerlySerializedAs("attackRange"), Min(0f)] private float parryRange = 7f;
-        [Tooltip("우클릭 방어가 자동으로 적 탄을 요격할 수 있는 거리입니다.")]
-        [SerializeField, FormerlySerializedAs("closeParryFailDistance"), Min(0f)] private float defenseRange = 1.2f;
         [Tooltip("방어 성공 시 플레이어에게 추가되는 열기량입니다.")]
         [SerializeField, FormerlySerializedAs("failedParryHeat"), Min(0f)] private float defenseHeat = 4f;
         [Tooltip("패링 성공 시 플레이어에게 추가되는 열기량입니다. 이 열기만으로는 과열되지 않습니다.")]
         [SerializeField, Min(0f)] private float parryHeat = 2f;
         [Tooltip("패링탄과 방어가 바라보는 방향 기준으로 허용하는 각도입니다.")]
         [SerializeField, Range(1f, 360f)] private float parryAimAngleDegrees = 65f;
+        [Tooltip("우클릭 연타로 좁아질 수 있는 최소 요격 각도입니다.")]
+        [SerializeField, Range(1f, 360f)] private float minParryAimAngleDegrees = 20f;
+        [Tooltip("우클릭을 한 번 누를 때마다 줄어드는 요격 각도입니다.")]
+        [SerializeField, Min(0f)] private float parryAimAnglePenaltyPerClick = 10f;
+        [Tooltip("우클릭을 누르지 않을 때 초당 회복되는 요격 각도입니다.")]
+        [SerializeField, Min(0f)] private float parryAimAngleRecoveryPerSecond = 35f;
         [Tooltip("오른손 패링탄을 다시 쏠 수 있을 때까지의 쿨다운입니다.")]
         [SerializeField, Min(0f)] private float parryShotCooldown = 0.18f;
         [Tooltip("플레이어가 적 공격에 맞았을 때 증가하는 열기량입니다.")]
@@ -112,7 +114,6 @@ namespace Week14.Combat
         public float AttackDamage => attackDamage;
         public float AttackHeat => attackHeat;
         public float AttackCooldown => attackCooldown;
-        public float HeatEffectiveRange => heatEffectiveRange;
         public float TargetHeatCoolingSuppressSeconds => targetHeatCoolingSuppressSeconds;
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;
@@ -122,10 +123,12 @@ namespace Week14.Combat
         public float GunAimHoldSeconds => gunAimHoldSeconds;
         public Color AttackEffectColor => effectData != null ? effectData.AttackEffectColor : new Color(1f, 0.35f, 0.12f, 0.55f);
         public float ParryRange => parryRange;
-        public float DefenseRange => defenseRange;
         public float DefenseHeat => defenseHeat;
         public float ParryHeat => parryHeat;
         public float ParryAimAngleDegrees => parryAimAngleDegrees;
+        public float MinParryAimAngleDegrees => minParryAimAngleDegrees;
+        public float ParryAimAnglePenaltyPerClick => parryAimAnglePenaltyPerClick;
+        public float ParryAimAngleRecoveryPerSecond => parryAimAngleRecoveryPerSecond;
         public float ParryShotCooldown => parryShotCooldown;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
         public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
@@ -140,6 +143,8 @@ namespace Week14.Combat
         public int ParryFlameCount => effectData != null ? effectData.ParryFlameCount : 20;
         public float ParryEffectScale => effectData != null ? effectData.ParryEffectScale : 1f;
         public int DefenseSparkCount => effectData != null ? effectData.DefenseSparkCount : 18;
+        public Color DefenseSparkColor => effectData != null ? effectData.DefenseSparkColor : new Color(0.55f, 0.75f, 1f, 1f);
+        public Color DefenseRingColor => effectData != null ? effectData.DefenseRingColor : new Color(0.35f, 0.65f, 1f, 0.75f);
         public float DefenseEffectScale => effectData != null ? effectData.DefenseEffectScale : 1f;
         public int PlayerHitSparkCount => effectData != null ? effectData.PlayerHitSparkCount : 12;
         public int PlayerHitBackSparkCount => effectData != null ? effectData.PlayerHitBackSparkCount : 5;

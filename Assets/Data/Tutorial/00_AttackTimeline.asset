@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47cb344f012732c42b9fcbcd3764c664, type: 3}
-  m_Name: 01_AttackTimeline
+  m_Name: 00_AttackTimeline
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackTimeline
-  timelineName: "\uAE30\uBCF8 \uACF5\uACA9_01"
-  cooldownAfter: 1.5
+  timelineName: "\uAE30\uBCF8 \uACF5\uACA9_00"
+  cooldownAfter: 2
   events:
   - patternKind: 0
     fireTime: 0

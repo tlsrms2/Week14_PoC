@@ -138,6 +138,8 @@ namespace Week14.Input
                 KeyCode.Q => keyboard.qKey.wasPressedThisFrame,
                 KeyCode.R => keyboard.rKey.wasPressedThisFrame,
                 KeyCode.F => keyboard.fKey.wasPressedThisFrame,
+                KeyCode.H => keyboard.hKey.wasPressedThisFrame,
+                KeyCode.F1 => keyboard.f1Key.wasPressedThisFrame,
                 _ => false
             };
 #elif ENABLE_LEGACY_INPUT_MANAGER

@@ -5,7 +5,7 @@ namespace Week14.Enemy
     /// <summary>
     /// 추격 상태.
     /// 플레이어가 사정거리 밖일 때 접근한다.
-    /// 사정거리 진입 시 Engage/Flank으로, 놓치면 Idle/Patrol로 전환.
+    /// 사정거리 진입 시 Engage/Flank으로, 놓치면 Idle로 전환.
     /// </summary>
     public sealed class ChaseState : IEnemyState
     {
@@ -56,10 +56,7 @@ namespace Week14.Enemy
 
         private static void ReturnToDefault(EnemyAI enemy)
         {
-            if (enemy.Data.PatrolMode == PatrolMode.Patrol && enemy.PatrolWaypoints.Count > 0)
-                enemy.StateMachine.ChangeState(enemy.PatrolState, enemy);
-            else
-                enemy.StateMachine.ChangeState(enemy.IdleState, enemy);
+            enemy.StateMachine.ChangeState(enemy.IdleState, enemy);
         }
     }
 }
