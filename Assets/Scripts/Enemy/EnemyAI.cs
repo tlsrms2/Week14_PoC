@@ -28,6 +28,11 @@ namespace Week14.Enemy
         [SerializeField] private GunRecoilMotion gunRecoil;
         [SerializeField] private LayerMask obstacleMask;
 
+        [Header("보스 전투 UI")]
+        [SerializeField] private GameObject bossCombatUiRoot;
+        [SerializeField] private DurabilityBarView bossDurabilityBarView;
+        [SerializeField] private HeatBarView bossHeatBarView;
+
         [Header("순찰 웨이포인트 (Patrol 모드 전용)")]
         [SerializeField] private List<Vector3> patrolWaypoints = new();
 
@@ -56,11 +61,14 @@ namespace Week14.Enemy
         private float lastBossPlayerAttackTime;
         private int bossPlayerAttackPressureCount;
         private int nextTimelineIndex;
+        private int currentAttackBulletTotal;
+        private int currentAttackBulletRemaining;
         private bool isBodyHitColorActive;
         private float bodyHitColorEndsAt;
         private bool isStaggered;
         private float staggerEndsAt;
         private Vector3 staggerBaseLocalPosition;
+        private bool isBossCombatUiActive;
 
         // ── 공개 프로퍼티 ─────────────────────────────
         public EnemyData Data => data;
@@ -163,7 +171,17 @@ namespace Week14.Enemy
                 true);
 
             // 상태바 UI
-            EnsureStatusView();
+            if (UsesBossCombatUi())
+            {
+                SuppressEnemyStatusView();
+                PrepareBossCombatUi();
+                BindBossCombatUiTargetsIfVisible();
+                SetBossCombatUiVisible(false);
+            }
+            else
+            {
+                EnsureStatusView();
+            }
             ApplyHeatStateColor();
 
             // 플레이어 참조
@@ -225,6 +243,7 @@ namespace Week14.Enemy
             }
 
             ResolvePlayer();
+            TryActivateBossCombatUiOnCombatStart();
             RotateToTarget();
             stateMachine.Tick(this);
         }
@@ -301,9 +320,9 @@ namespace Week14.Enemy
             }
 
             health.TakeDamage(damage);
-            BeginStagger(hitDirection);
             if (strongHit)
             {
+                BeginStagger(hitDirection);
                 FlashBodyHitColor();
             }
 
@@ -688,14 +707,40 @@ namespace Week14.Enemy
         // ── 공격 타이밍 표시 ─────────────────────────
         public void ShowAttackTiming(float remainingSeconds, float durationSeconds)
         {
+            ShowAttackTiming(remainingSeconds, durationSeconds, 0, 0);
+        }
+
+        public void ShowAttackTiming(float remainingSeconds, float durationSeconds, int loadedBulletCount, int totalBulletCount)
+        {
             if (remainingSeconds <= 0f || durationSeconds <= 0f)
+            {
+                if (totalBulletCount > 0)
+                {
+                    EnsureAttackTimingOutline();
+                    attackTimingOutline.ShowBullets(loadedBulletCount, totalBulletCount);
+                }
+                else
+                {
+                    HideAttackTiming();
+                }
+
+                return;
+            }
+
+            EnsureAttackTimingOutline();
+            attackTimingOutline.Show(remainingSeconds, durationSeconds, loadedBulletCount, totalBulletCount);
+        }
+
+        public void ShowCurrentAttackBullets()
+        {
+            if (currentAttackBulletTotal <= 0)
             {
                 HideAttackTiming();
                 return;
             }
 
             EnsureAttackTimingOutline();
-            attackTimingOutline.Show(remainingSeconds, durationSeconds);
+            attackTimingOutline.ShowBullets(currentAttackBulletRemaining, currentAttackBulletTotal);
         }
 
         public void HideAttackTiming()
@@ -769,10 +814,24 @@ namespace Week14.Enemy
             return timeline;
         }
 
+        public int GetNextTimelineAttackCount()
+        {
+            var timelines = data.AttackTimelines;
+            if (timelines == null || timelines.Count == 0)
+            {
+                return 0;
+            }
+
+            return CountTimelineAttacks(timelines[nextTimelineIndex]);
+        }
+
         /// <summary>타임라인 기반 공격 코루틴 시작</summary>
         public void StartAttack(AttackTimeline timeline)
         {
             if (timeline == null || attackCoroutine != null) return;
+            currentAttackBulletTotal = CountTimelineAttacks(timeline);
+            currentAttackBulletRemaining = currentAttackBulletTotal;
+            ShowCurrentAttackBullets();
             attackCoroutine = StartCoroutine(ExecuteTimeline(timeline));
         }
 
@@ -783,6 +842,9 @@ namespace Week14.Enemy
                 StopCoroutine(attackCoroutine);
                 attackCoroutine = null;
             }
+
+            currentAttackBulletTotal = 0;
+            currentAttackBulletRemaining = 0;
         }
 
         private IEnumerator ExecuteTimeline(AttackTimeline timeline)
@@ -815,6 +877,8 @@ namespace Week14.Enemy
                 }
 
                 FireProjectiles(events[eventIndex]);
+                currentAttackBulletRemaining = Mathf.Max(0, currentAttackBulletRemaining - 1);
+                ShowCurrentAttackBullets();
                 eventIndex++;
             }
 
@@ -826,6 +890,13 @@ namespace Week14.Enemy
             }
 
             attackCoroutine = null;
+            currentAttackBulletTotal = 0;
+            currentAttackBulletRemaining = 0;
+        }
+
+        private static int CountTimelineAttacks(AttackTimeline timeline)
+        {
+            return timeline?.Events != null ? timeline.Events.Count : 0;
         }
 
         /// <summary>단일 AttackEvent의 발사체 생성</summary>
@@ -834,7 +905,8 @@ namespace Week14.Enemy
             if (data.ProjectilePrefab == null || player == null) return;
 
             Transform origin = projectileOrigin != null ? projectileOrigin : fireOrigin;
-            Vector2 baseDir = ((Vector2)player.position - (Vector2)origin.position).normalized;
+            Vector2 targetPosition = GetPredictedProjectileTargetPosition(origin.position);
+            Vector2 baseDir = (targetPosition - (Vector2)origin.position).normalized;
             float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
 
             int count = evt.BulletCount;
@@ -864,6 +936,26 @@ namespace Week14.Enemy
         }
 
         // ── 시각 처리 ─────────────────────────────────
+        private Vector2 GetPredictedProjectileTargetPosition(Vector3 originPosition)
+        {
+            if (player == null)
+            {
+                return originPosition;
+            }
+
+            Vector2 targetPosition = player.position;
+            Rigidbody2D playerBody = player.GetComponent<Rigidbody2D>();
+            if (playerBody == null || data.ProjectileLeadPredictionSeconds <= 0f || data.ProjectileSpeed <= 0f)
+            {
+                return targetPosition;
+            }
+
+            float distance = Vector2.Distance(originPosition, targetPosition);
+            float travelSeconds = distance / data.ProjectileSpeed;
+            float leadSeconds = Mathf.Min(data.ProjectileLeadPredictionSeconds, travelSeconds);
+            return targetPosition + playerBody.linearVelocity * leadSeconds;
+        }
+
         private void RotateToTarget()
         {
             if (player == null) return;
@@ -1058,8 +1150,114 @@ namespace Week14.Enemy
             if (statusView == null) statusView = GetComponentInChildren<EnemyStatusView>();
             if (statusView == null) statusView = gameObject.AddComponent<EnemyStatusView>();
 
+            statusView.SetSuppressed(false);
             statusView.Configure(data);
             statusView.SetTargets(health, heat);
+        }
+
+        private bool UsesBossCombatUi()
+        {
+            return data != null
+                && data.Category == EnemyCategory.Boss
+                && (bossCombatUiRoot != null || bossDurabilityBarView != null || bossHeatBarView != null);
+        }
+
+        private void PrepareBossCombatUi()
+        {
+            if (bossCombatUiRoot != null)
+            {
+                bossDurabilityBarView ??= bossCombatUiRoot.GetComponentInChildren<DurabilityBarView>(true);
+                bossHeatBarView ??= bossCombatUiRoot.GetComponentInChildren<HeatBarView>(true);
+            }
+
+            if (bossDurabilityBarView != null)
+            {
+                bossDurabilityBarView.SetBindPlayerOnStart(false);
+            }
+
+            if (bossHeatBarView != null)
+            {
+                bossHeatBarView.SetBindPlayerOnStart(false);
+                bossHeatBarView.SetColors(data.HeatBarColor, data.OverheatedBarColor);
+            }
+        }
+
+        private void BindBossCombatUiTargetsIfVisible()
+        {
+            if (!IsBossCombatUiVisible())
+            {
+                return;
+            }
+
+            BindBossCombatUiTargets();
+        }
+
+        private void BindBossCombatUiTargets()
+        {
+            bossDurabilityBarView?.SetTarget(health);
+            bossHeatBarView?.SetTarget(heat);
+        }
+
+        private void TryActivateBossCombatUiOnCombatStart()
+        {
+            if (isBossCombatUiActive || !UsesBossCombatUi() || !IsPlayerDetected())
+            {
+                return;
+            }
+
+            PrepareBossCombatUi();
+            SuppressEnemyStatusView();
+            SetBossCombatUiVisible(true);
+            BindBossCombatUiTargets();
+        }
+
+        private bool IsBossCombatUiVisible()
+        {
+            if (bossCombatUiRoot != null)
+            {
+                return bossCombatUiRoot.activeInHierarchy;
+            }
+
+            return (bossDurabilityBarView != null && bossDurabilityBarView.gameObject.activeInHierarchy)
+                || (bossHeatBarView != null && bossHeatBarView.gameObject.activeInHierarchy);
+        }
+
+        private void SetBossCombatUiVisible(bool visible)
+        {
+            if (bossCombatUiRoot != null)
+            {
+                bossCombatUiRoot.SetActive(visible);
+            }
+            else
+            {
+                if (bossDurabilityBarView != null) bossDurabilityBarView.gameObject.SetActive(visible);
+                if (bossHeatBarView != null) bossHeatBarView.gameObject.SetActive(visible);
+            }
+
+            isBossCombatUiActive = visible;
+        }
+
+        private void SuppressEnemyStatusView()
+        {
+            EnemyStatusView rootStatusView = GetComponent<EnemyStatusView>();
+            if (rootStatusView == null)
+            {
+                rootStatusView = gameObject.AddComponent<EnemyStatusView>();
+            }
+
+            EnemyStatusView[] statusViews = GetComponentsInChildren<EnemyStatusView>(true);
+            for (int i = 0; i < statusViews.Length; i++)
+            {
+                if (statusViews[i] != null && statusViews[i] != rootStatusView)
+                {
+                    statusViews[i].SetSuppressed(true);
+                }
+            }
+
+            statusView = rootStatusView;
+            statusView.Configure(data);
+            statusView.SetTargets(health, heat);
+            statusView.SetSuppressed(true);
         }
 
         private void EnsureAttackTimingOutline()

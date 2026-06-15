@@ -12,6 +12,8 @@ namespace Week14.Combat
         private float projectileLifetime;
         private float projectileRadius;
         private Color projectileColor;
+        private float homingTurnDegreesPerSecond;
+        private float homingEndsAt;
         private Rigidbody2D body;
         private HeatGauge ownerHeat;
         private EnemyAI ownerEnemy;
@@ -43,7 +45,9 @@ namespace Week14.Combat
                 data.HeatPerShot, data.HeatCoolingDelayAfterShot,
                 data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
-                data.ProjectileTrailWidthMultiplier);
+                data.ProjectileTrailWidthMultiplier,
+                data.ProjectileHomingSeconds,
+                data.ProjectileHomingTurnDegreesPerSecond);
         }
 
         private static EnemyProjectile SpawnInternal(
@@ -55,12 +59,13 @@ namespace Week14.Combat
             float parryHeat,
             float parryHeatCoolingDelay,
             float speed, float lifetime, float radius,
-            Color color, float trailSeconds, float trailWidth)
+            Color color, float trailSeconds, float trailWidth,
+            float homingSeconds, float homingTurnDegrees)
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, damage, ownerHeat, parryHeat, parryHeatCoolingDelay, speed, lifetime, radius, color);
+            projectile.Initialize(direction, damage, ownerHeat, parryHeat, parryHeatCoolingDelay, speed, lifetime, radius, color, homingSeconds, homingTurnDegrees);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
@@ -77,12 +82,15 @@ namespace Week14.Combat
             HeatGauge nextOwnerHeat,
             float nextParryHeat,
             float nextParryHeatCoolingDelay,
-            float speed, float lifetime, float radius, Color color)
+            float speed, float lifetime, float radius, Color color,
+            float homingSeconds, float nextHomingTurnDegrees)
         {
             projectileSpeed = speed;
             projectileLifetime = lifetime;
             projectileRadius = radius;
             projectileColor = color;
+            homingTurnDegreesPerSecond = Mathf.Max(0f, nextHomingTurnDegrees);
+            homingEndsAt = Time.time + Mathf.Max(0f, homingSeconds);
             ownerHeat = nextOwnerHeat;
             ownerEnemy = ownerHeat != null ? ownerHeat.GetComponentInParent<EnemyAI>() : null;
             parryHeat = nextParryHeat;
@@ -106,10 +114,39 @@ namespace Week14.Combat
 
         private void Update()
         {
+            TickHoming();
+
             if (Time.time >= destroyAt)
             {
                 DestroyProjectile();
             }
+        }
+
+        private void TickHoming()
+        {
+            if (resolved || isDestroying || Time.time >= homingEndsAt || homingTurnDegreesPerSecond <= 0f || projectileSpeed <= 0f)
+            {
+                return;
+            }
+
+            PlayerCombatController target = PlayerCombatController.Active;
+            if (target == null || target.Health == null || target.Health.IsDead)
+            {
+                return;
+            }
+
+            Vector2 toTarget = (Vector2)target.transform.position - (Vector2)transform.position;
+            if (toTarget.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            float maxRadians = homingTurnDegreesPerSecond * Mathf.Deg2Rad * Time.deltaTime;
+            Vector3 nextDirection = Vector3.RotateTowards(flightDirection, toTarget.normalized, maxRadians, 0f);
+            flightDirection = ((Vector2)nextDirection).normalized;
+            body.linearVelocity = flightDirection * projectileSpeed;
+            float angle = Mathf.Atan2(flightDirection.y, flightDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

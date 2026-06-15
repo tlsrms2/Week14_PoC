@@ -66,6 +66,8 @@ namespace Week14.Enemy
         [Header("공격")]
         [Tooltip("플레이어가 이 거리 안에 있으면 공격 상태로 진입할 수 있습니다.")]
         [SerializeField, Min(0f)] private float attackRange = 8f;
+        [Tooltip("플레이어를 마주 보고 교전 상태에 들어간 뒤 첫 공격까지 기다리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float initialAttackDelaySeconds = 2f;
         [Tooltip("공격 시작 전 준비 동작으로 대기하는 시간입니다.")]
         [SerializeField, Min(0f)] private float windupSeconds = 0.35f;
         [Tooltip("공격 타임라인 종료 후 후딜레이로 대기하는 시간입니다.")]
@@ -97,6 +99,12 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float projectileLifetime = 3f;
         [Tooltip("적 탄의 충돌 반지름입니다.")]
         [SerializeField, Min(0f)] private float projectileRadius = 0.12f;
+        [Tooltip("적 탄 발사 시 플레이어 이동을 예측하는 최대 시간입니다.")]
+        [SerializeField, Min(0f)] private float projectileLeadPredictionSeconds = 0.45f;
+        [Tooltip("적 탄이 발사 후 플레이어를 추적하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float projectileHomingSeconds = 0.8f;
+        [Tooltip("적 탄이 플레이어 쪽으로 휘어질 수 있는 초당 회전 각도입니다.")]
+        [SerializeField, Min(0f)] private float projectileHomingTurnDegreesPerSecond = 540f;
 
         // ── 상태 UI 색상 ──────────────────────────────
         [Header("상태바 UI")]
@@ -140,6 +148,7 @@ namespace Week14.Enemy
 
         // 공격
         public float AttackRange => attackRange;
+        public float InitialAttackDelaySeconds => initialAttackDelaySeconds;
         public float WindupSeconds => windupSeconds;
         public float RecoverySeconds => recoverySeconds;
         public float HeatPerShot => heatPerShot;
@@ -155,6 +164,9 @@ namespace Week14.Enemy
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;
         public float ProjectileRadius => projectileRadius;
+        public float ProjectileLeadPredictionSeconds => projectileLeadPredictionSeconds;
+        public float ProjectileHomingSeconds => projectileHomingSeconds;
+        public float ProjectileHomingTurnDegreesPerSecond => projectileHomingTurnDegreesPerSecond;
         public Color ProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
         public float ProjectileTrailSeconds => effectData != null ? effectData.EnemyProjectileTrailSeconds : 0.1f;
         public float ProjectileTrailWidthMultiplier => effectData != null ? effectData.EnemyProjectileTrailWidthMultiplier : 3f;

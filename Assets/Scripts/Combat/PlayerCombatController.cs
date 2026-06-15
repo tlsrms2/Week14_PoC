@@ -394,14 +394,20 @@ namespace Week14.Combat
         private void UpdateAttackTimingOutline()
         {
             float attackRemaining = nextAttackTime - Time.time;
-            if (attackRemaining <= 0f || PlayerAttackCooldown <= 0f)
+            if (PlayerAttackCooldown <= 0f)
             {
                 HideAttackTimingOutline();
                 return;
             }
 
             EnsureAttackTimingOutline();
-            attackTimingOutline.Show(attackRemaining, PlayerAttackCooldown);
+            if (attackRemaining <= 0f)
+            {
+                attackTimingOutline.ShowBullets(1, 1);
+                return;
+            }
+
+            attackTimingOutline.Show(attackRemaining, PlayerAttackCooldown, 0, 1);
         }
 
         private void HideAttackTimingOutline()
@@ -1288,6 +1294,15 @@ namespace Week14.Combat
         private Vector2 GetParryIndicatorDirection()
         {
             Vector2 origin = GetParryCenter();
+            if (lockOnTarget != null && !lockOnTarget.IsDead && !IsLockOnTooFar(lockOnTarget))
+            {
+                Vector2 toLockOnTarget = (Vector2)lockOnTarget.transform.position - origin;
+                if (toLockOnTarget.sqrMagnitude > 0.0001f)
+                {
+                    return toLockOnTarget.normalized;
+                }
+            }
+
             Vector2 direction = GetMouseWorldPosition() - origin;
             if (direction.sqrMagnitude > 0.0001f)
             {

@@ -40,6 +40,7 @@ namespace Week14.UI
         private Color overheatedBarColor = Color.red;
         private Color lockOnColor = Color.white;
         private Color executionColor = Color.red;
+        private bool suppressed;
 
 
         public void Configure(EnemyData data)
@@ -74,6 +75,15 @@ namespace Week14.UI
             return renderer != null && (renderer == lockOnRenderer || renderer == executionRenderer);
         }
 
+        public void SetSuppressed(bool value)
+        {
+            suppressed = value;
+            if (suppressed)
+            {
+                SetBarsVisible(false);
+            }
+        }
+
         private void Awake()
         {
             if (durability == null)
@@ -105,13 +115,22 @@ namespace Week14.UI
         {
             bool alive = durability != null && !durability.IsDead;
             bool visible = alive && (enemyAI == null || !enemyAI.IsExecutionLocked);
-            SetRootVisible(visible);
+            if (suppressed)
+            {
+                SetBarsVisible(false);
+            }
+            else
+            {
+                SetRootVisible(visible);
+            }
+
             if (!visible)
             {
+                SetIndicatorsVisible(false);
                 return;
             }
 
-            if (barsRoot != null)
+            if (!suppressed && barsRoot != null)
             {
                 barsRoot.position = transform.position + authoredBarOffset;
 
@@ -127,9 +146,7 @@ namespace Week14.UI
 
             if (lockOnRenderer != null)
             {
-                lockOnRenderer.enabled = PlayerCombatController.Active != null
-                    && !PlayerCombatController.Active.IsExecuting
-                    && PlayerCombatController.Active.LockOnTarget == durability;
+                lockOnRenderer.enabled = IsLockOnTarget();
             }
 
             if (executionRenderer != null)
@@ -138,6 +155,29 @@ namespace Week14.UI
                     && PlayerCombatController.Active != null
                     && executionTarget.CanExecute(PlayerCombatController.Active.transform);
             }
+        }
+
+        private bool IsLockOnTarget()
+        {
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player == null || player.IsExecuting || player.LockOnTarget == null)
+            {
+                return false;
+            }
+
+            if (player.LockOnTarget == durability)
+            {
+                return true;
+            }
+
+            if (enemyAI != null && player.LockOnTarget == enemyAI.Health)
+            {
+                return true;
+            }
+
+            EnemyAI targetEnemy = player.LockOnTarget.GetComponent<EnemyAI>()
+                ?? player.LockOnTarget.GetComponentInParent<EnemyAI>();
+            return enemyAI != null && targetEnemy == enemyAI;
         }
 
         private void EnsureView()
@@ -379,22 +419,32 @@ namespace Week14.UI
 
         private void SetRootVisible(bool visible)
         {
+            SetBarsVisible(visible);
+
+            if (!visible)
+            {
+                SetIndicatorsVisible(false);
+            }
+        }
+
+        private void SetBarsVisible(bool visible)
+        {
             if (barsRoot != null)
             {
                 barsRoot.gameObject.SetActive(visible);
             }
+        }
 
-            if (!visible)
+        private void SetIndicatorsVisible(bool visible)
+        {
+            if (lockOnRenderer != null)
             {
-                if (lockOnRenderer != null)
-                {
-                    lockOnRenderer.enabled = false;
-                }
+                lockOnRenderer.enabled = visible;
+            }
 
-                if (executionRenderer != null)
-                {
-                    executionRenderer.enabled = false;
-                }
+            if (executionRenderer != null)
+            {
+                executionRenderer.enabled = visible;
             }
         }
 

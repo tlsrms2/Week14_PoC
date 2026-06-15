@@ -63,7 +63,7 @@ MonoBehaviour:
   enemyBodyHitColor: {r: 1, g: 0.35, b: 0.25, a: 1}
   bodyHitColorSeconds: 0.08
   heatParryOutlineColor: {r: 1, g: 1, b: 1, a: 1}
-  heatDefenseOutlineColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
+  heatDefenseOutlineColor: {r: 0.2, g: 0.6509804, b: 1, a: 1}
   heatHitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   heatOverheatBlinkOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   heatOverheatBlinkFillColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}

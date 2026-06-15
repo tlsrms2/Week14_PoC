@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0ef1d8e86ae264f9639400a96ddea2, type: 3}
   m_Name: PlayerCombatConfig
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatConfig
-  maxDurability: 120000
+  maxDurability: 220
   maxHeat: 350
   heatCoolingPerSecond: 10
   overheatSeconds: 2
@@ -32,7 +32,7 @@ MonoBehaviour:
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
   parryRange: 10
-  defenseRange: 2
+  defenseRange: 1.5
   defenseHeat: 15
   parryHeat: 5
   parryAimAngleDegrees: 60
@@ -41,7 +41,7 @@ MonoBehaviour:
   lockOnSearchRadius: 2
   lockOnBreakDistance: 9
   executionRange: 2.5
-  executionHeatRecovery: 150
+  executionHeatRecovery: 300
   destroyTargetOnExecute: 1
   executionStandOffDistance: 2
   executionAimSeconds: 1

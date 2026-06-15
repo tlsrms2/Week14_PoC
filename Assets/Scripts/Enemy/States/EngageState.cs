@@ -9,14 +9,16 @@ namespace Week14.Enemy
     /// </summary>
     public sealed class EngageState : IEnemyState
     {
+        private const float MagazinePreloadSeconds = 0.15f;
+
         private float cooldownTimer;
         private float cooldownDuration;
 
         public void Enter(EnemyAI enemy)
         {
             enemy.Stop();
-            cooldownTimer = 0f;
-            cooldownDuration = 0f;
+            cooldownDuration = enemy.Data != null ? enemy.Data.InitialAttackDelaySeconds : 0f;
+            cooldownTimer = cooldownDuration;
             enemy.HideAttackTiming();
         }
 
@@ -42,14 +44,16 @@ namespace Week14.Enemy
 
             if (enemy.IsAttacking)
             {
-                enemy.HideAttackTiming();
+                enemy.ShowCurrentAttackBullets();
                 return;
             }
 
             if (cooldownTimer > 0f)
             {
                 cooldownTimer = Mathf.Max(0f, cooldownTimer - Time.deltaTime);
-                enemy.ShowAttackTiming(cooldownTimer, cooldownDuration);
+                int nextAttackCount = enemy.GetNextTimelineAttackCount();
+                int loadedAttackCount = cooldownTimer <= MagazinePreloadSeconds ? nextAttackCount : 0;
+                enemy.ShowAttackTiming(cooldownTimer, cooldownDuration, loadedAttackCount, nextAttackCount);
                 return;
             }
 
