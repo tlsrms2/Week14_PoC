@@ -20,16 +20,16 @@ namespace Week14.Combat
         private float chargeEndsAt;
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
-        private HeatGauge ownerHeat;
+        private BulletGauge ownerBullets;
         private EnemyAI ownerEnemy;
-        private float parryHeat;
-        private float parryHeatCoolingDelay;
-        private float damage;
+        private int counterBulletDamage;
+        private int bulletDamage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
         private bool resolved;
         private bool isDestroying;
         private bool launched;
+        private bool ownerSlotReleased;
         private static Material chargeVfxMaterial;
 
         public Vector2 IncomingDirection => flightDirection;
@@ -42,14 +42,14 @@ namespace Week14.Combat
         public static EnemyProjectile Spawn(
             EnemyProjectile prefab,
             EnemyData data,
-            HeatGauge ownerHeat,
+            BulletGauge ownerBullets,
             Vector3 position,
             Vector2 direction)
         {
             if (prefab == null || data == null) return null;
 
-            return SpawnInternal(prefab, ownerHeat, position, direction, data.ProjectileDamage,
-                data.HeatPerShot, data.HeatCoolingDelayAfterShot,
+            return SpawnInternal(prefab, ownerBullets, position, direction, data.ProjectileBulletDamage,
+                data.CounteredProjectileBulletDamage,
                 data.ProjectileChargeSeconds, data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
                 data.ProjectileTrailWidthMultiplier,
@@ -59,12 +59,11 @@ namespace Week14.Combat
 
         private static EnemyProjectile SpawnInternal(
             EnemyProjectile prefab,
-            HeatGauge ownerHeat,
+            BulletGauge ownerBullets,
             Vector3 position,
             Vector2 direction,
-            float damage,
-            float parryHeat,
-            float parryHeatCoolingDelay,
+            int bulletDamage,
+            int counterBulletDamage,
             float chargeSeconds,
             float speed, float lifetime, float radius,
             Color color, float trailSeconds, float trailWidth,
@@ -73,7 +72,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, damage, ownerHeat, parryHeat, parryHeatCoolingDelay, chargeSeconds, speed, lifetime, radius, color, homingSeconds, homingTurnDegrees);
+            projectile.Initialize(direction, bulletDamage, ownerBullets, counterBulletDamage, chargeSeconds, speed, lifetime, radius, color, homingSeconds, homingTurnDegrees);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
@@ -86,10 +85,9 @@ namespace Week14.Combat
 
         private void Initialize(
             Vector2 direction,
-            float nextDamage,
-            HeatGauge nextOwnerHeat,
-            float nextParryHeat,
-            float nextParryHeatCoolingDelay,
+            int nextBulletDamage,
+            BulletGauge nextOwnerBullets,
+            int nextCounterBulletDamage,
             float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
             float homingSeconds, float nextHomingTurnDegrees)
@@ -101,11 +99,11 @@ namespace Week14.Combat
             projectileColor = color;
             this.homingSeconds = Mathf.Max(0f, homingSeconds);
             homingTurnDegreesPerSecond = Mathf.Max(0f, nextHomingTurnDegrees);
-            ownerHeat = nextOwnerHeat;
-            ownerEnemy = ownerHeat != null ? ownerHeat.GetComponentInParent<EnemyAI>() : null;
-            parryHeat = nextParryHeat;
-            parryHeatCoolingDelay = nextParryHeatCoolingDelay;
-            damage = nextDamage;
+            ownerBullets = nextOwnerBullets;
+            ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
+            ownerEnemy?.RegisterActiveProjectile(this);
+            counterBulletDamage = nextCounterBulletDamage;
+            bulletDamage = nextBulletDamage;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             launched = projectileChargeSeconds <= 0f;
             chargeEndsAt = Time.time + projectileChargeSeconds;
@@ -268,7 +266,7 @@ namespace Week14.Combat
             }
 
             resolved = true;
-            player.ReceiveAttack(damage, transform.position, flightDirection);
+            player.ReceiveAttack(bulletDamage, transform.position, flightDirection);
             DestroyProjectile();
         }
 
@@ -282,13 +280,16 @@ namespace Week14.Combat
 
             parried = IsCharging;
             resolved = true;
-            if (parried)
-            {
-                AddOwnerHeatOnParry();
-            }
+            SpendOwnerBulletsOnCounter(parried ? BulletChangeSource.Parry : BulletChangeSource.Defense);
 
             DestroyProjectile();
             return true;
+        }
+
+        public void DestroyFromOwner()
+        {
+            resolved = true;
+            DestroyProjectile();
         }
 
         private void DestroyProjectile()
@@ -299,6 +300,7 @@ namespace Week14.Combat
             }
 
             isDestroying = true;
+            ReleaseOwnerProjectileSlot();
             if (body != null)
             {
                 body.linearVelocity = Vector2.zero;
@@ -321,15 +323,30 @@ namespace Week14.Combat
             Destroy(gameObject);
         }
 
-        private void AddOwnerHeatOnParry()
+        private void OnDestroy()
         {
-            if (ownerHeat == null)
+            ReleaseOwnerProjectileSlot();
+        }
+
+        private void ReleaseOwnerProjectileSlot()
+        {
+            if (ownerSlotReleased)
             {
                 return;
             }
 
-            ownerHeat.AddHeat(parryHeat, HeatChangeSource.Parry);
-            ownerHeat.SuppressCooling(parryHeatCoolingDelay);
+            ownerSlotReleased = true;
+            ownerEnemy?.UnregisterActiveProjectile(this);
+        }
+
+        private void SpendOwnerBulletsOnCounter(BulletChangeSource source)
+        {
+            if (ownerBullets == null)
+            {
+                return;
+            }
+
+            ownerBullets.TrySpend(counterBulletDamage, source);
         }
 
         private void EnsureProjectileShape()

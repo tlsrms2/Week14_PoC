@@ -14,30 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossEnemyData
   displayName: "\uBCF4\uC2A4_01"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  maxDurability: 400
-  durabilityDepletedSeconds: 3
-  maxHeat: 500
-  heatCoolingPerSecond: 50
-  overheatSeconds: 4
-  normalColor: {r: 1, g: 0.8827955, b: 0.23137254, a: 1}
-  overheatedColor: {r: 1, g: 0.5058824, b: 0, a: 1}
-  durabilityDepletedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-  staggeredColor: {r: 1, g: 0.95, b: 0.35, a: 1}
+  maxBullets: 50
+  bulletEmptyExecutionSeconds: 3
+  counteredProjectileBulletDamage: 1
+  normalColor: {r: 1, g: 0.6458666, b: 0.23137254, a: 1}
+  bulletEmptyColor: {r: 0, g: 0.7529412, b: 1, a: 1}
+  staggeredColor: {r: 1, g: 0.64705884, b: 0.23137255, a: 1}
   detectionRange: 9
   moveSpeed: 3.5
   attackRange: 9
-  initialAttackDelaySeconds: 2
+  initialAttackDelaySeconds: 1
   windupSeconds: 0
   recoverySeconds: 0
-  heatPerShot: 25
-  heatCoolingDelayAfterShot: 0.75
   staggerSeconds: 0.3
   staggerShakeDistance: 0.06
   staggerShakeFrequency: 16
   attackTimelines:
   - {fileID: 11400000, guid: 1b1cca80b15ae4b4e87b705e40a63573, type: 2}
   projectilePrefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-  projectileDamage: 5
+  projectileBulletDamage: 1
   projectileChargeSeconds: 1
   projectileSpeed: 30
   projectileLifetime: 2
@@ -46,9 +41,8 @@ MonoBehaviour:
   projectileHomingSeconds: 0.4
   projectileHomingTurnDegreesPerSecond: 360
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
-  durabilityBarColor: {r: 0.19607843, g: 0.9019608, b: 0.34509805, a: 1}
-  heatBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
-  overheatedBarColor: {r: 1, g: 0, b: 0, a: 1}
+  bulletBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  emptyBulletBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
   canParryPlayerAttacks: 1
@@ -58,10 +52,4 @@ MonoBehaviour:
   playerAttackPressureResetSeconds: 1.2
   playerAttackParryAngleDegrees: 60
   playerAttackParryCooldown: 0.35
-  playerHeatOnBossParry: 10
-  canDefendPlayerAttacks: 0
-  playerAttackDefenseChance: 0.25
-  playerAttackDefenseAngleDegrees: 60
-  playerAttackDefenseCooldown: 0.12
-  bossHeatOnDefense: 15
-  playerHeatCoolingSuppressSeconds: 0.35
+  playerBulletDamageOnBossParry: 0

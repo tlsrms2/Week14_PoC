@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -8,42 +7,34 @@ namespace Week14.UI
     [DisallowMultipleComponent]
     public sealed class EnemyStatusView : MonoBehaviour
     {
-        private const int TextureSize = 64;
-        private const int StatusRingTextureSize = 128;
         private const int DefaultSortingOrder = 40;
         private const string BarsName = "EnemyStatusBars";
-        private const float StatusArcDegrees = 125f;
-        private static readonly Vector2 RingBarsSize = new(2.3f, 2.3f);
-        private static Sprite durabilityRingSprite;
-        private static Sprite heatRingSprite;
-        private static Sprite lockOnDiamondSprite;
+        private static readonly Vector2 BarsSize = new(2.35f, 0.4f);
+        private static Sprite indicatorSprite;
 
-        [SerializeField, HideInInspector] private Health durability;
-        [SerializeField, HideInInspector] private HeatGauge heat;
+        [SerializeField, HideInInspector] private Health health;
+        [SerializeField, HideInInspector] private BulletGauge bullets;
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
         [SerializeField, HideInInspector] private EnemyAI enemyAI;
-        [SerializeField, HideInInspector] private DurabilityBarView durabilityBarView;
-        [SerializeField, HideInInspector] private HeatBarView heatBarView;
-        [SerializeField, HideInInspector] private Image barBackgroundImage;
-        [SerializeField, HideInInspector] private Image durabilityBackgroundImage;
-        [SerializeField, HideInInspector] private Image durabilityFillImage;
-        [SerializeField, HideInInspector] private Image heatBackgroundImage;
-        [SerializeField, HideInInspector] private Image heatFillImage;
+        [SerializeField, HideInInspector] private BulletBarView bulletBarView;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
         [SerializeField, HideInInspector] private RectTransform barsRoot;
 
-        private Vector3 authoredBarOffset;
-        private bool hasAuthoredBarOffset;
-        private bool warnedMissingFillImages;
-        private Color barBackgroundColor = new Color(0f, 0f, 0f, 0.55f);
-        private Color durabilityBarColor = new Color(0.75f, 0.95f, 1f, 1f);
-        private Color heatBarColor = new Color(1f, 0.55f, 0.1f, 1f);
-        private Color overheatedBarColor = Color.red;
+        private Vector3 authoredBarOffset = new(0f, 0.65f, 0f);
+        private Color bulletColor = new(1f, 0.55f, 0.1f, 1f);
+        private Color emptyColor = Color.red;
         private Color lockOnColor = Color.white;
         private Color executionColor = Color.red;
         private bool suppressed;
 
+        public void SetIndicators(SpriteRenderer nextLockOnRenderer, SpriteRenderer nextExecutionRenderer)
+        {
+            lockOnRenderer = nextLockOnRenderer;
+            executionRenderer = nextExecutionRenderer;
+            EnsureIndicators();
+            ApplyColors();
+        }
 
         public void Configure(EnemyData data)
         {
@@ -52,10 +43,8 @@ namespace Week14.UI
                 return;
             }
 
-            barBackgroundColor = data.StatusBarBackgroundColor;
-            durabilityBarColor = data.DurabilityBarColor;
-            heatBarColor = data.HeatBarColor;
-            overheatedBarColor = data.OverheatedBarColor;
+            bulletColor = data.BulletBarColor;
+            emptyColor = data.EmptyBulletBarColor;
             lockOnColor = data.LockOnIndicatorColor;
             executionColor = data.ExecutionIndicatorColor;
 
@@ -63,13 +52,12 @@ namespace Week14.UI
             ApplyColors();
         }
 
-        public void SetTargets(Health nextDurability, HeatGauge nextHeat)
+        public void SetTargets(Health nextHealth, BulletGauge nextBullets)
         {
-            durability = nextDurability;
-            heat = nextHeat;
+            health = nextHealth;
+            bullets = nextBullets;
             EnsureView();
-            durabilityBarView?.SetTarget(durability);
-            heatBarView?.SetTarget(heat);
+            bulletBarView?.SetTarget(bullets);
         }
 
         public bool OwnsRenderer(SpriteRenderer renderer)
@@ -80,62 +68,38 @@ namespace Week14.UI
         public void SetSuppressed(bool value)
         {
             suppressed = value;
-            if (suppressed)
-            {
-                SetBarsVisible(false);
-            }
+            SetBarsVisible(!suppressed);
         }
 
         private void Awake()
         {
-            if (durability == null)
-            {
-                durability = GetComponentInParent<Health>();
-            }
-
-            if (heat == null)
-            {
-                heat = GetComponentInParent<HeatGauge>();
-            }
-
-            if (executionTarget == null)
-            {
-                executionTarget = GetComponentInParent<ExecutionTarget>();
-            }
-
-            if (enemyAI == null)
-            {
-                enemyAI = GetComponentInParent<EnemyAI>();
-            }
+            health ??= GetComponentInParent<Health>();
+            bullets ??= GetComponentInParent<BulletGauge>();
+            executionTarget ??= GetComponentInParent<ExecutionTarget>();
+            enemyAI ??= GetComponentInParent<EnemyAI>();
 
             EnsureView();
-            SetTargets(durability, heat);
+            SetTargets(health, bullets);
             ApplyColors();
         }
 
         private void LateUpdate()
         {
-            bool alive = durability != null && !durability.IsDead;
-            bool visible = alive && (enemyAI == null || !enemyAI.IsExecutionLocked);
-            if (suppressed)
-            {
-                SetBarsVisible(false);
-            }
-            else
-            {
-                SetRootVisible(visible);
-            }
+            bool alive = health != null && !health.IsDead;
+            bool canShowDuringEnemyState = enemyAI == null || !enemyAI.IsExecutionLocked;
+            bool barsVisible = alive && !suppressed && canShowDuringEnemyState;
+            bool indicatorsVisible = alive && canShowDuringEnemyState;
+            SetBarsVisible(barsVisible);
 
-            if (!visible)
+            if (!indicatorsVisible)
             {
                 SetIndicatorsVisible(false);
                 return;
             }
 
-            if (!suppressed && barsRoot != null)
+            if (barsVisible && barsRoot != null)
             {
                 barsRoot.position = transform.position + authoredBarOffset;
-
                 Camera mainCamera = Camera.main;
                 if (mainCamera != null)
                 {
@@ -146,17 +110,10 @@ namespace Week14.UI
             ApplyWorldCenter(lockOnRenderer);
             ApplyWorldCenter(executionRenderer);
 
-            if (lockOnRenderer != null)
-            {
-                lockOnRenderer.enabled = IsLockOnTarget();
-            }
-
-            if (executionRenderer != null)
-            {
-                executionRenderer.enabled = executionTarget != null
-                    && PlayerCombatController.Active != null
-                    && executionTarget.CanExecute(PlayerCombatController.Active.transform);
-            }
+            SetRendererEnabled(lockOnRenderer, IsLockOnTarget());
+            SetRendererEnabled(
+                executionRenderer,
+                IsHoveredExecutionTarget());
         }
 
         private bool IsLockOnTarget()
@@ -167,12 +124,7 @@ namespace Week14.UI
                 return false;
             }
 
-            if (player.LockOnTarget == durability)
-            {
-                return true;
-            }
-
-            if (enemyAI != null && player.LockOnTarget == enemyAI.Health)
+            if (player.LockOnTarget == health)
             {
                 return true;
             }
@@ -182,250 +134,184 @@ namespace Week14.UI
             return enemyAI != null && targetEnemy == enemyAI;
         }
 
+        private bool IsHoveredExecutionTarget()
+        {
+            PlayerCombatController player = PlayerCombatController.Active;
+            return player != null
+                && executionTarget != null
+                && player.HoveredExecutionTarget == executionTarget
+                && executionTarget.CanExecute(player.transform);
+        }
+
         private void EnsureView()
         {
-            if (enemyAI == null)
-            {
-                enemyAI = GetComponentInParent<EnemyAI>();
-            }
-
+            enemyAI ??= GetComponentInParent<EnemyAI>();
             EnsureBars();
             EnsureIndicators();
         }
 
         private void EnsureBars()
         {
-            if (barsRoot != null)
-            {
-                CaptureBarOffset();
-                CacheBarImages();
-                return;
-            }
-
-            barsRoot = FindBarsRoot();
-            if (barsRoot != null)
-            {
-                CaptureBarOffset();
-                CacheBarImages();
-                return;
-            }
-
-            GameObject canvasObject = new GameObject(BarsName, typeof(RectTransform));
-            canvasObject.transform.SetParent(transform, false);
-            barsRoot = canvasObject.GetComponent<RectTransform>();
-            barsRoot.localPosition = Vector3.zero;
-            barsRoot.sizeDelta = RingBarsSize;
-            CaptureBarOffset();
-
-            Canvas canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.WorldSpace;
-            canvas.overrideSorting = true;
-            canvas.sortingOrder = DefaultSortingOrder;
-
-            barBackgroundImage = CreateImage("Background", canvasObject.transform, barBackgroundColor);
-            Stretch(barBackgroundImage.rectTransform);
-            barBackgroundImage.enabled = false;
-
-            RectTransform durabilityRow = CreateRow("Durability", canvasObject.transform, 0f, 1f);
-            durabilityBackgroundImage = CreateImage("Background", durabilityRow, barBackgroundColor);
-            Stretch(durabilityBackgroundImage.rectTransform);
-            durabilityFillImage = CreateImage("Fill", durabilityRow, durabilityBarColor);
-            ConfigureFill(durabilityFillImage, true);
-            durabilityBarView = durabilityRow.gameObject.AddComponent<DurabilityBarView>();
-            durabilityBarView.SetBindPlayerOnStart(false);
-            durabilityBarView.Configure(durabilityFillImage);
-
-            RectTransform heatRow = CreateRow("Heat", canvasObject.transform, 0f, 1f);
-            heatBackgroundImage = CreateImage("Background", heatRow, barBackgroundColor);
-            Stretch(heatBackgroundImage.rectTransform);
-            heatFillImage = CreateImage("Fill", heatRow, heatBarColor);
-            ConfigureFill(heatFillImage, false);
-            heatBarView = heatRow.gameObject.AddComponent<HeatBarView>();
-            heatBarView.SetBindPlayerOnStart(false);
-            heatBarView.SetChangeOutlineEnabled(false);
-            heatBarView.SetOverheatDrainEnabled(true);
-            heatBarView.Configure(heatFillImage);
-            ApplyRingBarLayout();
-        }
-
-        private void CacheBarImages()
-        {
-            CaptureBarOffset();
-
-            barBackgroundImage ??= FindImage("Background");
-            durabilityBackgroundImage ??= FindImage("Durability/Background");
-            durabilityFillImage ??= FindImage("Durability/Fill");
-            heatBackgroundImage ??= FindImage("Heat/Background");
-            heatFillImage ??= FindImage("Heat/Fill");
-            durabilityFillImage ??= FindFillImage("Durability", 0);
-            heatFillImage ??= FindFillImage("Heat", 1);
-
-            durabilityBarView ??= FindBarView<DurabilityBarView>("Durability");
-            heatBarView ??= FindBarView<HeatBarView>("Heat");
-
-            if (durabilityBarView == null && durabilityFillImage != null)
-            {
-                Transform fillParent = durabilityFillImage.transform.parent;
-                if (fillParent != null)
-                {
-                    durabilityBarView = fillParent.gameObject.AddComponent<DurabilityBarView>();
-                }
-            }
-
-            if (heatBarView == null && heatFillImage != null)
-            {
-                Transform fillParent = heatFillImage.transform.parent;
-                if (fillParent != null)
-                {
-                    heatBarView = fillParent.gameObject.AddComponent<HeatBarView>();
-                }
-            }
-
-            if (durabilityBarView != null && durabilityFillImage != null)
-            {
-                durabilityBarView.SetBindPlayerOnStart(false);
-                ConfigureFillMode(durabilityFillImage, true);
-                durabilityBarView.Configure(durabilityFillImage);
-            }
-
-            if (heatBarView != null && heatFillImage != null)
-            {
-                heatBarView.SetBindPlayerOnStart(false);
-                heatBarView.SetChangeOutlineEnabled(false);
-                heatBarView.SetOverheatDrainEnabled(true);
-                ConfigureFillMode(heatFillImage, false);
-                heatBarView.Configure(heatFillImage);
-            }
-
-            ApplyRingBarLayout();
-
-            if (!warnedMissingFillImages && (durabilityFillImage == null || heatFillImage == null))
-            {
-                warnedMissingFillImages = true;
-                Debug.LogWarning($"{nameof(EnemyStatusView)} requires Durability/Fill and Heat/Fill images under {BarsName}.", this);
-            }
-        }
-
-        private void EnsureIndicators()
-        {
-            if (lockOnRenderer == null)
-            {
-                lockOnRenderer = FindIndicator("LockOnIndicator");
-            }
-
-            if (lockOnRenderer == null)
-            {
-                lockOnRenderer = CreateIndicator("LockOnIndicator", lockOnColor, DefaultSortingOrder + 1, 1.1f);
-            }
-
-            if (executionRenderer == null)
-            {
-                executionRenderer = FindIndicator("ExecutionIndicator");
-            }
-
-            if (executionRenderer == null)
-            {
-                executionRenderer = CreateIndicator("ExecutionIndicator", executionColor, DefaultSortingOrder + 2, 0.9f);
-            }
-        }
-
-        private void ApplyColors()
-        {
-            if (barBackgroundImage != null)
-            {
-                barBackgroundImage.color = barBackgroundColor;
-            }
-
-            if (durabilityBackgroundImage != null)
-            {
-                durabilityBackgroundImage.color = barBackgroundColor;
-            }
-
-            if (durabilityFillImage != null)
-            {
-                durabilityFillImage.color = durabilityBarColor;
-            }
-
-            if (heatBackgroundImage != null)
-            {
-                heatBackgroundImage.color = barBackgroundColor;
-            }
-
-            if (heatBarView != null)
-            {
-                heatBarView.SetColors(heatBarColor, overheatedBarColor);
-            }
-
-            ApplyIndicatorColor(lockOnRenderer, lockOnColor);
-            ApplyIndicatorColor(executionRenderer, executionColor);
-        }
-
-        private void CaptureBarOffset()
-        {
-            if (hasAuthoredBarOffset || barsRoot == null)
-            {
-                return;
-            }
-
-            authoredBarOffset = Vector3.zero;
-            barsRoot.localPosition = Vector3.zero;
-            hasAuthoredBarOffset = true;
-        }
-
-        private void ApplyRingBarLayout()
-        {
             if (barsRoot == null)
             {
-                return;
+                barsRoot = FindExistingBarsRoot();
             }
 
-            barsRoot.sizeDelta = RingBarsSize;
-            barsRoot.localPosition = Vector3.zero;
-            authoredBarOffset = Vector3.zero;
-
-            if (barBackgroundImage != null)
+            if (barsRoot == null)
             {
-                barBackgroundImage.enabled = false;
+                GameObject canvasObject = new(BarsName, typeof(RectTransform));
+                canvasObject.transform.SetParent(transform, false);
+                barsRoot = canvasObject.GetComponent<RectTransform>();
+                barsRoot.sizeDelta = BarsSize;
+
+                Canvas canvas = canvasObject.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.WorldSpace;
+                canvas.overrideSorting = true;
+                canvas.sortingOrder = DefaultSortingOrder;
             }
 
-            StretchRow(durabilityFillImage);
-            StretchRow(durabilityBackgroundImage);
-            StretchRow(heatFillImage);
-            StretchRow(heatBackgroundImage);
+            RectTransform row = FindRow("Bullet") ?? CreateRow("Bullet", barsRoot);
+            row.gameObject.name = "Bullet";
+            DisableChild(row, "Background");
+            DisableChild(row, "Fill");
+
+            bulletBarView = row.GetComponent<BulletBarView>() ?? row.gameObject.AddComponent<BulletBarView>();
+            bulletBarView.SetBindPlayerOnStart(false);
+            bulletBarView.SetColors(bulletColor, emptyColor);
+            bulletBarView.SetIconLayout(10, 0.9f, 0.48f, 0.16f);
+            bulletBarView.Configure();
         }
 
-        private static void StretchRow(Image image)
+        private RectTransform FindExistingBarsRoot()
         {
-            if (image == null || image.rectTransform.parent is not RectTransform row)
-            {
-                return;
-            }
+            Transform existing = transform.Find(BarsName);
+            return existing != null ? existing.GetComponent<RectTransform>() : null;
+        }
 
+        private RectTransform FindRow(string rowName)
+        {
+            Transform row = barsRoot != null ? barsRoot.Find(rowName) : null;
+            return row != null ? row.GetComponent<RectTransform>() : null;
+        }
+
+        private static RectTransform CreateRow(string rowName, Transform parent)
+        {
+            GameObject rowObject = new(rowName, typeof(RectTransform));
+            rowObject.transform.SetParent(parent, false);
+            RectTransform row = rowObject.GetComponent<RectTransform>();
             row.anchorMin = Vector2.zero;
             row.anchorMax = Vector2.one;
             row.offsetMin = Vector2.zero;
             row.offsetMax = Vector2.zero;
-            Stretch(image.rectTransform);
+            return row;
         }
 
-        private void ApplyWorldCenter(SpriteRenderer renderer)
+        private static void DisableChild(Transform parent, string childName)
+        {
+            Transform child = parent != null ? parent.Find(childName) : null;
+            if (child != null)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
+        private static void Stretch(RectTransform rect)
+        {
+            if (rect == null)
+            {
+                return;
+            }
+
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        private void EnsureIndicators()
+        {
+            lockOnRenderer ??= FindIndicator("LockOnIndicator") ?? CreateIndicator("LockOnIndicator", lockOnColor, 0.52f);
+            executionRenderer ??= FindIndicator("ExecutionIndicator") ?? CreateIndicator("ExecutionIndicator", executionColor, 0.42f);
+            ConfigureIndicator(lockOnRenderer, lockOnColor, DefaultSortingOrder + 1);
+            ConfigureIndicator(executionRenderer, executionColor, DefaultSortingOrder + 2);
+        }
+
+        private SpriteRenderer FindIndicator(string indicatorName)
+        {
+            Transform directChild = transform.Find(indicatorName);
+            if (directChild != null && directChild.TryGetComponent(out SpriteRenderer directRenderer))
+            {
+                return directRenderer;
+            }
+
+            SpriteRenderer[] candidates = GetComponentsInChildren<SpriteRenderer>(true);
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                if (candidates[i] != null && candidates[i].name == indicatorName)
+                {
+                    return candidates[i];
+                }
+            }
+
+            return null;
+        }
+
+        private SpriteRenderer CreateIndicator(string indicatorName, Color color, float scale)
+        {
+            GameObject indicatorObject = new(indicatorName);
+            indicatorObject.transform.SetParent(transform, false);
+            indicatorObject.transform.localScale = Vector3.one * scale;
+            SpriteRenderer renderer = indicatorObject.AddComponent<SpriteRenderer>();
+            renderer.sprite = GetIndicatorSprite();
+            renderer.color = color;
+            renderer.sortingOrder = DefaultSortingOrder + 1;
+            renderer.enabled = false;
+            return renderer;
+        }
+
+        private static void ConfigureIndicator(SpriteRenderer renderer, Color color, int sortingOrder)
         {
             if (renderer == null)
             {
                 return;
             }
 
-            renderer.transform.position = transform.position;
-            renderer.transform.rotation = Quaternion.identity;
+            renderer.gameObject.SetActive(true);
+            renderer.sprite ??= GetIndicatorSprite();
+            renderer.color = color;
+            renderer.sortingOrder = sortingOrder;
         }
 
-        private void SetRootVisible(bool visible)
+        private static Sprite GetIndicatorSprite()
         {
-            SetBarsVisible(visible);
-
-            if (!visible)
+            if (indicatorSprite != null)
             {
-                SetIndicatorsVisible(false);
+                return indicatorSprite;
+            }
+
+            Texture2D texture = new(1, 1);
+            texture.SetPixel(0, 0, Color.white);
+            texture.Apply();
+            indicatorSprite = Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
+            return indicatorSprite;
+        }
+
+        private void ApplyColors()
+        {
+            if (bulletBarView != null)
+            {
+                bulletBarView.SetColors(bulletColor, emptyColor);
+            }
+
+            ApplyIndicatorColor(lockOnRenderer, lockOnColor);
+            ApplyIndicatorColor(executionRenderer, executionColor);
+        }
+
+        private static void ApplyIndicatorColor(SpriteRenderer renderer, Color color)
+        {
+            if (renderer != null)
+            {
+                renderer.color = color;
             }
         }
 
@@ -439,366 +325,27 @@ namespace Week14.UI
 
         private void SetIndicatorsVisible(bool visible)
         {
-            if (lockOnRenderer != null)
-            {
-                lockOnRenderer.enabled = visible;
-            }
-
-            if (executionRenderer != null)
-            {
-                executionRenderer.enabled = visible;
-            }
+            SetRendererEnabled(lockOnRenderer, visible && IsLockOnTarget());
+            SetRendererEnabled(executionRenderer, visible && IsHoveredExecutionTarget());
         }
 
-        private SpriteRenderer CreateIndicator(string name, Color color, int order, float defaultScale)
+        private void ApplyWorldCenter(SpriteRenderer renderer)
         {
-            GameObject indicatorObject = new GameObject(name);
-            indicatorObject.transform.SetParent(transform, false);
-            indicatorObject.transform.localScale = Vector3.one * defaultScale;
-
-            SpriteRenderer renderer = indicatorObject.AddComponent<SpriteRenderer>();
-            renderer.color = color;
-            renderer.sortingOrder = order;
-            renderer.enabled = false;
-            return renderer;
-        }
-
-        private SpriteRenderer FindIndicator(string name)
-        {
-            Transform indicator = transform.Find(name);
-            return indicator != null ? indicator.GetComponent<SpriteRenderer>() : null;
-        }
-
-        private RectTransform FindBarsRoot()
-        {
-            Transform existing = transform.Find(BarsName);
-            if (existing == null)
+            if (renderer != null)
             {
-                existing = FindChildRecursive(transform, BarsName);
-            }
-
-            return existing != null ? existing.GetComponent<RectTransform>() : null;
-        }
-
-        private Image FindImage(string path)
-        {
-            Transform imageTransform = barsRoot != null ? barsRoot.Find(path) : null;
-            if (imageTransform == null)
-            {
-                imageTransform = FindNestedPath(barsRoot, path);
-            }
-
-            return imageTransform != null ? imageTransform.GetComponent<Image>() : null;
-        }
-
-        private Image FindFillImage(string rowName, int fallbackIndex)
-        {
-            if (barsRoot == null)
-            {
-                return null;
-            }
-
-            Image[] images = barsRoot.GetComponentsInChildren<Image>(true);
-            for (int i = 0; i < images.Length; i++)
-            {
-                if (images[i] != null
-                    && images[i].name == "Fill"
-                    && HasParentNamed(images[i].transform, rowName))
-                {
-                    return images[i];
-                }
-            }
-
-            int fillIndex = 0;
-            for (int i = 0; i < images.Length; i++)
-            {
-                if (images[i] == null || images[i].name != "Fill")
-                {
-                    continue;
-                }
-
-                if (fillIndex == fallbackIndex)
-                {
-                    return images[i];
-                }
-
-                fillIndex++;
-            }
-
-            return null;
-        }
-
-        private T FindBarView<T>(string path) where T : Component
-        {
-            Transform barTransform = barsRoot != null ? barsRoot.Find(path) : null;
-            if (barTransform == null)
-            {
-                barTransform = FindChildRecursive(barsRoot, path);
-            }
-
-            return barTransform != null ? barTransform.GetComponent<T>() : null;
-        }
-
-        private static bool HasParentNamed(Transform transformToCheck, string parentName)
-        {
-            Transform current = transformToCheck != null ? transformToCheck.parent : null;
-            while (current != null)
-            {
-                if (current.name == parentName)
-                {
-                    return true;
-                }
-
-                current = current.parent;
-            }
-
-            return false;
-        }
-
-        private static Transform FindNestedPath(Transform root, string path)
-        {
-            if (root == null)
-            {
-                return null;
-            }
-
-            int separator = path.IndexOf('/');
-            if (separator < 0)
-            {
-                return FindChildRecursive(root, path);
-            }
-
-            string parentName = path.Substring(0, separator);
-            string childName = path.Substring(separator + 1);
-            Transform parent = FindChildRecursive(root, parentName);
-            return FindChildRecursive(parent, childName);
-        }
-
-        private static Transform FindChildRecursive(Transform root, string name)
-        {
-            if (root == null)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < root.childCount; i++)
-            {
-                Transform child = root.GetChild(i);
-                if (child.name == name)
-                {
-                    return child;
-                }
-
-                Transform nested = FindChildRecursive(child, name);
-                if (nested != null)
-                {
-                    return nested;
-                }
-            }
-
-            return null;
-        }
-
-        private static RectTransform CreateRow(string name, Transform parent, float anchorMinY, float anchorMaxY)
-        {
-            GameObject rowObject = new GameObject(name, typeof(RectTransform));
-            rowObject.transform.SetParent(parent, false);
-
-            RectTransform row = rowObject.GetComponent<RectTransform>();
-            row.anchorMin = new Vector2(0f, anchorMinY);
-            row.anchorMax = new Vector2(1f, anchorMaxY);
-            row.offsetMin = Vector2.zero;
-            row.offsetMax = Vector2.zero;
-            return row;
-        }
-
-        private static Image CreateImage(string name, Transform parent, Color color)
-        {
-            GameObject imageObject = new GameObject(name, typeof(RectTransform));
-            imageObject.transform.SetParent(parent, false);
-
-            Image image = imageObject.AddComponent<Image>();
-            image.sprite = CreateUiSprite();
-            image.color = color;
-            return image;
-        }
-
-        private static void ConfigureFill(Image image, bool upperArc)
-        {
-            ConfigureFillMode(image, upperArc);
-            Stretch(image.rectTransform);
-        }
-
-        private static void ConfigureFillMode(Image image, bool upperArc)
-        {
-            ConfigureRingImage(image, upperArc, true);
-
-            Image backgroundImage = FindSiblingImage(image.rectTransform.parent, "Background");
-            if (backgroundImage != null)
-            {
-                ConfigureRingImage(backgroundImage, upperArc, false);
+                renderer.transform.position = transform.position;
             }
         }
 
-        private static void ConfigureRingImage(Image image, bool durabilityRing, bool filled)
-        {
-            if (image == null)
-            {
-                return;
-            }
-
-            image.sprite = GetStatusRingSprite(durabilityRing);
-            image.preserveAspect = false;
-            image.type = filled ? Image.Type.Filled : Image.Type.Simple;
-
-            if (!filled)
-            {
-                return;
-            }
-
-            image.fillMethod = Image.FillMethod.Horizontal;
-            image.fillOrigin = (int)Image.OriginHorizontal.Left;
-            image.fillClockwise = false;
-        }
-
-        private static Image FindSiblingImage(Transform parent, string imageName)
-        {
-            if (parent == null)
-            {
-                return null;
-            }
-
-            Transform sibling = parent.Find(imageName);
-            return sibling != null ? sibling.GetComponent<Image>() : null;
-        }
-
-        private static Sprite GetStatusRingSprite(bool durabilityRing)
-        {
-            if (durabilityRing)
-            {
-                durabilityRingSprite ??= CreateStatusRingSprite(0.96f, 0.88f);
-                return durabilityRingSprite;
-            }
-
-            heatRingSprite ??= CreateStatusRingSprite(0.82f, 0.74f);
-            return heatRingSprite;
-        }
-
-        private static Sprite CreateStatusRingSprite(float outerScale, float innerScale)
-        {
-            Texture2D texture = new Texture2D(StatusRingTextureSize, StatusRingTextureSize, TextureFormat.RGBA32, false)
-            {
-                filterMode = FilterMode.Bilinear,
-                wrapMode = TextureWrapMode.Clamp
-            };
-
-            float center = (StatusRingTextureSize - 1) * 0.5f;
-            float outerRadius = center * Mathf.Clamp01(outerScale);
-            float innerRadius = center * Mathf.Clamp01(innerScale);
-            float arcCenterAngle = 90f;
-            const float edgeSoftness = 1.8f;
-
-            for (int y = 0; y < StatusRingTextureSize; y++)
-            {
-                for (int x = 0; x < StatusRingTextureSize; x++)
-                {
-                    float dx = x - center;
-                    float dy = y - center;
-                    float distance = Mathf.Sqrt(dx * dx + dy * dy);
-                    float outerAlpha = Mathf.Clamp01((outerRadius - distance) / edgeSoftness);
-                    float innerAlpha = Mathf.Clamp01((distance - innerRadius) / edgeSoftness);
-                    float angle = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
-                    float arcAlpha = Mathf.Clamp01((StatusArcDegrees * 0.5f - Mathf.Abs(Mathf.DeltaAngle(arcCenterAngle, angle))) / edgeSoftness);
-                    float alpha = outerAlpha * innerAlpha * arcAlpha;
-                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
-                }
-            }
-
-            texture.Apply();
-            return Sprite.Create(
-                texture,
-                new Rect(0f, 0f, StatusRingTextureSize, StatusRingTextureSize),
-                new Vector2(0.5f, 0.5f),
-                StatusRingTextureSize);
-        }
-
-        private static void Stretch(RectTransform rectTransform)
-        {
-            rectTransform.anchorMin = Vector2.zero;
-            rectTransform.anchorMax = Vector2.one;
-            rectTransform.offsetMin = Vector2.zero;
-            rectTransform.offsetMax = Vector2.zero;
-        }
-
-        private void ApplyIndicatorColor(SpriteRenderer renderer, Color color)
+        private static void SetRendererEnabled(SpriteRenderer renderer, bool enabled)
         {
             if (renderer == null)
             {
                 return;
             }
 
-            if (renderer == lockOnRenderer)
-            {
-                renderer.sprite = CreateRingSprite();
-            }
-            else if (renderer.sprite == null)
-            {
-                renderer.sprite = CreateFilledCircleSprite();
-            }
-
-            renderer.color = color;
-        }
-
-        private static Sprite CreateRingSprite()
-        {
-            if (lockOnDiamondSprite != null)
-            {
-                return lockOnDiamondSprite;
-            }
-
-            Texture2D texture = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false);
-            float center = (TextureSize - 1) * 0.5f;
-            float outer = center;
-            float inner = center * 0.78f;
-
-            for (int y = 0; y < TextureSize; y++)
-            {
-                for (int x = 0; x < TextureSize; x++)
-                {
-                    float distance = Mathf.Abs(x - center) + Mathf.Abs(y - center);
-                    texture.SetPixel(x, y, distance <= outer && distance >= inner ? Color.white : Color.clear);
-                }
-            }
-
-            texture.Apply();
-            lockOnDiamondSprite = Sprite.Create(texture, new Rect(0f, 0f, TextureSize, TextureSize), new Vector2(0.5f, 0.5f), TextureSize);
-            return lockOnDiamondSprite;
-        }
-
-        private static Sprite CreateFilledCircleSprite()
-        {
-            Texture2D texture = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false);
-            float center = (TextureSize - 1) * 0.5f;
-
-            for (int y = 0; y < TextureSize; y++)
-            {
-                for (int x = 0; x < TextureSize; x++)
-                {
-                    float distance = Vector2.Distance(new Vector2(x, y), new Vector2(center, center));
-                    texture.SetPixel(x, y, distance <= center ? Color.white : Color.clear);
-                }
-            }
-
-            texture.Apply();
-            return Sprite.Create(texture, new Rect(0f, 0f, TextureSize, TextureSize), new Vector2(0.5f, 0.5f), TextureSize);
-        }
-
-        private static Sprite CreateUiSprite()
-        {
-            Texture2D texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-            return Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
+            renderer.gameObject.SetActive(true);
+            renderer.enabled = enabled;
         }
     }
 }

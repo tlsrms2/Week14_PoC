@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/NewMechanics.unity
-    guid: ed07efb636fd43d48b8cd371d8819cb1
+    path: Assets/Scenes/JSGScene.unity
+    guid: cb0c1487d6389b745abcdfc9c1bca35c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

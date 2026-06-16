@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 01_AttackTimeline
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackTimeline
   timelineName: "\uAE30\uBCF8 \uACF5\uACA9_01"
-  cooldownAfter: 1.5
+  cooldownAfter: 1
   events:
   - patternKind: 0
     fireTime: 0

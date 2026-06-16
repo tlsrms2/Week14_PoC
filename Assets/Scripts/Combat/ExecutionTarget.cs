@@ -3,20 +3,20 @@ using Week14.Enemy;
 
 namespace Week14.Combat
 {
-    [RequireComponent(typeof(Health), typeof(HeatGauge))]
+    [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class ExecutionTarget : MonoBehaviour
     {
         [SerializeField] private PlayerCombatConfig config;
 
         private Health health;
-        private HeatGauge heat;
+        private BulletGauge bullets;
         private EnemyAI enemyAI;
         private bool executionInProgress;
 
         private void Awake()
         {
             health = GetComponent<Health>();
-            heat = GetComponent<HeatGauge>();
+            bullets = GetComponent<BulletGauge>();
             enemyAI = GetComponent<EnemyAI>();
         }
 
@@ -33,7 +33,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (!heat.IsOverheated && !health.IsDurabilityDepleted)
+            if (bullets == null || !bullets.IsEmpty)
             {
                 return false;
             }
@@ -64,7 +64,7 @@ namespace Week14.Combat
             return Execute(player, destroyAfterExecute, true);
         }
 
-        public bool Execute(PlayerCombatController player, bool destroyAfterExecute, bool recoverHeat)
+        public bool Execute(PlayerCombatController player, bool destroyAfterExecute, bool recoverBullets)
         {
             PlayerCombatConfig activeConfig = Config;
             if (player == null || activeConfig == null || !CanExecute(player.transform))
@@ -74,9 +74,9 @@ namespace Week14.Combat
 
             BeginExecution(player);
             health.Kill();
-            if (recoverHeat)
+            if (recoverBullets)
             {
-                player.Heat.ReduceHeat(activeConfig.ExecutionHeatRecovery);
+                player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
             }
 
             if (destroyAfterExecute && activeConfig.DestroyTargetOnExecute)
@@ -87,7 +87,7 @@ namespace Week14.Combat
             return true;
         }
 
-        public bool RecoverExecutorHeat(PlayerCombatController player)
+        public bool RecoverExecutorBullets(PlayerCombatController player)
         {
             PlayerCombatConfig activeConfig = Config;
             if (player == null || activeConfig == null || health.IsDead)
@@ -95,11 +95,11 @@ namespace Week14.Combat
                 return false;
             }
 
-            player.Heat.ReduceHeat(activeConfig.ExecutionHeatRecovery);
+            player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
             return true;
         }
 
-        public bool CompleteExecution(PlayerCombatController player, bool recoverHeat)
+        public bool CompleteExecution(PlayerCombatController player, bool recoverBullets)
         {
             PlayerCombatConfig activeConfig = Config;
             if (player == null || activeConfig == null || health.IsDead)
@@ -108,9 +108,9 @@ namespace Week14.Combat
             }
 
             health.Kill();
-            if (recoverHeat)
+            if (recoverBullets)
             {
-                player.Heat.ReduceHeat(activeConfig.ExecutionHeatRecovery);
+                player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
             }
 
             return true;

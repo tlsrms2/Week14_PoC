@@ -1,4 +1,5 @@
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Week14.Bootstrap;
 using Week14.Combat;
@@ -7,16 +8,15 @@ using Week14.UI;
 namespace Week14.Enemy
 {
     /// <summary>
-    /// 모든 적(일반/보스)이 사용하는 단일 AI 컨트롤러.
-    /// EnemyData SO 기반으로 동작하며 FSM으로 상태를 관리한다.
-    /// 기존 EnemyCombatController를 완전 대체.
+    /// 일반 적과 보스가 공통으로 사용하는 AI 컨트롤러입니다.
+    /// EnemyData 기반으로 상태와 전투 동작을 관리합니다.
     /// </summary>
-    [RequireComponent(typeof(Health), typeof(HeatGauge))]
+    [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class EnemyAI : MonoBehaviour
     {
         private const float BossParryInterceptDelaySeconds = 0.035f;
 
-        // ── 직렬화 필드 ───────────────────────────────
+        [Header("기본 설정")]
         [SerializeField] private EnemyData data;
         [SerializeField] private Transform bodyRoot;
         [SerializeField] private Transform fireOrigin;
@@ -26,19 +26,20 @@ namespace Week14.Enemy
         [SerializeField] private AttackTimingOutline attackTimingOutline;
         [SerializeField] private GunRecoilMotion gunRecoil;
         [SerializeField] private LayerMask obstacleMask;
+        [SerializeField] private SpriteRenderer lockOnIndicator;
+        [SerializeField] private SpriteRenderer executionIndicator;
 
         [Header("보스 전투 UI")]
         [SerializeField] private GameObject bossCombatUiRoot;
-        [SerializeField] private DurabilityBarView bossDurabilityBarView;
-        [SerializeField] private HeatBarView bossHeatBarView;
+        [SerializeField] private BulletBarView bossBulletBarView;
 
-        // ── 캐시 ─────────────────────────────────────
+        // 런타임 캐시
         private Health health;
-        private HeatGauge heat;
+        private BulletGauge bullets;
         private SpriteRenderer[] renderers;
         private Transform player;
 
-        // ── FSM ──────────────────────────────────────
+        // 상태 머신
         private EnemyStateMachine stateMachine;
         private IdleState idleState;
         private ChaseState chaseState;
@@ -46,18 +47,18 @@ namespace Week14.Enemy
         private FlankState flankState;
         private DeadState deadState;
 
-        // ── 공격 ─────────────────────────────────────
+        // 전투 상태
         private Coroutine attackCoroutine;
-        private bool isDurabilityDepleted;
+        private bool isBulletEmpty;
+        private float bulletEmptyEndsAt;
         private bool isExecutionLocked;
-        private float durabilityDepletedEndsAt;
         private float nextBossParryTime;
-        private float nextBossDefenseTime;
         private float lastBossPlayerAttackTime;
         private int bossPlayerAttackPressureCount;
         private int nextTimelineIndex;
         private int currentAttackBulletTotal;
         private int currentAttackBulletRemaining;
+        private readonly List<EnemyProjectile> activeProjectiles = new();
         private bool isBodyHitColorActive;
         private float bodyHitColorEndsAt;
         private bool isStaggered;
@@ -66,21 +67,20 @@ namespace Week14.Enemy
         private bool isBossCombatUiActive;
         private bool destroyAfterDeathQueued;
 
-        // ── 공개 프로퍼티 ─────────────────────────────
+        // 공개 프로퍼티
         public EnemyData Data => data;
         public Transform Player => player;
         public Rigidbody2D Body => body;
         public Health Health => health;
-        public HeatGauge Heat => heat;
+        public BulletGauge Bullets => bullets;
         public Vector3 SpawnPosition { get; private set; }
         public bool IsAttacking => attackCoroutine != null;
-        public bool IsOverheated => heat != null && heat.IsOverheated;
         public bool IsStaggered => isStaggered;
-        public bool IsDurabilityDepleted => isDurabilityDepleted || (health != null && health.IsDurabilityDepleted);
+        public bool IsBulletEmpty => isBulletEmpty || (bullets != null && bullets.IsEmpty);
         public bool IsExecutionLocked => isExecutionLocked;
         public LayerMask ObstacleMask => obstacleMask;
 
-        // 상태 접근자 (상태 클래스에서 사용)
+        // 상태 클래스 접근용 프로퍼티
         public IdleState IdleState => idleState;
         public ChaseState ChaseState => chaseState;
         public EngageState EngageState => engageState;
@@ -88,11 +88,11 @@ namespace Week14.Enemy
         public DeadState DeadState => deadState;
         public EnemyStateMachine StateMachine => stateMachine;
 
-        // ── 생명주기 ─────────────────────────────────
+        // 생명 주기
         private void Awake()
         {
             health = GetComponent<Health>();
-            heat = GetComponent<HeatGauge>();
+            bullets = GetComponent<BulletGauge>();
 
             if (body == null) body = GetComponent<Rigidbody2D>();
             if (body != null) body.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -103,6 +103,10 @@ namespace Week14.Enemy
                 projectileOrigin = FindChild("FireOrigin") ?? FindChild("Muzzle") ?? fireOrigin;
             if (gunRecoil == null && fireOrigin != null)
                 gunRecoil = fireOrigin.GetComponentInChildren<GunRecoilMotion>();
+            if (lockOnIndicator == null)
+                lockOnIndicator = FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
+            if (executionIndicator == null)
+                executionIndicator = FindChild("ExecutionIndicator")?.GetComponent<SpriteRenderer>();
 
             renderers = GetComponentsInChildren<SpriteRenderer>(true);
 
@@ -117,28 +121,16 @@ namespace Week14.Enemy
 
         private void OnEnable()
         {
-            if (heat != null)
-            {
-                heat.Overheated += HandleOverheated;
-                heat.Recovered += HandleRecovered;
-            }
             if (health != null)
             {
-                health.DurabilityDepleted += HandleDurabilityDepleted;
                 health.Died += HandleDied;
             }
         }
 
         private void OnDisable()
         {
-            if (heat != null)
-            {
-                heat.Overheated -= HandleOverheated;
-                heat.Recovered -= HandleRecovered;
-            }
             if (health != null)
             {
-                health.DurabilityDepleted -= HandleDurabilityDepleted;
                 health.Died -= HandleDied;
             }
 
@@ -154,16 +146,10 @@ namespace Week14.Enemy
 
             SpawnPosition = transform.position;
 
-            // 체력/열 초기화
-            health.SetDeferDeathAtZero(true);
-            health.SetMaxDurability(data.MaxDurability, true);
-            heat.Configure(
-                data.MaxHeat,
-                data.HeatCoolingPerSecond,
-                data.OverheatSeconds,
-                true);
+            // 탄환 초기화
+            bullets.Configure(data.MaxBullets, true);
 
-            // 상태바 UI
+            // 상태 UI 준비
             if (UsesBossCombatUi())
             {
                 SuppressEnemyStatusView();
@@ -175,7 +161,7 @@ namespace Week14.Enemy
             {
                 EnsureStatusView();
             }
-            ApplyHeatStateColor();
+            ApplyBulletStateColor();
 
             // 플레이어 참조
             ResolvePlayer();
@@ -190,7 +176,7 @@ namespace Week14.Enemy
             UpdateBodyHitColor();
             UpdateStagger();
 
-            // 사망 체크
+            // 사망 처리
             if (health.IsDead)
             {
                 HideAttackTiming();
@@ -207,27 +193,11 @@ namespace Week14.Enemy
                 return;
             }
 
-            // 내구도 고갈 처리
-            if (isDurabilityDepleted || health.IsDurabilityDepleted)
+            // 탄환 고갈 처리
+            if (IsBulletEmpty)
             {
                 HideAttackTiming();
-                TickDurabilityDepleted();
-                return;
-            }
-
-            // 과열 시 행동 정지
-            if (heat.IsOverheated)
-            {
-                HideAttackTiming();
-                Stop();
-                CancelAttack();
-                return;
-            }
-
-            if (isStaggered)
-            {
-                HideAttackTiming();
-                Stop();
+                TickBulletEmpty();
                 return;
             }
 
@@ -237,7 +207,7 @@ namespace Week14.Enemy
             stateMachine.Tick(this);
         }
 
-        // ── 외부 설정 ─────────────────────────────────
+        // 데이터 설정
         public void SetData(EnemyData nextData)
         {
             data = nextData;
@@ -246,7 +216,7 @@ namespace Week14.Enemy
         public void SetExecutionLocked(bool locked)
         {
             isExecutionLocked = locked;
-            ApplyHeatStateColor();
+            ApplyBulletStateColor();
 
             if (locked)
             {
@@ -260,10 +230,10 @@ namespace Week14.Enemy
             BossEnemyData bossData = data as BossEnemyData;
             return bossData != null
                 && bossData.CanParryPlayerAttacks
-                && heat != null
-                && !heat.IsOverheated
+                && bullets != null
+                && !bullets.IsEmpty
                 && !isExecutionLocked
-                && !IsDurabilityDepleted
+                && !IsBulletEmpty
                 && Time.time >= nextBossParryTime
                 && IsPlayerAttackInFront(shotDirection, bossData.PlayerAttackParryAngleDegrees)
                 && IsShotAimedAtBoss(shotPosition, shotDirection);
@@ -290,11 +260,18 @@ namespace Week14.Enemy
             return true;
         }
 
-        public bool ReceivePlayerHit(float damage, float heatAmount, float heatCoolingSuppressSeconds, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        public bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
-            if (health == null || health.IsDead || health.IsDurabilityDepleted)
+            if (health == null || health.IsDead)
             {
                 return false;
+            }
+
+            if (IsBulletEmpty)
+            {
+                health.Kill();
+                QueueDestroyAfterDeath();
+                return true;
             }
 
             if (TryHandleBossPlayerAttackResponse(hitPosition, hitDirection))
@@ -302,18 +279,16 @@ namespace Week14.Enemy
                 return true;
             }
 
-            health.TakeDamage(damage);
+            bullets.TrySpend(bulletDamage, BulletChangeSource.Hit);
+            if (bullets.IsEmpty)
+            {
+                BeginBulletEmpty();
+            }
+
             if (strongHit)
             {
                 BeginStagger(hitDirection);
                 FlashBodyHitColor();
-            }
-
-            if (heat != null && heatAmount > 0f)
-            {
-                heat.AddHeat(heatAmount, HeatChangeSource.Hit);
-                heat.SuppressCooling(heatCoolingSuppressSeconds);
-                Stop();
             }
 
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -336,11 +311,11 @@ namespace Week14.Enemy
             return true;
         }
 
-        // ── 피격 이펙트 색상 ─────────────────────────
+        // 보스의 플레이어 공격 대응
         private bool TryHandleBossPlayerAttackResponse(Vector3 hitPosition, Vector2 hitDirection)
         {
             BossEnemyData bossData = data as BossEnemyData;
-            if (bossData == null || heat == null || heat.IsOverheated || isExecutionLocked || IsDurabilityDepleted)
+            if (bossData == null || bullets == null || bullets.IsEmpty || isExecutionLocked || IsBulletEmpty)
             {
                 return false;
             }
@@ -350,10 +325,6 @@ namespace Week14.Enemy
                 && Time.time >= nextBossParryTime
                 && IsPlayerAttackInFront(hitDirection, bossData.PlayerAttackParryAngleDegrees)
                 && Random.value <= GetBossParryChance(bossData, pressureCount);
-            bool canDefend = bossData.CanDefendPlayerAttacks
-                && Time.time >= nextBossDefenseTime
-                && IsPlayerAttackInFront(hitDirection, bossData.PlayerAttackDefenseAngleDegrees)
-                && Random.value <= bossData.PlayerAttackDefenseChance;
 
             RegisterBossPlayerAttackPressure();
 
@@ -361,13 +332,6 @@ namespace Week14.Enemy
             {
                 nextBossParryTime = Time.time + bossData.PlayerAttackParryCooldown;
                 HandleBossParryPlayerAttack(bossData, hitPosition, hitDirection);
-                return true;
-            }
-
-            if (canDefend)
-            {
-                nextBossDefenseTime = Time.time + bossData.PlayerAttackDefenseCooldown;
-                HandleBossDefendPlayerAttack(bossData, hitPosition, hitDirection);
                 return true;
             }
 
@@ -401,7 +365,7 @@ namespace Week14.Enemy
             }
 
             float sideDistance = Mathf.Abs(Vector2.Dot(new Vector2(-direction.y, direction.x), toBoss));
-            return sideDistance <= GetBossDefenseRadius();
+            return sideDistance <= GetBossBodyRadius();
         }
 
         private int GetBossPlayerAttackPressureCount(BossEnemyData bossData)
@@ -453,23 +417,7 @@ namespace Week14.Enemy
                 Mathf.Max(6, data.AttackImpactFlameCount),
                 Mathf.Max(0.7f, data.AttackImpactEffectScale));
             StartCoroutine(DelayedBossParryIntercept(responseDirection));
-            AddHeatToPlayerWithoutOverheat(bossData.PlayerHeatOnBossParry, bossData.PlayerHeatCoolingSuppressSeconds);
-            PlayEnemyHitCameraImpact(responseDirection);
-        }
-
-        private void HandleBossDefendPlayerAttack(BossEnemyData bossData, Vector3 hitPosition, Vector2 hitDirection)
-        {
-            Vector2 responseDirection = hitDirection.sqrMagnitude > 0.0001f ? -hitDirection.normalized : GetFacingDirection();
-            PlayBossDefenseArc(bossData, responseDirection, hitPosition);
-            ProjectileVfx.PlayDefense(
-                hitPosition,
-                responseDirection,
-                data.BossDefenseSparkColor,
-                data.BossDefenseRingColor,
-                Mathf.Max(8, data.AttackImpactSparkCount + data.AttackImpactBackSparkCount),
-                0.18f,
-                Mathf.Max(0.45f, data.AttackImpactEffectScale));
-            AddHeatToBoss(bossData.BossHeatOnDefense);
+            SpendPlayerBullets(bossData.PlayerBulletDamageOnBossParry);
             PlayEnemyHitCameraImpact(responseDirection);
         }
 
@@ -500,7 +448,7 @@ namespace Week14.Enemy
         {
             yield return new WaitForSeconds(BossParryInterceptDelaySeconds);
 
-            if (data == null || heat == null || heat.IsOverheated || isExecutionLocked || IsDurabilityDepleted)
+            if (data == null || bullets == null || bullets.IsEmpty || isExecutionLocked || IsBulletEmpty)
             {
                 yield break;
             }
@@ -524,23 +472,7 @@ namespace Week14.Enemy
             gunRecoil?.Play(normalizedDirection);
         }
 
-        private void PlayBossDefenseArc(BossEnemyData bossData, Vector2 responseDirection, Vector3 hitPosition)
-        {
-            Vector3 center = transform.position;
-            float radius = GetBossDefenseRadius();
-            Color color = data.BossDefenseRingColor;
-            color.a = Mathf.Max(color.a, 0.85f);
-            ProjectileVfx.PlayDefenseArc(
-                center,
-                responseDirection,
-                360f,
-                radius,
-                color,
-                0.65f,
-                0.035f);
-        }
-
-        private float GetBossDefenseRadius()
+        private float GetBossBodyRadius()
         {
             Bounds bounds = new(transform.position, Vector3.zero);
             bool hasBounds = false;
@@ -584,7 +516,7 @@ namespace Week14.Enemy
             return Mathf.Max(0.55f, radius + 0.18f);
         }
 
-        private void AddHeatToPlayerWithoutOverheat(float amount, float suppressSeconds)
+        private void SpendPlayerBullets(int amount)
         {
             PlayerCombatController playerCombat = PlayerCombatController.Active;
             if (playerCombat == null && player != null)
@@ -592,30 +524,17 @@ namespace Week14.Enemy
                 playerCombat = player.GetComponent<PlayerCombatController>();
             }
 
-            if (playerCombat == null)
+            if (playerCombat == null || playerCombat.Bullets == null)
             {
                 return;
             }
 
-            if (amount > 0f)
-            {
-                playerCombat.Heat?.AddHeatWithoutOverheat(amount, HeatChangeSource.Parry);
-            }
-
-            if (suppressSeconds > 0f)
-            {
-                playerCombat.SuppressHeatCooling(suppressSeconds);
-            }
-        }
-
-        private void AddHeatToBoss(float amount)
-        {
-            if (heat == null || amount <= 0f)
+            if (playerCombat.Bullets.IsEmpty)
             {
                 return;
             }
 
-            heat.AddHeat(amount, HeatChangeSource.Defense);
+            playerCombat.Bullets.TrySpend(amount, BulletChangeSource.Parry);
         }
 
         private Color GetAttackImpactSparkColor(Color hitColor)
@@ -666,7 +585,7 @@ namespace Week14.Enemy
             return color;
         }
 
-        // ── 공격 타이밍 표시 ─────────────────────────
+        // 공격 타이밍 표시
         public void ShowAttackTiming(float remainingSeconds, float durationSeconds)
         {
             ShowAttackTiming(remainingSeconds, durationSeconds, 0, 0);
@@ -713,15 +632,15 @@ namespace Week14.Enemy
             }
         }
 
-        // ── 감지 ─────────────────────────────────────
-        /// <summary>감지 범위 안에 플레이어가 있는지</summary>
+        // 감지
+        /// <summary>감지 범위 안에 플레이어가 있는지 확인합니다.</summary>
         public bool IsPlayerDetected()
         {
             if (player == null) return false;
             return Vector2.Distance(transform.position, player.position) <= data.DetectionRange;
         }
 
-        /// <summary>감지 거리 + 장애물 레이캐스트 통과 여부</summary>
+        /// <summary>감지 거리와 장애물 레이캐스트를 함께 확인합니다.</summary>
         public bool CanSeePlayer()
         {
             if (player == null) return false;
@@ -734,7 +653,7 @@ namespace Week14.Enemy
             return hit.collider == null;
         }
 
-        /// <summary>사정거리 안에 플레이어가 있는지</summary>
+        /// <summary>공격 사거리 안에 플레이어가 있는지 확인합니다.</summary>
         public bool IsPlayerInAttackRange()
         {
             if (player == null) return false;
@@ -747,7 +666,7 @@ namespace Week14.Enemy
             return Vector2.Distance(transform.position, player.position);
         }
 
-        // ── 이동 ─────────────────────────────────────
+        // 이동
         public void MoveToward(Vector2 target)
         {
             if (body == null) return;
@@ -764,8 +683,8 @@ namespace Week14.Enemy
             }
         }
 
-        // ── 공격 ─────────────────────────────────────
-        /// <summary>다음 AttackTimeline을 선택하여 실행 (Round-Robin)</summary>
+        // 공격
+        /// <summary>다음 AttackTimeline을 라운드 로빈으로 선택합니다.</summary>
         public AttackTimeline SelectNextTimeline()
         {
             var timelines = data.AttackTimelines;
@@ -787,7 +706,7 @@ namespace Week14.Enemy
             return CountTimelineAttacks(timelines[nextTimelineIndex]);
         }
 
-        /// <summary>타임라인 기반 공격 코루틴 시작</summary>
+        /// <summary>타임라인 기반 공격 코루틴을 시작합니다.</summary>
         public void StartAttack(AttackTimeline timeline)
         {
             if (timeline == null || attackCoroutine != null) return;
@@ -824,7 +743,7 @@ namespace Week14.Enemy
                 yield return new WaitForSeconds(data.WindupSeconds);
             }
 
-            // 이벤트 순차 실행
+            // 이벤트 시각 실행
             float timelineStartedAt = Time.time;
             int eventIndex = 0;
 
@@ -859,7 +778,7 @@ namespace Week14.Enemy
             return timeline?.Events != null ? timeline.Events.Count : 0;
         }
 
-        /// <summary>단일 AttackEvent의 발사체 생성</summary>
+        /// <summary>단일 AttackEvent의 투사체를 생성합니다.</summary>
         public void FireProjectiles(AttackEvent evt)
         {
             FireDirectSpread(evt);
@@ -911,7 +830,7 @@ namespace Week14.Enemy
             }
         }
 
-        // ── 공격 패턴 처리 ─────────────────────────────
+        // 공격 패턴 처리
         private IEnumerator FireLeftCircleSweep(AttackEvent evt)
         {
             if (data.ProjectilePrefab == null || player == null)
@@ -1004,10 +923,15 @@ namespace Week14.Enemy
 
         private EnemyProjectile SpawnEnemyProjectile(Vector3 position, Vector2 direction, bool playRecoil)
         {
+            if (!CanSpawnEnemyProjectile())
+            {
+                return null;
+            }
+
             EnemyProjectile projectile = EnemyProjectile.Spawn(
                 data.ProjectilePrefab,
                 data,
-                heat,
+                bullets,
                 position,
                 direction);
 
@@ -1021,6 +945,50 @@ namespace Week14.Enemy
             }
 
             return projectile;
+        }
+
+        public bool CanSpawnEnemyProjectile()
+        {
+            if (bullets == null || bullets.IsEmpty)
+            {
+                return false;
+            }
+
+            PruneInactiveProjectiles();
+            int capacity = bullets.CurrentBullets;
+            return activeProjectiles.Count < capacity;
+        }
+
+        public void RegisterActiveProjectile(EnemyProjectile projectile)
+        {
+            PruneInactiveProjectiles();
+            if (projectile == null || activeProjectiles.Contains(projectile))
+            {
+                return;
+            }
+
+            activeProjectiles.Add(projectile);
+        }
+
+        public void UnregisterActiveProjectile(EnemyProjectile projectile)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            activeProjectiles.Remove(projectile);
+        }
+
+        private void PruneInactiveProjectiles()
+        {
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                if (activeProjectiles[i] == null)
+                {
+                    activeProjectiles.RemoveAt(i);
+                }
+            }
         }
 
         private Vector2 GetProjectileDirection(Vector3 originPosition)
@@ -1049,7 +1017,7 @@ namespace Week14.Enemy
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         }
 
-        // ── 조준 처리 ─────────────────────────────────
+        // 조준 처리
         private Vector2 GetPredictedProjectileTargetPosition(Vector3 originPosition)
         {
             if (player == null)
@@ -1085,7 +1053,7 @@ namespace Week14.Enemy
             }
         }
 
-        public void ApplyHeatStateColor()
+        public void ApplyBulletStateColor()
         {
             if (data == null || renderers == null) return;
 
@@ -1094,19 +1062,17 @@ namespace Week14.Enemy
                 color = data.StaggeredColor;
             else if (isBodyHitColorActive)
                 color = data.BodyHitColor;
-            else if (isExecutionLocked || (health != null && health.IsDurabilityDepleted))
-                color = data.DurabilityDepletedColor;
-            else if (heat != null && heat.IsOverheated)
-                color = data.OverheatedColor;
+            else if (isExecutionLocked || IsBulletEmpty)
+                color = data.BulletEmptyColor;
 
             for (int i = 0; i < renderers.Length; i++)
             {
                 if (renderers[i] == null) continue;
 
-                // UI 상태바 렌더러 제외
+                // 상태 UI 렌더러는 제외
                 if (statusView != null && statusView.OwnsRenderer(renderers[i])) continue;
 
-                // 총(fireOrigin) 하위 렌더러 제외 (총과 몸체가 다를 때만)
+                // 총구 하위 렌더러는 몸체 색상 변경에서 제외
                 if (fireOrigin != null && fireOrigin != bodyRoot)
                 {
                     if (renderers[i].transform == fireOrigin || renderers[i].transform.IsChildOf(fireOrigin))
@@ -1128,7 +1094,7 @@ namespace Week14.Enemy
 
             isBodyHitColorActive = true;
             bodyHitColorEndsAt = Time.time + data.BodyHitColorSeconds;
-            ApplyHeatStateColor();
+            ApplyBulletStateColor();
         }
 
         private void UpdateBodyHitColor()
@@ -1139,12 +1105,12 @@ namespace Week14.Enemy
             }
 
             isBodyHitColorActive = false;
-            ApplyHeatStateColor();
+            ApplyBulletStateColor();
         }
 
         private void BeginStagger(Vector2 hitDirection)
         {
-            if (data == null || data.StaggerSeconds <= 0f || isExecutionLocked || IsDurabilityDepleted)
+            if (data == null || data.StaggerSeconds <= 0f || isExecutionLocked || IsBulletEmpty)
             {
                 return;
             }
@@ -1156,8 +1122,7 @@ namespace Week14.Enemy
 
             isStaggered = true;
             staggerEndsAt = Time.time + data.StaggerSeconds;
-            Stop();
-            ApplyHeatStateColor();
+            ApplyBulletStateColor();
         }
 
         private void UpdateStagger()
@@ -1176,7 +1141,7 @@ namespace Week14.Enemy
                     bodyRoot.localPosition = staggerBaseLocalPosition;
                 }
 
-                ApplyHeatStateColor();
+                ApplyBulletStateColor();
                 return;
             }
 
@@ -1211,47 +1176,62 @@ namespace Week14.Enemy
             cameraFollow?.PlayImpact(direction, 0.08f, 0.12f, 0.05f);
         }
 
-        // ── 이벤트 핸들러 ─────────────────────────────
-        private void HandleOverheated(HeatGauge _) => ApplyHeatStateColor();
-        private void HandleRecovered(HeatGauge _) => ApplyHeatStateColor();
-
-        private void HandleDurabilityDepleted(Health _)
-        {
-            BeginDurabilityDepleted();
-        }
-
+        // 이벤트 핸들러
         private void HandleDied(Health _)
         {
+            DestroyActiveProjectiles();
             if (stateMachine.CurrentState != deadState)
                 stateMachine.ChangeState(deadState, this);
         }
 
-        private void BeginDurabilityDepleted()
+        private void DestroyActiveProjectiles()
         {
-            if (data == null || isDurabilityDepleted || health.IsDead) return;
-
-            isDurabilityDepleted = true;
-            CancelAttack();
-            Stop();
-            durabilityDepletedEndsAt = Time.time + data.DurabilityDepletedSeconds;
-            ApplyHeatStateColor();
-
-            if (data.DurabilityDepletedSeconds <= 0f)
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
-                health.Kill();
-                QueueDestroyAfterDeath();
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile != null)
+                {
+                    projectile.DestroyFromOwner();
+                }
             }
+
+            activeProjectiles.Clear();
         }
 
-        private void TickDurabilityDepleted()
+        private void BeginBulletEmpty()
         {
-            if (!isDurabilityDepleted) BeginDurabilityDepleted();
+            if (data == null || isBulletEmpty || health.IsDead) return;
+
+            isBulletEmpty = true;
+            bulletEmptyEndsAt = Time.time + data.BulletEmptyExecutionSeconds;
+            CancelAttack();
             Stop();
-            if (!health.IsDead && Time.time >= durabilityDepletedEndsAt)
+            ApplyBulletStateColor();
+        }
+
+        private void TickBulletEmpty()
+        {
+            if (!isBulletEmpty) BeginBulletEmpty();
+            if (Time.time >= bulletEmptyEndsAt)
             {
-                health.Kill();
-                QueueDestroyAfterDeath();
+                RecoverFromBulletEmpty();
+                return;
             }
+
+            Stop();
+        }
+
+        private void RecoverFromBulletEmpty()
+        {
+            if (health == null || health.IsDead || bullets == null)
+            {
+                return;
+            }
+
+            isBulletEmpty = false;
+            bulletEmptyEndsAt = 0f;
+            bullets.Restore(Mathf.Max(1, (bullets.MaxBullets + 2) / 3), BulletChangeSource.Generic);
+            ApplyBulletStateColor();
         }
 
         private void QueueDestroyAfterDeath()
@@ -1265,7 +1245,7 @@ namespace Week14.Enemy
             Destroy(gameObject);
         }
 
-        // ── 유틸리티 ─────────────────────────────────
+        // 유틸리티
         public Vector2 GetFacingDirection()
         {
             return bodyRoot != null ? (Vector2)bodyRoot.right : Vector2.right;
@@ -1283,34 +1263,29 @@ namespace Week14.Enemy
             if (statusView == null) statusView = gameObject.AddComponent<EnemyStatusView>();
 
             statusView.SetSuppressed(false);
+            statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(data);
-            statusView.SetTargets(health, heat);
+            statusView.SetTargets(health, bullets);
         }
 
         private bool UsesBossCombatUi()
         {
             return data != null
                 && data is BossEnemyData
-                && (bossCombatUiRoot != null || bossDurabilityBarView != null || bossHeatBarView != null);
+                && (bossCombatUiRoot != null || bossBulletBarView != null);
         }
 
         private void PrepareBossCombatUi()
         {
             if (bossCombatUiRoot != null)
             {
-                bossDurabilityBarView ??= bossCombatUiRoot.GetComponentInChildren<DurabilityBarView>(true);
-                bossHeatBarView ??= bossCombatUiRoot.GetComponentInChildren<HeatBarView>(true);
+                bossBulletBarView ??= bossCombatUiRoot.GetComponentInChildren<BulletBarView>(true);
             }
 
-            if (bossDurabilityBarView != null)
+            if (bossBulletBarView != null)
             {
-                bossDurabilityBarView.SetBindPlayerOnStart(false);
-            }
-
-            if (bossHeatBarView != null)
-            {
-                bossHeatBarView.SetBindPlayerOnStart(false);
-                bossHeatBarView.SetColors(data.HeatBarColor, data.OverheatedBarColor);
+                bossBulletBarView.SetBindPlayerOnStart(false);
+                bossBulletBarView.SetColors(data.BulletBarColor, data.EmptyBulletBarColor);
             }
         }
 
@@ -1326,8 +1301,7 @@ namespace Week14.Enemy
 
         private void BindBossCombatUiTargets()
         {
-            bossDurabilityBarView?.SetTarget(health);
-            bossHeatBarView?.SetTarget(heat);
+            bossBulletBarView?.SetTarget(bullets);
         }
 
         private void TryActivateBossCombatUiOnCombatStart()
@@ -1350,8 +1324,7 @@ namespace Week14.Enemy
                 return bossCombatUiRoot.activeInHierarchy;
             }
 
-            return (bossDurabilityBarView != null && bossDurabilityBarView.gameObject.activeInHierarchy)
-                || (bossHeatBarView != null && bossHeatBarView.gameObject.activeInHierarchy);
+            return bossBulletBarView != null && bossBulletBarView.gameObject.activeInHierarchy;
         }
 
         private void SetBossCombatUiVisible(bool visible)
@@ -1362,8 +1335,7 @@ namespace Week14.Enemy
             }
             else
             {
-                if (bossDurabilityBarView != null) bossDurabilityBarView.gameObject.SetActive(visible);
-                if (bossHeatBarView != null) bossHeatBarView.gameObject.SetActive(visible);
+                if (bossBulletBarView != null) bossBulletBarView.gameObject.SetActive(visible);
             }
 
             isBossCombatUiActive = visible;
@@ -1387,8 +1359,9 @@ namespace Week14.Enemy
             }
 
             statusView = rootStatusView;
+            statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(data);
-            statusView.SetTargets(health, heat);
+            statusView.SetTargets(health, bullets);
             statusView.SetSuppressed(true);
         }
 

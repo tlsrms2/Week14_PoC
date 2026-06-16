@@ -53,10 +53,6 @@ namespace Week14.Combat
             float speed = config.MoveSpeed * (isSprinting ? config.SprintSpeedMultiplier : 1f);
             body.linearVelocity = moveInput * speed;
 
-            if (isSprinting)
-            {
-                combat?.SuppressHeatCooling(config.SprintHeatCoolingSuppressSeconds);
-            }
         }
     }
 }

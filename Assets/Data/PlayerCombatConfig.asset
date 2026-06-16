@@ -12,45 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0ef1d8e86ae264f9639400a96ddea2, type: 3}
   m_Name: PlayerCombatConfig
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatConfig
-  maxDurability: 220
-  maxHeat: 350
-  heatCoolingPerSecond: 10
-  overheatSeconds: 2
+  maxBullets: 5
+  leftAttackBulletCost: 1
+  attackBulletDamage: 1
+  parryBulletRecovery: 1
   moveSpeed: 3
   sprintSpeedMultiplier: 1.5
-  sprintHeatCoolingSuppressSeconds: 0.75
-  actionHeatCoolingSuppressSeconds: 0.75
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  attackDamage: 10
-  attackHeat: 10
-  attackCooldown: 0.8
-  targetHeatCoolingSuppressSeconds: 1.75
   projectileSpeed: 60
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
   parryRange: 6.5
-  defenseHeat: 15
-  parryHeat: 5
   parryAimAngleDegrees: 30
   minParryAimAngleDegrees: 5
   parryAimAnglePenaltyPerClick: 5
   parryAimAngleRecoveryPerSecond: 10
   parryShotCooldown: 0.1
-  hitHeatToPlayer: 25
   lockOnSearchRadius: 2
   lockOnBreakDistance: 9
-  executionRange: 2.5
-  executionHeatRecovery: 300
+  executionRange: 7
+  executionBulletRecovery: 300
   destroyTargetOnExecute: 1
-  executionStandOffDistance: 2
   executionAimSeconds: 1
   executionShotDelaySeconds: 0.3
   executionKillDelaySeconds: 0.08
   executionFinishSeconds: 0.12
   executionCameraFocusWeight: 1
-  executionCameraZoomMultiplier: 0.35
+  executionCameraZoomMultiplier: 0.55
   executionGunKickSeconds: 1
   executionGunReturnSeconds: 0.2
   executionShotDimSeconds: 0.5

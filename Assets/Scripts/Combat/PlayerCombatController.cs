@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Week14.Bootstrap;
 using Week14.Enemy;
 using Week14.Input;
@@ -8,7 +7,7 @@ using Week14.UI;
 
 namespace Week14.Combat
 {
-    [RequireComponent(typeof(Health), typeof(HeatGauge))]
+    [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class PlayerCombatController : MonoBehaviour
     {
         private const string BodyVisualName = "Visual";
@@ -26,7 +25,7 @@ namespace Week14.Combat
 
         [SerializeField] private PlayerCombatConfig config;
         [SerializeField] private Transform bodyRoot;
-        [SerializeField, FormerlySerializedAs("attackOrigin")] private Transform leftGunOrigin;
+        [SerializeField] private Transform leftGunOrigin;
         [SerializeField] private Transform leftGunFireOrigin;
         [SerializeField] private Transform rightGunOrigin;
         [SerializeField] private Transform rightGunFireOrigin;
@@ -38,13 +37,13 @@ namespace Week14.Combat
         [SerializeField] private AttackTimingOutline attackTimingOutline;
 
         private Health health;
-        private HeatGauge heat;
+        private BulletGauge bullets;
         private CameraFollow2D cameraFollow;
         private Health lockOnTarget;
+        private ExecutionTarget hoveredExecutionTarget;
         private EnemyProjectile projectileLockOnTarget;
         private Coroutine executionRoutine;
         private bool isExecuting;
-        private float nextAttackTime;
         private float nextParryTime;
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
@@ -65,17 +64,18 @@ namespace Week14.Combat
         private static Sprite executionDimSprite;
 
         public Health Health => health;
-        public HeatGauge Heat => heat;
+        public BulletGauge Bullets => bullets;
         public Health LockOnTarget => lockOnTarget;
+        public ExecutionTarget HoveredExecutionTarget => hoveredExecutionTarget;
         public bool IsExecuting => isExecuting;
         public PlayerCombatConfig Config => config;
         public bool CanMove => CanAct;
-        private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead && !heat.IsOverheated;
+        private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
 
         private void Awake()
         {
             health = GetComponent<Health>();
-            heat = GetComponent<HeatGauge>();
+            bullets = GetComponent<BulletGauge>();
 
             if (body == null)
             {
@@ -94,20 +94,10 @@ namespace Week14.Combat
         private void OnEnable()
         {
             Active = this;
-            if (heat != null)
-            {
-                heat.Overheated += HandleOverheated;
-                heat.Recovered += HandleHeatRecovered;
-            }
         }
 
         private void OnDisable()
         {
-            if (heat != null)
-            {
-                heat.Overheated -= HandleOverheated;
-                heat.Recovered -= HandleHeatRecovered;
-            }
 
             if (Active == this)
             {
@@ -134,27 +124,12 @@ namespace Week14.Combat
                 return;
             }
 
-            health.SetMaxDurability(config.MaxDurability, true);
-            heat.Configure(
-                config.MaxHeat,
-                config.HeatCoolingPerSecond,
-                config.OverheatSeconds,
-                true);
+            bullets.Configure(config.MaxBullets, true);
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
         {
             config = nextConfig;
-        }
-
-        private void HandleOverheated(HeatGauge _)
-        {
-            UpdateBodyColor(true);
-        }
-
-        private void HandleHeatRecovered(HeatGauge _)
-        {
-            UpdateBodyColor(true);
         }
 
         private void Update()
@@ -165,6 +140,7 @@ namespace Week14.Combat
                 SetRangeIndicatorsVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetLockOnTarget(null);
+                SetHoveredExecutionTarget(null);
                 HideAttackTimingOutline();
                 return;
             }
@@ -174,6 +150,7 @@ namespace Week14.Combat
                 StopBody();
                 SetRangeIndicatorsVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
+                SetHoveredExecutionTarget(null);
                 HideAttackTimingOutline();
                 return;
             }
@@ -182,6 +159,7 @@ namespace Week14.Combat
             {
                 SetRangeIndicatorsVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
+                SetHoveredExecutionTarget(null);
                 HideAttackTimingOutline();
                 return;
             }
@@ -189,6 +167,7 @@ namespace Week14.Combat
             RecoverParryAimPenalty();
             UpdateLockOnInput();
             ClearInvalidLockOnTarget();
+            UpdateHoveredExecutionTarget();
             RotateToAim();
             UpdateProjectileLockOnTarget();
             UpdateRangeIndicators();
@@ -215,20 +194,26 @@ namespace Week14.Combat
             UpdateAttackTimingOutline();
         }
 
-        public bool ReceiveAttack(float damage)
+        public bool ReceiveAttack(int bulletDamage)
         {
-            return ReceiveAttack(damage, transform.position, Vector2.right);
+            return ReceiveAttack(bulletDamage, transform.position, Vector2.right);
         }
 
-        public bool ReceiveAttack(float damage, Vector3 hitPosition, Vector2 hitDirection)
+        public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
         {
             if (isExecuting || health.IsDead || config == null)
             {
                 return false;
             }
 
-            health.TakeDamage(damage);
-            heat.AddHeat(HitHeatToPlayer, HeatChangeSource.Hit);
+            if (bullets == null || bullets.IsEmpty)
+            {
+                health.Kill();
+            }
+            else
+            {
+                bullets.TrySpend(bulletDamage, BulletChangeSource.Hit);
+            }
             FlashBodyHitColor();
             ProjectileVfx.PlayPlayerAttackImpact(
                 hitPosition,
@@ -240,11 +225,6 @@ namespace Week14.Combat
                 config.PlayerHitEffectScale);
             GetCameraFollow()?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
             return true;
-        }
-
-        public void SuppressHeatCooling(float seconds)
-        {
-            heat?.SuppressCooling(seconds);
         }
 
         private void FlashBodyHitColor()
@@ -270,9 +250,9 @@ namespace Week14.Combat
             {
                 overrideColor = config.PlayerBodyHitColor;
             }
-            else if (heat != null && heat.IsOverheated)
+            else if (bullets != null && bullets.IsEmpty)
             {
-                overrideColor = config.PlayerBodyOverheatedColor;
+                overrideColor = config.PlayerBodyBulletEmptyColor;
             }
 
             for (int i = 0; i < bodyRenderers.Length; i++)
@@ -309,8 +289,7 @@ namespace Week14.Combat
                 return;
             }
 
-            heat.AddHeatWithoutOverheat(config.ParryHeat, HeatChangeSource.Parry);
-            SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
+            bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry);
             ProjectileVfx.PlayParry(
                 position,
                 direction,
@@ -335,12 +314,10 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (Time.time < nextAttackTime)
+            if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
             {
                 return false;
             }
-
-            nextAttackTime = Time.time + PlayerAttackCooldown;
 
             Transform fireOrigin = GetLeftFireOrigin();
             Vector2 direction = AimGunAndGetDirection(leftGunOrigin, fireOrigin, GetAimDirection(leftGunOrigin));
@@ -354,20 +331,19 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                PlayerAttackDamage,
-                PlayerAttackHeat,
+                PlayerAttackBulletDamage,
                 AttackEffectColor,
                 true);
 
             if (projectile == null)
             {
+                bullets.Restore(config.LeftAttackBulletCost, BulletChangeSource.Attack);
                 return false;
             }
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
             leftGunRecoil?.Play(direction);
             TryTriggerBossParryOnShotFired(fireOrigin.position, direction);
-            SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
             return true;
         }
 
@@ -400,21 +376,7 @@ namespace Week14.Combat
 
         private void UpdateAttackTimingOutline()
         {
-            float attackRemaining = nextAttackTime - Time.time;
-            if (PlayerAttackCooldown <= 0f)
-            {
-                HideAttackTimingOutline();
-                return;
-            }
-
-            EnsureAttackTimingOutline();
-            if (attackRemaining <= 0f)
-            {
-                attackTimingOutline.ShowBullets(1, 1);
-                return;
-            }
-
-            attackTimingOutline.Show(attackRemaining, PlayerAttackCooldown, 0, 1);
+            HideAttackTimingOutline();
         }
 
         private void HideAttackTimingOutline()
@@ -442,7 +404,7 @@ namespace Week14.Combat
 
         private bool TryBeginExecution()
         {
-            ExecutionTarget executionTarget = FindExecutionTarget();
+            ExecutionTarget executionTarget = FindHoveredExecutionTarget();
             if (executionTarget == null)
             {
                 return false;
@@ -457,50 +419,48 @@ namespace Week14.Combat
             return true;
         }
 
-        private ExecutionTarget FindExecutionTarget()
+        private void UpdateHoveredExecutionTarget()
         {
-            if (lockOnTarget != null)
-            {
-                ExecutionTarget lockedExecutionTarget = lockOnTarget.GetComponent<ExecutionTarget>();
-                if (lockedExecutionTarget != null && lockedExecutionTarget.CanExecute(transform))
-                {
-                    return lockedExecutionTarget;
-                }
-            }
+            SetHoveredExecutionTarget(FindHoveredExecutionTarget());
+        }
 
-            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, config.ExecutionRange, enemyMask);
+        private ExecutionTarget FindHoveredExecutionTarget()
+        {
+            Vector2 mouseWorld = GetMouseWorldPosition();
+            float searchRadius = config != null ? config.LockOnSearchRadius : 0f;
+            Collider2D[] hits = Physics2D.OverlapCircleAll(mouseWorld, searchRadius, enemyMask);
             ExecutionTarget bestTarget = null;
             float bestDistance = float.PositiveInfinity;
 
             for (int i = 0; i < hits.Length; i++)
             {
                 ExecutionTarget target = hits[i].GetComponentInParent<ExecutionTarget>();
-                ChooseCloserExecutionTarget(target, ref bestTarget, ref bestDistance);
-            }
-
-            if (bestTarget != null)
-            {
-                return bestTarget;
+                ChooseCloserHoveredExecutionTarget(target, mouseWorld, ref bestTarget, ref bestDistance);
             }
 
             ExecutionTarget[] executionTargets = Object.FindObjectsByType<ExecutionTarget>(FindObjectsSortMode.None);
             for (int i = 0; i < executionTargets.Length; i++)
             {
-                ChooseCloserExecutionTarget(executionTargets[i], ref bestTarget, ref bestDistance);
+                ChooseCloserHoveredExecutionTarget(executionTargets[i], mouseWorld, ref bestTarget, ref bestDistance);
             }
 
             return bestTarget;
         }
 
-        private void ChooseCloserExecutionTarget(ExecutionTarget target, ref ExecutionTarget bestTarget, ref float bestDistance)
+        private void ChooseCloserHoveredExecutionTarget(
+            ExecutionTarget target,
+            Vector2 mouseWorld,
+            ref ExecutionTarget bestTarget,
+            ref float bestDistance)
         {
             if (target == null || !target.CanExecute(transform))
             {
                 return;
             }
 
-            float distance = Vector2.Distance(transform.position, target.transform.position);
-            if (distance >= bestDistance)
+            float searchRadius = config != null ? config.LockOnSearchRadius : 0f;
+            float distance = Vector2.Distance(mouseWorld, target.transform.position);
+            if (distance > searchRadius || distance >= bestDistance)
             {
                 return;
             }
@@ -527,20 +487,17 @@ namespace Week14.Combat
             }
 
             Vector2 targetPosition = executionTarget.transform.position;
-            Vector2 standDirection = ((Vector2)transform.position - targetPosition);
+            Vector2 playerPosition = transform.position;
+            Vector2 standDirection = playerPosition - targetPosition;
             if (standDirection.sqrMagnitude <= 0.0001f)
             {
                 standDirection = -Vector2.right;
             }
-
-            standDirection.Normalize();
-            Vector2 executionPosition = targetPosition + standDirection * config.ExecutionStandOffDistance;
-            if (body != null)
+            else
             {
-                body.position = executionPosition;
+                standDirection.Normalize();
             }
 
-            transform.position = executionPosition;
             UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
             CameraFollow2D activeCamera = GetCameraFollow();
             activeCamera?.BeginCinematicFocus(
@@ -587,8 +544,7 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                0f,
-                0f,
+                0,
                 config.ExecutionShotColor,
                 false);
             if (executionShot != null)
@@ -607,7 +563,7 @@ namespace Week14.Combat
             }
 
             Vector3 impactPosition = executionTarget.transform.position;
-            executionTarget.RecoverExecutorHeat(this);
+            executionTarget.RecoverExecutorBullets(this);
             ExecutionVfx.PlayImpact(
                 impactPosition,
                 aimDirection,
@@ -622,6 +578,7 @@ namespace Week14.Combat
                 config.ExecutionImpactParticleSeconds);
             GetCameraFollow()?.PlayImpact(aimDirection, 0.18f, 0.18f, 0.1f);
             SetLockOnTarget(null);
+            SetHoveredExecutionTarget(null);
 
             yield return new WaitForSeconds(config.ExecutionFinishSeconds);
 
@@ -641,6 +598,7 @@ namespace Week14.Combat
             leftGunRecoil?.ReturnToBase(config != null ? config.ExecutionGunReturnSeconds : 0.045f);
             GetCameraFollow()?.EndCinematicFocus();
             ClearInvalidLockOnTarget();
+            UpdateHoveredExecutionTarget();
         }
 
         private void UpdateExecutionFocusPoint(Vector3 playerPosition, Vector3 targetPosition)
@@ -835,7 +793,6 @@ namespace Week14.Combat
 
             Vector2 direction = AimGunAndGetDirection(rightGunOrigin, fireOrigin, aimDirection);
             LockRightGunAim(direction);
-            SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
 
             PlayerProjectile projectile = PlayerProjectile.Spawn(
                 config.ProjectilePrefab,
@@ -845,8 +802,7 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                0f,
-                0f,
+                0,
                 ParryEffectColor,
                 false,
                 true);
@@ -866,7 +822,6 @@ namespace Week14.Combat
                 return;
             }
 
-            AddDefenseHeat();
             ProjectileVfx.PlayDefense(
                 position,
                 incomingDirection,
@@ -876,12 +831,6 @@ namespace Week14.Combat
                 config.ParrySparkSeconds,
                 config.DefenseEffectScale);
             GetCameraFollow()?.PlayImpact(incomingDirection, 0.18f, 0.18f, 0.1f);
-        }
-
-        private void AddDefenseHeat()
-        {
-            heat.AddHeat(config.DefenseHeat, HeatChangeSource.Defense);
-            SuppressHeatCooling(config.ActionHeatCoolingSuppressSeconds);
         }
 
         private EnemyProjectile FindClosestInterceptTarget(Vector2 aimDirection)
@@ -1237,6 +1186,11 @@ namespace Week14.Combat
             {
                 projectileLockOnTarget = null;
             }
+        }
+
+        private void SetHoveredExecutionTarget(ExecutionTarget nextTarget)
+        {
+            hoveredExecutionTarget = nextTarget;
         }
 
         private void UpdateRangeIndicators()
@@ -1661,14 +1615,11 @@ namespace Week14.Combat
             Gizmos.DrawWireSphere(parryCenter, ParryRange);
         }
 
-        private float PlayerAttackDamage => config.AttackDamage;
-        private float PlayerAttackHeat => config.AttackHeat;
+        private int PlayerAttackBulletDamage => config.AttackBulletDamage;
         private float ParryRange => config.ParryRange;
-        private float PlayerAttackCooldown => config.AttackCooldown;
         private float GunAimHoldSeconds => config.GunAimHoldSeconds;
         private Color AttackEffectColor => config.AttackEffectColor;
         private float ParryShotCooldown => config.ParryShotCooldown;
         private Color ParryEffectColor => config.ParryEffectColor;
-        private float HitHeatToPlayer => config.HitHeatToPlayer;
     }
 }

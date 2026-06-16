@@ -12,8 +12,7 @@ namespace Week14.Combat
         private PlayerCombatController owner;
         private Rigidbody2D body;
         private float projectileSpeed;
-        private float damage;
-        private float heat;
+        private int bulletDamage;
         private float collisionRadius;
         private float destroyAt;
         private Vector2 previousPosition;
@@ -35,8 +34,7 @@ namespace Week14.Combat
             float speed,
             float lifetime,
             float radius,
-            float damage,
-            float heat,
+            int bulletDamage,
             Color color,
             bool canDamageHealth,
             bool canClashWithEnemyProjectile = false)
@@ -49,7 +47,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, damage, heat, color, canDamageHealth, canClashWithEnemyProjectile);
+            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile);
             PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (config != null)
             {
@@ -75,16 +73,14 @@ namespace Week14.Combat
             float speed,
             float lifetime,
             float radius,
-            float nextDamage,
-            float nextHeat,
+            int nextBulletDamage,
             Color color,
             bool nextCanDamageHealth,
             bool nextCanClashWithEnemyProjectile)
         {
             owner = nextOwner;
             projectileSpeed = speed;
-            damage = nextDamage;
-            heat = nextHeat;
+            bulletDamage = nextBulletDamage;
             collisionRadius = radius;
             canDamageHealth = nextCanDamageHealth;
             canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
@@ -273,15 +269,29 @@ namespace Week14.Combat
             resolved = true;
             EnemyAI enemy = targetHealth.GetComponent<EnemyAI>();
             PlayerCombatConfig config = owner != null ? owner.Config : null;
-            float heatCoolingSuppressSeconds = config != null ? config.TargetHeatCoolingSuppressSeconds : 0f;
             if (enemy != null)
             {
-                enemy.ReceivePlayerHit(damage, heat, heatCoolingSuppressSeconds, true, transform.position, flightDirection, projectileColor);
+                enemy.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
                 DestroyProjectile();
                 return true;
             }
 
-            targetHealth.TakeDamage(damage);
+            BulletGauge targetBullets = targetHealth.GetComponent<BulletGauge>();
+            if (targetBullets != null)
+            {
+                if (targetBullets.IsEmpty)
+                {
+                    targetHealth.Kill();
+                }
+                else
+                {
+                    targetBullets.TrySpend(bulletDamage, BulletChangeSource.Hit);
+                }
+            }
+            else
+            {
+                targetHealth.TakeDamage(bulletDamage);
+            }
             Color impactColor = projectileColor;
 
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -292,13 +302,6 @@ namespace Week14.Combat
                 0,
                 0,
                 0.45f);
-
-            HeatGauge targetHeat = targetHealth.GetComponent<HeatGauge>();
-            if (targetHeat != null)
-            {
-                targetHeat.AddHeat(heat, HeatChangeSource.Hit);
-                targetHeat.SuppressCooling(heatCoolingSuppressSeconds);
-            }
 
             DestroyProjectile();
             return true;
