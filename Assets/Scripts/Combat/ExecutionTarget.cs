@@ -38,7 +38,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            return Vector2.Distance(transform.position, executor.position) <= activeConfig.ExecutionRange;
+            return Vector2.Distance(transform.position, executor.position) <= activeConfig.ParryRange;
         }
 
         public bool BeginExecution(PlayerCombatController player)

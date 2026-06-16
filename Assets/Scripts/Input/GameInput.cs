@@ -6,30 +6,123 @@ using UnityEngine.InputSystem;
 
 namespace Week14.Input
 {
+    public enum GameplayControlMode
+    {
+        KeyboardMouse,
+        Gamepad
+    }
+
     public static class GameInput
     {
-        public static Vector2 Move
-        {
-            get
-            {
-#if ENABLE_INPUT_SYSTEM
-                Vector2 move = Vector2.zero;
-                Keyboard keyboard = Keyboard.current;
-                if (keyboard != null)
-                {
-                    move.x += keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed ? 1f : 0f;
-                    move.x -= keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed ? 1f : 0f;
-                    move.y += keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed ? 1f : 0f;
-                    move.y -= keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed ? 1f : 0f;
-                }
+        private const string PlayerMapName = "Player";
+        private const string MoveActionName = "Move";
+        private const string LookActionName = "Look";
+        private const string LeftAttackActionName = "LeftAttack";
+        private const string RightAttackActionName = "RightAttack";
+        private const string SprintActionName = "Sprint";
+        private const string LockOnActionName = "LockOn";
+        private const string HelpActionName = "Help";
+        private const string LeftActionName = "Left";
+        private const string RightActionName = "Right";
+        private const string UpActionName = "Up";
+        private const string DownActionName = "Down";
+        private const string ChoiceActionName = "Choice";
+        public const float MinGamepadLookSensitivity = 0.25f;
+        public const float MaxGamepadLookSensitivity = 2f;
+        public const float DefaultGamepadLookSensitivity = 1f;
 
-                return Vector2.ClampMagnitude(move, 1f);
-#elif ENABLE_LEGACY_INPUT_MANAGER
-                return Vector2.ClampMagnitude(new Vector2(UnityEngine.Input.GetAxisRaw("Horizontal"), UnityEngine.Input.GetAxisRaw("Vertical")), 1f);
+#if ENABLE_INPUT_SYSTEM
+        private static PlayerInput playerInput;
+        private static InputAction moveAction;
+        private static InputAction lookAction;
+        private static InputAction leftAttackAction;
+        private static InputAction rightAttackAction;
+        private static InputAction sprintAction;
+        private static InputAction lockOnAction;
+        private static InputAction helpAction;
+        private static InputAction leftAction;
+        private static InputAction rightAction;
+        private static InputAction upAction;
+        private static InputAction downAction;
+        private static InputAction choiceAction;
 #else
-                return Vector2.zero;
+        private static readonly object moveAction = null;
+        private static readonly object leftAttackAction = null;
+        private static readonly object rightAttackAction = null;
+        private static readonly object sprintAction = null;
+        private static readonly object lockOnAction = null;
+        private static readonly object helpAction = null;
+        private static readonly object leftAction = null;
+        private static readonly object rightAction = null;
+        private static readonly object upAction = null;
+        private static readonly object downAction = null;
+        private static readonly object choiceAction = null;
 #endif
+
+#if ENABLE_INPUT_SYSTEM
+        public static void Bind(PlayerInput input)
+        {
+            if (input == null || playerInput == input)
+            {
+                return;
             }
+
+            playerInput = input;
+            ResolveActions();
+            EnableActions();
+        }
+
+        public static void Unbind(PlayerInput input)
+        {
+            if (playerInput != input)
+            {
+                return;
+            }
+
+            playerInput = null;
+            moveAction = null;
+            lookAction = null;
+            leftAttackAction = null;
+            rightAttackAction = null;
+            sprintAction = null;
+            lockOnAction = null;
+            helpAction = null;
+            leftAction = null;
+            rightAction = null;
+            upAction = null;
+            downAction = null;
+            choiceAction = null;
+        }
+#endif
+
+        private static float gamepadLookSensitivity = DefaultGamepadLookSensitivity;
+        private static GameplayControlMode controlMode = GameplayControlMode.KeyboardMouse;
+
+        public static GameplayControlMode ControlMode => controlMode;
+        public static bool IsGamepadMode => controlMode == GameplayControlMode.Gamepad;
+        public static Vector2 Move => ReadVector2(moveAction);
+        public static bool Sprint => ReadButton(sprintAction);
+        public static bool LeftAttackDown => WasPressed(IsGamepadMode ? rightAttackAction : leftAttackAction);
+        public static bool RightAttackDown => WasPressed(IsGamepadMode ? leftAttackAction : rightAttackAction);
+        public static bool LockOnDown => WasPressed(lockOnAction);
+        public static bool HelpDown => WasPressed(helpAction);
+        public static bool UiLeftDown => WasPressed(leftAction);
+        public static bool UiRightDown => WasPressed(rightAction);
+        public static bool UiUpDown => WasPressed(upAction);
+        public static bool UiDownDown => WasPressed(downAction);
+        public static bool UiChoiceDown => WasPressed(choiceAction);
+        public static bool IsGamepadInputActive => IsActiveDeviceGamepad();
+        public static float GamepadLookSensitivity
+        {
+            get => gamepadLookSensitivity;
+            set => gamepadLookSensitivity = Mathf.Clamp(value, MinGamepadLookSensitivity, MaxGamepadLookSensitivity);
+        }
+
+        public static void SelectControlMode(GameplayControlMode mode)
+        {
+            controlMode = mode;
+            Cursor.visible = mode != GameplayControlMode.Gamepad;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         public static Vector2 MouseScreenPosition
@@ -37,116 +130,178 @@ namespace Week14.Input
             get
             {
 #if ENABLE_INPUT_SYSTEM
-                return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
-#elif ENABLE_LEGACY_INPUT_MANAGER
-                return UnityEngine.Input.mousePosition;
+                if (IsGamepadMode)
+                {
+                    return Vector2.zero;
+                }
+
+                Pointer pointer = GetActivePointer();
+                return pointer != null ? pointer.position.ReadValue() : Vector2.zero;
 #else
                 return Vector2.zero;
 #endif
             }
         }
 
-        public static bool Sprint
+        public static bool TryGetLookDirection(out Vector2 direction)
         {
-            get
-            {
+            direction = Vector2.zero;
 #if ENABLE_INPUT_SYSTEM
-                Keyboard keyboard = Keyboard.current;
-                return keyboard != null && (keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed);
-#elif ENABLE_LEGACY_INPUT_MANAGER
-                return UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift);
-#else
-                return false;
-#endif
-            }
-        }
-
-        public static bool GetMouseButton(int button)
-        {
-#if ENABLE_INPUT_SYSTEM
-            Mouse mouse = Mouse.current;
-            if (mouse == null)
+            if (lookAction == null)
             {
                 return false;
             }
 
-            return button switch
+            if (IsGamepadMode && TryReadCurrentGamepadLook(out direction))
             {
-                0 => mouse.leftButton.isPressed,
-                1 => mouse.rightButton.isPressed,
-                2 => mouse.middleButton.isPressed,
-                _ => false
-            };
-#elif ENABLE_LEGACY_INPUT_MANAGER
-            return UnityEngine.Input.GetMouseButton(button);
-#else
-            return false;
-#endif
-        }
+                return true;
+            }
 
-        public static bool GetMouseButtonDown(int button)
-        {
-#if ENABLE_INPUT_SYSTEM
-            Mouse mouse = Mouse.current;
-            if (mouse == null)
+            if (IsGamepadMode && IsPointerLook())
             {
                 return false;
             }
 
-            return button switch
+            if (!IsGamepadMode && IsPointerLook())
             {
-                0 => mouse.leftButton.wasPressedThisFrame,
-                1 => mouse.rightButton.wasPressedThisFrame,
-                2 => mouse.middleButton.wasPressedThisFrame,
-                _ => false
-            };
-#elif ENABLE_LEGACY_INPUT_MANAGER
-            return UnityEngine.Input.GetMouseButtonDown(button);
+                return false;
+            }
+
+            Vector2 look = lookAction.ReadValue<Vector2>();
+            if (look.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            direction = Vector2.ClampMagnitude(look, 1f);
+            return true;
 #else
             return false;
 #endif
         }
 
-        public static bool GetKeyDown(KeyCode keyCode)
-        {
-            if (keyCode == KeyCode.Mouse0)
-            {
-                return GetMouseButtonDown(0);
-            }
-
-            if (keyCode == KeyCode.Mouse1)
-            {
-                return GetMouseButtonDown(1);
-            }
-
-            if (keyCode == KeyCode.Mouse2)
-            {
-                return GetMouseButtonDown(2);
-            }
-
 #if ENABLE_INPUT_SYSTEM
-            Keyboard keyboard = Keyboard.current;
-            if (keyboard == null)
+        private static void ResolveActions()
+        {
+            moveAction = FindPlayerAction(MoveActionName);
+            lookAction = FindPlayerAction(LookActionName);
+            leftAttackAction = FindPlayerAction(LeftAttackActionName);
+            rightAttackAction = FindPlayerAction(RightAttackActionName);
+            sprintAction = FindPlayerAction(SprintActionName);
+            lockOnAction = FindPlayerAction(LockOnActionName);
+            helpAction = FindPlayerAction(HelpActionName);
+            leftAction = FindPlayerAction(LeftActionName);
+            rightAction = FindPlayerAction(RightActionName);
+            upAction = FindPlayerAction(UpActionName);
+            downAction = FindPlayerAction(DownActionName);
+            choiceAction = FindPlayerAction(ChoiceActionName);
+        }
+
+        private static InputAction FindPlayerAction(string actionName)
+        {
+            InputActionAsset actions = playerInput != null ? playerInput.actions : null;
+            if (actions == null)
+            {
+                return null;
+            }
+
+            return actions.FindAction($"{PlayerMapName}/{actionName}", false)
+                ?? actions.FindAction(actionName, false);
+        }
+
+        private static void EnableActions()
+        {
+            EnableAction(moveAction);
+            EnableAction(lookAction);
+            EnableAction(leftAttackAction);
+            EnableAction(rightAttackAction);
+            EnableAction(sprintAction);
+            EnableAction(lockOnAction);
+            EnableAction(helpAction);
+            EnableAction(leftAction);
+            EnableAction(rightAction);
+            EnableAction(upAction);
+            EnableAction(downAction);
+            EnableAction(choiceAction);
+        }
+
+        private static void EnableAction(InputAction action)
+        {
+            if (action != null && !action.enabled)
+            {
+                action.Enable();
+            }
+        }
+
+        private static Vector2 ReadVector2(InputAction action)
+        {
+            return action != null ? Vector2.ClampMagnitude(action.ReadValue<Vector2>(), 1f) : Vector2.zero;
+        }
+
+        private static bool ReadButton(InputAction action)
+        {
+            return action != null && action.IsPressed();
+        }
+
+        private static bool WasPressed(InputAction action)
+        {
+            return action != null && action.WasPressedThisFrame();
+        }
+
+        private static bool IsPointerLook()
+        {
+            InputControl activeControl = lookAction != null ? lookAction.activeControl : null;
+            return activeControl != null && activeControl.device is Pointer;
+        }
+
+        private static bool IsGamepadLook()
+        {
+            InputControl activeControl = lookAction != null ? lookAction.activeControl : null;
+            return activeControl != null && activeControl.device is Gamepad;
+        }
+
+        private static bool TryReadCurrentGamepadLook(out Vector2 direction)
+        {
+            direction = Vector2.zero;
+            Gamepad gamepad = Gamepad.current;
+            if (gamepad == null)
             {
                 return false;
             }
 
-            return keyCode switch
+            Vector2 look = gamepad.rightStick.ReadValue();
+            if (look.sqrMagnitude <= 0.0001f)
             {
-                KeyCode.Space => keyboard.spaceKey.wasPressedThisFrame,
-                KeyCode.E => keyboard.eKey.wasPressedThisFrame,
-                KeyCode.Q => keyboard.qKey.wasPressedThisFrame,
-                KeyCode.R => keyboard.rKey.wasPressedThisFrame,
-                KeyCode.F => keyboard.fKey.wasPressedThisFrame,
-                KeyCode.H => keyboard.hKey.wasPressedThisFrame,
-                KeyCode.F1 => keyboard.f1Key.wasPressedThisFrame,
-                _ => false
-            };
-#elif ENABLE_LEGACY_INPUT_MANAGER
-            return UnityEngine.Input.GetKeyDown(keyCode);
-#else
-            return false;
-#endif
+                return false;
+            }
+
+            direction = Vector2.ClampMagnitude(look, 1f);
+            return true;
         }
+
+        private static Pointer GetActivePointer()
+        {
+            InputControl activeControl = lookAction != null ? lookAction.activeControl : null;
+            if (activeControl != null && activeControl.device is Pointer pointer)
+            {
+                return pointer;
+            }
+
+            return Pointer.current;
+        }
+
+        private static bool IsActiveDeviceGamepad()
+        {
+            InputControl activeControl = lookAction != null && lookAction.activeControl != null
+                ? lookAction.activeControl
+                : moveAction != null ? moveAction.activeControl : null;
+            return activeControl != null && activeControl.device is Gamepad;
+        }
+#else
+        private static Vector2 ReadVector2(object _) => Vector2.zero;
+        private static bool ReadButton(object _) => false;
+        private static bool WasPressed(object _) => false;
+        private static bool IsActiveDeviceGamepad() => false;
+#endif
     }
 }
