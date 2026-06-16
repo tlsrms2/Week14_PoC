@@ -38,8 +38,8 @@ MonoBehaviour:
   projectileLifetime: 2
   projectileRadius: 0.08
   projectileLeadPredictionSeconds: 0.45
-  projectileHomingSeconds: 0.4
-  projectileHomingTurnDegreesPerSecond: 360
+  projectileHomingSeconds: 0
+  projectileHomingTurnDegreesPerSecond: 0
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   bulletBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyBulletBarColor: {r: 1, g: 0, b: 0, a: 1}
