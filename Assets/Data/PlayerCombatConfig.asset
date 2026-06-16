@@ -30,6 +30,8 @@ MonoBehaviour:
   parryAimAnglePenaltyPerClick: 5
   parryAimAngleRecoveryPerSecond: 10
   parryShotCooldown: 0.1
+  overloadBulletDamage: 2
+  parryBlockAfterOverloadSeconds: 1
   lockOnSearchRadius: 2
   lockOnBreakDistance: 9
   executionRange: 7
