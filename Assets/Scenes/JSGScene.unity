@@ -5230,6 +5230,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829118625}
   m_CullTransparentMesh: 1
+--- !u!1 &839342461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 479005607939962125, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+  m_PrefabInstance: {fileID: 2382189914428757667}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &868003703 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8837883821217332569, guid: 7c38b8f21396cfa47b1f333416fb9eb9, type: 3}
@@ -32763,19 +32768,52 @@ PrefabInstance:
     - {fileID: 2732529989977436893, guid: 5198d635b02d49d438e98964595764ba, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 479005607939962125, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2382189914428757669}
   m_SourcePrefab: {fileID: 100100000, guid: 5198d635b02d49d438e98964595764ba, type: 3}
 --- !u!114 &2382189914428757668 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 419335832944192615, guid: 5198d635b02d49d438e98964595764ba, type: 3}
   m_PrefabInstance: {fileID: 2382189914428757667}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 839342461}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bb4c7c61538bda429b49d88608ae9e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.BulletGauge
+--- !u!114 &2382189914428757669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839342461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

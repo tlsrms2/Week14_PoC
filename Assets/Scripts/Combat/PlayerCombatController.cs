@@ -164,9 +164,9 @@ namespace Week14.Combat
                 return;
             }
 
-            RecoverParryAimPenalty();
-            UpdateLockOnInput();
             ClearInvalidLockOnTarget();
+            RecoverParryAimPenalty();
+            UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
             RotateToAim();
             UpdateProjectileLockOnTarget();
@@ -427,7 +427,7 @@ namespace Week14.Combat
         private ExecutionTarget FindHoveredExecutionTarget()
         {
             Vector2 mouseWorld = GetMouseWorldPosition();
-            float searchRadius = config != null ? config.LockOnSearchRadius : 0f;
+            float searchRadius = config != null ? config.ExecutionRange : 0f;
             Collider2D[] hits = Physics2D.OverlapCircleAll(mouseWorld, searchRadius, enemyMask);
             ExecutionTarget bestTarget = null;
             float bestDistance = float.PositiveInfinity;
@@ -458,7 +458,7 @@ namespace Week14.Combat
                 return;
             }
 
-            float searchRadius = config != null ? config.LockOnSearchRadius : 0f;
+            float searchRadius = config != null ? config.ExecutionRange : 0f;
             float distance = Vector2.Distance(mouseWorld, target.transform.position);
             if (distance > searchRadius || distance >= bestDistance)
             {
@@ -737,6 +737,11 @@ namespace Week14.Combat
         private bool TryParryProjectile(out bool applyImmediatePenalty)
         {
             applyImmediatePenalty = false;
+            if (!CanRecoverBullets())
+            {
+                return false;
+            }
+
             if (config.ProjectilePrefab == null)
             {
                 Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", this);
@@ -906,20 +911,24 @@ namespace Week14.Combat
             parryAimPenaltyDegrees = Mathf.Max(0f, parryAimPenaltyDegrees - config.ParryAimAngleRecoveryPerSecond * Time.deltaTime);
         }
 
-        private void UpdateLockOnInput()
+        private void UpdateLockOnTarget()
         {
-            if (!GameInput.GetKeyDown(KeyCode.Q))
+            if (GameInput.GetKeyDown(KeyCode.Q))
             {
+                SetLockOnTarget(FindNextLockOnTarget());
                 return;
             }
 
-            SetLockOnTarget(FindLockOnTarget());
+            if (lockOnTarget == null)
+            {
+                SetLockOnTarget(FindNearestLockOnTarget());
+            }
         }
 
-        private Health FindLockOnTarget()
+        private Health FindNearestLockOnTarget()
         {
-            Vector2 mouseWorld = GetMouseWorldPosition();
-            Collider2D[] hits = Physics2D.OverlapCircleAll(mouseWorld, config.LockOnSearchRadius, enemyMask);
+            Vector2 playerPosition = transform.position;
+            Collider2D[] hits = Physics2D.OverlapCircleAll(playerPosition, GetLockOnAcquireDistance(), enemyMask);
             Health bestTarget = null;
             float bestDistance = float.PositiveInfinity;
 
@@ -931,7 +940,7 @@ namespace Week14.Combat
                     continue;
                 }
 
-                float distance = Vector2.Distance(mouseWorld, hits[i].bounds.center);
+                float distance = Vector2.Distance(playerPosition, hits[i].bounds.center);
                 if (distance >= bestDistance)
                 {
                     continue;
@@ -950,12 +959,12 @@ namespace Week14.Combat
             for (int i = 0; i < allTargets.Length; i++)
             {
                 Health targetHealth = allTargets[i];
-                if (!IsValidLockOnTarget(targetHealth))
+                if (!IsValidLockOnTargetInRange(targetHealth))
                 {
                     continue;
                 }
 
-                float distance = Vector2.Distance(mouseWorld, targetHealth.transform.position);
+                float distance = Vector2.Distance(playerPosition, targetHealth.transform.position);
                 if (distance >= bestDistance)
                 {
                     continue;
@@ -966,6 +975,42 @@ namespace Week14.Combat
             }
 
             return bestTarget;
+        }
+
+        private Health FindNextLockOnTarget()
+        {
+            Health[] allTargets = Object.FindObjectsByType<Health>(FindObjectsSortMode.None);
+            Health firstTarget = null;
+            Health nextTarget = null;
+            int firstId = int.MaxValue;
+            int nextId = int.MaxValue;
+            int currentId = lockOnTarget != null ? lockOnTarget.GetInstanceID() : int.MinValue;
+
+            for (int i = 0; i < allTargets.Length; i++)
+            {
+                Health targetHealth = allTargets[i];
+                if (!IsValidLockOnTargetInRange(targetHealth))
+                {
+                    continue;
+                }
+
+                int targetId = targetHealth.GetInstanceID();
+                if (targetId < firstId)
+                {
+                    firstId = targetId;
+                    firstTarget = targetHealth;
+                }
+
+                if (targetHealth == lockOnTarget || targetId <= currentId || targetId >= nextId)
+                {
+                    continue;
+                }
+
+                nextId = targetId;
+                nextTarget = targetHealth;
+            }
+
+            return nextTarget != null ? nextTarget : firstTarget;
         }
 
         private void ClearInvalidLockOnTarget()
@@ -980,7 +1025,7 @@ namespace Week14.Combat
 
         private void SetLockOnTarget(Health nextTarget)
         {
-            if (nextTarget != null && lockOnTarget == nextTarget)
+            if (lockOnTarget == nextTarget)
             {
                 return;
             }
@@ -1009,6 +1054,17 @@ namespace Week14.Combat
                 && targetHealth != health
                 && !targetHealth.IsDead
                 && targetHealth.GetComponent<Week14.Enemy.EnemyAI>() != null;
+        }
+
+        private bool IsValidLockOnTargetInRange(Health targetHealth)
+        {
+            return IsValidLockOnTarget(targetHealth)
+                && Vector2.Distance(transform.position, targetHealth.transform.position) <= GetLockOnAcquireDistance();
+        }
+
+        private float GetLockOnAcquireDistance()
+        {
+            return config != null ? config.LockOnBreakDistance : 0f;
         }
 
         private bool IsLockOnTooFar(Health targetHealth)
@@ -1139,7 +1195,7 @@ namespace Week14.Combat
                 return;
             }
 
-            Color color = ParryEffectColor;
+            Color color = GetParryAvailabilityColor();
             color.a = Mathf.Max(color.a, projectileLockOnTarget.IsCharging ? 0.95f : 0.72f);
             projectileLockOnLine.enabled = true;
             projectileLockOnLine.startColor = color;
@@ -1228,7 +1284,7 @@ namespace Week14.Combat
             {
                 GameObject parryObject = new GameObject(ParryRangeIndicatorName);
                 parryObject.transform.SetParent(rangeIndicatorRoot != null ? rangeIndicatorRoot : transform, false);
-                Color parryColor = ParryEffectColor;
+                Color parryColor = GetParryAvailabilityColor();
                 parryColor.a = Mathf.Max(parryColor.a, 0.85f);
                 parryRangeLine = CreateRangeLine(parryObject, parryColor, 0.03f, 32);
                 parryRangeLine.sortingOrder = 5;
@@ -1277,7 +1333,7 @@ namespace Week14.Combat
                 return;
             }
 
-            Color parryColor = ParryEffectColor;
+            Color parryColor = GetParryAvailabilityColor();
             parryColor.a = Mathf.Max(parryColor.a, 0.85f);
             parryRangeLine.startColor = parryColor;
             parryRangeLine.endColor = parryColor;
@@ -1309,6 +1365,16 @@ namespace Week14.Combat
             }
 
             return bodyRoot != null ? (Vector2)bodyRoot.right : (Vector2)transform.right;
+        }
+
+        private bool CanRecoverBullets()
+        {
+            return bullets != null && bullets.CurrentBullets < bullets.MaxBullets;
+        }
+
+        private Color GetParryAvailabilityColor()
+        {
+            return CanRecoverBullets() ? ParryEffectColor : Color.red;
         }
 
         private void SetAttackRangeDashesVisible(bool visible)
