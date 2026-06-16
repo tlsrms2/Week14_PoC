@@ -6,6 +6,7 @@ namespace Week14.Combat
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public sealed class EnemyProjectile : MonoBehaviour
     {
+        private const int DefaultCounteredProjectileBulletDamage = 34;
         private const string BulletVisualName = "BulletVisual";
         private const string ChargeVfxName = "ChargeVfx";
 
@@ -49,12 +50,19 @@ namespace Week14.Combat
             if (prefab == null || data == null) return null;
 
             return SpawnInternal(prefab, ownerBullets, position, direction, data.ProjectileBulletDamage,
-                data.CounteredProjectileBulletDamage,
+                GetCounteredProjectileBulletDamage(),
                 data.ProjectileChargeSeconds, data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
                 data.ProjectileTrailWidthMultiplier,
                 data.ProjectileHomingSeconds,
                 data.ProjectileHomingTurnDegreesPerSecond);
+        }
+
+        private static int GetCounteredProjectileBulletDamage()
+        {
+            PlayerCombatController player = PlayerCombatController.Active;
+            PlayerCombatConfig config = player != null ? player.Config : null;
+            return config != null ? config.CounteredProjectileBulletDamage : DefaultCounteredProjectileBulletDamage;
         }
 
         private static EnemyProjectile SpawnInternal(

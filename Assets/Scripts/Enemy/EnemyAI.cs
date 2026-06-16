@@ -14,8 +14,6 @@ namespace Week14.Enemy
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class EnemyAI : MonoBehaviour
     {
-        private const float BossParryInterceptDelaySeconds = 0.035f;
-
         [Header("기본 설정")]
         [SerializeField] private EnemyData data;
         [SerializeField] private Transform bodyRoot;
@@ -52,9 +50,6 @@ namespace Week14.Enemy
         private bool isBulletEmpty;
         private float bulletEmptyEndsAt;
         private bool isExecutionLocked;
-        private float nextBossParryTime;
-        private float lastBossPlayerAttackTime;
-        private int bossPlayerAttackPressureCount;
         private int nextTimelineIndex;
         private int currentAttackBulletTotal;
         private int currentAttackBulletRemaining;
@@ -225,41 +220,6 @@ namespace Week14.Enemy
             }
         }
 
-        public bool CanHandleBossParryOnShotFired(Vector3 shotPosition, Vector2 shotDirection)
-        {
-            BossEnemyData bossData = data as BossEnemyData;
-            return bossData != null
-                && bossData.CanParryPlayerAttacks
-                && bullets != null
-                && !bullets.IsEmpty
-                && !isExecutionLocked
-                && !IsBulletEmpty
-                && Time.time >= nextBossParryTime
-                && IsPlayerAttackInFront(shotDirection, bossData.PlayerAttackParryAngleDegrees)
-                && IsShotAimedAtBoss(shotPosition, shotDirection);
-        }
-
-        public bool HandleBossParryOnShotFired(Vector3 shotPosition, Vector2 shotDirection)
-        {
-            BossEnemyData bossData = data as BossEnemyData;
-            if (!CanHandleBossParryOnShotFired(shotPosition, shotDirection))
-            {
-                return false;
-            }
-
-            int pressureCount = GetBossPlayerAttackPressureCount(bossData);
-            RegisterBossPlayerAttackPressure();
-            nextBossParryTime = Time.time + bossData.PlayerAttackParryCooldown;
-
-            if (Random.value > GetBossParryChance(bossData, pressureCount))
-            {
-                return false;
-            }
-
-            HandleBossParryPlayerAttack(bossData, transform.position, shotDirection);
-            return true;
-        }
-
         public bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
             if (health == null || health.IsDead)
@@ -271,11 +231,6 @@ namespace Week14.Enemy
             {
                 health.Kill();
                 QueueDestroyAfterDeath();
-                return true;
-            }
-
-            if (TryHandleBossPlayerAttackResponse(hitPosition, hitDirection))
-            {
                 return true;
             }
 
@@ -309,232 +264,6 @@ namespace Week14.Enemy
             }
 
             return true;
-        }
-
-        // 보스의 플레이어 공격 대응
-        private bool TryHandleBossPlayerAttackResponse(Vector3 hitPosition, Vector2 hitDirection)
-        {
-            BossEnemyData bossData = data as BossEnemyData;
-            if (bossData == null || bullets == null || bullets.IsEmpty || isExecutionLocked || IsBulletEmpty)
-            {
-                return false;
-            }
-
-            int pressureCount = GetBossPlayerAttackPressureCount(bossData);
-            bool canParry = bossData.CanParryPlayerAttacks
-                && Time.time >= nextBossParryTime
-                && IsPlayerAttackInFront(hitDirection, bossData.PlayerAttackParryAngleDegrees)
-                && Random.value <= GetBossParryChance(bossData, pressureCount);
-
-            RegisterBossPlayerAttackPressure();
-
-            if (canParry)
-            {
-                nextBossParryTime = Time.time + bossData.PlayerAttackParryCooldown;
-                HandleBossParryPlayerAttack(bossData, hitPosition, hitDirection);
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool IsPlayerAttackInFront(Vector2 hitDirection, float angleDegrees)
-        {
-            if (angleDegrees >= 359.5f)
-            {
-                return true;
-            }
-
-            Vector2 toAttacker = hitDirection.sqrMagnitude > 0.0001f ? -hitDirection.normalized : -GetFacingDirection();
-            return Vector2.Angle(GetFacingDirection(), toAttacker) <= angleDegrees * 0.5f;
-        }
-
-        private bool IsShotAimedAtBoss(Vector3 shotPosition, Vector2 shotDirection)
-        {
-            if (shotDirection.sqrMagnitude <= 0.0001f)
-            {
-                return false;
-            }
-
-            Vector2 direction = shotDirection.normalized;
-            Vector2 toBoss = (Vector2)transform.position - (Vector2)shotPosition;
-            float forwardDistance = Vector2.Dot(direction, toBoss);
-            if (forwardDistance <= 0f)
-            {
-                return false;
-            }
-
-            float sideDistance = Mathf.Abs(Vector2.Dot(new Vector2(-direction.y, direction.x), toBoss));
-            return sideDistance <= GetBossBodyRadius();
-        }
-
-        private int GetBossPlayerAttackPressureCount(BossEnemyData bossData)
-        {
-            if (bossData.PlayerAttackPressureResetSeconds > 0f
-                && Time.time - lastBossPlayerAttackTime > bossData.PlayerAttackPressureResetSeconds)
-            {
-                bossPlayerAttackPressureCount = 0;
-            }
-
-            return bossPlayerAttackPressureCount;
-        }
-
-        private void RegisterBossPlayerAttackPressure()
-        {
-            lastBossPlayerAttackTime = Time.time;
-            bossPlayerAttackPressureCount++;
-        }
-
-        private void ResetBossPlayerAttackPressure()
-        {
-            bossPlayerAttackPressureCount = 0;
-            lastBossPlayerAttackTime = Time.time;
-        }
-
-        private static float GetBossParryChance(BossEnemyData bossData, int pressureCount)
-        {
-            float maxChance = Mathf.Max(bossData.PlayerAttackParryChance, bossData.MaxPlayerAttackParryChance);
-            float chance = bossData.PlayerAttackParryChance
-                + Mathf.Max(0, pressureCount) * bossData.PlayerAttackParryChanceIncrease;
-            return Mathf.Clamp(chance, 0f, maxChance);
-        }
-
-        private void HandleBossParryPlayerAttack(BossEnemyData bossData, Vector3 hitPosition, Vector2 hitDirection)
-        {
-            ResetBossPlayerAttackPressure();
-            Vector2 responseDirection = hitDirection.sqrMagnitude > 0.0001f ? -hitDirection.normalized : GetFacingDirection();
-            ProjectileVfx.PlayParry(
-                hitPosition,
-                responseDirection,
-                data.BossParrySparkColor,
-                data.BossParryRingColor,
-                data.BossParryGlitterColor,
-                Mathf.Max(18, data.AttackImpactSparkCount + data.AttackImpactBackSparkCount),
-                10,
-                0.16f,
-                0.24f,
-                0.14f,
-                Mathf.Max(6, data.AttackImpactFlameCount),
-                Mathf.Max(0.7f, data.AttackImpactEffectScale));
-            StartCoroutine(DelayedBossParryIntercept(responseDirection));
-            SpendPlayerBullets(bossData.PlayerBulletDamageOnBossParry);
-            PlayEnemyHitCameraImpact(responseDirection);
-        }
-
-        private void DestroyAllPlayerProjectilesByBossParry(Vector2 responseDirection)
-        {
-            PlayerProjectile[] projectiles = FindObjectsByType<PlayerProjectile>(FindObjectsSortMode.None);
-            for (int i = 0; i < projectiles.Length; i++)
-            {
-                PlayerProjectile projectile = projectiles[i];
-                if (projectile == null)
-                {
-                    continue;
-                }
-
-                FireBossParryInterceptShot(projectile.transform.position);
-                ProjectileVfx.PlayParry(
-                    projectile.transform.position,
-                    responseDirection,
-                    data.BossParrySparkColor,
-                    data.BossParryRingColor,
-                    Mathf.Max(8, data.AttackImpactSparkCount),
-                    0.12f);
-                projectile.DestroyAfterParryResolved();
-            }
-        }
-
-        private IEnumerator DelayedBossParryIntercept(Vector2 responseDirection)
-        {
-            yield return new WaitForSeconds(BossParryInterceptDelaySeconds);
-
-            if (data == null || bullets == null || bullets.IsEmpty || isExecutionLocked || IsBulletEmpty)
-            {
-                yield break;
-            }
-
-            DestroyAllPlayerProjectilesByBossParry(responseDirection);
-        }
-
-        private void FireBossParryInterceptShot(Vector3 targetPosition)
-        {
-            Transform origin = projectileOrigin != null ? projectileOrigin : fireOrigin != null ? fireOrigin : transform;
-            Vector2 direction = targetPosition - origin.position;
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                direction = GetFacingDirection();
-            }
-
-            Vector2 normalizedDirection = direction.normalized;
-            RotateRight(fireOrigin, normalizedDirection);
-            ProjectileVfx.PlayMuzzleFlash(origin.position, normalizedDirection, data.BossParrySparkColor, 0.85f);
-            ProjectileVfx.PlayShotLine(origin.position, targetPosition, data.BossParryRingColor, 0.09f, 0.035f);
-            gunRecoil?.Play(normalizedDirection);
-        }
-
-        private float GetBossBodyRadius()
-        {
-            Bounds bounds = new(transform.position, Vector3.zero);
-            bool hasBounds = false;
-
-            if (renderers != null)
-            {
-                for (int i = 0; i < renderers.Length; i++)
-                {
-                    SpriteRenderer spriteRenderer = renderers[i];
-                    if (spriteRenderer == null || !spriteRenderer.enabled)
-                    {
-                        continue;
-                    }
-
-                    if (statusView != null && statusView.OwnsRenderer(spriteRenderer))
-                    {
-                        continue;
-                    }
-
-                    if (fireOrigin != null && fireOrigin != bodyRoot
-                        && (spriteRenderer.transform == fireOrigin || spriteRenderer.transform.IsChildOf(fireOrigin)))
-                    {
-                        continue;
-                    }
-
-                    if (!hasBounds)
-                    {
-                        bounds = spriteRenderer.bounds;
-                        hasBounds = true;
-                    }
-                    else
-                    {
-                        bounds.Encapsulate(spriteRenderer.bounds);
-                    }
-                }
-            }
-
-            float radius = hasBounds
-                ? Mathf.Max(bounds.extents.x, bounds.extents.y)
-                : 0.45f;
-            return Mathf.Max(0.55f, radius + 0.18f);
-        }
-
-        private void SpendPlayerBullets(int amount)
-        {
-            PlayerCombatController playerCombat = PlayerCombatController.Active;
-            if (playerCombat == null && player != null)
-            {
-                playerCombat = player.GetComponent<PlayerCombatController>();
-            }
-
-            if (playerCombat == null || playerCombat.Bullets == null)
-            {
-                return;
-            }
-
-            if (playerCombat.Bullets.IsEmpty)
-            {
-                return;
-            }
-
-            playerCombat.Bullets.TrySpend(amount, BulletChangeSource.Parry);
         }
 
         private Color GetAttackImpactSparkColor(Color hitColor)
@@ -1270,9 +999,7 @@ namespace Week14.Enemy
 
         private bool UsesBossCombatUi()
         {
-            return data != null
-                && data is BossEnemyData
-                && (bossCombatUiRoot != null || bossBulletBarView != null);
+            return data != null && (bossCombatUiRoot != null || bossBulletBarView != null);
         }
 
         private void PrepareBossCombatUi()

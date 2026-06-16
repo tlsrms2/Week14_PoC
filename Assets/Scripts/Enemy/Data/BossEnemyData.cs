@@ -1,35 +1,64 @@
-﻿using UnityEngine;
+using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    [CreateAssetMenu(menuName = "Week14/Enemy/Boss Enemy Data", fileName = "BossEnemyData")]
-    public sealed class BossEnemyData : EnemyData
+    public abstract class BossEnemyData : ScriptableObject
     {
-        [Header("Player Attack Response")]
-        [Tooltip("보스가 플레이어의 왼쪽 권총 공격을 패링할 수 있는지 여부입니다.")]
-        [SerializeField] private bool canParryPlayerAttacks = true;
-        [Tooltip("보스가 플레이어 공격을 패링할 기본 확률입니다.")]
-        [SerializeField, Range(0f, 1f)] private float playerAttackParryChance = 0.25f;
-        [Tooltip("플레이어가 연속 공격할수록 패링 확률에 더해지는 값입니다.")]
-        [SerializeField, Range(0f, 1f)] private float playerAttackParryChanceIncrease = 0.1f;
-        [Tooltip("연속 공격으로 증가할 수 있는 패링 확률의 최대값입니다.")]
-        [SerializeField, Range(0f, 1f)] private float maxPlayerAttackParryChance = 0.85f;
-        [Tooltip("이 시간 동안 플레이어 공격이 없으면 누적 패링 압박을 초기화합니다.")]
-        [SerializeField, Min(0f)] private float playerAttackPressureResetSeconds = 1.5f;
-        [Tooltip("보스 정면 기준으로 플레이어 공격을 패링할 수 있는 각도입니다.")]
-        [SerializeField, Range(1f, 360f)] private float playerAttackParryAngleDegrees = 130f;
-        [Tooltip("보스가 플레이어 공격을 한 번 패링한 뒤 다시 패링할 수 있을 때까지의 시간입니다.")]
-        [SerializeField, Min(0f)] private float playerAttackParryCooldown = 0.35f;
-        [Tooltip("보스가 플레이어 공격을 패링했을 때 플레이어 탄환을 감소시키는 양입니다.")]
-        [SerializeField, Min(0)] private int playerBulletDamageOnBossParry = 8;
+        [Header("Meta")]
+        [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 에셋 이름을 사용합니다.")]
+        [SerializeField] private string displayName;
+        [Tooltip("이 보스가 사용할 공통 전투 이펙트와 색상 설정입니다.")]
+        [SerializeField] private CombatEffectData effectData;
 
-        public bool CanParryPlayerAttacks => canParryPlayerAttacks;
-        public float PlayerAttackParryChance => Mathf.Clamp01(playerAttackParryChance);
-        public float PlayerAttackParryChanceIncrease => Mathf.Clamp01(playerAttackParryChanceIncrease);
-        public float MaxPlayerAttackParryChance => Mathf.Clamp01(maxPlayerAttackParryChance);
-        public float PlayerAttackPressureResetSeconds => playerAttackPressureResetSeconds;
-        public float PlayerAttackParryAngleDegrees => playerAttackParryAngleDegrees;
-        public float PlayerAttackParryCooldown => playerAttackParryCooldown;
-        public int PlayerBulletDamageOnBossParry => playerBulletDamageOnBossParry;
+        [Header("Bullet")]
+        [Tooltip("보스가 보유할 수 있는 최대 탄환 수입니다.")]
+        [SerializeField, Min(1)] private int maxBullets = 60;
+        [Tooltip("보스 탄환이 0이 되었을 때 처형 가능 상태를 유지하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float bulletEmptyExecutionSeconds = 3f;
+
+        [Header("Color")]
+        [Tooltip("기본 상태에서 보스 스프라이트에 적용할 색입니다.")]
+        [SerializeField] private Color normalColor = Color.white;
+        [Tooltip("보스 탄환이 0이 되었을 때 보스 스프라이트에 적용할 색입니다.")]
+        [SerializeField] private Color bulletEmptyColor = new(0.45f, 0.65f, 1f, 1f);
+        [Tooltip("플레이어 공격에 맞아 경직 중일 때 보스 스프라이트에 적용할 색입니다.")]
+        [SerializeField] private Color staggeredColor = new(1f, 0.95f, 0.35f, 1f);
+
+        [Header("Detection")]
+        [Tooltip("플레이어를 감지할 수 있는 최대 거리입니다.")]
+        [SerializeField, Min(0f)] private float detectionRange = 9f;
+
+        [Header("Movement")]
+        [Tooltip("보스의 기본 이동 속도입니다.")]
+        [SerializeField, Min(0f)] private float moveSpeed = 3.5f;
+
+        [Header("Status UI")]
+        [Tooltip("보스 탄환 상태 UI의 배경 색입니다.")]
+        [SerializeField] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
+        [Tooltip("보스 탄환 UI의 기본 채움 색입니다.")]
+        [SerializeField] private Color bulletBarColor = new(1f, 0.55f, 0.1f, 1f);
+        [Tooltip("보스 탄환이 비었을 때 탄환 UI에 적용할 색입니다.")]
+        [SerializeField] private Color emptyBulletBarColor = Color.red;
+        [Tooltip("플레이어가 이 보스를 락온했을 때 표시할 색입니다.")]
+        [SerializeField] private Color lockOnIndicatorColor = Color.white;
+        [Tooltip("이 보스가 처형 가능할 때 표시할 색입니다.")]
+        [SerializeField] private Color executionIndicatorColor = Color.red;
+
+        public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
+        public int MaxBullets => maxBullets;
+        public float BulletEmptyExecutionSeconds => bulletEmptyExecutionSeconds;
+        public Color NormalColor => normalColor;
+        public Color BulletEmptyColor => bulletEmptyColor;
+        public Color StaggeredColor => staggeredColor;
+        public float DetectionRange => detectionRange;
+        public float MoveSpeed => moveSpeed;
+        public Color BodyHitColor => effectData != null ? effectData.EnemyBodyHitColor : new Color(1f, 0.35f, 0.25f, 1f);
+        public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
+        public Color StatusBarBackgroundColor => statusBarBackgroundColor;
+        public Color BulletBarColor => bulletBarColor;
+        public Color EmptyBulletBarColor => emptyBulletBarColor;
+        public Color LockOnIndicatorColor => lockOnIndicatorColor;
+        public Color ExecutionIndicatorColor => executionIndicatorColor;
     }
 }

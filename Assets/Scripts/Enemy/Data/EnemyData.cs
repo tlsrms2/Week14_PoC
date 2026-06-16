@@ -19,10 +19,6 @@ namespace Week14.Enemy
         [Tooltip("적 탄환이 0이 되었을 때 처형 가능 상태를 유지하는 시간입니다.")]
         [SerializeField, Min(0f)] private float bulletEmptyExecutionSeconds = 2f;
 
-        [Header("Counter")]
-        [Tooltip("적 탄이 패링되거나 방어되었을 때 적 탄환을 감소시키는 양입니다.")]
-        [SerializeField, Min(0)] private int counteredProjectileBulletDamage = 34;
-
         [Header("Color")]
         [Tooltip("기본 상태에서 적 스프라이트에 적용할 색입니다.")]
         [SerializeField] private Color normalColor = Color.white;
@@ -105,7 +101,6 @@ namespace Week14.Enemy
         public float InitialAttackDelaySeconds => initialAttackDelaySeconds;
         public float WindupSeconds => windupSeconds;
         public float RecoverySeconds => recoverySeconds;
-        public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
         public float StaggerSeconds => staggerSeconds;
         public float StaggerShakeDistance => staggerShakeDistance;
         public float StaggerShakeFrequency => staggerShakeFrequency;

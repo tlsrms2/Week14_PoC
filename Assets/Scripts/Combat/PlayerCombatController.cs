@@ -384,35 +384,7 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
             leftGunRecoil?.Play(direction);
-            TryTriggerBossParryOnShotFired(fireOrigin.position, direction);
             return true;
-        }
-
-        private static void TryTriggerBossParryOnShotFired(Vector3 shotPosition, Vector2 shotDirection)
-        {
-            EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
-            EnemyAI bestBoss = null;
-            float bestDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                EnemyAI enemy = enemies[i];
-                if (enemy == null || !enemy.CanHandleBossParryOnShotFired(shotPosition, shotDirection))
-                {
-                    continue;
-                }
-
-                float distance = Vector2.Distance(shotPosition, enemy.transform.position);
-                if (distance >= bestDistance)
-                {
-                    continue;
-                }
-
-                bestDistance = distance;
-                bestBoss = enemy;
-            }
-
-            bestBoss?.HandleBossParryOnShotFired(shotPosition, shotDirection);
         }
 
         private void UpdateAttackTimingOutline()
