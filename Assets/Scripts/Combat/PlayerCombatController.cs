@@ -67,6 +67,10 @@ namespace Week14.Combat
         private float parryAimPenaltyDegrees;
         private Vector2 smoothedGamepadLookDirection;
         private int smoothedGamepadLookFrame = -1;
+        private float parryBlockedUntil;
+        private bool isPlayerStaggered;
+        private float playerStaggerEndsAt;
+        private Vector3 playerStaggerBaseLocalPosition;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
@@ -80,7 +84,7 @@ namespace Week14.Combat
         public bool IsExecuting => isExecuting;
         public PlayerCombatConfig Config => config;
         public bool CanMove => CanAct;
-        private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
+        private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead && !isPlayerStaggered;
 
         private void Awake()
         {
@@ -214,6 +218,7 @@ namespace Week14.Combat
             UpdateRangeIndicators();
             UpdateProjectileLockOnIndicator();
             UpdateBodyColor();
+            UpdatePlayerStagger();
 
             if (GameInput.LeftAttackDown && CanAct)
             {
@@ -330,7 +335,13 @@ namespace Week14.Combat
                 return;
             }
 
+            bool wasAtMax = bullets.CurrentBullets >= bullets.MaxBullets;
             bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry);
+            if (wasAtMax)
+            {
+                bullets.TrySpend(config.OverloadBulletDamage, BulletChangeSource.Hit);
+                parryBlockedUntil = Time.time + config.ParryBlockAfterOverloadSeconds;
+            }
             ProjectileVfx.PlayParry(
                 position,
                 direction,
@@ -357,6 +368,10 @@ namespace Week14.Combat
 
             if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
             {
+                if (bullets != null && bullets.IsEmpty)
+                {
+                    BeginPlayerStagger();
+                }
                 return false;
             }
 
@@ -776,7 +791,7 @@ namespace Week14.Combat
         private bool TryParryProjectile(out bool applyImmediatePenalty)
         {
             applyImmediatePenalty = false;
-            if (!CanRecoverBullets())
+            if (!CanRecoverBullets() || Time.time < parryBlockedUntil)
             {
                 return false;
             }
@@ -954,14 +969,47 @@ namespace Week14.Combat
         {
             if (GameInput.LockOnDown)
             {
-                SetLockOnTarget(FindNextLockOnTarget());
+                SetLockOnTarget(GameInput.IsGamepadMode ? FindNextLockOnTarget() : FindMouseLockOnTarget());
                 return;
             }
 
-            if (lockOnTarget == null)
+            if (GameInput.IsGamepadMode && lockOnTarget == null)
             {
                 SetLockOnTarget(FindNearestLockOnTarget());
             }
+        }
+
+        private Health FindMouseLockOnTarget()
+        {
+            if (config == null)
+            {
+                return null;
+            }
+
+            Vector2 mouseWorld = GetMouseWorldPosition();
+            Collider2D[] hits = Physics2D.OverlapCircleAll(mouseWorld, config.LockOnSearchRadius, enemyMask);
+            Health bestTarget = null;
+            float bestDistance = float.PositiveInfinity;
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Health targetHealth = hits[i].GetComponentInParent<Health>();
+                if (!IsValidLockOnTarget(targetHealth))
+                {
+                    continue;
+                }
+
+                float distance = Vector2.Distance(mouseWorld, hits[i].bounds.center);
+                if (distance >= bestDistance)
+                {
+                    continue;
+                }
+
+                bestTarget = targetHealth;
+                bestDistance = distance;
+            }
+
+            return bestTarget;
         }
 
         private Health FindNearestLockOnTarget()
@@ -1372,7 +1420,9 @@ namespace Week14.Combat
                 return;
             }
 
-            Color parryColor = GetParryAvailabilityColor();
+            Color parryColor = Time.time < parryBlockedUntil
+                ? new Color(1f, 0.15f, 0.1f, 0.85f)
+                : GetParryAvailabilityColor();
             parryColor.a = Mathf.Max(parryColor.a, 0.85f);
             parryRangeLine.startColor = parryColor;
             parryRangeLine.endColor = parryColor;
@@ -1392,6 +1442,54 @@ namespace Week14.Combat
                 float angle = (startAngle + angleDegrees * t) * Mathf.Deg2Rad;
                 parryRangeLine.SetPosition(i, center + CirclePoint(radius, angle));
             }
+        }
+
+        private void BeginPlayerStagger()
+        {
+            if (config == null || config.PlayerStaggerSeconds <= 0f)
+            {
+                return;
+            }
+
+            if (!isPlayerStaggered)
+            {
+                playerStaggerBaseLocalPosition = bodyRoot != null ? bodyRoot.localPosition : Vector3.zero;
+            }
+
+            isPlayerStaggered = true;
+            playerStaggerEndsAt = Time.time + config.PlayerStaggerSeconds;
+            bodyHitColorEndsAt = playerStaggerEndsAt;
+            UpdateBodyColor(true);
+        }
+
+        private void UpdatePlayerStagger()
+        {
+            if (!isPlayerStaggered)
+            {
+                return;
+            }
+
+            if (Time.time >= playerStaggerEndsAt)
+            {
+                isPlayerStaggered = false;
+                if (bodyRoot != null)
+                {
+                    bodyRoot.localPosition = playerStaggerBaseLocalPosition;
+                }
+
+                UpdateBodyColor(true);
+                return;
+            }
+
+            float distance = config != null ? config.PlayerStaggerShakeDistance : 0f;
+            float frequency = config != null ? config.PlayerStaggerShakeFrequency : 0f;
+            if (bodyRoot == null || distance <= 0f || frequency <= 0f)
+            {
+                return;
+            }
+
+            float sign = Mathf.Sin(Time.time * frequency * Mathf.PI * 2f) >= 0f ? 1f : -1f;
+            bodyRoot.localPosition = playerStaggerBaseLocalPosition + Vector3.right * (distance * sign);
         }
 
         private Vector2 GetParryIndicatorDirection()

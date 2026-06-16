@@ -47,7 +47,23 @@ namespace Week14.Combat
         [Tooltip("오른쪽 권총 패링탄을 다시 발사할 수 있을 때까지의 시간입니다.")]
         [SerializeField, Min(0f)] private float parryShotCooldown = 0.18f;
 
+        [Header("Player Stagger")]
+        [Tooltip("탄환이 0인 상태에서 공격 시도 시 플레이어가 경직되는 시간입니다.")]
+        [SerializeField, Min(0f)] private float playerStaggerSeconds = 0.18f;
+        [Tooltip("경직 중 플레이어 몸체가 흔들리는 거리입니다.")]
+        [SerializeField, Min(0f)] private float playerStaggerShakeDistance = 0.06f;
+        [Tooltip("경직 중 흔들림의 초당 반복 횟수입니다.")]
+        [SerializeField, Min(0f)] private float playerStaggerShakeFrequency = 32f;
+
+        [Header("Overload")]
+        [Tooltip("풀피 상태에서 패링 성공 시 받는 과부화 탄환 데미지입니다.")]
+        [SerializeField, Min(0)] private int overloadBulletDamage = 2;
+        [Tooltip("과부화 피격 후 패링이 봉인되는 시간입니다.")]
+        [SerializeField, Min(0f)] private float parryBlockAfterOverloadSeconds = 1f;
+
         [Header("Lock On")]
+        [Tooltip("마우스 위치 주변에서 락온 대상을 찾는 반경입니다.")]
+        [SerializeField, Min(0f)] private float lockOnSearchRadius = 2f;
         [Tooltip("락온 대상이 이 거리보다 멀어지면 락온을 해제합니다.")]
         [SerializeField, Min(0f)] private float lockOnBreakDistance = 9f;
 
@@ -125,6 +141,12 @@ namespace Week14.Combat
         public Color BulletParryOutlineColor => effectData != null ? effectData.BulletParryOutlineColor : Color.white;
         public Color BulletDefenseOutlineColor => effectData != null ? effectData.BulletDefenseOutlineColor : new Color(0.55f, 0.55f, 0.55f, 1f);
         public Color BulletHitOutlineColor => effectData != null ? effectData.BulletHitOutlineColor : Color.yellow;
+        public float PlayerStaggerSeconds => playerStaggerSeconds;
+        public float PlayerStaggerShakeDistance => playerStaggerShakeDistance;
+        public float PlayerStaggerShakeFrequency => playerStaggerShakeFrequency;
+        public int OverloadBulletDamage => overloadBulletDamage;
+        public float ParryBlockAfterOverloadSeconds => parryBlockAfterOverloadSeconds;
+        public float LockOnSearchRadius => lockOnSearchRadius;
         public float LockOnBreakDistance => lockOnBreakDistance;
         public float ExecutionRange => executionRange;
         public int ExecutionBulletRecovery => executionBulletRecovery;
