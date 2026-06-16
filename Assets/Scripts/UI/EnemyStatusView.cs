@@ -16,6 +16,7 @@ namespace Week14.UI
         [SerializeField, HideInInspector] private BulletGauge bullets;
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
         [SerializeField, HideInInspector] private EnemyAI enemyAI;
+        [SerializeField, HideInInspector] private BossAI bossAI;
         [SerializeField, HideInInspector] private BulletBarView bulletBarView;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
@@ -52,6 +53,23 @@ namespace Week14.UI
             ApplyColors();
         }
 
+        public void Configure(BossAI boss)
+        {
+            if (boss == null)
+            {
+                return;
+            }
+
+            bossAI = boss;
+            bulletColor = boss.BulletBarColor;
+            emptyColor = boss.EmptyBulletBarColor;
+            lockOnColor = boss.LockOnIndicatorColor;
+            executionColor = boss.ExecutionIndicatorColor;
+
+            EnsureView();
+            ApplyColors();
+        }
+
         public void SetTargets(Health nextHealth, BulletGauge nextBullets)
         {
             health = nextHealth;
@@ -77,6 +95,7 @@ namespace Week14.UI
             bullets ??= GetComponentInParent<BulletGauge>();
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
             enemyAI ??= GetComponentInParent<EnemyAI>();
+            bossAI ??= GetComponentInParent<BossAI>();
 
             EnsureView();
             SetTargets(health, bullets);
@@ -86,7 +105,8 @@ namespace Week14.UI
         private void LateUpdate()
         {
             bool alive = health != null && !health.IsDead;
-            bool canShowDuringEnemyState = enemyAI == null || !enemyAI.IsExecutionLocked;
+            bool canShowDuringEnemyState = (enemyAI == null || !enemyAI.IsExecutionLocked)
+                && (bossAI == null || !bossAI.IsExecutionLocked);
             bool barsVisible = alive && !suppressed && canShowDuringEnemyState;
             bool indicatorsVisible = alive && canShowDuringEnemyState;
             SetBarsVisible(barsVisible);
@@ -131,7 +151,14 @@ namespace Week14.UI
 
             EnemyAI targetEnemy = player.LockOnTarget.GetComponent<EnemyAI>()
                 ?? player.LockOnTarget.GetComponentInParent<EnemyAI>();
-            return enemyAI != null && targetEnemy == enemyAI;
+            if (enemyAI != null && targetEnemy == enemyAI)
+            {
+                return true;
+            }
+
+            BossAI targetBoss = player.LockOnTarget.GetComponent<BossAI>()
+                ?? player.LockOnTarget.GetComponentInParent<BossAI>();
+            return bossAI != null && targetBoss == bossAI;
         }
 
         private bool IsHoveredExecutionTarget()
@@ -146,6 +173,7 @@ namespace Week14.UI
         private void EnsureView()
         {
             enemyAI ??= GetComponentInParent<EnemyAI>();
+            bossAI ??= GetComponentInParent<BossAI>();
             EnsureBars();
             EnsureIndicators();
         }

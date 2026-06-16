@@ -23,6 +23,7 @@ namespace Week14.Combat
         private LineRenderer chargeVfx;
         private BulletGauge ownerBullets;
         private EnemyAI ownerEnemy;
+        private BossAI ownerBoss;
         private int counterBulletDamage;
         private int bulletDamage;
         private float destroyAt;
@@ -56,6 +57,45 @@ namespace Week14.Combat
                 data.ProjectileTrailWidthMultiplier,
                 data.ProjectileHomingSeconds,
                 data.ProjectileHomingTurnDegreesPerSecond);
+        }
+
+        public static EnemyProjectile Spawn(
+            EnemyProjectile prefab,
+            BulletGauge ownerBullets,
+            Vector3 position,
+            Vector2 direction,
+            int bulletDamage,
+            float chargeSeconds,
+            float speed,
+            float lifetime,
+            float radius,
+            Color color,
+            float trailSeconds,
+            float trailWidth,
+            float homingSeconds,
+            float homingTurnDegrees)
+        {
+            if (prefab == null)
+            {
+                return null;
+            }
+
+            return SpawnInternal(
+                prefab,
+                ownerBullets,
+                position,
+                direction,
+                bulletDamage,
+                GetCounteredProjectileBulletDamage(),
+                chargeSeconds,
+                speed,
+                lifetime,
+                radius,
+                color,
+                trailSeconds,
+                trailWidth,
+                homingSeconds,
+                homingTurnDegrees);
         }
 
         private static int GetCounteredProjectileBulletDamage()
@@ -109,7 +149,9 @@ namespace Week14.Combat
             homingTurnDegreesPerSecond = Mathf.Max(0f, nextHomingTurnDegrees);
             ownerBullets = nextOwnerBullets;
             ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
+            ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
             ownerEnemy?.RegisterActiveProjectile(this);
+            ownerBoss?.RegisterActiveProjectile(this);
             counterBulletDamage = nextCounterBulletDamage;
             bulletDamage = nextBulletDamage;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
@@ -260,6 +302,18 @@ namespace Week14.Combat
                     return;
                 }
 
+                BossAI hitBoss = other.GetComponentInParent<BossAI>();
+                if (hitBoss != null)
+                {
+                    if (hitBoss == ownerBoss)
+                    {
+                        return;
+                    }
+
+                    DestroyProjectile();
+                    return;
+                }
+
                 if (other.GetComponentInParent<EnemyProjectile>() == null)
                 {
                     DestroyProjectile();
@@ -345,6 +399,7 @@ namespace Week14.Combat
 
             ownerSlotReleased = true;
             ownerEnemy?.UnregisterActiveProjectile(this);
+            ownerBoss?.UnregisterActiveProjectile(this);
         }
 
         private void SpendOwnerBulletsOnCounter(BulletChangeSource source)

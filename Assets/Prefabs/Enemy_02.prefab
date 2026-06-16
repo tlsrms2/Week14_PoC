@@ -377,11 +377,11 @@ GameObject:
   - component: {fileID: 8932169065044441375}
   - component: {fileID: 1045739664010594910}
   - component: {fileID: 4667363922611649476}
-  - component: {fileID: 6024914368375278117}
   - component: {fileID: 3117858263439591997}
   - component: {fileID: 3327489348220524332}
   - component: {fileID: 3428452993075551584}
   - component: {fileID: 498269881852238974}
+  - component: {fileID: 2075240932106930298}
   m_Layer: 0
   m_Name: Enemy_02
   m_TagString: Untagged
@@ -482,18 +482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb26d3e1e4cbf7c488d372b9878cd439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.Health
---- !u!114 &6024914368375278117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958469296149594014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a070f80ca71c814783341cde6cb57e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.HeatGauge
 --- !u!114 &3117858263439591997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,17 +494,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8aefe568f54bb4e9bb27ce447537a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.EnemyStatusView
-  durability: {fileID: 0}
-  heat: {fileID: 0}
+  health: {fileID: 0}
+  bullets: {fileID: 0}
   executionTarget: {fileID: 0}
   enemyAI: {fileID: 0}
-  durabilityBarView: {fileID: 0}
-  heatBarView: {fileID: 0}
-  barBackgroundImage: {fileID: 0}
-  durabilityBackgroundImage: {fileID: 0}
-  durabilityFillImage: {fileID: 0}
-  heatBackgroundImage: {fileID: 0}
-  heatFillImage: {fileID: 0}
+  bossAI: {fileID: 0}
+  bulletBarView: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
   barsRoot: {fileID: 0}
@@ -556,7 +539,10 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
-  patrolWaypoints: []
+  lockOnIndicator: {fileID: 0}
+  executionIndicator: {fileID: 0}
+  bossCombatUiRoot: {fileID: 0}
+  bossBulletBarView: {fileID: 0}
 --- !u!114 &498269881852238974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,6 +609,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2075240932106930298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958469296149594014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb4c7c61538bda429b49d88608ae9e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.BulletGauge
 --- !u!1 &4325219888150825616
 GameObject:
   m_ObjectHideFlags: 0

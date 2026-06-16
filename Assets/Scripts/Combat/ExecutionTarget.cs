@@ -11,13 +11,15 @@ namespace Week14.Combat
         private Health health;
         private BulletGauge bullets;
         private EnemyAI enemyAI;
+        private BossAI bossAI;
         private bool executionInProgress;
 
         private void Awake()
         {
             health = GetComponent<Health>();
             bullets = GetComponent<BulletGauge>();
-            enemyAI = GetComponent<EnemyAI>();
+            enemyAI = GetComponent<EnemyAI>() ?? GetComponentInParent<EnemyAI>();
+            bossAI = GetComponent<BossAI>() ?? GetComponentInParent<BossAI>();
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
@@ -51,6 +53,7 @@ namespace Week14.Combat
 
             executionInProgress = true;
             enemyAI?.SetExecutionLocked(true);
+            bossAI?.SetExecutionLocked(true);
             return true;
         }
 

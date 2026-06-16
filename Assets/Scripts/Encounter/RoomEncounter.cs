@@ -134,9 +134,10 @@ namespace Week14.Encounter
                         continue;
                     }
 
-                    if (enemy.GetComponentInChildren<Week14.Enemy.EnemyAI>() == null)
+                    if (enemy.GetComponentInChildren<Week14.Enemy.EnemyAI>() == null
+                        && enemy.GetComponentInChildren<Week14.Enemy.BossAI>() == null)
                     {
-                        Debug.LogWarning($"{spawnPoint.EnemyPrefab.name} requires {nameof(Week14.Enemy.EnemyAI)}.", enemy);
+                        Debug.LogWarning($"{spawnPoint.EnemyPrefab.name} requires {nameof(Week14.Enemy.EnemyAI)} or {nameof(Week14.Enemy.BossAI)}.", enemy);
                     }
 
                     aliveEnemies.Add(enemyHealth);

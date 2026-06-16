@@ -134,9 +134,9 @@ GameObject:
   - component: {fileID: 4451041738046458440}
   - component: {fileID: 2148138128209018699}
   - component: {fileID: 1962243867910976323}
-  - component: {fileID: 2732529989977436893}
   - component: {fileID: 2278235474687056908}
   - component: {fileID: 961238046002133381}
+  - component: {fileID: 419335832944192615}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -235,18 +235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb26d3e1e4cbf7c488d372b9878cd439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.Health
---- !u!114 &2732529989977436893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479005607939962125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a070f80ca71c814783341cde6cb57e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.HeatGauge
 --- !u!114 &2278235474687056908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,6 +276,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerTopDownMovement
   combat: {fileID: 2278235474687056908}
+--- !u!114 &419335832944192615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479005607939962125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb4c7c61538bda429b49d88608ae9e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.BulletGauge
 --- !u!1 &1284190382212355185
 GameObject:
   m_ObjectHideFlags: 0

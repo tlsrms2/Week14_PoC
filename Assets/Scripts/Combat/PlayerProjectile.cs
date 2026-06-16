@@ -267,11 +267,21 @@ namespace Week14.Combat
             }
 
             resolved = true;
-            EnemyAI enemy = targetHealth.GetComponent<EnemyAI>();
+            EnemyAI enemy = targetHealth.GetComponent<EnemyAI>()
+                ?? targetHealth.GetComponentInParent<EnemyAI>();
             PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (enemy != null)
             {
                 enemy.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
+                DestroyProjectile();
+                return true;
+            }
+
+            BossAI boss = targetHealth.GetComponent<BossAI>()
+                ?? targetHealth.GetComponentInParent<BossAI>();
+            if (boss != null)
+            {
+                boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
                 DestroyProjectile();
                 return true;
             }

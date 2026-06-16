@@ -1060,7 +1060,10 @@ namespace Week14.Combat
             return targetHealth != null
                 && targetHealth != health
                 && !targetHealth.IsDead
-                && targetHealth.GetComponent<Week14.Enemy.EnemyAI>() != null;
+                && (targetHealth.GetComponent<Week14.Enemy.EnemyAI>() != null
+                    || targetHealth.GetComponentInParent<Week14.Enemy.EnemyAI>() != null
+                    || targetHealth.GetComponent<Week14.Enemy.BossAI>() != null
+                    || targetHealth.GetComponentInParent<Week14.Enemy.BossAI>() != null);
         }
 
         private bool IsValidLockOnTargetInRange(Health targetHealth)
