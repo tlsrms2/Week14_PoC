@@ -791,7 +791,7 @@ namespace Week14.Combat
         private bool TryParryProjectile(out bool applyImmediatePenalty)
         {
             applyImmediatePenalty = false;
-            if (!CanRecoverBullets() || Time.time < parryBlockedUntil)
+            if (Time.time < parryBlockedUntil)
             {
                 return false;
             }
@@ -969,47 +969,14 @@ namespace Week14.Combat
         {
             if (GameInput.LockOnDown)
             {
-                SetLockOnTarget(GameInput.IsGamepadMode ? FindNextLockOnTarget() : FindMouseLockOnTarget());
+                SetLockOnTarget(FindNextLockOnTarget());
                 return;
             }
 
-            if (GameInput.IsGamepadMode && lockOnTarget == null)
+            if (lockOnTarget == null)
             {
                 SetLockOnTarget(FindNearestLockOnTarget());
             }
-        }
-
-        private Health FindMouseLockOnTarget()
-        {
-            if (config == null)
-            {
-                return null;
-            }
-
-            Vector2 mouseWorld = GetMouseWorldPosition();
-            Collider2D[] hits = Physics2D.OverlapCircleAll(mouseWorld, config.LockOnSearchRadius, enemyMask);
-            Health bestTarget = null;
-            float bestDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Health targetHealth = hits[i].GetComponentInParent<Health>();
-                if (!IsValidLockOnTarget(targetHealth))
-                {
-                    continue;
-                }
-
-                float distance = Vector2.Distance(mouseWorld, hits[i].bounds.center);
-                if (distance >= bestDistance)
-                {
-                    continue;
-                }
-
-                bestTarget = targetHealth;
-                bestDistance = distance;
-            }
-
-            return bestTarget;
         }
 
         private Health FindNearestLockOnTarget()
@@ -1514,14 +1481,9 @@ namespace Week14.Combat
             return bodyRoot != null ? (Vector2)bodyRoot.right : (Vector2)transform.right;
         }
 
-        private bool CanRecoverBullets()
-        {
-            return bullets != null && bullets.CurrentBullets < bullets.MaxBullets;
-        }
-
         private Color GetParryAvailabilityColor()
         {
-            return CanRecoverBullets() ? ParryEffectColor : Color.red;
+            return Time.time < parryBlockedUntil ? Color.red : ParryEffectColor;
         }
 
         private void SetAttackRangeDashesVisible(bool visible)

@@ -35,7 +35,6 @@ MonoBehaviour:
   playerStaggerShakeFrequency: 32
   overloadBulletDamage: 2
   parryBlockAfterOverloadSeconds: 1
-  lockOnSearchRadius: 2
   lockOnBreakDistance: 7.5
   executionRange: 7
   executionBulletRecovery: 300

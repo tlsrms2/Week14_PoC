@@ -62,8 +62,6 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float parryBlockAfterOverloadSeconds = 1f;
 
         [Header("Lock On")]
-        [Tooltip("마우스 위치 주변에서 락온 대상을 찾는 반경입니다.")]
-        [SerializeField, Min(0f)] private float lockOnSearchRadius = 2f;
         [Tooltip("락온 대상이 이 거리보다 멀어지면 락온을 해제합니다.")]
         [SerializeField, Min(0f)] private float lockOnBreakDistance = 9f;
 
@@ -146,7 +144,6 @@ namespace Week14.Combat
         public float PlayerStaggerShakeFrequency => playerStaggerShakeFrequency;
         public int OverloadBulletDamage => overloadBulletDamage;
         public float ParryBlockAfterOverloadSeconds => parryBlockAfterOverloadSeconds;
-        public float LockOnSearchRadius => lockOnSearchRadius;
         public float LockOnBreakDistance => lockOnBreakDistance;
         public float ExecutionRange => executionRange;
         public int ExecutionBulletRecovery => executionBulletRecovery;
