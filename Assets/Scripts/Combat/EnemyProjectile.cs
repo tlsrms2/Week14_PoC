@@ -36,6 +36,8 @@ namespace Week14.Combat
         private Vector3 chargeGrowthEndScale;
         private Color launchBubbleColor;
         private float launchBubbleScale = 1f;
+        private bool playMuzzleFlashOnLaunch;
+        private float launchMuzzleFlashScale = 1f;
         private bool aimAtPlayerWhileCharging = true;
         private bool aimAtPlayerOnLaunch;
         private float aimAtPlayerOnLaunchSpreadDegrees;
@@ -236,6 +238,12 @@ namespace Week14.Combat
             }
         }
 
+        public void ConfigureLaunchMuzzleFlash(float scale)
+        {
+            launchMuzzleFlashScale = Mathf.Max(0f, scale);
+            playMuzzleFlashOnLaunch = launchMuzzleFlashScale > 0f;
+        }
+
         public void ConfigureInterceptable(bool interceptable)
         {
             canBeIntercepted = interceptable;
@@ -298,6 +306,8 @@ namespace Week14.Combat
             chargeGrowthEndScale = baseLocalScale;
             growScaleWhileCharging = false;
             playBubbleOnLaunch = false;
+            playMuzzleFlashOnLaunch = false;
+            launchMuzzleFlashScale = 1f;
             aimAtPlayerOnLaunchSpreadDegrees = 0f;
             canBeIntercepted = true;
             splitOnObstacle = false;
@@ -388,6 +398,11 @@ namespace Week14.Combat
             if (aimAtPlayerOnLaunch)
             {
                 AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
+            }
+
+            if (playMuzzleFlashOnLaunch)
+            {
+                ProjectileVfx.PlayMuzzleFlash(transform.position, flightDirection, launchedColor, launchMuzzleFlashScale);
             }
 
             if (playBubbleOnLaunch)

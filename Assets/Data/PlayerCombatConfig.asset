@@ -27,10 +27,7 @@ MonoBehaviour:
   gunAimHoldSeconds: 0.15
   parryRange: 6.5
   parryAimAngleDegrees: 30
-  minParryAimAngleDegrees: 5
-  parryAimAnglePenaltyPerClick: 5
-  parryAimAngleRecoveryPerSecond: 10
-  rightGunMagazineSize: 4
+  rightGunMagazineSize: 5
   rightGunRechargeSeconds: 1
   lockOnBreakDistance: 7.5
   executionRange: 7
