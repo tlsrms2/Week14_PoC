@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatConfig
   maxBullets: 5
   leftAttackBulletCost: 1
-  attackBulletDamage: 1
+  attackBulletDamage: 5
   parryBulletRecovery: 1
+  counteredProjectileBulletDamage: 1
   moveSpeed: 3
   sprintSpeedMultiplier: 1.5
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
@@ -30,11 +31,6 @@ MonoBehaviour:
   parryAimAnglePenaltyPerClick: 5
   parryAimAngleRecoveryPerSecond: 10
   parryShotCooldown: 0.1
-  playerStaggerSeconds: 0.18
-  playerStaggerShakeDistance: 0.06
-  playerStaggerShakeFrequency: 32
-  overloadBulletDamage: 2
-  parryBlockAfterOverloadSeconds: 1
   lockOnBreakDistance: 7.5
   executionRange: 7
   executionBulletRecovery: 300

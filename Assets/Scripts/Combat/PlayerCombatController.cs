@@ -253,7 +253,7 @@ namespace Week14.Combat
             }
             else
             {
-                bullets.TrySpend(bulletDamage, BulletChangeSource.Hit);
+                bullets.TrySpend(Mathf.Clamp(bulletDamage, 1, bullets.CurrentBullets), BulletChangeSource.Hit);
             }
             FlashBodyHitColor();
             ProjectileVfx.PlayPlayerAttackImpact(

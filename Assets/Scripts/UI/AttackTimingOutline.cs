@@ -8,6 +8,7 @@ namespace Week14.UI
         private const string RootName = "AttackTimingOutline";
         private const string BulletRootName = "AttackBullets";
         private const int MaxPointCount = 73;
+        private const int MaxBulletsPerRow = 10;
 
         [SerializeField, Min(0.1f)] private float fallbackRadius = 0.85f;
         [SerializeField, Min(0f)] private float radiusPadding = 0.02f;
@@ -15,6 +16,7 @@ namespace Week14.UI
         [SerializeField, Min(0.001f)] private float bulletWidth = 0.06f;
         [SerializeField, Min(0.01f)] private float bulletLength = 0.18f;
         [SerializeField, Min(0.01f)] private float bulletGap = 0.12f;
+        [SerializeField, Min(0.01f)] private float bulletRowGap = 0.16f;
         [SerializeField, Min(0f)] private float bulletYOffset = 0.24f;
         [SerializeField] private Color color = new(1f, 0.82f, 0.18f, 0.95f);
         [SerializeField] private Color spentBulletColor = new(1f, 1f, 1f, 0.22f);
@@ -196,11 +198,18 @@ namespace Week14.UI
 
             int loadedCount = Mathf.Clamp(loadedBulletCount, 0, totalBulletCount);
             float radius = GetOutlineRadius();
-            float y = radius + bulletYOffset;
-            float startX = -((totalBulletCount - 1) * bulletGap) * 0.5f;
+            float firstRowY = radius + bulletYOffset;
 
             for (int i = 0; i < totalBulletCount; i++)
             {
+                int row = i / MaxBulletsPerRow;
+                int column = i % MaxBulletsPerRow;
+                int rowStartIndex = row * MaxBulletsPerRow;
+                int rowBulletCount = Mathf.Min(MaxBulletsPerRow, totalBulletCount - rowStartIndex);
+                float startX = -((rowBulletCount - 1) * bulletGap) * 0.5f;
+                float x = startX + column * bulletGap;
+                float y = firstRowY + row * bulletRowGap;
+
                 LineRenderer bullet = GetBulletLine(i);
                 bullet.enabled = true;
                 bullet.positionCount = 2;
@@ -215,7 +224,6 @@ namespace Week14.UI
                 bullet.endColor = bullet.startColor;
                 bullet.sortingOrder = sortingOrder + 1;
 
-                float x = startX + i * bulletGap;
                 bullet.SetPosition(0, new Vector3(x, y - bulletLength * 0.5f, 0f));
                 bullet.SetPosition(1, new Vector3(x, y + bulletLength * 0.5f, 0f));
             }
