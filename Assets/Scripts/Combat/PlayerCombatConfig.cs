@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using UnityEngine.Serialization;
+
 namespace Week14.Combat
 {
     [CreateAssetMenu(menuName = "Week14/Combat/Player Combat Config", fileName = "PlayerCombatConfig")]
@@ -40,14 +42,11 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float parryRange = 7f;
         [Tooltip("패링 판정에 허용되는 조준 각도입니다.")]
         [SerializeField, Range(1f, 360f)] private float parryAimAngleDegrees = 65f;
-        [Tooltip("연속 실패 시 줄어들 수 있는 최소 패링 조준 각도입니다.")]
-        [SerializeField, Range(1f, 360f)] private float minParryAimAngleDegrees = 20f;
-        [Tooltip("패링 대상이 없을 때 클릭할 때마다 감소하는 조준 각도입니다.")]
-        [SerializeField, Min(0f)] private float parryAimAnglePenaltyPerClick = 10f;
-        [Tooltip("패링 조준 각도가 초당 회복되는 양입니다.")]
-        [SerializeField, Min(0f)] private float parryAimAngleRecoveryPerSecond = 35f;
-        [Tooltip("오른쪽 권총 패링탄을 다시 발사할 수 있을 때까지의 시간입니다.")]
-        [SerializeField, Min(0f)] private float parryShotCooldown = 0.18f;
+        [Tooltip("오른쪽 권총에 장전되는 패링/방어 탄환 수입니다.")]
+        [SerializeField, Min(1)] private int rightGunMagazineSize = 3;
+        [Tooltip("오른쪽 권총 탄환 하나가 재충전되기까지 걸리는 시간입니다.")]
+        [FormerlySerializedAs("parryShotCooldown")]
+        [SerializeField, Min(0f)] private float rightGunRechargeSeconds = 0.18f;
 
         [Header("Lock On")]
         [Tooltip("락온 대상이 이 거리보다 멀어지면 락온을 해제합니다.")]
@@ -98,10 +97,8 @@ namespace Week14.Combat
         public int ParryBulletRecovery => parryBulletRecovery;
         public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
         public float ParryAimAngleDegrees => parryAimAngleDegrees;
-        public float MinParryAimAngleDegrees => minParryAimAngleDegrees;
-        public float ParryAimAnglePenaltyPerClick => parryAimAnglePenaltyPerClick;
-        public float ParryAimAngleRecoveryPerSecond => parryAimAngleRecoveryPerSecond;
-        public float ParryShotCooldown => parryShotCooldown;
+        public int RightGunMagazineSize => rightGunMagazineSize;
+        public float RightGunRechargeSeconds => rightGunRechargeSeconds;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
         public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
         public Color ParrySparkColor => effectData != null ? effectData.ParrySparkColor : new Color(1f, 0.88f, 0.35f, 1f);

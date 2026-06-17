@@ -482,7 +482,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 434.74103}
+  m_AnchoredPosition: {x: 0, y: 581}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &155646889
@@ -30768,7 +30768,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -419.62708}
+  m_AnchoredPosition: {x: 0, y: -556.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1261519759
@@ -31088,6 +31088,12 @@ MonoBehaviour:
   defenseOutlineColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
   hitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   attackOutlineColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  showPlayerRightGunAmmo: 1
+  rightGunAmmoHeightRatio: 0.2
+  rightGunAmmoWidthRatio: 0.48
+  rightGunAmmoSpacingRatio: 0.12
+  rightGunAmmoColor: {r: 0.58, g: 0.58, b: 0.58, a: 0.95}
+  rightGunCooldownColor: {r: 0.78, g: 0.78, b: 0.78, a: 0.9}
 --- !u!114 &1422819312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31101,7 +31107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 0.54901963}
+  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31929,7 +31935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 0.54901963}
+  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31979,6 +31985,12 @@ MonoBehaviour:
   defenseOutlineColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
   hitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   attackOutlineColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  showPlayerRightGunAmmo: 1
+  rightGunAmmoHeightRatio: 0.4
+  rightGunAmmoWidthRatio: 0.75
+  rightGunAmmoSpacingRatio: 0.01
+  rightGunAmmoColor: {r: 0.58, g: 0.58, b: 0.58, a: 0.95}
+  rightGunCooldownColor: {r: 0.78, g: 0.78, b: 0.78, a: 0.9}
 --- !u!1 &1536620596
 GameObject:
   m_ObjectHideFlags: 0
@@ -32363,7 +32375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1779958075
 RectTransform:
   m_ObjectHideFlags: 0

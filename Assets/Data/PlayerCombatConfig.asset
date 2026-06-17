@@ -30,7 +30,8 @@ MonoBehaviour:
   minParryAimAngleDegrees: 5
   parryAimAnglePenaltyPerClick: 5
   parryAimAngleRecoveryPerSecond: 10
-  parryShotCooldown: 0.1
+  rightGunMagazineSize: 4
+  rightGunRechargeSeconds: 1
   lockOnBreakDistance: 7.5
   executionRange: 7
   executionBulletRecovery: 300

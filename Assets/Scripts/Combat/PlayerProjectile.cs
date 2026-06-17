@@ -17,7 +17,6 @@ namespace Week14.Combat
         private float destroyAt;
         private Vector2 previousPosition;
         private EnemyProjectile forcedParryTarget;
-        private Action<bool> interceptResolutionCallback;
         private float forcedParryResolveAt;
         private Vector2 flightDirection = Vector2.right;
         private Color projectileColor = Color.white;
@@ -181,11 +180,6 @@ namespace Week14.Combat
             SetForcedTarget(enemyProjectile);
         }
 
-        public void SetInterceptResolutionCallback(Action<bool> callback)
-        {
-            interceptResolutionCallback = callback;
-        }
-
         private void SetForcedTarget(EnemyProjectile enemyProjectile)
         {
             forcedParryTarget = enemyProjectile;
@@ -345,7 +339,6 @@ namespace Week14.Combat
                 owner?.PlayDefenseImpact(impactPosition, incomingDirection);
             }
 
-            ReportInterceptResolved(parried);
             DestroyByClash();
             return true;
         }
@@ -373,11 +366,6 @@ namespace Week14.Combat
                 return;
             }
 
-            if (canClashWithEnemyProjectile && !resolved)
-            {
-                ReportInterceptResolved(false);
-            }
-
             isDestroying = true;
             if (body != null)
             {
@@ -397,13 +385,6 @@ namespace Week14.Combat
             }
 
             Destroy(gameObject);
-        }
-
-        private void ReportInterceptResolved(bool parried)
-        {
-            Action<bool> callback = interceptResolutionCallback;
-            interceptResolutionCallback = null;
-            callback?.Invoke(parried);
         }
 
         private void EnsureProjectileShape(Color color, float radius)
