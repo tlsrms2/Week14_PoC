@@ -64,6 +64,7 @@ namespace Week14.Combat
         private SpriteRenderer executionDimRenderer;
         private Coroutine executionDimRoutine;
         private SpriteRenderer[] bodyRenderers;
+        private SpriteRenderer[] bodyVisualRenderers;
         private Color[] bodyBaseColors;
         private float bodyHitColorEndsAt;
         private Vector2 smoothedGamepadLookDirection;
@@ -935,8 +936,6 @@ namespace Week14.Combat
             Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, ParryRange, parryMask);
             EnemyProjectile bestTarget = null;
             float bestDistance = float.PositiveInfinity;
-            Transform aimOrigin = rightGunOrigin != null ? rightGunOrigin : transform;
-            float aimAngle = config.ParryAimAngleDegrees;
 
             for (int i = 0; i < hits.Length; i++)
             {
@@ -946,8 +945,7 @@ namespace Week14.Combat
                     continue;
                 }
 
-                Vector2 toSource = (Vector2)(source.transform.position - aimOrigin.position);
-                if (!IsInsideAimAngle(toSource, aimDirection, aimAngle))
+                if (!IsInsideParryJudgementArea(source.transform.position, aimDirection))
                 {
                     continue;
                 }
@@ -968,6 +966,107 @@ namespace Week14.Combat
         private Vector2 GetParryCenter()
         {
             return bodyRoot != null ? bodyRoot.position : transform.position;
+        }
+
+        private bool IsInsideParryJudgementArea(Vector2 targetPosition, Vector2 aimDirection)
+        {
+            Vector2 parryCenter = GetParryCenter();
+            float radius = ParryRange;
+            if (radius <= 0f || (targetPosition - parryCenter).sqrMagnitude > radius * radius)
+            {
+                return false;
+            }
+
+            float angleDegrees = Mathf.Clamp(config.ParryAimAngleDegrees, 1f, 360f);
+            if (angleDegrees >= 359.5f)
+            {
+                return true;
+            }
+
+            Vector2 forward = aimDirection.sqrMagnitude > 0.0001f ? aimDirection.normalized : Vector2.right;
+            float halfAngle = angleDegrees * 0.5f;
+            Vector2 lowerArcPoint = parryCenter + RotateDirection(forward, -halfAngle) * radius;
+            Vector2 upperArcPoint = parryCenter + RotateDirection(forward, halfAngle) * radius;
+            GetParryBodyEdgePoints(out Vector2 lowerBodyPoint, out Vector2 upperBodyPoint);
+
+            Vector2 insideReference = parryCenter + forward * (radius * 0.5f);
+            return IsSameSideOfLine(lowerBodyPoint, lowerArcPoint, insideReference, targetPosition)
+                && IsSameSideOfLine(upperBodyPoint, upperArcPoint, insideReference, targetPosition);
+        }
+
+        private void GetParryBodyEdgePoints(out Vector2 lowerPoint, out Vector2 upperPoint)
+        {
+            Vector2 center = GetParryCenter();
+            Vector2 up = bodyRoot != null ? (Vector2)bodyRoot.up : Vector2.up;
+            if (up.sqrMagnitude <= 0.0001f)
+            {
+                up = Vector2.up;
+            }
+            up.Normalize();
+
+            if (TryGetBodyVisualProjection(up, center, out float minOffset, out float maxOffset))
+            {
+                lowerPoint = center + up * minOffset;
+                upperPoint = center + up * maxOffset;
+                return;
+            }
+
+            lowerPoint = center;
+            upperPoint = center;
+        }
+
+        private bool TryGetBodyVisualProjection(Vector2 axis, Vector2 center, out float minOffset, out float maxOffset)
+        {
+            minOffset = 0f;
+            maxOffset = 0f;
+            bool hasProjection = false;
+
+            SpriteRenderer[] renderers = bodyVisualRenderers;
+            if (renderers == null || renderers.Length == 0)
+            {
+                Transform targetRoot = bodyRoot != null ? bodyRoot : transform;
+                renderers = targetRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            }
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                SpriteRenderer renderer = renderers[i];
+                if (renderer == null || renderer.sprite == null)
+                {
+                    continue;
+                }
+
+                Bounds bounds = renderer.sprite.bounds;
+                Vector3 min = bounds.min;
+                Vector3 max = bounds.max;
+                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(min.x, min.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
+                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(min.x, max.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
+                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(max.x, min.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
+                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(max.x, max.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
+            }
+
+            return hasProjection;
+        }
+
+        private static void IncludeBodyVisualProjection(
+            Vector3 point,
+            Vector2 axis,
+            Vector2 center,
+            ref float minOffset,
+            ref float maxOffset,
+            ref bool hasProjection)
+        {
+            float offset = Vector2.Dot((Vector2)point - center, axis);
+            if (!hasProjection)
+            {
+                minOffset = offset;
+                maxOffset = offset;
+                hasProjection = true;
+                return;
+            }
+
+            minOffset = Mathf.Min(minOffset, offset);
+            maxOffset = Mathf.Max(maxOffset, offset);
         }
 
         private void UpdateLockOnTarget()
@@ -1578,6 +1677,7 @@ namespace Week14.Combat
         {
             Transform targetRoot = bodyRoot != null ? bodyRoot : transform;
             SpriteRenderer[] renderers = targetRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            bodyVisualRenderers = renderers;
             int count = 0;
             for (int i = 0; i < renderers.Length; i++)
             {
@@ -1761,14 +1861,22 @@ namespace Week14.Combat
             return camera.ScreenToWorldPoint(GameInput.MouseScreenPosition);
         }
 
-        private static bool IsInsideAimAngle(Vector2 toTarget, Vector2 forward, float angleDegrees)
+        private static bool IsSameSideOfLine(Vector2 lineStart, Vector2 lineEnd, Vector2 reference, Vector2 point)
         {
-            if (toTarget.sqrMagnitude <= 0.0001f || angleDegrees >= 360f)
+            Vector2 line = lineEnd - lineStart;
+            float referenceSide = Cross(line, reference - lineStart);
+            float pointSide = Cross(line, point - lineStart);
+            if (Mathf.Abs(referenceSide) <= 0.0001f)
             {
                 return true;
             }
 
-            return Vector2.Angle(forward, toTarget) <= angleDegrees * 0.5f;
+            return referenceSide * pointSide >= -0.0001f;
+        }
+
+        private static float Cross(Vector2 a, Vector2 b)
+        {
+            return a.x * b.y - a.y * b.x;
         }
 
         private static Vector2 RotateDirection(Vector2 direction, float angleDegrees)
@@ -1808,6 +1916,54 @@ namespace Week14.Combat
             Gizmos.color = Color.cyan;
             Vector3 parryCenter = bodyRoot != null ? bodyRoot.position : transform.position;
             Gizmos.DrawWireSphere(parryCenter, ParryRange);
+            Gizmos.color = new Color(0.35f, 1f, 0.45f, 0.85f);
+            DrawParryJudgementGizmo(parryCenter, GetGizmoParryDirection());
+        }
+
+        private Vector2 GetGizmoParryDirection()
+        {
+            Transform aimTransform = rightGunOrigin != null
+                ? rightGunOrigin
+                : bodyRoot != null
+                    ? bodyRoot
+                    : transform;
+            Vector2 direction = aimTransform != null ? (Vector2)aimTransform.right : Vector2.right;
+            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+        }
+
+        private void DrawParryJudgementGizmo(Vector3 center, Vector2 direction)
+        {
+            float radius = ParryRange;
+            if (radius <= 0f)
+            {
+                return;
+            }
+
+            Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float clampedAngle = Mathf.Clamp(config.ParryAimAngleDegrees, 1f, 360f);
+            bool fullCircle = clampedAngle >= 359.5f;
+            int segmentCount = fullCircle ? 72 : Mathf.Max(2, Mathf.CeilToInt(clampedAngle / 4f));
+            float centerAngle = Mathf.Atan2(normalized.y, normalized.x) * Mathf.Rad2Deg;
+            float startAngle = fullCircle ? 0f : centerAngle - clampedAngle * 0.5f;
+            Vector3 firstPoint = center + CirclePoint(radius, startAngle * Mathf.Deg2Rad);
+            Vector3 previousPoint = firstPoint;
+
+            for (int i = 1; i <= segmentCount; i++)
+            {
+                float t = (float)i / segmentCount;
+                float angle = (startAngle + clampedAngle * t) * Mathf.Deg2Rad;
+                Vector3 currentPoint = center + CirclePoint(radius, angle);
+                Gizmos.DrawLine(previousPoint, currentPoint);
+                previousPoint = currentPoint;
+            }
+
+            if (!fullCircle)
+            {
+                GetParryBodyEdgePoints(out Vector2 lowerBodyPoint, out Vector2 upperBodyPoint);
+                Gizmos.DrawLine(lowerBodyPoint, firstPoint);
+                Gizmos.DrawLine(upperBodyPoint, previousPoint);
+                Gizmos.DrawLine(lowerBodyPoint, upperBodyPoint);
+            }
         }
 
         private int PlayerAttackBulletDamage => config.AttackBulletDamage;
