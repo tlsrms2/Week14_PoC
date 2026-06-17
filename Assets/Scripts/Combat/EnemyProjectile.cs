@@ -6,7 +6,7 @@ namespace Week14.Combat
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public sealed class EnemyProjectile : MonoBehaviour
     {
-        private const int DefaultCounteredProjectileBulletDamage = 34;
+        private const int DefaultCounteredProjectileBulletDamage = 1;
         private const string BulletVisualName = "BulletVisual";
         private const string ChargeVfxName = "ChargeVfx";
 
@@ -15,8 +15,11 @@ namespace Week14.Combat
         private float projectileRadius;
         private float projectileChargeSeconds;
         private Color projectileColor;
+        private Color chargingColor;
+        private Color launchedColor;
         private float homingTurnDegreesPerSecond;
         private float homingSeconds;
+        private float chargeDriftSpeed;
         private float homingEndsAt;
         private float chargeEndsAt;
         private Rigidbody2D body;
@@ -28,6 +31,28 @@ namespace Week14.Combat
         private int bulletDamage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
+        private Vector3 baseLocalScale = Vector3.one;
+        private Vector3 chargeGrowthStartScale;
+        private Vector3 chargeGrowthEndScale;
+        private Color launchBubbleColor;
+        private float launchBubbleScale = 1f;
+        private bool aimAtPlayerWhileCharging = true;
+        private bool aimAtPlayerOnLaunch;
+        private float aimAtPlayerOnLaunchSpreadDegrees;
+        private bool growScaleWhileCharging;
+        private bool playBubbleOnLaunch;
+        private bool canBeIntercepted = true;
+        private bool splitOnObstacle;
+        private bool splitRadiallyOnLaunch;
+        private int splitRemaining;
+        private float splitAngleDegrees = 45f;
+        private int radialSplitBulletCount;
+        private float radialSplitStartAngleDegrees;
+        private float radialSplitDelaySeconds;
+        private float radialSplitAt;
+        private float splitSpeedMultiplier = 1f;
+        private float splitRadiusMultiplier = 0.6f;
+        private float splitLifetimeMultiplier = 0.85f;
         private bool resolved;
         private bool isDestroying;
         private bool launched;
@@ -36,7 +61,7 @@ namespace Week14.Combat
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
-        public bool CanBeIntercepted => !resolved && !isDestroying;
+        public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
 
 
@@ -105,6 +130,117 @@ namespace Week14.Combat
             return config != null ? config.CounteredProjectileBulletDamage : DefaultCounteredProjectileBulletDamage;
         }
 
+        public void ConfigureStateColors(Color nextChargingColor, Color nextLaunchedColor)
+        {
+            chargingColor = nextChargingColor;
+            launchedColor = nextLaunchedColor;
+            ApplyProjectileColor(launched ? launchedColor : chargingColor);
+        }
+
+        public void ConfigureChargeMotion(float driftSpeed, bool aimAtPlayer)
+        {
+            chargeDriftSpeed = Mathf.Max(0f, driftSpeed);
+            aimAtPlayerWhileCharging = aimAtPlayer;
+            aimAtPlayerOnLaunch = false;
+            aimAtPlayerOnLaunchSpreadDegrees = 0f;
+        }
+
+        public void ConfigureChargeMotion(float driftSpeed, bool aimAtPlayer, bool aimAtLaunch)
+        {
+            ConfigureChargeMotion(driftSpeed, aimAtPlayer, aimAtLaunch, 0f);
+        }
+
+        public void ConfigureChargeMotion(float driftSpeed, bool aimAtPlayer, bool aimAtLaunch, float launchSpreadDegrees)
+        {
+            chargeDriftSpeed = Mathf.Max(0f, driftSpeed);
+            aimAtPlayerWhileCharging = aimAtPlayer;
+            aimAtPlayerOnLaunch = aimAtLaunch;
+            aimAtPlayerOnLaunchSpreadDegrees = Mathf.Max(0f, launchSpreadDegrees);
+        }
+
+        public void ConfigureObstacleSplit(
+            int splitCount,
+            float angleDegrees,
+            float speedMultiplier,
+            float radiusMultiplier,
+            float lifetimeMultiplier)
+        {
+            splitOnObstacle = splitCount > 0;
+            splitRemaining = Mathf.Max(0, splitCount);
+            splitAngleDegrees = Mathf.Max(0f, angleDegrees);
+            splitSpeedMultiplier = Mathf.Max(0.01f, speedMultiplier);
+            splitRadiusMultiplier = Mathf.Clamp(radiusMultiplier, 0.05f, 1f);
+            splitLifetimeMultiplier = Mathf.Clamp(lifetimeMultiplier, 0.05f, 1f);
+
+        }
+
+        public void ConfigureRadialSplitOnLaunch(
+            int bulletCount,
+            float startAngleDegrees,
+            float delaySeconds,
+            float speedMultiplier,
+            float radiusMultiplier,
+            float lifetimeMultiplier)
+        {
+            splitRadiallyOnLaunch = bulletCount > 0;
+            radialSplitBulletCount = Mathf.Max(1, bulletCount);
+            radialSplitStartAngleDegrees = startAngleDegrees;
+            radialSplitDelaySeconds = Mathf.Max(0f, delaySeconds);
+            radialSplitAt = launched ? Time.time + radialSplitDelaySeconds : 0f;
+            splitSpeedMultiplier = Mathf.Max(0.01f, speedMultiplier);
+            splitRadiusMultiplier = Mathf.Clamp(radiusMultiplier, 0.05f, 1f);
+            splitLifetimeMultiplier = Mathf.Clamp(lifetimeMultiplier, 0.05f, 1f);
+
+            if (splitRadiallyOnLaunch && launched && radialSplitDelaySeconds <= 0f && !resolved && !isDestroying)
+            {
+                SplitRadiallyOnLaunch();
+            }
+        }
+
+        public void ConfigureProjectileSize(float radius)
+        {
+            projectileRadius = Mathf.Max(0.01f, radius);
+
+            CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
+            if (circleCollider != null)
+            {
+                circleCollider.radius = projectileRadius;
+            }
+
+            TrailRenderer trail = GetComponent<TrailRenderer>();
+            if (trail != null)
+            {
+                trail.startWidth = Mathf.Max(trail.startWidth, projectileRadius * 0.35f);
+            }
+        }
+
+        public void MultiplyProjectileScale(float scaleMultiplier)
+        {
+            float multiplier = Mathf.Max(0.01f, scaleMultiplier);
+            transform.localScale *= multiplier;
+            baseLocalScale = transform.localScale;
+        }
+
+        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier, Color bubbleColor, float bubbleScale)
+        {
+            chargeGrowthStartScale = baseLocalScale * Mathf.Max(0.01f, startScaleMultiplier);
+            chargeGrowthEndScale = baseLocalScale * Mathf.Max(0.01f, endScaleMultiplier);
+            launchBubbleColor = bubbleColor;
+            launchBubbleScale = Mathf.Max(0.1f, bubbleScale);
+            growScaleWhileCharging = true;
+            playBubbleOnLaunch = true;
+
+            if (IsCharging)
+            {
+                transform.localScale = chargeGrowthStartScale;
+            }
+        }
+
+        public void ConfigureInterceptable(bool interceptable)
+        {
+            canBeIntercepted = interceptable;
+        }
+
         private static EnemyProjectile SpawnInternal(
             EnemyProjectile prefab,
             BulletGauge ownerBullets,
@@ -145,6 +281,8 @@ namespace Week14.Combat
             projectileRadius = radius;
             projectileChargeSeconds = Mathf.Max(0f, chargeSeconds);
             projectileColor = color;
+            chargingColor = color;
+            launchedColor = color;
             this.homingSeconds = Mathf.Max(0f, homingSeconds);
             homingTurnDegreesPerSecond = Mathf.Max(0f, nextHomingTurnDegrees);
             ownerBullets = nextOwnerBullets;
@@ -155,6 +293,20 @@ namespace Week14.Combat
             counterBulletDamage = nextCounterBulletDamage;
             bulletDamage = nextBulletDamage;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
+            baseLocalScale = transform.localScale;
+            chargeGrowthStartScale = baseLocalScale;
+            chargeGrowthEndScale = baseLocalScale;
+            growScaleWhileCharging = false;
+            playBubbleOnLaunch = false;
+            aimAtPlayerOnLaunchSpreadDegrees = 0f;
+            canBeIntercepted = true;
+            splitOnObstacle = false;
+            splitRadiallyOnLaunch = false;
+            splitRemaining = 0;
+            radialSplitBulletCount = 0;
+            radialSplitStartAngleDegrees = 0f;
+            radialSplitDelaySeconds = 0f;
+            radialSplitAt = 0f;
             launched = projectileChargeSeconds <= 0f;
             chargeEndsAt = Time.time + projectileChargeSeconds;
             float launchTime = launched ? Time.time : chargeEndsAt;
@@ -197,6 +349,7 @@ namespace Week14.Combat
             else
             {
                 TickHoming();
+                TickRadialSplitDelay();
             }
 
             if (Time.time >= destroyAt)
@@ -207,12 +360,17 @@ namespace Week14.Combat
 
         private void TickCharge()
         {
-            if (body != null)
+            if (aimAtPlayerWhileCharging)
             {
-                body.linearVelocity = Vector2.zero;
+                AimAtPlayerWhileCharging();
             }
 
-            AimAtPlayerWhileCharging();
+            if (body != null)
+            {
+                body.linearVelocity = flightDirection * chargeDriftSpeed;
+            }
+
+            UpdateChargeGrowth();
             UpdateChargeVfx();
             if (Time.time < chargeEndsAt)
             {
@@ -220,6 +378,25 @@ namespace Week14.Combat
             }
 
             launched = true;
+            ApplyProjectileColor(launchedColor);
+            if (growScaleWhileCharging)
+            {
+                transform.localScale = chargeGrowthEndScale;
+                baseLocalScale = transform.localScale;
+            }
+
+            if (aimAtPlayerOnLaunch)
+            {
+                AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
+            }
+
+            if (playBubbleOnLaunch)
+            {
+                ProjectileVfx.PlayHogBubbleBurst(transform.position, launchBubbleColor, launchBubbleScale, 18);
+            }
+
+            radialSplitAt = splitRadiallyOnLaunch ? Time.time + radialSplitDelaySeconds : 0f;
+
             SetChargeVfxVisible(false);
             if (body != null)
             {
@@ -227,7 +404,19 @@ namespace Week14.Combat
             }
         }
 
-        private void AimAtPlayerWhileCharging()
+        private void UpdateChargeGrowth()
+        {
+            if (!growScaleWhileCharging || projectileChargeSeconds <= 0f)
+            {
+                return;
+            }
+
+            float t = 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds);
+            t = Mathf.SmoothStep(0f, 1f, t);
+            transform.localScale = Vector3.Lerp(chargeGrowthStartScale, chargeGrowthEndScale, t);
+        }
+
+        private void AimAtPlayerWhileCharging(float spreadDegrees = 0f)
         {
             PlayerCombatController target = PlayerCombatController.Active;
             if (target == null || target.Health == null || target.Health.IsDead)
@@ -242,6 +431,11 @@ namespace Week14.Combat
             }
 
             flightDirection = toTarget.normalized;
+            if (spreadDegrees > 0f)
+            {
+                flightDirection = RotateDirection(flightDirection, Random.Range(-spreadDegrees * 0.5f, spreadDegrees * 0.5f)).normalized;
+            }
+
             float angle = Mathf.Atan2(flightDirection.y, flightDirection.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
@@ -271,6 +465,16 @@ namespace Week14.Combat
             body.linearVelocity = flightDirection * projectileSpeed;
             float angle = Mathf.Atan2(flightDirection.y, flightDirection.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
+
+        private void TickRadialSplitDelay()
+        {
+            if (!splitRadiallyOnLaunch || resolved || isDestroying || radialSplitAt <= 0f || Time.time < radialSplitAt)
+            {
+                return;
+            }
+
+            SplitRadiallyOnLaunch();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -314,11 +518,17 @@ namespace Week14.Combat
                     return;
                 }
 
-                if (other.GetComponentInParent<EnemyProjectile>() == null)
+                if (other.GetComponentInParent<EnemyProjectile>() != null)
                 {
-                    DestroyProjectile();
+                    return;
                 }
 
+                if (TrySplitOnObstacle(other))
+                {
+                    return;
+                }
+
+                DestroyProjectile();
                 return;
             }
 
@@ -332,9 +542,116 @@ namespace Week14.Combat
             DestroyProjectile();
         }
 
+        private bool TrySplitOnObstacle(Collider2D obstacle)
+        {
+            if (!splitOnObstacle || splitRemaining <= 0 || obstacle == null)
+            {
+                return false;
+            }
+
+            Vector2 normal = GetObstacleNormal(obstacle);
+            Vector2 reflected = Vector2.Reflect(flightDirection, normal);
+            if (reflected.sqrMagnitude <= 0.0001f)
+            {
+                reflected = -flightDirection;
+            }
+
+            ProjectileVfx.PlayHogBubbleBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), 20);
+            SpawnSplitChild(RotateDirection(reflected, -splitAngleDegrees * 0.5f));
+            SpawnSplitChild(RotateDirection(reflected, splitAngleDegrees * 0.5f));
+            resolved = true;
+            DestroyProjectile();
+            return true;
+        }
+
+        private void SplitRadiallyOnLaunch()
+        {
+            int count = Mathf.Max(1, radialSplitBulletCount);
+            float step = 360f / count;
+            ProjectileVfx.PlayHogBubbleBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), count);
+
+            for (int i = 0; i < count; i++)
+            {
+                SpawnSplitChild(AngleToDirection(radialSplitStartAngleDegrees + step * i));
+            }
+
+            resolved = true;
+            SetChargeVfxVisible(false);
+            DestroyProjectile();
+        }
+
+        private Vector2 GetObstacleNormal(Collider2D obstacle)
+        {
+            Vector2 position = transform.position;
+            Vector2 closest = obstacle.ClosestPoint(position);
+            Vector2 normal = position - closest;
+            if (normal.sqrMagnitude <= 0.0001f)
+            {
+                normal = -flightDirection;
+            }
+
+            return normal.normalized;
+        }
+
+        private static Vector2 AngleToDirection(float angleDegrees)
+        {
+            float radians = angleDegrees * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        private void SpawnSplitChild(Vector2 direction)
+        {
+            EnemyProjectile child = SpawnInternal(
+                this,
+                ownerBullets,
+                transform.position + (Vector3)(direction.normalized * Mathf.Max(0.08f, projectileRadius)),
+                direction,
+                bulletDamage,
+                counterBulletDamage,
+                0f,
+                projectileSpeed * splitSpeedMultiplier,
+                projectileLifetime * splitLifetimeMultiplier,
+                projectileRadius * splitRadiusMultiplier,
+                projectileColor,
+                0.08f,
+                3f,
+                homingSeconds,
+                homingTurnDegreesPerSecond);
+
+            if (child == null)
+            {
+                return;
+            }
+
+            child.ConfigureObstacleSplit(
+                splitRemaining - 1,
+                splitAngleDegrees,
+                splitSpeedMultiplier,
+                splitRadiusMultiplier,
+                splitLifetimeMultiplier);
+            child.ConfigureProjectileSize(projectileRadius * splitRadiusMultiplier);
+            child.MultiplyProjectileScale(splitRadiusMultiplier);
+        }
+
+        private static Vector2 RotateDirection(Vector2 direction, float angleDegrees)
+        {
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                return Vector2.left;
+            }
+
+            float radians = angleDegrees * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(radians);
+            float sin = Mathf.Sin(radians);
+            Vector2 normalized = direction.normalized;
+            return new Vector2(
+                normalized.x * cos - normalized.y * sin,
+                normalized.x * sin + normalized.y * cos);
+        }
+
         public bool TryDestroyByInterceptShot(out bool parried)
         {
-            if (resolved || isDestroying)
+            if (resolved || isDestroying || !canBeIntercepted)
             {
                 parried = false;
                 return false;
@@ -443,7 +760,6 @@ namespace Week14.Combat
             visualRenderer.sortingOrder = 20;
             visual.localPosition = Vector3.zero;
             visual.localRotation = Quaternion.identity;
-            visual.localScale = new Vector3(Mathf.Max(0.14f, projectileRadius * 6f), Mathf.Max(0.018f, projectileRadius * 0.75f), 1f);
 
             CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
             if (circleCollider == null)
@@ -453,11 +769,37 @@ namespace Week14.Combat
 
             circleCollider.isTrigger = true;
             circleCollider.radius = projectileRadius;
-            transform.localScale = Vector3.one;
+        }
+
+        private void ApplyProjectileColor(Color color)
+        {
+            projectileColor = color;
+
+            Transform visual = transform.Find(BulletVisualName);
+            SpriteRenderer visualRenderer = visual != null ? visual.GetComponent<SpriteRenderer>() : null;
+            if (visualRenderer != null)
+            {
+                visualRenderer.color = projectileColor;
+            }
+
+            TrailRenderer trail = GetComponent<TrailRenderer>();
+            if (trail != null)
+            {
+                Color endColor = projectileColor;
+                endColor.a = 0f;
+                trail.startColor = projectileColor;
+                trail.endColor = endColor;
+            }
         }
 
         private void UpdateChargeVfx()
         {
+            if (!canBeIntercepted)
+            {
+                SetChargeVfxVisible(false);
+                return;
+            }
+
             LineRenderer line = EnsureChargeVfx();
             if (line == null)
             {

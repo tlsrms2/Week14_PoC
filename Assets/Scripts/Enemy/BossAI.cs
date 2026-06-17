@@ -290,14 +290,31 @@ namespace Week14.Enemy
 
         public void ShowAttackTiming(float remainingSeconds, float durationSeconds)
         {
+            ShowAttackTiming(remainingSeconds, durationSeconds, 0, 0);
+        }
+
+        public void ShowAttackTiming(float remainingSeconds, float durationSeconds, int loadedBulletCount, int totalBulletCount)
+        {
             if (remainingSeconds <= 0f || durationSeconds <= 0f)
+            {
+                ShowAttackBullets(loadedBulletCount, totalBulletCount);
+                return;
+            }
+
+            EnsureAttackTimingOutline();
+            attackTimingOutline.Show(remainingSeconds, durationSeconds, loadedBulletCount, totalBulletCount);
+        }
+
+        public void ShowAttackBullets(int loadedBulletCount, int totalBulletCount)
+        {
+            if (totalBulletCount <= 0)
             {
                 HideAttackTiming();
                 return;
             }
 
             EnsureAttackTimingOutline();
-            attackTimingOutline.Show(remainingSeconds, durationSeconds);
+            attackTimingOutline.ShowBullets(loadedBulletCount, totalBulletCount);
         }
 
         public void HideAttackTiming()
