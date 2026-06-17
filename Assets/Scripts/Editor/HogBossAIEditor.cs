@@ -10,23 +10,25 @@ public sealed class HogBossAIEditor : Editor
     private static readonly string[] Tabs =
     {
         "공통",
-        "기본",
         "패턴1",
         "패턴2",
         "패턴3",
-        "패턴4"
+        "패턴4",
+        "패턴5"
     };
 
     private static readonly HashSet<string> HogFields = new()
     {
-        "basicAttack",
         "pattern1",
         "pattern2",
         "pattern3",
         "pattern4",
+        "pattern5",
         "minPatternRecoverySeconds",
         "maxPatternRecoverySeconds",
         "randomizePatterns",
+        "debugUseFixedPattern",
+        "debugPattern",
         "hogEffectColor",
         "bubbleEffectScale"
     };
@@ -47,19 +49,19 @@ public sealed class HogBossAIEditor : Editor
         switch (tabIndex)
         {
             case 1:
-                DrawBasicAttackTab();
-                break;
-            case 2:
                 DrawPattern1Tab();
                 break;
-            case 3:
+            case 2:
                 DrawPattern2Tab();
                 break;
-            case 4:
+            case 3:
                 DrawPattern3Tab();
                 break;
-            case 5:
+            case 4:
                 DrawPattern4Tab();
+                break;
+            case 5:
+                DrawPattern5Tab();
                 break;
             default:
                 DrawCommonTab();
@@ -71,12 +73,19 @@ public sealed class HogBossAIEditor : Editor
 
     private void DrawCommonTab()
     {
-        DrawHeader("패턴 흐름", "패턴 선택 방식, 패턴 사이 일반공격, 대기 타이머와 보글 이펙트를 조율합니다.");
+        DrawHeader("패턴 흐름", "패턴 선택 방식, 패턴 사이 대기 타이머와 보글 이펙트를 조율합니다.");
         DrawProperty("randomizePatterns");
         DrawProperty("minPatternRecoverySeconds");
         DrawProperty("maxPatternRecoverySeconds");
         DrawProperty("hogEffectColor");
         DrawProperty("bubbleEffectScale");
+
+        EditorGUILayout.Space(6f);
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("디버그 패턴 고정", EditorStyles.boldLabel);
+        DrawProperty("debugUseFixedPattern");
+        DrawProperty("debugPattern");
+        EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(6f);
         showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 공통/참조 설정", true);
@@ -86,21 +95,13 @@ public sealed class HogBossAIEditor : Editor
         }
     }
 
-    private void DrawBasicAttackTab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("basicAttack");
-        DrawHeader("기본공격", "다른 패턴과 같은 로테이션에 포함되는 일반공격입니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "기본공격 투사체");
-        DrawSection("공격", pattern, "duration", "firstShotDelay", "shotInterval", "bulletCount", "moveSpeedMultiplier");
-    }
-
     private void DrawPattern1Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern1");
         DrawHeader("패턴1", "사방 랜덤 방향으로 일반 탄환을 만들고, 대기 시간이 끝나면 플레이어를 향해 날아갑니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴1 투사체");
-        DrawSection("추격", pattern, "duration", "initialChaseSpeedMultiplier", "finalChaseSpeedMultiplier");
-        DrawSection("발사", pattern, "radialBulletCount", "burstInterval", "finalBurstIntervalMultiplier", "spawnRadius");
+        DrawSection("추격", pattern, "initialChaseSpeedMultiplier", "finalChaseSpeedMultiplier");
+        DrawSection("발사", pattern, "radialBulletCount", "burstInterval", "spawnRadius");
     }
 
     private void DrawPattern2Tab()
@@ -117,8 +118,8 @@ public sealed class HogBossAIEditor : Editor
         SerializedProperty pattern = serializedObject.FindProperty("pattern3");
         DrawHeader("패턴3", "보스에게 붙어 커진 뒤 플레이어 근처 방향으로 날아가고, 첫 분열 전까지 요격 불가입니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴3 투사체");
-        DrawSection("준비/조준", pattern, "windupSeconds", "aimSpreadDegrees");
-        DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio", "launchBubbleScale");
+        DrawSection("준비/조준", pattern, "windupSeconds", "aimSpreadDegrees", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
+        DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio", "launchBubbleScale", "launchMuzzleFlashScale");
         DrawSection("전방위 분열", pattern, "splitDelaySeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
     }
 
@@ -128,6 +129,15 @@ public sealed class HogBossAIEditor : Editor
         DrawHeader("패턴4", "전방위 방향을 섞은 뒤 무작위 순서로 하나씩 특수 탄환을 생성합니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴4 투사체");
         DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "shotInterval", "startAngleOffset", "spawnRadius");
+    }
+
+    private void DrawPattern5Tab()
+    {
+        SerializedProperty pattern = serializedObject.FindProperty("pattern5");
+        DrawHeader("패턴5", "제자리에서 기를 모은 뒤 플레이어를 향해 미니건처럼 많은 탄환을 발사합니다.");
+        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴5 투사체");
+        DrawSection("기 모으기", pattern, "windupSeconds", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
+        DrawSection("미니건 발사", pattern, "bulletCount", "fireInterval", "spawnSpacing");
     }
 
     private void DrawProjectile(SerializedProperty projectile, string title)

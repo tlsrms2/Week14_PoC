@@ -383,7 +383,9 @@ namespace Week14.Enemy
             float trailWidth,
             float homingSeconds,
             float homingTurnDegrees,
-            bool playRecoil)
+            bool playRecoil,
+            Vector3? muzzleFlashPosition = null,
+            float muzzleFlashScale = 0.9f)
         {
             if (!CanSpawnEnemyProjectile())
             {
@@ -411,7 +413,10 @@ namespace Week14.Enemy
                 return null;
             }
 
-            ProjectileVfx.PlayMuzzleFlash(position, direction, color, 0.9f);
+            if (muzzleFlashScale > 0f)
+            {
+                ProjectileVfx.PlayMuzzleFlash(muzzleFlashPosition ?? position, direction, color, muzzleFlashScale);
+            }
             if (playRecoil)
             {
                 gunRecoil?.Play(direction);

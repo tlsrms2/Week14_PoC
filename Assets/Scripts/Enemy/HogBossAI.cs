@@ -12,11 +12,11 @@ namespace Week14.Enemy
 
         private enum PatternKind
         {
-            BasicAttack,
             Pattern1,
             Pattern2,
             Pattern3,
-            Pattern4
+            Pattern4,
+            Pattern5
         }
 
         [System.Serializable]
@@ -54,42 +54,20 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class BasicAttackSettings
-        {
-            [SerializeField, Tooltip("기본공격에서 사용할 일반 탄환 설정입니다.")] private ProjectileSettings projectile = new();
-            [SerializeField, Min(0.1f), Tooltip("기본공격이 유지되는 시간입니다.")] private float duration = 1.2f;
-            [SerializeField, Min(0f), Tooltip("패턴 시작 후 첫 탄환을 발사하기까지 기다리는 시간입니다.")] private float firstShotDelay = 0.1f;
-            [SerializeField, Min(0.01f), Tooltip("각 일반 탄환을 발사하는 간격입니다.")] private float shotInterval = 0.28f;
-            [SerializeField, Min(1), Tooltip("기본공격 중 발사할 일반 탄환 수입니다.")] private int bulletCount = 3;
-            [SerializeField, Min(0f), Tooltip("기본공격 중 보스 이동 속도 배율입니다.")] private float moveSpeedMultiplier = 0.85f;
-
-            public ProjectileSettings Projectile => projectile;
-            public float Duration => duration;
-            public float FirstShotDelay => firstShotDelay;
-            public float ShotInterval => shotInterval;
-            public int BulletCount => bulletCount;
-            public float MoveSpeedMultiplier => moveSpeedMultiplier;
-        }
-
-        [System.Serializable]
         private sealed class Pattern1Settings
         {
             [SerializeField, Tooltip("패턴1에서 사용할 일반 탄환 설정입니다.")] private ProjectileSettings projectile = new();
-            [SerializeField, Min(0.1f), Tooltip("패턴1이 유지되는 시간입니다.")] private float duration = 3f;
             [SerializeField, Min(0f), Tooltip("패턴 시작 시 추격 속도 배율입니다.")] private float initialChaseSpeedMultiplier = 0.65f;
             [SerializeField, Min(0f), Tooltip("패턴 종료 시점의 추격 속도 배율입니다.")] private float finalChaseSpeedMultiplier = 1.8f;
             [SerializeField, Min(4), Tooltip("한 번의 사방 발사에서 생성할 탄환 수입니다.")] private int radialBulletCount = 4;
             [SerializeField, Min(0.01f), Tooltip("사방 탄환을 반복 발사하는 간격입니다.")] private float burstInterval = 0.65f;
-            [SerializeField, Range(0.05f, 1f), Tooltip("패턴 종료 시점의 발사 간격 배율입니다. 작을수록 후반에 더 자주 쏩니다.")] private float finalBurstIntervalMultiplier = 0.35f;
             [SerializeField, Min(0f), Tooltip("보스 중심에서 패턴1 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
 
             public ProjectileSettings Projectile => projectile;
-            public float Duration => duration;
             public float InitialChaseSpeedMultiplier => initialChaseSpeedMultiplier;
             public float FinalChaseSpeedMultiplier => finalChaseSpeedMultiplier;
             public int RadialBulletCount => radialBulletCount;
             public float BurstInterval => burstInterval;
-            public float FinalBurstIntervalMultiplier => finalBurstIntervalMultiplier;
             public float SpawnRadius => spawnRadius;
         }
 
@@ -114,7 +92,6 @@ namespace Week14.Enemy
             }
 
             [SerializeField, Tooltip("패턴2에서 머신건처럼 발사할 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
-            [SerializeField, Min(0.1f), Tooltip("패턴2가 유지되는 최대 시간입니다.")] private float duration = 2.6f;
             [SerializeField, Min(0f), Tooltip("패턴2 중 느려진 이동 속도 배율입니다.")] private float moveSpeedMultiplier = 0.25f;
             [SerializeField, Min(1), Tooltip("머신건처럼 연속 발사할 탄환 수입니다.")] private int bulletCount = 14;
             [SerializeField, Min(0.01f), Tooltip("머신건 탄환 발사 간격입니다.")] private float fireInterval = 0.12f;
@@ -124,7 +101,6 @@ namespace Week14.Enemy
             private List<VolleySettings> volleys = new() { new VolleySettings() };
 
             public ProjectileSettings Projectile => projectile;
-            public float Duration => duration;
             public float MoveSpeedMultiplier => moveSpeedMultiplier;
             public int BulletCount => bulletCount;
             public float FireInterval => fireInterval;
@@ -180,6 +156,15 @@ namespace Week14.Enemy
             public float StartScaleMultiplier => finalScaleMultiplier * startScaleRatio;
             public float FinalScaleMultiplier => finalScaleMultiplier;
             public float LaunchBubbleScale => launchBubbleScale;
+            [SerializeField, Min(0.01f), Tooltip("기 모으는 동안 버블 이펙트를 반복하는 간격입니다.")] private float windupBubbleInterval = 0.14f;
+            [SerializeField, Min(0.1f), Tooltip("기 모으는 동안 반복되는 버블 이펙트 크기 배율입니다.")] private float windupBubbleScale = 1.2f;
+            [SerializeField, Min(1), Tooltip("기 모으는 동안 한 번에 생성할 버블 수입니다.")] private int windupBubbleCount = 8;
+            [SerializeField, Min(0.1f), Tooltip("특수 탄환 발사 순간 총구 화염 크기 배율입니다.")] private float launchMuzzleFlashScale = 2.2f;
+
+            public float WindupBubbleInterval => windupBubbleInterval;
+            public float WindupBubbleScale => windupBubbleScale;
+            public int WindupBubbleCount => windupBubbleCount;
+            public float LaunchMuzzleFlashScale => launchMuzzleFlashScale;
             public float AimSpreadDegrees => aimSpreadDegrees;
             [SerializeField, Min(1), Tooltip("대기 종료 시 전방위로 분열되어 생성할 탄환 수입니다.")] private int radialSplitBulletCount = 12;
             [SerializeField, Tooltip("전방위 분열의 시작 각도 오프셋입니다.")] private float radialSplitStartAngleOffset;
@@ -210,12 +195,34 @@ namespace Week14.Enemy
             public float SpawnRadius => spawnRadius;
         }
 
+        [System.Serializable]
+        private sealed class Pattern5Settings
+        {
+            [SerializeField, Tooltip("패턴5에서 미니건처럼 발사할 탄환 설정입니다.")] private ProjectileSettings projectile = new();
+            [SerializeField, Min(0f), Tooltip("제자리에서 기를 모으는 시간입니다.")] private float windupSeconds = 1.4f;
+            [SerializeField, Min(1), Tooltip("기 모으기가 끝난 뒤 발사할 탄환 수입니다.")] private int bulletCount = 36;
+            [SerializeField, Min(0.01f), Tooltip("미니건 탄환 발사 간격입니다.")] private float fireInterval = 0.045f;
+            [SerializeField, Min(0f), Tooltip("연속 탄환들이 겹치지 않도록 옆으로 벌리는 거리입니다.")] private float spawnSpacing = 0.12f;
+            [SerializeField, Min(0.01f), Tooltip("기 모으는 동안 버블 이펙트를 반복하는 간격입니다.")] private float windupBubbleInterval = 0.12f;
+            [SerializeField, Min(0.1f), Tooltip("기 모으는 동안 반복되는 버블 이펙트 크기 배율입니다.")] private float windupBubbleScale = 0.85f;
+            [SerializeField, Min(1), Tooltip("기 모으는 동안 한 번에 생성할 버블 수입니다.")] private int windupBubbleCount = 6;
+
+            public ProjectileSettings Projectile => projectile;
+            public float WindupSeconds => windupSeconds;
+            public int BulletCount => bulletCount;
+            public float FireInterval => fireInterval;
+            public float SpawnSpacing => spawnSpacing;
+            public float WindupBubbleInterval => windupBubbleInterval;
+            public float WindupBubbleScale => windupBubbleScale;
+            public int WindupBubbleCount => windupBubbleCount;
+        }
+
         [Header("Hog Patterns")]
-        [SerializeField, Tooltip("이동하며 세 발의 일반 탄환을 생성하는 기본공격 설정입니다.")] private BasicAttackSettings basicAttack = new();
         [SerializeField, Tooltip("플레이어 방향 기준 사방 탄환을 발사하며 가속 추격하는 패턴 설정입니다.")] private Pattern1Settings pattern1 = new();
         [SerializeField, Tooltip("느려진 상태로 플레이어를 향해 머신건처럼 발사하는 패턴 설정입니다.")] private Pattern2Settings pattern2 = new();
         [SerializeField, Tooltip("벽에 부딪히면 분열하는 거대 특수 탄환 패턴 설정입니다.")] private Pattern3Settings pattern3 = new();
         [SerializeField, Tooltip("360도 전방위 탄환을 발사하는 패턴 설정입니다.")] private Pattern4Settings pattern4 = new();
+        [SerializeField, Tooltip("제자리에서 기를 모은 뒤 미니건처럼 다수의 탄환을 발사하는 패턴 설정입니다.")] private Pattern5Settings pattern5 = new();
         [SerializeField, FormerlySerializedAs("patternRecoverySeconds"), Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최소 시간입니다.")] private float minPatternRecoverySeconds = 0.5f;
         [SerializeField, Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최대 시간입니다.")] private float maxPatternRecoverySeconds = 0.9f;
         [SerializeField, Tooltip("켜면 패턴을 순서대로 쓰지 않고 무작위로 선택합니다.")] private bool randomizePatterns;
@@ -223,6 +230,10 @@ namespace Week14.Enemy
         [Header("Hog Effects")]
         [SerializeField, Tooltip("호그 보글보글 이펙트 대표색입니다. 기본값은 #477330입니다.")] private Color hogEffectColor = new(0.278f, 0.451f, 0.188f, 1f);
         [SerializeField, Min(0.1f), Tooltip("패턴1, 패턴2, 패턴4에서 생성되는 보글보글 이펙트 크기입니다.")] private float bubbleEffectScale = 1f;
+
+        [Header("Debug")]
+        [SerializeField, Tooltip("켜면 아래에서 고른 패턴만 반복 실행합니다.")] private bool debugUseFixedPattern;
+        [SerializeField, Tooltip("디버그용으로 고정 실행할 패턴입니다.")] private PatternKind debugPattern = PatternKind.Pattern1;
 
         private Coroutine patternRoutine;
         private int nextPatternIndex;
@@ -254,6 +265,11 @@ namespace Week14.Enemy
 
         private PatternKind SelectPattern()
         {
+            if (debugUseFixedPattern)
+            {
+                return debugPattern;
+            }
+
             if (randomizePatterns)
             {
                 return (PatternKind)Random.Range(0, 5);
@@ -268,9 +284,6 @@ namespace Week14.Enemy
         {
             switch (pattern)
             {
-                case PatternKind.BasicAttack:
-                    yield return RunBasicAttack();
-                    break;
                 case PatternKind.Pattern1:
                     yield return RunPattern1();
                     break;
@@ -282,6 +295,9 @@ namespace Week14.Enemy
                     break;
                 case PatternKind.Pattern4:
                     yield return RunPattern4();
+                    break;
+                case PatternKind.Pattern5:
+                    yield return RunPattern5();
                     break;
                 default:
                     yield return RunPattern1();
@@ -321,30 +337,6 @@ namespace Week14.Enemy
             HideAttackTiming();
         }
 
-        private IEnumerator RunBasicAttack()
-        {
-            float elapsed = 0f;
-            float nextShotAt = basicAttack.FirstShotDelay;
-            int fired = 0;
-            BeginPatternBulletUi(Mathf.Max(1, basicAttack.BulletCount));
-
-            while (elapsed < basicAttack.Duration || fired < basicAttack.BulletCount)
-            {
-                MoveTowardPlayer(basicAttack.MoveSpeedMultiplier);
-
-                if (fired < basicAttack.BulletCount && elapsed >= nextShotAt)
-                {
-                    FireProjectileAtPlayer(basicAttack.Projectile, GetProjectileOrigin(), true);
-                    fired++;
-                    ConsumePatternBulletUi();
-                    nextShotAt += basicAttack.ShotInterval;
-                }
-
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-        }
-
         private IEnumerator RunPattern1()
         {
             float elapsed = 0f;
@@ -353,9 +345,9 @@ namespace Week14.Enemy
             int totalBullets = Mathf.Max(1, pattern1.RadialBulletCount);
             BeginPatternBulletUi(totalBullets);
 
-            while (elapsed < pattern1.Duration || fired < totalBullets)
+            while (fired < totalBullets)
             {
-                float t = Mathf.Clamp01(elapsed / pattern1.Duration);
+                float t = totalBullets <= 1 ? 1f : Mathf.Clamp01((float)fired / (totalBullets - 1));
                 float speedMultiplier = Mathf.Lerp(
                     pattern1.InitialChaseSpeedMultiplier,
                     pattern1.FinalChaseSpeedMultiplier,
@@ -374,7 +366,7 @@ namespace Week14.Enemy
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
                     fired++;
                     ConsumePatternBulletUi();
-                    nextBurstAt += GetPattern1BurstInterval(t);
+                    nextBurstAt += Mathf.Max(0.01f, pattern1.BurstInterval);
                 }
 
                 elapsed += Time.deltaTime;
@@ -438,7 +430,9 @@ namespace Week14.Enemy
                 true,
                 true,
                 Mathf.Max(0f, pattern3.WindupSeconds),
-                radius);
+                radius,
+                null,
+                0f);
             ConsumePatternBulletUi();
 
             if (projectile == null)
@@ -453,6 +447,7 @@ namespace Week14.Enemy
                 pattern3.FinalScaleMultiplier,
                 GetHogEffectColor(),
                 pattern3.LaunchBubbleScale);
+            projectile.ConfigureLaunchMuzzleFlash(pattern3.LaunchMuzzleFlashScale);
             projectile.ConfigureInterceptable(false);
             projectile.ConfigureRadialSplitOnLaunch(
                 pattern3.RadialSplitBulletCount,
@@ -462,8 +457,10 @@ namespace Week14.Enemy
                 pattern3.SplitRadiusMultiplier,
                 pattern3.SplitLifetimeMultiplier);
 
+            float nextBubbleAt = Time.time;
             while (projectile != null && projectile.IsCharging)
             {
+                PlayWindupBubbleIfDue(ref nextBubbleAt, projectile.transform.position, pattern3.WindupBubbleInterval, pattern3.WindupBubbleScale, pattern3.WindupBubbleCount);
                 yield return null;
             }
         }
@@ -481,6 +478,42 @@ namespace Week14.Enemy
                 if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
                 {
                     yield return new WaitForSeconds(pattern4.WaveInterval);
+                }
+            }
+        }
+
+        private IEnumerator RunPattern5()
+        {
+            Stop();
+
+            int bulletCount = Mathf.Max(1, pattern5.BulletCount);
+            BeginPatternBulletUiEmpty(bulletCount);
+
+            float windupSeconds = Mathf.Max(0f, pattern5.WindupSeconds);
+            float elapsed = 0f;
+            float nextBubbleAt = Time.time;
+            while (elapsed < windupSeconds)
+            {
+                Stop();
+                float progress = windupSeconds <= 0f ? 1f : Mathf.Clamp01(elapsed / windupSeconds);
+                SetPatternBulletUiLoaded(Mathf.FloorToInt(bulletCount * progress));
+                PlayWindupBubbleIfDue(ref nextBubbleAt, GetProjectileOrigin(), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            SetPatternBulletUiLoaded(bulletCount);
+
+            for (int i = 0; i < bulletCount; i++)
+            {
+                Stop();
+                FirePattern5Bullet(i);
+                ConsumePatternBulletUi();
+
+                if (pattern5.FireInterval > 0f && i < bulletCount - 1)
+                {
+                    yield return WaitPattern5Seconds(pattern5.FireInterval);
                 }
             }
         }
@@ -533,8 +566,38 @@ namespace Week14.Enemy
             Vector2 side = new(-direction.y, direction.x);
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern2.SpawnSpacing);
             Vector3 spawnPosition = origin + offset;
-            EnemyProjectile projectile = FireConfiguredProjectile(pattern2.Projectile, spawnPosition, direction, bulletIndex == 0);
+            EnemyProjectile projectile = FireConfiguredProjectile(
+                pattern2.Projectile,
+                spawnPosition,
+                direction,
+                bulletIndex == 0,
+                pattern2.Projectile.AimAtPlayerWhileCharging,
+                false,
+                false,
+                -1f,
+                -1f,
+                origin);
             PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
+        }
+
+        private void FirePattern5Bullet(int bulletIndex)
+        {
+            Vector3 origin = GetProjectileOrigin();
+            Vector2 direction = GetDirectionToPlayer(origin);
+            Vector2 side = new(-direction.y, direction.x);
+            Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern5.SpawnSpacing);
+            Vector3 spawnPosition = origin + offset;
+            FireConfiguredProjectile(
+                pattern5.Projectile,
+                spawnPosition,
+                direction,
+                bulletIndex == 0,
+                pattern5.Projectile.AimAtPlayerWhileCharging,
+                false,
+                false,
+                0f,
+                -1f,
+                origin);
         }
 
         private IEnumerator WaitPattern2Seconds(float seconds)
@@ -543,6 +606,17 @@ namespace Week14.Enemy
             while (remaining > 0f)
             {
                 MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
+                remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitPattern5Seconds(float seconds)
+        {
+            float remaining = Mathf.Max(0f, seconds);
+            while (remaining > 0f)
+            {
+                Stop();
                 remaining -= Time.deltaTime;
                 yield return null;
             }
@@ -572,17 +646,28 @@ namespace Week14.Enemy
             return AngleToDirection(baseAngle + Random.Range(-halfSpread, halfSpread));
         }
 
-        private float GetPattern1BurstInterval(float patternProgress)
-        {
-            float startInterval = Mathf.Max(0.01f, pattern1.BurstInterval);
-            float endInterval = startInterval * Mathf.Clamp(pattern1.FinalBurstIntervalMultiplier, 0.05f, 1f);
-            return Mathf.Lerp(startInterval, endInterval, Mathf.Clamp01(patternProgress));
-        }
-
         private void BeginPatternBulletUi(int totalBulletCount)
         {
             currentPatternBulletTotal = Mathf.Max(0, totalBulletCount);
             currentPatternBulletRemaining = currentPatternBulletTotal;
+            ShowCurrentPatternBullets();
+        }
+
+        private void BeginPatternBulletUiEmpty(int totalBulletCount)
+        {
+            currentPatternBulletTotal = Mathf.Max(0, totalBulletCount);
+            currentPatternBulletRemaining = 0;
+            ShowCurrentPatternBullets();
+        }
+
+        private void SetPatternBulletUiLoaded(int loadedBulletCount)
+        {
+            if (currentPatternBulletTotal <= 0)
+            {
+                return;
+            }
+
+            currentPatternBulletRemaining = Mathf.Clamp(loadedBulletCount, 0, currentPatternBulletTotal);
             ShowCurrentPatternBullets();
         }
 
@@ -642,6 +727,17 @@ namespace Week14.Enemy
             ProjectileVfx.PlayHogBubbleBurst(position, GetHogEffectColor(), bubbleEffectScale * scaleMultiplier, bubbleCount);
         }
 
+        private void PlayWindupBubbleIfDue(ref float nextBubbleAt, Vector3 position, float interval, float scaleMultiplier, int bubbleCount)
+        {
+            if (Time.time < nextBubbleAt)
+            {
+                return;
+            }
+
+            ProjectileVfx.PlayHogBubbleBurst(position, GetHogEffectColor(), bubbleEffectScale * scaleMultiplier, Mathf.Max(1, bubbleCount));
+            nextBubbleAt = Time.time + Mathf.Max(0.01f, interval);
+        }
+
         private Color GetHogEffectColor()
         {
             return hogEffectColor.a > 0f ? hogEffectColor : DefaultHogEffectColor;
@@ -688,7 +784,9 @@ namespace Week14.Enemy
             bool aimAtPlayerOnLaunch,
             bool suppressHoming,
             float chargeSecondsOverride,
-            float radiusOverride)
+            float radiusOverride,
+            Vector3? muzzleFlashPosition = null,
+            float muzzleFlashScale = 0.9f)
         {
             if (settings == null || settings.Prefab == null)
             {
@@ -711,7 +809,9 @@ namespace Week14.Enemy
                 settings.TrailWidthMultiplier,
                 suppressHoming ? 0f : settings.HomingSeconds,
                 suppressHoming ? 0f : settings.HomingTurnDegreesPerSecond,
-                playRecoil);
+                playRecoil,
+                muzzleFlashPosition,
+                muzzleFlashScale);
 
             projectile?.ConfigureStateColors(settings.ChargingColor, settings.LaunchedColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
