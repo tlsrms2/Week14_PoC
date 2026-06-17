@@ -15,7 +15,7 @@ namespace Week14.Combat
         [Tooltip("패링 성공 시 플레이어가 회복하는 탄환 수입니다.")]
         [SerializeField, Min(0)] private int parryBulletRecovery = 2;
         [Tooltip("적 탄이 패링되거나 방어되었을 때 적 탄환을 감소시키는 양입니다.")]
-        [SerializeField, Min(0)] private int counteredProjectileBulletDamage = 34;
+        [SerializeField, Min(0)] private int counteredProjectileBulletDamage = 1;
         [Tooltip("플레이어의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
         [Tooltip("질주 중 기본 이동 속도에 곱하는 배율입니다.")]
