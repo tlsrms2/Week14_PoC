@@ -17,7 +17,7 @@ namespace Week14.Enemy
 
         [Header("Bullet")]
         [Tooltip("보스가 보유할 수 있는 최대 탄환 수입니다.")]
-        [SerializeField, Min(1)] private int maxBullets = 60;
+        [SerializeField, Min(1)] private int maxBullets = 150;
         [Tooltip("보스 탄환이 0이 되었을 때 처형 가능 상태를 유지하는 시간입니다.")]
         [SerializeField, Min(0f)] private float bulletEmptyExecutionSeconds = 3f;
 
@@ -331,9 +331,8 @@ namespace Week14.Enemy
             {
                 return false;
             }
-
-            PruneInactiveProjectiles();
-            return activeProjectiles.Count < bullets.CurrentBullets;
+            
+            return true;
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)

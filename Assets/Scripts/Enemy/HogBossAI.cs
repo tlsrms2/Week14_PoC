@@ -62,6 +62,7 @@ namespace Week14.Enemy
             [SerializeField, Min(4), Tooltip("한 번의 사방 발사에서 생성할 탄환 수입니다.")] private int radialBulletCount = 4;
             [SerializeField, Min(0.01f), Tooltip("사방 탄환을 반복 발사하는 간격입니다.")] private float burstInterval = 0.65f;
             [SerializeField, Min(0f), Tooltip("보스 중심에서 패턴1 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
+            [SerializeField, Tooltip("탄환을 발사할 때마다 회전시킬 각도입니다.")] private float angleStepDegrees = 25f;
 
             public ProjectileSettings Projectile => projectile;
             public float InitialChaseSpeedMultiplier => initialChaseSpeedMultiplier;
@@ -69,6 +70,7 @@ namespace Week14.Enemy
             public int RadialBulletCount => radialBulletCount;
             public float BurstInterval => burstInterval;
             public float SpawnRadius => spawnRadius;
+            public float AngleStepDegrees => angleStepDegrees;
         }
 
         [System.Serializable]
@@ -144,9 +146,11 @@ namespace Week14.Enemy
             [SerializeField, Range(0.01f, 1f), Tooltip("패턴3 특수 탄환이 처음 붙어 있을 때 최종 Scale에 곱할 비율입니다.")] private float startScaleRatio = 0.18f;
             [SerializeField, Min(0.1f), Tooltip("패턴3 특수 탄환 발사 순간 보글보글 이펙트 크기입니다.")] private float launchBubbleScale = 2.3f;
             [SerializeField, Range(0f, 180f), Tooltip("패턴3 특수 탄환이 플레이어 방향 근처로 빗나갈 수 있는 각도입니다.")] private float aimSpreadDegrees = 24f;
-
+            [SerializeField, Min(0f), Tooltip("발사 전 플레이어를 따라가며 조준(회전)하는 시간입니다. 이 시간이 지나면 멈추고 대기합니다.")] private float aimTrackingSeconds = 1.0f;
+            
             public ProjectileSettings Projectile => projectile;
             public float WindupSeconds => windupSeconds;
+            public float AimTrackingSeconds => aimTrackingSeconds;
             public int SplitDepth => splitDepth;
             public float SplitAngleDegrees => splitAngleDegrees;
             public float SplitSpeedMultiplier => splitSpeedMultiplier;
@@ -180,9 +184,8 @@ namespace Week14.Enemy
         {
             [SerializeField, Tooltip("패턴4에서 랜덤 순서로 전방위 발사할 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
             [SerializeField, Min(1), Tooltip("한 웨이브에서 360도로 발사할 탄환 수입니다.")] private int bulletCount = 32;
-            [SerializeField, Min(1), Tooltip("전방위 발사를 몇 번 반복할지 정합니다.")] private int waveCount = 1;
+            [SerializeField, Min(1), Tooltip("전방위 원형 파동 발사를 몇 번 반복할지 정합니다.")] private int waveCount = 3;
             [SerializeField, Min(0f), Tooltip("전방위 웨이브 사이의 대기 시간입니다.")] private float waveInterval = 0.2f;
-            [SerializeField, Min(0f), Tooltip("패턴4 탄환을 하나씩 생성할 때 사용하는 발사 간격입니다.")] private float shotInterval = 0.035f;
             [SerializeField, Tooltip("첫 탄환의 시작 각도 오프셋입니다.")] private float startAngleOffset;
             [SerializeField, Min(0f), Tooltip("보스 중심에서 전방위 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
 
@@ -190,7 +193,6 @@ namespace Week14.Enemy
             public int BulletCount => bulletCount;
             public int WaveCount => waveCount;
             public float WaveInterval => waveInterval;
-            public float ShotInterval => shotInterval;
             public float StartAngleOffset => startAngleOffset;
             public float SpawnRadius => spawnRadius;
         }
@@ -203,6 +205,8 @@ namespace Week14.Enemy
             [SerializeField, Min(1), Tooltip("기 모으기가 끝난 뒤 발사할 탄환 수입니다.")] private int bulletCount = 36;
             [SerializeField, Min(0.01f), Tooltip("미니건 탄환 발사 간격입니다.")] private float fireInterval = 0.045f;
             [SerializeField, Min(0f), Tooltip("연속 탄환들이 겹치지 않도록 옆으로 벌리는 거리입니다.")] private float spawnSpacing = 0.12f;
+            [SerializeField, Min(0f), Tooltip("매 탄환마다 회전할 각도입니다.")] private float sweepStepDegrees = 5f;
+            [SerializeField, Min(0f), Tooltip("중심 방향(플레이어)을 기준으로 좌우로 꺾이는 최대 부채꼴 각도입니다.")] private float maxSweepAngle = 35f;
             [SerializeField, Min(0.01f), Tooltip("기 모으는 동안 버블 이펙트를 반복하는 간격입니다.")] private float windupBubbleInterval = 0.12f;
             [SerializeField, Min(0.1f), Tooltip("기 모으는 동안 반복되는 버블 이펙트 크기 배율입니다.")] private float windupBubbleScale = 0.85f;
             [SerializeField, Min(1), Tooltip("기 모으는 동안 한 번에 생성할 버블 수입니다.")] private int windupBubbleCount = 6;
@@ -212,6 +216,8 @@ namespace Week14.Enemy
             public int BulletCount => bulletCount;
             public float FireInterval => fireInterval;
             public float SpawnSpacing => spawnSpacing;
+            public float SweepStepDegrees => sweepStepDegrees;
+            public float MaxSweepAngle => maxSweepAngle;
             public float WindupBubbleInterval => windupBubbleInterval;
             public float WindupBubbleScale => windupBubbleScale;
             public int WindupBubbleCount => windupBubbleCount;
@@ -345,6 +351,9 @@ namespace Week14.Enemy
             int totalBullets = Mathf.Max(1, pattern1.RadialBulletCount);
             BeginPatternBulletUi(totalBullets);
 
+            // 첫 탄환의 시작 각도를 무작위로 설정 (항상 같은 방향에서 시작하려면 0f 등으로 고정)
+            float currentAngle = Random.Range(0f, 360f);
+
             while (fired < totalBullets)
             {
                 float t = totalBullets <= 1 ? 1f : Mathf.Clamp01((float)fired / (totalBullets - 1));
@@ -356,17 +365,21 @@ namespace Week14.Enemy
 
                 if (fired < totalBullets && elapsed >= nextBurstAt)
                 {
-                    Vector2 direction = GetRandomPattern1Direction();
+                    Vector2 direction = AngleToDirection(currentAngle);
                     Vector3 origin = GetPattern1SpawnPosition(direction);
+            
                     EnemyProjectile projectile = FireConfiguredProjectileWithPlayerLaunchAim(
                         pattern1.Projectile,
                         origin,
                         direction,
                         fired == 0);
+                
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
                     fired++;
                     ConsumePatternBulletUi();
                     nextBurstAt += Mathf.Max(0.01f, pattern1.BurstInterval);
+                    
+                    currentAngle += pattern1.AngleStepDegrees;
                 }
 
                 elapsed += Time.deltaTime;
@@ -421,13 +434,15 @@ namespace Week14.Enemy
 
             Vector3 origin = GetProjectileOrigin();
             float radius = pattern3.Projectile.Radius * pattern3.ProjectileRadiusMultiplier;
+            
+            // 👇 변경: 5번째 인자(차징 중 조준)를 true로, 6번째 인자(발사 순간 조준)를 false로 변경
             EnemyProjectile projectile = FireConfiguredProjectile(
                 pattern3.Projectile,
                 origin,
                 GetPattern3Direction(origin),
                 true,
-                false,
-                true,
+                true,   // 차징 중 조준 켬
+                false,  // 발사 순간 조준 끔
                 true,
                 Mathf.Max(0f, pattern3.WindupSeconds),
                 radius,
@@ -441,7 +456,9 @@ namespace Week14.Enemy
             }
 
             projectile.ConfigureProjectileSize(radius);
-            projectile.ConfigureChargeMotion(0f, false, true, pattern3.AimSpreadDegrees);
+            
+            // 👇 변경: 차징 중 조준(true), 발사 시 조준(false)
+            projectile.ConfigureChargeMotion(0f, true, false, pattern3.AimSpreadDegrees);
             projectile.ConfigureChargeGrowth(
                 pattern3.StartScaleMultiplier,
                 pattern3.FinalScaleMultiplier,
@@ -458,9 +475,21 @@ namespace Week14.Enemy
                 pattern3.SplitLifetimeMultiplier);
 
             float nextBubbleAt = Time.time;
+            float elapsed = 0f;
+            bool trackingStopped = false; // 👇 추적 정지 여부 체크 변수
+
             while (projectile != null && projectile.IsCharging)
             {
+                // 👇 추가된 로직: 설정한 조준 시간이 지나면 조준을 멈춤
+                if (!trackingStopped && elapsed >= pattern3.AimTrackingSeconds)
+                {
+                    projectile.ConfigureChargeMotion(0f, false, false, pattern3.AimSpreadDegrees);
+                    trackingStopped = true;
+                }
+
                 PlayWindupBubbleIfDue(ref nextBubbleAt, projectile.transform.position, pattern3.WindupBubbleInterval, pattern3.WindupBubbleScale, pattern3.WindupBubbleCount);
+                
+                elapsed += Time.deltaTime; // 👇 시간 누적
                 yield return null;
             }
         }
@@ -472,8 +501,10 @@ namespace Week14.Enemy
             for (int wave = 0; wave < pattern4.WaveCount; wave++)
             {
                 BeginPatternBulletUi(Mathf.Max(1, pattern4.BulletCount));
+                
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
-                yield return FirePattern4Circle(offset);
+                
+                FirePattern4Wave(offset);
 
                 if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
                 {
@@ -505,11 +536,28 @@ namespace Week14.Enemy
 
             SetPatternBulletUiLoaded(bulletCount);
 
+            float currentSweepOffset = 0f;
+            float sweepDirection = 1f;
+
             for (int i = 0; i < bulletCount; i++)
             {
                 Stop();
-                FirePattern5Bullet(i);
+                
+                Vector3 currentOrigin = GetProjectileOrigin();
+                Vector2 dynamicBaseDirection = GetDirectionToPlayer(currentOrigin);
+                
+                float dynamicBaseAngle = Mathf.Atan2(dynamicBaseDirection.y, dynamicBaseDirection.x) * Mathf.Rad2Deg;
+                float finalAngle = dynamicBaseAngle + currentSweepOffset;
+                
+                FirePattern5Bullet(i, finalAngle); 
                 ConsumePatternBulletUi();
+                currentSweepOffset += pattern5.SweepStepDegrees * sweepDirection;
+        
+                if (Mathf.Abs(currentSweepOffset) >= pattern5.MaxSweepAngle)
+                {
+                    sweepDirection *= -1f; 
+                    currentSweepOffset = Mathf.Sign(currentSweepOffset) * pattern5.MaxSweepAngle; // 오차 보정
+                }
 
                 if (pattern5.FireInterval > 0f && i < bulletCount - 1)
                 {
@@ -535,27 +583,23 @@ namespace Week14.Enemy
                 FireConfiguredProjectile(settings, origin, AngleToDirection(startAngleDegrees + step * i), i == 0);
             }
         }
-
-        private IEnumerator FirePattern4Circle(float startAngleDegrees)
+        
+        private void FirePattern4Wave(float startAngleDegrees)
         {
             Vector3 center = transform.position;
             int count = Mathf.Max(1, pattern4.BulletCount);
+            
             float step = 360f / count;
             float radius = Mathf.Max(0f, pattern4.SpawnRadius);
-            int[] order = BuildShuffledOrder(count);
 
             for (int i = 0; i < count; i++)
             {
-                Vector2 direction = AngleToDirection(startAngleDegrees + step * order[i]);
+                Vector2 direction = AngleToDirection(startAngleDegrees + step * i);
                 Vector3 origin = center + (Vector3)(direction * radius);
+        
                 EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction, i == 0);
                 PlayBubbleEffectIfSpawned(projectile, origin, 0.75f, 7);
                 ConsumePatternBulletUi();
-
-                if (pattern4.ShotInterval > 0f && i < count - 1)
-                {
-                    yield return new WaitForSeconds(pattern4.ShotInterval);
-                }
             }
         }
 
@@ -579,20 +623,22 @@ namespace Week14.Enemy
                 origin);
             PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
         }
-
-        private void FirePattern5Bullet(int bulletIndex)
+        
+        private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees)
         {
             Vector3 origin = GetProjectileOrigin();
-            Vector2 direction = GetDirectionToPlayer(origin);
-            Vector2 side = new(-direction.y, direction.x);
+            Vector2 finalDirection = AngleToDirection(finalAngleDegrees);
+            
+            Vector2 side = new(-finalDirection.y, finalDirection.x);
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern5.SpawnSpacing);
             Vector3 spawnPosition = origin + offset;
+
             FireConfiguredProjectile(
                 pattern5.Projectile,
                 spawnPosition,
-                direction,
+                finalDirection,
                 bulletIndex == 0,
-                pattern5.Projectile.AimAtPlayerWhileCharging,
+                false,
                 false,
                 false,
                 0f,
@@ -620,11 +666,6 @@ namespace Week14.Enemy
                 remaining -= Time.deltaTime;
                 yield return null;
             }
-        }
-
-        private Vector2 GetRandomPattern1Direction()
-        {
-            return AngleToDirection(Random.Range(0f, 360f));
         }
 
         private Vector3 GetPattern1SpawnPosition(Vector2 direction)
