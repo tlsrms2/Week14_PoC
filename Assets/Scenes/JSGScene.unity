@@ -34567,7 +34567,7 @@ MonoBehaviour:
   image: {fileID: 1005209689}
   targetHeight: 630
   growSeconds: 0.1
-  hideLeadSeconds: 0.3
+  holdSeconds: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

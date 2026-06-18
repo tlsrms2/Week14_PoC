@@ -622,6 +622,18 @@ namespace Week14.Enemy
             statusView.SetSuppressed(true);
         }
 
+        public void PlayExecutionHitReaction(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            if (health == null || health.IsDead)
+            {
+                return;
+            }
+
+            FlashBodyHitColor();
+            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            PlayEnemyHitCameraImpact(hitDirection);
+        }
+
         private void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
             Color sparkColor = effectData != null ? effectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);

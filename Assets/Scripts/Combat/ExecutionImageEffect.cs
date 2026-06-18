@@ -11,10 +11,8 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float targetHeight = 400f;
         [Tooltip("처형 이미지가 0에서 목표 높이까지 커지는 데 걸리는 시간입니다.")]
         [SerializeField, Min(0.01f)] private float growSeconds = 0.1f;
-        [Tooltip("처형 순간보다 몇 초 전에 처형 이미지를 꺼질지 결정합니다.")]
-        [SerializeField, Min(0f)] private float hideLeadSeconds = 0.1f;
-
-        private Coroutine routine;
+        [Tooltip("이미지가 다 차오른 뒤 꺼지기 전까지 유지하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float holdSeconds = 0.1f;
 
         private void Awake()
         {
@@ -29,47 +27,21 @@ namespace Week14.Combat
             Stop();
         }
 
-        public void Play(float secondsUntilKillMoment)
+        public IEnumerator PlayAndWait()
         {
             if (image == null)
             {
-                return;
+                yield break;
             }
 
-            if (routine != null)
-            {
-                StopCoroutine(routine);
-            }
-
-            routine = StartCoroutine(PlayRoutine(secondsUntilKillMoment));
-        }
-
-        public void Stop()
-        {
-            if (routine != null)
-            {
-                StopCoroutine(routine);
-                routine = null;
-            }
-
-            if (image != null)
-            {
-                image.gameObject.SetActive(false);
-            }
-        }
-
-        private IEnumerator PlayRoutine(float secondsUntilKillMoment)
-        {
             RectTransform rect = image.rectTransform;
-            float hideAt = Mathf.Max(0f, secondsUntilKillMoment - hideLeadSeconds);
-
             Vector2 size = rect.sizeDelta;
             size.y = 0f;
             rect.sizeDelta = size;
             image.gameObject.SetActive(true);
 
             float elapsed = 0f;
-            while (elapsed < hideAt)
+            while (elapsed < growSeconds)
             {
                 size.y = Mathf.Lerp(0f, targetHeight, Mathf.Clamp01(elapsed / growSeconds));
                 rect.sizeDelta = size;
@@ -77,8 +49,23 @@ namespace Week14.Combat
                 yield return null;
             }
 
+            size.y = targetHeight;
+            rect.sizeDelta = size;
+
+            if (holdSeconds > 0f)
+            {
+                yield return new WaitForSeconds(holdSeconds);
+            }
+
             image.gameObject.SetActive(false);
-            routine = null;
+        }
+
+        public void Stop()
+        {
+            if (image != null)
+            {
+                image.gameObject.SetActive(false);
+            }
         }
     }
 }

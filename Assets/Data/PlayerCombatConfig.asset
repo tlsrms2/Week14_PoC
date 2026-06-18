@@ -27,12 +27,13 @@ MonoBehaviour:
   gunAimHoldSeconds: 0.15
   parryRange: 6.5
   parryAimAngleDegrees: 30
+  parryBodyRadius: 0.3
   parryCooldownSeconds: 0.18
   lockOnBreakDistance: 7.5
   executionRange: 7
   executionBulletRecovery: 300
   destroyTargetOnExecute: 1
-  executionAimSeconds: 1
+  executionAimSeconds: 0.2
   executionShotDelaySeconds: 0.3
   executionKillDelaySeconds: 0.08
   executionFinishSeconds: 0.12
@@ -42,6 +43,9 @@ MonoBehaviour:
   executionGunReturnSeconds: 0.2
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
+  executionFlourishDelaySeconds: 0.3
+  executionFlourishShotCount: 3
+  executionFlourishShotInterval: 0.1
   playerBulletUiMaxVisibleIcons: 10
   playerBulletUiIconWorldHeight: 0.5
   playerBulletUiIconWidthRatio: 0.5
