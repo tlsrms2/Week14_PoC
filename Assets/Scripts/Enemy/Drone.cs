@@ -301,6 +301,28 @@ namespace Week14.Enemy
             return true;
         }
 
+        public void PlayExecutionHitReaction(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            if (health == null || health.IsDead)
+            {
+                return;
+            }
+
+            FlashBodyHitColor();
+            ProjectileVfx.PlayPlayerAttackImpact(
+                hitPosition,
+                hitDirection,
+                GetAttackImpactSparkColor(hitColor),
+                GetAttackImpactBackSparkColor(hitColor),
+                GetAttackImpactFlameColor(hitColor),
+                GetAttackImpactRingColor(hitColor),
+                effectData != null ? effectData.AttackImpactSparkCount : 14,
+                effectData != null ? effectData.AttackImpactBackSparkCount : 6,
+                effectData != null ? effectData.AttackImpactFlameCount : 8,
+                effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+            PlayEnemyHitCameraImpact(hitDirection);
+        }
+
         public void SetExecutionLocked(bool locked)
         {
             isExecutionLocked = locked;

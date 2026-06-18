@@ -93,6 +93,13 @@ namespace Week14.Combat
             return true;
         }
 
+        public void PlayHitReaction(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            enemyAI?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
+            bossAI?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
+            drone?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
+        }
+
         public bool RecoverExecutorBullets(PlayerCombatController player)
         {
             PlayerCombatConfig activeConfig = Config;

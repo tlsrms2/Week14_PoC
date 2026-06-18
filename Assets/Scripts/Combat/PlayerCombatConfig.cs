@@ -80,6 +80,12 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float executionShotDimSeconds = 0.065f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리의 최대 알파값입니다.")]
         [SerializeField, Range(0f, 1f)] private float executionShotDimAlpha = 0.72f;
+        [Tooltip("처형 시작 후 총 발사 연출이 시작되기 전 대기 시간입니다.")]
+        [SerializeField, Min(0f)] private float executionFlourishDelaySeconds = 0.1f;
+        [Tooltip("처형 사격 전, 총 발사 애니메이션을 반복할 횟수입니다.")]
+        [SerializeField, Min(0)] private int executionFlourishShotCount = 3;
+        [Tooltip("처형 사격 전 총 발사 애니메이션 반복 사이의 간격입니다.")]
+        [SerializeField, Min(0.01f)] private float executionFlourishShotInterval = 0.08f;
 
         [Header("Player Bullet UI")]
         [Tooltip("패링 호 아래에 표시할 플레이어 탄환 아이콘 최대 개수입니다.")]
@@ -151,6 +157,9 @@ namespace Week14.Combat
         public float ExecutionGunReturnSeconds => executionGunReturnSeconds;
         public float ExecutionShotDimSeconds => executionShotDimSeconds;
         public float ExecutionShotDimAlpha => executionShotDimAlpha;
+        public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
+        public int ExecutionFlourishShotCount => executionFlourishShotCount;
+        public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
         public Color ExecutionShotColor => effectData != null ? effectData.ExecutionShotColor : Color.white;
         public Color ExecutionImpactColor => effectData != null ? effectData.ExecutionImpactColor : new Color(0.9f, 0.02f, 0.04f, 1f);
         public Color ExecutionAbsorbColor => effectData != null ? effectData.ExecutionAbsorbColor : new Color(0.35f, 0.85f, 1f, 1f);

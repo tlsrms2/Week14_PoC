@@ -486,7 +486,9 @@ namespace Week14.Combat
 
             isExecuting = true;
             StopBody();
-            executionImage?.Play(config.ExecutionAimSeconds + config.ExecutionShotDelaySeconds + config.ExecutionKillDelaySeconds);
+            float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
+                + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
+            executionImage?.Play(flourishSeconds + config.ExecutionAimSeconds + config.ExecutionShotDelaySeconds + config.ExecutionKillDelaySeconds);
 
             Health targetHealth = executionTarget.GetComponent<Health>();
             if (targetHealth != null)
@@ -517,6 +519,8 @@ namespace Week14.Combat
             Transform leftFireOrigin = GetLeftFireOrigin();
             Vector2 aimDirection = targetPosition - (Vector2)leftGunOrigin.position;
             AimExecutionPose(aimDirection);
+            yield return new WaitForSeconds(config.ExecutionFlourishDelaySeconds);
+            yield return RunExecutionFlourish(executionTarget, aimDirection);
             leftGunRecoil?.PlayKick(aimDirection, config.ExecutionGunKickSeconds);
 
             yield return new WaitForSeconds(config.ExecutionAimSeconds);
@@ -542,6 +546,7 @@ namespace Week14.Combat
             LockLeftGunAim(aimDirection);
             UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
             leftGunRecoil?.ReturnToBase(config.ExecutionGunReturnSeconds);
+            visual?.PlayShot();
             PlayExecutionShotDim();
 
             PlayerProjectile executionShot = PlayerProjectile.Spawn(
@@ -597,6 +602,51 @@ namespace Week14.Combat
             }
 
             FinishExecution();
+        }
+
+        private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget, Vector2 aimDirection)
+        {
+            int shotCount = Mathf.Max(0, config.ExecutionFlourishShotCount);
+            float interval = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
+            for (int i = 0; i < shotCount; i++)
+            {
+                visual?.PlayShot();
+                leftGunRecoil?.Play(aimDirection);
+                FireExecutionFlourishShot(executionTarget, aimDirection);
+                yield return new WaitForSeconds(interval);
+            }
+        }
+
+        private void FireExecutionFlourishShot(ExecutionTarget executionTarget, Vector2 aimDirection)
+        {
+            Transform fireOrigin = GetLeftFireOrigin();
+            if (fireOrigin == null)
+            {
+                return;
+            }
+
+            PlayerProjectile flourishShot = PlayerProjectile.Spawn(
+                config.ProjectilePrefab,
+                fireOrigin.position,
+                aimDirection,
+                this,
+                config.ProjectileSpeed,
+                config.ProjectileLifetime,
+                config.ProjectileRadius,
+                0,
+                config.ExecutionShotColor,
+                false);
+            if (flourishShot != null)
+            {
+                Color muzzleFlashColor = Color.Lerp(config.ExecutionShotColor, Color.white, 0.65f);
+                muzzleFlashColor.a = 1f;
+                ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, aimDirection, muzzleFlashColor, 1.55f);
+            }
+
+            if (executionTarget != null)
+            {
+                executionTarget.PlayHitReaction(executionTarget.transform.position, aimDirection, config.ExecutionShotColor);
+            }
         }
 
         private void FinishExecution()
