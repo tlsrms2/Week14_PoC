@@ -348,6 +348,14 @@ namespace Week14.Combat
                 return false;
             }
 
+            // 탄환을 소비하기 전, 현재 상태를 기준으로 대미지 계산
+            // 공식: (최대 탄환 수 - 현재 탄환 수) + 1
+            int dynamicDamage = config.AttackBulletDamage;
+            if (bullets != null)
+            {
+                dynamicDamage = (bullets.MaxBullets - bullets.CurrentBullets) + 1;
+            }
+
             if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
             {
                 return false;
@@ -365,7 +373,7 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                PlayerAttackBulletDamage,
+                dynamicDamage,
                 AttackEffectColor,
                 true);
 
