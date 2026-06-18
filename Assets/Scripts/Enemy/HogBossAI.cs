@@ -331,6 +331,13 @@ namespace Week14.Enemy
 
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
@@ -346,6 +353,13 @@ namespace Week14.Enemy
 
             while (fired < totalBullets)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 float t = totalBullets <= 1 ? 1f : Mathf.Clamp01((float)fired / (totalBullets - 1));
                 float speedMultiplier = Mathf.Lerp(
                     pattern1.InitialChaseSpeedMultiplier,
@@ -394,6 +408,8 @@ namespace Week14.Enemy
                 int volleyBulletCount = Mathf.Max(1, volley.BulletCount);
                 for (int bulletIndex = 0; bulletIndex < volleyBulletCount; bulletIndex++)
                 {
+                    yield return WaitWhileExecutionPaused();
+
                     MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
                     FireMachinegunBullet(fired);
                     fired++;
@@ -457,6 +473,13 @@ namespace Week14.Enemy
             float nextBubbleAt = Time.time;
             while (projectile != null && projectile.IsCharging)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 PlayWindupBubbleIfDue(ref nextBubbleAt, projectile.transform.position, pattern3.WindupBubbleInterval, pattern3.WindupBubbleScale, pattern3.WindupBubbleCount);
                 yield return null;
             }
@@ -468,13 +491,15 @@ namespace Week14.Enemy
 
             for (int wave = 0; wave < pattern4.WaveCount; wave++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
                 yield return FirePattern4Circle(offset);
                 ConsumePatternBulletUi();
 
                 if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
                 {
-                    yield return new WaitForSeconds(pattern4.WaveInterval);
+                    yield return WaitPattern5Seconds(pattern4.WaveInterval);
                 }
             }
         }
@@ -490,6 +515,13 @@ namespace Week14.Enemy
             float nextBubbleAt = Time.time;
             while (elapsed < windupSeconds)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Stop();
                 PlayWindupBubbleIfDue(ref nextBubbleAt, GetProjectileOrigin(), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
 
@@ -499,6 +531,8 @@ namespace Week14.Enemy
 
             for (int i = 0; i < bulletCount; i++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 Stop();
                 FirePattern5Bullet(i);
                 ConsumePatternBulletUi();
@@ -538,6 +572,8 @@ namespace Week14.Enemy
 
             for (int i = 0; i < count; i++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 Vector2 direction = AngleToDirection(startAngleDegrees + step * order[i]);
                 Vector3 origin = center + (Vector3)(direction * radius);
                 EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction, i == 0);
@@ -545,7 +581,7 @@ namespace Week14.Enemy
 
                 if (pattern4.ShotInterval > 0f && i < count - 1)
                 {
-                    yield return new WaitForSeconds(pattern4.ShotInterval);
+                    yield return WaitPattern5Seconds(pattern4.ShotInterval);
                 }
             }
         }
@@ -596,6 +632,13 @@ namespace Week14.Enemy
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
                 remaining -= Time.deltaTime;
                 yield return null;
@@ -607,8 +650,24 @@ namespace Week14.Enemy
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Stop();
                 remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitWhileExecutionPaused()
+        {
+            while (IsExecutionPaused)
+            {
+                Stop();
                 yield return null;
             }
         }

@@ -181,6 +181,12 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (IsExecutionPaused)
+            {
+                Stop();
+                return;
+            }
+
             if (IsBulletEmpty)
             {
                 HideAttackTiming();
@@ -327,7 +333,7 @@ namespace Week14.Enemy
 
         public bool CanSpawnEnemyProjectile()
         {
-            return bullets != null && !bullets.IsEmpty;
+            return !IsExecutionPaused && bullets != null && !bullets.IsEmpty;
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)
@@ -362,6 +368,7 @@ namespace Week14.Enemy
         protected virtual void OnBulletEmptyRecovered() { }
         protected virtual bool TryHandlePlayerHitBeforeDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) => false;
         protected virtual void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) { }
+        protected static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
 
         protected EnemyProjectile SpawnBossProjectile(
             EnemyProjectile prefab,

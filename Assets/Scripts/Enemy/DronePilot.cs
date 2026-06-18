@@ -103,9 +103,13 @@ namespace Week14.Enemy
         {
             [SerializeField, Tooltip("켜면 보스 일반 공격 탄환 설정을 드론도 그대로 사용합니다.")] private bool useBossProjectile = true;
             [SerializeField] private ProjectileSettings droneProjectile = new();
+            [SerializeField, Min(1), Tooltip("패턴1 동안 각 드론이 발사할 탄환 수입니다.")] private int bulletCount = 6;
+            [SerializeField, Min(0f), Tooltip("패턴1 드론 발사 간격입니다.")] private float fireInterval = 0.22f;
 
             public bool UseBossProjectile => useBossProjectile;
             public ProjectileSettings DroneProjectile => droneProjectile;
+            public int BulletCount => bulletCount;
+            public float FireInterval => fireInterval;
         }
 
         [System.Serializable]
@@ -283,6 +287,11 @@ namespace Week14.Enemy
 
         public EnemyProjectile FireDroneProjectile(Drone source, ProjectileSettings settings, Vector3 origin, Vector2 direction, bool playMuzzleFlash)
         {
+            if (IsExecutionPaused)
+            {
+                return null;
+            }
+
             if (settings == null || settings.Prefab == null)
             {
                 return null;
@@ -482,6 +491,13 @@ namespace Week14.Enemy
             float remaining = duration;
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
@@ -496,6 +512,13 @@ namespace Week14.Enemy
             float remaining = duration;
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 ShowDroneAttackRecovery(remaining, duration);
                 remaining -= Time.deltaTime;
                 yield return null;
@@ -506,6 +529,8 @@ namespace Week14.Enemy
 
         private IEnumerator RunSummonPattern()
         {
+            yield return WaitWhileExecutionPaused();
+
             RefreshControlledDrones();
             if (summon.Prefab == null)
             {
@@ -524,6 +549,8 @@ namespace Week14.Enemy
             float longestIntro = 0f;
             for (int i = 0; i < summonCount; i++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 longestIntro = Mathf.Max(longestIntro, SpawnDrone(i, currentCount + summonCount));
                 if (i < summonCount - 1 && summon.SummonInterval > 0f)
                 {
@@ -539,20 +566,22 @@ namespace Week14.Enemy
 
         private IEnumerator RunDronePattern1()
         {
-            if (!EnsureAnyDrone())
+            yield return WaitWhileExecutionPaused();
+
+            List<Drone> drones = GetControlledDrones();
+            if (!EnsureAnyDrone(drones))
             {
                 yield break;
             }
 
-            ProjectileSettings droneProjectile = dronePattern1.UseBossProjectile
-                ? bossBurst.Projectile
-                : dronePattern1.DroneProjectile;
-            int syncVersion = BeginSynchronizedDroneFire(droneProjectile, bossBurst.BulletCount);
+            int syncVersion = BeginSynchronizedDroneFire(dronePattern1.DroneProjectile, bossBurst.BulletCount);
             yield return WaitSynchronizedDroneFire(syncVersion);
         }
 
         private IEnumerator RunDronePattern2()
         {
+            yield return WaitWhileExecutionPaused();
+
             List<Drone> drones = GetControlledDrones();
             if (!EnsureAnyDrone(drones))
             {
@@ -582,6 +611,8 @@ namespace Week14.Enemy
 
         private IEnumerator RunDronePattern3()
         {
+            yield return WaitWhileExecutionPaused();
+
             List<Drone> drones = GetControlledDrones();
             if (!EnsureAnyDrone(drones))
             {
@@ -605,6 +636,8 @@ namespace Week14.Enemy
 
         private IEnumerator RunDronePattern4()
         {
+            yield return WaitWhileExecutionPaused();
+
             List<Drone> drones = GetControlledDrones();
             if (!EnsureAnyDrone(drones))
             {
@@ -631,6 +664,8 @@ namespace Week14.Enemy
 
         private IEnumerator RunDronePattern5()
         {
+            yield return WaitWhileExecutionPaused();
+
             List<Drone> drones = GetControlledDrones();
             if (!EnsureAnyDrone(drones))
             {
@@ -661,6 +696,8 @@ namespace Week14.Enemy
             int fireCount = Mathf.Max(1, dronePattern5.DroneFireCount);
             for (int i = 0; i < fireCount; i++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 FireAllDrones(dronePattern5.DroneProjectile);
                 if (i < fireCount - 1 && dronePattern5.DroneFireInterval > 0f)
                 {
@@ -687,6 +724,8 @@ namespace Week14.Enemy
             int count = Mathf.Max(1, bulletCount);
             for (int i = 0; i < count; i++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 Vector3 origin = GetProjectileOrigin();
                 Vector2 direction = GetDirectionToPlayer(origin);
                 Vector2 side = new(-direction.y, direction.x);
@@ -702,7 +741,7 @@ namespace Week14.Enemy
                 ConsumePatternBulletUi();
                 if (i < count - 1 && fireInterval > 0f)
                 {
-                    yield return new WaitForSeconds(fireInterval);
+                    yield return WaitPatternSeconds(fireInterval);
                 }
             }
         }
@@ -842,6 +881,13 @@ namespace Week14.Enemy
         {
             while (syncVersion == synchronizedDroneSyncVersion && synchronizedDroneShotsRemaining > 0)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 yield return null;
             }
         }
@@ -900,7 +946,7 @@ namespace Week14.Enemy
             switch (pattern)
             {
                 case PatternKind.DronePattern1:
-                    return GetDronePattern1Projectile() != null ? Mathf.Max(1, bossBurst.BulletCount) : 0;
+                    return dronePattern1.DroneProjectile != null ? Mathf.Max(1, bossBurst.BulletCount) : 0;
                 case PatternKind.DronePattern2:
                     return droneIndex == 0
                         ? GetOrbitFireBulletCount(dronePattern2.FireAngleStepDegrees)
@@ -916,11 +962,6 @@ namespace Week14.Enemy
                 default:
                     return 0;
             }
-        }
-
-        private ProjectileSettings GetDronePattern1Projectile()
-        {
-            return dronePattern1.UseBossProjectile ? bossBurst.Projectile : dronePattern1.DroneProjectile;
         }
 
         private static int GetOrbitFireBulletCount(float fireAngleStepDegrees)
@@ -1013,6 +1054,13 @@ namespace Week14.Enemy
             float remaining = duration;
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Stop();
                 ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
@@ -1025,18 +1073,41 @@ namespace Week14.Enemy
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Stop();
                 remaining -= Time.deltaTime;
                 yield return null;
             }
         }
 
-        private static IEnumerator WaitDronePatternSeconds(float seconds)
+        private IEnumerator WaitDronePatternSeconds(float seconds)
         {
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitWhileExecutionPaused()
+        {
+            while (IsExecutionPaused)
+            {
+                Stop();
                 yield return null;
             }
         }

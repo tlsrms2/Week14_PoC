@@ -188,6 +188,12 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (IsExecutionPaused)
+            {
+                Stop();
+                return;
+            }
+
             // 탄환 고갈 처리
             if (IsBulletEmpty)
             {
@@ -469,22 +475,31 @@ namespace Week14.Enemy
             // Windup
             if (data.WindupSeconds > 0f)
             {
-                yield return new WaitForSeconds(data.WindupSeconds);
+                yield return WaitAttackSeconds(data.WindupSeconds);
             }
 
             // 이벤트 시각 실행
-            float timelineStartedAt = Time.time;
+            float timelineElapsed = 0f;
             int eventIndex = 0;
 
             while (eventIndex < events.Count)
             {
                 AttackEvent evt = events[eventIndex];
-                float waitSeconds = timelineStartedAt + evt.FireTime - Time.time;
-                if (waitSeconds > 0f)
+                float targetTime = Mathf.Max(0f, evt.FireTime);
+                while (timelineElapsed < targetTime)
                 {
-                    yield return new WaitForSeconds(waitSeconds);
+                    if (IsExecutionPaused)
+                    {
+                        Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    timelineElapsed += Time.deltaTime;
+                    yield return null;
                 }
 
+                yield return WaitWhileExecutionPaused();
                 yield return ExecuteAttackEvent(evt);
                 currentAttackBulletRemaining = Mathf.Max(0, currentAttackBulletRemaining - 1);
                 ShowCurrentAttackBullets();
@@ -494,7 +509,7 @@ namespace Week14.Enemy
             // Recovery
             if (data.RecoverySeconds > 0f)
             {
-                yield return new WaitForSeconds(data.RecoverySeconds);
+                yield return WaitAttackSeconds(data.RecoverySeconds);
             }
 
             attackCoroutine = null;
@@ -593,7 +608,7 @@ namespace Week14.Enemy
 
                 if (interval > 0f && i < count - 1)
                 {
-                    yield return new WaitForSeconds(interval);
+                    yield return WaitAttackSeconds(interval);
                 }
             }
         }
@@ -630,6 +645,13 @@ namespace Week14.Enemy
 
             while (elapsed < duration)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Vector2 currentPosition = transform.position;
                 distanceSinceLastBullet += Vector2.Distance(previousPosition, currentPosition);
 
@@ -678,7 +700,7 @@ namespace Week14.Enemy
 
         public bool CanSpawnEnemyProjectile()
         {
-            if (bullets == null || bullets.IsEmpty)
+            if (IsExecutionPaused || bullets == null || bullets.IsEmpty)
             {
                 return false;
             }
@@ -686,6 +708,32 @@ namespace Week14.Enemy
             PruneInactiveProjectiles();
             int capacity = bullets.CurrentBullets;
             return activeProjectiles.Count < capacity;
+        }
+
+        private static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
+
+        private IEnumerator WaitAttackSeconds(float seconds)
+        {
+            float remaining = Mathf.Max(0f, seconds);
+            while (remaining > 0f)
+            {
+                if (IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitWhileExecutionPaused()
+        {
+            while (IsExecutionPaused)
+            {
+                yield return null;
+            }
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)

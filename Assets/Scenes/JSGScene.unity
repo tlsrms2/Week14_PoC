@@ -30726,6 +30726,12 @@ MonoBehaviour:
   parryOutlineColor: {r: 1, g: 1, b: 1, a: 1}
   hitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   attackOutlineColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  showPlayerRightGunAmmo: 1
+  rightGunAmmoHeightRatio: 0.2
+  rightGunAmmoWidthRatio: 0.48
+  rightGunAmmoSpacingRatio: 0.12
+  rightGunAmmoColor: {r: 0.58, g: 0.58, b: 0.58, a: 0.95}
+  rightGunCooldownColor: {r: 0.78, g: 0.78, b: 0.78, a: 0.9}
 --- !u!114 &1422819312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30878,7 +30884,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0, y: 360}
+  m_AnchoredPosition: {x: -0, y: 341}
   m_SizeDelta: {x: 430.67, y: 102.46}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1535808842
@@ -30943,6 +30949,12 @@ MonoBehaviour:
   parryOutlineColor: {r: 1, g: 1, b: 1, a: 1}
   hitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   attackOutlineColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  showPlayerRightGunAmmo: 1
+  rightGunAmmoHeightRatio: 0.2
+  rightGunAmmoWidthRatio: 0.48
+  rightGunAmmoSpacingRatio: 0.12
+  rightGunAmmoColor: {r: 0.58, g: 0.58, b: 0.58, a: 0.95}
+  rightGunCooldownColor: {r: 0.78, g: 0.78, b: 0.78, a: 0.9}
 --- !u!1 &1536620596
 GameObject:
   m_ObjectHideFlags: 0
@@ -33924,6 +33936,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: maxBullets
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: randomizePatterns
       value: 1
       objectReference: {fileID: 0}
@@ -33932,8 +33948,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.bulletCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: summon.maxOwnedDrones
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossBurst.windupSeconds
@@ -33949,7 +33969,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: maxPatternRecoverySeconds
-      value: 2.5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: minPatternRecoverySeconds
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern4.chargeSeconds
@@ -33964,11 +33988,75 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: summon.maxAutoSummonInterval
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: summon.minAutoSummonInterval
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern5.formationRadius
       value: 3.2
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern5.droneFireInterval
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.homingSeconds
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.chargingColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.chargingColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.chargingColor.r
+      value: 0.078704834
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.launchedColor.b
+      value: 0.9408389
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.launchedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.launchedColor.r
+      value: 0.25098038
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.prefab
+      value: 
+      objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.radius
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.chargeSeconds
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.chargingColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.chargingColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.chargingColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
@@ -33984,6 +34072,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.chargeDriftSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.homingTurnDegreesPerSecond
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern2.stationaryProjectile.chargingColor.b
       value: 0
       objectReference: {fileID: 0}
@@ -33994,6 +34090,10 @@ PrefabInstance:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern2.stationaryProjectile.chargingColor.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.aimAtPlayerWhileCharging
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x

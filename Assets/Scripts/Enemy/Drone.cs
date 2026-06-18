@@ -41,6 +41,9 @@ namespace Week14.Enemy
         [SerializeField] private Color lockOnIndicatorColor = Color.white;
         [SerializeField] private Color executionIndicatorColor = Color.red;
 
+        [Header("Status UI")]
+        [SerializeField] private Vector2 statusBulletBarSize = new(1.88f, 0.32f);
+
         [Header("Effect")]
         [SerializeField] private CombatEffectData effectData;
         [SerializeField, Min(0f)] private float staggerSeconds = 0.18f;
@@ -107,6 +110,7 @@ namespace Week14.Enemy
         public Color EmptyBulletBarColor => emptyBulletBarColor;
         public Color LockOnIndicatorColor => lockOnIndicatorColor;
         public Color ExecutionIndicatorColor => executionIndicatorColor;
+        public Vector2 StatusBulletBarSize => new(Mathf.Max(0.01f, statusBulletBarSize.x), Mathf.Max(0.01f, statusBulletBarSize.y));
         public static IReadOnlyList<Drone> All => ActiveDrones;
 
         private void Awake()
@@ -196,6 +200,12 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (IsExecutionPaused)
+            {
+                StopBody();
+                return;
+            }
+
             if (isSummoning)
             {
                 StopBody();
@@ -239,13 +249,12 @@ namespace Week14.Enemy
 
         public bool CanSpawnEnemyProjectile()
         {
-            if (bullets == null || bullets.IsEmpty || isSummoning)
+            if (IsExecutionPaused || isSummoning || health == null || health.IsDead)
             {
                 return false;
             }
 
-            PruneInactiveProjectiles();
-            return activeProjectiles.Count < bullets.CurrentBullets;
+            return true;
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)
@@ -442,11 +451,12 @@ namespace Week14.Enemy
             int count = Mathf.Max(0, bulletCount);
             for (int i = 0; i < count; i++)
             {
+                yield return WaitWhileExecutionPaused();
                 StopBody();
                 FireOnceAtPlayer(projectile);
                 if (i < count - 1)
                 {
-                    yield return new WaitForSeconds(Mathf.Max(0f, fireInterval));
+                    yield return WaitCommandSeconds(fireInterval);
                 }
             }
 
@@ -472,6 +482,13 @@ namespace Week14.Enemy
             float elapsed = 0f;
             while (elapsed < duration)
             {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
                 float t = Mathf.Clamp01(elapsed / duration);
                 float eased = t * t * (3f - 2f * t);
                 transform.position = Vector3.Lerp(startPosition, targetPosition, eased);
@@ -510,6 +527,13 @@ namespace Week14.Enemy
 
             while (travelled < 360f)
             {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
                 if (player == null)
                 {
                     break;
@@ -565,7 +589,7 @@ namespace Week14.Enemy
 
                 if (volley < volleys - 1)
                 {
-                    yield return new WaitForSeconds(Mathf.Max(0f, volleyInterval));
+                    yield return WaitCommandSeconds(volleyInterval);
                 }
             }
 
@@ -592,6 +616,13 @@ namespace Week14.Enemy
             float sideAngle = Mathf.Max(1f, sideFireAngleDegrees);
             while (elapsed < chargeSeconds)
             {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
                 SetVelocity(direction.normalized * Mathf.Max(0f, chargeSpeed));
                 if (elapsed >= nextFireAt)
                 {
@@ -619,6 +650,13 @@ namespace Week14.Enemy
             bool lockedToPattern = false;
             while (owner != null && owner.Player != null)
             {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
                 Vector2 bossToPlayer = (Vector2)(owner.Player.position - owner.transform.position);
                 Vector2 baseDirection = bossToPlayer.sqrMagnitude > 0.0001f ? bossToPlayer.normalized : Vector2.right;
                 Vector2 targetDirection = RotateDirection(baseDirection, angleOffsetDegrees);
@@ -1036,7 +1074,7 @@ namespace Week14.Enemy
             bool playMuzzleFlash,
             bool consumeAttackBullet = true)
         {
-            if (owner == null)
+            if (IsExecutionPaused || owner == null)
             {
                 return null;
             }
@@ -1048,6 +1086,34 @@ namespace Week14.Enemy
             }
 
             return firedProjectile;
+        }
+
+        private static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
+
+        private IEnumerator WaitCommandSeconds(float seconds)
+        {
+            float remaining = Mathf.Max(0f, seconds);
+            while (remaining > 0f)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitWhileExecutionPaused()
+        {
+            while (IsExecutionPaused)
+            {
+                StopBody();
+                yield return null;
+            }
         }
 
         private void ConsumeAttackBullet()

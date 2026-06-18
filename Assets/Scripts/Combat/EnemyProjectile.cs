@@ -11,7 +11,10 @@ namespace Week14.Combat
         private const string BulletVisualName = "BulletVisual";
         private const string ChargeVfxName = "ChargeVfx";
         private const string PathIndicatorName = "PathIndicator";
+        private const string HomingAimReticleName = "HomingAimReticle";
         private const int MaxPathDashCount = 72;
+        private const int HomingAimReticleLineCount = 3;
+        private const int HomingAimReticleCircleSegments = 40;
         private const float PathIndicatorSeconds = 1f;
         private const float PathDashLength = 0.2f;
         private const float PathDashGap = 0.14f;
@@ -31,6 +34,7 @@ namespace Week14.Combat
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
         private readonly List<LineRenderer> pathIndicatorDashes = new();
+        private readonly List<LineRenderer> homingAimReticleLines = new();
         private Transform pathIndicatorRoot;
         private BulletGauge ownerBullets;
         private EnemyAI ownerEnemy;
@@ -73,6 +77,8 @@ namespace Week14.Combat
         private Vector2 pathIndicatorDirection = Vector2.left;
         private float pathIndicatorLength;
         private float pathIndicatorEndsAt;
+        private float executionPauseStartedAt;
+        private bool pausedByExecution;
         private static Material chargeVfxMaterial;
 
         public Vector2 IncomingDirection => flightDirection;
@@ -369,6 +375,14 @@ namespace Week14.Combat
             {
                 return;
             }
+
+            if (PlayerCombatController.IsExecutionCinematicActive)
+            {
+                PauseForExecution();
+                return;
+            }
+
+            ResumeFromExecutionPause();
 
             if (!launched)
             {
@@ -849,11 +863,23 @@ namespace Week14.Combat
                 && projectileLifetime > 0f;
         }
 
+        private bool IsHomingProjectile()
+        {
+            return homingSeconds > 0f
+                || homingTurnDegreesPerSecond > 0f;
+        }
+
         private void UpdatePathIndicatorPreview()
         {
             if (!ShouldShowPathIndicator())
             {
                 SetPathIndicatorVisible(false);
+                return;
+            }
+
+            if (IsHomingProjectile())
+            {
+                DrawHomingPathIndicator();
                 return;
             }
 
@@ -873,8 +899,15 @@ namespace Week14.Combat
             float visibleSeconds = Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, destroyAt - Time.time));
             pathIndicatorEndsAt = Time.time + visibleSeconds;
             pathIndicatorLength = GetPathIndicatorLength(visibleSeconds);
-            DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, 0f);
             pathIndicatorActive = true;
+
+            if (IsHomingProjectile())
+            {
+                DrawHomingPathIndicator();
+                return;
+            }
+
+            DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, 0f);
         }
 
         private void TickPathIndicator()
@@ -890,10 +923,9 @@ namespace Week14.Combat
                 return;
             }
 
-            if (IsPathIndicatorDynamic())
+            if (IsHomingProjectile())
             {
-                float remainingSeconds = Mathf.Max(0f, pathIndicatorEndsAt - Time.time);
-                DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(remainingSeconds), 0f);
+                DrawHomingPathIndicator();
                 return;
             }
 
@@ -906,15 +938,132 @@ namespace Week14.Combat
             return projectileSpeed * Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, seconds));
         }
 
-        private bool IsPathIndicatorDynamic()
+        private void DrawHomingPathIndicator()
         {
-            return homingSeconds > 0f
-                && homingTurnDegreesPerSecond > 0f
-                && Time.time < homingEndsAt;
+            if (!TryGetHomingIndicatorTarget(out Vector2 start, out Vector2 direction, out Vector2 aimPoint))
+            {
+                SetPathIndicatorVisible(false);
+                return;
+            }
+
+            float length = Vector2.Distance(start, aimPoint);
+            if (length > 0.01f)
+            {
+                DrawPathIndicator(start, direction, length, 0f, true);
+            }
+            else
+            {
+                SetPathDashesVisible(false);
+            }
+
+            DrawHomingAimReticle(aimPoint, direction);
+            pathIndicatorActive = true;
+        }
+
+        private bool TryGetHomingIndicatorTarget(out Vector2 start, out Vector2 direction, out Vector2 aimPoint)
+        {
+            start = transform.position;
+            direction = flightDirection.sqrMagnitude > 0.0001f ? flightDirection.normalized : Vector2.left;
+            aimPoint = start;
+
+            PlayerCombatController target = PlayerCombatController.Active;
+            if (target == null || target.Health == null || target.Health.IsDead)
+            {
+                return false;
+            }
+
+            Vector2 targetCenter = target.transform.position;
+            Vector2 toTarget = targetCenter - start;
+            if (toTarget.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            direction = toTarget.normalized;
+            aimPoint = GetHomingAimPoint(target, start, direction);
+            return true;
+        }
+
+        private Vector2 GetHomingAimPoint(PlayerCombatController target, Vector2 start, Vector2 direction)
+        {
+            Vector2 fallback = (Vector2)target.transform.position - direction * GetPlayerContactRadius(target);
+            Collider2D[] colliders = target.GetComponentsInChildren<Collider2D>();
+            if (colliders == null || colliders.Length == 0)
+            {
+                return fallback;
+            }
+
+            if (TryGetClosestPlayerColliderPoint(colliders, start, direction, false, out Vector2 solidPoint))
+            {
+                return solidPoint;
+            }
+
+            return TryGetClosestPlayerColliderPoint(colliders, start, direction, true, out Vector2 triggerPoint)
+                ? triggerPoint
+                : fallback;
+        }
+
+        private static float GetPlayerContactRadius(PlayerCombatController target)
+        {
+            PlayerCombatConfig config = target != null ? target.Config : null;
+            return config != null ? Mathf.Max(0.05f, config.ParryBodyRadius) : 0.35f;
+        }
+
+        private static bool TryGetClosestPlayerColliderPoint(
+            Collider2D[] colliders,
+            Vector2 start,
+            Vector2 direction,
+            bool includeTriggers,
+            out Vector2 point)
+        {
+            point = start;
+            float bestDistanceSqr = float.PositiveInfinity;
+            bool found = false;
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null
+                    || !collider.enabled
+                    || !collider.gameObject.activeInHierarchy
+                    || (!includeTriggers && collider.isTrigger))
+                {
+                    continue;
+                }
+
+                Vector2 closest = collider.ClosestPoint(start);
+                Vector2 delta = closest - start;
+                if (Vector2.Dot(direction, delta) < -0.001f)
+                {
+                    continue;
+                }
+
+                float distanceSqr = delta.sqrMagnitude;
+                if (distanceSqr >= bestDistanceSqr)
+                {
+                    continue;
+                }
+
+                bestDistanceSqr = distanceSqr;
+                point = closest;
+                found = true;
+            }
+
+            return found;
         }
 
         private void DrawPathIndicator(Vector2 start, Vector2 direction, float length, float travelled)
         {
+            DrawPathIndicator(start, direction, length, travelled, false);
+        }
+
+        private void DrawPathIndicator(Vector2 start, Vector2 direction, float length, float travelled, bool keepHomingReticle)
+        {
+            if (!keepHomingReticle)
+            {
+                SetHomingAimReticleVisible(false);
+            }
+
             if (length <= 0.01f)
             {
                 SetPathIndicatorVisible(false);
@@ -923,9 +1072,11 @@ namespace Week14.Combat
 
             Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
             int dashCount = Mathf.Min(MaxPathDashCount, Mathf.CeilToInt(length / (PathDashLength + PathDashGap)));
-            Color color = Color.Lerp(projectileColor, Color.white, 0.35f);
-            color.a = 0.38f;
-            float width = Mathf.Max(0.005f, projectileRadius * 0.067f);
+            Color color = keepHomingReticle
+                ? new Color(0.25f, 0.72f, 1f, 0.9f)
+                : Color.Lerp(projectileColor, Color.white, 0.55f);
+            color.a = keepHomingReticle ? 0.86f : 0.58f;
+            float width = Mathf.Max(keepHomingReticle ? 0.014f : 0.01f, projectileRadius * (keepHomingReticle ? 0.16f : 0.11f));
             int visibleCount = 0;
 
             for (int i = 0; i < dashCount; i++)
@@ -963,6 +1114,114 @@ namespace Week14.Combat
             pathIndicatorActive = visibleCount > 0;
         }
 
+        private void DrawHomingAimReticle(Vector2 center, Vector2 direction)
+        {
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+            Vector2 side = new(-forward.y, forward.x);
+            float radius = Mathf.Max(0.2f, projectileRadius * 2.1f);
+            float crossRadius = radius * 0.72f;
+            Color color = new(0.55f, 0.9f, 1f, 0.95f);
+            color.a = 0.95f;
+            float width = Mathf.Max(0.024f, projectileRadius * 0.24f);
+
+            SetHomingAimReticleCircle(0, center, radius, color, width);
+            SetHomingAimReticleSegment(1, center - side * crossRadius, center + side * crossRadius, color, width);
+            SetHomingAimReticleSegment(2, center - forward * crossRadius, center + forward * crossRadius, color, width);
+
+            for (int i = HomingAimReticleLineCount; i < homingAimReticleLines.Count; i++)
+            {
+                if (homingAimReticleLines[i] != null)
+                {
+                    homingAimReticleLines[i].enabled = false;
+                }
+            }
+        }
+
+        private void PauseForExecution()
+        {
+            if (!pausedByExecution)
+            {
+                pausedByExecution = true;
+                executionPauseStartedAt = Time.time;
+            }
+
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+        }
+
+        private void ResumeFromExecutionPause()
+        {
+            if (!pausedByExecution)
+            {
+                return;
+            }
+
+            float pausedSeconds = Mathf.Max(0f, Time.time - executionPauseStartedAt);
+            chargeEndsAt += pausedSeconds;
+            homingEndsAt += pausedSeconds;
+            destroyAt += pausedSeconds;
+            if (radialSplitAt > 0f)
+            {
+                radialSplitAt += pausedSeconds;
+            }
+
+            if (pathIndicatorEndsAt > 0f)
+            {
+                pathIndicatorEndsAt += pausedSeconds;
+            }
+
+            pausedByExecution = false;
+            executionPauseStartedAt = 0f;
+            if (launched && body != null)
+            {
+                body.linearVelocity = flightDirection * projectileSpeed;
+            }
+        }
+
+        private void SetHomingAimReticleCircle(int index, Vector2 center, float radius, Color color, float width)
+        {
+            LineRenderer line = EnsureHomingAimReticleLine(index);
+            if (line == null)
+            {
+                return;
+            }
+
+            line.enabled = true;
+            line.loop = true;
+            line.positionCount = HomingAimReticleCircleSegments;
+            line.startColor = color;
+            line.endColor = color;
+            line.startWidth = width;
+            line.endWidth = width;
+
+            for (int i = 0; i < HomingAimReticleCircleSegments; i++)
+            {
+                float angle = Mathf.PI * 2f * i / HomingAimReticleCircleSegments;
+                line.SetPosition(i, center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius);
+            }
+        }
+
+        private void SetHomingAimReticleSegment(int index, Vector2 start, Vector2 end, Color color, float width)
+        {
+            LineRenderer line = EnsureHomingAimReticleLine(index);
+            if (line == null)
+            {
+                return;
+            }
+
+            line.enabled = true;
+            line.loop = false;
+            line.positionCount = 2;
+            line.startColor = color;
+            line.endColor = color;
+            line.startWidth = width;
+            line.endWidth = width;
+            line.SetPosition(0, start);
+            line.SetPosition(1, end);
+        }
+
         private LineRenderer EnsurePathDash(int index)
         {
             EnsurePathIndicatorRoot();
@@ -987,6 +1246,32 @@ namespace Week14.Combat
             }
 
             return pathIndicatorDashes[index];
+        }
+
+        private LineRenderer EnsureHomingAimReticleLine(int index)
+        {
+            EnsurePathIndicatorRoot();
+            if (pathIndicatorRoot == null)
+            {
+                return null;
+            }
+
+            while (homingAimReticleLines.Count <= index)
+            {
+                GameObject lineObject = new($"{HomingAimReticleName}_{homingAimReticleLines.Count:00}");
+                lineObject.transform.SetParent(pathIndicatorRoot, false);
+                LineRenderer line = lineObject.AddComponent<LineRenderer>();
+                line.useWorldSpace = true;
+                line.loop = false;
+                line.positionCount = 2;
+                line.numCornerVertices = 0;
+                line.numCapVertices = 1;
+                line.sortingOrder = 19;
+                line.material = GetChargeVfxMaterial();
+                homingAimReticleLines.Add(line);
+            }
+
+            return homingAimReticleLines[index];
         }
 
         private void EnsurePathIndicatorRoot()
@@ -1018,11 +1303,28 @@ namespace Week14.Combat
         private void SetPathIndicatorVisible(bool visible)
         {
             pathIndicatorActive = visible && pathIndicatorActive;
+            SetPathDashesVisible(visible);
+            SetHomingAimReticleVisible(visible);
+        }
+
+        private void SetPathDashesVisible(bool visible)
+        {
             for (int i = 0; i < pathIndicatorDashes.Count; i++)
             {
                 if (pathIndicatorDashes[i] != null)
                 {
                     pathIndicatorDashes[i].enabled = visible;
+                }
+            }
+        }
+
+        private void SetHomingAimReticleVisible(bool visible)
+        {
+            for (int i = 0; i < homingAimReticleLines.Count; i++)
+            {
+                if (homingAimReticleLines[i] != null)
+                {
+                    homingAimReticleLines[i].enabled = visible;
                 }
             }
         }
@@ -1052,7 +1354,7 @@ namespace Week14.Combat
             line.enabled = true;
             line.startColor = chargeColor;
             line.endColor = chargeColor;
-            line.startWidth = Mathf.Max(0.012f, projectileRadius * 0.22f);
+            line.startWidth = Mathf.Max(0.018f, projectileRadius * 0.32f);
             line.endWidth = line.startWidth;
             line.positionCount = 5;
             line.SetPosition(0, new Vector3(0f, radius, 0f));

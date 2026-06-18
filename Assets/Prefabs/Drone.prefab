@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.Drone
   owner: {fileID: 0}
-  maxBullets: 25
+  maxBullets: 5
   bulletEmptyExecutionSeconds: 3
   normalColor: {r: 0.9803922, g: 0.60784316, b: 0.60784316, a: 1}
   bulletEmptyColor: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
@@ -378,6 +378,7 @@ MonoBehaviour:
   emptyBulletBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
+  statusBulletBarSize: {x: 1.88, y: 0.32}
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   staggerSeconds: 0.18
   staggerShakeDistance: 0.06
