@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Bootstrap;
@@ -12,6 +13,8 @@ namespace Week14.Enemy
         [Header("Boss Lives")]
         [Tooltip("보스의 총 목숨(페이즈) 수입니다. 처형될 때마다 1씩 깎입니다.")]
         [SerializeField, Min(1)] private int maxLives = 3;
+        [Tooltip("처형 후 다음 페이즈 패턴을 시작하기 전, 보스가 제자리에서 대기하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float phaseTransitionWaitSeconds = 1.2f;
 
         [Header("Enrage System")]
         [Tooltip("전투 시작 후 1단계 광폭화(최대 탄환 감소)까지 걸리는 시간입니다.")]
@@ -64,6 +67,8 @@ namespace Week14.Enemy
         [Header("Boss Combat UI")]
         [SerializeField] private GameObject bossCombatUiRoot;
         [SerializeField] private BulletBarView bossBulletBarView;
+        [SerializeField] private BossLivesView bossLivesView;
+        [SerializeField] private BossEnrageBarView bossEnrageBarView;
 
         [Header("Status UI")]
         [SerializeField] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
@@ -90,6 +95,8 @@ namespace Week14.Enemy
         private bool isBossCombatUiActive;
         private bool destroyAfterDeathQueued;
         private int currentLives;
+        private bool isPhaseTransitionWaiting;
+        private float phaseTransitionWaitEndsAt;
         private bool isCombatStarted;
         private float currentPhaseStartTime;
         private int currentEnragePhase;
@@ -122,6 +129,12 @@ namespace Week14.Enemy
         public Color ExecutionIndicatorColor => executionIndicatorColor;
 
         protected CombatEffectData EffectData => effectData;
+        public int MaxLives => Mathf.Max(1, maxLives);
+        public int CurrentLives => Mathf.Clamp(currentLives, 0, MaxLives);
+        public int CurrentEnragePhase => currentEnragePhase;
+        public float CurrentEnrageProgress => GetCurrentEnrageProgress();
+        public event Action<int, int> LivesChanged;
+        public event Action<int, float> EnrageChanged;
 
         protected virtual void Awake()
         {
@@ -170,6 +183,7 @@ namespace Week14.Enemy
         protected virtual void Start()
         {
             currentLives = maxLives;
+            NotifyLivesChanged();
             
             SpawnPosition = transform.position;
             bullets.Configure(maxBullets, true);
@@ -196,6 +210,13 @@ namespace Week14.Enemy
             {
                 HideAttackTiming();
                 Stop();
+                return;
+            }
+
+            if (isPhaseTransitionWaiting)
+            {
+                HideAttackTiming();
+                TickPhaseTransitionWait();
                 return;
             }
 
@@ -337,12 +358,15 @@ namespace Week14.Enemy
                 currentEnragePhase = 2;
                 ApplyPlayerMaxBullets(enragePhase2MaxBullets);
             }
+
+            NotifyEnrageChanged();
         }
 
         private void ResetEnrageTimer()
         {
             currentPhaseStartTime = Time.time;
             currentEnragePhase = 0;
+            NotifyEnrageChanged();
 
             PlayerCombatController player = PlayerCombatController.Active;
             if (player != null && player.Config != null && player.Bullets != null)
@@ -357,6 +381,7 @@ namespace Week14.Enemy
             if (currentLives > 1)
             {
                 currentLives--; // 목숨 1개 차감
+                NotifyLivesChanged();
                 ResetEnrageTimer(); // 광폭화 리셋
                 
                 isExecutionLocked = false; // 행동 잠금 해제
@@ -371,6 +396,7 @@ namespace Week14.Enemy
                 // 혹시 이중으로 꼬여있는 기존 패턴이 있다면 강제로 정지시킵니다.
                 CancelBossAction();
                 Stop();
+                BeginPhaseTransitionWait();
                 
                 isBulletEmpty = false;
                 bulletEmptyEndsAt = 0f;
@@ -383,6 +409,9 @@ namespace Week14.Enemy
 
             // 모든 목숨을 소진함
             currentLives = 0;
+            isPhaseTransitionWaiting = false;
+            phaseTransitionWaitEndsAt = 0f;
+            NotifyLivesChanged();
             return false;
         }
 
@@ -663,6 +692,26 @@ namespace Week14.Enemy
                 bossBulletBarView.SetBindPlayerOnStart(false);
                 bossBulletBarView.SetColors(bulletBarColor, emptyBulletBarColor);
             }
+
+            bossLivesView ??= bossCombatUiRoot != null
+                ? bossCombatUiRoot.GetComponentInChildren<BossLivesView>(true)
+                : GetComponentInChildren<BossLivesView>(true);
+            if (bossLivesView == null && bossCombatUiRoot != null)
+            {
+                bossLivesView = BossLivesView.CreateUnder(bossCombatUiRoot.transform);
+            }
+
+            bossLivesView?.SetTarget(this);
+
+            bossEnrageBarView ??= bossCombatUiRoot != null
+                ? bossCombatUiRoot.GetComponentInChildren<BossEnrageBarView>(true)
+                : GetComponentInChildren<BossEnrageBarView>(true);
+            if (bossEnrageBarView == null && bossCombatUiRoot != null)
+            {
+                bossEnrageBarView = BossEnrageBarView.CreateUnder(bossCombatUiRoot.transform);
+            }
+
+            bossEnrageBarView?.SetTarget(this);
         }
 
         private void BindBossCombatUiTargetsIfVisible()
@@ -708,6 +757,39 @@ namespace Week14.Enemy
             }
 
             isBossCombatUiActive = visible;
+        }
+
+        private void NotifyLivesChanged()
+        {
+            LivesChanged?.Invoke(CurrentLives, MaxLives);
+            bossLivesView?.Refresh();
+        }
+
+        private void NotifyEnrageChanged()
+        {
+            float progress = GetCurrentEnrageProgress();
+            EnrageChanged?.Invoke(currentEnragePhase, progress);
+            bossEnrageBarView?.Refresh();
+        }
+
+        private float GetCurrentEnrageProgress()
+        {
+            if (!isCombatStarted)
+            {
+                return 0f;
+            }
+
+            if (currentEnragePhase <= 0)
+            {
+                return Mathf.Clamp01((Time.time - currentPhaseStartTime) / Mathf.Max(0.0001f, enragePhase1Seconds));
+            }
+
+            if (currentEnragePhase == 1)
+            {
+                return Mathf.Clamp01((Time.time - currentPhaseStartTime) / Mathf.Max(0.0001f, enragePhase2Seconds));
+            }
+
+            return 1f;
         }
 
         private void SuppressEnemyStatusView()
@@ -848,6 +930,32 @@ namespace Week14.Enemy
             OnBulletEmptyRecovered();
         }
 
+        private void BeginPhaseTransitionWait()
+        {
+            float waitSeconds = Mathf.Max(0f, phaseTransitionWaitSeconds);
+            if (waitSeconds <= 0f)
+            {
+                isPhaseTransitionWaiting = false;
+                phaseTransitionWaitEndsAt = 0f;
+                return;
+            }
+
+            isPhaseTransitionWaiting = true;
+            phaseTransitionWaitEndsAt = Time.time + waitSeconds;
+        }
+
+        private void TickPhaseTransitionWait()
+        {
+            Stop();
+            if (Time.time < phaseTransitionWaitEndsAt)
+            {
+                return;
+            }
+
+            isPhaseTransitionWaiting = false;
+            phaseTransitionWaitEndsAt = 0f;
+        }
+
         private void ApplyBodyStateColor()
         {
             if (renderers == null)
@@ -895,6 +1003,16 @@ namespace Week14.Enemy
         private void HandleDied(Health _)
         {
             DestroyActiveProjectiles();
+            SetBossCombatUiVisible(false);
+            if (bossLivesView != null)
+            {
+                bossLivesView.gameObject.SetActive(false);
+            }
+            if (bossEnrageBarView != null)
+            {
+                bossEnrageBarView.gameObject.SetActive(false);
+            }
+
             OnBossDied();
         }
 
