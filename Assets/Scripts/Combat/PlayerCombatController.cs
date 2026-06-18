@@ -14,11 +14,8 @@ namespace Week14.Combat
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class PlayerCombatController : MonoBehaviour
     {
-        private const string BodyVisualName = "Visual";
-        private const string LeftGunName = "LeftGun";
-        private const string RightGunName = "RightGun";
-        private const string FireOriginName = "FireOrigin";
-        private const string MuzzleName = "Muzzle";
+        private const string BodyVisualName = "VisualRoot";
+        private const string CombatCenterName = "Center Pivot";
         private const string AttackRangeIndicatorName = "AttackRangeIndicator";
         private const string ParryRangeIndicatorName = "ParryRangeIndicator";
         private const string ProjectileLockOnIndicatorName = "ProjectileLockOnIndicator";
@@ -29,13 +26,14 @@ namespace Week14.Combat
         public static PlayerCombatController Active { get; private set; }
 
         [SerializeField] private PlayerCombatConfig config;
+        [SerializeField] private PlayerVisualRig visual;
         [SerializeField] private Transform bodyRoot;
+        [SerializeField] private Transform combatCenter;
         [SerializeField] private Transform leftGunOrigin;
         [SerializeField] private Transform leftGunFireOrigin;
         [SerializeField] private Transform rightGunOrigin;
         [SerializeField] private Transform rightGunFireOrigin;
         [SerializeField] private GunRecoilMotion leftGunRecoil;
-        [SerializeField] private GunRecoilMotion rightGunRecoil;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private LayerMask parryMask = ~0;
         [SerializeField] private Rigidbody2D body;
@@ -52,8 +50,6 @@ namespace Week14.Combat
         private float nextParryReadyAt;
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
-        private float rightGunAimLockedUntil;
-        private Vector2 rightGunLockedDirection;
         private Transform rangeIndicatorRoot;
         private LineRenderer[] attackRangeDashes;
         private LineRenderer parryRangeLine;
@@ -62,7 +58,6 @@ namespace Week14.Combat
         private SpriteRenderer executionDimRenderer;
         private Coroutine executionDimRoutine;
         private SpriteRenderer[] bodyRenderers;
-        private SpriteRenderer[] bodyVisualRenderers;
         private Color[] bodyBaseColors;
         private float bodyHitColorEndsAt;
         private float nextEnemyBodyContactDamageAt;
@@ -395,6 +390,7 @@ namespace Week14.Combat
                 }
 
                 Color targetColor = overrideColor ?? GetBodyBaseColor(i);
+                targetColor.a = bodyRenderers[i].color.a;
                 if (force || bodyRenderers[i].color != targetColor)
                 {
                     bodyRenderers[i].color = targetColor;
@@ -452,7 +448,7 @@ namespace Week14.Combat
             }
 
             Transform fireOrigin = GetLeftFireOrigin();
-            Vector2 direction = AimGunAndGetDirection(leftGunOrigin, fireOrigin, GetAimDirection(leftGunOrigin));
+            Vector2 direction = AimGunAndGetDirection(leftGunOrigin, GetAimDirection(leftGunOrigin));
             LockLeftGunAim(direction);
 
             PlayerProjectile projectile = PlayerProjectile.Spawn(
@@ -475,6 +471,7 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
             leftGunRecoil?.Play(direction);
+            visual?.PlayShot();
             return true;
         }
 
@@ -632,7 +629,7 @@ namespace Week14.Combat
             }
 
             leftFireOrigin = GetLeftFireOrigin();
-            aimDirection = AimGunAndGetDirection(leftGunOrigin, leftFireOrigin, (Vector2)executionTarget.transform.position - (Vector2)leftGunOrigin.position);
+            aimDirection = AimGunAndGetDirection(leftGunOrigin, (Vector2)executionTarget.transform.position - (Vector2)leftGunOrigin.position);
             LockLeftGunAim(aimDirection);
             UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
             leftGunRecoil?.ReturnToBase(config.ExecutionGunReturnSeconds);
@@ -876,7 +873,7 @@ namespace Week14.Combat
 
             Vector3 targetPosition = target.transform.position;
             rightFireOrigin = GetRightFireOrigin();
-            Vector2 direction = AimGunAndGetDirection(rightGunOrigin, rightFireOrigin, (Vector2)(targetPosition - rightGunOrigin.position));
+            Vector2 direction = AimGunAndGetDirection(rightGunOrigin, (Vector2)(targetPosition - rightGunOrigin.position));
             PlayerProjectile parryShot = FireParryShot(rightFireOrigin, direction);
             if (parryShot != null)
             {
@@ -894,8 +891,7 @@ namespace Week14.Combat
                 return null;
             }
 
-            Vector2 direction = AimGunAndGetDirection(rightGunOrigin, fireOrigin, aimDirection);
-            LockRightGunAim(direction);
+            Vector2 direction = AimGunAndGetDirection(rightGunOrigin, aimDirection);
 
             PlayerProjectile projectile = PlayerProjectile.Spawn(
                 config.ProjectilePrefab,
@@ -912,7 +908,7 @@ namespace Week14.Combat
             if (projectile != null)
             {
                 ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, ParryEffectColor, 1f);
-                rightGunRecoil?.Play(direction);
+                visual?.PlayIntercept();
             }
 
             return projectile;
@@ -951,9 +947,11 @@ namespace Week14.Combat
             return bestTarget;
         }
 
+        private Transform CombatCenterOrigin => combatCenter != null ? combatCenter : (bodyRoot != null ? bodyRoot : transform);
+
         private Vector2 GetParryCenter()
         {
-            return bodyRoot != null ? bodyRoot.position : transform.position;
+            return CombatCenterOrigin.position;
         }
 
         public bool TryGetParryIndicatorState(out Vector2 center, out Vector2 direction, out float radius, out float angleDegrees)
@@ -984,86 +982,21 @@ namespace Week14.Combat
             float halfAngle = angleDegrees * 0.5f;
             Vector2 lowerArcPoint = parryCenter + RotateDirection(forward, -halfAngle) * radius;
             Vector2 upperArcPoint = parryCenter + RotateDirection(forward, halfAngle) * radius;
-            GetParryBodyEdgePoints(out Vector2 lowerBodyPoint, out Vector2 upperBodyPoint);
+            GetParryBodyEdgePoints(forward, out Vector2 lowerBodyPoint, out Vector2 upperBodyPoint);
 
             Vector2 insideReference = parryCenter + forward * (radius * 0.5f);
             return IsSameSideOfLine(lowerBodyPoint, lowerArcPoint, insideReference, targetPosition)
                 && IsSameSideOfLine(upperBodyPoint, upperArcPoint, insideReference, targetPosition);
         }
 
-        private void GetParryBodyEdgePoints(out Vector2 lowerPoint, out Vector2 upperPoint)
+        private void GetParryBodyEdgePoints(Vector2 forward, out Vector2 lowerPoint, out Vector2 upperPoint)
         {
             Vector2 center = GetParryCenter();
-            Vector2 up = bodyRoot != null ? (Vector2)bodyRoot.up : Vector2.up;
-            if (up.sqrMagnitude <= 0.0001f)
-            {
-                up = Vector2.up;
-            }
-            up.Normalize();
+            Vector2 up = RotateDirection(forward, 90f);
+            float halfWidth = ParryBodyRadius;
 
-            if (TryGetBodyVisualProjection(up, center, out float minOffset, out float maxOffset))
-            {
-                lowerPoint = center + up * minOffset;
-                upperPoint = center + up * maxOffset;
-                return;
-            }
-
-            lowerPoint = center;
-            upperPoint = center;
-        }
-
-        private bool TryGetBodyVisualProjection(Vector2 axis, Vector2 center, out float minOffset, out float maxOffset)
-        {
-            minOffset = 0f;
-            maxOffset = 0f;
-            bool hasProjection = false;
-
-            SpriteRenderer[] renderers = bodyVisualRenderers;
-            if (renderers == null || renderers.Length == 0)
-            {
-                Transform targetRoot = bodyRoot != null ? bodyRoot : transform;
-                renderers = targetRoot.GetComponentsInChildren<SpriteRenderer>(true);
-            }
-
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                SpriteRenderer renderer = renderers[i];
-                if (renderer == null || renderer.sprite == null)
-                {
-                    continue;
-                }
-
-                Bounds bounds = renderer.sprite.bounds;
-                Vector3 min = bounds.min;
-                Vector3 max = bounds.max;
-                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(min.x, min.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
-                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(min.x, max.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
-                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(max.x, min.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
-                IncludeBodyVisualProjection(renderer.transform.TransformPoint(new Vector3(max.x, max.y, 0f)), axis, center, ref minOffset, ref maxOffset, ref hasProjection);
-            }
-
-            return hasProjection;
-        }
-
-        private static void IncludeBodyVisualProjection(
-            Vector3 point,
-            Vector2 axis,
-            Vector2 center,
-            ref float minOffset,
-            ref float maxOffset,
-            ref bool hasProjection)
-        {
-            float offset = Vector2.Dot((Vector2)point - center, axis);
-            if (!hasProjection)
-            {
-                minOffset = offset;
-                maxOffset = offset;
-                hasProjection = true;
-                return;
-            }
-
-            minOffset = Mathf.Min(minOffset, offset);
-            maxOffset = Mathf.Max(maxOffset, offset);
+            lowerPoint = center - up * halfWidth;
+            upperPoint = center + up * halfWidth;
         }
 
         private void UpdateLockOnTarget()
@@ -1239,19 +1172,13 @@ namespace Week14.Combat
 
         private void RotateToAim()
         {
-            Transform bodyAimOrigin = bodyRoot != null ? bodyRoot : transform;
-            Vector2 bodyDirection = GetAimDirection(bodyAimOrigin);
-            RotateVisual(bodyRoot, bodyDirection);
+            Vector2 bodyDirection = GetAimDirection(CombatCenterOrigin);
+            visual?.SetBodyAimDirection(bodyDirection);
 
             Vector2 leftDirection = lockOnTarget == null && Time.time <= leftGunAimLockedUntil
                 ? leftGunLockedDirection
                 : GetAimDirection(leftGunOrigin);
-            RotateGun(leftGunOrigin, leftDirection);
-
-            Vector2 rightDirection = lockOnTarget == null && Time.time <= rightGunAimLockedUntil
-                ? rightGunLockedDirection
-                : GetAimDirection(rightGunOrigin);
-            RotateGun(rightGunOrigin, rightDirection);
+            visual?.SetLeftArmAimDirection(leftDirection);
         }
 
         private void LockLeftGunAim(Vector2 direction)
@@ -1263,19 +1190,7 @@ namespace Week14.Combat
 
             leftGunLockedDirection = direction.normalized;
             leftGunAimLockedUntil = Time.time + GunAimHoldSeconds;
-            RotateGun(leftGunOrigin, leftGunLockedDirection);
-        }
-
-        private void LockRightGunAim(Vector2 direction)
-        {
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                return;
-            }
-
-            rightGunLockedDirection = direction.normalized;
-            rightGunAimLockedUntil = Time.time + GunAimHoldSeconds;
-            RotateGun(rightGunOrigin, rightGunLockedDirection);
+            visual?.SetLeftArmAimDirection(leftGunLockedDirection);
         }
 
         private void AimExecutionPose(Vector2 direction)
@@ -1286,54 +1201,19 @@ namespace Week14.Combat
             }
 
             Vector2 normalized = direction.normalized;
-            RotateVisual(bodyRoot, normalized);
-            RotateGun(leftGunOrigin, normalized);
+            visual?.SetBodyAimDirection(normalized);
+            visual?.SetLeftArmAimDirection(normalized);
         }
 
-        private void RotateGun(Transform gun, Vector2 direction)
-        {
-            if (gun == null || gun == bodyRoot || IsPhysicsRoot(gun))
-            {
-                return;
-            }
-
-            RotateRight(gun, direction);
-        }
-
-        private Vector2 AimGunAndGetDirection(Transform gun, Transform fireOrigin, Vector2 desiredDirection)
+        private Vector2 AimGunAndGetDirection(Transform gun, Vector2 desiredDirection)
         {
             Vector2 normalized = desiredDirection.sqrMagnitude > 0.0001f ? desiredDirection.normalized : Vector2.right;
-            RotateGun(gun, normalized);
-
-            if (gun == null || gun == bodyRoot || IsPhysicsRoot(gun))
+            if (gun == leftGunOrigin)
             {
-                return normalized;
+                visual?.SetLeftArmAimDirection(normalized);
             }
 
-            Transform forwardOrigin = fireOrigin != null ? fireOrigin : gun;
-            Vector2 gunForward = forwardOrigin.right;
-            return gunForward.sqrMagnitude > 0.0001f ? gunForward.normalized : normalized;
-        }
-
-        private void RotateVisual(Transform visual, Vector2 direction)
-        {
-            if (visual == null || IsPhysicsRoot(visual))
-            {
-                return;
-            }
-
-            RotateRight(visual, direction);
-        }
-
-        private static void RotateRight(Transform target, Vector2 direction)
-        {
-            if (target == null || direction.sqrMagnitude <= 0.0001f)
-            {
-                return;
-            }
-
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            target.rotation = Quaternion.Euler(0f, 0f, angle);
+            return normalized;
         }
 
         private void UpdateProjectileLockOnTarget()
@@ -1629,39 +1509,19 @@ namespace Week14.Combat
 
         private void ResolveRigReferences()
         {
-            if (bodyRoot == null || IsPhysicsRoot(bodyRoot))
+            if (bodyRoot == null)
             {
                 bodyRoot = FindChildRecursive(transform, BodyVisualName);
             }
 
-            if (leftGunOrigin == null || IsPhysicsRoot(leftGunOrigin))
+            if (combatCenter == null)
             {
-                leftGunOrigin = FindChildRecursive(transform, LeftGunName);
-            }
-
-            if (leftGunFireOrigin == null || IsPhysicsRoot(leftGunFireOrigin))
-            {
-                leftGunFireOrigin = FindFireOrigin(leftGunOrigin);
-            }
-
-            if (rightGunOrigin == null || IsPhysicsRoot(rightGunOrigin))
-            {
-                rightGunOrigin = FindChildRecursive(transform, RightGunName);
-            }
-
-            if (rightGunFireOrigin == null || IsPhysicsRoot(rightGunFireOrigin))
-            {
-                rightGunFireOrigin = FindFireOrigin(rightGunOrigin);
+                combatCenter = FindChildRecursive(transform, CombatCenterName);
             }
 
             if (leftGunRecoil == null && leftGunOrigin != null)
             {
                 leftGunRecoil = leftGunOrigin.GetComponentInChildren<GunRecoilMotion>();
-            }
-
-            if (rightGunRecoil == null && rightGunOrigin != null)
-            {
-                rightGunRecoil = rightGunOrigin.GetComponentInChildren<GunRecoilMotion>();
             }
 
             leftGunOrigin ??= transform;
@@ -1673,55 +1533,12 @@ namespace Week14.Combat
         private void CacheBodyRenderers()
         {
             Transform targetRoot = bodyRoot != null ? bodyRoot : transform;
-            SpriteRenderer[] renderers = targetRoot.GetComponentsInChildren<SpriteRenderer>(true);
-            bodyVisualRenderers = renderers;
-            int count = 0;
-            for (int i = 0; i < renderers.Length; i++)
+            bodyRenderers = targetRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            bodyBaseColors = new Color[bodyRenderers.Length];
+            for (int i = 0; i < bodyRenderers.Length; i++)
             {
-                if (ShouldTintBodyRenderer(renderers[i]))
-                {
-                    count++;
-                }
+                bodyBaseColors[i] = bodyRenderers[i].color;
             }
-
-            bodyRenderers = new SpriteRenderer[count];
-            bodyBaseColors = new Color[count];
-            int index = 0;
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (!ShouldTintBodyRenderer(renderers[i]))
-                {
-                    continue;
-                }
-
-                bodyRenderers[index] = renderers[i];
-                bodyBaseColors[index] = renderers[i].color;
-                index++;
-            }
-        }
-
-        private bool ShouldTintBodyRenderer(SpriteRenderer renderer)
-        {
-            if (renderer == null)
-            {
-                return false;
-            }
-
-            Transform rendererTransform = renderer.transform;
-            return !IsUnderTransform(rendererTransform, leftGunOrigin)
-                && !IsUnderTransform(rendererTransform, rightGunOrigin)
-                && !IsUnderTransform(rendererTransform, leftGunFireOrigin)
-                && !IsUnderTransform(rendererTransform, rightGunFireOrigin);
-        }
-
-        private static bool IsUnderTransform(Transform target, Transform root)
-        {
-            return target != null && root != null && (target == root || target.IsChildOf(root));
-        }
-
-        private bool IsPhysicsRoot(Transform target)
-        {
-            return body != null && target == body.transform;
         }
 
         private static Transform FindChildRecursive(Transform root, string childName)
@@ -1747,11 +1564,6 @@ namespace Week14.Combat
             }
 
             return null;
-        }
-
-        private static Transform FindFireOrigin(Transform gun)
-        {
-            return FindChildRecursive(gun, FireOriginName) ?? FindChildRecursive(gun, MuzzleName) ?? gun;
         }
 
         private Transform GetLeftFireOrigin()
@@ -1911,7 +1723,7 @@ namespace Week14.Combat
             Gizmos.color = Color.red;
             Gizmos.DrawLine(leftOrigin.position, leftOrigin.position + leftOrigin.right * ParryRange);
             Gizmos.color = Color.cyan;
-            Vector3 parryCenter = bodyRoot != null ? bodyRoot.position : transform.position;
+            Vector3 parryCenter = CombatCenterOrigin.position;
             Gizmos.DrawWireSphere(parryCenter, ParryRange);
             Gizmos.color = new Color(0.35f, 1f, 0.45f, 0.85f);
             DrawParryJudgementGizmo(parryCenter, GetGizmoParryDirection());
@@ -1956,7 +1768,7 @@ namespace Week14.Combat
 
             if (!fullCircle)
             {
-                GetParryBodyEdgePoints(out Vector2 lowerBodyPoint, out Vector2 upperBodyPoint);
+                GetParryBodyEdgePoints(normalized, out Vector2 lowerBodyPoint, out Vector2 upperBodyPoint);
                 Gizmos.DrawLine(lowerBodyPoint, firstPoint);
                 Gizmos.DrawLine(upperBodyPoint, previousPoint);
                 Gizmos.DrawLine(lowerBodyPoint, upperBodyPoint);
@@ -1965,6 +1777,7 @@ namespace Week14.Combat
 
         private int PlayerAttackBulletDamage => config.AttackBulletDamage;
         private float ParryRange => config.ParryRange;
+        private float ParryBodyRadius => config.ParryBodyRadius;
         private float GunAimHoldSeconds => config.GunAimHoldSeconds;
         private Color AttackEffectColor => config.AttackEffectColor;
         private Color ParryEffectColor => config.ParryEffectColor;
