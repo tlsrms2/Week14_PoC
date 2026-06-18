@@ -42,6 +42,8 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float parryRange = 7f;
         [Tooltip("패링 판정에 허용되는 조준 각도입니다.")]
         [SerializeField, Range(1f, 360f)] private float parryAimAngleDegrees = 65f;
+        [Tooltip("패링 판정 쐐기의 안쪽(플레이어 쪽) 경계 반경입니다. 캐릭터 콜라이더 반경과 비슷한 값을 권장합니다.")]
+        [SerializeField, Min(0f)] private float parryBodyRadius = 0.3f;
         [Tooltip("우클릭 패링을 다시 사용할 수 있기까지 걸리는 시간입니다.")]
         [FormerlySerializedAs("rightGunRechargeSeconds")]
         [FormerlySerializedAs("parryShotCooldown")]
@@ -112,6 +114,7 @@ namespace Week14.Combat
         public int ParryBulletRecovery => parryBulletRecovery;
         public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
         public float ParryAimAngleDegrees => parryAimAngleDegrees;
+        public float ParryBodyRadius => parryBodyRadius;
         public float ParryCooldownSeconds => parryCooldownSeconds;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
         public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);

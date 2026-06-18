@@ -34325,6 +34325,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2278235474687056908, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: visual
+      value: 
+      objectReference: {fileID: 2382189914428757675}
+    - target: {fileID: 3938221165504833192, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: backMaxAngleFromUp
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: frontMaxAngleFromDown
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: leftArmAimAngleLimits.x
+      value: -105
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: leftArmAimAngleLimits.y
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -34365,8 +34389,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7137852081691070482, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162927814773672605, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774364868105303796, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 2732529989977436893, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
@@ -34418,6 +34454,17 @@ MonoBehaviour:
   m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2382189914428757675 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+  m_PrefabInstance: {fileID: 2382189914428757667}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802688690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4c64988ba34cb45bfa179b6e2399fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerVisualRig
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
