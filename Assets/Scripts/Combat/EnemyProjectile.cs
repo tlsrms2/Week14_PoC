@@ -73,6 +73,7 @@ namespace Week14.Combat
         private Vector2 pathIndicatorDirection = Vector2.left;
         private float pathIndicatorLength;
         private float pathIndicatorEndsAt;
+        private static readonly List<EnemyProjectile> activeProjectiles = new();
         private static Material chargeVfxMaterial;
 
         public Vector2 IncomingDirection => flightDirection;
@@ -80,6 +81,19 @@ namespace Week14.Combat
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
 
+        public static void DestroyAllActive()
+        {
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile != null)
+                {
+                    projectile.DestroyFromOwner();
+                }
+            }
+
+            activeProjectiles.Clear();
+        }
 
         /// <summary>EnemyData 기반 스폰 (신규 AI 시스템용)</summary>
         public static EnemyProjectile Spawn(
@@ -311,6 +325,11 @@ namespace Week14.Combat
             ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
             ownerDrone = ownerBullets != null ? ownerBullets.GetComponentInParent<Drone>() : null;
+            if (!activeProjectiles.Contains(this))
+            {
+                activeProjectiles.Add(this);
+            }
+
             ownerEnemy?.RegisterActiveProjectile(this);
             ownerBoss?.RegisterActiveProjectile(this);
             ownerDrone?.RegisterActiveProjectile(this);
@@ -754,6 +773,7 @@ namespace Week14.Combat
 
         private void OnDestroy()
         {
+            activeProjectiles.Remove(this);
             ReleaseOwnerProjectileSlot();
         }
 

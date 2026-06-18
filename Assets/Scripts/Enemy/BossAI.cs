@@ -9,6 +9,18 @@ namespace Week14.Enemy
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public abstract class BossAI : MonoBehaviour
     {
+        [Header("Boss Lives")]
+        [Tooltip("보스의 총 목숨(페이즈) 수입니다. 처형될 때마다 1씩 깎입니다.")]
+        [SerializeField, Min(1)] private int maxLives = 3;
+
+        [Header("Enrage System")]
+        [Tooltip("전투 시작 후 1단계 광폭화(최대 탄환 감소)까지 걸리는 시간입니다.")]
+        [SerializeField] private float enragePhase1Seconds = 30f;
+        [SerializeField] private int enragePhase1MaxBullets = 3;
+        [Tooltip("1단계 광폭화 후 2단계 광폭화까지 추가로 걸리는 시간입니다.")]
+        [SerializeField] private float enragePhase2Seconds = 30f;
+        [SerializeField] private int enragePhase2MaxBullets = 1;
+        
         [Header("Meta")]
         [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 오브젝트 이름을 사용합니다.")]
         [SerializeField] private string displayName;
@@ -77,6 +89,10 @@ namespace Week14.Enemy
         private Vector3 staggerBaseLocalPosition;
         private bool isBossCombatUiActive;
         private bool destroyAfterDeathQueued;
+        private int currentLives;
+        private bool isCombatStarted;
+        private float currentPhaseStartTime;
+        private int currentEnragePhase;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -153,6 +169,8 @@ namespace Week14.Enemy
 
         protected virtual void Start()
         {
+            currentLives = maxLives;
+            
             SpawnPosition = transform.position;
             bullets.Configure(maxBullets, true);
 
@@ -189,6 +207,18 @@ namespace Week14.Enemy
             }
 
             ResolvePlayer();
+            
+            if (!isCombatStarted && IsPlayerDetected())
+            {
+                isCombatStarted = true;
+                ResetEnrageTimer();
+            }
+
+            if (isCombatStarted)
+            {
+                UpdateEnrageTimer();
+            }
+            
             TryActivateBossCombatUiOnCombatStart();
             RotateToTarget();
             OnBossTick();
@@ -215,8 +245,10 @@ namespace Week14.Enemy
 
             if (IsBulletEmpty)
             {
-                health.Kill();
-                QueueDestroyAfterDeath();
+                // 그로기 상태에서는 총격으로 목숨이 깎이지 않고 이펙트만 재생됩니다.
+                // 페이즈 전환은 오직 '처형 연출'이 끝났을 때 외부에서 TryConsumeLife()를 호출하여 처리합니다.
+                PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+                PlayEnemyHitCameraImpact(hitDirection);
                 return true;
             }
 
@@ -286,6 +318,82 @@ namespace Week14.Enemy
 
             body.linearVelocity = Vector2.zero;
             body.angularVelocity = 0f;
+        }
+        
+        private void UpdateEnrageTimer()
+        {
+            float elapsed = Time.time - currentPhaseStartTime;
+
+            // 1단계 광폭화 도달
+            if (currentEnragePhase == 0 && elapsed >= enragePhase1Seconds)
+            {
+                currentEnragePhase = 1;
+                currentPhaseStartTime = Time.time; // 다음 단계를 위해 타이머 리셋
+                ApplyPlayerMaxBullets(enragePhase1MaxBullets);
+            }
+            // 2단계 광폭화 도달
+            else if (currentEnragePhase == 1 && elapsed >= enragePhase2Seconds)
+            {
+                currentEnragePhase = 2;
+                ApplyPlayerMaxBullets(enragePhase2MaxBullets);
+            }
+        }
+
+        private void ResetEnrageTimer()
+        {
+            currentPhaseStartTime = Time.time;
+            currentEnragePhase = 0;
+
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player != null && player.Config != null && player.Bullets != null)
+            {
+                // 플레이어의 탄환을 원래 최대치(기본 5)로 복구하고 가득 채웁니다.
+                player.Bullets.Configure(player.Config.MaxBullets, true);
+            }
+        }
+        
+        public bool TryConsumeLife()
+        {
+            if (currentLives > 1)
+            {
+                currentLives--; // 목숨 1개 차감
+                ResetEnrageTimer(); // 광폭화 리셋
+                
+                isExecutionLocked = false; // 행동 잠금 해제
+                
+                // 처형 연출 시스템이 물리 엔진이나 스크립트를 꺼버렸을 경우 강제로 켭니다.
+                this.enabled = true;
+                if (body != null)
+                {
+                    body.simulated = true;
+                }
+                
+                // 혹시 이중으로 꼬여있는 기존 패턴이 있다면 강제로 정지시킵니다.
+                CancelBossAction();
+                Stop();
+                
+                isBulletEmpty = false;
+                bulletEmptyEndsAt = 0f;
+                bullets.Configure(maxBullets, true); // 체력(탄환) 풀 회복
+                ApplyBodyStateColor();
+                OnBulletEmptyRecovered(); // 다음 패턴을 위한 훅 실행
+                
+                return true; // 목숨이 남아있어 부활했음을 반환
+            }
+
+            // 모든 목숨을 소진함
+            currentLives = 0;
+            return false;
+        }
+
+        private void ApplyPlayerMaxBullets(int newMax)
+        {
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player != null && player.Bullets != null)
+            {
+                // 최대치만 깎습니다. (fill=false를 전달해 현재 남아있는 탄환 수는 유지하되, 한도를 넘으면 깎이도록 함)
+                player.Bullets.Configure(newMax, false);
+            }
         }
 
         public void ShowAttackTiming(float remainingSeconds, float durationSeconds)

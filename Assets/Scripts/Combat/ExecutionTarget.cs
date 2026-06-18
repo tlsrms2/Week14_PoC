@@ -114,6 +114,7 @@ namespace Week14.Combat
             }
 
             health.Kill();
+            ReleaseExecutionLock();
             if (recoverBullets)
             {
                 player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
@@ -122,12 +123,25 @@ namespace Week14.Combat
             return true;
         }
 
+        public void CompleteExecutionWithoutKill()
+        {
+            ReleaseExecutionLock();
+        }
+
         public void DestroyExecutedTarget()
         {
             if (Config != null && Config.DestroyTargetOnExecute)
             {
                 Destroy(gameObject);
             }
+        }
+
+        private void ReleaseExecutionLock()
+        {
+            executionInProgress = false;
+            enemyAI?.SetExecutionLocked(false);
+            bossAI?.SetExecutionLocked(false);
+            drone?.SetExecutionLocked(false);
         }
 
         private PlayerCombatConfig Config => config != null ? config : PlayerCombatController.Active?.Config;

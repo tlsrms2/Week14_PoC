@@ -348,13 +348,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            // 탄환을 소비하기 전, 현재 상태를 기준으로 대미지 계산
-            // 공식: (최대 탄환 수 - 현재 탄환 수) + 1
-            int dynamicDamage = config.AttackBulletDamage;
-            if (bullets != null)
-            {
-                dynamicDamage = (bullets.MaxBullets - bullets.CurrentBullets) + 1;
-            }
+            int dynamicDamage = CalculateAttackBulletDamage();
 
             if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
             {
@@ -597,8 +591,25 @@ namespace Week14.Combat
 
             if (executionTarget != null)
             {
-                executionTarget.CompleteExecution(this, false);
-                executionTarget.DestroyExecutedTarget();
+                BossAI boss = executionTarget.GetComponentInParent<BossAI>();
+                if (boss != null)
+                {
+                    EnemyProjectile.DestroyAllActive();
+                    if (boss.TryConsumeLife())
+                    {
+                        executionTarget.CompleteExecutionWithoutKill();
+                    }
+                    else
+                    {
+                        executionTarget.CompleteExecution(this, false);
+                        executionTarget.DestroyExecutedTarget();
+                    }
+                }
+                else
+                {
+                    executionTarget.CompleteExecution(this, false);
+                    executionTarget.DestroyExecutedTarget();
+                }
             }
 
             FinishExecution();
@@ -826,6 +837,17 @@ namespace Week14.Combat
             }
 
             return projectile;
+        }
+
+        private int CalculateAttackBulletDamage()
+        {
+            if (bullets == null || config == null)
+            {
+                return config != null ? config.AttackBulletDamage : 1;
+            }
+
+            int baseMaxBullets = Mathf.Max(1, config.MaxBullets);
+            return Mathf.Max(1, baseMaxBullets - bullets.CurrentBullets + 1);
         }
 
         private EnemyProjectile FindClosestInterceptTarget(Vector2 aimDirection)
