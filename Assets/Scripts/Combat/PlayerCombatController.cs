@@ -38,6 +38,7 @@ namespace Week14.Combat
         [SerializeField] private LayerMask parryMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private AttackTimingOutline attackTimingOutline;
+        [SerializeField] private ExecutionImageEffect executionImage;
 
         private Health health;
         private BulletGauge bullets;
@@ -150,6 +151,7 @@ namespace Week14.Combat
             HideAttackTimingOutline();
             SetProjectileLockOnIndicatorVisible(false);
             StopExecutionShotDim();
+            executionImage?.Stop();
         }
 
         private void Start()
@@ -484,6 +486,7 @@ namespace Week14.Combat
 
             isExecuting = true;
             StopBody();
+            executionImage?.Play(config.ExecutionAimSeconds + config.ExecutionShotDelaySeconds + config.ExecutionKillDelaySeconds);
 
             Health targetHealth = executionTarget.GetComponent<Health>();
             if (targetHealth != null)
@@ -604,6 +607,7 @@ namespace Week14.Combat
             GetCameraFollow()?.EndCinematicFocus();
             ClearInvalidLockOnTarget();
             UpdateHoveredExecutionTarget();
+            executionImage?.Stop();
         }
 
         private void UpdateExecutionFocusPoint(Vector3 playerPosition, Vector3 targetPosition)
