@@ -327,13 +327,7 @@ namespace Week14.Enemy
 
         public bool CanSpawnEnemyProjectile()
         {
-            if (bullets == null || bullets.IsEmpty)
-            {
-                return false;
-            }
-
-            PruneInactiveProjectiles();
-            return activeProjectiles.Count < bullets.CurrentBullets;
+            return bullets != null && !bullets.IsEmpty;
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)

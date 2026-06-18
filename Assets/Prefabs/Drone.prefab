@@ -395,6 +395,7 @@ MonoBehaviour:
   projectileOrigin: {fileID: 3270307445686639313}
   body: {fileID: 4043645167298043163}
   statusView: {fileID: 0}
+  attackTimingOutline: {fileID: 0}
   lockOnIndicator: {fileID: 2377328325086529979}
   executionIndicator: {fileID: 5724727393675789359}
 --- !u!114 &4912170951151867422

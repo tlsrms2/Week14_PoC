@@ -80,6 +80,7 @@ namespace Week14.UI
             }
 
             drone = nextDrone;
+            executionTarget = nextDrone.GetComponent<ExecutionTarget>();
             bulletColor = nextDrone.BulletBarColor;
             emptyColor = nextDrone.EmptyBulletBarColor;
             lockOnColor = nextDrone.LockOnIndicatorColor;

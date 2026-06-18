@@ -36,6 +36,11 @@ namespace Week14.Combat
             moveInput = GameInput.Move;
             sprintInput = GameInput.Sprint;
 
+            if (combat != null && combat.IsBodyContactStaggered)
+            {
+                return;
+            }
+
             if (combat != null && !combat.CanMove)
             {
                 body.linearVelocity = Vector2.zero;

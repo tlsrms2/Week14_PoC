@@ -925,7 +925,7 @@ namespace Week14.Combat
             int dashCount = Mathf.Min(MaxPathDashCount, Mathf.CeilToInt(length / (PathDashLength + PathDashGap)));
             Color color = Color.Lerp(projectileColor, Color.white, 0.35f);
             color.a = 0.38f;
-            float width = Mathf.Max(0.004f, projectileRadius * 0.055f);
+            float width = Mathf.Max(0.005f, projectileRadius * 0.067f);
             int visibleCount = 0;
 
             for (int i = 0; i < dashCount; i++)

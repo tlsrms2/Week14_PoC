@@ -18,6 +18,14 @@ namespace Week14.Combat
         [SerializeField, Min(0)] private int parryBulletRecovery = 2;
         [Tooltip("적 탄이 패링되었을 때 적 탄환을 감소시키는 양입니다.")]
         [SerializeField, Min(0)] private int counteredProjectileBulletDamage = 1;
+        [Tooltip("적 몸체와 접촉했을 때 플레이어가 잃는 탄환 수입니다.")]
+        [SerializeField, Min(1)] private int enemyBodyContactBulletDamage = 1;
+        [Tooltip("적 몸체와 계속 닿아 있을 때 피격을 다시 받을 때까지의 시간입니다.")]
+        [SerializeField, Min(0f)] private float enemyBodyContactCooldownSeconds = 0.35f;
+        [Tooltip("적 몸체와 부딪혔을 때 플레이어가 튕겨나는 속도입니다.")]
+        [SerializeField, Min(0f)] private float enemyBodyContactKnockbackSpeed = 8f;
+        [Tooltip("적 몸체와 부딪힌 뒤 입력 이동을 막는 경직 시간입니다.")]
+        [SerializeField, Min(0f)] private float enemyBodyContactStaggerSeconds = 0.22f;
         [Tooltip("플레이어의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
         [Tooltip("질주 중 기본 이동 속도에 곱하는 배율입니다.")]
@@ -111,6 +119,10 @@ namespace Week14.Combat
         public float ParryRange => parryRange;
         public int ParryBulletRecovery => parryBulletRecovery;
         public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
+        public int EnemyBodyContactBulletDamage => enemyBodyContactBulletDamage;
+        public float EnemyBodyContactCooldownSeconds => enemyBodyContactCooldownSeconds;
+        public float EnemyBodyContactKnockbackSpeed => enemyBodyContactKnockbackSpeed;
+        public float EnemyBodyContactStaggerSeconds => enemyBodyContactStaggerSeconds;
         public float ParryAimAngleDegrees => parryAimAngleDegrees;
         public float ParryCooldownSeconds => parryCooldownSeconds;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);

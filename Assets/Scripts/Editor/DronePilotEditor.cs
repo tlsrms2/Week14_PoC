@@ -118,6 +118,7 @@ public sealed class DronePilotEditor : Editor
         DrawChildSection("소환 수", pattern, "maxOwnedDrones", "summonCount");
         DrawChildSection("소환 위치", pattern, "spawnRadius", "summonInterval");
         DrawChildSection("등장 연출", pattern, "introSeconds", "introStartScale");
+        DrawChildSection("자동 소환 간격", pattern, "minAutoSummonInterval", "maxAutoSummonInterval");
     }
 
     private void DrawDronePattern1Tab()
@@ -171,6 +172,7 @@ public sealed class DronePilotEditor : Editor
         DrawProjectile(pattern.FindPropertyRelative("bossProjectile"), "패턴5 보스 탄환");
         DrawChildSection("패턴5 보스 발사", pattern, "bossBulletCount", "bossFireInterval", "bossSpawnSpacing");
         DrawProjectile(pattern.FindPropertyRelative("droneProjectile"), "패턴5 드론 탄환");
+        DrawChildSection("패턴5 드론 독립 발사", pattern, "droneFireCount", "droneFireInterval");
         DrawChildSection("드론 대형", pattern, "formationRadius", "formationAngleSpacingDegrees", "settleSeconds", "formationSpeedMultiplier");
     }
 

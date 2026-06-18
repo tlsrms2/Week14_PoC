@@ -247,7 +247,9 @@ namespace Week14.Enemy
                 return;
             }
 
-            patternRoutine = StartCoroutine(RunPattern(SelectPattern()));
+            PatternKind pattern = SelectPattern();
+            PreviewPatternBulletUi(pattern);
+            patternRoutine = StartCoroutine(RunPattern(pattern));
         }
 
         protected override void CancelBossAction()
@@ -305,15 +307,15 @@ namespace Week14.Enemy
             }
 
             Stop();
-            ClearPatternBulletUi();
+            PatternKind nextPattern = SelectPattern();
+            PreviewPatternBulletUi(nextPattern);
             float recoverySeconds = GetPatternRecoverySeconds();
             if (recoverySeconds > 0f)
             {
                 yield return RunPatternRecovery(recoverySeconds);
             }
 
-            HideAttackTiming();
-            patternRoutine = null;
+            patternRoutine = StartCoroutine(RunPattern(nextPattern));
         }
 
         private float GetPatternRecoverySeconds()
@@ -329,12 +331,10 @@ namespace Week14.Enemy
 
             while (remaining > 0f)
             {
-                ShowAttackTiming(remaining, duration);
+                ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
             }
-
-            HideAttackTiming();
         }
 
         private IEnumerator RunPattern1()
@@ -343,7 +343,6 @@ namespace Week14.Enemy
             float nextBurstAt = 0f;
             int fired = 0;
             int totalBullets = Mathf.Max(1, pattern1.RadialBulletCount);
-            BeginPatternBulletUi(totalBullets);
 
             while (fired < totalBullets)
             {
@@ -393,7 +392,6 @@ namespace Week14.Enemy
                 }
 
                 int volleyBulletCount = Mathf.Max(1, volley.BulletCount);
-                BeginPatternBulletUi(volleyBulletCount);
                 for (int bulletIndex = 0; bulletIndex < volleyBulletCount; bulletIndex++)
                 {
                     MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
@@ -417,7 +415,6 @@ namespace Week14.Enemy
         private IEnumerator RunPattern3()
         {
             Stop();
-            BeginPatternBulletUi(1);
 
             Vector3 origin = GetProjectileOrigin();
             float radius = pattern3.Projectile.Radius * pattern3.ProjectileRadiusMultiplier;
@@ -471,9 +468,9 @@ namespace Week14.Enemy
 
             for (int wave = 0; wave < pattern4.WaveCount; wave++)
             {
-                BeginPatternBulletUi(Mathf.Max(1, pattern4.BulletCount));
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
                 yield return FirePattern4Circle(offset);
+                ConsumePatternBulletUi();
 
                 if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
                 {
@@ -487,7 +484,6 @@ namespace Week14.Enemy
             Stop();
 
             int bulletCount = Mathf.Max(1, pattern5.BulletCount);
-            BeginPatternBulletUiEmpty(bulletCount);
 
             float windupSeconds = Mathf.Max(0f, pattern5.WindupSeconds);
             float elapsed = 0f;
@@ -495,15 +491,11 @@ namespace Week14.Enemy
             while (elapsed < windupSeconds)
             {
                 Stop();
-                float progress = windupSeconds <= 0f ? 1f : Mathf.Clamp01(elapsed / windupSeconds);
-                SetPatternBulletUiLoaded(Mathf.FloorToInt(bulletCount * progress));
                 PlayWindupBubbleIfDue(ref nextBubbleAt, GetProjectileOrigin(), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
 
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-
-            SetPatternBulletUiLoaded(bulletCount);
 
             for (int i = 0; i < bulletCount; i++)
             {
@@ -550,7 +542,6 @@ namespace Week14.Enemy
                 Vector3 origin = center + (Vector3)(direction * radius);
                 EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction, i == 0);
                 PlayBubbleEffectIfSpawned(projectile, origin, 0.75f, 7);
-                ConsumePatternBulletUi();
 
                 if (pattern4.ShotInterval > 0f && i < count - 1)
                 {
@@ -653,22 +644,48 @@ namespace Week14.Enemy
             ShowCurrentPatternBullets();
         }
 
-        private void BeginPatternBulletUiEmpty(int totalBulletCount)
+        private void PreviewPatternBulletUi(PatternKind pattern)
         {
-            currentPatternBulletTotal = Mathf.Max(0, totalBulletCount);
-            currentPatternBulletRemaining = 0;
-            ShowCurrentPatternBullets();
+            BeginPatternBulletUi(GetPatternBulletCount(pattern));
         }
 
-        private void SetPatternBulletUiLoaded(int loadedBulletCount)
+        private int GetPatternBulletCount(PatternKind pattern)
         {
-            if (currentPatternBulletTotal <= 0)
+            switch (pattern)
             {
-                return;
+                case PatternKind.Pattern1:
+                    return Mathf.Max(1, pattern1.RadialBulletCount);
+                case PatternKind.Pattern2:
+                    return GetPattern2BulletCount();
+                case PatternKind.Pattern3:
+                    return 1;
+                case PatternKind.Pattern4:
+                    return Mathf.Max(0, pattern4.WaveCount);
+                case PatternKind.Pattern5:
+                    return Mathf.Max(1, pattern5.BulletCount);
+                default:
+                    return 0;
+            }
+        }
+
+        private int GetPattern2BulletCount()
+        {
+            int count = 0;
+            IReadOnlyList<Pattern2Settings.VolleySettings> volleys = pattern2.Volleys;
+            if (volleys == null)
+            {
+                return count;
             }
 
-            currentPatternBulletRemaining = Mathf.Clamp(loadedBulletCount, 0, currentPatternBulletTotal);
-            ShowCurrentPatternBullets();
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                if (volleys[i] != null)
+                {
+                    count += Mathf.Max(1, volleys[i].BulletCount);
+                }
+            }
+
+            return count;
         }
 
         private void ConsumePatternBulletUi()

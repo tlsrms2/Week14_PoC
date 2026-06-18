@@ -65,6 +65,8 @@ namespace Week14.Combat
         private SpriteRenderer[] bodyVisualRenderers;
         private Color[] bodyBaseColors;
         private float bodyHitColorEndsAt;
+        private float nextEnemyBodyContactDamageAt;
+        private float enemyBodyContactStaggerEndsAt;
         private Vector2 smoothedGamepadLookDirection;
         private int smoothedGamepadLookFrame = -1;
 #if ENABLE_INPUT_SYSTEM
@@ -79,7 +81,8 @@ namespace Week14.Combat
         public ExecutionTarget HoveredExecutionTarget => hoveredExecutionTarget;
         public bool IsExecuting => isExecuting;
         public PlayerCombatConfig Config => config;
-        public bool CanMove => CanAct;
+        public bool CanMove => CanAct && !IsBodyContactStaggered;
+        public bool IsBodyContactStaggered => Time.time < enemyBodyContactStaggerEndsAt;
         private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
 
         private void Awake()
@@ -232,9 +235,100 @@ namespace Week14.Combat
             UpdateAttackTimingOutline();
         }
 
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null)
+            {
+                return;
+            }
+
+            Vector2 hitPosition = collision.contactCount > 0 ? collision.GetContact(0).point : collision.collider.ClosestPoint(transform.position);
+            TryReceiveEnemyBodyContact(collision.collider, hitPosition);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null)
+            {
+                return;
+            }
+
+            Vector2 hitPosition = collision.contactCount > 0 ? collision.GetContact(0).point : collision.collider.ClosestPoint(transform.position);
+            TryReceiveEnemyBodyContact(collision.collider, hitPosition);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            TryReceiveEnemyBodyContact(other, other != null ? other.ClosestPoint(transform.position) : transform.position);
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            TryReceiveEnemyBodyContact(other, other != null ? other.ClosestPoint(transform.position) : transform.position);
+        }
+
         public bool ReceiveAttack(int bulletDamage)
         {
             return ReceiveAttack(bulletDamage, transform.position, Vector2.right);
+        }
+
+        private void TryReceiveEnemyBodyContact(Collider2D other, Vector2 hitPosition)
+        {
+            if (other == null || config == null || Time.time < nextEnemyBodyContactDamageAt)
+            {
+                return;
+            }
+
+            if (!IsEnemyBodyContact(other))
+            {
+                return;
+            }
+
+            Vector2 hitDirection = (Vector2)transform.position - hitPosition;
+            if (hitDirection.sqrMagnitude <= 0.0001f)
+            {
+                hitDirection = (Vector2)transform.position - (Vector2)other.transform.position;
+            }
+
+            if (hitDirection.sqrMagnitude <= 0.0001f)
+            {
+                hitDirection = Vector2.right;
+            }
+
+            if (ReceiveAttack(config.EnemyBodyContactBulletDamage, hitPosition, hitDirection.normalized))
+            {
+                ApplyEnemyBodyContactKnockback(hitDirection.normalized);
+                nextEnemyBodyContactDamageAt = Time.time + config.EnemyBodyContactCooldownSeconds;
+            }
+        }
+
+        private void ApplyEnemyBodyContactKnockback(Vector2 direction)
+        {
+            if (body == null || config == null)
+            {
+                return;
+            }
+
+            float staggerSeconds = Mathf.Max(0f, config.EnemyBodyContactStaggerSeconds);
+            enemyBodyContactStaggerEndsAt = Mathf.Max(enemyBodyContactStaggerEndsAt, Time.time + staggerSeconds);
+            body.linearVelocity = direction * Mathf.Max(0f, config.EnemyBodyContactKnockbackSpeed);
+        }
+
+        private bool IsEnemyBodyContact(Collider2D other)
+        {
+            if (other.GetComponentInParent<EnemyProjectile>() != null)
+            {
+                return false;
+            }
+
+            Drone drone = other.GetComponentInParent<Drone>();
+            if (drone != null)
+            {
+                return !drone.SuppressesBodyContactDamage;
+            }
+
+            return other.GetComponentInParent<EnemyAI>() != null
+                || other.GetComponentInParent<BossAI>() != null;
         }
 
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
