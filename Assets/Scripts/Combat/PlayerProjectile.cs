@@ -280,6 +280,15 @@ namespace Week14.Combat
                 return true;
             }
 
+            Drone drone = targetHealth.GetComponent<Drone>()
+                ?? targetHealth.GetComponentInParent<Drone>();
+            if (drone != null)
+            {
+                drone.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
+                DestroyProjectile();
+                return true;
+            }
+
             BulletGauge targetBullets = targetHealth.GetComponent<BulletGauge>();
             if (targetBullets != null)
             {
@@ -325,19 +334,12 @@ namespace Week14.Combat
 
             Vector3 impactPosition = enemyProjectile.transform.position;
             Vector2 incomingDirection = enemyProjectile.IncomingDirection;
-            if (!enemyProjectile.TryDestroyByInterceptShot(out bool parried))
+            if (!enemyProjectile.TryDestroyByInterceptShot(out _))
             {
                 return false;
             }
 
-            if (parried)
-            {
-                owner?.PlayParryImpact(impactPosition, incomingDirection);
-            }
-            else
-            {
-                owner?.PlayDefenseImpact(impactPosition, incomingDirection);
-            }
+            owner?.PlayParryImpact(impactPosition, incomingDirection);
 
             DestroyByClash();
             return true;

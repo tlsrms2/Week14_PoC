@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Week14.Enemy;
 
@@ -9,6 +10,11 @@ namespace Week14.Combat
         private const int DefaultCounteredProjectileBulletDamage = 1;
         private const string BulletVisualName = "BulletVisual";
         private const string ChargeVfxName = "ChargeVfx";
+        private const string PathIndicatorName = "PathIndicator";
+        private const int MaxPathDashCount = 72;
+        private const float PathIndicatorSeconds = 1f;
+        private const float PathDashLength = 0.2f;
+        private const float PathDashGap = 0.14f;
 
         private float projectileSpeed;
         private float projectileLifetime;
@@ -24,9 +30,12 @@ namespace Week14.Combat
         private float chargeEndsAt;
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
+        private readonly List<LineRenderer> pathIndicatorDashes = new();
+        private Transform pathIndicatorRoot;
         private BulletGauge ownerBullets;
         private EnemyAI ownerEnemy;
         private BossAI ownerBoss;
+        private Drone ownerDrone;
         private int counterBulletDamage;
         private int bulletDamage;
         private float destroyAt;
@@ -59,6 +68,11 @@ namespace Week14.Combat
         private bool isDestroying;
         private bool launched;
         private bool ownerSlotReleased;
+        private bool pathIndicatorActive;
+        private Vector2 pathIndicatorStart;
+        private Vector2 pathIndicatorDirection = Vector2.left;
+        private float pathIndicatorLength;
+        private float pathIndicatorEndsAt;
         private static Material chargeVfxMaterial;
 
         public Vector2 IncomingDirection => flightDirection;
@@ -296,8 +310,10 @@ namespace Week14.Combat
             ownerBullets = nextOwnerBullets;
             ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
+            ownerDrone = ownerBullets != null ? ownerBullets.GetComponentInParent<Drone>() : null;
             ownerEnemy?.RegisterActiveProjectile(this);
             ownerBoss?.RegisterActiveProjectile(this);
+            ownerDrone?.RegisterActiveProjectile(this);
             counterBulletDamage = nextCounterBulletDamage;
             bulletDamage = nextBulletDamage;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
@@ -338,10 +354,12 @@ namespace Week14.Combat
             if (launched)
             {
                 SetChargeVfxVisible(false);
+                BeginPathIndicator();
             }
             else
             {
                 UpdateChargeVfx();
+                UpdatePathIndicatorPreview();
             }
         }
 
@@ -360,6 +378,7 @@ namespace Week14.Combat
             {
                 TickHoming();
                 TickRadialSplitDelay();
+                TickPathIndicator();
             }
 
             if (Time.time >= destroyAt)
@@ -382,6 +401,7 @@ namespace Week14.Combat
 
             UpdateChargeGrowth();
             UpdateChargeVfx();
+            UpdatePathIndicatorPreview();
             if (Time.time < chargeEndsAt)
             {
                 return;
@@ -413,6 +433,7 @@ namespace Week14.Combat
             radialSplitAt = splitRadiallyOnLaunch ? Time.time + radialSplitDelaySeconds : 0f;
 
             SetChargeVfxVisible(false);
+            BeginPathIndicator();
             if (body != null)
             {
                 body.linearVelocity = flightDirection * projectileSpeed;
@@ -533,6 +554,18 @@ namespace Week14.Combat
                     return;
                 }
 
+                Drone hitDrone = other.GetComponentInParent<Drone>();
+                if (hitDrone != null)
+                {
+                    if (hitDrone == ownerDrone)
+                    {
+                        return;
+                    }
+
+                    DestroyProjectile();
+                    return;
+                }
+
                 if (other.GetComponentInParent<EnemyProjectile>() != null)
                 {
                     return;
@@ -592,6 +625,7 @@ namespace Week14.Combat
 
             resolved = true;
             SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
             DestroyProjectile();
         }
 
@@ -672,9 +706,9 @@ namespace Week14.Combat
                 return false;
             }
 
-            parried = IsCharging;
+            parried = true;
             resolved = true;
-            SpendOwnerBulletsOnCounter(parried ? BulletChangeSource.Parry : BulletChangeSource.Defense);
+            SpendOwnerBulletsOnCounter(BulletChangeSource.Parry);
 
             DestroyProjectile();
             return true;
@@ -701,6 +735,7 @@ namespace Week14.Combat
             }
 
             SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
 
             Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
             for (int i = 0; i < colliders.Length; i++)
@@ -732,6 +767,7 @@ namespace Week14.Combat
             ownerSlotReleased = true;
             ownerEnemy?.UnregisterActiveProjectile(this);
             ownerBoss?.UnregisterActiveProjectile(this);
+            ownerDrone?.UnregisterActiveProjectile(this);
         }
 
         private void SpendOwnerBulletsOnCounter(BulletChangeSource source)
@@ -804,6 +840,190 @@ namespace Week14.Combat
                 endColor.a = 0f;
                 trail.startColor = projectileColor;
                 trail.endColor = endColor;
+            }
+        }
+
+        private bool ShouldShowPathIndicator()
+        {
+            return projectileSpeed > 0f
+                && projectileLifetime > 0f;
+        }
+
+        private void UpdatePathIndicatorPreview()
+        {
+            if (!ShouldShowPathIndicator())
+            {
+                SetPathIndicatorVisible(false);
+                return;
+            }
+
+            DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(projectileLifetime), 0f);
+        }
+
+        private void BeginPathIndicator()
+        {
+            if (!ShouldShowPathIndicator())
+            {
+                SetPathIndicatorVisible(false);
+                return;
+            }
+
+            pathIndicatorStart = transform.position;
+            pathIndicatorDirection = flightDirection.sqrMagnitude > 0.0001f ? flightDirection.normalized : Vector2.left;
+            float visibleSeconds = Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, destroyAt - Time.time));
+            pathIndicatorEndsAt = Time.time + visibleSeconds;
+            pathIndicatorLength = GetPathIndicatorLength(visibleSeconds);
+            DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, 0f);
+            pathIndicatorActive = true;
+        }
+
+        private void TickPathIndicator()
+        {
+            if (!pathIndicatorActive || pathIndicatorLength <= 0f)
+            {
+                return;
+            }
+
+            if (Time.time >= pathIndicatorEndsAt)
+            {
+                SetPathIndicatorVisible(false);
+                return;
+            }
+
+            if (IsPathIndicatorDynamic())
+            {
+                float remainingSeconds = Mathf.Max(0f, pathIndicatorEndsAt - Time.time);
+                DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(remainingSeconds), 0f);
+                return;
+            }
+
+            float travelled = Vector2.Dot((Vector2)transform.position - pathIndicatorStart, pathIndicatorDirection);
+            DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, Mathf.Max(0f, travelled));
+        }
+
+        private float GetPathIndicatorLength(float seconds)
+        {
+            return projectileSpeed * Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, seconds));
+        }
+
+        private bool IsPathIndicatorDynamic()
+        {
+            return homingSeconds > 0f
+                && homingTurnDegreesPerSecond > 0f
+                && Time.time < homingEndsAt;
+        }
+
+        private void DrawPathIndicator(Vector2 start, Vector2 direction, float length, float travelled)
+        {
+            if (length <= 0.01f)
+            {
+                SetPathIndicatorVisible(false);
+                return;
+            }
+
+            Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+            int dashCount = Mathf.Min(MaxPathDashCount, Mathf.CeilToInt(length / (PathDashLength + PathDashGap)));
+            Color color = Color.Lerp(projectileColor, Color.white, 0.35f);
+            color.a = 0.38f;
+            float width = Mathf.Max(0.004f, projectileRadius * 0.055f);
+            int visibleCount = 0;
+
+            for (int i = 0; i < dashCount; i++)
+            {
+                float segmentStart = i * (PathDashLength + PathDashGap);
+                float segmentEnd = Mathf.Min(segmentStart + PathDashLength, length);
+                if (segmentEnd <= travelled)
+                {
+                    SetPathDashVisible(i, false);
+                    continue;
+                }
+
+                segmentStart = Mathf.Max(segmentStart, travelled);
+                LineRenderer dash = EnsurePathDash(i);
+                if (dash == null)
+                {
+                    continue;
+                }
+
+                dash.enabled = true;
+                dash.startColor = color;
+                dash.endColor = color;
+                dash.startWidth = width;
+                dash.endWidth = width;
+                dash.SetPosition(0, start + normalized * segmentStart);
+                dash.SetPosition(1, start + normalized * segmentEnd);
+                visibleCount++;
+            }
+
+            for (int i = dashCount; i < pathIndicatorDashes.Count; i++)
+            {
+                SetPathDashVisible(i, false);
+            }
+
+            pathIndicatorActive = visibleCount > 0;
+        }
+
+        private LineRenderer EnsurePathDash(int index)
+        {
+            EnsurePathIndicatorRoot();
+            if (pathIndicatorRoot == null)
+            {
+                return null;
+            }
+
+            while (pathIndicatorDashes.Count <= index)
+            {
+                GameObject dashObject = new($"{PathIndicatorName}_{pathIndicatorDashes.Count:00}");
+                dashObject.transform.SetParent(pathIndicatorRoot, false);
+                LineRenderer dash = dashObject.AddComponent<LineRenderer>();
+                dash.useWorldSpace = true;
+                dash.loop = false;
+                dash.positionCount = 2;
+                dash.numCornerVertices = 0;
+                dash.numCapVertices = 1;
+                dash.sortingOrder = 17;
+                dash.material = GetChargeVfxMaterial();
+                pathIndicatorDashes.Add(dash);
+            }
+
+            return pathIndicatorDashes[index];
+        }
+
+        private void EnsurePathIndicatorRoot()
+        {
+            if (pathIndicatorRoot != null)
+            {
+                return;
+            }
+
+            Transform existing = transform.Find(PathIndicatorName);
+            GameObject rootObject = existing != null ? existing.gameObject : new GameObject(PathIndicatorName);
+            rootObject.transform.SetParent(transform, false);
+            rootObject.transform.localPosition = Vector3.zero;
+            rootObject.transform.localRotation = Quaternion.identity;
+            rootObject.transform.localScale = Vector3.one;
+            pathIndicatorRoot = rootObject.transform;
+        }
+
+        private void SetPathDashVisible(int index, bool visible)
+        {
+            if (index < 0 || index >= pathIndicatorDashes.Count || pathIndicatorDashes[index] == null)
+            {
+                return;
+            }
+
+            pathIndicatorDashes[index].enabled = visible;
+        }
+
+        private void SetPathIndicatorVisible(bool visible)
+        {
+            pathIndicatorActive = visible && pathIndicatorActive;
+            for (int i = 0; i < pathIndicatorDashes.Count; i++)
+            {
+                if (pathIndicatorDashes[i] != null)
+                {
+                    pathIndicatorDashes[i].enabled = visible;
+                }
             }
         }
 

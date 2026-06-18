@@ -17,11 +17,13 @@ namespace Week14.UI
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
         [SerializeField, HideInInspector] private EnemyAI enemyAI;
         [SerializeField, HideInInspector] private BossAI bossAI;
+        [SerializeField, HideInInspector] private Drone drone;
         [SerializeField, HideInInspector] private BulletBarView bulletBarView;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
         [SerializeField, HideInInspector] private RectTransform barsRoot;
 
+        private Transform worldTarget;
         private Vector3 authoredBarOffset = new(0f, 0.65f, 0f);
         private Color bulletColor = new(1f, 0.55f, 0.1f, 1f);
         private Color emptyColor = Color.red;
@@ -70,6 +72,28 @@ namespace Week14.UI
             ApplyColors();
         }
 
+        public void Configure(Drone nextDrone)
+        {
+            if (nextDrone == null)
+            {
+                return;
+            }
+
+            drone = nextDrone;
+            bulletColor = nextDrone.BulletBarColor;
+            emptyColor = nextDrone.EmptyBulletBarColor;
+            lockOnColor = nextDrone.LockOnIndicatorColor;
+            executionColor = nextDrone.ExecutionIndicatorColor;
+
+            EnsureView();
+            ApplyColors();
+        }
+
+        public void SetWorldTarget(Transform target)
+        {
+            worldTarget = target;
+        }
+
         public void SetTargets(Health nextHealth, BulletGauge nextBullets)
         {
             health = nextHealth;
@@ -96,6 +120,7 @@ namespace Week14.UI
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
             enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
+            drone ??= GetComponentInParent<Drone>();
 
             EnsureView();
             SetTargets(health, bullets);
@@ -106,11 +131,13 @@ namespace Week14.UI
         {
             bool alive = health != null && !health.IsDead;
             bool canShowDuringEnemyState = (enemyAI == null || !enemyAI.IsExecutionLocked)
-                && (bossAI == null || !bossAI.IsExecutionLocked);
+                && (bossAI == null || !bossAI.IsExecutionLocked)
+                && (drone == null || !drone.IsExecutionLocked);
             bool barsVisible = alive && !suppressed && canShowDuringEnemyState;
             bool indicatorsVisible = alive && canShowDuringEnemyState;
             SetBarsVisible(barsVisible);
 
+            Vector3 center = GetWorldCenter();
             if (!indicatorsVisible)
             {
                 SetIndicatorsVisible(false);
@@ -119,7 +146,7 @@ namespace Week14.UI
 
             if (barsVisible && barsRoot != null)
             {
-                barsRoot.position = transform.position + authoredBarOffset;
+                barsRoot.position = center + authoredBarOffset;
                 Camera mainCamera = Camera.main;
                 if (mainCamera != null)
                 {
@@ -127,8 +154,8 @@ namespace Week14.UI
                 }
             }
 
-            ApplyWorldCenter(lockOnRenderer);
-            ApplyWorldCenter(executionRenderer);
+            ApplyOwnedWorldCenter(lockOnRenderer, center);
+            ApplyOwnedWorldCenter(executionRenderer, center);
 
             SetRendererEnabled(lockOnRenderer, IsLockOnTarget());
             SetRendererEnabled(
@@ -158,7 +185,14 @@ namespace Week14.UI
 
             BossAI targetBoss = player.LockOnTarget.GetComponent<BossAI>()
                 ?? player.LockOnTarget.GetComponentInParent<BossAI>();
-            return bossAI != null && targetBoss == bossAI;
+            if (bossAI != null && targetBoss == bossAI)
+            {
+                return true;
+            }
+
+            Drone targetDrone = player.LockOnTarget.GetComponent<Drone>()
+                ?? player.LockOnTarget.GetComponentInParent<Drone>();
+            return drone != null && targetDrone == drone;
         }
 
         private bool IsHoveredExecutionTarget()
@@ -174,6 +208,7 @@ namespace Week14.UI
         {
             enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
+            drone ??= GetComponentInParent<Drone>();
             EnsureBars();
             EnsureIndicators();
         }
@@ -260,8 +295,8 @@ namespace Week14.UI
         {
             lockOnRenderer ??= FindIndicator("LockOnIndicator") ?? CreateIndicator("LockOnIndicator", lockOnColor, 0.52f);
             executionRenderer ??= FindIndicator("ExecutionIndicator") ?? CreateIndicator("ExecutionIndicator", executionColor, 0.42f);
-            ConfigureIndicator(lockOnRenderer, lockOnColor, DefaultSortingOrder + 1);
-            ConfigureIndicator(executionRenderer, executionColor, DefaultSortingOrder + 2);
+            ConfigureOwnedIndicator(lockOnRenderer, lockOnColor, DefaultSortingOrder + 1);
+            ConfigureOwnedIndicator(executionRenderer, executionColor, DefaultSortingOrder + 2);
         }
 
         private SpriteRenderer FindIndicator(string indicatorName)
@@ -297,9 +332,9 @@ namespace Week14.UI
             return renderer;
         }
 
-        private static void ConfigureIndicator(SpriteRenderer renderer, Color color, int sortingOrder)
+        private void ConfigureOwnedIndicator(SpriteRenderer renderer, Color color, int sortingOrder)
         {
-            if (renderer == null)
+            if (renderer == null || !IsOwnedIndicator(renderer))
             {
                 return;
             }
@@ -331,13 +366,13 @@ namespace Week14.UI
                 bulletBarView.SetColors(bulletColor, emptyColor);
             }
 
-            ApplyIndicatorColor(lockOnRenderer, lockOnColor);
-            ApplyIndicatorColor(executionRenderer, executionColor);
+            ApplyOwnedIndicatorColor(lockOnRenderer, lockOnColor);
+            ApplyOwnedIndicatorColor(executionRenderer, executionColor);
         }
 
-        private static void ApplyIndicatorColor(SpriteRenderer renderer, Color color)
+        private void ApplyOwnedIndicatorColor(SpriteRenderer renderer, Color color)
         {
-            if (renderer != null)
+            if (renderer != null && IsOwnedIndicator(renderer))
             {
                 renderer.color = color;
             }
@@ -357,12 +392,23 @@ namespace Week14.UI
             SetRendererEnabled(executionRenderer, visible && IsHoveredExecutionTarget());
         }
 
-        private void ApplyWorldCenter(SpriteRenderer renderer)
+        private Vector3 GetWorldCenter()
         {
-            if (renderer != null)
+            return worldTarget != null ? worldTarget.position : transform.position;
+        }
+
+        private void ApplyOwnedWorldCenter(SpriteRenderer renderer, Vector3 center)
+        {
+            if (renderer != null && IsOwnedIndicator(renderer))
             {
-                renderer.transform.position = transform.position;
+                renderer.transform.position = center;
+                renderer.transform.rotation = Quaternion.identity;
             }
+        }
+
+        private bool IsOwnedIndicator(SpriteRenderer renderer)
+        {
+            return renderer != null && renderer.transform.IsChildOf(transform);
         }
 
         private static void SetRendererEnabled(SpriteRenderer renderer, bool enabled)
@@ -372,7 +418,6 @@ namespace Week14.UI
                 return;
             }
 
-            renderer.gameObject.SetActive(true);
             renderer.enabled = enabled;
         }
     }

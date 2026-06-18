@@ -25,7 +25,6 @@ namespace Week14.Combat
         private const int RangeDashCount = 48;
         private const int ExecutionDimSortingOrder = 65;
         private const float BaseGamepadLookTurnDegreesPerSecond = 540f;
-        private static readonly Color RightGunEmptyRangeColor = new(0.58f, 0.58f, 0.58f, 0.95f);
 
         public static PlayerCombatController Active { get; private set; }
 
@@ -50,8 +49,7 @@ namespace Week14.Combat
         private EnemyProjectile projectileLockOnTarget;
         private Coroutine executionRoutine;
         private bool isExecuting;
-        private int rightGunAmmo;
-        private float rightGunRechargeReadyAt;
+        private float nextParryReadyAt;
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
         private float rightGunAimLockedUntil;
@@ -81,28 +79,6 @@ namespace Week14.Combat
         public ExecutionTarget HoveredExecutionTarget => hoveredExecutionTarget;
         public bool IsExecuting => isExecuting;
         public PlayerCombatConfig Config => config;
-        public int RightGunAmmo => rightGunAmmo;
-        public int RightGunMagazineSize => config != null ? Mathf.Max(1, config.RightGunMagazineSize) : 0;
-        public bool IsRightGunRecharging => config != null && rightGunAmmo < RightGunMagazineSize;
-        public float RightGunRechargeProgress
-        {
-            get
-            {
-                if (!IsRightGunRecharging)
-                {
-                    return 1f;
-                }
-
-                float seconds = Mathf.Max(0f, config.RightGunRechargeSeconds);
-                if (seconds <= 0f)
-                {
-                    return 1f;
-                }
-
-                float remaining = Mathf.Max(0f, rightGunRechargeReadyAt - Time.time);
-                return Mathf.Clamp01(1f - remaining / seconds);
-            }
-        }
         public bool CanMove => CanAct;
         private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
 
@@ -190,13 +166,13 @@ namespace Week14.Combat
             }
 
             bullets.Configure(config.MaxBullets, true);
-            ResetRightGunAmmo();
+            ResetParryCooldown();
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
         {
             config = nextConfig;
-            ResetRightGunAmmo();
+            ResetParryCooldown();
         }
 
         private void Update()
@@ -231,7 +207,6 @@ namespace Week14.Combat
                 return;
             }
 
-            TickRightGunRecharge();
             ClearInvalidLockOnTarget();
             UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
@@ -767,82 +742,19 @@ namespace Week14.Combat
             }
         }
 
-        private void ResetRightGunAmmo()
+        private void ResetParryCooldown()
         {
-            rightGunAmmo = RightGunMagazineSize;
-            rightGunRechargeReadyAt = 0f;
+            nextParryReadyAt = 0f;
         }
 
-        private bool HasRightGunAmmo()
+        private bool CanUseParry()
         {
-            return config != null && rightGunAmmo > 0;
+            return config != null && Time.time >= nextParryReadyAt;
         }
 
-        private bool TrySpendRightGunAmmo()
+        private void StartParryCooldown()
         {
-            if (!HasRightGunAmmo())
-            {
-                return false;
-            }
-
-            rightGunAmmo--;
-            RestartRightGunRecharge();
-            return true;
-        }
-
-        private void RestartRightGunRecharge()
-        {
-            if (config == null || rightGunAmmo >= RightGunMagazineSize)
-            {
-                rightGunRechargeReadyAt = 0f;
-                return;
-            }
-
-            rightGunRechargeReadyAt = Time.time + Mathf.Max(0f, config.RightGunRechargeSeconds);
-        }
-
-        private void TickRightGunRecharge()
-        {
-            int magazineSize = RightGunMagazineSize;
-            if (magazineSize <= 0)
-            {
-                rightGunAmmo = 0;
-                rightGunRechargeReadyAt = 0f;
-                return;
-            }
-
-            if (rightGunAmmo > magazineSize)
-            {
-                rightGunAmmo = magazineSize;
-            }
-
-            if (rightGunAmmo >= magazineSize)
-            {
-                rightGunRechargeReadyAt = 0f;
-                return;
-            }
-
-            float rechargeSeconds = Mathf.Max(0f, config.RightGunRechargeSeconds);
-            if (rechargeSeconds <= 0f)
-            {
-                rightGunAmmo = magazineSize;
-                rightGunRechargeReadyAt = 0f;
-                return;
-            }
-
-            if (rightGunRechargeReadyAt <= 0f)
-            {
-                rightGunRechargeReadyAt = Time.time + rechargeSeconds;
-                return;
-            }
-
-            if (Time.time < rightGunRechargeReadyAt)
-            {
-                return;
-            }
-
-            rightGunAmmo = magazineSize;
-            rightGunRechargeReadyAt = 0f;
+            nextParryReadyAt = Time.time + Mathf.Max(0f, config.ParryCooldownSeconds);
         }
 
         private bool TryParryProjectile()
@@ -853,7 +765,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (!HasRightGunAmmo())
+            if (!CanUseParry())
             {
                 return false;
             }
@@ -874,7 +786,7 @@ namespace Week14.Combat
             PlayerProjectile parryShot = FireParryShot(rightFireOrigin, direction);
             if (parryShot != null)
             {
-                TrySpendRightGunAmmo();
+                StartParryCooldown();
                 parryShot.SetForcedParryTarget(target);
             }
 
@@ -910,24 +822,6 @@ namespace Week14.Combat
             }
 
             return projectile;
-        }
-
-        public void PlayDefenseImpact(Vector3 position, Vector2 incomingDirection)
-        {
-            if (config == null)
-            {
-                return;
-            }
-
-            ProjectileVfx.PlayDefense(
-                position,
-                incomingDirection,
-                config.DefenseSparkColor,
-                config.DefenseRingColor,
-                config.DefenseSparkCount,
-                config.ParrySparkSeconds,
-                config.DefenseEffectScale);
-            GetCameraFollow()?.PlayImpact(incomingDirection, 0.18f, 0.18f, 0.1f);
         }
 
         private EnemyProjectile FindClosestInterceptTarget(Vector2 aimDirection)
@@ -966,6 +860,15 @@ namespace Week14.Combat
         private Vector2 GetParryCenter()
         {
             return bodyRoot != null ? bodyRoot.position : transform.position;
+        }
+
+        public bool TryGetParryIndicatorState(out Vector2 center, out Vector2 direction, out float radius, out float angleDegrees)
+        {
+            center = GetParryCenter();
+            direction = GetParryIndicatorDirection();
+            radius = config != null ? ParryRange : 0f;
+            angleDegrees = config != null ? Mathf.Clamp(config.ParryAimAngleDegrees, 1f, 360f) : 0f;
+            return config != null && radius > 0f;
         }
 
         private bool IsInsideParryJudgementArea(Vector2 targetPosition, Vector2 aimDirection)
@@ -1214,7 +1117,9 @@ namespace Week14.Combat
                 && (targetHealth.GetComponent<Week14.Enemy.EnemyAI>() != null
                     || targetHealth.GetComponentInParent<Week14.Enemy.EnemyAI>() != null
                     || targetHealth.GetComponent<Week14.Enemy.BossAI>() != null
-                    || targetHealth.GetComponentInParent<Week14.Enemy.BossAI>() != null);
+                    || targetHealth.GetComponentInParent<Week14.Enemy.BossAI>() != null
+                    || targetHealth.GetComponent<Week14.Enemy.Drone>() != null
+                    || targetHealth.GetComponentInParent<Week14.Enemy.Drone>() != null);
         }
 
         private bool IsValidLockOnTargetInRange(Health targetHealth)
@@ -1516,9 +1421,7 @@ namespace Week14.Combat
 
         private Color GetParryRangeColor()
         {
-            Color color = rightGunAmmo <= 0 && IsRightGunRecharging
-                ? RightGunEmptyRangeColor
-                : ParryEffectColor;
+            Color color = ParryEffectColor;
             color.a = Mathf.Max(color.a, 0.85f);
             return color;
         }

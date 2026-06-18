@@ -82,55 +82,6 @@ namespace Week14.Combat
             PlayRingGlitter(position, direction, glitterColor, nextGlitterCount, nextGlitterSeconds, scale);
         }
 
-        public static void PlayDefense(Vector3 position, Vector2 incomingDirection, Color sparkColor, Color ringColor, int sparkCount, float seconds, float effectScale = 1f)
-        {
-            position.z = 0f;
-            float scale = Mathf.Max(0f, effectScale);
-            int forwardCount = Mathf.CeilToInt(Mathf.Max(0, sparkCount) * 0.65f);
-            int backwardCount = Mathf.Max(0, sparkCount / 4);
-            float duration = Mathf.Max(0.05f, seconds * 0.55f);
-
-            PlayDirectionalSpark(position, incomingDirection, sparkColor, forwardCount, duration, 28f, 2.8f, 6.4f, scale);
-            PlayDirectionalSpark(position, -incomingDirection, sparkColor, backwardCount, duration, 45f, 1.2f, 3.2f, scale);
-            PlayRing(position, ringColor, duration * 0.65f, scale);
-        }
-
-        public static void PlayDefenseArc(Vector3 center, Vector2 direction, float angleDegrees, float radius, Color color, float seconds, float width = 0.03f)
-        {
-            center.z = 0f;
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            float clampedAngle = Mathf.Clamp(angleDegrees, 1f, 360f);
-            bool fullCircle = clampedAngle >= 359.5f;
-            int pointCount = fullCircle ? 73 : Mathf.Max(3, Mathf.CeilToInt(clampedAngle / 4f) + 1);
-            float centerAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
-            float startAngle = fullCircle ? 0f : centerAngle - clampedAngle * 0.5f;
-
-            GameObject arcObject = new GameObject("DefenseArcVfx");
-            arcObject.transform.position = center;
-            LineRenderer line = arcObject.AddComponent<LineRenderer>();
-            line.useWorldSpace = false;
-            line.loop = fullCircle;
-            line.positionCount = pointCount;
-            line.startWidth = width;
-            line.endWidth = width;
-            line.startColor = color;
-            line.endColor = color;
-            line.numCornerVertices = 2;
-            line.numCapVertices = 2;
-            line.material = GetSpriteMaterial();
-            line.sortingOrder = 72;
-
-            float safeRadius = Mathf.Max(0.05f, radius);
-            for (int i = 0; i < pointCount; i++)
-            {
-                float t = pointCount <= 1 ? 0f : (float)i / (pointCount - 1);
-                float angle = (startAngle + clampedAngle * t) * Mathf.Deg2Rad;
-                line.SetPosition(i, new Vector3(Mathf.Cos(angle) * safeRadius, Mathf.Sin(angle) * safeRadius, 0f));
-            }
-
-            Object.Destroy(arcObject, Mathf.Max(0.05f, seconds));
-        }
-
         public static void PlayShotLine(Vector3 start, Vector3 end, Color color, float seconds, float width = 0.035f)
         {
             start.z = 0f;

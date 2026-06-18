@@ -12,6 +12,7 @@ namespace Week14.Combat
         private BulletGauge bullets;
         private EnemyAI enemyAI;
         private BossAI bossAI;
+        private Drone drone;
         private bool executionInProgress;
 
         private void Awake()
@@ -20,6 +21,7 @@ namespace Week14.Combat
             bullets = GetComponent<BulletGauge>();
             enemyAI = GetComponent<EnemyAI>() ?? GetComponentInParent<EnemyAI>();
             bossAI = GetComponent<BossAI>() ?? GetComponentInParent<BossAI>();
+            drone = GetComponent<Drone>() ?? GetComponentInParent<Drone>();
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
@@ -54,6 +56,7 @@ namespace Week14.Combat
             executionInProgress = true;
             enemyAI?.SetExecutionLocked(true);
             bossAI?.SetExecutionLocked(true);
+            drone?.SetExecutionLocked(true);
             return true;
         }
 

@@ -27,8 +27,7 @@ MonoBehaviour:
   gunAimHoldSeconds: 0.15
   parryRange: 6.5
   parryAimAngleDegrees: 30
-  rightGunMagazineSize: 5
-  rightGunRechargeSeconds: 1
+  parryCooldownSeconds: 0.18
   lockOnBreakDistance: 7.5
   executionRange: 7
   executionBulletRecovery: 300
@@ -43,3 +42,10 @@ MonoBehaviour:
   executionGunReturnSeconds: 0.2
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
+  playerBulletUiMaxVisibleIcons: 10
+  playerBulletUiIconWorldHeight: 0.5
+  playerBulletUiIconWidthRatio: 0.5
+  playerBulletUiArcInset: 0.2
+  playerBulletUiArcPaddingDegrees: 1.1
+  playerBulletUiSpacingDegrees: 0
+  playerBulletUiOverflowWorldHeight: 0.22

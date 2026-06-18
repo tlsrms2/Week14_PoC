@@ -10,7 +10,6 @@ namespace Week14.Combat
         Hit,
         Attack,
         Parry,
-        Defense,
         Execution
     }
 
