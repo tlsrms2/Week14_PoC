@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: -3427355340198616746}
   - component: {fileID: 2075240932106930298}
   - component: {fileID: 7213248953238434763}
+  - component: {fileID: 3721729926954954457}
   m_Layer: 0
   m_Name: Boss_Hog
   m_TagString: Untagged
@@ -319,6 +320,18 @@ MonoBehaviour:
   enragePhase1MaxBullets: 3
   enragePhase2Seconds: 20
   enragePhase2MaxBullets: 1
+  enrageWindupSeconds: 3
+  enrageWindupShakeDistance: 0.01
+  enrageWindupShakeFrequency: 28
+  enrageBurstSprite: {fileID: -1308620352984429291, guid: 0baa10e0e47a1e94eac947c1f292f41a, type: 3}
+  enrageBurstTargetScale: 50
+  enrageBurstGrowSeconds: 5
+  enrageBurstHoldSeconds: 0.1
+  enrageBurstFadeSeconds: 0.35
+  enrageBurstColor: {r: 1, g: 1, b: 1, a: 1}
+  enrageShakeAmplitude: 0.25
+  enrageShakeSeconds: 1
+  enrageShakeZoom: 0.12
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   maxBullets: 150
@@ -506,6 +519,7 @@ MonoBehaviour:
     radialSplitBulletCount: 30
     radialSplitStartAngleOffset: 0
     splitDelaySeconds: 0.35
+    bombSfxLeadSeconds: 0.15
   pattern4:
     projectileOrigin: {fileID: 3064024220512520814}
     slamUpOffset: 0.8
@@ -612,6 +626,9 @@ MonoBehaviour:
     patterns: 0000000001000000020000000300000004000000
   minPatternRecoverySeconds: 3
   maxPatternRecoverySeconds: 3
+  showPatternBulletPreview: 1
+  patternBulletPreviewFullHoldSeconds: 0.18
+  patternBulletPreviewSingleGroupFullHoldRatio: 0.55
   randomizePatterns: 1
   preventRandomRepeatPattern: 1
   debugUseFixedPattern: 0
@@ -706,6 +723,34 @@ MonoBehaviour:
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
     outlineWidth: 0.1
+--- !u!114 &3721729926954954457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958469296149594014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb968fb0d29ceda43b1c05bb9a70dc0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossPatternBulletLineView
+  settings:
+    fallbackRadius: 0.85
+    radiusPadding: 0
+    anchorOffset: {x: -0.4, y: 0}
+    maxBulletsPerColumn: 10
+    bulletWidth: 0.05
+    bulletLength: 0.1
+    bulletGap: 0.15
+    bulletRowGap: 0.01
+    bulletRotationDegrees: 0
+    loadedColor: {r: 1, g: 0.76, b: 0.12, a: 0.95}
+    nextColor: {r: 1, g: 0.39, b: 0.06, a: 1}
+    spentColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+    nextWidthScale: 1
+    sortingOrder: 9
+  targetRoot: {fileID: 3928034980745414157}
 --- !u!1 &4340331539688093370
 GameObject:
   m_ObjectHideFlags: 0
