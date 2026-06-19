@@ -23,7 +23,24 @@ namespace Week14.Enemy
         [Tooltip("1단계 광폭화 후 2단계 광폭화까지 추가로 걸리는 시간입니다.")]
         [SerializeField] private float enragePhase2Seconds = 30f;
         [SerializeField] private int enragePhase2MaxBullets = 1;
-        
+
+        [Header("Enrage Burst Effect")]
+        [Tooltip("광폭화 단계로 넘어갈 때 스폰할 이미지입니다.")]
+        [SerializeField] private Sprite enrageBurstSprite;
+        [Tooltip("이펙트가 빠르게 커지면서 도달할 최종 스케일(N)입니다.")]
+        [SerializeField, Min(0.01f)] private float enrageBurstTargetScale = 4f;
+        [Tooltip("0에서 최종 스케일까지 커지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float enrageBurstGrowSeconds = 0.15f;
+        [Tooltip("최종 스케일에 도달한 뒤 사라지기 전까지 유지하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float enrageBurstHoldSeconds = 0.1f;
+        [Tooltip("유지 시간이 끝난 뒤 페이드아웃되는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float enrageBurstFadeSeconds = 0.35f;
+        [SerializeField] private Color enrageBurstColor = Color.white;
+        [Tooltip("광폭화 진입 시 카메라 쉐이크 강도입니다.")]
+        [SerializeField, Min(0f)] private float enrageShakeAmplitude = 0.25f;
+        [SerializeField, Min(0f)] private float enrageShakeSeconds = 0.3f;
+        [SerializeField, Min(0f)] private float enrageShakeZoom = 0.12f;
+
         [Header("Meta")]
         [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 오브젝트 이름을 사용합니다.")]
         [SerializeField] private string displayName;
@@ -362,15 +379,40 @@ namespace Week14.Enemy
                 currentEnragePhase = 1;
                 currentPhaseStartTime = Time.time; // 다음 단계를 위해 타이머 리셋
                 ApplyPlayerMaxBullets(enragePhase1MaxBullets);
+                PlayEnrageTransitionEffect();
             }
             // 2단계 광폭화 도달
             else if (currentEnragePhase == 1 && elapsed >= enragePhase2Seconds)
             {
                 currentEnragePhase = 2;
                 ApplyPlayerMaxBullets(enragePhase2MaxBullets);
+                PlayEnrageTransitionEffect();
             }
 
             NotifyEnrageChanged();
+        }
+
+        private void PlayEnrageTransitionEffect()
+        {
+            Vector3 spawnPosition = bodyRoot != null ? bodyRoot.position : transform.position;
+
+            if (enrageBurstSprite != null)
+            {
+                GameObject burstObject = new GameObject("EnrageBurstVfx");
+                burstObject.transform.position = spawnPosition;
+                EnrageBurstVfx burst = burstObject.AddComponent<EnrageBurstVfx>();
+                burst.Play(
+                    enrageBurstSprite,
+                    spawnPosition,
+                    bodyRoot,
+                    enrageBurstTargetScale,
+                    enrageBurstGrowSeconds,
+                    enrageBurstHoldSeconds,
+                    enrageBurstFadeSeconds,
+                    enrageBurstColor);
+            }
+
+            PlayEnemyHitCameraImpact(Vector2.zero, enrageShakeAmplitude, enrageShakeSeconds, enrageShakeZoom);
         }
 
         private void ResetEnrageTimer()
@@ -1102,6 +1144,11 @@ namespace Week14.Enemy
 
         private static void PlayEnemyHitCameraImpact(Vector2 direction)
         {
+            PlayEnemyHitCameraImpact(direction, 0.08f, 0.12f, 0.05f);
+        }
+
+        private static void PlayEnemyHitCameraImpact(Vector2 direction, float amplitude, float seconds, float zoomAmount)
+        {
             Camera mainCamera = Camera.main;
             if (mainCamera == null)
             {
@@ -1109,7 +1156,7 @@ namespace Week14.Enemy
             }
 
             CameraFollow2D cameraFollow = mainCamera.GetComponent<CameraFollow2D>();
-            cameraFollow?.PlayImpact(direction, 0.08f, 0.12f, 0.05f);
+            cameraFollow?.PlayImpact(direction, amplitude, seconds, zoomAmount);
         }
 
         private static void RotateRight(Transform target, Vector2 direction)
