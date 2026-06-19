@@ -535,7 +535,7 @@ MonoBehaviour:
   enragePhase2MaxBullets: 1
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  maxBullets: 150
+  maxBullets: 100
   bulletEmptyExecutionSeconds: 10
   normalColor: {r: 0.27767888, g: 0.4528302, b: 0.19010323, a: 1}
   bulletEmptyColor: {r: 0.8301887, g: 0.24717018, b: 0.19971518, a: 1}
@@ -583,7 +583,7 @@ MonoBehaviour:
     initialChaseSpeedMultiplier: 0.5
     finalChaseSpeedMultiplier: 1
     radialBulletCount: 5
-    burstInterval: 0.25
+    burstInterval: 0.5
     spawnRadius: 0.25
     angleStepDegrees: 25
   pattern2:
