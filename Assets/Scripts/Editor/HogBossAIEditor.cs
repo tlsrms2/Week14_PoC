@@ -208,7 +208,7 @@ public sealed class HogBossAIEditor : Editor
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴3 투사체");
         DrawSection("준비/조준", pattern, "windupSeconds", "aimTrackingSeconds", "aimSpreadDegrees", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
         DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio", "launchBubbleScale", "launchMuzzleFlashScale");
-        DrawSection("전방위 분열", pattern, "splitDelaySeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
+        DrawSection("전방위 분열", pattern, "splitDelaySeconds", "bombSfxLeadSeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
     }
 
     private void DrawPattern4Tab()

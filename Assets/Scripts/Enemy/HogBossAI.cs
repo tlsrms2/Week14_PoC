@@ -201,10 +201,12 @@ namespace Week14.Enemy
             [SerializeField, Min(1), Tooltip("대기 종료 시 전방위로 분열되어 생성할 탄환 수입니다.")] private int radialSplitBulletCount = 12;
             [SerializeField, Tooltip("전방위 분열의 시작 각도 오프셋입니다.")] private float radialSplitStartAngleOffset;
             [SerializeField, Min(0f), Tooltip("발사된 뒤 전방위로 분열되기까지 기다리는 시간입니다.")] private float splitDelaySeconds = 0.8f;
+            [SerializeField, Min(0f), Tooltip("BossBomb 사운드를 실제 분열(SplitDelaySeconds)보다 몇 초 일찍 재생할지 정합니다.")] private float bombSfxLeadSeconds = 0.15f;
 
             public int RadialSplitBulletCount => radialSplitBulletCount;
             public float RadialSplitStartAngleOffset => radialSplitStartAngleOffset;
             public float SplitDelaySeconds => splitDelaySeconds;
+            public float BombSfxLeadSeconds => bombSfxLeadSeconds;
         }
 
         [System.Serializable]
@@ -509,7 +511,7 @@ namespace Week14.Enemy
                         useOwnColors: true);
                 
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
-                    PlayBossSpecialShotOnLaunch(projectile);
+                    PlaySfxOnLaunch(projectile, "BossSpecialShot");
                     if (projectile != null)
                     {
                         SoundManager.PlaySfx("BossNormalShot");
@@ -594,6 +596,9 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            PlaySfxOnLaunch(projectile, "BossNormalShot");
+            PlayBossBombOnRadialSplit(projectile);
+
             projectile.ConfigureProjectileSize(radius);
             
             // 👇 변경: 차징 중 조준(true), 발사 시 조준(false)
@@ -612,6 +617,7 @@ namespace Week14.Enemy
                 pattern3.SplitSpeedMultiplier,
                 pattern3.SplitRadiusMultiplier,
                 pattern3.SplitLifetimeMultiplier);
+            projectile.ConfigureRadialSplitSfxLead(pattern3.BombSfxLeadSeconds);
 
             float nextBubbleAt = Time.time;
             float elapsed = 0f;
@@ -779,7 +785,7 @@ namespace Week14.Enemy
                 origin,
                 useOwnColors: true);
             PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
-            PlayBossSpecialShotOnLaunch(projectile);
+            PlaySfxOnLaunch(projectile, "BossSpecialShot");
             if (projectile != null)
             {
                 SoundManager.PlaySfx("BossNormalShot");
@@ -983,20 +989,36 @@ namespace Week14.Enemy
             return order;
         }
 
-        private static void PlayBossSpecialShotOnLaunch(EnemyProjectile projectile)
+        private static void PlaySfxOnLaunch(EnemyProjectile projectile, string sfxId)
         {
             if (projectile == null)
             {
                 return;
             }
 
-            static void HandleLaunched(EnemyProjectile launchedProjectile)
+            void HandleLaunched(EnemyProjectile launchedProjectile)
             {
                 launchedProjectile.Launched -= HandleLaunched;
-                SoundManager.PlaySfx("BossSpecialShot");
+                SoundManager.PlaySfx(sfxId);
             }
 
             projectile.Launched += HandleLaunched;
+        }
+
+        private static void PlayBossBombOnRadialSplit(EnemyProjectile projectile)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            static void HandleRadialSplitImminent(EnemyProjectile splitProjectile)
+            {
+                splitProjectile.RadialSplitImminent -= HandleRadialSplitImminent;
+                SoundManager.PlaySfx("BossBomb");
+            }
+
+            projectile.RadialSplitImminent += HandleRadialSplitImminent;
         }
 
         private void PlayBubbleEffectIfSpawned(EnemyProjectile projectile, Vector3 position, float scaleMultiplier, int bubbleCount)

@@ -29975,7 +29975,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: debugPattern
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossCombatUiRoot
@@ -29988,7 +29988,7 @@ PrefabInstance:
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: enrageBurstSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 67aadd19f04741845bfb0958c4a13f58, type: 3}
+      objectReference: {fileID: -1308620352984429291, guid: 0baa10e0e47a1e94eac947c1f292f41a, type: 3}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: enrageShakeSeconds
       value: 1
