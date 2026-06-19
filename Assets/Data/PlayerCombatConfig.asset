@@ -30,6 +30,14 @@ MonoBehaviour:
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
   playerBodyAimRadius: 0.3
+  mouseParryMinimumRangeScale: 0.5
+  mouseParryMissRangeScaleLoss: 0.2
+  mouseParryRangeRecoveryDelay: 0.5
+  mouseParryRangeRecoveryPerSecond: 0.45
+  mouseParryMissColorSeconds: 0.16
+  mouseParryMissShakeSeconds: 0.18
+  mouseParryMissShakeAmplitude: 0.035
+  mouseParryMissShakeFrequency: 42
   executionRange: 7
   executionBulletRecovery: 3
   destroyTargetOnExecute: 1
@@ -46,8 +54,3 @@ MonoBehaviour:
   executionFlourishDelaySeconds: 0.5
   executionFlourishShotCount: 3
   executionFlourishShotInterval: 0.1
-  playerBulletUiMaxVisibleIcons: 10
-  playerBulletUiIconHeightRatio: 0.9
-  playerBulletUiIconWidthRatio: 0.5
-  playerBulletUiIconSpacingRatio: 0.16
-  playerBulletUiOverflowTextFontSize: 18
