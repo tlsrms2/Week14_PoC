@@ -35,6 +35,7 @@ namespace Week14.Combat
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private ExecutionImageEffect executionImage;
         [SerializeField] private PlayerHP playerHpView;
+        [SerializeField, Min(0f)] private float finalDeathCameraReturnSeconds = 0.25f;
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
         [SerializeField] private MouseParryReticle mouseParryReticle;
@@ -681,6 +682,7 @@ namespace Week14.Combat
 
             yield return new WaitForSeconds(Mathf.Max(config.ExecutionFinishSeconds, playerHpRecoverySeconds));
 
+            bool executionFinished = false;
             if (executionTarget != null)
             {
                 BossAI boss = executionTarget.GetComponentInParent<BossAI>();
@@ -693,8 +695,18 @@ namespace Week14.Combat
                     }
                     else
                     {
-                        executionTarget.CompleteExecution(this, false);
-                        executionTarget.DestroyExecutedTarget();
+                        FinishExecution();
+                        executionFinished = true;
+                        yield return WaitBeforeFinalDeathFocus();
+                        CameraFollow2D finalDeathCamera = BeginFinalDeathCameraFocus(boss);
+                        yield return boss.PlayFinalDeathSequence();
+                        if (executionTarget != null)
+                        {
+                            executionTarget.CompleteExecution(this, false);
+                            executionTarget.DestroyExecutedTarget();
+                        }
+
+                        finalDeathCamera?.EndCinematicFocus();
                     }
                 }
                 else
@@ -704,7 +716,38 @@ namespace Week14.Combat
                 }
             }
 
-            FinishExecution();
+            if (!executionFinished)
+            {
+                FinishExecution();
+            }
+        }
+
+        private IEnumerator WaitBeforeFinalDeathFocus()
+        {
+            if (finalDeathCameraReturnSeconds > 0f)
+            {
+                yield return new WaitForSeconds(finalDeathCameraReturnSeconds);
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+
+        private CameraFollow2D BeginFinalDeathCameraFocus(BossAI boss)
+        {
+            if (boss == null)
+            {
+                return null;
+            }
+
+            CameraFollow2D activeCamera = GetCameraFollow();
+            Transform focusTarget = boss.BodyRoot != null ? boss.BodyRoot : boss.transform;
+            activeCamera?.BeginCinematicFocus(
+                focusTarget,
+                config != null ? config.ExecutionCameraFocusWeight : 1f,
+                config != null ? config.ExecutionCameraZoomMultiplier : 0.75f);
+            return activeCamera;
         }
 
         private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget, Vector2 aimDirection)

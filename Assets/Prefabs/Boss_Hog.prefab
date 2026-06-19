@@ -332,6 +332,14 @@ MonoBehaviour:
   enrageShakeAmplitude: 0.25
   enrageShakeSeconds: 1
   enrageShakeZoom: 0.12
+  deathAnimator: {fileID: 8640302714323975246}
+  deathTriggerName: Die
+  finalDeathExplosionSeconds: 1.4
+  finalDeathExplosionCount: 10
+  finalDeathExplosionScale: 1.25
+  finalDeathExplosionSparkCount: 24
+  finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
+  deathAnimationFallbackSeconds: 1
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   maxBullets: 150
@@ -1185,5 +1193,10 @@ Transform:
 --- !u!4 &6728027085813036487 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7127474615898528361, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+  m_PrefabInstance: {fileID: 4591174193527746478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8640302714323975246 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5215068385082528736, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
   m_PrefabInstance: {fileID: 4591174193527746478}
   m_PrefabAsset: {fileID: 0}

@@ -16,7 +16,7 @@ namespace Week14.UI
             None,
             AttackSpend,
             Recovery,
-            EnrageFade
+            EnrageSpend
         }
 
         [Serializable]
@@ -34,6 +34,7 @@ namespace Week14.UI
             private EffectKind effectKind;
             private float timer;
             private float duration;
+            private float effectDelay;
             private bool targetUsable;
             private bool targetRecovered;
             private Color targetOutlineColor = Color.white;
@@ -57,6 +58,7 @@ namespace Week14.UI
             }
 
             public Color RecoveredOutlineColor => recoveredOutlineColor;
+            public bool IsPlayingEnrageSpend => effectKind == EffectKind.EnrageSpend;
 
             public void ApplyInstant(bool usable, bool recovered, Color outlineColor)
             {
@@ -91,9 +93,9 @@ namespace Week14.UI
                 SetTransientImageVisible(shineImage, true);
             }
 
-            public void PlayEnrageFade(float effectSeconds, Color outlineColor)
+            public void PlayEnrageSpend(float delaySeconds, float effectSeconds, Color outlineColor)
             {
-                BeginEffect(EffectKind.EnrageFade, false, false, effectSeconds, outlineColor);
+                BeginEffect(EffectKind.EnrageSpend, false, false, effectSeconds, outlineColor, delaySeconds);
             }
 
             public void Tick(
@@ -119,8 +121,8 @@ namespace Week14.UI
                     case EffectKind.Recovery:
                         TickRecovery(t, shineAlpha);
                         break;
-                    case EffectKind.EnrageFade:
-                        TickEnrageFade(t);
+                    case EffectKind.EnrageSpend:
+                        TickEnrageSpend(attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
                         break;
                 }
 
@@ -130,7 +132,13 @@ namespace Week14.UI
                 }
             }
 
-            private void BeginEffect(EffectKind nextEffectKind, bool usable, bool recovered, float effectSeconds, Color outlineColor)
+            private void BeginEffect(
+                EffectKind nextEffectKind,
+                bool usable,
+                bool recovered,
+                float effectSeconds,
+                Color outlineColor,
+                float delaySeconds = 0f)
             {
                 FinishEffect();
                 targetUsable = usable;
@@ -138,7 +146,8 @@ namespace Week14.UI
                 targetOutlineColor = outlineColor;
                 effectKind = nextEffectKind;
                 timer = 0f;
-                duration = Mathf.Max(0.01f, effectSeconds);
+                effectDelay = Mathf.Max(0f, delaySeconds);
+                duration = effectDelay + Mathf.Max(0.01f, effectSeconds);
 
                 CaptureTransforms();
                 bodyStartColor = GetColor(bodyImage, usable && recovered ? RecoveredBodyColor : UsedBodyColor);
@@ -189,11 +198,29 @@ namespace Week14.UI
                 ApplyColor(shineImage, new Color(1f, 1f, 1f, pulse * shineAlpha));
             }
 
-            private void TickEnrageFade(float t)
+            private void TickEnrageSpend(float distance, float rise, float spinDegrees)
             {
-                float eased = Mathf.SmoothStep(0f, 1f, t);
-                ApplyColor(bodyImage, Color.Lerp(bodyStartColor, bodyTargetColor, eased));
-                ApplyColor(outlineImage, Color.Lerp(outlineStartColor, outlineTargetColor, eased));
+                if (timer < effectDelay)
+                {
+                    ApplyOffset(bodyImage, bodyTransform, Vector2.zero, 0f, 1f);
+                    ApplyOffset(outlineImage, outlineTransform, Vector2.zero, 0f, 1f);
+                    ApplyColor(bodyImage, bodyStartColor);
+                    ApplyColor(outlineImage, outlineStartColor);
+                    return;
+                }
+
+                float t = Mathf.Clamp01((timer - effectDelay) / Mathf.Max(0.01f, duration - effectDelay));
+                float eased = 1f - Mathf.Pow(1f - t, 3f);
+                float x = Mathf.Round(distance * eased);
+                float y = Mathf.Round(Mathf.Sin(t * Mathf.PI) * rise - rise * 0.35f * t);
+                float rotation = spinDegrees * eased;
+                float fade = Mathf.Lerp(0.3f, 1f, Mathf.SmoothStep(0f, 1f, t));
+                Vector2 offset = new(x, y);
+
+                ApplyOffset(bodyImage, bodyTransform, offset, rotation, 1f);
+                ApplyOffset(outlineImage, outlineTransform, offset, rotation, 1f);
+                ApplyColor(bodyImage, WithAlpha(bodyStartColor, bodyStartColor.a * (1f - fade)));
+                ApplyColor(outlineImage, WithAlpha(outlineStartColor, outlineStartColor.a * (1f - fade)));
             }
 
             private void FinishEffect()
@@ -205,6 +232,7 @@ namespace Week14.UI
 
                 RestoreTransforms();
                 effectKind = EffectKind.None;
+                effectDelay = 0f;
                 SetTransientImageVisible(shineImage, false);
                 SetTransientImageVisible(ejectedBodyImage, false);
                 SetTransientImageVisible(ejectedOutlineImage, false);
@@ -538,7 +566,7 @@ namespace Week14.UI
         [SerializeField, Min(0.01f)] private float attackSpendSeconds = 0.42f;
         [SerializeField, Min(0.01f)] private float recoverySeconds = 0.34f;
         [SerializeField, Min(0.01f)] private float executionRecoverySeconds = 1f;
-        [SerializeField, Min(0.01f)] private float enrageFadeSeconds = 0.65f;
+        [SerializeField, Min(0f)] private float enrageSpendDelaySeconds = 0.5f;
         [SerializeField, Min(0f)] private float attackEjectDistance = 52f;
         [SerializeField, Min(0f)] private float attackEjectRise = 18f;
         [SerializeField] private float attackEjectSpinDegrees = 520f;
@@ -685,6 +713,11 @@ namespace Week14.UI
 
             bool usable = max >= hp;
             bool recovered = usable && current >= hp;
+            if (!usable && slot.IsPlayingEnrageSpend)
+            {
+                return;
+            }
+
             if (!hasSnapshot)
             {
                 slot.ApplyInstant(usable, recovered, outlineColor);
@@ -696,7 +729,7 @@ namespace Week14.UI
 
             if (wasUsable && !usable)
             {
-                slot.PlayEnrageFade(enrageFadeSeconds, outlineColor);
+                slot.PlayEnrageSpend(enrageSpendDelaySeconds, hitSpendSeconds, outlineColor);
             }
             else if (!wasUsable && usable)
             {
