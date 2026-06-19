@@ -363,6 +363,11 @@ namespace Week14.Combat
                 return;
             }
 
+            if (!resolved && forcedParryTarget != null)
+            {
+                forcedParryTarget.CancelInterceptReservation();
+            }
+
             isDestroying = true;
             if (body != null)
             {

@@ -14,6 +14,7 @@ namespace Week14.Bootstrap
         [SerializeField, Min(0f)] private float mouseLookBlendSpeed = 5f;
         [SerializeField, Range(0f, 1f)] private float lockOnMouseLookMultiplier = 0.35f;
         [SerializeField, Min(0f)] private float lockOnTransitionSmoothTime = 0.45f;
+        [SerializeField, Min(0f)] private float focusPositionSmoothTime = 0.28f;
         [SerializeField, Min(0f)] private float shakeFrequency = 34f;
         [SerializeField, Min(0f)] private float zoomBlendSpeed = 10f;
 
@@ -25,6 +26,8 @@ namespace Week14.Bootstrap
         private Vector3 followVelocity;
         private Vector3 currentBasePosition;
         private Vector3 lastFocusPosition;
+        private Vector3 currentFocusPosition;
+        private Vector3 focusPositionVelocity;
         private Vector2 currentMouseLookOffset;
         private Vector2 mouseLookOffsetVelocity;
         private float currentFocusWeight;
@@ -40,6 +43,7 @@ namespace Week14.Bootstrap
         private float shakeSeed;
         private Vector2 shakeDirection = Vector2.right;
         private bool hasBasePosition;
+        private bool hasCurrentFocusPosition;
         private bool cinematicFocusActive;
         private float cinematicFocusWeight = 0.5f;
         private float cinematicZoomMultiplier = 1f;
@@ -61,6 +65,9 @@ namespace Week14.Bootstrap
             followVelocity = Vector3.zero;
             currentFocusWeight = 0f;
             focusWeightVelocity = 0f;
+            currentFocusPosition = Vector3.zero;
+            focusPositionVelocity = Vector3.zero;
+            hasCurrentFocusPosition = false;
             hasBasePosition = false;
             CacheTargetBody();
         }
@@ -219,9 +226,39 @@ namespace Week14.Bootstrap
             }
 
             Vector3 focusPosition = focusBody != null ? focusBody.transform.position : focusTarget.position;
-            lastFocusPosition = focusPosition;
-            return Vector3.Lerp(targetPosition, focusPosition, currentFocusWeight)
+            currentFocusPosition = GetSmoothedFocusPosition(focusPosition);
+            lastFocusPosition = currentFocusPosition;
+            return Vector3.Lerp(targetPosition, currentFocusPosition, currentFocusWeight)
                 + (Vector3)GetMouseLookOffset(true);
+        }
+
+        private Vector3 GetSmoothedFocusPosition(Vector3 targetFocusPosition)
+        {
+            if (currentFocusWeight <= 0.001f || !hasCurrentFocusPosition)
+            {
+                currentFocusPosition = targetFocusPosition;
+                focusPositionVelocity = Vector3.zero;
+                hasCurrentFocusPosition = true;
+                return currentFocusPosition;
+            }
+
+            if (cinematicFocusActive || focusPositionSmoothTime <= 0f)
+            {
+                currentFocusPosition = targetFocusPosition;
+                focusPositionVelocity = Vector3.zero;
+                hasCurrentFocusPosition = true;
+                return currentFocusPosition;
+            }
+
+            currentFocusPosition = Vector3.SmoothDamp(
+                currentFocusPosition,
+                targetFocusPosition,
+                ref focusPositionVelocity,
+                focusPositionSmoothTime,
+                Mathf.Infinity,
+                Time.deltaTime);
+            hasCurrentFocusPosition = true;
+            return currentFocusPosition;
         }
 
         private Vector2 GetMouseLookOffset(bool hasFocusTarget)

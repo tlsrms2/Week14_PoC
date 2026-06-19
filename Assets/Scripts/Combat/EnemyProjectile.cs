@@ -20,14 +20,6 @@ namespace Week14.Combat
         private const float PathDashGap = 0.14f;
         private const float DefaultHomingSeconds = 0.8f;
         private const float DefaultHomingTurnDegreesPerSecond = 540f;
-        private const string ParryRangeIndicatorName = "ProjectileParryRangeIndicator";
-        private const int ParryRangeSpriteSize = 96;
-        private static readonly Color ParryRangeColor = new(1f, 0.48f, 0f, 0.18f);
-
-        [Header("Parry")]
-        [SerializeField, Min(0f), Tooltip("이 탄환 중심에서 커서를 두면 패링할 수 있는 반지름입니다.")]
-        private float parryRange = 7f;
-
         private float projectileSpeed;
         private float projectileLifetime;
         private float projectileRadius;
@@ -43,7 +35,6 @@ namespace Week14.Combat
         private float chargeEndsAt;
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
-        private SpriteRenderer parryRangeIndicator;
         private readonly List<LineRenderer> pathIndicatorDashes = new();
         private readonly List<LineRenderer> homingAimReticleLines = new();
         private Transform pathIndicatorRoot;
@@ -93,12 +84,10 @@ namespace Week14.Combat
         private float executionPauseStartedAt;
         private bool pausedByExecution;
         private static Material chargeVfxMaterial;
-        private static Sprite parryRangeSprite;
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
-        public float ParryRange => Mathf.Max(0f, parryRange);
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public static IReadOnlyList<EnemyProjectile> ActiveProjectiles => activeProjectiles;
 
@@ -439,9 +428,6 @@ namespace Week14.Combat
                 TickRadialSplitDelay();
                 TickPathIndicator();
             }
-
-            UpdateParryRangeIndicator();
-
             if (Time.time >= destroyAt)
             {
                 DestroyProjectile();
@@ -789,8 +775,17 @@ namespace Week14.Combat
             }
 
             interceptPending = true;
-            SetParryRangeIndicatorVisible(false);
             return true;
+        }
+
+        public void CancelInterceptReservation()
+        {
+            if (resolved || isDestroying)
+            {
+                return;
+            }
+
+            interceptPending = false;
         }
 
         public void DestroyFromOwner()
@@ -815,7 +810,6 @@ namespace Week14.Combat
 
             SetChargeVfxVisible(false);
             SetPathIndicatorVisible(false);
-            SetParryRangeIndicatorVisible(false);
 
             Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
             for (int i = 0; i < colliders.Length; i++)
@@ -830,98 +824,6 @@ namespace Week14.Combat
             }
 
             Destroy(gameObject);
-        }
-
-        private void UpdateParryRangeIndicator()
-        {
-            float parryRange = ParryRange;
-            if (!CanBeIntercepted || parryRange <= 0f)
-            {
-                SetParryRangeIndicatorVisible(false);
-                return;
-            }
-
-            EnsureParryRangeIndicator();
-            if (parryRangeIndicator == null)
-            {
-                return;
-            }
-
-            parryRangeIndicator.enabled = true;
-            parryRangeIndicator.color = ParryRangeColor;
-            parryRangeIndicator.transform.position = transform.position;
-            Vector3 lossyScale = transform.lossyScale;
-            float xScale = Mathf.Abs(lossyScale.x) > 0.0001f ? Mathf.Abs(lossyScale.x) : 1f;
-            float yScale = Mathf.Abs(lossyScale.y) > 0.0001f ? Mathf.Abs(lossyScale.y) : 1f;
-            float diameter = parryRange * 2f;
-            parryRangeIndicator.transform.localScale = new Vector3(diameter / xScale, diameter / yScale, 1f);
-        }
-
-        private void EnsureParryRangeIndicator()
-        {
-            if (parryRangeIndicator != null)
-            {
-                return;
-            }
-
-            GameObject indicatorObject = new(ParryRangeIndicatorName);
-            indicatorObject.transform.SetParent(transform, false);
-            indicatorObject.transform.localPosition = Vector3.zero;
-            indicatorObject.transform.localRotation = Quaternion.identity;
-
-            parryRangeIndicator = indicatorObject.AddComponent<SpriteRenderer>();
-            parryRangeIndicator.sprite = GetParryRangeSprite();
-            parryRangeIndicator.color = ParryRangeColor;
-            parryRangeIndicator.sortingOrder = 4;
-            parryRangeIndicator.enabled = false;
-        }
-
-        private void SetParryRangeIndicatorVisible(bool visible)
-        {
-            if (parryRangeIndicator != null)
-            {
-                parryRangeIndicator.enabled = visible;
-            }
-        }
-
-        private static Sprite GetParryRangeSprite()
-        {
-            if (parryRangeSprite != null)
-            {
-                return parryRangeSprite;
-            }
-
-            Texture2D texture = new(ParryRangeSpriteSize, ParryRangeSpriteSize, TextureFormat.RGBA32, false)
-            {
-                filterMode = FilterMode.Bilinear,
-                wrapMode = TextureWrapMode.Clamp
-            };
-
-            float center = (ParryRangeSpriteSize - 1) * 0.5f;
-            float radius = center;
-            float radiusSqr = radius * radius;
-            Color clear = Color.clear;
-            Color white = Color.white;
-            Color[] pixels = new Color[ParryRangeSpriteSize * ParryRangeSpriteSize];
-            for (int y = 0; y < ParryRangeSpriteSize; y++)
-            {
-                for (int x = 0; x < ParryRangeSpriteSize; x++)
-                {
-                    float dx = x - center;
-                    float dy = y - center;
-                    pixels[y * ParryRangeSpriteSize + x] = dx * dx + dy * dy <= radiusSqr ? white : clear;
-                }
-            }
-
-            texture.SetPixels(pixels);
-            texture.Apply(false, true);
-            parryRangeSprite = Sprite.Create(
-                texture,
-                new Rect(0f, 0f, ParryRangeSpriteSize, ParryRangeSpriteSize),
-                new Vector2(0.5f, 0.5f),
-                ParryRangeSpriteSize);
-            parryRangeSprite.name = ParryRangeIndicatorName;
-            return parryRangeSprite;
         }
 
         private void OnDestroy()
