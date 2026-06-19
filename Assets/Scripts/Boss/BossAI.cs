@@ -56,7 +56,6 @@ namespace Week14.Enemy
         [SerializeField] private Transform bodyRoot;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private EnemyStatusView statusView;
-        [SerializeField] private AttackTimingOutline attackTimingOutline;
         [SerializeField] private LayerMask obstacleMask;
         [SerializeField] private SpriteRenderer lockOnIndicator;
         [SerializeField] private SpriteRenderer executionIndicator;
@@ -193,35 +192,30 @@ namespace Week14.Enemy
 
             if (health.IsDead)
             {
-                HideAttackTiming();
                 Stop();
                 return;
             }
 
             if (isExecutionLocked)
             {
-                HideAttackTiming();
                 Stop();
                 return;
             }
 
             if (IsExecutionPaused)
             {
-                HideAttackTiming();
                 Stop();
                 return;
             }
 
             if (isPhaseTransitionWaiting)
             {
-                HideAttackTiming();
                 TickPhaseTransitionWait();
                 return;
             }
 
             if (IsBulletEmpty)
             {
-                HideAttackTiming();
                 TickBulletEmpty();
                 return;
             }
@@ -426,43 +420,6 @@ namespace Week14.Enemy
             {
                 // 최대치만 깎습니다. (fill=false를 전달해 현재 남아있는 탄환 수는 유지하되, 한도를 넘으면 깎이도록 함)
                 player.Bullets.Configure(newMax, false);
-            }
-        }
-
-        public void ShowAttackTiming(float remainingSeconds, float durationSeconds)
-        {
-            ShowAttackTiming(remainingSeconds, durationSeconds, 0, 0);
-        }
-
-        public void ShowAttackTiming(float remainingSeconds, float durationSeconds, int loadedBulletCount, int totalBulletCount)
-        {
-            if (remainingSeconds <= 0f || durationSeconds <= 0f)
-            {
-                ShowAttackBullets(loadedBulletCount, totalBulletCount);
-                return;
-            }
-
-            EnsureAttackTimingOutline();
-            attackTimingOutline.Show(remainingSeconds, durationSeconds, loadedBulletCount, totalBulletCount);
-        }
-
-        public void ShowAttackBullets(int loadedBulletCount, int totalBulletCount)
-        {
-            if (totalBulletCount <= 0)
-            {
-                HideAttackTiming();
-                return;
-            }
-
-            EnsureAttackTimingOutline();
-            attackTimingOutline.ShowBullets(loadedBulletCount, totalBulletCount);
-        }
-
-        public void HideAttackTiming()
-        {
-            if (attackTimingOutline != null)
-            {
-                attackTimingOutline.Hide();
             }
         }
 
@@ -1063,16 +1020,6 @@ namespace Week14.Enemy
 
             destroyAfterDeathQueued = true;
             Destroy(gameObject);
-        }
-
-        private void EnsureAttackTimingOutline()
-        {
-            if (attackTimingOutline == null)
-            {
-                attackTimingOutline = GetComponent<AttackTimingOutline>() ?? gameObject.AddComponent<AttackTimingOutline>();
-            }
-
-            attackTimingOutline.SetTarget(bodyRoot);
         }
 
         private static void PlayEnemyHitCameraImpact(Vector2 direction)

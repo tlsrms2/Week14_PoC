@@ -66,7 +66,6 @@ namespace Week14.Enemy
         [SerializeField] private Transform projectileOrigin;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private EnemyStatusView statusView;
-        [SerializeField] private AttackTimingOutline attackTimingOutline;
         [SerializeField] private SpriteRenderer lockOnIndicator;
         [SerializeField] private SpriteRenderer executionIndicator;
 
@@ -96,8 +95,6 @@ namespace Week14.Enemy
         private bool ownsStatusView;
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
-        private int attackBulletTotal;
-        private int attackBulletRemaining;
 
         public DronePilot Owner => owner;
         public Health Health => health;
@@ -172,8 +169,6 @@ namespace Week14.Enemy
                 statusView = null;
                 ownsStatusView = false;
             }
-
-            ClearAttackBullets();
         }
 
         private void Start()
@@ -387,31 +382,6 @@ namespace Week14.Enemy
             FireCommandProjectile(projectile, origin, GetDirectionToPlayer(origin), true);
         }
 
-        public void PreviewAttackBullets(int totalBulletCount)
-        {
-            attackBulletTotal = Mathf.Max(0, totalBulletCount);
-            attackBulletRemaining = attackBulletTotal;
-            ShowCurrentAttackBullets();
-        }
-
-        public void ShowAttackRecovery(float remainingSeconds, float durationSeconds)
-        {
-            EnsureAttackTimingOutline();
-            attackTimingOutline.Show(remainingSeconds, durationSeconds, attackBulletRemaining, attackBulletTotal);
-        }
-
-        public void ShowAttackBulletsOnly()
-        {
-            ShowCurrentAttackBullets();
-        }
-
-        public void ClearAttackBullets()
-        {
-            attackBulletTotal = 0;
-            attackBulletRemaining = 0;
-            attackTimingOutline?.Hide();
-        }
-
         public float CommandStopAndFire(DronePilot.ProjectileSettings projectile, int bulletCount, float fireInterval, bool resumeIdle)
         {
             StopCommand();
@@ -597,16 +567,10 @@ namespace Week14.Enemy
                 float arc = spreadDegrees <= 0f ? 360f : Mathf.Min(360f, spreadDegrees);
                 float step = directions <= 1 ? 0f : arc / (directions - 1);
                 float start = directions <= 1 ? centerAngle : centerAngle - arc * 0.5f;
-                bool firedAny = false;
 
                 for (int i = 0; i < directions; i++)
                 {
-                    firedAny |= FireCommandProjectile(projectile, origin, AngleToDirection(start + step * i), i == 0, false) != null;
-                }
-
-                if (firedAny)
-                {
-                    ConsumeAttackBullet();
+                    FireCommandProjectile(projectile, origin, AngleToDirection(start + step * i), i == 0);
                 }
 
                 if (volley < volleys - 1)
@@ -649,12 +613,8 @@ namespace Week14.Enemy
                 if (elapsed >= nextFireAt)
                 {
                     Vector3 origin = GetProjectileOrigin();
-                    bool firedAny = FireCommandProjectile(projectile, origin, RotateDirection(direction, sideAngle), true, false) != null;
-                    firedAny |= FireCommandProjectile(projectile, origin, RotateDirection(direction, -sideAngle), false, false) != null;
-                    if (firedAny)
-                    {
-                        ConsumeAttackBullet();
-                    }
+                    FireCommandProjectile(projectile, origin, RotateDirection(direction, sideAngle), true);
+                    FireCommandProjectile(projectile, origin, RotateDirection(direction, -sideAngle), false);
 
                     nextFireAt += interval;
                 }
@@ -1083,7 +1043,6 @@ namespace Week14.Enemy
 
         private void HandleDied(Health _)
         {
-            ClearAttackBullets();
             DestroyActiveProjectiles();
             StopCommand();
             QueueDestroyAfterDeath();
@@ -1093,21 +1052,14 @@ namespace Week14.Enemy
             DronePilot.ProjectileSettings projectile,
             Vector3 origin,
             Vector2 direction,
-            bool playMuzzleFlash,
-            bool consumeAttackBullet = true)
+            bool playMuzzleFlash)
         {
             if (IsExecutionPaused || owner == null)
             {
                 return null;
             }
 
-            EnemyProjectile firedProjectile = owner.FireDroneProjectile(this, projectile, origin, direction, playMuzzleFlash);
-            if (firedProjectile != null && consumeAttackBullet)
-            {
-                ConsumeAttackBullet();
-            }
-
-            return firedProjectile;
+            return owner.FireDroneProjectile(this, projectile, origin, direction, playMuzzleFlash);
         }
 
         private static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
@@ -1136,45 +1088,6 @@ namespace Week14.Enemy
                 StopBody();
                 yield return null;
             }
-        }
-
-        private void ConsumeAttackBullet()
-        {
-            if (attackBulletTotal <= 0)
-            {
-                return;
-            }
-
-            attackBulletRemaining = Mathf.Max(0, attackBulletRemaining - 1);
-            ShowCurrentAttackBullets();
-        }
-
-        private void ShowCurrentAttackBullets()
-        {
-            if (attackBulletTotal <= 0)
-            {
-                attackTimingOutline?.Hide();
-                return;
-            }
-
-            EnsureAttackTimingOutline();
-            attackTimingOutline.ShowBullets(attackBulletRemaining, attackBulletTotal);
-        }
-
-        private void EnsureAttackTimingOutline()
-        {
-            if (attackTimingOutline == null)
-            {
-                attackTimingOutline = GetComponentInChildren<AttackTimingOutline>(true);
-            }
-
-            if (attackTimingOutline == null)
-            {
-                attackTimingOutline = gameObject.AddComponent<AttackTimingOutline>();
-            }
-
-            attackTimingOutline.SetTarget(bodyRoot != null ? bodyRoot : transform);
-            attackTimingOutline.SetOutlineShape(AttackTimingOutline.OutlineShape.Square);
         }
 
         private void DestroyActiveProjectiles()

@@ -388,8 +388,6 @@ namespace Week14.Enemy
 
         private Coroutine patternRoutine;
         private int nextPatternIndex;
-        private int currentPatternBulletTotal;
-        private int currentPatternBulletRemaining;
         private bool isPattern4BodyRootMoved;
         private Vector3 pattern4BodyRootBaseLocalPosition;
 
@@ -419,7 +417,6 @@ namespace Week14.Enemy
             }
 
             PatternKind pattern = SelectPattern();
-            PreviewPatternBulletUi(pattern);
             patternRoutine = StartCoroutine(RunPattern(pattern));
         }
 
@@ -431,9 +428,6 @@ namespace Week14.Enemy
                 patternRoutine = null;
             }
 
-            HideAttackTiming();
-            currentPatternBulletTotal = 0;
-            currentPatternBulletRemaining = 0;
             ResetPattern4BodyRoot();
             DeactivatePatternFirePoints();
         }
@@ -548,7 +542,6 @@ namespace Week14.Enemy
 
             Stop();
             PatternKind nextPattern = SelectPattern();
-            PreviewPatternBulletUi(nextPattern);
             float recoverySeconds = GetPatternRecoverySeconds();
             if (recoverySeconds > 0f)
             {
@@ -577,8 +570,6 @@ namespace Week14.Enemy
                     yield return null;
                     continue;
                 }
-
-                ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
             }
@@ -623,7 +614,6 @@ namespace Week14.Enemy
                 
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
                     fired++;
-                    ConsumePatternBulletUi();
                     nextBurstAt += Mathf.Max(0.01f, pattern1.BurstInterval);
                     
                     currentAngle += pattern1.AngleStepDegrees;
@@ -660,7 +650,6 @@ namespace Week14.Enemy
                     MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
                     FireMachinegunBullet(fired);
                     fired++;
-                    ConsumePatternBulletUi();
 
                     if (bulletIndex < volleyBulletCount - 1 && volley.FireInterval > 0f)
                     {
@@ -696,8 +685,6 @@ namespace Week14.Enemy
                 radius,
                 null,
                 0f);
-            ConsumePatternBulletUi();
-
             if (projectile == null)
             {
                 SetFirePointActive(pattern3.FirePoint, false);
@@ -765,7 +752,6 @@ namespace Week14.Enemy
             {
                 yield return WaitWhileExecutionPaused();
 
-                BeginPatternBulletUi(Mathf.Max(1, pattern4.BulletCount));
                 yield return SlamPattern4BodyRoot();
                 
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
@@ -809,8 +795,6 @@ namespace Week14.Enemy
                 yield return null;
             }
 
-            SetPatternBulletUiLoaded(bulletCount);
-
             float currentSweepOffset = 0f;
             float sweepDirection = 1f;
 
@@ -830,7 +814,6 @@ namespace Week14.Enemy
                 currentOrigin = GetFirePointProjectilePosition(pattern5.FirePoint);
                 
                 FirePattern5Bullet(i, finalAngle, currentOrigin);
-                ConsumePatternBulletUi();
                 currentSweepOffset += pattern5.SweepStepDegrees * sweepDirection;
         
                 if (Mathf.Abs(currentSweepOffset) >= pattern5.MaxSweepAngle)
@@ -881,7 +864,6 @@ namespace Week14.Enemy
         
                 EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction);
                 PlayBubbleEffectIfSpawned(projectile, origin, 0.75f, 7);
-                ConsumePatternBulletUi();
             }
         }
 
@@ -993,97 +975,6 @@ namespace Week14.Enemy
             float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             float halfSpread = pattern3.AimSpreadDegrees * 0.5f;
             return AngleToDirection(baseAngle + Random.Range(-halfSpread, halfSpread));
-        }
-
-        private void BeginPatternBulletUi(int totalBulletCount)
-        {
-            currentPatternBulletTotal = Mathf.Max(0, totalBulletCount);
-            currentPatternBulletRemaining = currentPatternBulletTotal;
-            ShowCurrentPatternBullets();
-        }
-
-        private void PreviewPatternBulletUi(PatternKind pattern)
-        {
-            BeginPatternBulletUi(GetPatternBulletCount(pattern));
-        }
-
-        private void SetPatternBulletUiLoaded(int loadedBulletCount)
-        {
-            if (currentPatternBulletTotal <= 0)
-            {
-                return;
-            }
-
-            currentPatternBulletRemaining = Mathf.Clamp(loadedBulletCount, 0, currentPatternBulletTotal);
-            ShowCurrentPatternBullets();
-        }
-
-        private int GetPatternBulletCount(PatternKind pattern)
-        {
-            switch (pattern)
-            {
-                case PatternKind.Pattern1:
-                    return Mathf.Max(1, pattern1.RadialBulletCount);
-                case PatternKind.Pattern2:
-                    return GetPattern2BulletCount();
-                case PatternKind.Pattern3:
-                    return 1;
-                case PatternKind.Pattern4:
-                    return Mathf.Max(0, pattern4.WaveCount);
-                case PatternKind.Pattern5:
-                    return Mathf.Max(1, pattern5.BulletCount);
-                default:
-                    return 0;
-            }
-        }
-
-        private int GetPattern2BulletCount()
-        {
-            int count = 0;
-            IReadOnlyList<Pattern2Settings.VolleySettings> volleys = pattern2.Volleys;
-            if (volleys == null)
-            {
-                return count;
-            }
-
-            for (int i = 0; i < volleys.Count; i++)
-            {
-                if (volleys[i] != null)
-                {
-                    count += Mathf.Max(1, volleys[i].BulletCount);
-                }
-            }
-
-            return count;
-        }
-
-        private void ConsumePatternBulletUi()
-        {
-            if (currentPatternBulletTotal <= 0)
-            {
-                return;
-            }
-
-            currentPatternBulletRemaining = Mathf.Max(0, currentPatternBulletRemaining - 1);
-            ShowCurrentPatternBullets();
-        }
-
-        private void ShowCurrentPatternBullets()
-        {
-            if (currentPatternBulletTotal <= 0)
-            {
-                HideAttackTiming();
-                return;
-            }
-
-            ShowAttackBullets(currentPatternBulletRemaining, currentPatternBulletTotal);
-        }
-
-        private void ClearPatternBulletUi()
-        {
-            currentPatternBulletTotal = 0;
-            currentPatternBulletRemaining = 0;
-            HideAttackTiming();
         }
 
         private static int[] BuildShuffledOrder(int count)

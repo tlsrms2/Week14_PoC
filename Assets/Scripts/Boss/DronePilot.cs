@@ -235,8 +235,6 @@ namespace Week14.Enemy
         private int synchronizedDroneSyncVersion;
         private int nextBossPatternIndex;
         private int nextDronePatternIndex;
-        private int currentPatternBulletTotal;
-        private int currentPatternBulletRemaining;
         private float nextAutoSummonAt;
 
         protected override void OnBossStarted()
@@ -255,14 +253,12 @@ namespace Week14.Enemy
             if (bossPatternRoutine == null)
             {
                 PatternKind bossPattern = PatternKind.BossBurst;
-                PreviewBossPatternBulletUi(bossPattern);
                 bossPatternRoutine = StartCoroutine(RunBossPattern(bossPattern));
             }
 
             if (dronePatternRoutine == null)
             {
                 PatternKind dronePattern = SelectDronePattern();
-                PreviewDronePatternBullets(dronePattern);
                 dronePatternRoutine = StartCoroutine(RunDronePattern(dronePattern));
             }
         }
@@ -282,8 +278,6 @@ namespace Week14.Enemy
             }
 
             ClearSynchronizedDroneFire();
-            ClearPatternBulletUi();
-            ClearAllDroneAttackBullets();
             StopAllDrones();
         }
 
@@ -437,7 +431,6 @@ namespace Week14.Enemy
             }
 
             PatternKind nextPattern = PatternKind.BossBurst;
-            PreviewBossPatternBulletUi(nextPattern);
             yield return WaitBossPatternRecovery();
             bossPatternRoutine = StartCoroutine(RunBossPattern(nextPattern));
         }
@@ -467,7 +460,6 @@ namespace Week14.Enemy
             }
 
             PatternKind nextPattern = SelectDronePattern();
-            PreviewDronePatternBullets(nextPattern);
             yield return WaitDronePatternRecovery();
             dronePatternRoutine = StartCoroutine(RunDronePattern(nextPattern));
         }
@@ -509,13 +501,9 @@ namespace Week14.Enemy
                     yield return null;
                     continue;
                 }
-
-                ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
             }
-
-            ShowCurrentPatternBullets();
         }
 
         private IEnumerator WaitDronePatternRecovery()
@@ -530,13 +518,9 @@ namespace Week14.Enemy
                     yield return null;
                     continue;
                 }
-
-                ShowDroneAttackRecovery(remaining, duration);
                 remaining -= Time.deltaTime;
                 yield return null;
             }
-
-            ShowDroneAttackBulletsOnly();
         }
 
         private IEnumerator RunSummonPattern()
@@ -750,7 +734,6 @@ namespace Week14.Enemy
                 }
 
                 TryFireSynchronizedDrones();
-                ConsumePatternBulletUi();
                 if (i < count - 1 && fireInterval > 0f)
                 {
                     yield return WaitPatternSeconds(fireInterval);
@@ -942,95 +925,6 @@ namespace Week14.Enemy
             synchronizedDroneSyncVersion++;
         }
 
-        private void PreviewBossPatternBulletUi(PatternKind pattern)
-        {
-            BeginPatternBulletUi(GetBossPatternBulletCount(pattern));
-        }
-
-        private int GetBossPatternBulletCount(PatternKind pattern)
-        {
-            return pattern == PatternKind.BossBurst ? Mathf.Max(1, bossBurst.BulletCount) : 0;
-        }
-
-        private void PreviewDronePatternBullets(PatternKind pattern)
-        {
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                int count = GetDronePatternBulletCount(pattern, i);
-                if (count > 0)
-                {
-                    drones[i]?.PreviewAttackBullets(count);
-                }
-                else
-                {
-                    drones[i]?.ClearAttackBullets();
-                }
-            }
-        }
-
-        private int GetDronePatternBulletCount(PatternKind pattern, int droneIndex)
-        {
-            switch (pattern)
-            {
-                case PatternKind.DronePattern1:
-                    return dronePattern1.DroneProjectile != null ? Mathf.Max(1, bossBurst.BulletCount) : 0;
-                case PatternKind.DronePattern2:
-                    return droneIndex == 0
-                        ? GetOrbitFireBulletCount(dronePattern2.FireAngleStepDegrees)
-                        : Mathf.Max(0, dronePattern2.StationaryBulletCount);
-                case PatternKind.DronePattern3:
-                    return Mathf.Max(1, dronePattern3.VolleyCount);
-                case PatternKind.DronePattern4:
-                    return GetChargeSideFireBulletCount(
-                        dronePattern4.ChargeSeconds,
-                        dronePattern4.SideFireInterval);
-                case PatternKind.DronePattern5:
-                    return dronePattern5.DroneProjectile != null ? Mathf.Max(1, dronePattern5.DroneFireCount) : 0;
-                default:
-                    return 0;
-            }
-        }
-
-        private static int GetOrbitFireBulletCount(float fireAngleStepDegrees)
-        {
-            return Mathf.Max(1, Mathf.CeilToInt(360f / Mathf.Max(1f, fireAngleStepDegrees)));
-        }
-
-        private static int GetChargeSideFireBulletCount(float chargeSeconds, float sideFireInterval)
-        {
-            float duration = Mathf.Max(0.05f, chargeSeconds);
-            float interval = Mathf.Max(0.01f, sideFireInterval);
-            return Mathf.Max(1, Mathf.CeilToInt(duration / interval));
-        }
-
-        private void ClearAllDroneAttackBullets()
-        {
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i]?.ClearAttackBullets();
-            }
-        }
-
-        private void ShowDroneAttackRecovery(float remainingSeconds, float durationSeconds)
-        {
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i]?.ShowAttackRecovery(remainingSeconds, durationSeconds);
-            }
-        }
-
-        private void ShowDroneAttackBulletsOnly()
-        {
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i]?.ShowAttackBulletsOnly();
-            }
-        }
-
         private void StopAllDrones()
         {
             List<Drone> drones = GetControlledDrones();
@@ -1090,7 +984,6 @@ namespace Week14.Enemy
                 }
 
                 Stop();
-                ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
             }
@@ -1148,42 +1041,6 @@ namespace Week14.Enemy
             }
 
             return BodyRoot != null ? BodyRoot.position : transform.position;
-        }
-
-        private void BeginPatternBulletUi(int totalBulletCount)
-        {
-            currentPatternBulletTotal = Mathf.Max(0, totalBulletCount);
-            currentPatternBulletRemaining = currentPatternBulletTotal;
-            ShowCurrentPatternBullets();
-        }
-
-        private void ConsumePatternBulletUi()
-        {
-            if (currentPatternBulletTotal <= 0)
-            {
-                return;
-            }
-
-            currentPatternBulletRemaining = Mathf.Max(0, currentPatternBulletRemaining - 1);
-            ShowCurrentPatternBullets();
-        }
-
-        private void ShowCurrentPatternBullets()
-        {
-            if (currentPatternBulletTotal <= 0)
-            {
-                HideAttackTiming();
-                return;
-            }
-
-            ShowAttackBullets(currentPatternBulletRemaining, currentPatternBulletTotal);
-        }
-
-        private void ClearPatternBulletUi()
-        {
-            currentPatternBulletTotal = 0;
-            currentPatternBulletRemaining = 0;
-            HideAttackTiming();
         }
 
         private static float GetPattern5FormationAngle(int index, float spacingDegrees)

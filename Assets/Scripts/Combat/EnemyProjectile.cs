@@ -45,7 +45,6 @@ namespace Week14.Combat
         private readonly List<LineRenderer> homingAimReticleLines = new();
         private Transform pathIndicatorRoot;
         private BulletGauge ownerBullets;
-        private EnemyAI ownerEnemy;
         private BossAI ownerBoss;
         private Drone ownerDrone;
         private int counterBulletDamage;
@@ -134,26 +133,6 @@ namespace Week14.Combat
             }
 
             activeProjectiles.Clear();
-        }
-
-        /// <summary>EnemyData 기반 스폰 (신규 AI 시스템용)</summary>
-        public static EnemyProjectile Spawn(
-            EnemyProjectile prefab,
-            EnemyData data,
-            BulletGauge ownerBullets,
-            Vector3 position,
-            Vector2 direction)
-        {
-            if (prefab == null || data == null) return null;
-
-            return SpawnInternal(prefab, ownerBullets, position, direction, data.ProjectileBulletDamage,
-                GetCounteredProjectileBulletDamage(),
-                data.ProjectileChargeSeconds, data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
-                data.ProjectileColor, data.ProjectileTrailSeconds,
-                data.ProjectileTrailWidthMultiplier,
-                data.ProjectileHomingEnabled,
-                data.ProjectileHomingSeconds,
-                data.ProjectileHomingTurnDegreesPerSecond);
         }
 
         public static EnemyProjectile Spawn(
@@ -380,7 +359,6 @@ namespace Week14.Combat
                 ? Mathf.Max(0.01f, nextHomingTurnDegrees > 0f ? nextHomingTurnDegrees : DefaultHomingTurnDegreesPerSecond)
                 : 0f;
             ownerBullets = nextOwnerBullets;
-            ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
             ownerDrone = ownerBullets != null ? ownerBullets.GetComponentInParent<Drone>() : null;
             if (!activeProjectiles.Contains(this))
@@ -388,7 +366,6 @@ namespace Week14.Combat
                 activeProjectiles.Add(this);
             }
 
-            ownerEnemy?.RegisterActiveProjectile(this);
             ownerBoss?.RegisterActiveProjectile(this);
             ownerDrone?.RegisterActiveProjectile(this);
             counterBulletDamage = nextCounterBulletDamage;
@@ -625,18 +602,6 @@ namespace Week14.Combat
             PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
             if (player == null)
             {
-                EnemyAI hitEnemy = other.GetComponentInParent<EnemyAI>();
-                if (hitEnemy != null)
-                {
-                    if (hitEnemy == ownerEnemy)
-                    {
-                        return;
-                    }
-
-                    DestroyProjectile();
-                    return;
-                }
-
                 BossAI hitBoss = other.GetComponentInParent<BossAI>();
                 if (hitBoss != null)
                 {
@@ -885,7 +850,6 @@ namespace Week14.Combat
             }
 
             ownerSlotReleased = true;
-            ownerEnemy?.UnregisterActiveProjectile(this);
             ownerBoss?.UnregisterActiveProjectile(this);
             ownerDrone?.UnregisterActiveProjectile(this);
         }

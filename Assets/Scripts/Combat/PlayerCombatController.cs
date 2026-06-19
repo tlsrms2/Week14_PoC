@@ -32,7 +32,6 @@ namespace Week14.Combat
         [SerializeField] private Transform leftGunFireOrigin;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
-        [SerializeField] private AttackTimingOutline attackTimingOutline;
         [SerializeField] private ExecutionImageEffect executionImage;
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
@@ -148,7 +147,6 @@ namespace Week14.Combat
                 activeCamera.SetFocusTarget(null);
             }
 
-            HideAttackTimingOutline();
             SetMouseParryReticleVisible(false);
             SetProjectileLockOnIndicatorVisible(false);
             StopExecutionShotDim();
@@ -182,7 +180,6 @@ namespace Week14.Combat
                 SetProjectileLockOnIndicatorVisible(false);
                 SetLockOnTarget(null);
                 SetHoveredExecutionTarget(null);
-                HideAttackTimingOutline();
                 return;
             }
 
@@ -192,7 +189,6 @@ namespace Week14.Combat
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
-                HideAttackTimingOutline();
                 return;
             }
 
@@ -201,7 +197,6 @@ namespace Week14.Combat
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
-                HideAttackTimingOutline();
                 return;
             }
 
@@ -231,8 +226,6 @@ namespace Week14.Combat
                     ApplyMouseParryMissPenalty();
                 }
             }
-
-            UpdateAttackTimingOutline();
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -327,8 +320,7 @@ namespace Week14.Combat
                 return !drone.SuppressesBodyContactDamage;
             }
 
-            return other.GetComponentInParent<EnemyAI>() != null
-                || other.GetComponentInParent<BossAI>() != null;
+            return other.GetComponentInParent<BossAI>() != null;
         }
 
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
@@ -350,7 +342,7 @@ namespace Week14.Combat
             ProjectileVfx.PlayPlayerAttackImpact(
                 hitPosition,
                 hitDirection,
-                config.EnemyProjectileColor,
+                config.PlayerBodyHitColor,
                 config.PlayerHitSparkCount,
                 config.PlayerHitBackSparkCount,
                 config.PlayerHitFlameCount,
@@ -481,34 +473,6 @@ namespace Week14.Combat
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
             visual?.PlayShot();
             return true;
-        }
-
-        private void UpdateAttackTimingOutline()
-        {
-            HideAttackTimingOutline();
-        }
-
-        private void HideAttackTimingOutline()
-        {
-            if (attackTimingOutline != null)
-            {
-                attackTimingOutline.Hide();
-            }
-        }
-
-        private void EnsureAttackTimingOutline()
-        {
-            if (attackTimingOutline == null)
-            {
-                attackTimingOutline = GetComponent<AttackTimingOutline>();
-            }
-
-            if (attackTimingOutline == null)
-            {
-                attackTimingOutline = gameObject.AddComponent<AttackTimingOutline>();
-            }
-
-            attackTimingOutline.SetTarget(bodyRoot);
         }
 
         private bool TryBeginExecution()
@@ -682,12 +646,6 @@ namespace Week14.Combat
                 aimDirection,
                 config.ExecutionImpactColor,
                 config.ExecutionImpactParticleCount,
-                config.ExecutionImpactParticleSeconds);
-            ExecutionVfx.PlayAbsorb(
-                impactPosition,
-                transform,
-                config.ExecutionAbsorbColor,
-                config.ExecutionAbsorbParticleCount,
                 config.ExecutionImpactParticleSeconds);
             GetCameraFollow()?.PlayImpact(aimDirection, 0.18f, 0.18f, 0.1f);
             SetLockOnTarget(null);
@@ -1148,9 +1106,7 @@ namespace Week14.Combat
             return targetHealth != null
                 && targetHealth != health
                 && !targetHealth.IsDead
-                && (targetHealth.GetComponent<Week14.Enemy.EnemyAI>() != null
-                    || targetHealth.GetComponentInParent<Week14.Enemy.EnemyAI>() != null
-                    || targetHealth.GetComponent<Week14.Enemy.BossAI>() != null
+                && (targetHealth.GetComponent<Week14.Enemy.BossAI>() != null
                     || targetHealth.GetComponentInParent<Week14.Enemy.BossAI>() != null
                     || targetHealth.GetComponent<Week14.Enemy.Drone>() != null
                     || targetHealth.GetComponentInParent<Week14.Enemy.Drone>() != null);

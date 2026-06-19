@@ -10,7 +10,6 @@ namespace Week14.Combat
 
         private Health health;
         private BulletGauge bullets;
-        private EnemyAI enemyAI;
         private BossAI bossAI;
         private Drone drone;
         private bool executionInProgress;
@@ -19,7 +18,6 @@ namespace Week14.Combat
         {
             health = GetComponent<Health>();
             bullets = GetComponent<BulletGauge>();
-            enemyAI = GetComponent<EnemyAI>() ?? GetComponentInParent<EnemyAI>();
             bossAI = GetComponent<BossAI>() ?? GetComponentInParent<BossAI>();
             drone = GetComponent<Drone>() ?? GetComponentInParent<Drone>();
         }
@@ -54,7 +52,6 @@ namespace Week14.Combat
             }
 
             executionInProgress = true;
-            enemyAI?.SetExecutionLocked(true);
             bossAI?.SetExecutionLocked(true);
             drone?.SetExecutionLocked(true);
             return true;
@@ -95,7 +92,6 @@ namespace Week14.Combat
 
         public void PlayHitReaction(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
-            enemyAI?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
             bossAI?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
             drone?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
         }
@@ -146,7 +142,6 @@ namespace Week14.Combat
         private void ReleaseExecutionLock()
         {
             executionInProgress = false;
-            enemyAI?.SetExecutionLocked(false);
             bossAI?.SetExecutionLocked(false);
             drone?.SetExecutionLocked(false);
         }

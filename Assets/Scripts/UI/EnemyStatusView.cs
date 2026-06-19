@@ -13,7 +13,6 @@ namespace Week14.UI
 
         [SerializeField, HideInInspector] private Health health;
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
-        [SerializeField, HideInInspector] private EnemyAI enemyAI;
         [SerializeField, HideInInspector] private BossAI bossAI;
         [SerializeField, HideInInspector] private Drone drone;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
@@ -29,20 +28,6 @@ namespace Week14.UI
             lockOnRenderer = nextLockOnRenderer;
             executionRenderer = nextExecutionRenderer;
             EnsureIndicators();
-            ApplyColors();
-        }
-
-        public void Configure(EnemyData data)
-        {
-            if (data == null)
-            {
-                return;
-            }
-
-            lockOnColor = data.LockOnIndicatorColor;
-            executionColor = data.ExecutionIndicatorColor;
-
-            EnsureView();
             ApplyColors();
         }
 
@@ -102,7 +87,6 @@ namespace Week14.UI
         {
             health ??= GetComponentInParent<Health>();
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
-            enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
             drone ??= GetComponentInParent<Drone>();
 
@@ -114,8 +98,7 @@ namespace Week14.UI
         private void LateUpdate()
         {
             bool alive = health != null && !health.IsDead;
-            bool canShowDuringEnemyState = (enemyAI == null || !enemyAI.IsExecutionLocked)
-                && (bossAI == null || !bossAI.IsExecutionLocked)
+            bool canShowDuringEnemyState = (bossAI == null || !bossAI.IsExecutionLocked)
                 && (drone == null || !drone.IsExecutionLocked);
             bool indicatorsVisible = alive && canShowDuringEnemyState;
 
@@ -148,13 +131,6 @@ namespace Week14.UI
                 return true;
             }
 
-            EnemyAI targetEnemy = player.LockOnTarget.GetComponent<EnemyAI>()
-                ?? player.LockOnTarget.GetComponentInParent<EnemyAI>();
-            if (enemyAI != null && targetEnemy == enemyAI)
-            {
-                return true;
-            }
-
             BossAI targetBoss = player.LockOnTarget.GetComponent<BossAI>()
                 ?? player.LockOnTarget.GetComponentInParent<BossAI>();
             if (bossAI != null && targetBoss == bossAI)
@@ -178,7 +154,6 @@ namespace Week14.UI
 
         private void EnsureView()
         {
-            enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
             drone ??= GetComponentInParent<Drone>();
             EnsureIndicators();
