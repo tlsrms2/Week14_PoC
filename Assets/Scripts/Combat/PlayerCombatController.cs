@@ -34,6 +34,7 @@ namespace Week14.Combat
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private ExecutionImageEffect executionImage;
+        [SerializeField] private PlayerHP playerHpView;
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
         [SerializeField] private MouseParryReticle mouseParryReticle;
@@ -61,6 +62,7 @@ namespace Week14.Combat
         private float bodyHitColorEndsAt;
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
+        private bool playerHpHiddenForExecution;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
@@ -150,6 +152,7 @@ namespace Week14.Combat
 
             SetMouseParryReticleVisible(false);
             SetProjectileLockOnIndicatorVisible(false);
+            RestorePlayerHpAfterExecution();
             StopExecutionShotDim();
             executionImage?.Stop();
         }
@@ -573,6 +576,7 @@ namespace Week14.Combat
             }
 
             StopBody();
+            HidePlayerHpForExecution();
             SoundManager.PlaySfx("Execute");
             float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
                 + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
@@ -663,6 +667,7 @@ namespace Week14.Combat
             }
 
             Vector3 impactPosition = executionTarget.transform.position;
+            float playerHpRecoverySeconds = ShowPlayerHpForExecutionRecovery();
             executionTarget.RecoverExecutorBullets(this);
             ExecutionVfx.PlayImpact(
                 impactPosition,
@@ -674,7 +679,7 @@ namespace Week14.Combat
             SetLockOnTarget(null);
             SetHoveredExecutionTarget(null);
 
-            yield return new WaitForSeconds(config.ExecutionFinishSeconds);
+            yield return new WaitForSeconds(Mathf.Max(config.ExecutionFinishSeconds, playerHpRecoverySeconds));
 
             if (executionTarget != null)
             {
@@ -754,7 +759,58 @@ namespace Week14.Combat
             GetCameraFollow()?.EndCinematicFocus();
             ClearInvalidLockOnTarget();
             UpdateHoveredExecutionTarget();
+            RestorePlayerHpAfterExecution();
             executionImage?.Stop();
+        }
+
+        private void HidePlayerHpForExecution()
+        {
+            PlayerHP hpView = GetPlayerHpView();
+            playerHpHiddenForExecution = hpView != null && hpView.gameObject.activeSelf;
+            if (playerHpHiddenForExecution)
+            {
+                hpView.SetExecutionVisible(false);
+            }
+        }
+
+        private float ShowPlayerHpForExecutionRecovery()
+        {
+            PlayerHP hpView = GetPlayerHpView();
+            if (hpView == null)
+            {
+                playerHpHiddenForExecution = false;
+                return 0f;
+            }
+
+            hpView.SetExecutionVisible(true);
+            playerHpHiddenForExecution = false;
+            return hpView.ExecutionRecoveryEffectSeconds;
+        }
+
+        private void RestorePlayerHpAfterExecution()
+        {
+            if (!playerHpHiddenForExecution)
+            {
+                return;
+            }
+
+            PlayerHP hpView = GetPlayerHpView();
+            if (hpView != null)
+            {
+                hpView.SetExecutionVisible(true);
+            }
+
+            playerHpHiddenForExecution = false;
+        }
+
+        private PlayerHP GetPlayerHpView()
+        {
+            if (playerHpView == null)
+            {
+                playerHpView = UnityEngine.Object.FindFirstObjectByType<PlayerHP>(FindObjectsInactive.Include);
+            }
+
+            return playerHpView;
         }
 
         private void UpdateExecutionFocusPoint(Vector3 playerPosition, Vector3 targetPosition)

@@ -14,7 +14,6 @@ namespace Week14.UI
         private enum EffectKind
         {
             None,
-            HitSpend,
             AttackSpend,
             Recovery,
             EnrageFade
@@ -37,6 +36,7 @@ namespace Week14.UI
             private float duration;
             private bool targetUsable;
             private bool targetRecovered;
+            private Color targetOutlineColor = Color.white;
             private Color bodyStartColor;
             private Color bodyTargetColor;
             private Color outlineStartColor;
@@ -56,42 +56,48 @@ namespace Week14.UI
                 recoveredOutlineColor = defaultOutlineColor;
             }
 
-            public void ApplyInstant(bool usable, bool recovered)
+            public Color RecoveredOutlineColor => recoveredOutlineColor;
+
+            public void ApplyInstant(bool usable, bool recovered, Color outlineColor)
             {
                 FinishEffect();
                 targetUsable = usable;
                 targetRecovered = recovered;
+                targetOutlineColor = outlineColor;
                 ApplyFinal();
             }
 
-            public void PlayHitSpend(float effectSeconds)
+            public void PlayHitSpend(float effectSeconds, Color outlineColor)
             {
-                BeginEffect(EffectKind.HitSpend, true, false, effectSeconds);
+                PlayEjectSpend(effectSeconds, outlineColor);
             }
 
-            public void PlayAttackSpend(float effectSeconds)
+            public void PlayAttackSpend(float effectSeconds, Color outlineColor)
+            {
+                PlayEjectSpend(effectSeconds, outlineColor);
+            }
+
+            private void PlayEjectSpend(float effectSeconds, Color outlineColor)
             {
                 EnsureEjectedImages();
-                BeginEffect(EffectKind.AttackSpend, true, false, effectSeconds);
+                BeginEffect(EffectKind.AttackSpend, true, false, effectSeconds, outlineColor);
                 PrepareEjectedImages();
             }
 
-            public void PlayRecovery(float effectSeconds)
+            public void PlayRecovery(float effectSeconds, Color outlineColor)
             {
                 EnsureShineImage();
-                BeginEffect(EffectKind.Recovery, true, true, effectSeconds);
+                BeginEffect(EffectKind.Recovery, true, true, effectSeconds, outlineColor);
                 SetTransientImageVisible(shineImage, true);
             }
 
-            public void PlayEnrageFade(float effectSeconds)
+            public void PlayEnrageFade(float effectSeconds, Color outlineColor)
             {
-                BeginEffect(EffectKind.EnrageFade, false, false, effectSeconds);
+                BeginEffect(EffectKind.EnrageFade, false, false, effectSeconds, outlineColor);
             }
 
             public void Tick(
                 float deltaTime,
-                float shakePixels,
-                float shakeDegrees,
                 float shineAlpha,
                 float attackEjectDistance,
                 float attackEjectRise,
@@ -107,9 +113,6 @@ namespace Week14.UI
 
                 switch (effectKind)
                 {
-                    case EffectKind.HitSpend:
-                        TickSpend(t, shakePixels, shakeDegrees);
-                        break;
                     case EffectKind.AttackSpend:
                         TickAttackSpend(t, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
                         break;
@@ -127,35 +130,21 @@ namespace Week14.UI
                 }
             }
 
-            private void BeginEffect(EffectKind nextEffectKind, bool usable, bool recovered, float effectSeconds)
+            private void BeginEffect(EffectKind nextEffectKind, bool usable, bool recovered, float effectSeconds, Color outlineColor)
             {
                 FinishEffect();
                 targetUsable = usable;
                 targetRecovered = recovered;
+                targetOutlineColor = outlineColor;
                 effectKind = nextEffectKind;
                 timer = 0f;
                 duration = Mathf.Max(0.01f, effectSeconds);
 
                 CaptureTransforms();
                 bodyStartColor = GetColor(bodyImage, usable && recovered ? RecoveredBodyColor : UsedBodyColor);
-                outlineStartColor = GetColor(outlineImage, usable && recovered ? recoveredOutlineColor : UsedOutlineColor);
+                outlineStartColor = GetColor(outlineImage, GetOutlineColor(usable, recovered));
                 bodyTargetColor = GetBodyColor(usable, recovered);
                 outlineTargetColor = GetOutlineColor(usable, recovered);
-            }
-
-            private void TickSpend(float t, float shakePixels, float shakeDegrees)
-            {
-                float shakeT = 1f - Mathf.Clamp01(t / 0.72f);
-                float wave = Mathf.Sin(t * Mathf.PI * 10f);
-                Vector2 offset = new Vector2(wave * shakePixels, Mathf.Sin(t * Mathf.PI * 14f) * shakePixels * 0.35f) * shakeT;
-                float rotation = wave * shakeDegrees * shakeT;
-
-                ApplyOffset(bodyImage, bodyTransform, offset, rotation, 1f);
-                ApplyOffset(outlineImage, outlineTransform, offset, rotation, 1f);
-
-                float colorT = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.68f, 1f, t));
-                ApplyColor(bodyImage, Color.Lerp(bodyStartColor, bodyTargetColor, colorT));
-                ApplyColor(outlineImage, Color.Lerp(outlineStartColor, outlineTargetColor, colorT));
             }
 
             private void TickAttackSpend(float t, float distance, float rise, float spinDegrees)
@@ -456,14 +445,9 @@ namespace Week14.UI
 
             private Color GetOutlineColor(bool usable, bool recovered)
             {
-                if (!usable)
-                {
-                    Color color = GetColor(outlineImage, UsedOutlineColor);
-                    color.a = 0f;
-                    return color;
-                }
-
-                return recovered ? recoveredOutlineColor : UsedOutlineColor;
+                Color color = recovered ? targetOutlineColor : UsedOutlineColor;
+                color.a = usable ? color.a : 0f;
+                return color;
             }
 
             private static void SetImageAlpha(Image image, float alpha)
@@ -553,9 +537,8 @@ namespace Week14.UI
         [SerializeField, Min(0.01f)] private float hitSpendSeconds = 0.28f;
         [SerializeField, Min(0.01f)] private float attackSpendSeconds = 0.42f;
         [SerializeField, Min(0.01f)] private float recoverySeconds = 0.34f;
+        [SerializeField, Min(0.01f)] private float executionRecoverySeconds = 1f;
         [SerializeField, Min(0.01f)] private float enrageFadeSeconds = 0.65f;
-        [SerializeField, Min(0f)] private float shakePixels = 4f;
-        [SerializeField, Min(0f)] private float shakeDegrees = 5f;
         [SerializeField, Min(0f)] private float attackEjectDistance = 52f;
         [SerializeField, Min(0f)] private float attackEjectRise = 18f;
         [SerializeField] private float attackEjectSpinDegrees = 520f;
@@ -566,6 +549,8 @@ namespace Week14.UI
         [SerializeField] private HpSlot hp3 = new(new Color32(0xff, 0xe9, 0x66, 0xff));
         [SerializeField] private HpSlot hp2 = new(new Color32(0xff, 0xae, 0x54, 0xff));
         [SerializeField] private HpSlot hp1 = new(new Color32(0xff, 0x63, 0x63, 0xff));
+
+        public float ExecutionRecoveryEffectSeconds => Mathf.Max(0.01f, executionRecoverySeconds);
 
         private bool hasSnapshot;
         private int previousCurrent;
@@ -616,6 +601,21 @@ namespace Week14.UI
             Refresh();
         }
 
+        public void SetExecutionVisible(bool visible)
+        {
+            if (gameObject.activeSelf == visible)
+            {
+                if (visible)
+                {
+                    Refresh();
+                }
+
+                return;
+            }
+
+            gameObject.SetActive(visible);
+        }
+
         private void TryBindPlayer()
         {
             if (!bindPlayerOnEnable || PlayerCombatController.Active == null)
@@ -664,18 +664,19 @@ namespace Week14.UI
 
         private void Apply(int current, int max, BulletChangeSource source)
         {
-            ApplySlot(hp5, 5, current, max, source);
-            ApplySlot(hp4, 4, current, max, source);
-            ApplySlot(hp3, 3, current, max, source);
-            ApplySlot(hp2, 2, current, max, source);
-            ApplySlot(hp1, 1, current, max, source);
+            Color outlineColor = ResolveOutlineColor(current);
+            ApplySlot(hp5, 5, current, max, source, outlineColor);
+            ApplySlot(hp4, 4, current, max, source, outlineColor);
+            ApplySlot(hp3, 3, current, max, source, outlineColor);
+            ApplySlot(hp2, 2, current, max, source, outlineColor);
+            ApplySlot(hp1, 1, current, max, source, outlineColor);
 
             previousCurrent = current;
             previousMax = max;
             hasSnapshot = true;
         }
 
-        private void ApplySlot(HpSlot slot, int hp, int current, int max, BulletChangeSource source)
+        private void ApplySlot(HpSlot slot, int hp, int current, int max, BulletChangeSource source, Color outlineColor)
         {
             if (slot == null)
             {
@@ -686,7 +687,7 @@ namespace Week14.UI
             bool recovered = usable && current >= hp;
             if (!hasSnapshot)
             {
-                slot.ApplyInstant(usable, recovered);
+                slot.ApplyInstant(usable, recovered, outlineColor);
                 return;
             }
 
@@ -695,48 +696,72 @@ namespace Week14.UI
 
             if (wasUsable && !usable)
             {
-                slot.PlayEnrageFade(enrageFadeSeconds);
+                slot.PlayEnrageFade(enrageFadeSeconds, outlineColor);
             }
             else if (!wasUsable && usable)
             {
                 if (recovered)
                 {
-                    slot.PlayRecovery(recoverySeconds);
+                    slot.PlayRecovery(GetRecoverySeconds(source), outlineColor);
                 }
                 else
                 {
-                    slot.ApplyInstant(usable, false);
+                    slot.ApplyInstant(usable, false, outlineColor);
                 }
             }
             else if (wasRecovered && !recovered)
             {
                 if (source == BulletChangeSource.Attack)
                 {
-                    slot.PlayAttackSpend(attackSpendSeconds);
+                    slot.PlayAttackSpend(attackSpendSeconds, outlineColor);
                 }
                 else
                 {
-                    slot.PlayHitSpend(hitSpendSeconds);
+                    slot.PlayHitSpend(hitSpendSeconds, outlineColor);
                 }
             }
             else if (!wasRecovered && recovered)
             {
-                slot.PlayRecovery(recoverySeconds);
+                slot.PlayRecovery(GetRecoverySeconds(source), outlineColor);
             }
             else
             {
-                slot.ApplyInstant(usable, recovered);
+                slot.ApplyInstant(usable, recovered, outlineColor);
             }
         }
 
         private void TickEffects()
         {
             float deltaTime = Time.unscaledDeltaTime;
-            hp5?.Tick(deltaTime, shakePixels, shakeDegrees, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
-            hp4?.Tick(deltaTime, shakePixels, shakeDegrees, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
-            hp3?.Tick(deltaTime, shakePixels, shakeDegrees, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
-            hp2?.Tick(deltaTime, shakePixels, shakeDegrees, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
-            hp1?.Tick(deltaTime, shakePixels, shakeDegrees, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+            hp5?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+            hp4?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+            hp3?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+            hp2?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+            hp1?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+        }
+
+        private float GetRecoverySeconds(BulletChangeSource source)
+        {
+            return source == BulletChangeSource.Execution
+                ? executionRecoverySeconds
+                : recoverySeconds;
+        }
+
+        private Color ResolveOutlineColor(int current)
+        {
+            if (current <= 0)
+            {
+                return UsedOutlineColor;
+            }
+
+            return Mathf.Clamp(current, 1, 5) switch
+            {
+                5 => hp5 != null ? hp5.RecoveredOutlineColor : UsedOutlineColor,
+                4 => hp4 != null ? hp4.RecoveredOutlineColor : UsedOutlineColor,
+                3 => hp3 != null ? hp3.RecoveredOutlineColor : UsedOutlineColor,
+                2 => hp2 != null ? hp2.RecoveredOutlineColor : UsedOutlineColor,
+                _ => hp1 != null ? hp1.RecoveredOutlineColor : UsedOutlineColor
+            };
         }
     }
 }
