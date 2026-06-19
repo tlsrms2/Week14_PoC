@@ -196,6 +196,8 @@ public sealed class HogBossAIEditor : Editor
         DrawChild(projectile, "speed");
         DrawChild(projectile, "lifetime");
         DrawChild(projectile, "radius");
+        DrawChild(projectile, "chargingColor");
+        DrawChild(projectile, "launchedColor");
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         bool advancedExpanded = DrawFoldout($"{key}.advanced", "투사체 고급값");
