@@ -17,7 +17,6 @@ namespace Week14.Combat
     {
         private const string BodyVisualName = "VisualRoot";
         private const string CombatCenterName = "Center Pivot";
-        private const string ProjectileLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const int ExecutionDimSortingOrder = 65;
         private const float LockOnAcquireViewportPadding = 0f;
         private const float LockOnReleaseViewportPadding = 0.08f;
@@ -50,7 +49,11 @@ namespace Week14.Combat
         private bool isExecuting;
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
-        private LineRenderer projectileLockOnLine;
+        private EnemyProjectile visibleProjectileLockOnIndicator;
+        private Vector3 mouseParryReticleBaseLocalScale = Vector3.one;
+        private float mouseParryCurrentRangeScale = 1f;
+        private float mouseParryRangeRecoveryStartsAt;
+        private bool hasMouseParryReticleBaseLocalScale;
         private Transform executionFocusPoint;
         private SpriteRenderer executionDimRenderer;
         private Coroutine executionDimRoutine;
@@ -62,7 +65,6 @@ namespace Week14.Combat
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
-        private static Material rangeIndicatorMaterial;
         private static Sprite executionDimSprite;
 
         public Health Health => health;
@@ -90,6 +92,7 @@ namespace Week14.Combat
 #endif
             ResolveRigReferences();
             ResolveMouseParryReticleReference();
+            CacheMouseParryReticleBaseScale();
             CacheBodyRenderers();
 
             if (cameraFollow == null && Camera.main != null)
@@ -207,6 +210,7 @@ namespace Week14.Combat
             UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
             RotateToAim();
+            UpdateMouseParryRangeRecovery();
             UpdateMouseParryReticle();
             UpdateProjectileLockOnTarget();
             UpdateMouseParryReticleThreat();
@@ -223,7 +227,10 @@ namespace Week14.Combat
 
             if (GameInput.RightAttackDown && CanAct)
             {
-                TryParryProjectile();
+                if (!TryParryProjectile())
+                {
+                    ApplyMouseParryMissPenalty();
+                }
             }
 
             UpdateAttackTimingOutline();
@@ -441,6 +448,7 @@ namespace Week14.Combat
                 return false;
             }
 
+            int firedBulletNumber = bullets != null ? bullets.CurrentBullets : 0;
             int dynamicDamage = CalculateAttackBulletDamage();
 
             if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
@@ -462,7 +470,8 @@ namespace Week14.Combat
                 config.ProjectileRadius,
                 dynamicDamage,
                 AttackEffectColor,
-                true);
+                true,
+                damageStyleBulletNumber: firedBulletNumber);
 
             if (projectile == null)
             {
@@ -1287,6 +1296,66 @@ namespace Week14.Combat
             projectileLockOnTarget = FindClosestInterceptTarget();
         }
 
+        private void ApplyMouseParryMissPenalty()
+        {
+            ResolveMouseParryReticleReference();
+            CacheMouseParryReticleBaseScale();
+
+            float minimumScale = Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f);
+            float loss = Mathf.Clamp01(MouseParryMissRangeScaleLoss);
+            mouseParryCurrentRangeScale = Mathf.Max(minimumScale, mouseParryCurrentRangeScale - loss);
+            mouseParryRangeRecoveryStartsAt = Time.time + Mathf.Max(0f, MouseParryRangeRecoveryDelay);
+
+            ApplyMouseParryRangeScale();
+            mouseParryReticle?.PlayMissFeedback(
+                MouseParryMissColorSeconds,
+                MouseParryMissShakeSeconds,
+                MouseParryMissShakeAmplitude,
+                MouseParryMissShakeFrequency);
+        }
+
+        private void UpdateMouseParryRangeRecovery()
+        {
+            if (mouseParryCurrentRangeScale >= 0.999f || Time.time < mouseParryRangeRecoveryStartsAt)
+            {
+                return;
+            }
+
+            mouseParryCurrentRangeScale = Mathf.MoveTowards(
+                mouseParryCurrentRangeScale,
+                1f,
+                Mathf.Max(0f, MouseParryRangeRecoveryPerSecond) * Time.deltaTime);
+            ApplyMouseParryRangeScale();
+        }
+
+        private void CacheMouseParryReticleBaseScale()
+        {
+            if (hasMouseParryReticleBaseLocalScale || mouseParryReticleRenderer == null)
+            {
+                return;
+            }
+
+            mouseParryReticleBaseLocalScale = mouseParryReticleRenderer.transform.localScale;
+            hasMouseParryReticleBaseLocalScale = true;
+        }
+
+        private void ApplyMouseParryRangeScale()
+        {
+            if (mouseParryReticleRenderer == null)
+            {
+                return;
+            }
+
+            CacheMouseParryReticleBaseScale();
+            if (!hasMouseParryReticleBaseLocalScale)
+            {
+                return;
+            }
+
+            float scale = Mathf.Clamp(mouseParryCurrentRangeScale, Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f), 1f);
+            mouseParryReticleRenderer.transform.localScale = mouseParryReticleBaseLocalScale * scale;
+        }
+
         private void UpdateMouseParryReticle()
         {
             if (!CanShowMouseParryReticle())
@@ -1303,6 +1372,7 @@ namespace Week14.Combat
             mouseParryReticleRenderer.enabled = true;
             ResolveMouseParryReticleReference();
             mouseParryReticle?.SetVisible(true);
+            ApplyMouseParryRangeScale();
 
             Vector2 cursorPosition = GetParryCursorWorldPosition();
             Transform reticleTransform = mouseParryReticleRenderer.transform;
@@ -1433,62 +1503,44 @@ namespace Week14.Combat
         {
             if (projectileLockOnTarget == null || !projectileLockOnTarget.CanBeIntercepted)
             {
-                SetProjectileLockOnIndicatorVisible(false);
+                SetProjectileLockOnIndicatorTarget(null);
                 return;
             }
 
-            EnsureProjectileLockOnIndicator();
-            if (projectileLockOnLine == null)
-            {
-                return;
-            }
-
-            Color color = ParryEffectColor;
-            color.a = Mathf.Max(color.a, projectileLockOnTarget.IsCharging ? 0.95f : 0.72f);
-            projectileLockOnLine.enabled = true;
-            projectileLockOnLine.startColor = color;
-            projectileLockOnLine.endColor = color;
-            projectileLockOnLine.startWidth = projectileLockOnTarget.IsCharging ? 0.035f : 0.026f;
-            projectileLockOnLine.endWidth = projectileLockOnLine.startWidth;
-
-            Vector3 center = projectileLockOnTarget.transform.position;
-            float radius = projectileLockOnTarget.LockOnRadius;
-            projectileLockOnLine.SetPosition(0, center + Vector3.up * radius);
-            projectileLockOnLine.SetPosition(1, center + Vector3.right * radius);
-            projectileLockOnLine.SetPosition(2, center + Vector3.down * radius);
-            projectileLockOnLine.SetPosition(3, center + Vector3.left * radius);
-        }
-
-        private void EnsureProjectileLockOnIndicator()
-        {
-            if (projectileLockOnLine != null)
-            {
-                return;
-            }
-
-            GameObject indicatorObject = new GameObject(ProjectileLockOnIndicatorName);
-            indicatorObject.transform.SetParent(transform, false);
-            projectileLockOnLine = indicatorObject.AddComponent<LineRenderer>();
-            projectileLockOnLine.useWorldSpace = true;
-            projectileLockOnLine.loop = true;
-            projectileLockOnLine.positionCount = 4;
-            projectileLockOnLine.numCornerVertices = 2;
-            projectileLockOnLine.numCapVertices = 2;
-            projectileLockOnLine.material = GetRangeIndicatorMaterial();
-            projectileLockOnLine.sortingOrder = 45;
-            projectileLockOnLine.enabled = false;
+            SetProjectileLockOnIndicatorTarget(projectileLockOnTarget);
         }
 
         private void SetProjectileLockOnIndicatorVisible(bool visible)
         {
-            if (projectileLockOnLine != null)
-            {
-                projectileLockOnLine.enabled = visible;
-            }
+            SetProjectileLockOnIndicatorTarget(visible ? projectileLockOnTarget : null);
 
             if (!visible)
             {
                 projectileLockOnTarget = null;
+            }
+        }
+
+        private void SetProjectileLockOnIndicatorTarget(EnemyProjectile target)
+        {
+            if (visibleProjectileLockOnIndicator == target)
+            {
+                if (visibleProjectileLockOnIndicator != null)
+                {
+                    visibleProjectileLockOnIndicator.SetParryLockOnIndicatorVisible(true);
+                }
+
+                return;
+            }
+
+            if (visibleProjectileLockOnIndicator != null)
+            {
+                visibleProjectileLockOnIndicator.SetParryLockOnIndicatorVisible(false);
+            }
+
+            visibleProjectileLockOnIndicator = target;
+            if (visibleProjectileLockOnIndicator != null)
+            {
+                visibleProjectileLockOnIndicator.SetParryLockOnIndicatorVisible(true);
             }
         }
 
@@ -1500,18 +1552,6 @@ namespace Week14.Combat
         private Vector2 GetParryCursorWorldPosition()
         {
             return GetMouseWorldPosition();
-        }
-
-        private static Material GetRangeIndicatorMaterial()
-        {
-            if (rangeIndicatorMaterial != null)
-            {
-                return rangeIndicatorMaterial;
-            }
-
-            Shader shader = Shader.Find("Sprites/Default");
-            rangeIndicatorMaterial = shader != null ? new Material(shader) : null;
-            return rangeIndicatorMaterial;
         }
 
         private void ResolveRigReferences()
@@ -1621,5 +1661,13 @@ namespace Week14.Combat
         private float GunAimHoldSeconds => config.GunAimHoldSeconds;
         private Color AttackEffectColor => config.AttackEffectColor;
         private Color ParryEffectColor => config.ParryEffectColor;
+        private float MouseParryMinimumRangeScale => config != null ? config.MouseParryMinimumRangeScale : 0.5f;
+        private float MouseParryMissRangeScaleLoss => config != null ? config.MouseParryMissRangeScaleLoss : 0.12f;
+        private float MouseParryRangeRecoveryDelay => config != null ? config.MouseParryRangeRecoveryDelay : 0.8f;
+        private float MouseParryRangeRecoveryPerSecond => config != null ? config.MouseParryRangeRecoveryPerSecond : 0.45f;
+        private float MouseParryMissColorSeconds => config != null ? config.MouseParryMissColorSeconds : 0.16f;
+        private float MouseParryMissShakeSeconds => config != null ? config.MouseParryMissShakeSeconds : 0.18f;
+        private float MouseParryMissShakeAmplitude => config != null ? config.MouseParryMissShakeAmplitude : 0.035f;
+        private float MouseParryMissShakeFrequency => config != null ? config.MouseParryMissShakeFrequency : 42f;
     }
 }
