@@ -538,7 +538,7 @@ MonoBehaviour:
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   maxBullets: 150
-  bulletEmptyExecutionSeconds: 5
+  bulletEmptyExecutionSeconds: 10
   normalColor: {r: 0.27767888, g: 0.4528302, b: 0.19010323, a: 1}
   bulletEmptyColor: {r: 0.8301887, g: 0.24717018, b: 0.19971518, a: 1}
   staggeredColor: {r: 0.1228789, g: 0.3584906, b: 0.005072971, a: 1}
@@ -570,19 +570,19 @@ MonoBehaviour:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
-      chargeDriftSpeed: 1
+      chargeDriftSpeed: 1.5
       aimAtPlayerWhileCharging: 0
-      speed: 15
+      speed: 12
       lifetime: 3
       radius: 0.1
       chargingColor: {r: 1, g: 0.15838778, b: 0, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0.8
+      homingEnabled: 1
+      homingSeconds: 10
       homingTurnDegreesPerSecond: 540
-    initialChaseSpeedMultiplier: 1
+    initialChaseSpeedMultiplier: 0.5
     finalChaseSpeedMultiplier: 1
     radialBulletCount: 5
     burstInterval: 0.25
@@ -593,19 +593,19 @@ MonoBehaviour:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
       bulletDamage: 1
       chargeSeconds: 1.5
-      chargeDriftSpeed: 1
+      chargeDriftSpeed: 1.5
       aimAtPlayerWhileCharging: 1
-      speed: 15
+      speed: 12
       lifetime: 3
       radius: 0.1
       chargingColor: {r: 1, g: 0.16078432, b: 0, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0.8
+      homingEnabled: 1
+      homingSeconds: 10
       homingTurnDegreesPerSecond: 540
-    moveSpeedMultiplier: 1
+    moveSpeedMultiplier: 0.6
     bulletCount: 30
     fireInterval: 0.2
     spawnSpacing: 1
@@ -627,7 +627,7 @@ MonoBehaviour:
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
       speed: 15
-      lifetime: 4
+      lifetime: 2.5
       radius: 0.1
       chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
@@ -636,7 +636,7 @@ MonoBehaviour:
       homingEnabled: 0
       homingSeconds: 0
       homingTurnDegreesPerSecond: 0
-    windupSeconds: 3
+    windupSeconds: 1.5
     splitDepth: 4
     splitAngleDegrees: 48
     splitSpeedMultiplier: 0.5
@@ -647,14 +647,14 @@ MonoBehaviour:
     startScaleRatio: 0.18
     launchBubbleScale: 2.5
     aimSpreadDegrees: 0
-    aimTrackingSeconds: 2.5
+    aimTrackingSeconds: 1
     windupBubbleInterval: 0.14
     windupBubbleScale: 1.2
     windupBubbleCount: 8
     launchMuzzleFlashScale: 2.2
     radialSplitBulletCount: 30
     radialSplitStartAngleOffset: 0
-    splitDelaySeconds: 0.3
+    splitDelaySeconds: 0.35
   pattern4:
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
@@ -662,7 +662,7 @@ MonoBehaviour:
       chargeSeconds: 0.25
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
-      speed: 10
+      speed: 7
       lifetime: 3
       radius: 0.1
       chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
@@ -684,7 +684,7 @@ MonoBehaviour:
       chargeSeconds: 0
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
-      speed: 10
+      speed: 7
       lifetime: 3
       radius: 0.1
       chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
