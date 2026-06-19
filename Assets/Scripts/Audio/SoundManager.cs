@@ -18,6 +18,9 @@ namespace Week14.Audio
         [SerializeField] private bool bgmMuted;
         [SerializeField] private bool sfxMuted;
 
+        [Header("Test")]
+        [SerializeField] private string testSfxId;
+
         private static SoundManager instance;
 
         private AudioSource bgmSource;
@@ -71,7 +74,10 @@ namespace Week14.Audio
 
         private void Update()
         {
-           
+            if (Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
+            {
+                PlaySfx(testSfxId);
+            }
         }
 
         public static void PlayBgm(string id, float fadeSeconds = 0.5f)
