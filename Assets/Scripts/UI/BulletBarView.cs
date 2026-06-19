@@ -28,6 +28,7 @@ namespace Week14.UI
         [SerializeField, Range(0.1f, 1f)] private float iconWidthRatio = 0.48f;
         [SerializeField, Min(0f)] private float iconSpacingRatio = 0.16f;
         [SerializeField, Min(1f)] private float overflowTextFontSize = 18f;
+        [SerializeField] private List<Image> staticBulletImages = new();
         [SerializeField] private Color normalColor = new(1f, 0.55f, 0.1f);
         [SerializeField] private Color emptyColor = Color.red;
         [SerializeField] private Color parryOutlineColor = Color.white;
@@ -61,7 +62,7 @@ namespace Week14.UI
         private readonly List<BulletIcon> retiringIcons = new();
         private readonly List<IconShard> shards = new();
         private RectTransform iconRoot;
-        private TextMeshProUGUI overflowText;
+        [SerializeField] private TextMeshProUGUI overflowText;
         private RectTransform overflowTextRect;
         private int displayedBulletCount = -1;
         private int displayedVisibleCount;
@@ -77,10 +78,11 @@ namespace Week14.UI
             if (displayMode == DisplayMode.Filled)
             {
                 EnsureFilledView();
+                SetStaticBulletImagesVisible(false);
             }
             else
             {
-                EnsureIconRoot();
+                EnsureIconView();
             }
 
             TryBindPlayer();
@@ -127,7 +129,7 @@ namespace Week14.UI
 
         public void Configure()
         {
-            EnsureIconRoot();
+            EnsureIconView();
             Refresh();
         }
 
@@ -156,6 +158,7 @@ namespace Week14.UI
             if (mode == DisplayMode.Filled)
             {
                 EnsureFilledView();
+                SetStaticBulletImagesVisible(false);
                 if (iconRoot != null)
                 {
                     iconRoot.gameObject.SetActive(false);
@@ -163,7 +166,7 @@ namespace Week14.UI
             }
             else
             {
-                EnsureIconRoot();
+                EnsureIconView();
                 if (fillRoot != null)
                 {
                     fillRoot.gameObject.SetActive(false);
@@ -296,6 +299,12 @@ namespace Week14.UI
                 }
 
                 SetFilledValue(current, max);
+                return;
+            }
+
+            if (HasStaticBulletImages())
+            {
+                SetStaticIconValue(current, max);
                 return;
             }
 
@@ -477,7 +486,18 @@ namespace Week14.UI
                 iconRoot.offsetMax = Vector2.zero;
             }
 
+            iconRoot.gameObject.SetActive(true);
             EnsureOverflowText();
+        }
+
+        private void EnsureIconView()
+        {
+            if (HasStaticBulletImages())
+            {
+                return;
+            }
+
+            EnsureIconRoot();
         }
 
         private RectTransform ResolveIconParent()
@@ -729,6 +749,82 @@ namespace Week14.UI
 
             overflowText.text = $"+{overflowCount:0}";
             overflowText.color = currentIconColor;
+        }
+
+        private void SetStaticIconValue(int current, int max)
+        {
+            int bulletCount = Mathf.Max(0, current);
+            int visibleCount = Mathf.Min(bulletCount, GetStaticBulletImageCount());
+            currentIconColor = ResolveIconColor(current, max);
+            int slotIndex = 0;
+
+            for (int i = 0; i < staticBulletImages.Count; i++)
+            {
+                Image image = staticBulletImages[i];
+                if (image == null)
+                {
+                    continue;
+                }
+
+                bool visible = slotIndex < visibleCount;
+                image.gameObject.SetActive(visible);
+                if (visible)
+                {
+                    image.raycastTarget = false;
+                    image.color = currentIconColor;
+                }
+
+                slotIndex++;
+            }
+
+            UpdateOverflowText(bulletCount - visibleCount);
+            displayedBulletCount = bulletCount;
+            displayedVisibleCount = visibleCount;
+        }
+
+        private void SetStaticBulletImagesVisible(bool visible)
+        {
+            if (staticBulletImages == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < staticBulletImages.Count; i++)
+            {
+                if (staticBulletImages[i] != null)
+                {
+                    staticBulletImages[i].gameObject.SetActive(visible);
+                }
+            }
+
+            if (!visible)
+            {
+                UpdateOverflowText(0);
+            }
+        }
+
+        private bool HasStaticBulletImages()
+        {
+            return GetStaticBulletImageCount() > 0;
+        }
+
+        private int GetStaticBulletImageCount()
+        {
+            if (staticBulletImages == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+            for (int i = 0; i < staticBulletImages.Count; i++)
+            {
+                if (staticBulletImages[i] != null)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         private void PlayOverflowChangeFeedback(bool gained, BulletChangeSource source)
