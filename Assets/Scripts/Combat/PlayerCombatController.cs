@@ -39,6 +39,7 @@ namespace Week14.Combat
         [SerializeField] private ExecutionImageEffect executionImage;
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
+        [SerializeField] private MouseParryReticle mouseParryReticle;
 
         private Health health;
         private BulletGauge bullets;
@@ -91,6 +92,7 @@ namespace Week14.Combat
             BindPlayerInput();
 #endif
             ResolveRigReferences();
+            ResolveMouseParryReticleReference();
             CacheBodyRenderers();
 
             if (cameraFollow == null && Camera.main != null)
@@ -210,6 +212,7 @@ namespace Week14.Combat
             RotateToAim();
             UpdateMouseParryReticle();
             UpdateProjectileLockOnTarget();
+            UpdateMouseParryReticleThreat();
             UpdateProjectileLockOnIndicator();
             UpdateBodyColor();
 
@@ -1307,10 +1310,20 @@ namespace Week14.Combat
             }
 
             mouseParryReticleRenderer.enabled = true;
+            ResolveMouseParryReticleReference();
+            mouseParryReticle?.SetVisible(true);
 
             Vector2 cursorPosition = GetParryCursorWorldPosition();
             Transform reticleTransform = mouseParryReticleRenderer.transform;
             reticleTransform.position = new Vector3(cursorPosition.x, cursorPosition.y, reticleTransform.position.z);
+        }
+
+        private void UpdateMouseParryReticleThreat()
+        {
+            if (mouseParryReticle != null)
+            {
+                mouseParryReticle.SetThreatened(projectileLockOnTarget != null && IsProjectileInMouseParryRange(projectileLockOnTarget));
+            }
         }
 
         private bool CanShowMouseParryReticle()
@@ -1381,9 +1394,33 @@ namespace Week14.Combat
 
         private void SetMouseParryReticleVisible(bool visible)
         {
+            ResolveMouseParryReticleReference();
             if (mouseParryReticleRenderer != null)
             {
                 mouseParryReticleRenderer.enabled = visible;
+            }
+
+            if (mouseParryReticle != null)
+            {
+                mouseParryReticle.SetVisible(visible);
+                if (!visible)
+                {
+                    mouseParryReticle.SetThreatened(false);
+                }
+            }
+        }
+
+        private void ResolveMouseParryReticleReference()
+        {
+            if (mouseParryReticle != null || mouseParryReticleRenderer == null)
+            {
+                return;
+            }
+
+            mouseParryReticle = mouseParryReticleRenderer.GetComponent<MouseParryReticle>();
+            if (mouseParryReticle == null)
+            {
+                mouseParryReticle = mouseParryReticleRenderer.GetComponentInParent<MouseParryReticle>();
             }
         }
 
