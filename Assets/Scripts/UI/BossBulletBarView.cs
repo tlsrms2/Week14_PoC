@@ -6,20 +6,20 @@ namespace Week14.UI
 {
     public sealed class BossBulletBarView : MonoBehaviour
     {
-        private const string FillRootName = "FillRoot";
-        private const string FillBackgroundName = "Background";
-        private const string FillGhostName = "Ghost";
-        private const string FillForegroundName = "Fill";
+        [Tooltip("씬에 이미 배치된, 실제 남은 탄환만큼 즉시 채워지는 본체 이미지입니다. Image Type이 Filled여야 합니다.")]
+        [SerializeField] private Image foregroundImage;
+        [Tooltip("씬에 이미 배치된, 빨리 따라오는 잔상 이미지입니다. Image Type이 Filled여야 합니다.")]
+        [SerializeField] private Image fastGhostImage;
+        [Tooltip("씬에 이미 배치된, 천천히 따라오는 잔상 이미지입니다. Image Type이 Filled여야 합니다.")]
+        [SerializeField] private Image slowGhostImage;
 
         [SerializeField] private BulletGauge target;
         [SerializeField] private Color normalColor = new(1f, 0.55f, 0.1f);
         [SerializeField] private Color emptyColor = Color.red;
-        [Tooltip("배경 바 색상입니다.")]
-        [SerializeField] private Color filledBackgroundColor = new(0.15f, 0.15f, 0.15f, 0.85f);
-        [Tooltip("체력이 줄어들 때 보이는 반투명 잔상 색상입니다.")]
-        [SerializeField] private Color filledGhostColor = new(1f, 1f, 1f, 0.55f);
-        [Tooltip("반투명 잔상이 실제 체력만큼 줄어드는 속도입니다. 값이 클수록 빠르게 줄어듭니다.")]
-        [SerializeField, Min(0.1f)] private float filledGhostShrinkSpeed = 14f;
+        [Tooltip("빨리 따라오는 잔상이 실제 탄환만큼 줄어드는 속도입니다. 값이 클수록 빠르게 줄어듭니다.")]
+        [SerializeField, Min(0.1f)] private float fastGhostShrinkSpeed = 14f;
+        [Tooltip("천천히 따라오는 잔상이 실제 탄환만큼 줄어드는 속도입니다. 값이 클수록 빠르게 줄어듭니다.")]
+        [SerializeField, Min(0.1f)] private float slowGhostShrinkSpeed = 4f;
         [Tooltip("총알이 0이 되어 처형 가능 상태일 때 체력바 색입니다.")]
         [SerializeField] private Color executionWindowColor = new(0.95f, 0.05f, 0.05f, 1f);
         [Tooltip("처형 가능 상태에서 체력바가 깜빡이는 속도입니다.")]
@@ -27,20 +27,14 @@ namespace Week14.UI
         [Tooltip("처형 가능 상태에서 깜빡일 때 가장 어두워지는 알파값입니다.")]
         [SerializeField, Range(0f, 1f)] private float executionWindowBlinkMinAlpha = 0.35f;
 
-        private RectTransform fillRoot;
-        private Image filledBackgroundImage;
-        private Image filledGhostImage;
-        private Image filledForegroundImage;
-        private float filledRatio;
-        private float filledGhostRatio;
+        private float currentRatio;
+        private float fastGhostRatio;
+        private float slowGhostRatio;
         private bool executionWindowActive;
         private int displayedBulletCount = -1;
 
-        private static Sprite solidFillSprite;
-
         private void OnEnable()
         {
-            EnsureFilledView();
             Subscribe();
             Refresh();
         }
@@ -76,19 +70,12 @@ namespace Week14.UI
                 return;
             }
 
-            EnsureFilledView();
-            if (filledForegroundImage == null)
-            {
-                return;
-            }
-
-            filledRatio = Mathf.Clamp01(remainingRatio);
-            filledGhostRatio = filledRatio;
-            filledForegroundImage.fillAmount = filledRatio;
-            if (filledGhostImage != null)
-            {
-                filledGhostImage.fillAmount = filledGhostRatio;
-            }
+            currentRatio = Mathf.Clamp01(remainingRatio);
+            fastGhostRatio = currentRatio;
+            slowGhostRatio = currentRatio;
+            SetFillAmount(foregroundImage, currentRatio);
+            SetFillAmount(fastGhostImage, fastGhostRatio);
+            SetFillAmount(slowGhostImage, slowGhostRatio);
         }
 
         public void ClearExecutionWindow()
@@ -101,9 +88,9 @@ namespace Week14.UI
             executionWindowActive = false;
             displayedBulletCount = -1;
 
-            if (filledForegroundImage != null)
+            if (foregroundImage != null)
             {
-                filledForegroundImage.color = ResolveBarColor(target != null ? target.CurrentBullets : 0, target != null ? target.MaxBullets : 1);
+                foregroundImage.color = ResolveBarColor(target != null ? target.CurrentBullets : 0, target != null ? target.MaxBullets : 1);
             }
 
             Refresh();
@@ -152,119 +139,31 @@ namespace Week14.UI
                 return;
             }
 
-            EnsureFilledView();
-            if (filledForegroundImage == null)
-            {
-                return;
-            }
-
             bool hasPreviousValue = displayedBulletCount >= 0;
             int bulletCount = Mathf.Max(0, current);
             float ratio = Mathf.Clamp01(bulletCount / (float)Mathf.Max(1, max));
 
-            filledRatio = ratio;
-            filledForegroundImage.color = ResolveBarColor(current, max);
-            filledForegroundImage.fillAmount = filledRatio;
-
-            if (!hasPreviousValue || ratio > filledGhostRatio)
+            currentRatio = ratio;
+            if (foregroundImage != null)
             {
-                filledGhostRatio = ratio;
+                foregroundImage.color = ResolveBarColor(current, max);
             }
 
-            filledGhostImage.fillAmount = filledGhostRatio;
+            SetFillAmount(foregroundImage, currentRatio);
+
+            if (!hasPreviousValue || ratio > fastGhostRatio)
+            {
+                fastGhostRatio = ratio;
+            }
+
+            if (!hasPreviousValue || ratio > slowGhostRatio)
+            {
+                slowGhostRatio = ratio;
+            }
+
+            SetFillAmount(fastGhostImage, fastGhostRatio);
+            SetFillAmount(slowGhostImage, slowGhostRatio);
             displayedBulletCount = bulletCount;
-        }
-
-        private void EnsureFilledView()
-        {
-            RectTransform parent = transform as RectTransform;
-            if (parent == null)
-            {
-                return;
-            }
-
-            if (fillRoot == null || fillRoot.parent != parent)
-            {
-                Transform existing = parent.Find(FillRootName);
-                fillRoot = existing != null ? existing.GetComponent<RectTransform>() : null;
-                if (fillRoot == null)
-                {
-                    GameObject rootObject = new(FillRootName, typeof(RectTransform));
-                    rootObject.transform.SetParent(parent, false);
-                    fillRoot = rootObject.GetComponent<RectTransform>();
-                }
-
-                fillRoot.anchorMin = Vector2.zero;
-                fillRoot.anchorMax = Vector2.one;
-                fillRoot.offsetMin = Vector2.zero;
-                fillRoot.offsetMax = Vector2.zero;
-            }
-
-            fillRoot.gameObject.SetActive(true);
-
-            if (filledBackgroundImage == null)
-            {
-                filledBackgroundImage = CreateFillImage(FillBackgroundName, filledBackgroundColor);
-            }
-
-            if (filledGhostImage == null)
-            {
-                filledGhostImage = CreateFillImage(FillGhostName, filledGhostColor);
-                filledGhostImage.type = Image.Type.Filled;
-                filledGhostImage.fillMethod = Image.FillMethod.Horizontal;
-                filledGhostImage.fillOrigin = (int)Image.OriginHorizontal.Left;
-            }
-
-            if (filledForegroundImage == null)
-            {
-                filledForegroundImage = CreateFillImage(FillForegroundName, normalColor);
-                filledForegroundImage.type = Image.Type.Filled;
-                filledForegroundImage.fillMethod = Image.FillMethod.Horizontal;
-                filledForegroundImage.fillOrigin = (int)Image.OriginHorizontal.Left;
-            }
-        }
-
-        private Image CreateFillImage(string imageName, Color color)
-        {
-            Transform existing = fillRoot.Find(imageName);
-            Image image = existing != null ? existing.GetComponent<Image>() : null;
-            if (image == null)
-            {
-                GameObject imageObject = new(imageName, typeof(RectTransform));
-                imageObject.transform.SetParent(fillRoot, false);
-                image = imageObject.AddComponent<Image>();
-            }
-
-            RectTransform rect = image.rectTransform;
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-            rect.localScale = Vector3.one;
-            rect.localRotation = Quaternion.identity;
-
-            image.sprite = GetSolidFillSprite();
-            image.color = color;
-            image.raycastTarget = false;
-            return image;
-        }
-
-        private static Sprite GetSolidFillSprite()
-        {
-            if (solidFillSprite != null)
-            {
-                return solidFillSprite;
-            }
-
-            Texture2D texture = new(1, 1, TextureFormat.RGBA32, false)
-            {
-                filterMode = FilterMode.Point,
-                wrapMode = TextureWrapMode.Clamp
-            };
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-            solidFillSprite = Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
-            return solidFillSprite;
         }
 
         private void TickEffects()
@@ -277,16 +176,22 @@ namespace Week14.UI
                 return;
             }
 
-            if (filledGhostImage != null && filledGhostRatio > filledRatio)
+            if (fastGhostImage != null && fastGhostRatio > currentRatio)
             {
-                filledGhostRatio = Mathf.Max(filledRatio, Mathf.Lerp(filledGhostRatio, filledRatio, 1f - Mathf.Exp(-deltaTime * filledGhostShrinkSpeed)));
-                filledGhostImage.fillAmount = filledGhostRatio;
+                fastGhostRatio = Mathf.Max(currentRatio, Mathf.Lerp(fastGhostRatio, currentRatio, 1f - Mathf.Exp(-deltaTime * fastGhostShrinkSpeed)));
+                SetFillAmount(fastGhostImage, fastGhostRatio);
+            }
+
+            if (slowGhostImage != null && slowGhostRatio > currentRatio)
+            {
+                slowGhostRatio = Mathf.Max(currentRatio, Mathf.Lerp(slowGhostRatio, currentRatio, 1f - Mathf.Exp(-deltaTime * slowGhostShrinkSpeed)));
+                SetFillAmount(slowGhostImage, slowGhostRatio);
             }
         }
 
         private void TickExecutionWindowBlink()
         {
-            if (filledForegroundImage == null)
+            if (foregroundImage == null)
             {
                 return;
             }
@@ -295,11 +200,17 @@ namespace Week14.UI
             float alpha = Mathf.Lerp(executionWindowBlinkMinAlpha, 1f, blink);
             Color color = executionWindowColor;
             color.a *= alpha;
-            filledForegroundImage.color = color;
+            foregroundImage.color = color;
 
-            if (filledGhostImage != null)
+            SetFillAmount(fastGhostImage, currentRatio);
+            SetFillAmount(slowGhostImage, currentRatio);
+        }
+
+        private static void SetFillAmount(Image image, float ratio)
+        {
+            if (image != null)
             {
-                filledGhostImage.fillAmount = filledRatio;
+                image.fillAmount = ratio;
             }
         }
 

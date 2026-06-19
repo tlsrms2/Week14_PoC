@@ -135,8 +135,9 @@ namespace Week14.Enemy
         public int CurrentPhaseNumber => CurrentPhaseIndex + 1;
         public int CurrentEnragePhase => currentEnragePhase;
         public float CurrentEnrageProgress => GetCurrentEnrageProgress();
+        public float CurrentEnrageRemainingSeconds => GetCurrentEnrageRemainingSeconds();
         public event Action<int, int> LivesChanged;
-        public event Action<int, float> EnrageChanged;
+        public event Action<int, float, float> EnrageChanged;
 
         protected virtual void Awake()
         {
@@ -765,7 +766,8 @@ namespace Week14.Enemy
         private void NotifyEnrageChanged()
         {
             float progress = GetCurrentEnrageProgress();
-            EnrageChanged?.Invoke(currentEnragePhase, progress);
+            float remainingSeconds = GetCurrentEnrageRemainingSeconds();
+            EnrageChanged?.Invoke(currentEnragePhase, progress, remainingSeconds);
             bossEnrageBarView?.Refresh();
         }
 
@@ -787,6 +789,26 @@ namespace Week14.Enemy
             }
 
             return 1f;
+        }
+
+        private float GetCurrentEnrageRemainingSeconds()
+        {
+            if (!isCombatStarted)
+            {
+                return enragePhase1Seconds;
+            }
+
+            if (currentEnragePhase <= 0)
+            {
+                return Mathf.Max(0f, enragePhase1Seconds - (Time.time - currentPhaseStartTime));
+            }
+
+            if (currentEnragePhase == 1)
+            {
+                return Mathf.Max(0f, enragePhase2Seconds - (Time.time - currentPhaseStartTime));
+            }
+
+            return 0f;
         }
 
         private void SuppressEnemyStatusView()
