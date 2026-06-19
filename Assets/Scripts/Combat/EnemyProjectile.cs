@@ -14,10 +14,10 @@ namespace Week14.Combat
         private const string HomingAimReticleName = "HomingAimReticle";
         private const string ParryLockOnIndicatorName = "ParryLockOnIndicator";
         private const string LegacyParryLockOnIndicatorName = "ProjectileLockOnIndicator";
-        private const int MaxPathDashCount = 72;
+        private const string WallLayerName = "Wall";
+        private const int MaxPathDashCount = 160;
         private const int HomingAimReticleLineCount = 3;
         private const int HomingAimReticleCircleSegments = 40;
-        private const float PathIndicatorSeconds = 1f;
         private const float PathDashLength = 0.2f;
         private const float PathDashGap = 0.14f;
         private const float DefaultHomingSeconds = 0.8f;
@@ -45,7 +45,6 @@ namespace Week14.Combat
         private readonly List<LineRenderer> homingAimReticleLines = new();
         private Transform pathIndicatorRoot;
         private BulletGauge ownerBullets;
-        private EnemyAI ownerEnemy;
         private BossAI ownerBoss;
         private Drone ownerDrone;
         private int counterBulletDamage;
@@ -55,15 +54,14 @@ namespace Week14.Combat
         private Vector3 baseLocalScale = Vector3.one;
         private Vector3 chargeGrowthStartScale;
         private Vector3 chargeGrowthEndScale;
-        private Color launchBubbleColor;
-        private float launchBubbleScale = 1f;
-        private bool playMuzzleFlashOnLaunch;
-        private float launchMuzzleFlashScale = 1f;
+        private Color launchSmokeColor;
+        private float launchSmokeScale = 1f;
+        private Transform chargeAnchor;
         private bool aimAtPlayerWhileCharging = true;
         private bool aimAtPlayerOnLaunch;
         private float aimAtPlayerOnLaunchSpreadDegrees;
         private bool growScaleWhileCharging;
-        private bool playBubbleOnLaunch;
+        private bool playSmokeOnLaunch;
         private bool canBeIntercepted = true;
         private bool splitOnObstacle;
         private bool splitRadiallyOnLaunch;
@@ -84,11 +82,13 @@ namespace Week14.Combat
         private bool interceptPending;
         private bool ownerSlotReleased;
         private bool pathIndicatorActive;
+        private bool suppressPathIndicator;
         private bool parryLockOnIndicatorVisible;
         private Vector2 pathIndicatorStart;
         private Vector2 pathIndicatorDirection = Vector2.left;
         private float pathIndicatorLength;
         private float pathIndicatorEndsAt;
+        private Vector2 lastWallCheckPosition;
         private static readonly List<EnemyProjectile> activeProjectiles = new();
         private float executionPauseStartedAt;
         private bool pausedByExecution;
@@ -140,26 +140,6 @@ namespace Week14.Combat
             }
 
             activeProjectiles.Clear();
-        }
-
-        /// <summary>EnemyData 기반 스폰 (신규 AI 시스템용)</summary>
-        public static EnemyProjectile Spawn(
-            EnemyProjectile prefab,
-            EnemyData data,
-            BulletGauge ownerBullets,
-            Vector3 position,
-            Vector2 direction)
-        {
-            if (prefab == null || data == null) return null;
-
-            return SpawnInternal(prefab, ownerBullets, position, direction, data.ProjectileBulletDamage,
-                GetCounteredProjectileBulletDamage(),
-                data.ProjectileChargeSeconds, data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
-                data.ProjectileColor, data.ProjectileTrailSeconds,
-                data.ProjectileTrailWidthMultiplier,
-                data.ProjectileHomingEnabled,
-                data.ProjectileHomingSeconds,
-                data.ProjectileHomingTurnDegreesPerSecond);
         }
 
         public static EnemyProjectile Spawn(
@@ -238,6 +218,15 @@ namespace Week14.Combat
             aimAtPlayerOnLaunchSpreadDegrees = Mathf.Max(0f, launchSpreadDegrees);
         }
 
+        public void ConfigureChargeAnchor(Transform anchor)
+        {
+            chargeAnchor = anchor;
+            if (IsCharging)
+            {
+                SnapToChargeAnchor();
+            }
+        }
+
         public void ConfigureObstacleSplit(
             int splitCount,
             float angleDegrees,
@@ -306,14 +295,12 @@ namespace Week14.Combat
             baseLocalScale = transform.localScale;
         }
 
-        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier, Color bubbleColor, float bubbleScale)
+        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier)
         {
             chargeGrowthStartScale = baseLocalScale * Mathf.Max(0.01f, startScaleMultiplier);
             chargeGrowthEndScale = baseLocalScale * Mathf.Max(0.01f, endScaleMultiplier);
-            launchBubbleColor = bubbleColor;
-            launchBubbleScale = Mathf.Max(0.1f, bubbleScale);
             growScaleWhileCharging = true;
-            playBubbleOnLaunch = true;
+            playSmokeOnLaunch = false;
 
             if (IsCharging)
             {
@@ -321,10 +308,19 @@ namespace Week14.Combat
             }
         }
 
-        public void ConfigureLaunchMuzzleFlash(float scale)
+        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier, Color smokeColor, float smokeScale)
         {
-            launchMuzzleFlashScale = Mathf.Max(0f, scale);
-            playMuzzleFlashOnLaunch = launchMuzzleFlashScale > 0f;
+            chargeGrowthStartScale = baseLocalScale * Mathf.Max(0.01f, startScaleMultiplier);
+            chargeGrowthEndScale = baseLocalScale * Mathf.Max(0.01f, endScaleMultiplier);
+            launchSmokeColor = smokeColor;
+            launchSmokeScale = Mathf.Max(0.1f, smokeScale);
+            growScaleWhileCharging = true;
+            playSmokeOnLaunch = true;
+
+            if (IsCharging)
+            {
+                transform.localScale = chargeGrowthStartScale;
+            }
         }
 
         public void ConfigureInterceptable(bool interceptable)
@@ -348,12 +344,26 @@ namespace Week14.Combat
             Color color, float trailSeconds, float trailWidth,
             bool homingEnabled,
             float homingSeconds,
-            float homingTurnDegrees)
+            float homingTurnDegrees,
+            bool suppressPathIndicator = false)
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, bulletDamage, ownerBullets, counterBulletDamage, chargeSeconds, speed, lifetime, radius, color, homingEnabled, homingSeconds, homingTurnDegrees);
+            projectile.Initialize(
+                direction,
+                bulletDamage,
+                ownerBullets,
+                counterBulletDamage,
+                chargeSeconds,
+                speed,
+                lifetime,
+                radius,
+                color,
+                homingEnabled,
+                homingSeconds,
+                homingTurnDegrees,
+                suppressPathIndicator);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
@@ -374,7 +384,8 @@ namespace Week14.Combat
             float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
             bool enableHoming,
-            float homingSeconds, float nextHomingTurnDegrees)
+            float homingSeconds, float nextHomingTurnDegrees,
+            bool nextSuppressPathIndicator)
         {
             projectileSpeed = speed;
             projectileLifetime = lifetime;
@@ -391,7 +402,6 @@ namespace Week14.Combat
                 ? Mathf.Max(0.01f, nextHomingTurnDegrees > 0f ? nextHomingTurnDegrees : DefaultHomingTurnDegreesPerSecond)
                 : 0f;
             ownerBullets = nextOwnerBullets;
-            ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
             ownerDrone = ownerBullets != null ? ownerBullets.GetComponentInParent<Drone>() : null;
             if (!activeProjectiles.Contains(this))
@@ -399,7 +409,6 @@ namespace Week14.Combat
                 activeProjectiles.Add(this);
             }
 
-            ownerEnemy?.RegisterActiveProjectile(this);
             ownerBoss?.RegisterActiveProjectile(this);
             ownerDrone?.RegisterActiveProjectile(this);
             counterBulletDamage = nextCounterBulletDamage;
@@ -408,10 +417,9 @@ namespace Week14.Combat
             baseLocalScale = transform.localScale;
             chargeGrowthStartScale = baseLocalScale;
             chargeGrowthEndScale = baseLocalScale;
+            chargeAnchor = null;
             growScaleWhileCharging = false;
-            playBubbleOnLaunch = false;
-            playMuzzleFlashOnLaunch = false;
-            launchMuzzleFlashScale = 1f;
+            playSmokeOnLaunch = false;
             aimAtPlayerOnLaunchSpreadDegrees = 0f;
             canBeIntercepted = true;
             interceptPending = false;
@@ -423,7 +431,10 @@ namespace Week14.Combat
             radialSplitStartAngleDegrees = 0f;
             radialSplitDelaySeconds = 0f;
             radialSplitAt = 0f;
+            suppressPathIndicator = nextSuppressPathIndicator;
+            ResetClonedPathIndicators();
             launched = projectileChargeSeconds <= 0f;
+            lastWallCheckPosition = transform.position;
             chargeEndsAt = Time.time + projectileChargeSeconds;
             float launchTime = launched ? Time.time : chargeEndsAt;
             homingEndsAt = launchTime + this.homingSeconds;
@@ -475,12 +486,19 @@ namespace Week14.Combat
             if (!launched)
             {
                 TickCharge();
+                lastWallCheckPosition = transform.position;
             }
             else
             {
+                if (TryDestroyIfCrossedWall())
+                {
+                    return;
+                }
+
                 TickHoming();
                 TickRadialSplitDelay();
                 TickPathIndicator();
+                lastWallCheckPosition = transform.position;
             }
             if (Time.time >= destroyAt)
             {
@@ -490,6 +508,8 @@ namespace Week14.Combat
 
         private void TickCharge()
         {
+            SnapToChargeAnchor();
+
             if (aimAtPlayerWhileCharging)
             {
                 AimAtPlayerWhileCharging();
@@ -508,7 +528,9 @@ namespace Week14.Combat
                 return;
             }
 
+            SnapToChargeAnchor();
             launched = true;
+            chargeAnchor = null;
             ApplyProjectileColor(launchedColor);
             if (growScaleWhileCharging)
             {
@@ -521,14 +543,9 @@ namespace Week14.Combat
                 AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
             }
 
-            if (playMuzzleFlashOnLaunch)
+            if (playSmokeOnLaunch)
             {
-                ProjectileVfx.PlayMuzzleFlash(transform.position, flightDirection, launchedColor, launchMuzzleFlashScale);
-            }
-
-            if (playBubbleOnLaunch)
-            {
-                ProjectileVfx.PlayHogBubbleBurst(transform.position, launchBubbleColor, launchBubbleScale, 18);
+                ProjectileVfx.PlayHogSmokeBurst(transform.position, launchSmokeColor, launchSmokeScale, 18);
             }
 
             radialSplitAt = splitRadiallyOnLaunch ? Time.time + radialSplitDelaySeconds : 0f;
@@ -541,6 +558,22 @@ namespace Week14.Combat
             }
 
             Launched?.Invoke(this);
+        }
+
+        private void SnapToChargeAnchor()
+        {
+            if (chargeAnchor == null)
+            {
+                return;
+            }
+
+            Vector3 position = chargeAnchor.position;
+            position.z = transform.position.z;
+            transform.position = position;
+            if (body != null)
+            {
+                body.position = position;
+            }
         }
 
         private void UpdateChargeGrowth()
@@ -646,21 +679,15 @@ namespace Week14.Combat
                 return;
             }
 
+            if (IsWallCollider(other))
+            {
+                DestroyProjectile();
+                return;
+            }
+
             PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
             if (player == null)
             {
-                EnemyAI hitEnemy = other.GetComponentInParent<EnemyAI>();
-                if (hitEnemy != null)
-                {
-                    if (hitEnemy == ownerEnemy)
-                    {
-                        return;
-                    }
-
-                    DestroyProjectile();
-                    return;
-                }
-
                 BossAI hitBoss = other.GetComponentInParent<BossAI>();
                 if (hitBoss != null)
                 {
@@ -723,7 +750,7 @@ namespace Week14.Combat
                 reflected = -flightDirection;
             }
 
-            ProjectileVfx.PlayHogBubbleBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), 20);
+            ProjectileVfx.PlayHogSmokeBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), 20);
             SpawnSplitChild(RotateDirection(reflected, -splitAngleDegrees * 0.5f));
             SpawnSplitChild(RotateDirection(reflected, splitAngleDegrees * 0.5f));
             resolved = true;
@@ -735,7 +762,7 @@ namespace Week14.Combat
         {
             int count = Mathf.Max(1, radialSplitBulletCount);
             float step = 360f / count;
-            ProjectileVfx.PlayHogBubbleBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), count);
+            ProjectileVfx.PlayHogSmokeBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), count);
             RadialSplit?.Invoke(this);
 
             for (int i = 0; i < count; i++)
@@ -786,7 +813,8 @@ namespace Week14.Combat
                 3f,
                 homingEnabled,
                 homingSeconds,
-                homingTurnDegreesPerSecond);
+                homingTurnDegreesPerSecond,
+                suppressPathIndicator: true);
 
             if (child == null)
             {
@@ -910,7 +938,6 @@ namespace Week14.Combat
             }
 
             ownerSlotReleased = true;
-            ownerEnemy?.UnregisterActiveProjectile(this);
             ownerBoss?.UnregisterActiveProjectile(this);
             ownerDrone?.UnregisterActiveProjectile(this);
         }
@@ -1044,8 +1071,29 @@ namespace Week14.Combat
 
         private bool ShouldShowPathIndicator()
         {
-            return projectileSpeed > 0f
+            return !suppressPathIndicator
+                && projectileSpeed > 0f
                 && projectileLifetime > 0f;
+        }
+
+        private void ResetClonedPathIndicators()
+        {
+            pathIndicatorActive = false;
+            pathIndicatorLength = 0f;
+            pathIndicatorEndsAt = 0f;
+            pathIndicatorDashes.Clear();
+            homingAimReticleLines.Clear();
+            pathIndicatorRoot = null;
+
+            Transform existing = transform.Find(PathIndicatorName);
+            if (existing == null)
+            {
+                return;
+            }
+
+            existing.gameObject.SetActive(false);
+            existing.SetParent(null, false);
+            Destroy(existing.gameObject);
         }
 
         private bool IsHomingProjectile()
@@ -1067,7 +1115,7 @@ namespace Week14.Combat
                 return;
             }
 
-            DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(projectileLifetime), 0f);
+            DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(transform.position, flightDirection, projectileLifetime), 0f);
         }
 
         private void BeginPathIndicator()
@@ -1080,9 +1128,9 @@ namespace Week14.Combat
 
             pathIndicatorStart = transform.position;
             pathIndicatorDirection = flightDirection.sqrMagnitude > 0.0001f ? flightDirection.normalized : Vector2.left;
-            float visibleSeconds = Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, destroyAt - Time.time));
+            float visibleSeconds = Mathf.Max(0f, destroyAt - Time.time);
             pathIndicatorEndsAt = Time.time + visibleSeconds;
-            pathIndicatorLength = GetPathIndicatorLength(visibleSeconds);
+            pathIndicatorLength = GetPathIndicatorLength(pathIndicatorStart, pathIndicatorDirection, visibleSeconds);
             pathIndicatorActive = true;
 
             if (IsHomingProjectile())
@@ -1117,9 +1165,63 @@ namespace Week14.Combat
             DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, Mathf.Max(0f, travelled));
         }
 
-        private float GetPathIndicatorLength(float seconds)
+        private float GetPathIndicatorLength(Vector2 start, Vector2 direction, float seconds)
         {
-            return projectileSpeed * Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, seconds));
+            float length = projectileSpeed * Mathf.Max(0f, seconds);
+            return GetWallClippedLength(start, direction, length);
+        }
+
+        private float GetWallClippedLength(Vector2 start, Vector2 direction, float length)
+        {
+            return TryGetWallHit(start, direction, length, out RaycastHit2D hit)
+                ? Mathf.Max(0f, hit.distance)
+                : length;
+        }
+
+        private bool TryDestroyIfCrossedWall()
+        {
+            Vector2 currentPosition = transform.position;
+            Vector2 delta = currentPosition - lastWallCheckPosition;
+            if (delta.sqrMagnitude <= 0.000001f)
+            {
+                return false;
+            }
+
+            if (!TryGetWallHit(lastWallCheckPosition, delta.normalized, delta.magnitude + projectileRadius, out _))
+            {
+                return false;
+            }
+
+            DestroyProjectile();
+            return true;
+        }
+
+        private bool TryGetWallHit(Vector2 start, Vector2 direction, float distance, out RaycastHit2D hit)
+        {
+            hit = default;
+            int wallMask = GetWallMask();
+            if (wallMask == 0 || distance <= 0.001f || direction.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            float castRadius = Mathf.Max(0.001f, projectileRadius);
+            hit = Physics2D.CircleCast(start, castRadius, direction.normalized, distance, wallMask);
+            return hit.collider != null;
+        }
+
+        private static bool IsWallCollider(Collider2D collider)
+        {
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            return wallLayer >= 0
+                && collider != null
+                && collider.gameObject.layer == wallLayer;
+        }
+
+        private static int GetWallMask()
+        {
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            return wallLayer >= 0 ? 1 << wallLayer : 0;
         }
 
         private void DrawHomingPathIndicator()
@@ -1131,6 +1233,12 @@ namespace Week14.Combat
             }
 
             float length = Vector2.Distance(start, aimPoint);
+            bool blockedByWall = TryGetWallHit(start, direction, length, out RaycastHit2D wallHit);
+            if (blockedByWall)
+            {
+                length = wallHit.distance;
+            }
+
             if (length > 0.01f)
             {
                 DrawPathIndicator(start, direction, length, 0f, true);
@@ -1140,7 +1248,14 @@ namespace Week14.Combat
                 SetPathDashesVisible(false);
             }
 
-            DrawHomingAimReticle(aimPoint, direction);
+            if (blockedByWall)
+            {
+                SetHomingAimReticleVisible(false);
+            }
+            else
+            {
+                DrawHomingAimReticle(aimPoint, direction);
+            }
             pathIndicatorActive = true;
         }
 
@@ -1256,11 +1371,8 @@ namespace Week14.Combat
 
             Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
             int dashCount = Mathf.Min(MaxPathDashCount, Mathf.CeilToInt(length / (PathDashLength + PathDashGap)));
-            Color color = keepHomingReticle
-                ? new Color(0.25f, 0.72f, 1f, 0.9f)
-                : Color.Lerp(projectileColor, Color.white, 0.55f);
-            color.a = keepHomingReticle ? 0.86f : 0.58f;
-            float width = Mathf.Max(keepHomingReticle ? 0.014f : 0.01f, projectileRadius * (keepHomingReticle ? 0.16f : 0.11f));
+            Color color = GetProjectileIndicatorColor(keepHomingReticle ? 0.86f : 0.58f);
+            float width = Mathf.Max(keepHomingReticle ? 0.018f : 0.013f, projectileRadius * (keepHomingReticle ? 0.2f : 0.14f));
             int visibleCount = 0;
 
             for (int i = 0; i < dashCount; i++)
@@ -1304,9 +1416,8 @@ namespace Week14.Combat
             Vector2 side = new(-forward.y, forward.x);
             float radius = Mathf.Max(0.2f, projectileRadius * 2.1f);
             float crossRadius = radius * 0.72f;
-            Color color = new(0.55f, 0.9f, 1f, 0.95f);
-            color.a = 0.95f;
-            float width = Mathf.Max(0.024f, projectileRadius * 0.24f);
+            Color color = GetProjectileIndicatorColor(0.95f);
+            float width = Mathf.Max(0.03f, projectileRadius * 0.3f);
 
             SetHomingAimReticleCircle(0, center, radius, color, width);
             SetHomingAimReticleSegment(1, center - side * crossRadius, center + side * crossRadius, color, width);
@@ -1319,6 +1430,13 @@ namespace Week14.Combat
                     homingAimReticleLines[i].enabled = false;
                 }
             }
+        }
+
+        private Color GetProjectileIndicatorColor(float alpha)
+        {
+            Color color = launched ? launchedColor : chargingColor;
+            color.a = Mathf.Clamp01(alpha);
+            return color;
         }
 
         private void PauseForExecution()

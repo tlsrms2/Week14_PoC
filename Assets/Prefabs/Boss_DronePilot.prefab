@@ -288,7 +288,6 @@ GameObject:
   - component: {fileID: 4667363922611649476}
   - component: {fileID: 3117858263439591997}
   - component: {fileID: 3327489348220524332}
-  - component: {fileID: 498269881852238974}
   - component: {fileID: 2075240932106930298}
   - component: {fileID: -3957373781628334430}
   m_Layer: 0
@@ -404,15 +403,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.EnemyStatusView
   health: {fileID: 0}
-  bullets: {fileID: 0}
   executionTarget: {fileID: 0}
   enemyAI: {fileID: 0}
   bossAI: {fileID: 0}
   drone: {fileID: 0}
-  bulletBarView: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
-  barsRoot: {fileID: 0}
 --- !u!114 &3327489348220524332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,72 +422,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ExecutionTarget
   config: {fileID: 11400000, guid: 036d479638e6f0947910ac9113337d66, type: 2}
---- !u!114 &498269881852238974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958469296149594014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85482bef9663aed41b44daf09329b0eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.GunRecoilMotion
-  target: {fileID: 7754808717796362439}
-  localOffset: {x: -0.3, y: 0, z: 0}
-  kickSeconds: 0.035
-  returnSeconds: 0.2
-  useShotDirection: 0
-  shotDirectionDistance: 0.08
-  kickCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  returnCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &2075240932106930298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,7 +467,6 @@ MonoBehaviour:
   body: {fileID: 8932169065044441375}
   statusView: {fileID: 3117858263439591997}
   attackTimingOutline: {fileID: 0}
-  gunRecoil: {fileID: 498269881852238974}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256

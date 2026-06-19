@@ -78,10 +78,6 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float executionCameraFocusWeight = 1f;
         [Tooltip("처형 중 카메라 줌 배율입니다. 작을수록 더 가까이 보입니다.")]
         [SerializeField, Range(0.35f, 1f)] private float executionCameraZoomMultiplier = 0.62f;
-        [Tooltip("처형 발사 전 왼쪽 총 반동 자세가 유지되는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float executionGunKickSeconds = 0.45f;
-        [Tooltip("처형 발사 후 왼쪽 총이 원래 위치로 돌아오는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float executionGunReturnSeconds = 0.045f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리되는 시간입니다.")]
         [SerializeField, Min(0f)] private float executionShotDimSeconds = 0.065f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리의 최대 알파값입니다.")]
@@ -133,7 +129,6 @@ namespace Week14.Combat
         public float MouseParryMissShakeAmplitude => mouseParryMissShakeAmplitude;
         public float MouseParryMissShakeFrequency => mouseParryMissShakeFrequency;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
-        public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
         public Color ParrySparkColor => effectData != null ? effectData.ParrySparkColor : new Color(1f, 0.88f, 0.35f, 1f);
         public Color ParryRingColor => effectData != null ? effectData.ParryRingColor : new Color(0.45f, 0.9f, 1f, 0.75f);
         public Color ParryRingGlitterColor => effectData != null ? effectData.ParryRingGlitterColor : new Color(1f, 0.96f, 0.68f, 1f);
@@ -151,8 +146,6 @@ namespace Week14.Combat
         public Color PlayerBodyBulletEmptyColor => effectData != null ? effectData.PlayerBodyBulletEmptyColor : new Color(1f, 0.2f, 0.12f, 1f);
         public Color PlayerBodyHitColor => effectData != null ? effectData.PlayerBodyHitColor : new Color(1f, 0.85f, 0.25f, 1f);
         public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
-        public Color BulletParryOutlineColor => effectData != null ? effectData.BulletParryOutlineColor : Color.white;
-        public Color BulletHitOutlineColor => effectData != null ? effectData.BulletHitOutlineColor : Color.yellow;
         public float ExecutionRange => executionRange;
         public int ExecutionBulletRecovery => executionBulletRecovery;
         public bool DestroyTargetOnExecute => destroyTargetOnExecute;
@@ -162,8 +155,6 @@ namespace Week14.Combat
         public float ExecutionFinishSeconds => executionFinishSeconds;
         public float ExecutionCameraFocusWeight => executionCameraFocusWeight;
         public float ExecutionCameraZoomMultiplier => executionCameraZoomMultiplier;
-        public float ExecutionGunKickSeconds => executionGunKickSeconds;
-        public float ExecutionGunReturnSeconds => executionGunReturnSeconds;
         public float ExecutionShotDimSeconds => executionShotDimSeconds;
         public float ExecutionShotDimAlpha => executionShotDimAlpha;
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
@@ -171,9 +162,7 @@ namespace Week14.Combat
         public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
         public Color ExecutionShotColor => effectData != null ? effectData.ExecutionShotColor : Color.white;
         public Color ExecutionImpactColor => effectData != null ? effectData.ExecutionImpactColor : new Color(0.9f, 0.02f, 0.04f, 1f);
-        public Color ExecutionAbsorbColor => effectData != null ? effectData.ExecutionAbsorbColor : new Color(0.35f, 0.85f, 1f, 1f);
         public float ExecutionImpactParticleSeconds => effectData != null ? effectData.ExecutionImpactParticleSeconds : 0.55f;
         public int ExecutionImpactParticleCount => effectData != null ? effectData.ExecutionImpactParticleCount : 28;
-        public int ExecutionAbsorbParticleCount => effectData != null ? effectData.ExecutionAbsorbParticleCount : 24;
     }
 }

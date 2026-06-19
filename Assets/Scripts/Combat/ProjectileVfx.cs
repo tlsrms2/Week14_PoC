@@ -107,25 +107,25 @@ namespace Week14.Combat
             PlayDirectionalSpark(position, direction, color, 10, 0.16f, 36f, 2.5f, 6f);
         }
 
-        public static void PlayHogBubbleBurst(Vector3 position, Color baseColor, float effectScale = 1f, int bubbleCount = 12)
+        public static void PlayHogSmokeBurst(Vector3 position, Color baseColor, float effectScale = 1f, int smokeCount = 12)
         {
             position.z = 0f;
             float scale = Mathf.Max(0.15f, effectScale);
-            GameObject bubbleObject = new GameObject("HogBubbleVfx");
-            bubbleObject.transform.position = position;
+            GameObject smokeObject = new GameObject("HogSmokeVfx");
+            smokeObject.transform.position = position;
 
-            ParticleSystem particles = bubbleObject.AddComponent<ParticleSystem>();
+            ParticleSystem particles = smokeObject.AddComponent<ParticleSystem>();
             particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
             ParticleSystem.MainModule main = particles.main;
             main.playOnAwake = false;
-            main.duration = 0.7f;
+            main.duration = 1.1f;
             main.loop = false;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.28f, 0.75f);
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.48f, 1.15f);
             main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.045f * scale, 0.16f * scale);
-            main.startColor = baseColor;
-            main.gravityModifier = -0.08f;
+            main.startSize = new ParticleSystem.MinMaxCurve(0.09f * scale, 0.28f * scale);
+            main.startColor = WithAlpha(baseColor, Mathf.Min(baseColor.a, 0.72f));
+            main.gravityModifier = -0.025f;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.stopAction = ParticleSystemStopAction.Destroy;
 
@@ -135,33 +135,78 @@ namespace Week14.Combat
             ParticleSystem.ShapeModule shape = particles.shape;
             shape.enabled = true;
             shape.shapeType = ParticleSystemShapeType.Circle;
-            shape.radius = 0.1f * scale;
+            shape.radius = 0.13f * scale;
+
+            ParticleSystem.ColorOverLifetimeModule colorOverLifetime = particles.colorOverLifetime;
+            colorOverLifetime.enabled = true;
+            Gradient gradient = new();
+            Color startColor = WithAlpha(Color.Lerp(baseColor, Color.gray, 0.25f), Mathf.Min(baseColor.a, 0.58f));
+            Color endColor = WithAlpha(startColor, 0f);
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(startColor, 0f),
+                    new GradientColorKey(Color.Lerp(startColor, Color.white, 0.08f), 0.55f),
+                    new GradientColorKey(startColor, 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(startColor.a, 0f),
+                    new GradientAlphaKey(startColor.a * 0.6f, 0.55f),
+                    new GradientAlphaKey(endColor.a, 1f)
+                });
+            colorOverLifetime.color = new ParticleSystem.MinMaxGradient(gradient);
+
+            ParticleSystem.SizeOverLifetimeModule sizeOverLifetime = particles.sizeOverLifetime;
+            sizeOverLifetime.enabled = true;
+            AnimationCurve sizeCurve = new(
+                new Keyframe(0f, 0.65f),
+                new Keyframe(0.45f, 1.1f),
+                new Keyframe(1f, 1.45f));
+            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
 
             ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
-            renderer.sortingOrder = 74;
+            renderer.sortingOrder = 73;
             renderer.sharedMaterial = GetSpriteMaterial();
 
             particles.Play();
-            Color darkColor = Color.Lerp(baseColor, Color.black, 0.45f);
-            Color highlightColor = Color.Lerp(baseColor, new Color(0.72f, 0.86f, 0.48f, 1f), 0.35f);
-            int count = Mathf.Max(0, bubbleCount);
+            Color darkColor = WithAlpha(Color.Lerp(baseColor, Color.black, 0.35f), Mathf.Min(baseColor.a, 0.58f));
+            Color lightColor = WithAlpha(Color.Lerp(baseColor, Color.gray, 0.45f), Mathf.Min(baseColor.a, 0.48f));
+            int count = Mathf.Max(0, smokeCount);
             for (int i = 0; i < count; i++)
             {
-                Vector2 offset = Random.insideUnitCircle * Random.Range(0.02f, 0.18f) * scale;
-                Vector2 velocity = new Vector2(Random.Range(-0.24f, 0.24f), Random.Range(0.08f, 0.72f)) * scale;
-                Color bubbleColor = Color.Lerp(darkColor, highlightColor, Random.Range(0.15f, 0.85f));
-                bubbleColor.a = Random.Range(0.48f, 0.86f);
+                Vector2 offset = Random.insideUnitCircle * Random.Range(0.02f, 0.2f) * scale;
+                Vector2 velocity = new(Random.Range(-0.18f, 0.18f), Random.Range(0.16f, 0.62f));
+                velocity *= scale;
+                Color smokeColor = Color.Lerp(darkColor, lightColor, Random.Range(0.1f, 0.9f));
 
                 ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
                 {
                     position = position + (Vector3)offset,
                     velocity = velocity,
-                    startLifetime = Random.Range(0.28f, 0.75f),
-                    startSize = Random.Range(0.045f, 0.16f) * scale,
-                    startColor = bubbleColor
+                    startLifetime = Random.Range(0.48f, 1.15f),
+                    startSize = Random.Range(0.09f, 0.28f) * scale,
+                    startColor = smokeColor
                 };
                 particles.Emit(emitParams, 1);
             }
+        }
+
+        public static void PlayHogExplosion(Vector3 position, Color color, float effectScale = 1f, int sparkCount = 18)
+        {
+            position.z = 0f;
+            float scale = Mathf.Max(0.1f, effectScale);
+            int count = Mathf.Max(0, sparkCount);
+            Color coreColor = Color.Lerp(color, Color.white, 0.45f);
+            coreColor.a = color.a;
+            Color emberColor = Color.Lerp(color, new Color(1f, 0.32f, 0.05f, 1f), 0.45f);
+            emberColor.a = color.a;
+            Color ringColor = coreColor;
+            ringColor.a *= 0.55f;
+
+            PlayDirectionalSpark(position, Vector2.right, coreColor, count, 0.22f, 360f, 3.6f, 9.5f, scale);
+            PlayFlameBurst(position, Vector2.up, emberColor, coreColor, Mathf.Max(6, count / 2), 0.2f, scale);
+            PlayRing(position, ringColor, 0.16f, scale);
         }
 
         public static void PlayMuzzleFlash(Vector3 position, Vector2 direction, Color color, float effectScale = 1f)
@@ -480,6 +525,12 @@ namespace Week14.Combat
             Shader shader = Shader.Find("Sprites/Default");
             spriteMaterial = shader != null ? new Material(shader) : null;
             return spriteMaterial;
+        }
+
+        private static Color WithAlpha(Color color, float alpha)
+        {
+            color.a = Mathf.Clamp01(alpha);
+            return color;
         }
 
         private static Sprite CreateCircleSprite()

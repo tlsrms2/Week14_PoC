@@ -17,14 +17,6 @@ namespace Week14.Combat
         [Tooltip("플레이어 투사체 궤적 두께 배율입니다.")]
         [SerializeField, Min(0.1f)] private float playerProjectileTrailWidthMultiplier = 2.8f;
 
-        [Header("Enemy Projectile")]
-        [Tooltip("적 투사체와 적 총구 화염에 사용할 기본 색입니다.")]
-        [SerializeField] private Color enemyProjectileColor = new(1f, 0.95f, 0.25f, 1f);
-        [Tooltip("적 투사체 궤적이 남는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float enemyProjectileTrailSeconds = 0.1f;
-        [Tooltip("적 투사체 궤적 두께 배율입니다.")]
-        [SerializeField, Min(0.1f)] private float enemyProjectileTrailWidthMultiplier = 3f;
-
         [Header("Parry")]
         [Tooltip("패링 성공 시 생성되는 스파크 색입니다.")]
         [SerializeField] private Color parrySparkColor = new(1f, 0.88f, 0.35f, 1f);
@@ -46,13 +38,6 @@ namespace Week14.Combat
         [SerializeField, Min(0)] private int parryFlameCount = 20;
         [Tooltip("패링 성공 이펙트 전체 크기 배율입니다.")]
         [SerializeField, Min(0f)] private float parryEffectScale = 1f;
-        [Header("Boss Response")]
-        [Tooltip("보스가 플레이어 공격을 패링할 때 사용하는 스파크 색입니다.")]
-        [SerializeField] private Color bossParrySparkColor = new(1f, 0.78f, 0.18f, 1f);
-        [Tooltip("보스가 플레이어 공격을 패링할 때 사용하는 링 색입니다.")]
-        [SerializeField] private Color bossParryRingColor = new(1f, 0.42f, 0.08f, 0.85f);
-        [Tooltip("보스가 플레이어 공격을 패링할 때 사용하는 글리터 색입니다.")]
-        [SerializeField] private Color bossParryGlitterColor = new(1f, 0.95f, 0.52f, 1f);
 
         [Header("Hit Impact")]
         [Tooltip("플레이어 공격이 적에게 적중했을 때 전방 스파크 색입니다.")]
@@ -90,33 +75,19 @@ namespace Week14.Combat
         [Tooltip("피격 색이 유지되는 시간입니다.")]
         [SerializeField, Min(0f)] private float bodyHitColorSeconds = 0.08f;
 
-        [Header("Bullet UI")]
-        [Tooltip("패링으로 탄환 변화가 발생했을 때 탄환 UI 외곽선 색입니다.")]
-        [SerializeField] private Color bulletParryOutlineColor = Color.white;
-        [Tooltip("피격으로 탄환 변화가 발생했을 때 탄환 UI 외곽선 색입니다.")]
-        [SerializeField] private Color bulletHitOutlineColor = Color.yellow;
-
         [Header("Execution")]
         [Tooltip("처형 타격 순간 사용하는 이펙트 색입니다.")]
         [SerializeField] private Color executionImpactColor = new(0.9f, 0.02f, 0.04f, 1f);
-        [Tooltip("처형 흡수 연출에 사용하는 이펙트 색입니다.")]
-        [SerializeField] private Color executionAbsorbColor = new(0.35f, 0.85f, 1f, 1f);
         [Tooltip("처형 타격 입자가 유지되는 시간입니다.")]
         [SerializeField, Min(0f)] private float executionImpactParticleSeconds = 0.55f;
         [Tooltip("처형 타격 순간 생성되는 입자 수입니다.")]
         [SerializeField, Min(0)] private int executionImpactParticleCount = 28;
-        [Tooltip("처형 흡수 연출에 생성되는 입자 수입니다.")]
-        [SerializeField, Min(0)] private int executionAbsorbParticleCount = 24;
 
         public Color AttackEffectColor => attackEffectColor;
         public Color ParryEffectColor => parryEffectColor;
         public Color ExecutionShotColor => executionShotColor;
         public float PlayerProjectileTrailSeconds => playerProjectileTrailSeconds;
         public float PlayerProjectileTrailWidthMultiplier => playerProjectileTrailWidthMultiplier;
-
-        public Color EnemyProjectileColor => enemyProjectileColor;
-        public float EnemyProjectileTrailSeconds => enemyProjectileTrailSeconds;
-        public float EnemyProjectileTrailWidthMultiplier => enemyProjectileTrailWidthMultiplier;
 
         public Color ParrySparkColor => parrySparkColor;
         public Color ParryRingColor => parryRingColor;
@@ -128,10 +99,6 @@ namespace Week14.Combat
         public int ParryRingGlitterCount => parryRingGlitterCount > 0 ? parryRingGlitterCount : 18;
         public int ParryFlameCount => parryFlameCount > 0 ? parryFlameCount : 20;
         public float ParryEffectScale => parryEffectScale > 0f ? parryEffectScale : 1f;
-        public Color BossParrySparkColor => bossParrySparkColor;
-        public Color BossParryRingColor => bossParryRingColor;
-        public Color BossParryGlitterColor => bossParryGlitterColor;
-
         public int AttackImpactSparkCount => attackImpactSparkCount;
         public int AttackImpactBackSparkCount => attackImpactBackSparkCount;
         public int AttackImpactFlameCount => attackImpactFlameCount;
@@ -148,13 +115,9 @@ namespace Week14.Combat
         public Color PlayerBodyHitColor => playerBodyHitColor;
         public Color EnemyBodyHitColor => enemyBodyHitColor;
         public float BodyHitColorSeconds => bodyHitColorSeconds > 0f ? bodyHitColorSeconds : 0.08f;
-        public Color BulletParryOutlineColor => bulletParryOutlineColor;
-        public Color BulletHitOutlineColor => bulletHitOutlineColor;
 
         public Color ExecutionImpactColor => executionImpactColor;
-        public Color ExecutionAbsorbColor => executionAbsorbColor;
         public float ExecutionImpactParticleSeconds => executionImpactParticleSeconds;
         public int ExecutionImpactParticleCount => executionImpactParticleCount;
-        public int ExecutionAbsorbParticleCount => executionAbsorbParticleCount;
     }
 }

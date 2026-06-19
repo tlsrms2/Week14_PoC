@@ -268,19 +268,6 @@ namespace Week14.Combat
             }
 
             resolved = true;
-            EnemyAI enemy = targetHealth.GetComponent<EnemyAI>()
-                ?? targetHealth.GetComponentInParent<EnemyAI>();
-            if (enemy != null)
-            {
-                if (enemy.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
-                {
-                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
-                }
-
-                DestroyProjectile();
-                return true;
-            }
-
             BossAI boss = targetHealth.GetComponent<BossAI>()
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)

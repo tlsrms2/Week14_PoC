@@ -8,11 +8,11 @@ namespace Week14.UI
     public sealed class EnemyStatusView : MonoBehaviour
     {
         private const int DefaultSortingOrder = 40;
+        private const float ExecutionIndicatorRotationSpeedDegrees = 180f;
         private static Sprite indicatorSprite;
 
         [SerializeField, HideInInspector] private Health health;
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
-        [SerializeField, HideInInspector] private EnemyAI enemyAI;
         [SerializeField, HideInInspector] private BossAI bossAI;
         [SerializeField, HideInInspector] private Drone drone;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
@@ -21,26 +21,13 @@ namespace Week14.UI
         private Transform worldTarget;
         private Color lockOnColor = Color.white;
         private Color executionColor = Color.red;
+        private float executionIndicatorAngle;
 
         public void SetIndicators(SpriteRenderer nextLockOnRenderer, SpriteRenderer nextExecutionRenderer)
         {
             lockOnRenderer = nextLockOnRenderer;
             executionRenderer = nextExecutionRenderer;
             EnsureIndicators();
-            ApplyColors();
-        }
-
-        public void Configure(EnemyData data)
-        {
-            if (data == null)
-            {
-                return;
-            }
-
-            lockOnColor = data.LockOnIndicatorColor;
-            executionColor = data.ExecutionIndicatorColor;
-
-            EnsureView();
             ApplyColors();
         }
 
@@ -100,7 +87,6 @@ namespace Week14.UI
         {
             health ??= GetComponentInParent<Health>();
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
-            enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
             drone ??= GetComponentInParent<Drone>();
 
@@ -112,8 +98,7 @@ namespace Week14.UI
         private void LateUpdate()
         {
             bool alive = health != null && !health.IsDead;
-            bool canShowDuringEnemyState = (enemyAI == null || !enemyAI.IsExecutionLocked)
-                && (bossAI == null || !bossAI.IsExecutionLocked)
+            bool canShowDuringEnemyState = (bossAI == null || !bossAI.IsExecutionLocked)
                 && (drone == null || !drone.IsExecutionLocked);
             bool indicatorsVisible = alive && canShowDuringEnemyState;
 
@@ -127,10 +112,10 @@ namespace Week14.UI
             ApplyOwnedWorldCenter(lockOnRenderer, center);
             ApplyOwnedWorldCenter(executionRenderer, center);
 
-            SetRendererEnabled(lockOnRenderer, IsLockOnTarget());
-            SetRendererEnabled(
-                executionRenderer,
-                IsHoveredExecutionTarget());
+            bool executionVisible = IsHoveredExecutionTarget();
+            SetRendererEnabled(lockOnRenderer, !executionVisible && IsLockOnTarget());
+            SetRendererEnabled(executionRenderer, executionVisible);
+            RotateExecutionIndicator(executionVisible);
         }
 
         private bool IsLockOnTarget()
@@ -142,13 +127,6 @@ namespace Week14.UI
             }
 
             if (player.LockOnTarget == health)
-            {
-                return true;
-            }
-
-            EnemyAI targetEnemy = player.LockOnTarget.GetComponent<EnemyAI>()
-                ?? player.LockOnTarget.GetComponentInParent<EnemyAI>();
-            if (enemyAI != null && targetEnemy == enemyAI)
             {
                 return true;
             }
@@ -176,7 +154,6 @@ namespace Week14.UI
 
         private void EnsureView()
         {
-            enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
             drone ??= GetComponentInParent<Drone>();
             EnsureIndicators();
@@ -295,6 +272,19 @@ namespace Week14.UI
         private bool IsOwnedIndicator(SpriteRenderer renderer)
         {
             return renderer != null && renderer.transform.IsChildOf(transform);
+        }
+
+        private void RotateExecutionIndicator(bool visible)
+        {
+            if (!visible || executionRenderer == null)
+            {
+                return;
+            }
+
+            executionIndicatorAngle = Mathf.Repeat(
+                executionIndicatorAngle + ExecutionIndicatorRotationSpeedDegrees * Time.deltaTime,
+                360f);
+            executionRenderer.transform.rotation = Quaternion.Euler(0f, 0f, executionIndicatorAngle);
         }
 
         private static void SetRendererEnabled(SpriteRenderer renderer, bool enabled)
