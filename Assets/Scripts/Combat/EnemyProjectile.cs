@@ -14,10 +14,10 @@ namespace Week14.Combat
         private const string HomingAimReticleName = "HomingAimReticle";
         private const string ParryLockOnIndicatorName = "ParryLockOnIndicator";
         private const string LegacyParryLockOnIndicatorName = "ProjectileLockOnIndicator";
-        private const int MaxPathDashCount = 72;
+        private const string WallLayerName = "Wall";
+        private const int MaxPathDashCount = 160;
         private const int HomingAimReticleLineCount = 3;
         private const int HomingAimReticleCircleSegments = 40;
-        private const float PathIndicatorSeconds = 1f;
         private const float PathDashLength = 0.2f;
         private const float PathDashGap = 0.14f;
         private const float DefaultHomingSeconds = 0.8f;
@@ -85,6 +85,7 @@ namespace Week14.Combat
         private Vector2 pathIndicatorDirection = Vector2.left;
         private float pathIndicatorLength;
         private float pathIndicatorEndsAt;
+        private Vector2 lastWallCheckPosition;
         private static readonly List<EnemyProjectile> activeProjectiles = new();
         private float executionPauseStartedAt;
         private bool pausedByExecution;
@@ -404,6 +405,7 @@ namespace Week14.Combat
             radialSplitDelaySeconds = 0f;
             radialSplitAt = 0f;
             launched = projectileChargeSeconds <= 0f;
+            lastWallCheckPosition = transform.position;
             chargeEndsAt = Time.time + projectileChargeSeconds;
             float launchTime = launched ? Time.time : chargeEndsAt;
             homingEndsAt = launchTime + this.homingSeconds;
@@ -455,12 +457,19 @@ namespace Week14.Combat
             if (!launched)
             {
                 TickCharge();
+                lastWallCheckPosition = transform.position;
             }
             else
             {
+                if (TryDestroyIfCrossedWall())
+                {
+                    return;
+                }
+
                 TickHoming();
                 TickRadialSplitDelay();
                 TickPathIndicator();
+                lastWallCheckPosition = transform.position;
             }
             if (Time.time >= destroyAt)
             {
@@ -625,6 +634,12 @@ namespace Week14.Combat
 
             if (IsCharging)
             {
+                return;
+            }
+
+            if (IsWallCollider(other))
+            {
+                DestroyProjectile();
                 return;
             }
 
@@ -1035,7 +1050,7 @@ namespace Week14.Combat
                 return;
             }
 
-            DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(projectileLifetime), 0f);
+            DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(transform.position, flightDirection, projectileLifetime), 0f);
         }
 
         private void BeginPathIndicator()
@@ -1048,9 +1063,9 @@ namespace Week14.Combat
 
             pathIndicatorStart = transform.position;
             pathIndicatorDirection = flightDirection.sqrMagnitude > 0.0001f ? flightDirection.normalized : Vector2.left;
-            float visibleSeconds = Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, destroyAt - Time.time));
+            float visibleSeconds = Mathf.Max(0f, destroyAt - Time.time);
             pathIndicatorEndsAt = Time.time + visibleSeconds;
-            pathIndicatorLength = GetPathIndicatorLength(visibleSeconds);
+            pathIndicatorLength = GetPathIndicatorLength(pathIndicatorStart, pathIndicatorDirection, visibleSeconds);
             pathIndicatorActive = true;
 
             if (IsHomingProjectile())
@@ -1085,9 +1100,63 @@ namespace Week14.Combat
             DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, Mathf.Max(0f, travelled));
         }
 
-        private float GetPathIndicatorLength(float seconds)
+        private float GetPathIndicatorLength(Vector2 start, Vector2 direction, float seconds)
         {
-            return projectileSpeed * Mathf.Min(PathIndicatorSeconds, Mathf.Max(0f, seconds));
+            float length = projectileSpeed * Mathf.Max(0f, seconds);
+            return GetWallClippedLength(start, direction, length);
+        }
+
+        private float GetWallClippedLength(Vector2 start, Vector2 direction, float length)
+        {
+            return TryGetWallHit(start, direction, length, out RaycastHit2D hit)
+                ? Mathf.Max(0f, hit.distance)
+                : length;
+        }
+
+        private bool TryDestroyIfCrossedWall()
+        {
+            Vector2 currentPosition = transform.position;
+            Vector2 delta = currentPosition - lastWallCheckPosition;
+            if (delta.sqrMagnitude <= 0.000001f)
+            {
+                return false;
+            }
+
+            if (!TryGetWallHit(lastWallCheckPosition, delta.normalized, delta.magnitude + projectileRadius, out _))
+            {
+                return false;
+            }
+
+            DestroyProjectile();
+            return true;
+        }
+
+        private bool TryGetWallHit(Vector2 start, Vector2 direction, float distance, out RaycastHit2D hit)
+        {
+            hit = default;
+            int wallMask = GetWallMask();
+            if (wallMask == 0 || distance <= 0.001f || direction.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            float castRadius = Mathf.Max(0.001f, projectileRadius);
+            hit = Physics2D.CircleCast(start, castRadius, direction.normalized, distance, wallMask);
+            return hit.collider != null;
+        }
+
+        private static bool IsWallCollider(Collider2D collider)
+        {
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            return wallLayer >= 0
+                && collider != null
+                && collider.gameObject.layer == wallLayer;
+        }
+
+        private static int GetWallMask()
+        {
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            return wallLayer >= 0 ? 1 << wallLayer : 0;
         }
 
         private void DrawHomingPathIndicator()
@@ -1099,6 +1168,12 @@ namespace Week14.Combat
             }
 
             float length = Vector2.Distance(start, aimPoint);
+            bool blockedByWall = TryGetWallHit(start, direction, length, out RaycastHit2D wallHit);
+            if (blockedByWall)
+            {
+                length = wallHit.distance;
+            }
+
             if (length > 0.01f)
             {
                 DrawPathIndicator(start, direction, length, 0f, true);
@@ -1108,7 +1183,14 @@ namespace Week14.Combat
                 SetPathDashesVisible(false);
             }
 
-            DrawHomingAimReticle(aimPoint, direction);
+            if (blockedByWall)
+            {
+                SetHomingAimReticleVisible(false);
+            }
+            else
+            {
+                DrawHomingAimReticle(aimPoint, direction);
+            }
             pathIndicatorActive = true;
         }
 
@@ -1224,11 +1306,8 @@ namespace Week14.Combat
 
             Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
             int dashCount = Mathf.Min(MaxPathDashCount, Mathf.CeilToInt(length / (PathDashLength + PathDashGap)));
-            Color color = keepHomingReticle
-                ? new Color(0.25f, 0.72f, 1f, 0.9f)
-                : Color.Lerp(projectileColor, Color.white, 0.55f);
-            color.a = keepHomingReticle ? 0.86f : 0.58f;
-            float width = Mathf.Max(keepHomingReticle ? 0.014f : 0.01f, projectileRadius * (keepHomingReticle ? 0.16f : 0.11f));
+            Color color = GetProjectileIndicatorColor(keepHomingReticle ? 0.86f : 0.58f);
+            float width = Mathf.Max(keepHomingReticle ? 0.018f : 0.013f, projectileRadius * (keepHomingReticle ? 0.2f : 0.14f));
             int visibleCount = 0;
 
             for (int i = 0; i < dashCount; i++)
@@ -1272,9 +1351,8 @@ namespace Week14.Combat
             Vector2 side = new(-forward.y, forward.x);
             float radius = Mathf.Max(0.2f, projectileRadius * 2.1f);
             float crossRadius = radius * 0.72f;
-            Color color = new(0.55f, 0.9f, 1f, 0.95f);
-            color.a = 0.95f;
-            float width = Mathf.Max(0.024f, projectileRadius * 0.24f);
+            Color color = GetProjectileIndicatorColor(0.95f);
+            float width = Mathf.Max(0.03f, projectileRadius * 0.3f);
 
             SetHomingAimReticleCircle(0, center, radius, color, width);
             SetHomingAimReticleSegment(1, center - side * crossRadius, center + side * crossRadius, color, width);
@@ -1287,6 +1365,13 @@ namespace Week14.Combat
                     homingAimReticleLines[i].enabled = false;
                 }
             }
+        }
+
+        private Color GetProjectileIndicatorColor(float alpha)
+        {
+            Color color = launched ? launchedColor : chargingColor;
+            color.a = Mathf.Clamp01(alpha);
+            return color;
         }
 
         private void PauseForExecution()

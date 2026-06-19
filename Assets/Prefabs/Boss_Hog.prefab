@@ -321,7 +321,7 @@ MonoBehaviour:
   enragePhase2MaxBullets: 1
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  maxBullets: 1
+  maxBullets: 150
   bulletEmptyExecutionSeconds: 10
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   bulletEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
@@ -358,8 +358,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.15838778, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
+      chargingColor: {r: 1, g: 0.29959294, b: 0.23113209, a: 1}
+      launchedColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
@@ -406,8 +406,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.16078432, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
+      chargingColor: {r: 1, g: 0.3019608, b: 0.23137255, a: 1}
+      launchedColor: {r: 0.2509804, g: 0.5137255, b: 1, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
@@ -462,7 +462,7 @@ MonoBehaviour:
       speed: 15
       lifetime: 2.5
       radius: 0.1
-      chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
+      chargingColor: {r: 1, g: 0.63759786, b: 0.1745283, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
@@ -522,7 +522,7 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
+      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
@@ -569,7 +569,7 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
+      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
       launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
@@ -682,27 +682,27 @@ MonoBehaviour:
   format: '{0}'
   styles:
   - bulletNumber: 5
-    fontSize: 18
+    fontSize: 6
     textColor: {r: 0.11965811, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.38823533, g: 0.7137255, b: 0.34509805, a: 1}
     outlineWidth: 0.1
   - bulletNumber: 4
-    fontSize: 24
+    fontSize: 10
     textColor: {r: 0.49650347, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.57254905, g: 0.7960785, b: 0.34901962, a: 1}
     outlineWidth: 0.1
   - bulletNumber: 3
-    fontSize: 30
+    fontSize: 16
     textColor: {r: 1, g: 0.86184216, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.7294118, b: 0.32156864, a: 1}
     outlineWidth: 0.1
   - bulletNumber: 2
-    fontSize: 38
+    fontSize: 24
     textColor: {r: 1, g: 0.52662724, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.54509807, b: 0.26666668, a: 1}
     outlineWidth: 0.1
   - bulletNumber: 1
-    fontSize: 54
+    fontSize: 38
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
     outlineWidth: 0.1

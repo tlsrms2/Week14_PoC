@@ -31,14 +31,14 @@ MonoBehaviour:
   attackImpactBackSparkColor: {r: 1, g: 0.52, b: 0.12, a: 1}
   attackImpactFlameColor: {r: 1, g: 0.48, b: 0.08, a: 1}
   attackImpactRingColor: {r: 1, g: 0.92, b: 0.62, a: 0.72}
-  attackImpactSparkCount: 15
-  attackImpactBackSparkCount: 24
-  attackImpactFlameCount: 16
+  attackImpactSparkCount: 10
+  attackImpactBackSparkCount: 20
+  attackImpactFlameCount: 12
   attackImpactEffectScale: 0.8
-  playerHitSparkCount: 10
-  playerHitBackSparkCount: 24
-  playerHitFlameCount: 12
-  playerHitEffectScale: 0.8
+  playerHitSparkCount: 5
+  playerHitBackSparkCount: 12
+  playerHitFlameCount: 6
+  playerHitEffectScale: 0.7
   playerBodyBulletEmptyColor: {r: 1, g: 0.2, b: 0.12, a: 1}
   playerBodyHitColor: {r: 1, g: 0.20000002, b: 0.121568635, a: 1}
   enemyBodyHitColor: {r: 1, g: 1, b: 1, a: 1}
