@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Week14.Bootstrap;
 using Week14.Enemy;
@@ -787,10 +788,11 @@ namespace Week14.Combat
             }
 
             Transform rightFireOrigin = GetRightFireOrigin();
-            Vector2 aimDirection = GetParryIndicatorDirection();
-            EnemyProjectile target = projectileLockOnTarget != null && projectileLockOnTarget.CanBeIntercepted
+            EnemyProjectile target = projectileLockOnTarget != null
+                    && projectileLockOnTarget.CanBeIntercepted
+                    && IsProjectileInCursorParryRange(projectileLockOnTarget)
                 ? projectileLockOnTarget
-                : FindClosestInterceptTarget(aimDirection);
+                : FindClosestInterceptTarget();
             if (target == null)
             {
                 return false;
@@ -850,27 +852,28 @@ namespace Week14.Combat
             return Mathf.Max(1, baseMaxBullets - bullets.CurrentBullets + 1);
         }
 
-        private EnemyProjectile FindClosestInterceptTarget(Vector2 aimDirection)
+        private EnemyProjectile FindClosestInterceptTarget()
         {
-            Vector2 parryCenter = GetParryCenter();
-            Collider2D[] hits = Physics2D.OverlapCircleAll(parryCenter, ParryRange, parryMask);
+            Vector2 cursorPosition = GetParryCursorWorldPosition();
             EnemyProjectile bestTarget = null;
             float bestDistance = float.PositiveInfinity;
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
 
-            for (int i = 0; i < hits.Length; i++)
+            for (int i = 0; i < activeProjectiles.Count; i++)
             {
-                EnemyProjectile source = hits[i].GetComponentInParent<EnemyProjectile>();
+                EnemyProjectile source = activeProjectiles[i];
                 if (source == null || !source.CanBeIntercepted)
                 {
                     continue;
                 }
 
-                if (!IsInsideParryJudgementArea(source.transform.position, aimDirection))
+                if (!IsProjectileInCursorParryRange(source, cursorPosition))
                 {
                     continue;
                 }
 
-                float distance = Vector2.Distance(parryCenter, source.transform.position);
+                Vector2 sourcePosition = source.transform.position;
+                float distance = Vector2.Distance(cursorPosition, sourcePosition);
                 if (distance >= bestDistance)
                 {
                     continue;
@@ -881,6 +884,23 @@ namespace Week14.Combat
             }
 
             return bestTarget;
+        }
+
+        private bool IsProjectileInCursorParryRange(EnemyProjectile projectile)
+        {
+            return IsProjectileInCursorParryRange(projectile, GetParryCursorWorldPosition());
+        }
+
+        private bool IsProjectileInCursorParryRange(EnemyProjectile projectile, Vector2 cursorPosition)
+        {
+            if (projectile == null || !projectile.CanBeIntercepted || projectile.ParryRange <= 0f)
+            {
+                return false;
+            }
+
+            Vector2 sourcePosition = projectile.transform.position;
+            float projectileParryRange = projectile.ParryRange;
+            return (cursorPosition - sourcePosition).sqrMagnitude <= projectileParryRange * projectileParryRange;
         }
 
         private Transform CombatCenterOrigin => combatCenter != null ? combatCenter : (bodyRoot != null ? bodyRoot : transform);
@@ -1154,7 +1174,7 @@ namespace Week14.Combat
 
         private void UpdateProjectileLockOnTarget()
         {
-            projectileLockOnTarget = FindClosestInterceptTarget(GetParryIndicatorDirection());
+            projectileLockOnTarget = FindClosestInterceptTarget();
         }
 
         private void UpdateProjectileLockOnIndicator()
@@ -1227,13 +1247,10 @@ namespace Week14.Combat
 
         private void UpdateRangeIndicators()
         {
-            EnsureRangeIndicators();
             SetAttackRangeDashesVisible(false);
-            Vector2 indicatorDirection = GetParryIndicatorDirection();
-            UpdateParryRangeIndicator(ParryRange, indicatorDirection);
             if (parryRangeLine != null)
             {
-                parryRangeLine.enabled = true;
+                parryRangeLine.enabled = false;
             }
         }
 
@@ -1356,6 +1373,16 @@ namespace Week14.Combat
             }
 
             return bodyRoot != null ? (Vector2)bodyRoot.right : (Vector2)transform.right;
+        }
+
+        private Vector2 GetParryCursorWorldPosition()
+        {
+            if (GameInput.IsGamepadMode)
+            {
+                return GetParryCenter() + GetParryIndicatorDirection() * ParryRange;
+            }
+
+            return GetMouseWorldPosition();
         }
 
         private void SetAttackRangeDashesVisible(bool visible)
