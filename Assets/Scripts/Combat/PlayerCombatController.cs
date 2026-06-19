@@ -20,6 +20,8 @@ namespace Week14.Combat
         private const string ProjectileLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const int ExecutionDimSortingOrder = 65;
         private const float BaseGamepadLookTurnDegreesPerSecond = 540f;
+        private const float LockOnAcquireViewportPadding = 0f;
+        private const float LockOnReleaseViewportPadding = 0.08f;
 
         public static PlayerCombatController Active { get; private set; }
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
@@ -962,33 +964,31 @@ namespace Week14.Combat
 
         private void UpdateLockOnTarget()
         {
+            if (lockOnTarget != null)
+            {
+                return;
+            }
+
             SetLockOnTarget(FindNearestLockOnTarget());
         }
 
         private Health FindNearestLockOnTarget()
         {
-            Vector2 playerPosition = transform.position;
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return null;
+            }
+
             Vector2 mousePosition = GetMouseWorldPosition();
-            Collider2D[] hits = Physics2D.OverlapCircleAll(playerPosition, GetLockOnAcquireDistance(), enemyMask);
             Health bestTarget = null;
             float bestDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Health targetHealth = hits[i].GetComponentInParent<Health>();
-                ChooseCloserLockOnTarget(targetHealth, hits[i], mousePosition, ref bestTarget, ref bestDistance);
-            }
-
-            if (bestTarget != null)
-            {
-                return bestTarget;
-            }
 
             Health[] allTargets = Object.FindObjectsByType<Health>(FindObjectsSortMode.None);
             for (int i = 0; i < allTargets.Length; i++)
             {
                 Health targetHealth = allTargets[i];
-                ChooseCloserLockOnTarget(targetHealth, null, mousePosition, ref bestTarget, ref bestDistance);
+                ChooseCloserLockOnTarget(targetHealth, camera, mousePosition, ref bestTarget, ref bestDistance);
             }
 
             return bestTarget;
@@ -996,17 +996,17 @@ namespace Week14.Combat
 
         private void ChooseCloserLockOnTarget(
             Health targetHealth,
-            Collider2D candidateCollider,
+            Camera camera,
             Vector2 mousePosition,
             ref Health bestTarget,
             ref float bestDistance)
         {
-            if (!IsValidLockOnTargetInRange(targetHealth))
+            if (!IsValidLockOnTargetInCamera(targetHealth, camera))
             {
                 return;
             }
 
-            Vector2 targetPoint = GetLockOnMouseComparePoint(targetHealth, candidateCollider, mousePosition);
+            Vector2 targetPoint = GetLockOnMouseComparePoint(targetHealth, mousePosition);
             float distance = Vector2.Distance(mousePosition, targetPoint);
             if (distance >= bestDistance)
             {
@@ -1019,14 +1019,8 @@ namespace Week14.Combat
 
         private static Vector2 GetLockOnMouseComparePoint(
             Health targetHealth,
-            Collider2D candidateCollider,
             Vector2 mousePosition)
         {
-            if (candidateCollider != null && candidateCollider.enabled)
-            {
-                return candidateCollider.ClosestPoint(mousePosition);
-            }
-
             Collider2D[] colliders = targetHealth != null ? targetHealth.GetComponentsInChildren<Collider2D>() : null;
             if (colliders == null || colliders.Length == 0)
             {
@@ -1059,7 +1053,9 @@ namespace Week14.Combat
 
         private void ClearInvalidLockOnTarget()
         {
-            if (lockOnTarget != null && !lockOnTarget.IsDead && !IsLockOnTooFar(lockOnTarget))
+            if (lockOnTarget != null
+                && !lockOnTarget.IsDead
+                && CanKeepLockOnTarget(lockOnTarget, Camera.main))
             {
                 return;
             }
@@ -1105,25 +1101,87 @@ namespace Week14.Combat
                     || targetHealth.GetComponentInParent<Week14.Enemy.Drone>() != null);
         }
 
-        private bool IsValidLockOnTargetInRange(Health targetHealth)
+        private bool IsValidLockOnTargetInCamera(Health targetHealth, Camera camera)
+        {
+            return IsValidLockOnTargetInCamera(targetHealth, camera, LockOnAcquireViewportPadding);
+        }
+
+        private bool IsValidLockOnTargetInCamera(Health targetHealth, Camera camera, float viewportPadding)
         {
             return IsValidLockOnTarget(targetHealth)
-                && Vector2.Distance(transform.position, targetHealth.transform.position) <= GetLockOnAcquireDistance();
+                && IsTargetVisibleInCamera(targetHealth, camera, viewportPadding);
         }
 
-        private float GetLockOnAcquireDistance()
+        private bool CanKeepLockOnTarget(Health targetHealth, Camera camera)
         {
-            return config != null ? config.LockOnBreakDistance : 0f;
+            return IsValidLockOnTarget(targetHealth)
+                && CanCameraContainPair(camera, transform.position, targetHealth.transform.position, LockOnReleaseViewportPadding);
         }
 
-        private bool IsLockOnTooFar(Health targetHealth)
+        private static bool CanCameraContainPair(Camera camera, Vector3 firstPosition, Vector3 secondPosition, float viewportPadding)
         {
-            if (targetHealth == null || config == null || config.LockOnBreakDistance <= 0f)
+            if (camera == null || !camera.orthographic)
             {
                 return false;
             }
 
-            return Vector2.Distance(transform.position, targetHealth.transform.position) > config.LockOnBreakDistance;
+            float padding = Mathf.Clamp01(viewportPadding);
+            float availableHalfHeight = camera.orthographicSize * (1f - padding);
+            float availableHalfWidth = availableHalfHeight * camera.aspect;
+            Vector2 delta = secondPosition - firstPosition;
+            return Mathf.Abs(delta.x) * 0.5f <= availableHalfWidth
+                && Mathf.Abs(delta.y) * 0.5f <= availableHalfHeight;
+        }
+
+        private static bool IsTargetVisibleInCamera(Health targetHealth, Camera camera, float viewportPadding)
+        {
+            if (targetHealth == null || camera == null)
+            {
+                return false;
+            }
+
+            if (IsWorldPointInCamera(camera, targetHealth.transform.position, viewportPadding))
+            {
+                return true;
+            }
+
+            Collider2D[] colliders = targetHealth.GetComponentsInChildren<Collider2D>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (IsBoundsVisibleInCamera(camera, collider.bounds, viewportPadding))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsBoundsVisibleInCamera(Camera camera, Bounds bounds, float viewportPadding)
+        {
+            return IsWorldPointInCamera(camera, bounds.center, viewportPadding)
+                || IsWorldPointInCamera(camera, new Vector3(bounds.min.x, bounds.min.y, bounds.center.z), viewportPadding)
+                || IsWorldPointInCamera(camera, new Vector3(bounds.min.x, bounds.max.y, bounds.center.z), viewportPadding)
+                || IsWorldPointInCamera(camera, new Vector3(bounds.max.x, bounds.min.y, bounds.center.z), viewportPadding)
+                || IsWorldPointInCamera(camera, new Vector3(bounds.max.x, bounds.max.y, bounds.center.z), viewportPadding);
+        }
+
+        private static bool IsWorldPointInCamera(Camera camera, Vector3 worldPoint, float viewportPadding)
+        {
+            Vector3 viewportPoint = camera.WorldToViewportPoint(worldPoint);
+            float padding = Mathf.Max(0f, viewportPadding);
+            return viewportPoint.z >= camera.nearClipPlane
+                && viewportPoint.z <= camera.farClipPlane
+                && viewportPoint.x >= -padding
+                && viewportPoint.x <= 1f + padding
+                && viewportPoint.y >= -padding
+                && viewportPoint.y <= 1f + padding;
         }
 
         private void RotateToAim()

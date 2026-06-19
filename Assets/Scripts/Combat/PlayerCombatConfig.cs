@@ -48,10 +48,6 @@ namespace Week14.Combat
         [FormerlySerializedAs("parryBodyRadius")]
         [SerializeField, Min(0f)] private float playerBodyAimRadius = 0.3f;
 
-        [Header("Lock On")]
-        [Tooltip("락온 대상이 이 거리보다 멀어지면 락온을 해제합니다.")]
-        [SerializeField, Min(0f)] private float lockOnBreakDistance = 9f;
-
         [Header("Execution")]
         [Tooltip("처형을 시작할 수 있는 최대 거리입니다.")]
         [SerializeField, Min(0f)] private float executionRange = 1.2f;
@@ -133,7 +129,6 @@ namespace Week14.Combat
         public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
         public Color BulletParryOutlineColor => effectData != null ? effectData.BulletParryOutlineColor : Color.white;
         public Color BulletHitOutlineColor => effectData != null ? effectData.BulletHitOutlineColor : Color.yellow;
-        public float LockOnBreakDistance => lockOnBreakDistance;
         public float ExecutionRange => executionRange;
         public int ExecutionBulletRecovery => executionBulletRecovery;
         public bool DestroyTargetOnExecute => destroyTargetOnExecute;
