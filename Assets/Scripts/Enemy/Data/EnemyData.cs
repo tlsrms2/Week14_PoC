@@ -68,6 +68,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float projectileRadius = 0.12f;
         [Tooltip("발사 방향 계산 시 플레이어 이동을 예측할 최대 시간입니다.")]
         [SerializeField, Min(0f)] private float projectileLeadPredictionSeconds = 0.45f;
+        [Tooltip("켜면 이 적의 기본 투사체가 플레이어를 추적합니다.")]
+        [SerializeField] private bool projectileHomingEnabled;
         [Tooltip("발사 후 플레이어를 추적하는 시간입니다.")]
         [SerializeField, Min(0f)] private float projectileHomingSeconds = 0.8f;
         [Tooltip("추적 중 적 투사체가 초당 회전할 수 있는 최대 각도입니다.")]
@@ -113,6 +115,7 @@ namespace Week14.Enemy
         public float ProjectileLifetime => projectileLifetime;
         public float ProjectileRadius => projectileRadius;
         public float ProjectileLeadPredictionSeconds => projectileLeadPredictionSeconds;
+        public bool ProjectileHomingEnabled => projectileHomingEnabled;
         public float ProjectileHomingSeconds => projectileHomingSeconds;
         public float ProjectileHomingTurnDegreesPerSecond => projectileHomingTurnDegreesPerSecond;
         public Color ProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);

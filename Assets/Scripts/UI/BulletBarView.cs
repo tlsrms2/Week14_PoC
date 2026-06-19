@@ -35,6 +35,7 @@ namespace Week14.UI
         private float iconWidth;
         private float iconHeight;
         private float iconSpacing;
+        private float lastIconRootHeight;
         private Color currentIconColor;
 
         private static Sprite bulletIconSprite;
@@ -55,7 +56,12 @@ namespace Week14.UI
         {
             TickEffects();
 
-            if (target != null || !bindPlayerOnStart)
+            if (!bindPlayerOnStart || PlayerCombatController.Active == null)
+            {
+                return;
+            }
+
+            if (target == PlayerCombatController.Active.Bullets)
             {
                 return;
             }
@@ -107,13 +113,23 @@ namespace Week14.UI
 
         private void TryBindPlayer()
         {
-            if (!bindPlayerOnStart || target != null || PlayerCombatController.Active == null)
+            if (!bindPlayerOnStart || PlayerCombatController.Active == null)
             {
                 return;
             }
 
+            BulletGauge playerBullets = PlayerCombatController.Active.Bullets;
+            if (target == playerBullets)
+            {
+                ApplyPlayerConfigColors();
+                return;
+            }
+
+            Unsubscribe();
+            target = playerBullets;
             ApplyPlayerConfigColors();
-            target = PlayerCombatController.Active.Bullets;
+            displayedBulletCount = -1;
+            displayedVisibleCount = 0;
         }
 
         private void Subscribe()
@@ -259,6 +275,46 @@ namespace Week14.UI
             ConfigureOverflowTextTransform(0f, 0f);
         }
 
+        private float GetIconRootHeight()
+        {
+            return TryGetIconRootHeight(out float rootHeight)
+                ? rootHeight
+                : Mathf.Max(0.01f, lastIconRootHeight);
+        }
+
+        private bool TryGetIconRootHeight(out float rootHeight)
+        {
+            Canvas.ForceUpdateCanvases();
+
+            float iconRootHeight = iconRoot != null ? Mathf.Abs(iconRoot.rect.height) : 0f;
+            if (iconRootHeight > 0.01f)
+            {
+                lastIconRootHeight = iconRootHeight;
+                rootHeight = iconRootHeight;
+                return true;
+            }
+
+            RectTransform parent = ResolveIconParent();
+            float parentHeight = parent != null ? Mathf.Abs(parent.rect.height) : 0f;
+            if (parentHeight > 0.01f)
+            {
+                lastIconRootHeight = parentHeight;
+                rootHeight = parentHeight;
+                return true;
+            }
+
+            float sizeDeltaHeight = parent != null ? Mathf.Abs(parent.sizeDelta.y) : 0f;
+            if (sizeDeltaHeight > 0.01f)
+            {
+                lastIconRootHeight = sizeDeltaHeight;
+                rootHeight = sizeDeltaHeight;
+                return true;
+            }
+
+            rootHeight = 0f;
+            return false;
+        }
+
         private void ResizeVisibleIcons(int visibleCount, bool animate, bool gained, BulletChangeSource source)
         {
             while (icons.Count < visibleCount)
@@ -315,7 +371,7 @@ namespace Week14.UI
 
             Rect rect = iconRoot.rect;
             float rootWidth = Mathf.Abs(rect.width);
-            float rootHeight = Mathf.Max(0.01f, Mathf.Abs(rect.height));
+            float rootHeight = GetIconRootHeight();
             iconHeight = rootHeight * iconHeightRatio;
             iconWidth = rootHeight * iconWidthRatio;
             iconSpacing = rootHeight * iconSpacingRatio;
@@ -551,6 +607,10 @@ namespace Week14.UI
             parryOutlineColor = config.BulletParryOutlineColor;
             hitOutlineColor = config.BulletHitOutlineColor;
             maxVisibleIcons = Mathf.Max(1, config.PlayerBulletUiMaxVisibleIcons);
+            iconHeightRatio = Mathf.Clamp(config.PlayerBulletUiIconHeightRatio, 0.1f, 1f);
+            iconWidthRatio = Mathf.Clamp(config.PlayerBulletUiIconWidthRatio, 0.1f, 1f);
+            iconSpacingRatio = Mathf.Max(0f, config.PlayerBulletUiIconSpacingRatio);
+            overflowTextFontSize = Mathf.Max(1f, config.PlayerBulletUiOverflowTextFontSize);
         }
 
         private void ApplyPlayerConfigColorsIfNeeded()

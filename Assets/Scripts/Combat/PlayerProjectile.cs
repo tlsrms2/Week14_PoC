@@ -177,11 +177,6 @@ namespace Week14.Combat
 
         public void SetForcedParryTarget(EnemyProjectile enemyProjectile)
         {
-            SetForcedTarget(enemyProjectile);
-        }
-
-        private void SetForcedTarget(EnemyProjectile enemyProjectile)
-        {
             forcedParryTarget = enemyProjectile;
             if (forcedParryTarget == null || projectileSpeed <= 0f)
             {
@@ -191,13 +186,20 @@ namespace Week14.Combat
 
             float distance = Vector2.Distance(transform.position, forcedParryTarget.transform.position);
             forcedParryResolveAt = Time.time + Mathf.Max(0.02f, distance / projectileSpeed);
+            destroyAt = Mathf.Max(destroyAt, forcedParryResolveAt + 0.1f);
         }
 
         private bool TryResolveForcedParryTarget()
         {
-            if (!canClashWithEnemyProjectile || forcedParryTarget == null || resolved || isDestroying)
+            if (!canClashWithEnemyProjectile || resolved || isDestroying)
             {
                 return false;
+            }
+
+            if (forcedParryTarget == null)
+            {
+                DestroyProjectile();
+                return true;
             }
 
             Vector2 targetPosition = forcedParryTarget.transform.position;
@@ -327,32 +329,25 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (enemyProjectile == null)
+            if (enemyProjectile == null || (forcedParryTarget != null && enemyProjectile != forcedParryTarget))
             {
                 return false;
             }
 
             Vector3 impactPosition = enemyProjectile.transform.position;
             Vector2 incomingDirection = enemyProjectile.IncomingDirection;
-            if (!enemyProjectile.TryDestroyByInterceptShot(out _))
+            if (!enemyProjectile.TryDestroyByInterceptShot(out bool parried))
             {
                 return false;
             }
 
-            owner?.PlayParryImpact(impactPosition, incomingDirection);
-
-            DestroyByClash();
-            return true;
-        }
-
-        public void DestroyAfterParryResolved()
-        {
-            if (isDestroying)
+            if (parried)
             {
-                return;
+                owner?.PlayParryImpact(impactPosition, incomingDirection);
             }
 
             DestroyByClash();
+            return true;
         }
 
         private void DestroyByClash()

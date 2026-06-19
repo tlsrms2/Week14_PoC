@@ -9,7 +9,7 @@ namespace Week14.UI
     {
         private const int DefaultSortingOrder = 40;
         private const string BarsName = "EnemyStatusBars";
-        private static readonly Vector2 BarsSize = new(2.35f, 0.4f);
+        private static readonly Vector2 DefaultBarsSize = new(2.35f, 0.4f);
         private static Sprite indicatorSprite;
 
         [SerializeField, HideInInspector] private Health health;
@@ -25,6 +25,7 @@ namespace Week14.UI
 
         private Transform worldTarget;
         private Vector3 authoredBarOffset = new(0f, 0.65f, 0f);
+        private Vector2 authoredBarsSize = DefaultBarsSize;
         private Color bulletColor = new(1f, 0.55f, 0.1f, 1f);
         private Color emptyColor = Color.red;
         private Color lockOnColor = Color.white;
@@ -80,10 +81,12 @@ namespace Week14.UI
             }
 
             drone = nextDrone;
+            executionTarget = nextDrone.GetComponent<ExecutionTarget>();
             bulletColor = nextDrone.BulletBarColor;
             emptyColor = nextDrone.EmptyBulletBarColor;
             lockOnColor = nextDrone.LockOnIndicatorColor;
             executionColor = nextDrone.ExecutionIndicatorColor;
+            authoredBarsSize = nextDrone.StatusBulletBarSize;
 
             EnsureView();
             ApplyColors();
@@ -225,13 +228,14 @@ namespace Week14.UI
                 GameObject canvasObject = new(BarsName, typeof(RectTransform));
                 canvasObject.transform.SetParent(transform, false);
                 barsRoot = canvasObject.GetComponent<RectTransform>();
-                barsRoot.sizeDelta = BarsSize;
 
                 Canvas canvas = canvasObject.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.WorldSpace;
                 canvas.overrideSorting = true;
                 canvas.sortingOrder = DefaultSortingOrder;
             }
+
+            barsRoot.sizeDelta = authoredBarsSize;
 
             RectTransform row = FindRow("Bullet") ?? CreateRow("Bullet", barsRoot);
             row.gameObject.name = "Bullet";

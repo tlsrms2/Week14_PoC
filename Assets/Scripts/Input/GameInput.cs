@@ -19,8 +19,6 @@ namespace Week14.Input
         private const string LookActionName = "Look";
         private const string LeftAttackActionName = "LeftAttack";
         private const string RightAttackActionName = "RightAttack";
-        private const string SprintActionName = "Sprint";
-        private const string LockOnActionName = "LockOn";
         private const string HelpActionName = "Help";
         private const string LeftActionName = "Left";
         private const string RightActionName = "Right";
@@ -37,8 +35,6 @@ namespace Week14.Input
         private static InputAction lookAction;
         private static InputAction leftAttackAction;
         private static InputAction rightAttackAction;
-        private static InputAction sprintAction;
-        private static InputAction lockOnAction;
         private static InputAction helpAction;
         private static InputAction leftAction;
         private static InputAction rightAction;
@@ -49,8 +45,6 @@ namespace Week14.Input
         private static readonly object moveAction = null;
         private static readonly object leftAttackAction = null;
         private static readonly object rightAttackAction = null;
-        private static readonly object sprintAction = null;
-        private static readonly object lockOnAction = null;
         private static readonly object helpAction = null;
         private static readonly object leftAction = null;
         private static readonly object rightAction = null;
@@ -84,8 +78,6 @@ namespace Week14.Input
             lookAction = null;
             leftAttackAction = null;
             rightAttackAction = null;
-            sprintAction = null;
-            lockOnAction = null;
             helpAction = null;
             leftAction = null;
             rightAction = null;
@@ -101,10 +93,8 @@ namespace Week14.Input
         public static GameplayControlMode ControlMode => controlMode;
         public static bool IsGamepadMode => controlMode == GameplayControlMode.Gamepad;
         public static Vector2 Move => ReadVector2(moveAction);
-        public static bool Sprint => ReadButton(sprintAction);
         public static bool LeftAttackDown => WasPressed(IsGamepadMode ? rightAttackAction : leftAttackAction);
         public static bool RightAttackDown => WasPressed(IsGamepadMode ? leftAttackAction : rightAttackAction);
-        public static bool LockOnDown => WasPressed(lockOnAction);
         public static bool HelpDown => WasPressed(helpAction);
         public static bool UiLeftDown => WasPressed(leftAction);
         public static bool UiRightDown => WasPressed(rightAction);
@@ -187,8 +177,6 @@ namespace Week14.Input
             lookAction = FindPlayerAction(LookActionName);
             leftAttackAction = FindPlayerAction(LeftAttackActionName);
             rightAttackAction = FindPlayerAction(RightAttackActionName);
-            sprintAction = FindPlayerAction(SprintActionName);
-            lockOnAction = FindPlayerAction(LockOnActionName);
             helpAction = FindPlayerAction(HelpActionName);
             leftAction = FindPlayerAction(LeftActionName);
             rightAction = FindPlayerAction(RightActionName);
@@ -215,8 +203,6 @@ namespace Week14.Input
             EnableAction(lookAction);
             EnableAction(leftAttackAction);
             EnableAction(rightAttackAction);
-            EnableAction(sprintAction);
-            EnableAction(lockOnAction);
             EnableAction(helpAction);
             EnableAction(leftAction);
             EnableAction(rightAction);
@@ -236,11 +222,6 @@ namespace Week14.Input
         private static Vector2 ReadVector2(InputAction action)
         {
             return action != null ? Vector2.ClampMagnitude(action.ReadValue<Vector2>(), 1f) : Vector2.zero;
-        }
-
-        private static bool ReadButton(InputAction action)
-        {
-            return action != null && action.IsPressed();
         }
 
         private static bool WasPressed(InputAction action)
@@ -299,7 +280,6 @@ namespace Week14.Input
         }
 #else
         private static Vector2 ReadVector2(object _) => Vector2.zero;
-        private static bool ReadButton(object _) => false;
         private static bool WasPressed(object _) => false;
         private static bool IsActiveDeviceGamepad() => false;
 #endif
