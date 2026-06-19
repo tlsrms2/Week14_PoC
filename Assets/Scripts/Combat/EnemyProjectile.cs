@@ -12,6 +12,8 @@ namespace Week14.Combat
         private const string ChargeVfxName = "ChargeVfx";
         private const string PathIndicatorName = "PathIndicator";
         private const string HomingAimReticleName = "HomingAimReticle";
+        private const string ParryLockOnIndicatorName = "ParryLockOnIndicator";
+        private const string LegacyParryLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const int MaxPathDashCount = 72;
         private const int HomingAimReticleLineCount = 3;
         private const int HomingAimReticleCircleSegments = 40;
@@ -35,6 +37,10 @@ namespace Week14.Combat
         private float chargeEndsAt;
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
+        [SerializeField] private GameObject parryLockOnIndicatorRoot;
+        [SerializeField] private MouseParryReticle parryLockOnReticle;
+        [SerializeField] private Transform parryLockOnRotatingRoot;
+        [SerializeField] private float parryLockOnRotationSpeedDegrees = 180f;
         private readonly List<LineRenderer> pathIndicatorDashes = new();
         private readonly List<LineRenderer> homingAimReticleLines = new();
         private Transform pathIndicatorRoot;
@@ -76,6 +82,7 @@ namespace Week14.Combat
         private bool interceptPending;
         private bool ownerSlotReleased;
         private bool pathIndicatorActive;
+        private bool parryLockOnIndicatorVisible;
         private Vector2 pathIndicatorStart;
         private Vector2 pathIndicatorDirection = Vector2.left;
         private float pathIndicatorLength;
@@ -90,6 +97,30 @@ namespace Week14.Combat
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public static IReadOnlyList<EnemyProjectile> ActiveProjectiles => activeProjectiles;
+
+        public void SetParryLockOnIndicatorVisible(bool visible)
+        {
+            ResolveParryLockOnIndicator();
+            bool nextVisible = visible && CanBeIntercepted;
+            parryLockOnIndicatorVisible = nextVisible;
+
+            if (nextVisible && parryLockOnIndicatorRoot != null && parryLockOnIndicatorRoot != gameObject)
+            {
+                parryLockOnIndicatorRoot.SetActive(true);
+            }
+
+            if (parryLockOnReticle != null)
+            {
+                parryLockOnReticle.SetForceOscillationWhileThreatened(nextVisible);
+                parryLockOnReticle.SetVisible(nextVisible);
+                parryLockOnReticle.SetThreatened(nextVisible);
+            }
+
+            if (!nextVisible && parryLockOnIndicatorRoot != null && parryLockOnIndicatorRoot != gameObject)
+            {
+                parryLockOnIndicatorRoot.SetActive(false);
+            }
+        }
 
         public static void DestroyAllActive()
         {
@@ -288,6 +319,10 @@ namespace Week14.Combat
         public void ConfigureInterceptable(bool interceptable)
         {
             canBeIntercepted = interceptable;
+            if (!canBeIntercepted)
+            {
+                SetParryLockOnIndicatorVisible(false);
+            }
         }
 
         private static EnemyProjectile SpawnInternal(
@@ -316,6 +351,8 @@ namespace Week14.Combat
         private void Awake()
         {
             body = GetComponent<Rigidbody2D>();
+            ResolveParryLockOnIndicator();
+            SetParryLockOnIndicatorVisible(false);
         }
 
         private void Initialize(
@@ -366,6 +403,8 @@ namespace Week14.Combat
             launchMuzzleFlashScale = 1f;
             aimAtPlayerOnLaunchSpreadDegrees = 0f;
             canBeIntercepted = true;
+            interceptPending = false;
+            SetParryLockOnIndicatorVisible(false);
             splitOnObstacle = false;
             splitRadiallyOnLaunch = false;
             splitRemaining = 0;
@@ -381,15 +420,18 @@ namespace Week14.Combat
 
             if (body == null)
             {
-                body = gameObject.AddComponent<Rigidbody2D>();
+                body = GetComponent<Rigidbody2D>();
             }
 
             EnsureProjectileShape();
-            body.gravityScale = 0f;
-            body.freezeRotation = true;
-            body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-            body.interpolation = RigidbodyInterpolation2D.Interpolate;
-            body.linearVelocity = launched ? flightDirection * projectileSpeed : Vector2.zero;
+            if (body != null)
+            {
+                body.gravityScale = 0f;
+                body.freezeRotation = true;
+                body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                body.interpolation = RigidbodyInterpolation2D.Interpolate;
+                body.linearVelocity = launched ? flightDirection * projectileSpeed : Vector2.zero;
+            }
 
             if (launched)
             {
@@ -417,6 +459,7 @@ namespace Week14.Combat
             }
 
             ResumeFromExecutionPause();
+            TickParryLockOnIndicator();
 
             if (!launched)
             {
@@ -775,6 +818,7 @@ namespace Week14.Combat
             }
 
             interceptPending = true;
+            SetParryLockOnIndicatorVisible(false);
             return true;
         }
 
@@ -810,6 +854,7 @@ namespace Week14.Combat
 
             SetChargeVfxVisible(false);
             SetPathIndicatorVisible(false);
+            SetParryLockOnIndicatorVisible(false);
 
             Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
             for (int i = 0; i < colliders.Length; i++)
@@ -857,52 +902,33 @@ namespace Week14.Combat
 
         private void EnsureProjectileShape()
         {
-            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
+            if (visualRenderer != null)
             {
-                spriteRenderer.enabled = false;
+                visualRenderer.color = projectileColor;
+                visualRenderer.sortingOrder = 20;
             }
-
-            Transform visual = transform.Find(BulletVisualName);
-            if (visual == null)
-            {
-                GameObject visualObject = new GameObject(BulletVisualName);
-                visualObject.transform.SetParent(transform, false);
-                visual = visualObject.transform;
-            }
-
-            SpriteRenderer visualRenderer = visual.GetComponent<SpriteRenderer>();
-            if (visualRenderer == null)
-            {
-                visualRenderer = visual.gameObject.AddComponent<SpriteRenderer>();
-            }
-
-            if (visualRenderer.sprite == null)
-            {
-                visualRenderer.sprite = CreateRuntimeSprite();
-            }
-
-            visualRenderer.color = projectileColor;
-            visualRenderer.sortingOrder = 20;
-            visual.localPosition = Vector3.zero;
-            visual.localRotation = Quaternion.identity;
 
             CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
-            if (circleCollider == null)
+            if (circleCollider != null)
             {
-                circleCollider = gameObject.AddComponent<CircleCollider2D>();
+                circleCollider.isTrigger = true;
+                circleCollider.radius = projectileRadius;
+                return;
             }
 
-            circleCollider.isTrigger = true;
-            circleCollider.radius = projectileRadius;
+            Collider2D projectileCollider = GetComponent<Collider2D>();
+            if (projectileCollider != null)
+            {
+                projectileCollider.isTrigger = true;
+            }
         }
 
         private void ApplyProjectileColor(Color color)
         {
             projectileColor = color;
 
-            Transform visual = transform.Find(BulletVisualName);
-            SpriteRenderer visualRenderer = visual != null ? visual.GetComponent<SpriteRenderer>() : null;
+            SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
             if (visualRenderer != null)
             {
                 visualRenderer.color = projectileColor;
@@ -916,6 +942,79 @@ namespace Week14.Combat
                 trail.startColor = projectileColor;
                 trail.endColor = endColor;
             }
+        }
+
+        private SpriteRenderer GetProjectileVisualRenderer()
+        {
+            Transform visual = transform.Find(BulletVisualName);
+            SpriteRenderer visualRenderer = visual != null ? visual.GetComponent<SpriteRenderer>() : null;
+            return visualRenderer != null ? visualRenderer : GetComponent<SpriteRenderer>();
+        }
+
+        private void ResolveParryLockOnIndicator()
+        {
+            if (parryLockOnReticle == null && parryLockOnIndicatorRoot != null)
+            {
+                parryLockOnReticle = parryLockOnIndicatorRoot.GetComponentInChildren<MouseParryReticle>(true);
+            }
+
+            if (parryLockOnReticle == null)
+            {
+                parryLockOnReticle = GetComponentInChildren<MouseParryReticle>(true);
+            }
+
+            if (parryLockOnIndicatorRoot != null)
+            {
+                return;
+            }
+
+            Transform authoredRoot = transform.Find(ParryLockOnIndicatorName);
+            if (authoredRoot == null)
+            {
+                authoredRoot = transform.Find(LegacyParryLockOnIndicatorName);
+            }
+
+            if (authoredRoot != null)
+            {
+                parryLockOnIndicatorRoot = authoredRoot.gameObject;
+                return;
+            }
+
+            if (parryLockOnReticle != null && parryLockOnReticle.gameObject != gameObject)
+            {
+                parryLockOnIndicatorRoot = parryLockOnReticle.gameObject;
+            }
+        }
+
+        private void TickParryLockOnIndicator()
+        {
+            if (!parryLockOnIndicatorVisible || Mathf.Approximately(parryLockOnRotationSpeedDegrees, 0f))
+            {
+                return;
+            }
+
+            Transform targetRoot = GetParryLockOnRotationRoot();
+            if (targetRoot != null)
+            {
+                targetRoot.Rotate(0f, 0f, parryLockOnRotationSpeedDegrees * Time.deltaTime, Space.Self);
+            }
+        }
+
+        private Transform GetParryLockOnRotationRoot()
+        {
+            if (parryLockOnRotatingRoot != null)
+            {
+                return parryLockOnRotatingRoot;
+            }
+
+            if (parryLockOnIndicatorRoot != null && parryLockOnIndicatorRoot != gameObject)
+            {
+                return parryLockOnIndicatorRoot.transform;
+            }
+
+            return parryLockOnReticle != null && parryLockOnReticle.gameObject != gameObject
+                ? parryLockOnReticle.transform
+                : null;
         }
 
         private bool ShouldShowPathIndicator()
@@ -1432,16 +1531,15 @@ namespace Week14.Combat
             }
 
             Transform existing = transform.Find(ChargeVfxName);
-            GameObject vfxObject = existing != null ? existing.gameObject : new GameObject(ChargeVfxName);
-            vfxObject.transform.SetParent(transform, false);
-            vfxObject.transform.localPosition = Vector3.zero;
-            vfxObject.transform.localRotation = Quaternion.identity;
-            vfxObject.transform.localScale = Vector3.one;
+            if (existing == null)
+            {
+                return null;
+            }
 
-            chargeVfx = vfxObject.GetComponent<LineRenderer>();
+            chargeVfx = existing.GetComponent<LineRenderer>();
             if (chargeVfx == null)
             {
-                chargeVfx = vfxObject.AddComponent<LineRenderer>();
+                return null;
             }
 
             chargeVfx.useWorldSpace = false;
@@ -1473,12 +1571,5 @@ namespace Week14.Combat
             }
         }
 
-        private static Sprite CreateRuntimeSprite()
-        {
-            Texture2D texture = new Texture2D(1, 1);
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-            return Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
-        }
     }
 }

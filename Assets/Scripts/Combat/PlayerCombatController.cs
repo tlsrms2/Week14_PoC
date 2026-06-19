@@ -17,7 +17,6 @@ namespace Week14.Combat
     {
         private const string BodyVisualName = "VisualRoot";
         private const string CombatCenterName = "Center Pivot";
-        private const string ProjectileLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const int ExecutionDimSortingOrder = 65;
         private const float LockOnAcquireViewportPadding = 0f;
         private const float LockOnReleaseViewportPadding = 0.08f;
@@ -50,7 +49,7 @@ namespace Week14.Combat
         private bool isExecuting;
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
-        private LineRenderer projectileLockOnLine;
+        private EnemyProjectile visibleProjectileLockOnIndicator;
         private Transform executionFocusPoint;
         private SpriteRenderer executionDimRenderer;
         private Coroutine executionDimRoutine;
@@ -62,7 +61,6 @@ namespace Week14.Combat
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
-        private static Material rangeIndicatorMaterial;
         private static Sprite executionDimSprite;
 
         public Health Health => health;
@@ -1435,62 +1433,44 @@ namespace Week14.Combat
         {
             if (projectileLockOnTarget == null || !projectileLockOnTarget.CanBeIntercepted)
             {
-                SetProjectileLockOnIndicatorVisible(false);
+                SetProjectileLockOnIndicatorTarget(null);
                 return;
             }
 
-            EnsureProjectileLockOnIndicator();
-            if (projectileLockOnLine == null)
-            {
-                return;
-            }
-
-            Color color = ParryEffectColor;
-            color.a = Mathf.Max(color.a, projectileLockOnTarget.IsCharging ? 0.95f : 0.72f);
-            projectileLockOnLine.enabled = true;
-            projectileLockOnLine.startColor = color;
-            projectileLockOnLine.endColor = color;
-            projectileLockOnLine.startWidth = projectileLockOnTarget.IsCharging ? 0.035f : 0.026f;
-            projectileLockOnLine.endWidth = projectileLockOnLine.startWidth;
-
-            Vector3 center = projectileLockOnTarget.transform.position;
-            float radius = projectileLockOnTarget.LockOnRadius;
-            projectileLockOnLine.SetPosition(0, center + Vector3.up * radius);
-            projectileLockOnLine.SetPosition(1, center + Vector3.right * radius);
-            projectileLockOnLine.SetPosition(2, center + Vector3.down * radius);
-            projectileLockOnLine.SetPosition(3, center + Vector3.left * radius);
-        }
-
-        private void EnsureProjectileLockOnIndicator()
-        {
-            if (projectileLockOnLine != null)
-            {
-                return;
-            }
-
-            GameObject indicatorObject = new GameObject(ProjectileLockOnIndicatorName);
-            indicatorObject.transform.SetParent(transform, false);
-            projectileLockOnLine = indicatorObject.AddComponent<LineRenderer>();
-            projectileLockOnLine.useWorldSpace = true;
-            projectileLockOnLine.loop = true;
-            projectileLockOnLine.positionCount = 4;
-            projectileLockOnLine.numCornerVertices = 2;
-            projectileLockOnLine.numCapVertices = 2;
-            projectileLockOnLine.material = GetRangeIndicatorMaterial();
-            projectileLockOnLine.sortingOrder = 45;
-            projectileLockOnLine.enabled = false;
+            SetProjectileLockOnIndicatorTarget(projectileLockOnTarget);
         }
 
         private void SetProjectileLockOnIndicatorVisible(bool visible)
         {
-            if (projectileLockOnLine != null)
-            {
-                projectileLockOnLine.enabled = visible;
-            }
+            SetProjectileLockOnIndicatorTarget(visible ? projectileLockOnTarget : null);
 
             if (!visible)
             {
                 projectileLockOnTarget = null;
+            }
+        }
+
+        private void SetProjectileLockOnIndicatorTarget(EnemyProjectile target)
+        {
+            if (visibleProjectileLockOnIndicator == target)
+            {
+                if (visibleProjectileLockOnIndicator != null)
+                {
+                    visibleProjectileLockOnIndicator.SetParryLockOnIndicatorVisible(true);
+                }
+
+                return;
+            }
+
+            if (visibleProjectileLockOnIndicator != null)
+            {
+                visibleProjectileLockOnIndicator.SetParryLockOnIndicatorVisible(false);
+            }
+
+            visibleProjectileLockOnIndicator = target;
+            if (visibleProjectileLockOnIndicator != null)
+            {
+                visibleProjectileLockOnIndicator.SetParryLockOnIndicatorVisible(true);
             }
         }
 
@@ -1502,18 +1482,6 @@ namespace Week14.Combat
         private Vector2 GetParryCursorWorldPosition()
         {
             return GetMouseWorldPosition();
-        }
-
-        private static Material GetRangeIndicatorMaterial()
-        {
-            if (rangeIndicatorMaterial != null)
-            {
-                return rangeIndicatorMaterial;
-            }
-
-            Shader shader = Shader.Find("Sprites/Default");
-            rangeIndicatorMaterial = shader != null ? new Material(shader) : null;
-            return rangeIndicatorMaterial;
         }
 
         private void ResolveRigReferences()

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Week14.Combat
 {
@@ -14,6 +15,7 @@ namespace Week14.Combat
             private Vector3 baseLocalPosition;
             private bool hasBaseLocalPosition;
             private float moveProgress;
+            private float oscillationTime;
 
             public SpriteRenderer Renderer => renderer;
 
@@ -36,6 +38,23 @@ namespace Week14.Combat
                 }
             }
 
+            public void ResetMotion()
+            {
+                if (renderer == null)
+                {
+                    return;
+                }
+
+                if (!hasBaseLocalPosition)
+                {
+                    CacheBaseLocalPosition();
+                }
+
+                moveProgress = 0f;
+                oscillationTime = 0f;
+                renderer.transform.localPosition = baseLocalPosition;
+            }
+
             public void Tick(
                 bool threatened,
                 float moveScale,
@@ -43,6 +62,8 @@ namespace Week14.Combat
                 Color idleColor,
                 Color threatenedColor,
                 float moveSpeed,
+                bool oscillateWhileThreatened,
+                float oscillationSpeed,
                 float colorSpeed,
                 float deltaTime)
             {
@@ -59,8 +80,18 @@ namespace Week14.Combat
                 Vector3 localOffset = moveDirection.sqrMagnitude > 0.0001f
                     ? renderer.transform.localRotation * moveDirection
                     : Vector3.zero;
-                float targetProgress = threatened ? 1f : 0f;
-                moveProgress = Mathf.MoveTowards(moveProgress, targetProgress, Mathf.Max(0f, moveSpeed) * deltaTime);
+                if (threatened && oscillateWhileThreatened)
+                {
+                    oscillationTime += Mathf.Max(0f, oscillationSpeed) * deltaTime;
+                    moveProgress = Mathf.PingPong(oscillationTime, 1f);
+                }
+                else
+                {
+                    oscillationTime = 0f;
+                    float targetProgress = threatened ? 1f : 0f;
+                    moveProgress = Mathf.MoveTowards(moveProgress, targetProgress, Mathf.Max(0f, moveSpeed) * deltaTime);
+                }
+
                 float curvedProgress = moveCurve != null ? Mathf.Clamp01(moveCurve.Evaluate(moveProgress)) : moveProgress;
                 Vector3 targetPosition = baseLocalPosition + localOffset * moveScale * curvedProgress;
                 Color targetColor = threatened ? threatenedColor : idleColor;
@@ -78,20 +109,31 @@ namespace Week14.Combat
             new ReticlePiece()
         };
         [SerializeField] private SpriteRenderer[] colorOnlyRenderers = Array.Empty<SpriteRenderer>();
-        [SerializeField] private Color idleColor = Color.white;
-        [SerializeField] private Color threatenedColor = new(1f, 0.45f, 0.05f, 1f);
+        [SerializeField, FormerlySerializedAs("idleColor")] private Color pieceIdleColor = Color.white;
+        [SerializeField, FormerlySerializedAs("threatenedColor")] private Color pieceThreatenedColor = new(1f, 0.45f, 0.05f, 1f);
+        [SerializeField] private Color colorOnlyIdleColor = Color.white;
+        [SerializeField] private Color colorOnlyThreatenedColor = new(1f, 0.45f, 0.05f, 1f);
         [SerializeField, Min(0f)] private float moveScale = 1f;
         [SerializeField] private AnimationCurve moveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
+        [SerializeField] private bool oscillatePiecesWhileThreatened;
+        [SerializeField, Min(0f)] private float pieceOscillationSpeed = 2f;
         [SerializeField, Min(0f)] private float colorSpeed = 8f;
         [SerializeField] private bool useUnscaledTime;
+        [SerializeField, HideInInspector] private bool colorOnlyColorsInitialized;
 
         private bool threatened;
         private bool visible = true;
+        private bool forceOscillationWhileThreatened;
 
         public void SetThreatened(bool value)
         {
             threatened = value;
+        }
+
+        public void SetForceOscillationWhileThreatened(bool value)
+        {
+            forceOscillationWhileThreatened = value;
         }
 
         public void SetVisible(bool value)
@@ -100,6 +142,10 @@ namespace Week14.Combat
             for (int i = 0; i < pieces.Length; i++)
             {
                 pieces[i]?.SetVisible(value);
+                if (!value)
+                {
+                    pieces[i]?.ResetMotion();
+                }
             }
 
             for (int i = 0; i < colorOnlyRenderers.Length; i++)
@@ -110,7 +156,13 @@ namespace Week14.Combat
 
         private void Awake()
         {
+            InitializeColorOnlyColors();
             CacheBaseLocalPositions();
+        }
+
+        private void OnValidate()
+        {
+            InitializeColorOnlyColors();
         }
 
         private void OnEnable()
@@ -129,10 +181,20 @@ namespace Week14.Combat
             float deltaTime = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             for (int i = 0; i < pieces.Length; i++)
             {
-                pieces[i]?.Tick(threatened, moveScale, moveCurve, idleColor, threatenedColor, moveSpeed, colorSpeed, deltaTime);
+                pieces[i]?.Tick(
+                    threatened,
+                    moveScale,
+                    moveCurve,
+                    pieceIdleColor,
+                    pieceThreatenedColor,
+                    moveSpeed,
+                    oscillatePiecesWhileThreatened || forceOscillationWhileThreatened,
+                    pieceOscillationSpeed,
+                    colorSpeed,
+                    deltaTime);
             }
 
-            Color targetColor = threatened ? threatenedColor : idleColor;
+            Color targetColor = threatened ? colorOnlyThreatenedColor : colorOnlyIdleColor;
             for (int i = 0; i < colorOnlyRenderers.Length; i++)
             {
                 SpriteRenderer renderer = colorOnlyRenderers[i];
@@ -149,6 +211,18 @@ namespace Week14.Combat
             {
                 pieces[i]?.CacheBaseLocalPosition();
             }
+        }
+
+        private void InitializeColorOnlyColors()
+        {
+            if (colorOnlyColorsInitialized)
+            {
+                return;
+            }
+
+            colorOnlyIdleColor = pieceIdleColor;
+            colorOnlyThreatenedColor = pieceThreatenedColor;
+            colorOnlyColorsInitialized = true;
         }
 
         private static void SetRendererVisible(SpriteRenderer renderer, bool value)
