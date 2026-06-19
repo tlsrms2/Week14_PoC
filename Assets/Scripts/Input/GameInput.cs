@@ -6,12 +6,6 @@ using UnityEngine.InputSystem;
 
 namespace Week14.Input
 {
-    public enum GameplayControlMode
-    {
-        KeyboardMouse,
-        Gamepad
-    }
-
     public static class GameInput
     {
         private const string PlayerMapName = "Player";
@@ -20,15 +14,6 @@ namespace Week14.Input
         private const string LeftAttackActionName = "LeftAttack";
         private const string RightAttackActionName = "RightAttack";
         private const string HelpActionName = "Help";
-        private const string LeftActionName = "Left";
-        private const string RightActionName = "Right";
-        private const string UpActionName = "Up";
-        private const string DownActionName = "Down";
-        private const string ChoiceActionName = "Choice";
-        public const float MinGamepadLookSensitivity = 0.25f;
-        public const float MaxGamepadLookSensitivity = 2f;
-        public const float DefaultGamepadLookSensitivity = 1f;
-
 #if ENABLE_INPUT_SYSTEM
         private static PlayerInput playerInput;
         private static InputAction moveAction;
@@ -36,21 +21,11 @@ namespace Week14.Input
         private static InputAction leftAttackAction;
         private static InputAction rightAttackAction;
         private static InputAction helpAction;
-        private static InputAction leftAction;
-        private static InputAction rightAction;
-        private static InputAction upAction;
-        private static InputAction downAction;
-        private static InputAction choiceAction;
 #else
         private static readonly object moveAction = null;
         private static readonly object leftAttackAction = null;
         private static readonly object rightAttackAction = null;
         private static readonly object helpAction = null;
-        private static readonly object leftAction = null;
-        private static readonly object rightAction = null;
-        private static readonly object upAction = null;
-        private static readonly object downAction = null;
-        private static readonly object choiceAction = null;
 #endif
 
 #if ENABLE_INPUT_SYSTEM
@@ -79,95 +54,25 @@ namespace Week14.Input
             leftAttackAction = null;
             rightAttackAction = null;
             helpAction = null;
-            leftAction = null;
-            rightAction = null;
-            upAction = null;
-            downAction = null;
-            choiceAction = null;
         }
 #endif
 
-        private static float gamepadLookSensitivity = DefaultGamepadLookSensitivity;
-        private static GameplayControlMode controlMode = GameplayControlMode.KeyboardMouse;
-
-        public static GameplayControlMode ControlMode => controlMode;
-        public static bool IsGamepadMode => controlMode == GameplayControlMode.Gamepad;
         public static Vector2 Move => ReadVector2(moveAction);
-        public static bool LeftAttackDown => WasPressed(IsGamepadMode ? rightAttackAction : leftAttackAction);
-        public static bool RightAttackDown => WasPressed(IsGamepadMode ? leftAttackAction : rightAttackAction);
+        public static bool LeftAttackDown => WasPressed(leftAttackAction);
+        public static bool RightAttackDown => WasPressed(rightAttackAction);
         public static bool HelpDown => WasPressed(helpAction);
-        public static bool UiLeftDown => WasPressed(leftAction);
-        public static bool UiRightDown => WasPressed(rightAction);
-        public static bool UiUpDown => WasPressed(upAction);
-        public static bool UiDownDown => WasPressed(downAction);
-        public static bool UiChoiceDown => WasPressed(choiceAction);
-        public static bool IsGamepadInputActive => IsActiveDeviceGamepad();
-        public static float GamepadLookSensitivity
-        {
-            get => gamepadLookSensitivity;
-            set => gamepadLookSensitivity = Mathf.Clamp(value, MinGamepadLookSensitivity, MaxGamepadLookSensitivity);
-        }
-
-        public static void SelectControlMode(GameplayControlMode mode)
-        {
-            controlMode = mode;
-            Cursor.visible = mode != GameplayControlMode.Gamepad;
-            Cursor.lockState = CursorLockMode.None;
-        }
 
         public static Vector2 MouseScreenPosition
         {
             get
             {
 #if ENABLE_INPUT_SYSTEM
-                if (IsGamepadMode)
-                {
-                    return Vector2.zero;
-                }
-
                 Pointer pointer = GetActivePointer();
                 return pointer != null ? pointer.position.ReadValue() : Vector2.zero;
 #else
                 return Vector2.zero;
 #endif
             }
-        }
-
-        public static bool TryGetLookDirection(out Vector2 direction)
-        {
-            direction = Vector2.zero;
-#if ENABLE_INPUT_SYSTEM
-            if (lookAction == null)
-            {
-                return false;
-            }
-
-            if (IsGamepadMode && TryReadCurrentGamepadLook(out direction))
-            {
-                return true;
-            }
-
-            if (IsGamepadMode && IsPointerLook())
-            {
-                return false;
-            }
-
-            if (!IsGamepadMode && IsPointerLook())
-            {
-                return false;
-            }
-
-            Vector2 look = lookAction.ReadValue<Vector2>();
-            if (look.sqrMagnitude <= 0.0001f)
-            {
-                return false;
-            }
-
-            direction = Vector2.ClampMagnitude(look, 1f);
-            return true;
-#else
-            return false;
-#endif
         }
 
 #if ENABLE_INPUT_SYSTEM
@@ -178,11 +83,6 @@ namespace Week14.Input
             leftAttackAction = FindPlayerAction(LeftAttackActionName);
             rightAttackAction = FindPlayerAction(RightAttackActionName);
             helpAction = FindPlayerAction(HelpActionName);
-            leftAction = FindPlayerAction(LeftActionName);
-            rightAction = FindPlayerAction(RightActionName);
-            upAction = FindPlayerAction(UpActionName);
-            downAction = FindPlayerAction(DownActionName);
-            choiceAction = FindPlayerAction(ChoiceActionName);
         }
 
         private static InputAction FindPlayerAction(string actionName)
@@ -204,11 +104,6 @@ namespace Week14.Input
             EnableAction(leftAttackAction);
             EnableAction(rightAttackAction);
             EnableAction(helpAction);
-            EnableAction(leftAction);
-            EnableAction(rightAction);
-            EnableAction(upAction);
-            EnableAction(downAction);
-            EnableAction(choiceAction);
         }
 
         private static void EnableAction(InputAction action)
@@ -221,43 +116,14 @@ namespace Week14.Input
 
         private static Vector2 ReadVector2(InputAction action)
         {
-            return action != null ? Vector2.ClampMagnitude(action.ReadValue<Vector2>(), 1f) : Vector2.zero;
+            return action != null && IsKeyboardMouseAction(action)
+                ? Vector2.ClampMagnitude(action.ReadValue<Vector2>(), 1f)
+                : Vector2.zero;
         }
 
         private static bool WasPressed(InputAction action)
         {
-            return action != null && action.WasPressedThisFrame();
-        }
-
-        private static bool IsPointerLook()
-        {
-            InputControl activeControl = lookAction != null ? lookAction.activeControl : null;
-            return activeControl != null && activeControl.device is Pointer;
-        }
-
-        private static bool IsGamepadLook()
-        {
-            InputControl activeControl = lookAction != null ? lookAction.activeControl : null;
-            return activeControl != null && activeControl.device is Gamepad;
-        }
-
-        private static bool TryReadCurrentGamepadLook(out Vector2 direction)
-        {
-            direction = Vector2.zero;
-            Gamepad gamepad = Gamepad.current;
-            if (gamepad == null)
-            {
-                return false;
-            }
-
-            Vector2 look = gamepad.rightStick.ReadValue();
-            if (look.sqrMagnitude <= 0.0001f)
-            {
-                return false;
-            }
-
-            direction = Vector2.ClampMagnitude(look, 1f);
-            return true;
+            return action != null && action.WasPressedThisFrame() && IsKeyboardMouseAction(action);
         }
 
         private static Pointer GetActivePointer()
@@ -271,17 +137,16 @@ namespace Week14.Input
             return Pointer.current;
         }
 
-        private static bool IsActiveDeviceGamepad()
+        private static bool IsKeyboardMouseAction(InputAction action)
         {
-            InputControl activeControl = lookAction != null && lookAction.activeControl != null
-                ? lookAction.activeControl
-                : moveAction != null ? moveAction.activeControl : null;
-            return activeControl != null && activeControl.device is Gamepad;
+            InputControl activeControl = action.activeControl;
+            return activeControl == null
+                || activeControl.device is Keyboard
+                || activeControl.device is Pointer;
         }
 #else
         private static Vector2 ReadVector2(object _) => Vector2.zero;
         private static bool WasPressed(object _) => false;
-        private static bool IsActiveDeviceGamepad() => false;
 #endif
     }
 }

@@ -19,7 +19,6 @@ namespace Week14.Combat
         private const string CombatCenterName = "Center Pivot";
         private const string ProjectileLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const int ExecutionDimSortingOrder = 65;
-        private const float BaseGamepadLookTurnDegreesPerSecond = 540f;
         private const float LockOnAcquireViewportPadding = 0f;
         private const float LockOnReleaseViewportPadding = 0.08f;
 
@@ -60,8 +59,6 @@ namespace Week14.Combat
         private float bodyHitColorEndsAt;
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
-        private Vector2 smoothedGamepadLookDirection;
-        private int smoothedGamepadLookFrame = -1;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
@@ -910,11 +907,6 @@ namespace Week14.Combat
 
         private bool TryParryProjectile()
         {
-            if (GameInput.IsGamepadMode)
-            {
-                return false;
-            }
-
             if (config.ProjectilePrefab == null)
             {
                 Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", this);
@@ -1328,7 +1320,6 @@ namespace Week14.Combat
         private bool CanShowMouseParryReticle()
         {
             return config != null
-                && !GameInput.IsGamepadMode
                 && !GameModalState.BlocksGameplayInput
                 && !isExecuting
                 && health != null
@@ -1381,7 +1372,6 @@ namespace Week14.Combat
         private void UpdateCursorPresentation()
         {
             bool gameplayMouseActive = config != null
-                && !GameInput.IsGamepadMode
                 && !GameModalState.BlocksGameplayInput
                 && !isExecuting
                 && health != null
@@ -1594,69 +1584,9 @@ namespace Week14.Combat
                 return origin != null ? (Vector2)origin.right : (Vector2)transform.right;
             }
 
-            if (lockOnTarget == null && TryGetSmoothedGamepadLookDirection(out Vector2 lookDirection))
-            {
-                return lookDirection;
-            }
-
-            if (lockOnTarget == null && GameInput.IsGamepadMode)
-            {
-                return origin != null ? (Vector2)origin.right : (Vector2)transform.right;
-            }
-
             Vector2 aimPoint = GetAimPoint();
             Vector2 direction = aimPoint - (Vector2)origin.position;
             return direction.sqrMagnitude > 0.0001f ? direction.normalized : (Vector2)origin.right;
-        }
-
-        private bool TryGetSmoothedGamepadLookDirection(out Vector2 direction)
-        {
-            direction = Vector2.zero;
-            if (!GameInput.TryGetLookDirection(out Vector2 targetDirection))
-            {
-                return false;
-            }
-
-            if (smoothedGamepadLookFrame == Time.frameCount)
-            {
-                direction = smoothedGamepadLookDirection;
-                return true;
-            }
-
-            if (smoothedGamepadLookDirection.sqrMagnitude <= 0.0001f)
-            {
-                smoothedGamepadLookDirection = GetNeutralGamepadLookDirection();
-            }
-
-            float maxRadiansDelta = BaseGamepadLookTurnDegreesPerSecond
-                * GameInput.GamepadLookSensitivity
-                * Mathf.Deg2Rad
-                * Time.unscaledDeltaTime;
-            Vector3 nextDirection = Vector3.RotateTowards(
-                smoothedGamepadLookDirection,
-                targetDirection,
-                maxRadiansDelta,
-                0f);
-            smoothedGamepadLookDirection = ((Vector2)nextDirection).normalized;
-            smoothedGamepadLookFrame = Time.frameCount;
-            direction = smoothedGamepadLookDirection;
-            return true;
-        }
-
-        private Vector2 GetLastGamepadLookDirection()
-        {
-            if (smoothedGamepadLookDirection.sqrMagnitude > 0.0001f)
-            {
-                return smoothedGamepadLookDirection.normalized;
-            }
-
-            return GetNeutralGamepadLookDirection();
-        }
-
-        private Vector2 GetNeutralGamepadLookDirection()
-        {
-            Vector2 direction = transform.right;
-            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
         }
 
         private Vector2 GetAimPoint()

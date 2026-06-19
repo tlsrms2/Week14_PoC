@@ -13,6 +13,7 @@ namespace Week14.Combat
 
             private Vector3 baseLocalPosition;
             private bool hasBaseLocalPosition;
+            private float moveProgress;
 
             public SpriteRenderer Renderer => renderer;
 
@@ -35,7 +36,15 @@ namespace Week14.Combat
                 }
             }
 
-            public void Tick(bool threatened, float moveScale, Color idleColor, Color threatenedColor, float moveSpeed, float colorSpeed, float deltaTime)
+            public void Tick(
+                bool threatened,
+                float moveScale,
+                AnimationCurve moveCurve,
+                Color idleColor,
+                Color threatenedColor,
+                float moveSpeed,
+                float colorSpeed,
+                float deltaTime)
             {
                 if (renderer == null)
                 {
@@ -50,13 +59,13 @@ namespace Week14.Combat
                 Vector3 localOffset = moveDirection.sqrMagnitude > 0.0001f
                     ? renderer.transform.localRotation * moveDirection
                     : Vector3.zero;
-                Vector3 targetPosition = baseLocalPosition + (threatened ? localOffset * moveScale : Vector3.zero);
+                float targetProgress = threatened ? 1f : 0f;
+                moveProgress = Mathf.MoveTowards(moveProgress, targetProgress, Mathf.Max(0f, moveSpeed) * deltaTime);
+                float curvedProgress = moveCurve != null ? Mathf.Clamp01(moveCurve.Evaluate(moveProgress)) : moveProgress;
+                Vector3 targetPosition = baseLocalPosition + localOffset * moveScale * curvedProgress;
                 Color targetColor = threatened ? threatenedColor : idleColor;
 
-                renderer.transform.localPosition = Vector3.MoveTowards(
-                    renderer.transform.localPosition,
-                    targetPosition,
-                    Mathf.Max(0f, moveSpeed) * deltaTime);
+                renderer.transform.localPosition = targetPosition;
                 renderer.color = MoveColor(renderer.color, targetColor, Mathf.Max(0f, colorSpeed) * deltaTime);
             }
         }
@@ -68,9 +77,11 @@ namespace Week14.Combat
             new ReticlePiece(),
             new ReticlePiece()
         };
+        [SerializeField] private SpriteRenderer[] colorOnlyRenderers = Array.Empty<SpriteRenderer>();
         [SerializeField] private Color idleColor = Color.white;
         [SerializeField] private Color threatenedColor = new(1f, 0.45f, 0.05f, 1f);
         [SerializeField, Min(0f)] private float moveScale = 1f;
+        [SerializeField] private AnimationCurve moveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
         [SerializeField, Min(0f)] private float colorSpeed = 8f;
         [SerializeField] private bool useUnscaledTime;
@@ -89,6 +100,11 @@ namespace Week14.Combat
             for (int i = 0; i < pieces.Length; i++)
             {
                 pieces[i]?.SetVisible(value);
+            }
+
+            for (int i = 0; i < colorOnlyRenderers.Length; i++)
+            {
+                SetRendererVisible(colorOnlyRenderers[i], value);
             }
         }
 
@@ -113,7 +129,17 @@ namespace Week14.Combat
             float deltaTime = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
             for (int i = 0; i < pieces.Length; i++)
             {
-                pieces[i]?.Tick(threatened, moveScale, idleColor, threatenedColor, moveSpeed, colorSpeed, deltaTime);
+                pieces[i]?.Tick(threatened, moveScale, moveCurve, idleColor, threatenedColor, moveSpeed, colorSpeed, deltaTime);
+            }
+
+            Color targetColor = threatened ? threatenedColor : idleColor;
+            for (int i = 0; i < colorOnlyRenderers.Length; i++)
+            {
+                SpriteRenderer renderer = colorOnlyRenderers[i];
+                if (renderer != null)
+                {
+                    renderer.color = MoveColor(renderer.color, targetColor, Mathf.Max(0f, colorSpeed) * deltaTime);
+                }
             }
         }
 
@@ -122,6 +148,14 @@ namespace Week14.Combat
             for (int i = 0; i < pieces.Length; i++)
             {
                 pieces[i]?.CacheBaseLocalPosition();
+            }
+        }
+
+        private static void SetRendererVisible(SpriteRenderer renderer, bool value)
+        {
+            if (renderer != null)
+            {
+                renderer.enabled = value;
             }
         }
 
