@@ -440,6 +440,8 @@ namespace Week14.Enemy
         {
             Vector3 spawnPosition = bodyRoot != null ? bodyRoot.position : transform.position;
 
+            SoundManager.PlaySfx("BossRoar");
+
             if (enrageBurstSprite != null)
             {
                 GameObject burstObject = new GameObject("EnrageBurstVfx");

@@ -509,6 +509,11 @@ namespace Week14.Enemy
                         useOwnColors: true);
                 
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
+                    PlayBossSpecialShotOnLaunch(projectile);
+                    if (projectile != null)
+                    {
+                        SoundManager.PlaySfx("BossNormalShot");
+                    }
                     fired++;
                     ConsumePatternBulletUi();
                     nextBurstAt += Mathf.Max(0.01f, pattern1.BurstInterval);
@@ -735,6 +740,8 @@ namespace Week14.Enemy
         
         private void FirePattern4Wave(float startAngleDegrees)
         {
+            SoundManager.PlaySfx("Smash");
+
             Vector3 center = transform.position;
             int count = Mathf.Max(1, pattern4.BulletCount);
             
@@ -772,6 +779,11 @@ namespace Week14.Enemy
                 origin,
                 useOwnColors: true);
             PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
+            PlayBossSpecialShotOnLaunch(projectile);
+            if (projectile != null)
+            {
+                SoundManager.PlaySfx("BossNormalShot");
+            }
         }
         
         private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees)
@@ -783,7 +795,7 @@ namespace Week14.Enemy
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern5.SpawnSpacing);
             Vector3 spawnPosition = origin + offset;
 
-            FireConfiguredProjectile(
+            EnemyProjectile projectile = FireConfiguredProjectile(
                 pattern5.Projectile,
                 spawnPosition,
                 finalDirection,
@@ -794,6 +806,10 @@ namespace Week14.Enemy
                 0f,
                 -1f,
                 origin);
+            if (projectile != null)
+            {
+                SoundManager.PlaySfx("BossNormalShot");
+            }
         }
 
         private IEnumerator WaitPattern2Seconds(float seconds)
@@ -965,6 +981,22 @@ namespace Week14.Enemy
             }
 
             return order;
+        }
+
+        private static void PlayBossSpecialShotOnLaunch(EnemyProjectile projectile)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            static void HandleLaunched(EnemyProjectile launchedProjectile)
+            {
+                launchedProjectile.Launched -= HandleLaunched;
+                SoundManager.PlaySfx("BossSpecialShot");
+            }
+
+            projectile.Launched += HandleLaunched;
         }
 
         private void PlayBubbleEffectIfSpawned(EnemyProjectile projectile, Vector3 position, float scaleMultiplier, int bubbleCount)

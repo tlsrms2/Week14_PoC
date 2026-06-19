@@ -92,6 +92,8 @@ namespace Week14.Combat
         private bool pausedByExecution;
         private static Material chargeVfxMaterial;
 
+        public event System.Action<EnemyProjectile> Launched;
+
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
@@ -528,6 +530,8 @@ namespace Week14.Combat
             {
                 body.linearVelocity = flightDirection * projectileSpeed;
             }
+
+            Launched?.Invoke(this);
         }
 
         private void UpdateChargeGrowth()

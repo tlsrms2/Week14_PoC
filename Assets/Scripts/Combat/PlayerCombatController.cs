@@ -347,6 +347,7 @@ namespace Week14.Combat
             else
             {
                 bullets.TrySpend(Mathf.Clamp(bulletDamage, 1, bullets.CurrentBullets), BulletChangeSource.Hit);
+                SoundManager.PlaySfx("BulletLoss");
             }
             FlashBodyHitColor();
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -488,17 +489,21 @@ namespace Week14.Combat
             leftGunRecoil?.Play(direction);
             visual?.PlayShot();
             SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
+            SoundManager.PlaySfx("BulletLoss");
             return true;
         }
 
         private const int BulletRestorePitchReferenceMax = 5;
 
+        private static float GetBulletCountPitch(int currentBullets, float maxPitch = 2f)
+        {
+            float t = Mathf.Clamp01((currentBullets - 1f) / (BulletRestorePitchReferenceMax - 1f));
+            return Mathf.Lerp(1f, maxPitch, t);
+        }
+
         private static void PlayBulletRestoreSfx(int currentBullets)
         {
-            string id = Random.value < 0.5f ? "BulletRestore" : "BulletRestore2";
-            float t = Mathf.Clamp01((currentBullets - 1f) / (BulletRestorePitchReferenceMax - 1f));
-            float pitch = Mathf.Lerp(1f, 2f, t);
-            SoundManager.PlaySfx(id, pitch);
+            SoundManager.PlaySfx("BulletRestore2", GetBulletCountPitch(currentBullets));
         }
 
         private void UpdateAttackTimingOutline()
@@ -987,7 +992,7 @@ namespace Week14.Combat
             parryShot.SetForcedParryTarget(target);
             ProjectileVfx.PlayMuzzleFlash(firePosition, direction.normalized, ParryEffectColor, 1f);
             visual?.PlayIntercept();
-            SoundManager.PlaySfx(Random.value < 0.5f ? "Parry" : "Parry2");
+            SoundManager.PlaySfx("Parry2", GetBulletCountPitch(bullets.CurrentBullets, 1.3f));
             return true;
         }
 
