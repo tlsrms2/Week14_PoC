@@ -348,6 +348,8 @@ namespace Week14.Combat
                 return false;
             }
 
+            int dynamicDamage = CalculateAttackBulletDamage();
+
             if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
             {
                 return false;
@@ -365,7 +367,7 @@ namespace Week14.Combat
                 config.ProjectileSpeed,
                 config.ProjectileLifetime,
                 config.ProjectileRadius,
-                PlayerAttackBulletDamage,
+                dynamicDamage,
                 AttackEffectColor,
                 true);
 
@@ -589,8 +591,25 @@ namespace Week14.Combat
 
             if (executionTarget != null)
             {
-                executionTarget.CompleteExecution(this, false);
-                executionTarget.DestroyExecutedTarget();
+                BossAI boss = executionTarget.GetComponentInParent<BossAI>();
+                if (boss != null)
+                {
+                    EnemyProjectile.DestroyAllActive();
+                    if (boss.TryConsumeLife())
+                    {
+                        executionTarget.CompleteExecutionWithoutKill();
+                    }
+                    else
+                    {
+                        executionTarget.CompleteExecution(this, false);
+                        executionTarget.DestroyExecutedTarget();
+                    }
+                }
+                else
+                {
+                    executionTarget.CompleteExecution(this, false);
+                    executionTarget.DestroyExecutedTarget();
+                }
             }
 
             FinishExecution();
@@ -818,6 +837,17 @@ namespace Week14.Combat
             }
 
             return projectile;
+        }
+
+        private int CalculateAttackBulletDamage()
+        {
+            if (bullets == null || config == null)
+            {
+                return config != null ? config.AttackBulletDamage : 1;
+            }
+
+            int baseMaxBullets = Mathf.Max(1, config.MaxBullets);
+            return Mathf.Max(1, baseMaxBullets - bullets.CurrentBullets + 1);
         }
 
         private EnemyProjectile FindClosestInterceptTarget(Vector2 aimDirection)

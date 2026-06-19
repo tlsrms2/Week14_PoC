@@ -24,6 +24,7 @@ public sealed class HogBossAIEditor : Editor
         "pattern3",
         "pattern4",
         "pattern5",
+        "phasePatterns",
         "minPatternRecoverySeconds",
         "maxPatternRecoverySeconds",
         "randomizePatterns",
@@ -75,6 +76,7 @@ public sealed class HogBossAIEditor : Editor
     {
         DrawHeader("패턴 흐름", "패턴 선택 방식, 패턴 사이 대기 타이머와 보글 이펙트를 조율합니다.");
         DrawProperty("randomizePatterns");
+        DrawPhasePatterns();
         DrawProperty("minPatternRecoverySeconds");
         DrawProperty("maxPatternRecoverySeconds");
         DrawProperty("hogEffectColor");
@@ -95,13 +97,36 @@ public sealed class HogBossAIEditor : Editor
         }
     }
 
+    private void DrawPhasePatterns()
+    {
+        SerializedProperty phasePatterns = serializedObject.FindProperty("phasePatterns");
+        if (phasePatterns == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("페이즈별 패턴 구성", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("각 요소가 보스 목숨 순서의 페이즈입니다. Patterns 목록에 넣은 패턴만 해당 페이즈에서 선택됩니다. 비워두면 모든 패턴을 사용합니다.", MessageType.Info);
+
+        SerializedProperty maxLives = serializedObject.FindProperty("maxLives");
+        int desiredCount = maxLives != null ? Mathf.Max(1, maxLives.intValue) : phasePatterns.arraySize;
+        if (phasePatterns.arraySize < desiredCount)
+        {
+            EditorGUILayout.HelpBox("페이즈 수보다 패턴 구성이 적습니다. 게임 실행 또는 값 변경 시 부족한 페이즈가 자동 추가됩니다.", MessageType.Warning);
+        }
+
+        EditorGUILayout.PropertyField(phasePatterns, true);
+        EditorGUILayout.EndVertical();
+    }
+
     private void DrawPattern1Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern1");
-        DrawHeader("패턴1", "사방 랜덤 방향으로 일반 탄환을 만들고, 대기 시간이 끝나면 플레이어를 향해 날아갑니다.");
+        DrawHeader("패턴1", "일정 각도씩 회전하며 일반 탄환을 만들고, 대기 시간이 끝나면 플레이어를 향해 날아갑니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴1 투사체");
         DrawSection("추격", pattern, "initialChaseSpeedMultiplier", "finalChaseSpeedMultiplier");
-        DrawSection("발사", pattern, "radialBulletCount", "burstInterval", "spawnRadius");
+        DrawSection("발사", pattern, "radialBulletCount", "burstInterval", "spawnRadius", "angleStepDegrees");
     }
 
     private void DrawPattern2Tab()
@@ -116,9 +141,9 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern3Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern3");
-        DrawHeader("패턴3", "보스에게 붙어 커진 뒤 플레이어 근처 방향으로 날아가고, 첫 분열 전까지 요격 불가입니다.");
+        DrawHeader("패턴3", "보스에게 붙어 커지며 조준하다가, 멈춘 뒤 대기하고 날아갑니다. 첫 분열 전까지 요격 불가입니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴3 투사체");
-        DrawSection("준비/조준", pattern, "windupSeconds", "aimSpreadDegrees", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
+        DrawSection("준비/조준", pattern, "windupSeconds", "aimTrackingSeconds", "aimSpreadDegrees", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
         DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio", "launchBubbleScale", "launchMuzzleFlashScale");
         DrawSection("전방위 분열", pattern, "splitDelaySeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
     }
@@ -126,18 +151,18 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern4Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern4");
-        DrawHeader("패턴4", "전방위 방향을 섞은 뒤 무작위 순서로 하나씩 특수 탄환을 생성합니다.");
+        DrawHeader("패턴4", "보스 위치를 기준으로 360도 원형의 파동처럼 여러 차례 탄환을 발사합니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴4 투사체");
-        DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "shotInterval", "startAngleOffset", "spawnRadius");
+        DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
     }
 
     private void DrawPattern5Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern5");
-        DrawHeader("패턴5", "제자리에서 기를 모은 뒤 플레이어를 향해 미니건처럼 많은 탄환을 발사합니다.");
+        DrawHeader("패턴5", "제자리에서 기를 모은 뒤 플레이어 방향을 기준으로 부채꼴 모양으로 훑으며 탄막을 발사합니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴5 투사체");
         DrawSection("기 모으기", pattern, "windupSeconds", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
-        DrawSection("미니건 발사", pattern, "bulletCount", "fireInterval", "spawnSpacing");
+        DrawSection("미니건 발사", pattern, "bulletCount", "fireInterval", "spawnSpacing", "sweepStepDegrees", "maxSweepAngle");
     }
 
     private void DrawProjectile(SerializedProperty projectile, string title)
