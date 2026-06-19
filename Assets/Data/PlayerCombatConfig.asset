@@ -15,6 +15,7 @@ MonoBehaviour:
   maxBullets: 5
   leftAttackBulletCost: 1
   attackBulletDamage: 1
+  attackDamageByRemainingBullets: 0500000002000000020000000100000001000000
   parryBulletRecovery: 1
   counteredProjectileBulletDamage: 0
   enemyBodyContactBulletDamage: 1
@@ -28,7 +29,6 @@ MonoBehaviour:
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
-  mouseParryRadius: 0.7
   playerBodyAimRadius: 0.3
   executionRange: 7
   executionBulletRecovery: 3

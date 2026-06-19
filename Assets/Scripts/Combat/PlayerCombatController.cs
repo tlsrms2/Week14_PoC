@@ -977,8 +977,7 @@ namespace Week14.Combat
                 return config != null ? config.AttackBulletDamage : 1;
             }
 
-            int baseMaxBullets = Mathf.Max(1, config.MaxBullets);
-            return Mathf.Max(1, baseMaxBullets - bullets.CurrentBullets + 1);
+            return config.GetAttackDamageForRemainingBullets(bullets.CurrentBullets);
         }
 
         private EnemyProjectile FindClosestInterceptTarget()
