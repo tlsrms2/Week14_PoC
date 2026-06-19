@@ -35,7 +35,23 @@ public sealed class HogBossAIEditor : Editor
             "normalProjectileChargeColor",
             "normalProjectileColor",
             "homingProjectileChargeColor",
-            "homingProjectileColor"
+            "homingProjectileColor",
+            "enrageWindupSeconds",
+            "enrageWindupShakeDistance",
+            "enrageWindupShakeFrequency",
+            "enragePhase1Seconds",
+            "enragePhase1MaxBullets",
+            "enragePhase2Seconds",
+            "enragePhase2MaxBullets",
+            "enrageBurstSprite",
+            "enrageBurstTargetScale",
+            "enrageBurstGrowSeconds",
+            "enrageBurstHoldSeconds",
+            "enrageBurstFadeSeconds",
+            "enrageBurstColor",
+            "enrageShakeAmplitude",
+            "enrageShakeSeconds",
+            "enrageShakeZoom"
     };
 
     private static readonly Dictionary<string, bool> FoldoutStates = new();
@@ -98,11 +114,50 @@ public sealed class HogBossAIEditor : Editor
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(6f);
+        DrawEnrageSection();
+
+        EditorGUILayout.Space(6f);
         showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 공통/참조 설정", true);
         if (showBossBase)
         {
             DrawBaseProperties();
         }
+    }
+
+    private void DrawEnrageSection()
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        bool expanded = DrawFoldout("common.enrage", "광폭화 / 진입 연출");
+        if (!expanded)
+        {
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        DrawProperty("enragePhase1Seconds");
+        DrawProperty("enragePhase1MaxBullets");
+        DrawProperty("enragePhase2Seconds");
+        DrawProperty("enragePhase2MaxBullets");
+
+        EditorGUILayout.Space(4f);
+        EditorGUILayout.LabelField("진입 전 떨림 (Windup)", EditorStyles.boldLabel);
+        DrawProperty("enrageWindupSeconds");
+        DrawProperty("enrageWindupShakeDistance");
+        DrawProperty("enrageWindupShakeFrequency");
+
+        EditorGUILayout.Space(4f);
+        EditorGUILayout.LabelField("진입 연출 (스폰 이미지/스케일/카메라 쉐이크)", EditorStyles.boldLabel);
+        DrawProperty("enrageBurstSprite");
+        DrawProperty("enrageBurstTargetScale");
+        DrawProperty("enrageBurstGrowSeconds");
+        DrawProperty("enrageBurstHoldSeconds");
+        DrawProperty("enrageBurstFadeSeconds");
+        DrawProperty("enrageBurstColor");
+        DrawProperty("enrageShakeAmplitude");
+        DrawProperty("enrageShakeSeconds");
+        DrawProperty("enrageShakeZoom");
+
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawPhasePatterns()

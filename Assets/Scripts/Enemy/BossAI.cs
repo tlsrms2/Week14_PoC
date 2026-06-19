@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Bootstrap;
@@ -23,6 +24,14 @@ namespace Week14.Enemy
         [Tooltip("1단계 광폭화 후 2단계 광폭화까지 추가로 걸리는 시간입니다.")]
         [SerializeField] private float enragePhase2Seconds = 30f;
         [SerializeField] private int enragePhase2MaxBullets = 1;
+
+        [Header("Enrage Windup")]
+        [Tooltip("광폭화 진입 연출이 재생되기 전, 보스가 부들부들 떠는 시간입니다. 0이면 떨림 없이 바로 진입 연출이 재생됩니다.")]
+        [SerializeField, Min(0f)] private float enrageWindupSeconds = 0.6f;
+        [Tooltip("떨림 중 좌우로 움직이는 거리입니다.")]
+        [SerializeField, Min(0f)] private float enrageWindupShakeDistance = 0.05f;
+        [Tooltip("떨림이 좌우로 진동하는 빈도입니다.")]
+        [SerializeField, Min(0f)] private float enrageWindupShakeFrequency = 28f;
 
         [Header("Enrage Burst Effect")]
         [Tooltip("광폭화 단계로 넘어갈 때 스폰할 이미지입니다.")]
@@ -117,6 +126,7 @@ namespace Week14.Enemy
         private bool isCombatStarted;
         private float currentPhaseStartTime;
         private int currentEnragePhase;
+        private int pendingEnragePhase;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -371,25 +381,57 @@ namespace Week14.Enemy
         
         private void UpdateEnrageTimer()
         {
+            if (pendingEnragePhase != 0)
+            {
+                // 광폭화 진입이 예약된 상태입니다. 현재 진행 중인 패턴이 끝나는 시점(각 보스의
+                // 패턴 경계 지점에서 호출하는 ApplyPendingEnrageIfAny)에 실제로 적용됩니다.
+                return;
+            }
+
             float elapsed = Time.time - currentPhaseStartTime;
 
-            // 1단계 광폭화 도달
+            // 1단계 광폭화 도달 - 즉시 적용하지 않고 예약만 해둡니다.
             if (currentEnragePhase == 0 && elapsed >= enragePhase1Seconds)
             {
-                currentEnragePhase = 1;
-                currentPhaseStartTime = Time.time; // 다음 단계를 위해 타이머 리셋
-                ApplyPlayerMaxBullets(enragePhase1MaxBullets);
-                PlayEnrageTransitionEffect();
+                pendingEnragePhase = 1;
             }
             // 2단계 광폭화 도달
             else if (currentEnragePhase == 1 && elapsed >= enragePhase2Seconds)
             {
-                currentEnragePhase = 2;
-                ApplyPlayerMaxBullets(enragePhase2MaxBullets);
-                PlayEnrageTransitionEffect();
+                pendingEnragePhase = 2;
             }
 
             NotifyEnrageChanged();
+        }
+
+        protected IEnumerator ApplyPendingEnrageIfAny()
+        {
+            if (pendingEnragePhase == 0)
+            {
+                yield break;
+            }
+
+            Stop();
+            yield return PlayEnrageWindupTremble();
+
+            if (pendingEnragePhase == 1)
+            {
+                currentEnragePhase = 1;
+                currentPhaseStartTime = Time.time; // 다음 단계를 위해 타이머 리셋
+                ApplyPlayerMaxBullets(enragePhase1MaxBullets);
+            }
+            else if (pendingEnragePhase == 2)
+            {
+                currentEnragePhase = 2;
+                ApplyPlayerMaxBullets(enragePhase2MaxBullets);
+            }
+
+            pendingEnragePhase = 0;
+            NotifyEnrageChanged();
+
+            // 연출(스폰/스케일업/카메라 쉐이크)은 자체적으로 재생되다 사라지므로
+            // 다음 패턴 시작을 더 이상 막지 않고, 연출이 보이는 도중에 바로 다음 공격이 시작됩니다.
+            PlayEnrageTransitionEffect();
         }
 
         private void PlayEnrageTransitionEffect()
@@ -415,10 +457,33 @@ namespace Week14.Enemy
             PlayEnemyHitCameraImpact(Vector2.zero, enrageShakeAmplitude, enrageShakeSeconds, enrageShakeZoom);
         }
 
+        private IEnumerator PlayEnrageWindupTremble()
+        {
+            if (enrageWindupSeconds <= 0f || bodyRoot == null)
+            {
+                yield break;
+            }
+
+            Vector3 baseLocalPosition = bodyRoot.localPosition;
+            float elapsed = 0f;
+
+            while (elapsed < enrageWindupSeconds)
+            {
+                Stop();
+                float sign = Mathf.Sin(Time.time * enrageWindupShakeFrequency * Mathf.PI * 2f) >= 0f ? 1f : -1f;
+                bodyRoot.localPosition = baseLocalPosition + Vector3.right * (enrageWindupShakeDistance * sign);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            bodyRoot.localPosition = baseLocalPosition;
+        }
+
         private void ResetEnrageTimer()
         {
             currentPhaseStartTime = Time.time;
             currentEnragePhase = 0;
+            pendingEnragePhase = 0;
             NotifyEnrageChanged();
 
             PlayerCombatController player = PlayerCombatController.Active;
