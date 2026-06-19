@@ -641,11 +641,46 @@ MonoBehaviour:
     moveDirection: {x: 0.025, y: 0.025}
   - renderer: {fileID: 8760767150154566598}
     moveDirection: {x: -0.025, y: 0.025}
-  idleColor: {r: 1, g: 1, b: 1, a: 1}
-  threatenedColor: {r: 0.34069067, g: 0.46559697, b: 0.8301887, a: 1}
+  colorOnlyRenderers:
+  - {fileID: 3426584923014866416}
+  idleColor: {r: 1, g: 1, b: 1, a: 0.11764706}
+  threatenedColor: {r: 0.19607845, g: 0.70980394, b: 0.76470596, a: 1}
   moveScale: 1
-  moveSpeed: 1
-  colorSpeed: 5
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4.3079123
+      outSlope: 4.3079123
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.20742899
+      value: 0.8935859
+      inSlope: 0.2674349
+      outSlope: 0.2674349
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.61436725
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.13426441
+      outSlope: 0.13426441
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveSpeed: 20
+  colorSpeed: 20
   useUnscaledTime: 0
 --- !u!1 &5065699031556063786
 GameObject:

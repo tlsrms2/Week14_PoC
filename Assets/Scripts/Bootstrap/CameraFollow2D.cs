@@ -264,7 +264,7 @@ namespace Week14.Bootstrap
         private Vector2 GetMouseLookOffset(bool hasFocusTarget)
         {
             Vector2 targetOffset = Vector2.zero;
-            if (!cinematicFocusActive && controlledCamera != null && mouseLookMaxOffset > 0f && !GameInput.IsGamepadMode)
+            if (!cinematicFocusActive && controlledCamera != null && mouseLookMaxOffset > 0f)
             {
                 Vector2 screenPosition = GameInput.MouseScreenPosition;
                 Vector2 screenSize = new Vector2(Screen.width, Screen.height);

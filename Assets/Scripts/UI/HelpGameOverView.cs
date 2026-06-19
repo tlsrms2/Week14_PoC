@@ -11,11 +11,6 @@ namespace Week14.UI
 {
     public sealed class HelpGameOverView : MonoBehaviour
     {
-        private const float FocusMoveThreshold = 0.5f;
-
-        [Header("Start")]
-        [SerializeField] private StartControlSelect startControlSelect;
-
         [Header("Help")]
         [SerializeField] private GameObject helpRoot;
         [SerializeField] private TMP_Text helpBodyText;
@@ -23,7 +18,6 @@ namespace Week14.UI
         [SerializeField] private Button previousButton;
         [SerializeField] private Button nextButton;
         [SerializeField] private Button closeHelpButton;
-        [SerializeField] private GamepadSensitivitySettings gamepadSensitivitySettings;
         [SerializeField] private List<GameObject> helpPageImages = new();
         [TextArea(3, 8)]
         [SerializeField] private List<string> helpPages = new()
@@ -40,11 +34,8 @@ namespace Week14.UI
         private Health subscribedPlayerHealth;
         private int pageIndex;
         private float previousTimeScale = 1f;
-        private bool startOpen = true;
         private bool helpOpen;
         private bool gameOverOpen;
-        private bool sensitivityFocused;
-        private bool focusMoveHeld;
 
         private void Awake()
         {
@@ -52,32 +43,22 @@ namespace Week14.UI
             BindButtons();
             SetHelpVisible(false);
             SetGameOverVisible(false);
-            SetStartControlVisible(true);
         }
 
         private void OnEnable()
         {
             TrySubscribePlayer();
-            if (startControlSelect != null)
-            {
-                startControlSelect.Selected += HandleStartControlSelected;
-            }
         }
 
         private void OnDisable()
         {
             UnsubscribePlayer();
-            if (startControlSelect != null)
-            {
-                startControlSelect.Selected -= HandleStartControlSelected;
-            }
 
-            if (startOpen || helpOpen || gameOverOpen)
+            if (helpOpen || gameOverOpen)
             {
                 UnfreezeGame();
             }
 
-            startOpen = false;
             helpOpen = false;
             gameOverOpen = false;
             RefreshInputBlock();
@@ -87,21 +68,9 @@ namespace Week14.UI
         {
             TrySubscribePlayer();
 
-            if (startOpen)
-            {
-                startControlSelect?.TickGamepadInput();
-                return;
-            }
-
             if (!gameOverOpen && GameInput.HelpDown)
             {
                 ToggleHelp();
-            }
-
-            if (helpOpen)
-            {
-                TickHelpGamepadFocus();
-                gamepadSensitivitySettings?.TickGamepadInput(sensitivityFocused);
             }
         }
 
@@ -133,12 +102,6 @@ namespace Week14.UI
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
-        private void HandleStartControlSelected(GameplayControlMode mode)
-        {
-            GameInput.SelectControlMode(mode);
-            SetStartControlVisible(false);
         }
 
         private void CacheSceneReferences()
@@ -245,25 +208,6 @@ namespace Week14.UI
             SetGameOverVisible(true);
         }
 
-        private void SetStartControlVisible(bool visible)
-        {
-            startOpen = visible;
-            startControlSelect?.SetVisible(visible);
-
-            if (visible)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                FreezeGame();
-            }
-            else if (!helpOpen && !gameOverOpen)
-            {
-                UnfreezeGame();
-            }
-
-            RefreshInputBlock();
-        }
-
         private void SetHelpVisible(bool visible)
         {
             helpOpen = visible;
@@ -271,91 +215,18 @@ namespace Week14.UI
             {
                 helpRoot.SetActive(visible);
             }
-
-            gamepadSensitivitySettings?.SetVisible(visible);
-
             if (visible)
             {
                 pageIndex = Mathf.Clamp(pageIndex, 0, GetPageCount() - 1);
-                sensitivityFocused = false;
-                focusMoveHeld = false;
                 RefreshHelpPage();
-                FocusSensitivity();
                 FreezeGame();
             }
-            else if (!startOpen && !gameOverOpen)
+            else if (!gameOverOpen)
             {
                 UnfreezeGame();
             }
 
             RefreshInputBlock();
-        }
-
-        private void TickHelpGamepadFocus()
-        {
-            float vertical = GameInput.Move.y;
-            bool moveUpDown = vertical >= FocusMoveThreshold && !focusMoveHeld;
-            bool moveDownDown = vertical <= -FocusMoveThreshold && !focusMoveHeld;
-
-            if (Mathf.Abs(vertical) < FocusMoveThreshold)
-            {
-                focusMoveHeld = false;
-            }
-            else
-            {
-                focusMoveHeld = true;
-            }
-
-            if (sensitivityFocused)
-            {
-                if (GameInput.UiUpDown || moveUpDown)
-                {
-                    sensitivityFocused = false;
-                    FocusTopHelpButton();
-                }
-
-                return;
-            }
-
-            if (GameInput.UiDownDown || moveDownDown)
-            {
-                FocusSensitivity();
-            }
-        }
-
-        private void FocusTopHelpButton()
-        {
-            Selectable target = closeHelpButton != null && closeHelpButton.interactable
-                ? closeHelpButton
-                : GetFirstInteractableTopButton();
-            FocusSelectable(target);
-        }
-
-        private Selectable GetFirstInteractableTopButton()
-        {
-            if (previousButton != null && previousButton.interactable)
-            {
-                return previousButton;
-            }
-
-            if (nextButton != null && nextButton.interactable)
-            {
-                return nextButton;
-            }
-
-            return closeHelpButton;
-        }
-
-        private void FocusSensitivity()
-        {
-            Selectable target = gamepadSensitivitySettings != null ? gamepadSensitivitySettings.Selectable : null;
-            if (target == null || !target.interactable)
-            {
-                return;
-            }
-
-            sensitivityFocused = true;
-            FocusSelectable(target);
         }
 
         private static void FocusSelectable(Selectable target)
@@ -378,12 +249,10 @@ namespace Week14.UI
 
             if (visible)
             {
-                sensitivityFocused = false;
-                focusMoveHeld = false;
                 FocusSelectable(restartButton);
                 FreezeGame();
             }
-            else if (!startOpen && !helpOpen)
+            else if (!helpOpen)
             {
                 UnfreezeGame();
             }
@@ -432,7 +301,7 @@ namespace Week14.UI
 
         private void RefreshInputBlock()
         {
-            GameModalState.BlocksGameplayInput = startOpen || helpOpen || gameOverOpen;
+            GameModalState.BlocksGameplayInput = helpOpen || gameOverOpen;
         }
 
         private void FreezeGame()
