@@ -1018,11 +1018,6 @@ namespace Week14.Combat
 
         private void UpdateLockOnTarget()
         {
-            if (lockOnTarget != null)
-            {
-                return;
-            }
-
             SetLockOnTarget(FindNearestLockOnTarget());
         }
 
@@ -1055,7 +1050,8 @@ namespace Week14.Combat
             ref Health bestTarget,
             ref float bestDistance)
         {
-            if (!IsValidLockOnTargetInCamera(targetHealth, camera))
+            if (!IsValidLockOnTargetInCamera(targetHealth, camera)
+                || !CanKeepLockOnTarget(targetHealth, camera))
             {
                 return;
             }
