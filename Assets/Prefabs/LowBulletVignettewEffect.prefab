@@ -50,9 +50,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.LowBulletVignetteEffect
   target: {fileID: 0}
   bindPlayerOnStart: 0
-  vignetteColor: {r: 0.95, g: 0.05, b: 0.05, a: 1}
+  vignetteColor: {r: 1, g: 0, b: 0, a: 1}
   minIntensity: 0.2
-  maxIntensity: 0.37
-  pulseSeconds: 2.5
+  maxIntensity: 0.5
+  pulseSeconds: 1
   fadeSeconds: 0.25
-  smoothness: 0.35
+  smoothness: 0.5
