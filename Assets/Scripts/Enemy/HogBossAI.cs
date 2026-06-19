@@ -496,7 +496,8 @@ namespace Week14.Enemy
                         pattern1.Projectile,
                         origin,
                         direction,
-                        fired == 0);
+                        fired == 0,
+                        useOwnColors: true);
                 
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
                     fired++;
@@ -759,7 +760,8 @@ namespace Week14.Enemy
                 false,
                 -1f,
                 -1f,
-                origin);
+                origin,
+                useOwnColors: true);
             PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
         }
         
@@ -982,15 +984,25 @@ namespace Week14.Enemy
             return hogEffectColor.a > 0f ? hogEffectColor : DefaultHogEffectColor;
         }
 
-        private Color GetProjectileColor(ProjectileSettings settings, bool suppressHoming)
+        private Color GetProjectileColor(ProjectileSettings settings, bool suppressHoming, bool useOwnColors)
         {
+            if (useOwnColors && settings != null)
+            {
+                return settings.LaunchedColor;
+            }
+
             return settings != null && settings.HomingEnabled && !suppressHoming
                 ? homingProjectileColor
                 : normalProjectileColor;
         }
 
-        private Color GetProjectileChargeColor(ProjectileSettings settings, bool suppressHoming)
+        private Color GetProjectileChargeColor(ProjectileSettings settings, bool suppressHoming, bool useOwnColors)
         {
+            if (useOwnColors && settings != null)
+            {
+                return settings.ChargingColor;
+            }
+
             return settings != null && settings.HomingEnabled && !suppressHoming
                 ? homingProjectileChargeColor
                 : normalProjectileChargeColor;
@@ -1002,16 +1014,17 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playRecoil)
         {
-            return FireConfiguredProjectile(settings, origin, direction, playRecoil, false, false, true, -1f, -1f);
+            return FireConfiguredProjectile(settings, origin, direction, playRecoil, false, false, true, -1f, -1f, useOwnColors: false);
         }
 
         private EnemyProjectile FireConfiguredProjectileWithPlayerLaunchAim(
             ProjectileSettings settings,
             Vector3 origin,
             Vector2 direction,
-            bool playRecoil)
+            bool playRecoil,
+            bool useOwnColors = false)
         {
-            return FireConfiguredProjectile(settings, origin, direction, playRecoil, false, true, false, -1f, -1f);
+            return FireConfiguredProjectile(settings, origin, direction, playRecoil, false, true, false, -1f, -1f, useOwnColors: useOwnColors);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
@@ -1025,7 +1038,7 @@ namespace Week14.Enemy
                 return null;
             }
 
-            return FireConfiguredProjectile(settings, origin, direction, playRecoil, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f);
+            return FireConfiguredProjectile(settings, origin, direction, playRecoil, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f, useOwnColors: false);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
@@ -1039,7 +1052,8 @@ namespace Week14.Enemy
             float chargeSecondsOverride,
             float radiusOverride,
             Vector3? muzzleFlashPosition = null,
-            float muzzleFlashScale = 0.9f)
+            float muzzleFlashScale = 0.9f,
+            bool useOwnColors = false)
         {
             if (settings == null || settings.Prefab == null)
             {
@@ -1048,8 +1062,8 @@ namespace Week14.Enemy
 
             float chargeSeconds = chargeSecondsOverride >= 0f ? chargeSecondsOverride : settings.ChargeSeconds;
             float radius = radiusOverride > 0f ? radiusOverride : settings.Radius;
-            Color chargeColor = GetProjectileChargeColor(settings, suppressHoming);
-            Color projectileColor = GetProjectileColor(settings, suppressHoming);
+            Color chargeColor = GetProjectileChargeColor(settings, suppressHoming, useOwnColors);
+            Color projectileColor = GetProjectileColor(settings, suppressHoming, useOwnColors);
             EnemyProjectile projectile = SpawnBossProjectile(
                 settings.Prefab,
                 origin,
