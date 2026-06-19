@@ -78,10 +78,6 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float executionCameraFocusWeight = 1f;
         [Tooltip("처형 중 카메라 줌 배율입니다. 작을수록 더 가까이 보입니다.")]
         [SerializeField, Range(0.35f, 1f)] private float executionCameraZoomMultiplier = 0.62f;
-        [Tooltip("처형 발사 전 왼쪽 총 반동 자세가 유지되는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float executionGunKickSeconds = 0.45f;
-        [Tooltip("처형 발사 후 왼쪽 총이 원래 위치로 돌아오는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float executionGunReturnSeconds = 0.045f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리되는 시간입니다.")]
         [SerializeField, Min(0f)] private float executionShotDimSeconds = 0.065f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리의 최대 알파값입니다.")]
@@ -162,8 +158,6 @@ namespace Week14.Combat
         public float ExecutionFinishSeconds => executionFinishSeconds;
         public float ExecutionCameraFocusWeight => executionCameraFocusWeight;
         public float ExecutionCameraZoomMultiplier => executionCameraZoomMultiplier;
-        public float ExecutionGunKickSeconds => executionGunKickSeconds;
-        public float ExecutionGunReturnSeconds => executionGunReturnSeconds;
         public float ExecutionShotDimSeconds => executionShotDimSeconds;
         public float ExecutionShotDimAlpha => executionShotDimAlpha;
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;

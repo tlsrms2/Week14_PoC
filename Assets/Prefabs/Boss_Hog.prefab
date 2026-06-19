@@ -289,7 +289,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7248746899097906334
 Transform:
   m_ObjectHideFlags: 0
@@ -380,7 +380,6 @@ GameObject:
   - component: {fileID: 3117858263439591997}
   - component: {fileID: 3327489348220524332}
   - component: {fileID: -3427355340198616746}
-  - component: {fileID: 498269881852238974}
   - component: {fileID: 2075240932106930298}
   - component: {fileID: 7213248953238434763}
   m_Layer: 0
@@ -403,6 +402,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 3928034980745414157}
   - {fileID: 7248746899097906334}
   - {fileID: 6502647366495056629}
   - {fileID: 33144151026404172}
@@ -548,7 +548,6 @@ MonoBehaviour:
   body: {fileID: 8932169065044441375}
   statusView: {fileID: 3117858263439591997}
   attackTimingOutline: {fileID: 0}
-  gunRecoil: {fileID: 498269881852238974}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
@@ -717,72 +716,6 @@ MonoBehaviour:
   homingProjectileColor: {r: 0.35, g: 0.75, b: 1, a: 1}
   debugUseFixedPattern: 0
   debugPattern: 0
---- !u!114 &498269881852238974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958469296149594014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85482bef9663aed41b44daf09329b0eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.GunRecoilMotion
-  target: {fileID: 7754808717796362439}
-  localOffset: {x: -0.3, y: 0, z: 0}
-  kickSeconds: 0.035
-  returnSeconds: 0.2
-  useShotDirection: 0
-  shotDirectionDistance: 0.08
-  kickCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  returnCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &2075240932106930298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1489,3 +1422,77 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &4591174193527746478
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2186068290515178274}
+    m_Modifications:
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3503659303532875670, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_Name
+      value: Boss-Dealer Visual
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+--- !u!4 &3928034980745414157 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 663172200429971875, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+  m_PrefabInstance: {fileID: 4591174193527746478}
+  m_PrefabAsset: {fileID: 0}

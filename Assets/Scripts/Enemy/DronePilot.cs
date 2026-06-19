@@ -18,6 +18,9 @@ namespace Week14.Enemy
             DronePattern5
         }
 
+        [Header("Drone Pilot References")]
+        [SerializeField] private Transform projectileOrigin;
+
         [System.Serializable]
         public sealed class ProjectileSettings
         {
@@ -739,7 +742,7 @@ namespace Week14.Enemy
                 Vector2 direction = GetDirectionToPlayer(origin);
                 Vector2 side = new(-direction.y, direction.x);
                 Vector3 spawnPosition = origin + (Vector3)(side * GetAlternatingOffset(i, spawnSpacing));
-                FireBossProjectile(bossProjectile, spawnPosition, direction, i == 0, origin);
+                FireBossProjectile(bossProjectile, spawnPosition, direction, origin);
 
                 if (notifyDrones)
                 {
@@ -755,7 +758,7 @@ namespace Week14.Enemy
             }
         }
 
-        private EnemyProjectile FireBossProjectile(ProjectileSettings settings, Vector3 origin, Vector2 direction, bool playRecoil, Vector3 muzzleOrigin)
+        private EnemyProjectile FireBossProjectile(ProjectileSettings settings, Vector3 origin, Vector2 direction, Vector3 muzzleOrigin)
         {
             if (settings == null || settings.Prefab == null)
             {
@@ -779,7 +782,6 @@ namespace Week14.Enemy
                 settings.HomingEnabled,
                 settings.HomingSeconds,
                 settings.HomingTurnDegreesPerSecond,
-                playRecoil,
                 muzzleOrigin);
 
             projectile?.ConfigureStateColors(chargeColor, projectileColor);
@@ -1140,17 +1142,12 @@ namespace Week14.Enemy
 
         private Vector3 GetProjectileOrigin()
         {
-            if (ProjectileOrigin != null)
+            if (projectileOrigin != null)
             {
-                return ProjectileOrigin.position;
+                return projectileOrigin.position;
             }
 
-            if (FireOrigin != null)
-            {
-                return FireOrigin.position;
-            }
-
-            return transform.position;
+            return BodyRoot != null ? BodyRoot.position : transform.position;
         }
 
         private void BeginPatternBulletUi(int totalBulletCount)

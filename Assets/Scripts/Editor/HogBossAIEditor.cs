@@ -131,6 +131,7 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern1Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern1");
+        DrawSection("Origins", pattern, "projectileOrigins");
         DrawHeader("패턴1", "일정 각도씩 회전하며 일반 탄환을 만들고, 대기 시간이 끝나면 플레이어를 향해 날아갑니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴1 투사체");
         DrawSection("추격", pattern, "initialChaseSpeedMultiplier", "finalChaseSpeedMultiplier");
@@ -140,6 +141,7 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern2Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern2");
+        DrawSection("Origins", pattern, "projectileOrigins");
         DrawHeader("패턴2", "느려진 상태로 플레이어를 향해 특수 탄환을 머신건처럼 발사합니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴2 투사체");
         DrawSection("이동", pattern, "moveSpeedMultiplier");
@@ -149,6 +151,7 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern3Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern3");
+        DrawSection("Origins", pattern, "firePoint");
         DrawHeader("패턴3", "보스에게 붙어 커지며 조준하다가, 멈춘 뒤 대기하고 날아갑니다. 첫 분열 전까지 요격 불가입니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴3 투사체");
         DrawSection("준비/조준", pattern, "windupSeconds", "aimTrackingSeconds", "aimSpreadDegrees", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");
@@ -159,6 +162,7 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern4Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern4");
+        DrawSection("Origins / Slam", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
         DrawHeader("패턴4", "보스 위치를 기준으로 360도 원형의 파동처럼 여러 차례 탄환을 발사합니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴4 투사체");
         DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
@@ -167,6 +171,7 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern5Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern5");
+        DrawSection("Origins", pattern, "firePoint");
         DrawHeader("패턴5", "제자리에서 기를 모은 뒤 플레이어 방향을 기준으로 부채꼴 모양으로 훑으며 탄막을 발사합니다.");
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴5 투사체");
         DrawSection("기 모으기", pattern, "windupSeconds", "windupBubbleInterval", "windupBubbleScale", "windupBubbleCount");

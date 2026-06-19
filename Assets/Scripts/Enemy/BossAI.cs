@@ -54,12 +54,9 @@ namespace Week14.Enemy
 
         [Header("Scene References")]
         [SerializeField] private Transform bodyRoot;
-        [SerializeField] private Transform fireOrigin;
-        [SerializeField] private Transform projectileOrigin;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private EnemyStatusView statusView;
         [SerializeField] private AttackTimingOutline attackTimingOutline;
-        [SerializeField] private GunRecoilMotion gunRecoil;
         [SerializeField] private LayerMask obstacleMask;
         [SerializeField] private SpriteRenderer lockOnIndicator;
         [SerializeField] private SpriteRenderer executionIndicator;
@@ -107,9 +104,6 @@ namespace Week14.Enemy
         public Transform Player => player;
         public Rigidbody2D Body => body;
         public Transform BodyRoot => bodyRoot;
-        public Transform FireOrigin => fireOrigin;
-        public Transform ProjectileOrigin => projectileOrigin;
-        public GunRecoilMotion GunRecoil => gunRecoil;
         public LayerMask ObstacleMask => obstacleMask;
         public Vector3 SpawnPosition { get; private set; }
         public bool IsBulletEmpty => isBulletEmpty || (bullets != null && bullets.IsEmpty);
@@ -155,12 +149,6 @@ namespace Week14.Enemy
             }
 
             bodyRoot ??= FindChild("Visual") ?? transform;
-            fireOrigin ??= FindChild("Gun") ?? bodyRoot;
-            projectileOrigin ??= FindChild("FireOrigin") ?? FindChild("Muzzle") ?? fireOrigin;
-            if (gunRecoil == null && fireOrigin != null)
-            {
-                gunRecoil = fireOrigin.GetComponentInChildren<GunRecoilMotion>();
-            }
 
             lockOnIndicator ??= FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
             executionIndicator ??= FindChild("ExecutionIndicator")?.GetComponent<SpriteRenderer>();
@@ -252,7 +240,10 @@ namespace Week14.Enemy
             }
             
             TryActivateBossCombatUiOnCombatStart();
-            RotateToTarget();
+            if (RotatesBodyToPlayer)
+            {
+                RotateToTarget();
+            }
             OnBossTick();
         }
 
@@ -513,6 +504,7 @@ namespace Week14.Enemy
         protected virtual void OnBulletEmptyRecovered() { }
         protected virtual bool TryHandlePlayerHitBeforeDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) => false;
         protected virtual void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) { }
+        protected virtual bool RotatesBodyToPlayer => true;
         protected static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
 
         protected EnemyProjectile SpawnBossProjectile(
@@ -530,7 +522,6 @@ namespace Week14.Enemy
             bool homingEnabled,
             float homingSeconds,
             float homingTurnDegrees,
-            bool playRecoil,
             Vector3? muzzleFlashPosition = null,
             float muzzleFlashScale = 0.9f)
         {
@@ -564,10 +555,6 @@ namespace Week14.Enemy
             if (muzzleFlashScale > 0f)
             {
                 ProjectileVfx.PlayMuzzleFlash(muzzleFlashPosition ?? position, direction, color, muzzleFlashScale);
-            }
-            if (playRecoil)
-            {
-                gunRecoil?.Play(direction);
             }
 
             return projectile;
@@ -646,13 +633,6 @@ namespace Week14.Enemy
 
             Vector2 bodyDirection = (Vector2)(player.position - bodyRoot.position);
             RotateRight(bodyRoot, bodyDirection);
-
-            if (fireOrigin != null && fireOrigin != bodyRoot)
-            {
-                Transform origin = projectileOrigin != null ? projectileOrigin : fireOrigin;
-                Vector2 fireDirection = (Vector2)(player.position - origin.position);
-                RotateRight(fireOrigin, fireDirection);
-            }
         }
 
         private void PrepareStatusViews()
@@ -1018,7 +998,7 @@ namespace Week14.Enemy
 
             for (int i = 0; i < renderers.Length; i++)
             {
-                if (renderers[i] == null || IsStatusRenderer(renderers[i]) || IsUnderFireOrigin(renderers[i].transform))
+                if (renderers[i] == null || IsStatusRenderer(renderers[i]) || ShouldIgnoreBodyStateRenderer(renderers[i]))
                 {
                     continue;
                 }
@@ -1032,12 +1012,7 @@ namespace Week14.Enemy
             return statusView != null && statusView.OwnsRenderer(renderer);
         }
 
-        private bool IsUnderFireOrigin(Transform target)
-        {
-            return fireOrigin != null
-                && fireOrigin != bodyRoot
-                && (target == fireOrigin || target.IsChildOf(fireOrigin));
-        }
+        protected virtual bool ShouldIgnoreBodyStateRenderer(SpriteRenderer renderer) => false;
 
         private void HandleDied(Health _)
         {

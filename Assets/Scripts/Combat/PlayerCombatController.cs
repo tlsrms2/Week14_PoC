@@ -30,7 +30,6 @@ namespace Week14.Combat
         [SerializeField] private Transform combatCenter;
         [SerializeField] private Transform leftGunOrigin;
         [SerializeField] private Transform leftGunFireOrigin;
-        [SerializeField] private GunRecoilMotion leftGunRecoil;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private AttackTimingOutline attackTimingOutline;
@@ -480,7 +479,6 @@ namespace Week14.Combat
             }
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
-            leftGunRecoil?.Play(direction);
             visual?.PlayShot();
             return true;
         }
@@ -625,7 +623,6 @@ namespace Week14.Combat
             AimExecutionPose(aimDirection);
             yield return new WaitForSeconds(config.ExecutionFlourishDelaySeconds);
             yield return RunExecutionFlourish(executionTarget, aimDirection);
-            leftGunRecoil?.PlayKick(aimDirection, config.ExecutionGunKickSeconds);
 
             yield return new WaitForSeconds(config.ExecutionAimSeconds);
             if (executionTarget == null)
@@ -649,7 +646,6 @@ namespace Week14.Combat
             aimDirection = AimGunAndGetDirection(leftGunOrigin, (Vector2)executionTarget.transform.position - (Vector2)leftGunOrigin.position);
             LockLeftGunAim(aimDirection);
             UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
-            leftGunRecoil?.ReturnToBase(config.ExecutionGunReturnSeconds);
             visual?.PlayShot();
             PlayExecutionShotDim();
 
@@ -732,7 +728,6 @@ namespace Week14.Combat
             for (int i = 0; i < shotCount; i++)
             {
                 visual?.PlayShot();
-                leftGunRecoil?.Play(aimDirection);
                 FireExecutionFlourishShot(executionTarget, aimDirection);
                 yield return new WaitForSeconds(interval);
             }
@@ -774,7 +769,6 @@ namespace Week14.Combat
         {
             isExecuting = false;
             executionRoutine = null;
-            leftGunRecoil?.ReturnToBase(config != null ? config.ExecutionGunReturnSeconds : 0.045f);
             GetCameraFollow()?.EndCinematicFocus();
             ClearInvalidLockOnTarget();
             UpdateHoveredExecutionTarget();
@@ -1564,11 +1558,6 @@ namespace Week14.Combat
             if (combatCenter == null)
             {
                 combatCenter = FindChildRecursive(transform, CombatCenterName);
-            }
-
-            if (leftGunRecoil == null && leftGunOrigin != null)
-            {
-                leftGunRecoil = leftGunOrigin.GetComponentInChildren<GunRecoilMotion>();
             }
 
             leftGunOrigin ??= transform;

@@ -8,6 +8,7 @@ namespace Week14.UI
     public sealed class EnemyStatusView : MonoBehaviour
     {
         private const int DefaultSortingOrder = 40;
+        private const float ExecutionIndicatorRotationSpeedDegrees = 180f;
         private static Sprite indicatorSprite;
 
         [SerializeField, HideInInspector] private Health health;
@@ -21,6 +22,7 @@ namespace Week14.UI
         private Transform worldTarget;
         private Color lockOnColor = Color.white;
         private Color executionColor = Color.red;
+        private float executionIndicatorAngle;
 
         public void SetIndicators(SpriteRenderer nextLockOnRenderer, SpriteRenderer nextExecutionRenderer)
         {
@@ -127,10 +129,10 @@ namespace Week14.UI
             ApplyOwnedWorldCenter(lockOnRenderer, center);
             ApplyOwnedWorldCenter(executionRenderer, center);
 
-            SetRendererEnabled(lockOnRenderer, IsLockOnTarget());
-            SetRendererEnabled(
-                executionRenderer,
-                IsHoveredExecutionTarget());
+            bool executionVisible = IsHoveredExecutionTarget();
+            SetRendererEnabled(lockOnRenderer, !executionVisible && IsLockOnTarget());
+            SetRendererEnabled(executionRenderer, executionVisible);
+            RotateExecutionIndicator(executionVisible);
         }
 
         private bool IsLockOnTarget()
@@ -295,6 +297,19 @@ namespace Week14.UI
         private bool IsOwnedIndicator(SpriteRenderer renderer)
         {
             return renderer != null && renderer.transform.IsChildOf(transform);
+        }
+
+        private void RotateExecutionIndicator(bool visible)
+        {
+            if (!visible || executionRenderer == null)
+            {
+                return;
+            }
+
+            executionIndicatorAngle = Mathf.Repeat(
+                executionIndicatorAngle + ExecutionIndicatorRotationSpeedDegrees * Time.deltaTime,
+                360f);
+            executionRenderer.transform.rotation = Quaternion.Euler(0f, 0f, executionIndicatorAngle);
         }
 
         private static void SetRendererEnabled(SpriteRenderer renderer, bool enabled)

@@ -81,8 +81,92 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
+        private sealed class AlternatingProjectileOrigins
+        {
+            [SerializeField] private Transform firstProjectileOrigin;
+            [SerializeField] private Transform secondProjectileOrigin;
+
+            public bool HasAny => firstProjectileOrigin != null || secondProjectileOrigin != null;
+
+            public Transform Get(int shotIndex)
+            {
+                if (firstProjectileOrigin == null)
+                {
+                    return secondProjectileOrigin;
+                }
+
+                if (secondProjectileOrigin == null)
+                {
+                    return firstProjectileOrigin;
+                }
+
+                return shotIndex % 2 == 0 ? firstProjectileOrigin : secondProjectileOrigin;
+            }
+        }
+
+        [System.Serializable]
+        private sealed class FirePoint
+        {
+            [SerializeField] private Transform fireOrigin;
+            [SerializeField] private Transform projectileOrigin;
+
+            [System.NonSerialized] private bool hasBaseLocalScale;
+            [System.NonSerialized] private Vector3 baseLocalScale;
+
+            public Transform FireOrigin => fireOrigin;
+            public Transform ProjectileOrigin => projectileOrigin;
+
+            public void SetActive(bool active)
+            {
+                if (fireOrigin != null)
+                {
+                    fireOrigin.gameObject.SetActive(active);
+                }
+            }
+
+            public void RotateRight(Vector2 direction)
+            {
+                if (fireOrigin == null || direction.sqrMagnitude <= 0.0001f)
+                {
+                    return;
+                }
+
+                CacheBaseLocalScale();
+
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                fireOrigin.rotation = Quaternion.Euler(0f, 0f, angle);
+
+                bool flipY = angle < -90f || angle > 90f;
+                Vector3 nextScale = baseLocalScale;
+                float authoredSign = baseLocalScale.y < 0f ? -1f : 1f;
+                nextScale.y = Mathf.Abs(baseLocalScale.y) * authoredSign * (flipY ? -1f : 1f);
+                fireOrigin.localScale = nextScale;
+            }
+
+            public bool Contains(Transform target, Transform bodyRoot)
+            {
+                return fireOrigin != null
+                    && fireOrigin != bodyRoot
+                    && target != null
+                    && (target == fireOrigin || target.IsChildOf(fireOrigin));
+            }
+
+            private void CacheBaseLocalScale()
+            {
+                if (hasBaseLocalScale || fireOrigin == null)
+                {
+                    return;
+                }
+
+                baseLocalScale = fireOrigin.localScale;
+                hasBaseLocalScale = true;
+            }
+        }
+
+        [System.Serializable]
         private sealed class Pattern1Settings
         {
+            [SerializeField] private AlternatingProjectileOrigins projectileOrigins = new();
             [SerializeField, Tooltip("패턴1에서 사용할 일반 탄환 설정입니다.")] private ProjectileSettings projectile = new();
             [SerializeField, Min(0f), Tooltip("패턴 시작 시 추격 속도 배율입니다.")] private float initialChaseSpeedMultiplier = 0.65f;
             [SerializeField, Min(0f), Tooltip("패턴 종료 시점의 추격 속도 배율입니다.")] private float finalChaseSpeedMultiplier = 1.8f;
@@ -92,6 +176,7 @@ namespace Week14.Enemy
             [SerializeField, Tooltip("탄환을 발사할 때마다 회전시킬 각도입니다.")] private float angleStepDegrees = 25f;
 
             public ProjectileSettings Projectile => projectile;
+            public AlternatingProjectileOrigins ProjectileOrigins => projectileOrigins;
             public float InitialChaseSpeedMultiplier => initialChaseSpeedMultiplier;
             public float FinalChaseSpeedMultiplier => finalChaseSpeedMultiplier;
             public int RadialBulletCount => radialBulletCount;
@@ -103,6 +188,8 @@ namespace Week14.Enemy
         [System.Serializable]
         private sealed class Pattern2Settings
         {
+            [SerializeField] private AlternatingProjectileOrigins projectileOrigins = new();
+
             [System.Serializable]
             public sealed class VolleySettings
             {
@@ -130,6 +217,7 @@ namespace Week14.Enemy
             private List<VolleySettings> volleys = new() { new VolleySettings() };
 
             public ProjectileSettings Projectile => projectile;
+            public AlternatingProjectileOrigins ProjectileOrigins => projectileOrigins;
             public float MoveSpeedMultiplier => moveSpeedMultiplier;
             public int BulletCount => bulletCount;
             public float FireInterval => fireInterval;
@@ -161,6 +249,8 @@ namespace Week14.Enemy
         [System.Serializable]
         private sealed class Pattern3Settings
         {
+            [SerializeField] private FirePoint firePoint = new();
+
             [SerializeField, Tooltip("패턴3에서 커졌다가 분열하는 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
             [SerializeField, Min(0f), Tooltip("특수 탄환이 보스에게 붙어서 점점 커지는 시간입니다.")] private float windupSeconds = 1.6f;
             [SerializeField, Min(0), Tooltip("벽에 부딪힌 특수 탄환이 몇 단계까지 분열할지 정합니다.")] private int splitDepth = 3;
@@ -176,6 +266,7 @@ namespace Week14.Enemy
             [SerializeField, Min(0f), Tooltip("발사 전 플레이어를 따라가며 조준(회전)하는 시간입니다. 이 시간이 지나면 멈추고 대기합니다.")] private float aimTrackingSeconds = 1.0f;
             
             public ProjectileSettings Projectile => projectile;
+            public FirePoint FirePoint => firePoint;
             public float WindupSeconds => windupSeconds;
             public float AimTrackingSeconds => aimTrackingSeconds;
             public int SplitDepth => splitDepth;
@@ -209,6 +300,13 @@ namespace Week14.Enemy
         [System.Serializable]
         private sealed class Pattern4Settings
         {
+            [SerializeField] private Transform projectileOrigin;
+            [SerializeField, Min(0f)] private float slamUpOffset = 1.2f;
+            [SerializeField, Min(0f)] private float slamDownOffset = 0.25f;
+            [SerializeField, Min(0.01f)] private float slamRiseSeconds = 0.18f;
+            [SerializeField, Min(0.01f)] private float slamDropSeconds = 0.12f;
+            [SerializeField, Min(0f)] private float slamRecoverSeconds = 0.12f;
+
             [SerializeField, Tooltip("패턴4에서 랜덤 순서로 전방위 발사할 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
             [SerializeField, Min(1), Tooltip("한 웨이브에서 360도로 발사할 탄환 수입니다.")] private int bulletCount = 32;
             [SerializeField, Min(1), Tooltip("전방위 원형 파동 발사를 몇 번 반복할지 정합니다.")] private int waveCount = 3;
@@ -217,16 +315,24 @@ namespace Week14.Enemy
             [SerializeField, Min(0f), Tooltip("보스 중심에서 전방위 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
 
             public ProjectileSettings Projectile => projectile;
+            public Transform ProjectileOrigin => projectileOrigin;
             public int BulletCount => bulletCount;
             public int WaveCount => waveCount;
             public float WaveInterval => waveInterval;
             public float StartAngleOffset => startAngleOffset;
             public float SpawnRadius => spawnRadius;
+            public float SlamUpOffset => slamUpOffset;
+            public float SlamDownOffset => slamDownOffset;
+            public float SlamRiseSeconds => slamRiseSeconds;
+            public float SlamDropSeconds => slamDropSeconds;
+            public float SlamRecoverSeconds => slamRecoverSeconds;
         }
 
         [System.Serializable]
         private sealed class Pattern5Settings
         {
+            [SerializeField] private FirePoint firePoint = new();
+
             [SerializeField, Tooltip("패턴5에서 미니건처럼 발사할 탄환 설정입니다.")] private ProjectileSettings projectile = new();
             [SerializeField, Min(0f), Tooltip("제자리에서 기를 모으는 시간입니다.")] private float windupSeconds = 1.4f;
             [SerializeField, Min(1), Tooltip("기 모으기가 끝난 뒤 발사할 탄환 수입니다.")] private int bulletCount = 36;
@@ -239,6 +345,7 @@ namespace Week14.Enemy
             [SerializeField, Min(1), Tooltip("기 모으는 동안 한 번에 생성할 버블 수입니다.")] private int windupBubbleCount = 6;
 
             public ProjectileSettings Projectile => projectile;
+            public FirePoint FirePoint => firePoint;
             public float WindupSeconds => windupSeconds;
             public int BulletCount => bulletCount;
             public float FireInterval => fireInterval;
@@ -283,11 +390,25 @@ namespace Week14.Enemy
         private int nextPatternIndex;
         private int currentPatternBulletTotal;
         private int currentPatternBulletRemaining;
+        private bool isPattern4BodyRootMoved;
+        private Vector3 pattern4BodyRootBaseLocalPosition;
+
+        protected override bool RotatesBodyToPlayer => false;
 
         private void OnValidate()
         {
             EnsurePhasePatternSlots();
             EnsurePhasePatternLabels();
+        }
+
+        protected override void OnBossStarted()
+        {
+            DeactivatePatternFirePoints();
+        }
+
+        protected override void OnBossDied()
+        {
+            DeactivatePatternFirePoints();
         }
 
         protected override void OnBossTick()
@@ -313,6 +434,8 @@ namespace Week14.Enemy
             HideAttackTiming();
             currentPatternBulletTotal = 0;
             currentPatternBulletRemaining = 0;
+            ResetPattern4BodyRoot();
+            DeactivatePatternFirePoints();
         }
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
@@ -490,13 +613,12 @@ namespace Week14.Enemy
                 if (fired < totalBullets && elapsed >= nextBurstAt)
                 {
                     Vector2 direction = AngleToDirection(currentAngle);
-                    Vector3 origin = GetPattern1SpawnPosition(direction);
+                    Vector3 origin = GetPattern1SpawnPosition(fired, direction);
             
                     EnemyProjectile projectile = FireConfiguredProjectileWithPlayerLaunchAim(
                         pattern1.Projectile,
                         origin,
                         direction,
-                        fired == 0,
                         useOwnColors: true);
                 
                     PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
@@ -556,8 +678,10 @@ namespace Week14.Enemy
         private IEnumerator RunPattern3()
         {
             Stop();
+            SetFirePointActive(pattern3.FirePoint, true);
 
-            Vector3 origin = GetProjectileOrigin();
+            RotateFirePointToPlayer(pattern3.FirePoint);
+            Vector3 origin = GetFirePointProjectilePosition(pattern3.FirePoint);
             float radius = pattern3.Projectile.Radius * pattern3.ProjectileRadiusMultiplier;
             
             // 👇 변경: 5번째 인자(차징 중 조준)를 true로, 6번째 인자(발사 순간 조준)를 false로 변경
@@ -565,7 +689,6 @@ namespace Week14.Enemy
                 pattern3.Projectile,
                 origin,
                 GetPattern3Direction(origin),
-                true,
                 true,   // 차징 중 조준 켬
                 false,  // 발사 순간 조준 끔
                 true,
@@ -577,6 +700,7 @@ namespace Week14.Enemy
 
             if (projectile == null)
             {
+                SetFirePointActive(pattern3.FirePoint, false);
                 yield break;
             }
 
@@ -613,6 +737,11 @@ namespace Week14.Enemy
                 }
 
                 // 👇 추가된 로직: 설정한 조준 시간이 지나면 조준을 멈춤
+                if (!trackingStopped)
+                {
+                    RotateFirePointToPlayer(pattern3.FirePoint);
+                }
+
                 if (!trackingStopped && elapsed >= pattern3.AimTrackingSeconds)
                 {
                     projectile.ConfigureChargeMotion(0f, false, false, pattern3.AimSpreadDegrees);
@@ -624,6 +753,8 @@ namespace Week14.Enemy
                 elapsed += Time.deltaTime; // 👇 시간 누적
                 yield return null;
             }
+
+            SetFirePointActive(pattern3.FirePoint, false);
         }
 
         private IEnumerator RunPattern4()
@@ -635,21 +766,26 @@ namespace Week14.Enemy
                 yield return WaitWhileExecutionPaused();
 
                 BeginPatternBulletUi(Mathf.Max(1, pattern4.BulletCount));
+                yield return SlamPattern4BodyRoot();
                 
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
                 
                 FirePattern4Wave(offset);
+                yield return RecoverPattern4BodyRoot();
 
                 if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
                 {
                     yield return WaitPattern5Seconds(pattern4.WaveInterval);
                 }
             }
+
+            ResetPattern4BodyRoot();
         }
 
         private IEnumerator RunPattern5()
         {
             Stop();
+            SetFirePointActive(pattern5.FirePoint, true);
 
             int bulletCount = Mathf.Max(1, pattern5.BulletCount);
 
@@ -666,7 +802,8 @@ namespace Week14.Enemy
                 }
 
                 Stop();
-                PlayWindupBubbleIfDue(ref nextBubbleAt, GetProjectileOrigin(), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
+                RotateFirePointToPlayer(pattern5.FirePoint);
+                PlayWindupBubbleIfDue(ref nextBubbleAt, GetFirePointProjectilePosition(pattern5.FirePoint), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -683,13 +820,16 @@ namespace Week14.Enemy
 
                 Stop();
                 
-                Vector3 currentOrigin = GetProjectileOrigin();
+                RotateFirePointToPlayer(pattern5.FirePoint);
+                Vector3 currentOrigin = GetFirePointProjectilePosition(pattern5.FirePoint);
                 Vector2 dynamicBaseDirection = GetDirectionToPlayer(currentOrigin);
                 
                 float dynamicBaseAngle = Mathf.Atan2(dynamicBaseDirection.y, dynamicBaseDirection.x) * Mathf.Rad2Deg;
                 float finalAngle = dynamicBaseAngle + currentSweepOffset;
+                RotateFirePoint(pattern5.FirePoint, AngleToDirection(finalAngle));
+                currentOrigin = GetFirePointProjectilePosition(pattern5.FirePoint);
                 
-                FirePattern5Bullet(i, finalAngle); 
+                FirePattern5Bullet(i, finalAngle, currentOrigin);
                 ConsumePatternBulletUi();
                 currentSweepOffset += pattern5.SweepStepDegrees * sweepDirection;
         
@@ -704,29 +844,31 @@ namespace Week14.Enemy
                     yield return WaitPattern5Seconds(pattern5.FireInterval);
                 }
             }
+
+            SetFirePointActive(pattern5.FirePoint, false);
         }
 
-        private EnemyProjectile FireProjectileAtPlayer(ProjectileSettings settings, Vector3 origin, bool playRecoil)
+        private EnemyProjectile FireProjectileAtPlayer(ProjectileSettings settings, Vector3 origin)
         {
             Vector2 direction = GetDirectionToPlayer(origin);
-            return FireConfiguredProjectileWithPlayerLaunchAim(settings, origin, direction, playRecoil);
+            return FireConfiguredProjectileWithPlayerLaunchAim(settings, origin, direction);
         }
 
         private void FireRadialBurst(ProjectileSettings settings, int bulletCount, float startAngleDegrees)
         {
-            Vector3 origin = GetProjectileOrigin();
+            Vector3 origin = GetDefaultProjectileOrigin();
             int count = Mathf.Max(1, bulletCount);
             float step = 360f / count;
 
             for (int i = 0; i < count; i++)
             {
-                FireConfiguredProjectile(settings, origin, AngleToDirection(startAngleDegrees + step * i), i == 0);
+                FireConfiguredProjectile(settings, origin, AngleToDirection(startAngleDegrees + step * i));
             }
         }
         
         private void FirePattern4Wave(float startAngleDegrees)
         {
-            Vector3 center = transform.position;
+            Vector3 center = GetPattern4ProjectilePosition();
             int count = Mathf.Max(1, pattern4.BulletCount);
             
             float step = 360f / count;
@@ -737,7 +879,7 @@ namespace Week14.Enemy
                 Vector2 direction = AngleToDirection(startAngleDegrees + step * i);
                 Vector3 origin = center + (Vector3)(direction * radius);
         
-                EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction, i == 0);
+                EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction);
                 PlayBubbleEffectIfSpawned(projectile, origin, 0.75f, 7);
                 ConsumePatternBulletUi();
             }
@@ -745,16 +887,16 @@ namespace Week14.Enemy
 
         private void FireMachinegunBullet(int bulletIndex)
         {
-            Vector3 origin = GetProjectileOrigin();
+            bool hasConfiguredOrigin = pattern2.ProjectileOrigins != null && pattern2.ProjectileOrigins.HasAny;
+            Vector3 origin = GetAlternatingProjectilePosition(pattern2.ProjectileOrigins, bulletIndex);
             Vector2 direction = GetDirectionToPlayer(origin);
             Vector2 side = new(-direction.y, direction.x);
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern2.SpawnSpacing);
-            Vector3 spawnPosition = origin + offset;
+            Vector3 spawnPosition = hasConfiguredOrigin ? origin : origin + offset;
             EnemyProjectile projectile = FireConfiguredProjectile(
                 pattern2.Projectile,
                 spawnPosition,
                 direction,
-                bulletIndex == 0,
                 pattern2.Projectile.AimAtPlayerWhileCharging,
                 false,
                 false,
@@ -765,9 +907,8 @@ namespace Week14.Enemy
             PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
         }
         
-        private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees)
+        private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees, Vector3 origin)
         {
-            Vector3 origin = GetProjectileOrigin();
             Vector2 finalDirection = AngleToDirection(finalAngleDegrees);
             
             Vector2 side = new(-finalDirection.y, finalDirection.x);
@@ -778,7 +919,6 @@ namespace Week14.Enemy
                 pattern5.Projectile,
                 spawnPosition,
                 finalDirection,
-                bulletIndex == 0,
                 false,
                 false,
                 false,
@@ -831,15 +971,20 @@ namespace Week14.Enemy
                 yield return null;
             }
         }
-        private Vector3 GetPattern1SpawnPosition(Vector2 direction)
+        private Vector3 GetPattern1SpawnPosition(int shotIndex, Vector2 direction)
         {
+            if (pattern1.ProjectileOrigins != null && pattern1.ProjectileOrigins.HasAny)
+            {
+                return GetAlternatingProjectilePosition(pattern1.ProjectileOrigins, shotIndex);
+            }
+
             float radius = Mathf.Max(0f, pattern1.SpawnRadius);
             if (radius <= 0f || direction.sqrMagnitude <= 0.0001f)
             {
-                return GetProjectileOrigin();
+                return GetDefaultProjectileOrigin();
             }
 
-            return transform.position + (Vector3)(direction.normalized * radius);
+            return GetDefaultProjectileOrigin() + (Vector3)(direction.normalized * radius);
         }
 
         private Vector2 GetPattern3Direction(Vector3 origin)
@@ -1011,41 +1156,37 @@ namespace Week14.Enemy
         private EnemyProjectile FireConfiguredProjectileWithoutPlayerAim(
             ProjectileSettings settings,
             Vector3 origin,
-            Vector2 direction,
-            bool playRecoil)
+            Vector2 direction)
         {
-            return FireConfiguredProjectile(settings, origin, direction, playRecoil, false, false, true, -1f, -1f, useOwnColors: false);
+            return FireConfiguredProjectile(settings, origin, direction, false, false, true, -1f, -1f, useOwnColors: false);
         }
 
         private EnemyProjectile FireConfiguredProjectileWithPlayerLaunchAim(
             ProjectileSettings settings,
             Vector3 origin,
             Vector2 direction,
-            bool playRecoil,
             bool useOwnColors = false)
         {
-            return FireConfiguredProjectile(settings, origin, direction, playRecoil, false, true, false, -1f, -1f, useOwnColors: useOwnColors);
+            return FireConfiguredProjectile(settings, origin, direction, false, true, false, -1f, -1f, useOwnColors: useOwnColors);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
             ProjectileSettings settings,
             Vector3 origin,
-            Vector2 direction,
-            bool playRecoil)
+            Vector2 direction)
         {
             if (settings == null)
             {
                 return null;
             }
 
-            return FireConfiguredProjectile(settings, origin, direction, playRecoil, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f, useOwnColors: false);
+            return FireConfiguredProjectile(settings, origin, direction, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f, useOwnColors: false);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
             ProjectileSettings settings,
             Vector3 origin,
             Vector2 direction,
-            bool playRecoil,
             bool aimAtPlayerWhileCharging,
             bool aimAtPlayerOnLaunch,
             bool suppressHoming,
@@ -1079,7 +1220,6 @@ namespace Week14.Enemy
                 settings.HomingEnabled && !suppressHoming,
                 settings.HomingSeconds,
                 settings.HomingTurnDegreesPerSecond,
-                playRecoil,
                 muzzleFlashPosition,
                 muzzleFlashScale);
 
@@ -1105,25 +1245,147 @@ namespace Week14.Enemy
             Body.linearVelocity = direction.normalized * (MoveSpeed * Mathf.Max(0f, speedMultiplier));
         }
 
-        private Vector3 GetProjectileOrigin()
+        private IEnumerator SlamPattern4BodyRoot()
         {
-            if (ProjectileOrigin != null)
+            Transform target = BodyRoot;
+            if (target == null || target == transform)
             {
-                return ProjectileOrigin.position;
+                yield break;
             }
 
-            if (FireOrigin != null)
+            if (!isPattern4BodyRootMoved)
             {
-                return FireOrigin.position;
+                pattern4BodyRootBaseLocalPosition = target.localPosition;
+                isPattern4BodyRootMoved = true;
             }
 
-            return transform.position;
+            Vector3 basePosition = pattern4BodyRootBaseLocalPosition;
+            Vector3 upPosition = basePosition + Vector3.up * pattern4.SlamUpOffset;
+            Vector3 downPosition = basePosition + Vector3.down * pattern4.SlamDownOffset;
+
+            yield return MovePattern4BodyRoot(target, target.localPosition, upPosition, pattern4.SlamRiseSeconds);
+            yield return MovePattern4BodyRoot(target, target.localPosition, downPosition, pattern4.SlamDropSeconds);
         }
 
-        private float GetPlayerAngle()
+        private IEnumerator RecoverPattern4BodyRoot()
         {
-            Vector2 direction = GetDirectionToPlayer(GetProjectileOrigin());
-            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            if (!isPattern4BodyRootMoved || BodyRoot == null || BodyRoot == transform)
+            {
+                yield break;
+            }
+
+            yield return MovePattern4BodyRoot(BodyRoot, BodyRoot.localPosition, pattern4BodyRootBaseLocalPosition, pattern4.SlamRecoverSeconds);
+            ResetPattern4BodyRoot();
+        }
+
+        private IEnumerator MovePattern4BodyRoot(Transform target, Vector3 from, Vector3 to, float seconds)
+        {
+            float duration = Mathf.Max(0.01f, seconds);
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
+                Stop();
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                target.localPosition = Vector3.Lerp(from, to, t);
+                yield return null;
+            }
+
+            target.localPosition = to;
+        }
+
+        private void ResetPattern4BodyRoot()
+        {
+            if (!isPattern4BodyRootMoved)
+            {
+                return;
+            }
+
+            if (BodyRoot != null)
+            {
+                BodyRoot.localPosition = pattern4BodyRootBaseLocalPosition;
+            }
+
+            isPattern4BodyRootMoved = false;
+        }
+
+        private Vector3 GetAlternatingProjectilePosition(AlternatingProjectileOrigins origins, int shotIndex)
+        {
+            Transform origin = origins != null ? origins.Get(shotIndex) : null;
+            return origin != null ? origin.position : GetDefaultProjectileOrigin();
+        }
+
+        private Vector3 GetFirePointProjectilePosition(FirePoint firePoint)
+        {
+            if (firePoint == null)
+            {
+                return GetDefaultProjectileOrigin();
+            }
+
+            if (firePoint.ProjectileOrigin != null)
+            {
+                return firePoint.ProjectileOrigin.position;
+            }
+
+            return firePoint.FireOrigin != null ? firePoint.FireOrigin.position : GetDefaultProjectileOrigin();
+        }
+
+        private Vector3 GetPattern4ProjectilePosition()
+        {
+            return pattern4.ProjectileOrigin != null ? pattern4.ProjectileOrigin.position : GetDefaultProjectileOrigin();
+        }
+
+        private Vector3 GetDefaultProjectileOrigin()
+        {
+            return BodyRoot != null ? BodyRoot.position : transform.position;
+        }
+
+        private void RotateFirePointToPlayer(FirePoint firePoint)
+        {
+            if (firePoint == null || firePoint.FireOrigin == null || Player == null)
+            {
+                return;
+            }
+
+            Vector3 origin = GetFirePointProjectilePosition(firePoint);
+            Vector2 direction = (Vector2)(Player.position - origin);
+            RotateFirePoint(firePoint, direction);
+        }
+
+        private void RotateFirePoint(FirePoint firePoint, Vector2 direction)
+        {
+            firePoint?.RotateRight(direction);
+        }
+
+        private void SetFirePointActive(FirePoint firePoint, bool active)
+        {
+            firePoint?.SetActive(active);
+        }
+
+        private void DeactivatePatternFirePoints()
+        {
+            SetFirePointActive(pattern3.FirePoint, false);
+            SetFirePointActive(pattern5.FirePoint, false);
+        }
+
+        protected override bool ShouldIgnoreBodyStateRenderer(SpriteRenderer renderer)
+        {
+            return renderer != null
+                && (IsUnderFirePoint(pattern3.FirePoint, renderer.transform)
+                    || IsUnderFirePoint(pattern5.FirePoint, renderer.transform));
+        }
+
+        private bool IsUnderFirePoint(FirePoint firePoint, Transform target)
+        {
+            return firePoint != null && firePoint.Contains(target, BodyRoot);
         }
 
         private static float GetAlternatingOffset(int index, float spacing)

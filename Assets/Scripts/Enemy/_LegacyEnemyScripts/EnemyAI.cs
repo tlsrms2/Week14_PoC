@@ -22,7 +22,6 @@ namespace Week14.Enemy
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private EnemyStatusView statusView;
         [SerializeField] private AttackTimingOutline attackTimingOutline;
-        [SerializeField] private GunRecoilMotion gunRecoil;
         [SerializeField] private LayerMask obstacleMask;
         [SerializeField] private SpriteRenderer lockOnIndicator;
         [SerializeField] private SpriteRenderer executionIndicator;
@@ -96,8 +95,6 @@ namespace Week14.Enemy
             if (fireOrigin == null) fireOrigin = FindChild("Gun") ?? bodyRoot;
             if (projectileOrigin == null)
                 projectileOrigin = FindChild("FireOrigin") ?? FindChild("Muzzle") ?? fireOrigin;
-            if (gunRecoil == null && fireOrigin != null)
-                gunRecoil = fireOrigin.GetComponentInChildren<GunRecoilMotion>();
             if (lockOnIndicator == null)
                 lockOnIndicator = FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
             if (executionIndicator == null)
@@ -592,7 +589,7 @@ namespace Week14.Enemy
                     Mathf.Cos(angle * Mathf.Deg2Rad),
                     Mathf.Sin(angle * Mathf.Deg2Rad));
 
-                SpawnEnemyProjectile(origin.position, dir, true);
+                SpawnEnemyProjectile(origin.position, dir);
             }
         }
 
@@ -626,7 +623,7 @@ namespace Week14.Enemy
                 Vector2 radialDirection = AngleToDirection(angle);
                 Vector3 spawnPosition = center + radialDirection * radius;
                 Vector2 direction = GetProjectileDirection(spawnPosition);
-                SpawnEnemyProjectile(spawnPosition, direction, false);
+                SpawnEnemyProjectile(spawnPosition, direction);
 
                 if (interval > 0f && i < count - 1)
                 {
@@ -680,7 +677,7 @@ namespace Week14.Enemy
                 while (spawnedBulletCount < maxBulletCount && distanceSinceLastBullet >= spacing)
                 {
                     Vector2 direction = GetProjectileDirection(currentPosition);
-                    SpawnEnemyProjectile(currentPosition, direction, false);
+                    SpawnEnemyProjectile(currentPosition, direction);
                     spawnedBulletCount++;
                     distanceSinceLastBullet -= spacing;
                 }
@@ -694,7 +691,7 @@ namespace Week14.Enemy
             body.linearVelocity = Vector2.zero;
         }
 
-        private EnemyProjectile SpawnEnemyProjectile(Vector3 position, Vector2 direction, bool playRecoil)
+        private EnemyProjectile SpawnEnemyProjectile(Vector3 position, Vector2 direction)
         {
             if (!CanSpawnEnemyProjectile())
             {
@@ -711,10 +708,6 @@ namespace Week14.Enemy
             if (projectile != null)
             {
                 ProjectileVfx.PlayMuzzleFlash(position, direction, data.ProjectileColor, 0.9f);
-                if (playRecoil)
-                {
-                    gunRecoil?.Play(direction);
-                }
             }
 
             return projectile;
