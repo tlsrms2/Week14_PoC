@@ -169,3 +169,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7adab327b2876a4db7387db73fb3dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.EnemyProjectile
+  parryRange: 0.8

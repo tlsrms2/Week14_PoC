@@ -43,19 +43,10 @@ namespace Week14.Combat
         [Tooltip("발사 후 총구 방향을 고정해서 보여주는 시간입니다.")]
         [SerializeField, Min(0f)] private float gunAimHoldSeconds = 0.5f;
 
-        [Header("Right Gun")]
-        [Tooltip("오른쪽 권총 패링탄으로 적 탄을 겨냥할 수 있는 최대 거리입니다.")]
-        [SerializeField, Min(0f)] private float parryRange = 7f;
-        [Tooltip("패링 판정에 허용되는 조준 각도입니다.")]
-        [SerializeField, Range(1f, 360f)] private float parryAimAngleDegrees = 65f;
-        [Tooltip("패링 판정 쐐기의 안쪽(플레이어 쪽) 경계 반경입니다. 캐릭터 콜라이더 반경과 비슷한 값을 권장합니다.")]
-        [SerializeField, Min(0f)] private float parryBodyRadius = 0.3f;
-        [Tooltip("오른쪽 권총에 장전되는 패링 전용 탄환 수입니다.")]
-        [SerializeField, Min(1)] private int rightGunMagazineSize = 3;
-        [Tooltip("오른쪽 권총 패링탄 하나가 재충전되기까지 걸리는 시간입니다.")]
-        [FormerlySerializedAs("parryCooldownSeconds")]
-        [FormerlySerializedAs("parryShotCooldown")]
-        [SerializeField, Min(0f)] private float rightGunRechargeSeconds = 0.18f;
+        [Header("Projectile Parry")]
+        [Tooltip("유도탄 조준선이 플레이어에게 닿는 지점을 계산할 때 사용하는 플레이어 몸체 반경입니다.")]
+        [FormerlySerializedAs("parryBodyRadius")]
+        [SerializeField, Min(0f)] private float playerBodyAimRadius = 0.3f;
 
         [Header("Lock On")]
         [Tooltip("락온 대상이 이 거리보다 멀어지면 락온을 해제합니다.")]
@@ -102,20 +93,6 @@ namespace Week14.Combat
         [Tooltip("남은 탄환 수 텍스트 크기입니다.")]
         [SerializeField, Min(1f)] private float playerBulletUiOverflowTextFontSize = 18f;
 
-        [Header("Right Gun Bullet UI")]
-        [Tooltip("플레이어 탄환 UI에 오른쪽 권총 패링 전용 탄환을 표시할지 여부입니다.")]
-        [SerializeField] private bool showRightGunBulletUi = true;
-        [Tooltip("오른쪽 권총 탄환 아이콘의 세로 두께 비율입니다.")]
-        [SerializeField, Min(0.01f)] private float rightGunBulletUiHeightRatio = 0.2f;
-        [Tooltip("오른쪽 권총 탄환 아이콘의 가로 길이 비율입니다.")]
-        [SerializeField, Min(0.01f)] private float rightGunBulletUiWidthRatio = 0.48f;
-        [Tooltip("오른쪽 권총 탄환 아이콘 사이 간격 비율입니다.")]
-        [SerializeField, Min(0f)] private float rightGunBulletUiSpacingRatio = 0.12f;
-        [Tooltip("오른쪽 권총 탄환 아이콘 색상입니다.")]
-        [SerializeField] private Color rightGunBulletUiColor = new(0.58f, 0.58f, 0.58f, 0.95f);
-        [Tooltip("오른쪽 권총 탄환 재충전 링 색상입니다.")]
-        [SerializeField] private Color rightGunBulletUiCooldownColor = new(0.78f, 0.78f, 0.78f, 0.9f);
-
         public int MaxBullets => maxBullets;
         public float MoveSpeed => moveSpeed;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
@@ -128,17 +105,13 @@ namespace Week14.Combat
         public float ProjectileTrailWidthMultiplier => effectData != null ? effectData.PlayerProjectileTrailWidthMultiplier : 2.8f;
         public float GunAimHoldSeconds => gunAimHoldSeconds;
         public Color AttackEffectColor => effectData != null ? effectData.AttackEffectColor : new Color(1f, 0.35f, 0.12f, 0.55f);
-        public float ParryRange => parryRange;
         public int ParryBulletRecovery => parryBulletRecovery;
         public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
         public int EnemyBodyContactBulletDamage => enemyBodyContactBulletDamage;
         public float EnemyBodyContactCooldownSeconds => enemyBodyContactCooldownSeconds;
         public float EnemyBodyContactKnockbackSpeed => enemyBodyContactKnockbackSpeed;
         public float EnemyBodyContactStaggerSeconds => enemyBodyContactStaggerSeconds;
-        public float ParryAimAngleDegrees => parryAimAngleDegrees;
-        public float ParryBodyRadius => parryBodyRadius;
-        public int RightGunMagazineSize => rightGunMagazineSize;
-        public float RightGunRechargeSeconds => rightGunRechargeSeconds;
+        public float PlayerBodyAimRadius => playerBodyAimRadius;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
         public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
         public Color ParrySparkColor => effectData != null ? effectData.ParrySparkColor : new Color(1f, 0.88f, 0.35f, 1f);
@@ -185,11 +158,5 @@ namespace Week14.Combat
         public float PlayerBulletUiIconWidthRatio => playerBulletUiIconWidthRatio;
         public float PlayerBulletUiIconSpacingRatio => playerBulletUiIconSpacingRatio;
         public float PlayerBulletUiOverflowTextFontSize => playerBulletUiOverflowTextFontSize;
-        public bool ShowRightGunBulletUi => showRightGunBulletUi;
-        public float RightGunBulletUiHeightRatio => rightGunBulletUiHeightRatio;
-        public float RightGunBulletUiWidthRatio => rightGunBulletUiWidthRatio;
-        public float RightGunBulletUiSpacingRatio => rightGunBulletUiSpacingRatio;
-        public Color RightGunBulletUiColor => rightGunBulletUiColor;
-        public Color RightGunBulletUiCooldownColor => rightGunBulletUiCooldownColor;
     }
 }

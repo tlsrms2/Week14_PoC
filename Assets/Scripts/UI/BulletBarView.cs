@@ -10,9 +10,6 @@ namespace Week14.UI
     {
         private const string IconRootName = "BulletIconRoot";
         private const string OverflowTextName = "BulletOverflowText";
-        private const string RightGunAmmoRootName = "RightGunAmmoRoot";
-        private const string RightGunCooldownBackName = "RightGunCooldownBack";
-        private const string RightGunCooldownFillName = "RightGunCooldownFill";
 
         [SerializeField] private BulletGauge target;
         [SerializeField] private bool bindPlayerOnStart = true;
@@ -26,28 +23,15 @@ namespace Week14.UI
         [SerializeField] private Color parryOutlineColor = Color.white;
         [SerializeField] private Color hitOutlineColor = Color.yellow;
         [SerializeField] private Color attackOutlineColor = new(1f, 0.55f, 0.1f, 1f);
-        [SerializeField] private bool showPlayerRightGunAmmo = true;
-        [SerializeField, Min(0.01f)] private float rightGunAmmoHeightRatio = 0.2f;
-        [SerializeField, Min(0.01f)] private float rightGunAmmoWidthRatio = 0.48f;
-        [SerializeField, Min(0f)] private float rightGunAmmoSpacingRatio = 0.12f;
-        [SerializeField] private Color rightGunAmmoColor = new(0.58f, 0.58f, 0.58f, 0.95f);
-        [SerializeField] private Color rightGunCooldownColor = new(0.78f, 0.78f, 0.78f, 0.9f);
 
         private readonly List<BulletIcon> icons = new();
         private readonly List<BulletIcon> retiringIcons = new();
-        private readonly List<BulletIcon> rightGunAmmoIcons = new();
-        private readonly List<BulletIcon> retiringRightGunAmmoIcons = new();
         private readonly List<IconShard> shards = new();
         private RectTransform iconRoot;
         private TextMeshProUGUI overflowText;
         private RectTransform overflowTextRect;
-        private RectTransform rightGunAmmoRoot;
-        private Image rightGunCooldownBack;
-        private Image rightGunCooldownFill;
         private int displayedBulletCount = -1;
         private int displayedVisibleCount;
-        private int displayedRightGunAmmo = -1;
-        private int displayedRightGunMagazineSize = -1;
         private float iconWidth;
         private float iconHeight;
         private float iconSpacing;
@@ -55,14 +39,12 @@ namespace Week14.UI
         private Color currentIconColor;
 
         private static Sprite bulletIconSprite;
-        private static Sprite donutSprite;
         private void OnEnable()
         {
             EnsureIconRoot();
             TryBindPlayer();
             Subscribe();
             Refresh();
-            UpdateRightGunAmmoView(false);
         }
 
         private void OnDisable()
@@ -73,7 +55,6 @@ namespace Week14.UI
         private void Update()
         {
             TickEffects();
-            UpdateRightGunAmmoView(false);
 
             if (!bindPlayerOnStart || PlayerCombatController.Active == null)
             {
@@ -88,7 +69,6 @@ namespace Week14.UI
             TryBindPlayer();
             Subscribe();
             Refresh();
-            UpdateRightGunAmmoView(true);
         }
 
         public void SetTarget(BulletGauge nextTarget)
@@ -102,20 +82,17 @@ namespace Week14.UI
             target = nextTarget;
             Subscribe();
             Refresh();
-            UpdateRightGunAmmoView(true);
         }
 
         public void Configure()
         {
             EnsureIconRoot();
             Refresh();
-            UpdateRightGunAmmoView(true);
         }
 
         public void SetBindPlayerOnStart(bool value)
         {
             bindPlayerOnStart = value;
-            UpdateRightGunAmmoView(true);
         }
 
         public void SetColors(Color normal, Color empty)
@@ -153,9 +130,6 @@ namespace Week14.UI
             ApplyPlayerConfigColors();
             displayedBulletCount = -1;
             displayedVisibleCount = 0;
-            displayedRightGunAmmo = -1;
-            displayedRightGunMagazineSize = -1;
-            ClearRightGunAmmoIcons(false);
         }
 
         private void Subscribe()
@@ -231,7 +205,6 @@ namespace Week14.UI
 
             displayedBulletCount = bulletCount;
             displayedVisibleCount = visibleCount;
-            UpdateRightGunAmmoView(true);
         }
 
         private void EnsureIconRoot()
@@ -300,310 +273,6 @@ namespace Week14.UI
             overflowText.fontSize = GetEffectiveOverflowFontSize(iconRoot.rect.height);
             overflowTextRect = overflowText.rectTransform;
             ConfigureOverflowTextTransform(0f, 0f);
-        }
-
-        private void UpdateRightGunAmmoView(bool force)
-        {
-            ApplyPlayerConfigColorsIfNeeded();
-
-            PlayerCombatController player = ResolvePlayerRightGunOwner();
-            if (player == null)
-            {
-                SetRightGunAmmoVisible(false);
-                return;
-            }
-
-            EnsureRightGunAmmoRoot();
-            if (rightGunAmmoRoot == null)
-            {
-                return;
-            }
-
-            SetRightGunAmmoVisible(true);
-
-            if (!TryGetIconRootHeight(out _))
-            {
-                return;
-            }
-
-            int ammo = Mathf.Max(0, player.RightGunAmmo);
-            int magazineSize = Mathf.Max(1, player.RightGunMagazineSize);
-            bool changed = force || ammo != displayedRightGunAmmo || magazineSize != displayedRightGunMagazineSize;
-            bool snapIcons = false;
-            bool animateRightGunAmmo = false;
-            bool gainedRightGunAmmo = false;
-            int previousRightGunIconCount = rightGunAmmoIcons.Count;
-            if (changed)
-            {
-                animateRightGunAmmo = displayedRightGunAmmo >= 0;
-                gainedRightGunAmmo = ammo > displayedRightGunAmmo;
-                ResizeRightGunAmmoIcons(ammo, animateRightGunAmmo);
-                snapIcons = !animateRightGunAmmo;
-                displayedRightGunAmmo = ammo;
-                displayedRightGunMagazineSize = magazineSize;
-            }
-
-            LayoutRightGunAmmo(ammo, magazineSize, player.IsRightGunRecharging);
-            if (animateRightGunAmmo && gainedRightGunAmmo)
-            {
-                PlayRightGunAmmoSpawn(previousRightGunIconCount);
-            }
-            if (snapIcons)
-            {
-                SnapRightGunAmmoIcons();
-            }
-            UpdateRightGunCooldown(player);
-        }
-
-        private PlayerCombatController ResolvePlayerRightGunOwner()
-        {
-            PlayerCombatController player = PlayerCombatController.Active;
-            if (!showPlayerRightGunAmmo || player == null || target != player.Bullets)
-            {
-                return null;
-            }
-
-            return player;
-        }
-
-        private void EnsureRightGunAmmoRoot()
-        {
-            EnsureIconRoot();
-            if (iconRoot == null)
-            {
-                return;
-            }
-
-            if (rightGunAmmoRoot == null || rightGunAmmoRoot.parent != iconRoot)
-            {
-                Transform existing = iconRoot.Find(RightGunAmmoRootName);
-                rightGunAmmoRoot = existing != null ? existing.GetComponent<RectTransform>() : null;
-                if (rightGunAmmoRoot == null)
-                {
-                    GameObject rootObject = new(RightGunAmmoRootName, typeof(RectTransform));
-                    rootObject.transform.SetParent(iconRoot, false);
-                    rightGunAmmoRoot = rootObject.GetComponent<RectTransform>();
-                }
-
-                rightGunAmmoRoot.anchorMin = Vector2.zero;
-                rightGunAmmoRoot.anchorMax = Vector2.one;
-                rightGunAmmoRoot.offsetMin = Vector2.zero;
-                rightGunAmmoRoot.offsetMax = Vector2.zero;
-            }
-
-            rightGunCooldownBack = EnsureRightGunCooldownImage(RightGunCooldownBackName, false);
-            rightGunCooldownFill = EnsureRightGunCooldownImage(RightGunCooldownFillName, true);
-        }
-
-        private Image EnsureRightGunCooldownImage(string objectName, bool filled)
-        {
-            Transform existing = rightGunAmmoRoot.Find(objectName);
-            Image image = existing != null ? existing.GetComponent<Image>() : null;
-            if (image == null)
-            {
-                GameObject imageObject = new(objectName, typeof(RectTransform));
-                imageObject.transform.SetParent(rightGunAmmoRoot, false);
-                image = imageObject.AddComponent<Image>();
-            }
-
-            image.sprite = GetDonutSprite();
-            image.raycastTarget = false;
-            image.preserveAspect = true;
-            if (filled)
-            {
-                image.type = Image.Type.Filled;
-                image.fillMethod = Image.FillMethod.Radial360;
-                image.fillOrigin = (int)Image.Origin360.Top;
-                image.fillClockwise = true;
-            }
-            else
-            {
-                image.type = Image.Type.Simple;
-            }
-
-            return image;
-        }
-
-        private void SetRightGunAmmoVisible(bool visible)
-        {
-            if (rightGunAmmoRoot != null)
-            {
-                rightGunAmmoRoot.gameObject.SetActive(visible);
-            }
-
-            if (!visible)
-            {
-                displayedRightGunAmmo = -1;
-                displayedRightGunMagazineSize = -1;
-            }
-        }
-
-        private void ResizeRightGunAmmoIcons(int ammo, bool animate)
-        {
-            while (rightGunAmmoIcons.Count < ammo)
-            {
-                BulletIcon icon = CreateRightGunAmmoIcon();
-                rightGunAmmoIcons.Add(icon);
-            }
-
-            while (rightGunAmmoIcons.Count > ammo)
-            {
-                BulletIcon icon = rightGunAmmoIcons[rightGunAmmoIcons.Count - 1];
-                rightGunAmmoIcons.RemoveAt(rightGunAmmoIcons.Count - 1);
-                if (animate)
-                {
-                    icon.PlayTear(rightGunAmmoColor);
-                    retiringRightGunAmmoIcons.Add(icon);
-                }
-                else
-                {
-                    Destroy(icon.Rect.gameObject);
-                }
-            }
-        }
-
-        private void ClearRightGunAmmoIcons(bool destroyRoot)
-        {
-            for (int i = 0; i < rightGunAmmoIcons.Count; i++)
-            {
-                if (rightGunAmmoIcons[i] != null && rightGunAmmoIcons[i].Rect != null)
-                {
-                    Destroy(rightGunAmmoIcons[i].Rect.gameObject);
-                }
-            }
-
-            for (int i = 0; i < retiringRightGunAmmoIcons.Count; i++)
-            {
-                if (retiringRightGunAmmoIcons[i] != null && retiringRightGunAmmoIcons[i].Rect != null)
-                {
-                    Destroy(retiringRightGunAmmoIcons[i].Rect.gameObject);
-                }
-            }
-
-            rightGunAmmoIcons.Clear();
-            retiringRightGunAmmoIcons.Clear();
-            displayedRightGunAmmo = -1;
-            displayedRightGunMagazineSize = -1;
-
-            if (destroyRoot && rightGunAmmoRoot != null)
-            {
-                Destroy(rightGunAmmoRoot.gameObject);
-                rightGunAmmoRoot = null;
-                rightGunCooldownBack = null;
-                rightGunCooldownFill = null;
-            }
-        }
-
-        private void SnapRightGunAmmoIcons()
-        {
-            for (int i = 0; i < rightGunAmmoIcons.Count; i++)
-            {
-                rightGunAmmoIcons[i].SnapToTarget();
-            }
-        }
-
-        private void PlayRightGunAmmoSpawn(int startIndex)
-        {
-            for (int i = Mathf.Max(0, startIndex); i < rightGunAmmoIcons.Count; i++)
-            {
-                rightGunAmmoIcons[i].PlaySpawn(rightGunAmmoColor, Random.insideUnitCircle * Mathf.Max(iconHeight, 0.01f) * 0.35f);
-            }
-        }
-
-        private BulletIcon CreateRightGunAmmoIcon()
-        {
-            GameObject iconObject = new("RightGunAmmoIcon", typeof(RectTransform));
-            iconObject.transform.SetParent(rightGunAmmoRoot, false);
-            Image image = iconObject.AddComponent<Image>();
-            image.sprite = GetBulletIconSprite();
-            image.raycastTarget = false;
-            image.preserveAspect = true;
-            image.color = rightGunAmmoColor;
-
-            BulletIcon icon = new(iconObject.GetComponent<RectTransform>(), image)
-            {
-                BaseColor = rightGunAmmoColor,
-                BaseRotationDegrees = -90f
-            };
-            return icon;
-        }
-
-        private void LayoutRightGunAmmo(int ammo, int magazineSize, bool showCooldown)
-        {
-            if (rightGunAmmoRoot == null)
-            {
-                return;
-            }
-
-            float rootHeight = GetIconRootHeight();
-            float bulletLength = rootHeight * rightGunAmmoWidthRatio;
-            float bulletThickness = rootHeight * rightGunAmmoHeightRatio;
-            float spacing = rootHeight * rightGunAmmoSpacingRatio;
-            float cooldownSize = rootHeight * 0.34f;
-            float cooldownGap = rootHeight * 0.18f;
-            float y = rootHeight * 0.58f;
-            float fullIconAreaWidth = magazineSize > 0
-                ? magazineSize * bulletLength + Mathf.Max(0, magazineSize - 1) * spacing
-                : 0f;
-            float currentIconAreaWidth = ammo > 0
-                ? ammo * bulletLength + Mathf.Max(0, ammo - 1) * spacing
-                : 0f;
-            float startX = -currentIconAreaWidth * 0.5f + bulletLength * 0.5f;
-
-            for (int i = 0; i < rightGunAmmoIcons.Count; i++)
-            {
-                BulletIcon icon = rightGunAmmoIcons[i];
-                icon.BaseColor = rightGunAmmoColor;
-                icon.SetSize(bulletThickness, bulletLength);
-                icon.TargetPosition = new Vector2(startX + i * (bulletLength + spacing), y);
-            }
-
-            float cooldownX = fullIconAreaWidth * 0.5f + cooldownGap + cooldownSize * 0.5f;
-            LayoutRightGunCooldown(showCooldown, cooldownX, cooldownSize, y);
-        }
-
-        private void LayoutRightGunCooldown(bool visible, float x, float size, float y)
-        {
-            if (rightGunCooldownBack == null || rightGunCooldownFill == null)
-            {
-                return;
-            }
-
-            rightGunCooldownBack.gameObject.SetActive(visible);
-            rightGunCooldownFill.gameObject.SetActive(visible);
-            if (!visible)
-            {
-                return;
-            }
-
-            Vector2 position = new(x, y);
-            ConfigureCooldownRect(rightGunCooldownBack.rectTransform, size, position);
-            ConfigureCooldownRect(rightGunCooldownFill.rectTransform, size, position);
-        }
-
-        private static void ConfigureCooldownRect(RectTransform rect, float size, Vector2 position)
-        {
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(size, size);
-            rect.anchoredPosition = position;
-            rect.localScale = Vector3.one;
-            rect.localRotation = Quaternion.identity;
-        }
-
-        private void UpdateRightGunCooldown(PlayerCombatController player)
-        {
-            if (rightGunCooldownBack == null || rightGunCooldownFill == null)
-            {
-                return;
-            }
-
-            Color backColor = rightGunCooldownColor;
-            backColor.a *= 0.18f;
-            rightGunCooldownBack.color = backColor;
-            rightGunCooldownFill.color = rightGunCooldownColor;
-            rightGunCooldownFill.fillAmount = player.RightGunRechargeProgress;
         }
 
         private float GetIconRootHeight()
@@ -885,26 +554,12 @@ namespace Week14.UI
                 icons[i].Tick(deltaTime);
             }
 
-            for (int i = 0; i < rightGunAmmoIcons.Count; i++)
-            {
-                rightGunAmmoIcons[i].Tick(deltaTime);
-            }
-
             for (int i = retiringIcons.Count - 1; i >= 0; i--)
             {
                 if (retiringIcons[i].Tick(deltaTime))
                 {
                     Destroy(retiringIcons[i].Rect.gameObject);
                     retiringIcons.RemoveAt(i);
-                }
-            }
-
-            for (int i = retiringRightGunAmmoIcons.Count - 1; i >= 0; i--)
-            {
-                if (retiringRightGunAmmoIcons[i].Tick(deltaTime))
-                {
-                    Destroy(retiringRightGunAmmoIcons[i].Rect.gameObject);
-                    retiringRightGunAmmoIcons.RemoveAt(i);
                 }
             }
 
@@ -956,12 +611,6 @@ namespace Week14.UI
             iconWidthRatio = Mathf.Clamp(config.PlayerBulletUiIconWidthRatio, 0.1f, 1f);
             iconSpacingRatio = Mathf.Max(0f, config.PlayerBulletUiIconSpacingRatio);
             overflowTextFontSize = Mathf.Max(1f, config.PlayerBulletUiOverflowTextFontSize);
-            showPlayerRightGunAmmo = config.ShowRightGunBulletUi;
-            rightGunAmmoHeightRatio = Mathf.Max(0.01f, config.RightGunBulletUiHeightRatio);
-            rightGunAmmoWidthRatio = Mathf.Max(0.01f, config.RightGunBulletUiWidthRatio);
-            rightGunAmmoSpacingRatio = Mathf.Max(0f, config.RightGunBulletUiSpacingRatio);
-            rightGunAmmoColor = config.RightGunBulletUiColor;
-            rightGunCooldownColor = config.RightGunBulletUiCooldownColor;
         }
 
         private void ApplyPlayerConfigColorsIfNeeded()
@@ -1009,41 +658,6 @@ namespace Week14.UI
             texture.Apply();
             bulletIconSprite = Sprite.Create(texture, new Rect(0f, 0f, width, height), new Vector2(0.5f, 0.5f), height);
             return bulletIconSprite;
-        }
-
-        private static Sprite GetDonutSprite()
-        {
-            if (donutSprite != null)
-            {
-                return donutSprite;
-            }
-
-            const int size = 48;
-            Texture2D texture = new(size, size, TextureFormat.RGBA32, false)
-            {
-                filterMode = FilterMode.Bilinear,
-                wrapMode = TextureWrapMode.Clamp
-            };
-
-            Vector2 center = new((size - 1) * 0.5f, (size - 1) * 0.5f);
-            float outerRadius = size * 0.43f;
-            float innerRadius = size * 0.27f;
-            float softEdge = size * 0.06f;
-            for (int y = 0; y < size; y++)
-            {
-                for (int x = 0; x < size; x++)
-                {
-                    float distance = Vector2.Distance(new Vector2(x, y), center);
-                    float outerAlpha = Mathf.Clamp01((outerRadius + softEdge - distance) / softEdge);
-                    float innerAlpha = Mathf.Clamp01((distance - innerRadius + softEdge) / softEdge);
-                    float alpha = Mathf.Min(outerAlpha, innerAlpha);
-                    texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
-                }
-            }
-
-            texture.Apply();
-            donutSprite = Sprite.Create(texture, new Rect(0f, 0f, size, size), new Vector2(0.5f, 0.5f), size);
-            return donutSprite;
         }
 
         private sealed class BulletIcon
