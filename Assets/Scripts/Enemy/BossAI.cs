@@ -708,20 +708,12 @@ namespace Week14.Enemy
             bossLivesView ??= bossCombatUiRoot != null
                 ? bossCombatUiRoot.GetComponentInChildren<BossLivesView>(true)
                 : GetComponentInChildren<BossLivesView>(true);
-            if (bossLivesView == null && bossCombatUiRoot != null)
-            {
-                bossLivesView = BossLivesView.CreateUnder(bossCombatUiRoot.transform);
-            }
 
             bossLivesView?.SetTarget(this);
 
             bossEnrageBarView ??= bossCombatUiRoot != null
                 ? bossCombatUiRoot.GetComponentInChildren<BossEnrageBarView>(true)
                 : GetComponentInChildren<BossEnrageBarView>(true);
-            if (bossEnrageBarView == null && bossCombatUiRoot != null)
-            {
-                bossEnrageBarView = BossEnrageBarView.CreateUnder(bossCombatUiRoot.transform);
-            }
 
             bossEnrageBarView?.SetTarget(this);
         }

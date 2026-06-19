@@ -1,28 +1,24 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.Combat;
 using Week14.Enemy;
 
 namespace Week14.UI
 {
     public sealed class BossEnrageBarView : MonoBehaviour
     {
-        private const string FillName = "BossEnrageFill";
-
         [SerializeField] private BossAI target;
-        [SerializeField] private Color backgroundColor = new(0.24f, 0.24f, 0.24f, 0.86f);
+        [Tooltip("광폭화 진행도를 표시할 Filled 타입 Image입니다.")]
+        [SerializeField] private Image fillImage;
+        [Tooltip("플레이어 최대 탄환 감소량을 표시할 텍스트입니다.")]
+        [SerializeField] private TextMeshProUGUI reductionText;
         [SerializeField] private Color phase0FillColor = new(1f, 0.48f, 0.08f, 1f);
         [SerializeField] private Color phase1FillColor = new(0.95f, 0.04f, 0.03f, 1f);
-
-        private RectTransform rectTransform;
-        private Image backgroundImage;
-        private Image fillImage;
-
-        private static Sprite solidSprite;
-
-        private void Awake()
-        {
-            EnsureView();
-        }
+        [Tooltip("광폭화 단계에 따라 바뀌는 이미지입니다.")]
+        [SerializeField] private Image phaseImage;
+        [Tooltip("광폭화 단계별 이미지입니다. 인덱스 0이 단계0(평상시), 1이 단계1, 2가 단계2(최종 광폭화)에 대응합니다.")]
+        [SerializeField] private Sprite[] phaseSprites;
 
         private void OnEnable()
         {
@@ -33,21 +29,6 @@ namespace Week14.UI
         private void OnDisable()
         {
             Unsubscribe();
-        }
-
-        public static BossEnrageBarView CreateUnder(Transform parent)
-        {
-            GameObject viewObject = new("BossEnrageBarView", typeof(RectTransform));
-            viewObject.transform.SetParent(parent, false);
-
-            RectTransform rect = viewObject.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0f);
-            rect.anchorMax = new Vector2(0.5f, 0f);
-            rect.pivot = new Vector2(0.5f, 0f);
-            rect.anchoredPosition = new Vector2(0f, 44f);
-            rect.sizeDelta = new Vector2(1080f, 16f);
-
-            return viewObject.AddComponent<BossEnrageBarView>();
         }
 
         public void SetTarget(BossAI nextTarget)
@@ -66,7 +47,6 @@ namespace Week14.UI
 
         public void Refresh()
         {
-            EnsureView();
             if (target == null)
             {
                 SetValue(0, 0f);
@@ -99,77 +79,44 @@ namespace Week14.UI
 
         private void SetValue(int phase, float progress)
         {
-            EnsureView();
+            if (fillImage != null)
+            {
+                fillImage.color = phase <= 0 ? phase0FillColor : phase1FillColor;
+                fillImage.fillAmount = phase >= 2 ? 1f : Mathf.Clamp01(progress);
+            }
 
-            fillImage.color = phase <= 0 ? phase0FillColor : phase1FillColor;
-            fillImage.fillAmount = phase >= 2 ? 1f : Mathf.Clamp01(progress);
+            UpdatePhaseImage(phase);
+            UpdateReductionText();
         }
 
-        private void EnsureView()
+        private void UpdatePhaseImage(int phase)
         {
-            rectTransform ??= transform as RectTransform;
-            if (rectTransform == null)
+            if (phaseImage == null || phaseSprites == null || phaseSprites.Length == 0)
             {
-                rectTransform = gameObject.AddComponent<RectTransform>();
+                return;
             }
 
-            backgroundImage ??= GetComponent<Image>();
-            if (backgroundImage == null)
-            {
-                backgroundImage = gameObject.AddComponent<Image>();
-            }
-
-            backgroundImage.sprite = GetSolidSprite();
-            backgroundImage.type = Image.Type.Sliced;
-            backgroundImage.raycastTarget = false;
-            backgroundImage.color = backgroundColor;
-
-            if (fillImage == null)
-            {
-                Transform existing = rectTransform.Find(FillName);
-                fillImage = existing != null ? existing.GetComponent<Image>() : null;
-            }
-
-            if (fillImage == null)
-            {
-                GameObject fillObject = new(FillName, typeof(RectTransform));
-                fillObject.transform.SetParent(rectTransform, false);
-                fillImage = fillObject.AddComponent<Image>();
-            }
-
-            RectTransform fillRect = fillImage.rectTransform;
-            fillRect.anchorMin = Vector2.zero;
-            fillRect.anchorMax = Vector2.one;
-            fillRect.offsetMin = new Vector2(2f, 2f);
-            fillRect.offsetMax = new Vector2(-2f, -2f);
-            fillRect.pivot = new Vector2(0f, 0.5f);
-            fillRect.localScale = Vector3.one;
-            fillRect.localRotation = Quaternion.identity;
-
-            fillImage.sprite = GetSolidSprite();
-            fillImage.type = Image.Type.Filled;
-            fillImage.fillMethod = Image.FillMethod.Horizontal;
-            fillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
-            fillImage.fillClockwise = true;
-            fillImage.raycastTarget = false;
+            Sprite sprite = phaseSprites[Mathf.Clamp(phase, 0, phaseSprites.Length - 1)];
+            phaseImage.sprite = sprite;
+            phaseImage.enabled = sprite != null;
         }
 
-        private static Sprite GetSolidSprite()
+        private void UpdateReductionText()
         {
-            if (solidSprite != null)
+            if (reductionText == null)
             {
-                return solidSprite;
+                return;
             }
 
-            Texture2D texture = new(1, 1, TextureFormat.RGBA32, false)
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player == null || player.Config == null || player.Bullets == null)
             {
-                filterMode = FilterMode.Point,
-                wrapMode = TextureWrapMode.Clamp
-            };
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-            solidSprite = Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
-            return solidSprite;
+                reductionText.text = string.Empty;
+                return;
+            }
+
+            int reduction = player.Config.MaxBullets - player.Bullets.MaxBullets;
+            reductionText.text = reduction > 0 ? $"-{reduction}" : string.Empty;
         }
     }
 }

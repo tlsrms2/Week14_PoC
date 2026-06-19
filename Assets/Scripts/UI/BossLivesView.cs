@@ -39,21 +39,6 @@ namespace Week14.UI
             Unsubscribe();
         }
 
-        public static BossLivesView CreateUnder(Transform parent)
-        {
-            GameObject viewObject = new("BossLivesView", typeof(RectTransform));
-            viewObject.transform.SetParent(parent, false);
-
-            RectTransform rect = viewObject.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 1f);
-            rect.anchorMax = new Vector2(0.5f, 1f);
-            rect.pivot = new Vector2(0.5f, 1f);
-            rect.anchoredPosition = new Vector2(0f, -122f);
-            rect.sizeDelta = new Vector2(180f, 42f);
-
-            return viewObject.AddComponent<BossLivesView>();
-        }
-
         public void SetTarget(BossAI nextTarget)
         {
             if (target == nextTarget)
