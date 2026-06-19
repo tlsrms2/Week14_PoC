@@ -11,6 +11,8 @@ namespace Week14.Combat
         [SerializeField, Min(0.01f)] private float growSeconds = 0.1f;
         [Tooltip("처형 순간보다 몇 초 전에 처형 이미지를 꺼질지 결정합니다.")]
         [SerializeField, Min(0f)] private float hideLeadSeconds = 0.1f;
+        [Tooltip("사라질 때 FillAmount가 1에서 0까지 줄어드는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float disappearSeconds = 0.08f;
 
         private Coroutine routine;
 
@@ -18,6 +20,7 @@ namespace Week14.Combat
         {
             if (image != null)
             {
+                image.fillOrigin = (int)Image.OriginHorizontal.Right;
                 image.fillAmount = 0f;
                 image.gameObject.SetActive(false);
             }
@@ -53,6 +56,8 @@ namespace Week14.Combat
 
             if (image != null)
             {
+                image.fillOrigin = (int)Image.OriginHorizontal.Right;
+                image.fillAmount = 0f;
                 image.gameObject.SetActive(false);
             }
         }
@@ -61,6 +66,7 @@ namespace Week14.Combat
         {
             float hideAt = Mathf.Max(0f, secondsUntilKillMoment - hideLeadSeconds);
 
+            image.fillOrigin = (int)Image.OriginHorizontal.Right;
             image.fillAmount = 0f;
             image.gameObject.SetActive(true);
 
@@ -72,6 +78,16 @@ namespace Week14.Combat
                 yield return null;
             }
 
+            image.fillOrigin = (int)Image.OriginHorizontal.Left;
+            elapsed = 0f;
+            while (elapsed < disappearSeconds)
+            {
+                image.fillAmount = Mathf.Lerp(1f, 0f, elapsed / disappearSeconds);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            image.fillAmount = 0f;
             image.gameObject.SetActive(false);
             routine = null;
         }

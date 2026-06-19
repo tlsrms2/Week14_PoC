@@ -34567,6 +34567,7 @@ MonoBehaviour:
   image: {fileID: 1005209689}
   growSeconds: 0.1
   hideLeadSeconds: 0.3
+  disappearSeconds: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
