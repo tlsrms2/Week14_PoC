@@ -5,6 +5,12 @@ namespace Week14.UI
 {
     public sealed class AttackTimingOutline : MonoBehaviour
     {
+        public enum OutlineShape
+        {
+            Circle,
+            Square
+        }
+
         private const string RootName = "AttackTimingOutline";
         private const string BulletRootName = "AttackBullets";
         private const int MaxPointCount = 73;
@@ -13,14 +19,15 @@ namespace Week14.UI
         [SerializeField, Min(0.1f)] private float fallbackRadius = 0.85f;
         [SerializeField, Min(0f)] private float radiusPadding = 0.02f;
         [SerializeField, Min(0.001f)] private float width = 0.045f;
-        [SerializeField, Min(0.001f)] private float bulletWidth = 0.06f;
-        [SerializeField, Min(0.01f)] private float bulletLength = 0.18f;
-        [SerializeField, Min(0.01f)] private float bulletGap = 0.12f;
-        [SerializeField, Min(0.01f)] private float bulletRowGap = 0.16f;
-        [SerializeField, Min(0f)] private float bulletYOffset = 0.24f;
+        [SerializeField, Min(0.001f)] private float bulletWidth = 0.067f;
+        [SerializeField, Min(0.01f)] private float bulletLength = 0.2f;
+        [SerializeField, Min(0.01f)] private float bulletGap = 0.13f;
+        [SerializeField, Min(0.01f)] private float bulletRowGap = 0.18f;
+        [SerializeField, Min(0f)] private float bulletYOffset = 0.26f;
         [SerializeField] private Color color = new(1f, 0.82f, 0.18f, 0.95f);
         [SerializeField] private Color spentBulletColor = new(1f, 1f, 1f, 0.22f);
         [SerializeField] private int sortingOrder = 8;
+        [SerializeField] private OutlineShape outlineShape = OutlineShape.Circle;
         [SerializeField] private Transform targetRoot;
 
         private Transform root;
@@ -49,6 +56,11 @@ namespace Week14.UI
             }
         }
 
+        public void SetOutlineShape(OutlineShape shape)
+        {
+            outlineShape = shape;
+        }
+
         public void Show(float remainingSeconds, float durationSeconds)
         {
             Show(remainingSeconds, durationSeconds, 0, 0);
@@ -74,7 +86,7 @@ namespace Week14.UI
             UpdateRootTransform();
 
             float ratio = Mathf.Clamp01(remainingSeconds / durationSeconds);
-            DrawArc(line, ratio, 90f, 360f, color, MaxPointCount, ratio >= 0.995f);
+            DrawOutline(line, ratio);
             DrawBullets(loadedBulletCount, totalBulletCount);
         }
 
@@ -141,6 +153,17 @@ namespace Week14.UI
             EnsureBulletRoot();
         }
 
+        private void DrawOutline(LineRenderer renderer, float ratio)
+        {
+            if (outlineShape == OutlineShape.Square)
+            {
+                DrawSquareOutline(renderer, ratio);
+                return;
+            }
+
+            DrawArc(renderer, ratio, 90f, 360f, color, MaxPointCount, ratio >= 0.995f);
+        }
+
         private void DrawArc(
             LineRenderer renderer,
             float ratio,
@@ -163,6 +186,8 @@ namespace Week14.UI
             renderer.enabled = true;
             renderer.loop = loop;
             renderer.positionCount = loop ? maxPointCount : pointCount;
+            renderer.numCornerVertices = 2;
+            renderer.numCapVertices = 2;
             renderer.startWidth = width;
             renderer.endWidth = width;
             renderer.startColor = lineColor;
@@ -186,6 +211,80 @@ namespace Week14.UI
             }
         }
 
+        private void DrawSquareOutline(LineRenderer renderer, float ratio)
+        {
+            if (renderer == null || ratio <= 0f)
+            {
+                SetLineVisible(renderer, false);
+                return;
+            }
+
+            Vector2 halfExtents = GetOutlineHalfExtents();
+            Vector2[] corners =
+            {
+                new(halfExtents.x, halfExtents.y),
+                new(halfExtents.x, -halfExtents.y),
+                new(-halfExtents.x, -halfExtents.y),
+                new(-halfExtents.x, halfExtents.y),
+                new(halfExtents.x, halfExtents.y)
+            };
+
+            float[] segmentLengths =
+            {
+                Vector2.Distance(corners[0], corners[1]),
+                Vector2.Distance(corners[1], corners[2]),
+                Vector2.Distance(corners[2], corners[3]),
+                Vector2.Distance(corners[3], corners[4])
+            };
+            float perimeter = segmentLengths[0] + segmentLengths[1] + segmentLengths[2] + segmentLengths[3];
+            float targetLength = perimeter * Mathf.Clamp01(ratio);
+            int pointCount = Mathf.Max(2, Mathf.CeilToInt(MaxPointCount * ratio));
+
+            renderer.enabled = true;
+            renderer.loop = ratio >= 0.995f;
+            renderer.positionCount = renderer.loop ? 4 : pointCount;
+            renderer.numCornerVertices = 0;
+            renderer.numCapVertices = 0;
+            renderer.startWidth = width;
+            renderer.endWidth = width;
+            renderer.startColor = color;
+            renderer.endColor = color;
+            renderer.sortingOrder = sortingOrder;
+
+            if (renderer.loop)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    renderer.SetPosition(i, corners[i]);
+                }
+
+                return;
+            }
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                float t = pointCount <= 1 ? 0f : (float)i / (pointCount - 1);
+                renderer.SetPosition(i, GetSquareOutlinePoint(corners, segmentLengths, targetLength * t));
+            }
+        }
+
+        private static Vector2 GetSquareOutlinePoint(Vector2[] corners, float[] segmentLengths, float distance)
+        {
+            float remaining = Mathf.Max(0f, distance);
+            for (int i = 0; i < segmentLengths.Length; i++)
+            {
+                if (remaining <= segmentLengths[i] || i == segmentLengths.Length - 1)
+                {
+                    float t = segmentLengths[i] <= 0f ? 0f : Mathf.Clamp01(remaining / segmentLengths[i]);
+                    return Vector2.Lerp(corners[i], corners[i + 1], t);
+                }
+
+                remaining -= segmentLengths[i];
+            }
+
+            return corners[corners.Length - 1];
+        }
+
         private void DrawBullets(int loadedBulletCount, int totalBulletCount)
         {
             if (totalBulletCount <= 0)
@@ -197,8 +296,8 @@ namespace Week14.UI
             EnsureBulletRoot();
 
             int loadedCount = Mathf.Clamp(loadedBulletCount, 0, totalBulletCount);
-            float radius = GetOutlineRadius();
-            float firstRowY = radius + bulletYOffset;
+            float firstRowY = GetBulletAnchorY() + bulletYOffset;
+            float rowSpacing = Mathf.Max(bulletRowGap, bulletLength + bulletWidth * 1.35f);
 
             for (int i = 0; i < totalBulletCount; i++)
             {
@@ -208,7 +307,7 @@ namespace Week14.UI
                 int rowBulletCount = Mathf.Min(MaxBulletsPerRow, totalBulletCount - rowStartIndex);
                 float startX = -((rowBulletCount - 1) * bulletGap) * 0.5f;
                 float x = startX + column * bulletGap;
-                float y = firstRowY + row * bulletRowGap;
+                float y = firstRowY + row * rowSpacing;
 
                 LineRenderer bullet = GetBulletLine(i);
                 bullet.enabled = true;
@@ -307,6 +406,25 @@ namespace Week14.UI
 
             Bounds bounds = renderer.sprite.bounds;
             return Mathf.Max(bounds.extents.x, bounds.extents.y) + radiusPadding;
+        }
+
+        private Vector2 GetOutlineHalfExtents()
+        {
+            SpriteRenderer renderer = targetRoot != null ? targetRoot.GetComponent<SpriteRenderer>() : null;
+            if (renderer == null || renderer.sprite == null)
+            {
+                return Vector2.one * fallbackRadius;
+            }
+
+            Bounds bounds = renderer.sprite.bounds;
+            return new Vector2(
+                Mathf.Max(0.05f, bounds.extents.x + radiusPadding),
+                Mathf.Max(0.05f, bounds.extents.y + radiusPadding));
+        }
+
+        private float GetBulletAnchorY()
+        {
+            return outlineShape == OutlineShape.Square ? GetOutlineHalfExtents().y : GetOutlineRadius();
         }
 
         private Vector3 GetSpriteCenter()

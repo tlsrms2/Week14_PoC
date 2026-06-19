@@ -22,8 +22,10 @@ namespace Week14.Combat
         private const int RangeDashCount = 48;
         private const int ExecutionDimSortingOrder = 65;
         private const float BaseGamepadLookTurnDegreesPerSecond = 540f;
+        private static readonly Color RightGunEmptyRangeColor = new(0.58f, 0.58f, 0.58f, 0.95f);
 
         public static PlayerCombatController Active { get; private set; }
+        public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
 
         [SerializeField] private PlayerCombatConfig config;
         [SerializeField] private PlayerVisualRig visual;
@@ -47,7 +49,8 @@ namespace Week14.Combat
         private EnemyProjectile projectileLockOnTarget;
         private Coroutine executionRoutine;
         private bool isExecuting;
-        private float nextParryReadyAt;
+        private int rightGunAmmo;
+        private float rightGunRechargeReadyAt;
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
         private Transform rangeIndicatorRoot;
@@ -60,6 +63,8 @@ namespace Week14.Combat
         private SpriteRenderer[] bodyRenderers;
         private Color[] bodyBaseColors;
         private float bodyHitColorEndsAt;
+        private float nextEnemyBodyContactDamageAt;
+        private float enemyBodyContactStaggerEndsAt;
         private Vector2 smoothedGamepadLookDirection;
         private int smoothedGamepadLookFrame = -1;
 #if ENABLE_INPUT_SYSTEM
@@ -74,7 +79,35 @@ namespace Week14.Combat
         public ExecutionTarget HoveredExecutionTarget => hoveredExecutionTarget;
         public bool IsExecuting => isExecuting;
         public PlayerCombatConfig Config => config;
-        public bool CanMove => CanAct;
+        public int RightGunAmmo => rightGunAmmo;
+        public int RightGunMagazineSize => config != null ? Mathf.Max(1, config.RightGunMagazineSize) : 0;
+        public bool IsRightGunRecharging => config != null && rightGunAmmo < RightGunMagazineSize;
+        public float RightGunRechargeProgress
+        {
+            get
+            {
+                if (!IsRightGunRecharging)
+                {
+                    return 1f;
+                }
+
+                float seconds = Mathf.Max(0f, config.RightGunRechargeSeconds);
+                if (seconds <= 0f)
+                {
+                    return 1f;
+                }
+
+                if (rightGunRechargeReadyAt <= 0f)
+                {
+                    return 0f;
+                }
+
+                float remaining = Mathf.Max(0f, rightGunRechargeReadyAt - Time.time);
+                return Mathf.Clamp01(1f - remaining / seconds);
+            }
+        }
+        public bool CanMove => CanAct && !IsBodyContactStaggered;
+        public bool IsBodyContactStaggered => Time.time < enemyBodyContactStaggerEndsAt;
         private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
 
         private void Awake()
@@ -161,13 +194,13 @@ namespace Week14.Combat
             }
 
             bullets.Configure(config.MaxBullets, true);
-            ResetParryCooldown();
+            ResetRightGunAmmo();
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
         {
             config = nextConfig;
-            ResetParryCooldown();
+            ResetRightGunAmmo();
         }
 
         private void Update()
@@ -210,6 +243,7 @@ namespace Week14.Combat
             UpdateRangeIndicators();
             UpdateProjectileLockOnIndicator();
             UpdateBodyColor();
+            TickRightGunRecharge();
 
             if (GameInput.LeftAttackDown && CanAct)
             {
@@ -227,9 +261,100 @@ namespace Week14.Combat
             UpdateAttackTimingOutline();
         }
 
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null)
+            {
+                return;
+            }
+
+            Vector2 hitPosition = collision.contactCount > 0 ? collision.GetContact(0).point : collision.collider.ClosestPoint(transform.position);
+            TryReceiveEnemyBodyContact(collision.collider, hitPosition);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            if (collision == null || collision.collider == null)
+            {
+                return;
+            }
+
+            Vector2 hitPosition = collision.contactCount > 0 ? collision.GetContact(0).point : collision.collider.ClosestPoint(transform.position);
+            TryReceiveEnemyBodyContact(collision.collider, hitPosition);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            TryReceiveEnemyBodyContact(other, other != null ? other.ClosestPoint(transform.position) : transform.position);
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            TryReceiveEnemyBodyContact(other, other != null ? other.ClosestPoint(transform.position) : transform.position);
+        }
+
         public bool ReceiveAttack(int bulletDamage)
         {
             return ReceiveAttack(bulletDamage, transform.position, Vector2.right);
+        }
+
+        private void TryReceiveEnemyBodyContact(Collider2D other, Vector2 hitPosition)
+        {
+            if (other == null || config == null || Time.time < nextEnemyBodyContactDamageAt)
+            {
+                return;
+            }
+
+            if (!IsEnemyBodyContact(other))
+            {
+                return;
+            }
+
+            Vector2 hitDirection = (Vector2)transform.position - hitPosition;
+            if (hitDirection.sqrMagnitude <= 0.0001f)
+            {
+                hitDirection = (Vector2)transform.position - (Vector2)other.transform.position;
+            }
+
+            if (hitDirection.sqrMagnitude <= 0.0001f)
+            {
+                hitDirection = Vector2.right;
+            }
+
+            if (ReceiveAttack(config.EnemyBodyContactBulletDamage, hitPosition, hitDirection.normalized))
+            {
+                ApplyEnemyBodyContactKnockback(hitDirection.normalized);
+                nextEnemyBodyContactDamageAt = Time.time + config.EnemyBodyContactCooldownSeconds;
+            }
+        }
+
+        private void ApplyEnemyBodyContactKnockback(Vector2 direction)
+        {
+            if (body == null || config == null)
+            {
+                return;
+            }
+
+            float staggerSeconds = Mathf.Max(0f, config.EnemyBodyContactStaggerSeconds);
+            enemyBodyContactStaggerEndsAt = Mathf.Max(enemyBodyContactStaggerEndsAt, Time.time + staggerSeconds);
+            body.linearVelocity = direction * Mathf.Max(0f, config.EnemyBodyContactKnockbackSpeed);
+        }
+
+        private bool IsEnemyBodyContact(Collider2D other)
+        {
+            if (other.GetComponentInParent<EnemyProjectile>() != null)
+            {
+                return false;
+            }
+
+            Drone drone = other.GetComponentInParent<Drone>();
+            if (drone != null)
+            {
+                return !drone.SuppressesBodyContactDamage;
+            }
+
+            return other.GetComponentInParent<EnemyAI>() != null
+                || other.GetComponentInParent<BossAI>() != null;
         }
 
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
@@ -478,13 +603,13 @@ namespace Week14.Combat
 
         private IEnumerator ExecuteTarget(ExecutionTarget executionTarget)
         {
+            isExecuting = true;
             if (executionTarget == null || !executionTarget.BeginExecution(this))
             {
                 FinishExecution();
                 yield break;
             }
 
-            isExecuting = true;
             StopBody();
 
             Health targetHealth = executionTarget.GetComponent<Health>();
@@ -758,19 +883,87 @@ namespace Week14.Combat
             }
         }
 
-        private void ResetParryCooldown()
+        private void ResetRightGunAmmo()
         {
-            nextParryReadyAt = 0f;
+            rightGunAmmo = RightGunMagazineSize;
+            rightGunRechargeReadyAt = 0f;
         }
 
-        private bool CanUseParry()
+        private bool HasRightGunAmmo()
         {
-            return config != null && Time.time >= nextParryReadyAt;
+            return config != null && rightGunAmmo > 0;
         }
 
-        private void StartParryCooldown()
+        private bool TrySpendRightGunAmmo()
         {
-            nextParryReadyAt = Time.time + Mathf.Max(0f, config.ParryCooldownSeconds);
+            if (!HasRightGunAmmo())
+            {
+                return false;
+            }
+
+            rightGunAmmo--;
+            EnsureRightGunRecharge();
+            return true;
+        }
+
+        private void EnsureRightGunRecharge()
+        {
+            if (config == null || rightGunAmmo >= RightGunMagazineSize)
+            {
+                rightGunRechargeReadyAt = 0f;
+                return;
+            }
+
+            if (rightGunRechargeReadyAt <= 0f)
+            {
+                rightGunRechargeReadyAt = Time.time + Mathf.Max(0f, config.RightGunRechargeSeconds);
+            }
+        }
+
+        private void TickRightGunRecharge()
+        {
+            int magazineSize = RightGunMagazineSize;
+            if (magazineSize <= 0)
+            {
+                rightGunAmmo = 0;
+                rightGunRechargeReadyAt = 0f;
+                return;
+            }
+
+            if (rightGunAmmo > magazineSize)
+            {
+                rightGunAmmo = magazineSize;
+            }
+
+            if (rightGunAmmo >= magazineSize)
+            {
+                rightGunRechargeReadyAt = 0f;
+                return;
+            }
+
+            float rechargeSeconds = Mathf.Max(0f, config.RightGunRechargeSeconds);
+            if (rechargeSeconds <= 0f)
+            {
+                rightGunAmmo = magazineSize;
+                rightGunRechargeReadyAt = 0f;
+                return;
+            }
+
+            if (rightGunRechargeReadyAt <= 0f)
+            {
+                rightGunRechargeReadyAt = Time.time + rechargeSeconds;
+                return;
+            }
+
+            if (Time.time < rightGunRechargeReadyAt)
+            {
+                return;
+            }
+
+            rightGunAmmo = Mathf.Min(magazineSize, rightGunAmmo + 1);
+            rightGunRechargeReadyAt = rightGunAmmo < magazineSize
+                ? Time.time + rechargeSeconds
+                : 0f;
         }
 
         private bool TryParryProjectile()
@@ -781,7 +974,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (!CanUseParry())
+            if (!HasRightGunAmmo())
             {
                 return false;
             }
@@ -802,7 +995,7 @@ namespace Week14.Combat
             PlayerProjectile parryShot = FireParryShot(rightFireOrigin, direction);
             if (parryShot != null)
             {
-                StartParryCooldown();
+                TrySpendRightGunAmmo();
                 parryShot.SetForcedParryTarget(target);
             }
 
@@ -937,21 +1130,13 @@ namespace Week14.Combat
 
         private void UpdateLockOnTarget()
         {
-            if (GameInput.LockOnDown)
-            {
-                SetLockOnTarget(FindNextLockOnTarget());
-                return;
-            }
-
-            if (lockOnTarget == null)
-            {
-                SetLockOnTarget(FindNearestLockOnTarget());
-            }
+            SetLockOnTarget(FindNearestLockOnTarget());
         }
 
         private Health FindNearestLockOnTarget()
         {
             Vector2 playerPosition = transform.position;
+            Vector2 mousePosition = GetMouseWorldPosition();
             Collider2D[] hits = Physics2D.OverlapCircleAll(playerPosition, GetLockOnAcquireDistance(), enemyMask);
             Health bestTarget = null;
             float bestDistance = float.PositiveInfinity;
@@ -959,19 +1144,7 @@ namespace Week14.Combat
             for (int i = 0; i < hits.Length; i++)
             {
                 Health targetHealth = hits[i].GetComponentInParent<Health>();
-                if (!IsValidLockOnTarget(targetHealth))
-                {
-                    continue;
-                }
-
-                float distance = Vector2.Distance(playerPosition, hits[i].bounds.center);
-                if (distance >= bestDistance)
-                {
-                    continue;
-                }
-
-                bestTarget = targetHealth;
-                bestDistance = distance;
+                ChooseCloserLockOnTarget(targetHealth, hits[i], mousePosition, ref bestTarget, ref bestDistance);
             }
 
             if (bestTarget != null)
@@ -983,58 +1156,73 @@ namespace Week14.Combat
             for (int i = 0; i < allTargets.Length; i++)
             {
                 Health targetHealth = allTargets[i];
-                if (!IsValidLockOnTargetInRange(targetHealth))
-                {
-                    continue;
-                }
-
-                float distance = Vector2.Distance(playerPosition, targetHealth.transform.position);
-                if (distance >= bestDistance)
-                {
-                    continue;
-                }
-
-                bestTarget = targetHealth;
-                bestDistance = distance;
+                ChooseCloserLockOnTarget(targetHealth, null, mousePosition, ref bestTarget, ref bestDistance);
             }
 
             return bestTarget;
         }
 
-        private Health FindNextLockOnTarget()
+        private void ChooseCloserLockOnTarget(
+            Health targetHealth,
+            Collider2D candidateCollider,
+            Vector2 mousePosition,
+            ref Health bestTarget,
+            ref float bestDistance)
         {
-            Health[] allTargets = Object.FindObjectsByType<Health>(FindObjectsSortMode.None);
-            Health firstTarget = null;
-            Health nextTarget = null;
-            int firstId = int.MaxValue;
-            int nextId = int.MaxValue;
-            int currentId = lockOnTarget != null ? lockOnTarget.GetInstanceID() : int.MinValue;
-
-            for (int i = 0; i < allTargets.Length; i++)
+            if (!IsValidLockOnTargetInRange(targetHealth))
             {
-                Health targetHealth = allTargets[i];
-                if (!IsValidLockOnTargetInRange(targetHealth))
-                {
-                    continue;
-                }
-
-                int targetId = targetHealth.GetInstanceID();
-                if (targetId < firstId)
-                {
-                    firstId = targetId;
-                    firstTarget = targetHealth;
-                }
-
-                if (targetHealth == lockOnTarget || targetId <= currentId || targetId >= nextId)
-                {
-                    continue;
-                }
-
-                nextId = targetId;
-                nextTarget = targetHealth;
+                return;
             }
 
-            return nextTarget != null ? nextTarget : firstTarget;
+            Vector2 targetPoint = GetLockOnMouseComparePoint(targetHealth, candidateCollider, mousePosition);
+            float distance = Vector2.Distance(mousePosition, targetPoint);
+            if (distance >= bestDistance)
+            {
+                return;
+            }
+
+            bestTarget = targetHealth;
+            bestDistance = distance;
+        }
+
+        private static Vector2 GetLockOnMouseComparePoint(
+            Health targetHealth,
+            Collider2D candidateCollider,
+            Vector2 mousePosition)
+        {
+            if (candidateCollider != null && candidateCollider.enabled)
+            {
+                return candidateCollider.ClosestPoint(mousePosition);
+            }
+
+            Collider2D[] colliders = targetHealth != null ? targetHealth.GetComponentsInChildren<Collider2D>() : null;
+            if (colliders == null || colliders.Length == 0)
+            {
+                return targetHealth != null ? targetHealth.transform.position : mousePosition;
+            }
+
+            Vector2 bestPoint = targetHealth.transform.position;
+            float bestDistance = float.PositiveInfinity;
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                Vector2 point = collider.ClosestPoint(mousePosition);
+                float distance = Vector2.Distance(mousePosition, point);
+                if (distance >= bestDistance)
+                {
+                    continue;
+                }
+
+                bestPoint = point;
+                bestDistance = distance;
+            }
+
+            return bestPoint;
         }
 
         private void ClearInvalidLockOnTarget()
@@ -1331,7 +1519,9 @@ namespace Week14.Combat
 
         private Color GetParryRangeColor()
         {
-            Color color = ParryEffectColor;
+            Color color = rightGunAmmo <= 0 && IsRightGunRecharging
+                ? RightGunEmptyRangeColor
+                : ParryEffectColor;
             color.a = Mathf.Max(color.a, 0.85f);
             return color;
         }

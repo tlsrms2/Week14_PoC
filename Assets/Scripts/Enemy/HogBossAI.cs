@@ -59,8 +59,9 @@ namespace Week14.Enemy
             [SerializeField, FormerlySerializedAs("color"), Tooltip("발사된 탄환 색입니다.")] private Color launchedColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Min(0.01f), Tooltip("탄환 궤적이 남아 있는 시간입니다.")] private float trailSeconds = 0.1f;
             [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] private float trailWidthMultiplier = 3f;
-            [SerializeField, Min(0f), Tooltip("발사 후 플레이어를 추적하는 시간입니다.")] private float homingSeconds;
-            [SerializeField, Min(0f), Tooltip("추적 중 초당 회전 가능한 최대 각도입니다.")] private float homingTurnDegreesPerSecond;
+            [SerializeField] private bool homingEnabled;
+            [SerializeField, Min(0f), Tooltip("발사 후 플레이어를 추적하는 시간입니다.")] private float homingSeconds = 0.8f;
+            [SerializeField, Min(0f), Tooltip("추적 중 초당 회전 가능한 최대 각도입니다.")] private float homingTurnDegreesPerSecond = 540f;
 
             public EnemyProjectile Prefab => prefab;
             public int BulletDamage => bulletDamage;
@@ -74,6 +75,7 @@ namespace Week14.Enemy
             public Color LaunchedColor => launchedColor;
             public float TrailSeconds => trailSeconds;
             public float TrailWidthMultiplier => trailWidthMultiplier;
+            public bool HomingEnabled => homingEnabled;
             public float HomingSeconds => homingSeconds;
             public float HomingTurnDegreesPerSecond => homingTurnDegreesPerSecond;
         }
@@ -268,6 +270,10 @@ namespace Week14.Enemy
         [Header("Hog Effects")]
         [SerializeField, Tooltip("호그 보글보글 이펙트 대표색입니다. 기본값은 #477330입니다.")] private Color hogEffectColor = new(0.278f, 0.451f, 0.188f, 1f);
         [SerializeField, Min(0.1f), Tooltip("패턴1, 패턴2, 패턴4에서 생성되는 보글보글 이펙트 크기입니다.")] private float bubbleEffectScale = 1f;
+        [SerializeField, Tooltip("유도 기능이 꺼진 보스 투사체 발사 전 색입니다.")] private Color normalProjectileChargeColor = new(0.45f, 0.7f, 0.25f, 1f);
+        [SerializeField, Tooltip("유도 기능이 꺼진 보스 투사체 발사 후 색입니다.")] private Color normalProjectileColor = new(1f, 0.95f, 0.25f, 1f);
+        [SerializeField, Tooltip("유도 기능이 켜진 보스 투사체 발사 전 색입니다.")] private Color homingProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
+        [SerializeField, Tooltip("유도 기능이 켜진 보스 투사체 발사 후 색입니다.")] private Color homingProjectileColor = new(0.35f, 0.75f, 1f, 1f);
 
         [Header("Debug")]
         [SerializeField, Tooltip("켜면 아래에서 고른 패턴만 반복 실행합니다.")] private bool debugUseFixedPattern;
@@ -291,7 +297,9 @@ namespace Week14.Enemy
                 return;
             }
 
-            patternRoutine = StartCoroutine(RunPattern(SelectPattern()));
+            PatternKind pattern = SelectPattern();
+            PreviewPatternBulletUi(pattern);
+            patternRoutine = StartCoroutine(RunPattern(pattern));
         }
 
         protected override void CancelBossAction()
@@ -416,15 +424,15 @@ namespace Week14.Enemy
             }
 
             Stop();
-            ClearPatternBulletUi();
+            PatternKind nextPattern = SelectPattern();
+            PreviewPatternBulletUi(nextPattern);
             float recoverySeconds = GetPatternRecoverySeconds();
             if (recoverySeconds > 0f)
             {
                 yield return RunPatternRecovery(recoverySeconds);
             }
 
-            HideAttackTiming();
-            patternRoutine = null;
+            patternRoutine = StartCoroutine(RunPattern(nextPattern));
         }
 
         private float GetPatternRecoverySeconds()
@@ -440,12 +448,17 @@ namespace Week14.Enemy
 
             while (remaining > 0f)
             {
-                ShowAttackTiming(remaining, duration);
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
+                ShowAttackTiming(remaining, duration, currentPatternBulletRemaining, currentPatternBulletTotal);
                 remaining -= Time.deltaTime;
                 yield return null;
             }
-
-            HideAttackTiming();
         }
 
         private IEnumerator RunPattern1()
@@ -454,13 +467,19 @@ namespace Week14.Enemy
             float nextBurstAt = 0f;
             int fired = 0;
             int totalBullets = Mathf.Max(1, pattern1.RadialBulletCount);
-            BeginPatternBulletUi(totalBullets);
 
             // 첫 탄환의 시작 각도를 무작위로 설정 (항상 같은 방향에서 시작하려면 0f 등으로 고정)
             float currentAngle = Random.Range(0f, 360f);
 
             while (fired < totalBullets)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 float t = totalBullets <= 1 ? 1f : Mathf.Clamp01((float)fired / (totalBullets - 1));
                 float speedMultiplier = Mathf.Lerp(
                     pattern1.InitialChaseSpeedMultiplier,
@@ -511,9 +530,10 @@ namespace Week14.Enemy
                 }
 
                 int volleyBulletCount = Mathf.Max(1, volley.BulletCount);
-                BeginPatternBulletUi(volleyBulletCount);
                 for (int bulletIndex = 0; bulletIndex < volleyBulletCount; bulletIndex++)
                 {
+                    yield return WaitWhileExecutionPaused();
+
                     MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
                     FireMachinegunBullet(fired);
                     fired++;
@@ -535,7 +555,6 @@ namespace Week14.Enemy
         private IEnumerator RunPattern3()
         {
             Stop();
-            BeginPatternBulletUi(1);
 
             Vector3 origin = GetProjectileOrigin();
             float radius = pattern3.Projectile.Radius * pattern3.ProjectileRadiusMultiplier;
@@ -585,6 +604,13 @@ namespace Week14.Enemy
 
             while (projectile != null && projectile.IsCharging)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 // 👇 추가된 로직: 설정한 조준 시간이 지나면 조준을 멈춤
                 if (!trackingStopped && elapsed >= pattern3.AimTrackingSeconds)
                 {
@@ -605,6 +631,8 @@ namespace Week14.Enemy
 
             for (int wave = 0; wave < pattern4.WaveCount; wave++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 BeginPatternBulletUi(Mathf.Max(1, pattern4.BulletCount));
                 
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
@@ -613,7 +641,7 @@ namespace Week14.Enemy
 
                 if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
                 {
-                    yield return new WaitForSeconds(pattern4.WaveInterval);
+                    yield return WaitPattern5Seconds(pattern4.WaveInterval);
                 }
             }
         }
@@ -623,16 +651,20 @@ namespace Week14.Enemy
             Stop();
 
             int bulletCount = Mathf.Max(1, pattern5.BulletCount);
-            BeginPatternBulletUiEmpty(bulletCount);
 
             float windupSeconds = Mathf.Max(0f, pattern5.WindupSeconds);
             float elapsed = 0f;
             float nextBubbleAt = Time.time;
             while (elapsed < windupSeconds)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Stop();
-                float progress = windupSeconds <= 0f ? 1f : Mathf.Clamp01(elapsed / windupSeconds);
-                SetPatternBulletUiLoaded(Mathf.FloorToInt(bulletCount * progress));
                 PlayWindupBubbleIfDue(ref nextBubbleAt, GetProjectileOrigin(), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
 
                 elapsed += Time.deltaTime;
@@ -646,6 +678,8 @@ namespace Week14.Enemy
 
             for (int i = 0; i < bulletCount; i++)
             {
+                yield return WaitWhileExecutionPaused();
+
                 Stop();
                 
                 Vector3 currentOrigin = GetProjectileOrigin();
@@ -756,6 +790,13 @@ namespace Week14.Enemy
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
                 remaining -= Time.deltaTime;
                 yield return null;
@@ -767,12 +808,27 @@ namespace Week14.Enemy
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
             {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
                 Stop();
                 remaining -= Time.deltaTime;
                 yield return null;
             }
         }
 
+        private IEnumerator WaitWhileExecutionPaused()
+        {
+            while (IsExecutionPaused)
+            {
+                Stop();
+                yield return null;
+            }
+        }
         private Vector3 GetPattern1SpawnPosition(Vector2 direction)
         {
             float radius = Mathf.Max(0f, pattern1.SpawnRadius);
@@ -799,11 +855,9 @@ namespace Week14.Enemy
             ShowCurrentPatternBullets();
         }
 
-        private void BeginPatternBulletUiEmpty(int totalBulletCount)
+        private void PreviewPatternBulletUi(PatternKind pattern)
         {
-            currentPatternBulletTotal = Mathf.Max(0, totalBulletCount);
-            currentPatternBulletRemaining = 0;
-            ShowCurrentPatternBullets();
+            BeginPatternBulletUi(GetPatternBulletCount(pattern));
         }
 
         private void SetPatternBulletUiLoaded(int loadedBulletCount)
@@ -815,6 +869,45 @@ namespace Week14.Enemy
 
             currentPatternBulletRemaining = Mathf.Clamp(loadedBulletCount, 0, currentPatternBulletTotal);
             ShowCurrentPatternBullets();
+        }
+
+        private int GetPatternBulletCount(PatternKind pattern)
+        {
+            switch (pattern)
+            {
+                case PatternKind.Pattern1:
+                    return Mathf.Max(1, pattern1.RadialBulletCount);
+                case PatternKind.Pattern2:
+                    return GetPattern2BulletCount();
+                case PatternKind.Pattern3:
+                    return 1;
+                case PatternKind.Pattern4:
+                    return Mathf.Max(0, pattern4.WaveCount);
+                case PatternKind.Pattern5:
+                    return Mathf.Max(1, pattern5.BulletCount);
+                default:
+                    return 0;
+            }
+        }
+
+        private int GetPattern2BulletCount()
+        {
+            int count = 0;
+            IReadOnlyList<Pattern2Settings.VolleySettings> volleys = pattern2.Volleys;
+            if (volleys == null)
+            {
+                return count;
+            }
+
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                if (volleys[i] != null)
+                {
+                    count += Mathf.Max(1, volleys[i].BulletCount);
+                }
+            }
+
+            return count;
         }
 
         private void ConsumePatternBulletUi()
@@ -889,6 +982,20 @@ namespace Week14.Enemy
             return hogEffectColor.a > 0f ? hogEffectColor : DefaultHogEffectColor;
         }
 
+        private Color GetProjectileColor(ProjectileSettings settings, bool suppressHoming)
+        {
+            return settings != null && settings.HomingEnabled && !suppressHoming
+                ? homingProjectileColor
+                : normalProjectileColor;
+        }
+
+        private Color GetProjectileChargeColor(ProjectileSettings settings, bool suppressHoming)
+        {
+            return settings != null && settings.HomingEnabled && !suppressHoming
+                ? homingProjectileChargeColor
+                : normalProjectileChargeColor;
+        }
+
         private EnemyProjectile FireConfiguredProjectileWithoutPlayerAim(
             ProjectileSettings settings,
             Vector3 origin,
@@ -941,6 +1048,8 @@ namespace Week14.Enemy
 
             float chargeSeconds = chargeSecondsOverride >= 0f ? chargeSecondsOverride : settings.ChargeSeconds;
             float radius = radiusOverride > 0f ? radiusOverride : settings.Radius;
+            Color chargeColor = GetProjectileChargeColor(settings, suppressHoming);
+            Color projectileColor = GetProjectileColor(settings, suppressHoming);
             EnemyProjectile projectile = SpawnBossProjectile(
                 settings.Prefab,
                 origin,
@@ -950,16 +1059,17 @@ namespace Week14.Enemy
                 settings.Speed,
                 settings.Lifetime,
                 radius,
-                settings.LaunchedColor,
+                projectileColor,
                 settings.TrailSeconds,
                 settings.TrailWidthMultiplier,
-                suppressHoming ? 0f : settings.HomingSeconds,
-                suppressHoming ? 0f : settings.HomingTurnDegreesPerSecond,
+                settings.HomingEnabled && !suppressHoming,
+                settings.HomingSeconds,
+                settings.HomingTurnDegreesPerSecond,
                 playRecoil,
                 muzzleFlashPosition,
                 muzzleFlashScale);
 
-            projectile?.ConfigureStateColors(settings.ChargingColor, settings.LaunchedColor);
+            projectile?.ConfigureStateColors(chargeColor, projectileColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
             return projectile;
         }

@@ -17,8 +17,11 @@ MonoBehaviour:
   attackBulletDamage: 1
   parryBulletRecovery: 1
   counteredProjectileBulletDamage: 0
-  moveSpeed: 4
-  sprintSpeedMultiplier: 1
+  enemyBodyContactBulletDamage: 1
+  enemyBodyContactCooldownSeconds: 0.35
+  enemyBodyContactKnockbackSpeed: 8
+  enemyBodyContactStaggerSeconds: 0.22
+  moveSpeed: 3
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   projectileSpeed: 60
@@ -28,10 +31,11 @@ MonoBehaviour:
   parryRange: 6.5
   parryAimAngleDegrees: 30
   parryBodyRadius: 0.3
-  parryCooldownSeconds: 0.18
-  lockOnBreakDistance: 7.5
+  rightGunMagazineSize: 5
+  rightGunRechargeSeconds: 1.25
+  lockOnBreakDistance: 7
   executionRange: 7
-  executionBulletRecovery: 300
+  executionBulletRecovery: 3
   destroyTargetOnExecute: 1
   executionAimSeconds: 1
   executionShotDelaySeconds: 0.3
@@ -44,9 +48,13 @@ MonoBehaviour:
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
   playerBulletUiMaxVisibleIcons: 10
-  playerBulletUiIconWorldHeight: 0.5
+  playerBulletUiIconHeightRatio: 0.9
   playerBulletUiIconWidthRatio: 0.5
-  playerBulletUiArcInset: 0.2
-  playerBulletUiArcPaddingDegrees: 1.1
-  playerBulletUiSpacingDegrees: 0
-  playerBulletUiOverflowWorldHeight: 0.22
+  playerBulletUiIconSpacingRatio: 0.16
+  playerBulletUiOverflowTextFontSize: 18
+  showRightGunBulletUi: 1
+  rightGunBulletUiHeightRatio: 0.35
+  rightGunBulletUiWidthRatio: 0.6
+  rightGunBulletUiSpacingRatio: 0.06
+  rightGunBulletUiColor: {r: 0.58, g: 0.58, b: 0.58, a: 0.95}
+  rightGunBulletUiCooldownColor: {r: 0.78, g: 0.78, b: 0.78, a: 0.9}

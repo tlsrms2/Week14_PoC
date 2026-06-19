@@ -31,7 +31,11 @@ public sealed class DronePilotEditor : Editor
         "patternSequence",
         "randomizePatterns",
         "minPatternRecoverySeconds",
-        "maxPatternRecoverySeconds"
+        "maxPatternRecoverySeconds",
+        "normalProjectileChargeColor",
+        "normalProjectileColor",
+        "homingProjectileChargeColor",
+        "homingProjectileColor"
     };
 
     private static readonly Dictionary<string, bool> ToggleStates = new();
@@ -94,6 +98,14 @@ public sealed class DronePilotEditor : Editor
             DrawProperty("maxPatternRecoverySeconds");
         });
 
+        DrawToggleSection("투사체 색", "common.projectileColors", () =>
+        {
+            DrawProperty("normalProjectileChargeColor");
+            DrawProperty("normalProjectileColor");
+            DrawProperty("homingProjectileChargeColor");
+            DrawProperty("homingProjectileColor");
+        });
+
         showBossBase = EditorGUILayout.ToggleLeft("BossAI 공통 설정 보기", showBossBase, EditorStyles.boldLabel);
         if (showBossBase)
         {
@@ -118,11 +130,27 @@ public sealed class DronePilotEditor : Editor
         DrawChildSection("소환 수", pattern, "maxOwnedDrones", "summonCount");
         DrawChildSection("소환 위치", pattern, "spawnRadius", "summonInterval");
         DrawChildSection("등장 연출", pattern, "introSeconds", "introStartScale");
+        DrawChildSection("자동 소환 간격", pattern, "minAutoSummonInterval", "maxAutoSummonInterval");
     }
 
     private void DrawDronePattern1Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("dronePattern1");
+        if (pattern != null)
+        {
+            DrawHeader("드론 패턴 1", "보스 발사 타이밍에 맞춰 드론이 함께 쏠 전용 투사체를 설정합니다.");
+            DrawProjectile(pattern.FindPropertyRelative("droneProjectile"), "드론 패턴1 전용 탄환");
+            return;
+        }
+
+        bool useDedicatedPattern1Inspector = true;
+        if (useDedicatedPattern1Inspector)
+        {
+            DrawHeader("드론 패턴 1", "드론 패턴 1에서 사용할 탄환과 발사 수를 보스와 별도로 설정합니다.");
+            DrawChildSection("발사 설정", pattern, "bulletCount", "fireInterval");
+            DrawProjectile(pattern.FindPropertyRelative("droneProjectile"), "드론 패턴1 전용 탄환");
+            return;
+        }
         DrawHeader("드론 패턴 1", "보스가 공격할 때 드론들이 같은 타이밍으로 함께 발사합니다.");
         DrawChildSection("연동", pattern, "useBossProjectile");
 
@@ -171,6 +199,7 @@ public sealed class DronePilotEditor : Editor
         DrawProjectile(pattern.FindPropertyRelative("bossProjectile"), "패턴5 보스 탄환");
         DrawChildSection("패턴5 보스 발사", pattern, "bossBulletCount", "bossFireInterval", "bossSpawnSpacing");
         DrawProjectile(pattern.FindPropertyRelative("droneProjectile"), "패턴5 드론 탄환");
+        DrawChildSection("패턴5 드론 독립 발사", pattern, "droneFireCount", "droneFireInterval");
         DrawChildSection("드론 대형", pattern, "formationRadius", "formationAngleSpacingDegrees", "settleSeconds", "formationSpeedMultiplier");
     }
 
@@ -185,8 +214,8 @@ public sealed class DronePilotEditor : Editor
         {
             DrawChildSection("기본", projectile, "prefab", "bulletDamage", "radius");
             DrawChildSection("충전", projectile, "chargeSeconds", "chargeDriftSpeed", "aimAtPlayerWhileCharging", "aimAtPlayerOnLaunch");
-            DrawChildSection("이동", projectile, "speed", "lifetime", "homingSeconds", "homingTurnDegreesPerSecond");
-            DrawChildSection("색/궤적", projectile, "chargingColor", "launchedColor", "trailSeconds", "trailWidthMultiplier");
+            DrawChildSection("이동", projectile, "speed", "lifetime", "homingEnabled", "homingSeconds", "homingTurnDegreesPerSecond");
+            DrawChildSection("색/궤적", projectile, "trailSeconds", "trailWidthMultiplier");
         });
     }
 

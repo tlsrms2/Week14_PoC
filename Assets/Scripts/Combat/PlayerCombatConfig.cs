@@ -18,10 +18,16 @@ namespace Week14.Combat
         [SerializeField, Min(0)] private int parryBulletRecovery = 2;
         [Tooltip("적 탄이 패링되었을 때 적 탄환을 감소시키는 양입니다.")]
         [SerializeField, Min(0)] private int counteredProjectileBulletDamage = 1;
+        [Tooltip("적 몸체와 접촉했을 때 플레이어가 잃는 탄환 수입니다.")]
+        [SerializeField, Min(1)] private int enemyBodyContactBulletDamage = 1;
+        [Tooltip("적 몸체와 계속 닿아 있을 때 피격을 다시 받을 때까지의 시간입니다.")]
+        [SerializeField, Min(0f)] private float enemyBodyContactCooldownSeconds = 0.35f;
+        [Tooltip("적 몸체와 부딪혔을 때 플레이어가 튕겨나는 속도입니다.")]
+        [SerializeField, Min(0f)] private float enemyBodyContactKnockbackSpeed = 8f;
+        [Tooltip("적 몸체와 부딪힌 뒤 입력 이동을 막는 경직 시간입니다.")]
+        [SerializeField, Min(0f)] private float enemyBodyContactStaggerSeconds = 0.22f;
         [Tooltip("플레이어의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
-        [Tooltip("질주 중 기본 이동 속도에 곱하는 배율입니다.")]
-        [SerializeField, Min(1f)] private float sprintSpeedMultiplier = 1.5f;
 
         [Header("Left Gun")]
         [Tooltip("플레이어 권총 발사에 사용할 투사체 프리팹입니다.")]
@@ -44,10 +50,12 @@ namespace Week14.Combat
         [SerializeField, Range(1f, 360f)] private float parryAimAngleDegrees = 65f;
         [Tooltip("패링 판정 쐐기의 안쪽(플레이어 쪽) 경계 반경입니다. 캐릭터 콜라이더 반경과 비슷한 값을 권장합니다.")]
         [SerializeField, Min(0f)] private float parryBodyRadius = 0.3f;
-        [Tooltip("우클릭 패링을 다시 사용할 수 있기까지 걸리는 시간입니다.")]
-        [FormerlySerializedAs("rightGunRechargeSeconds")]
+        [Tooltip("오른쪽 권총에 장전되는 패링 전용 탄환 수입니다.")]
+        [SerializeField, Min(1)] private int rightGunMagazineSize = 3;
+        [Tooltip("오른쪽 권총 패링탄 하나가 재충전되기까지 걸리는 시간입니다.")]
+        [FormerlySerializedAs("parryCooldownSeconds")]
         [FormerlySerializedAs("parryShotCooldown")]
-        [SerializeField, Min(0f)] private float parryCooldownSeconds = 0.18f;
+        [SerializeField, Min(0f)] private float rightGunRechargeSeconds = 0.18f;
 
         [Header("Lock On")]
         [Tooltip("락온 대상이 이 거리보다 멀어지면 락온을 해제합니다.")]
@@ -82,24 +90,34 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float executionShotDimAlpha = 0.72f;
 
         [Header("Player Bullet UI")]
-        [Tooltip("패링 호 아래에 표시할 플레이어 탄환 아이콘 최대 개수입니다.")]
+        [Tooltip("플레이어 탄환 UI에 표시할 탄환 아이콘 최대 개수입니다.")]
         [SerializeField, Min(1)] private int playerBulletUiMaxVisibleIcons = 10;
-        [Tooltip("플레이어 탄환 아이콘의 월드 기준 세로 길이입니다.")]
-        [SerializeField, Min(0.01f)] private float playerBulletUiIconWorldHeight = 0.22f;
-        [Tooltip("플레이어 탄환 아이콘의 세로 길이에 곱할 가로 폭 비율입니다.")]
+        [Tooltip("플레이어 탄환 아이콘이 UI 영역 높이에서 차지하는 비율입니다.")]
+        [SerializeField, Range(0.1f, 1f)] private float playerBulletUiIconHeightRatio = 0.9f;
+        [Tooltip("플레이어 탄환 아이콘의 가로 폭 비율입니다.")]
+        [FormerlySerializedAs("playerBulletUiIconWidthRatio")]
         [SerializeField, Range(0.1f, 1f)] private float playerBulletUiIconWidthRatio = 0.48f;
-        [Tooltip("패링 실선 호에서 안쪽으로 떨어뜨릴 거리입니다.")]
-        [SerializeField, Min(0f)] private float playerBulletUiArcInset = 0.28f;
-        [Tooltip("패링 호 양 끝에서 탄환 아이콘을 안쪽으로 들여놓을 각도입니다.")]
-        [SerializeField, Min(0f)] private float playerBulletUiArcPaddingDegrees = 4f;
-        [Tooltip("플레이어 탄환 아이콘 사이 각도 간격입니다. 0이면 패링 호 안에서 자동 분배합니다.")]
-        [SerializeField, Min(0f)] private float playerBulletUiSpacingDegrees;
-        [Tooltip("남은 탄환 수 텍스트의 월드 기준 높이입니다.")]
-        [SerializeField, Min(0.01f)] private float playerBulletUiOverflowWorldHeight = 0.22f;
+        [Tooltip("플레이어 탄환 아이콘 사이 간격 비율입니다.")]
+        [SerializeField, Min(0f)] private float playerBulletUiIconSpacingRatio = 0.16f;
+        [Tooltip("남은 탄환 수 텍스트 크기입니다.")]
+        [SerializeField, Min(1f)] private float playerBulletUiOverflowTextFontSize = 18f;
+
+        [Header("Right Gun Bullet UI")]
+        [Tooltip("플레이어 탄환 UI에 오른쪽 권총 패링 전용 탄환을 표시할지 여부입니다.")]
+        [SerializeField] private bool showRightGunBulletUi = true;
+        [Tooltip("오른쪽 권총 탄환 아이콘의 세로 두께 비율입니다.")]
+        [SerializeField, Min(0.01f)] private float rightGunBulletUiHeightRatio = 0.2f;
+        [Tooltip("오른쪽 권총 탄환 아이콘의 가로 길이 비율입니다.")]
+        [SerializeField, Min(0.01f)] private float rightGunBulletUiWidthRatio = 0.48f;
+        [Tooltip("오른쪽 권총 탄환 아이콘 사이 간격 비율입니다.")]
+        [SerializeField, Min(0f)] private float rightGunBulletUiSpacingRatio = 0.12f;
+        [Tooltip("오른쪽 권총 탄환 아이콘 색상입니다.")]
+        [SerializeField] private Color rightGunBulletUiColor = new(0.58f, 0.58f, 0.58f, 0.95f);
+        [Tooltip("오른쪽 권총 탄환 재충전 링 색상입니다.")]
+        [SerializeField] private Color rightGunBulletUiCooldownColor = new(0.78f, 0.78f, 0.78f, 0.9f);
 
         public int MaxBullets => maxBullets;
         public float MoveSpeed => moveSpeed;
-        public float SprintSpeedMultiplier => sprintSpeedMultiplier;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
         public int LeftAttackBulletCost => leftAttackBulletCost;
         public int AttackBulletDamage => attackBulletDamage;
@@ -113,9 +131,14 @@ namespace Week14.Combat
         public float ParryRange => parryRange;
         public int ParryBulletRecovery => parryBulletRecovery;
         public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
+        public int EnemyBodyContactBulletDamage => enemyBodyContactBulletDamage;
+        public float EnemyBodyContactCooldownSeconds => enemyBodyContactCooldownSeconds;
+        public float EnemyBodyContactKnockbackSpeed => enemyBodyContactKnockbackSpeed;
+        public float EnemyBodyContactStaggerSeconds => enemyBodyContactStaggerSeconds;
         public float ParryAimAngleDegrees => parryAimAngleDegrees;
         public float ParryBodyRadius => parryBodyRadius;
-        public float ParryCooldownSeconds => parryCooldownSeconds;
+        public int RightGunMagazineSize => rightGunMagazineSize;
+        public float RightGunRechargeSeconds => rightGunRechargeSeconds;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
         public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
         public Color ParrySparkColor => effectData != null ? effectData.ParrySparkColor : new Color(1f, 0.88f, 0.35f, 1f);
@@ -158,11 +181,15 @@ namespace Week14.Combat
         public int ExecutionImpactParticleCount => effectData != null ? effectData.ExecutionImpactParticleCount : 28;
         public int ExecutionAbsorbParticleCount => effectData != null ? effectData.ExecutionAbsorbParticleCount : 24;
         public int PlayerBulletUiMaxVisibleIcons => playerBulletUiMaxVisibleIcons;
-        public float PlayerBulletUiIconWorldHeight => playerBulletUiIconWorldHeight;
+        public float PlayerBulletUiIconHeightRatio => playerBulletUiIconHeightRatio;
         public float PlayerBulletUiIconWidthRatio => playerBulletUiIconWidthRatio;
-        public float PlayerBulletUiArcInset => playerBulletUiArcInset;
-        public float PlayerBulletUiArcPaddingDegrees => playerBulletUiArcPaddingDegrees;
-        public float PlayerBulletUiSpacingDegrees => playerBulletUiSpacingDegrees;
-        public float PlayerBulletUiOverflowWorldHeight => playerBulletUiOverflowWorldHeight;
+        public float PlayerBulletUiIconSpacingRatio => playerBulletUiIconSpacingRatio;
+        public float PlayerBulletUiOverflowTextFontSize => playerBulletUiOverflowTextFontSize;
+        public bool ShowRightGunBulletUi => showRightGunBulletUi;
+        public float RightGunBulletUiHeightRatio => rightGunBulletUiHeightRatio;
+        public float RightGunBulletUiWidthRatio => rightGunBulletUiWidthRatio;
+        public float RightGunBulletUiSpacingRatio => rightGunBulletUiSpacingRatio;
+        public Color RightGunBulletUiColor => rightGunBulletUiColor;
+        public Color RightGunBulletUiCooldownColor => rightGunBulletUiCooldownColor;
     }
 }

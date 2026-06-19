@@ -10,7 +10,6 @@ namespace Week14.Combat
 
         private Rigidbody2D body;
         private Vector2 moveInput;
-        private bool sprintInput;
 
         private void Awake()
         {
@@ -28,17 +27,19 @@ namespace Week14.Combat
         private void Update()
         {
             moveInput = GameInput.Move;
-            sprintInput = GameInput.Sprint;
         }
 
         private void FixedUpdate()
         {
             moveInput = GameInput.Move;
-            sprintInput = GameInput.Sprint;
 
             if (combat != null && !combat.CanMove)
             {
-                body.linearVelocity = Vector2.zero;
+                if (!combat.IsBodyContactStaggered)
+                {
+                    body.linearVelocity = Vector2.zero;
+                }
+
                 return;
             }
 
@@ -49,10 +50,7 @@ namespace Week14.Combat
                 return;
             }
 
-            bool isSprinting = sprintInput && moveInput.sqrMagnitude > 0.0001f;
-            float speed = config.MoveSpeed * (isSprinting ? config.SprintSpeedMultiplier : 1f);
-            body.linearVelocity = moveInput * speed;
-
+            body.linearVelocity = moveInput * config.MoveSpeed;
         }
     }
 }
