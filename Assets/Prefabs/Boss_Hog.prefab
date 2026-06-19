@@ -382,6 +382,7 @@ GameObject:
   - component: {fileID: -3427355340198616746}
   - component: {fileID: 498269881852238974}
   - component: {fileID: 2075240932106930298}
+  - component: {fileID: 7213248953238434763}
   m_Layer: 0
   m_Name: Boss_Hog
   m_TagString: Untagged
@@ -495,15 +496,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.EnemyStatusView
   health: {fileID: 0}
-  bullets: {fileID: 0}
   executionTarget: {fileID: 0}
   enemyAI: {fileID: 0}
   bossAI: {fileID: 0}
   drone: {fileID: 0}
-  bulletBarView: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
-  barsRoot: {fileID: 0}
 --- !u!114 &3327489348220524332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,6 +795,84 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb4c7c61538bda429b49d88608ae9e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.BulletGauge
+--- !u!114 &7213248953238434763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958469296149594014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a9f536d2677f44ba975327adb72d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.FloatingDamageView
+  lifetimeSeconds: 1
+  floatOffset: {x: 0, y: 0.3}
+  canvasScale: 0.01
+  textBoxSize: {x: 2.4, y: 0.8}
+  sortingOrder: 80
+  font: {fileID: 11400000, guid: be779b8214e5f964f9224e869a7082f3, type: 2}
+  alphaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.78039515
+      value: 0.54459727
+      inSlope: -1.4980786
+      outSlope: -1.4980786
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  format: '{0}'
+  styles:
+  - bulletNumber: 5
+    fontSize: 28
+    textColor: {r: 0.11965811, g: 1, b: 0, a: 1}
+    outlineColor: {r: 0.38823533, g: 0.7137255, b: 0.34509805, a: 1}
+    outlineWidth: 0.1
+  - bulletNumber: 4
+    fontSize: 34
+    textColor: {r: 0.49650347, g: 1, b: 0, a: 1}
+    outlineColor: {r: 0.57254905, g: 0.7960785, b: 0.34901962, a: 1}
+    outlineWidth: 0.1
+  - bulletNumber: 3
+    fontSize: 40
+    textColor: {r: 1, g: 0.86184216, b: 0, a: 1}
+    outlineColor: {r: 0.7960785, g: 0.7294118, b: 0.32156864, a: 1}
+    outlineWidth: 0.1
+  - bulletNumber: 2
+    fontSize: 48
+    textColor: {r: 1, g: 0.52662724, b: 0, a: 1}
+    outlineColor: {r: 0.7960785, g: 0.54509807, b: 0.26666668, a: 1}
+    outlineWidth: 0.1
+  - bulletNumber: 1
+    fontSize: 64
+    textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
+    outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
+    outlineWidth: 0.1
 --- !u!1 &3244067297755951923
 GameObject:
   m_ObjectHideFlags: 0

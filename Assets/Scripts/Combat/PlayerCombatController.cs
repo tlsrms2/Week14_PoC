@@ -441,6 +441,7 @@ namespace Week14.Combat
                 return false;
             }
 
+            int firedBulletNumber = bullets != null ? bullets.CurrentBullets : 0;
             int dynamicDamage = CalculateAttackBulletDamage();
 
             if (bullets == null || !bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack))
@@ -462,7 +463,8 @@ namespace Week14.Combat
                 config.ProjectileRadius,
                 dynamicDamage,
                 AttackEffectColor,
-                true);
+                true,
+                damageStyleBulletNumber: firedBulletNumber);
 
             if (projectile == null)
             {

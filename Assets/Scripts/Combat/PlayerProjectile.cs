@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Week14.Enemy;
+using Week14.UI;
 
 namespace Week14.Combat
 {
@@ -13,6 +14,7 @@ namespace Week14.Combat
         private Rigidbody2D body;
         private float projectileSpeed;
         private int bulletDamage;
+        private int damageStyleBulletNumber;
         private float collisionRadius;
         private float destroyAt;
         private Vector2 previousPosition;
@@ -36,7 +38,8 @@ namespace Week14.Combat
             int bulletDamage,
             Color color,
             bool canDamageHealth,
-            bool canClashWithEnemyProjectile = false)
+            bool canClashWithEnemyProjectile = false,
+            int damageStyleBulletNumber = 0)
         {
             if (prefab == null)
             {
@@ -46,7 +49,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile);
+            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile, damageStyleBulletNumber);
             PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (config != null)
             {
@@ -75,11 +78,13 @@ namespace Week14.Combat
             int nextBulletDamage,
             Color color,
             bool nextCanDamageHealth,
-            bool nextCanClashWithEnemyProjectile)
+            bool nextCanClashWithEnemyProjectile,
+            int nextDamageStyleBulletNumber)
         {
             owner = nextOwner;
             projectileSpeed = speed;
             bulletDamage = nextBulletDamage;
+            damageStyleBulletNumber = Mathf.Max(0, nextDamageStyleBulletNumber);
             collisionRadius = radius;
             canDamageHealth = nextCanDamageHealth;
             canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
@@ -265,10 +270,13 @@ namespace Week14.Combat
             resolved = true;
             EnemyAI enemy = targetHealth.GetComponent<EnemyAI>()
                 ?? targetHealth.GetComponentInParent<EnemyAI>();
-            PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (enemy != null)
             {
-                enemy.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
+                if (enemy.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
+                {
+                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                }
+
                 DestroyProjectile();
                 return true;
             }
@@ -277,7 +285,11 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)
             {
-                boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
+                if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
+                {
+                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                }
+
                 DestroyProjectile();
                 return true;
             }
@@ -286,7 +298,11 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<Drone>();
             if (drone != null)
             {
-                drone.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor);
+                if (drone.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
+                {
+                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                }
+
                 DestroyProjectile();
                 return true;
             }
@@ -307,6 +323,8 @@ namespace Week14.Combat
             {
                 targetHealth.TakeDamage(bulletDamage);
             }
+
+            ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
             Color impactColor = projectileColor;
 
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -320,6 +338,22 @@ namespace Week14.Combat
 
             DestroyProjectile();
             return true;
+        }
+
+        private static void ShowFloatingDamage(Health targetHealth, int damage, int bulletNumber)
+        {
+            if (targetHealth == null || damage <= 0)
+            {
+                return;
+            }
+
+            FloatingDamageView view = targetHealth.GetComponentInParent<FloatingDamageView>();
+            if (view == null)
+            {
+                view = targetHealth.gameObject.AddComponent<FloatingDamageView>();
+            }
+
+            view.Show(damage, bulletNumber);
         }
 
         public bool TryDestroyByEnemyProjectileClash(EnemyProjectile enemyProjectile)
