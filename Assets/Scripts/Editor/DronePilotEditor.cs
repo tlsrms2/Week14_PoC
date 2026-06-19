@@ -35,7 +35,23 @@ public sealed class DronePilotEditor : Editor
         "normalProjectileChargeColor",
         "normalProjectileColor",
         "homingProjectileChargeColor",
-        "homingProjectileColor"
+        "homingProjectileColor",
+        "enrageWindupSeconds",
+        "enrageWindupShakeDistance",
+        "enrageWindupShakeFrequency",
+        "enragePhase1Seconds",
+        "enragePhase1MaxBullets",
+        "enragePhase2Seconds",
+        "enragePhase2MaxBullets",
+        "enrageBurstSprite",
+        "enrageBurstTargetScale",
+        "enrageBurstGrowSeconds",
+        "enrageBurstHoldSeconds",
+        "enrageBurstFadeSeconds",
+        "enrageBurstColor",
+        "enrageShakeAmplitude",
+        "enrageShakeSeconds",
+        "enrageShakeZoom"
     };
 
     private static readonly Dictionary<string, bool> ToggleStates = new();
@@ -104,6 +120,32 @@ public sealed class DronePilotEditor : Editor
             DrawProperty("normalProjectileColor");
             DrawProperty("homingProjectileChargeColor");
             DrawProperty("homingProjectileColor");
+        });
+
+        DrawToggleSection("광폭화 / 진입 연출", "common.enrage", () =>
+        {
+            DrawProperty("enragePhase1Seconds");
+            DrawProperty("enragePhase1MaxBullets");
+            DrawProperty("enragePhase2Seconds");
+            DrawProperty("enragePhase2MaxBullets");
+
+            EditorGUILayout.Space(4f);
+            EditorGUILayout.LabelField("진입 전 떨림 (Windup)", EditorStyles.boldLabel);
+            DrawProperty("enrageWindupSeconds");
+            DrawProperty("enrageWindupShakeDistance");
+            DrawProperty("enrageWindupShakeFrequency");
+
+            EditorGUILayout.Space(4f);
+            EditorGUILayout.LabelField("진입 연출 (스폰 이미지/스케일/카메라 쉐이크)", EditorStyles.boldLabel);
+            DrawProperty("enrageBurstSprite");
+            DrawProperty("enrageBurstTargetScale");
+            DrawProperty("enrageBurstGrowSeconds");
+            DrawProperty("enrageBurstHoldSeconds");
+            DrawProperty("enrageBurstFadeSeconds");
+            DrawProperty("enrageBurstColor");
+            DrawProperty("enrageShakeAmplitude");
+            DrawProperty("enrageShakeSeconds");
+            DrawProperty("enrageShakeZoom");
         });
 
         showBossBase = EditorGUILayout.ToggleLeft("BossAI 공통 설정 보기", showBossBase, EditorStyles.boldLabel);

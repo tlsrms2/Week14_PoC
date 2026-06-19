@@ -429,6 +429,9 @@ namespace Week14.Enemy
                     break;
             }
 
+            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
+            yield return ApplyPendingEnrageIfAny();
+
             Stop();
             PatternKind nextPattern = SelectPattern();
             PreviewPatternBulletUi(nextPattern);
