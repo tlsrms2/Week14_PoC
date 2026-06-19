@@ -38,7 +38,7 @@ MonoBehaviour:
   mouseParryMissShakeSeconds: 0.18
   mouseParryMissShakeAmplitude: 0.035
   mouseParryMissShakeFrequency: 42
-  executionRange: 7
+  executionRange: 8.5
   executionBulletRecovery: 3
   destroyTargetOnExecute: 1
   executionAimSeconds: 0.2
@@ -47,8 +47,6 @@ MonoBehaviour:
   executionFinishSeconds: 0.12
   executionCameraFocusWeight: 1
   executionCameraZoomMultiplier: 0.55
-  executionGunKickSeconds: 1
-  executionGunReturnSeconds: 0.2
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
   executionFlourishDelaySeconds: 0.5

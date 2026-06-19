@@ -54,15 +54,14 @@ namespace Week14.Combat
         private Vector3 baseLocalScale = Vector3.one;
         private Vector3 chargeGrowthStartScale;
         private Vector3 chargeGrowthEndScale;
-        private Color launchBubbleColor;
-        private float launchBubbleScale = 1f;
-        private bool playMuzzleFlashOnLaunch;
-        private float launchMuzzleFlashScale = 1f;
+        private Color launchSmokeColor;
+        private float launchSmokeScale = 1f;
+        private Transform chargeAnchor;
         private bool aimAtPlayerWhileCharging = true;
         private bool aimAtPlayerOnLaunch;
         private float aimAtPlayerOnLaunchSpreadDegrees;
         private bool growScaleWhileCharging;
-        private bool playBubbleOnLaunch;
+        private bool playSmokeOnLaunch;
         private bool canBeIntercepted = true;
         private bool splitOnObstacle;
         private bool splitRadiallyOnLaunch;
@@ -211,6 +210,15 @@ namespace Week14.Combat
             aimAtPlayerOnLaunchSpreadDegrees = Mathf.Max(0f, launchSpreadDegrees);
         }
 
+        public void ConfigureChargeAnchor(Transform anchor)
+        {
+            chargeAnchor = anchor;
+            if (IsCharging)
+            {
+                SnapToChargeAnchor();
+            }
+        }
+
         public void ConfigureObstacleSplit(
             int splitCount,
             float angleDegrees,
@@ -274,14 +282,12 @@ namespace Week14.Combat
             baseLocalScale = transform.localScale;
         }
 
-        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier, Color bubbleColor, float bubbleScale)
+        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier)
         {
             chargeGrowthStartScale = baseLocalScale * Mathf.Max(0.01f, startScaleMultiplier);
             chargeGrowthEndScale = baseLocalScale * Mathf.Max(0.01f, endScaleMultiplier);
-            launchBubbleColor = bubbleColor;
-            launchBubbleScale = Mathf.Max(0.1f, bubbleScale);
             growScaleWhileCharging = true;
-            playBubbleOnLaunch = true;
+            playSmokeOnLaunch = false;
 
             if (IsCharging)
             {
@@ -289,10 +295,19 @@ namespace Week14.Combat
             }
         }
 
-        public void ConfigureLaunchMuzzleFlash(float scale)
+        public void ConfigureChargeGrowth(float startScaleMultiplier, float endScaleMultiplier, Color smokeColor, float smokeScale)
         {
-            launchMuzzleFlashScale = Mathf.Max(0f, scale);
-            playMuzzleFlashOnLaunch = launchMuzzleFlashScale > 0f;
+            chargeGrowthStartScale = baseLocalScale * Mathf.Max(0.01f, startScaleMultiplier);
+            chargeGrowthEndScale = baseLocalScale * Mathf.Max(0.01f, endScaleMultiplier);
+            launchSmokeColor = smokeColor;
+            launchSmokeScale = Mathf.Max(0.1f, smokeScale);
+            growScaleWhileCharging = true;
+            playSmokeOnLaunch = true;
+
+            if (IsCharging)
+            {
+                transform.localScale = chargeGrowthStartScale;
+            }
         }
 
         public void ConfigureInterceptable(bool interceptable)
@@ -374,10 +389,9 @@ namespace Week14.Combat
             baseLocalScale = transform.localScale;
             chargeGrowthStartScale = baseLocalScale;
             chargeGrowthEndScale = baseLocalScale;
+            chargeAnchor = null;
             growScaleWhileCharging = false;
-            playBubbleOnLaunch = false;
-            playMuzzleFlashOnLaunch = false;
-            launchMuzzleFlashScale = 1f;
+            playSmokeOnLaunch = false;
             aimAtPlayerOnLaunchSpreadDegrees = 0f;
             canBeIntercepted = true;
             interceptPending = false;
@@ -456,6 +470,8 @@ namespace Week14.Combat
 
         private void TickCharge()
         {
+            SnapToChargeAnchor();
+
             if (aimAtPlayerWhileCharging)
             {
                 AimAtPlayerWhileCharging();
@@ -474,7 +490,9 @@ namespace Week14.Combat
                 return;
             }
 
+            SnapToChargeAnchor();
             launched = true;
+            chargeAnchor = null;
             ApplyProjectileColor(launchedColor);
             if (growScaleWhileCharging)
             {
@@ -487,14 +505,9 @@ namespace Week14.Combat
                 AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
             }
 
-            if (playMuzzleFlashOnLaunch)
+            if (playSmokeOnLaunch)
             {
-                ProjectileVfx.PlayMuzzleFlash(transform.position, flightDirection, launchedColor, launchMuzzleFlashScale);
-            }
-
-            if (playBubbleOnLaunch)
-            {
-                ProjectileVfx.PlayHogBubbleBurst(transform.position, launchBubbleColor, launchBubbleScale, 18);
+                ProjectileVfx.PlayHogSmokeBurst(transform.position, launchSmokeColor, launchSmokeScale, 18);
             }
 
             radialSplitAt = splitRadiallyOnLaunch ? Time.time + radialSplitDelaySeconds : 0f;
@@ -504,6 +517,22 @@ namespace Week14.Combat
             if (body != null)
             {
                 body.linearVelocity = flightDirection * projectileSpeed;
+            }
+        }
+
+        private void SnapToChargeAnchor()
+        {
+            if (chargeAnchor == null)
+            {
+                return;
+            }
+
+            Vector3 position = chargeAnchor.position;
+            position.z = transform.position.z;
+            transform.position = position;
+            if (body != null)
+            {
+                body.position = position;
             }
         }
 
@@ -664,7 +693,7 @@ namespace Week14.Combat
                 reflected = -flightDirection;
             }
 
-            ProjectileVfx.PlayHogBubbleBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), 20);
+            ProjectileVfx.PlayHogSmokeBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), 20);
             SpawnSplitChild(RotateDirection(reflected, -splitAngleDegrees * 0.5f));
             SpawnSplitChild(RotateDirection(reflected, splitAngleDegrees * 0.5f));
             resolved = true;
@@ -676,7 +705,7 @@ namespace Week14.Combat
         {
             int count = Mathf.Max(1, radialSplitBulletCount);
             float step = 360f / count;
-            ProjectileVfx.PlayHogBubbleBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), count);
+            ProjectileVfx.PlayHogSmokeBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), count);
 
             for (int i = 0; i < count; i++)
             {

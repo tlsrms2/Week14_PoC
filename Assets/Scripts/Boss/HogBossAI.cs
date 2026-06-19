@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Bootstrap;
 using Week14.Combat;
 
 namespace Week14.Enemy
 {
     public sealed class HogBossAI : BossAI
     {
-        private static readonly Color DefaultHogEffectColor = new(0.278f, 0.451f, 0.188f, 1f);
+        private static readonly Color DefaultHogSmokeColor = new(0.38f, 0.48f, 0.34f, 0.72f);
+        private static readonly Color DefaultHogExplosionColor = new(1f, 0.62f, 0.18f, 1f);
+        private static readonly Color DefaultHogMuzzleFlashColor = new(1f, 0.78f, 0.26f, 1f);
 
         private enum PatternKind
         {
@@ -164,6 +167,143 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
+        private sealed class ParticleEffectSettings
+        {
+            [SerializeField] private bool enabled = true;
+            [SerializeField] private Color color = Color.white;
+            [SerializeField, Min(0.1f)] private float scale = 1f;
+            [SerializeField, Min(0)] private int count = 12;
+
+            public bool Enabled => enabled;
+            public Color Color => color;
+            public float Scale => scale;
+            public int Count => count;
+
+            public static ParticleEffectSettings Create(bool enabled, Color color, float scale, int count)
+            {
+                return new ParticleEffectSettings
+                {
+                    enabled = enabled,
+                    color = color,
+                    scale = Mathf.Max(0.1f, scale),
+                    count = Mathf.Max(0, count)
+                };
+            }
+
+            public void SetValues(bool nextEnabled, Color nextColor, float nextScale, int nextCount)
+            {
+                enabled = nextEnabled;
+                color = nextColor;
+                scale = Mathf.Max(0.1f, nextScale);
+                count = Mathf.Max(0, nextCount);
+            }
+        }
+
+        [System.Serializable]
+        private sealed class CameraShakeSettings
+        {
+            [SerializeField] private bool enabled;
+            [SerializeField, Min(0f)] private float seconds = 0.14f;
+            [SerializeField, Min(0f)] private float distance = 0.22f;
+            [SerializeField, Min(0f)] private float frequency = 0.12f;
+
+            public bool Enabled => enabled;
+            public float Seconds => seconds;
+            public float Distance => distance;
+            public float Frequency => frequency;
+
+            public static CameraShakeSettings Create(bool enabled, float seconds, float distance, float frequency)
+            {
+                return new CameraShakeSettings
+                {
+                    enabled = enabled,
+                    seconds = Mathf.Max(0f, seconds),
+                    distance = Mathf.Max(0f, distance),
+                    frequency = Mathf.Max(0f, frequency)
+                };
+            }
+
+            public void SetValues(bool nextEnabled, float nextSeconds, float nextDistance, float nextFrequency)
+            {
+                enabled = nextEnabled;
+                seconds = Mathf.Max(0f, nextSeconds);
+                distance = Mathf.Max(0f, nextDistance);
+                frequency = Mathf.Max(0f, nextFrequency);
+            }
+        }
+
+        [System.Serializable]
+        private sealed class PatternEffectSettings
+        {
+            [Header("Explosion")]
+            [SerializeField] private ParticleEffectSettings explosion = ParticleEffectSettings.Create(true, DefaultHogExplosionColor, 1f, 18);
+            [Header("Smoke")]
+            [SerializeField] private ParticleEffectSettings smoke = ParticleEffectSettings.Create(true, DefaultHogSmokeColor, 1f, 12);
+            [SerializeField, Min(0.01f)] private float smokeInterval = 0.12f;
+            [Header("Muzzle Flash")]
+            [SerializeField] private ParticleEffectSettings muzzleFlash = ParticleEffectSettings.Create(false, DefaultHogMuzzleFlashColor, 1f, 0);
+            [Header("Camera Shake")]
+            [SerializeField] private CameraShakeSettings cameraShake = CameraShakeSettings.Create(false, 0.14f, 0.22f, 0.12f);
+
+            public ParticleEffectSettings Explosion => explosion;
+            public ParticleEffectSettings Smoke => smoke;
+            public float SmokeInterval => smokeInterval;
+            public ParticleEffectSettings MuzzleFlash => muzzleFlash;
+            public CameraShakeSettings CameraShake => cameraShake;
+
+            public static PatternEffectSettings OriginBurst(
+                float explosionScale,
+                int explosionCount,
+                float smokeScale,
+                int smokeCount,
+                bool muzzleFlashEnabled = false,
+                float muzzleFlashScale = 1f)
+            {
+                return new PatternEffectSettings
+                {
+                    explosion = ParticleEffectSettings.Create(true, DefaultHogExplosionColor, explosionScale, explosionCount),
+                    smoke = ParticleEffectSettings.Create(true, DefaultHogSmokeColor, smokeScale, smokeCount),
+                    muzzleFlash = ParticleEffectSettings.Create(muzzleFlashEnabled, DefaultHogMuzzleFlashColor, muzzleFlashScale, 0),
+                    cameraShake = CameraShakeSettings.Create(false, 0.14f, 0.22f, 0.12f)
+                };
+            }
+
+            public static PatternEffectSettings Slam()
+            {
+                return new PatternEffectSettings
+                {
+                    explosion = ParticleEffectSettings.Create(true, DefaultHogExplosionColor, 1.45f, 28),
+                    smoke = ParticleEffectSettings.Create(false, DefaultHogSmokeColor, 1.1f, 10),
+                    muzzleFlash = ParticleEffectSettings.Create(false, DefaultHogMuzzleFlashColor, 1f, 0),
+                    cameraShake = CameraShakeSettings.Create(true, 0.16f, 0.25f, 0.12f)
+                };
+            }
+
+            public static PatternEffectSettings WindupMuzzle()
+            {
+                return new PatternEffectSettings
+                {
+                    explosion = ParticleEffectSettings.Create(false, DefaultHogExplosionColor, 1f, 0),
+                    smoke = ParticleEffectSettings.Create(true, DefaultHogSmokeColor, 0.9f, 8),
+                    muzzleFlash = ParticleEffectSettings.Create(true, DefaultHogMuzzleFlashColor, 1f, 0),
+                    cameraShake = CameraShakeSettings.Create(true, 0.05f, 0.06f, 0.08f)
+                };
+            }
+
+            public void SetMuzzleFlashDefaults(bool enabled, Color color, float scale)
+            {
+                muzzleFlash ??= ParticleEffectSettings.Create(enabled, color, scale, 0);
+                muzzleFlash.SetValues(enabled, color, scale, 0);
+            }
+
+            public void SetCameraShakeDefaults(bool enabled, float seconds, float distance, float frequency)
+            {
+                cameraShake ??= CameraShakeSettings.Create(enabled, seconds, distance, frequency);
+                cameraShake.SetValues(enabled, seconds, distance, frequency);
+            }
+        }
+
+        [System.Serializable]
         private sealed class Pattern1Settings
         {
             [SerializeField] private AlternatingProjectileOrigins projectileOrigins = new();
@@ -174,6 +314,8 @@ namespace Week14.Enemy
             [SerializeField, Min(0.01f), Tooltip("사방 탄환을 반복 발사하는 간격입니다.")] private float burstInterval = 0.65f;
             [SerializeField, Min(0f), Tooltip("보스 중심에서 패턴1 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
             [SerializeField, Tooltip("탄환을 발사할 때마다 회전시킬 각도입니다.")] private float angleStepDegrees = 25f;
+            [Header("Effects")]
+            [SerializeField, Tooltip("패턴1 원점 폭발/연기 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.OriginBurst(1f, 18, 1f, 12);
 
             public ProjectileSettings Projectile => projectile;
             public AlternatingProjectileOrigins ProjectileOrigins => projectileOrigins;
@@ -183,6 +325,7 @@ namespace Week14.Enemy
             public float BurstInterval => burstInterval;
             public float SpawnRadius => spawnRadius;
             public float AngleStepDegrees => angleStepDegrees;
+            public PatternEffectSettings Effects => effects;
         }
 
         [System.Serializable]
@@ -215,6 +358,8 @@ namespace Week14.Enemy
 
             [SerializeField, Tooltip("발사 묶음 목록입니다. 각 묶음은 n발을 m초 간격으로 쏜 뒤 l초 쉽니다.")]
             private List<VolleySettings> volleys = new() { new VolleySettings() };
+            [Header("Effects")]
+            [SerializeField, Tooltip("패턴2 원점 폭발/연기 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.OriginBurst(0.9f, 14, 0.9f, 10);
 
             public ProjectileSettings Projectile => projectile;
             public AlternatingProjectileOrigins ProjectileOrigins => projectileOrigins;
@@ -223,6 +368,7 @@ namespace Week14.Enemy
             public float FireInterval => fireInterval;
             public float SpawnSpacing => spawnSpacing;
             public IReadOnlyList<VolleySettings> Volleys => volleys;
+            public PatternEffectSettings Effects => effects;
             public int TotalBulletCount
             {
                 get
@@ -261,9 +407,11 @@ namespace Week14.Enemy
             [SerializeField, Min(1f), Tooltip("패턴3 특수 탄환 충돌 크기에 곱할 배율입니다.")] private float projectileRadiusMultiplier = 4f;
             [SerializeField, Min(1f), Tooltip("패턴3 특수 탄환 프리팹 루트 Scale에 곱할 최종 배율입니다.")] private float finalScaleMultiplier = 4f;
             [SerializeField, Range(0.01f, 1f), Tooltip("패턴3 특수 탄환이 처음 붙어 있을 때 최종 Scale에 곱할 비율입니다.")] private float startScaleRatio = 0.18f;
-            [SerializeField, Min(0.1f), Tooltip("패턴3 특수 탄환 발사 순간 보글보글 이펙트 크기입니다.")] private float launchBubbleScale = 2.3f;
             [SerializeField, Range(0f, 180f), Tooltip("패턴3 특수 탄환이 플레이어 방향 근처로 빗나갈 수 있는 각도입니다.")] private float aimSpreadDegrees = 24f;
             [SerializeField, Min(0f), Tooltip("발사 전 플레이어를 따라가며 조준(회전)하는 시간입니다. 이 시간이 지나면 멈추고 대기합니다.")] private float aimTrackingSeconds = 1.0f;
+            [Header("Effects")]
+            [SerializeField, Tooltip("패턴3 원점 폭발/연기/총구화염 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.OriginBurst(1.35f, 24, 1.25f, 16, true, 1.25f);
+            [SerializeField, HideInInspector] private bool pattern3MuzzleFlashDefaultApplied;
             
             public ProjectileSettings Projectile => projectile;
             public FirePoint FirePoint => firePoint;
@@ -277,17 +425,20 @@ namespace Week14.Enemy
             public float ProjectileRadiusMultiplier => projectileRadiusMultiplier;
             public float StartScaleMultiplier => finalScaleMultiplier * startScaleRatio;
             public float FinalScaleMultiplier => finalScaleMultiplier;
-            public float LaunchBubbleScale => launchBubbleScale;
-            [SerializeField, Min(0.01f), Tooltip("기 모으는 동안 버블 이펙트를 반복하는 간격입니다.")] private float windupBubbleInterval = 0.14f;
-            [SerializeField, Min(0.1f), Tooltip("기 모으는 동안 반복되는 버블 이펙트 크기 배율입니다.")] private float windupBubbleScale = 1.2f;
-            [SerializeField, Min(1), Tooltip("기 모으는 동안 한 번에 생성할 버블 수입니다.")] private int windupBubbleCount = 8;
-            [SerializeField, Min(0.1f), Tooltip("특수 탄환 발사 순간 총구 화염 크기 배율입니다.")] private float launchMuzzleFlashScale = 2.2f;
-
-            public float WindupBubbleInterval => windupBubbleInterval;
-            public float WindupBubbleScale => windupBubbleScale;
-            public int WindupBubbleCount => windupBubbleCount;
-            public float LaunchMuzzleFlashScale => launchMuzzleFlashScale;
             public float AimSpreadDegrees => aimSpreadDegrees;
+            public PatternEffectSettings Effects => effects;
+            public void EnsureMuzzleFlashDefault()
+            {
+                if (pattern3MuzzleFlashDefaultApplied)
+                {
+                    return;
+                }
+
+                effects ??= PatternEffectSettings.OriginBurst(1.35f, 24, 1.25f, 16, true, 1.25f);
+                effects.SetMuzzleFlashDefaults(true, DefaultHogMuzzleFlashColor, 1.25f);
+                pattern3MuzzleFlashDefaultApplied = true;
+            }
+
             [SerializeField, Min(1), Tooltip("대기 종료 시 전방위로 분열되어 생성할 탄환 수입니다.")] private int radialSplitBulletCount = 12;
             [SerializeField, Tooltip("전방위 분열의 시작 각도 오프셋입니다.")] private float radialSplitStartAngleOffset;
             [SerializeField, Min(0f), Tooltip("발사된 뒤 전방위로 분열되기까지 기다리는 시간입니다.")] private float splitDelaySeconds = 0.8f;
@@ -313,6 +464,8 @@ namespace Week14.Enemy
             [SerializeField, Min(0f), Tooltip("전방위 웨이브 사이의 대기 시간입니다.")] private float waveInterval = 0.2f;
             [SerializeField, Tooltip("첫 탄환의 시작 각도 오프셋입니다.")] private float startAngleOffset;
             [SerializeField, Min(0f), Tooltip("보스 중심에서 전방위 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
+            [Header("Effects")]
+            [SerializeField, Tooltip("패턴4 내려찍기 폭발/진동 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.Slam();
 
             public ProjectileSettings Projectile => projectile;
             public Transform ProjectileOrigin => projectileOrigin;
@@ -326,6 +479,7 @@ namespace Week14.Enemy
             public float SlamRiseSeconds => slamRiseSeconds;
             public float SlamDropSeconds => slamDropSeconds;
             public float SlamRecoverSeconds => slamRecoverSeconds;
+            public PatternEffectSettings Effects => effects;
         }
 
         [System.Serializable]
@@ -340,9 +494,9 @@ namespace Week14.Enemy
             [SerializeField, Min(0f), Tooltip("연속 탄환들이 겹치지 않도록 옆으로 벌리는 거리입니다.")] private float spawnSpacing = 0.12f;
             [SerializeField, Min(0f), Tooltip("매 탄환마다 회전할 각도입니다.")] private float sweepStepDegrees = 5f;
             [SerializeField, Min(0f), Tooltip("중심 방향(플레이어)을 기준으로 좌우로 꺾이는 최대 부채꼴 각도입니다.")] private float maxSweepAngle = 35f;
-            [SerializeField, Min(0.01f), Tooltip("기 모으는 동안 버블 이펙트를 반복하는 간격입니다.")] private float windupBubbleInterval = 0.12f;
-            [SerializeField, Min(0.1f), Tooltip("기 모으는 동안 반복되는 버블 이펙트 크기 배율입니다.")] private float windupBubbleScale = 0.85f;
-            [SerializeField, Min(1), Tooltip("기 모으는 동안 한 번에 생성할 버블 수입니다.")] private int windupBubbleCount = 6;
+            [Header("Effects")]
+            [SerializeField, Tooltip("패턴5 준비 연기/발사 총구화염 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.WindupMuzzle();
+            [SerializeField, HideInInspector] private bool pattern5BulletShakeDefaultApplied;
 
             public ProjectileSettings Projectile => projectile;
             public FirePoint FirePoint => firePoint;
@@ -352,9 +506,18 @@ namespace Week14.Enemy
             public float SpawnSpacing => spawnSpacing;
             public float SweepStepDegrees => sweepStepDegrees;
             public float MaxSweepAngle => maxSweepAngle;
-            public float WindupBubbleInterval => windupBubbleInterval;
-            public float WindupBubbleScale => windupBubbleScale;
-            public int WindupBubbleCount => windupBubbleCount;
+            public PatternEffectSettings Effects => effects;
+            public void EnsureBulletShakeDefault()
+            {
+                if (pattern5BulletShakeDefaultApplied)
+                {
+                    return;
+                }
+
+                effects ??= PatternEffectSettings.WindupMuzzle();
+                effects.SetCameraShakeDefaults(true, 0.05f, 0.06f, 0.08f);
+                pattern5BulletShakeDefaultApplied = true;
+            }
         }
 
         [Header("Hog Patterns")]
@@ -373,14 +536,7 @@ namespace Week14.Enemy
         [SerializeField, FormerlySerializedAs("patternRecoverySeconds"), Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최소 시간입니다.")] private float minPatternRecoverySeconds = 0.5f;
         [SerializeField, Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최대 시간입니다.")] private float maxPatternRecoverySeconds = 0.9f;
         [SerializeField, Tooltip("켜면 패턴을 순서대로 쓰지 않고 무작위로 선택합니다.")] private bool randomizePatterns;
-
-        [Header("Hog Effects")]
-        [SerializeField, Tooltip("호그 보글보글 이펙트 대표색입니다. 기본값은 #477330입니다.")] private Color hogEffectColor = new(0.278f, 0.451f, 0.188f, 1f);
-        [SerializeField, Min(0.1f), Tooltip("패턴1, 패턴2, 패턴4에서 생성되는 보글보글 이펙트 크기입니다.")] private float bubbleEffectScale = 1f;
-        [SerializeField, Tooltip("유도 기능이 꺼진 보스 투사체 발사 전 색입니다.")] private Color normalProjectileChargeColor = new(0.45f, 0.7f, 0.25f, 1f);
-        [SerializeField, Tooltip("유도 기능이 꺼진 보스 투사체 발사 후 색입니다.")] private Color normalProjectileColor = new(1f, 0.95f, 0.25f, 1f);
-        [SerializeField, Tooltip("유도 기능이 켜진 보스 투사체 발사 전 색입니다.")] private Color homingProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
-        [SerializeField, Tooltip("유도 기능이 켜진 보스 투사체 발사 후 색입니다.")] private Color homingProjectileColor = new(0.35f, 0.75f, 1f, 1f);
+        [SerializeField, Tooltip("랜덤 패턴 선택 시 직전에 실행한 패턴을 다시 고르지 않습니다. 후보가 1개면 같은 패턴을 허용합니다.")] private bool preventRandomRepeatPattern = true;
 
         [Header("Debug")]
         [SerializeField, Tooltip("켜면 아래에서 고른 패턴만 반복 실행합니다.")] private bool debugUseFixedPattern;
@@ -388,6 +544,8 @@ namespace Week14.Enemy
 
         private Coroutine patternRoutine;
         private int nextPatternIndex;
+        private bool hasLastPattern;
+        private PatternKind lastPattern;
         private bool isPattern4BodyRootMoved;
         private Vector3 pattern4BodyRootBaseLocalPosition;
 
@@ -397,6 +555,8 @@ namespace Week14.Enemy
         {
             EnsurePhasePatternSlots();
             EnsurePhasePatternLabels();
+            pattern3?.EnsureMuzzleFlashDefault();
+            pattern5?.EnsureBulletShakeDefault();
         }
 
         protected override void OnBossStarted()
@@ -435,6 +595,7 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             nextPatternIndex = 0;
+            hasLastPattern = false;
             EnsurePhasePatternLabels();
         }
 
@@ -448,12 +609,58 @@ namespace Week14.Enemy
             List<PatternKind> availablePatterns = GetCurrentPhasePatterns();
             if (randomizePatterns)
             {
-                return availablePatterns[Random.Range(0, availablePatterns.Count)];
+                return SelectRandomPattern(availablePatterns);
             }
 
             PatternKind pattern = availablePatterns[nextPatternIndex % availablePatterns.Count];
             nextPatternIndex++;
             return pattern;
+        }
+
+        private PatternKind SelectRandomPattern(List<PatternKind> availablePatterns)
+        {
+            if (availablePatterns == null || availablePatterns.Count == 0)
+            {
+                return PatternKind.Pattern1;
+            }
+
+            if (!preventRandomRepeatPattern || !hasLastPattern || availablePatterns.Count <= 1)
+            {
+                return availablePatterns[Random.Range(0, availablePatterns.Count)];
+            }
+
+            int repeatCount = 0;
+            for (int i = 0; i < availablePatterns.Count; i++)
+            {
+                if (availablePatterns[i] == lastPattern)
+                {
+                    repeatCount++;
+                }
+            }
+
+            int candidateCount = availablePatterns.Count - repeatCount;
+            if (candidateCount <= 0)
+            {
+                return availablePatterns[Random.Range(0, availablePatterns.Count)];
+            }
+
+            int selectedIndex = Random.Range(0, candidateCount);
+            for (int i = 0; i < availablePatterns.Count; i++)
+            {
+                if (availablePatterns[i] == lastPattern)
+                {
+                    continue;
+                }
+
+                if (selectedIndex == 0)
+                {
+                    return availablePatterns[i];
+                }
+
+                selectedIndex--;
+            }
+
+            return availablePatterns[Random.Range(0, availablePatterns.Count)];
         }
 
         private List<PatternKind> GetCurrentPhasePatterns()
@@ -518,6 +725,9 @@ namespace Week14.Enemy
 
         private IEnumerator RunPattern(PatternKind pattern)
         {
+            lastPattern = pattern;
+            hasLastPattern = true;
+
             switch (pattern)
             {
                 case PatternKind.Pattern1:
@@ -609,10 +819,12 @@ namespace Week14.Enemy
                     EnemyProjectile projectile = FireConfiguredProjectileWithPlayerLaunchAim(
                         pattern1.Projectile,
                         origin,
-                        direction,
-                        useOwnColors: true);
+                        direction);
                 
-                    PlayBubbleEffectIfSpawned(projectile, origin, 1f, 10);
+                    if (projectile != null)
+                    {
+                        PlayOriginBurstEffects(pattern1.Effects, origin);
+                    }
                     fired++;
                     nextBurstAt += Mathf.Max(0.01f, pattern1.BurstInterval);
                     
@@ -670,16 +882,16 @@ namespace Week14.Enemy
             SetFirePointActive(pattern3.FirePoint, true);
 
             RotateFirePointToPlayer(pattern3.FirePoint);
-            Vector3 origin = GetFirePointProjectilePosition(pattern3.FirePoint);
+            Transform projectileAnchor = GetFirePointProjectileTransform(pattern3.FirePoint);
+            Vector3 origin = projectileAnchor != null ? projectileAnchor.position : GetFirePointProjectilePosition(pattern3.FirePoint);
             float radius = pattern3.Projectile.Radius * pattern3.ProjectileRadiusMultiplier;
             
-            // 👇 변경: 5번째 인자(차징 중 조준)를 true로, 6번째 인자(발사 순간 조준)를 false로 변경
             EnemyProjectile projectile = FireConfiguredProjectile(
                 pattern3.Projectile,
                 origin,
                 GetPattern3Direction(origin),
-                true,   // 차징 중 조준 켬
-                false,  // 발사 순간 조준 끔
+                true,
+                false,
                 true,
                 Mathf.Max(0f, pattern3.WindupSeconds),
                 radius,
@@ -691,16 +903,13 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            PlayOriginBurstEffects(pattern3.Effects, origin);
+            projectile.ConfigureChargeAnchor(projectileAnchor);
             projectile.ConfigureProjectileSize(radius);
-            
-            // 👇 변경: 차징 중 조준(true), 발사 시 조준(false)
             projectile.ConfigureChargeMotion(0f, true, false, pattern3.AimSpreadDegrees);
             projectile.ConfigureChargeGrowth(
                 pattern3.StartScaleMultiplier,
-                pattern3.FinalScaleMultiplier,
-                GetHogEffectColor(),
-                pattern3.LaunchBubbleScale);
-            projectile.ConfigureLaunchMuzzleFlash(pattern3.LaunchMuzzleFlashScale);
+                pattern3.FinalScaleMultiplier);
             projectile.ConfigureInterceptable(false);
             projectile.ConfigureRadialSplitOnLaunch(
                 pattern3.RadialSplitBulletCount,
@@ -710,9 +919,9 @@ namespace Week14.Enemy
                 pattern3.SplitRadiusMultiplier,
                 pattern3.SplitLifetimeMultiplier);
 
-            float nextBubbleAt = Time.time;
             float elapsed = 0f;
-            bool trackingStopped = false; // 👇 추적 정지 여부 체크 변수
+            float nextSmokeAt = Time.time;
+            bool trackingStopped = false;
 
             while (projectile != null && projectile.IsCharging)
             {
@@ -723,7 +932,6 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                // 👇 추가된 로직: 설정한 조준 시간이 지나면 조준을 멈춤
                 if (!trackingStopped)
                 {
                     RotateFirePointToPlayer(pattern3.FirePoint);
@@ -735,10 +943,19 @@ namespace Week14.Enemy
                     trackingStopped = true;
                 }
 
-                PlayWindupBubbleIfDue(ref nextBubbleAt, projectile.transform.position, pattern3.WindupBubbleInterval, pattern3.WindupBubbleScale, pattern3.WindupBubbleCount);
-                
-                elapsed += Time.deltaTime; // 👇 시간 누적
+                PlaySmokeIfDue(ref nextSmokeAt, pattern3.Effects, GetFirePointProjectilePosition(pattern3.FirePoint));
+
+                elapsed += Time.deltaTime;
                 yield return null;
+            }
+
+            if (projectile != null)
+            {
+                Vector3 launchOrigin = GetFirePointProjectilePosition(pattern3.FirePoint);
+                Vector2 launchDirection = projectile.IncomingDirection.sqrMagnitude > 0.0001f
+                    ? projectile.IncomingDirection
+                    : GetDirectionToPlayer(launchOrigin);
+                PlayMuzzleFlashIfEnabled(pattern3.Effects, launchOrigin, launchDirection);
             }
 
             SetFirePointActive(pattern3.FirePoint, false);
@@ -777,7 +994,7 @@ namespace Week14.Enemy
 
             float windupSeconds = Mathf.Max(0f, pattern5.WindupSeconds);
             float elapsed = 0f;
-            float nextBubbleAt = Time.time;
+            float nextSmokeAt = Time.time;
             while (elapsed < windupSeconds)
             {
                 if (IsExecutionPaused)
@@ -789,7 +1006,7 @@ namespace Week14.Enemy
 
                 Stop();
                 RotateFirePointToPlayer(pattern5.FirePoint);
-                PlayWindupBubbleIfDue(ref nextBubbleAt, GetFirePointProjectilePosition(pattern5.FirePoint), pattern5.WindupBubbleInterval, pattern5.WindupBubbleScale, pattern5.WindupBubbleCount);
+                PlaySmokeIfDue(ref nextSmokeAt, pattern5.Effects, GetFirePointProjectilePosition(pattern5.FirePoint));
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -862,8 +1079,7 @@ namespace Week14.Enemy
                 Vector2 direction = AngleToDirection(startAngleDegrees + step * i);
                 Vector3 origin = center + (Vector3)(direction * radius);
         
-                EnemyProjectile projectile = FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction);
-                PlayBubbleEffectIfSpawned(projectile, origin, 0.75f, 7);
+                FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction);
             }
         }
 
@@ -884,9 +1100,11 @@ namespace Week14.Enemy
                 false,
                 -1f,
                 -1f,
-                origin,
-                useOwnColors: true);
-            PlayBubbleEffectIfSpawned(projectile, spawnPosition, 0.9f, 9);
+                origin);
+            if (projectile != null)
+            {
+                PlayOriginBurstEffects(pattern2.Effects, origin);
+            }
         }
         
         private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees, Vector3 origin)
@@ -897,7 +1115,7 @@ namespace Week14.Enemy
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern5.SpawnSpacing);
             Vector3 spawnPosition = origin + offset;
 
-            FireConfiguredProjectile(
+            EnemyProjectile projectile = FireConfiguredProjectile(
                 pattern5.Projectile,
                 spawnPosition,
                 finalDirection,
@@ -906,7 +1124,13 @@ namespace Week14.Enemy
                 false,
                 0f,
                 -1f,
-                origin);
+                origin,
+                0f);
+            if (projectile != null)
+            {
+                PlayMuzzleFlashIfEnabled(pattern5.Effects, origin, finalDirection);
+                PlayCameraShakeIfEnabled(pattern5.Effects, finalDirection);
+            }
         }
 
         private IEnumerator WaitPattern2Seconds(float seconds)
@@ -994,54 +1218,87 @@ namespace Week14.Enemy
             return order;
         }
 
-        private void PlayBubbleEffectIfSpawned(EnemyProjectile projectile, Vector3 position, float scaleMultiplier, int bubbleCount)
+        private void PlayOriginBurstEffects(PatternEffectSettings effects, Vector3 position)
         {
-            if (projectile == null)
+            if (effects == null)
             {
                 return;
             }
 
-            ProjectileVfx.PlayHogBubbleBurst(position, GetHogEffectColor(), bubbleEffectScale * scaleMultiplier, bubbleCount);
+            PlayExplosionIfEnabled(effects, position);
+            PlaySmokeIfEnabled(effects, position);
         }
 
-        private void PlayWindupBubbleIfDue(ref float nextBubbleAt, Vector3 position, float interval, float scaleMultiplier, int bubbleCount)
+        private void PlaySmokeIfDue(ref float nextSmokeAt, PatternEffectSettings effects, Vector3 position)
         {
-            if (Time.time < nextBubbleAt)
+            if (effects == null || Time.time < nextSmokeAt)
             {
                 return;
             }
 
-            ProjectileVfx.PlayHogBubbleBurst(position, GetHogEffectColor(), bubbleEffectScale * scaleMultiplier, Mathf.Max(1, bubbleCount));
-            nextBubbleAt = Time.time + Mathf.Max(0.01f, interval);
+            PlaySmokeIfEnabled(effects, position);
+            nextSmokeAt = Time.time + Mathf.Max(0.01f, effects.SmokeInterval);
         }
 
-        private Color GetHogEffectColor()
+        private void PlayExplosionIfEnabled(PatternEffectSettings effects, Vector3 position)
         {
-            return hogEffectColor.a > 0f ? hogEffectColor : DefaultHogEffectColor;
-        }
-
-        private Color GetProjectileColor(ProjectileSettings settings, bool suppressHoming, bool useOwnColors)
-        {
-            if (useOwnColors && settings != null)
+            ParticleEffectSettings explosion = effects.Explosion;
+            if (explosion == null || !explosion.Enabled)
             {
-                return settings.LaunchedColor;
+                return;
             }
 
-            return settings != null && settings.HomingEnabled && !suppressHoming
-                ? homingProjectileColor
-                : normalProjectileColor;
+            ProjectileVfx.PlayHogExplosion(position, explosion.Color, explosion.Scale, explosion.Count);
         }
 
-        private Color GetProjectileChargeColor(ProjectileSettings settings, bool suppressHoming, bool useOwnColors)
+        private void PlaySmokeIfEnabled(PatternEffectSettings effects, Vector3 position)
         {
-            if (useOwnColors && settings != null)
+            ParticleEffectSettings smoke = effects.Smoke;
+            if (smoke == null || !smoke.Enabled)
             {
-                return settings.ChargingColor;
+                return;
             }
 
-            return settings != null && settings.HomingEnabled && !suppressHoming
-                ? homingProjectileChargeColor
-                : normalProjectileChargeColor;
+            ProjectileVfx.PlayHogSmokeBurst(position, smoke.Color, smoke.Scale, smoke.Count);
+        }
+
+        private void PlayMuzzleFlashIfEnabled(PatternEffectSettings effects, Vector3 position, Vector2 direction)
+        {
+            ParticleEffectSettings muzzleFlash = effects?.MuzzleFlash;
+            if (muzzleFlash == null || !muzzleFlash.Enabled)
+            {
+                return;
+            }
+
+            ProjectileVfx.PlayMuzzleFlash(position, direction, muzzleFlash.Color, muzzleFlash.Scale);
+        }
+
+        private void PlayCameraShakeIfEnabled(PatternEffectSettings effects, Vector2 direction)
+        {
+            CameraShakeSettings shake = effects?.CameraShake;
+            if (shake == null || !shake.Enabled)
+            {
+                return;
+            }
+
+            Camera mainCamera = Camera.main;
+            if (mainCamera == null)
+            {
+                return;
+            }
+
+            CameraFollow2D cameraFollow = mainCamera.GetComponent<CameraFollow2D>();
+            cameraFollow?.PlayImpact(direction, shake.Seconds, shake.Distance, shake.Frequency);
+        }
+
+        private static Color GetProjectileColor(ProjectileSettings settings)
+        {
+            return settings != null ? settings.LaunchedColor : Color.white;
+        }
+
+        private static Color GetProjectileChargeColor(ProjectileSettings settings)
+        {
+            return settings != null ? settings.ChargingColor : Color.white;
         }
 
         private EnemyProjectile FireConfiguredProjectileWithoutPlayerAim(
@@ -1049,16 +1306,15 @@ namespace Week14.Enemy
             Vector3 origin,
             Vector2 direction)
         {
-            return FireConfiguredProjectile(settings, origin, direction, false, false, true, -1f, -1f, useOwnColors: false);
+            return FireConfiguredProjectile(settings, origin, direction, false, false, true, -1f, -1f);
         }
 
         private EnemyProjectile FireConfiguredProjectileWithPlayerLaunchAim(
             ProjectileSettings settings,
             Vector3 origin,
-            Vector2 direction,
-            bool useOwnColors = false)
+            Vector2 direction)
         {
-            return FireConfiguredProjectile(settings, origin, direction, false, true, false, -1f, -1f, useOwnColors: useOwnColors);
+            return FireConfiguredProjectile(settings, origin, direction, false, true, false, -1f, -1f);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
@@ -1071,7 +1327,7 @@ namespace Week14.Enemy
                 return null;
             }
 
-            return FireConfiguredProjectile(settings, origin, direction, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f, useOwnColors: false);
+            return FireConfiguredProjectile(settings, origin, direction, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
@@ -1084,8 +1340,7 @@ namespace Week14.Enemy
             float chargeSecondsOverride,
             float radiusOverride,
             Vector3? muzzleFlashPosition = null,
-            float muzzleFlashScale = 0.9f,
-            bool useOwnColors = false)
+            float muzzleFlashScale = 0f)
         {
             if (settings == null || settings.Prefab == null)
             {
@@ -1094,8 +1349,8 @@ namespace Week14.Enemy
 
             float chargeSeconds = chargeSecondsOverride >= 0f ? chargeSecondsOverride : settings.ChargeSeconds;
             float radius = radiusOverride > 0f ? radiusOverride : settings.Radius;
-            Color chargeColor = GetProjectileChargeColor(settings, suppressHoming, useOwnColors);
-            Color projectileColor = GetProjectileColor(settings, suppressHoming, useOwnColors);
+            Color chargeColor = GetProjectileChargeColor(settings);
+            Color projectileColor = GetProjectileColor(settings);
             EnemyProjectile projectile = SpawnBossProjectile(
                 settings.Prefab,
                 origin,
@@ -1156,6 +1411,8 @@ namespace Week14.Enemy
 
             yield return MovePattern4BodyRoot(target, target.localPosition, upPosition, pattern4.SlamRiseSeconds);
             yield return MovePattern4BodyRoot(target, target.localPosition, downPosition, pattern4.SlamDropSeconds);
+            PlayExplosionIfEnabled(pattern4.Effects, target.position);
+            PlayCameraShakeIfEnabled(pattern4.Effects, Vector2.down);
         }
 
         private IEnumerator RecoverPattern4BodyRoot()
@@ -1216,17 +1473,18 @@ namespace Week14.Enemy
 
         private Vector3 GetFirePointProjectilePosition(FirePoint firePoint)
         {
+            Transform origin = GetFirePointProjectileTransform(firePoint);
+            return origin != null ? origin.position : GetDefaultProjectileOrigin();
+        }
+
+        private Transform GetFirePointProjectileTransform(FirePoint firePoint)
+        {
             if (firePoint == null)
             {
-                return GetDefaultProjectileOrigin();
+                return null;
             }
 
-            if (firePoint.ProjectileOrigin != null)
-            {
-                return firePoint.ProjectileOrigin.position;
-            }
-
-            return firePoint.FireOrigin != null ? firePoint.FireOrigin.position : GetDefaultProjectileOrigin();
+            return firePoint.ProjectileOrigin != null ? firePoint.ProjectileOrigin : firePoint.FireOrigin;
         }
 
         private Vector3 GetPattern4ProjectilePosition()
