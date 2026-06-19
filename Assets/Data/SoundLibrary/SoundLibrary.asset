@@ -44,11 +44,11 @@ MonoBehaviour:
     pitch: 1
   - id: BulletRestore
     clip: {fileID: 8300000, guid: b6da089388344a44380bd22e9e1d05ff, type: 3}
-    volume: 0.4
+    volume: 0.6
     pitch: 1
   - id: BulletRestore2
     clip: {fileID: 8300000, guid: 8be97bd0aab47574996e91094adbce09, type: 3}
-    volume: 0.4
+    volume: 0.6
     pitch: 1
   - id: BulletLoss
     clip: {fileID: 8300000, guid: ac0fad67991e4284887cc32106822607, type: 3}
