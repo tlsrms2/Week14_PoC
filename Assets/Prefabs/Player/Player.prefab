@@ -1346,9 +1346,9 @@ MonoBehaviour:
   enrageFadeSeconds: 1.25
   shakePixels: 7
   shakeDegrees: 4
-  attackEjectDistance: 30
-  attackEjectRise: 18
-  attackEjectSpinDegrees: -155
+  attackEjectDistance: 38
+  attackEjectRise: 20
+  attackEjectSpinDegrees: -165
   shineMaxAlpha: 0.9
   hp5:
     bodyImage: {fileID: 4920504655185398120}

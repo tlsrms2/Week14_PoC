@@ -684,7 +684,7 @@ namespace Week14.Enemy
             statusView.SetSuppressed(false);
             statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(this);
-            statusView.SetTargets(health, bullets);
+            statusView.SetTarget(health);
         }
 
         private bool UsesBossCombatUi()
@@ -826,7 +826,7 @@ namespace Week14.Enemy
             statusView = rootStatusView;
             statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(this);
-            statusView.SetTargets(health, bullets);
+            statusView.SetTarget(health);
             statusView.SetSuppressed(true);
         }
 
