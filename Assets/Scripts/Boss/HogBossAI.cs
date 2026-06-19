@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.UI;
 
 namespace Week14.Enemy
 {
@@ -535,6 +536,11 @@ namespace Week14.Enemy
         };
         [SerializeField, FormerlySerializedAs("patternRecoverySeconds"), Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최소 시간입니다.")] private float minPatternRecoverySeconds = 0.5f;
         [SerializeField, Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최대 시간입니다.")] private float maxPatternRecoverySeconds = 0.9f;
+        [Header("Pattern Preview UI")]
+        [SerializeField, Tooltip("켜면 다음 패턴의 발사 탄환 수를 대기 시간 동안 LineRenderer 총알 줄로 표시합니다.")] private bool showPatternBulletPreview = true;
+        [SerializeField, Min(0f), Tooltip("총알이 모두 찬 뒤 패턴 시작 전 유지할 시간입니다.")] private float patternBulletPreviewFullHoldSeconds = 0.18f;
+        [SerializeField, Range(0f, 0.95f), Tooltip("한 번에 모든 총알을 쓰는 패턴은 대기 시간 중 이 비율만큼을 다 찬 상태로 유지합니다.")]
+        private float patternBulletPreviewSingleGroupFullHoldRatio = 0.55f;
         [SerializeField, Tooltip("켜면 패턴을 순서대로 쓰지 않고 무작위로 선택합니다.")] private bool randomizePatterns;
         [SerializeField, Tooltip("랜덤 패턴 선택 시 직전에 실행한 패턴을 다시 고르지 않습니다. 후보가 1개면 같은 패턴을 허용합니다.")] private bool preventRandomRepeatPattern = true;
 
@@ -543,6 +549,10 @@ namespace Week14.Enemy
         [SerializeField, Tooltip("디버그용으로 고정 실행할 패턴입니다.")] private PatternKind debugPattern = PatternKind.Pattern1;
 
         private Coroutine patternRoutine;
+        private readonly List<int> patternBulletPreviewGroups = new();
+        private BossPatternBulletLineView patternBulletPreviewView;
+        private int patternBulletPreviewGroupIndex;
+        private float patternBulletPreviewFillDuration;
         private int nextPatternIndex;
         private bool hasLastPattern;
         private PatternKind lastPattern;
@@ -562,11 +572,13 @@ namespace Week14.Enemy
         protected override void OnBossStarted()
         {
             DeactivatePatternFirePoints();
+            HidePatternBulletPreview();
         }
 
         protected override void OnBossDied()
         {
             DeactivatePatternFirePoints();
+            HidePatternBulletPreview();
         }
 
         protected override void OnBossTick()
@@ -590,6 +602,7 @@ namespace Week14.Enemy
 
             ResetPattern4BodyRoot();
             DeactivatePatternFirePoints();
+            HidePatternBulletPreview();
         }
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
@@ -597,6 +610,7 @@ namespace Week14.Enemy
             nextPatternIndex = 0;
             hasLastPattern = false;
             EnsurePhasePatternLabels();
+            HidePatternBulletPreview();
         }
 
         private PatternKind SelectPattern()
@@ -727,6 +741,7 @@ namespace Week14.Enemy
         {
             lastPattern = pattern;
             hasLastPattern = true;
+            BeginPatternBulletPreviewPlayback(pattern);
 
             switch (pattern)
             {
@@ -755,7 +770,7 @@ namespace Week14.Enemy
             float recoverySeconds = GetPatternRecoverySeconds();
             if (recoverySeconds > 0f)
             {
-                yield return RunPatternRecovery(recoverySeconds);
+                yield return RunPatternRecovery(nextPattern, recoverySeconds);
             }
 
             patternRoutine = StartCoroutine(RunPattern(nextPattern));
@@ -768,9 +783,11 @@ namespace Week14.Enemy
             return Random.Range(min, max);
         }
 
-        private IEnumerator RunPatternRecovery(float duration)
+        private IEnumerator RunPatternRecovery(PatternKind nextPattern, float duration)
         {
             float remaining = duration;
+            BeginPatternBulletPreview(nextPattern, duration);
+            BeginPatternRecoveryTelegraph(nextPattern);
 
             while (remaining > 0f)
             {
@@ -780,8 +797,244 @@ namespace Week14.Enemy
                     yield return null;
                     continue;
                 }
+
+                UpdatePatternBulletPreviewLoading(duration, remaining);
+                UpdatePatternRecoveryTelegraph(nextPattern);
                 remaining -= Time.deltaTime;
                 yield return null;
+            }
+        }
+
+        private IEnumerator ReloadPattern4WavePreview(float duration)
+        {
+            float reloadDuration = Mathf.Max(0f, duration);
+            float remaining = reloadDuration;
+            if (remaining <= 0f)
+            {
+                BeginPatternBulletPreviewPlayback(PatternKind.Pattern4);
+                yield break;
+            }
+
+            BeginPatternBulletPreview(PatternKind.Pattern4, remaining);
+
+            while (remaining > 0f)
+            {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
+                UpdatePatternBulletPreviewLoading(reloadDuration, remaining);
+                remaining -= Time.deltaTime;
+                yield return null;
+            }
+
+            BeginPatternBulletPreviewPlayback(PatternKind.Pattern4);
+        }
+
+        private void BeginPatternRecoveryTelegraph(PatternKind nextPattern)
+        {
+            if (nextPattern != PatternKind.Pattern5)
+            {
+                return;
+            }
+
+            SetFirePointActive(pattern5.FirePoint, true);
+            RotateFirePointToPlayer(pattern5.FirePoint);
+        }
+
+        private void UpdatePatternRecoveryTelegraph(PatternKind nextPattern)
+        {
+            if (nextPattern == PatternKind.Pattern5)
+            {
+                RotateFirePointToPlayer(pattern5.FirePoint);
+            }
+        }
+
+        private void BeginPatternBulletPreview(PatternKind nextPattern, float duration)
+        {
+            if (!showPatternBulletPreview || duration <= 0f)
+            {
+                HidePatternBulletPreview();
+                return;
+            }
+
+            BuildPatternBulletPreviewGroups(nextPattern, patternBulletPreviewGroups);
+            if (patternBulletPreviewGroups.Count == 0)
+            {
+                HidePatternBulletPreview();
+                return;
+            }
+
+            BossPatternBulletLineView view = EnsurePatternBulletPreviewView();
+            if (view == null)
+            {
+                return;
+            }
+
+            float holdSeconds = GetPatternBulletPreviewFullHoldSeconds(duration);
+            patternBulletPreviewFillDuration = duration - holdSeconds;
+            view.ShowLoading(patternBulletPreviewGroups, 0);
+        }
+
+        private float GetPatternBulletPreviewFullHoldSeconds(float duration)
+        {
+            float maxHoldSeconds = Mathf.Max(0f, duration - 0.01f);
+            float holdSeconds = Mathf.Clamp(patternBulletPreviewFullHoldSeconds, 0f, maxHoldSeconds);
+            if (patternBulletPreviewGroups.Count == 1)
+            {
+                float singleGroupHoldSeconds = duration * Mathf.Clamp01(patternBulletPreviewSingleGroupFullHoldRatio);
+                holdSeconds = Mathf.Max(holdSeconds, singleGroupHoldSeconds);
+            }
+
+            return Mathf.Clamp(holdSeconds, 0f, maxHoldSeconds);
+        }
+
+        private void UpdatePatternBulletPreviewLoading(float duration, float remaining)
+        {
+            if (!showPatternBulletPreview || patternBulletPreviewView == null)
+            {
+                return;
+            }
+
+            float elapsed = Mathf.Max(0f, duration - remaining);
+            float progress = Mathf.Clamp01(elapsed / Mathf.Max(0.01f, patternBulletPreviewFillDuration));
+            int fullGroupCount = progress >= 1f
+                ? patternBulletPreviewGroups.Count
+                : Mathf.Clamp(Mathf.FloorToInt(progress * patternBulletPreviewGroups.Count + 0.0001f), 0, patternBulletPreviewGroups.Count);
+            patternBulletPreviewView.ShowLoading(patternBulletPreviewGroups, fullGroupCount);
+        }
+
+        private void BeginPatternBulletPreviewPlayback(PatternKind pattern)
+        {
+            if (!showPatternBulletPreview)
+            {
+                HidePatternBulletPreview();
+                return;
+            }
+
+            BuildPatternBulletPreviewGroups(pattern, patternBulletPreviewGroups);
+            if (patternBulletPreviewGroups.Count == 0)
+            {
+                HidePatternBulletPreview();
+                return;
+            }
+
+            BossPatternBulletLineView view = EnsurePatternBulletPreviewView();
+            if (view == null)
+            {
+                return;
+            }
+
+            patternBulletPreviewGroupIndex = 0;
+            view.ShowNextGroup(patternBulletPreviewGroups, patternBulletPreviewGroupIndex);
+        }
+
+        private void AdvancePatternBulletPreviewGroup()
+        {
+            if (!showPatternBulletPreview || patternBulletPreviewView == null)
+            {
+                return;
+            }
+
+            patternBulletPreviewGroupIndex++;
+            patternBulletPreviewView.ShowNextGroup(patternBulletPreviewGroups, patternBulletPreviewGroupIndex);
+        }
+
+        private BossPatternBulletLineView EnsurePatternBulletPreviewView()
+        {
+            if (patternBulletPreviewView != null)
+            {
+                patternBulletPreviewView.SetTarget(BodyRoot != null ? BodyRoot : transform);
+                return patternBulletPreviewView;
+            }
+
+            patternBulletPreviewView = GetComponent<BossPatternBulletLineView>();
+            if (patternBulletPreviewView == null)
+            {
+                patternBulletPreviewView = GetComponentInChildren<BossPatternBulletLineView>(true);
+            }
+
+            if (patternBulletPreviewView == null)
+            {
+                patternBulletPreviewView = gameObject.AddComponent<BossPatternBulletLineView>();
+            }
+
+            patternBulletPreviewView.SetTarget(BodyRoot != null ? BodyRoot : transform);
+            return patternBulletPreviewView;
+        }
+
+        private void HidePatternBulletPreview()
+        {
+            patternBulletPreviewGroupIndex = 0;
+            patternBulletPreviewFillDuration = 0f;
+            patternBulletPreviewView?.Hide();
+        }
+
+        private void BuildPatternBulletPreviewGroups(PatternKind pattern, List<int> groups)
+        {
+            groups.Clear();
+
+            switch (pattern)
+            {
+                case PatternKind.Pattern1:
+                    AddRepeatedGroups(groups, 1, Mathf.Max(1, pattern1.RadialBulletCount));
+                    break;
+                case PatternKind.Pattern2:
+                    AddPattern2PreviewGroups(groups);
+                    break;
+                case PatternKind.Pattern3:
+                    groups.Add(1);
+                    break;
+                case PatternKind.Pattern4:
+                    groups.Add(Mathf.Max(1, pattern4.BulletCount));
+                    break;
+                case PatternKind.Pattern5:
+                    AddRepeatedGroups(
+                        groups,
+                        pattern5.FireInterval <= 0f ? Mathf.Max(1, pattern5.BulletCount) : 1,
+                        pattern5.FireInterval <= 0f ? 1 : Mathf.Max(1, pattern5.BulletCount));
+                    break;
+            }
+        }
+
+        private void AddPattern2PreviewGroups(List<int> groups)
+        {
+            IReadOnlyList<Pattern2Settings.VolleySettings> volleys = pattern2.Volleys;
+            if (volleys == null || volleys.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                Pattern2Settings.VolleySettings volley = volleys[i];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                int bulletCount = Mathf.Max(1, volley.BulletCount);
+                if (volley.FireInterval <= 0f)
+                {
+                    groups.Add(bulletCount);
+                }
+                else
+                {
+                    AddRepeatedGroups(groups, 1, bulletCount);
+                }
+            }
+        }
+
+        private static void AddRepeatedGroups(List<int> groups, int groupSize, int groupCount)
+        {
+            int count = Mathf.Max(0, groupCount);
+            int size = Mathf.Max(1, groupSize);
+            for (int i = 0; i < count; i++)
+            {
+                groups.Add(size);
             }
         }
 
@@ -826,6 +1079,7 @@ namespace Week14.Enemy
                         PlayOriginBurstEffects(pattern1.Effects, origin);
                     }
                     fired++;
+                    AdvancePatternBulletPreviewGroup();
                     nextBurstAt += Mathf.Max(0.01f, pattern1.BurstInterval);
                     
                     currentAngle += pattern1.AngleStepDegrees;
@@ -855,6 +1109,7 @@ namespace Week14.Enemy
                 }
 
                 int volleyBulletCount = Mathf.Max(1, volley.BulletCount);
+                bool groupedVolley = volley.FireInterval <= 0f;
                 for (int bulletIndex = 0; bulletIndex < volleyBulletCount; bulletIndex++)
                 {
                     yield return WaitWhileExecutionPaused();
@@ -862,11 +1117,20 @@ namespace Week14.Enemy
                     MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
                     FireMachinegunBullet(fired);
                     fired++;
+                    if (!groupedVolley)
+                    {
+                        AdvancePatternBulletPreviewGroup();
+                    }
 
                     if (bulletIndex < volleyBulletCount - 1 && volley.FireInterval > 0f)
                     {
                         yield return WaitPattern2Seconds(volley.FireInterval);
                     }
+                }
+
+                if (groupedVolley)
+                {
+                    AdvancePatternBulletPreviewGroup();
                 }
 
                 if (volleyIndex < volleys.Count - 1 && volley.RestSeconds > 0f)
@@ -958,6 +1222,7 @@ namespace Week14.Enemy
                 PlayMuzzleFlashIfEnabled(pattern3.Effects, launchOrigin, launchDirection);
             }
 
+            AdvancePatternBulletPreviewGroup();
             SetFirePointActive(pattern3.FirePoint, false);
         }
 
@@ -965,7 +1230,8 @@ namespace Week14.Enemy
         {
             Stop();
 
-            for (int wave = 0; wave < pattern4.WaveCount; wave++)
+            int waveCount = Mathf.Max(1, pattern4.WaveCount);
+            for (int wave = 0; wave < waveCount; wave++)
             {
                 yield return WaitWhileExecutionPaused();
 
@@ -974,11 +1240,12 @@ namespace Week14.Enemy
                 float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
                 
                 FirePattern4Wave(offset);
+                AdvancePatternBulletPreviewGroup();
                 yield return RecoverPattern4BodyRoot();
 
-                if (wave < pattern4.WaveCount - 1 && pattern4.WaveInterval > 0f)
+                if (wave < waveCount - 1)
                 {
-                    yield return WaitPattern5Seconds(pattern4.WaveInterval);
+                    yield return ReloadPattern4WavePreview(pattern4.WaveInterval);
                 }
             }
 
@@ -1014,6 +1281,7 @@ namespace Week14.Enemy
 
             float currentSweepOffset = 0f;
             float sweepDirection = 1f;
+            bool groupedFire = pattern5.FireInterval <= 0f;
 
             for (int i = 0; i < bulletCount; i++)
             {
@@ -1031,6 +1299,10 @@ namespace Week14.Enemy
                 currentOrigin = GetFirePointProjectilePosition(pattern5.FirePoint);
                 
                 FirePattern5Bullet(i, finalAngle, currentOrigin);
+                if (!groupedFire)
+                {
+                    AdvancePatternBulletPreviewGroup();
+                }
                 currentSweepOffset += pattern5.SweepStepDegrees * sweepDirection;
         
                 if (Mathf.Abs(currentSweepOffset) >= pattern5.MaxSweepAngle)
@@ -1043,6 +1315,11 @@ namespace Week14.Enemy
                 {
                     yield return WaitPattern5Seconds(pattern5.FireInterval);
                 }
+            }
+
+            if (groupedFire)
+            {
+                AdvancePatternBulletPreviewGroup();
             }
 
             SetFirePointActive(pattern5.FirePoint, false);

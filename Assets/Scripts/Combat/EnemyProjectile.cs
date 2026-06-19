@@ -80,6 +80,7 @@ namespace Week14.Combat
         private bool interceptPending;
         private bool ownerSlotReleased;
         private bool pathIndicatorActive;
+        private bool suppressPathIndicator;
         private bool parryLockOnIndicatorVisible;
         private Vector2 pathIndicatorStart;
         private Vector2 pathIndicatorDirection = Vector2.left;
@@ -332,12 +333,26 @@ namespace Week14.Combat
             Color color, float trailSeconds, float trailWidth,
             bool homingEnabled,
             float homingSeconds,
-            float homingTurnDegrees)
+            float homingTurnDegrees,
+            bool suppressPathIndicator = false)
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, bulletDamage, ownerBullets, counterBulletDamage, chargeSeconds, speed, lifetime, radius, color, homingEnabled, homingSeconds, homingTurnDegrees);
+            projectile.Initialize(
+                direction,
+                bulletDamage,
+                ownerBullets,
+                counterBulletDamage,
+                chargeSeconds,
+                speed,
+                lifetime,
+                radius,
+                color,
+                homingEnabled,
+                homingSeconds,
+                homingTurnDegrees,
+                suppressPathIndicator);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
@@ -358,7 +373,8 @@ namespace Week14.Combat
             float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
             bool enableHoming,
-            float homingSeconds, float nextHomingTurnDegrees)
+            float homingSeconds, float nextHomingTurnDegrees,
+            bool nextSuppressPathIndicator)
         {
             projectileSpeed = speed;
             projectileLifetime = lifetime;
@@ -404,6 +420,8 @@ namespace Week14.Combat
             radialSplitStartAngleDegrees = 0f;
             radialSplitDelaySeconds = 0f;
             radialSplitAt = 0f;
+            suppressPathIndicator = nextSuppressPathIndicator;
+            ResetClonedPathIndicators();
             launched = projectileChargeSeconds <= 0f;
             lastWallCheckPosition = transform.position;
             chargeEndsAt = Time.time + projectileChargeSeconds;
@@ -770,7 +788,8 @@ namespace Week14.Combat
                 3f,
                 homingEnabled,
                 homingSeconds,
-                homingTurnDegreesPerSecond);
+                homingTurnDegreesPerSecond,
+                suppressPathIndicator: true);
 
             if (child == null)
             {
@@ -1027,8 +1046,29 @@ namespace Week14.Combat
 
         private bool ShouldShowPathIndicator()
         {
-            return projectileSpeed > 0f
+            return !suppressPathIndicator
+                && projectileSpeed > 0f
                 && projectileLifetime > 0f;
+        }
+
+        private void ResetClonedPathIndicators()
+        {
+            pathIndicatorActive = false;
+            pathIndicatorLength = 0f;
+            pathIndicatorEndsAt = 0f;
+            pathIndicatorDashes.Clear();
+            homingAimReticleLines.Clear();
+            pathIndicatorRoot = null;
+
+            Transform existing = transform.Find(PathIndicatorName);
+            if (existing == null)
+            {
+                return;
+            }
+
+            existing.gameObject.SetActive(false);
+            existing.SetParent(null, false);
+            Destroy(existing.gameObject);
         }
 
         private bool IsHomingProjectile()
