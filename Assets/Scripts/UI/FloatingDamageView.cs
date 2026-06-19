@@ -96,7 +96,7 @@ namespace Week14.UI
             TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
             text.raycastTarget = false;
             text.alignment = TextAlignmentOptions.Center;
-            text.enableWordWrapping = false;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
             if (font != null)
             {
                 text.font = font;

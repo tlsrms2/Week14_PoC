@@ -49,6 +49,15 @@ namespace Week14.Combat
         [Tooltip("유도탄 조준선이 플레이어에게 닿는 지점을 계산할 때 사용하는 플레이어 몸체 반경입니다.")]
         [FormerlySerializedAs("parryBodyRadius")]
         [SerializeField, Min(0f)] private float playerBodyAimRadius = 0.3f;
+        [Header("Mouse Parry Miss Penalty")]
+        [SerializeField, Range(0.1f, 1f)] private float mouseParryMinimumRangeScale = 0.5f;
+        [SerializeField, Range(0f, 1f)] private float mouseParryMissRangeScaleLoss = 0.12f;
+        [SerializeField, Min(0f)] private float mouseParryRangeRecoveryDelay = 0.8f;
+        [SerializeField, Min(0f)] private float mouseParryRangeRecoveryPerSecond = 0.45f;
+        [SerializeField, Min(0f)] private float mouseParryMissColorSeconds = 0.16f;
+        [SerializeField, Min(0f)] private float mouseParryMissShakeSeconds = 0.18f;
+        [SerializeField, Min(0f)] private float mouseParryMissShakeAmplitude = 0.035f;
+        [SerializeField, Min(0f)] private float mouseParryMissShakeFrequency = 42f;
 
         [Header("Execution")]
         [Tooltip("처형을 시작할 수 있는 최대 거리입니다.")]
@@ -115,6 +124,14 @@ namespace Week14.Combat
         public float EnemyBodyContactKnockbackSpeed => enemyBodyContactKnockbackSpeed;
         public float EnemyBodyContactStaggerSeconds => enemyBodyContactStaggerSeconds;
         public float PlayerBodyAimRadius => playerBodyAimRadius;
+        public float MouseParryMinimumRangeScale => mouseParryMinimumRangeScale;
+        public float MouseParryMissRangeScaleLoss => mouseParryMissRangeScaleLoss;
+        public float MouseParryRangeRecoveryDelay => mouseParryRangeRecoveryDelay;
+        public float MouseParryRangeRecoveryPerSecond => mouseParryRangeRecoveryPerSecond;
+        public float MouseParryMissColorSeconds => mouseParryMissColorSeconds;
+        public float MouseParryMissShakeSeconds => mouseParryMissShakeSeconds;
+        public float MouseParryMissShakeAmplitude => mouseParryMissShakeAmplitude;
+        public float MouseParryMissShakeFrequency => mouseParryMissShakeFrequency;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
         public Color EnemyProjectileColor => effectData != null ? effectData.EnemyProjectileColor : new Color(1f, 0.95f, 0.25f, 1f);
         public Color ParrySparkColor => effectData != null ? effectData.ParrySparkColor : new Color(1f, 0.88f, 0.35f, 1f);

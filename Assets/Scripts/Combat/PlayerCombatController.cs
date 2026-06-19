@@ -50,6 +50,10 @@ namespace Week14.Combat
         private float leftGunAimLockedUntil;
         private Vector2 leftGunLockedDirection;
         private EnemyProjectile visibleProjectileLockOnIndicator;
+        private Vector3 mouseParryReticleBaseLocalScale = Vector3.one;
+        private float mouseParryCurrentRangeScale = 1f;
+        private float mouseParryRangeRecoveryStartsAt;
+        private bool hasMouseParryReticleBaseLocalScale;
         private Transform executionFocusPoint;
         private SpriteRenderer executionDimRenderer;
         private Coroutine executionDimRoutine;
@@ -88,6 +92,7 @@ namespace Week14.Combat
 #endif
             ResolveRigReferences();
             ResolveMouseParryReticleReference();
+            CacheMouseParryReticleBaseScale();
             CacheBodyRenderers();
 
             if (cameraFollow == null && Camera.main != null)
@@ -205,6 +210,7 @@ namespace Week14.Combat
             UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
             RotateToAim();
+            UpdateMouseParryRangeRecovery();
             UpdateMouseParryReticle();
             UpdateProjectileLockOnTarget();
             UpdateMouseParryReticleThreat();
@@ -221,7 +227,10 @@ namespace Week14.Combat
 
             if (GameInput.RightAttackDown && CanAct)
             {
-                TryParryProjectile();
+                if (!TryParryProjectile())
+                {
+                    ApplyMouseParryMissPenalty();
+                }
             }
 
             UpdateAttackTimingOutline();
@@ -1287,6 +1296,66 @@ namespace Week14.Combat
             projectileLockOnTarget = FindClosestInterceptTarget();
         }
 
+        private void ApplyMouseParryMissPenalty()
+        {
+            ResolveMouseParryReticleReference();
+            CacheMouseParryReticleBaseScale();
+
+            float minimumScale = Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f);
+            float loss = Mathf.Clamp01(MouseParryMissRangeScaleLoss);
+            mouseParryCurrentRangeScale = Mathf.Max(minimumScale, mouseParryCurrentRangeScale - loss);
+            mouseParryRangeRecoveryStartsAt = Time.time + Mathf.Max(0f, MouseParryRangeRecoveryDelay);
+
+            ApplyMouseParryRangeScale();
+            mouseParryReticle?.PlayMissFeedback(
+                MouseParryMissColorSeconds,
+                MouseParryMissShakeSeconds,
+                MouseParryMissShakeAmplitude,
+                MouseParryMissShakeFrequency);
+        }
+
+        private void UpdateMouseParryRangeRecovery()
+        {
+            if (mouseParryCurrentRangeScale >= 0.999f || Time.time < mouseParryRangeRecoveryStartsAt)
+            {
+                return;
+            }
+
+            mouseParryCurrentRangeScale = Mathf.MoveTowards(
+                mouseParryCurrentRangeScale,
+                1f,
+                Mathf.Max(0f, MouseParryRangeRecoveryPerSecond) * Time.deltaTime);
+            ApplyMouseParryRangeScale();
+        }
+
+        private void CacheMouseParryReticleBaseScale()
+        {
+            if (hasMouseParryReticleBaseLocalScale || mouseParryReticleRenderer == null)
+            {
+                return;
+            }
+
+            mouseParryReticleBaseLocalScale = mouseParryReticleRenderer.transform.localScale;
+            hasMouseParryReticleBaseLocalScale = true;
+        }
+
+        private void ApplyMouseParryRangeScale()
+        {
+            if (mouseParryReticleRenderer == null)
+            {
+                return;
+            }
+
+            CacheMouseParryReticleBaseScale();
+            if (!hasMouseParryReticleBaseLocalScale)
+            {
+                return;
+            }
+
+            float scale = Mathf.Clamp(mouseParryCurrentRangeScale, Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f), 1f);
+            mouseParryReticleRenderer.transform.localScale = mouseParryReticleBaseLocalScale * scale;
+        }
+
         private void UpdateMouseParryReticle()
         {
             if (!CanShowMouseParryReticle())
@@ -1303,6 +1372,7 @@ namespace Week14.Combat
             mouseParryReticleRenderer.enabled = true;
             ResolveMouseParryReticleReference();
             mouseParryReticle?.SetVisible(true);
+            ApplyMouseParryRangeScale();
 
             Vector2 cursorPosition = GetParryCursorWorldPosition();
             Transform reticleTransform = mouseParryReticleRenderer.transform;
@@ -1591,5 +1661,13 @@ namespace Week14.Combat
         private float GunAimHoldSeconds => config.GunAimHoldSeconds;
         private Color AttackEffectColor => config.AttackEffectColor;
         private Color ParryEffectColor => config.ParryEffectColor;
+        private float MouseParryMinimumRangeScale => config != null ? config.MouseParryMinimumRangeScale : 0.5f;
+        private float MouseParryMissRangeScaleLoss => config != null ? config.MouseParryMissRangeScaleLoss : 0.12f;
+        private float MouseParryRangeRecoveryDelay => config != null ? config.MouseParryRangeRecoveryDelay : 0.8f;
+        private float MouseParryRangeRecoveryPerSecond => config != null ? config.MouseParryRangeRecoveryPerSecond : 0.45f;
+        private float MouseParryMissColorSeconds => config != null ? config.MouseParryMissColorSeconds : 0.16f;
+        private float MouseParryMissShakeSeconds => config != null ? config.MouseParryMissShakeSeconds : 0.18f;
+        private float MouseParryMissShakeAmplitude => config != null ? config.MouseParryMissShakeAmplitude : 0.035f;
+        private float MouseParryMissShakeFrequency => config != null ? config.MouseParryMissShakeFrequency : 42f;
     }
 }

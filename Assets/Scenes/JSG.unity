@@ -32814,8 +32814,28 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: missPieceColor.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: missPieceColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: missPieceColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: missPieceColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: pieceIdleColor.a
       value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: missShakeAmplitude
+      value: 0.025
       objectReference: {fileID: 0}
     - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: colorOnlyIdleColor.a
@@ -32832,6 +32852,10 @@ PrefabInstance:
     - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: colorOnlyIdleColor.r
       value: 0.19607845
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: missColorOnlyColor.a
+      value: 0.39215687
       objectReference: {fileID: 0}
     - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: pieceThreatenedColor.a
