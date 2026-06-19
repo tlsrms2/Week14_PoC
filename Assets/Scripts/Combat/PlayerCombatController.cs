@@ -37,6 +37,8 @@ namespace Week14.Combat
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private AttackTimingOutline attackTimingOutline;
         [SerializeField] private ExecutionImageEffect executionImage;
+        [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
+        private SpriteRenderer mouseParryReticleRenderer;
 
         private Health health;
         private BulletGauge bullets;
@@ -146,6 +148,7 @@ namespace Week14.Combat
             }
 
             HideAttackTimingOutline();
+            SetMouseParryReticleVisible(false);
             SetProjectileLockOnIndicatorVisible(false);
             StopExecutionShotDim();
             executionImage?.Stop();
@@ -169,9 +172,12 @@ namespace Week14.Combat
 
         private void Update()
         {
+            UpdateCursorPresentation();
+
             if (health.IsDead)
             {
                 StopBody();
+                SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetLockOnTarget(null);
                 SetHoveredExecutionTarget(null);
@@ -182,6 +188,7 @@ namespace Week14.Combat
             if (isExecuting)
             {
                 StopBody();
+                SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
                 HideAttackTimingOutline();
@@ -190,6 +197,7 @@ namespace Week14.Combat
 
             if (config == null)
             {
+                SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
                 HideAttackTimingOutline();
@@ -200,6 +208,7 @@ namespace Week14.Combat
             UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
             RotateToAim();
+            UpdateMouseParryReticle();
             UpdateProjectileLockOnTarget();
             UpdateProjectileLockOnIndicator();
             UpdateBodyColor();
@@ -898,6 +907,11 @@ namespace Week14.Combat
 
         private bool TryParryProjectile()
         {
+            if (GameInput.IsGamepadMode)
+            {
+                return false;
+            }
+
             if (config.ProjectilePrefab == null)
             {
                 Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", this);
@@ -906,7 +920,7 @@ namespace Week14.Combat
 
             EnemyProjectile target = projectileLockOnTarget != null
                     && projectileLockOnTarget.CanBeIntercepted
-                    && IsProjectileInCursorParryRange(projectileLockOnTarget)
+                    && IsProjectileInMouseParryRange(projectileLockOnTarget)
                 ? projectileLockOnTarget
                 : FindClosestInterceptTarget();
             if (target == null)
@@ -943,6 +957,7 @@ namespace Week14.Combat
                 true);
             if (parryShot == null)
             {
+                target.CancelInterceptReservation();
                 return false;
             }
 
@@ -978,7 +993,7 @@ namespace Week14.Combat
                     continue;
                 }
 
-                if (!IsProjectileInCursorParryRange(source, cursorPosition))
+                if (!IsProjectileInMouseParryRange(source))
                 {
                     continue;
                 }
@@ -997,21 +1012,14 @@ namespace Week14.Combat
             return bestTarget;
         }
 
-        private bool IsProjectileInCursorParryRange(EnemyProjectile projectile)
+        private bool IsProjectileInMouseParryRange(EnemyProjectile projectile)
         {
-            return IsProjectileInCursorParryRange(projectile, GetParryCursorWorldPosition());
-        }
-
-        private bool IsProjectileInCursorParryRange(EnemyProjectile projectile, Vector2 cursorPosition)
-        {
-            if (projectile == null || !projectile.CanBeIntercepted || projectile.ParryRange <= 0f)
+            if (projectile == null || !projectile.CanBeIntercepted)
             {
                 return false;
             }
 
-            Vector2 sourcePosition = projectile.transform.position;
-            float projectileParryRange = projectile.ParryRange;
-            return (cursorPosition - sourcePosition).sqrMagnitude <= projectileParryRange * projectileParryRange;
+            return IsPointInsideMouseParryDiamond(projectile.transform.position);
         }
 
         private Transform CombatCenterOrigin => combatCenter != null ? combatCenter : (bodyRoot != null ? bodyRoot : transform);
@@ -1283,6 +1291,116 @@ namespace Week14.Combat
         private void UpdateProjectileLockOnTarget()
         {
             projectileLockOnTarget = FindClosestInterceptTarget();
+        }
+
+        private void UpdateMouseParryReticle()
+        {
+            if (!CanShowMouseParryReticle())
+            {
+                SetMouseParryReticleVisible(false);
+                return;
+            }
+
+            if (mouseParryReticleRenderer == null)
+            {
+                return;
+            }
+
+            mouseParryReticleRenderer.enabled = true;
+
+            Vector2 cursorPosition = GetParryCursorWorldPosition();
+            Transform reticleTransform = mouseParryReticleRenderer.transform;
+            reticleTransform.position = new Vector3(cursorPosition.x, cursorPosition.y, reticleTransform.position.z);
+        }
+
+        private bool CanShowMouseParryReticle()
+        {
+            return config != null
+                && !GameInput.IsGamepadMode
+                && !GameModalState.BlocksGameplayInput
+                && !isExecuting
+                && health != null
+                && !health.IsDead;
+        }
+
+        private bool IsPointInsideMouseParryDiamond(Vector2 worldPoint)
+        {
+            if (mouseParryReticleRenderer == null || mouseParryReticleRenderer.sprite == null)
+            {
+                return false;
+            }
+
+            Bounds spriteBounds = mouseParryReticleRenderer.sprite.bounds;
+            Vector2 center = spriteBounds.center;
+            Vector2 halfSize = spriteBounds.extents;
+            if (halfSize.x <= 0.0001f || halfSize.y <= 0.0001f)
+            {
+                return false;
+            }
+
+            Vector2 local = mouseParryReticleRenderer.transform.InverseTransformPoint(worldPoint) - (Vector3)center;
+            return Mathf.Abs(local.x) / halfSize.x + Mathf.Abs(local.y) / halfSize.y <= 1f;
+        }
+
+        private bool TryGetMouseParryDiamondCorners(out Vector3 top, out Vector3 right, out Vector3 bottom, out Vector3 left)
+        {
+            top = right = bottom = left = Vector3.zero;
+            if (mouseParryReticleRenderer == null || mouseParryReticleRenderer.sprite == null)
+            {
+                return false;
+            }
+
+            Bounds spriteBounds = mouseParryReticleRenderer.sprite.bounds;
+            Vector3 center = spriteBounds.center;
+            Vector3 extents = spriteBounds.extents;
+            if (extents.x <= 0.0001f || extents.y <= 0.0001f)
+            {
+                return false;
+            }
+
+            Transform reticleTransform = mouseParryReticleRenderer.transform;
+            top = reticleTransform.TransformPoint(center + Vector3.up * extents.y);
+            right = reticleTransform.TransformPoint(center + Vector3.right * extents.x);
+            bottom = reticleTransform.TransformPoint(center + Vector3.down * extents.y);
+            left = reticleTransform.TransformPoint(center + Vector3.left * extents.x);
+            return true;
+        }
+
+        private void UpdateCursorPresentation()
+        {
+            bool gameplayMouseActive = config != null
+                && !GameInput.IsGamepadMode
+                && !GameModalState.BlocksGameplayInput
+                && !isExecuting
+                && health != null
+                && !health.IsDead;
+
+            Cursor.visible = !gameplayMouseActive;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        private void SetMouseParryReticleVisible(bool visible)
+        {
+            if (mouseParryReticleRenderer != null)
+            {
+                mouseParryReticleRenderer.enabled = visible;
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!TryGetMouseParryDiamondCorners(out Vector3 top, out Vector3 right, out Vector3 bottom, out Vector3 left))
+            {
+                return;
+            }
+
+            Gizmos.color = new Color(1f, 0.48f, 0f, 0.95f);
+            Gizmos.DrawLine(top, right);
+            Gizmos.DrawLine(right, bottom);
+            Gizmos.DrawLine(bottom, left);
+            Gizmos.DrawLine(left, top);
+            Gizmos.DrawLine(top, bottom);
+            Gizmos.DrawLine(left, right);
         }
 
         private void UpdateProjectileLockOnIndicator()

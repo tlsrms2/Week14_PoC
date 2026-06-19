@@ -28,6 +28,7 @@ MonoBehaviour:
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
+  mouseParryRadius: 0.7
   playerBodyAimRadius: 0.3
   executionRange: 7
   executionBulletRecovery: 3

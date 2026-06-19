@@ -345,7 +345,10 @@ namespace Week14.UI
 
             renderer.gameObject.SetActive(true);
             renderer.sprite ??= GetIndicatorSprite();
-            renderer.color = color;
+            if (!ShouldKeepAuthoredIndicatorColor(renderer))
+            {
+                renderer.color = color;
+            }
             renderer.sortingOrder = sortingOrder;
         }
 
@@ -376,10 +379,15 @@ namespace Week14.UI
 
         private void ApplyOwnedIndicatorColor(SpriteRenderer renderer, Color color)
         {
-            if (renderer != null && IsOwnedIndicator(renderer))
+            if (renderer != null && IsOwnedIndicator(renderer) && !ShouldKeepAuthoredIndicatorColor(renderer))
             {
                 renderer.color = color;
             }
+        }
+
+        private bool ShouldKeepAuthoredIndicatorColor(SpriteRenderer renderer)
+        {
+            return renderer == lockOnRenderer;
         }
 
         private void SetBarsVisible(bool visible)
