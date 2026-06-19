@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Week14.Audio;
 using Week14.Combat;
 using Week14.Input;
 
@@ -204,6 +205,7 @@ namespace Week14.UI
 
         private void HandlePlayerDied(Health _)
         {
+            SoundManager.StopBgm();
             SetHelpVisible(false);
             SetGameOverVisible(true);
         }

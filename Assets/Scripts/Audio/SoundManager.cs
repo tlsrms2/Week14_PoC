@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 
 namespace Week14.Audio
 {
@@ -17,10 +16,6 @@ namespace Week14.Audio
         [SerializeField, Range(0f, 1f)] private float sfxVolume = 1f;
         [SerializeField] private bool bgmMuted;
         [SerializeField] private bool sfxMuted;
-
-        [Header("Test")]
-        [SerializeField] private string testSfxId;
-        [SerializeField, Range(0.5f, 2f)] private float testSfxPitch = 1f;
 
         private static SoundManager instance;
 
@@ -71,14 +66,6 @@ namespace Week14.Audio
         private void OnValidate()
         {
             RefreshBgmSourceVolume();
-        }
-
-        private void Update()
-        {
-            if (Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
-            {
-                PlaySfx(testSfxId, testSfxPitch);
-            }
         }
 
         public static void PlayBgm(string id, float fadeSeconds = 0.5f)
