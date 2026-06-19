@@ -1,25 +1,19 @@
 fileFormatVersion: 2
-guid: 7cff3755c33c6b442b3a247d5c7d577d
+guid: 3fcce982500593444ab1ef8215d2a785
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -744224916669823452
-    second: CrossHair_0
+      213: 941169527526746867
+    second: 195889073-aim-line-icon_0
   - first:
-      213: -1293136600567593322
-    second: CrossHair_1
+      213: -5590790404704397104
+    second: 195889073-aim-line-icon_1
   - first:
-      213: -684334941710694347
-    second: CrossHair_2
+      213: 4804574589196942706
+    second: 195889073-aim-line-icon_2
   - first:
-      213: -8837467389095724918
-    second: CrossHair_3
-  - first:
-      213: 1841894237415278797
-    second: CrossHair_4
-  - first:
-      213: 3234672835217430837
-    second: CrossHair_5
+      213: -4627118519059655154
+    second: 195889073-aim-line-icon_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -90,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,7 +110,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -128,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CrossHair_0
+      name: 195889073-aim-line-icon_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 11
-        width: 11
-        height: 10
+        x: 32
+        y: 308
+        width: 121
+        height: 109
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 42686e0a16bfba5f0800000000000000
-      internalID: -744224916669823452
+      spriteID: 3fa67a1e2b4bf0d00800000000000000
+      internalID: 941169527526746867
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossHair_1
+      name: 195889073-aim-line-icon_1
       rect:
         serializedVersion: 2
-        x: 5
-        y: 20
-        width: 7
-        height: 7
+        x: 301
+        y: 307
+        width: 118
+        height: 111
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,20 +159,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 696cc15fc1bdd0ee0800000000000000
-      internalID: -1293136600567593322
+      spriteID: 0d89ee98fb58962b0800000000000000
+      internalID: -5590790404704397104
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossHair_2
+      name: 195889073-aim-line-icon_2
       rect:
         serializedVersion: 2
-        x: 11
-        y: 19
-        width: 10
-        height: 11
+        x: 32
+        y: 30
+        width: 121
+        height: 91
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,20 +181,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 53842fb0ff0c086f0800000000000000
-      internalID: -684334941710694347
+      spriteID: 27db3f512274da240800000000000000
+      internalID: 4804574589196942706
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CrossHair_3
+      name: 195889073-aim-line-icon_3
       rect:
         serializedVersion: 2
-        x: 19
-        y: 5
-        width: 11
-        height: 22
+        x: 302
+        y: 30
+        width: 118
+        height: 92
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -209,52 +203,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a88b9d68b320b5580800000000000000
-      internalID: -8837467389095724918
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CrossHair_4
-      rect:
-        serializedVersion: 2
-        x: 5
-        y: 5
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dc80af6dc09bf8910800000000000000
-      internalID: 1841894237415278797
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CrossHair_5
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 2
-        width: 10
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5399dbb3ecdd3ec20800000000000000
-      internalID: 3234672835217430837
+      spriteID: e0651d1f83c29cfb0800000000000000
+      internalID: -4627118519059655154
       vertices: []
       indices: 
       edges: []
@@ -273,12 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CrossHair_0: -744224916669823452
-      CrossHair_1: -1293136600567593322
-      CrossHair_2: -684334941710694347
-      CrossHair_3: -8837467389095724918
-      CrossHair_4: 1841894237415278797
-      CrossHair_5: 3234672835217430837
+      195889073-aim-line-icon_0: 941169527526746867
+      195889073-aim-line-icon_1: -5590790404704397104
+      195889073-aim-line-icon_2: 4804574589196942706
+      195889073-aim-line-icon_3: -4627118519059655154
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

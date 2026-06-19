@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 2f542d789cc3e8e419bea977b1f5db1e
+guid: ea4bb4c2a7477b84f9ca91e2abd28afe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3515182526180454729
-    second: CrossHair-Range_0
-  - first:
-      213: 6074124551079309678
-    second: CrossHair-Range_1
-  - first:
-      213: -7450750495002973591
-    second: CrossHair-Range_2
-  - first:
-      213: 5639486486364055261
-    second: CrossHair-Range_3
+      213: -4611796966104067529
+    second: "icons8-\uC704\uCE58\uB97C-\uC815\uC758-100_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -55,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -84,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,7 +101,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -122,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CrossHair-Range_0
+      name: "icons8-\uC704\uCE58\uB97C-\uC815\uC758-100_0"
       rect:
         serializedVersion: 2
-        x: 11
-        y: 23
-        width: 10
-        height: 7
+        x: 0
+        y: 0
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,74 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 94175a122ef68c030800000000000000
-      internalID: 3515182526180454729
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CrossHair-Range_1
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 10
-        width: 7
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e61bf8cd810ab4450800000000000000
-      internalID: 6074124551079309678
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CrossHair-Range_2
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 11
-        width: 7
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 96a284b86ed999890800000000000000
-      internalID: -7450750495002973591
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CrossHair-Range_3
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 2
-        width: 10
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dd6685f741b734e40800000000000000
-      internalID: 5639486486364055261
+      spriteID: 732942bf71b9fffb0800000000000000
+      internalID: -4611796966104067529
       vertices: []
       indices: 
       edges: []
@@ -213,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CrossHair-Range_0: 3515182526180454729
-      CrossHair-Range_1: 6074124551079309678
-      CrossHair-Range_2: -7450750495002973591
-      CrossHair-Range_3: 5639486486364055261
+      "icons8-\uC704\uCE58\uB97C-\uC815\uC758-100_0": -4611796966104067529
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
