@@ -842,6 +842,12 @@ namespace Week14.Combat
 
         private bool TryParryProjectile()
         {
+            if (config.ProjectilePrefab == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", this);
+                return false;
+            }
+
             EnemyProjectile target = projectileLockOnTarget != null
                     && projectileLockOnTarget.CanBeIntercepted
                     && IsProjectileInCursorParryRange(projectileLockOnTarget)
@@ -852,19 +858,41 @@ namespace Week14.Combat
                 return false;
             }
 
-            Vector3 impactPosition = target.transform.position;
-            Vector2 incomingDirection = target.IncomingDirection;
-            if (!target.TryDestroyByInterceptShot(out bool parried))
+            Transform fireOrigin = GetLeftFireOrigin();
+            Vector2 firePosition = fireOrigin != null ? fireOrigin.position : transform.position;
+            Vector2 direction = (Vector2)target.transform.position - firePosition;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = target.IncomingDirection.sqrMagnitude > 0.0001f
+                    ? -target.IncomingDirection
+                    : Vector2.right;
+            }
+
+            if (!target.TryReserveIntercept())
             {
                 return false;
             }
 
-            if (parried)
+            PlayerProjectile parryShot = PlayerProjectile.Spawn(
+                config.ProjectilePrefab,
+                firePosition,
+                direction.normalized,
+                this,
+                config.ProjectileSpeed,
+                config.ProjectileLifetime,
+                config.ProjectileRadius,
+                0,
+                ParryEffectColor,
+                false,
+                true);
+            if (parryShot == null)
             {
-                PlayParryImpact(impactPosition, incomingDirection);
-                visual?.PlayIntercept();
+                return false;
             }
 
+            parryShot.SetForcedParryTarget(target);
+            ProjectileVfx.PlayMuzzleFlash(firePosition, direction.normalized, ParryEffectColor, 1f);
+            visual?.PlayIntercept();
             return true;
         }
 

@@ -16,9 +16,12 @@ namespace Week14.Combat
         private float collisionRadius;
         private float destroyAt;
         private Vector2 previousPosition;
+        private EnemyProjectile forcedParryTarget;
+        private float forcedParryResolveAt;
         private Vector2 flightDirection = Vector2.right;
         private Color projectileColor = Color.white;
         private bool canDamageHealth;
+        private bool canClashWithEnemyProjectile;
         private bool resolved;
         private bool isDestroying;
 
@@ -32,7 +35,8 @@ namespace Week14.Combat
             float radius,
             int bulletDamage,
             Color color,
-            bool canDamageHealth)
+            bool canDamageHealth,
+            bool canClashWithEnemyProjectile = false)
         {
             if (prefab == null)
             {
@@ -42,7 +46,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth);
+            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile);
             PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (config != null)
             {
@@ -70,13 +74,15 @@ namespace Week14.Combat
             float radius,
             int nextBulletDamage,
             Color color,
-            bool nextCanDamageHealth)
+            bool nextCanDamageHealth,
+            bool nextCanClashWithEnemyProjectile)
         {
             owner = nextOwner;
             projectileSpeed = speed;
             bulletDamage = nextBulletDamage;
             collisionRadius = radius;
             canDamageHealth = nextCanDamageHealth;
+            canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
             destroyAt = Time.time + lifetime;
             previousPosition = transform.position;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
@@ -103,6 +109,12 @@ namespace Week14.Combat
             }
 
             SweepForMissedCollisions();
+            if (isDestroying)
+            {
+                return;
+            }
+
+            TryResolveForcedParryTarget();
             if (isDestroying)
             {
                 return;
@@ -163,6 +175,47 @@ namespace Week14.Combat
             }
         }
 
+        public void SetForcedParryTarget(EnemyProjectile enemyProjectile)
+        {
+            forcedParryTarget = enemyProjectile;
+            if (forcedParryTarget == null || projectileSpeed <= 0f)
+            {
+                forcedParryResolveAt = 0f;
+                return;
+            }
+
+            float distance = Vector2.Distance(transform.position, forcedParryTarget.transform.position);
+            forcedParryResolveAt = Time.time + Mathf.Max(0.02f, distance / projectileSpeed);
+            destroyAt = Mathf.Max(destroyAt, forcedParryResolveAt + 0.1f);
+        }
+
+        private bool TryResolveForcedParryTarget()
+        {
+            if (!canClashWithEnemyProjectile || resolved || isDestroying)
+            {
+                return false;
+            }
+
+            if (forcedParryTarget == null)
+            {
+                DestroyProjectile();
+                return true;
+            }
+
+            Vector2 targetPosition = forcedParryTarget.transform.position;
+            float hitRadius = Mathf.Max(0.12f, collisionRadius * 2.5f);
+            bool closeEnough = Vector2.Distance(transform.position, targetPosition) <= hitRadius;
+            bool reachedExpectedTime = forcedParryResolveAt > 0f && Time.time >= forcedParryResolveAt;
+            bool crossedTarget = Vector2.Dot(flightDirection, targetPosition - (Vector2)transform.position) <= 0f;
+            if (!closeEnough && !reachedExpectedTime && !crossedTarget)
+            {
+                return false;
+            }
+
+            transform.position = forcedParryTarget.transform.position;
+            return TryDestroyByEnemyProjectileClash(forcedParryTarget);
+        }
+
         private bool TryResolveCollision(Collider2D other)
         {
             if (other == null || isDestroying || other.transform.IsChildOf(transform))
@@ -178,12 +231,22 @@ namespace Week14.Combat
             EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
             if (enemyProjectile != null)
             {
+                if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
+                {
+                    return true;
+                }
+
                 return false;
             }
 
             Health targetHealth = other.GetComponentInParent<Health>();
             if (targetHealth == null)
             {
+                if (forcedParryTarget != null)
+                {
+                    return false;
+                }
+
                 if (other.GetComponentInParent<PlayerProjectile>() != null
                     || other.GetComponentInParent<EnemyProjectile>() != null)
                 {
@@ -257,6 +320,40 @@ namespace Week14.Combat
 
             DestroyProjectile();
             return true;
+        }
+
+        public bool TryDestroyByEnemyProjectileClash(EnemyProjectile enemyProjectile)
+        {
+            if (!canClashWithEnemyProjectile || resolved || isDestroying)
+            {
+                return false;
+            }
+
+            if (enemyProjectile == null || (forcedParryTarget != null && enemyProjectile != forcedParryTarget))
+            {
+                return false;
+            }
+
+            Vector3 impactPosition = enemyProjectile.transform.position;
+            Vector2 incomingDirection = enemyProjectile.IncomingDirection;
+            if (!enemyProjectile.TryDestroyByInterceptShot(out bool parried))
+            {
+                return false;
+            }
+
+            if (parried)
+            {
+                owner?.PlayParryImpact(impactPosition, incomingDirection);
+            }
+
+            DestroyByClash();
+            return true;
+        }
+
+        private void DestroyByClash()
+        {
+            resolved = true;
+            DestroyProjectile();
         }
 
         private void DestroyProjectile()

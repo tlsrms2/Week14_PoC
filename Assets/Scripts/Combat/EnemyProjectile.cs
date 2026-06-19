@@ -82,6 +82,7 @@ namespace Week14.Combat
         private bool resolved;
         private bool isDestroying;
         private bool launched;
+        private bool interceptPending;
         private bool ownerSlotReleased;
         private bool pathIndicatorActive;
         private Vector2 pathIndicatorStart;
@@ -96,7 +97,7 @@ namespace Week14.Combat
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
-        public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted;
+        public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
         public float ParryRange => Mathf.Max(0f, parryRange);
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public static IReadOnlyList<EnemyProjectile> ActiveProjectiles => activeProjectiles;
@@ -578,6 +579,12 @@ namespace Week14.Combat
             PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
             if (playerProjectile != null)
             {
+                playerProjectile.TryDestroyByEnemyProjectileClash(this);
+                return;
+            }
+
+            if (interceptPending && other.GetComponentInParent<PlayerCombatController>() != null)
+            {
                 return;
             }
 
@@ -771,6 +778,18 @@ namespace Week14.Combat
             SpendOwnerBulletsOnCounter(BulletChangeSource.Parry);
 
             DestroyProjectile();
+            return true;
+        }
+
+        public bool TryReserveIntercept()
+        {
+            if (!CanBeIntercepted)
+            {
+                return false;
+            }
+
+            interceptPending = true;
+            SetParryRangeIndicatorVisible(false);
             return true;
         }
 
