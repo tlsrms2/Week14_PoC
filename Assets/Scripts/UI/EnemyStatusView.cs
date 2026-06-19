@@ -8,29 +8,19 @@ namespace Week14.UI
     public sealed class EnemyStatusView : MonoBehaviour
     {
         private const int DefaultSortingOrder = 40;
-        private const string BarsName = "EnemyStatusBars";
-        private static readonly Vector2 DefaultBarsSize = new(2.35f, 0.4f);
         private static Sprite indicatorSprite;
 
         [SerializeField, HideInInspector] private Health health;
-        [SerializeField, HideInInspector] private BulletGauge bullets;
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
         [SerializeField, HideInInspector] private EnemyAI enemyAI;
         [SerializeField, HideInInspector] private BossAI bossAI;
         [SerializeField, HideInInspector] private Drone drone;
-        [SerializeField, HideInInspector] private BulletBarView bulletBarView;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
-        [SerializeField, HideInInspector] private RectTransform barsRoot;
 
         private Transform worldTarget;
-        private Vector3 authoredBarOffset = new(0f, 0.65f, 0f);
-        private Vector2 authoredBarsSize = DefaultBarsSize;
-        private Color bulletColor = new(1f, 0.55f, 0.1f, 1f);
-        private Color emptyColor = Color.red;
         private Color lockOnColor = Color.white;
         private Color executionColor = Color.red;
-        private bool suppressed;
 
         public void SetIndicators(SpriteRenderer nextLockOnRenderer, SpriteRenderer nextExecutionRenderer)
         {
@@ -47,8 +37,6 @@ namespace Week14.UI
                 return;
             }
 
-            bulletColor = data.BulletBarColor;
-            emptyColor = data.EmptyBulletBarColor;
             lockOnColor = data.LockOnIndicatorColor;
             executionColor = data.ExecutionIndicatorColor;
 
@@ -64,8 +52,6 @@ namespace Week14.UI
             }
 
             bossAI = boss;
-            bulletColor = boss.BulletBarColor;
-            emptyColor = boss.EmptyBulletBarColor;
             lockOnColor = boss.LockOnIndicatorColor;
             executionColor = boss.ExecutionIndicatorColor;
 
@@ -82,11 +68,8 @@ namespace Week14.UI
 
             drone = nextDrone;
             executionTarget = nextDrone.GetComponent<ExecutionTarget>();
-            bulletColor = nextDrone.BulletBarColor;
-            emptyColor = nextDrone.EmptyBulletBarColor;
             lockOnColor = nextDrone.LockOnIndicatorColor;
             executionColor = nextDrone.ExecutionIndicatorColor;
-            authoredBarsSize = nextDrone.StatusBulletBarSize;
 
             EnsureView();
             ApplyColors();
@@ -97,12 +80,10 @@ namespace Week14.UI
             worldTarget = target;
         }
 
-        public void SetTargets(Health nextHealth, BulletGauge nextBullets)
+        public void SetTarget(Health nextHealth)
         {
             health = nextHealth;
-            bullets = nextBullets;
             EnsureView();
-            bulletBarView?.SetTarget(bullets);
         }
 
         public bool OwnsRenderer(SpriteRenderer renderer)
@@ -112,21 +93,19 @@ namespace Week14.UI
 
         public void SetSuppressed(bool value)
         {
-            suppressed = value;
-            SetBarsVisible(!suppressed);
+            _ = value;
         }
 
         private void Awake()
         {
             health ??= GetComponentInParent<Health>();
-            bullets ??= GetComponentInParent<BulletGauge>();
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
             enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
             drone ??= GetComponentInParent<Drone>();
 
             EnsureView();
-            SetTargets(health, bullets);
+            SetTarget(health);
             ApplyColors();
         }
 
@@ -136,25 +115,13 @@ namespace Week14.UI
             bool canShowDuringEnemyState = (enemyAI == null || !enemyAI.IsExecutionLocked)
                 && (bossAI == null || !bossAI.IsExecutionLocked)
                 && (drone == null || !drone.IsExecutionLocked);
-            bool barsVisible = alive && !suppressed && canShowDuringEnemyState;
             bool indicatorsVisible = alive && canShowDuringEnemyState;
-            SetBarsVisible(barsVisible);
 
             Vector3 center = GetWorldCenter();
             if (!indicatorsVisible)
             {
                 SetIndicatorsVisible(false);
                 return;
-            }
-
-            if (barsVisible && barsRoot != null)
-            {
-                barsRoot.position = center + authoredBarOffset;
-                Camera mainCamera = Camera.main;
-                if (mainCamera != null)
-                {
-                    barsRoot.rotation = mainCamera.transform.rotation;
-                }
             }
 
             ApplyOwnedWorldCenter(lockOnRenderer, center);
@@ -212,87 +179,7 @@ namespace Week14.UI
             enemyAI ??= GetComponentInParent<EnemyAI>();
             bossAI ??= GetComponentInParent<BossAI>();
             drone ??= GetComponentInParent<Drone>();
-            EnsureBars();
             EnsureIndicators();
-        }
-
-        private void EnsureBars()
-        {
-            if (barsRoot == null)
-            {
-                barsRoot = FindExistingBarsRoot();
-            }
-
-            if (barsRoot == null)
-            {
-                GameObject canvasObject = new(BarsName, typeof(RectTransform));
-                canvasObject.transform.SetParent(transform, false);
-                barsRoot = canvasObject.GetComponent<RectTransform>();
-
-                Canvas canvas = canvasObject.AddComponent<Canvas>();
-                canvas.renderMode = RenderMode.WorldSpace;
-                canvas.overrideSorting = true;
-                canvas.sortingOrder = DefaultSortingOrder;
-            }
-
-            barsRoot.sizeDelta = authoredBarsSize;
-
-            RectTransform row = FindRow("Bullet") ?? CreateRow("Bullet", barsRoot);
-            row.gameObject.name = "Bullet";
-            DisableChild(row, "Background");
-            DisableChild(row, "Fill");
-
-            bulletBarView = row.GetComponent<BulletBarView>() ?? row.gameObject.AddComponent<BulletBarView>();
-            bulletBarView.SetBindPlayerOnStart(false);
-            bulletBarView.SetColors(bulletColor, emptyColor);
-            bulletBarView.SetIconLayout(10, 0.9f, 0.48f, 0.16f);
-            bulletBarView.Configure();
-        }
-
-        private RectTransform FindExistingBarsRoot()
-        {
-            Transform existing = transform.Find(BarsName);
-            return existing != null ? existing.GetComponent<RectTransform>() : null;
-        }
-
-        private RectTransform FindRow(string rowName)
-        {
-            Transform row = barsRoot != null ? barsRoot.Find(rowName) : null;
-            return row != null ? row.GetComponent<RectTransform>() : null;
-        }
-
-        private static RectTransform CreateRow(string rowName, Transform parent)
-        {
-            GameObject rowObject = new(rowName, typeof(RectTransform));
-            rowObject.transform.SetParent(parent, false);
-            RectTransform row = rowObject.GetComponent<RectTransform>();
-            row.anchorMin = Vector2.zero;
-            row.anchorMax = Vector2.one;
-            row.offsetMin = Vector2.zero;
-            row.offsetMax = Vector2.zero;
-            return row;
-        }
-
-        private static void DisableChild(Transform parent, string childName)
-        {
-            Transform child = parent != null ? parent.Find(childName) : null;
-            if (child != null)
-            {
-                child.gameObject.SetActive(false);
-            }
-        }
-
-        private static void Stretch(RectTransform rect)
-        {
-            if (rect == null)
-            {
-                return;
-            }
-
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
         }
 
         private void EnsureIndicators()
@@ -368,11 +255,6 @@ namespace Week14.UI
 
         private void ApplyColors()
         {
-            if (bulletBarView != null)
-            {
-                bulletBarView.SetColors(bulletColor, emptyColor);
-            }
-
             ApplyOwnedIndicatorColor(lockOnRenderer, lockOnColor);
             ApplyOwnedIndicatorColor(executionRenderer, executionColor);
         }
@@ -388,14 +270,6 @@ namespace Week14.UI
         private bool ShouldKeepAuthoredIndicatorColor(SpriteRenderer renderer)
         {
             return renderer == lockOnRenderer;
-        }
-
-        private void SetBarsVisible(bool visible)
-        {
-            if (barsRoot != null)
-            {
-                barsRoot.gameObject.SetActive(visible);
-            }
         }
 
         private void SetIndicatorsVisible(bool visible)

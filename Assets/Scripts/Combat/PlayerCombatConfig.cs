@@ -84,19 +84,6 @@ namespace Week14.Combat
         [Tooltip("처형 사격 전 총 발사 애니메이션 반복 사이의 간격입니다.")]
         [SerializeField, Min(0.01f)] private float executionFlourishShotInterval = 0.08f;
 
-        [Header("Player Bullet UI")]
-        [Tooltip("플레이어 탄환 UI에 표시할 탄환 아이콘 최대 개수입니다.")]
-        [SerializeField, Min(1)] private int playerBulletUiMaxVisibleIcons = 10;
-        [Tooltip("플레이어 탄환 아이콘이 UI 영역 높이에서 차지하는 비율입니다.")]
-        [SerializeField, Range(0.1f, 1f)] private float playerBulletUiIconHeightRatio = 0.9f;
-        [Tooltip("플레이어 탄환 아이콘의 가로 폭 비율입니다.")]
-        [FormerlySerializedAs("playerBulletUiIconWidthRatio")]
-        [SerializeField, Range(0.1f, 1f)] private float playerBulletUiIconWidthRatio = 0.48f;
-        [Tooltip("플레이어 탄환 아이콘 사이 간격 비율입니다.")]
-        [SerializeField, Min(0f)] private float playerBulletUiIconSpacingRatio = 0.16f;
-        [Tooltip("남은 탄환 수 텍스트 크기입니다.")]
-        [SerializeField, Min(1f)] private float playerBulletUiOverflowTextFontSize = 18f;
-
         public int MaxBullets => maxBullets;
         public float MoveSpeed => moveSpeed;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
@@ -171,10 +158,5 @@ namespace Week14.Combat
         public float ExecutionImpactParticleSeconds => effectData != null ? effectData.ExecutionImpactParticleSeconds : 0.55f;
         public int ExecutionImpactParticleCount => effectData != null ? effectData.ExecutionImpactParticleCount : 28;
         public int ExecutionAbsorbParticleCount => effectData != null ? effectData.ExecutionAbsorbParticleCount : 24;
-        public int PlayerBulletUiMaxVisibleIcons => playerBulletUiMaxVisibleIcons;
-        public float PlayerBulletUiIconHeightRatio => playerBulletUiIconHeightRatio;
-        public float PlayerBulletUiIconWidthRatio => playerBulletUiIconWidthRatio;
-        public float PlayerBulletUiIconSpacingRatio => playerBulletUiIconSpacingRatio;
-        public float PlayerBulletUiOverflowTextFontSize => playerBulletUiOverflowTextFontSize;
     }
 }

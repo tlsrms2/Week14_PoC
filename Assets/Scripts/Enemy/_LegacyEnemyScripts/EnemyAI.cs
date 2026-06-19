@@ -29,7 +29,7 @@ namespace Week14.Enemy
 
         [Header("보스 전투 UI")]
         [SerializeField] private GameObject bossCombatUiRoot;
-        [SerializeField] private BulletBarView bossBulletBarView;
+        [SerializeField] private BossBulletBarView bossBulletBarView;
 
         // 런타임 캐시
         private Health health;
@@ -1064,7 +1064,7 @@ namespace Week14.Enemy
             statusView.SetSuppressed(false);
             statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(data);
-            statusView.SetTargets(health, bullets);
+            statusView.SetTarget(health);
         }
 
         private bool UsesBossCombatUi()
@@ -1076,13 +1076,7 @@ namespace Week14.Enemy
         {
             if (bossCombatUiRoot != null)
             {
-                bossBulletBarView ??= bossCombatUiRoot.GetComponentInChildren<BulletBarView>(true);
-            }
-
-            if (bossBulletBarView != null)
-            {
-                bossBulletBarView.SetBindPlayerOnStart(false);
-                bossBulletBarView.SetColors(data.BulletBarColor, data.EmptyBulletBarColor);
+                bossBulletBarView ??= bossCombatUiRoot.GetComponentInChildren<BossBulletBarView>(true);
             }
         }
 
@@ -1158,7 +1152,7 @@ namespace Week14.Enemy
             statusView = rootStatusView;
             statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(data);
-            statusView.SetTargets(health, bullets);
+            statusView.SetTarget(health);
             statusView.SetSuppressed(true);
         }
 

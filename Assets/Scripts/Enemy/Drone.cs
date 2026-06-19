@@ -1050,7 +1050,7 @@ namespace Week14.Enemy
             statusView.SetSuppressed(false);
             statusView.SetIndicators(lockOnIndicator, executionIndicator);
             statusView.Configure(this);
-            statusView.SetTargets(health, bullets);
+            statusView.SetTarget(health);
             statusView.gameObject.SetActive(true);
         }
 
