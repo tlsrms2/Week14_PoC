@@ -159,6 +159,7 @@ namespace Week14.Enemy
         public float CurrentEnrageRemainingSeconds => GetCurrentEnrageRemainingSeconds();
         public event Action<int, int> LivesChanged;
         public event Action<int, float, float> EnrageChanged;
+        public static event Action<BossAI> Defeated;
 
         protected virtual void Awake()
         {
@@ -1098,6 +1099,7 @@ namespace Week14.Enemy
             }
 
             OnBossDied();
+            Defeated?.Invoke(this);
         }
 
         private void DestroyActiveProjectiles()
