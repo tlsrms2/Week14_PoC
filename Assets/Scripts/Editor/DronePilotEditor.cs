@@ -31,7 +31,11 @@ public sealed class DronePilotEditor : Editor
         "patternSequence",
         "randomizePatterns",
         "minPatternRecoverySeconds",
-        "maxPatternRecoverySeconds"
+        "maxPatternRecoverySeconds",
+        "normalProjectileChargeColor",
+        "normalProjectileColor",
+        "homingProjectileChargeColor",
+        "homingProjectileColor"
     };
 
     private static readonly Dictionary<string, bool> ToggleStates = new();
@@ -92,6 +96,14 @@ public sealed class DronePilotEditor : Editor
         {
             DrawProperty("minPatternRecoverySeconds");
             DrawProperty("maxPatternRecoverySeconds");
+        });
+
+        DrawToggleSection("투사체 색", "common.projectileColors", () =>
+        {
+            DrawProperty("normalProjectileChargeColor");
+            DrawProperty("normalProjectileColor");
+            DrawProperty("homingProjectileChargeColor");
+            DrawProperty("homingProjectileColor");
         });
 
         showBossBase = EditorGUILayout.ToggleLeft("BossAI 공통 설정 보기", showBossBase, EditorStyles.boldLabel);
@@ -202,8 +214,8 @@ public sealed class DronePilotEditor : Editor
         {
             DrawChildSection("기본", projectile, "prefab", "bulletDamage", "radius");
             DrawChildSection("충전", projectile, "chargeSeconds", "chargeDriftSpeed", "aimAtPlayerWhileCharging", "aimAtPlayerOnLaunch");
-            DrawChildSection("이동", projectile, "speed", "lifetime", "homingSeconds", "homingTurnDegreesPerSecond");
-            DrawChildSection("색/궤적", projectile, "chargingColor", "launchedColor", "trailSeconds", "trailWidthMultiplier");
+            DrawChildSection("이동", projectile, "speed", "lifetime", "homingEnabled", "homingSeconds", "homingTurnDegreesPerSecond");
+            DrawChildSection("색/궤적", projectile, "trailSeconds", "trailWidthMultiplier");
         });
     }
 

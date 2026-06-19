@@ -28,8 +28,20 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float enemyBodyContactStaggerSeconds = 0.22f;
         [Tooltip("플레이어의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
-        [Tooltip("질주 중 기본 이동 속도에 곱하는 배율입니다.")]
-        [SerializeField, Min(1f)] private float sprintSpeedMultiplier = 1.5f;
+        [Tooltip("대쉬로 이동하는 거리입니다.")]
+        [SerializeField, Min(0f)] private float dashDistance = 2.8f;
+        [Tooltip("대쉬 이동이 지속되는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float dashSeconds = 0.16f;
+        [Tooltip("대쉬를 다시 사용할 수 있기까지 걸리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float dashCooldownSeconds = 0.35f;
+        [Tooltip("대쉬 중 피격을 무시하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float dashInvincibleSeconds = 0.18f;
+        [Tooltip("대쉬 잔상이 사라지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float dashAfterimageSeconds = 0.18f;
+        [Tooltip("대쉬 잔상이 생성되는 간격입니다.")]
+        [SerializeField, Min(0.01f)] private float dashAfterimageInterval = 0.035f;
+        [Tooltip("대쉬 잔상 색상입니다.")]
+        [SerializeField] private Color dashAfterimageColor = new(0.45f, 0.85f, 1f, 0.45f);
 
         [Header("Left Gun")]
         [Tooltip("플레이어 권총 발사에 사용할 투사체 프리팹입니다.")]
@@ -120,7 +132,13 @@ namespace Week14.Combat
 
         public int MaxBullets => maxBullets;
         public float MoveSpeed => moveSpeed;
-        public float SprintSpeedMultiplier => sprintSpeedMultiplier;
+        public float DashDistance => dashDistance;
+        public float DashSeconds => dashSeconds;
+        public float DashCooldownSeconds => dashCooldownSeconds;
+        public float DashInvincibleSeconds => dashInvincibleSeconds;
+        public float DashAfterimageSeconds => dashAfterimageSeconds;
+        public float DashAfterimageInterval => dashAfterimageInterval;
+        public Color DashAfterimageColor => dashAfterimageColor;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
         public int LeftAttackBulletCost => leftAttackBulletCost;
         public int AttackBulletDamage => attackBulletDamage;

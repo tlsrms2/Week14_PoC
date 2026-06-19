@@ -65,6 +65,7 @@ namespace Week14.Combat
         private float bodyHitColorEndsAt;
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
+        private float dashInvincibleEndsAt;
         private Vector2 smoothedGamepadLookDirection;
         private int smoothedGamepadLookFrame = -1;
 #if ENABLE_INPUT_SYSTEM
@@ -108,6 +109,7 @@ namespace Week14.Combat
         }
         public bool CanMove => CanAct && !IsBodyContactStaggered;
         public bool IsBodyContactStaggered => Time.time < enemyBodyContactStaggerEndsAt;
+        public bool IsDashInvincible => Time.time < dashInvincibleEndsAt;
         private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
 
         private void Awake()
@@ -359,7 +361,7 @@ namespace Week14.Combat
 
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
         {
-            if (isExecuting || health.IsDead || config == null)
+            if (isExecuting || IsDashInvincible || health.IsDead || config == null)
             {
                 return false;
             }
@@ -383,6 +385,16 @@ namespace Week14.Combat
                 config.PlayerHitEffectScale);
             GetCameraFollow()?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
             return true;
+        }
+
+        public void GrantDashInvincibility(float seconds)
+        {
+            if (seconds <= 0f)
+            {
+                return;
+            }
+
+            dashInvincibleEndsAt = Mathf.Max(dashInvincibleEndsAt, Time.time + seconds);
         }
 
         private void FlashBodyHitColor()

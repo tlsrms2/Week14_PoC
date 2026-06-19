@@ -382,6 +382,7 @@ namespace Week14.Enemy
             Color color,
             float trailSeconds,
             float trailWidth,
+            bool homingEnabled,
             float homingSeconds,
             float homingTurnDegrees,
             bool playRecoil,
@@ -406,6 +407,7 @@ namespace Week14.Enemy
                 color,
                 trailSeconds,
                 trailWidth,
+                homingEnabled,
                 homingSeconds,
                 homingTurnDegrees);
 

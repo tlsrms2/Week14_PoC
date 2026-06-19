@@ -34,8 +34,9 @@ namespace Week14.Enemy
             [SerializeField, Tooltip("발사 후 색입니다.")] private Color launchedColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Min(0.01f), Tooltip("탄환 궤적 유지 시간입니다.")] private float trailSeconds = 0.1f;
             [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] private float trailWidthMultiplier = 3f;
-            [SerializeField, Min(0f), Tooltip("플레이어를 추적하는 시간입니다.")] private float homingSeconds;
-            [SerializeField, Min(0f), Tooltip("초당 추적 회전 각도입니다.")] private float homingTurnDegreesPerSecond;
+            [SerializeField] private bool homingEnabled;
+            [SerializeField, Min(0f), Tooltip("플레이어를 추적하는 시간입니다.")] private float homingSeconds = 0.8f;
+            [SerializeField, Min(0f), Tooltip("초당 추적 회전 각도입니다.")] private float homingTurnDegreesPerSecond = 540f;
 
             public EnemyProjectile Prefab => prefab;
             public int BulletDamage => bulletDamage;
@@ -50,6 +51,7 @@ namespace Week14.Enemy
             public Color LaunchedColor => launchedColor;
             public float TrailSeconds => trailSeconds;
             public float TrailWidthMultiplier => trailWidthMultiplier;
+            public bool HomingEnabled => homingEnabled;
             public float HomingSeconds => homingSeconds;
             public float HomingTurnDegreesPerSecond => homingTurnDegreesPerSecond;
         }
@@ -216,6 +218,10 @@ namespace Week14.Enemy
         [SerializeField] private bool randomizePatterns;
         [SerializeField, Min(0f)] private float minPatternRecoverySeconds = 0.45f;
         [SerializeField, Min(0f)] private float maxPatternRecoverySeconds = 0.75f;
+        [SerializeField, Tooltip("유도 기능이 꺼진 드론파일럿 투사체 발사 전 색입니다.")] private Color normalProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
+        [SerializeField, Tooltip("유도 기능이 꺼진 드론파일럿 투사체 발사 후 색입니다.")] private Color normalProjectileColor = new(1f, 0.95f, 0.25f, 1f);
+        [SerializeField, Tooltip("유도 기능이 켜진 드론파일럿 투사체 발사 전 색입니다.")] private Color homingProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
+        [SerializeField, Tooltip("유도 기능이 켜진 드론파일럿 투사체 발사 후 색입니다.")] private Color homingProjectileColor = new(0.35f, 0.75f, 1f, 1f);
 
         private readonly List<Drone> controlledDrones = new();
         private readonly List<Drone> spawnedDrones = new();
@@ -304,6 +310,8 @@ namespace Week14.Enemy
                 return null;
             }
 
+            Color chargeColor = GetProjectileChargeColor(settings);
+            Color projectileColor = GetProjectileColor(settings);
             EnemyProjectile projectile = EnemyProjectile.Spawn(
                 settings.Prefab,
                 ownerBullets,
@@ -314,18 +322,19 @@ namespace Week14.Enemy
                 settings.Speed,
                 settings.Lifetime,
                 settings.Radius,
-                settings.LaunchedColor,
+                projectileColor,
                 settings.TrailSeconds,
                 settings.TrailWidthMultiplier,
+                settings.HomingEnabled,
                 settings.HomingSeconds,
                 settings.HomingTurnDegreesPerSecond);
 
-            projectile?.ConfigureStateColors(settings.ChargingColor, settings.LaunchedColor);
+            projectile?.ConfigureStateColors(chargeColor, projectileColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, settings.AimAtPlayerWhileCharging, settings.AimAtPlayerOnLaunch);
 
             if (projectile != null && playMuzzleFlash)
             {
-                ProjectileVfx.PlayMuzzleFlash(origin, direction, settings.LaunchedColor, 0.75f);
+                ProjectileVfx.PlayMuzzleFlash(origin, direction, projectileColor, 0.75f);
             }
 
             return projectile;
@@ -753,6 +762,8 @@ namespace Week14.Enemy
                 return null;
             }
 
+            Color chargeColor = GetProjectileChargeColor(settings);
+            Color projectileColor = GetProjectileColor(settings);
             EnemyProjectile projectile = SpawnBossProjectile(
                 settings.Prefab,
                 origin,
@@ -762,17 +773,32 @@ namespace Week14.Enemy
                 settings.Speed,
                 settings.Lifetime,
                 settings.Radius,
-                settings.LaunchedColor,
+                projectileColor,
                 settings.TrailSeconds,
                 settings.TrailWidthMultiplier,
+                settings.HomingEnabled,
                 settings.HomingSeconds,
                 settings.HomingTurnDegreesPerSecond,
                 playRecoil,
                 muzzleOrigin);
 
-            projectile?.ConfigureStateColors(settings.ChargingColor, settings.LaunchedColor);
+            projectile?.ConfigureStateColors(chargeColor, projectileColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, settings.AimAtPlayerWhileCharging, settings.AimAtPlayerOnLaunch);
             return projectile;
+        }
+
+        private Color GetProjectileColor(ProjectileSettings settings)
+        {
+            return settings != null && settings.HomingEnabled
+                ? homingProjectileColor
+                : normalProjectileColor;
+        }
+
+        private Color GetProjectileChargeColor(ProjectileSettings settings)
+        {
+            return settings != null && settings.HomingEnabled
+                ? homingProjectileChargeColor
+                : normalProjectileChargeColor;
         }
 
         private float SpawnDrone(int index, int totalCount)

@@ -34,8 +34,9 @@ namespace Week14.Enemy
             [SerializeField, FormerlySerializedAs("color"), Tooltip("발사된 탄환 색입니다.")] private Color launchedColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Min(0.01f), Tooltip("탄환 궤적이 남아 있는 시간입니다.")] private float trailSeconds = 0.1f;
             [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] private float trailWidthMultiplier = 3f;
-            [SerializeField, Min(0f), Tooltip("발사 후 플레이어를 추적하는 시간입니다.")] private float homingSeconds;
-            [SerializeField, Min(0f), Tooltip("추적 중 초당 회전 가능한 최대 각도입니다.")] private float homingTurnDegreesPerSecond;
+            [SerializeField] private bool homingEnabled;
+            [SerializeField, Min(0f), Tooltip("발사 후 플레이어를 추적하는 시간입니다.")] private float homingSeconds = 0.8f;
+            [SerializeField, Min(0f), Tooltip("추적 중 초당 회전 가능한 최대 각도입니다.")] private float homingTurnDegreesPerSecond = 540f;
 
             public EnemyProjectile Prefab => prefab;
             public int BulletDamage => bulletDamage;
@@ -49,6 +50,7 @@ namespace Week14.Enemy
             public Color LaunchedColor => launchedColor;
             public float TrailSeconds => trailSeconds;
             public float TrailWidthMultiplier => trailWidthMultiplier;
+            public bool HomingEnabled => homingEnabled;
             public float HomingSeconds => homingSeconds;
             public float HomingTurnDegreesPerSecond => homingTurnDegreesPerSecond;
         }
@@ -230,6 +232,10 @@ namespace Week14.Enemy
         [Header("Hog Effects")]
         [SerializeField, Tooltip("호그 보글보글 이펙트 대표색입니다. 기본값은 #477330입니다.")] private Color hogEffectColor = new(0.278f, 0.451f, 0.188f, 1f);
         [SerializeField, Min(0.1f), Tooltip("패턴1, 패턴2, 패턴4에서 생성되는 보글보글 이펙트 크기입니다.")] private float bubbleEffectScale = 1f;
+        [SerializeField, Tooltip("유도 기능이 꺼진 보스 투사체 발사 전 색입니다.")] private Color normalProjectileChargeColor = new(0.45f, 0.7f, 0.25f, 1f);
+        [SerializeField, Tooltip("유도 기능이 꺼진 보스 투사체 발사 후 색입니다.")] private Color normalProjectileColor = new(1f, 0.95f, 0.25f, 1f);
+        [SerializeField, Tooltip("유도 기능이 켜진 보스 투사체 발사 전 색입니다.")] private Color homingProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
+        [SerializeField, Tooltip("유도 기능이 켜진 보스 투사체 발사 후 색입니다.")] private Color homingProjectileColor = new(0.35f, 0.75f, 1f, 1f);
 
         [Header("Debug")]
         [SerializeField, Tooltip("켜면 아래에서 고른 패턴만 반복 실행합니다.")] private bool debugUseFixedPattern;
@@ -819,6 +825,20 @@ namespace Week14.Enemy
             return hogEffectColor.a > 0f ? hogEffectColor : DefaultHogEffectColor;
         }
 
+        private Color GetProjectileColor(ProjectileSettings settings, bool suppressHoming)
+        {
+            return settings != null && settings.HomingEnabled && !suppressHoming
+                ? homingProjectileColor
+                : normalProjectileColor;
+        }
+
+        private Color GetProjectileChargeColor(ProjectileSettings settings, bool suppressHoming)
+        {
+            return settings != null && settings.HomingEnabled && !suppressHoming
+                ? homingProjectileChargeColor
+                : normalProjectileChargeColor;
+        }
+
         private EnemyProjectile FireConfiguredProjectileWithoutPlayerAim(
             ProjectileSettings settings,
             Vector3 origin,
@@ -871,6 +891,8 @@ namespace Week14.Enemy
 
             float chargeSeconds = chargeSecondsOverride >= 0f ? chargeSecondsOverride : settings.ChargeSeconds;
             float radius = radiusOverride > 0f ? radiusOverride : settings.Radius;
+            Color chargeColor = GetProjectileChargeColor(settings, suppressHoming);
+            Color projectileColor = GetProjectileColor(settings, suppressHoming);
             EnemyProjectile projectile = SpawnBossProjectile(
                 settings.Prefab,
                 origin,
@@ -880,16 +902,17 @@ namespace Week14.Enemy
                 settings.Speed,
                 settings.Lifetime,
                 radius,
-                settings.LaunchedColor,
+                projectileColor,
                 settings.TrailSeconds,
                 settings.TrailWidthMultiplier,
-                suppressHoming ? 0f : settings.HomingSeconds,
-                suppressHoming ? 0f : settings.HomingTurnDegreesPerSecond,
+                settings.HomingEnabled && !suppressHoming,
+                settings.HomingSeconds,
+                settings.HomingTurnDegreesPerSecond,
                 playRecoil,
                 muzzleFlashPosition,
                 muzzleFlashScale);
 
-            projectile?.ConfigureStateColors(settings.ChargingColor, settings.LaunchedColor);
+            projectile?.ConfigureStateColors(chargeColor, projectileColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
             return projectile;
         }

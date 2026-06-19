@@ -33960,6 +33960,30 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: homingProjectileColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: homingProjectileColor.g
+      value: 0.69411767
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: homingProjectileColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: normalProjectileColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: normalProjectileColor.g
+      value: 0.88759816
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: normalProjectileColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern2.orbitRadius
       value: 3.2
       objectReference: {fileID: 0}
@@ -34000,12 +34024,40 @@ PrefabInstance:
       value: 3.2
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: homingProjectileChargeColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: homingProjectileChargeColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: homingProjectileChargeColor.r
+      value: 0.03529412
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: normalProjectileChargeColor.b
+      value: 0.009601116
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: normalProjectileChargeColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: normalProjectileChargeColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern5.droneFireInterval
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossBurst.projectile.homingEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossBurst.projectile.homingSeconds
-      value: 0.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern1.droneProjectile.speed
@@ -34044,8 +34096,24 @@ PrefabInstance:
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern5.bossProjectile.homingEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern5.bossProjectile.homingSeconds
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern1.droneProjectile.chargeSeconds
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.homingSeconds
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern5.droneProjectile.homingSeconds
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern1.droneProjectile.chargingColor.b
@@ -34077,7 +34145,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossBurst.projectile.homingTurnDegreesPerSecond
-      value: 540
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern2.stationaryProjectile.homingSeconds
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern2.stationaryProjectile.chargingColor.b
@@ -34093,6 +34165,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: dronePattern1.droneProjectile.aimAtPlayerWhileCharging
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern5.bossProjectile.homingTurnDegreesPerSecond
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern1.droneProjectile.homingTurnDegreesPerSecond
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern5.droneProjectile.homingTurnDegreesPerSecond
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: dronePattern2.stationaryProjectile.homingTurnDegreesPerSecond
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}

@@ -28,9 +28,13 @@ public sealed class HogBossAIEditor : Editor
         "maxPatternRecoverySeconds",
         "randomizePatterns",
         "debugUseFixedPattern",
-        "debugPattern",
-        "hogEffectColor",
-        "bubbleEffectScale"
+            "debugPattern",
+            "hogEffectColor",
+            "bubbleEffectScale",
+            "normalProjectileChargeColor",
+            "normalProjectileColor",
+            "homingProjectileChargeColor",
+            "homingProjectileColor"
     };
 
     private static readonly Dictionary<string, bool> FoldoutStates = new();
@@ -79,6 +83,10 @@ public sealed class HogBossAIEditor : Editor
         DrawProperty("maxPatternRecoverySeconds");
         DrawProperty("hogEffectColor");
         DrawProperty("bubbleEffectScale");
+        DrawProperty("normalProjectileChargeColor");
+        DrawProperty("normalProjectileColor");
+        DrawProperty("homingProjectileChargeColor");
+        DrawProperty("homingProjectileColor");
 
         EditorGUILayout.Space(6f);
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -163,8 +171,6 @@ public sealed class HogBossAIEditor : Editor
         DrawChild(projectile, "speed");
         DrawChild(projectile, "lifetime");
         DrawChild(projectile, "radius");
-        DrawChild(projectile, "chargingColor");
-        DrawChild(projectile, "launchedColor");
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         bool advancedExpanded = DrawFoldout($"{key}.advanced", "투사체 고급값");
@@ -173,6 +179,7 @@ public sealed class HogBossAIEditor : Editor
             DrawChild(projectile, "aimAtPlayerWhileCharging");
             DrawChild(projectile, "trailSeconds");
             DrawChild(projectile, "trailWidthMultiplier");
+            DrawChild(projectile, "homingEnabled");
             DrawChild(projectile, "homingSeconds");
             DrawChild(projectile, "homingTurnDegreesPerSecond");
         }

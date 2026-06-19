@@ -19,7 +19,7 @@ namespace Week14.Input
         private const string LookActionName = "Look";
         private const string LeftAttackActionName = "LeftAttack";
         private const string RightAttackActionName = "RightAttack";
-        private const string SprintActionName = "Sprint";
+        private const string DashActionName = "Dash";
         private const string LockOnActionName = "LockOn";
         private const string HelpActionName = "Help";
         private const string LeftActionName = "Left";
@@ -37,7 +37,7 @@ namespace Week14.Input
         private static InputAction lookAction;
         private static InputAction leftAttackAction;
         private static InputAction rightAttackAction;
-        private static InputAction sprintAction;
+        private static InputAction dashAction;
         private static InputAction lockOnAction;
         private static InputAction helpAction;
         private static InputAction leftAction;
@@ -49,7 +49,7 @@ namespace Week14.Input
         private static readonly object moveAction = null;
         private static readonly object leftAttackAction = null;
         private static readonly object rightAttackAction = null;
-        private static readonly object sprintAction = null;
+        private static readonly object dashAction = null;
         private static readonly object lockOnAction = null;
         private static readonly object helpAction = null;
         private static readonly object leftAction = null;
@@ -84,7 +84,7 @@ namespace Week14.Input
             lookAction = null;
             leftAttackAction = null;
             rightAttackAction = null;
-            sprintAction = null;
+            dashAction = null;
             lockOnAction = null;
             helpAction = null;
             leftAction = null;
@@ -101,7 +101,7 @@ namespace Week14.Input
         public static GameplayControlMode ControlMode => controlMode;
         public static bool IsGamepadMode => controlMode == GameplayControlMode.Gamepad;
         public static Vector2 Move => ReadVector2(moveAction);
-        public static bool Sprint => ReadButton(sprintAction);
+        public static bool DashDown => WasPressed(dashAction);
         public static bool LeftAttackDown => WasPressed(IsGamepadMode ? rightAttackAction : leftAttackAction);
         public static bool RightAttackDown => WasPressed(IsGamepadMode ? leftAttackAction : rightAttackAction);
         public static bool LockOnDown => WasPressed(lockOnAction);
@@ -187,7 +187,7 @@ namespace Week14.Input
             lookAction = FindPlayerAction(LookActionName);
             leftAttackAction = FindPlayerAction(LeftAttackActionName);
             rightAttackAction = FindPlayerAction(RightAttackActionName);
-            sprintAction = FindPlayerAction(SprintActionName);
+            dashAction = FindPlayerAction(DashActionName);
             lockOnAction = FindPlayerAction(LockOnActionName);
             helpAction = FindPlayerAction(HelpActionName);
             leftAction = FindPlayerAction(LeftActionName);
@@ -215,7 +215,7 @@ namespace Week14.Input
             EnableAction(lookAction);
             EnableAction(leftAttackAction);
             EnableAction(rightAttackAction);
-            EnableAction(sprintAction);
+            EnableAction(dashAction);
             EnableAction(lockOnAction);
             EnableAction(helpAction);
             EnableAction(leftAction);
@@ -236,11 +236,6 @@ namespace Week14.Input
         private static Vector2 ReadVector2(InputAction action)
         {
             return action != null ? Vector2.ClampMagnitude(action.ReadValue<Vector2>(), 1f) : Vector2.zero;
-        }
-
-        private static bool ReadButton(InputAction action)
-        {
-            return action != null && action.IsPressed();
         }
 
         private static bool WasPressed(InputAction action)
@@ -299,7 +294,6 @@ namespace Week14.Input
         }
 #else
         private static Vector2 ReadVector2(object _) => Vector2.zero;
-        private static bool ReadButton(object _) => false;
         private static bool WasPressed(object _) => false;
         private static bool IsActiveDeviceGamepad() => false;
 #endif

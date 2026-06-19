@@ -18,6 +18,8 @@ namespace Week14.Combat
         private const float PathIndicatorSeconds = 1f;
         private const float PathDashLength = 0.2f;
         private const float PathDashGap = 0.14f;
+        private const float DefaultHomingSeconds = 0.8f;
+        private const float DefaultHomingTurnDegreesPerSecond = 540f;
 
         private float projectileSpeed;
         private float projectileLifetime;
@@ -26,6 +28,7 @@ namespace Week14.Combat
         private Color projectileColor;
         private Color chargingColor;
         private Color launchedColor;
+        private bool homingEnabled;
         private float homingTurnDegreesPerSecond;
         private float homingSeconds;
         private float chargeDriftSpeed;
@@ -102,6 +105,7 @@ namespace Week14.Combat
                 data.ProjectileChargeSeconds, data.ProjectileSpeed, data.ProjectileLifetime, data.ProjectileRadius,
                 data.ProjectileColor, data.ProjectileTrailSeconds,
                 data.ProjectileTrailWidthMultiplier,
+                data.ProjectileHomingEnabled,
                 data.ProjectileHomingSeconds,
                 data.ProjectileHomingTurnDegreesPerSecond);
         }
@@ -119,6 +123,7 @@ namespace Week14.Combat
             Color color,
             float trailSeconds,
             float trailWidth,
+            bool homingEnabled,
             float homingSeconds,
             float homingTurnDegrees)
         {
@@ -141,6 +146,7 @@ namespace Week14.Combat
                 color,
                 trailSeconds,
                 trailWidth,
+                homingEnabled,
                 homingSeconds,
                 homingTurnDegrees);
         }
@@ -279,12 +285,14 @@ namespace Week14.Combat
             float chargeSeconds,
             float speed, float lifetime, float radius,
             Color color, float trailSeconds, float trailWidth,
-            float homingSeconds, float homingTurnDegrees)
+            bool homingEnabled,
+            float homingSeconds,
+            float homingTurnDegrees)
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(direction, bulletDamage, ownerBullets, counterBulletDamage, chargeSeconds, speed, lifetime, radius, color, homingSeconds, homingTurnDegrees);
+            projectile.Initialize(direction, bulletDamage, ownerBullets, counterBulletDamage, chargeSeconds, speed, lifetime, radius, color, homingEnabled, homingSeconds, homingTurnDegrees);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             return projectile;
@@ -302,6 +310,7 @@ namespace Week14.Combat
             int nextCounterBulletDamage,
             float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
+            bool enableHoming,
             float homingSeconds, float nextHomingTurnDegrees)
         {
             projectileSpeed = speed;
@@ -311,8 +320,13 @@ namespace Week14.Combat
             projectileColor = color;
             chargingColor = color;
             launchedColor = color;
-            this.homingSeconds = Mathf.Max(0f, homingSeconds);
-            homingTurnDegreesPerSecond = Mathf.Max(0f, nextHomingTurnDegrees);
+            homingEnabled = enableHoming;
+            this.homingSeconds = homingEnabled
+                ? Mathf.Max(0.01f, homingSeconds > 0f ? homingSeconds : DefaultHomingSeconds)
+                : 0f;
+            homingTurnDegreesPerSecond = homingEnabled
+                ? Mathf.Max(0.01f, nextHomingTurnDegrees > 0f ? nextHomingTurnDegrees : DefaultHomingTurnDegreesPerSecond)
+                : 0f;
             ownerBullets = nextOwnerBullets;
             ownerEnemy = ownerBullets != null ? ownerBullets.GetComponentInParent<EnemyAI>() : null;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
@@ -492,7 +506,7 @@ namespace Week14.Combat
 
         private void TickHoming()
         {
-            if (resolved || isDestroying || Time.time >= homingEndsAt || homingTurnDegreesPerSecond <= 0f || projectileSpeed <= 0f)
+            if (!homingEnabled || resolved || isDestroying || Time.time >= homingEndsAt || homingTurnDegreesPerSecond <= 0f || projectileSpeed <= 0f)
             {
                 return;
             }
@@ -678,6 +692,7 @@ namespace Week14.Combat
                 projectileColor,
                 0.08f,
                 3f,
+                homingEnabled,
                 homingSeconds,
                 homingTurnDegreesPerSecond);
 
@@ -865,8 +880,7 @@ namespace Week14.Combat
 
         private bool IsHomingProjectile()
         {
-            return homingSeconds > 0f
-                || homingTurnDegreesPerSecond > 0f;
+            return homingEnabled;
         }
 
         private void UpdatePathIndicatorPreview()

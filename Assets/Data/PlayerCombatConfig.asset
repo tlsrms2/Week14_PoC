@@ -22,7 +22,13 @@ MonoBehaviour:
   enemyBodyContactKnockbackSpeed: 8
   enemyBodyContactStaggerSeconds: 0.22
   moveSpeed: 3
-  sprintSpeedMultiplier: 1.5
+  dashDistance: 2.4
+  dashSeconds: 0.16
+  dashCooldownSeconds: 0.35
+  dashInvincibleSeconds: 0.18
+  dashAfterimageSeconds: 0.18
+  dashAfterimageInterval: 0.035
+  dashAfterimageColor: {r: 0.45, g: 0.85, b: 1, a: 0.45}
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   projectileSpeed: 60
@@ -33,7 +39,7 @@ MonoBehaviour:
   parryAimAngleDegrees: 30
   parryBodyRadius: 0.3
   rightGunMagazineSize: 5
-  rightGunRechargeSeconds: 1
+  rightGunRechargeSeconds: 1.25
   lockOnBreakDistance: 7
   executionRange: 7
   executionBulletRecovery: 3
