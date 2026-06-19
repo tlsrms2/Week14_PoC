@@ -28,16 +28,12 @@ MonoBehaviour:
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
-  parryRange: 6.5
-  parryAimAngleDegrees: 30
-  parryBodyRadius: 0.3
-  rightGunMagazineSize: 5
-  rightGunRechargeSeconds: 1.25
+  playerBodyAimRadius: 0.3
   lockOnBreakDistance: 7
   executionRange: 7
   executionBulletRecovery: 3
   destroyTargetOnExecute: 1
-  executionAimSeconds: 1
+  executionAimSeconds: 0.2
   executionShotDelaySeconds: 0.3
   executionKillDelaySeconds: 0.08
   executionFinishSeconds: 0.12
@@ -47,14 +43,11 @@ MonoBehaviour:
   executionGunReturnSeconds: 0.2
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
+  executionFlourishDelaySeconds: 0.5
+  executionFlourishShotCount: 3
+  executionFlourishShotInterval: 0.1
   playerBulletUiMaxVisibleIcons: 10
   playerBulletUiIconHeightRatio: 0.9
   playerBulletUiIconWidthRatio: 0.5
   playerBulletUiIconSpacingRatio: 0.16
   playerBulletUiOverflowTextFontSize: 18
-  showRightGunBulletUi: 1
-  rightGunBulletUiHeightRatio: 0.35
-  rightGunBulletUiWidthRatio: 0.6
-  rightGunBulletUiSpacingRatio: 0.06
-  rightGunBulletUiColor: {r: 0.58, g: 0.58, b: 0.58, a: 0.95}
-  rightGunBulletUiCooldownColor: {r: 0.78, g: 0.78, b: 0.78, a: 0.9}
