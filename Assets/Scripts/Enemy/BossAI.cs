@@ -413,6 +413,7 @@ namespace Week14.Enemy
                 bulletEmptyEndsAt = 0f;
                 bullets.Configure(maxBullets, true); // 체력(탄환) 풀 회복
                 ApplyBodyStateColor();
+                bossBulletBarView?.ClearExecutionWindow();
                 OnBulletEmptyRecovered(); // 다음 패턴을 위한 훅 실행
                 
                 return true; // 목숨이 남아있어 부활했음을 반환
@@ -701,6 +702,7 @@ namespace Week14.Enemy
             {
                 bossBulletBarView.SetBindPlayerOnStart(false);
                 bossBulletBarView.SetColors(bulletBarColor, emptyBulletBarColor);
+                bossBulletBarView.SetDisplayMode(BulletBarView.DisplayMode.Filled);
             }
 
             bossLivesView ??= bossCombatUiRoot != null
@@ -919,6 +921,7 @@ namespace Week14.Enemy
             CancelBossAction();
             Stop();
             ApplyBodyStateColor();
+            bossBulletBarView?.SetExecutionWindow(true, 1f);
             OnBulletEmptyBegan();
         }
 
@@ -935,6 +938,12 @@ namespace Week14.Enemy
                 return;
             }
 
+            float remainingSeconds = bulletEmptyEndsAt - Time.time;
+            float remainingRatio = bulletEmptyExecutionSeconds > 0f
+                ? Mathf.Clamp01(remainingSeconds / bulletEmptyExecutionSeconds)
+                : 0f;
+            bossBulletBarView?.SetExecutionWindow(true, remainingRatio);
+
             Stop();
         }
 
@@ -949,6 +958,7 @@ namespace Week14.Enemy
             bulletEmptyEndsAt = 0f;
             bullets.Restore(Mathf.Max(1, (bullets.MaxBullets + 2) / 3), BulletChangeSource.Generic);
             ApplyBodyStateColor();
+            bossBulletBarView?.ClearExecutionWindow();
             OnBulletEmptyRecovered();
         }
 
