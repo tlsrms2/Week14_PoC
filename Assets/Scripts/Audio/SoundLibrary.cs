@@ -31,6 +31,9 @@ namespace Week14.Audio
         private Dictionary<string, SoundEntry> bgmById;
         private Dictionary<string, SoundEntry> sfxById;
 
+        public IReadOnlyList<string> BgmIds => GetIds(bgmEntries);
+        public IReadOnlyList<string> SfxIds => GetIds(sfxEntries);
+
         public SoundEntry FindBgm(string id)
         {
             bgmById ??= BuildLookup(bgmEntries);
@@ -51,6 +54,20 @@ namespace Week14.Audio
             }
 
             return lookup.TryGetValue(id, out SoundEntry entry) ? entry : null;
+        }
+
+        private static IReadOnlyList<string> GetIds(List<SoundEntry> entries)
+        {
+            List<string> ids = new(entries.Count);
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i] != null && !string.IsNullOrEmpty(entries[i].Id))
+                {
+                    ids.Add(entries[i].Id);
+                }
+            }
+
+            return ids;
         }
 
         private static Dictionary<string, SoundEntry> BuildLookup(List<SoundEntry> entries)

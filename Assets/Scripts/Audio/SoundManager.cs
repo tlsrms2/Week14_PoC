@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 
 namespace Week14.Audio
 {
@@ -69,11 +68,6 @@ namespace Week14.Audio
             RefreshBgmSourceVolume();
         }
 
-        private void Update()
-        {
-           
-        }
-
         public static void PlayBgm(string id, float fadeSeconds = 0.5f)
         {
             if (instance == null || instance.library == null)
@@ -111,6 +105,23 @@ namespace Week14.Audio
             }
 
             instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch);
+        }
+
+        public static void PlaySfx(string id, float pitch)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(id);
+            if (entry == null || entry.Clip == null)
+            {
+                Debug.LogWarning($"{nameof(SoundManager)}: SFX id '{id}' not found.");
+                return;
+            }
+
+            instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch);
         }
 
         public static void PlaySfx(AudioClip clip, float volume = 1f, float pitch = 1f)

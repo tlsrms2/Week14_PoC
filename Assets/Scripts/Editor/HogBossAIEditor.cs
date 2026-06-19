@@ -88,11 +88,50 @@ public sealed class HogBossAIEditor : Editor
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(6f);
+        DrawEnrageSection();
+
+        EditorGUILayout.Space(6f);
         showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 공통/참조 설정", true);
         if (showBossBase)
         {
             DrawBaseProperties();
         }
+    }
+
+    private void DrawEnrageSection()
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        bool expanded = DrawFoldout("common.enrage", "광폭화 / 진입 연출");
+        if (!expanded)
+        {
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        DrawProperty("enragePhase1Seconds");
+        DrawProperty("enragePhase1MaxBullets");
+        DrawProperty("enragePhase2Seconds");
+        DrawProperty("enragePhase2MaxBullets");
+
+        EditorGUILayout.Space(4f);
+        EditorGUILayout.LabelField("진입 전 떨림 (Windup)", EditorStyles.boldLabel);
+        DrawProperty("enrageWindupSeconds");
+        DrawProperty("enrageWindupShakeDistance");
+        DrawProperty("enrageWindupShakeFrequency");
+
+        EditorGUILayout.Space(4f);
+        EditorGUILayout.LabelField("진입 연출 (스폰 이미지/스케일/카메라 쉐이크)", EditorStyles.boldLabel);
+        DrawProperty("enrageBurstSprite");
+        DrawProperty("enrageBurstTargetScale");
+        DrawProperty("enrageBurstGrowSeconds");
+        DrawProperty("enrageBurstHoldSeconds");
+        DrawProperty("enrageBurstFadeSeconds");
+        DrawProperty("enrageBurstColor");
+        DrawProperty("enrageShakeAmplitude");
+        DrawProperty("enrageShakeSeconds");
+        DrawProperty("enrageShakeZoom");
+
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawPhasePatterns()
@@ -148,7 +187,7 @@ public sealed class HogBossAIEditor : Editor
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴3 투사체");
         DrawSection("준비/조준", pattern, "windupSeconds", "aimTrackingSeconds", "aimSpreadDegrees");
         DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio");
-        DrawSection("전방위 분열", pattern, "splitDelaySeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
+        DrawSection("전방위 분열", pattern, "splitDelaySeconds", "bombSfxLeadSeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
         DrawSection("이펙트", pattern, "effects");
     }
 

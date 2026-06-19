@@ -47,7 +47,9 @@ MonoBehaviour:
   library: {fileID: 11400000, guid: d2fc152d4e114784fa772f504727c432, type: 2}
   bgmOutput: {fileID: 0}
   sfxOutput: {fileID: 0}
-  bgmVolume: 1
-  sfxVolume: 1
+  bgmVolume: 0.7
+  sfxVolume: 0.7
   bgmMuted: 0
   sfxMuted: 0
+  testSfxId: PlayerShot
+  testSfxPitch: 1

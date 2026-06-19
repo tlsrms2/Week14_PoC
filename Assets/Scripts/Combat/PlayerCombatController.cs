@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Enemy;
 using Week14.Input;
@@ -337,6 +338,7 @@ namespace Week14.Combat
             else
             {
                 bullets.TrySpend(Mathf.Clamp(bulletDamage, 1, bullets.CurrentBullets), BulletChangeSource.Hit);
+                SoundManager.PlaySfx("BulletLoss");
             }
             FlashBodyHitColor();
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -414,7 +416,11 @@ namespace Week14.Combat
                 return;
             }
 
-            bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry);
+            if (bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry))
+            {
+                PlayBulletRestoreSfx(bullets.CurrentBullets);
+            }
+
             ProjectileVfx.PlayParry(
                 position,
                 direction,
@@ -472,7 +478,22 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, AttackEffectColor, 0.9f);
             visual?.PlayShot();
+            SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
+            SoundManager.PlaySfx("BulletLoss");
             return true;
+        }
+
+        private const int BulletRestorePitchReferenceMax = 5;
+
+        private static float GetBulletCountPitch(int currentBullets, float maxPitch = 2f)
+        {
+            float t = Mathf.Clamp01((currentBullets - 1f) / (BulletRestorePitchReferenceMax - 1f));
+            return Mathf.Lerp(1f, maxPitch, t);
+        }
+
+        private static void PlayBulletRestoreSfx(int currentBullets)
+        {
+            SoundManager.PlaySfx("BulletRestore2", GetBulletCountPitch(currentBullets));
         }
 
         private bool TryBeginExecution()
@@ -552,6 +573,7 @@ namespace Week14.Combat
             }
 
             StopBody();
+            SoundManager.PlaySfx("Execute");
             float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
                 + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             executionImage?.Play(flourishSeconds + config.ExecutionAimSeconds + config.ExecutionShotDelaySeconds + config.ExecutionKillDelaySeconds);
@@ -611,6 +633,7 @@ namespace Week14.Combat
             LockLeftGunAim(aimDirection);
             UpdateExecutionFocusPoint(transform.position, executionTarget.transform.position);
             visual?.PlayShot();
+            SoundManager.PlaySfx("PlayerPowerShot");
             PlayExecutionShotDim();
 
             PlayerProjectile executionShot = PlayerProjectile.Spawn(
@@ -686,6 +709,7 @@ namespace Week14.Combat
             for (int i = 0; i < shotCount; i++)
             {
                 visual?.PlayShot();
+                SoundManager.PlaySfx("PlayerShot");
                 FireExecutionFlourishShot(executionTarget, aimDirection);
                 yield return new WaitForSeconds(interval);
             }
@@ -920,6 +944,7 @@ namespace Week14.Combat
             parryShot.SetForcedParryTarget(target);
             ProjectileVfx.PlayMuzzleFlash(firePosition, direction.normalized, ParryEffectColor, 1f);
             visual?.PlayIntercept();
+            SoundManager.PlaySfx("Parry2", GetBulletCountPitch(bullets.CurrentBullets, 1.3f));
             return true;
         }
 

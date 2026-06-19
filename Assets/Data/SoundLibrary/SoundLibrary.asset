@@ -13,8 +13,60 @@ MonoBehaviour:
   m_Name: SoundLibrary
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Audio.SoundLibrary
   bgmEntries:
-  - id: Test
-    clip: {fileID: 8300000, guid: 9c5e1ae0c2f07ac45ae1427bed1f8a16, type: 3}
-    volume: 1
+  - id: HogBgm
+    clip: {fileID: 8300000, guid: 3cafd06b23d732248b601961dfafb490, type: 3}
+    volume: 0.4
     pitch: 1
-  sfxEntries: []
+  sfxEntries:
+  - id: PlayerShot
+    clip: {fileID: 8300000, guid: 5b7bfe1023f81c2429be1d8741f1ac2e, type: 3}
+    volume: 0.6
+    pitch: 1
+  - id: PlayerPowerShot
+    clip: {fileID: 8300000, guid: 81987cd58fd29d24e9ae636658d14304, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Smash
+    clip: {fileID: 8300000, guid: 7b8bab61d2753cd45a5e96886c053330, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Parry
+    clip: {fileID: 8300000, guid: 1d687178835b27447a5ee9b33cf4d2d6, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Parry2
+    clip: {fileID: 8300000, guid: 4e2cf921ceeb65542967dbebbcb49ab6, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Execute
+    clip: {fileID: 8300000, guid: 7f67f98e61a298f4c92798eb9f9e9db6, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: BulletRestore
+    clip: {fileID: 8300000, guid: b6da089388344a44380bd22e9e1d05ff, type: 3}
+    volume: 0.6
+    pitch: 1
+  - id: BulletRestore2
+    clip: {fileID: 8300000, guid: 8be97bd0aab47574996e91094adbce09, type: 3}
+    volume: 0.6
+    pitch: 1
+  - id: BulletLoss
+    clip: {fileID: 8300000, guid: ac0fad67991e4284887cc32106822607, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: BossNormalShot
+    clip: {fileID: 8300000, guid: bde793b1b553d854a82fe792c8e5b44c, type: 3}
+    volume: 0.8
+    pitch: 1
+  - id: BossSpecialShot
+    clip: {fileID: 8300000, guid: d3ea3e80afcaa91499f522a6e6d5a537, type: 3}
+    volume: 0.9
+    pitch: 1
+  - id: BossRoar
+    clip: {fileID: 8300000, guid: 6c7fc5b3c021e72498e83a2921eabed7, type: 3}
+    volume: 1.2
+    pitch: 1
+  - id: BossBomb
+    clip: {fileID: 8300000, guid: bde5655eab502e148a43a2de46b7df95, type: 3}
+    volume: 0.7
+    pitch: 1

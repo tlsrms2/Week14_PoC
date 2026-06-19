@@ -71,6 +71,8 @@ namespace Week14.Combat
         private float radialSplitStartAngleDegrees;
         private float radialSplitDelaySeconds;
         private float radialSplitAt;
+        private float radialSplitSfxLeadSeconds;
+        private bool radialSplitImminentFired;
         private float splitSpeedMultiplier = 1f;
         private float splitRadiusMultiplier = 0.6f;
         private float splitLifetimeMultiplier = 0.85f;
@@ -91,6 +93,10 @@ namespace Week14.Combat
         private float executionPauseStartedAt;
         private bool pausedByExecution;
         private static Material chargeVfxMaterial;
+
+        public event System.Action<EnemyProjectile> Launched;
+        public event System.Action<EnemyProjectile> RadialSplit;
+        public event System.Action<EnemyProjectile> RadialSplitImminent;
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
@@ -258,6 +264,11 @@ namespace Week14.Combat
             {
                 SplitRadiallyOnLaunch();
             }
+        }
+
+        public void ConfigureRadialSplitSfxLead(float leadSeconds)
+        {
+            radialSplitSfxLeadSeconds = Mathf.Max(0f, leadSeconds);
         }
 
         public void ConfigureProjectileSize(float radius)
@@ -545,6 +556,8 @@ namespace Week14.Combat
             {
                 body.linearVelocity = flightDirection * projectileSpeed;
             }
+
+            Launched?.Invoke(this);
         }
 
         private void SnapToChargeAnchor()
@@ -628,7 +641,18 @@ namespace Week14.Combat
 
         private void TickRadialSplitDelay()
         {
-            if (!splitRadiallyOnLaunch || resolved || isDestroying || radialSplitAt <= 0f || Time.time < radialSplitAt)
+            if (!splitRadiallyOnLaunch || resolved || isDestroying || radialSplitAt <= 0f)
+            {
+                return;
+            }
+
+            if (!radialSplitImminentFired && Time.time >= radialSplitAt - radialSplitSfxLeadSeconds)
+            {
+                radialSplitImminentFired = true;
+                RadialSplitImminent?.Invoke(this);
+            }
+
+            if (Time.time < radialSplitAt)
             {
                 return;
             }
@@ -739,6 +763,7 @@ namespace Week14.Combat
             int count = Mathf.Max(1, radialSplitBulletCount);
             float step = 360f / count;
             ProjectileVfx.PlayHogSmokeBurst(transform.position, projectileColor, Mathf.Max(1f, projectileRadius * 2.6f), count);
+            RadialSplit?.Invoke(this);
 
             for (int i = 0; i < count; i++)
             {

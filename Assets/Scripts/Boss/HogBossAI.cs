@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.UI;
@@ -443,10 +444,12 @@ namespace Week14.Enemy
             [SerializeField, Min(1), Tooltip("대기 종료 시 전방위로 분열되어 생성할 탄환 수입니다.")] private int radialSplitBulletCount = 12;
             [SerializeField, Tooltip("전방위 분열의 시작 각도 오프셋입니다.")] private float radialSplitStartAngleOffset;
             [SerializeField, Min(0f), Tooltip("발사된 뒤 전방위로 분열되기까지 기다리는 시간입니다.")] private float splitDelaySeconds = 0.8f;
+            [SerializeField, Min(0f), Tooltip("BossBomb 사운드를 실제 분열(SplitDelaySeconds)보다 몇 초 일찍 재생할지 정합니다.")] private float bombSfxLeadSeconds = 0.15f;
 
             public int RadialSplitBulletCount => radialSplitBulletCount;
             public float RadialSplitStartAngleOffset => radialSplitStartAngleOffset;
             public float SplitDelaySeconds => splitDelaySeconds;
+            public float BombSfxLeadSeconds => bombSfxLeadSeconds;
         }
 
         [System.Serializable]
@@ -579,6 +582,11 @@ namespace Week14.Enemy
         {
             DeactivatePatternFirePoints();
             HidePatternBulletPreview();
+        }
+
+        protected override void OnCombatStarted()
+        {
+            SoundManager.PlayBgm("HogBgm");
         }
 
         protected override void OnBossTick()
@@ -764,6 +772,9 @@ namespace Week14.Enemy
                     yield return RunPattern1();
                     break;
             }
+
+            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
+            yield return ApplyPendingEnrageIfAny();
 
             Stop();
             PatternKind nextPattern = SelectPattern();
@@ -1077,6 +1088,8 @@ namespace Week14.Enemy
                     if (projectile != null)
                     {
                         PlayOriginBurstEffects(pattern1.Effects, origin);
+                        PlaySfxOnLaunch(projectile, "BossSpecialShot");
+                        SoundManager.PlaySfx("BossNormalShot");
                     }
                     fired++;
                     AdvancePatternBulletPreviewGroup();
@@ -1168,6 +1181,8 @@ namespace Week14.Enemy
             }
 
             PlayOriginBurstEffects(pattern3.Effects, origin);
+            PlaySfxOnLaunch(projectile, "BossNormalShot");
+            PlayBossBombOnRadialSplit(projectile);
             projectile.ConfigureChargeAnchor(projectileAnchor);
             projectile.ConfigureProjectileSize(radius);
             projectile.ConfigureChargeMotion(0f, true, false, pattern3.AimSpreadDegrees);
@@ -1182,6 +1197,7 @@ namespace Week14.Enemy
                 pattern3.SplitSpeedMultiplier,
                 pattern3.SplitRadiusMultiplier,
                 pattern3.SplitLifetimeMultiplier);
+            projectile.ConfigureRadialSplitSfxLead(pattern3.BombSfxLeadSeconds);
 
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
@@ -1345,6 +1361,7 @@ namespace Week14.Enemy
         
         private void FirePattern4Wave(float startAngleDegrees)
         {
+            SoundManager.PlaySfx("Smash");
             Vector3 center = GetPattern4ProjectilePosition();
             int count = Mathf.Max(1, pattern4.BulletCount);
             
@@ -1381,6 +1398,8 @@ namespace Week14.Enemy
             if (projectile != null)
             {
                 PlayOriginBurstEffects(pattern2.Effects, origin);
+                PlaySfxOnLaunch(projectile, "BossSpecialShot");
+                SoundManager.PlaySfx("BossNormalShot");
             }
         }
         
@@ -1407,6 +1426,7 @@ namespace Week14.Enemy
             {
                 PlayMuzzleFlashIfEnabled(pattern5.Effects, origin, finalDirection);
                 PlayCameraShakeIfEnabled(pattern5.Effects, finalDirection);
+                SoundManager.PlaySfx("BossNormalShot");
             }
         }
 
@@ -1493,6 +1513,38 @@ namespace Week14.Enemy
             }
 
             return order;
+        }
+
+        private static void PlaySfxOnLaunch(EnemyProjectile projectile, string sfxId)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            void HandleLaunched(EnemyProjectile launchedProjectile)
+            {
+                launchedProjectile.Launched -= HandleLaunched;
+                SoundManager.PlaySfx(sfxId);
+            }
+
+            projectile.Launched += HandleLaunched;
+        }
+
+        private static void PlayBossBombOnRadialSplit(EnemyProjectile projectile)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            static void HandleRadialSplitImminent(EnemyProjectile splitProjectile)
+            {
+                splitProjectile.RadialSplitImminent -= HandleRadialSplitImminent;
+                SoundManager.PlaySfx("BossBomb");
+            }
+
+            projectile.RadialSplitImminent += HandleRadialSplitImminent;
         }
 
         private void PlayOriginBurstEffects(PatternEffectSettings effects, Vector3 position)
