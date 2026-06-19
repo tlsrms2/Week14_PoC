@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Input;
 
 namespace Week14.Bootstrap
 {
@@ -7,8 +8,12 @@ namespace Week14.Bootstrap
         [SerializeField] private Transform target;
         [SerializeField] private Vector3 offset = new Vector3(0f, 0f, -10f);
         [SerializeField, Min(0f)] private float followSpeed = 12f;
-        [SerializeField, Range(0f, 1f)] private float focusWeight = 0.5f;
         [SerializeField, Min(0f)] private float focusBlendSpeed = 8f;
+        [SerializeField, Min(0f)] private float mouseLookMaxOffset = 1.2f;
+        [SerializeField, Range(0f, 0.45f)] private float mouseLookDeadZone = 0.08f;
+        [SerializeField, Min(0f)] private float mouseLookBlendSpeed = 5f;
+        [SerializeField, Range(0f, 1f)] private float lockOnMouseLookMultiplier = 0.35f;
+        [SerializeField, Min(0f)] private float lockOnTransitionSmoothTime = 0.45f;
         [SerializeField, Min(0f)] private float shakeFrequency = 34f;
         [SerializeField, Min(0f)] private float zoomBlendSpeed = 10f;
 
@@ -20,6 +25,8 @@ namespace Week14.Bootstrap
         private Vector3 followVelocity;
         private Vector3 currentBasePosition;
         private Vector3 lastFocusPosition;
+        private Vector2 currentMouseLookOffset;
+        private Vector2 mouseLookOffsetVelocity;
         private float currentFocusWeight;
         private float focusWeightVelocity;
         private float baseOrthographicSize;
@@ -185,9 +192,10 @@ namespace Week14.Bootstrap
         private Vector3 GetTargetPosition()
         {
             Vector3 targetPosition = targetBody != null ? targetBody.transform.position : target.position;
-            float activeFocusWeight = cinematicFocusActive ? cinematicFocusWeight : focusWeight;
+            float activeFocusWeight = cinematicFocusActive ? cinematicFocusWeight : 0.5f;
             float targetFocusWeight = focusTarget != null ? activeFocusWeight : 0f;
-            if (focusBlendSpeed <= 0f)
+            float focusSmoothTime = GetLockOnBlendSmoothTime(focusBlendSpeed);
+            if (focusSmoothTime <= 0f)
             {
                 currentFocusWeight = targetFocusWeight;
             }
@@ -197,21 +205,74 @@ namespace Week14.Bootstrap
                     currentFocusWeight,
                     targetFocusWeight,
                     ref focusWeightVelocity,
-                    1f / focusBlendSpeed,
+                    focusSmoothTime,
                     Mathf.Infinity,
                     Time.deltaTime);
             }
 
             if (focusTarget == null)
             {
-                return currentFocusWeight > 0.001f
+                Vector3 position = currentFocusWeight > 0.001f
                     ? Vector3.Lerp(targetPosition, lastFocusPosition, currentFocusWeight)
                     : targetPosition;
+                return position + (Vector3)GetMouseLookOffset(false);
             }
 
             Vector3 focusPosition = focusBody != null ? focusBody.transform.position : focusTarget.position;
             lastFocusPosition = focusPosition;
-            return Vector3.Lerp(targetPosition, focusPosition, currentFocusWeight);
+            return Vector3.Lerp(targetPosition, focusPosition, currentFocusWeight)
+                + (Vector3)GetMouseLookOffset(true);
+        }
+
+        private Vector2 GetMouseLookOffset(bool hasFocusTarget)
+        {
+            Vector2 targetOffset = Vector2.zero;
+            if (!cinematicFocusActive && controlledCamera != null && mouseLookMaxOffset > 0f && !GameInput.IsGamepadMode)
+            {
+                Vector2 screenPosition = GameInput.MouseScreenPosition;
+                Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+                if (screenSize.x > 0f && screenSize.y > 0f)
+                {
+                    Vector2 normalized = new Vector2(
+                        Mathf.Clamp01(screenPosition.x / screenSize.x) - 0.5f,
+                        Mathf.Clamp01(screenPosition.y / screenSize.y) - 0.5f) * 2f;
+                    float magnitude = normalized.magnitude;
+                    if (magnitude > mouseLookDeadZone)
+                    {
+                        float strength = Mathf.InverseLerp(mouseLookDeadZone, 1f, Mathf.Min(1f, magnitude));
+                        float multiplier = hasFocusTarget ? lockOnMouseLookMultiplier : 1f;
+                        targetOffset = normalized.normalized * strength * mouseLookMaxOffset * multiplier;
+                    }
+                }
+            }
+
+            if (mouseLookBlendSpeed <= 0f)
+            {
+                currentMouseLookOffset = targetOffset;
+            }
+            else
+            {
+                currentMouseLookOffset = Vector2.SmoothDamp(
+                    currentMouseLookOffset,
+                    targetOffset,
+                    ref mouseLookOffsetVelocity,
+                    1f / mouseLookBlendSpeed,
+                    Mathf.Infinity,
+                    Time.deltaTime);
+            }
+
+            return currentMouseLookOffset;
+        }
+
+        private float GetLockOnBlendSmoothTime(float blendSpeed)
+        {
+            float speedSmoothTime = blendSpeed > 0f ? 1f / blendSpeed : 0f;
+            if (cinematicFocusActive)
+            {
+                return speedSmoothTime;
+            }
+
+            return Mathf.Max(speedSmoothTime, lockOnTransitionSmoothTime);
         }
 
         private Vector3 GetShakeOffset()
@@ -253,6 +314,7 @@ namespace Week14.Bootstrap
             }
 
             targetSize = Mathf.Max(0.5f, targetSize);
+
             if (zoomBlendSpeed <= 0f)
             {
                 controlledCamera.orthographicSize = targetSize;

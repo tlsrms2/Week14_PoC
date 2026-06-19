@@ -29,7 +29,6 @@ MonoBehaviour:
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
   playerBodyAimRadius: 0.3
-  lockOnBreakDistance: 7
   executionRange: 7
   executionBulletRecovery: 3
   destroyTargetOnExecute: 1
