@@ -66,7 +66,7 @@ namespace Week14.Enemy
 
         [Header("Boss Combat UI")]
         [SerializeField] private GameObject bossCombatUiRoot;
-        [SerializeField] private BulletBarView bossBulletBarView;
+        [SerializeField] private BossBulletBarView bossBulletBarView;
         [SerializeField] private BossLivesView bossLivesView;
         [SerializeField] private BossEnrageBarView bossEnrageBarView;
 
@@ -695,14 +695,7 @@ namespace Week14.Enemy
         {
             if (bossCombatUiRoot != null)
             {
-                bossBulletBarView ??= bossCombatUiRoot.GetComponentInChildren<BulletBarView>(true);
-            }
-
-            if (bossBulletBarView != null)
-            {
-                bossBulletBarView.SetBindPlayerOnStart(false);
-                bossBulletBarView.SetColors(bulletBarColor, emptyBulletBarColor);
-                bossBulletBarView.SetDisplayMode(BulletBarView.DisplayMode.Filled);
+                bossBulletBarView ??= bossCombatUiRoot.GetComponentInChildren<BossBulletBarView>(true);
             }
 
             bossLivesView ??= bossCombatUiRoot != null

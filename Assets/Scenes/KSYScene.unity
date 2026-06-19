@@ -704,11 +704,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2df9183683258408482f1005f5f825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.ShuffleTimerView
-  gridManager: {fileID: 0}
-  fillImage: {fileID: 829118627}
-  valueText: {fileID: 482018701}
-  textFormat: '{0:0.0}s'
-  hideWhenInactive: 1
 --- !u!114 &367447754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5818,12 +5813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55eac6551d613cc4d97961bb52e7d679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.StartControlSelect
-  root: {fileID: 1379409088}
-  keyboardButton: {fileID: 1833891056}
-  gamepadButton: {fileID: 956613409}
-  normalColor: {r: 0.2959238, g: 0.38381097, b: 0.4716981, a: 0.96}
-  selectedColor: {r: 0.21052866, g: 0.515361, b: 0.7830189, a: 1}
-  defaultSelectionIndex: 1
 --- !u!1 &863537117
 GameObject:
   m_ObjectHideFlags: 0
@@ -31136,7 +31125,7 @@ GameObject:
   - component: {fileID: 1422819310}
   - component: {fileID: 1422819313}
   - component: {fileID: 1422819312}
-  - component: {fileID: 1422819311}
+  - component: {fileID: 1422819314}
   m_Layer: 0
   m_Name: HEAT
   m_TagString: Untagged
@@ -31163,37 +31152,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000022865832, y: -63.616}
   m_SizeDelta: {x: 885.002, y: 51.54}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1422819311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422819309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 545d19ea3029bd245aef177f88af94d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BulletBarView
-  target: {fileID: 0}
-  bindPlayerOnStart: 1
-  maxVisibleIcons: 10
-  iconHeightRatio: 0.9
-  iconWidthRatio: 0.48
-  iconSpacingRatio: 0.16
-  overflowTextFontSize: 32
-  normalColor: {r: 1, g: 0.7568338, b: 0.25, a: 1}
-  emptyColor: {r: 1, g: 0, b: 0, a: 1}
-  parryOutlineColor: {r: 1, g: 1, b: 1, a: 1}
-  hitOutlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  attackOutlineColor: {r: 1, g: 0.55, b: 0.1, a: 1}
-  displayMode: 1
-  filledBackgroundColor: {r: 0.15, g: 0.15, b: 0.15, a: 0.85}
-  filledGhostColor: {r: 1, g: 1, b: 1, a: 0.55}
-  filledGhostShrinkSpeed: 14
-  executionWindowColor: {r: 0.95, g: 0.05, b: 0.05, a: 1}
-  executionWindowBlinkSpeed: 1
-  executionWindowBlinkMinAlpha: 0
 --- !u!114 &1422819312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31232,6 +31190,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422819309}
   m_CullTransparentMesh: 1
+--- !u!114 &1422819314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422819309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c62dd33aeb0b62438f2a2d87134a19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossBulletBarView
+  target: {fileID: 0}
+  normalColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  emptyColor: {r: 1, g: 0, b: 0, a: 1}
+  filledBackgroundColor: {r: 0.15, g: 0.15, b: 0.15, a: 0.85}
+  filledGhostColor: {r: 1, g: 1, b: 1, a: 0.55}
+  filledGhostShrinkSpeed: 14
+  executionWindowColor: {r: 0.95, g: 0.05, b: 0.05, a: 1}
+  executionWindowBlinkSpeed: 1
+  executionWindowBlinkMinAlpha: 0.35
 --- !u!1 &1457255910
 GameObject:
   m_ObjectHideFlags: 0
@@ -31342,7 +31321,7 @@ PrefabInstance:
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossBulletBarView
       value: 
-      objectReference: {fileID: 1422819311}
+      objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: pattern4.waveCount
       value: 3
@@ -32747,14 +32726,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d72e5e28f54e63ad41677cb1b8e0a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startControlSelect: {fileID: 840941040}
   helpRoot: {fileID: 2100001010}
   helpBodyText: {fileID: 2100001043}
   helpPageText: {fileID: 2100001053}
   previousButton: {fileID: 2100001064}
   nextButton: {fileID: 2100001084}
   closeHelpButton: {fileID: 2100001104}
-  gamepadSensitivitySettings: {fileID: 2100001003}
   helpPageImages:
   - {fileID: 1317057490}
   - {fileID: 754109857}
@@ -32793,9 +32770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7750d58d86e1f74297e8feed73f75c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.GamepadSensitivitySettings
-  root: {fileID: 1636293603}
-  sensitivitySlider: {fileID: 11165732}
-  sensitivityValueText: {fileID: 1998281095}
 --- !u!1 &2100001010
 GameObject:
   m_ObjectHideFlags: 0
