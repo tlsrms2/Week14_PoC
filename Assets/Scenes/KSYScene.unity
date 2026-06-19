@@ -338,7 +338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3882333399279353865, guid: bf13389364450094f8e0805e6a81c250, type: 3}
       propertyPath: testSfxId
-      value: Parry
+      value: BulletRestore2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882333399279353865, guid: bf13389364450094f8e0805e6a81c250, type: 3}
+      propertyPath: testSfxPitch
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8269069251385642366, guid: bf13389364450094f8e0805e6a81c250, type: 3}
       propertyPath: m_LocalPosition.x

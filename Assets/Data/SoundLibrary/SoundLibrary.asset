@@ -20,7 +20,7 @@ MonoBehaviour:
   sfxEntries:
   - id: PlayerShot
     clip: {fileID: 8300000, guid: 5b7bfe1023f81c2429be1d8741f1ac2e, type: 3}
-    volume: 0.4
+    volume: 0.6
     pitch: 1
   - id: PlayerPowerShot
     clip: {fileID: 8300000, guid: 81987cd58fd29d24e9ae636658d14304, type: 3}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.UI;
@@ -244,6 +245,7 @@ namespace Week14.Enemy
             {
                 isCombatStarted = true;
                 ResetEnrageTimer();
+                OnCombatStarted();
             }
 
             if (isCombatStarted)
@@ -505,6 +507,7 @@ namespace Week14.Enemy
         }
 
         protected virtual void OnBossStarted() { }
+        protected virtual void OnCombatStarted() { }
         protected virtual void OnBossPhaseChanged(int phaseIndex, int phaseNumber) { }
         protected abstract void OnBossTick();
         protected virtual void CancelBossAction() { }
@@ -1043,6 +1046,7 @@ namespace Week14.Enemy
         {
             DestroyActiveProjectiles();
             SetBossCombatUiVisible(false);
+            SoundManager.StopBgm();
             if (bossLivesView != null)
             {
                 bossLivesView.gameObject.SetActive(false);

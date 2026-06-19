@@ -20,6 +20,7 @@ namespace Week14.Audio
 
         [Header("Test")]
         [SerializeField] private string testSfxId;
+        [SerializeField, Range(0.5f, 2f)] private float testSfxPitch = 1f;
 
         private static SoundManager instance;
 
@@ -76,7 +77,7 @@ namespace Week14.Audio
         {
             if (Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
             {
-                PlaySfx(testSfxId);
+                PlaySfx(testSfxId, testSfxPitch);
             }
         }
 
@@ -117,6 +118,23 @@ namespace Week14.Audio
             }
 
             instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch);
+        }
+
+        public static void PlaySfx(string id, float pitch)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(id);
+            if (entry == null || entry.Clip == null)
+            {
+                Debug.LogWarning($"{nameof(SoundManager)}: SFX id '{id}' not found.");
+                return;
+            }
+
+            instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch);
         }
 
         public static void PlaySfx(AudioClip clip, float volume = 1f, float pitch = 1f)

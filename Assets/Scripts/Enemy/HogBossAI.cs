@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -288,6 +289,11 @@ namespace Week14.Enemy
         {
             EnsurePhasePatternSlots();
             EnsurePhasePatternLabels();
+        }
+
+        protected override void OnCombatStarted()
+        {
+            SoundManager.PlayBgm("HogBgm");
         }
 
         protected override void OnBossTick()
