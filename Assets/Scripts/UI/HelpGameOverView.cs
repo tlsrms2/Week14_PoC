@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Week14.Audio;
+using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Enemy;
 using Week14.Input;
@@ -33,7 +34,8 @@ namespace Week14.UI
         [SerializeField] private GameObject gameOverRoot;
         [SerializeField] private TMP_Text gameOverTitleText;
         [SerializeField] private Button restartButton;
-        [SerializeField] private Button quitButton;
+        [SerializeField] private Button titleButton;
+        [SerializeField] private string titleSceneName = "TitleScene";
         [SerializeField] private string gameOverTitle = "GAME OVER";
         [SerializeField] private string victoryTitle = "VICTORY";
 
@@ -112,13 +114,12 @@ namespace Week14.UI
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        public void QuitGame()
+        public void GoToTitle()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            Time.timeScale = 1f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneTransition.LoadScene(titleSceneName);
         }
 
         private void CacheSceneReferences()
@@ -132,7 +133,7 @@ namespace Week14.UI
             nextButton ??= FindComponent<Button>("NextButton");
             closeHelpButton ??= FindComponent<Button>("CloseHelpButton");
             restartButton ??= FindComponent<Button>("RestartButton");
-            quitButton ??= FindComponent<Button>("QuitButton");
+            titleButton ??= FindComponent<Button>("TitleButton");
 
             if (helpPageImages.Count == 0)
             {
@@ -160,7 +161,7 @@ namespace Week14.UI
             nextButton?.onClick.AddListener(ShowNextPage);
             closeHelpButton?.onClick.AddListener(CloseHelp);
             restartButton?.onClick.AddListener(RestartScene);
-            quitButton?.onClick.AddListener(QuitGame);
+            titleButton?.onClick.AddListener(GoToTitle);
         }
 
         private GameObject FindGameObject(string childName)
