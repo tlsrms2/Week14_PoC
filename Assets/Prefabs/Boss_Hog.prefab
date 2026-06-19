@@ -334,7 +334,7 @@ MonoBehaviour:
   enrageShakeZoom: 0.12
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  maxBullets: 150
+  maxBullets: 120
   bulletEmptyExecutionSeconds: 10
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   bulletEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
@@ -413,7 +413,7 @@ MonoBehaviour:
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
       bulletDamage: 1
-      chargeSeconds: 1.5
+      chargeSeconds: 2
       chargeDriftSpeed: 1.5
       aimAtPlayerWhileCharging: 1
       speed: 12
@@ -433,10 +433,10 @@ MonoBehaviour:
     volleys:
     - bulletCount: 2
       fireInterval: 0.3
-      restSeconds: 1.5
+      restSeconds: 2
     - bulletCount: 3
       fireInterval: 0.3
-      restSeconds: 1.5
+      restSeconds: 2
     - bulletCount: 5
       fireInterval: 0.3
       restSeconds: 2
@@ -472,7 +472,7 @@ MonoBehaviour:
       chargeSeconds: 0
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
-      speed: 15
+      speed: 14
       lifetime: 2.5
       radius: 0.1
       chargingColor: {r: 1, g: 0.63759786, b: 0.1745283, a: 1}
@@ -482,7 +482,7 @@ MonoBehaviour:
       homingEnabled: 0
       homingSeconds: 0
       homingTurnDegreesPerSecond: 0
-    windupSeconds: 1.5
+    windupSeconds: 2
     splitDepth: 4
     splitAngleDegrees: 48
     splitSpeedMultiplier: 0.5
@@ -492,7 +492,7 @@ MonoBehaviour:
     finalScaleMultiplier: 2
     startScaleRatio: 0.18
     aimSpreadDegrees: 0
-    aimTrackingSeconds: 1
+    aimTrackingSeconds: 1.5
     effects:
       explosion:
         enabled: 0
