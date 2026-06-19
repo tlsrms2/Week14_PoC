@@ -34,6 +34,8 @@ namespace Week14.Combat
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private ExecutionImageEffect executionImage;
+        [SerializeField] private PlayerHP playerHpView;
+        [SerializeField, Min(0f)] private float finalDeathCameraReturnSeconds = 0.25f;
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
         [SerializeField] private MouseParryReticle mouseParryReticle;
@@ -61,6 +63,7 @@ namespace Week14.Combat
         private float bodyHitColorEndsAt;
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
+        private bool playerHpHiddenForExecution;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
@@ -150,6 +153,7 @@ namespace Week14.Combat
 
             SetMouseParryReticleVisible(false);
             SetProjectileLockOnIndicatorVisible(false);
+            RestorePlayerHpAfterExecution();
             StopExecutionShotDim();
             executionImage?.Stop();
         }
@@ -573,6 +577,7 @@ namespace Week14.Combat
             }
 
             StopBody();
+            HidePlayerHpForExecution();
             SoundManager.PlaySfx("Execute");
             float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
                 + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
@@ -663,6 +668,7 @@ namespace Week14.Combat
             }
 
             Vector3 impactPosition = executionTarget.transform.position;
+            float playerHpRecoverySeconds = ShowPlayerHpForExecutionRecovery();
             executionTarget.RecoverExecutorBullets(this);
             ExecutionVfx.PlayImpact(
                 impactPosition,
@@ -674,8 +680,9 @@ namespace Week14.Combat
             SetLockOnTarget(null);
             SetHoveredExecutionTarget(null);
 
-            yield return new WaitForSeconds(config.ExecutionFinishSeconds);
+            yield return new WaitForSeconds(Mathf.Max(config.ExecutionFinishSeconds, playerHpRecoverySeconds));
 
+            bool executionFinished = false;
             if (executionTarget != null)
             {
                 BossAI boss = executionTarget.GetComponentInParent<BossAI>();
@@ -688,8 +695,18 @@ namespace Week14.Combat
                     }
                     else
                     {
-                        executionTarget.CompleteExecution(this, false);
-                        executionTarget.DestroyExecutedTarget();
+                        FinishExecution();
+                        executionFinished = true;
+                        yield return WaitBeforeFinalDeathFocus();
+                        CameraFollow2D finalDeathCamera = BeginFinalDeathCameraFocus(boss);
+                        yield return boss.PlayFinalDeathSequence();
+                        if (executionTarget != null)
+                        {
+                            executionTarget.CompleteExecution(this, false);
+                            executionTarget.DestroyExecutedTarget();
+                        }
+
+                        finalDeathCamera?.EndCinematicFocus();
                     }
                 }
                 else
@@ -699,7 +716,38 @@ namespace Week14.Combat
                 }
             }
 
-            FinishExecution();
+            if (!executionFinished)
+            {
+                FinishExecution();
+            }
+        }
+
+        private IEnumerator WaitBeforeFinalDeathFocus()
+        {
+            if (finalDeathCameraReturnSeconds > 0f)
+            {
+                yield return new WaitForSeconds(finalDeathCameraReturnSeconds);
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+
+        private CameraFollow2D BeginFinalDeathCameraFocus(BossAI boss)
+        {
+            if (boss == null)
+            {
+                return null;
+            }
+
+            CameraFollow2D activeCamera = GetCameraFollow();
+            Transform focusTarget = boss.BodyRoot != null ? boss.BodyRoot : boss.transform;
+            activeCamera?.BeginCinematicFocus(
+                focusTarget,
+                config != null ? config.ExecutionCameraFocusWeight : 1f,
+                config != null ? config.ExecutionCameraZoomMultiplier : 0.75f);
+            return activeCamera;
         }
 
         private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget, Vector2 aimDirection)
@@ -754,7 +802,58 @@ namespace Week14.Combat
             GetCameraFollow()?.EndCinematicFocus();
             ClearInvalidLockOnTarget();
             UpdateHoveredExecutionTarget();
+            RestorePlayerHpAfterExecution();
             executionImage?.Stop();
+        }
+
+        private void HidePlayerHpForExecution()
+        {
+            PlayerHP hpView = GetPlayerHpView();
+            playerHpHiddenForExecution = hpView != null && hpView.gameObject.activeSelf;
+            if (playerHpHiddenForExecution)
+            {
+                hpView.SetExecutionVisible(false);
+            }
+        }
+
+        private float ShowPlayerHpForExecutionRecovery()
+        {
+            PlayerHP hpView = GetPlayerHpView();
+            if (hpView == null)
+            {
+                playerHpHiddenForExecution = false;
+                return 0f;
+            }
+
+            hpView.SetExecutionVisible(true);
+            playerHpHiddenForExecution = false;
+            return hpView.ExecutionRecoveryEffectSeconds;
+        }
+
+        private void RestorePlayerHpAfterExecution()
+        {
+            if (!playerHpHiddenForExecution)
+            {
+                return;
+            }
+
+            PlayerHP hpView = GetPlayerHpView();
+            if (hpView != null)
+            {
+                hpView.SetExecutionVisible(true);
+            }
+
+            playerHpHiddenForExecution = false;
+        }
+
+        private PlayerHP GetPlayerHpView()
+        {
+            if (playerHpView == null)
+            {
+                playerHpView = UnityEngine.Object.FindFirstObjectByType<PlayerHP>(FindObjectsInactive.Include);
+            }
+
+            return playerHpView;
         }
 
         private void UpdateExecutionFocusPoint(Vector3 playerPosition, Vector3 targetPosition)

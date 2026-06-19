@@ -141,6 +141,7 @@ MonoBehaviour:
     m_Bits: 64
   body: {fileID: 4451041738046458440}
   executionImage: {fileID: 2769524803987398758}
+  playerHpView: {fileID: 0}
   mouseParryReticleRenderer: {fileID: 3426584923014866416}
   mouseParryReticle: {fileID: 522378119315174641}
 --- !u!114 &961238046002133381
@@ -1439,12 +1440,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.PlayerHP
   bindPlayerOnEnable: 1
   target: {fileID: 419335832944192615}
-  hitSpendSeconds: 0.5
+  hitSpendSeconds: 0.32
   attackSpendSeconds: 0.32
-  recoverySeconds: 0.5
-  enrageFadeSeconds: 1.25
-  shakePixels: 7
-  shakeDegrees: 4
+  recoverySeconds: 0.25
+  executionRecoverySeconds: 1
+  enrageSpendDelaySeconds: 0.5
   attackEjectDistance: 38
   attackEjectRise: 20
   attackEjectSpinDegrees: -165

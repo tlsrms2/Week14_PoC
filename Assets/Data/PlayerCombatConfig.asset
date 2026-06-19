@@ -39,7 +39,7 @@ MonoBehaviour:
   mouseParryMissShakeAmplitude: 0.035
   mouseParryMissShakeFrequency: 42
   executionRange: 8.5
-  executionBulletRecovery: 3
+  executionBulletRecovery: 5
   destroyTargetOnExecute: 1
   executionAimSeconds: 0.2
   executionShotDelaySeconds: 0.3

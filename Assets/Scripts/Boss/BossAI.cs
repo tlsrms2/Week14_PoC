@@ -51,6 +51,16 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float enrageShakeSeconds = 0.3f;
         [SerializeField, Min(0f)] private float enrageShakeZoom = 0.12f;
 
+        [Header("Death Sequence")]
+        [SerializeField] private Animator deathAnimator;
+        [SerializeField] private string deathTriggerName = "Die";
+        [SerializeField, Min(0f)] private float finalDeathExplosionSeconds = 1.4f;
+        [SerializeField, Min(1)] private int finalDeathExplosionCount = 10;
+        [SerializeField, Min(0.1f)] private float finalDeathExplosionScale = 1.25f;
+        [SerializeField, Min(0)] private int finalDeathExplosionSparkCount = 24;
+        [SerializeField] private Color finalDeathExplosionColor = new(1f, 0.55f, 0.12f, 1f);
+        [SerializeField, Min(0f)] private float deathAnimationFallbackSeconds = 1f;
+
         [Header("Meta")]
         [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 오브젝트 이름을 사용합니다.")]
         [SerializeField] private string displayName;
@@ -124,6 +134,7 @@ namespace Week14.Enemy
         private float currentPhaseStartTime;
         private int currentEnragePhase;
         private int pendingEnragePhase;
+        private bool finalDeathSequencePlayed;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -177,6 +188,9 @@ namespace Week14.Enemy
             }
 
             bodyRoot ??= FindChild("Visual") ?? transform;
+            deathAnimator ??= bodyRoot != null
+                ? bodyRoot.GetComponentInChildren<Animator>(true)
+                : GetComponentInChildren<Animator>(true);
 
             lockOnIndicator ??= FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
             executionIndicator ??= FindChild("ExecutionIndicator")?.GetComponent<SpriteRenderer>();
@@ -522,6 +536,263 @@ namespace Week14.Enemy
             isPhaseTransitionWaiting = false;
             phaseTransitionWaitEndsAt = 0f;
             NotifyLivesChanged();
+            return false;
+        }
+
+        public IEnumerator PlayFinalDeathSequence()
+        {
+            if (finalDeathSequencePlayed)
+            {
+                yield break;
+            }
+
+            finalDeathSequencePlayed = true;
+            CancelBossAction();
+            Stop();
+            DestroyActiveProjectiles();
+
+            yield return PlayFinalDeathExplosions();
+            yield return PlayDeathAnimation();
+        }
+
+        private IEnumerator PlayFinalDeathExplosions()
+        {
+            int explosionCount = Mathf.Max(1, finalDeathExplosionCount);
+            float interval = explosionCount > 1
+                ? Mathf.Max(0f, finalDeathExplosionSeconds) / (explosionCount - 1)
+                : 0f;
+
+            for (int i = 0; i < explosionCount; i++)
+            {
+                Vector3 position = GetRandomDeathExplosionPosition();
+                ProjectileVfx.PlayHogExplosion(
+                    position,
+                    finalDeathExplosionColor,
+                    finalDeathExplosionScale,
+                    finalDeathExplosionSparkCount);
+                ProjectileVfx.PlayHogSmokeBurst(
+                    position,
+                    Color.Lerp(finalDeathExplosionColor, Color.gray, 0.55f),
+                    finalDeathExplosionScale,
+                    Mathf.Max(8, finalDeathExplosionSparkCount / 2));
+
+                Vector2 impactDirection = UnityEngine.Random.insideUnitCircle;
+                PlayEnemyHitCameraImpact(
+                    impactDirection.sqrMagnitude > 0.0001f ? impactDirection.normalized : Vector2.right,
+                    0.12f,
+                    0.1f,
+                    0.04f);
+
+                if (i >= explosionCount - 1)
+                {
+                    continue;
+                }
+
+                if (interval > 0f)
+                {
+                    yield return new WaitForSeconds(interval);
+                }
+                else
+                {
+                    yield return null;
+                }
+            }
+        }
+
+        private IEnumerator PlayDeathAnimation()
+        {
+            Animator animator = deathAnimator;
+            if (animator == null || !animator.isActiveAndEnabled || string.IsNullOrWhiteSpace(deathTriggerName))
+            {
+                yield return WaitDeathAnimationFallback();
+                yield break;
+            }
+
+            int triggerHash = Animator.StringToHash(deathTriggerName);
+            if (!HasAnimatorTrigger(animator, triggerHash))
+            {
+                yield return WaitDeathAnimationFallback();
+                yield break;
+            }
+
+            animator.SetTrigger(triggerHash);
+            yield return null;
+
+            float startedAt = Time.time;
+            float fallbackSeconds = Mathf.Max(0.01f, deathAnimationFallbackSeconds);
+            while (animator != null
+                && animator.isActiveAndEnabled
+                && animator.IsInTransition(0)
+                && Time.time - startedAt < fallbackSeconds)
+            {
+                yield return null;
+            }
+
+            if (animator == null || !animator.isActiveAndEnabled)
+            {
+                yield break;
+            }
+
+            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+            float animatorSpeed = Mathf.Abs(animator.speed);
+            float animationSeconds = state.length > 0f && animatorSpeed > 0.01f
+                ? state.length / animatorSpeed
+                : fallbackSeconds;
+            float waitLimit = Mathf.Max(fallbackSeconds, animationSeconds);
+
+            while (Time.time - startedAt < waitLimit)
+            {
+                if (animator == null || !animator.isActiveAndEnabled)
+                {
+                    yield break;
+                }
+
+                if (!animator.IsInTransition(0))
+                {
+                    state = animator.GetCurrentAnimatorStateInfo(0);
+                    if (!state.loop && state.normalizedTime >= 1f)
+                    {
+                        yield break;
+                    }
+                }
+
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitDeathAnimationFallback()
+        {
+            float fallbackSeconds = Mathf.Max(0f, deathAnimationFallbackSeconds);
+            if (fallbackSeconds > 0f)
+            {
+                yield return new WaitForSeconds(fallbackSeconds);
+            }
+        }
+
+        private Vector3 GetRandomDeathExplosionPosition()
+        {
+            SpriteRenderer renderer = GetRandomDeathExplosionRenderer();
+            if (renderer != null)
+            {
+                Bounds bounds = renderer.bounds;
+                Vector3 position = new(
+                    UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
+                    UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
+                    0f);
+                return position;
+            }
+
+            Vector2 offset = UnityEngine.Random.insideUnitCircle * GetFallbackDeathExplosionRadius();
+            Vector3 center = bodyRoot != null ? bodyRoot.position : transform.position;
+            center.z = 0f;
+            return center + (Vector3)offset;
+        }
+
+        private SpriteRenderer GetRandomDeathExplosionRenderer()
+        {
+            if (renderers == null)
+            {
+                return null;
+            }
+
+            int validCount = 0;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (CanUseDeathExplosionRenderer(renderers[i]))
+                {
+                    validCount++;
+                }
+            }
+
+            if (validCount <= 0)
+            {
+                return null;
+            }
+
+            int selectedIndex = UnityEngine.Random.Range(0, validCount);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (!CanUseDeathExplosionRenderer(renderers[i]))
+                {
+                    continue;
+                }
+
+                if (selectedIndex == 0)
+                {
+                    return renderers[i];
+                }
+
+                selectedIndex--;
+            }
+
+            return null;
+        }
+
+        private bool CanUseDeathExplosionRenderer(SpriteRenderer renderer)
+        {
+            return renderer != null
+                && renderer.enabled
+                && renderer.gameObject.activeInHierarchy
+                && renderer != lockOnIndicator
+                && renderer != executionIndicator
+                && !IsStatusRenderer(renderer)
+                && !ShouldIgnoreBodyStateRenderer(renderer)
+                && renderer.bounds.size.sqrMagnitude > 0.0001f;
+        }
+
+        private float GetFallbackDeathExplosionRadius()
+        {
+            if (renderers == null)
+            {
+                return Mathf.Max(0.35f, finalDeathExplosionScale);
+            }
+
+            Bounds bounds = default;
+            bool hasBounds = false;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (!CanUseDeathExplosionRenderer(renderers[i]))
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    bounds = renderers[i].bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(renderers[i].bounds);
+                }
+            }
+
+            if (!hasBounds)
+            {
+                return Mathf.Max(0.35f, finalDeathExplosionScale);
+            }
+
+            return Mathf.Max(Mathf.Max(bounds.extents.x, bounds.extents.y), 0.35f);
+        }
+
+        private static bool HasAnimatorTrigger(Animator animator, int triggerHash)
+        {
+            if (animator == null)
+            {
+                return false;
+            }
+
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                AnimatorControllerParameter parameter = parameters[i];
+                if (parameter.type == AnimatorControllerParameterType.Trigger
+                    && parameter.nameHash == triggerHash)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 
