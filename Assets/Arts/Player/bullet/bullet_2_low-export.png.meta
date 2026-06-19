@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 11c808a484109194f80546dcce56b13d
+guid: 228b4383e6399f24cabec08e7cc3374c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6955084404823257652
-    second: bullet_outline_0
+      213: -4331728554364472868
+    second: bullet_2_low-export_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 3, y: 12, z: 3, w: 12}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -96,27 +96,40 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bullet_outline_0
+      name: bullet_2_low-export_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 2
-        width: 10
-        height: 28
+        x: 3
+        y: 12
+        width: 26
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4327954aa6c658060800000000000000
-      internalID: 6955084404823257652
+      spriteID: cd170bd84db92e3c0800000000000000
+      internalID: -4331728554364472868
       vertices: []
       indices: 
       edges: []
@@ -126,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      bullet_outline_0: 6955084404823257652
+      bullet_2_low-export_0: -4331728554364472868
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
