@@ -20,6 +20,31 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
+        private sealed class PhasePatternSet
+        {
+            [SerializeField, Min(1), Tooltip("인스펙터에서 구분하기 위한 페이즈 번호입니다. 실제 적용은 배열 순서 기준입니다.")]
+            private int phase = 1;
+
+            [SerializeField, Tooltip("이 페이즈에서 사용할 패턴 목록입니다. 비어 있으면 모든 패턴을 사용합니다.")]
+            private List<PatternKind> patterns = new()
+            {
+                PatternKind.Pattern1,
+                PatternKind.Pattern2,
+                PatternKind.Pattern3,
+                PatternKind.Pattern4,
+                PatternKind.Pattern5
+            };
+
+            public int Phase
+            {
+                get => phase;
+                set => phase = Mathf.Max(1, value);
+            }
+
+            public List<PatternKind> Patterns => patterns;
+        }
+
+        [System.Serializable]
         private sealed class ProjectileSettings
         {
             [SerializeField, Tooltip("이 설정으로 생성할 적 탄환 프리팹입니다.")] private EnemyProjectile prefab;
@@ -229,6 +254,13 @@ namespace Week14.Enemy
         [SerializeField, Tooltip("벽에 부딪히면 분열하는 거대 특수 탄환 패턴 설정입니다.")] private Pattern3Settings pattern3 = new();
         [SerializeField, Tooltip("360도 전방위 탄환을 발사하는 패턴 설정입니다.")] private Pattern4Settings pattern4 = new();
         [SerializeField, Tooltip("제자리에서 기를 모은 뒤 미니건처럼 다수의 탄환을 발사하는 패턴 설정입니다.")] private Pattern5Settings pattern5 = new();
+        [SerializeField, Tooltip("페이즈별로 포함할 패턴 목록입니다. 1번 요소가 페이즈 1, 2번 요소가 페이즈 2입니다.")]
+        private List<PhasePatternSet> phasePatterns = new()
+        {
+            new PhasePatternSet { Phase = 1 },
+            new PhasePatternSet { Phase = 2 },
+            new PhasePatternSet { Phase = 3 }
+        };
         [SerializeField, FormerlySerializedAs("patternRecoverySeconds"), Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최소 시간입니다.")] private float minPatternRecoverySeconds = 0.5f;
         [SerializeField, Min(0f), Tooltip("패턴 하나가 끝난 뒤 다음 패턴 전까지 쉬는 최대 시간입니다.")] private float maxPatternRecoverySeconds = 0.9f;
         [SerializeField, Tooltip("켜면 패턴을 순서대로 쓰지 않고 무작위로 선택합니다.")] private bool randomizePatterns;
@@ -245,6 +277,12 @@ namespace Week14.Enemy
         private int nextPatternIndex;
         private int currentPatternBulletTotal;
         private int currentPatternBulletRemaining;
+
+        private void OnValidate()
+        {
+            EnsurePhasePatternSlots();
+            EnsurePhasePatternLabels();
+        }
 
         protected override void OnBossTick()
         {
@@ -269,6 +307,12 @@ namespace Week14.Enemy
             currentPatternBulletRemaining = 0;
         }
 
+        protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
+        {
+            nextPatternIndex = 0;
+            EnsurePhasePatternLabels();
+        }
+
         private PatternKind SelectPattern()
         {
             if (debugUseFixedPattern)
@@ -276,14 +320,75 @@ namespace Week14.Enemy
                 return debugPattern;
             }
 
+            List<PatternKind> availablePatterns = GetCurrentPhasePatterns();
             if (randomizePatterns)
             {
-                return (PatternKind)Random.Range(0, 5);
+                return availablePatterns[Random.Range(0, availablePatterns.Count)];
             }
 
-            PatternKind pattern = (PatternKind)(nextPatternIndex % 5);
+            PatternKind pattern = availablePatterns[nextPatternIndex % availablePatterns.Count];
             nextPatternIndex++;
             return pattern;
+        }
+
+        private List<PatternKind> GetCurrentPhasePatterns()
+        {
+            EnsurePhasePatternSlots();
+            PhasePatternSet phasePatternSet = GetCurrentPhasePatternSet();
+            if (phasePatternSet != null && phasePatternSet.Patterns != null && phasePatternSet.Patterns.Count > 0)
+            {
+                return phasePatternSet.Patterns;
+            }
+
+            return GetDefaultPatternList();
+        }
+
+        private PhasePatternSet GetCurrentPhasePatternSet()
+        {
+            if (phasePatterns == null || phasePatterns.Count == 0)
+            {
+                return null;
+            }
+
+            int index = Mathf.Clamp(CurrentPhaseIndex, 0, phasePatterns.Count - 1);
+            return phasePatterns[index];
+        }
+
+        private void EnsurePhasePatternSlots()
+        {
+            phasePatterns ??= new List<PhasePatternSet>();
+            while (phasePatterns.Count < MaxLives)
+            {
+                phasePatterns.Add(new PhasePatternSet { Phase = phasePatterns.Count + 1 });
+            }
+        }
+
+        private void EnsurePhasePatternLabels()
+        {
+            if (phasePatterns == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < phasePatterns.Count; i++)
+            {
+                if (phasePatterns[i] != null)
+                {
+                    phasePatterns[i].Phase = i + 1;
+                }
+            }
+        }
+
+        private static List<PatternKind> GetDefaultPatternList()
+        {
+            return new List<PatternKind>
+            {
+                PatternKind.Pattern1,
+                PatternKind.Pattern2,
+                PatternKind.Pattern3,
+                PatternKind.Pattern4,
+                PatternKind.Pattern5
+            };
         }
 
         private IEnumerator RunPattern(PatternKind pattern)

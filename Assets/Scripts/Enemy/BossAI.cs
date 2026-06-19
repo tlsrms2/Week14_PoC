@@ -131,6 +131,8 @@ namespace Week14.Enemy
         protected CombatEffectData EffectData => effectData;
         public int MaxLives => Mathf.Max(1, maxLives);
         public int CurrentLives => Mathf.Clamp(currentLives, 0, MaxLives);
+        public int CurrentPhaseIndex => Mathf.Clamp(MaxLives - CurrentLives, 0, MaxLives - 1);
+        public int CurrentPhaseNumber => CurrentPhaseIndex + 1;
         public int CurrentEnragePhase => currentEnragePhase;
         public float CurrentEnrageProgress => GetCurrentEnrageProgress();
         public event Action<int, int> LivesChanged;
@@ -184,6 +186,7 @@ namespace Week14.Enemy
         {
             currentLives = maxLives;
             NotifyLivesChanged();
+            OnBossPhaseChanged(CurrentPhaseIndex, CurrentPhaseNumber);
             
             SpawnPosition = transform.position;
             bullets.Configure(maxBullets, true);
@@ -382,6 +385,7 @@ namespace Week14.Enemy
             {
                 currentLives--; // 목숨 1개 차감
                 NotifyLivesChanged();
+                OnBossPhaseChanged(CurrentPhaseIndex, CurrentPhaseNumber);
                 ResetEnrageTimer(); // 광폭화 리셋
                 
                 isExecutionLocked = false; // 행동 잠금 해제
@@ -497,6 +501,7 @@ namespace Week14.Enemy
         }
 
         protected virtual void OnBossStarted() { }
+        protected virtual void OnBossPhaseChanged(int phaseIndex, int phaseNumber) { }
         protected abstract void OnBossTick();
         protected virtual void CancelBossAction() { }
         protected virtual void OnBossDied() { }

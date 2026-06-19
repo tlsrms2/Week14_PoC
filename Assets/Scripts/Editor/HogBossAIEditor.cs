@@ -24,6 +24,7 @@ public sealed class HogBossAIEditor : Editor
         "pattern3",
         "pattern4",
         "pattern5",
+        "phasePatterns",
         "minPatternRecoverySeconds",
         "maxPatternRecoverySeconds",
         "randomizePatterns",
@@ -75,6 +76,7 @@ public sealed class HogBossAIEditor : Editor
     {
         DrawHeader("패턴 흐름", "패턴 선택 방식, 패턴 사이 대기 타이머와 보글 이펙트를 조율합니다.");
         DrawProperty("randomizePatterns");
+        DrawPhasePatterns();
         DrawProperty("minPatternRecoverySeconds");
         DrawProperty("maxPatternRecoverySeconds");
         DrawProperty("hogEffectColor");
@@ -93,6 +95,29 @@ public sealed class HogBossAIEditor : Editor
         {
             DrawBaseProperties();
         }
+    }
+
+    private void DrawPhasePatterns()
+    {
+        SerializedProperty phasePatterns = serializedObject.FindProperty("phasePatterns");
+        if (phasePatterns == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("페이즈별 패턴 구성", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("각 요소가 보스 목숨 순서의 페이즈입니다. Patterns 목록에 넣은 패턴만 해당 페이즈에서 선택됩니다. 비워두면 모든 패턴을 사용합니다.", MessageType.Info);
+
+        SerializedProperty maxLives = serializedObject.FindProperty("maxLives");
+        int desiredCount = maxLives != null ? Mathf.Max(1, maxLives.intValue) : phasePatterns.arraySize;
+        if (phasePatterns.arraySize < desiredCount)
+        {
+            EditorGUILayout.HelpBox("페이즈 수보다 패턴 구성이 적습니다. 게임 실행 또는 값 변경 시 부족한 페이즈가 자동 추가됩니다.", MessageType.Warning);
+        }
+
+        EditorGUILayout.PropertyField(phasePatterns, true);
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawPattern1Tab()
