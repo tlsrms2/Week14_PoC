@@ -575,7 +575,7 @@ MonoBehaviour:
       speed: 15
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
+      chargingColor: {r: 1, g: 0.15838778, b: 0, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
@@ -598,7 +598,7 @@ MonoBehaviour:
       speed: 15
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.45, g: 1, b: 0, a: 1}
+      chargingColor: {r: 1, g: 0.16078432, b: 0, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
