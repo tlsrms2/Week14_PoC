@@ -1610,12 +1610,16 @@ namespace Week14.Enemy
                     pattern7.SpecialProjectile,
                     specialOrigin,
                     lockedDirection);
-                firedAny |= specialProjectile != null;
+                if (specialProjectile != null)
+                {
+                    firedAny = true;
+                    PlaySfxOnLaunch(specialProjectile, "BossSpecialShot");
+                }
             }
 
             if (firedAny)
             {
-                SoundManager.PlaySfx("BossSpecialShot");
+                SoundManager.PlaySfx("BossNormalShot");
             }
         }
 
