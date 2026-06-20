@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Week14.Audio;
+using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.Enemy;
 using Week14.Input;
 
 namespace Week14.UI
@@ -30,7 +32,12 @@ namespace Week14.UI
 
         [Header("Game Over")]
         [SerializeField] private GameObject gameOverRoot;
+        [SerializeField] private TMP_Text gameOverTitleText;
         [SerializeField] private Button restartButton;
+        [SerializeField] private Button titleButton;
+        [SerializeField] private string titleSceneName = "TitleScene";
+        [SerializeField] private string gameOverTitle = "GAME OVER";
+        [SerializeField] private string victoryTitle = "VICTORY";
 
         private Health subscribedPlayerHealth;
         private int pageIndex;
@@ -49,10 +56,12 @@ namespace Week14.UI
         private void OnEnable()
         {
             TrySubscribePlayer();
+            BossAI.Defeated += HandleBossDefeated;
         }
 
         private void OnDisable()
         {
+            BossAI.Defeated -= HandleBossDefeated;
             UnsubscribePlayer();
 
             if (helpOpen || gameOverOpen)
@@ -105,16 +114,26 @@ namespace Week14.UI
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
+        public void GoToTitle()
+        {
+            Time.timeScale = 1f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneTransition.LoadScene(titleSceneName);
+        }
+
         private void CacheSceneReferences()
         {
             helpRoot ??= FindGameObject("HelpRoot");
             gameOverRoot ??= FindGameObject("GameOverRoot");
+            gameOverTitleText ??= FindComponent<TMP_Text>("GameOverTitleText");
             helpBodyText ??= FindComponent<TMP_Text>("HelpBodyText");
             helpPageText ??= FindComponent<TMP_Text>("HelpPageText");
             previousButton ??= FindComponent<Button>("PreviousButton");
             nextButton ??= FindComponent<Button>("NextButton");
             closeHelpButton ??= FindComponent<Button>("CloseHelpButton");
             restartButton ??= FindComponent<Button>("RestartButton");
+            titleButton ??= FindComponent<Button>("TitleButton");
 
             if (helpPageImages.Count == 0)
             {
@@ -142,6 +161,7 @@ namespace Week14.UI
             nextButton?.onClick.AddListener(ShowNextPage);
             closeHelpButton?.onClick.AddListener(CloseHelp);
             restartButton?.onClick.AddListener(RestartScene);
+            titleButton?.onClick.AddListener(GoToTitle);
         }
 
         private GameObject FindGameObject(string childName)
@@ -207,6 +227,22 @@ namespace Week14.UI
         {
             SoundManager.StopBgm();
             SetHelpVisible(false);
+            ShowGameOver(gameOverTitle);
+        }
+
+        private void HandleBossDefeated(BossAI _)
+        {
+            SetHelpVisible(false);
+            ShowGameOver(victoryTitle);
+        }
+
+        private void ShowGameOver(string title)
+        {
+            if (gameOverTitleText != null)
+            {
+                gameOverTitleText.text = title;
+            }
+
             SetGameOverVisible(true);
         }
 
