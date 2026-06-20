@@ -14,7 +14,9 @@ public sealed class HogBossAIEditor : Editor
         "패턴2",
         "패턴3",
         "패턴4",
-        "패턴5"
+        "패턴5",
+        "패턴6",
+        "패턴7"
     };
 
     private static readonly HashSet<string> HogFields = new()
@@ -24,6 +26,8 @@ public sealed class HogBossAIEditor : Editor
         "pattern3",
         "pattern4",
         "pattern5",
+        "pattern6",
+        "pattern7",
         "phasePatterns",
         "minPatternRecoverySeconds",
         "maxPatternRecoverySeconds",
@@ -62,6 +66,12 @@ public sealed class HogBossAIEditor : Editor
                 break;
             case 5:
                 DrawPattern5Tab();
+                break;
+            case 6:
+                DrawPattern6Tab();
+                break;
+            case 7:
+                DrawPattern7Tab();
                 break;
             default:
                 DrawCommonTab();
@@ -209,6 +219,29 @@ public sealed class HogBossAIEditor : Editor
         DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴5 투사체");
         DrawSection("기 모으기", pattern, "windupSeconds");
         DrawSection("미니건 발사", pattern, "bulletCount", "fireInterval", "spawnSpacing", "sweepStepDegrees", "maxSweepAngle");
+        DrawSection("이펙트", pattern, "effects");
+    }
+
+    private void DrawPattern6Tab()
+    {
+        SerializedProperty pattern = serializedObject.FindProperty("pattern6");
+        DrawSection("Origins / Slam", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
+        DrawHeader("패턴6", "패턴4와 동일하게 보스 위치를 기준으로 360도 원형의 파동처럼 여러 차례 탄환을 발사합니다.");
+        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴6 투사체");
+        DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
+        DrawSection("이펙트", pattern, "effects");
+    }
+
+    private void DrawPattern7Tab()
+    {
+        SerializedProperty pattern = serializedObject.FindProperty("pattern7");
+        DrawSection("Origins", pattern, "firePoint", "specialProjectileOrigins");
+        DrawHeader("패턴7", "발사 직전 플레이어 방향으로 조준을 고정한 뒤 전방 세 갈래 일반 탄환을 여러 번 쏘고 특수 탄환을 함께 소환합니다.");
+        DrawProjectile(pattern.FindPropertyRelative("normalProjectile"), "패턴7 일반 탄환");
+        DrawProjectile(pattern.FindPropertyRelative("specialProjectile"), "패턴7 특수 탄환");
+        DrawSection("기 모으기", pattern, "windupSeconds");
+        DrawSection("세 갈래 반복 발사", pattern, "normalVolleyCount", "normalVolleyInterval", "fanAngleDegrees", "normalSpawnSpacing", "specialSpawnForwardOffset");
+        DrawSection("특수 탄환", pattern, "specialBulletCount");
         DrawSection("이펙트", pattern, "effects");
     }
 

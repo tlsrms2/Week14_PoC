@@ -14,6 +14,11 @@ namespace Week14.Enemy
         private static readonly Color DefaultHogSmokeColor = new(0.38f, 0.48f, 0.34f, 0.72f);
         private static readonly Color DefaultHogExplosionColor = new(1f, 0.62f, 0.18f, 1f);
         private static readonly Color DefaultHogMuzzleFlashColor = new(1f, 0.78f, 0.26f, 1f);
+        private const string WallLayerName = "Wall";
+        private const int Pattern7GuideMaxDashCountPerLine = 160;
+        private const float Pattern7GuideDashLength = 0.2f;
+        private const float Pattern7GuideDashGap = 0.14f;
+        private static Material pattern7GuideMaterial;
 
         private enum PatternKind
         {
@@ -21,7 +26,9 @@ namespace Week14.Enemy
             Pattern2,
             Pattern3,
             Pattern4,
-            Pattern5
+            Pattern5,
+            Pattern6,
+            Pattern7
         }
 
         [System.Serializable]
@@ -37,7 +44,9 @@ namespace Week14.Enemy
                 PatternKind.Pattern2,
                 PatternKind.Pattern3,
                 PatternKind.Pattern4,
-                PatternKind.Pattern5
+                PatternKind.Pattern5,
+                PatternKind.Pattern6,
+                PatternKind.Pattern7
             };
 
             public int Phase
@@ -524,12 +533,47 @@ namespace Week14.Enemy
             }
         }
 
+        [System.Serializable]
+        private sealed class Pattern7Settings
+        {
+            [SerializeField] private FirePoint firePoint = new();
+            [SerializeField, Tooltip("특수 탄환별 소환 위치 목록입니다. 발사 개수보다 부족한 요소는 FirePoint의 Projectile Origin을 사용합니다.")]
+            private List<Transform> specialProjectileOrigins = new();
+
+            [SerializeField, Tooltip("패턴7에서 세 갈래로 발사할 일반 탄환 설정입니다.")] private ProjectileSettings normalProjectile = new();
+            [SerializeField, Tooltip("패턴7에서 일반 탄환과 동시에 소환할 특수 탄환 설정입니다.")] private ProjectileSettings specialProjectile = new();
+            [SerializeField, Min(0f), Tooltip("발사 직전 플레이어를 조준하며 대기하는 시간입니다.")] private float windupSeconds = 1.0f;
+            [SerializeField, Min(1), Tooltip("일반 탄환 3갈래 묶음을 몇 번 발사할지 정합니다.")] private int normalVolleyCount = 3;
+            [SerializeField, Min(0f), Tooltip("일반 탄환 3갈래 묶음 사이의 발사 간격입니다. 0이면 한 번에 모두 발사합니다.")] private float normalVolleyInterval = 0.18f;
+            [SerializeField, Min(0), Tooltip("특수 탄환을 몇 발 소환할지 정합니다. 0이면 특수 탄환을 발사하지 않습니다.")] private int specialBulletCount = 1;
+            [SerializeField, Range(0f, 180f), Tooltip("전방 부채꼴 전체 각도입니다. 3갈래 탄환은 -절반, 중앙, +절반 방향으로 발사됩니다.")] private float fanAngleDegrees = 42f;
+            [SerializeField, Min(0f), Tooltip("세 갈래 일반 탄환이 시작 위치에서 옆으로 벌어지는 거리입니다.")] private float normalSpawnSpacing = 0.16f;
+            [SerializeField, Min(0f), Tooltip("특수 탄환을 발사 방향 앞쪽으로 소환할 거리입니다.")] private float specialSpawnForwardOffset = 0f;
+            [Header("Effects")]
+            [SerializeField, Tooltip("패턴7 준비 연기/발사 총구화염 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.WindupMuzzle();
+
+            public ProjectileSettings NormalProjectile => normalProjectile;
+            public ProjectileSettings SpecialProjectile => specialProjectile;
+            public FirePoint FirePoint => firePoint;
+            public IReadOnlyList<Transform> SpecialProjectileOrigins => specialProjectileOrigins;
+            public float WindupSeconds => windupSeconds;
+            public int NormalVolleyCount => normalVolleyCount;
+            public float NormalVolleyInterval => normalVolleyInterval;
+            public int SpecialBulletCount => specialBulletCount;
+            public float FanAngleDegrees => fanAngleDegrees;
+            public float NormalSpawnSpacing => normalSpawnSpacing;
+            public float SpecialSpawnForwardOffset => specialSpawnForwardOffset;
+            public PatternEffectSettings Effects => effects;
+        }
+
         [Header("Hog Patterns")]
         [SerializeField, Tooltip("플레이어 방향 기준 사방 탄환을 발사하며 가속 추격하는 패턴 설정입니다.")] private Pattern1Settings pattern1 = new();
         [SerializeField, Tooltip("느려진 상태로 플레이어를 향해 머신건처럼 발사하는 패턴 설정입니다.")] private Pattern2Settings pattern2 = new();
         [SerializeField, Tooltip("벽에 부딪히면 분열하는 거대 특수 탄환 패턴 설정입니다.")] private Pattern3Settings pattern3 = new();
         [SerializeField, Tooltip("360도 전방위 탄환을 발사하는 패턴 설정입니다.")] private Pattern4Settings pattern4 = new();
         [SerializeField, Tooltip("제자리에서 기를 모은 뒤 미니건처럼 다수의 탄환을 발사하는 패턴 설정입니다.")] private Pattern5Settings pattern5 = new();
+        [SerializeField, Tooltip("패턴4와 동일한 360도 전방위 탄환 패턴 설정입니다. 인스펙터 수치를 다르게 조절해 변형 패턴으로 사용합니다.")] private Pattern4Settings pattern6 = new();
+        [SerializeField, Tooltip("발사 직전 플레이어 방향으로 고정한 뒤 전방 세 갈래 일반 탄환과 특수 탄환을 동시에 발사하는 패턴 설정입니다.")] private Pattern7Settings pattern7 = new();
         [SerializeField, Tooltip("페이즈별로 포함할 패턴 목록입니다. 1번 요소가 페이즈 1, 2번 요소가 페이즈 2입니다.")]
         private List<PhasePatternSet> phasePatterns = new()
         {
@@ -553,6 +597,7 @@ namespace Week14.Enemy
 
         private Coroutine patternRoutine;
         private readonly List<int> patternBulletPreviewGroups = new();
+        private readonly List<LineRenderer> pattern7GuideLines = new();
         private BossPatternBulletLineView patternBulletPreviewView;
         private int patternBulletPreviewGroupIndex;
         private float patternBulletPreviewFillDuration;
@@ -576,12 +621,14 @@ namespace Week14.Enemy
         {
             DeactivatePatternFirePoints();
             HidePatternBulletPreview();
+            HidePattern7GuideLines();
         }
 
         protected override void OnBossDied()
         {
             DeactivatePatternFirePoints();
             HidePatternBulletPreview();
+            HidePattern7GuideLines();
         }
 
         protected override void OnCombatStarted()
@@ -611,6 +658,7 @@ namespace Week14.Enemy
             ResetPattern4BodyRoot();
             DeactivatePatternFirePoints();
             HidePatternBulletPreview();
+            HidePattern7GuideLines();
         }
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
@@ -741,7 +789,9 @@ namespace Week14.Enemy
                 PatternKind.Pattern2,
                 PatternKind.Pattern3,
                 PatternKind.Pattern4,
-                PatternKind.Pattern5
+                PatternKind.Pattern5,
+                PatternKind.Pattern6,
+                PatternKind.Pattern7
             };
         }
 
@@ -767,6 +817,12 @@ namespace Week14.Enemy
                     break;
                 case PatternKind.Pattern5:
                     yield return RunPattern5();
+                    break;
+                case PatternKind.Pattern6:
+                    yield return RunPattern6();
+                    break;
+                case PatternKind.Pattern7:
+                    yield return RunPattern7();
                     break;
                 default:
                     yield return RunPattern1();
@@ -818,15 +874,20 @@ namespace Week14.Enemy
 
         private IEnumerator ReloadPattern4WavePreview(float duration)
         {
+            yield return ReloadPatternWavePreview(PatternKind.Pattern4, duration);
+        }
+
+        private IEnumerator ReloadPatternWavePreview(PatternKind pattern, float duration)
+        {
             float reloadDuration = Mathf.Max(0f, duration);
             float remaining = reloadDuration;
             if (remaining <= 0f)
             {
-                BeginPatternBulletPreviewPlayback(PatternKind.Pattern4);
+                BeginPatternBulletPreviewPlayback(pattern);
                 yield break;
             }
 
-            BeginPatternBulletPreview(PatternKind.Pattern4, remaining);
+            BeginPatternBulletPreview(pattern, remaining);
 
             while (remaining > 0f)
             {
@@ -842,18 +903,19 @@ namespace Week14.Enemy
                 yield return null;
             }
 
-            BeginPatternBulletPreviewPlayback(PatternKind.Pattern4);
+            BeginPatternBulletPreviewPlayback(pattern);
         }
 
         private void BeginPatternRecoveryTelegraph(PatternKind nextPattern)
         {
-            if (nextPattern != PatternKind.Pattern5)
+            if (nextPattern != PatternKind.Pattern5 && nextPattern != PatternKind.Pattern7)
             {
                 return;
             }
 
-            SetFirePointActive(pattern5.FirePoint, true);
-            RotateFirePointToPlayer(pattern5.FirePoint);
+            FirePoint firePoint = nextPattern == PatternKind.Pattern7 ? pattern7.FirePoint : pattern5.FirePoint;
+            SetFirePointActive(firePoint, true);
+            RotateFirePointToPlayer(firePoint);
         }
 
         private void UpdatePatternRecoveryTelegraph(PatternKind nextPattern)
@@ -861,6 +923,10 @@ namespace Week14.Enemy
             if (nextPattern == PatternKind.Pattern5)
             {
                 RotateFirePointToPlayer(pattern5.FirePoint);
+            }
+            else if (nextPattern == PatternKind.Pattern7)
+            {
+                RotateFirePointToPlayer(pattern7.FirePoint);
             }
         }
 
@@ -1008,7 +1074,27 @@ namespace Week14.Enemy
                         pattern5.FireInterval <= 0f ? Mathf.Max(1, pattern5.BulletCount) : 1,
                         pattern5.FireInterval <= 0f ? 1 : Mathf.Max(1, pattern5.BulletCount));
                     break;
+                case PatternKind.Pattern6:
+                    groups.Add(Mathf.Max(1, pattern6.BulletCount));
+                    break;
+                case PatternKind.Pattern7:
+                    AddPattern7PreviewGroups(groups);
+                    break;
             }
+        }
+
+        private void AddPattern7PreviewGroups(List<int> groups)
+        {
+            int volleyCount = Mathf.Max(1, pattern7.NormalVolleyCount);
+            int specialBulletCount = Mathf.Max(0, pattern7.SpecialBulletCount);
+            if (pattern7.NormalVolleyInterval <= 0f)
+            {
+                groups.Add(volleyCount * 3 + specialBulletCount);
+                return;
+            }
+
+            groups.Add(3 + specialBulletCount);
+            AddRepeatedGroups(groups, 3, volleyCount - 1);
         }
 
         private void AddPattern2PreviewGroups(List<int> groups)
@@ -1244,24 +1330,34 @@ namespace Week14.Enemy
 
         private IEnumerator RunPattern4()
         {
+            yield return RunPattern4Like(pattern4, PatternKind.Pattern4);
+        }
+
+        private IEnumerator RunPattern6()
+        {
+            yield return RunPattern4Like(pattern6, PatternKind.Pattern6);
+        }
+
+        private IEnumerator RunPattern4Like(Pattern4Settings settings, PatternKind patternKind)
+        {
             Stop();
 
-            int waveCount = Mathf.Max(1, pattern4.WaveCount);
+            int waveCount = Mathf.Max(1, settings.WaveCount);
             for (int wave = 0; wave < waveCount; wave++)
             {
                 yield return WaitWhileExecutionPaused();
 
-                yield return SlamPattern4BodyRoot();
+                yield return SlamPattern4BodyRoot(settings);
                 
-                float offset = pattern4.StartAngleOffset + wave * (360f / Mathf.Max(1, pattern4.BulletCount) * 0.5f);
+                float offset = settings.StartAngleOffset + wave * (360f / Mathf.Max(1, settings.BulletCount) * 0.5f);
                 
-                FirePattern4Wave(offset);
+                FirePattern4Wave(settings, offset);
                 AdvancePatternBulletPreviewGroup();
-                yield return RecoverPattern4BodyRoot();
+                yield return RecoverPattern4BodyRoot(settings);
 
                 if (wave < waveCount - 1)
                 {
-                    yield return ReloadPattern4WavePreview(pattern4.WaveInterval);
+                    yield return ReloadPatternWavePreview(patternKind, settings.WaveInterval);
                 }
             }
 
@@ -1341,6 +1437,75 @@ namespace Week14.Enemy
             SetFirePointActive(pattern5.FirePoint, false);
         }
 
+        private IEnumerator RunPattern7()
+        {
+            Stop();
+            SetFirePointActive(pattern7.FirePoint, true);
+
+            float windupSeconds = Mathf.Max(0f, pattern7.WindupSeconds);
+            float elapsed = 0f;
+            float nextSmokeAt = Time.time;
+            while (elapsed < windupSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
+                Stop();
+                RotateFirePointToPlayer(pattern7.FirePoint);
+                Vector3 guideOrigin = GetPattern7NormalProjectilePosition();
+                Vector2 guideDirection = GetDirectionToPlayer(guideOrigin);
+                UpdatePattern7GuideLines(guideOrigin, guideDirection);
+                PlaySmokeIfDue(ref nextSmokeAt, pattern7.Effects, guideOrigin);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            HidePattern7GuideLines();
+            yield return WaitWhileExecutionPaused();
+
+            Vector3 aimOrigin = GetPattern7NormalProjectilePosition();
+            Vector2 lockedDirection = GetDirectionToPlayer(aimOrigin);
+            RotateFirePoint(pattern7.FirePoint, lockedDirection);
+            aimOrigin = GetPattern7NormalProjectilePosition();
+
+            int volleyCount = Mathf.Max(1, pattern7.NormalVolleyCount);
+            bool groupedFire = pattern7.NormalVolleyInterval <= 0f;
+            for (int volleyIndex = 0; volleyIndex < volleyCount; volleyIndex++)
+            {
+                yield return WaitWhileExecutionPaused();
+
+                Stop();
+                FirePattern7NormalVolley(GetPattern7NormalProjectilePosition(), lockedDirection);
+                if (volleyIndex == 0)
+                {
+                    FirePattern7SpecialProjectiles(lockedDirection);
+                }
+
+                if (!groupedFire)
+                {
+                    AdvancePatternBulletPreviewGroup();
+                }
+
+                if (pattern7.NormalVolleyInterval > 0f && volleyIndex < volleyCount - 1)
+                {
+                    yield return WaitPattern7Seconds(pattern7.NormalVolleyInterval);
+                }
+            }
+
+            if (groupedFire)
+            {
+                AdvancePatternBulletPreviewGroup();
+            }
+
+            SetFirePointActive(pattern7.FirePoint, false);
+            HidePattern7GuideLines();
+        }
+
         private EnemyProjectile FireProjectileAtPlayer(ProjectileSettings settings, Vector3 origin)
         {
             Vector2 direction = GetDirectionToPlayer(origin);
@@ -1359,21 +1524,21 @@ namespace Week14.Enemy
             }
         }
         
-        private void FirePattern4Wave(float startAngleDegrees)
+        private void FirePattern4Wave(Pattern4Settings settings, float startAngleDegrees)
         {
             SoundManager.PlaySfx("Smash");
-            Vector3 center = GetPattern4ProjectilePosition();
-            int count = Mathf.Max(1, pattern4.BulletCount);
+            Vector3 center = GetPattern4ProjectilePosition(settings);
+            int count = Mathf.Max(1, settings.BulletCount);
             
             float step = 360f / count;
-            float radius = Mathf.Max(0f, pattern4.SpawnRadius);
+            float radius = Mathf.Max(0f, settings.SpawnRadius);
 
             for (int i = 0; i < count; i++)
             {
                 Vector2 direction = AngleToDirection(startAngleDegrees + step * i);
                 Vector3 origin = center + (Vector3)(direction * radius);
         
-                FireConfiguredProjectileWithoutPlayerAim(pattern4.Projectile, origin, direction);
+                FireConfiguredProjectileWithoutPlayerAim(settings.Projectile, origin, direction);
             }
         }
 
@@ -1401,6 +1566,207 @@ namespace Week14.Enemy
                 PlaySfxOnLaunch(projectile, "BossSpecialShot");
                 SoundManager.PlaySfx("BossNormalShot");
             }
+        }
+
+        private void FirePattern7NormalVolley(Vector3 origin, Vector2 lockedDirection)
+        {
+            if (lockedDirection.sqrMagnitude <= 0.0001f)
+            {
+                lockedDirection = Vector2.right;
+            }
+
+            float baseAngle = Mathf.Atan2(lockedDirection.y, lockedDirection.x) * Mathf.Rad2Deg;
+            float halfFanAngle = pattern7.FanAngleDegrees * 0.5f;
+            float spacing = Mathf.Max(0f, pattern7.NormalSpawnSpacing);
+
+            for (int i = 0; i < 3; i++)
+            {
+                float t = i - 1f;
+                Vector2 direction = AngleToDirection(baseAngle + halfFanAngle * t);
+                Vector2 side = new(-lockedDirection.y, lockedDirection.x);
+                Vector3 spawnPosition = origin + (Vector3)(side * spacing * t);
+                FireConfiguredProjectileWithoutPlayerAim(pattern7.NormalProjectile, spawnPosition, direction);
+            }
+            
+            PlayMuzzleFlashIfEnabled(pattern7.Effects, origin, lockedDirection);
+            PlayCameraShakeIfEnabled(pattern7.Effects, lockedDirection);
+            SoundManager.PlaySfx("BossNormalShot");
+        }
+
+        private void FirePattern7SpecialProjectiles(Vector2 lockedDirection)
+        {
+            if (lockedDirection.sqrMagnitude <= 0.0001f)
+            {
+                lockedDirection = Vector2.right;
+            }
+
+            int count = Mathf.Max(0, pattern7.SpecialBulletCount);
+            bool firedAny = false;
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 origin = GetPattern7SpecialProjectilePosition(i);
+                Vector3 specialOrigin = origin + (Vector3)(lockedDirection.normalized * Mathf.Max(0f, pattern7.SpecialSpawnForwardOffset));
+                EnemyProjectile specialProjectile = FireConfiguredProjectile(
+                    pattern7.SpecialProjectile,
+                    specialOrigin,
+                    lockedDirection);
+                firedAny |= specialProjectile != null;
+            }
+
+            if (firedAny)
+            {
+                SoundManager.PlaySfx("BossSpecialShot");
+            }
+        }
+
+        private void UpdatePattern7GuideLines(Vector3 origin, Vector2 baseDirection)
+        {
+            if (baseDirection.sqrMagnitude <= 0.0001f)
+            {
+                HidePattern7GuideLines();
+                return;
+            }
+
+            float baseAngle = Mathf.Atan2(baseDirection.y, baseDirection.x) * Mathf.Rad2Deg;
+            float halfFanAngle = pattern7.FanAngleDegrees * 0.5f;
+            float maxLength = Mathf.Max(0f, pattern7.NormalProjectile.Speed * pattern7.NormalProjectile.Lifetime);
+            float width = Mathf.Max(0.013f, pattern7.NormalProjectile.Radius * 0.14f);
+            Color color = pattern7.NormalProjectile.ChargingColor;
+            color.a = 0.58f;
+            int visibleDashCount = 0;
+
+            for (int i = 0; i < 3; i++)
+            {
+                float t = i - 1f;
+                Vector2 direction = AngleToDirection(baseAngle + halfFanAngle * t);
+                float length = GetPattern7GuideLength(origin, direction, maxLength);
+                visibleDashCount = DrawPattern7GuideDashes(
+                    visibleDashCount,
+                    origin,
+                    direction,
+                    length,
+                    color,
+                    width);
+            }
+
+            for (int i = visibleDashCount; i < pattern7GuideLines.Count; i++)
+            {
+                if (pattern7GuideLines[i] != null)
+                {
+                    pattern7GuideLines[i].enabled = false;
+                }
+            }
+        }
+
+        private int DrawPattern7GuideDashes(
+            int startDashIndex,
+            Vector3 start,
+            Vector2 direction,
+            float length,
+            Color color,
+            float width)
+        {
+            if (length <= 0.01f)
+            {
+                return startDashIndex;
+            }
+
+            Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+            int dashCount = Mathf.Min(
+                Pattern7GuideMaxDashCountPerLine,
+                Mathf.CeilToInt(length / (Pattern7GuideDashLength + Pattern7GuideDashGap)));
+            int nextDashIndex = startDashIndex;
+
+            for (int i = 0; i < dashCount; i++)
+            {
+                float segmentStart = i * (Pattern7GuideDashLength + Pattern7GuideDashGap);
+                float segmentEnd = Mathf.Min(segmentStart + Pattern7GuideDashLength, length);
+                if (segmentEnd <= 0f)
+                {
+                    continue;
+                }
+
+                LineRenderer dash = EnsurePattern7GuideLine(nextDashIndex);
+                dash.enabled = true;
+                dash.startColor = color;
+                dash.endColor = color;
+                dash.startWidth = width;
+                dash.endWidth = width;
+                dash.SetPosition(0, start + (Vector3)(normalized * segmentStart));
+                dash.SetPosition(1, start + (Vector3)(normalized * segmentEnd));
+                nextDashIndex++;
+            }
+
+            return nextDashIndex;
+        }
+
+        private float GetPattern7GuideLength(Vector2 start, Vector2 direction, float maxLength)
+        {
+            if (maxLength <= 0.01f)
+            {
+                return 0f;
+            }
+
+            int wallMask = GetWallMask();
+            if (wallMask == 0 || direction.sqrMagnitude <= 0.0001f)
+            {
+                return maxLength;
+            }
+
+            float castRadius = Mathf.Max(0.001f, pattern7.NormalProjectile.Radius);
+            RaycastHit2D hit = Physics2D.CircleCast(start, castRadius, direction.normalized, maxLength, wallMask);
+            return hit.collider != null ? Mathf.Max(0f, hit.distance) : maxLength;
+        }
+
+        private static int GetWallMask()
+        {
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            return wallLayer >= 0 ? 1 << wallLayer : 0;
+        }
+
+        private LineRenderer EnsurePattern7GuideLine(int index)
+        {
+            while (pattern7GuideLines.Count <= index)
+            {
+                GameObject lineObject = new($"Pattern7GuideLine_{pattern7GuideLines.Count:00}");
+                lineObject.transform.SetParent(transform, false);
+                LineRenderer line = lineObject.AddComponent<LineRenderer>();
+                line.material = GetPattern7GuideMaterial();
+                line.useWorldSpace = true;
+                line.loop = false;
+                line.positionCount = 2;
+                line.numCornerVertices = 0;
+                line.numCapVertices = 1;
+                line.sortingOrder = 17;
+                pattern7GuideLines.Add(line);
+            }
+
+            LineRenderer guideLine = pattern7GuideLines[index];
+            guideLine.material = GetPattern7GuideMaterial();
+            return guideLine;
+        }
+
+        private void HidePattern7GuideLines()
+        {
+            for (int i = 0; i < pattern7GuideLines.Count; i++)
+            {
+                if (pattern7GuideLines[i] != null)
+                {
+                    pattern7GuideLines[i].enabled = false;
+                }
+            }
+        }
+
+        private static Material GetPattern7GuideMaterial()
+        {
+            if (pattern7GuideMaterial != null)
+            {
+                return pattern7GuideMaterial;
+            }
+
+            Shader shader = Shader.Find("Sprites/Default");
+            pattern7GuideMaterial = shader != null ? new Material(shader) : null;
+            return pattern7GuideMaterial;
         }
         
         private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees, Vector3 origin)
@@ -1449,6 +1815,24 @@ namespace Week14.Enemy
         }
 
         private IEnumerator WaitPattern5Seconds(float seconds)
+        {
+            float remaining = Mathf.Max(0f, seconds);
+            while (remaining > 0f)
+            {
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
+                Stop();
+                remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitPattern7Seconds(float seconds)
         {
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
@@ -1720,7 +2104,7 @@ namespace Week14.Enemy
             Body.linearVelocity = direction.normalized * (MoveSpeed * Mathf.Max(0f, speedMultiplier));
         }
 
-        private IEnumerator SlamPattern4BodyRoot()
+        private IEnumerator SlamPattern4BodyRoot(Pattern4Settings settings)
         {
             Transform target = BodyRoot;
             if (target == null || target == transform)
@@ -1735,23 +2119,23 @@ namespace Week14.Enemy
             }
 
             Vector3 basePosition = pattern4BodyRootBaseLocalPosition;
-            Vector3 upPosition = basePosition + Vector3.up * pattern4.SlamUpOffset;
-            Vector3 downPosition = basePosition + Vector3.down * pattern4.SlamDownOffset;
+            Vector3 upPosition = basePosition + Vector3.up * settings.SlamUpOffset;
+            Vector3 downPosition = basePosition + Vector3.down * settings.SlamDownOffset;
 
-            yield return MovePattern4BodyRoot(target, target.localPosition, upPosition, pattern4.SlamRiseSeconds);
-            yield return MovePattern4BodyRoot(target, target.localPosition, downPosition, pattern4.SlamDropSeconds);
-            PlayExplosionIfEnabled(pattern4.Effects, target.position);
-            PlayCameraShakeIfEnabled(pattern4.Effects, Vector2.down);
+            yield return MovePattern4BodyRoot(target, target.localPosition, upPosition, settings.SlamRiseSeconds);
+            yield return MovePattern4BodyRoot(target, target.localPosition, downPosition, settings.SlamDropSeconds);
+            PlayExplosionIfEnabled(settings.Effects, target.position);
+            PlayCameraShakeIfEnabled(settings.Effects, Vector2.down);
         }
 
-        private IEnumerator RecoverPattern4BodyRoot()
+        private IEnumerator RecoverPattern4BodyRoot(Pattern4Settings settings)
         {
             if (!isPattern4BodyRootMoved || BodyRoot == null || BodyRoot == transform)
             {
                 yield break;
             }
 
-            yield return MovePattern4BodyRoot(BodyRoot, BodyRoot.localPosition, pattern4BodyRootBaseLocalPosition, pattern4.SlamRecoverSeconds);
+            yield return MovePattern4BodyRoot(BodyRoot, BodyRoot.localPosition, pattern4BodyRootBaseLocalPosition, settings.SlamRecoverSeconds);
             ResetPattern4BodyRoot();
         }
 
@@ -1806,6 +2190,23 @@ namespace Week14.Enemy
             return origin != null ? origin.position : GetDefaultProjectileOrigin();
         }
 
+        private Vector3 GetPattern7NormalProjectilePosition()
+        {
+            return GetFirePointProjectilePosition(pattern7.FirePoint);
+        }
+
+        private Vector3 GetPattern7SpecialProjectilePosition(int index)
+        {
+            IReadOnlyList<Transform> origins = pattern7.SpecialProjectileOrigins;
+            Transform origin = origins != null && index >= 0 && index < origins.Count ? origins[index] : null;
+            if (origin != null)
+            {
+                return origin.position;
+            }
+
+            return GetFirePointProjectilePosition(pattern7.FirePoint);
+        }
+
         private Transform GetFirePointProjectileTransform(FirePoint firePoint)
         {
             if (firePoint == null)
@@ -1816,9 +2217,9 @@ namespace Week14.Enemy
             return firePoint.ProjectileOrigin != null ? firePoint.ProjectileOrigin : firePoint.FireOrigin;
         }
 
-        private Vector3 GetPattern4ProjectilePosition()
+        private Vector3 GetPattern4ProjectilePosition(Pattern4Settings settings)
         {
-            return pattern4.ProjectileOrigin != null ? pattern4.ProjectileOrigin.position : GetDefaultProjectileOrigin();
+            return settings.ProjectileOrigin != null ? settings.ProjectileOrigin.position : GetDefaultProjectileOrigin();
         }
 
         private Vector3 GetDefaultProjectileOrigin()
@@ -1852,13 +2253,15 @@ namespace Week14.Enemy
         {
             SetFirePointActive(pattern3.FirePoint, false);
             SetFirePointActive(pattern5.FirePoint, false);
+            SetFirePointActive(pattern7.FirePoint, false);
         }
 
         protected override bool ShouldIgnoreBodyStateRenderer(SpriteRenderer renderer)
         {
             return renderer != null
                 && (IsUnderFirePoint(pattern3.FirePoint, renderer.transform)
-                    || IsUnderFirePoint(pattern5.FirePoint, renderer.transform));
+                    || IsUnderFirePoint(pattern5.FirePoint, renderer.transform)
+                    || IsUnderFirePoint(pattern7.FirePoint, renderer.transform));
         }
 
         private bool IsUnderFirePoint(FirePoint firePoint, Transform target)

@@ -334,7 +334,7 @@ MonoBehaviour:
   enrageShakeZoom: 0.12
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  maxBullets: 120
+  maxBullets: 100
   bulletEmptyExecutionSeconds: 10
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   bulletEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
@@ -371,8 +371,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.29959294, b: 0.23113209, a: 1}
-      launchedColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
+      chargingColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
+      launchedColor: {r: 0.1462264, g: 0.220251, b: 1, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
@@ -419,8 +419,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.3019608, b: 0.23137255, a: 1}
-      launchedColor: {r: 0.2509804, g: 0.5137255, b: 1, a: 1}
+      chargingColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
+      launchedColor: {r: 0.1462264, g: 0.220251, b: 1, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
@@ -431,13 +431,13 @@ MonoBehaviour:
     fireInterval: 0.2
     spawnSpacing: 1
     volleys:
+    - bulletCount: 1
+      fireInterval: 0.3
+      restSeconds: 2
     - bulletCount: 2
       fireInterval: 0.3
       restSeconds: 2
-    - bulletCount: 3
-      fireInterval: 0.3
-      restSeconds: 2
-    - bulletCount: 5
+    - bulletCount: 4
       fireInterval: 0.3
       restSeconds: 2
     effects:
@@ -619,11 +619,129 @@ MonoBehaviour:
         distance: 0.1
         frequency: 0.12
     pattern5BulletShakeDefaultApplied: 1
+  pattern6:
+    projectileOrigin: {fileID: 3064024220512520814}
+    slamUpOffset: 0
+    slamDownOffset: 0
+    slamRiseSeconds: 0.01
+    slamDropSeconds: 0.01
+    slamRecoverSeconds: 0
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 0.25
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      speed: 5
+      lifetime: 3
+      radius: 0.1
+      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
+      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      trailSeconds: 0.1
+      trailWidthMultiplier: 1
+      homingEnabled: 0
+      homingSeconds: 0
+      homingTurnDegreesPerSecond: 0
+    bulletCount: 30
+    waveCount: 5
+    waveInterval: 0.1
+    startAngleOffset: 0
+    spawnRadius: 0.25
+    effects:
+      explosion:
+        enabled: 1
+        color: {r: 1, g: 0.62, b: 0.18, a: 1}
+        scale: 1.45
+        count: 28
+      smoke:
+        enabled: 0
+        color: {r: 0.38, g: 0.48, b: 0.34, a: 0.72}
+        scale: 1.1
+        count: 10
+      smokeInterval: 0.12
+      muzzleFlash:
+        enabled: 0
+        color: {r: 1, g: 0.78, b: 0.26, a: 1}
+        scale: 1
+        count: 0
+      cameraShake:
+        enabled: 1
+        seconds: 0.16
+        distance: 0.25
+        frequency: 0.12
+  pattern7:
+    firePoint:
+      fireOrigin: {fileID: 5386927287202759199}
+      projectileOrigin: {fileID: 8950221499719562823}
+    specialProjectileOrigins:
+    - {fileID: 4751530550925763319}
+    - {fileID: 3329525432054548886}
+    normalProjectile:
+      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 1
+      speed: 7
+      lifetime: 3
+      radius: 0.12
+      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
+      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      trailSeconds: 0.1
+      trailWidthMultiplier: 3
+      homingEnabled: 0
+      homingSeconds: 0.8
+      homingTurnDegreesPerSecond: 540
+    specialProjectile:
+      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 2
+      chargeDriftSpeed: 1.5
+      aimAtPlayerWhileCharging: 0
+      speed: 12
+      lifetime: 3
+      radius: 0.1
+      chargingColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
+      launchedColor: {r: 0.1462264, g: 0.220251, b: 1, a: 1}
+      trailSeconds: 0.1
+      trailWidthMultiplier: 1
+      homingEnabled: 1
+      homingSeconds: 10
+      homingTurnDegreesPerSecond: 540
+    windupSeconds: 2
+    normalVolleyCount: 5
+    normalVolleyInterval: 0.18
+    specialBulletCount: 2
+    fanAngleDegrees: 42
+    normalSpawnSpacing: 0.16
+    specialSpawnForwardOffset: 0
+    effects:
+      explosion:
+        enabled: 0
+        color: {r: 1, g: 0.62, b: 0.18, a: 1}
+        scale: 1
+        count: 0
+      smoke:
+        enabled: 1
+        color: {r: 0.38, g: 0.48, b: 0.34, a: 0.72}
+        scale: 0.9
+        count: 8
+      smokeInterval: 0.12
+      muzzleFlash:
+        enabled: 1
+        color: {r: 1, g: 0.78, b: 0.26, a: 1}
+        scale: 1
+        count: 0
+      cameraShake:
+        enabled: 1
+        seconds: 0.05
+        distance: 0.06
+        frequency: 0.08
   phasePatterns:
   - phase: 1
-    patterns: 000000000100000003000000
+    patterns: 00000000010000000300000005000000
   - phase: 2
-    patterns: 0000000001000000020000000300000004000000
+    patterns: 00000000010000000200000003000000040000000500000006000000
   minPatternRecoverySeconds: 3
   maxPatternRecoverySeconds: 3
   showPatternBulletPreview: 1
@@ -631,8 +749,8 @@ MonoBehaviour:
   patternBulletPreviewSingleGroupFullHoldRatio: 0.55
   randomizePatterns: 1
   preventRandomRepeatPattern: 1
-  debugUseFixedPattern: 0
-  debugPattern: 0
+  debugUseFixedPattern: 1
+  debugPattern: 1
 --- !u!114 &2075240932106930298
 MonoBehaviour:
   m_ObjectHideFlags: 0
