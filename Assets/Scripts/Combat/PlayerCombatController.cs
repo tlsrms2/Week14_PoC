@@ -36,6 +36,8 @@ namespace Week14.Combat
         [SerializeField] private ExecutionImageEffect executionImage;
         [SerializeField] private PlayerHP playerHpView;
         [SerializeField, Min(0f)] private float finalDeathCameraReturnSeconds = 0.25f;
+        [SerializeField, Min(0f), Tooltip("보스 사망 연출이 끝난 후 게임승리 패널이 뜨기까지의 대기 시간입니다.")]
+        private float victoryPanelDelaySeconds = 0f;
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
         [SerializeField] private MouseParryReticle mouseParryReticle;
@@ -640,6 +642,7 @@ namespace Week14.Combat
             visual?.PlayShot();
             SoundManager.PlaySfx("PlayerPowerShot");
             PlayExecutionShotDim();
+            executionTarget.GetComponentInParent<BossAI>()?.PlayExecutionBarDrain();
 
             PlayerProjectile executionShot = PlayerProjectile.Spawn(
                 config.ProjectilePrefab,
@@ -700,6 +703,11 @@ namespace Week14.Combat
                         yield return WaitBeforeFinalDeathFocus();
                         CameraFollow2D finalDeathCamera = BeginFinalDeathCameraFocus(boss);
                         yield return boss.PlayFinalDeathSequence();
+                        if (victoryPanelDelaySeconds > 0f)
+                        {
+                            yield return new WaitForSeconds(victoryPanelDelaySeconds);
+                        }
+
                         if (executionTarget != null)
                         {
                             executionTarget.CompleteExecution(this, false);

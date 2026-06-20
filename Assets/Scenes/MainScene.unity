@@ -1223,6 +1223,8 @@ MonoBehaviour:
   executionWindowColor: {r: 0.95, g: 0.05, b: 0.05, a: 1}
   executionWindowBlinkSpeed: 1
   executionWindowBlinkMinAlpha: 0.35
+  executionDrainSeconds: 0.2
+  phaseRefillSeconds: 0.6
 --- !u!1 &754109857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +1853,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: maxBullets
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossLivesView
       value: 
@@ -4687,6 +4693,10 @@ PrefabInstance:
     - target: {fileID: 479005607939962125, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2278235474687056908, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: victoryPanelDelaySeconds
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalPosition.x

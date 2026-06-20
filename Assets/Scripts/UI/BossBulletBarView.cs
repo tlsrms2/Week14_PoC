@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Week14.Combat;
@@ -26,12 +27,17 @@ namespace Week14.UI
         [SerializeField, Min(0.1f)] private float executionWindowBlinkSpeed = 6f;
         [Tooltip("처형 가능 상태에서 깜빡일 때 가장 어두워지는 알파값입니다.")]
         [SerializeField, Range(0f, 1f)] private float executionWindowBlinkMinAlpha = 0.35f;
+        [Tooltip("처형의 마지막 발을 쏘는 순간, 남아있는 그로기 체력바가 0으로 줄어드는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float executionDrainSeconds = 0.2f;
+        [Tooltip("다음 페이즈로 넘어갈 때 체력바가 다시 가득 차오르는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float phaseRefillSeconds = 0.6f;
 
         private float currentRatio;
         private float fastGhostRatio;
         private float slowGhostRatio;
         private bool executionWindowActive;
         private int displayedBulletCount = -1;
+        private Coroutine ratioTransitionRoutine;
 
         private void OnEnable()
         {
@@ -80,6 +86,8 @@ namespace Week14.UI
 
         public void ClearExecutionWindow()
         {
+            StopRatioTransition();
+
             if (!executionWindowActive)
             {
                 return;
@@ -94,6 +102,69 @@ namespace Week14.UI
             }
 
             Refresh();
+        }
+
+        public void PlayExecutionDrain()
+        {
+            executionWindowActive = true;
+            StopRatioTransition();
+            ratioTransitionRoutine = StartCoroutine(AnimateRatio(currentRatio, 0f, executionDrainSeconds, true));
+        }
+
+        public void PlayPhaseRefill()
+        {
+            executionWindowActive = false;
+            displayedBulletCount = -1;
+            StopRatioTransition();
+            ratioTransitionRoutine = StartCoroutine(AnimateRatio(currentRatio, 1f, phaseRefillSeconds, false));
+        }
+
+        private void StopRatioTransition()
+        {
+            if (ratioTransitionRoutine != null)
+            {
+                StopCoroutine(ratioTransitionRoutine);
+                ratioTransitionRoutine = null;
+            }
+        }
+
+        private IEnumerator AnimateRatio(float from, float to, float durationSeconds, bool blinkWhileAnimating)
+        {
+            float duration = Mathf.Max(0.01f, durationSeconds);
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float ratio = Mathf.Lerp(from, to, Mathf.Clamp01(elapsed / duration));
+                ApplyRatio(ratio, blinkWhileAnimating);
+                yield return null;
+            }
+
+            ApplyRatio(to, blinkWhileAnimating);
+
+            if (!blinkWhileAnimating)
+            {
+                executionWindowActive = false;
+                displayedBulletCount = target != null ? Mathf.Max(0, target.CurrentBullets) : -1;
+            }
+
+            ratioTransitionRoutine = null;
+        }
+
+        private void ApplyRatio(float ratio, bool useExecutionColor)
+        {
+            currentRatio = ratio;
+            fastGhostRatio = ratio;
+            slowGhostRatio = ratio;
+            SetFillAmount(foregroundImage, ratio);
+            SetFillAmount(fastGhostImage, ratio);
+            SetFillAmount(slowGhostImage, ratio);
+
+            if (foregroundImage != null && !useExecutionColor)
+            {
+                foregroundImage.color = ResolveBarColor(ratio, 1f);
+            }
         }
 
         private void Subscribe()

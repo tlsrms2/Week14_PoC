@@ -285,6 +285,11 @@ namespace Week14.Enemy
             OnBossTick();
         }
 
+        public void PlayExecutionBarDrain()
+        {
+            bossBulletBarView?.PlayExecutionDrain();
+        }
+
         public void SetExecutionLocked(bool locked)
         {
             isExecutionLocked = locked;
@@ -525,7 +530,7 @@ namespace Week14.Enemy
                 bulletEmptyEndsAt = 0f;
                 bullets.Configure(maxBullets, true); // 체력(탄환) 풀 회복
                 ApplyBodyStateColor();
-                bossBulletBarView?.ClearExecutionWindow();
+                bossBulletBarView?.PlayPhaseRefill();
                 OnBulletEmptyRecovered(); // 다음 패턴을 위한 훅 실행
                 
                 return true; // 목숨이 남아있어 부활했음을 반환
