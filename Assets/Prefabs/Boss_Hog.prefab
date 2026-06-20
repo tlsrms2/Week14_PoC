@@ -749,8 +749,8 @@ MonoBehaviour:
   patternBulletPreviewSingleGroupFullHoldRatio: 0.55
   randomizePatterns: 1
   preventRandomRepeatPattern: 1
-  debugUseFixedPattern: 1
-  debugPattern: 1
+  debugUseFixedPattern: 0
+  debugPattern: 0
 --- !u!114 &2075240932106930298
 MonoBehaviour:
   m_ObjectHideFlags: 0
