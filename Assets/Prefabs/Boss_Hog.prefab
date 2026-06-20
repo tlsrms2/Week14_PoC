@@ -379,8 +379,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
-      launchedColor: {r: 0.1462264, g: 0.220251, b: 1, a: 1}
+      chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
+      launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
@@ -427,8 +427,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
-      launchedColor: {r: 0.1462264, g: 0.220251, b: 1, a: 1}
+      chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
+      launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
@@ -709,8 +709,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 0.25098038, g: 0.5136879, b: 1, a: 1}
-      launchedColor: {r: 0.1462264, g: 0.220251, b: 1, a: 1}
+      chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
+      launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 1
