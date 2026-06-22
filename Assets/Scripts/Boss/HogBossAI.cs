@@ -1,4 +1,4 @@
-using System;
+using Action = System.Action;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -594,6 +594,8 @@ namespace Week14.Enemy
         private readonly HogPatternPreviewPresenter patternPreviewPresenter = new();
         private readonly HogPattern7GuideView pattern7GuideView = new();
         private readonly HogBodyRootSlamController bodyRootSlamController = new();
+        private readonly HogPatternRecoveryController patternRecoveryController = new();
+        private readonly HogPatternMovement patternMovement = new();
         private readonly List<int> patternBulletPreviewGroups = new();
 
         protected override bool RotatesBodyToPlayer => false;
@@ -632,8 +634,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            PatternKind pattern = SelectPattern();
-            patternRoutine = StartCoroutine(RunPattern(pattern));
+            patternRoutine = StartCoroutine(RunPatternLoop());
         }
 
         protected override void CancelBossAction()
@@ -679,6 +680,28 @@ namespace Week14.Enemy
             patternSelector.EnsurePhasePatternLabels(phasePatterns);
         }
 
+        private IEnumerator RunPatternLoop()
+        {
+            PatternKind pattern = SelectPattern();
+            while (true)
+            {
+                yield return RunPattern(pattern);
+                yield return ApplyPendingEnrageIfAny();
+
+                Stop();
+                PatternKind nextPattern = SelectPattern();
+                float recoverySeconds = patternRecoveryController.GetRecoverySeconds(
+                    minPatternRecoverySeconds,
+                    maxPatternRecoverySeconds);
+                if (recoverySeconds > 0f)
+                {
+                    yield return RunPatternRecovery(nextPattern, recoverySeconds);
+                }
+
+                pattern = nextPattern;
+            }
+        }
+
         private IEnumerator RunPattern(PatternKind pattern)
         {
             patternSelector.RecordExecuted(pattern);
@@ -711,101 +734,33 @@ namespace Week14.Enemy
                     yield return RunPattern1();
                     break;
             }
-
-            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
-            yield return ApplyPendingEnrageIfAny();
-
-            Stop();
-            PatternKind nextPattern = SelectPattern();
-            float recoverySeconds = GetPatternRecoverySeconds();
-            if (recoverySeconds > 0f)
-            {
-                yield return RunPatternRecovery(nextPattern, recoverySeconds);
-            }
-
-            patternRoutine = StartCoroutine(RunPattern(nextPattern));
-        }
-
-        private float GetPatternRecoverySeconds()
-        {
-            float min = Mathf.Max(0f, minPatternRecoverySeconds);
-            float max = Mathf.Max(min, maxPatternRecoverySeconds);
-            return Random.Range(min, max);
         }
 
         private IEnumerator RunPatternRecovery(PatternKind nextPattern, float duration)
         {
-            float remaining = duration;
-            BeginPatternBulletPreview(nextPattern, duration);
-            BeginPatternRecoveryTelegraph(nextPattern);
-
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                UpdatePatternBulletPreviewLoading(duration, remaining);
-                UpdatePatternRecoveryTelegraph(nextPattern);
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
+            yield return patternRecoveryController.RunRecovery(
+                nextPattern,
+                duration,
+                pattern5.FirePoint,
+                pattern7.FirePoint,
+                BeginPatternBulletPreview,
+                UpdatePatternBulletPreviewLoading,
+                SetFirePointActive,
+                RotateFirePointToPlayer,
+                IsBossExecutionPaused,
+                Stop);
         }
 
         private IEnumerator ReloadPatternWavePreview(PatternKind pattern, float duration)
         {
-            float reloadDuration = Mathf.Max(0f, duration);
-            float remaining = reloadDuration;
-            if (remaining <= 0f)
-            {
-                BeginPatternBulletPreviewPlayback(pattern);
-                yield break;
-            }
-
-            BeginPatternBulletPreview(pattern, remaining);
-
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                UpdatePatternBulletPreviewLoading(reloadDuration, remaining);
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
-
-            BeginPatternBulletPreviewPlayback(pattern);
-        }
-
-        private void BeginPatternRecoveryTelegraph(PatternKind nextPattern)
-        {
-            if (nextPattern != PatternKind.Pattern5 && nextPattern != PatternKind.Pattern7)
-            {
-                return;
-            }
-
-            FirePoint firePoint = nextPattern == PatternKind.Pattern7 ? pattern7.FirePoint : pattern5.FirePoint;
-            SetFirePointActive(firePoint, true);
-            RotateFirePointToPlayer(firePoint);
-        }
-
-        private void UpdatePatternRecoveryTelegraph(PatternKind nextPattern)
-        {
-            if (nextPattern == PatternKind.Pattern5)
-            {
-                RotateFirePointToPlayer(pattern5.FirePoint);
-            }
-            else if (nextPattern == PatternKind.Pattern7)
-            {
-                RotateFirePointToPlayer(pattern7.FirePoint);
-            }
+            yield return patternRecoveryController.ReloadWavePreview(
+                pattern,
+                duration,
+                BeginPatternBulletPreview,
+                UpdatePatternBulletPreviewLoading,
+                BeginPatternBulletPreviewPlayback,
+                IsBossExecutionPaused,
+                Stop);
         }
 
         private void BeginPatternBulletPreview(PatternKind nextPattern, float duration)
@@ -1304,29 +1259,12 @@ namespace Week14.Enemy
 
         private IEnumerator WaitPatternSeconds(float seconds, Action onTick)
         {
-            float remaining = Mathf.Max(0f, seconds);
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                onTick?.Invoke();
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
+            yield return patternMovement.WaitSeconds(seconds, onTick, IsBossExecutionPaused, Stop);
         }
 
         private IEnumerator WaitWhileExecutionPaused()
         {
-            while (IsExecutionPaused)
-            {
-                Stop();
-                yield return null;
-            }
+            yield return patternMovement.WaitWhileExecutionPaused(IsBossExecutionPaused, Stop);
         }
 
         private void MoveDuringPattern2Delay()
@@ -1403,19 +1341,7 @@ namespace Week14.Enemy
 
         private void MoveTowardPlayer(float speedMultiplier)
         {
-            if (Player == null || Body == null)
-            {
-                return;
-            }
-
-            Vector2 direction = (Vector2)Player.position - (Vector2)transform.position;
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                Body.linearVelocity = Vector2.zero;
-                return;
-            }
-
-            Body.linearVelocity = direction.normalized * (MoveSpeed * Mathf.Max(0f, speedMultiplier));
+            patternMovement.MoveTowardPlayer(Player, Body, transform, MoveSpeed, speedMultiplier);
         }
 
         private IEnumerator SlamPattern4BodyRoot(Pattern4Settings settings)
