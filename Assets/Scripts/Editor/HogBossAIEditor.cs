@@ -323,11 +323,34 @@ public sealed class HogBossAIEditor : Editor
 
     private static void DrawChild(SerializedProperty root, string childName)
     {
-        SerializedProperty child = root.FindPropertyRelative(childName);
+        SerializedProperty child = FindChild(root, childName);
         if (child != null)
         {
             EditorGUILayout.PropertyField(child, true);
         }
+    }
+
+    private static SerializedProperty FindChild(SerializedProperty root, string childName)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            return child;
+        }
+
+        SerializedProperty iterator = root.Copy();
+        SerializedProperty end = iterator.GetEndProperty();
+        bool enterChildren = true;
+        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        {
+            enterChildren = false;
+            if (iterator.name == childName)
+            {
+                return iterator.Copy();
+            }
+        }
+
+        return null;
     }
 
     private void DrawProperty(string propertyName)
