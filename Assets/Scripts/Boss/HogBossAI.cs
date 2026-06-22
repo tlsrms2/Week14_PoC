@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Audio;
-using Week14.Bootstrap;
 using Week14.Combat;
-using Week14.UI;
 
 namespace Week14.Enemy
 {
@@ -14,13 +13,8 @@ namespace Week14.Enemy
         private static readonly Color DefaultHogSmokeColor = new(0.38f, 0.48f, 0.34f, 0.72f);
         private static readonly Color DefaultHogExplosionColor = new(1f, 0.62f, 0.18f, 1f);
         private static readonly Color DefaultHogMuzzleFlashColor = new(1f, 0.78f, 0.26f, 1f);
-        private const string WallLayerName = "Wall";
-        private const int Pattern7GuideMaxDashCountPerLine = 160;
-        private const float Pattern7GuideDashLength = 0.2f;
-        private const float Pattern7GuideDashGap = 0.14f;
-        private static Material pattern7GuideMaterial;
 
-        private enum PatternKind
+        internal enum PatternKind
         {
             Pattern1,
             Pattern2,
@@ -32,7 +26,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class PhasePatternSet
+        internal sealed class PhasePatternSet
         {
             [SerializeField, Min(1), Tooltip("인스펙터에서 구분하기 위한 페이즈 번호입니다. 실제 적용은 배열 순서 기준입니다.")]
             private int phase = 1;
@@ -59,7 +53,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class ProjectileSettings
+        internal sealed class ProjectileSettings
         {
             [SerializeField, Tooltip("이 설정으로 생성할 적 탄환 프리팹입니다.")] private EnemyProjectile prefab;
             [SerializeField, Min(0), Tooltip("플레이어에게 적중했을 때 플레이어 탄환을 감소시키는 양입니다.")] private int bulletDamage = 1;
@@ -95,7 +89,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class AlternatingProjectileOrigins
+        internal sealed class AlternatingProjectileOrigins
         {
             [SerializeField] private Transform firstProjectileOrigin;
             [SerializeField] private Transform secondProjectileOrigin;
@@ -119,7 +113,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class FirePoint
+        internal sealed class FirePoint
         {
             [SerializeField] private Transform fireOrigin;
             [SerializeField] private Transform projectileOrigin;
@@ -178,7 +172,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class ParticleEffectSettings
+        internal sealed class ParticleEffectSettings
         {
             [SerializeField] private bool enabled = true;
             [SerializeField] private Color color = Color.white;
@@ -211,7 +205,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class CameraShakeSettings
+        internal sealed class CameraShakeSettings
         {
             [SerializeField] private bool enabled;
             [SerializeField, Min(0f)] private float seconds = 0.14f;
@@ -244,7 +238,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class PatternEffectSettings
+        internal sealed class PatternEffectSettings
         {
             [Header("Explosion")]
             [SerializeField] private ParticleEffectSettings explosion = ParticleEffectSettings.Create(true, DefaultHogExplosionColor, 1f, 18);
@@ -315,7 +309,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class Pattern1Settings
+        internal sealed class Pattern1Settings
         {
             [SerializeField] private AlternatingProjectileOrigins projectileOrigins = new();
             [SerializeField, Tooltip("패턴1에서 사용할 일반 탄환 설정입니다.")] private ProjectileSettings projectile = new();
@@ -340,7 +334,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class Pattern2Settings
+        internal sealed class Pattern2Settings
         {
             [SerializeField] private AlternatingProjectileOrigins projectileOrigins = new();
 
@@ -462,7 +456,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class Pattern4Settings
+        internal sealed class Pattern4Settings
         {
             [SerializeField] private Transform projectileOrigin;
             [SerializeField, Min(0f)] private float slamUpOffset = 1.2f;
@@ -496,7 +490,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class Pattern5Settings
+        internal sealed class Pattern5Settings
         {
             [SerializeField] private FirePoint firePoint = new();
 
@@ -534,7 +528,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class Pattern7Settings
+        internal sealed class Pattern7Settings
         {
             [SerializeField] private FirePoint firePoint = new();
             [SerializeField, Tooltip("특수 탄환별 소환 위치 목록입니다. 발사 개수보다 부족한 요소는 FirePoint의 Projectile Origin을 사용합니다.")]
@@ -596,16 +590,11 @@ namespace Week14.Enemy
         [SerializeField, Tooltip("디버그용으로 고정 실행할 패턴입니다.")] private PatternKind debugPattern = PatternKind.Pattern1;
 
         private Coroutine patternRoutine;
+        private readonly HogPatternSelector patternSelector = new();
+        private readonly HogPatternPreviewPresenter patternPreviewPresenter = new();
+        private readonly HogPattern7GuideView pattern7GuideView = new();
+        private readonly HogBodyRootSlamController bodyRootSlamController = new();
         private readonly List<int> patternBulletPreviewGroups = new();
-        private readonly List<LineRenderer> pattern7GuideLines = new();
-        private BossPatternBulletLineView patternBulletPreviewView;
-        private int patternBulletPreviewGroupIndex;
-        private float patternBulletPreviewFillDuration;
-        private int nextPatternIndex;
-        private bool hasLastPattern;
-        private PatternKind lastPattern;
-        private bool isPattern4BodyRootMoved;
-        private Vector3 pattern4BodyRootBaseLocalPosition;
 
         protected override bool RotatesBodyToPlayer => false;
 
@@ -663,142 +652,36 @@ namespace Week14.Enemy
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
-            nextPatternIndex = 0;
-            hasLastPattern = false;
+            patternSelector.Reset();
             EnsurePhasePatternLabels();
             HidePatternBulletPreview();
         }
 
         private PatternKind SelectPattern()
         {
-            if (debugUseFixedPattern)
-            {
-                return debugPattern;
-            }
-
-            List<PatternKind> availablePatterns = GetCurrentPhasePatterns();
-            if (randomizePatterns)
-            {
-                return SelectRandomPattern(availablePatterns);
-            }
-
-            PatternKind pattern = availablePatterns[nextPatternIndex % availablePatterns.Count];
-            nextPatternIndex++;
-            return pattern;
-        }
-
-        private PatternKind SelectRandomPattern(List<PatternKind> availablePatterns)
-        {
-            if (availablePatterns == null || availablePatterns.Count == 0)
-            {
-                return PatternKind.Pattern1;
-            }
-
-            if (!preventRandomRepeatPattern || !hasLastPattern || availablePatterns.Count <= 1)
-            {
-                return availablePatterns[Random.Range(0, availablePatterns.Count)];
-            }
-
-            int repeatCount = 0;
-            for (int i = 0; i < availablePatterns.Count; i++)
-            {
-                if (availablePatterns[i] == lastPattern)
-                {
-                    repeatCount++;
-                }
-            }
-
-            int candidateCount = availablePatterns.Count - repeatCount;
-            if (candidateCount <= 0)
-            {
-                return availablePatterns[Random.Range(0, availablePatterns.Count)];
-            }
-
-            int selectedIndex = Random.Range(0, candidateCount);
-            for (int i = 0; i < availablePatterns.Count; i++)
-            {
-                if (availablePatterns[i] == lastPattern)
-                {
-                    continue;
-                }
-
-                if (selectedIndex == 0)
-                {
-                    return availablePatterns[i];
-                }
-
-                selectedIndex--;
-            }
-
-            return availablePatterns[Random.Range(0, availablePatterns.Count)];
-        }
-
-        private List<PatternKind> GetCurrentPhasePatterns()
-        {
             EnsurePhasePatternSlots();
-            PhasePatternSet phasePatternSet = GetCurrentPhasePatternSet();
-            if (phasePatternSet != null && phasePatternSet.Patterns != null && phasePatternSet.Patterns.Count > 0)
-            {
-                return phasePatternSet.Patterns;
-            }
-
-            return GetDefaultPatternList();
-        }
-
-        private PhasePatternSet GetCurrentPhasePatternSet()
-        {
-            if (phasePatterns == null || phasePatterns.Count == 0)
-            {
-                return null;
-            }
-
-            int index = Mathf.Clamp(CurrentPhaseIndex, 0, phasePatterns.Count - 1);
-            return phasePatterns[index];
+            return patternSelector.Select(
+                phasePatterns,
+                CurrentPhaseIndex,
+                randomizePatterns,
+                preventRandomRepeatPattern,
+                debugUseFixedPattern,
+                debugPattern);
         }
 
         private void EnsurePhasePatternSlots()
         {
-            phasePatterns ??= new List<PhasePatternSet>();
-            while (phasePatterns.Count < MaxLives)
-            {
-                phasePatterns.Add(new PhasePatternSet { Phase = phasePatterns.Count + 1 });
-            }
+            phasePatterns = patternSelector.EnsurePhasePatternSlots(phasePatterns, MaxLives);
         }
 
         private void EnsurePhasePatternLabels()
         {
-            if (phasePatterns == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < phasePatterns.Count; i++)
-            {
-                if (phasePatterns[i] != null)
-                {
-                    phasePatterns[i].Phase = i + 1;
-                }
-            }
-        }
-
-        private static List<PatternKind> GetDefaultPatternList()
-        {
-            return new List<PatternKind>
-            {
-                PatternKind.Pattern1,
-                PatternKind.Pattern2,
-                PatternKind.Pattern3,
-                PatternKind.Pattern4,
-                PatternKind.Pattern5,
-                PatternKind.Pattern6,
-                PatternKind.Pattern7
-            };
+            patternSelector.EnsurePhasePatternLabels(phasePatterns);
         }
 
         private IEnumerator RunPattern(PatternKind pattern)
         {
-            lastPattern = pattern;
-            hasLastPattern = true;
+            patternSelector.RecordExecuted(pattern);
             BeginPatternBulletPreviewPlayback(pattern);
 
             switch (pattern)
@@ -872,11 +755,6 @@ namespace Week14.Enemy
             }
         }
 
-        private IEnumerator ReloadPattern4WavePreview(float duration)
-        {
-            yield return ReloadPatternWavePreview(PatternKind.Pattern4, duration);
-        }
-
         private IEnumerator ReloadPatternWavePreview(PatternKind pattern, float duration)
         {
             float reloadDuration = Mathf.Max(0f, duration);
@@ -932,207 +810,56 @@ namespace Week14.Enemy
 
         private void BeginPatternBulletPreview(PatternKind nextPattern, float duration)
         {
-            if (!showPatternBulletPreview || duration <= 0f)
-            {
-                HidePatternBulletPreview();
-                return;
-            }
-
             BuildPatternBulletPreviewGroups(nextPattern, patternBulletPreviewGroups);
-            if (patternBulletPreviewGroups.Count == 0)
-            {
-                HidePatternBulletPreview();
-                return;
-            }
-
-            BossPatternBulletLineView view = EnsurePatternBulletPreviewView();
-            if (view == null)
-            {
-                return;
-            }
-
-            float holdSeconds = GetPatternBulletPreviewFullHoldSeconds(duration);
-            patternBulletPreviewFillDuration = duration - holdSeconds;
-            view.ShowLoading(patternBulletPreviewGroups, 0);
-        }
-
-        private float GetPatternBulletPreviewFullHoldSeconds(float duration)
-        {
-            float maxHoldSeconds = Mathf.Max(0f, duration - 0.01f);
-            float holdSeconds = Mathf.Clamp(patternBulletPreviewFullHoldSeconds, 0f, maxHoldSeconds);
-            if (patternBulletPreviewGroups.Count == 1)
-            {
-                float singleGroupHoldSeconds = duration * Mathf.Clamp01(patternBulletPreviewSingleGroupFullHoldRatio);
-                holdSeconds = Mathf.Max(holdSeconds, singleGroupHoldSeconds);
-            }
-
-            return Mathf.Clamp(holdSeconds, 0f, maxHoldSeconds);
+            ConfigurePatternPreviewPresenter();
+            patternPreviewPresenter.BeginLoading(patternBulletPreviewGroups, duration);
         }
 
         private void UpdatePatternBulletPreviewLoading(float duration, float remaining)
         {
-            if (!showPatternBulletPreview || patternBulletPreviewView == null)
-            {
-                return;
-            }
-
-            float elapsed = Mathf.Max(0f, duration - remaining);
-            float progress = Mathf.Clamp01(elapsed / Mathf.Max(0.01f, patternBulletPreviewFillDuration));
-            int fullGroupCount = progress >= 1f
-                ? patternBulletPreviewGroups.Count
-                : Mathf.Clamp(Mathf.FloorToInt(progress * patternBulletPreviewGroups.Count + 0.0001f), 0, patternBulletPreviewGroups.Count);
-            patternBulletPreviewView.ShowLoading(patternBulletPreviewGroups, fullGroupCount);
+            ConfigurePatternPreviewPresenter();
+            patternPreviewPresenter.UpdateLoading(duration, remaining);
         }
 
         private void BeginPatternBulletPreviewPlayback(PatternKind pattern)
         {
-            if (!showPatternBulletPreview)
-            {
-                HidePatternBulletPreview();
-                return;
-            }
-
             BuildPatternBulletPreviewGroups(pattern, patternBulletPreviewGroups);
-            if (patternBulletPreviewGroups.Count == 0)
-            {
-                HidePatternBulletPreview();
-                return;
-            }
-
-            BossPatternBulletLineView view = EnsurePatternBulletPreviewView();
-            if (view == null)
-            {
-                return;
-            }
-
-            patternBulletPreviewGroupIndex = 0;
-            view.ShowNextGroup(patternBulletPreviewGroups, patternBulletPreviewGroupIndex);
+            ConfigurePatternPreviewPresenter();
+            patternPreviewPresenter.BeginPlayback(patternBulletPreviewGroups);
         }
 
         private void AdvancePatternBulletPreviewGroup()
         {
-            if (!showPatternBulletPreview || patternBulletPreviewView == null)
-            {
-                return;
-            }
-
-            patternBulletPreviewGroupIndex++;
-            patternBulletPreviewView.ShowNextGroup(patternBulletPreviewGroups, patternBulletPreviewGroupIndex);
-        }
-
-        private BossPatternBulletLineView EnsurePatternBulletPreviewView()
-        {
-            if (patternBulletPreviewView != null)
-            {
-                patternBulletPreviewView.SetTarget(BodyRoot != null ? BodyRoot : transform);
-                return patternBulletPreviewView;
-            }
-
-            patternBulletPreviewView = GetComponent<BossPatternBulletLineView>();
-            if (patternBulletPreviewView == null)
-            {
-                patternBulletPreviewView = GetComponentInChildren<BossPatternBulletLineView>(true);
-            }
-
-            if (patternBulletPreviewView == null)
-            {
-                patternBulletPreviewView = gameObject.AddComponent<BossPatternBulletLineView>();
-            }
-
-            patternBulletPreviewView.SetTarget(BodyRoot != null ? BodyRoot : transform);
-            return patternBulletPreviewView;
+            ConfigurePatternPreviewPresenter();
+            patternPreviewPresenter.AdvanceGroup();
         }
 
         private void HidePatternBulletPreview()
         {
-            patternBulletPreviewGroupIndex = 0;
-            patternBulletPreviewFillDuration = 0f;
-            patternBulletPreviewView?.Hide();
+            patternPreviewPresenter.Hide();
+        }
+
+        private void ConfigurePatternPreviewPresenter()
+        {
+            patternPreviewPresenter.Configure(
+                this,
+                BodyRoot != null ? BodyRoot : transform,
+                showPatternBulletPreview,
+                patternBulletPreviewFullHoldSeconds,
+                patternBulletPreviewSingleGroupFullHoldRatio);
         }
 
         private void BuildPatternBulletPreviewGroups(PatternKind pattern, List<int> groups)
         {
-            groups.Clear();
-
-            switch (pattern)
-            {
-                case PatternKind.Pattern1:
-                    AddRepeatedGroups(groups, 1, Mathf.Max(1, pattern1.RadialBulletCount));
-                    break;
-                case PatternKind.Pattern2:
-                    AddPattern2PreviewGroups(groups);
-                    break;
-                case PatternKind.Pattern3:
-                    groups.Add(1);
-                    break;
-                case PatternKind.Pattern4:
-                    groups.Add(Mathf.Max(1, pattern4.BulletCount));
-                    break;
-                case PatternKind.Pattern5:
-                    AddRepeatedGroups(
-                        groups,
-                        pattern5.FireInterval <= 0f ? Mathf.Max(1, pattern5.BulletCount) : 1,
-                        pattern5.FireInterval <= 0f ? 1 : Mathf.Max(1, pattern5.BulletCount));
-                    break;
-                case PatternKind.Pattern6:
-                    groups.Add(Mathf.Max(1, pattern6.BulletCount));
-                    break;
-                case PatternKind.Pattern7:
-                    AddPattern7PreviewGroups(groups);
-                    break;
-            }
-        }
-
-        private void AddPattern7PreviewGroups(List<int> groups)
-        {
-            int volleyCount = Mathf.Max(1, pattern7.NormalVolleyCount);
-            int specialBulletCount = Mathf.Max(0, pattern7.SpecialBulletCount);
-            if (pattern7.NormalVolleyInterval <= 0f)
-            {
-                groups.Add(volleyCount * 3 + specialBulletCount);
-                return;
-            }
-
-            groups.Add(3 + specialBulletCount);
-            AddRepeatedGroups(groups, 3, volleyCount - 1);
-        }
-
-        private void AddPattern2PreviewGroups(List<int> groups)
-        {
-            IReadOnlyList<Pattern2Settings.VolleySettings> volleys = pattern2.Volleys;
-            if (volleys == null || volleys.Count == 0)
-            {
-                return;
-            }
-
-            for (int i = 0; i < volleys.Count; i++)
-            {
-                Pattern2Settings.VolleySettings volley = volleys[i];
-                if (volley == null)
-                {
-                    continue;
-                }
-
-                int bulletCount = Mathf.Max(1, volley.BulletCount);
-                if (volley.FireInterval <= 0f)
-                {
-                    groups.Add(bulletCount);
-                }
-                else
-                {
-                    AddRepeatedGroups(groups, 1, bulletCount);
-                }
-            }
-        }
-
-        private static void AddRepeatedGroups(List<int> groups, int groupSize, int groupCount)
-        {
-            int count = Mathf.Max(0, groupCount);
-            int size = Mathf.Max(1, groupSize);
-            for (int i = 0; i < count; i++)
-            {
-                groups.Add(size);
-            }
+            HogPatternPreviewGroupBuilder.Build(
+                pattern,
+                pattern1,
+                pattern2,
+                pattern4,
+                pattern5,
+                pattern6,
+                pattern7,
+                groups);
         }
 
         private IEnumerator RunPattern1()
@@ -1173,8 +900,8 @@ namespace Week14.Enemy
                 
                     if (projectile != null)
                     {
-                        PlayOriginBurstEffects(pattern1.Effects, origin);
-                        PlaySfxOnLaunch(projectile, "BossSpecialShot");
+                        HogPatternEffects.PlayOriginBurst(pattern1.Effects, origin);
+                        HogPatternEffects.PlaySfxOnLaunch(projectile, "BossSpecialShot");
                         SoundManager.PlaySfx("BossNormalShot");
                     }
                     fired++;
@@ -1223,7 +950,7 @@ namespace Week14.Enemy
 
                     if (bulletIndex < volleyBulletCount - 1 && volley.FireInterval > 0f)
                     {
-                        yield return WaitPattern2Seconds(volley.FireInterval);
+                        yield return WaitPatternSeconds(volley.FireInterval, MoveDuringPattern2Delay);
                     }
                 }
 
@@ -1234,7 +961,7 @@ namespace Week14.Enemy
 
                 if (volleyIndex < volleys.Count - 1 && volley.RestSeconds > 0f)
                 {
-                    yield return WaitPattern2Seconds(volley.RestSeconds);
+                    yield return WaitPatternSeconds(volley.RestSeconds, MoveDuringPattern2Delay);
                 }
             }
         }
@@ -1266,9 +993,9 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            PlayOriginBurstEffects(pattern3.Effects, origin);
-            PlaySfxOnLaunch(projectile, "BossNormalShot");
-            PlayBossBombOnRadialSplit(projectile);
+            HogPatternEffects.PlayOriginBurst(pattern3.Effects, origin);
+            HogPatternEffects.PlaySfxOnLaunch(projectile, "BossNormalShot");
+            HogPatternEffects.PlayBossBombOnRadialSplit(projectile);
             projectile.ConfigureChargeAnchor(projectileAnchor);
             projectile.ConfigureProjectileSize(radius);
             projectile.ConfigureChargeMotion(0f, true, false, pattern3.AimSpreadDegrees);
@@ -1309,7 +1036,7 @@ namespace Week14.Enemy
                     trackingStopped = true;
                 }
 
-                PlaySmokeIfDue(ref nextSmokeAt, pattern3.Effects, GetFirePointProjectilePosition(pattern3.FirePoint));
+                HogPatternEffects.PlaySmokeIfDue(ref nextSmokeAt, pattern3.Effects, GetFirePointProjectilePosition(pattern3.FirePoint));
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -1321,7 +1048,7 @@ namespace Week14.Enemy
                 Vector2 launchDirection = projectile.IncomingDirection.sqrMagnitude > 0.0001f
                     ? projectile.IncomingDirection
                     : GetDirectionToPlayer(launchOrigin);
-                PlayMuzzleFlashIfEnabled(pattern3.Effects, launchOrigin, launchDirection);
+                HogPatternEffects.PlayMuzzleFlashIfEnabled(pattern3.Effects, launchOrigin, launchDirection);
             }
 
             AdvancePatternBulletPreviewGroup();
@@ -1385,7 +1112,7 @@ namespace Week14.Enemy
 
                 Stop();
                 RotateFirePointToPlayer(pattern5.FirePoint);
-                PlaySmokeIfDue(ref nextSmokeAt, pattern5.Effects, GetFirePointProjectilePosition(pattern5.FirePoint));
+                HogPatternEffects.PlaySmokeIfDue(ref nextSmokeAt, pattern5.Effects, GetFirePointProjectilePosition(pattern5.FirePoint));
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -1425,7 +1152,7 @@ namespace Week14.Enemy
 
                 if (pattern5.FireInterval > 0f && i < bulletCount - 1)
                 {
-                    yield return WaitPattern5Seconds(pattern5.FireInterval);
+                    yield return WaitPatternSeconds(pattern5.FireInterval, Stop);
                 }
             }
 
@@ -1459,7 +1186,7 @@ namespace Week14.Enemy
                 Vector3 guideOrigin = GetPattern7NormalProjectilePosition();
                 Vector2 guideDirection = GetDirectionToPlayer(guideOrigin);
                 UpdatePattern7GuideLines(guideOrigin, guideDirection);
-                PlaySmokeIfDue(ref nextSmokeAt, pattern7.Effects, guideOrigin);
+                HogPatternEffects.PlaySmokeIfDue(ref nextSmokeAt, pattern7.Effects, guideOrigin);
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -1493,7 +1220,7 @@ namespace Week14.Enemy
 
                 if (pattern7.NormalVolleyInterval > 0f && volleyIndex < volleyCount - 1)
                 {
-                    yield return WaitPattern7Seconds(pattern7.NormalVolleyInterval);
+                    yield return WaitPatternSeconds(pattern7.NormalVolleyInterval, Stop);
                 }
             }
 
@@ -1506,40 +1233,13 @@ namespace Week14.Enemy
             HidePattern7GuideLines();
         }
 
-        private EnemyProjectile FireProjectileAtPlayer(ProjectileSettings settings, Vector3 origin)
-        {
-            Vector2 direction = GetDirectionToPlayer(origin);
-            return FireConfiguredProjectileWithPlayerLaunchAim(settings, origin, direction);
-        }
-
-        private void FireRadialBurst(ProjectileSettings settings, int bulletCount, float startAngleDegrees)
-        {
-            Vector3 origin = GetDefaultProjectileOrigin();
-            int count = Mathf.Max(1, bulletCount);
-            float step = 360f / count;
-
-            for (int i = 0; i < count; i++)
-            {
-                FireConfiguredProjectile(settings, origin, AngleToDirection(startAngleDegrees + step * i));
-            }
-        }
-        
         private void FirePattern4Wave(Pattern4Settings settings, float startAngleDegrees)
         {
-            SoundManager.PlaySfx("Smash");
-            Vector3 center = GetPattern4ProjectilePosition(settings);
-            int count = Mathf.Max(1, settings.BulletCount);
-            
-            float step = 360f / count;
-            float radius = Mathf.Max(0f, settings.SpawnRadius);
-
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 direction = AngleToDirection(startAngleDegrees + step * i);
-                Vector3 origin = center + (Vector3)(direction * radius);
-        
-                FireConfiguredProjectileWithoutPlayerAim(settings.Projectile, origin, direction);
-            }
+            HogPatternShotEmitter.FirePattern4Wave(
+                settings,
+                GetPattern4ProjectilePosition(settings),
+                startAngleDegrees,
+                FireConfiguredProjectileWithoutPlayerAim);
         }
 
         private void FireMachinegunBullet(int bulletIndex)
@@ -1547,260 +1247,62 @@ namespace Week14.Enemy
             bool hasConfiguredOrigin = pattern2.ProjectileOrigins != null && pattern2.ProjectileOrigins.HasAny;
             Vector3 origin = GetAlternatingProjectilePosition(pattern2.ProjectileOrigins, bulletIndex);
             Vector2 direction = GetDirectionToPlayer(origin);
-            Vector2 side = new(-direction.y, direction.x);
-            Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern2.SpawnSpacing);
-            Vector3 spawnPosition = hasConfiguredOrigin ? origin : origin + offset;
-            EnemyProjectile projectile = FireConfiguredProjectile(
-                pattern2.Projectile,
-                spawnPosition,
+            HogPatternShotEmitter.FireMachinegunBullet(
+                pattern2,
+                bulletIndex,
+                origin,
                 direction,
-                pattern2.Projectile.AimAtPlayerWhileCharging,
-                false,
-                false,
-                -1f,
-                -1f,
-                origin);
-            if (projectile != null)
-            {
-                PlayOriginBurstEffects(pattern2.Effects, origin);
-                PlaySfxOnLaunch(projectile, "BossSpecialShot");
-                SoundManager.PlaySfx("BossNormalShot");
-            }
+                hasConfiguredOrigin,
+                FireConfiguredProjectile);
         }
 
         private void FirePattern7NormalVolley(Vector3 origin, Vector2 lockedDirection)
         {
-            if (lockedDirection.sqrMagnitude <= 0.0001f)
-            {
-                lockedDirection = Vector2.right;
-            }
-
-            float baseAngle = Mathf.Atan2(lockedDirection.y, lockedDirection.x) * Mathf.Rad2Deg;
-            float halfFanAngle = pattern7.FanAngleDegrees * 0.5f;
-            float spacing = Mathf.Max(0f, pattern7.NormalSpawnSpacing);
-
-            for (int i = 0; i < 3; i++)
-            {
-                float t = i - 1f;
-                Vector2 direction = AngleToDirection(baseAngle + halfFanAngle * t);
-                Vector2 side = new(-lockedDirection.y, lockedDirection.x);
-                Vector3 spawnPosition = origin + (Vector3)(side * spacing * t);
-                FireConfiguredProjectileWithoutPlayerAim(pattern7.NormalProjectile, spawnPosition, direction);
-            }
-            
-            PlayMuzzleFlashIfEnabled(pattern7.Effects, origin, lockedDirection);
-            PlayCameraShakeIfEnabled(pattern7.Effects, lockedDirection);
-            SoundManager.PlaySfx("BossNormalShot");
+            HogPatternShotEmitter.FirePattern7NormalVolley(
+                pattern7,
+                origin,
+                lockedDirection,
+                FireConfiguredProjectileWithoutPlayerAim);
         }
 
         private void FirePattern7SpecialProjectiles(Vector2 lockedDirection)
         {
-            if (lockedDirection.sqrMagnitude <= 0.0001f)
-            {
-                lockedDirection = Vector2.right;
-            }
-
-            int count = Mathf.Max(0, pattern7.SpecialBulletCount);
-            bool firedAny = false;
-            for (int i = 0; i < count; i++)
-            {
-                Vector3 origin = GetPattern7SpecialProjectilePosition(i);
-                Vector3 specialOrigin = origin + (Vector3)(lockedDirection.normalized * Mathf.Max(0f, pattern7.SpecialSpawnForwardOffset));
-                EnemyProjectile specialProjectile = FireConfiguredProjectile(
-                    pattern7.SpecialProjectile,
-                    specialOrigin,
-                    lockedDirection);
-                if (specialProjectile != null)
-                {
-                    firedAny = true;
-                    PlaySfxOnLaunch(specialProjectile, "BossSpecialShot");
-                }
-            }
-
-            if (firedAny)
-            {
-                SoundManager.PlaySfx("BossNormalShot");
-            }
+            HogPatternShotEmitter.FirePattern7SpecialProjectiles(
+                pattern7,
+                lockedDirection,
+                GetPattern7SpecialProjectilePosition,
+                FireConfiguredProjectile);
         }
 
         private void UpdatePattern7GuideLines(Vector3 origin, Vector2 baseDirection)
         {
-            if (baseDirection.sqrMagnitude <= 0.0001f)
-            {
-                HidePattern7GuideLines();
-                return;
-            }
-
-            float baseAngle = Mathf.Atan2(baseDirection.y, baseDirection.x) * Mathf.Rad2Deg;
-            float halfFanAngle = pattern7.FanAngleDegrees * 0.5f;
-            float maxLength = Mathf.Max(0f, pattern7.NormalProjectile.Speed * pattern7.NormalProjectile.Lifetime);
-            float width = Mathf.Max(0.013f, pattern7.NormalProjectile.Radius * 0.14f);
-            Color color = pattern7.NormalProjectile.ChargingColor;
-            color.a = 0.58f;
-            int visibleDashCount = 0;
-
-            for (int i = 0; i < 3; i++)
-            {
-                float t = i - 1f;
-                Vector2 direction = AngleToDirection(baseAngle + halfFanAngle * t);
-                float length = GetPattern7GuideLength(origin, direction, maxLength);
-                visibleDashCount = DrawPattern7GuideDashes(
-                    visibleDashCount,
-                    origin,
-                    direction,
-                    length,
-                    color,
-                    width);
-            }
-
-            for (int i = visibleDashCount; i < pattern7GuideLines.Count; i++)
-            {
-                if (pattern7GuideLines[i] != null)
-                {
-                    pattern7GuideLines[i].enabled = false;
-                }
-            }
-        }
-
-        private int DrawPattern7GuideDashes(
-            int startDashIndex,
-            Vector3 start,
-            Vector2 direction,
-            float length,
-            Color color,
-            float width)
-        {
-            if (length <= 0.01f)
-            {
-                return startDashIndex;
-            }
-
-            Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
-            int dashCount = Mathf.Min(
-                Pattern7GuideMaxDashCountPerLine,
-                Mathf.CeilToInt(length / (Pattern7GuideDashLength + Pattern7GuideDashGap)));
-            int nextDashIndex = startDashIndex;
-
-            for (int i = 0; i < dashCount; i++)
-            {
-                float segmentStart = i * (Pattern7GuideDashLength + Pattern7GuideDashGap);
-                float segmentEnd = Mathf.Min(segmentStart + Pattern7GuideDashLength, length);
-                if (segmentEnd <= 0f)
-                {
-                    continue;
-                }
-
-                LineRenderer dash = EnsurePattern7GuideLine(nextDashIndex);
-                dash.enabled = true;
-                dash.startColor = color;
-                dash.endColor = color;
-                dash.startWidth = width;
-                dash.endWidth = width;
-                dash.SetPosition(0, start + (Vector3)(normalized * segmentStart));
-                dash.SetPosition(1, start + (Vector3)(normalized * segmentEnd));
-                nextDashIndex++;
-            }
-
-            return nextDashIndex;
-        }
-
-        private float GetPattern7GuideLength(Vector2 start, Vector2 direction, float maxLength)
-        {
-            if (maxLength <= 0.01f)
-            {
-                return 0f;
-            }
-
-            int wallMask = GetWallMask();
-            if (wallMask == 0 || direction.sqrMagnitude <= 0.0001f)
-            {
-                return maxLength;
-            }
-
-            float castRadius = Mathf.Max(0.001f, pattern7.NormalProjectile.Radius);
-            RaycastHit2D hit = Physics2D.CircleCast(start, castRadius, direction.normalized, maxLength, wallMask);
-            return hit.collider != null ? Mathf.Max(0f, hit.distance) : maxLength;
-        }
-
-        private static int GetWallMask()
-        {
-            int wallLayer = LayerMask.NameToLayer(WallLayerName);
-            return wallLayer >= 0 ? 1 << wallLayer : 0;
-        }
-
-        private LineRenderer EnsurePattern7GuideLine(int index)
-        {
-            while (pattern7GuideLines.Count <= index)
-            {
-                GameObject lineObject = new($"Pattern7GuideLine_{pattern7GuideLines.Count:00}");
-                lineObject.transform.SetParent(transform, false);
-                LineRenderer line = lineObject.AddComponent<LineRenderer>();
-                line.material = GetPattern7GuideMaterial();
-                line.useWorldSpace = true;
-                line.loop = false;
-                line.positionCount = 2;
-                line.numCornerVertices = 0;
-                line.numCapVertices = 1;
-                line.sortingOrder = 17;
-                pattern7GuideLines.Add(line);
-            }
-
-            LineRenderer guideLine = pattern7GuideLines[index];
-            guideLine.material = GetPattern7GuideMaterial();
-            return guideLine;
+            pattern7GuideView.Show(
+                this,
+                origin,
+                baseDirection,
+                pattern7.FanAngleDegrees,
+                pattern7.NormalProjectile.Speed,
+                pattern7.NormalProjectile.Lifetime,
+                pattern7.NormalProjectile.Radius,
+                pattern7.NormalProjectile.ChargingColor);
         }
 
         private void HidePattern7GuideLines()
         {
-            for (int i = 0; i < pattern7GuideLines.Count; i++)
-            {
-                if (pattern7GuideLines[i] != null)
-                {
-                    pattern7GuideLines[i].enabled = false;
-                }
-            }
-        }
-
-        private static Material GetPattern7GuideMaterial()
-        {
-            if (pattern7GuideMaterial != null)
-            {
-                return pattern7GuideMaterial;
-            }
-
-            Shader shader = Shader.Find("Sprites/Default");
-            pattern7GuideMaterial = shader != null ? new Material(shader) : null;
-            return pattern7GuideMaterial;
+            pattern7GuideView.Hide();
         }
         
         private void FirePattern5Bullet(int bulletIndex, float finalAngleDegrees, Vector3 origin)
         {
-            Vector2 finalDirection = AngleToDirection(finalAngleDegrees);
-            
-            Vector2 side = new(-finalDirection.y, finalDirection.x);
-            Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern5.SpawnSpacing);
-            Vector3 spawnPosition = origin + offset;
-
-            EnemyProjectile projectile = FireConfiguredProjectile(
-                pattern5.Projectile,
-                spawnPosition,
-                finalDirection,
-                false,
-                false,
-                false,
-                0f,
-                -1f,
+            HogPatternShotEmitter.FirePattern5Bullet(
+                pattern5,
+                bulletIndex,
+                finalAngleDegrees,
                 origin,
-                0f);
-            if (projectile != null)
-            {
-                PlayMuzzleFlashIfEnabled(pattern5.Effects, origin, finalDirection);
-                PlayCameraShakeIfEnabled(pattern5.Effects, finalDirection);
-                SoundManager.PlaySfx("BossNormalShot");
-            }
+                FireConfiguredProjectile);
         }
 
-        private IEnumerator WaitPattern2Seconds(float seconds)
+        private IEnumerator WaitPatternSeconds(float seconds, Action onTick)
         {
             float remaining = Mathf.Max(0f, seconds);
             while (remaining > 0f)
@@ -1812,43 +1314,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private IEnumerator WaitPattern5Seconds(float seconds)
-        {
-            float remaining = Mathf.Max(0f, seconds);
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Stop();
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private IEnumerator WaitPattern7Seconds(float seconds)
-        {
-            float remaining = Mathf.Max(0f, seconds);
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Stop();
+                onTick?.Invoke();
                 remaining -= Time.deltaTime;
                 yield return null;
             }
@@ -1862,20 +1328,19 @@ namespace Week14.Enemy
                 yield return null;
             }
         }
+
+        private void MoveDuringPattern2Delay()
+        {
+            MoveTowardPlayer(pattern2.MoveSpeedMultiplier);
+        }
+
         private Vector3 GetPattern1SpawnPosition(int shotIndex, Vector2 direction)
         {
-            if (pattern1.ProjectileOrigins != null && pattern1.ProjectileOrigins.HasAny)
-            {
-                return GetAlternatingProjectilePosition(pattern1.ProjectileOrigins, shotIndex);
-            }
-
-            float radius = Mathf.Max(0f, pattern1.SpawnRadius);
-            if (radius <= 0f || direction.sqrMagnitude <= 0.0001f)
-            {
-                return GetDefaultProjectileOrigin();
-            }
-
-            return GetDefaultProjectileOrigin() + (Vector3)(direction.normalized * radius);
+            return HogProjectileOriginResolver.GetPattern1SpawnPosition(
+                pattern1,
+                shotIndex,
+                direction,
+                GetDefaultProjectileOrigin());
         }
 
         private Vector2 GetPattern3Direction(Vector3 origin)
@@ -1886,144 +1351,12 @@ namespace Week14.Enemy
             return AngleToDirection(baseAngle + Random.Range(-halfSpread, halfSpread));
         }
 
-        private static int[] BuildShuffledOrder(int count)
-        {
-            int[] order = new int[Mathf.Max(1, count)];
-            for (int i = 0; i < order.Length; i++)
-            {
-                order[i] = i;
-            }
-
-            for (int i = order.Length - 1; i > 0; i--)
-            {
-                int swapIndex = Random.Range(0, i + 1);
-                (order[i], order[swapIndex]) = (order[swapIndex], order[i]);
-            }
-
-            return order;
-        }
-
-        private static void PlaySfxOnLaunch(EnemyProjectile projectile, string sfxId)
-        {
-            if (projectile == null)
-            {
-                return;
-            }
-
-            void HandleLaunched(EnemyProjectile launchedProjectile)
-            {
-                launchedProjectile.Launched -= HandleLaunched;
-                SoundManager.PlaySfx(sfxId);
-            }
-
-            projectile.Launched += HandleLaunched;
-        }
-
-        private static void PlayBossBombOnRadialSplit(EnemyProjectile projectile)
-        {
-            if (projectile == null)
-            {
-                return;
-            }
-
-            static void HandleRadialSplitImminent(EnemyProjectile splitProjectile)
-            {
-                splitProjectile.RadialSplitImminent -= HandleRadialSplitImminent;
-                SoundManager.PlaySfx("BossBomb");
-            }
-
-            projectile.RadialSplitImminent += HandleRadialSplitImminent;
-        }
-
-        private void PlayOriginBurstEffects(PatternEffectSettings effects, Vector3 position)
-        {
-            if (effects == null)
-            {
-                return;
-            }
-
-            PlayExplosionIfEnabled(effects, position);
-            PlaySmokeIfEnabled(effects, position);
-        }
-
-        private void PlaySmokeIfDue(ref float nextSmokeAt, PatternEffectSettings effects, Vector3 position)
-        {
-            if (effects == null || Time.time < nextSmokeAt)
-            {
-                return;
-            }
-
-            PlaySmokeIfEnabled(effects, position);
-            nextSmokeAt = Time.time + Mathf.Max(0.01f, effects.SmokeInterval);
-        }
-
-        private void PlayExplosionIfEnabled(PatternEffectSettings effects, Vector3 position)
-        {
-            ParticleEffectSettings explosion = effects.Explosion;
-            if (explosion == null || !explosion.Enabled)
-            {
-                return;
-            }
-
-            ProjectileVfx.PlayHogExplosion(position, explosion.Color, explosion.Scale, explosion.Count);
-        }
-
-        private void PlaySmokeIfEnabled(PatternEffectSettings effects, Vector3 position)
-        {
-            ParticleEffectSettings smoke = effects.Smoke;
-            if (smoke == null || !smoke.Enabled)
-            {
-                return;
-            }
-
-            ProjectileVfx.PlayHogSmokeBurst(position, smoke.Color, smoke.Scale, smoke.Count);
-        }
-
-        private void PlayMuzzleFlashIfEnabled(PatternEffectSettings effects, Vector3 position, Vector2 direction)
-        {
-            ParticleEffectSettings muzzleFlash = effects?.MuzzleFlash;
-            if (muzzleFlash == null || !muzzleFlash.Enabled)
-            {
-                return;
-            }
-
-            ProjectileVfx.PlayMuzzleFlash(position, direction, muzzleFlash.Color, muzzleFlash.Scale);
-        }
-
-        private void PlayCameraShakeIfEnabled(PatternEffectSettings effects, Vector2 direction)
-        {
-            CameraShakeSettings shake = effects?.CameraShake;
-            if (shake == null || !shake.Enabled)
-            {
-                return;
-            }
-
-            Camera mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                return;
-            }
-
-            CameraFollow2D cameraFollow = mainCamera.GetComponent<CameraFollow2D>();
-            cameraFollow?.PlayImpact(direction, shake.Seconds, shake.Distance, shake.Frequency);
-        }
-
-        private static Color GetProjectileColor(ProjectileSettings settings)
-        {
-            return settings != null ? settings.LaunchedColor : Color.white;
-        }
-
-        private static Color GetProjectileChargeColor(ProjectileSettings settings)
-        {
-            return settings != null ? settings.ChargingColor : Color.white;
-        }
-
         private EnemyProjectile FireConfiguredProjectileWithoutPlayerAim(
             ProjectileSettings settings,
             Vector3 origin,
             Vector2 direction)
         {
-            return FireConfiguredProjectile(settings, origin, direction, false, false, true, -1f, -1f);
+            return HogProjectileEmitter.FireWithoutPlayerAim(SpawnBossProjectile, settings, origin, direction);
         }
 
         private EnemyProjectile FireConfiguredProjectileWithPlayerLaunchAim(
@@ -2031,7 +1364,7 @@ namespace Week14.Enemy
             Vector3 origin,
             Vector2 direction)
         {
-            return FireConfiguredProjectile(settings, origin, direction, false, true, false, -1f, -1f);
+            return HogProjectileEmitter.FireWithPlayerLaunchAim(SpawnBossProjectile, settings, origin, direction);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
@@ -2039,12 +1372,7 @@ namespace Week14.Enemy
             Vector3 origin,
             Vector2 direction)
         {
-            if (settings == null)
-            {
-                return null;
-            }
-
-            return FireConfiguredProjectile(settings, origin, direction, settings.AimAtPlayerWhileCharging, false, false, -1f, -1f);
+            return HogProjectileEmitter.Fire(SpawnBossProjectile, settings, origin, direction);
         }
 
         private EnemyProjectile FireConfiguredProjectile(
@@ -2059,36 +1387,18 @@ namespace Week14.Enemy
             Vector3? muzzleFlashPosition = null,
             float muzzleFlashScale = 0f)
         {
-            if (settings == null || settings.Prefab == null)
-            {
-                return null;
-            }
-
-            float chargeSeconds = chargeSecondsOverride >= 0f ? chargeSecondsOverride : settings.ChargeSeconds;
-            float radius = radiusOverride > 0f ? radiusOverride : settings.Radius;
-            Color chargeColor = GetProjectileChargeColor(settings);
-            Color projectileColor = GetProjectileColor(settings);
-            EnemyProjectile projectile = SpawnBossProjectile(
-                settings.Prefab,
+            return HogProjectileEmitter.Fire(
+                SpawnBossProjectile,
+                settings,
                 origin,
                 direction,
-                settings.BulletDamage,
-                chargeSeconds,
-                settings.Speed,
-                settings.Lifetime,
-                radius,
-                projectileColor,
-                settings.TrailSeconds,
-                settings.TrailWidthMultiplier,
-                settings.HomingEnabled && !suppressHoming,
-                settings.HomingSeconds,
-                settings.HomingTurnDegreesPerSecond,
+                aimAtPlayerWhileCharging,
+                aimAtPlayerOnLaunch,
+                suppressHoming,
+                chargeSecondsOverride,
+                radiusOverride,
                 muzzleFlashPosition,
                 muzzleFlashScale);
-
-            projectile?.ConfigureStateColors(chargeColor, projectileColor);
-            projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
-            return projectile;
         }
 
         private void MoveTowardPlayer(float speedMultiplier)
@@ -2110,120 +1420,52 @@ namespace Week14.Enemy
 
         private IEnumerator SlamPattern4BodyRoot(Pattern4Settings settings)
         {
-            Transform target = BodyRoot;
-            if (target == null || target == transform)
-            {
-                yield break;
-            }
-
-            if (!isPattern4BodyRootMoved)
-            {
-                pattern4BodyRootBaseLocalPosition = target.localPosition;
-                isPattern4BodyRootMoved = true;
-            }
-
-            Vector3 basePosition = pattern4BodyRootBaseLocalPosition;
-            Vector3 upPosition = basePosition + Vector3.up * settings.SlamUpOffset;
-            Vector3 downPosition = basePosition + Vector3.down * settings.SlamDownOffset;
-
-            yield return MovePattern4BodyRoot(target, target.localPosition, upPosition, settings.SlamRiseSeconds);
-            yield return MovePattern4BodyRoot(target, target.localPosition, downPosition, settings.SlamDropSeconds);
-            PlayExplosionIfEnabled(settings.Effects, target.position);
-            PlayCameraShakeIfEnabled(settings.Effects, Vector2.down);
+            yield return bodyRootSlamController.Slam(BodyRoot, transform, settings, IsBossExecutionPaused, Stop);
         }
 
         private IEnumerator RecoverPattern4BodyRoot(Pattern4Settings settings)
         {
-            if (!isPattern4BodyRootMoved || BodyRoot == null || BodyRoot == transform)
-            {
-                yield break;
-            }
-
-            yield return MovePattern4BodyRoot(BodyRoot, BodyRoot.localPosition, pattern4BodyRootBaseLocalPosition, settings.SlamRecoverSeconds);
-            ResetPattern4BodyRoot();
-        }
-
-        private IEnumerator MovePattern4BodyRoot(Transform target, Vector3 from, Vector3 to, float seconds)
-        {
-            float duration = Mathf.Max(0.01f, seconds);
-            float elapsed = 0f;
-
-            while (elapsed < duration)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Stop();
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / duration);
-                target.localPosition = Vector3.Lerp(from, to, t);
-                yield return null;
-            }
-
-            target.localPosition = to;
+            yield return bodyRootSlamController.Recover(BodyRoot, transform, settings, IsBossExecutionPaused, Stop);
         }
 
         private void ResetPattern4BodyRoot()
         {
-            if (!isPattern4BodyRootMoved)
-            {
-                return;
-            }
+            bodyRootSlamController.Reset(BodyRoot);
+        }
 
-            if (BodyRoot != null)
-            {
-                BodyRoot.localPosition = pattern4BodyRootBaseLocalPosition;
-            }
-
-            isPattern4BodyRootMoved = false;
+        private static bool IsBossExecutionPaused()
+        {
+            return IsExecutionPaused;
         }
 
         private Vector3 GetAlternatingProjectilePosition(AlternatingProjectileOrigins origins, int shotIndex)
         {
-            Transform origin = origins != null ? origins.Get(shotIndex) : null;
-            return origin != null ? origin.position : GetDefaultProjectileOrigin();
+            return HogProjectileOriginResolver.GetAlternatingPosition(origins, shotIndex, GetDefaultProjectileOrigin());
         }
 
         private Vector3 GetFirePointProjectilePosition(FirePoint firePoint)
         {
-            Transform origin = GetFirePointProjectileTransform(firePoint);
-            return origin != null ? origin.position : GetDefaultProjectileOrigin();
+            return HogProjectileOriginResolver.GetFirePointPosition(firePoint, GetDefaultProjectileOrigin());
         }
 
         private Vector3 GetPattern7NormalProjectilePosition()
         {
-            return GetFirePointProjectilePosition(pattern7.FirePoint);
+            return HogProjectileOriginResolver.GetPattern7NormalPosition(pattern7, GetDefaultProjectileOrigin());
         }
 
         private Vector3 GetPattern7SpecialProjectilePosition(int index)
         {
-            IReadOnlyList<Transform> origins = pattern7.SpecialProjectileOrigins;
-            Transform origin = origins != null && index >= 0 && index < origins.Count ? origins[index] : null;
-            if (origin != null)
-            {
-                return origin.position;
-            }
-
-            return GetFirePointProjectilePosition(pattern7.FirePoint);
+            return HogProjectileOriginResolver.GetPattern7SpecialPosition(pattern7, index, GetDefaultProjectileOrigin());
         }
 
         private Transform GetFirePointProjectileTransform(FirePoint firePoint)
         {
-            if (firePoint == null)
-            {
-                return null;
-            }
-
-            return firePoint.ProjectileOrigin != null ? firePoint.ProjectileOrigin : firePoint.FireOrigin;
+            return HogFirePointUtility.GetProjectileTransform(firePoint);
         }
 
         private Vector3 GetPattern4ProjectilePosition(Pattern4Settings settings)
         {
-            return settings.ProjectileOrigin != null ? settings.ProjectileOrigin.position : GetDefaultProjectileOrigin();
+            return HogProjectileOriginResolver.GetPattern4Position(settings, GetDefaultProjectileOrigin());
         }
 
         private Vector3 GetDefaultProjectileOrigin()
@@ -2233,24 +1475,17 @@ namespace Week14.Enemy
 
         private void RotateFirePointToPlayer(FirePoint firePoint)
         {
-            if (firePoint == null || firePoint.FireOrigin == null || Player == null)
-            {
-                return;
-            }
-
-            Vector3 origin = GetFirePointProjectilePosition(firePoint);
-            Vector2 direction = (Vector2)(Player.position - origin);
-            RotateFirePoint(firePoint, direction);
+            HogFirePointUtility.RotateToPlayer(firePoint, Player, GetDefaultProjectileOrigin());
         }
 
         private void RotateFirePoint(FirePoint firePoint, Vector2 direction)
         {
-            firePoint?.RotateRight(direction);
+            HogFirePointUtility.Rotate(firePoint, direction);
         }
 
         private void SetFirePointActive(FirePoint firePoint, bool active)
         {
-            firePoint?.SetActive(active);
+            HogFirePointUtility.SetActive(firePoint, active);
         }
 
         private void DeactivatePatternFirePoints()
@@ -2263,26 +1498,10 @@ namespace Week14.Enemy
         protected override bool ShouldIgnoreBodyStateRenderer(SpriteRenderer renderer)
         {
             return renderer != null
-                && (IsUnderFirePoint(pattern3.FirePoint, renderer.transform)
-                    || IsUnderFirePoint(pattern5.FirePoint, renderer.transform)
-                    || IsUnderFirePoint(pattern7.FirePoint, renderer.transform));
+                && (HogFirePointUtility.Contains(pattern3.FirePoint, renderer.transform, BodyRoot)
+                    || HogFirePointUtility.Contains(pattern5.FirePoint, renderer.transform, BodyRoot)
+                    || HogFirePointUtility.Contains(pattern7.FirePoint, renderer.transform, BodyRoot));
         }
 
-        private bool IsUnderFirePoint(FirePoint firePoint, Transform target)
-        {
-            return firePoint != null && firePoint.Contains(target, BodyRoot);
-        }
-
-        private static float GetAlternatingOffset(int index, float spacing)
-        {
-            if (index <= 0 || spacing <= 0f)
-            {
-                return 0f;
-            }
-
-            int ring = (index + 1) / 2;
-            float sign = index % 2 == 0 ? -1f : 1f;
-            return ring * spacing * sign;
-        }
     }
 }
