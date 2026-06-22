@@ -56,6 +56,7 @@ namespace Week14.Enemy
         internal sealed class ProjectileSettings
         {
             [SerializeField, Tooltip("이 설정으로 생성할 적 탄환 프리팹입니다.")] private EnemyProjectile prefab;
+            [SerializeField, Tooltip("유도탄이 대기 중일 때만 사용할 충전 프리팹입니다. 비워두면 기본 프리팹을 사용합니다.")] private EnemyProjectile homingChargePrefab;
             [SerializeField, Min(0), Tooltip("플레이어에게 적중했을 때 플레이어 탄환을 감소시키는 양입니다.")] private int bulletDamage = 1;
             [SerializeField, Min(0f), Tooltip("발사 전 대기하는 시간입니다.")] private float chargeSeconds = 0.35f;
             [SerializeField, Min(0f), Tooltip("대기 시간 동안 탄환이 천천히 이동하는 속도입니다.")] private float chargeDriftSpeed = 0.65f;
@@ -75,6 +76,7 @@ namespace Week14.Enemy
             [SerializeField, Min(0f), Tooltip("추적 중 초당 회전 가능한 최대 각도입니다.")] private float homingTurnDegreesPerSecond = 540f;
 
             public EnemyProjectile Prefab => prefab;
+            public EnemyProjectile HomingChargePrefab => homingChargePrefab;
             public int BulletDamage => bulletDamage;
             public float ChargeSeconds => chargeSeconds;
             public float ChargeDriftSpeed => chargeDriftSpeed;

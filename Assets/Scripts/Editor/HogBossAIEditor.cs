@@ -262,6 +262,7 @@ public sealed class HogBossAIEditor : Editor
         }
 
         DrawChild(projectile, "prefab");
+        DrawChild(projectile, "homingChargePrefab");
         DrawChild(projectile, "bulletDamage");
         DrawChild(projectile, "chargeSeconds");
         DrawChild(projectile, "chargeDriftSpeed");
