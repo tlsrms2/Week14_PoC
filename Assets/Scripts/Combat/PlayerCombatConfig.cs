@@ -18,8 +18,6 @@ namespace Week14.Combat
         [SerializeField] private int[] attackDamageByRemainingBullets = { 5, 4, 3, 2, 1 };
         [Tooltip("패링 성공 시 플레이어가 회복하는 탄환 수입니다.")]
         [SerializeField, Min(0)] private int parryBulletRecovery = 2;
-        [Tooltip("적 탄이 패링되었을 때 적 탄환을 감소시키는 양입니다.")]
-        [SerializeField, Min(0)] private int counteredProjectileBulletDamage = 1;
         [Tooltip("적 몸체와 접촉했을 때 플레이어가 잃는 탄환 수입니다.")]
         [SerializeField, Min(1)] private int enemyBodyContactBulletDamage = 1;
         [Tooltip("적 몸체와 계속 닿아 있을 때 피격을 다시 받을 때까지의 시간입니다.")]
@@ -114,7 +112,6 @@ namespace Week14.Combat
         public float GunAimHoldSeconds => gunAimHoldSeconds;
         public Color AttackEffectColor => effectData != null ? effectData.AttackEffectColor : new Color(1f, 0.35f, 0.12f, 0.55f);
         public int ParryBulletRecovery => parryBulletRecovery;
-        public int CounteredProjectileBulletDamage => counteredProjectileBulletDamage;
         public int EnemyBodyContactBulletDamage => enemyBodyContactBulletDamage;
         public float EnemyBodyContactCooldownSeconds => enemyBodyContactCooldownSeconds;
         public float EnemyBodyContactKnockbackSpeed => enemyBodyContactKnockbackSpeed;

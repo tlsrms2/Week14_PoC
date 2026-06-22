@@ -7,7 +7,6 @@ namespace Week14.Combat
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public sealed class EnemyProjectile : MonoBehaviour
     {
-        private const int DefaultCounteredProjectileBulletDamage = 1;
         private const string BulletVisualName = "BulletVisual";
         private const string ChargeVfxName = "ChargeVfx";
         private const string PathIndicatorName = "PathIndicator";
@@ -47,7 +46,6 @@ namespace Week14.Combat
         private BulletGauge ownerBullets;
         private BossAI ownerBoss;
         private Drone ownerDrone;
-        private int counterBulletDamage;
         private int bulletDamage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
@@ -170,7 +168,6 @@ namespace Week14.Combat
                 position,
                 direction,
                 bulletDamage,
-                GetCounteredProjectileBulletDamage(),
                 chargeSeconds,
                 speed,
                 lifetime,
@@ -181,13 +178,6 @@ namespace Week14.Combat
                 homingEnabled,
                 homingSeconds,
                 homingTurnDegrees);
-        }
-
-        private static int GetCounteredProjectileBulletDamage()
-        {
-            PlayerCombatController player = PlayerCombatController.Active;
-            PlayerCombatConfig config = player != null ? player.Config : null;
-            return config != null ? config.CounteredProjectileBulletDamage : DefaultCounteredProjectileBulletDamage;
         }
 
         public void ConfigureStateColors(Color nextChargingColor, Color nextLaunchedColor)
@@ -338,7 +328,6 @@ namespace Week14.Combat
             Vector3 position,
             Vector2 direction,
             int bulletDamage,
-            int counterBulletDamage,
             float chargeSeconds,
             float speed, float lifetime, float radius,
             Color color, float trailSeconds, float trailWidth,
@@ -354,7 +343,6 @@ namespace Week14.Combat
                 direction,
                 bulletDamage,
                 ownerBullets,
-                counterBulletDamage,
                 chargeSeconds,
                 speed,
                 lifetime,
@@ -380,7 +368,6 @@ namespace Week14.Combat
             Vector2 direction,
             int nextBulletDamage,
             BulletGauge nextOwnerBullets,
-            int nextCounterBulletDamage,
             float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
             bool enableHoming,
@@ -411,7 +398,6 @@ namespace Week14.Combat
 
             ownerBoss?.RegisterActiveProjectile(this);
             ownerDrone?.RegisterActiveProjectile(this);
-            counterBulletDamage = nextCounterBulletDamage;
             bulletDamage = nextBulletDamage;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             baseLocalScale = transform.localScale;
@@ -803,7 +789,6 @@ namespace Week14.Combat
                 transform.position + (Vector3)(direction.normalized * Mathf.Max(0.08f, projectileRadius)),
                 direction,
                 bulletDamage,
-                counterBulletDamage,
                 0f,
                 projectileSpeed * splitSpeedMultiplier,
                 projectileLifetime * splitLifetimeMultiplier,
@@ -857,7 +842,6 @@ namespace Week14.Combat
 
             parried = true;
             resolved = true;
-            SpendOwnerBulletsOnCounter(BulletChangeSource.Parry);
 
             DestroyProjectile();
             return true;
@@ -940,16 +924,6 @@ namespace Week14.Combat
             ownerSlotReleased = true;
             ownerBoss?.UnregisterActiveProjectile(this);
             ownerDrone?.UnregisterActiveProjectile(this);
-        }
-
-        private void SpendOwnerBulletsOnCounter(BulletChangeSource source)
-        {
-            if (ownerBullets == null)
-            {
-                return;
-            }
-
-            ownerBullets.TrySpend(counterBulletDamage, source);
         }
 
         private void EnsureProjectileShape()
