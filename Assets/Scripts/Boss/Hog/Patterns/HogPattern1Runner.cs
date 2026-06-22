@@ -23,19 +23,12 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                float t = totalBullets <= 1 ? 1f : Mathf.Clamp01((float)fired / (totalBullets - 1));
-                float speedMultiplier = Mathf.Lerp(
-                    settings.InitialChaseSpeedMultiplier,
-                    settings.FinalChaseSpeedMultiplier,
-                    t);
-                context.MoveTowardPlayer(speedMultiplier);
-
                 if (elapsed >= nextBurstAt)
                 {
                     Vector2 direction = context.AngleToDirection(currentAngle);
                     Vector3 origin = context.GetPattern1SpawnPosition(fired, direction);
                     EnemyProjectile projectile = context.FireConfiguredProjectileWithPlayerLaunchAim(
-                        settings.Projectile,
+                        context.GetProjectile(settings.ProjectileIndex),
                         origin,
                         direction);
 

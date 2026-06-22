@@ -7,15 +7,22 @@ namespace Week14.Enemy
     {
         private void UpdatePattern7GuideLines(Vector3 origin, Vector2 baseDirection)
         {
+            ProjectileSettings projectileSettings = GetProjectile(pattern7.NormalProjectileIndex);
+            if (projectileSettings == null)
+            {
+                pattern7GuideView.Hide();
+                return;
+            }
+
             pattern7GuideView.Show(
                 this,
                 origin,
                 baseDirection,
                 pattern7.FanAngleDegrees,
-                pattern7.NormalProjectile.Speed,
-                pattern7.NormalProjectile.Lifetime,
-                pattern7.NormalProjectile.Radius,
-                pattern7.NormalProjectile.ChargingColor);
+                projectileSettings.Speed,
+                projectileSettings.Lifetime,
+                projectileSettings.Radius,
+                projectileSettings.ChargingColor);
         }
 
         private void HidePattern7GuideLines()

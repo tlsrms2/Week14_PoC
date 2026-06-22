@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -51,7 +50,7 @@ namespace Week14.Enemy
                 context.FirePattern7NormalVolley(context.GetPattern7NormalProjectilePosition(), lockedDirection);
                 if (volleyIndex == 0)
                 {
-                    context.FirePattern7SpecialProjectiles(lockedDirection);
+                    context.FirePattern7SecondaryProjectiles(lockedDirection);
                 }
 
                 if (!groupedFire)

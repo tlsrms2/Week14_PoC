@@ -31,12 +31,13 @@ namespace Week14.Enemy
             Func<bool> isExecutionPaused,
             Func<IEnumerator> waitWhileExecutionPaused,
             Func<float, Action, IEnumerator> waitPatternSeconds,
+            Func<int, HogBossAI.ProjectileSettings> getProjectile,
             Action<float> moveTowardPlayer,
             Action<HogBossAI.Pattern4Settings, float> firePattern4Wave,
             Action<int> fireMachinegunBullet,
             Action<int, float, Vector3> firePattern5Bullet,
             Action<Vector3, Vector2> firePattern7NormalVolley,
-            Action<Vector2> firePattern7SpecialProjectiles,
+            Action<Vector2> firePattern7SecondaryProjectiles,
             Func<HogBossAI.Pattern4Settings, IEnumerator> slamPattern4BodyRoot,
             Func<HogBossAI.Pattern4Settings, IEnumerator> recoverPattern4BodyRoot,
             Func<HogBossAI.PatternKind, float, IEnumerator> reloadWavePreview,
@@ -52,7 +53,6 @@ namespace Week14.Enemy
             Func<int, Vector2, Vector3> getPattern1SpawnPosition,
             Func<Vector3, Vector2> getPattern3Direction,
             Func<Vector3> getPattern7NormalProjectilePosition,
-            Func<int, Vector3> getPattern7SpecialProjectilePosition,
             Action<Vector3, Vector2> updatePattern7GuideLines,
             Action hidePattern7GuideLines,
             ProjectileFire fireConfiguredProjectileWithoutPlayerAim,
@@ -64,12 +64,13 @@ namespace Week14.Enemy
             IsExecutionPaused = isExecutionPaused;
             WaitWhileExecutionPaused = waitWhileExecutionPaused;
             WaitPatternSeconds = waitPatternSeconds;
+            GetProjectile = getProjectile;
             MoveTowardPlayer = moveTowardPlayer;
             FirePattern4Wave = firePattern4Wave;
             FireMachinegunBullet = fireMachinegunBullet;
             FirePattern5Bullet = firePattern5Bullet;
             FirePattern7NormalVolley = firePattern7NormalVolley;
-            FirePattern7SpecialProjectiles = firePattern7SpecialProjectiles;
+            FirePattern7SecondaryProjectiles = firePattern7SecondaryProjectiles;
             SlamPattern4BodyRoot = slamPattern4BodyRoot;
             RecoverPattern4BodyRoot = recoverPattern4BodyRoot;
             ReloadWavePreview = reloadWavePreview;
@@ -85,7 +86,6 @@ namespace Week14.Enemy
             GetPattern1SpawnPosition = getPattern1SpawnPosition;
             GetPattern3Direction = getPattern3Direction;
             GetPattern7NormalProjectilePosition = getPattern7NormalProjectilePosition;
-            GetPattern7SpecialProjectilePosition = getPattern7SpecialProjectilePosition;
             UpdatePattern7GuideLines = updatePattern7GuideLines;
             HidePattern7GuideLines = hidePattern7GuideLines;
             FireConfiguredProjectileWithoutPlayerAim = fireConfiguredProjectileWithoutPlayerAim;
@@ -98,12 +98,13 @@ namespace Week14.Enemy
         internal Func<bool> IsExecutionPaused { get; }
         internal Func<IEnumerator> WaitWhileExecutionPaused { get; }
         internal Func<float, Action, IEnumerator> WaitPatternSeconds { get; }
+        internal Func<int, HogBossAI.ProjectileSettings> GetProjectile { get; }
         internal Action<float> MoveTowardPlayer { get; }
         internal Action<HogBossAI.Pattern4Settings, float> FirePattern4Wave { get; }
         internal Action<int> FireMachinegunBullet { get; }
         internal Action<int, float, Vector3> FirePattern5Bullet { get; }
         internal Action<Vector3, Vector2> FirePattern7NormalVolley { get; }
-        internal Action<Vector2> FirePattern7SpecialProjectiles { get; }
+        internal Action<Vector2> FirePattern7SecondaryProjectiles { get; }
         internal Func<HogBossAI.Pattern4Settings, IEnumerator> SlamPattern4BodyRoot { get; }
         internal Func<HogBossAI.Pattern4Settings, IEnumerator> RecoverPattern4BodyRoot { get; }
         internal Func<HogBossAI.PatternKind, float, IEnumerator> ReloadWavePreview { get; }
@@ -119,7 +120,6 @@ namespace Week14.Enemy
         internal Func<int, Vector2, Vector3> GetPattern1SpawnPosition { get; }
         internal Func<Vector3, Vector2> GetPattern3Direction { get; }
         internal Func<Vector3> GetPattern7NormalProjectilePosition { get; }
-        internal Func<int, Vector3> GetPattern7SpecialProjectilePosition { get; }
         internal Action<Vector3, Vector2> UpdatePattern7GuideLines { get; }
         internal Action HidePattern7GuideLines { get; }
         internal ProjectileFire FireConfiguredProjectileWithoutPlayerAim { get; }

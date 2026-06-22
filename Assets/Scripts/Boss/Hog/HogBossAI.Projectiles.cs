@@ -22,11 +22,12 @@ namespace Week14.Enemy
             float step = 360f / count;
             float radius = Mathf.Max(0f, settings.SpawnRadius);
             Vector3 center = GetPattern4ProjectilePosition(settings);
+            ProjectileSettings projectileSettings = GetProjectile(settings.ProjectileIndex);
             for (int i = 0; i < count; i++)
             {
                 Vector2 direction = AngleToDirection(startAngleDegrees + step * i);
                 Vector3 origin = center + (Vector3)(direction * radius);
-                FireConfiguredProjectileWithoutPlayerAim(settings.Projectile, origin, direction);
+                FireConfiguredProjectileWithoutPlayerAim(projectileSettings, origin, direction);
             }
         }
 
@@ -38,9 +39,10 @@ namespace Week14.Enemy
             Vector2 side = new(-direction.y, direction.x);
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern2.SpawnSpacing);
             Vector3 spawnPosition = hasConfiguredOrigin ? origin : origin + offset;
-            bool aimAtPlayerWhileCharging = pattern2.Projectile != null && pattern2.Projectile.AimAtPlayerWhileCharging;
+            ProjectileSettings projectileSettings = GetProjectile(pattern2.ProjectileIndex);
+            bool aimAtPlayerWhileCharging = projectileSettings != null && projectileSettings.AimAtPlayerWhileCharging;
             EnemyProjectile projectile = FireConfiguredProjectile(
-                pattern2.Projectile,
+                projectileSettings,
                 spawnPosition,
                 direction,
                 aimAtPlayerWhileCharging,
@@ -70,13 +72,14 @@ namespace Week14.Enemy
             float baseAngle = Mathf.Atan2(lockedDirection.y, lockedDirection.x) * Mathf.Rad2Deg;
             float halfFanAngle = pattern7.FanAngleDegrees * 0.5f;
             float spacing = Mathf.Max(0f, pattern7.NormalSpawnSpacing);
+            ProjectileSettings projectileSettings = GetProjectile(pattern7.NormalProjectileIndex);
             for (int i = 0; i < 3; i++)
             {
                 float t = i - 1f;
                 Vector2 direction = AngleToDirection(baseAngle + halfFanAngle * t);
                 Vector2 side = new(-lockedDirection.y, lockedDirection.x);
                 Vector3 spawnPosition = origin + (Vector3)(side * spacing * t);
-                FireConfiguredProjectileWithoutPlayerAim(pattern7.NormalProjectile, spawnPosition, direction);
+                FireConfiguredProjectileWithoutPlayerAim(projectileSettings, spawnPosition, direction);
             }
 
             PlayMuzzleFlashIfEnabled(pattern7.Effects, origin, lockedDirection);
@@ -84,24 +87,25 @@ namespace Week14.Enemy
             SoundManager.PlaySfx("BossNormalShot");
         }
 
-        private void FirePattern7SpecialProjectiles(Vector2 lockedDirection)
+        private void FirePattern7SecondaryProjectiles(Vector2 lockedDirection)
         {
             if (lockedDirection.sqrMagnitude <= 0.0001f)
             {
                 lockedDirection = Vector2.right;
             }
 
-            int count = Mathf.Max(0, pattern7.SpecialBulletCount);
+            ProjectileSettings projectileSettings = GetProjectile(pattern7.SecondaryProjectileIndex);
+            int count = Mathf.Max(0, pattern7.SecondaryBulletCount);
             bool firedAny = false;
             for (int i = 0; i < count; i++)
             {
-                Vector3 origin = GetPattern7SpecialProjectilePosition(i);
-                Vector3 specialOrigin = origin + (Vector3)(lockedDirection.normalized * Mathf.Max(0f, pattern7.SpecialSpawnForwardOffset));
-                EnemyProjectile specialProjectile = FireConfiguredProjectile(pattern7.SpecialProjectile, specialOrigin, lockedDirection);
-                if (specialProjectile != null)
+                Vector3 origin = GetPattern7SecondaryProjectilePosition(i);
+                Vector3 spawnPosition = origin + (Vector3)(lockedDirection.normalized * Mathf.Max(0f, pattern7.SecondarySpawnForwardOffset));
+                EnemyProjectile projectile = FireConfiguredProjectile(projectileSettings, spawnPosition, lockedDirection);
+                if (projectile != null)
                 {
                     firedAny = true;
-                    PlaySfxOnLaunch(specialProjectile, "BossSpecialShot");
+                    PlaySfxOnLaunch(projectile, "BossSpecialShot");
                 }
             }
 
@@ -117,8 +121,9 @@ namespace Week14.Enemy
             Vector2 side = new(-finalDirection.y, finalDirection.x);
             Vector3 offset = side * GetAlternatingOffset(bulletIndex, pattern5.SpawnSpacing);
             Vector3 spawnPosition = origin + offset;
+            ProjectileSettings projectileSettings = GetProjectile(pattern5.ProjectileIndex);
             EnemyProjectile projectile = FireConfiguredProjectile(
-                pattern5.Projectile,
+                projectileSettings,
                 spawnPosition,
                 finalDirection,
                 false,
@@ -369,9 +374,9 @@ namespace Week14.Enemy
             return GetFirePointProjectilePosition(pattern7.FirePoint);
         }
 
-        private Vector3 GetPattern7SpecialProjectilePosition(int index)
+        private Vector3 GetPattern7SecondaryProjectilePosition(int index)
         {
-            IReadOnlyList<Transform> origins = pattern7.SpecialProjectileOrigins;
+            IReadOnlyList<Transform> origins = pattern7.SecondaryProjectileOrigins;
             Transform origin = origins != null && index >= 0 && index < origins.Count ? origins[index] : null;
             return origin != null ? origin.position : GetFirePointProjectilePosition(pattern7.FirePoint);
         }

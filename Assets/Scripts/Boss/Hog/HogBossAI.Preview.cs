@@ -130,14 +130,14 @@ namespace Week14.Enemy
         private void AddPattern7PreviewGroups(List<int> groups)
         {
             int volleyCount = Mathf.Max(1, pattern7.NormalVolleyCount);
-            int specialBulletCount = Mathf.Max(0, pattern7.SpecialBulletCount);
+            int secondaryBulletCount = Mathf.Max(0, pattern7.SecondaryBulletCount);
             if (pattern7.NormalVolleyInterval <= 0f)
             {
-                groups.Add(volleyCount * 3 + specialBulletCount);
+                groups.Add(volleyCount * 3 + secondaryBulletCount);
                 return;
             }
 
-            groups.Add(3 + specialBulletCount);
+            groups.Add(3 + secondaryBulletCount);
             AddRepeatedPreviewGroups(groups, 3, volleyCount - 1);
         }
 

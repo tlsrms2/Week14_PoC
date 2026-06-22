@@ -16,10 +16,17 @@ namespace Week14.Enemy
             Vector3 origin = projectileAnchor != null
                 ? projectileAnchor.position
                 : context.GetFirePointProjectilePosition(settings.FirePoint);
-            float radius = settings.Projectile.Radius * settings.ProjectileRadiusMultiplier;
+            HogBossAI.ProjectileSettings projectileSettings = context.GetProjectile(settings.ProjectileIndex);
+            if (projectileSettings == null)
+            {
+                context.SetFirePointActive(settings.FirePoint, false);
+                yield break;
+            }
+
+            float radius = projectileSettings.Radius * settings.ProjectileRadiusMultiplier;
 
             EnemyProjectile projectile = context.FireConfiguredProjectileWithOptions(
-                settings.Projectile,
+                projectileSettings,
                 origin,
                 context.GetPattern3Direction(origin),
                 true,

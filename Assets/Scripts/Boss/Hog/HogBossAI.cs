@@ -13,13 +13,20 @@ namespace Week14.Enemy
     public sealed partial class HogBossAI : BossAI
     {
         [Header("Hog Patterns")]
-        [SerializeField, Tooltip("플레이어 방향 기준 사방 탄환을 발사하며 가속 추격하는 패턴 설정입니다.")] private Pattern1Settings pattern1 = new();
+        [SerializeField, Tooltip("플레이어 방향 기준 사방 탄환을 발사하는 패턴 설정입니다.")] private Pattern1Settings pattern1 = new();
         [SerializeField, Tooltip("느려진 상태로 플레이어를 향해 머신건처럼 발사하는 패턴 설정입니다.")] private Pattern2Settings pattern2 = new();
         [SerializeField, Tooltip("벽에 부딪히면 분열하는 거대 특수 탄환 패턴 설정입니다.")] private Pattern3Settings pattern3 = new();
         [SerializeField, Tooltip("360도 전방위 탄환을 발사하는 패턴 설정입니다.")] private Pattern4Settings pattern4 = new();
         [SerializeField, Tooltip("제자리에서 기를 모은 뒤 미니건처럼 다수의 탄환을 발사하는 패턴 설정입니다.")] private Pattern5Settings pattern5 = new();
         [SerializeField, Tooltip("패턴4와 동일한 360도 전방위 탄환 패턴 설정입니다. 인스펙터 수치를 다르게 조절해 변형 패턴으로 사용합니다.")] private Pattern4Settings pattern6 = new();
-        [SerializeField, Tooltip("발사 직전 플레이어 방향으로 고정한 뒤 전방 세 갈래 일반 탄환과 특수 탄환을 동시에 발사하는 패턴 설정입니다.")] private Pattern7Settings pattern7 = new();
+        [SerializeField, Tooltip("발사 직전 플레이어 방향으로 고정한 뒤 전방 세 갈래 탄환을 발사하는 패턴 설정입니다.")] private Pattern7Settings pattern7 = new();
+        [Header("Hog Projectiles")]
+        [SerializeField, Tooltip("패턴에서 선택해 사용할 공용 투사체 목록입니다. 인스펙터에서는 A, B, C 순서로 표시됩니다.")]
+        private List<ProjectileSettings> projectiles = new()
+        {
+            new ProjectileSettings(),
+            new ProjectileSettings()
+        };
         [SerializeField, Tooltip("페이즈별로 포함할 패턴 목록입니다. 1번 요소가 페이즈 1, 2번 요소가 페이즈 2입니다.")]
         private List<PhasePatternSet> phasePatterns = new()
         {
@@ -54,6 +61,7 @@ namespace Week14.Enemy
 
         private void OnValidate()
         {
+            EnsureProjectiles();
             patternSelector.EnsurePhasePatterns(ref phasePatterns, MaxLives);
             pattern3?.EnsureMuzzleFlashDefault();
             pattern5?.EnsureBulletShakeDefault();
@@ -156,12 +164,13 @@ namespace Week14.Enemy
                 IsBossExecutionPaused,
                 WaitWhileExecutionPaused,
                 WaitPatternSeconds,
+                GetProjectile,
                 MoveTowardPlayer,
                 FirePattern4Wave,
                 FireMachinegunBullet,
                 FirePattern5Bullet,
                 FirePattern7NormalVolley,
-                FirePattern7SpecialProjectiles,
+                FirePattern7SecondaryProjectiles,
                 SlamPattern4BodyRoot,
                 RecoverPattern4BodyRoot,
                 ReloadPatternWavePreview,
@@ -177,7 +186,6 @@ namespace Week14.Enemy
                 GetPattern1SpawnPosition,
                 GetPattern3Direction,
                 GetPattern7NormalProjectilePosition,
-                GetPattern7SpecialProjectilePosition,
                 UpdatePattern7GuideLines,
                 HidePattern7GuideLines,
                 FireConfiguredProjectileWithoutPlayerAim,

@@ -6,6 +6,8 @@ namespace Week14.Enemy
 {
     public sealed partial class HogBossAI
     {
+        private const int MinimumProjectileCount = 2;
+
         private static readonly Color DefaultHogSmokeColor = new(0.38f, 0.48f, 0.34f, 0.72f);
         private static readonly Color DefaultHogExplosionColor = new(1f, 0.62f, 0.18f, 1f);
         private static readonly Color DefaultHogMuzzleFlashColor = new(1f, 0.78f, 0.26f, 1f);
@@ -74,6 +76,32 @@ namespace Week14.Enemy
                     new Color(1f, 0.95f, 0.25f, 1f))
             {
             }
+        }
+
+        private void EnsureProjectiles()
+        {
+            projectiles ??= new List<ProjectileSettings>();
+            while (projectiles.Count < MinimumProjectileCount)
+            {
+                projectiles.Add(new ProjectileSettings());
+            }
+
+            for (int i = 0; i < projectiles.Count; i++)
+            {
+                projectiles[i] ??= new ProjectileSettings();
+            }
+        }
+
+        private ProjectileSettings GetProjectile(int projectileIndex)
+        {
+            EnsureProjectiles();
+            if (projectiles.Count == 0)
+            {
+                return null;
+            }
+
+            int index = Mathf.Clamp(projectileIndex, 0, projectiles.Count - 1);
+            return projectiles[index];
         }
 
         [System.Serializable]
@@ -300,9 +328,7 @@ namespace Week14.Enemy
         internal sealed class Pattern1Settings
         {
             [SerializeField] private AlternatingProjectileOrigins projectileOrigins = new();
-            [SerializeField, Tooltip("패턴1에서 사용할 일반 탄환 설정입니다.")] private ProjectileSettings projectile = new();
-            [SerializeField, Min(0f), Tooltip("패턴 시작 시 추격 속도 배율입니다.")] private float initialChaseSpeedMultiplier = 0.65f;
-            [SerializeField, Min(0f), Tooltip("패턴 종료 시점의 추격 속도 배율입니다.")] private float finalChaseSpeedMultiplier = 1.8f;
+            [SerializeField, Min(0), Tooltip("패턴1에서 사용할 공용 투사체 인덱스입니다.")] private int projectileIndex;
             [SerializeField, Min(4), Tooltip("한 번의 사방 발사에서 생성할 탄환 수입니다.")] private int radialBulletCount = 4;
             [SerializeField, Min(0.01f), Tooltip("사방 탄환을 반복 발사하는 간격입니다.")] private float burstInterval = 0.65f;
             [SerializeField, Min(0f), Tooltip("보스 중심에서 패턴1 탄환을 원형으로 배치할 거리입니다.")] private float spawnRadius = 0.85f;
@@ -310,10 +336,8 @@ namespace Week14.Enemy
             [Header("Effects")]
             [SerializeField, Tooltip("패턴1 원점 폭발/연기 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.OriginBurst(1f, 18, 1f, 12);
 
-            public ProjectileSettings Projectile => projectile;
+            public int ProjectileIndex => projectileIndex;
             public AlternatingProjectileOrigins ProjectileOrigins => projectileOrigins;
-            public float InitialChaseSpeedMultiplier => initialChaseSpeedMultiplier;
-            public float FinalChaseSpeedMultiplier => finalChaseSpeedMultiplier;
             public int RadialBulletCount => radialBulletCount;
             public float BurstInterval => burstInterval;
             public float SpawnRadius => spawnRadius;
@@ -343,7 +367,7 @@ namespace Week14.Enemy
                 public float RestSeconds => restSeconds;
             }
 
-            [SerializeField, Tooltip("패턴2에서 머신건처럼 발사할 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
+            [SerializeField, Min(0), Tooltip("패턴2에서 사용할 공용 투사체 인덱스입니다.")] private int projectileIndex = 1;
             [SerializeField, Min(0f), Tooltip("패턴2 중 느려진 이동 속도 배율입니다.")] private float moveSpeedMultiplier = 0.25f;
             [SerializeField, Min(1), Tooltip("머신건처럼 연속 발사할 탄환 수입니다.")] private int bulletCount = 14;
             [SerializeField, Min(0.01f), Tooltip("머신건 탄환 발사 간격입니다.")] private float fireInterval = 0.12f;
@@ -354,7 +378,7 @@ namespace Week14.Enemy
             [Header("Effects")]
             [SerializeField, Tooltip("패턴2 원점 폭발/연기 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.OriginBurst(0.9f, 14, 0.9f, 10);
 
-            public ProjectileSettings Projectile => projectile;
+            public int ProjectileIndex => projectileIndex;
             public AlternatingProjectileOrigins ProjectileOrigins => projectileOrigins;
             public float MoveSpeedMultiplier => moveSpeedMultiplier;
             public int BulletCount => bulletCount;
@@ -390,7 +414,7 @@ namespace Week14.Enemy
         {
             [SerializeField] private FirePoint firePoint = new();
 
-            [SerializeField, Tooltip("패턴3에서 커졌다가 분열하는 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
+            [SerializeField, Min(0), Tooltip("패턴3에서 사용할 공용 투사체 인덱스입니다.")] private int projectileIndex = 1;
             [SerializeField, Min(0f), Tooltip("특수 탄환이 보스에게 붙어서 점점 커지는 시간입니다.")] private float windupSeconds = 1.6f;
             [SerializeField, Min(0), Tooltip("벽에 부딪힌 특수 탄환이 몇 단계까지 분열할지 정합니다.")] private int splitDepth = 3;
             [SerializeField, Min(0f), Tooltip("분열된 두 탄환이 벌어지는 각도입니다.")] private float splitAngleDegrees = 48f;
@@ -406,7 +430,7 @@ namespace Week14.Enemy
             [SerializeField, Tooltip("패턴3 원점 폭발/연기/총구화염 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.OriginBurst(1.35f, 24, 1.25f, 16, true, 1.25f);
             [SerializeField, HideInInspector] private bool pattern3MuzzleFlashDefaultApplied;
             
-            public ProjectileSettings Projectile => projectile;
+            public int ProjectileIndex => projectileIndex;
             public FirePoint FirePoint => firePoint;
             public float WindupSeconds => windupSeconds;
             public float AimTrackingSeconds => aimTrackingSeconds;
@@ -453,7 +477,7 @@ namespace Week14.Enemy
             [SerializeField, Min(0.01f)] private float slamDropSeconds = 0.12f;
             [SerializeField, Min(0f)] private float slamRecoverSeconds = 0.12f;
 
-            [SerializeField, Tooltip("패턴4에서 랜덤 순서로 전방위 발사할 특수 탄환 설정입니다.")] private ProjectileSettings projectile = new();
+            [SerializeField, Min(0), Tooltip("이 패턴에서 사용할 공용 투사체 인덱스입니다.")] private int projectileIndex = 1;
             [SerializeField, Min(1), Tooltip("한 웨이브에서 360도로 발사할 탄환 수입니다.")] private int bulletCount = 32;
             [SerializeField, Min(1), Tooltip("전방위 원형 파동 발사를 몇 번 반복할지 정합니다.")] private int waveCount = 3;
             [SerializeField, Min(0f), Tooltip("전방위 웨이브 사이의 대기 시간입니다.")] private float waveInterval = 0.2f;
@@ -462,7 +486,7 @@ namespace Week14.Enemy
             [Header("Effects")]
             [SerializeField, Tooltip("패턴4 내려찍기 폭발/진동 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.Slam();
 
-            public ProjectileSettings Projectile => projectile;
+            public int ProjectileIndex => projectileIndex;
             public Transform ProjectileOrigin => projectileOrigin;
             public int BulletCount => bulletCount;
             public int WaveCount => waveCount;
@@ -482,7 +506,7 @@ namespace Week14.Enemy
         {
             [SerializeField] private FirePoint firePoint = new();
 
-            [SerializeField, Tooltip("패턴5에서 미니건처럼 발사할 탄환 설정입니다.")] private ProjectileSettings projectile = new();
+            [SerializeField, Min(0), Tooltip("패턴5에서 사용할 공용 투사체 인덱스입니다.")] private int projectileIndex;
             [SerializeField, Min(0f), Tooltip("제자리에서 기를 모으는 시간입니다.")] private float windupSeconds = 1.4f;
             [SerializeField, Min(1), Tooltip("기 모으기가 끝난 뒤 발사할 탄환 수입니다.")] private int bulletCount = 36;
             [SerializeField, Min(0.01f), Tooltip("미니건 탄환 발사 간격입니다.")] private float fireInterval = 0.045f;
@@ -493,7 +517,7 @@ namespace Week14.Enemy
             [SerializeField, Tooltip("패턴5 준비 연기/발사 총구화염 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.WindupMuzzle();
             [SerializeField, HideInInspector] private bool pattern5BulletShakeDefaultApplied;
 
-            public ProjectileSettings Projectile => projectile;
+            public int ProjectileIndex => projectileIndex;
             public FirePoint FirePoint => firePoint;
             public float WindupSeconds => windupSeconds;
             public int BulletCount => bulletCount;
@@ -519,32 +543,31 @@ namespace Week14.Enemy
         internal sealed class Pattern7Settings
         {
             [SerializeField] private FirePoint firePoint = new();
-            [SerializeField, Tooltip("특수 탄환별 소환 위치 목록입니다. 발사 개수보다 부족한 요소는 FirePoint의 Projectile Origin을 사용합니다.")]
-            private List<Transform> specialProjectileOrigins = new();
-
-            [SerializeField, Tooltip("패턴7에서 세 갈래로 발사할 일반 탄환 설정입니다.")] private ProjectileSettings normalProjectile = new();
-            [SerializeField, Tooltip("패턴7에서 일반 탄환과 동시에 소환할 특수 탄환 설정입니다.")] private ProjectileSettings specialProjectile = new();
+            [SerializeField, Min(0), Tooltip("패턴7 세 갈래 발사에 사용할 공용 투사체 인덱스입니다.")] private int normalProjectileIndex;
+            [SerializeField, Min(0), Tooltip("패턴7 보조 발사에 사용할 공용 투사체 인덱스입니다.")] private int secondaryProjectileIndex = 1;
+            [SerializeField, Tooltip("패턴7 보조 투사체별 소환 위치 목록입니다. 발사 개수보다 부족한 요소는 FirePoint의 Projectile Origin을 사용합니다.")]
+            private List<Transform> secondaryProjectileOrigins = new();
             [SerializeField, Min(0f), Tooltip("발사 직전 플레이어를 조준하며 대기하는 시간입니다.")] private float windupSeconds = 1.0f;
             [SerializeField, Min(1), Tooltip("일반 탄환 3갈래 묶음을 몇 번 발사할지 정합니다.")] private int normalVolleyCount = 3;
             [SerializeField, Min(0f), Tooltip("일반 탄환 3갈래 묶음 사이의 발사 간격입니다. 0이면 한 번에 모두 발사합니다.")] private float normalVolleyInterval = 0.18f;
-            [SerializeField, Min(0), Tooltip("특수 탄환을 몇 발 소환할지 정합니다. 0이면 특수 탄환을 발사하지 않습니다.")] private int specialBulletCount = 1;
+            [SerializeField, Min(0), Tooltip("첫 발사 묶음과 함께 소환할 보조 투사체 수입니다.")] private int secondaryBulletCount = 1;
             [SerializeField, Range(0f, 180f), Tooltip("전방 부채꼴 전체 각도입니다. 3갈래 탄환은 -절반, 중앙, +절반 방향으로 발사됩니다.")] private float fanAngleDegrees = 42f;
             [SerializeField, Min(0f), Tooltip("세 갈래 일반 탄환이 시작 위치에서 옆으로 벌어지는 거리입니다.")] private float normalSpawnSpacing = 0.16f;
-            [SerializeField, Min(0f), Tooltip("특수 탄환을 발사 방향 앞쪽으로 소환할 거리입니다.")] private float specialSpawnForwardOffset = 0f;
+            [SerializeField, Min(0f), Tooltip("보조 투사체를 발사 방향 앞쪽으로 소환할 거리입니다.")] private float secondarySpawnForwardOffset = 0f;
             [Header("Effects")]
             [SerializeField, Tooltip("패턴7 준비 연기/발사 총구화염 설정입니다.")] private PatternEffectSettings effects = PatternEffectSettings.WindupMuzzle();
 
-            public ProjectileSettings NormalProjectile => normalProjectile;
-            public ProjectileSettings SpecialProjectile => specialProjectile;
+            public int NormalProjectileIndex => normalProjectileIndex;
+            public int SecondaryProjectileIndex => secondaryProjectileIndex;
             public FirePoint FirePoint => firePoint;
-            public IReadOnlyList<Transform> SpecialProjectileOrigins => specialProjectileOrigins;
+            public IReadOnlyList<Transform> SecondaryProjectileOrigins => secondaryProjectileOrigins;
             public float WindupSeconds => windupSeconds;
             public int NormalVolleyCount => normalVolleyCount;
             public float NormalVolleyInterval => normalVolleyInterval;
-            public int SpecialBulletCount => specialBulletCount;
+            public int SecondaryBulletCount => secondaryBulletCount;
             public float FanAngleDegrees => fanAngleDegrees;
             public float NormalSpawnSpacing => normalSpawnSpacing;
-            public float SpecialSpawnForwardOffset => specialSpawnForwardOffset;
+            public float SecondarySpawnForwardOffset => secondarySpawnForwardOffset;
             public PatternEffectSettings Effects => effects;
         }
     }

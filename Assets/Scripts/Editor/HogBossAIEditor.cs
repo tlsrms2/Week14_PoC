@@ -7,9 +7,15 @@ using Week14.Enemy;
 [CanEditMultipleObjects]
 public sealed class HogBossAIEditor : Editor
 {
-    private static readonly string[] Tabs =
+    private static readonly string[] MainTabs =
     {
-        "공통",
+        "패턴",
+        "투사체",
+        "설정"
+    };
+
+    private static readonly string[] PatternTabs =
+    {
         "패턴1",
         "패턴2",
         "패턴3",
@@ -28,18 +34,39 @@ public sealed class HogBossAIEditor : Editor
         "pattern5",
         "pattern6",
         "pattern7",
+        "projectiles",
         "phasePatterns",
         "minPatternRecoverySeconds",
         "maxPatternRecoverySeconds",
+        "showPatternBulletPreview",
+        "patternBulletPreviewFullHoldSeconds",
+        "patternBulletPreviewSingleGroupFullHoldRatio",
         "randomizePatterns",
         "preventRandomRepeatPattern",
         "debugUseFixedPattern",
-        "debugPattern"
+        "debugPattern",
+        "enragePhase1Seconds",
+        "enragePhase1MaxBullets",
+        "enragePhase2Seconds",
+        "enragePhase2MaxBullets",
+        "enrageWindupSeconds",
+        "enrageWindupShakeDistance",
+        "enrageWindupShakeFrequency",
+        "enrageBurstSprite",
+        "enrageBurstTargetScale",
+        "enrageBurstGrowSeconds",
+        "enrageBurstHoldSeconds",
+        "enrageBurstFadeSeconds",
+        "enrageBurstColor",
+        "enrageShakeAmplitude",
+        "enrageShakeSeconds",
+        "enrageShakeZoom"
     };
 
     private static readonly Dictionary<string, bool> FoldoutStates = new();
 
-    private int tabIndex;
+    private int mainTabIndex;
+    private int patternTabIndex;
     private bool showBossBase;
 
     public override void OnInspectorGUI()
@@ -47,43 +74,58 @@ public sealed class HogBossAIEditor : Editor
         serializedObject.Update();
 
         DrawScriptField();
-        tabIndex = GUILayout.Toolbar(tabIndex, Tabs);
+        mainTabIndex = GUILayout.SelectionGrid(mainTabIndex, MainTabs, MainTabs.Length);
         EditorGUILayout.Space(6f);
 
-        switch (tabIndex)
+        switch (mainTabIndex)
         {
             case 1:
-                DrawPattern1Tab();
+                DrawProjectilesTab();
                 break;
             case 2:
-                DrawPattern2Tab();
-                break;
-            case 3:
-                DrawPattern3Tab();
-                break;
-            case 4:
-                DrawPattern4Tab();
-                break;
-            case 5:
-                DrawPattern5Tab();
-                break;
-            case 6:
-                DrawPattern6Tab();
-                break;
-            case 7:
-                DrawPattern7Tab();
+                DrawSettingsTab();
                 break;
             default:
-                DrawCommonTab();
+                DrawPatternTabs();
                 break;
         }
 
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void DrawCommonTab()
+    private void DrawPatternTabs()
     {
-        DrawHeader("패턴 흐름", "패턴 선택 방식과 패턴 사이 대기 타이머를 조율합니다.");
+        patternTabIndex = GUILayout.SelectionGrid(patternTabIndex, PatternTabs, 4);
+        EditorGUILayout.Space(6f);
+
+        switch (patternTabIndex)
+        {
+            case 1:
+                DrawPattern2Tab();
+                break;
+            case 2:
+                DrawPattern3Tab();
+                break;
+            case 3:
+                DrawPattern4Tab();
+                break;
+            case 4:
+                DrawPattern5Tab();
+                break;
+            case 5:
+                DrawPattern6Tab();
+                break;
+            case 6:
+                DrawPattern7Tab();
+                break;
+            default:
+                DrawPattern1Tab();
+                break;
+        }
+    }
+
+    private void DrawSettingsTab()
+    {
         DrawProperty("randomizePatterns");
         DrawProperty("preventRandomRepeatPattern");
         DrawPhasePatterns();
@@ -92,9 +134,23 @@ public sealed class HogBossAIEditor : Editor
 
         EditorGUILayout.Space(6f);
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        EditorGUILayout.LabelField("디버그 패턴 고정", EditorStyles.boldLabel);
-        DrawProperty("debugUseFixedPattern");
-        DrawProperty("debugPattern");
+        bool previewExpanded = DrawFoldout("settings.preview", "프리뷰");
+        if (previewExpanded)
+        {
+            DrawProperty("showPatternBulletPreview");
+            DrawProperty("patternBulletPreviewFullHoldSeconds");
+            DrawProperty("patternBulletPreviewSingleGroupFullHoldRatio");
+        }
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(6f);
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        bool debugExpanded = DrawFoldout("settings.debug", "디버그");
+        if (debugExpanded)
+        {
+            DrawProperty("debugUseFixedPattern");
+            DrawProperty("debugPattern");
+        }
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(6f);
@@ -108,10 +164,42 @@ public sealed class HogBossAIEditor : Editor
         }
     }
 
+    private void DrawProjectilesTab()
+    {
+        SerializedProperty projectiles = serializedObject.FindProperty("projectiles");
+        if (projectiles == null)
+        {
+            return;
+        }
+
+        EnsureProjectileArray(projectiles);
+
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("투사체 추가"))
+        {
+            projectiles.arraySize++;
+        }
+
+        using (new EditorGUI.DisabledScope(projectiles.arraySize <= 2))
+        {
+            if (GUILayout.Button("마지막 투사체 삭제"))
+            {
+                projectiles.DeleteArrayElementAtIndex(projectiles.arraySize - 1);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(4f);
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            DrawProjectile(projectiles.GetArrayElementAtIndex(i), $"투사체 {GetProjectileLabel(i)}");
+        }
+    }
+
     private void DrawEnrageSection()
     {
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool expanded = DrawFoldout("common.enrage", "광폭화 / 진입 연출");
+        bool expanded = DrawFoldout("settings.enrage", "광폭화 / 진입 연출");
         if (!expanded)
         {
             EditorGUILayout.EndVertical();
@@ -124,13 +212,11 @@ public sealed class HogBossAIEditor : Editor
         DrawProperty("enragePhase2MaxBullets");
 
         EditorGUILayout.Space(4f);
-        EditorGUILayout.LabelField("진입 전 떨림 (Windup)", EditorStyles.boldLabel);
         DrawProperty("enrageWindupSeconds");
         DrawProperty("enrageWindupShakeDistance");
         DrawProperty("enrageWindupShakeFrequency");
 
         EditorGUILayout.Space(4f);
-        EditorGUILayout.LabelField("진입 연출 (스폰 이미지/스케일/카메라 쉐이크)", EditorStyles.boldLabel);
         DrawProperty("enrageBurstSprite");
         DrawProperty("enrageBurstTargetScale");
         DrawProperty("enrageBurstGrowSeconds");
@@ -153,14 +239,11 @@ public sealed class HogBossAIEditor : Editor
         }
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        EditorGUILayout.LabelField("페이즈별 패턴 구성", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("각 요소가 보스 목숨 순서의 페이즈입니다. Patterns 목록에 넣은 패턴만 해당 페이즈에서 선택됩니다. 비워두면 모든 패턴을 사용합니다.", MessageType.Info);
-
         SerializedProperty maxLives = serializedObject.FindProperty("maxLives");
         int desiredCount = maxLives != null ? Mathf.Max(1, maxLives.intValue) : phasePatterns.arraySize;
         if (phasePatterns.arraySize < desiredCount)
         {
-            EditorGUILayout.HelpBox("페이즈 수보다 패턴 구성이 적습니다. 게임 실행 또는 값 변경 시 부족한 페이즈가 자동 추가됩니다.", MessageType.Warning);
+            EditorGUILayout.HelpBox("페이즈 수보다 목록이 적습니다. 실행 또는 값 변경 시 부족한 페이즈가 자동 추가됩니다.", MessageType.Warning);
         }
 
         EditorGUILayout.PropertyField(phasePatterns, true);
@@ -170,79 +253,136 @@ public sealed class HogBossAIEditor : Editor
     private void DrawPattern1Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern1");
-        DrawSection("Origins", pattern, "projectileOrigins");
-        DrawHeader("패턴1", "일정 각도씩 회전하며 일반 탄환을 만들고, 대기 시간이 끝나면 플레이어를 향해 날아갑니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴1 투사체");
-        DrawSection("추격", pattern, "initialChaseSpeedMultiplier", "finalChaseSpeedMultiplier");
+        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
+        DrawSection("발사 원점", pattern, "projectileOrigins");
         DrawSection("발사", pattern, "radialBulletCount", "burstInterval", "spawnRadius", "angleStepDegrees");
-        DrawSection("이펙트", pattern, "effects");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
     }
 
     private void DrawPattern2Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern2");
-        DrawSection("Origins", pattern, "projectileOrigins");
-        DrawHeader("패턴2", "느려진 상태로 플레이어를 향해 특수 탄환을 머신건처럼 발사합니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴2 투사체");
+        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
+        DrawSection("발사 원점", pattern, "projectileOrigins");
         DrawSection("이동", pattern, "moveSpeedMultiplier");
         DrawSection("발사 묶음", pattern, "volleys", "spawnSpacing");
-        DrawSection("이펙트", pattern, "effects");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
     }
 
     private void DrawPattern3Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern3");
-        DrawSection("Origins", pattern, "firePoint");
-        DrawHeader("패턴3", "보스에게 붙어 커지며 조준하다가, 멈춘 뒤 대기하고 날아갑니다. 첫 분열 전까지 요격 불가입니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴3 투사체");
+        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
+        DrawSection("발사 원점", pattern, "firePoint");
         DrawSection("준비/조준", pattern, "windupSeconds", "aimTrackingSeconds", "aimSpreadDegrees");
         DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio");
         DrawSection("전방위 분열", pattern, "splitDelaySeconds", "bombSfxLeadSeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
-        DrawSection("이펙트", pattern, "effects");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
     }
 
     private void DrawPattern4Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern4");
-        DrawSection("Origins / Slam", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
-        DrawHeader("패턴4", "보스 위치를 기준으로 360도 원형의 파동처럼 여러 차례 탄환을 발사합니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴4 투사체");
+        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
+        DrawSection("내려찍기/원점", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
         DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
-        DrawSection("이펙트", pattern, "effects");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
     }
 
     private void DrawPattern5Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern5");
-        DrawSection("Origins", pattern, "firePoint");
-        DrawHeader("패턴5", "제자리에서 기를 모은 뒤 플레이어 방향을 기준으로 부채꼴 모양으로 훑으며 탄막을 발사합니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴5 투사체");
+        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
+        DrawSection("발사 원점", pattern, "firePoint");
         DrawSection("기 모으기", pattern, "windupSeconds");
         DrawSection("미니건 발사", pattern, "bulletCount", "fireInterval", "spawnSpacing", "sweepStepDegrees", "maxSweepAngle");
-        DrawSection("이펙트", pattern, "effects");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
     }
 
     private void DrawPattern6Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern6");
-        DrawSection("Origins / Slam", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
-        DrawHeader("패턴6", "패턴4와 동일하게 보스 위치를 기준으로 360도 원형의 파동처럼 여러 차례 탄환을 발사합니다.");
-        DrawProjectile(pattern.FindPropertyRelative("projectile"), "패턴6 투사체");
+        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
+        DrawSection("내려찍기/원점", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
         DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
-        DrawSection("이펙트", pattern, "effects");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
     }
 
     private void DrawPattern7Tab()
     {
         SerializedProperty pattern = serializedObject.FindProperty("pattern7");
-        DrawSection("Origins", pattern, "firePoint", "specialProjectileOrigins");
-        DrawHeader("패턴7", "발사 직전 플레이어 방향으로 조준을 고정한 뒤 전방 세 갈래 일반 탄환을 여러 번 쏘고 특수 탄환을 함께 소환합니다.");
-        DrawProjectile(pattern.FindPropertyRelative("normalProjectile"), "패턴7 일반 탄환");
-        DrawProjectile(pattern.FindPropertyRelative("specialProjectile"), "패턴7 특수 탄환");
+        DrawProjectileIndex(pattern, "normalProjectileIndex", "일반 투사체");
+        DrawProjectileIndex(pattern, "secondaryProjectileIndex", "보조 투사체");
+        DrawSection("발사 원점", pattern, "firePoint");
         DrawSection("기 모으기", pattern, "windupSeconds");
-        DrawSection("세 갈래 반복 발사", pattern, "normalVolleyCount", "normalVolleyInterval", "fanAngleDegrees", "normalSpawnSpacing", "specialSpawnForwardOffset");
-        DrawSection("특수 탄환", pattern, "specialBulletCount");
-        DrawSection("이펙트", pattern, "effects");
+        DrawSection("세 갈래 반복 발사", pattern, "normalVolleyCount", "normalVolleyInterval", "fanAngleDegrees", "normalSpawnSpacing");
+        DrawSection("보조 발사", pattern, "secondaryProjectileOrigins", "secondaryBulletCount", "secondarySpawnForwardOffset");
+        DrawEffects(pattern.FindPropertyRelative("effects"));
+    }
+
+    private void DrawProjectileIndex(SerializedProperty pattern, string childName, string label)
+    {
+        if (pattern == null)
+        {
+            return;
+        }
+
+        SerializedProperty projectiles = serializedObject.FindProperty("projectiles");
+        if (projectiles == null)
+        {
+            return;
+        }
+
+        EnsureProjectileArray(projectiles);
+
+        SerializedProperty projectileIndex = pattern.FindPropertyRelative(childName);
+        if (projectileIndex == null)
+        {
+            return;
+        }
+
+        string[] labels = GetProjectileLabels(projectiles.arraySize);
+        projectileIndex.intValue = Mathf.Clamp(projectileIndex.intValue, 0, labels.Length - 1);
+        projectileIndex.intValue = EditorGUILayout.Popup(label, projectileIndex.intValue, labels);
+    }
+
+    private static void EnsureProjectileArray(SerializedProperty projectiles)
+    {
+        if (projectiles == null)
+        {
+            return;
+        }
+
+        while (projectiles.arraySize < 2)
+        {
+            projectiles.arraySize++;
+        }
+    }
+
+    private static string[] GetProjectileLabels(int count)
+    {
+        int safeCount = Mathf.Max(1, count);
+        string[] labels = new string[safeCount];
+        for (int i = 0; i < safeCount; i++)
+        {
+            labels[i] = $"투사체 {GetProjectileLabel(i)}";
+        }
+
+        return labels;
+    }
+
+    private static string GetProjectileLabel(int index)
+    {
+        int value = Mathf.Max(0, index);
+        string label = string.Empty;
+        do
+        {
+            label = (char)('A' + value % 26) + label;
+            value = value / 26 - 1;
+        }
+        while (value >= 0);
+
+        return label;
     }
 
     private void DrawProjectile(SerializedProperty projectile, string title)
@@ -251,6 +391,8 @@ public sealed class HogBossAIEditor : Editor
         {
             return;
         }
+
+        ApplyHomingDefaults(projectile);
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         string key = $"{projectile.propertyPath}.{title}";
@@ -283,16 +425,41 @@ public sealed class HogBossAIEditor : Editor
             DrawChild(projectile, "trailSeconds");
             DrawChild(projectile, "trailWidthMultiplier");
             DrawChild(projectile, "homingEnabled");
-            DrawChild(projectile, "homingSeconds");
-            DrawChild(projectile, "homingTurnDegreesPerSecond");
+            ApplyHomingDefaults(projectile);
         }
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.EndVertical();
     }
 
+    private static void ApplyHomingDefaults(SerializedProperty projectile)
+    {
+        SerializedProperty homingEnabled = FindChild(projectile, "homingEnabled");
+        if (homingEnabled == null || !homingEnabled.boolValue)
+        {
+            return;
+        }
+
+        SerializedProperty homingSeconds = FindChild(projectile, "homingSeconds");
+        if (homingSeconds != null && homingSeconds.floatValue <= 0f)
+        {
+            homingSeconds.floatValue = 10f;
+        }
+
+        SerializedProperty homingTurnDegrees = FindChild(projectile, "homingTurnDegreesPerSecond");
+        if (homingTurnDegrees != null && homingTurnDegrees.floatValue <= 0f)
+        {
+            homingTurnDegrees.floatValue = 540f;
+        }
+    }
+
     private static void DrawSection(string title, SerializedProperty root, params string[] childNames)
     {
+        if (root == null)
+        {
+            return;
+        }
+
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         bool expanded = DrawFoldout($"{root.propertyPath}.{title}", title);
         if (!expanded)
@@ -307,6 +474,66 @@ public sealed class HogBossAIEditor : Editor
         }
 
         EditorGUILayout.EndVertical();
+    }
+
+    private static void DrawEffects(SerializedProperty effects)
+    {
+        if (effects == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        bool expanded = DrawFoldout($"{effects.propertyPath}.effects", "이펙트");
+        if (!expanded)
+        {
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        SerializedProperty explosion = effects.FindPropertyRelative("explosion");
+        DrawParticleEffect(explosion, "폭발", true);
+
+        SerializedProperty smoke = effects.FindPropertyRelative("smoke");
+        DrawParticleEffect(smoke, "연기", true);
+        DrawNamedChild(effects, "smokeInterval", "연기 간격");
+
+        SerializedProperty muzzleFlash = effects.FindPropertyRelative("muzzleFlash");
+        DrawParticleEffect(muzzleFlash, "총구 화염", false);
+
+        SerializedProperty cameraShake = effects.FindPropertyRelative("cameraShake");
+        DrawCameraShake(cameraShake);
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private static void DrawParticleEffect(SerializedProperty effect, string labelPrefix, bool drawCount)
+    {
+        if (effect == null)
+        {
+            return;
+        }
+
+        DrawNamedChild(effect, "enabled", $"{labelPrefix} 사용");
+        DrawNamedChild(effect, "color", $"{labelPrefix} 색");
+        DrawNamedChild(effect, "scale", $"{labelPrefix} 크기");
+        if (drawCount)
+        {
+            DrawNamedChild(effect, "count", $"{labelPrefix} 개수");
+        }
+    }
+
+    private static void DrawCameraShake(SerializedProperty cameraShake)
+    {
+        if (cameraShake == null)
+        {
+            return;
+        }
+
+        DrawNamedChild(cameraShake, "enabled", "카메라 쉐이크 사용");
+        DrawNamedChild(cameraShake, "seconds", "카메라 쉐이크 시간");
+        DrawNamedChild(cameraShake, "distance", "카메라 쉐이크 거리");
+        DrawNamedChild(cameraShake, "frequency", "카메라 쉐이크 빈도");
     }
 
     private static bool DrawFoldout(string key, string title)
@@ -330,8 +557,22 @@ public sealed class HogBossAIEditor : Editor
         }
     }
 
+    private static void DrawNamedChild(SerializedProperty root, string childName, string label)
+    {
+        SerializedProperty child = FindChild(root, childName);
+        if (child != null)
+        {
+            EditorGUILayout.PropertyField(child, new GUIContent(label), true);
+        }
+    }
+
     private static SerializedProperty FindChild(SerializedProperty root, string childName)
     {
+        if (root == null)
+        {
+            return null;
+        }
+
         SerializedProperty child = root.FindPropertyRelative(childName);
         if (child != null)
         {
@@ -351,6 +592,12 @@ public sealed class HogBossAIEditor : Editor
         }
 
         return null;
+    }
+
+    private SerializedProperty FindPatternChild(string patternName, string childName)
+    {
+        SerializedProperty pattern = serializedObject.FindProperty(patternName);
+        return pattern != null ? pattern.FindPropertyRelative(childName) : null;
     }
 
     private void DrawProperty(string propertyName)
@@ -387,13 +634,5 @@ public sealed class HogBossAIEditor : Editor
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
         }
-    }
-
-    private static void DrawHeader(string title, string description)
-    {
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox(description, MessageType.None);
-        EditorGUILayout.EndVertical();
     }
 }
