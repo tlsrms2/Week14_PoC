@@ -66,6 +66,8 @@ namespace Week14.Combat
         private MaterialPropertyBlock bodyFlashPropertyBlock;
         private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
+        private Coroutine hitStopRoutine;
+        private float hitStopPreviousTimeScale = 1f;
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
         private bool playerHpHiddenForExecution;
@@ -161,6 +163,17 @@ namespace Week14.Combat
             RestorePlayerHpAfterExecution();
             StopExecutionShotDim();
             executionImage?.Stop();
+
+            if (hitStopRoutine != null)
+            {
+                StopCoroutine(hitStopRoutine);
+                if (Mathf.Approximately(Time.timeScale, config != null ? config.HitStopTimeScale : Time.timeScale))
+                {
+                    Time.timeScale = hitStopPreviousTimeScale;
+                }
+
+                hitStopRoutine = null;
+            }
         }
 
         private void Start()
@@ -348,6 +361,7 @@ namespace Week14.Combat
             {
                 bullets.TrySpend(Mathf.Clamp(bulletDamage, 1, bullets.CurrentBullets), BulletChangeSource.Hit);
                 SoundManager.PlaySfx("BulletLoss");
+                PlayHitStop();
             }
             FlashBodyHitColor();
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -371,6 +385,38 @@ namespace Week14.Combat
 
             bodyHitColorEndsAt = Time.time + config.BodyHitColorSeconds;
             UpdateBodyColor(true);
+        }
+
+        private void PlayHitStop()
+        {
+            if (config == null || config.HitStopSeconds <= 0f)
+            {
+                return;
+            }
+
+            if (hitStopRoutine == null)
+            {
+                hitStopPreviousTimeScale = Time.timeScale;
+            }
+            else
+            {
+                StopCoroutine(hitStopRoutine);
+            }
+
+            Time.timeScale = config.HitStopTimeScale;
+            hitStopRoutine = StartCoroutine(HitStopRoutine(config.HitStopTimeScale, config.HitStopSeconds));
+        }
+
+        private IEnumerator HitStopRoutine(float appliedTimeScale, float seconds)
+        {
+            yield return new WaitForSecondsRealtime(seconds);
+
+            if (Mathf.Approximately(Time.timeScale, appliedTimeScale))
+            {
+                Time.timeScale = hitStopPreviousTimeScale;
+            }
+
+            hitStopRoutine = null;
         }
 
         private void UpdateBodyColor(bool force = false)

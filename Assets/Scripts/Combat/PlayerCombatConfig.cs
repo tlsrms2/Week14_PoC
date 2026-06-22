@@ -29,6 +29,12 @@ namespace Week14.Combat
         [Tooltip("플레이어의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
 
+        [Header("Hit Stop")]
+        [Tooltip("피격 시 타임스케일을 낮춰서 유지하는 실시간(초) 길이입니다.")]
+        [SerializeField, Min(0f)] private float hitStopSeconds = 0.06f;
+        [Tooltip("피격 역경직 중 적용할 타임스케일입니다. 0에 가까울수록 더 강하게 멈춥니다.")]
+        [SerializeField, Range(0f, 1f)] private float hitStopTimeScale = 0.05f;
+
         [Header("Left Gun")]
         [Tooltip("플레이어 권총 발사에 사용할 투사체 프리팹입니다.")]
         [SerializeField] private PlayerProjectile projectilePrefab;
@@ -89,6 +95,8 @@ namespace Week14.Combat
 
         public int MaxBullets => maxBullets;
         public float MoveSpeed => moveSpeed;
+        public float HitStopSeconds => hitStopSeconds;
+        public float HitStopTimeScale => hitStopTimeScale;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
         public int LeftAttackBulletCost => leftAttackBulletCost;
         public int AttackBulletDamage => attackBulletDamage;
