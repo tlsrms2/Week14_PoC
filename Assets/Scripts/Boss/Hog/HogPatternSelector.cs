@@ -5,6 +5,32 @@ namespace Week14.Enemy
 {
     internal sealed class HogPatternSelector
     {
+        internal readonly struct Settings
+        {
+            public Settings(
+                IReadOnlyList<HogBossAI.PhasePatternSet> phasePatterns,
+                int currentPhaseIndex,
+                bool randomizePatterns,
+                bool preventRandomRepeatPattern,
+                bool debugUseFixedPattern,
+                HogBossAI.PatternKind debugPattern)
+            {
+                PhasePatterns = phasePatterns;
+                CurrentPhaseIndex = currentPhaseIndex;
+                RandomizePatterns = randomizePatterns;
+                PreventRandomRepeatPattern = preventRandomRepeatPattern;
+                DebugUseFixedPattern = debugUseFixedPattern;
+                DebugPattern = debugPattern;
+            }
+
+            public IReadOnlyList<HogBossAI.PhasePatternSet> PhasePatterns { get; }
+            public int CurrentPhaseIndex { get; }
+            public bool RandomizePatterns { get; }
+            public bool PreventRandomRepeatPattern { get; }
+            public bool DebugUseFixedPattern { get; }
+            public HogBossAI.PatternKind DebugPattern { get; }
+        }
+
         private static readonly HogBossAI.PatternKind[] DefaultPatterns =
         {
             HogBossAI.PatternKind.Pattern1,
@@ -20,24 +46,12 @@ namespace Week14.Enemy
         private bool hasLastPattern;
         private HogBossAI.PatternKind lastPattern;
 
-        public List<HogBossAI.PhasePatternSet> EnsurePhasePatternSlots(
-            List<HogBossAI.PhasePatternSet> phasePatterns,
-            int maxLives)
+        public void EnsurePhasePatterns(ref List<HogBossAI.PhasePatternSet> phasePatterns, int maxLives)
         {
             phasePatterns ??= new List<HogBossAI.PhasePatternSet>();
             while (phasePatterns.Count < maxLives)
             {
                 phasePatterns.Add(new HogBossAI.PhasePatternSet { Phase = phasePatterns.Count + 1 });
-            }
-
-            return phasePatterns;
-        }
-
-        public void EnsurePhasePatternLabels(IReadOnlyList<HogBossAI.PhasePatternSet> phasePatterns)
-        {
-            if (phasePatterns == null)
-            {
-                return;
             }
 
             for (int i = 0; i < phasePatterns.Count; i++)
@@ -55,34 +69,25 @@ namespace Week14.Enemy
             hasLastPattern = false;
         }
 
-        public void RecordExecuted(HogBossAI.PatternKind pattern)
+        public HogBossAI.PatternKind SelectNext(Settings settings)
         {
-            lastPattern = pattern;
+            HogBossAI.PatternKind selectedPattern;
+            if (settings.DebugUseFixedPattern)
+            {
+                selectedPattern = settings.DebugPattern;
+            }
+            else
+            {
+                IReadOnlyList<HogBossAI.PatternKind> availablePatterns =
+                    GetCurrentPhasePatterns(settings.PhasePatterns, settings.CurrentPhaseIndex);
+                selectedPattern = settings.RandomizePatterns
+                    ? SelectRandomPattern(availablePatterns, settings.PreventRandomRepeatPattern)
+                    : SelectSequentialPattern(availablePatterns);
+            }
+
+            lastPattern = selectedPattern;
             hasLastPattern = true;
-        }
-
-        public HogBossAI.PatternKind Select(
-            IReadOnlyList<HogBossAI.PhasePatternSet> phasePatterns,
-            int currentPhaseIndex,
-            bool randomizePatterns,
-            bool preventRandomRepeatPattern,
-            bool debugUseFixedPattern,
-            HogBossAI.PatternKind debugPattern)
-        {
-            if (debugUseFixedPattern)
-            {
-                return debugPattern;
-            }
-
-            IReadOnlyList<HogBossAI.PatternKind> availablePatterns = GetCurrentPhasePatterns(phasePatterns, currentPhaseIndex);
-            if (randomizePatterns)
-            {
-                return SelectRandomPattern(availablePatterns, preventRandomRepeatPattern);
-            }
-
-            HogBossAI.PatternKind pattern = availablePatterns[nextPatternIndex % availablePatterns.Count];
-            nextPatternIndex++;
-            return pattern;
+            return selectedPattern;
         }
 
         private static IReadOnlyList<HogBossAI.PatternKind> GetCurrentPhasePatterns(
@@ -96,6 +101,13 @@ namespace Week14.Enemy
             }
 
             return DefaultPatterns;
+        }
+
+        private HogBossAI.PatternKind SelectSequentialPattern(IReadOnlyList<HogBossAI.PatternKind> availablePatterns)
+        {
+            HogBossAI.PatternKind pattern = availablePatterns[nextPatternIndex % availablePatterns.Count];
+            nextPatternIndex++;
+            return pattern;
         }
 
         private static HogBossAI.PhasePatternSet GetCurrentPhasePatternSet(
