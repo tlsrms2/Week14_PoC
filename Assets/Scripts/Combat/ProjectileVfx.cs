@@ -301,14 +301,16 @@ namespace Week14.Combat
             Color trailEndColor = trailColor;
             trailEndColor.a = 0f;
 
-            trail.time = Mathf.Clamp(seconds, 0.025f, 0.12f);
+            trail.time = Mathf.Max(0.025f, seconds);
             trail.startWidth = Mathf.Max(0.01f, radius * Mathf.Clamp(widthMultiplier * 0.35f, 0.35f, 1.1f));
             trail.endWidth = 0f;
             trail.startColor = trailColor;
             trail.endColor = trailEndColor;
+            trail.minVertexDistance = 0.01f;
             trail.numCornerVertices = 0;
             trail.numCapVertices = 0;
             trail.autodestruct = false;
+            trail.emitting = true;
             trail.material = GetSpriteMaterial();
             trail.sortingOrder = 18;
         }

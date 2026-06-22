@@ -270,6 +270,8 @@ public sealed class HogBossAIEditor : Editor
         DrawChild(projectile, "radius");
         DrawChild(projectile, "chargingColor");
         DrawChild(projectile, "launchedColor");
+        DrawChild(projectile, "homingBlinkColor");
+        DrawChild(projectile, "trailColor");
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         bool advancedExpanded = DrawFoldout($"{key}.advanced", "투사체 고급값");
