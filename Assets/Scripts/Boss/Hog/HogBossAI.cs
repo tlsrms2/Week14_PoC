@@ -56,6 +56,7 @@ namespace Week14.Enemy
         internal sealed class ProjectileSettings
         {
             [SerializeField, Tooltip("이 설정으로 생성할 적 탄환 프리팹입니다.")] private EnemyProjectile prefab;
+            [SerializeField, Tooltip("유도탄이 대기 중일 때만 사용할 충전 프리팹입니다. 비워두면 기본 프리팹을 사용합니다.")] private EnemyProjectile homingChargePrefab;
             [SerializeField, Min(0), Tooltip("플레이어에게 적중했을 때 플레이어 탄환을 감소시키는 양입니다.")] private int bulletDamage = 1;
             [SerializeField, Min(0f), Tooltip("발사 전 대기하는 시간입니다.")] private float chargeSeconds = 0.35f;
             [SerializeField, Min(0f), Tooltip("대기 시간 동안 탄환이 천천히 이동하는 속도입니다.")] private float chargeDriftSpeed = 0.65f;
@@ -67,6 +68,7 @@ namespace Week14.Enemy
             [SerializeField, FormerlySerializedAs("color"), Tooltip("발사된 탄환 색입니다.")] private Color launchedColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Tooltip("유도탄이 대기 중 깜빡일 때 번갈아 표시할 색입니다.")] private Color homingBlinkColor = new(1f, 0.25f, 0.15f, 1f);
             [SerializeField, Tooltip("탄환 궤적 색입니다. 알파값은 시작 투명도로 사용됩니다.")] private Color trailColor = new(1f, 0.82f, 0.18f, 0.55f);
+            [SerializeField, Tooltip("탄환 경로 인디케이터와 유도 조준 레티클 색입니다. 알파값은 내부 표시 강도로 조정됩니다.")] private Color indicatorColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Min(0.01f), Tooltip("탄환 궤적이 남아 있는 시간입니다.")] private float trailSeconds = 0.1f;
             [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] private float trailWidthMultiplier = 3f;
             [SerializeField] private bool homingEnabled;
@@ -74,6 +76,7 @@ namespace Week14.Enemy
             [SerializeField, Min(0f), Tooltip("추적 중 초당 회전 가능한 최대 각도입니다.")] private float homingTurnDegreesPerSecond = 540f;
 
             public EnemyProjectile Prefab => prefab;
+            public EnemyProjectile HomingChargePrefab => homingChargePrefab;
             public int BulletDamage => bulletDamage;
             public float ChargeSeconds => chargeSeconds;
             public float ChargeDriftSpeed => chargeDriftSpeed;
@@ -85,6 +88,7 @@ namespace Week14.Enemy
             public Color LaunchedColor => launchedColor;
             public Color HomingBlinkColor => homingBlinkColor;
             public Color TrailColor => trailColor;
+            public Color IndicatorColor => indicatorColor;
             public float TrailSeconds => trailSeconds;
             public float TrailWidthMultiplier => trailWidthMultiplier;
             public bool HomingEnabled => homingEnabled;

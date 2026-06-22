@@ -88,8 +88,13 @@ namespace Week14.Enemy
             Color projectileColor = settings.LaunchedColor;
             Color homingBlinkColor = settings.HomingBlinkColor;
             Color trailColor = settings.TrailColor;
+            Color indicatorColor = settings.IndicatorColor;
+            bool homingEnabled = settings.HomingEnabled && !suppressHoming;
+            EnemyProjectile spawnPrefab = homingEnabled && chargeSeconds > 0f && settings.HomingChargePrefab != null
+                ? settings.HomingChargePrefab
+                : settings.Prefab;
             EnemyProjectile projectile = spawnProjectile(
-                settings.Prefab,
+                spawnPrefab,
                 origin,
                 direction,
                 settings.BulletDamage,
@@ -100,7 +105,7 @@ namespace Week14.Enemy
                 projectileColor,
                 settings.TrailSeconds,
                 settings.TrailWidthMultiplier,
-                settings.HomingEnabled && !suppressHoming,
+                homingEnabled,
                 settings.HomingSeconds,
                 settings.HomingTurnDegreesPerSecond,
                 muzzleFlashPosition,
@@ -108,6 +113,8 @@ namespace Week14.Enemy
 
             projectile?.ConfigureStateColors(chargeColor, projectileColor, homingBlinkColor);
             projectile?.ConfigureTrailColor(trailColor);
+            projectile?.ConfigureIndicatorColor(indicatorColor);
+            projectile?.ConfigureLaunchReplacementPrefab(spawnPrefab != settings.Prefab ? settings.Prefab : null);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
             return projectile;
         }

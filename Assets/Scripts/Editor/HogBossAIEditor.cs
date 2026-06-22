@@ -262,6 +262,7 @@ public sealed class HogBossAIEditor : Editor
         }
 
         DrawChild(projectile, "prefab");
+        DrawChild(projectile, "homingChargePrefab");
         DrawChild(projectile, "bulletDamage");
         DrawChild(projectile, "chargeSeconds");
         DrawChild(projectile, "chargeDriftSpeed");
@@ -272,6 +273,7 @@ public sealed class HogBossAIEditor : Editor
         DrawChild(projectile, "launchedColor");
         DrawChild(projectile, "homingBlinkColor");
         DrawChild(projectile, "trailColor");
+        DrawChild(projectile, "indicatorColor");
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         bool advancedExpanded = DrawFoldout($"{key}.advanced", "투사체 고급값");

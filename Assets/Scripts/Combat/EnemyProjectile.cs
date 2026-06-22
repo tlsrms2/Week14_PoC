@@ -28,10 +28,13 @@ namespace Week14.Combat
         private float projectileLifetime;
         private float projectileRadius;
         private float projectileChargeSeconds;
+        private float projectileTrailSeconds;
+        private float projectileTrailWidthMultiplier;
         private Color projectileColor;
         private Color chargingColor;
         private Color launchedColor;
         private Color homingBlinkColor;
+        private Color indicatorColor;
         private float homingBlinkPhase;
         private bool homingEnabled;
         private float homingTurnDegreesPerSecond;
@@ -42,7 +45,9 @@ namespace Week14.Combat
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
         private TrailRenderer projectileTrail;
+        private EnemyProjectile launchReplacementPrefab;
         private bool customTrailColorConfigured;
+        private bool customIndicatorColorConfigured;
         [SerializeField] private GameObject parryLockOnIndicatorRoot;
         [SerializeField] private MouseParryReticle parryLockOnReticle;
         [SerializeField] private Transform parryLockOnRotatingRoot;
@@ -215,6 +220,19 @@ namespace Week14.Combat
             customTrailColorConfigured = true;
         }
 
+        public void ConfigureIndicatorColor(Color nextIndicatorColor)
+        {
+            indicatorColor = nextIndicatorColor;
+            customIndicatorColorConfigured = true;
+        }
+
+        public void ConfigureLaunchReplacementPrefab(EnemyProjectile nextLaunchPrefab)
+        {
+            launchReplacementPrefab = nextLaunchPrefab != null && nextLaunchPrefab != this
+                ? nextLaunchPrefab
+                : null;
+        }
+
         public void ConfigureChargeMotion(float driftSpeed, bool aimAtPlayer)
         {
             chargeDriftSpeed = Mathf.Max(0f, driftSpeed);
@@ -376,6 +394,8 @@ namespace Week14.Combat
                 lifetime,
                 radius,
                 color,
+                trailSeconds,
+                trailWidth,
                 homingEnabled,
                 homingSeconds,
                 homingTurnDegrees,
@@ -399,6 +419,7 @@ namespace Week14.Combat
             BulletGauge nextOwnerBullets,
             float chargeSeconds,
             float speed, float lifetime, float radius, Color color,
+            float trailSeconds, float trailWidth,
             bool enableHoming,
             float homingSeconds, float nextHomingTurnDegrees,
             bool nextSuppressPathIndicator)
@@ -407,12 +428,17 @@ namespace Week14.Combat
             projectileLifetime = lifetime;
             projectileRadius = radius;
             projectileChargeSeconds = Mathf.Max(0f, chargeSeconds);
+            projectileTrailSeconds = Mathf.Max(0.025f, trailSeconds);
+            projectileTrailWidthMultiplier = Mathf.Max(0.1f, trailWidth);
             projectileColor = color;
             chargingColor = color;
             launchedColor = color;
             homingBlinkColor = color;
+            indicatorColor = color;
             homingBlinkPhase = 0f;
             customTrailColorConfigured = false;
+            customIndicatorColorConfigured = false;
+            launchReplacementPrefab = null;
             homingEnabled = enableHoming;
             this.homingSeconds = homingEnabled
                 ? Mathf.Max(0.01f, homingSeconds > 0f ? homingSeconds : DefaultHomingSeconds)
@@ -549,6 +575,11 @@ namespace Week14.Combat
             }
 
             SnapToChargeAnchor();
+            if (TryReplaceWithLaunchPrefab())
+            {
+                return;
+            }
+
             launched = true;
             chargeAnchor = null;
             ApplyProjectileColor(launchedColor);
@@ -582,6 +613,150 @@ namespace Week14.Combat
             }
 
             Launched?.Invoke(this);
+        }
+
+        private bool TryReplaceWithLaunchPrefab()
+        {
+            if (launchReplacementPrefab == null)
+            {
+                return false;
+            }
+
+            if (homingEnabled)
+            {
+                AimAtPlayerWhileCharging();
+            }
+            else if (aimAtPlayerOnLaunch)
+            {
+                AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
+            }
+
+            EnemyProjectile replacement = SpawnInternal(
+                launchReplacementPrefab,
+                ownerBullets,
+                transform.position,
+                flightDirection,
+                bulletDamage,
+                0f,
+                projectileSpeed,
+                projectileLifetime,
+                projectileRadius,
+                launchedColor,
+                projectileTrailSeconds,
+                projectileTrailWidthMultiplier,
+                homingEnabled,
+                homingSeconds,
+                homingTurnDegreesPerSecond,
+                suppressPathIndicator);
+
+            if (replacement == null)
+            {
+                return false;
+            }
+
+            CopyLaunchRuntimeStateTo(replacement);
+            if (growScaleWhileCharging)
+            {
+                replacement.transform.localScale = chargeGrowthEndScale;
+                replacement.baseLocalScale = replacement.transform.localScale;
+            }
+
+            if (playSmokeOnLaunch)
+            {
+                ProjectileVfx.PlayHogSmokeBurst(transform.position, launchSmokeColor, launchSmokeScale, 18);
+            }
+
+            replacement.radialSplitAt = replacement.splitRadiallyOnLaunch
+                ? Time.time + replacement.radialSplitDelaySeconds
+                : 0f;
+            replacement.SetChargeVfxVisible(false);
+            replacement.BeginPathIndicator();
+            if (replacement.body != null)
+            {
+                replacement.body.linearVelocity = replacement.flightDirection * replacement.projectileSpeed;
+            }
+
+            replacement.Launched?.Invoke(replacement);
+            RetireAfterLaunchReplacement();
+            return true;
+        }
+
+        private void CopyLaunchRuntimeStateTo(EnemyProjectile replacement)
+        {
+            replacement.ConfigureStateColors(chargingColor, launchedColor, homingBlinkColor);
+            if (customTrailColorConfigured && projectileTrail != null)
+            {
+                replacement.ConfigureTrailColor(projectileTrail.startColor);
+            }
+
+            if (customIndicatorColorConfigured)
+            {
+                replacement.ConfigureIndicatorColor(indicatorColor);
+            }
+
+            replacement.ConfigureChargeMotion(
+                chargeDriftSpeed,
+                aimAtPlayerWhileCharging,
+                aimAtPlayerOnLaunch,
+                aimAtPlayerOnLaunchSpreadDegrees);
+            replacement.canBeIntercepted = canBeIntercepted;
+            replacement.splitOnObstacle = splitOnObstacle;
+            replacement.splitRadiallyOnLaunch = splitRadiallyOnLaunch;
+            replacement.splitRemaining = splitRemaining;
+            replacement.splitAngleDegrees = splitAngleDegrees;
+            replacement.radialSplitBulletCount = radialSplitBulletCount;
+            replacement.radialSplitStartAngleDegrees = radialSplitStartAngleDegrees;
+            replacement.radialSplitDelaySeconds = radialSplitDelaySeconds;
+            replacement.radialSplitSfxLeadSeconds = radialSplitSfxLeadSeconds;
+            replacement.splitSpeedMultiplier = splitSpeedMultiplier;
+            replacement.splitRadiusMultiplier = splitRadiusMultiplier;
+            replacement.splitLifetimeMultiplier = splitLifetimeMultiplier;
+            replacement.Launched = Launched;
+            replacement.RadialSplit = RadialSplit;
+            replacement.RadialSplitImminent = RadialSplitImminent;
+            replacement.SetParryLockOnIndicatorVisible(parryLockOnIndicatorVisible);
+        }
+
+        private void RetireAfterLaunchReplacement()
+        {
+            isDestroying = true;
+            activeProjectiles.Remove(this);
+            ReleaseOwnerProjectileSlot();
+
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+
+            SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
+            SetParryLockOnIndicatorVisible(false);
+
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (projectileTrail != null && renderers[i] == projectileTrail)
+                {
+                    continue;
+                }
+
+                renderers[i].enabled = false;
+            }
+
+            float destroyDelay = 0f;
+            if (projectileTrail != null)
+            {
+                projectileTrail.emitting = false;
+                destroyDelay = Mathf.Max(0.01f, projectileTrail.time);
+            }
+
+            Destroy(gameObject, destroyDelay);
         }
 
         private void SnapToChargeAnchor()
@@ -1494,7 +1669,9 @@ namespace Week14.Combat
 
         private Color GetProjectileIndicatorColor(float alpha)
         {
-            Color color = launched ? launchedColor : chargingColor;
+            Color color = customIndicatorColorConfigured
+                ? indicatorColor
+                : launched ? launchedColor : chargingColor;
             color.a = Mathf.Clamp01(alpha);
             return color;
         }
