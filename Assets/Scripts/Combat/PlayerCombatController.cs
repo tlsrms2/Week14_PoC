@@ -63,6 +63,9 @@ namespace Week14.Combat
         private SpriteRenderer[] bodyRenderers;
         private Color[] bodyBaseColors;
         private float bodyHitColorEndsAt;
+        private MaterialPropertyBlock bodyFlashPropertyBlock;
+        private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
         private bool playerHpHiddenForExecution;
@@ -377,29 +380,33 @@ namespace Week14.Combat
                 return;
             }
 
-            Color? overrideColor = null;
-            if (Time.time < bodyHitColorEndsAt)
-            {
-                overrideColor = config.PlayerBodyHitColor;
-            }
-            else if (bullets != null && bullets.IsEmpty)
-            {
-                overrideColor = config.PlayerBodyBulletEmptyColor;
-            }
+            bool flashing = Time.time < bodyHitColorEndsAt;
+            Color? overrideColor = !flashing && bullets != null && bullets.IsEmpty
+                ? config.PlayerBodyBulletEmptyColor
+                : null;
+            float flashAmount = flashing ? 1f : 0f;
+
+            bodyFlashPropertyBlock ??= new MaterialPropertyBlock();
 
             for (int i = 0; i < bodyRenderers.Length; i++)
             {
-                if (bodyRenderers[i] == null)
+                SpriteRenderer renderer = bodyRenderers[i];
+                if (renderer == null)
                 {
                     continue;
                 }
 
                 Color targetColor = overrideColor ?? GetBodyBaseColor(i);
-                targetColor.a = bodyRenderers[i].color.a;
-                if (force || bodyRenderers[i].color != targetColor)
+                targetColor.a = renderer.color.a;
+                if (force || renderer.color != targetColor)
                 {
-                    bodyRenderers[i].color = targetColor;
+                    renderer.color = targetColor;
                 }
+
+                renderer.GetPropertyBlock(bodyFlashPropertyBlock);
+                bodyFlashPropertyBlock.SetColor(FlashColorId, config.PlayerBodyHitColor);
+                bodyFlashPropertyBlock.SetFloat(FlashAmountId, flashAmount);
+                renderer.SetPropertyBlock(bodyFlashPropertyBlock);
             }
         }
 

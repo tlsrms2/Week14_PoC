@@ -40,7 +40,7 @@ MonoBehaviour:
   playerHitFlameCount: 6
   playerHitEffectScale: 0.7
   playerBodyBulletEmptyColor: {r: 1, g: 0.2, b: 0.12, a: 1}
-  playerBodyHitColor: {r: 1, g: 0.20000002, b: 0.121568635, a: 1}
+  playerBodyHitColor: {r: 1, g: 1, b: 1, a: 1}
   enemyBodyHitColor: {r: 1, g: 1, b: 1, a: 1}
   bodyHitColorSeconds: 0.08
   executionImpactColor: {r: 0.9, g: 0.02, b: 0.04, a: 1}

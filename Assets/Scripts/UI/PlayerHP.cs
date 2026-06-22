@@ -571,6 +571,12 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float attackEjectRise = 18f;
         [SerializeField] private float attackEjectSpinDegrees = 520f;
         [SerializeField, Range(0f, 1f)] private float shineMaxAlpha = 0.85f;
+        [Header("Hit Shake")]
+        [SerializeField] private RectTransform rotationRoot;
+        [SerializeField, Min(0f)] private float hitShakeSeconds = 0.18f;
+        [SerializeField, Min(0f)] private float hitShakeRotationDegrees = 12f;
+        [SerializeField, Min(0f)] private float hitShakeScaleAmount = 0.15f;
+        [SerializeField, Min(0f)] private float hitShakeFrequency = 40f;
         [Header("Top To Bottom")]
         [SerializeField] private HpSlot hp5 = new(new Color32(0x8b, 0xff, 0x7a, 0xff));
         [SerializeField] private HpSlot hp4 = new(new Color32(0xb6, 0xff, 0x6f, 0xff));
@@ -583,10 +589,16 @@ namespace Week14.UI
         private bool hasSnapshot;
         private int previousCurrent;
         private int previousMax;
+        private Quaternion baseRotationRootLocalRotation;
+        private Vector3 baseRotationRootLocalScale;
+        private bool hasBaseRotationRootTransform;
+        private float hitShakeStartedAt;
+        private float hitShakeEndsAt;
 
         private void OnEnable()
         {
             hasSnapshot = false;
+            CacheRotationRoot();
             TryBindPlayer();
             Subscribe();
             Refresh();
@@ -692,6 +704,11 @@ namespace Week14.UI
 
         private void Apply(int current, int max, BulletChangeSource source)
         {
+            if (hasSnapshot && source == BulletChangeSource.Hit && current < previousCurrent)
+            {
+                PlayHitShake();
+            }
+
             Color outlineColor = ResolveOutlineColor(current);
             ApplySlot(hp5, 5, current, max, source, outlineColor);
             ApplySlot(hp4, 4, current, max, source, outlineColor);
@@ -771,6 +788,74 @@ namespace Week14.UI
             hp3?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
             hp2?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
             hp1?.Tick(deltaTime, shineMaxAlpha, attackEjectDistance, attackEjectRise, attackEjectSpinDegrees);
+            ApplyHitShakeOffset();
+        }
+
+        private void CacheRotationRoot()
+        {
+            if (hasBaseRotationRootTransform)
+            {
+                return;
+            }
+
+            if (rotationRoot == null)
+            {
+                rotationRoot = transform.Find("HPRotationRoot") as RectTransform;
+            }
+
+            if (rotationRoot != null)
+            {
+                baseRotationRootLocalRotation = rotationRoot.localRotation;
+                baseRotationRootLocalScale = rotationRoot.localScale;
+                hasBaseRotationRootTransform = true;
+            }
+        }
+
+        private void PlayHitShake()
+        {
+            CacheRotationRoot();
+            float now = Time.unscaledTime;
+            hitShakeStartedAt = now;
+            hitShakeEndsAt = now + hitShakeSeconds;
+        }
+
+        private void ApplyHitShakeOffset()
+        {
+            if (!hasBaseRotationRootTransform || rotationRoot == null)
+            {
+                return;
+            }
+
+            float now = Time.unscaledTime;
+            rotationRoot.localRotation = baseRotationRootLocalRotation * Quaternion.Euler(0f, 0f, GetHitShakeRotationDegrees(now));
+            rotationRoot.localScale = baseRotationRootLocalScale * GetHitShakeScaleMultiplier(now);
+        }
+
+        private float GetHitShakeRotationDegrees(float now)
+        {
+            if (now >= hitShakeEndsAt || hitShakeSeconds <= 0f || hitShakeRotationDegrees <= 0f)
+            {
+                return 0f;
+            }
+
+            float elapsed = Mathf.Max(0f, now - hitShakeStartedAt);
+            float normalized = Mathf.Clamp01(elapsed / hitShakeSeconds);
+            float damping = 1f - normalized;
+            float wave = Mathf.Sin(elapsed * hitShakeFrequency);
+            return hitShakeRotationDegrees * damping * wave;
+        }
+
+        private float GetHitShakeScaleMultiplier(float now)
+        {
+            if (now >= hitShakeEndsAt || hitShakeSeconds <= 0f || hitShakeScaleAmount <= 0f)
+            {
+                return 1f;
+            }
+
+            float elapsed = Mathf.Max(0f, now - hitShakeStartedAt);
+            float normalized = Mathf.Clamp01(elapsed / hitShakeSeconds);
+            float pulse = Mathf.Sin(normalized * Mathf.PI);
+            return 1f + pulse * hitShakeScaleAmount;
         }
 
         private float GetRecoverySeconds(BulletChangeSource source)
