@@ -508,12 +508,12 @@ MonoBehaviour:
     moveDirection: {x: -0.025, y: 0.025}
   colorOnlyRenderers:
   - {fileID: 8756200840090794356}
-  pieceIdleColor: {r: 1, g: 0.121568635, b: 0.078431375, a: 1}
-  pieceThreatenedColor: {r: 1, g: 0.121568635, b: 0.078431375, a: 1}
-  colorOnlyIdleColor: {r: 1, g: 0.121568635, b: 0.078431375, a: 1}
-  colorOnlyThreatenedColor: {r: 1, g: 0.121568635, b: 0.078431375, a: 1}
-  missPieceColor: {r: 1, g: 0.12, b: 0.08, a: 1}
-  missColorOnlyColor: {r: 1, g: 0.12, b: 0.08, a: 1}
+  pieceIdleColor: {r: 1, g: 0, b: 0, a: 1}
+  pieceThreatenedColor: {r: 1, g: 0, b: 0, a: 1}
+  colorOnlyIdleColor: {r: 1, g: 0, b: 0, a: 1}
+  colorOnlyThreatenedColor: {r: 1, g: 0, b: 0, a: 1}
+  missPieceColor: {r: 1, g: 0, b: 0, a: 1}
+  missColorOnlyColor: {r: 1, g: 0, b: 0, a: 1}
   moveScale: 1
   moveCurve:
     serializedVersion: 2

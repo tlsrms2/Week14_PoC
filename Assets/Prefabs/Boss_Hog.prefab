@@ -342,10 +342,10 @@ MonoBehaviour:
   deathAnimationFallbackSeconds: 1
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  maxBullets: 100
-  bulletEmptyExecutionSeconds: 10
+  maxHp: 100
+  hpEmptyExecutionSeconds: 10
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  bulletEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+  hpEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   staggeredColor: {r: 1, g: 0.28872737, b: 0.19339621, a: 1}
   detectionRange: 9
   moveSpeed: 1.5
@@ -358,12 +358,12 @@ MonoBehaviour:
   lockOnIndicator: {fileID: 8837883821217332569}
   executionIndicator: {fileID: 6735452240196518299}
   bossCombatUiRoot: {fileID: 0}
-  bossBulletBarView: {fileID: 0}
+  bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
   bossEnrageBarView: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
-  bulletBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
-  emptyBulletBarColor: {r: 1, g: 0, b: 0, a: 1}
+  hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
+  emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
   pattern1:
@@ -381,8 +381,10 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
       launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
       homingEnabled: 1
       homingSeconds: 10
       homingTurnDegreesPerSecond: 540
@@ -429,8 +431,10 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
       launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 1}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
       homingEnabled: 1
       homingSeconds: 10
       homingTurnDegreesPerSecond: 540
@@ -485,6 +489,8 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.63759786, b: 0.1745283, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -546,6 +552,8 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
       launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -593,6 +601,8 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
       launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -645,6 +655,8 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
       launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -695,6 +707,8 @@ MonoBehaviour:
       radius: 0.12
       chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
       launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 3
       homingEnabled: 0
@@ -711,8 +725,10 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
       launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
+      homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+      trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
       homingEnabled: 1
       homingSeconds: 10
       homingTurnDegreesPerSecond: 540
@@ -1121,7 +1137,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.18725516, y: 0.18725516, z: 0.18725516}
+  m_LocalScale: {x: 0.06934059, y: 0.06934059, z: 0.06934059}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2186068290515178274}
@@ -1134,7 +1150,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8297976667078788076}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
