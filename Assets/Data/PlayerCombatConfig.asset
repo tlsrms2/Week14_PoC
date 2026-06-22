@@ -17,12 +17,13 @@ MonoBehaviour:
   attackBulletDamage: 1
   attackDamageByRemainingBullets: 0500000002000000020000000100000001000000
   parryBulletRecovery: 1
-  counteredProjectileBulletDamage: 0
   enemyBodyContactBulletDamage: 1
   enemyBodyContactCooldownSeconds: 0.35
   enemyBodyContactKnockbackSpeed: 8
   enemyBodyContactStaggerSeconds: 0.22
   moveSpeed: 3.5
+  hitStopSeconds: 0.12
+  hitStopTimeScale: 0.05
   projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   projectileSpeed: 60
