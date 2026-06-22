@@ -143,7 +143,7 @@ MonoBehaviour:
   executionImage: {fileID: 2769524803987398758}
   playerHpView: {fileID: 0}
   finalDeathCameraReturnSeconds: 0.25
-  victoryPanelDelaySeconds: 0
+  victoryPanelDelaySeconds: 1.5
   mouseParryReticleRenderer: {fileID: 3426584923014866416}
   mouseParryReticle: {fileID: 522378119315174641}
 --- !u!114 &961238046002133381
