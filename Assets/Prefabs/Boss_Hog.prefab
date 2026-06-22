@@ -372,6 +372,7 @@ MonoBehaviour:
       secondProjectileOrigin: {fileID: 3329525432054548886}
     projectile:
       prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1.5
@@ -380,7 +381,7 @@ MonoBehaviour:
       lifetime: 3
       radius: 0.1
       chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
       indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
@@ -423,6 +424,7 @@ MonoBehaviour:
       secondProjectileOrigin: {fileID: 4059521945129302117}
     projectile:
       prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1.5
@@ -431,7 +433,7 @@ MonoBehaviour:
       lifetime: 3
       radius: 0.1
       chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 1}
       indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
@@ -482,6 +484,7 @@ MonoBehaviour:
       projectileOrigin: {fileID: 8950221499719562823}
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      homingChargePrefab: {fileID: 0}
       bulletDamage: 1
       chargeSeconds: 0
       chargeDriftSpeed: 0
@@ -546,6 +549,7 @@ MonoBehaviour:
     slamRecoverSeconds: 0
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      homingChargePrefab: {fileID: 0}
       bulletDamage: 1
       chargeSeconds: 0.25
       chargeDriftSpeed: 0
@@ -596,6 +600,7 @@ MonoBehaviour:
       projectileOrigin: {fileID: 8950221499719562823}
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      homingChargePrefab: {fileID: 0}
       bulletDamage: 1
       chargeSeconds: 0
       chargeDriftSpeed: 0
@@ -651,6 +656,7 @@ MonoBehaviour:
     slamRecoverSeconds: 0
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      homingChargePrefab: {fileID: 0}
       bulletDamage: 1
       chargeSeconds: 0.25
       chargeDriftSpeed: 0
@@ -704,6 +710,7 @@ MonoBehaviour:
     - {fileID: 3329525432054548886}
     normalProjectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      homingChargePrefab: {fileID: 0}
       bulletDamage: 1
       chargeSeconds: 0
       chargeDriftSpeed: 0
@@ -723,6 +730,7 @@ MonoBehaviour:
       homingTurnDegreesPerSecond: 540
     specialProjectile:
       prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1.5
