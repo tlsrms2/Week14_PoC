@@ -21,6 +21,9 @@ namespace Week14.Combat
         private const float PathDashGap = 0.14f;
         private const float DefaultHomingSeconds = 0.8f;
         private const float DefaultHomingTurnDegreesPerSecond = 540f;
+        private const float HomingChargeBlinkMinRate = 2f;
+        private const float HomingChargeBlinkMaxRate = 8f;
+        private const float HomingChargeSolidColorRemainingRatio = 0.25f;
         private float projectileSpeed;
         private float projectileLifetime;
         private float projectileRadius;
@@ -28,6 +31,8 @@ namespace Week14.Combat
         private Color projectileColor;
         private Color chargingColor;
         private Color launchedColor;
+        private Color homingBlinkColor;
+        private float homingBlinkPhase;
         private bool homingEnabled;
         private float homingTurnDegreesPerSecond;
         private float homingSeconds;
@@ -36,6 +41,8 @@ namespace Week14.Combat
         private float chargeEndsAt;
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
+        private TrailRenderer projectileTrail;
+        private bool customTrailColorConfigured;
         [SerializeField] private GameObject parryLockOnIndicatorRoot;
         [SerializeField] private MouseParryReticle parryLockOnReticle;
         [SerializeField] private Transform parryLockOnRotatingRoot;
@@ -180,11 +187,32 @@ namespace Week14.Combat
                 homingTurnDegrees);
         }
 
-        public void ConfigureStateColors(Color nextChargingColor, Color nextLaunchedColor)
+        public void ConfigureStateColors(Color nextChargingColor, Color nextLaunchedColor, Color? nextHomingBlinkColor = null)
         {
             chargingColor = nextChargingColor;
             launchedColor = nextLaunchedColor;
+            homingBlinkColor = nextHomingBlinkColor ?? nextLaunchedColor;
+            homingBlinkPhase = 0f;
             ApplyProjectileColor(launched ? launchedColor : chargingColor);
+        }
+
+        public void ConfigureTrailColor(Color nextTrailColor)
+        {
+            if (projectileTrail == null)
+            {
+                projectileTrail = GetComponent<TrailRenderer>();
+            }
+
+            if (projectileTrail == null)
+            {
+                return;
+            }
+
+            Color endColor = nextTrailColor;
+            endColor.a = 0f;
+            projectileTrail.startColor = nextTrailColor;
+            projectileTrail.endColor = endColor;
+            customTrailColorConfigured = true;
         }
 
         public void ConfigureChargeMotion(float driftSpeed, bool aimAtPlayer)
@@ -354,6 +382,7 @@ namespace Week14.Combat
                 suppressPathIndicator);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
+            projectile.BeginTrail();
             return projectile;
         }
 
@@ -381,6 +410,9 @@ namespace Week14.Combat
             projectileColor = color;
             chargingColor = color;
             launchedColor = color;
+            homingBlinkColor = color;
+            homingBlinkPhase = 0f;
+            customTrailColorConfigured = false;
             homingEnabled = enableHoming;
             this.homingSeconds = homingEnabled
                 ? Mathf.Max(0.01f, homingSeconds > 0f ? homingSeconds : DefaultHomingSeconds)
@@ -507,6 +539,8 @@ namespace Week14.Combat
             }
 
             UpdateChargeGrowth();
+            UpdateHomingChargeBlink();
+            UpdateChargeTrail();
             UpdateChargeVfx();
             UpdatePathIndicatorPreview();
             if (Time.time < chargeEndsAt)
@@ -524,7 +558,11 @@ namespace Week14.Combat
                 baseLocalScale = transform.localScale;
             }
 
-            if (aimAtPlayerOnLaunch)
+            if (homingEnabled)
+            {
+                AimAtPlayerWhileCharging();
+            }
+            else if (aimAtPlayerOnLaunch)
             {
                 AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
             }
@@ -572,6 +610,57 @@ namespace Week14.Combat
             float t = 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds);
             t = Mathf.SmoothStep(0f, 1f, t);
             transform.localScale = Vector3.Lerp(chargeGrowthStartScale, chargeGrowthEndScale, t);
+        }
+
+        private void UpdateHomingChargeBlink()
+        {
+            if (!homingEnabled || projectileChargeSeconds <= 0f)
+            {
+                return;
+            }
+
+            float remainingRatio = Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds);
+            if (remainingRatio <= HomingChargeSolidColorRemainingRatio)
+            {
+                ApplyProjectileColor(homingBlinkColor);
+                return;
+            }
+
+            float blinkRate = Mathf.Lerp(HomingChargeBlinkMaxRate, HomingChargeBlinkMinRate, remainingRatio);
+            homingBlinkPhase += Time.deltaTime * blinkRate;
+            Color nextColor = Mathf.Repeat(homingBlinkPhase, 1f) >= 0.5f
+                ? homingBlinkColor
+                : chargingColor;
+            ApplyProjectileColor(nextColor);
+        }
+
+        private void UpdateChargeTrail()
+        {
+            if (projectileTrail == null)
+            {
+                projectileTrail = GetComponent<TrailRenderer>();
+            }
+
+            if (projectileTrail == null)
+            {
+                return;
+            }
+
+            projectileTrail.emitting = true;
+            projectileTrail.AddPosition(transform.position);
+        }
+
+        private void BeginTrail()
+        {
+            projectileTrail = GetComponent<TrailRenderer>();
+            if (projectileTrail == null)
+            {
+                return;
+            }
+
+            projectileTrail.Clear();
+            projectileTrail.emitting = true;
+            projectileTrail.AddPosition(transform.position);
         }
 
         private void AimAtPlayerWhileCharging(float spreadDegrees = 0f)
@@ -960,13 +1049,10 @@ namespace Week14.Combat
                 visualRenderer.color = projectileColor;
             }
 
-            TrailRenderer trail = GetComponent<TrailRenderer>();
-            if (trail != null)
+            if (!customTrailColorConfigured)
             {
-                Color endColor = projectileColor;
-                endColor.a = 0f;
-                trail.startColor = projectileColor;
-                trail.endColor = endColor;
+                ConfigureTrailColor(projectileColor);
+                customTrailColorConfigured = false;
             }
         }
 

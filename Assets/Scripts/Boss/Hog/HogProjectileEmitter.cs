@@ -29,7 +29,7 @@ namespace Week14.Enemy
             Vector3 origin,
             Vector2 direction)
         {
-            return Fire(spawnProjectile, settings, origin, direction, false, false, true, -1f, -1f);
+            return Fire(spawnProjectile, settings, origin, direction, false, false, false, -1f, -1f);
         }
 
         public static EnemyProjectile FireWithPlayerLaunchAim(
@@ -86,6 +86,8 @@ namespace Week14.Enemy
             float radius = radiusOverride > 0f ? radiusOverride : settings.Radius;
             Color chargeColor = settings.ChargingColor;
             Color projectileColor = settings.LaunchedColor;
+            Color homingBlinkColor = settings.HomingBlinkColor;
+            Color trailColor = settings.TrailColor;
             EnemyProjectile projectile = spawnProjectile(
                 settings.Prefab,
                 origin,
@@ -104,7 +106,8 @@ namespace Week14.Enemy
                 muzzleFlashPosition,
                 muzzleFlashScale);
 
-            projectile?.ConfigureStateColors(chargeColor, projectileColor);
+            projectile?.ConfigureStateColors(chargeColor, projectileColor, homingBlinkColor);
+            projectile?.ConfigureTrailColor(trailColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
             return projectile;
         }
