@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
@@ -67,17 +67,20 @@ namespace Week14.Enemy
         [Tooltip("이 보스가 사용할 공통 전투 이펙트와 색상 설정입니다.")]
         [SerializeField] private CombatEffectData effectData;
 
-        [Header("Bullet")]
-        [Tooltip("보스가 보유할 수 있는 최대 탄환 수입니다.")]
-        [SerializeField, Min(1)] private int maxBullets = 150;
-        [Tooltip("보스 탄환이 0이 되었을 때 처형 가능 상태를 유지하는 시간입니다.")]
-        [SerializeField, Min(0f)] private float bulletEmptyExecutionSeconds = 3f;
+        [Header("HP")]
+        [Tooltip("보스가 보유할 수 있는 최대 HP입니다.")]
+        [FormerlySerializedAs("maxBullets")]
+        [SerializeField, Min(1)] private int maxHp = 150;
+        [Tooltip("보스 HP가 0이 되었을 때 처형 가능 상태를 유지하는 시간입니다.")]
+        [FormerlySerializedAs("bulletEmptyExecutionSeconds")]
+        [SerializeField, Min(0f)] private float hpEmptyExecutionSeconds = 3f;
 
         [Header("Color")]
         [Tooltip("기본 상태에서 보스 스프라이트에 적용할 색입니다.")]
         [SerializeField] private Color normalColor = Color.white;
-        [Tooltip("보스 탄환이 0이 되었을 때 보스 스프라이트에 적용할 색입니다.")]
-        [SerializeField] private Color bulletEmptyColor = new(0.45f, 0.65f, 1f, 1f);
+        [Tooltip("보스 HP가 0이 되었을 때 보스 스프라이트에 적용할 색입니다.")]
+        [FormerlySerializedAs("bulletEmptyColor")]
+        [SerializeField] private Color hpEmptyColor = new(0.45f, 0.65f, 1f, 1f);
         [Tooltip("보스가 경직 상태일 때 보스 스프라이트에 적용할 색입니다.")]
         [SerializeField] private Color staggeredColor = new(1f, 0.95f, 0.35f, 1f);
 
@@ -99,24 +102,25 @@ namespace Week14.Enemy
 
         [Header("Boss Combat UI")]
         [SerializeField] private GameObject bossCombatUiRoot;
-        [SerializeField] private BossBulletBarView bossBulletBarView;
+        [FormerlySerializedAs("bossBulletBarView")]
+        [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private BossLivesView bossLivesView;
         [SerializeField] private BossEnrageBarView bossEnrageBarView;
 
         [Header("Status UI")]
         [SerializeField] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
-        [SerializeField] private Color bulletBarColor = new(1f, 0.55f, 0.1f, 1f);
-        [SerializeField] private Color emptyBulletBarColor = Color.red;
+        [FormerlySerializedAs("bulletBarColor")]
+        [SerializeField] private Color hpBarColor = new(1f, 0.55f, 0.1f, 1f);
+        [FormerlySerializedAs("emptyBulletBarColor")]
+        [SerializeField] private Color emptyHpBarColor = Color.red;
         [SerializeField] private Color lockOnIndicatorColor = Color.white;
         [SerializeField] private Color executionIndicatorColor = Color.red;
 
-        private readonly List<EnemyProjectile> activeProjectiles = new();
+        private readonly BossProjectileTracker projectileTracker = new();
         private Health health;
-        private BulletGauge bullets;
+        private BulletGauge hpGauge;
         private SpriteRenderer[] renderers;
         private Transform player;
-        private bool isBulletEmpty;
-        private float bulletEmptyEndsAt;
         private bool isExecutionLocked;
         private bool isBodyHitColorActive;
         private float bodyHitColorEndsAt;
@@ -127,55 +131,57 @@ namespace Week14.Enemy
         private Vector3 staggerBaseLocalPosition;
         private bool isBossCombatUiActive;
         private bool destroyAfterDeathQueued;
-        private int currentLives;
-        private bool isPhaseTransitionWaiting;
-        private float phaseTransitionWaitEndsAt;
-        private bool isCombatStarted;
-        private float currentPhaseStartTime;
-        private int currentEnragePhase;
-        private int pendingEnragePhase;
         private bool finalDeathSequencePlayed;
+        private BossPhaseController phaseController;
+        private BossStateMachine stateMachine;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
-        public BulletGauge Bullets => bullets;
+        public BulletGauge HpGauge => hpGauge;
+        public BulletGauge Bullets => hpGauge;
         public Transform Player => player;
         public Rigidbody2D Body => body;
         public Transform BodyRoot => bodyRoot;
         public LayerMask ObstacleMask => obstacleMask;
         public Vector3 SpawnPosition { get; private set; }
-        public bool IsBulletEmpty => isBulletEmpty || (bullets != null && bullets.IsEmpty);
+        public bool IsHpEmpty => hpGauge != null && hpGauge.IsEmpty;
+        public bool IsBulletEmpty => IsHpEmpty;
         public bool IsExecutionLocked => isExecutionLocked;
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
         public Color NormalColor => normalColor;
-        public Color BulletEmptyColor => bulletEmptyColor;
+        public Color HpEmptyColor => hpEmptyColor;
+        public Color BulletEmptyColor => HpEmptyColor;
         public Color StaggeredColor => staggeredColor;
         public Color BodyHitColor => effectData != null ? effectData.EnemyBodyHitColor : new Color(1f, 0.35f, 0.25f, 1f);
         public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
         public Color StatusBarBackgroundColor => statusBarBackgroundColor;
-        public Color BulletBarColor => bulletBarColor;
-        public Color EmptyBulletBarColor => emptyBulletBarColor;
+        public Color HpBarColor => hpBarColor;
+        public Color EmptyHpBarColor => emptyHpBarColor;
+        public Color BulletBarColor => HpBarColor;
+        public Color EmptyBulletBarColor => EmptyHpBarColor;
         public Color LockOnIndicatorColor => lockOnIndicatorColor;
         public Color ExecutionIndicatorColor => executionIndicatorColor;
 
         protected CombatEffectData EffectData => effectData;
         public int MaxLives => Mathf.Max(1, maxLives);
-        public int CurrentLives => Mathf.Clamp(currentLives, 0, MaxLives);
-        public int CurrentPhaseIndex => Mathf.Clamp(MaxLives - CurrentLives, 0, MaxLives - 1);
-        public int CurrentPhaseNumber => CurrentPhaseIndex + 1;
-        public int CurrentEnragePhase => currentEnragePhase;
-        public float CurrentEnrageProgress => GetCurrentEnrageProgress();
-        public float CurrentEnrageRemainingSeconds => GetCurrentEnrageRemainingSeconds();
+        public int CurrentLives => PhaseController.CurrentLives;
+        public int CurrentPhaseIndex => PhaseController.CurrentPhaseIndex;
+        public int CurrentPhaseNumber => PhaseController.CurrentPhaseNumber;
+        public int CurrentEnragePhase => PhaseController.CurrentEnragePhase;
+        public float CurrentEnrageProgress => PhaseController.CurrentEnrageProgress;
+        public float CurrentEnrageRemainingSeconds => PhaseController.CurrentEnrageRemainingSeconds;
         public event Action<int, int> LivesChanged;
         public event Action<int, float, float> EnrageChanged;
         public static event Action<BossAI> Defeated;
 
+        private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
+
         protected virtual void Awake()
         {
             health = GetComponent<Health>();
-            bullets = GetComponent<BulletGauge>();
+            hpGauge = GetComponent<BulletGauge>();
 
             if (body == null)
             {
@@ -195,6 +201,8 @@ namespace Week14.Enemy
             lockOnIndicator ??= FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
             executionIndicator ??= FindChild("ExecutionIndicator")?.GetComponent<SpriteRenderer>();
             renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            phaseController = new BossPhaseController(this);
+            stateMachine = new BossStateMachine(this);
         }
 
         protected virtual void OnEnable()
@@ -215,12 +223,10 @@ namespace Week14.Enemy
 
         protected virtual void Start()
         {
-            currentLives = maxLives;
-            NotifyLivesChanged();
-            OnBossPhaseChanged(CurrentPhaseIndex, CurrentPhaseNumber);
+            PhaseController.Initialize();
             
             SpawnPosition = transform.position;
-            bullets.Configure(maxBullets, true);
+            hpGauge.Configure(maxHp, true);
 
             PrepareStatusViews();
             ApplyBodyStateColor();
@@ -230,64 +236,13 @@ namespace Week14.Enemy
 
         protected virtual void Update()
         {
-            UpdateBodyHitColor();
-            UpdateStagger();
-
-            if (health.IsDead)
-            {
-                Stop();
-                return;
-            }
-
-            if (isExecutionLocked)
-            {
-                Stop();
-                return;
-            }
-
-            if (IsExecutionPaused)
-            {
-                Stop();
-                return;
-            }
-
-            if (isPhaseTransitionWaiting)
-            {
-                TickPhaseTransitionWait();
-                return;
-            }
-
-            if (IsBulletEmpty)
-            {
-                TickBulletEmpty();
-                return;
-            }
-
-            ResolvePlayer();
-            
-            if (!isCombatStarted && IsPlayerDetected())
-            {
-                isCombatStarted = true;
-                ResetEnrageTimer();
-                OnCombatStarted();
-            }
-
-            if (isCombatStarted)
-            {
-                UpdateEnrageTimer();
-            }
-            
-            TryActivateBossCombatUiOnCombatStart();
-            if (RotatesBodyToPlayer)
-            {
-                RotateToTarget();
-            }
-            OnBossTick();
+            stateMachine ??= new BossStateMachine(this);
+            stateMachine.Tick();
         }
 
         public void PlayExecutionBarDrain()
         {
-            bossBulletBarView?.PlayExecutionDrain();
+            bossHpBarView?.PlayExecutionDrain();
         }
 
         public void SetExecutionLocked(bool locked)
@@ -309,7 +264,7 @@ namespace Week14.Enemy
                 return false;
             }
 
-            if (IsBulletEmpty)
+            if (IsHpEmpty)
             {
                 // 그로기 상태에서는 총격으로 목숨이 깎이지 않고 이펙트만 재생됩니다.
                 // 페이즈 전환은 오직 '처형 연출'이 끝났을 때 외부에서 TryConsumeLife()를 호출하여 처리합니다.
@@ -323,11 +278,7 @@ namespace Week14.Enemy
                 return true;
             }
 
-            bullets.TrySpend(bulletDamage, BulletChangeSource.Hit);
-            if (bullets.IsEmpty)
-            {
-                BeginBulletEmpty();
-            }
+            hpGauge.TrySpend(bulletDamage, BulletChangeSource.Hit);
 
             FlashBodyHitColor();
             PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
@@ -385,60 +336,50 @@ namespace Week14.Enemy
             body.linearVelocity = Vector2.zero;
             body.angularVelocity = 0f;
         }
-        
-        private void UpdateEnrageTimer()
+
+        internal bool IsDeadForState => health != null && health.IsDead;
+        internal bool IsExecutionLockedForState => isExecutionLocked;
+        internal bool IsPhaseTransitionWaitingForState => PhaseController.IsPhaseTransitionWaiting;
+        internal bool IsCombatStartedForState => PhaseController.IsCombatStarted;
+        internal static bool IsExecutionPausedForState => IsExecutionPaused;
+
+        internal void TickVisualStateForState()
         {
-            if (pendingEnragePhase != 0)
+            UpdateBodyHitColor();
+            UpdateStagger();
+        }
+
+        internal void TickPhaseTransitionWaitForState()
+        {
+            PhaseController.TickPhaseTransitionWait();
+        }
+
+        internal void ResolvePlayerForState()
+        {
+            ResolvePlayer();
+        }
+
+        internal void TryStartCombatForState()
+        {
+            PhaseController.TryStartCombat(IsPlayerDetected());
+        }
+
+        internal void TickActiveBehaviorForState()
+        {
+            PhaseController.TickEnrage();
+
+            TryActivateBossCombatUiOnCombatStart();
+            if (RotatesBodyToPlayer)
             {
-                // 광폭화 진입이 예약된 상태입니다. 현재 진행 중인 패턴이 끝나는 시점(각 보스의
-                // 패턴 경계 지점에서 호출하는 ApplyPendingEnrageIfAny)에 실제로 적용됩니다.
-                return;
+                RotateToTarget();
             }
 
-            float elapsed = Time.time - currentPhaseStartTime;
-
-            // 1단계 광폭화 도달 - 즉시 적용하지 않고 예약만 해둡니다.
-            if (currentEnragePhase == 0 && elapsed >= enragePhase1Seconds)
-            {
-                pendingEnragePhase = 1;
-            }
-            // 2단계 광폭화 도달
-            else if (currentEnragePhase == 1 && elapsed >= enragePhase2Seconds)
-            {
-                pendingEnragePhase = 2;
-            }
-
-            NotifyEnrageChanged();
+            OnBossTick();
         }
 
         protected IEnumerator ApplyPendingEnrageIfAny()
         {
-            if (pendingEnragePhase == 0)
-            {
-                yield break;
-            }
-
-            Stop();
-            yield return PlayEnrageWindupTremble();
-
-            if (pendingEnragePhase == 1)
-            {
-                currentEnragePhase = 1;
-                currentPhaseStartTime = Time.time; // 다음 단계를 위해 타이머 리셋
-                ApplyPlayerMaxBullets(enragePhase1MaxBullets);
-            }
-            else if (pendingEnragePhase == 2)
-            {
-                currentEnragePhase = 2;
-                ApplyPlayerMaxBullets(enragePhase2MaxBullets);
-            }
-
-            pendingEnragePhase = 0;
-            NotifyEnrageChanged();
-
-            // 연출(스폰/스케일업/카메라 쉐이크)은 자체적으로 재생되다 사라지므로
-            // 다음 패턴 시작을 더 이상 막지 않고, 연출이 보이는 도중에 바로 다음 공격이 시작됩니다.
-            PlayEnrageTransitionEffect();
+            yield return PhaseController.ApplyPendingEnrageIfAny();
         }
 
         private void PlayEnrageTransitionEffect()
@@ -488,60 +429,9 @@ namespace Week14.Enemy
             bodyRoot.localPosition = baseLocalPosition;
         }
 
-        private void ResetEnrageTimer()
-        {
-            currentPhaseStartTime = Time.time;
-            currentEnragePhase = 0;
-            pendingEnragePhase = 0;
-            NotifyEnrageChanged();
-
-            PlayerCombatController player = PlayerCombatController.Active;
-            if (player != null && player.Config != null && player.Bullets != null)
-            {
-                // 플레이어의 탄환을 원래 최대치(기본 5)로 복구하고 가득 채웁니다.
-                player.Bullets.Configure(player.Config.MaxBullets, true);
-            }
-        }
-        
         public bool TryConsumeLife()
         {
-            if (currentLives > 1)
-            {
-                currentLives--; // 목숨 1개 차감
-                NotifyLivesChanged();
-                OnBossPhaseChanged(CurrentPhaseIndex, CurrentPhaseNumber);
-                ResetEnrageTimer(); // 광폭화 리셋
-                
-                isExecutionLocked = false; // 행동 잠금 해제
-                
-                // 처형 연출 시스템이 물리 엔진이나 스크립트를 꺼버렸을 경우 강제로 켭니다.
-                this.enabled = true;
-                if (body != null)
-                {
-                    body.simulated = true;
-                }
-                
-                // 혹시 이중으로 꼬여있는 기존 패턴이 있다면 강제로 정지시킵니다.
-                CancelBossAction();
-                Stop();
-                BeginPhaseTransitionWait();
-                
-                isBulletEmpty = false;
-                bulletEmptyEndsAt = 0f;
-                bullets.Configure(maxBullets, true); // 체력(탄환) 풀 회복
-                ApplyBodyStateColor();
-                bossBulletBarView?.PlayPhaseRefill();
-                OnBulletEmptyRecovered(); // 다음 패턴을 위한 훅 실행
-                
-                return true; // 목숨이 남아있어 부활했음을 반환
-            }
-
-            // 모든 목숨을 소진함
-            currentLives = 0;
-            isPhaseTransitionWaiting = false;
-            phaseTransitionWaitEndsAt = 0f;
-            NotifyLivesChanged();
-            return false;
+            return PhaseController.TryConsumeLife();
         }
 
         public IEnumerator PlayFinalDeathSequence()
@@ -554,186 +444,22 @@ namespace Week14.Enemy
             finalDeathSequencePlayed = true;
             CancelBossAction();
             Stop();
-            DestroyActiveProjectiles();
+            projectileTracker.DestroyAll();
 
-            yield return PlayFinalDeathExplosions();
-            yield return PlayDeathAnimation();
+            yield return BossDeathSequencePlayer.Play(this);
         }
 
-        private IEnumerator PlayFinalDeathExplosions()
-        {
-            int explosionCount = Mathf.Max(1, finalDeathExplosionCount);
-            float interval = explosionCount > 1
-                ? Mathf.Max(0f, finalDeathExplosionSeconds) / (explosionCount - 1)
-                : 0f;
+        internal Animator DeathAnimatorForSequence => deathAnimator;
+        internal string DeathTriggerNameForSequence => deathTriggerName;
+        internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
+        internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
+        internal float FinalDeathExplosionScaleForSequence => finalDeathExplosionScale;
+        internal int FinalDeathExplosionSparkCountForSequence => finalDeathExplosionSparkCount;
+        internal Color FinalDeathExplosionColorForSequence => finalDeathExplosionColor;
+        internal float DeathAnimationFallbackSecondsForSequence => deathAnimationFallbackSeconds;
+        internal SpriteRenderer[] RenderersForSequence => renderers;
 
-            for (int i = 0; i < explosionCount; i++)
-            {
-                Vector3 position = GetRandomDeathExplosionPosition();
-                ProjectileVfx.PlayHogExplosion(
-                    position,
-                    finalDeathExplosionColor,
-                    finalDeathExplosionScale,
-                    finalDeathExplosionSparkCount);
-                ProjectileVfx.PlayHogSmokeBurst(
-                    position,
-                    Color.Lerp(finalDeathExplosionColor, Color.gray, 0.55f),
-                    finalDeathExplosionScale,
-                    Mathf.Max(8, finalDeathExplosionSparkCount / 2));
-
-                Vector2 impactDirection = UnityEngine.Random.insideUnitCircle;
-                PlayEnemyHitCameraImpact(
-                    impactDirection.sqrMagnitude > 0.0001f ? impactDirection.normalized : Vector2.right,
-                    0.12f,
-                    0.1f,
-                    0.04f);
-
-                if (i >= explosionCount - 1)
-                {
-                    continue;
-                }
-
-                if (interval > 0f)
-                {
-                    yield return new WaitForSeconds(interval);
-                }
-                else
-                {
-                    yield return null;
-                }
-            }
-        }
-
-        private IEnumerator PlayDeathAnimation()
-        {
-            Animator animator = deathAnimator;
-            if (animator == null || !animator.isActiveAndEnabled || string.IsNullOrWhiteSpace(deathTriggerName))
-            {
-                yield return WaitDeathAnimationFallback();
-                yield break;
-            }
-
-            int triggerHash = Animator.StringToHash(deathTriggerName);
-            if (!HasAnimatorTrigger(animator, triggerHash))
-            {
-                yield return WaitDeathAnimationFallback();
-                yield break;
-            }
-
-            animator.SetTrigger(triggerHash);
-            yield return null;
-
-            float startedAt = Time.time;
-            float fallbackSeconds = Mathf.Max(0.01f, deathAnimationFallbackSeconds);
-            while (animator != null
-                && animator.isActiveAndEnabled
-                && animator.IsInTransition(0)
-                && Time.time - startedAt < fallbackSeconds)
-            {
-                yield return null;
-            }
-
-            if (animator == null || !animator.isActiveAndEnabled)
-            {
-                yield break;
-            }
-
-            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-            float animatorSpeed = Mathf.Abs(animator.speed);
-            float animationSeconds = state.length > 0f && animatorSpeed > 0.01f
-                ? state.length / animatorSpeed
-                : fallbackSeconds;
-            float waitLimit = Mathf.Max(fallbackSeconds, animationSeconds);
-
-            while (Time.time - startedAt < waitLimit)
-            {
-                if (animator == null || !animator.isActiveAndEnabled)
-                {
-                    yield break;
-                }
-
-                if (!animator.IsInTransition(0))
-                {
-                    state = animator.GetCurrentAnimatorStateInfo(0);
-                    if (!state.loop && state.normalizedTime >= 1f)
-                    {
-                        yield break;
-                    }
-                }
-
-                yield return null;
-            }
-        }
-
-        private IEnumerator WaitDeathAnimationFallback()
-        {
-            float fallbackSeconds = Mathf.Max(0f, deathAnimationFallbackSeconds);
-            if (fallbackSeconds > 0f)
-            {
-                yield return new WaitForSeconds(fallbackSeconds);
-            }
-        }
-
-        private Vector3 GetRandomDeathExplosionPosition()
-        {
-            SpriteRenderer renderer = GetRandomDeathExplosionRenderer();
-            if (renderer != null)
-            {
-                Bounds bounds = renderer.bounds;
-                Vector3 position = new(
-                    UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
-                    UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
-                    0f);
-                return position;
-            }
-
-            Vector2 offset = UnityEngine.Random.insideUnitCircle * GetFallbackDeathExplosionRadius();
-            Vector3 center = bodyRoot != null ? bodyRoot.position : transform.position;
-            center.z = 0f;
-            return center + (Vector3)offset;
-        }
-
-        private SpriteRenderer GetRandomDeathExplosionRenderer()
-        {
-            if (renderers == null)
-            {
-                return null;
-            }
-
-            int validCount = 0;
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (CanUseDeathExplosionRenderer(renderers[i]))
-                {
-                    validCount++;
-                }
-            }
-
-            if (validCount <= 0)
-            {
-                return null;
-            }
-
-            int selectedIndex = UnityEngine.Random.Range(0, validCount);
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (!CanUseDeathExplosionRenderer(renderers[i]))
-                {
-                    continue;
-                }
-
-                if (selectedIndex == 0)
-                {
-                    return renderers[i];
-                }
-
-                selectedIndex--;
-            }
-
-            return null;
-        }
-
-        private bool CanUseDeathExplosionRenderer(SpriteRenderer renderer)
+        internal bool CanUseDeathExplosionRendererForSequence(SpriteRenderer renderer)
         {
             return renderer != null
                 && renderer.enabled
@@ -745,94 +471,87 @@ namespace Week14.Enemy
                 && renderer.bounds.size.sqrMagnitude > 0.0001f;
         }
 
-        private float GetFallbackDeathExplosionRadius()
+        internal float PhaseTransitionWaitSeconds => phaseTransitionWaitSeconds;
+        internal float EnragePhase1Seconds => enragePhase1Seconds;
+        internal int EnragePhase1MaxBullets => enragePhase1MaxBullets;
+        internal float EnragePhase2Seconds => enragePhase2Seconds;
+        internal int EnragePhase2MaxBullets => enragePhase2MaxBullets;
+
+        internal IEnumerator PlayEnrageWindupTrembleForController()
         {
-            if (renderers == null)
-            {
-                return Mathf.Max(0.35f, finalDeathExplosionScale);
-            }
-
-            Bounds bounds = default;
-            bool hasBounds = false;
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (!CanUseDeathExplosionRenderer(renderers[i]))
-                {
-                    continue;
-                }
-
-                if (!hasBounds)
-                {
-                    bounds = renderers[i].bounds;
-                    hasBounds = true;
-                }
-                else
-                {
-                    bounds.Encapsulate(renderers[i].bounds);
-                }
-            }
-
-            if (!hasBounds)
-            {
-                return Mathf.Max(0.35f, finalDeathExplosionScale);
-            }
-
-            return Mathf.Max(Mathf.Max(bounds.extents.x, bounds.extents.y), 0.35f);
+            return PlayEnrageWindupTremble();
         }
 
-        private static bool HasAnimatorTrigger(Animator animator, int triggerHash)
+        internal void PlayEnrageTransitionEffectForController()
         {
-            if (animator == null)
-            {
-                return false;
-            }
-
-            AnimatorControllerParameter[] parameters = animator.parameters;
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                AnimatorControllerParameter parameter = parameters[i];
-                if (parameter.type == AnimatorControllerParameterType.Trigger
-                    && parameter.nameHash == triggerHash)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            PlayEnrageTransitionEffect();
         }
 
-        private void ApplyPlayerMaxBullets(int newMax)
+        internal void OnCombatStartedForController()
         {
-            PlayerCombatController player = PlayerCombatController.Active;
-            if (player != null && player.Bullets != null)
-            {
-                // 최대치만 깎습니다. (fill=false를 전달해 현재 남아있는 탄환 수는 유지하되, 한도를 넘으면 깎이도록 함)
-                player.Bullets.Configure(newMax, false);
-            }
+            OnCombatStarted();
         }
 
-        public bool CanSpawnEnemyProjectile()
+        internal void OnBossPhaseChangedForController(int phaseIndex, int phaseNumber)
         {
-            return !IsExecutionPaused && bullets != null && !bullets.IsEmpty;
+            OnBossPhaseChanged(phaseIndex, phaseNumber);
         }
 
-        public void RegisterActiveProjectile(EnemyProjectile projectile)
+        internal void CancelBossActionForController()
         {
-            PruneInactiveProjectiles();
-            if (projectile == null || activeProjectiles.Contains(projectile))
+            CancelBossAction();
+        }
+
+        internal void RefillHpForPhaseController()
+        {
+            hpGauge?.Configure(maxHp, true);
+            ApplyBodyStateColor();
+            bossHpBarView?.PlayPhaseRefill();
+            OnHpEmptyRecovered();
+        }
+
+        internal float HpEmptyExecutionSeconds => hpEmptyExecutionSeconds;
+
+        internal void BeginHpEmptyForState()
+        {
+            CancelBossAction();
+            Stop();
+            ApplyBodyStateColor();
+            bossHpBarView?.SetExecutionWindow(true, 1f);
+            OnHpEmptyBegan();
+        }
+
+        internal void UpdateHpEmptyWindowForState(float remainingRatio)
+        {
+            bossHpBarView?.SetExecutionWindow(true, remainingRatio);
+        }
+
+        internal void RecoverFromHpEmptyForState()
+        {
+            if (health == null || health.IsDead || hpGauge == null)
             {
                 return;
             }
 
-            activeProjectiles.Add(projectile);
+            hpGauge.Restore(Mathf.Max(1, (hpGauge.MaxBullets + 2) / 3), BulletChangeSource.Generic);
+            ApplyBodyStateColor();
+            bossHpBarView?.ClearExecutionWindow();
+            OnHpEmptyRecovered();
+        }
+
+        public bool CanSpawnEnemyProjectile()
+        {
+            return !IsExecutionPaused && hpGauge != null && !hpGauge.IsEmpty;
+        }
+
+        public void RegisterActiveProjectile(EnemyProjectile projectile)
+        {
+            projectileTracker.Register(projectile);
         }
 
         public void UnregisterActiveProjectile(EnemyProjectile projectile)
         {
-            if (projectile != null)
-            {
-                activeProjectiles.Remove(projectile);
-            }
+            projectileTracker.Unregister(projectile);
         }
 
         public Vector2 GetFacingDirection()
@@ -846,8 +565,8 @@ namespace Week14.Enemy
         protected abstract void OnBossTick();
         protected virtual void CancelBossAction() { }
         protected virtual void OnBossDied() { }
-        protected virtual void OnBulletEmptyBegan() { }
-        protected virtual void OnBulletEmptyRecovered() { }
+        protected virtual void OnHpEmptyBegan() { }
+        protected virtual void OnHpEmptyRecovered() { }
         protected virtual bool TryHandlePlayerHitBeforeDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) => false;
         protected virtual void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) { }
         protected virtual bool RotatesBodyToPlayer => true;
@@ -878,7 +597,7 @@ namespace Week14.Enemy
 
             EnemyProjectile projectile = EnemyProjectile.Spawn(
                 prefab,
-                bullets,
+                hpGauge,
                 position,
                 direction,
                 projectileBulletDamage,
@@ -908,7 +627,7 @@ namespace Week14.Enemy
 
         protected void BeginStagger(float seconds, float shakeDistance, float shakeFrequency)
         {
-            if (seconds <= 0f || isExecutionLocked || IsBulletEmpty)
+            if (seconds <= 0f || isExecutionLocked || IsHpEmpty)
             {
                 return;
             }
@@ -1015,14 +734,14 @@ namespace Week14.Enemy
 
         private bool UsesBossCombatUi()
         {
-            return bossCombatUiRoot != null || bossBulletBarView != null;
+            return bossCombatUiRoot != null || bossHpBarView != null;
         }
 
         private void PrepareBossCombatUi()
         {
             if (bossCombatUiRoot != null)
             {
-                bossBulletBarView ??= bossCombatUiRoot.GetComponentInChildren<BossBulletBarView>(true);
+                bossHpBarView ??= bossCombatUiRoot.GetComponentInChildren<BossBulletBarView>(true);
             }
 
             bossLivesView ??= bossCombatUiRoot != null
@@ -1042,7 +761,7 @@ namespace Week14.Enemy
         {
             if (IsBossCombatUiVisible())
             {
-                bossBulletBarView?.SetTarget(bullets);
+                bossHpBarView?.SetTarget(hpGauge);
             }
         }
 
@@ -1056,7 +775,7 @@ namespace Week14.Enemy
             PrepareBossCombatUi();
             SuppressEnemyStatusView();
             SetBossCombatUiVisible(true);
-            bossBulletBarView?.SetTarget(bullets);
+            bossHpBarView?.SetTarget(hpGauge);
         }
 
         private bool IsBossCombatUiVisible()
@@ -1066,7 +785,7 @@ namespace Week14.Enemy
                 return bossCombatUiRoot.activeInHierarchy;
             }
 
-            return bossBulletBarView != null && bossBulletBarView.gameObject.activeInHierarchy;
+            return bossHpBarView != null && bossHpBarView.gameObject.activeInHierarchy;
         }
 
         private void SetBossCombatUiVisible(bool visible)
@@ -1075,66 +794,24 @@ namespace Week14.Enemy
             {
                 bossCombatUiRoot.SetActive(visible);
             }
-            else if (bossBulletBarView != null)
+            else if (bossHpBarView != null)
             {
-                bossBulletBarView.gameObject.SetActive(visible);
+                bossHpBarView.gameObject.SetActive(visible);
             }
 
             isBossCombatUiActive = visible;
         }
 
-        private void NotifyLivesChanged()
+        internal void NotifyLivesChanged()
         {
             LivesChanged?.Invoke(CurrentLives, MaxLives);
             bossLivesView?.Refresh();
         }
 
-        private void NotifyEnrageChanged()
+        internal void NotifyEnrageChanged()
         {
-            float progress = GetCurrentEnrageProgress();
-            float remainingSeconds = GetCurrentEnrageRemainingSeconds();
-            EnrageChanged?.Invoke(currentEnragePhase, progress, remainingSeconds);
+            EnrageChanged?.Invoke(CurrentEnragePhase, CurrentEnrageProgress, CurrentEnrageRemainingSeconds);
             bossEnrageBarView?.Refresh();
-        }
-
-        private float GetCurrentEnrageProgress()
-        {
-            if (!isCombatStarted)
-            {
-                return 0f;
-            }
-
-            if (currentEnragePhase <= 0)
-            {
-                return Mathf.Clamp01((Time.time - currentPhaseStartTime) / Mathf.Max(0.0001f, enragePhase1Seconds));
-            }
-
-            if (currentEnragePhase == 1)
-            {
-                return Mathf.Clamp01((Time.time - currentPhaseStartTime) / Mathf.Max(0.0001f, enragePhase2Seconds));
-            }
-
-            return 1f;
-        }
-
-        private float GetCurrentEnrageRemainingSeconds()
-        {
-            if (!isCombatStarted)
-            {
-                return enragePhase1Seconds;
-            }
-
-            if (currentEnragePhase <= 0)
-            {
-                return Mathf.Max(0f, enragePhase1Seconds - (Time.time - currentPhaseStartTime));
-            }
-
-            if (currentEnragePhase == 1)
-            {
-                return Mathf.Max(0f, enragePhase2Seconds - (Time.time - currentPhaseStartTime));
-            }
-
-            return 0f;
         }
 
         private void SuppressEnemyStatusView()
@@ -1242,85 +919,6 @@ namespace Week14.Enemy
             }
         }
 
-        private void BeginBulletEmpty()
-        {
-            if (isBulletEmpty || health.IsDead)
-            {
-                return;
-            }
-
-            isBulletEmpty = true;
-            bulletEmptyEndsAt = Time.time + bulletEmptyExecutionSeconds;
-            CancelBossAction();
-            Stop();
-            ApplyBodyStateColor();
-            bossBulletBarView?.SetExecutionWindow(true, 1f);
-            OnBulletEmptyBegan();
-        }
-
-        private void TickBulletEmpty()
-        {
-            if (!isBulletEmpty)
-            {
-                BeginBulletEmpty();
-            }
-
-            if (Time.time >= bulletEmptyEndsAt)
-            {
-                RecoverFromBulletEmpty();
-                return;
-            }
-
-            float remainingSeconds = bulletEmptyEndsAt - Time.time;
-            float remainingRatio = bulletEmptyExecutionSeconds > 0f
-                ? Mathf.Clamp01(remainingSeconds / bulletEmptyExecutionSeconds)
-                : 0f;
-            bossBulletBarView?.SetExecutionWindow(true, remainingRatio);
-
-            Stop();
-        }
-
-        private void RecoverFromBulletEmpty()
-        {
-            if (health == null || health.IsDead || bullets == null)
-            {
-                return;
-            }
-
-            isBulletEmpty = false;
-            bulletEmptyEndsAt = 0f;
-            bullets.Restore(Mathf.Max(1, (bullets.MaxBullets + 2) / 3), BulletChangeSource.Generic);
-            ApplyBodyStateColor();
-            bossBulletBarView?.ClearExecutionWindow();
-            OnBulletEmptyRecovered();
-        }
-
-        private void BeginPhaseTransitionWait()
-        {
-            float waitSeconds = Mathf.Max(0f, phaseTransitionWaitSeconds);
-            if (waitSeconds <= 0f)
-            {
-                isPhaseTransitionWaiting = false;
-                phaseTransitionWaitEndsAt = 0f;
-                return;
-            }
-
-            isPhaseTransitionWaiting = true;
-            phaseTransitionWaitEndsAt = Time.time + waitSeconds;
-        }
-
-        private void TickPhaseTransitionWait()
-        {
-            Stop();
-            if (Time.time < phaseTransitionWaitEndsAt)
-            {
-                return;
-            }
-
-            isPhaseTransitionWaiting = false;
-            phaseTransitionWaitEndsAt = 0f;
-        }
-
         private void ApplyBodyStateColor()
         {
             if (renderers == null)
@@ -1337,9 +935,9 @@ namespace Week14.Enemy
             {
                 color = BodyHitColor;
             }
-            else if (isExecutionLocked || IsBulletEmpty)
+            else if (isExecutionLocked || IsHpEmpty)
             {
-                color = bulletEmptyColor;
+                color = hpEmptyColor;
             }
 
             for (int i = 0; i < renderers.Length; i++)
@@ -1362,7 +960,7 @@ namespace Week14.Enemy
 
         private void HandleDied(Health _)
         {
-            DestroyActiveProjectiles();
+            projectileTracker.DestroyAll();
             SetBossCombatUiVisible(false);
             SoundManager.StopBgm();
             if (bossLivesView != null)
@@ -1376,30 +974,6 @@ namespace Week14.Enemy
 
             OnBossDied();
             Defeated?.Invoke(this);
-        }
-
-        private void DestroyActiveProjectiles()
-        {
-            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
-            {
-                if (activeProjectiles[i] != null)
-                {
-                    activeProjectiles[i].DestroyFromOwner();
-                }
-            }
-
-            activeProjectiles.Clear();
-        }
-
-        private void PruneInactiveProjectiles()
-        {
-            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
-            {
-                if (activeProjectiles[i] == null)
-                {
-                    activeProjectiles.RemoveAt(i);
-                }
-            }
         }
 
         private void QueueDestroyAfterDeath()
@@ -1428,6 +1002,11 @@ namespace Week14.Enemy
 
             CameraFollow2D cameraFollow = mainCamera.GetComponent<CameraFollow2D>();
             cameraFollow?.PlayImpact(direction, amplitude, seconds, zoomAmount);
+        }
+
+        internal static void PlayEnemyHitCameraImpactForSequence(Vector2 direction, float amplitude, float seconds, float zoomAmount)
+        {
+            PlayEnemyHitCameraImpact(direction, amplitude, seconds, zoomAmount);
         }
 
         private static void RotateRight(Transform target, Vector2 direction)
