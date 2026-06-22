@@ -88,6 +88,7 @@ namespace Week14.Enemy
             Color projectileColor = settings.LaunchedColor;
             Color homingBlinkColor = settings.HomingBlinkColor;
             Color trailColor = settings.TrailColor;
+            Color indicatorColor = settings.IndicatorColor;
             EnemyProjectile projectile = spawnProjectile(
                 settings.Prefab,
                 origin,
@@ -108,6 +109,7 @@ namespace Week14.Enemy
 
             projectile?.ConfigureStateColors(chargeColor, projectileColor, homingBlinkColor);
             projectile?.ConfigureTrailColor(trailColor);
+            projectile?.ConfigureIndicatorColor(indicatorColor);
             projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, aimAtPlayerWhileCharging, aimAtPlayerOnLaunch);
             return projectile;
         }

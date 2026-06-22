@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
-  - component: {fileID: 6489297241618804930}
+  - component: {fileID: 6470095641802324841}
   - component: {fileID: 5897565683229663206}
   m_Layer: 7
-  m_Name: EnemyBullet
+  m_Name: EnemyBullet_Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,8 +63,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &6489297241618804930
-CapsuleCollider2D:
+--- !u!58 &6470095641802324841
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -97,9 +97,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0011091084, y: -0.0000008343329}
-  m_Size: {x: 0.3944966, y: 0.13055664}
-  m_Direction: 1
+  m_Offset: {x: -0.000000014901161, y: 0.0022179484}
+  m_Radius: 0.15399449
 --- !u!114 &5897565683229663206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,8 +233,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.12, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2354031526117083692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -288,12 +287,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.7320182, g: 0.8773585, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: b8cf7d2177bbc8d488174517b26182ed, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

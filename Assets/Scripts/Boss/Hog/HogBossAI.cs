@@ -67,6 +67,7 @@ namespace Week14.Enemy
             [SerializeField, FormerlySerializedAs("color"), Tooltip("발사된 탄환 색입니다.")] private Color launchedColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Tooltip("유도탄이 대기 중 깜빡일 때 번갈아 표시할 색입니다.")] private Color homingBlinkColor = new(1f, 0.25f, 0.15f, 1f);
             [SerializeField, Tooltip("탄환 궤적 색입니다. 알파값은 시작 투명도로 사용됩니다.")] private Color trailColor = new(1f, 0.82f, 0.18f, 0.55f);
+            [SerializeField, Tooltip("탄환 경로 인디케이터와 유도 조준 레티클 색입니다. 알파값은 내부 표시 강도로 조정됩니다.")] private Color indicatorColor = new(1f, 0.95f, 0.25f, 1f);
             [SerializeField, Min(0.01f), Tooltip("탄환 궤적이 남아 있는 시간입니다.")] private float trailSeconds = 0.1f;
             [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] private float trailWidthMultiplier = 3f;
             [SerializeField] private bool homingEnabled;
@@ -85,6 +86,7 @@ namespace Week14.Enemy
             public Color LaunchedColor => launchedColor;
             public Color HomingBlinkColor => homingBlinkColor;
             public Color TrailColor => trailColor;
+            public Color IndicatorColor => indicatorColor;
             public float TrailSeconds => trailSeconds;
             public float TrailWidthMultiplier => trailWidthMultiplier;
             public bool HomingEnabled => homingEnabled;

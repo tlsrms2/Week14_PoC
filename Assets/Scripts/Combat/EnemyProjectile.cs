@@ -32,6 +32,7 @@ namespace Week14.Combat
         private Color chargingColor;
         private Color launchedColor;
         private Color homingBlinkColor;
+        private Color indicatorColor;
         private float homingBlinkPhase;
         private bool homingEnabled;
         private float homingTurnDegreesPerSecond;
@@ -43,6 +44,7 @@ namespace Week14.Combat
         private LineRenderer chargeVfx;
         private TrailRenderer projectileTrail;
         private bool customTrailColorConfigured;
+        private bool customIndicatorColorConfigured;
         [SerializeField] private GameObject parryLockOnIndicatorRoot;
         [SerializeField] private MouseParryReticle parryLockOnReticle;
         [SerializeField] private Transform parryLockOnRotatingRoot;
@@ -213,6 +215,12 @@ namespace Week14.Combat
             projectileTrail.startColor = nextTrailColor;
             projectileTrail.endColor = endColor;
             customTrailColorConfigured = true;
+        }
+
+        public void ConfigureIndicatorColor(Color nextIndicatorColor)
+        {
+            indicatorColor = nextIndicatorColor;
+            customIndicatorColorConfigured = true;
         }
 
         public void ConfigureChargeMotion(float driftSpeed, bool aimAtPlayer)
@@ -411,8 +419,10 @@ namespace Week14.Combat
             chargingColor = color;
             launchedColor = color;
             homingBlinkColor = color;
+            indicatorColor = color;
             homingBlinkPhase = 0f;
             customTrailColorConfigured = false;
+            customIndicatorColorConfigured = false;
             homingEnabled = enableHoming;
             this.homingSeconds = homingEnabled
                 ? Mathf.Max(0.01f, homingSeconds > 0f ? homingSeconds : DefaultHomingSeconds)
@@ -1494,7 +1504,9 @@ namespace Week14.Combat
 
         private Color GetProjectileIndicatorColor(float alpha)
         {
-            Color color = launched ? launchedColor : chargingColor;
+            Color color = customIndicatorColorConfigured
+                ? indicatorColor
+                : launched ? launchedColor : chargingColor;
             color.a = Mathf.Clamp01(alpha);
             return color;
         }

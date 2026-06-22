@@ -371,7 +371,7 @@ MonoBehaviour:
       firstProjectileOrigin: {fileID: 4751530550925763319}
       secondProjectileOrigin: {fileID: 3329525432054548886}
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1.5
@@ -379,10 +379,11 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
-      launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+      indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
@@ -421,7 +422,7 @@ MonoBehaviour:
       firstProjectileOrigin: {fileID: 6360489807620193376}
       secondProjectileOrigin: {fileID: 4059521945129302117}
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1.5
@@ -429,10 +430,11 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
-      launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 1}
+      indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
@@ -487,10 +489,11 @@ MonoBehaviour:
       speed: 14
       lifetime: 2.5
       radius: 0.1
-      chargingColor: {r: 1, g: 0.63759786, b: 0.1745283, a: 1}
-      launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
+      indicatorColor: {r: 0.99215686, g: 0.98039216, b: 0, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -550,10 +553,11 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
-      launchedColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
+      indicatorColor: {r: 0.99215686, g: 0.98039216, b: 0, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -599,10 +603,11 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
+      indicatorColor: {r: 0.99215686, g: 0.98039216, b: 0, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -653,10 +658,11 @@ MonoBehaviour:
       speed: 5
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
       trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
+      indicatorColor: {r: 0.99215686, g: 0.98039216, b: 0, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 1
       homingEnabled: 0
@@ -705,17 +711,18 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.12
-      chargingColor: {r: 1, g: 0.6392157, b: 0.1764706, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-      trailColor: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 1}
+      trailColor: {r: 1, g: 0.81960785, b: 0.18039216, a: 1}
+      indicatorColor: {r: 0.99215686, g: 0.98039216, b: 0, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 3
       homingEnabled: 0
       homingSeconds: 0.8
       homingTurnDegreesPerSecond: 540
     specialProjectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1.5
@@ -723,10 +730,11 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 0.5411765, b: 0.88971967, a: 1}
-      launchedColor: {r: 0.9528302, g: 0.23820755, b: 0.844519, a: 1}
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-      trailColor: {r: 1, g: 0.82, b: 0.18, a: 0.55}
+      trailColor: {r: 0.5686275, g: 0.5686275, b: 0.5686275, a: 0.55}
+      indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
@@ -1150,7 +1158,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8297976667078788076}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
