@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BossColorSettings
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossColorSettings
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  hpEmptyColor: {r: 0.45, g: 0.65, b: 1, a: 1}
-  staggeredColor: {r: 1, g: 0.95, b: 0.35, a: 1}
+  hpEmptyColor: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
+  staggeredColor: {r: 1, g: 0, b: 0, a: 1}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}

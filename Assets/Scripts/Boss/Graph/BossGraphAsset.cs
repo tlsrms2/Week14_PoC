@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Week14.Combat;
+
+namespace Week14.Enemy
+{
+    [CreateAssetMenu(menuName = "Week14/Boss/Boss Graph", fileName = "BossGraph")]
+    public sealed class BossGraphAsset : ScriptableObject
+    {
+        [SerializeField] private string startNodeId = "Phase1";
+        [SerializeField] private BossGraphReferenceSettings references = new();
+        [SerializeField] private List<BossStateNode> stateNodes = new()
+        {
+            new BossStateNode()
+        };
+        [SerializeField] private List<BossTransition> transitions = new();
+
+        public BossGraphReferenceSettings References => references;
+        public CombatEffectData EffectData => references != null ? references.EffectData : null;
+        public BossColorSettings ColorSettings => references != null ? references.ColorSettings : null;
+        public IReadOnlyList<BossStateNode> StateNodes => stateNodes;
+        public IReadOnlyList<BossTransition> Transitions => transitions;
+
+        public BossStateNode GetStartNode()
+        {
+            BossStateNode node = FindNode(startNodeId);
+            return node ?? (stateNodes != null && stateNodes.Count > 0 ? stateNodes[0] : null);
+        }
+
+        public BossStateNode GetNodeForPhase(int phaseIndex)
+        {
+            if (stateNodes == null || stateNodes.Count == 0)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < stateNodes.Count; i++)
+            {
+                BossStateNode node = stateNodes[i];
+                if (node != null && node.PhaseIndex == phaseIndex)
+                {
+                    return node;
+                }
+            }
+
+            return GetStartNode();
+        }
+
+        public BossStateNode GetNode(string nodeId)
+        {
+            if (string.IsNullOrWhiteSpace(nodeId) || stateNodes == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < stateNodes.Count; i++)
+            {
+                BossStateNode node = stateNodes[i];
+                if (node != null && node.NodeId == nodeId)
+                {
+                    return node;
+                }
+            }
+
+            return null;
+        }
+
+        private BossStateNode FindNode(string nodeId)
+        {
+            return GetNode(nodeId);
+        }
+    }
+
+    [Serializable]
+    public sealed class BossGraphReferenceSettings
+    {
+        [SerializeField] private CombatEffectData effectData;
+        [SerializeField] private BossColorSettings colorSettings;
+
+        public CombatEffectData EffectData => effectData;
+        public BossColorSettings ColorSettings => colorSettings;
+    }
+
+    public enum BossSequenceSelectionMode
+    {
+        Sequential,
+        Random,
+        RandomNoRepeat,
+        WeightedRandom
+    }
+
+    public enum BossTransitionConditionType
+    {
+        SequenceEnded,
+        HpRatioLessOrEqual,
+        PhaseIndexEquals,
+        PlayerDetected,
+        HpEmpty,
+        HpNotEmpty,
+        Staggered,
+        NotStaggered,
+        ExecutionLocked,
+        ExecutionPaused,
+        EnragePhaseEquals,
+        LivesLessOrEqual
+    }
+
+    [Serializable]
+    public sealed class BossStateNode
+    {
+        [SerializeField] private string nodeId = "Phase1";
+        [SerializeField, Min(0)] private int phaseIndex;
+        [SerializeField] private BossSequenceSelectionMode selectionMode;
+        [SerializeField, Min(0f)] private float minRecoverySeconds = 0.5f;
+        [SerializeField, Min(0f)] private float maxRecoverySeconds = 0.9f;
+        [SerializeField] private List<BossSequenceEntry> sequences = new();
+        [SerializeField] private Vector2 editorPosition;
+
+        public string NodeId => nodeId;
+        public int PhaseIndex => phaseIndex;
+        public BossSequenceSelectionMode SelectionMode => selectionMode;
+        public float MinRecoverySeconds => minRecoverySeconds;
+        public float MaxRecoverySeconds => Mathf.Max(minRecoverySeconds, maxRecoverySeconds);
+        public IReadOnlyList<BossSequenceEntry> Sequences => sequences;
+        public Vector2 EditorPosition => editorPosition;
+    }
+
+    [Serializable]
+    public sealed class BossSequenceEntry
+    {
+        [SerializeField] private AttackSequenceAsset sequence;
+        [SerializeField, Min(0)] private int weight = 1;
+
+        public AttackSequenceAsset Sequence => sequence;
+        public int Weight => Mathf.Max(0, weight);
+    }
+
+    [Serializable]
+    public sealed class BossTransition
+    {
+        [SerializeField] private string fromNodeId;
+        [SerializeField] private string toNodeId;
+        [SerializeField] private BossTransitionConditionType conditionType;
+        [SerializeField] private float threshold;
+        [SerializeField] private int phaseIndex;
+
+        public string FromNodeId => fromNodeId;
+        public string ToNodeId => toNodeId;
+        public BossTransitionConditionType ConditionType => conditionType;
+        public float Threshold => threshold;
+        public int PhaseIndex => phaseIndex;
+    }
+}

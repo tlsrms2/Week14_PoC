@@ -153,21 +153,22 @@ namespace Week14.Enemy
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
-        public Color NormalColor => colorSettings != null ? colorSettings.NormalColor : normalColor;
-        public Color HpEmptyColor => colorSettings != null ? colorSettings.HpEmptyColor : hpEmptyColor;
+        public Color NormalColor => ActiveColorSettings != null ? ActiveColorSettings.NormalColor : normalColor;
+        public Color HpEmptyColor => ActiveColorSettings != null ? ActiveColorSettings.HpEmptyColor : hpEmptyColor;
         public Color BulletEmptyColor => HpEmptyColor;
-        public Color StaggeredColor => colorSettings != null ? colorSettings.StaggeredColor : staggeredColor;
-        public Color BodyHitColor => effectData != null ? effectData.EnemyBodyHitColor : new Color(1f, 0.35f, 0.25f, 1f);
-        public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
-        public Color StatusBarBackgroundColor => colorSettings != null ? colorSettings.StatusBarBackgroundColor : statusBarBackgroundColor;
-        public Color HpBarColor => colorSettings != null ? colorSettings.HpBarColor : hpBarColor;
-        public Color EmptyHpBarColor => colorSettings != null ? colorSettings.EmptyHpBarColor : emptyHpBarColor;
+        public Color StaggeredColor => ActiveColorSettings != null ? ActiveColorSettings.StaggeredColor : staggeredColor;
+        public Color BodyHitColor => ActiveEffectData != null ? ActiveEffectData.EnemyBodyHitColor : new Color(1f, 0.35f, 0.25f, 1f);
+        public float BodyHitColorSeconds => ActiveEffectData != null ? ActiveEffectData.BodyHitColorSeconds : 0.08f;
+        public Color StatusBarBackgroundColor => ActiveColorSettings != null ? ActiveColorSettings.StatusBarBackgroundColor : statusBarBackgroundColor;
+        public Color HpBarColor => ActiveColorSettings != null ? ActiveColorSettings.HpBarColor : hpBarColor;
+        public Color EmptyHpBarColor => ActiveColorSettings != null ? ActiveColorSettings.EmptyHpBarColor : emptyHpBarColor;
         public Color BulletBarColor => HpBarColor;
         public Color EmptyBulletBarColor => EmptyHpBarColor;
-        public Color LockOnIndicatorColor => colorSettings != null ? colorSettings.LockOnIndicatorColor : lockOnIndicatorColor;
-        public Color ExecutionIndicatorColor => colorSettings != null ? colorSettings.ExecutionIndicatorColor : executionIndicatorColor;
+        public Color LockOnIndicatorColor => ActiveColorSettings != null ? ActiveColorSettings.LockOnIndicatorColor : lockOnIndicatorColor;
+        public Color ExecutionIndicatorColor => ActiveColorSettings != null ? ActiveColorSettings.ExecutionIndicatorColor : executionIndicatorColor;
 
-        protected CombatEffectData EffectData => effectData;
+        protected CombatEffectData EffectData => ActiveEffectData;
+        protected virtual BossGraphAsset GraphAsset => null;
         public int MaxLives => Mathf.Max(1, maxLives);
         public int CurrentLives => PhaseController.CurrentLives;
         public int CurrentPhaseIndex => PhaseController.CurrentPhaseIndex;
@@ -183,6 +184,8 @@ namespace Week14.Enemy
         public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
 
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
+        private CombatEffectData ActiveEffectData => GraphAsset != null && GraphAsset.EffectData != null ? GraphAsset.EffectData : effectData;
+        private BossColorSettings ActiveColorSettings => GraphAsset != null && GraphAsset.ColorSettings != null ? GraphAsset.ColorSettings : colorSettings;
 
         protected virtual void Awake()
         {
@@ -390,6 +393,11 @@ namespace Week14.Enemy
         protected IEnumerator ApplyPendingEnrageIfAny()
         {
             yield return PhaseController.ApplyPendingEnrageIfAny();
+        }
+
+        internal IEnumerator ApplyPendingEnrageIfAnyForGraph()
+        {
+            yield return ApplyPendingEnrageIfAny();
         }
 
         private void PlayEnrageTransitionEffect()
@@ -656,6 +664,34 @@ namespace Week14.Enemy
             return projectile;
         }
 
+        internal EnemyProjectile FireGraphProjectile(
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            float muzzleFlashScale,
+            bool? aimAtPlayerWhileChargingOverride = null,
+            bool? aimAtPlayerOnLaunchOverride = null,
+            float chargeSecondsOverride = -1f,
+            float radiusOverride = -1f,
+            bool suppressHoming = false)
+        {
+            return BossProjectileEmitter.Fire(
+                SpawnBossProjectile,
+                settings,
+                origin,
+                direction,
+                settings != null ? settings.ChargingColor : Color.white,
+                settings != null ? settings.LaunchedColor : Color.white,
+                aimAtPlayerWhileChargingOverride ?? (settings != null && settings.AimAtPlayerWhileCharging),
+                aimAtPlayerOnLaunchOverride ?? (settings != null && settings.AimAtPlayerOnLaunch),
+                suppressHoming,
+                chargeSecondsOverride,
+                radiusOverride,
+                origin,
+                muzzleFlashScale,
+                null);
+        }
+
         protected void BeginStagger(float seconds, float shakeDistance, float shakeFrequency)
         {
             if (seconds <= 0f || isExecutionLocked || IsHpEmpty)
@@ -878,10 +914,11 @@ namespace Week14.Enemy
 
         private void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
-            Color sparkColor = effectData != null ? effectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);
-            Color backSparkColor = effectData != null ? effectData.AttackImpactBackSparkColor : Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
-            Color flameColor = effectData != null ? effectData.AttackImpactFlameColor : backSparkColor;
-            Color ringColor = effectData != null ? effectData.AttackImpactRingColor : Color.Lerp(hitColor, Color.white, 0.35f);
+            CombatEffectData activeEffectData = ActiveEffectData;
+            Color sparkColor = activeEffectData != null ? activeEffectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);
+            Color backSparkColor = activeEffectData != null ? activeEffectData.AttackImpactBackSparkColor : Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
+            Color flameColor = activeEffectData != null ? activeEffectData.AttackImpactFlameColor : backSparkColor;
+            Color ringColor = activeEffectData != null ? activeEffectData.AttackImpactRingColor : Color.Lerp(hitColor, Color.white, 0.35f);
             ProjectileVfx.PlayPlayerAttackImpact(
                 hitPosition,
                 hitDirection,
@@ -889,10 +926,10 @@ namespace Week14.Enemy
                 backSparkColor,
                 flameColor,
                 ringColor,
-                effectData != null ? effectData.AttackImpactSparkCount : 14,
-                effectData != null ? effectData.AttackImpactBackSparkCount : 6,
-                effectData != null ? effectData.AttackImpactFlameCount : 8,
-                effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                activeEffectData != null ? activeEffectData.AttackImpactSparkCount : 14,
+                activeEffectData != null ? activeEffectData.AttackImpactBackSparkCount : 6,
+                activeEffectData != null ? activeEffectData.AttackImpactFlameCount : 8,
+                activeEffectData != null ? activeEffectData.AttackImpactEffectScale : 0.65f);
         }
 
         private void FlashBodyHitColor()
