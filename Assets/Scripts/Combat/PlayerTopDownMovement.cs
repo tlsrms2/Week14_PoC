@@ -35,7 +35,7 @@ namespace Week14.Combat
 
             if (combat != null && !combat.CanMove)
             {
-                if (!combat.IsBodyContactStaggered)
+                if (combat.ShouldStopMovementWhenBlocked)
                 {
                     body.linearVelocity = Vector2.zero;
                 }

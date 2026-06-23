@@ -79,7 +79,7 @@ namespace Week14.Combat
             health.Kill();
             if (recoverBullets)
             {
-                player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
+                RecoverPlayerBullets(player, activeConfig);
             }
 
             if (destroyAfterExecute && activeConfig.DestroyTargetOnExecute)
@@ -104,8 +104,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
-            return true;
+            return RecoverPlayerBullets(player, activeConfig);
         }
 
         public bool CompleteExecution(PlayerCombatController player, bool recoverBullets)
@@ -120,10 +119,30 @@ namespace Week14.Combat
             ReleaseExecutionLock();
             if (recoverBullets)
             {
-                player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
+                RecoverPlayerBullets(player, activeConfig);
             }
 
             return true;
+        }
+
+        private bool RecoverPlayerBullets(PlayerCombatController player, PlayerCombatConfig activeConfig)
+        {
+            if (ShouldRestoreExecutorMaxBullets(player, activeConfig))
+            {
+                player.Bullets.Configure(activeConfig.MaxBullets, true, BulletChangeSource.Execution);
+                return true;
+            }
+
+            return player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
+        }
+
+        private bool ShouldRestoreExecutorMaxBullets(PlayerCombatController player, PlayerCombatConfig activeConfig)
+        {
+            return bossAI != null
+                && drone == null
+                && bossAI.CurrentLives > 1
+                && player.Bullets != null
+                && player.Bullets.MaxBullets < activeConfig.MaxBullets;
         }
 
         public void CompleteExecutionWithoutKill()

@@ -132,8 +132,10 @@ namespace Week14.Enemy
         private bool isBossCombatUiActive;
         private bool destroyAfterDeathQueued;
         private bool finalDeathSequencePlayed;
+        private bool isFinalDeathSequencePlaying;
         private BossPhaseController phaseController;
         private BossStateMachine stateMachine;
+        private static int finalDeathSequencePlayCount;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -147,6 +149,7 @@ namespace Week14.Enemy
         public bool IsHpEmpty => hpGauge != null && hpGauge.IsEmpty;
         public bool IsBulletEmpty => IsHpEmpty;
         public bool IsExecutionLocked => isExecutionLocked;
+        public bool IsFinalDeathSequencePlaying => isFinalDeathSequencePlaying;
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
@@ -175,6 +178,7 @@ namespace Week14.Enemy
         public event Action<int, int> LivesChanged;
         public event Action<int, float, float> EnrageChanged;
         public static event Action<BossAI> Defeated;
+        public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
 
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
 
@@ -219,6 +223,8 @@ namespace Week14.Enemy
             {
                 health.Died -= HandleDied;
             }
+
+            SetFinalDeathSequencePlaying(false);
         }
 
         protected virtual void Start()
@@ -442,11 +448,31 @@ namespace Week14.Enemy
             }
 
             finalDeathSequencePlayed = true;
-            CancelBossAction();
-            Stop();
-            projectileTracker.DestroyAll();
+            SetFinalDeathSequencePlaying(true);
 
-            yield return BossDeathSequencePlayer.Play(this);
+            try
+            {
+                CancelBossAction();
+                Stop();
+                projectileTracker.DestroyAll();
+
+                yield return BossDeathSequencePlayer.Play(this);
+            }
+            finally
+            {
+                SetFinalDeathSequencePlaying(false);
+            }
+        }
+
+        private void SetFinalDeathSequencePlaying(bool playing)
+        {
+            if (isFinalDeathSequencePlaying == playing)
+            {
+                return;
+            }
+
+            isFinalDeathSequencePlaying = playing;
+            finalDeathSequencePlayCount = Mathf.Max(0, finalDeathSequencePlayCount + (playing ? 1 : -1));
         }
 
         internal Animator DeathAnimatorForSequence => deathAnimator;

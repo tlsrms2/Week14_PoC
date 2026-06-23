@@ -1000,11 +1000,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579985606}
   m_CullTransparentMesh: 1
---- !u!224 &585025437 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5557715826915736996, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-  m_PrefabInstance: {fileID: 2382189914428757667}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4699,22 +4694,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 1912646280092137006, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1912646280092137006, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1912646280092137006, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2278235474687056908, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: victoryPanelDelaySeconds
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4754,18 +4733,6 @@ PrefabInstance:
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7112965414385014513, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: rotationRoot
-      value: 
-      objectReference: {fileID: 585025437}
-    - target: {fileID: 7112965414385014513, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: hitSpendSeconds
-      value: 0.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 7112965414385014513, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: recoverySeconds
-      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

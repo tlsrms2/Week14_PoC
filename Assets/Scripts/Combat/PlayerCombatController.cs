@@ -71,6 +71,7 @@ namespace Week14.Combat
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
         private bool playerHpHiddenForExecution;
+        private bool isWaitingForVictoryPanel;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
@@ -84,7 +85,14 @@ namespace Week14.Combat
         public PlayerCombatConfig Config => config;
         public bool CanMove => CanAct && !IsBodyContactStaggered;
         public bool IsBodyContactStaggered => Time.time < enemyBodyContactStaggerEndsAt;
-        private bool CanAct => !GameModalState.BlocksGameplayInput && !isExecuting && !health.IsDead;
+        public bool ShouldStopMovementWhenBlocked => !IsBodyContactStaggered
+            || BossAI.IsAnyFinalDeathSequencePlaying
+            || isWaitingForVictoryPanel;
+        private bool CanAct => !GameModalState.BlocksGameplayInput
+            && !isExecuting
+            && !BossAI.IsAnyFinalDeathSequencePlaying
+            && !isWaitingForVictoryPanel
+            && !health.IsDead;
 
         private void Awake()
         {
@@ -343,7 +351,8 @@ namespace Week14.Combat
                 return !drone.SuppressesBodyContactDamage;
             }
 
-            return other.GetComponentInParent<BossAI>() != null;
+            BossAI boss = other.GetComponentInParent<BossAI>();
+            return boss != null && !boss.IsFinalDeathSequencePlaying && !isWaitingForVictoryPanel;
         }
 
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
@@ -751,23 +760,31 @@ namespace Week14.Combat
                     }
                     else
                     {
+                        SetWaitingForVictoryPanel(true);
                         FinishExecution();
                         executionFinished = true;
-                        yield return WaitBeforeFinalDeathFocus();
-                        CameraFollow2D finalDeathCamera = BeginFinalDeathCameraFocus(boss);
-                        yield return boss.PlayFinalDeathSequence();
-                        if (victoryPanelDelaySeconds > 0f)
+                        try
                         {
-                            yield return new WaitForSeconds(victoryPanelDelaySeconds);
-                        }
+                            yield return WaitBeforeFinalDeathFocus();
+                            CameraFollow2D finalDeathCamera = BeginFinalDeathCameraFocus(boss);
+                            yield return boss.PlayFinalDeathSequence();
+                            if (victoryPanelDelaySeconds > 0f)
+                            {
+                                yield return new WaitForSeconds(victoryPanelDelaySeconds);
+                            }
 
-                        if (executionTarget != null)
+                            if (executionTarget != null)
+                            {
+                                executionTarget.CompleteExecution(this, false);
+                                executionTarget.DestroyExecutedTarget();
+                            }
+
+                            finalDeathCamera?.EndCinematicFocus();
+                        }
+                        finally
                         {
-                            executionTarget.CompleteExecution(this, false);
-                            executionTarget.DestroyExecutedTarget();
+                            SetWaitingForVictoryPanel(false);
                         }
-
-                        finalDeathCamera?.EndCinematicFocus();
                     }
                 }
                 else
@@ -780,6 +797,15 @@ namespace Week14.Combat
             if (!executionFinished)
             {
                 FinishExecution();
+            }
+        }
+
+        private void SetWaitingForVictoryPanel(bool waiting)
+        {
+            isWaitingForVictoryPanel = waiting;
+            if (waiting)
+            {
+                StopBody();
             }
         }
 
