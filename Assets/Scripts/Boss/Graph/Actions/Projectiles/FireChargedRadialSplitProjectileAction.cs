@@ -74,18 +74,10 @@ namespace Week14.Enemy
             context.PlaySfxOnRadialSplitImminent(spawned, radialSplitImminentSfxId);
             context.PlayOriginBurst(effects, origin);
 
-            ProjectileVfx.TelegraphLine telegraph = context.CreateProjectileTelegraphLine(projectileName, 0.075f);
-            try
-            {
-                yield return TrackCharge(context, spawned, telegraph);
-            }
-            finally
-            {
-                telegraph?.Destroy();
-            }
+            yield return TrackCharge(context, spawned);
         }
 
-        private IEnumerator TrackCharge(BossActionContext context, EnemyProjectile spawned, ProjectileVfx.TelegraphLine telegraph)
+        private IEnumerator TrackCharge(BossActionContext context, EnemyProjectile spawned)
         {
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
@@ -106,10 +98,6 @@ namespace Week14.Enemy
                 }
 
                 Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-                Vector2 direction = spawned.IncomingDirection.sqrMagnitude > 0.0001f
-                    ? spawned.IncomingDirection
-                    : context.GetDirectionToPlayer(origin);
-                context.SetProjectileTelegraphLine(telegraph, origin, direction);
                 context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
                 elapsed += Time.deltaTime;
                 yield return null;

@@ -54,7 +54,6 @@ namespace Week14.Enemy
                 Vector3 origin = spawnRadius > 0f
                     ? originCenter + (Vector3)(direction * spawnRadius)
                     : originCenter;
-                context.PlayProjectileTelegraphLine(projectileName, origin, direction, 0.1f);
                 context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
 
                 if (fireInterval > 0f && i < count - 1)

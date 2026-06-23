@@ -26,9 +26,16 @@ namespace Week14.Enemy
     {
     }
 
+    public sealed class BossGraphNodeIdAttribute : PropertyAttribute
+    {
+    }
+
     [System.Serializable]
     public class BossProjectileSettings
     {
+        private const float FixedHomingSeconds = 10f;
+        private const float FixedHomingTurnDegreesPerSecond = 540f;
+
         [SerializeField, Tooltip("발사할 적 탄환 프리팹입니다.")] protected EnemyProjectile prefab;
         [SerializeField, Min(0), Tooltip("플레이어에게 적중했을 때 감소시킬 플레이어 탄환 수입니다.")] protected int bulletDamage = 1;
         [SerializeField, Min(0f), Tooltip("발사 전 충전 시간입니다.")] protected float chargeSeconds = 0.15f;
@@ -47,8 +54,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f), Tooltip("탄환 궤적 유지 시간입니다.")] protected float trailSeconds = 0.1f;
         [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] protected float trailWidthMultiplier = 3f;
         [SerializeField] protected bool homingEnabled;
-        [SerializeField, Min(0f), Tooltip("플레이어를 추적하는 시간입니다.")] protected float homingSeconds = 0.8f;
-        [SerializeField, Min(0f), Tooltip("초당 추적 회전 각도입니다.")] protected float homingTurnDegreesPerSecond = 540f;
 
         public BossProjectileSettings()
         {
@@ -68,8 +73,6 @@ namespace Week14.Enemy
             float trailSeconds,
             float trailWidthMultiplier,
             bool homingEnabled,
-            float homingSeconds,
-            float homingTurnDegreesPerSecond,
             EnemyProjectile homingChargePrefab,
             Color homingBlinkColor,
             Color trailColor,
@@ -88,8 +91,6 @@ namespace Week14.Enemy
             this.trailSeconds = trailSeconds;
             this.trailWidthMultiplier = trailWidthMultiplier;
             this.homingEnabled = homingEnabled;
-            this.homingSeconds = homingSeconds;
-            this.homingTurnDegreesPerSecond = homingTurnDegreesPerSecond;
             this.homingChargePrefab = homingChargePrefab;
             this.homingBlinkColor = homingBlinkColor;
             this.trailColor = trailColor;
@@ -117,8 +118,8 @@ namespace Week14.Enemy
         public float TrailSeconds => trailSeconds;
         public float TrailWidthMultiplier => trailWidthMultiplier;
         public bool HomingEnabled => homingEnabled;
-        public float HomingSeconds => homingSeconds;
-        public float HomingTurnDegreesPerSecond => homingTurnDegreesPerSecond;
+        public float HomingSeconds => FixedHomingSeconds;
+        public float HomingTurnDegreesPerSecond => FixedHomingTurnDegreesPerSecond;
 
         private static bool HasCustomColor(Color color)
         {

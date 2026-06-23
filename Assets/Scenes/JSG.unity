@@ -1943,15 +1943,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.trailColor.b
-      value: 0.13333334
+      value: 0.6039216
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.trailColor.g
-      value: 0.8078432
+      value: 0.6039216
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.trailColor.r
-      value: 1
+      value: 0.6039216
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.trailSeconds
@@ -2063,11 +2063,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.indicatorColor.b
-      value: 0.2509804
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.indicatorColor.g
-      value: 0.9490197
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: graphProjectiles.Array.data[1].projectile.indicatorColor.r
@@ -2181,6 +2181,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss_Hog
       objectReference: {fileID: 0}
+    - target: {fileID: 3721729926954954457, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4148056431437641574, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2189,7 +2193,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3721729926954954457, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

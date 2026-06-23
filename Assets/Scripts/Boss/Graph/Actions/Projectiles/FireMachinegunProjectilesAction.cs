@@ -96,7 +96,6 @@ namespace Week14.Enemy
                 spawnPosition += (Vector3)(side * GetAlternatingOffset(bulletIndex));
             }
 
-            context.PlayProjectileTelegraphLine(projectileName, spawnPosition, direction, 0.08f);
             EnemyProjectile firedProjectile = context.FireProjectile(
                 projectile,
                 spawnPosition,

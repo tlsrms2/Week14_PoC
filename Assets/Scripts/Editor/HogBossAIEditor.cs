@@ -276,9 +276,6 @@ public sealed class HogBossAIEditor : Editor
 
         EditorGUILayout.Space(6f);
         DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossEnrageBarView");
-
-        EditorGUILayout.Space(6f);
-        DrawFallbackReferences();
     }
 
     private void DrawGraphReferences()
@@ -301,7 +298,7 @@ public sealed class HogBossAIEditor : Editor
         BossGraphAsset graph = bossGraph.objectReferenceValue as BossGraphAsset;
         if (graph == null)
         {
-            EditorGUILayout.HelpBox("Boss Graph가 비어 있으면 로컬 fallback 참조를 사용합니다.", MessageType.Warning);
+            EditorGUILayout.HelpBox("Boss Graph가 비어 있습니다.", MessageType.Warning);
             EditorGUILayout.EndVertical();
             return;
         }
@@ -319,60 +316,6 @@ public sealed class HogBossAIEditor : Editor
                 EditorUtility.SetDirty(graph);
             }
         }
-
-        DrawCopyLocalFallbackButton(graphObject, graph);
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawCopyLocalFallbackButton(SerializedObject graphObject, BossGraphAsset graph)
-    {
-        SerializedProperty localEffectData = serializedObject.FindProperty("effectData");
-        SerializedProperty localColorSettings = serializedObject.FindProperty("colorSettings");
-        bool hasLocalReference =
-            localEffectData?.objectReferenceValue != null
-            || localColorSettings?.objectReferenceValue != null;
-
-        using (new EditorGUI.DisabledScope(serializedObject.isEditingMultipleObjects || !hasLocalReference))
-        {
-            if (!GUILayout.Button("로컬 Fallback 참조를 Graph로 복사"))
-            {
-                return;
-            }
-        }
-
-        SerializedProperty references = graphObject.FindProperty("references");
-        if (references == null)
-        {
-            return;
-        }
-
-        Undo.RecordObject(graph, "Copy Boss Graph References");
-        CopyObjectReference(localEffectData, references.FindPropertyRelative("effectData"));
-        CopyObjectReference(localColorSettings, references.FindPropertyRelative("colorSettings"));
-        graphObject.ApplyModifiedProperties();
-        EditorUtility.SetDirty(graph);
-    }
-
-    private static void CopyObjectReference(SerializedProperty source, SerializedProperty destination)
-    {
-        if (source == null || destination == null)
-        {
-            return;
-        }
-
-        destination.objectReferenceValue = source.objectReferenceValue;
-    }
-
-    private void DrawFallbackReferences()
-    {
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool expanded = DrawFoldout("references.fallback", "Local Fallback References");
-        if (expanded)
-        {
-            DrawProperty("effectData");
-            DrawProperty("colorSettings");
-        }
-
         EditorGUILayout.EndVertical();
     }
 

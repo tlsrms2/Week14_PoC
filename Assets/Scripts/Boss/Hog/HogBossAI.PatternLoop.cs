@@ -4,6 +4,7 @@ namespace Week14.Enemy
     {
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
+            BossGraphRuntimeState.Clear(GraphAsset);
             graphRunner.Reset();
         }
     }

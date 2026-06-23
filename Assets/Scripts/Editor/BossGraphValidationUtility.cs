@@ -327,10 +327,39 @@ internal static class BossGraphValidationUtility
             case SpawnPrefabAction:
                 RequireObject(action, "prefab", label, messages);
                 break;
+            case AimBossChildAtPlayerAction:
+                ValidateAimBossChildAtPlayerAction(action, label, messages);
+                break;
             case CustomEventAction:
                 RequireString(action, "methodName", label, messages);
                 break;
         }
+    }
+
+    private static void ValidateAimBossChildAtPlayerAction(
+        SerializedProperty action,
+        string label,
+        List<BossGraphValidationMessage> messages)
+    {
+        if (IsAimEndMode(action))
+        {
+            RequireString(action, "startNodeId", label, messages);
+            return;
+        }
+
+        RequirePath(action, "targetPath", label, messages);
+    }
+
+    private static bool IsAimEndMode(SerializedProperty action)
+    {
+        SerializedProperty mode = action.FindPropertyRelative("mode");
+        if (mode == null)
+        {
+            return false;
+        }
+
+        int endNameIndex = Array.IndexOf(mode.enumNames, nameof(BossChildAimActionMode.End));
+        return mode.intValue == (int)BossChildAimActionMode.End || mode.enumValueIndex == endNameIndex;
     }
 
     private static void ValidatePlayAnimationAction(
@@ -595,7 +624,7 @@ internal static class BossGraphValidationUtility
         SerializedProperty property = root?.FindPropertyRelative(propertyName);
         if (property == null || property.objectReferenceValue == null)
         {
-            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: {propertyName} 참조가 비어 있습니다. Boss 컴포넌트 fallback 값이 사용될 수 있습니다."));
+            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: {propertyName} 참조가 비어 있습니다."));
         }
     }
 

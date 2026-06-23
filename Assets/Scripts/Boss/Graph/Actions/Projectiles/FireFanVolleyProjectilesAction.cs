@@ -69,30 +69,20 @@ namespace Week14.Enemy
         {
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
-            ProjectileVfx.TelegraphLine[] telegraphs = CreateFanTelegraphs(context);
-            try
+            while (elapsed < windupSeconds)
             {
-                while (elapsed < windupSeconds)
+                if (context.IsExecutionPaused)
                 {
-                    if (context.IsExecutionPaused)
-                    {
-                        context.Stop();
-                        yield return null;
-                        continue;
-                    }
-
                     context.Stop();
-                    Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-                    Vector2 direction = context.GetDirectionToPlayer(origin);
-                    UpdateFanTelegraphs(context, telegraphs, origin, direction);
-                    context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
-                    elapsed += Time.deltaTime;
                     yield return null;
+                    continue;
                 }
-            }
-            finally
-            {
-                DestroyTelegraphs(telegraphs);
+
+                context.Stop();
+                Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
+                context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
+                elapsed += Time.deltaTime;
+                yield return null;
             }
         }
 
@@ -109,7 +99,6 @@ namespace Week14.Enemy
                 float offsetIndex = i - 1f;
                 Vector2 direction = BossActionContext.AngleToDirection(baseAngle + halfFanAngle * offsetIndex);
                 Vector3 spawnPosition = origin + (Vector3)(side * normalSpawnSpacing * offsetIndex);
-                context.PlayProjectileTelegraphLine(normalProjectileName, spawnPosition, direction, 0.08f);
                 EnemyProjectile projectile = context.FireProjectile(
                     normalProjectile,
                     spawnPosition,
@@ -135,7 +124,6 @@ namespace Week14.Enemy
             {
                 Vector3 origin = GetSecondaryOrigin(context, i);
                 Vector3 spawnPosition = origin + (Vector3)(lockedDirection.normalized * secondarySpawnForwardOffset);
-                context.PlayProjectileTelegraphLine(secondaryProjectileName, spawnPosition, lockedDirection, 0.08f);
                 EnemyProjectile projectile = context.FireProjectile(
                     secondaryProjectile,
                     spawnPosition,
@@ -166,51 +154,6 @@ namespace Week14.Enemy
             }
 
             return context.GetBossChildPosition(projectileOriginPath);
-        }
-
-        private ProjectileVfx.TelegraphLine[] CreateFanTelegraphs(BossActionContext context)
-        {
-            ProjectileVfx.TelegraphLine[] telegraphs = new ProjectileVfx.TelegraphLine[3];
-            for (int i = 0; i < telegraphs.Length; i++)
-            {
-                telegraphs[i] = context.CreateProjectileTelegraphLine(normalProjectileName, 0.045f);
-            }
-
-            return telegraphs;
-        }
-
-        private void UpdateFanTelegraphs(
-            BossActionContext context,
-            ProjectileVfx.TelegraphLine[] telegraphs,
-            Vector3 origin,
-            Vector2 lockedDirection)
-        {
-            if (telegraphs == null || lockedDirection.sqrMagnitude <= 0.0001f)
-            {
-                return;
-            }
-
-            float baseAngle = Mathf.Atan2(lockedDirection.y, lockedDirection.x) * Mathf.Rad2Deg;
-            float halfFanAngle = fanAngleDegrees * 0.5f;
-            for (int i = 0; i < telegraphs.Length; i++)
-            {
-                float offsetIndex = i - 1f;
-                Vector2 direction = BossActionContext.AngleToDirection(baseAngle + halfFanAngle * offsetIndex);
-                context.SetProjectileTelegraphLine(telegraphs[i], origin, direction);
-            }
-        }
-
-        private static void DestroyTelegraphs(ProjectileVfx.TelegraphLine[] telegraphs)
-        {
-            if (telegraphs == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < telegraphs.Length; i++)
-            {
-                telegraphs[i]?.Destroy();
-            }
         }
     }
 }

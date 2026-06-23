@@ -36,7 +36,6 @@ namespace Week14.Enemy
                 origin += (Vector3)(direction.normalized * spawnRadius);
             }
 
-            context.PlayProjectileTelegraphLine(projectileName, origin, direction);
             context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
             yield break;
         }

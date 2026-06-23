@@ -35,30 +35,20 @@ namespace Week14.Enemy
         {
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
-            ProjectileVfx.TelegraphLine telegraph = context.CreateProjectileTelegraphLine(projectileName);
-            try
+            while (elapsed < windupSeconds)
             {
-                while (elapsed < windupSeconds)
+                if (context.IsExecutionPaused)
                 {
-                    if (context.IsExecutionPaused)
-                    {
-                        context.Stop();
-                        yield return null;
-                        continue;
-                    }
-
                     context.Stop();
-                    Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-                    Vector2 direction = context.GetDirectionToPlayer(origin);
-                    context.SetProjectileTelegraphLine(telegraph, origin, direction);
-                    context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
-                    elapsed += Time.deltaTime;
                     yield return null;
+                    continue;
                 }
-            }
-            finally
-            {
-                telegraph?.Destroy();
+
+                context.Stop();
+                Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
+                context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
+                elapsed += Time.deltaTime;
+                yield return null;
             }
         }
 
@@ -88,7 +78,6 @@ namespace Week14.Enemy
 
                 Vector2 side = new(-finalDirection.y, finalDirection.x);
                 Vector3 spawnPosition = origin + (Vector3)(side * GetAlternatingOffset(i));
-                context.PlayProjectileTelegraphLine(projectileName, origin, finalDirection, 0.08f);
                 EnemyProjectile firedProjectile = context.FireProjectile(
                     projectile,
                     spawnPosition,

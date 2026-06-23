@@ -40,8 +40,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
         windupSeconds: 6.12
         bulletCount: 45
@@ -72,6 +70,33 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+--- !u!114 &-6351225032087813335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Boss_Hog_MigratedGraph_Node3_Action1
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811921782538310
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811921782538310
+      type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        mode: 2
+        startNodeId: Node2
+        targetPath: 
+        activateOnStart: 1
+        flipYByFacing: 1
+        deactivateOnEnd: 1
+        deactivateOnPatternEnd: 1
 --- !u!114 &-6275492118707036480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,8 +137,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
         windupSeconds: 2
         aimTrackingSeconds: 1.5
@@ -152,6 +175,60 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+--- !u!114 &-5272043551908544486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Boss_Hog_MigratedGraph_Node2_Action1
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811921782538311
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811921782538311
+      type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        mode: 0
+        startNodeId: 
+        targetPath: Boss-Dealer Visual/MachineGunRoot
+        activateOnStart: 1
+        flipYByFacing: 1
+        deactivateOnEnd: 1
+        deactivateOnPatternEnd: 1
+--- !u!114 &-1485543101824265530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Boss_Hog_MigratedGraph_Node1_Action1
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811921782538308
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811921782538308
+      type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        mode: 0
+        startNodeId: 
+        targetPath: Boss-Dealer Visual/MachineGunRoot
+        activateOnStart: 1
+        flipYByFacing: 1
+        deactivateOnEnd: 1
+        deactivateOnPatternEnd: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +254,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000000}
       weight: 1
-    editorPosition: {x: 23, y: -149}
+    editorPosition: {x: 80, y: 120}
   - nodeId: HogPattern2_Action01
     nodeKind: 0
     phaseIndex: 0
@@ -185,7 +262,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000001}
       weight: 1
-    editorPosition: {x: 309, y: -147}
+    editorPosition: {x: 340, y: 120}
   - nodeId: HogPattern3_Action01
     nodeKind: 0
     phaseIndex: 0
@@ -193,7 +270,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000002}
       weight: 1
-    editorPosition: {x: 585, y: -145}
+    editorPosition: {x: 817, y: 120}
   - nodeId: HogPattern4_Action01
     nodeKind: 1
     phaseIndex: 0
@@ -201,7 +278,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000003}
       weight: 1
-    editorPosition: {x: 24, y: 38}
+    editorPosition: {x: 60, y: 298}
   - nodeId: HogPattern4_Action02
     nodeKind: 1
     phaseIndex: 0
@@ -209,7 +286,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000004}
       weight: 1
-    editorPosition: {x: 291, y: 38}
+    editorPosition: {x: 320, y: 298}
   - nodeId: HogPattern4_Action03
     nodeKind: 0
     phaseIndex: 0
@@ -217,15 +294,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000005}
       weight: 1
-    editorPosition: {x: 562, y: 31}
-  - nodeId: HogPattern4_Action04
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000006}
-      weight: 1
-    editorPosition: {x: 835, y: 40}
+    editorPosition: {x: 580, y: 298}
   - nodeId: HogPattern4_Action05
     nodeKind: 3
     phaseIndex: 0
@@ -233,7 +302,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000007}
       weight: 1
-    editorPosition: {x: 1095, y: 33}
+    editorPosition: {x: 840, y: 298}
   - nodeId: HogPattern4_Action06
     nodeKind: 1
     phaseIndex: 0
@@ -241,7 +310,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000008}
       weight: 1
-    editorPosition: {x: 1376, y: 38}
+    editorPosition: {x: 1097, y: 298}
   - nodeId: HogPattern4_Action07
     nodeKind: 1
     phaseIndex: 0
@@ -249,7 +318,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000009}
       weight: 1
-    editorPosition: {x: 1641, y: 33}
+    editorPosition: {x: 1357, y: 298}
   - nodeId: HogPattern4_Action08
     nodeKind: 0
     phaseIndex: 0
@@ -257,15 +326,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000010}
       weight: 1
-    editorPosition: {x: 24, y: 130}
-  - nodeId: HogPattern4_Action09
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000011}
-      weight: 1
-    editorPosition: {x: 293, y: 130}
+    editorPosition: {x: 56, y: 439}
   - nodeId: HogPattern4_Action10
     nodeKind: 3
     phaseIndex: 0
@@ -273,7 +334,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000012}
       weight: 1
-    editorPosition: {x: 550, y: 138}
+    editorPosition: {x: 316, y: 439}
   - nodeId: HogPattern4_Action11
     nodeKind: 1
     phaseIndex: 0
@@ -281,7 +342,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000013}
       weight: 1
-    editorPosition: {x: 828, y: 130}
+    editorPosition: {x: 576, y: 439}
   - nodeId: HogPattern4_Action12
     nodeKind: 1
     phaseIndex: 0
@@ -289,7 +350,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000014}
       weight: 1
-    editorPosition: {x: 1093, y: 130}
+    editorPosition: {x: 836, y: 439}
   - nodeId: HogPattern4_Action13
     nodeKind: 0
     phaseIndex: 0
@@ -297,23 +358,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000015}
       weight: 1
-    editorPosition: {x: 1360, y: 130}
-  - nodeId: HogPattern4_Action14
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000016}
-      weight: 1
-    editorPosition: {x: 1632, y: 130}
-  - nodeId: HogPattern4_Action15
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000017}
-      weight: 1
-    editorPosition: {x: 1899, y: 130}
+    editorPosition: {x: 1093, y: 439}
   - nodeId: HogPattern5_Action01
     nodeKind: 0
     phaseIndex: 0
@@ -321,7 +366,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000018}
       weight: 1
-    editorPosition: {x: 24, y: 279}
+    editorPosition: {x: 199, y: 629}
   - nodeId: HogPattern6_Action01
     nodeKind: 1
     phaseIndex: 0
@@ -329,7 +374,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000019}
       weight: 1
-    editorPosition: {x: 24, y: 440}
+    editorPosition: {x: 30, y: 851}
   - nodeId: HogPattern6_Action02
     nodeKind: 1
     phaseIndex: 0
@@ -337,7 +382,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000020}
       weight: 1
-    editorPosition: {x: 290, y: 440}
+    editorPosition: {x: 294, y: 852}
   - nodeId: HogPattern6_Action03
     nodeKind: 0
     phaseIndex: 0
@@ -345,15 +390,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000021}
       weight: 1
-    editorPosition: {x: 558, y: 442}
-  - nodeId: HogPattern6_Action04
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000022}
-      weight: 1
-    editorPosition: {x: 832, y: 440}
+    editorPosition: {x: 549, y: 852}
   - nodeId: HogPattern6_Action05
     nodeKind: 3
     phaseIndex: 0
@@ -361,7 +398,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000023}
       weight: 1
-    editorPosition: {x: 1101, y: 440}
+    editorPosition: {x: 809, y: 852}
   - nodeId: HogPattern6_Action06
     nodeKind: 1
     phaseIndex: 0
@@ -369,7 +406,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000024}
       weight: 1
-    editorPosition: {x: 1371, y: 440}
+    editorPosition: {x: 1069, y: 853}
   - nodeId: HogPattern6_Action07
     nodeKind: 1
     phaseIndex: 0
@@ -377,7 +414,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000025}
       weight: 1
-    editorPosition: {x: 1639, y: 440}
+    editorPosition: {x: 1329, y: 853}
   - nodeId: HogPattern6_Action08
     nodeKind: 0
     phaseIndex: 0
@@ -385,15 +422,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000026}
       weight: 1
-    editorPosition: {x: 1907, y: 440}
-  - nodeId: HogPattern6_Action09
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000027}
-      weight: 1
-    editorPosition: {x: 24, y: 532}
+    editorPosition: {x: 41, y: 978}
   - nodeId: HogPattern6_Action10
     nodeKind: 3
     phaseIndex: 0
@@ -401,7 +430,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000028}
       weight: 1
-    editorPosition: {x: 293, y: 553}
+    editorPosition: {x: 301, y: 978}
   - nodeId: HogPattern6_Action11
     nodeKind: 1
     phaseIndex: 0
@@ -409,7 +438,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000029}
       weight: 1
-    editorPosition: {x: 502, y: 544}
+    editorPosition: {x: 561, y: 978}
   - nodeId: HogPattern6_Action12
     nodeKind: 1
     phaseIndex: 0
@@ -417,7 +446,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000030}
       weight: 1
-    editorPosition: {x: 735, y: 550}
+    editorPosition: {x: 816, y: 978}
   - nodeId: HogPattern6_Action13
     nodeKind: 0
     phaseIndex: 0
@@ -425,15 +454,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000031}
       weight: 1
-    editorPosition: {x: 1039, y: 551}
-  - nodeId: HogPattern6_Action14
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000032}
-      weight: 1
-    editorPosition: {x: 1359, y: 544}
+    editorPosition: {x: 1076, y: 978}
   - nodeId: HogPattern6_Action15
     nodeKind: 3
     phaseIndex: 0
@@ -441,7 +462,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000033}
       weight: 1
-    editorPosition: {x: 1625, y: 532}
+    editorPosition: {x: 1336, y: 978}
   - nodeId: HogPattern6_Action16
     nodeKind: 1
     phaseIndex: 0
@@ -449,7 +470,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000034}
       weight: 1
-    editorPosition: {x: 1901, y: 541}
+    editorPosition: {x: 1596, y: 978}
   - nodeId: HogPattern6_Action17
     nodeKind: 1
     phaseIndex: 0
@@ -457,7 +478,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000035}
       weight: 1
-    editorPosition: {x: 30, y: 668}
+    editorPosition: {x: 38, y: 1102}
   - nodeId: HogPattern6_Action18
     nodeKind: 0
     phaseIndex: 0
@@ -465,15 +486,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000036}
       weight: 1
-    editorPosition: {x: 274, y: 677}
-  - nodeId: HogPattern6_Action19
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000037}
-      weight: 1
-    editorPosition: {x: 549, y: 681}
+    editorPosition: {x: 298, y: 1102}
   - nodeId: HogPattern6_Action20
     nodeKind: 3
     phaseIndex: 0
@@ -481,7 +494,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000038}
       weight: 1
-    editorPosition: {x: 809, y: 675}
+    editorPosition: {x: 558, y: 1102}
   - nodeId: HogPattern6_Action21
     nodeKind: 1
     phaseIndex: 0
@@ -489,7 +502,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000039}
       weight: 1
-    editorPosition: {x: 1054, y: 679}
+    editorPosition: {x: 813, y: 1102}
   - nodeId: HogPattern6_Action22
     nodeKind: 1
     phaseIndex: 0
@@ -497,7 +510,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000040}
       weight: 1
-    editorPosition: {x: 1321, y: 666}
+    editorPosition: {x: 1073, y: 1102}
   - nodeId: HogPattern6_Action23
     nodeKind: 0
     phaseIndex: 0
@@ -505,23 +518,7 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000041}
       weight: 1
-    editorPosition: {x: 1563, y: 675}
-  - nodeId: HogPattern6_Action24
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000042}
-      weight: 1
-    editorPosition: {x: 1755, y: 673}
-  - nodeId: HogPattern6_Action25
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    sequences:
-    - sequence: {fileID: 8000000000000000043}
-      weight: 1
-    editorPosition: {x: 1958, y: 663}
+    editorPosition: {x: 1333, y: 1102}
   - nodeId: HogPattern7_Action01
     nodeKind: 0
     phaseIndex: 0
@@ -529,84 +526,123 @@ MonoBehaviour:
     sequences:
     - sequence: {fileID: 8000000000000000044}
       weight: 1
-    editorPosition: {x: 41, y: 873}
+    editorPosition: {x: 43, y: 1298}
+  - nodeId: Node1
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    sequences:
+    - sequence: {fileID: -1485543101824265530}
+      weight: 1
+    editorPosition: {x: 641, y: 120}
+  - nodeId: Node2
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    sequences:
+    - sequence: {fileID: -5272043551908544486}
+      weight: 1
+    editorPosition: {x: 53, y: 623}
+  - nodeId: Node4
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    sequences:
+    - sequence: {fileID: 4263104780813616762}
+      weight: 1
+    editorPosition: {x: 1057, y: 125}
+  - nodeId: Node3
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    sequences:
+    - sequence: {fileID: -6351225032087813335}
+      weight: 1
+    editorPosition: {x: 434, y: 632}
   patterns:
-  - patternId: HogPattern2
+  - patternId: Pattern1
     nodeIds:
     - HogPattern1_Action01
   - patternId: Pattern2
     nodeIds:
     - HogPattern2_Action01
-  - patternId: HogPattern3
+  - patternId: Pattern3
     nodeIds:
+    - Node1
     - HogPattern3_Action01
+    - Node4
   - patternId: Pattern4
     nodeIds:
     - HogPattern4_Action01
     - HogPattern4_Action02
     - HogPattern4_Action03
-    - HogPattern4_Action04
     - HogPattern4_Action05
     - HogPattern4_Action06
     - HogPattern4_Action07
     - HogPattern4_Action08
-    - HogPattern4_Action09
     - HogPattern4_Action10
     - HogPattern4_Action11
     - HogPattern4_Action12
     - HogPattern4_Action13
-    - HogPattern4_Action14
-    - HogPattern4_Action15
-  - patternId: Pattern13
+  - patternId: Pattern5
     nodeIds:
+    - Node2
     - HogPattern5_Action01
-  - patternId: Pattern10
+    - Node3
+  - patternId: Pattern6
     nodeIds:
     - HogPattern6_Action01
     - HogPattern6_Action02
     - HogPattern6_Action03
-    - HogPattern6_Action04
     - HogPattern6_Action05
     - HogPattern6_Action06
     - HogPattern6_Action07
     - HogPattern6_Action08
-    - HogPattern6_Action09
     - HogPattern6_Action10
     - HogPattern6_Action11
     - HogPattern6_Action12
     - HogPattern6_Action13
-    - HogPattern6_Action14
     - HogPattern6_Action15
     - HogPattern6_Action16
     - HogPattern6_Action17
     - HogPattern6_Action18
-    - HogPattern6_Action19
     - HogPattern6_Action20
     - HogPattern6_Action21
     - HogPattern6_Action22
     - HogPattern6_Action23
-    - HogPattern6_Action24
-    - HogPattern6_Action25
-  - patternId: Pattern9
+  - patternId: Pattern7
     nodeIds:
     - HogPattern7_Action01
   phases:
   - phaseIndex: 0
     selectionMode: 0
+    patternIntervalSeconds: 1.5
     patterns:
-    - patternId: HogPattern2
+    - patternId: Pattern1
       weight: 1
     - patternId: Pattern2
       weight: 1
-    - patternId: HogPattern3
+    - patternId: Pattern4
+      weight: 1
+    - patternId: Pattern6
+      weight: 1
+  - phaseIndex: 1
+    selectionMode: 0
+    patternIntervalSeconds: 1.5
+    patterns:
+    - patternId: Pattern1
+      weight: 1
+    - patternId: Pattern2
+      weight: 1
+    - patternId: Pattern3
       weight: 1
     - patternId: Pattern4
       weight: 1
-    - patternId: Pattern13
+    - patternId: Pattern5
       weight: 1
-    - patternId: Pattern10
+    - patternId: Pattern6
       weight: 1
-    - patternId: Pattern9
+    - patternId: Pattern7
       weight: 1
   transitions:
   - fromNodeId: HogPattern4_Action01
@@ -616,16 +652,6 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeId: HogPattern4_Action02
     toNodeId: HogPattern4_Action03
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern4_Action03
-    toNodeId: HogPattern4_Action04
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern4_Action04
-    toNodeId: HogPattern4_Action05
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -644,16 +670,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeId: HogPattern4_Action08
-    toNodeId: HogPattern4_Action09
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern4_Action09
-    toNodeId: HogPattern4_Action10
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeId: HogPattern4_Action10
     toNodeId: HogPattern4_Action11
     conditionType: 0
@@ -669,16 +685,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeId: HogPattern4_Action13
-    toNodeId: HogPattern4_Action14
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern4_Action14
-    toNodeId: HogPattern4_Action15
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeId: HogPattern6_Action01
     toNodeId: HogPattern6_Action02
     conditionType: 0
@@ -686,16 +692,6 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeId: HogPattern6_Action02
     toNodeId: HogPattern6_Action03
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern6_Action03
-    toNodeId: HogPattern6_Action04
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern6_Action04
-    toNodeId: HogPattern6_Action05
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -714,16 +710,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeId: HogPattern6_Action08
-    toNodeId: HogPattern6_Action09
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern6_Action09
-    toNodeId: HogPattern6_Action10
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeId: HogPattern6_Action10
     toNodeId: HogPattern6_Action11
     conditionType: 0
@@ -736,16 +722,6 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeId: HogPattern6_Action12
     toNodeId: HogPattern6_Action13
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern6_Action13
-    toNodeId: HogPattern6_Action14
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern6_Action14
-    toNodeId: HogPattern6_Action15
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -764,16 +740,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeId: HogPattern6_Action18
-    toNodeId: HogPattern6_Action19
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: HogPattern6_Action19
-    toNodeId: HogPattern6_Action20
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeId: HogPattern6_Action20
     toNodeId: HogPattern6_Action21
     conditionType: 0
@@ -789,13 +755,53 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeId: HogPattern6_Action23
-    toNodeId: HogPattern6_Action24
+  - fromNodeId: HogPattern4_Action03
+    toNodeId: HogPattern4_Action05
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeId: HogPattern6_Action24
-    toNodeId: HogPattern6_Action25
+  - fromNodeId: HogPattern4_Action08
+    toNodeId: HogPattern4_Action10
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: HogPattern6_Action03
+    toNodeId: HogPattern6_Action05
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: HogPattern6_Action08
+    toNodeId: HogPattern6_Action10
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: HogPattern6_Action13
+    toNodeId: HogPattern6_Action15
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: HogPattern6_Action18
+    toNodeId: HogPattern6_Action20
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: Node1
+    toNodeId: HogPattern3_Action01
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: Node2
+    toNodeId: HogPattern5_Action01
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: HogPattern3_Action01
+    toNodeId: Node4
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: HogPattern5_Action01
+    toNodeId: Node3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -865,8 +871,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -941,8 +945,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1017,8 +1019,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1097,8 +1097,6 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
           homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         firstProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
         secondProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
         moveSpeedMultiplier: 0.6
@@ -1137,6 +1135,33 @@ MonoBehaviour:
         - bulletCount: 4
           fireInterval: 0.3
           restSeconds: 2
+--- !u!114 &4263104780813616762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Boss_Hog_MigratedGraph_Node4_Action1
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811921782538309
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811921782538309
+      type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        mode: 2
+        startNodeId: Node1
+        targetPath: 
+        activateOnStart: 1
+        flipYByFacing: 1
+        deactivateOnEnd: 1
+        deactivateOnPatternEnd: 1
 --- !u!114 &5380056226392186078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1213,8 +1238,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1289,8 +1312,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1365,8 +1386,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1441,8 +1460,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1517,8 +1534,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -1597,8 +1612,6 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
           homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         firstProjectileOriginPath: 
         secondProjectileOriginPath: 
         bulletCount: 5
@@ -1668,8 +1681,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         secondaryProjectileName: Default
         secondaryProjectile:
           prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
@@ -1690,8 +1701,6 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
           homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
         secondaryOriginPaths: []
         windupSeconds: 2
@@ -1809,8 +1818,6 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
           homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         firstProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_1
         secondProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_2
         bulletCount: 5
@@ -1880,8 +1887,6 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
           homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         firstProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
         secondProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
         moveSpeedMultiplier: 0.6
@@ -1960,8 +1965,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
         windupSeconds: 2
         aimTrackingSeconds: 1.5
@@ -1971,7 +1974,7 @@ MonoBehaviour:
         aimSpreadDegrees: 0
         radialSplitBulletCount: 30
         radialSplitStartAngleOffset: 0
-        splitDelaySeconds: 0.35
+        splitDelaySeconds: 0.6
         splitSpeedMultiplier: 0.5
         splitRadiusMultiplier: 0.5
         splitLifetimeMultiplier: 1
@@ -2086,8 +2089,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -2247,8 +2248,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -2408,8 +2407,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -2522,8 +2519,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
         windupSeconds: 6.12
         bulletCount: 45
@@ -2640,8 +2635,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -2801,8 +2794,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -2962,8 +2953,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -3123,8 +3112,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -3284,8 +3271,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         bulletCount: 30
         centerOnPlayer: 0
         arcDegrees: 360
@@ -3398,8 +3383,6 @@ MonoBehaviour:
           trailSeconds: 0.01
           trailWidthMultiplier: 3
           homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
         secondaryProjectileName: "\uC720\uB3C4\uD0C4"
         secondaryProjectile:
           prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
@@ -3420,16 +3403,14 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
           homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+        projectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
         secondaryOriginPaths:
-        - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
-        - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+        - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_1
+        - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_2
         windupSeconds: 2
         normalVolleyCount: 5
         normalVolleyInterval: 0.18
-        secondaryBulletCount: 1
+        secondaryBulletCount: 2
         fanAngleDegrees: 42
         normalSpawnSpacing: 0.16
         secondarySpawnForwardOffset: 0
@@ -3439,22 +3420,22 @@ MonoBehaviour:
         effects:
           explosion:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
             scale: 1
             count: 12
           smoke:
-            enabled: 0
+            enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
             scale: 0.9
             count: 8
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
+            enabled: 1
             color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
+            enabled: 1
+            seconds: 0.05
+            distance: 0.06
+            frequency: 0.08

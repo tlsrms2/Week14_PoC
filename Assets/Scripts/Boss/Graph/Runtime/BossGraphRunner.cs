@@ -12,14 +12,18 @@ namespace Week14.Enemy
         private readonly Dictionary<int, int> nextPatternIndexes = new();
         private readonly Dictionary<int, string> lastPatterns = new();
         private string currentNodeId;
+        private string previousRuntimeNodeId;
+        private BossGraphAsset activeGraph;
 
         public void Reset()
         {
+            BossGraphRuntimeState.Clear(activeGraph);
             nextSequenceIndexes.Clear();
             lastSequences.Clear();
             nextPatternIndexes.Clear();
             lastPatterns.Clear();
             currentNodeId = null;
+            previousRuntimeNodeId = null;
         }
 
         public IEnumerator RunLoop(BossGraphAsset graph, BossActionContext context)
@@ -29,13 +33,25 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (graph.UsesPhasePatternLayout)
+            activeGraph = graph;
+            try
             {
-                yield return RunPhasePatternLoop(graph, context);
-                yield break;
-            }
+                if (graph.UsesPhasePatternLayout)
+                {
+                    yield return RunPhasePatternLoop(graph, context);
+                    yield break;
+                }
 
-            yield return RunLegacyNodeLoop(graph, context);
+                yield return RunLegacyNodeLoop(graph, context);
+            }
+            finally
+            {
+                BossGraphRuntimeState.Clear(graph);
+                if (activeGraph == graph)
+                {
+                    activeGraph = null;
+                }
+            }
         }
 
         private IEnumerator RunLegacyNodeLoop(BossGraphAsset graph, BossActionContext context)
@@ -67,9 +83,21 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                yield return sequence.Execute(context);
-                yield return context.ApplyPendingEnrageIfAny();
-                context.Stop();
+                try
+                {
+                    BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousRuntimeNodeId);
+                    previousRuntimeNodeId = node.NodeId;
+                    context.SetCurrentNodeId(node.NodeId);
+                    yield return sequence.Execute(context);
+                    yield return context.ApplyPendingEnrageIfAny();
+                    context.Stop();
+                }
+                finally
+                {
+                    context.SetCurrentNodeId(null);
+                    context.ClearPatternScopedBossChildAims();
+                }
+
                 TryApplyTransition(graph, context, node, true);
             }
         }
@@ -91,6 +119,11 @@ namespace Week14.Enemy
                 yield return ExecutePattern(graph, pattern, context);
                 yield return context.ApplyPendingEnrageIfAny();
                 context.Stop();
+                if (phase.PatternIntervalSeconds > 0f)
+                {
+                    yield return context.WaitSeconds(phase.PatternIntervalSeconds);
+                    context.Stop();
+                }
             }
         }
 
@@ -99,18 +132,36 @@ namespace Week14.Enemy
             BossGraphPattern pattern,
             BossActionContext context)
         {
-            for (int i = 0; i < pattern.NodeIds.Count; i++)
+            try
             {
-                BossStateNode node = graph.GetNode(pattern.NodeIds[i]);
-                BossGraphActionAsset actionSequence = node?.ActionSequence;
-                if (actionSequence == null)
+                for (int i = 0; i < pattern.NodeIds.Count; i++)
                 {
-                    continue;
-                }
+                    BossStateNode node = graph.GetNode(pattern.NodeIds[i]);
+                    BossGraphActionAsset actionSequence = node?.ActionSequence;
+                    if (actionSequence == null)
+                    {
+                        continue;
+                    }
 
-                yield return actionSequence.Execute(context);
-                yield return context.ApplyPendingEnrageIfAny();
-                context.Stop();
+                    try
+                    {
+                        string previousNodeId = i > 0 ? pattern.NodeIds[i - 1] : null;
+                        BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
+                        context.SetCurrentNodeId(node.NodeId);
+                        yield return actionSequence.Execute(context);
+                    }
+                    finally
+                    {
+                        context.SetCurrentNodeId(null);
+                    }
+
+                    yield return context.ApplyPendingEnrageIfAny();
+                    context.Stop();
+                }
+            }
+            finally
+            {
+                context.ClearPatternScopedBossChildAims();
             }
         }
 
@@ -152,6 +203,8 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                BossGraphRuntimeState.SetCurrentNode(graph, targetNode.NodeId, currentNode.NodeId);
+                previousRuntimeNodeId = currentNode.NodeId;
                 currentNodeId = targetNode.NodeId;
                 return true;
             }
@@ -408,6 +461,52 @@ namespace Week14.Enemy
             if (entry != null && !string.IsNullOrWhiteSpace(entry.PatternId))
             {
                 lastPatterns[phaseKey] = entry.PatternId;
+            }
+        }
+    }
+
+    public readonly struct BossGraphRuntimeSnapshot
+    {
+        public BossGraphRuntimeSnapshot(string currentNodeId, string edgeFromNodeId, string edgeToNodeId)
+        {
+            CurrentNodeId = currentNodeId;
+            EdgeFromNodeId = edgeFromNodeId;
+            EdgeToNodeId = edgeToNodeId;
+        }
+
+        public string CurrentNodeId { get; }
+        public string EdgeFromNodeId { get; }
+        public string EdgeToNodeId { get; }
+    }
+
+    public static class BossGraphRuntimeState
+    {
+        private static readonly Dictionary<int, BossGraphRuntimeSnapshot> snapshots = new();
+
+        public static void SetCurrentNode(BossGraphAsset graph, string nodeId, string edgeFromNodeId = null)
+        {
+            if (graph == null || string.IsNullOrWhiteSpace(nodeId))
+            {
+                return;
+            }
+
+            string fromNodeId = !string.IsNullOrWhiteSpace(edgeFromNodeId) && edgeFromNodeId != nodeId
+                ? edgeFromNodeId
+                : null;
+            snapshots[graph.GetInstanceID()] = new BossGraphRuntimeSnapshot(nodeId, fromNodeId, fromNodeId != null ? nodeId : null);
+        }
+
+        public static bool TryGetSnapshot(BossGraphAsset graph, out BossGraphRuntimeSnapshot snapshot)
+        {
+            snapshot = default;
+            return graph != null && snapshots.TryGetValue(graph.GetInstanceID(), out snapshot);
+        }
+
+        public static void Clear(BossGraphAsset graph)
+        {
+            if (graph != null)
+            {
+                snapshots.Remove(graph.GetInstanceID());
             }
         }
     }

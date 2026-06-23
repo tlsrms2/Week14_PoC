@@ -71,6 +71,7 @@ namespace Week14.Enemy
                 patternRoutine = null;
             }
 
+            BossGraphRuntimeState.Clear(bossGraph);
             graphContext?.ResetBodyRootLocalOffset();
             graphContext = null;
         }

@@ -18,6 +18,9 @@ namespace Week14.Enemy
         private bool hasBodyRootLocalBase;
         private Vector3 bodyRootLocalBase;
         private readonly Dictionary<Transform, Vector3> transformBaseScales = new();
+        private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
+        private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
+        private string currentNodeId;
 
         public BossActionContext(
             BossAI boss,
@@ -48,7 +51,13 @@ namespace Week14.Enemy
 
         public void Stop()
         {
+            UpdateBossChildAims();
             stop?.Invoke();
+        }
+
+        public void SetCurrentNodeId(string nodeId)
+        {
+            currentNodeId = nodeId;
         }
 
         public void PlayAnimationTrigger(string triggerName)
@@ -107,12 +116,14 @@ namespace Week14.Enemy
                     }
                 }
 
+                UpdateBossChildAims();
                 yield return null;
             }
         }
 
         public void MoveTowardPlayer(float speedMultiplier)
         {
+            UpdateBossChildAims();
             if (Boss == null || Boss.Body == null || Boss.Player == null)
             {
                 return;
@@ -195,12 +206,14 @@ namespace Week14.Enemy
 
         public Vector3 GetBossChildPosition(string childPath)
         {
+            UpdateBossChildAims();
             Transform target = FindBossChild(childPath);
             return target != null ? target.position : OriginPosition;
         }
 
         public Transform GetBossChildTransform(string childPath)
         {
+            UpdateBossChildAims();
             return FindBossChild(childPath);
         }
 
@@ -242,6 +255,114 @@ namespace Week14.Enemy
             target.localScale = nextScale;
         }
 
+        public void StartBossChildAimAtPlayer(
+            string childPath,
+            bool activateOnStart,
+            bool flipYByFacing,
+            bool deactivateOnPatternEnd)
+        {
+            if (string.IsNullOrWhiteSpace(childPath))
+            {
+                return;
+            }
+
+            if (activateOnStart)
+            {
+                SetBossChildActive(childPath, true);
+            }
+
+            bossChildAimStates[childPath] = new BossChildAimState(childPath, flipYByFacing, deactivateOnPatternEnd);
+            if (!string.IsNullOrWhiteSpace(currentNodeId))
+            {
+                bossChildAimStartNodePaths[currentNodeId] = childPath;
+            }
+
+            UpdateBossChildAim(childPath, flipYByFacing);
+        }
+
+        public bool StopBossChildAimAtPlayerStartedByNode(string startNodeId, bool deactivate)
+        {
+            if (string.IsNullOrWhiteSpace(startNodeId)
+                || !bossChildAimStartNodePaths.TryGetValue(startNodeId, out string childPath))
+            {
+                return false;
+            }
+
+            StopBossChildAimAtPlayer(childPath, deactivate);
+            return true;
+        }
+
+        public void StopBossChildAimAtPlayer(string childPath, bool deactivate)
+        {
+            if (string.IsNullOrWhiteSpace(childPath))
+            {
+                return;
+            }
+
+            bossChildAimStates.Remove(childPath);
+            RemoveBossChildAimStartNodePaths(childPath);
+            if (deactivate)
+            {
+                SetBossChildActive(childPath, false);
+            }
+        }
+
+        public void ClearPatternScopedBossChildAims()
+        {
+            if (bossChildAimStates.Count == 0)
+            {
+                bossChildAimStartNodePaths.Clear();
+                return;
+            }
+
+            List<BossChildAimState> states = new(bossChildAimStates.Values);
+            bossChildAimStates.Clear();
+            bossChildAimStartNodePaths.Clear();
+            for (int i = 0; i < states.Count; i++)
+            {
+                BossChildAimState state = states[i];
+                if (state.DeactivateOnPatternEnd)
+                {
+                    SetBossChildActive(state.ChildPath, false);
+                }
+            }
+        }
+
+        public void UpdateBossChildAims()
+        {
+            if (bossChildAimStates.Count == 0)
+            {
+                return;
+            }
+
+            foreach (BossChildAimState state in bossChildAimStates.Values)
+            {
+                UpdateBossChildAim(state.ChildPath, state.FlipYByFacing);
+            }
+        }
+
+        private void RemoveBossChildAimStartNodePaths(string childPath)
+        {
+            if (bossChildAimStartNodePaths.Count == 0)
+            {
+                return;
+            }
+
+            List<string> startNodeIds = new();
+            foreach (KeyValuePair<string, string> pair in bossChildAimStartNodePaths)
+            {
+                if (pair.Value == childPath)
+                {
+                    startNodeIds.Add(pair.Key);
+                }
+            }
+
+            for (int i = 0; i < startNodeIds.Count; i++)
+            {
+                bossChildAimStartNodePaths.Remove(startNodeIds[i]);
+            }
+        }
+
         public Vector2 GetDirectionToPlayer(Vector3 origin)
         {
             if (Boss == null || Boss.Player == null)
@@ -271,6 +392,7 @@ namespace Week14.Enemy
             bool suppressHoming = false,
             string projectileName = null)
         {
+            UpdateBossChildAims();
             BossProjectileSettings resolvedSettings = !string.IsNullOrWhiteSpace(projectileName)
                 ? ResolveGraphProjectileSettings(projectileName)
                 : ResolveGraphProjectileSettings(null) ?? projectileSettings;
@@ -294,42 +416,6 @@ namespace Week14.Enemy
         public BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
         {
             return Boss != null ? Boss.ResolveGraphProjectileSettingsForActions(projectileName) : null;
-        }
-
-        public ProjectileVfx.TelegraphLine CreateProjectileTelegraphLine(string projectileName, float width = 0.055f)
-        {
-            BossProjectileSettings settings = ResolveGraphProjectileSettings(projectileName);
-            Color color = settings != null ? settings.LaunchedColor : new Color(1f, 0.25f, 0.15f, 1f);
-            color.a = 0.62f;
-            return ProjectileVfx.CreateTelegraphLine(color, width);
-        }
-
-        public void SetProjectileTelegraphLine(ProjectileVfx.TelegraphLine line, Vector3 origin, Vector2 direction)
-        {
-            if (line == null || direction.sqrMagnitude <= 0.0001f)
-            {
-                return;
-            }
-
-            Vector2 normalized = direction.normalized;
-            line.Set(origin, origin + (Vector3)(normalized * GetProjectileTelegraphLength()));
-        }
-
-        public void PlayProjectileTelegraphLine(
-            string projectileName,
-            Vector3 origin,
-            Vector2 direction,
-            float seconds = 0.12f,
-            float width = 0.045f)
-        {
-            if (direction.sqrMagnitude <= 0.0001f || seconds <= 0f)
-            {
-                return;
-            }
-
-            ProjectileVfx.TelegraphLine line = CreateProjectileTelegraphLine(projectileName, width);
-            SetProjectileTelegraphLine(line, origin, direction);
-            line.Destroy(seconds);
         }
 
         public void PlaySfx(string sfxId)
@@ -463,6 +549,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                UpdateBossChildAims();
                 remaining -= Time.deltaTime;
                 yield return null;
             }
@@ -543,12 +630,6 @@ namespace Week14.Enemy
             ProjectileVfx.PlayHogSmokeBurst(position, smoke.Color, smoke.Scale, smoke.Count);
         }
 
-        private float GetProjectileTelegraphLength()
-        {
-            float fallback = Boss != null ? Boss.DetectionRange : 9f;
-            return Mathf.Max(1f, fallback);
-        }
-
         private Transform FindBossChild(string childPath)
         {
             if (Boss == null || string.IsNullOrWhiteSpace(childPath))
@@ -583,6 +664,31 @@ namespace Week14.Enemy
             }
 
             return null;
+        }
+
+        private void UpdateBossChildAim(string childPath, bool flipYByFacing)
+        {
+            Transform target = FindBossChild(childPath);
+            if (target == null)
+            {
+                return;
+            }
+
+            RotateBossChildRight(childPath, GetDirectionToPlayer(target.position), flipYByFacing);
+        }
+
+        private readonly struct BossChildAimState
+        {
+            public BossChildAimState(string childPath, bool flipYByFacing, bool deactivateOnPatternEnd)
+            {
+                ChildPath = childPath;
+                FlipYByFacing = flipYByFacing;
+                DeactivateOnPatternEnd = deactivateOnPatternEnd;
+            }
+
+            public string ChildPath { get; }
+            public bool FlipYByFacing { get; }
+            public bool DeactivateOnPatternEnd { get; }
         }
     }
 }

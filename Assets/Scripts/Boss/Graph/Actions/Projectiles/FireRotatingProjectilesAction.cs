@@ -46,7 +46,6 @@ namespace Week14.Enemy
                     ? center + (Vector3)(direction.normalized * spawnRadius)
                     : center;
 
-                context.PlayProjectileTelegraphLine(projectileName, origin, direction, 0.1f);
                 EnemyProjectile firedProjectile = context.FireProjectile(
                     projectile,
                     origin,

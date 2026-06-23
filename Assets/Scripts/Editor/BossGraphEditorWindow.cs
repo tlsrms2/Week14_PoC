@@ -23,8 +23,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private Transform bossHierarchySelectedTransform;
     private string bossHierarchySelectedPath;
     private List<string> graphProjectileNames = new();
-    private readonly HashSet<int> selectedPatternIndexes = new();
     private readonly Dictionary<int, bool> bossHierarchyFoldouts = new();
+    private readonly Dictionary<int, int> phasePatternAddIndexes = new();
     private Vector2 detailsScroll;
     private Vector2 bossHierarchyScroll;
     private Vector2 bossHierarchyPanelPosition;
@@ -51,6 +51,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private const float BossHierarchyCollapsedHeight = 34f;
     private const float BossHierarchyPanelMargin = 8f;
     private const int SelectedElementDetailsIndex = -1;
+
+    private void OnEnable()
+    {
+        EditorApplication.update += UpdateRuntimeHighlight;
+    }
 
     [MenuItem("Window/Week14/Boss Graph Editor")]
     public static void OpenWindow()
@@ -127,6 +132,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         };
         graphView.graphViewChanged = OnGraphViewChanged;
         graphView.style.flexGrow = 1f;
+        graphView.RegisterCallback<MouseDownEvent>(HandleGraphContextMenu, TrickleDown.TrickleDown);
+        graphView.RegisterCallback<KeyDownEvent>(HandleGraphKeyDown, TrickleDown.TrickleDown);
         graphView.RegisterCallback<MouseUpEvent>(evt =>
         {
             HandleGraphMouseUp(evt);
@@ -180,7 +187,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         SelectActionAsset(null);
-        selectedPatternIndexes.Clear();
 
         RebuildGraph();
         detailsPanel?.MarkDirtyRepaint();
@@ -189,6 +195,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private void OnDisable()
     {
+        EditorApplication.update -= UpdateRuntimeHighlight;
+        graphView?.ClearRuntimeHighlight();
+        SaveGraphStateIfChanged("Save Boss Graph Layout", true, false);
         DestroyActionEditor();
     }
 
@@ -220,6 +229,29 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         AddTransitionViews();
         RefreshGroupFramesFromNodePositions();
+        UpdateRuntimeHighlight();
+    }
+
+    private void UpdateRuntimeHighlight()
+    {
+        if (graphView == null)
+        {
+            return;
+        }
+
+        if (!EditorApplication.isPlaying || graphAsset == null)
+        {
+            graphView.ClearRuntimeHighlight();
+            return;
+        }
+
+        if (BossGraphRuntimeState.TryGetSnapshot(graphAsset, out BossGraphRuntimeSnapshot snapshot))
+        {
+            graphView.SetRuntimeHighlight(snapshot.CurrentNodeId, snapshot.EdgeFromNodeId, snapshot.EdgeToNodeId);
+            return;
+        }
+
+        graphView.ClearRuntimeHighlight();
     }
 
     private BossGraphNodeView CreateNodeView(SerializedProperty node, int index)
@@ -269,7 +301,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
     }
 
-    private void AddStateNode()
+    private void AddStateNode(Vector2? editorPosition)
     {
         if (graphObject == null)
         {
@@ -280,25 +312,59 @@ public sealed class BossGraphEditorWindow : EditorWindow
         Undo.RecordObject(graphAsset, "Add Boss Graph Node");
         graphObject.Update();
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        string nodeId = GetUniqueElementId(stateNodes, "nodeId", "Node");
         stateNodes.arraySize++;
 
         int index = stateNodes.arraySize - 1;
-        string nodeId = $"Node{index + 1}";
+        Vector2 nodePosition = editorPosition ?? new Vector2(80f + index * 260f, 120f);
         SerializedProperty node = stateNodes.GetArrayElementAtIndex(index);
         SetString(node, "nodeId", nodeId);
         SetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
         SetInt(node, "phaseIndex", 0);
         SetEnum(node, "selectionMode", 0);
-        SetVector2(node, "editorPosition", new Vector2(80f + index * 260f, 120f));
+        SetVector2(node, "editorPosition", nodePosition);
 
         SerializedProperty sequences = node.FindPropertyRelative("sequences");
         sequences?.ClearArray();
 
         graphObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(graphAsset);
+        AssetDatabase.SaveAssets();
         RebuildGraph();
         graphView?.SelectNode(nodeId);
         detailsPanel?.MarkDirtyRepaint();
+    }
+
+    private void HandleGraphContextMenu(MouseDownEvent evt)
+    {
+        if (evt.button != 1 || graphObject == null || graphView == null || !IsGraphEmptyAreaTarget(evt.target))
+        {
+            return;
+        }
+
+        Vector2 nodePosition = graphView.LocalToContentPosition(evt.localMousePosition);
+        GenericMenu menu = new();
+        menu.AddItem(new GUIContent("Add Node"), false, () => AddStateNode(nodePosition));
+        menu.ShowAsContext();
+        evt.StopImmediatePropagation();
+    }
+
+    private static bool IsGraphEmptyAreaTarget(IEventHandler target)
+    {
+        for (VisualElement current = target as VisualElement; current != null; current = current.parent)
+        {
+            if (current is BossGraphNodeView || current is Edge || current is Port)
+            {
+                return false;
+            }
+
+            if (current is GraphView)
+            {
+                break;
+            }
+        }
+
+        return true;
     }
 
     private void DeleteSelectedNodes()
@@ -340,8 +406,28 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         graphObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(graphAsset);
+        AssetDatabase.SaveAssets();
+        selectedElementKey = string.Empty;
+        detailsTabIndex = 0;
         RebuildGraph();
         detailsPanel?.MarkDirtyRepaint();
+    }
+
+    private void HandleGraphKeyDown(KeyDownEvent evt)
+    {
+        if (evt.keyCode != KeyCode.Delete && evt.keyCode != KeyCode.Backspace)
+        {
+            return;
+        }
+
+        if (graphView == null
+            || (graphView.GetSelectedNodeIndexes().Count == 0 && graphView.GetSelectedEdges().Count == 0))
+        {
+            return;
+        }
+
+        DeleteSelectedNodes();
+        evt.StopImmediatePropagation();
     }
 
     private void SaveGraph()
@@ -382,25 +468,19 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        graphObject.Update();
-        Undo.RecordObject(graphAsset, "Edit Boss Graph Layout");
-        bool positionsChanged = WriteNodePositionsFromCurrentView();
-        bool transitionsChanged = SaveTransitions();
-        if (!positionsChanged && !transitionsChanged)
+        if (SaveGraphStateIfChanged("Edit Boss Graph Layout", true, true))
         {
-            return;
+            RefreshGroupFramesFromNodePositions();
         }
-
-        graphObject.ApplyModifiedProperties();
-        EditorUtility.SetDirty(graphAsset);
-        RefreshGroupFramesFromNodePositions();
     }
 
     private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
     {
         bool transitionChanged = (graphViewChange.edgesToCreate != null && graphViewChange.edgesToCreate.Count > 0)
             || (graphViewChange.elementsToRemove != null && graphViewChange.elementsToRemove.OfType<Edge>().Any());
-        if (transitionChanged)
+        bool nodeLayoutChanged = graphViewChange.movedElements != null
+            && graphViewChange.movedElements.OfType<BossGraphNodeView>().Any();
+        if (transitionChanged || nodeLayoutChanged)
         {
             ScheduleGraphStateSave();
         }
@@ -424,21 +504,44 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 return;
             }
 
-            graphObject.Update();
-            Undo.RecordObject(graphAsset, "Edit Boss Graph Connections");
-            bool changed = WriteNodePositionsFromCurrentView();
-            changed |= SaveTransitions();
-            if (!changed)
+            if (!SaveGraphStateIfChanged("Edit Boss Graph Connections", true, true))
             {
                 return;
             }
 
-            graphObject.ApplyModifiedProperties();
-            EditorUtility.SetDirty(graphAsset);
-            AssetDatabase.SaveAssets();
             RefreshGroupFramesFromNodePositions();
             detailsPanel?.MarkDirtyRepaint();
         };
+    }
+
+    private bool SaveGraphStateIfChanged(string undoName, bool saveAssets, bool recordUndo)
+    {
+        if (graphObject == null || graphAsset == null || graphView == null)
+        {
+            return false;
+        }
+
+        graphObject.Update();
+        if (recordUndo)
+        {
+            Undo.RecordObject(graphAsset, undoName);
+        }
+
+        bool changed = WriteNodePositionsFromCurrentView();
+        changed |= SaveTransitions();
+        if (!changed)
+        {
+            return false;
+        }
+
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
+        if (saveAssets)
+        {
+            AssetDatabase.SaveAssets();
+        }
+
+        return true;
     }
 
     private bool WriteNodePositionsFromCurrentView()
@@ -1080,6 +1183,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             (BossTransitionConditionType)GetEnum(transition, "conditionType", (int)BossTransitionConditionType.SequenceEnded);
         return conditionType switch
         {
+            BossTransitionConditionType.SequenceEnded => string.Empty,
             BossTransitionConditionType.HpRatioLessOrEqual => $"HP <= {GetFloat(transition, "threshold", 0f):0.##}",
             BossTransitionConditionType.PhaseIndexEquals => $"Phase = {GetInt(transition, "phaseIndex", 0) + 1}",
             BossTransitionConditionType.EnragePhaseEquals => $"Enrage = {GetInt(transition, "phaseIndex", 0)}",
@@ -1106,11 +1210,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
         graphObject.Update();
         BuildGroupFramesFromCurrentNodePositions(
             graphObject.FindProperty("patterns"),
-            graphObject.FindProperty("phases"),
+            null,
             out List<FrameLayout> patternFrames,
-            out List<FrameLayout> phaseFrames);
-        graphView.ReplacePatternFrames(patternFrames.Select(frame => new BossGraphFrameView(frame.Label, frame.Color, frame.Rect, true)));
-        graphView.ReplacePhaseFrames(phaseFrames.Select(frame => new BossGraphFrameView(frame.Label, frame.Color, frame.Rect, false)));
+            out _);
+        graphView.ReplacePatternFrames(patternFrames.Select(frame => new BossGraphFrameView(frame.Label, frame.Color, frame.Rect, false)));
+        graphView.ReplacePhaseFrames(null);
     }
 
     private void BuildGroupFramesFromCurrentNodePositions(
@@ -1670,10 +1774,34 @@ public sealed class BossGraphEditorWindow : EditorWindow
         ISelectable selection = graphView?.GetPrimarySelection();
         if (selection is BossGraphNodeView nodeView)
         {
-            return $"node:{nodeView.NodeIndex}";
+            return GetNodeSelectionKey(nodeView.NodeId);
         }
 
         return string.Empty;
+    }
+
+    private static string GetNodeSelectionKey(string nodeId)
+    {
+        return string.IsNullOrWhiteSpace(nodeId) ? string.Empty : $"node:{nodeId}";
+    }
+
+    private string GetSelectedNodeId()
+    {
+        return graphView?.GetPrimarySelection() is BossGraphNodeView nodeView
+            ? nodeView.NodeId
+            : string.Empty;
+    }
+
+    private void SelectNodeDetails(string nodeId)
+    {
+        if (string.IsNullOrWhiteSpace(nodeId))
+        {
+            return;
+        }
+
+        graphView?.SelectNode(nodeId);
+        selectedElementKey = GetNodeSelectionKey(nodeId);
+        detailsTabIndex = SelectedElementDetailsIndex;
     }
 
     private bool DrawSelectedElementDetails()
@@ -1728,35 +1856,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             using (new EditorGUI.DisabledScope(graphObject == null))
             {
-                if (GUILayout.Button("Add Node"))
-                {
-                    AddStateNode();
-                }
-
                 if (GUILayout.Button("Delete Selected"))
                 {
                     DeleteSelectedNodes();
-                }
-            }
-        }
-
-        using (new EditorGUILayout.HorizontalScope())
-        {
-            using (new EditorGUI.DisabledScope(graphObject == null || graphView == null || graphView.GetSelectedNodeIndexes().Count == 0))
-            {
-                if (GUILayout.Button("Nodes -> Pattern"))
-                {
-                    CreatePatternFromSelectedNodes();
-                    detailsTabIndex = 0;
-                }
-            }
-
-            using (new EditorGUI.DisabledScope(graphObject == null || selectedPatternIndexes.Count == 0))
-            {
-                if (GUILayout.Button("Patterns -> Phase"))
-                {
-                    CreatePhaseFromSelectedPatterns();
-                    detailsTabIndex = 1;
                 }
             }
         }
@@ -1850,12 +1952,21 @@ public sealed class BossGraphEditorWindow : EditorWindow
         bool changed = false;
         foreach (BossGraphActionMenuItem item in BossGraphActionEditorUtility.ActionMenuItems)
         {
+            BossGraphNodeKind defaultKind = BossGraphActionCategoryAsset.GetDefaultNodeKind(item.ActionType);
             if (categories.HasActionKind(item.ActionType))
             {
+                BossGraphNodeKind currentKind = categories.GetNodeKind(item.ActionType);
+                if (currentKind != defaultKind
+                    && (currentKind == BossGraphNodeKind.Utility || defaultKind == BossGraphNodeKind.Utility))
+                {
+                    categories.SetActionKind(item.ActionType, defaultKind);
+                    changed = true;
+                }
+
                 continue;
             }
 
-            categories.SetActionKind(item.ActionType, BossGraphActionCategoryAsset.GetDefaultNodeKind(item.ActionType));
+            categories.SetActionKind(item.ActionType, defaultKind);
             changed = true;
         }
 
@@ -1928,16 +2039,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
         DrawEmptySelectionHint();
         EditorGUILayout.Space(4f);
         EditorGUILayout.LabelField("Patterns", EditorStyles.boldLabel);
-        using (new EditorGUILayout.HorizontalScope())
-        {
-            using (new EditorGUI.DisabledScope(graphView == null || graphView.GetSelectedNodeIndexes().Count == 0))
-            {
-                if (GUILayout.Button("Create From Selected Nodes"))
-                {
-                    CreatePatternFromSelectedNodes();
-                }
-            }
-        }
 
         bool changed = false;
         EditorGUI.BeginChangeCheck();
@@ -1950,9 +2051,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
         changed |= EditorGUI.EndChangeCheck();
         if (changed)
         {
+            WriteNodePositionsFromCurrentView();
             graphObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(graphAsset);
-            ScheduleRebuildGraph();
+            RefreshGroupFramesFromNodePositions();
         }
     }
 
@@ -1963,20 +2065,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                bool selected = selectedPatternIndexes.Contains(patternIndex);
-                bool nextSelected = EditorGUILayout.Toggle(selected, GUILayout.Width(18f));
-                if (nextSelected != selected)
-                {
-                    if (nextSelected)
-                    {
-                        selectedPatternIndexes.Add(patternIndex);
-                    }
-                    else
-                    {
-                        selectedPatternIndexes.Remove(patternIndex);
-                    }
-                }
-
                 string fallbackLabel = $"Pattern {patternIndex + 1}";
                 pattern.isExpanded = EditorGUILayout.Foldout(
                     pattern.isExpanded,
@@ -2195,125 +2283,299 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
+        SerializedProperty patterns = graphObject.FindProperty("patterns");
+        List<string> patternIds = ReadPatternIds(patterns);
         EditorGUILayout.LabelField("Phases", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(phases, true);
-        if (GUI.changed)
+        bool changed = false;
+        using (new EditorGUILayout.HorizontalScope())
         {
+            if (GUILayout.Button("Phase 추가"))
+            {
+                AddPhase(phases);
+                changed = true;
+            }
+        }
+
+        EditorGUI.BeginChangeCheck();
+        for (int i = 0; i < phases.arraySize; i++)
+        {
+            SerializedProperty phase = phases.GetArrayElementAtIndex(i);
+            changed |= DrawPhaseItem(phase, i, phases, patternIds);
+        }
+
+        changed |= EditorGUI.EndChangeCheck();
+        if (changed)
+        {
+            WriteNodePositionsFromCurrentView();
             graphObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(graphAsset);
-            ScheduleRebuildGraph();
+            RefreshGroupFramesFromNodePositions();
         }
     }
 
-    private void CreatePatternFromSelectedNodes()
+    private bool DrawPhaseItem(
+        SerializedProperty phase,
+        int phaseArrayIndex,
+        SerializedProperty phases,
+        IReadOnlyList<string> patternIds)
     {
-        if (graphObject == null || graphView == null)
+        bool changed = false;
+        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            return;
-        }
-
-        List<int> indexes = graphView.GetSelectedNodeIndexes();
-        if (indexes.Count == 0)
-        {
-            return;
-        }
-
-        indexes.Sort();
-        graphObject.Update();
-        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
-        SerializedProperty patterns = graphObject.FindProperty("patterns");
-        if (stateNodes == null || patterns == null)
-        {
-            return;
-        }
-
-        Undo.RecordObject(graphAsset, "Create Boss Graph Pattern");
-        int patternIndex = patterns.arraySize;
-        patterns.InsertArrayElementAtIndex(patternIndex);
-        SerializedProperty pattern = patterns.GetArrayElementAtIndex(patternIndex);
-        SetString(pattern, "patternId", GetUniqueElementId(patterns, "patternId", "Pattern"));
-
-        SerializedProperty nodeIds = pattern.FindPropertyRelative("nodeIds");
-        nodeIds.ClearArray();
-        for (int i = 0; i < indexes.Count; i++)
-        {
-            int nodeIndex = indexes[i];
-            if (nodeIndex < 0 || nodeIndex >= stateNodes.arraySize)
+            using (new EditorGUILayout.HorizontalScope())
             {
-                continue;
+                int phaseIndex = GetInt(phase, "phaseIndex", phaseArrayIndex);
+                phase.isExpanded = EditorGUILayout.Foldout(phase.isExpanded, $"Phase {phaseIndex + 1}", true);
+
+                using (new EditorGUI.DisabledScope(phaseArrayIndex == 0))
+                {
+                    if (GUILayout.Button("Up", EditorStyles.miniButtonLeft, GUILayout.Width(34f)))
+                    {
+                        Undo.RecordObject(graphAsset, "Edit Boss Graph Phases");
+                        phases.MoveArrayElement(phaseArrayIndex, phaseArrayIndex - 1);
+                        changed = true;
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(phaseArrayIndex >= phases.arraySize - 1))
+                {
+                    if (GUILayout.Button("Down", EditorStyles.miniButtonMid, GUILayout.Width(48f)))
+                    {
+                        Undo.RecordObject(graphAsset, "Edit Boss Graph Phases");
+                        phases.MoveArrayElement(phaseArrayIndex, phaseArrayIndex + 1);
+                        changed = true;
+                    }
+                }
+
+                if (GUILayout.Button("Del", EditorStyles.miniButtonRight, GUILayout.Width(34f)))
+                {
+                    Undo.RecordObject(graphAsset, "Edit Boss Graph Phases");
+                    phases.DeleteArrayElementAtIndex(phaseArrayIndex);
+                    changed = true;
+                }
             }
 
-            string nodeId = GetString(stateNodes.GetArrayElementAtIndex(nodeIndex), "nodeId", string.Empty);
-            if (string.IsNullOrWhiteSpace(nodeId))
+            if (!phase.isExpanded)
             {
-                continue;
+                return changed;
             }
 
-            int idIndex = nodeIds.arraySize;
-            nodeIds.InsertArrayElementAtIndex(idIndex);
-            nodeIds.GetArrayElementAtIndex(idIndex).stringValue = nodeId;
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(phase.FindPropertyRelative("phaseIndex"), new GUIContent("Phase Index"));
+            EditorGUILayout.PropertyField(phase.FindPropertyRelative("selectionMode"), new GUIContent("Selection Mode"));
+            EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("patternIntervalSeconds"),
+                new GUIContent("Pattern Interval Seconds"));
+
+            SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
+            if (phasePatterns != null)
+            {
+                changed |= DrawPhasePatternEntries(phasePatterns, phaseArrayIndex, patternIds);
+            }
+
+            EditorGUI.indentLevel--;
         }
 
-        graphObject.ApplyModifiedProperties();
-        EditorUtility.SetDirty(graphAsset);
-        selectedPatternIndexes.Clear();
-        selectedPatternIndexes.Add(patternIndex);
-        ScheduleRebuildGraph();
-        detailsPanel?.MarkDirtyRepaint();
+        return changed;
     }
 
-    private void CreatePhaseFromSelectedPatterns()
+    private bool DrawPhasePatternEntries(
+        SerializedProperty phasePatterns,
+        int phaseArrayIndex,
+        IReadOnlyList<string> patternIds)
     {
-        if (graphObject == null || selectedPatternIndexes.Count == 0)
+        bool changed = false;
+        EditorGUILayout.LabelField("Patterns", EditorStyles.boldLabel);
+        if (patternIds.Count == 0)
         {
-            return;
+            EditorGUILayout.HelpBox("먼저 패턴을 만들어야 페이즈에 추가할 수 있습니다.", MessageType.Info);
+            return changed;
         }
 
-        graphObject.Update();
-        SerializedProperty patterns = graphObject.FindProperty("patterns");
-        SerializedProperty phases = graphObject.FindProperty("phases");
-        if (patterns == null || phases == null)
+        for (int i = 0; i < phasePatterns.arraySize; i++)
         {
-            return;
+            SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(i);
+            changed |= DrawPhasePatternEntry(phasePatterns, entry, i, patternIds);
         }
 
-        List<int> indexes = selectedPatternIndexes
-            .Where(index => index >= 0 && index < patterns.arraySize)
-            .OrderBy(index => index)
+        changed |= DrawAddPhasePatternRow(phasePatterns, phaseArrayIndex, patternIds);
+        return changed;
+    }
+
+    private bool DrawPhasePatternEntry(
+        SerializedProperty phasePatterns,
+        SerializedProperty entry,
+        int entryIndex,
+        IReadOnlyList<string> patternIds)
+    {
+        bool changed = false;
+        SerializedProperty patternId = entry.FindPropertyRelative("patternId");
+        SerializedProperty weight = entry.FindPropertyRelative("weight");
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            string nextPatternId = DrawPatternIdPopup(patternId.stringValue, patternIds);
+            if (nextPatternId != patternId.stringValue)
+            {
+                patternId.stringValue = nextPatternId;
+                changed = true;
+            }
+
+            int nextWeight = EditorGUILayout.IntField(Mathf.Max(0, weight.intValue), GUILayout.Width(42f));
+            nextWeight = Mathf.Max(0, nextWeight);
+            if (nextWeight != weight.intValue)
+            {
+                weight.intValue = nextWeight;
+                changed = true;
+            }
+
+            using (new EditorGUI.DisabledScope(entryIndex == 0))
+            {
+                if (GUILayout.Button("Up", EditorStyles.miniButtonLeft, GUILayout.Width(34f)))
+                {
+                    Undo.RecordObject(graphAsset, "Edit Boss Graph Phase Patterns");
+                    phasePatterns.MoveArrayElement(entryIndex, entryIndex - 1);
+                    changed = true;
+                }
+            }
+
+            using (new EditorGUI.DisabledScope(entryIndex >= phasePatterns.arraySize - 1))
+            {
+                if (GUILayout.Button("Down", EditorStyles.miniButtonMid, GUILayout.Width(48f)))
+                {
+                    Undo.RecordObject(graphAsset, "Edit Boss Graph Phase Patterns");
+                    phasePatterns.MoveArrayElement(entryIndex, entryIndex + 1);
+                    changed = true;
+                }
+            }
+
+            if (GUILayout.Button("Del", EditorStyles.miniButtonRight, GUILayout.Width(34f)))
+            {
+                Undo.RecordObject(graphAsset, "Edit Boss Graph Phase Patterns");
+                phasePatterns.DeleteArrayElementAtIndex(entryIndex);
+                changed = true;
+            }
+        }
+
+        return changed;
+    }
+
+    private bool DrawAddPhasePatternRow(
+        SerializedProperty phasePatterns,
+        int phaseArrayIndex,
+        IReadOnlyList<string> patternIds)
+    {
+        List<string> addablePatternIds = patternIds
+            .Where(patternId => !HasPhasePatternEntry(phasePatterns, patternId))
             .ToList();
-        if (indexes.Count == 0)
+        if (addablePatternIds.Count == 0)
+        {
+            EditorGUILayout.HelpBox("모든 패턴이 이 페이즈에 추가되어 있습니다.", MessageType.Info);
+            return false;
+        }
+
+        int selectedIndex = phasePatternAddIndexes.TryGetValue(phaseArrayIndex, out int savedIndex) ? savedIndex : 0;
+        selectedIndex = Mathf.Clamp(selectedIndex, 0, addablePatternIds.Count - 1);
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            selectedIndex = EditorGUILayout.Popup(selectedIndex, addablePatternIds.ToArray());
+            phasePatternAddIndexes[phaseArrayIndex] = selectedIndex;
+
+            if (GUILayout.Button("Pattern 추가", GUILayout.Width(92f)))
+            {
+                AddPhasePatternEntry(phasePatterns, addablePatternIds[selectedIndex]);
+                phasePatternAddIndexes[phaseArrayIndex] = 0;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void AddPhase(SerializedProperty phases)
+    {
+        Undo.RecordObject(graphAsset, "Add Boss Graph Phase");
+        int phaseArrayIndex = phases.arraySize;
+        phases.InsertArrayElementAtIndex(phaseArrayIndex);
+        SerializedProperty phase = phases.GetArrayElementAtIndex(phaseArrayIndex);
+        SetInt(phase, "phaseIndex", phaseArrayIndex);
+        SetEnum(phase, "selectionMode", 0);
+        SetFloat(phase, "patternIntervalSeconds", 0f);
+        SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
+        phasePatterns?.ClearArray();
+    }
+
+    private void AddPhasePatternEntry(SerializedProperty phasePatterns, string patternId)
+    {
+        if (string.IsNullOrWhiteSpace(patternId))
         {
             return;
         }
 
-        Undo.RecordObject(graphAsset, "Create Boss Graph Phase");
-        int phaseIndex = phases.arraySize;
-        phases.InsertArrayElementAtIndex(phaseIndex);
-        SerializedProperty phase = phases.GetArrayElementAtIndex(phaseIndex);
-        SetInt(phase, "phaseIndex", phaseIndex);
-        SetEnum(phase, "selectionMode", 0);
+        Undo.RecordObject(graphAsset, "Add Boss Graph Phase Pattern");
+        int entryIndex = phasePatterns.arraySize;
+        phasePatterns.InsertArrayElementAtIndex(entryIndex);
+        SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(entryIndex);
+        SetString(entry, "patternId", patternId);
+        SetInt(entry, "weight", 1);
+    }
 
-        SerializedProperty patternEntries = phase.FindPropertyRelative("patterns");
-        patternEntries.ClearArray();
-        for (int i = 0; i < indexes.Count; i++)
+    private static bool HasPhasePatternEntry(SerializedProperty phasePatterns, string patternId)
+    {
+        for (int i = 0; i < phasePatterns.arraySize; i++)
         {
-            string patternId = GetString(patterns.GetArrayElementAtIndex(indexes[i]), "patternId", string.Empty);
-            if (string.IsNullOrWhiteSpace(patternId))
+            if (GetString(phasePatterns.GetArrayElementAtIndex(i), "patternId", string.Empty) == patternId)
             {
-                continue;
+                return true;
             }
-
-            int entryIndex = patternEntries.arraySize;
-            patternEntries.InsertArrayElementAtIndex(entryIndex);
-            SerializedProperty entry = patternEntries.GetArrayElementAtIndex(entryIndex);
-            SetString(entry, "patternId", patternId);
-            SetInt(entry, "weight", 1);
         }
 
-        graphObject.ApplyModifiedProperties();
-        EditorUtility.SetDirty(graphAsset);
-        ScheduleRebuildGraph();
-        detailsPanel?.MarkDirtyRepaint();
+        return false;
+    }
+
+    private static string DrawPatternIdPopup(string currentPatternId, IReadOnlyList<string> patternIds)
+    {
+        List<string> values = new();
+        List<string> labels = new();
+        if (string.IsNullOrWhiteSpace(currentPatternId))
+        {
+            values.Add(string.Empty);
+            labels.Add("(None)");
+        }
+        else if (!patternIds.Contains(currentPatternId))
+        {
+            values.Add(currentPatternId);
+            labels.Add($"{currentPatternId} (Missing)");
+        }
+
+        for (int i = 0; i < patternIds.Count; i++)
+        {
+            values.Add(patternIds[i]);
+            labels.Add(patternIds[i]);
+        }
+
+        int selectedIndex = Mathf.Max(0, values.IndexOf(currentPatternId));
+        int nextIndex = EditorGUILayout.Popup(selectedIndex, labels.ToArray());
+        return values[nextIndex];
+    }
+
+    private static List<string> ReadPatternIds(SerializedProperty patterns)
+    {
+        List<string> patternIds = new();
+        if (patterns == null)
+        {
+            return patternIds;
+        }
+
+        for (int i = 0; i < patterns.arraySize; i++)
+        {
+            string patternId = GetString(patterns.GetArrayElementAtIndex(i), "patternId", string.Empty);
+            if (!string.IsNullOrWhiteSpace(patternId) && !patternIds.Contains(patternId))
+            {
+                patternIds.Add(patternId);
+            }
+        }
+
+        return patternIds;
     }
 
     private void DrawBossGraphActionAssetManager()
@@ -2422,11 +2684,13 @@ public sealed class BossGraphEditorWindow : EditorWindow
             try
             {
                 BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+                BossGraphAimStartNodeOptions.Set(graphObject);
                 selectedActionEditor?.OnInspectorGUI();
             }
             finally
             {
                 BossGraphBossHierarchyOptions.Clear();
+                BossGraphAimStartNodeOptions.Clear();
                 BossGraphActionFilterContext.Clear();
                 BossGraphProjectileNameOptions.Clear();
             }
@@ -2472,7 +2736,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
             if (oldNodeId != newNodeId || oldPhaseIndex != newPhaseIndex || oldNodeKind != newNodeKind)
             {
-                ScheduleRebuildGraph();
+                ScheduleRebuildGraph(newNodeId);
             }
             else
             {
@@ -2482,7 +2746,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         BossGraphNodeKind nodeKind = (BossGraphNodeKind)newNodeKind;
         DrawNodeActionSelector(node, nodeKind);
-        DrawNodeActionEditor(GetNodeActionAsset(node), nodeKind);
+        BossGraphActionAsset actionAsset = GetNodeActionAsset(node);
+        Type actionType = GetNodeActionType(actionAsset);
+        if (actionAsset != null && !IsActionAllowedForNodeKind(actionType, nodeKind))
+        {
+            EditorGUILayout.HelpBox("현재 Action 타입이 노드 Type과 맞지 않습니다. 이 Type에 맞는 Action을 다시 선택하세요.", MessageType.Warning);
+            return;
+        }
+
+        DrawNodeActionEditor(actionAsset, nodeKind);
     }
 
     private void DrawTransitionDetails(Edge edge)
@@ -2619,10 +2891,38 @@ public sealed class BossGraphEditorWindow : EditorWindow
     {
         BossGraphActionCategoryAsset categories = GetActionCategoryAsset();
         return BossGraphActionEditorUtility.ActionMenuItems
-            .Where(item => categories != null
-                ? categories.IsActionAllowed(item.ActionType, nodeKind)
-                : BossGraphActionCategoryAsset.GetDefaultNodeKind(item.ActionType) == nodeKind)
+            .Where(item => GetEffectiveActionNodeKind(item.ActionType, categories) == nodeKind)
             .ToList();
+    }
+
+    private static BossGraphNodeKind GetEffectiveActionNodeKind(Type actionType, BossGraphActionCategoryAsset categories)
+    {
+        BossGraphNodeKind defaultKind = BossGraphActionCategoryAsset.GetDefaultNodeKind(actionType);
+        BossGraphNodeKind configuredKind = categories != null
+            ? categories.GetNodeKind(actionType)
+            : defaultKind;
+
+        if (defaultKind == BossGraphNodeKind.Utility)
+        {
+            return BossGraphNodeKind.Utility;
+        }
+
+        if (configuredKind == BossGraphNodeKind.Utility)
+        {
+            return defaultKind;
+        }
+
+        return configuredKind;
+    }
+
+    private bool IsActionAllowedForNodeKind(Type actionType, BossGraphNodeKind nodeKind)
+    {
+        if (actionType == null)
+        {
+            return false;
+        }
+
+        return GetEffectiveActionNodeKind(actionType, GetActionCategoryAsset()) == nodeKind;
     }
 
     private static Type GetNodeActionType(BossGraphActionAsset actionAsset)
@@ -2641,10 +2941,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
+        string nodeId = GetString(node, "nodeId", string.Empty);
         BossGraphActionAsset actionAsset = GetNodeActionAsset(node);
         if (actionAsset == null)
         {
-            actionAsset = CreateActionAsset(graphAsset, GetString(node, "nodeId", "Node"), 0);
+            actionAsset = CreateActionAsset(graphAsset, string.IsNullOrWhiteSpace(nodeId) ? "Node" : nodeId, 0);
             if (actionAsset == null)
             {
                 return;
@@ -2658,6 +2959,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         SetActionAssetSingleAction(actionAsset, actionItem);
         SelectActionAsset(actionAsset);
+        SelectNodeDetails(nodeId);
         detailsPanel?.MarkDirtyRepaint();
     }
 
@@ -2704,11 +3006,13 @@ public sealed class BossGraphEditorWindow : EditorWindow
         try
         {
             BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+            BossGraphAimStartNodeOptions.Set(graphObject);
             selectedActionEditor?.OnInspectorGUI();
         }
         finally
         {
             BossGraphBossHierarchyOptions.Clear();
+            BossGraphAimStartNodeOptions.Clear();
             BossGraphActionFilterContext.Clear();
             BossGraphProjectileNameOptions.Clear();
         }
@@ -2944,13 +3248,18 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
     }
 
-    private void ScheduleRebuildGraph()
+    private void ScheduleRebuildGraph(string nodeIdToRestore = null)
     {
         if (rebuildQueued)
         {
             return;
         }
 
+        string selectedNodeId = !string.IsNullOrWhiteSpace(nodeIdToRestore)
+            ? nodeIdToRestore
+            : GetSelectedNodeId();
+        bool restoreSelectedNodeDetails = detailsTabIndex == SelectedElementDetailsIndex
+            && !string.IsNullOrWhiteSpace(selectedNodeId);
         rebuildQueued = true;
         EditorApplication.delayCall += () =>
         {
@@ -2961,6 +3270,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
             }
 
             RebuildGraph();
+            if (restoreSelectedNodeDetails)
+            {
+                SelectNodeDetails(selectedNodeId);
+            }
+
             detailsPanel?.MarkDirtyRepaint();
         };
     }
@@ -3548,6 +3862,8 @@ internal sealed class BossGraphView : GraphView
     private readonly List<BossGraphNodeView> nodeViews = new();
     private readonly List<BossGraphFrameView> patternFrameViews = new();
     private readonly List<BossGraphFrameView> phaseFrameViews = new();
+    private string runtimeHighlightedNodeId;
+    private string runtimeHighlightedEdgeKey;
 
     public BossGraphView()
     {
@@ -3561,12 +3877,19 @@ internal sealed class BossGraphView : GraphView
     public IReadOnlyList<BossGraphNodeView> NodeViews => nodeViews;
     public List<Edge> EdgeViews => edges.ToList();
 
+    public Vector2 LocalToContentPosition(Vector2 localPosition)
+    {
+        return this.ChangeCoordinatesTo(contentViewContainer, localPosition);
+    }
+
     public void ClearGraph()
     {
         DeleteElements(graphElements.ToList());
         nodeViews.Clear();
         patternFrameViews.Clear();
         phaseFrameViews.Clear();
+        runtimeHighlightedNodeId = null;
+        runtimeHighlightedEdgeKey = null;
     }
 
     public void AddStateNode(BossGraphNodeView nodeView)
@@ -3744,6 +4067,54 @@ internal sealed class BossGraphView : GraphView
         nodeView.BringToFront();
     }
 
+    public void SetRuntimeHighlight(string nodeId, string edgeFromNodeId, string edgeToNodeId)
+    {
+        string edgeKey = !string.IsNullOrWhiteSpace(edgeFromNodeId) && !string.IsNullOrWhiteSpace(edgeToNodeId)
+            ? $"{edgeFromNodeId}->{edgeToNodeId}"
+            : null;
+        if (runtimeHighlightedNodeId == nodeId && runtimeHighlightedEdgeKey == edgeKey)
+        {
+            return;
+        }
+
+        runtimeHighlightedNodeId = nodeId;
+        runtimeHighlightedEdgeKey = edgeKey;
+
+        for (int i = 0; i < nodeViews.Count; i++)
+        {
+            BossGraphNodeView nodeView = nodeViews[i];
+            nodeView.SetRuntimeActive(nodeView.NodeId == nodeId);
+        }
+
+        foreach (Edge edge in EdgeViews)
+        {
+            if (edge is not BossGraphEdgeView edgeView)
+            {
+                continue;
+            }
+
+            edgeView.SetRuntimeActive(IsRuntimeEdge(edgeView, edgeFromNodeId, edgeToNodeId));
+        }
+    }
+
+    public void ClearRuntimeHighlight()
+    {
+        SetRuntimeHighlight(null, null, null);
+    }
+
+    private static bool IsRuntimeEdge(Edge edge, string fromNodeId, string toNodeId)
+    {
+        if (string.IsNullOrWhiteSpace(fromNodeId)
+            || string.IsNullOrWhiteSpace(toNodeId)
+            || edge?.output?.node is not BossGraphNodeView fromNode
+            || edge.input?.node is not BossGraphNodeView toNode)
+        {
+            return false;
+        }
+
+        return fromNode.NodeId == fromNodeId && toNode.NodeId == toNodeId;
+    }
+
     public ISelectable GetPrimarySelection()
     {
         return selection.Count > 0 ? selection[0] : null;
@@ -3864,8 +4235,17 @@ internal sealed class BossGraphFrameView : GraphElement
 
 internal sealed class BossGraphEdgeView : Edge
 {
+    private static readonly Color RuntimeEdgeColor = new(1f, 0.78f, 0.08f, 1f);
+    private static readonly Color DefaultEdgeColor = new(0.68f, 0.68f, 0.68f, 1f);
+    private bool runtimeActive;
+
     public BossGraphEdgeView(string label)
     {
+        if (string.IsNullOrWhiteSpace(label))
+        {
+            return;
+        }
+
         Label conditionLabel = new(string.IsNullOrWhiteSpace(label) ? "Transition" : label)
         {
             pickingMode = PickingMode.Ignore
@@ -3881,16 +4261,37 @@ internal sealed class BossGraphEdgeView : Edge
         conditionLabel.style.paddingRight = 4f;
         Add(conditionLabel);
     }
+
+    public void SetRuntimeActive(bool active)
+    {
+        if (runtimeActive == active)
+        {
+            return;
+        }
+
+        runtimeActive = active;
+        if (edgeControl == null)
+        {
+            return;
+        }
+
+        edgeControl.inputColor = active ? RuntimeEdgeColor : DefaultEdgeColor;
+        edgeControl.outputColor = active ? RuntimeEdgeColor : DefaultEdgeColor;
+        edgeControl.edgeWidth = active ? 5 : 2;
+        edgeControl.MarkDirtyRepaint();
+    }
 }
 
 internal sealed class BossGraphNodeView : Node
 {
     private const float DragStartDistance = 5f;
+    private static readonly Color RuntimeNodeOutlineColor = new(1f, 0.78f, 0.08f, 1f);
 
     private readonly VisualElement dragHandle;
     private Func<IReadOnlyList<string>> dragNodeIdsProvider;
     private Vector2 dragStartMousePosition;
     private bool dragCandidate;
+    private bool runtimeActive;
 
     public BossGraphNodeView(int nodeIndex, string nodeId)
     {
@@ -3939,6 +4340,25 @@ internal sealed class BossGraphNodeView : Node
         mainContainer.style.borderBottomColor = color;
         mainContainer.style.borderLeftColor = color;
         mainContainer.style.borderRightColor = color;
+    }
+
+    public void SetRuntimeActive(bool active)
+    {
+        if (runtimeActive == active)
+        {
+            return;
+        }
+
+        runtimeActive = active;
+        float width = active ? 3f : 0f;
+        style.borderTopWidth = width;
+        style.borderBottomWidth = width;
+        style.borderLeftWidth = width;
+        style.borderRightWidth = width;
+        style.borderTopColor = RuntimeNodeOutlineColor;
+        style.borderBottomColor = RuntimeNodeOutlineColor;
+        style.borderLeftColor = RuntimeNodeOutlineColor;
+        style.borderRightColor = RuntimeNodeOutlineColor;
     }
 
     private void OnDragMouseDown(MouseDownEvent evt)

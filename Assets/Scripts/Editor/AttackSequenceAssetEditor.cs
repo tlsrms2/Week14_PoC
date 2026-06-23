@@ -77,7 +77,7 @@ internal static class BossGraphActionEditorUtility
 {
     public static readonly IReadOnlyList<BossGraphActionMenuItem> ActionMenuItems = new List<BossGraphActionMenuItem>
     {
-        new("Wait", typeof(WaitAction), () => new WaitAction()),
+        new("Utility/Wait", typeof(WaitAction), () => new WaitAction()),
         new("Animation/Play Animation", typeof(PlayAnimationAction), () => new PlayAnimationAction()),
         new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
         new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
@@ -90,6 +90,7 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Machinegun Projectiles", typeof(FireMachinegunProjectilesAction), () => new FireMachinegunProjectilesAction()),
         new("Projectile/Fire Sweep Projectiles", typeof(FireSweepProjectilesAction), () => new FireSweepProjectilesAction()),
         new("Projectile/Fire Fan Volley Projectiles", typeof(FireFanVolleyProjectilesAction), () => new FireFanVolleyProjectilesAction()),
+        new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Event/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Spawn/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction())
     };
@@ -147,6 +148,75 @@ internal static class BossGraphActionFilterContext
     }
 }
 
+internal static class BossGraphAimStartNodeOptions
+{
+    private static readonly List<string> startNodeIds = new();
+    private static bool hasContext;
+
+    public static IReadOnlyList<string> StartNodeIds => startNodeIds;
+
+    public static void Set(SerializedObject graphObject)
+    {
+        startNodeIds.Clear();
+        hasContext = graphObject != null;
+        if (graphObject == null)
+        {
+            return;
+        }
+
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        if (stateNodes == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            string nodeId = node.FindPropertyRelative("nodeId")?.stringValue;
+            if (string.IsNullOrWhiteSpace(nodeId) || !IsAimStartNode(node))
+            {
+                continue;
+            }
+
+            if (!startNodeIds.Contains(nodeId))
+            {
+                startNodeIds.Add(nodeId);
+            }
+        }
+    }
+
+    public static void Clear()
+    {
+        startNodeIds.Clear();
+        hasContext = false;
+    }
+
+    public static bool ContainsStartNode(string nodeId)
+    {
+        return string.IsNullOrWhiteSpace(nodeId)
+            || !hasContext
+            || startNodeIds.Contains(nodeId);
+    }
+
+    private static bool IsAimStartNode(SerializedProperty node)
+    {
+        SerializedProperty sequences = node.FindPropertyRelative("sequences");
+        if (sequences == null || sequences.arraySize == 0)
+        {
+            return false;
+        }
+
+        BossGraphActionAsset actionAsset = sequences.GetArrayElementAtIndex(0)
+            .FindPropertyRelative("sequence")?.objectReferenceValue as BossGraphActionAsset;
+        BossAction action = actionAsset?.Actions != null && actionAsset.Actions.Count > 0
+            ? actionAsset.Actions[0]
+            : null;
+        return action is AimBossChildAtPlayerAction aimAction
+            && aimAction.Mode == BossChildAimActionMode.Start;
+    }
+}
+
 internal static class BossGraphProjectileNameOptions
 {
     private static readonly List<string> names = new();
@@ -173,6 +243,148 @@ internal static class BossGraphProjectileNameOptions
     public static void Clear()
     {
         names.Clear();
+    }
+}
+
+[CustomPropertyDrawer(typeof(AimBossChildAtPlayerAction))]
+internal sealed class AimBossChildAtPlayerActionDrawer : PropertyDrawer
+{
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        AddHeight(ref height, property.FindPropertyRelative("mode"));
+
+        if (IsEndMode(property.FindPropertyRelative("mode")))
+        {
+            AddHeight(ref height, property.FindPropertyRelative("startNodeId"));
+            AddHeight(ref height, property.FindPropertyRelative("targetPath"));
+            AddHeight(ref height, property.FindPropertyRelative("activateOnStart"));
+            AddHeight(ref height, property.FindPropertyRelative("flipYByFacing"));
+            AddHeight(ref height, property.FindPropertyRelative("deactivateOnEnd"));
+            AddHeight(ref height, property.FindPropertyRelative("deactivateOnPatternEnd"));
+            return height;
+        }
+
+        AddHeight(ref height, property.FindPropertyRelative("targetPath"));
+        AddHeight(ref height, property.FindPropertyRelative("activateOnStart"));
+        AddHeight(ref height, property.FindPropertyRelative("flipYByFacing"));
+        AddHeight(ref height, property.FindPropertyRelative("deactivateOnPatternEnd"));
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        EditorGUI.LabelField(lineRect, label, EditorStyles.boldLabel);
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+        SerializedProperty mode = property.FindPropertyRelative("mode");
+        DrawProperty(ref lineRect, mode, new GUIContent("Mode"), false);
+
+        bool isEndMode = IsEndMode(mode);
+        if (isEndMode)
+        {
+            DrawProperty(ref lineRect, property.FindPropertyRelative("startNodeId"), new GUIContent("Start Node"), false);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("targetPath"), new GUIContent("Target Path"), true);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("activateOnStart"), new GUIContent("Activate On Start"), true);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("flipYByFacing"), new GUIContent("Flip Y By Facing"), true);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("deactivateOnEnd"), new GUIContent("Deactivate On End"), true);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("deactivateOnPatternEnd"), new GUIContent("Deactivate On Pattern End"), true);
+        }
+        else
+        {
+            DrawProperty(ref lineRect, property.FindPropertyRelative("targetPath"), new GUIContent("Target Path"), false);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("activateOnStart"), new GUIContent("Activate On Start"), false);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("flipYByFacing"), new GUIContent("Flip Y By Facing"), false);
+            DrawProperty(ref lineRect, property.FindPropertyRelative("deactivateOnPatternEnd"), new GUIContent("Deactivate On Pattern End"), false);
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
+    }
+
+    private static void AddHeight(ref float height, SerializedProperty property)
+    {
+        if (property == null)
+        {
+            return;
+        }
+
+        height += EditorGUI.GetPropertyHeight(property, true) + EditorGUIUtility.standardVerticalSpacing;
+    }
+
+    private static void DrawProperty(ref Rect lineRect, SerializedProperty property, GUIContent label, bool disabled)
+    {
+        if (property == null)
+        {
+            return;
+        }
+
+        lineRect.height = EditorGUI.GetPropertyHeight(property, true);
+        using (new EditorGUI.DisabledScope(disabled))
+        {
+            EditorGUI.PropertyField(lineRect, property, label, true);
+        }
+
+        lineRect.y += lineRect.height + EditorGUIUtility.standardVerticalSpacing;
+    }
+
+    private static bool IsEndMode(SerializedProperty mode)
+    {
+        if (mode == null)
+        {
+            return false;
+        }
+
+        int endNameIndex = Array.IndexOf(mode.enumNames, nameof(BossChildAimActionMode.End));
+        return mode.intValue == (int)BossChildAimActionMode.End || mode.enumValueIndex == endNameIndex;
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphNodeIdAttribute))]
+internal sealed class BossGraphNodeIdDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        if (property.propertyType != SerializedPropertyType.String)
+        {
+            EditorGUI.PropertyField(position, property, label);
+            return;
+        }
+
+        EditorGUI.BeginProperty(position, label, property);
+
+        IReadOnlyList<string> startNodeIds = BossGraphAimStartNodeOptions.StartNodeIds;
+        List<string> values = new() { string.Empty };
+        List<GUIContent> labels = new()
+        {
+            new(startNodeIds.Count == 0 ? "<Start 노드 없음>" : "<선택>")
+        };
+
+        for (int i = 0; i < startNodeIds.Count; i++)
+        {
+            values.Add(startNodeIds[i]);
+            labels.Add(new GUIContent(startNodeIds[i]));
+        }
+
+        if (!string.IsNullOrWhiteSpace(property.stringValue) && !values.Contains(property.stringValue))
+        {
+            values.Add(property.stringValue);
+            labels.Add(new GUIContent($"{property.stringValue} (Start 노드 아님)"));
+        }
+
+        int currentIndex = Mathf.Max(0, values.IndexOf(property.stringValue));
+        int nextIndex = EditorGUI.Popup(position, label, currentIndex, labels.ToArray());
+        if (nextIndex >= 0 && nextIndex < values.Count)
+        {
+            property.stringValue = values[nextIndex];
+        }
+
+        EditorGUI.EndProperty();
     }
 }
 
