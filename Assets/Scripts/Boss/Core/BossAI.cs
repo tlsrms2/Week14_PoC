@@ -204,7 +204,9 @@ namespace Week14.Enemy
 
             lockOnIndicator ??= FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
             executionIndicator ??= FindChild("ExecutionIndicator")?.GetComponent<SpriteRenderer>();
-            renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            renderers = bodyRoot != null
+                ? bodyRoot.GetComponentsInChildren<SpriteRenderer>(true)
+                : GetComponentsInChildren<SpriteRenderer>(true);
             phaseController = new BossPhaseController(this);
             stateMachine = new BossStateMachine(this);
         }
