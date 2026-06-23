@@ -3341,7 +3341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.SkillLoadoutManager
   database: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
-  defaultTestSkill: {fileID: 0}
+  defaultTestSkill: {fileID: 11400000, guid: 3968fa6280c5bdb45852a60292ef743a, type: 2}
+  forceDefaultTestSkill: 1
 --- !u!4 &968074597
 Transform:
   m_ObjectHideFlags: 0

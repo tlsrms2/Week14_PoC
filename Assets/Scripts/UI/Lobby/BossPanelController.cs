@@ -5,37 +5,34 @@ namespace Week14.UI
 {
     public sealed class BossPanelController : MonoBehaviour
     {
-        [SerializeField] private BossMapZoomController zoomController;
-        [SerializeField] private BossDetailPanel detailPanel;
-
         private BossData selectedBossData;
+        private BossSelectIcon selectedIcon;
 
         private void OnEnable()
         {
-            zoomController?.ResetImmediate();
-            detailPanel?.HideImmediate();
+            ClearSelection();
         }
 
-        public void SelectBoss(Transform posterTransform, BossData bossData)
+        public void SelectBoss(BossSelectIcon icon, BossData bossData)
         {
             if (bossData == null)
             {
                 return;
             }
 
-            if (zoomController != null && posterTransform != null)
+            if (selectedIcon != null && selectedIcon != icon)
             {
-                zoomController.ZoomTo(posterTransform.position);
+                selectedIcon.SetSelected(false);
             }
 
+            selectedIcon = icon;
             selectedBossData = bossData;
-            detailPanel?.Show(bossData.BossName, bossData.Crime, bossData.Description, bossData.Icon);
+            selectedIcon?.SetSelected(true);
         }
 
         public void Deselect()
         {
-            zoomController?.ZoomOut();
-            detailPanel?.Hide();
+            ClearSelection();
         }
 
         public void EnterSelectedBoss()
@@ -46,6 +43,13 @@ namespace Week14.UI
             }
 
             SceneManager.LoadScene(selectedBossData.SceneName);
+        }
+
+        private void ClearSelection()
+        {
+            selectedIcon?.SetSelected(false);
+            selectedIcon = null;
+            selectedBossData = null;
         }
     }
 }

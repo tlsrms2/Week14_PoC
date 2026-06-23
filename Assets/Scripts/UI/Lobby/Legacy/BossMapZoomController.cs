@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Week14.UI
 {
+    // 보스 선택 카메라 줌 연출이 호버형 디테일 패널 + 클릭 강조 방식으로 대체되어 더 이상 사용하지 않음. 참고용으로 보관.
     public sealed class BossMapZoomController : MonoBehaviour
     {
         [SerializeField] private Camera targetCamera;

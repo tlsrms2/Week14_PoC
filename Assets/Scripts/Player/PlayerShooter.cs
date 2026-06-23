@@ -71,6 +71,53 @@ namespace Week14.Combat
             return true;
         }
 
+        internal bool TryFireSkillProjectile(int damage, float sizeMultiplier, Color color)
+        {
+            PlayerCombatConfig config = context.Config;
+            if (config == null)
+            {
+                return false;
+            }
+
+            if (config.ProjectilePrefab == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", context.Owner);
+                return false;
+            }
+
+            Transform fireOrigin = GetLeftFireOrigin();
+            Vector2 direction = aimController.AimGunAndGetDirection(
+                context.LeftGunOrigin,
+                aimController.GetAimDirection(context.LeftGunOrigin));
+            aimController.LockLeftGunAim(direction);
+
+            float radius = config.ProjectileRadius * Mathf.Max(0.1f, sizeMultiplier);
+
+            PlayerProjectile projectile = PlayerProjectile.Spawn(
+                config.ProjectilePrefab,
+                fireOrigin.position,
+                direction,
+                context.Owner,
+                config.ProjectileSpeed,
+                config.ProjectileLifetime,
+                radius,
+                damage,
+                color,
+                true,
+                damageStyleBulletNumber: 1,
+                isSkillShot: true);
+
+            if (projectile == null)
+            {
+                return false;
+            }
+
+            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, color, 0.9f);
+            context.Visual?.PlayShot();
+            SoundManager.PlaySfx("PlayerPowerShot");
+            return true;
+        }
+
         internal int CalculateAttackBulletDamage()
         {
             PlayerCombatConfig config = context.Config;

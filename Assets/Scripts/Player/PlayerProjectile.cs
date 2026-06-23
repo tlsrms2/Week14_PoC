@@ -10,6 +10,8 @@ namespace Week14.Combat
     {
         private const string BulletVisualName = "BulletVisual";
 
+        internal static event Action<int> NormalAttackDamageDealt;
+
         private PlayerCombatController owner;
         private Rigidbody2D body;
         private float projectileSpeed;
@@ -24,6 +26,7 @@ namespace Week14.Combat
         private Color projectileColor = Color.white;
         private bool canDamageHealth;
         private bool canClashWithEnemyProjectile;
+        private bool isSkillShot;
         private bool resolved;
         private bool isDestroying;
 
@@ -39,7 +42,8 @@ namespace Week14.Combat
             Color color,
             bool canDamageHealth,
             bool canClashWithEnemyProjectile = false,
-            int damageStyleBulletNumber = 0)
+            int damageStyleBulletNumber = 0,
+            bool isSkillShot = false)
         {
             if (prefab == null)
             {
@@ -49,7 +53,7 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile, damageStyleBulletNumber);
+            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile, damageStyleBulletNumber, isSkillShot);
             PlayerCombatConfig config = owner != null ? owner.Config : null;
             if (config != null)
             {
@@ -79,7 +83,8 @@ namespace Week14.Combat
             Color color,
             bool nextCanDamageHealth,
             bool nextCanClashWithEnemyProjectile,
-            int nextDamageStyleBulletNumber)
+            int nextDamageStyleBulletNumber,
+            bool nextIsSkillShot)
         {
             owner = nextOwner;
             projectileSpeed = speed;
@@ -88,6 +93,7 @@ namespace Week14.Combat
             collisionRadius = radius;
             canDamageHealth = nextCanDamageHealth;
             canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
+            isSkillShot = nextIsSkillShot;
             destroyAt = Time.time + lifetime;
             previousPosition = transform.position;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
@@ -275,6 +281,7 @@ namespace Week14.Combat
                 if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
                     ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                    NotifyNormalAttackDamage();
                 }
 
                 DestroyProjectile();
@@ -288,6 +295,7 @@ namespace Week14.Combat
                 if (drone.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
                     ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                    NotifyNormalAttackDamage();
                 }
 
                 DestroyProjectile();
@@ -312,6 +320,7 @@ namespace Week14.Combat
             }
 
             ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+            NotifyNormalAttackDamage();
             Color impactColor = projectileColor;
 
             ProjectileVfx.PlayPlayerAttackImpact(
@@ -325,6 +334,16 @@ namespace Week14.Combat
 
             DestroyProjectile();
             return true;
+        }
+
+        private void NotifyNormalAttackDamage()
+        {
+            if (isSkillShot || bulletDamage <= 0)
+            {
+                return;
+            }
+
+            NormalAttackDamageDealt?.Invoke(bulletDamage);
         }
 
         private static void ShowFloatingDamage(Health targetHealth, int damage, int bulletNumber)

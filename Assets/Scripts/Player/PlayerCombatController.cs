@@ -51,6 +51,7 @@ namespace Week14.Combat
         private PlayerParryController parryController;
         private PlayerExecutionPresentation executionPresentation;
         private PlayerExecutionController executionController;
+        private PlayerDashController dashController;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
         private PlayerCombatRig Rig => playerCombatRig ??= new PlayerCombatRig(Context);
@@ -66,6 +67,7 @@ namespace Week14.Combat
             AimController,
             LockOnController,
             ExecutionPresentation);
+        private PlayerDashController DashController => dashController ??= new PlayerDashController(Context);
 
         public Health Health => Context.Health;
         public BulletGauge Bullets => Context.Bullets;
@@ -73,9 +75,10 @@ namespace Week14.Combat
         public ExecutionTarget HoveredExecutionTarget => ExecutionController.HoveredExecutionTarget;
         public bool IsExecuting => ExecutionController.IsExecuting;
         public PlayerCombatConfig Config => Context.Config;
-        public bool CanMove => CanAct && !IsBodyContactStaggered;
+        public bool CanMove => CanAct && !IsBodyContactStaggered && !IsDashing;
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
-        public bool ShouldStopMovementWhenBlocked => !IsBodyContactStaggered
+        public bool IsDashing => DashController.IsDashing;
+        public bool ShouldStopMovementWhenBlocked => (!IsBodyContactStaggered && !IsDashing)
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
         private bool CanAct => !GameModalState.BlocksGameplayInput
@@ -158,6 +161,7 @@ namespace Week14.Combat
             public float FinalDeathCameraReturnSeconds => controller.finalDeathCameraReturnSeconds;
             public float VictoryPanelDelaySeconds => controller.victoryPanelDelaySeconds;
             public bool IsExecuting => controller.IsExecuting;
+            public bool IsDashing => controller.IsDashing;
             public bool IsWaitingForVictoryPanel => controller.IsWaitingForVictoryPanel;
         }
 
@@ -307,9 +311,13 @@ namespace Week14.Combat
                 }
             }
 
-            if (GameInput.RightAttackDown && CanAct)
+            if (GameInput.RightAttackDown)
             {
-                if (!TryParryProjectile())
+                if (!CanAct)
+                {
+                    Debug.LogWarning($"[Player] 패링 입력 차단됨: Modal={GameModalState.BlocksGameplayInput}, IsExecuting={IsExecuting}, FinalDeath={BossAI.IsAnyFinalDeathSequencePlaying}, WaitingVictory={IsWaitingForVictoryPanel}, Dead={health.IsDead}");
+                }
+                else if (!TryParryProjectile())
                 {
                     ApplyMouseParryMissPenalty();
                 }
@@ -376,6 +384,21 @@ namespace Week14.Combat
         public void PlayParryImpact(Vector3 position, Vector2 direction)
         {
             ParryController.PlayParryImpact(position, direction);
+        }
+
+        public void PlayReloadAnimation()
+        {
+            visual?.PlayReload();
+        }
+
+        public bool TryDash(float distance, float duration)
+        {
+            return DashController.TryDash(distance, duration);
+        }
+
+        public bool FireSkillProjectile(int damage, float sizeMultiplier, Color color)
+        {
+            return Shooter.TryFireSkillProjectile(damage, sizeMultiplier, color);
         }
 
         private bool TryShootEnemy()

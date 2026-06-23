@@ -16,6 +16,8 @@ namespace Week14.Skills
         [SerializeField] private SkillDatabase database;
         [Tooltip("테스트용: 활성 슬롯에 아무 스킬도 장착되어 있지 않을 때 시작 시 자동으로 해금하고 장착할 스킬입니다. 비워두면 자동 장착하지 않습니다.")]
         [SerializeField] private BaseSkillSO defaultTestSkill;
+        [Tooltip("테스트용: 체크하면 세이브 파일의 장착 스킬을 불러오지 않고, 시작 시 항상 defaultTestSkill을 장착합니다. (세이브 파일은 읽지도 쓰지도 않습니다.)")]
+        [SerializeField] private bool forceDefaultTestSkill;
 
         private static SkillLoadoutManager instance;
 
@@ -56,13 +58,13 @@ namespace Week14.Skills
 
         private void OnEnable()
         {
-            PlayerParryController.ProjectileParried += HandleProjectileParried;
+            PlayerProjectile.NormalAttackDamageDealt += HandleNormalAttackDamageDealt;
             SceneManager.sceneLoaded += HandleSceneLoaded;
         }
 
         private void OnDisable()
         {
-            PlayerParryController.ProjectileParried -= HandleProjectileParried;
+            PlayerProjectile.NormalAttackDamageDealt -= HandleNormalAttackDamageDealt;
             SceneManager.sceneLoaded -= HandleSceneLoaded;
         }
 
@@ -122,20 +124,28 @@ namespace Week14.Skills
             }
 
             currentStack -= skill.RequiredStack;
-            skill.Execute(gameObject);
+            GameObject user = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : gameObject;
+            skill.Execute(user);
             SkillUsed?.Invoke(slot, skill);
             StackChanged?.Invoke(currentStack, skill.RequiredStack);
             return true;
         }
 
-        private void HandleProjectileParried()
+        private void HandleNormalAttackDamageDealt(int damage)
         {
-            AddStack(ActiveSlot);
+            Debug.Log($"[SkillLoadout] 평타 데미지 수신: {damage}. currentStack={currentStack}");
+            AddStack(ActiveSlot, damage);
         }
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             ResetStack();
+
+            if (scene.name == "MainScene")
+            {
+                BaseSkillSO equippedSkill = GetEquippedSkill(ActiveSlot);
+                Debug.Log($"[SkillLoadout] MainScene 시작. 장착 스킬: {(equippedSkill != null ? equippedSkill.SkillId : "없음")}");
+            }
         }
 
         private void ResetStack()
@@ -150,39 +160,59 @@ namespace Week14.Skills
             StackChanged?.Invoke(currentStack, skill != null ? skill.RequiredStack : 0);
         }
 
-        private void AddStack(SkillSlot slot)
+        private void AddStack(SkillSlot slot, int amount)
         {
+            if (amount <= 0)
+            {
+                return;
+            }
+
             if (!equippedSkills.TryGetValue(slot, out BaseSkillSO skill) || skill == null)
             {
+                Debug.LogWarning($"[SkillLoadout] AddStack 무시됨: {slot}에 장착된 스킬이 없습니다.");
                 return;
             }
 
             int requiredStack = Mathf.Max(1, skill.RequiredStack);
-            int nextStack = Mathf.Min(requiredStack, currentStack + 1);
+            int nextStack = Mathf.Min(requiredStack, currentStack + amount);
             if (nextStack == currentStack)
             {
+                Debug.Log($"[SkillLoadout] AddStack 변화 없음: 이미 {currentStack}/{requiredStack}.");
                 return;
             }
 
             currentStack = nextStack;
+            Debug.Log($"[SkillLoadout] 스택 증가: {currentStack}/{requiredStack}.");
             StackChanged?.Invoke(currentStack, requiredStack);
         }
 
         private void EquipDefaultTestSkillIfNeeded()
         {
-            if (defaultTestSkill == null || GetEquippedSkill(ActiveSlot) != null)
+            if (defaultTestSkill == null)
             {
                 return;
             }
 
-            GameSaveManager.UnlockSkill(defaultTestSkill.SkillId);
-            EquipSkill(ActiveSlot, defaultTestSkill.SkillId);
+            if (!forceDefaultTestSkill && GetEquippedSkill(ActiveSlot) != null)
+            {
+                return;
+            }
+
+            equippedSkills[ActiveSlot] = defaultTestSkill;
+            currentStack = 0;
+            StackChanged?.Invoke(currentStack, defaultTestSkill.RequiredStack);
+            SkillEquipped?.Invoke(ActiveSlot, defaultTestSkill);
         }
 
         private void LoadEquippedSkills()
         {
             equippedSkills.Clear();
             currentStack = 0;
+
+            if (forceDefaultTestSkill)
+            {
+                return;
+            }
 
             foreach (SkillSlot slot in Enum.GetValues(typeof(SkillSlot)))
             {

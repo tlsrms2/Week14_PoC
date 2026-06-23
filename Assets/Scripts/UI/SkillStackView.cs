@@ -23,6 +23,7 @@ namespace Week14.UI
         private void OnDisable()
         {
             Unsubscribe();
+            target = null;
         }
 
         private void Update()

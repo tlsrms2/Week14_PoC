@@ -7,17 +7,32 @@ namespace Week14.UI
 {
     public sealed class BossDetailPanel : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private RectTransform panelRect;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text crimeText;
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private Image iconImage;
-        [SerializeField, Min(0f)] private float fadeSeconds = 0.2f;
+        [Tooltip("패널이 다 펼쳐졌을 때의 높이입니다.")]
+        [SerializeField, Min(0f)] private float expandedHeight = 240f;
+        [Tooltip("높이 0에서 펼쳐진 높이까지 커지는 데 걸리는 시간입니다. 빠르게 보이도록 짧게 설정합니다.")]
+        [SerializeField, Min(0f)] private float growSeconds = 0.12f;
+        [Tooltip("패널이 다 펼쳐진 후 첫 항목이 나타나기까지의 지연 시간입니다.")]
+        [SerializeField, Min(0f)] private float initialRevealDelaySeconds = 0.06f;
+        [Tooltip("패널이 다 펼쳐진 후 항목들이 하나씩 나타나는 간격입니다.")]
+        [SerializeField, Min(0f)] private float revealStaggerSeconds = 0.06f;
 
-        private Coroutine fadeRoutine;
+        private GameObject[] revealTargets;
+        private Coroutine growRoutine;
+        private Coroutine revealRoutine;
 
         private void Awake()
         {
+            if (panelRect == null)
+            {
+                panelRect = transform as RectTransform;
+            }
+
+            CacheRevealTargets();
             HideImmediate();
         }
 
@@ -44,62 +59,137 @@ namespace Week14.UI
                 iconImage.enabled = icon != null;
             }
 
-            PlayFade(1f);
+            SetRevealTargetsActive(false);
+            PlayGrow(expandedHeight, revealAfterGrow: true);
         }
 
         public void Hide()
         {
-            PlayFade(0f);
+            StopRevealRoutine();
+            SetRevealTargetsActive(false);
+            PlayGrow(0f, revealAfterGrow: false);
         }
 
         public void HideImmediate()
         {
-            if (fadeRoutine != null)
+            if (growRoutine != null)
             {
-                StopCoroutine(fadeRoutine);
-                fadeRoutine = null;
+                StopCoroutine(growRoutine);
+                growRoutine = null;
             }
 
-            if (canvasGroup != null)
-            {
-                canvasGroup.alpha = 0f;
-                canvasGroup.interactable = false;
-                canvasGroup.blocksRaycasts = false;
-            }
+            StopRevealRoutine();
+            SetRevealTargetsActive(false);
+            SetHeight(0f);
         }
 
-        private void PlayFade(float targetAlpha)
+        private void CacheRevealTargets()
         {
-            if (canvasGroup == null)
+            revealTargets = new[]
+            {
+                iconImage != null ? iconImage.gameObject : null,
+                nameText != null ? nameText.gameObject : null,
+                crimeText != null ? crimeText.gameObject : null,
+                descriptionText != null ? descriptionText.gameObject : null,
+            };
+        }
+
+        private void SetRevealTargetsActive(bool active)
+        {
+            if (revealTargets == null)
             {
                 return;
             }
 
-            bool show = targetAlpha > 0f;
-            canvasGroup.interactable = show;
-            canvasGroup.blocksRaycasts = show;
-
-            if (fadeRoutine != null)
+            for (int i = 0; i < revealTargets.Length; i++)
             {
-                StopCoroutine(fadeRoutine);
+                if (revealTargets[i] != null)
+                {
+                    revealTargets[i].SetActive(active);
+                }
             }
-
-            fadeRoutine = StartCoroutine(FadeRoutine(targetAlpha));
         }
 
-        private IEnumerator FadeRoutine(float targetAlpha)
+        private void StopRevealRoutine()
         {
-            float startAlpha = canvasGroup.alpha;
+            if (revealRoutine != null)
+            {
+                StopCoroutine(revealRoutine);
+                revealRoutine = null;
+            }
+        }
+
+        private void PlayGrow(float targetHeight, bool revealAfterGrow)
+        {
+            if (panelRect == null)
+            {
+                return;
+            }
+
+            if (growRoutine != null)
+            {
+                StopCoroutine(growRoutine);
+            }
+
+            growRoutine = StartCoroutine(GrowRoutine(targetHeight, revealAfterGrow));
+        }
+
+        private IEnumerator GrowRoutine(float targetHeight, bool revealAfterGrow)
+        {
+            float startHeight = panelRect.sizeDelta.y;
             float t = 0f;
-            while (fadeSeconds > 0f && t < fadeSeconds)
+            while (growSeconds > 0f && t < growSeconds)
             {
                 t += Time.unscaledDeltaTime;
-                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, t / fadeSeconds);
+                SetHeight(Mathf.Lerp(startHeight, targetHeight, t / growSeconds));
                 yield return null;
             }
 
-            canvasGroup.alpha = targetAlpha;
-            fadeRoutine = null;
+            SetHeight(targetHeight);
+            growRoutine = null;
+
+            if (revealAfterGrow)
+            {
+                StopRevealRoutine();
+                revealRoutine = StartCoroutine(RevealRoutine());
+            }
+        }
+
+        private IEnumerator RevealRoutine()
+        {
+            if (initialRevealDelaySeconds > 0f)
+            {
+                yield return new WaitForSecondsRealtime(initialRevealDelaySeconds);
+            }
+
+            for (int i = 0; i < revealTargets.Length; i++)
+            {
+                GameObject target = revealTargets[i];
+                if (target == null)
+                {
+                    continue;
+                }
+
+                target.SetActive(true);
+                if (revealStaggerSeconds > 0f)
+                {
+                    yield return new WaitForSecondsRealtime(revealStaggerSeconds);
+                }
+            }
+
+            revealRoutine = null;
+        }
+
+        private void SetHeight(float height)
+        {
+            if (panelRect == null)
+            {
+                return;
+            }
+
+            Vector2 size = panelRect.sizeDelta;
+            size.y = height;
+            panelRect.sizeDelta = size;
         }
     }
 }

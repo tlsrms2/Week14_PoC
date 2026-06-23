@@ -27,6 +27,8 @@ namespace Week14.Combat
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
         private static readonly int DoInterceptParameter = Animator.StringToHash("doIntercept");
         private static readonly int DoShotParameter = Animator.StringToHash("doShot");
+        private static readonly int DoReloadParameter = Animator.StringToHash("doReload");
+        private static readonly int DoRollParameter = Animator.StringToHash("doRoll");
 
         private enum VisualFacing
         {
@@ -158,6 +160,42 @@ namespace Week14.Combat
             if (backRightArmAnimator != null)
             {
                 backRightArmAnimator.SetTrigger(DoInterceptParameter);
+            }
+        }
+
+        public void PlayReload()
+        {
+            if (frontRightArmAnimator != null)
+            {
+                frontRightArmAnimator.SetTrigger(DoReloadParameter);
+            }
+
+            if (sideRightArmAnimator != null)
+            {
+                sideRightArmAnimator.SetTrigger(DoReloadParameter);
+            }
+
+            if (backRightArmAnimator != null)
+            {
+                backRightArmAnimator.SetTrigger(DoReloadParameter);
+            }
+        }
+
+        public void PlayRoll()
+        {
+            if (frontBodyAnimator != null)
+            {
+                frontBodyAnimator.SetTrigger(DoRollParameter);
+            }
+
+            if (sideBodyAnimator != null)
+            {
+                sideBodyAnimator.SetTrigger(DoRollParameter);
+            }
+
+            if (backBodyAnimator != null)
+            {
+                backBodyAnimator.SetTrigger(DoRollParameter);
             }
         }
 
