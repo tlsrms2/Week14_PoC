@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553461748deae774480ab8b1802f2123, type: 3}
+  m_Name: BossData
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossData
+  id: 1
+  bossName: "\uD14C\uC2A4\uD2B8"
+  crime: "\uD14C\uC2A4\uD2B8"
+  description: "\uD14C\uC2A4\uD2B8\uAE30 \uB54C\uBB38\uC5D0 \uB098\uC068"
+  icon: {fileID: -6223629233855118504, guid: 7a5129de2f924994286606028341ce05, type: 3}
+  sceneName: MainScene
