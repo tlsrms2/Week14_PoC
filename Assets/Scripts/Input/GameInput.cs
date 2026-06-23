@@ -14,6 +14,7 @@ namespace Week14.Input
         private const string LeftAttackActionName = "LeftAttack";
         private const string RightAttackActionName = "RightAttack";
         private const string HelpActionName = "Help";
+        private const string UseSkillActionName = "UseSkill";
 #if ENABLE_INPUT_SYSTEM
         private static PlayerInput playerInput;
         private static InputAction moveAction;
@@ -21,11 +22,13 @@ namespace Week14.Input
         private static InputAction leftAttackAction;
         private static InputAction rightAttackAction;
         private static InputAction helpAction;
+        private static InputAction useSkillAction;
 #else
         private static readonly object moveAction = null;
         private static readonly object leftAttackAction = null;
         private static readonly object rightAttackAction = null;
         private static readonly object helpAction = null;
+        private static readonly object useSkillAction = null;
 #endif
 
 #if ENABLE_INPUT_SYSTEM
@@ -54,6 +57,7 @@ namespace Week14.Input
             leftAttackAction = null;
             rightAttackAction = null;
             helpAction = null;
+            useSkillAction = null;
         }
 #endif
 
@@ -61,6 +65,7 @@ namespace Week14.Input
         public static bool LeftAttackDown => WasPressed(leftAttackAction);
         public static bool RightAttackDown => WasPressed(rightAttackAction);
         public static bool HelpDown => WasPressed(helpAction);
+        public static bool UseSkillDown => WasPressed(useSkillAction);
 
         public static Vector2 MouseScreenPosition
         {
@@ -83,6 +88,7 @@ namespace Week14.Input
             leftAttackAction = FindPlayerAction(LeftAttackActionName);
             rightAttackAction = FindPlayerAction(RightAttackActionName);
             helpAction = FindPlayerAction(HelpActionName);
+            useSkillAction = FindPlayerAction(UseSkillActionName);
         }
 
         private static InputAction FindPlayerAction(string actionName)
@@ -104,6 +110,7 @@ namespace Week14.Input
             EnableAction(leftAttackAction);
             EnableAction(rightAttackAction);
             EnableAction(helpAction);
+            EnableAction(useSkillAction);
         }
 
         private static void EnableAction(InputAction action)

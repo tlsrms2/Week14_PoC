@@ -4698,6 +4698,14 @@ PrefabInstance:
       propertyPath: victoryPanelDelaySeconds
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: backMaxAngleFromUp
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446421250808589075, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: frontMaxAngleFromDown
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

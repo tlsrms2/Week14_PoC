@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -55,6 +56,55 @@ namespace Week14.Save
             }
 
             Data.clearedBossIds.Add(bossId);
+            Save();
+        }
+
+        public static IReadOnlyList<string> UnlockedSkillIds => Data.unlockedSkillIds;
+
+        public static bool IsSkillUnlocked(string skillId)
+        {
+            return !string.IsNullOrEmpty(skillId) && Data.unlockedSkillIds.Contains(skillId);
+        }
+
+        public static void UnlockSkill(string skillId)
+        {
+            if (string.IsNullOrEmpty(skillId) || Data.unlockedSkillIds.Contains(skillId))
+            {
+                return;
+            }
+
+            Data.unlockedSkillIds.Add(skillId);
+            Save();
+        }
+
+        public static string GetEquippedSkillId(int slot)
+        {
+            List<SkillSlotData> equippedSkills = Data.equippedSkills;
+            for (int i = 0; i < equippedSkills.Count; i++)
+            {
+                if (equippedSkills[i].slot == slot)
+                {
+                    return equippedSkills[i].skillId;
+                }
+            }
+
+            return null;
+        }
+
+        public static void SetEquippedSkillId(int slot, string skillId)
+        {
+            List<SkillSlotData> equippedSkills = Data.equippedSkills;
+            for (int i = 0; i < equippedSkills.Count; i++)
+            {
+                if (equippedSkills[i].slot == slot)
+                {
+                    equippedSkills[i].skillId = skillId;
+                    Save();
+                    return;
+                }
+            }
+
+            equippedSkills.Add(new SkillSlotData { slot = slot, skillId = skillId });
             Save();
         }
 

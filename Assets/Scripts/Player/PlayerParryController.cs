@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
@@ -7,6 +8,8 @@ namespace Week14.Combat
 {
     internal sealed class PlayerParryController
     {
+        internal static event Action ProjectileParried;
+
         private readonly PlayerCombatController.PlayerCombatContext context;
         private readonly PlayerAimController aimController;
         private readonly PlayerCombatRig rig;
@@ -124,6 +127,7 @@ namespace Week14.Combat
             context.Visual?.PlayIntercept();
             int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
             SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, 1.3f));
+            ProjectileParried?.Invoke();
             return true;
         }
 

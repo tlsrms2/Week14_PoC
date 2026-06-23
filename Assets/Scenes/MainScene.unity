@@ -3311,6 +3311,52 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &968074595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 968074597}
+  - component: {fileID: 968074596}
+  m_Layer: 0
+  m_Name: SkillLoadoutManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &968074596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968074595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d7430ef3d70754388caf450b16340e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.SkillLoadoutManager
+  database: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
+  defaultTestSkill: {fileID: 0}
+--- !u!4 &968074597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968074595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 910.379, y: 513.13794, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &977922113
 GameObject:
   m_ObjectHideFlags: 0
@@ -8398,6 +8444,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: m_FillMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8441,8 +8499,42 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7233779536830355045, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2382189914428757670}
   m_SourcePrefab: {fileID: 100100000, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+--- !u!1 &2382189914428757668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7233779536830355045, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+  m_PrefabInstance: {fileID: 2382189914428757667}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2382189914428757669 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+  m_PrefabInstance: {fileID: 2382189914428757667}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382189914428757668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &2382189914428757670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382189914428757668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce5ac8680f1d254ca17c155da3612a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.SkillStackView
+  fillImage: {fileID: 2382189914428757669}
+  normalColor: {r: 0.12941177, g: 0.62352943, b: 0.7254902, a: 1}
+  fullColor: {r: 0, g: 0.13725491, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -8456,3 +8548,4 @@ SceneRoots:
   - {fileID: 1927257814685671036}
   - {fileID: 171359973}
   - {fileID: 818700748}
+  - {fileID: 968074597}
