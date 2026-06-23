@@ -9,24 +9,35 @@ namespace Week14.Enemy
     {
         [SerializeReference] private List<BossAction> actions = new();
 
+        public BossAction Action => actions != null && actions.Count > 0 ? actions[0] : null;
         public IReadOnlyList<BossAction> Actions => actions;
 
         public IEnumerator Execute(BossActionContext context)
         {
-            if (context == null || actions == null)
+            BossAction action = Action;
+            if (context == null || action == null)
             {
                 yield break;
             }
 
-            for (int i = 0; i < actions.Count; i++)
-            {
-                BossAction action = actions[i];
-                if (action == null)
-                {
-                    continue;
-                }
+            yield return action.Execute(context);
+        }
 
-                yield return action.Execute(context);
+        private void OnValidate()
+        {
+            TrimToSingleAction();
+        }
+
+        private void TrimToSingleAction()
+        {
+            if (actions == null)
+            {
+                return;
+            }
+
+            while (actions.Count > 1)
+            {
+                actions.RemoveAt(actions.Count - 1);
             }
         }
     }

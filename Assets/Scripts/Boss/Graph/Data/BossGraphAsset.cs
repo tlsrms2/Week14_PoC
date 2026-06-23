@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -9,7 +10,8 @@ namespace Week14.Enemy
     public sealed class BossGraphAsset : ScriptableObject
     {
         [SerializeField] private string startNodeId = "Phase1";
-        [SerializeField] private BossGraphReferenceSettings references = new();
+        [FormerlySerializedAs("references")]
+        [SerializeField] private BossGraphReferenceSettings referenceSettings = new();
         [SerializeField] private List<BossStateNode> stateNodes = new()
         {
             new BossStateNode()
@@ -18,10 +20,10 @@ namespace Week14.Enemy
         [SerializeField] private List<BossGraphPhase> phases = new();
         [SerializeField] private List<BossTransition> transitions = new();
 
-        public BossGraphReferenceSettings References => references;
-        public CombatEffectData EffectData => references != null ? references.EffectData : null;
-        public BossColorSettings ColorSettings => references != null ? references.ColorSettings : null;
-        public BossGraphActionCategoryAsset ActionCategories => references != null ? references.ActionCategories : null;
+        public BossGraphReferenceSettings References => referenceSettings;
+        public CombatEffectData EffectData => referenceSettings != null ? referenceSettings.EffectData : null;
+        public BossColorSettings ColorSettings => referenceSettings != null ? referenceSettings.ColorSettings : null;
+        public BossGraphActionCategoryAsset ActionCategories => referenceSettings != null ? referenceSettings.ActionCategories : null;
         public IReadOnlyList<BossStateNode> StateNodes => stateNodes;
         public IReadOnlyList<BossGraphPattern> Patterns => patterns;
         public IReadOnlyList<BossGraphPhase> Phases => phases;
@@ -63,7 +65,7 @@ namespace Week14.Enemy
             for (int i = 0; i < stateNodes.Count; i++)
             {
                 BossStateNode node = stateNodes[i];
-                if (node != null && node.NodeId == nodeId)
+                if (node != null && (node.NodeGuid == nodeId || node.NodeId == nodeId))
                 {
                     return node;
                 }
@@ -108,6 +110,47 @@ namespace Week14.Enemy
             }
 
             return phases[0];
+        }
+
+        private void OnValidate()
+        {
+            EnsureNodeGuids();
+        }
+
+        private void EnsureNodeGuids()
+        {
+            if (stateNodes == null)
+            {
+                return;
+            }
+
+            HashSet<string> existingGuids = new();
+            Dictionary<string, string> nodeIdToGuid = new(StringComparer.Ordinal);
+            for (int i = 0; i < stateNodes.Count; i++)
+            {
+                BossStateNode node = stateNodes[i];
+                node?.EnsureNodeGuid(existingGuids);
+                if (node != null && !string.IsNullOrWhiteSpace(node.NodeId) && !string.IsNullOrWhiteSpace(node.NodeGuid))
+                {
+                    nodeIdToGuid[node.NodeId] = node.NodeGuid;
+                }
+            }
+
+            if (patterns != null)
+            {
+                for (int i = 0; i < patterns.Count; i++)
+                {
+                    patterns[i]?.EnsureNodeGuids(nodeIdToGuid);
+                }
+            }
+
+            if (transitions != null)
+            {
+                for (int i = 0; i < transitions.Count; i++)
+                {
+                    transitions[i]?.EnsureNodeGuids(nodeIdToGuid);
+                }
+            }
         }
 
         private BossStateNode FindNode(string nodeId)
@@ -156,19 +199,39 @@ namespace Week14.Enemy
     public sealed class BossStateNode
     {
         [SerializeField] private string nodeId = "Phase1";
+        [SerializeField, HideInInspector] private string nodeGuid;
         [SerializeField] private BossGraphNodeKind nodeKind = BossGraphNodeKind.Attack;
         [SerializeField, Min(0)] private int phaseIndex;
         [SerializeField] private BossSequenceSelectionMode selectionMode;
+        [SerializeReference] private BossAction action;
         [SerializeField] private List<BossSequenceEntry> sequences = new();
         [SerializeField] private Vector2 editorPosition;
 
         public string NodeId => nodeId;
+        public string NodeGuid => nodeGuid;
         public BossGraphNodeKind NodeKind => nodeKind;
         public int PhaseIndex => phaseIndex;
         public BossSequenceSelectionMode SelectionMode => selectionMode;
+        public BossAction Action => action ?? ActionSequence?.Action;
+        public bool HasDirectAction => action != null;
         public IReadOnlyList<BossSequenceEntry> Sequences => sequences;
         public BossGraphActionAsset ActionSequence => sequences != null && sequences.Count > 0 ? sequences[0]?.Sequence : null;
         public Vector2 EditorPosition => editorPosition;
+
+        internal void EnsureNodeGuid(ISet<string> existingGuids)
+        {
+            if (existingGuids == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(nodeGuid) || existingGuids.Contains(nodeGuid))
+            {
+                nodeGuid = Guid.NewGuid().ToString("N");
+            }
+
+            existingGuids.Add(nodeGuid);
+        }
     }
 
     [Serializable]
@@ -185,10 +248,32 @@ namespace Week14.Enemy
     public sealed class BossGraphPattern
     {
         [SerializeField] private string patternId = "Pattern1";
+        [SerializeField, HideInInspector] private List<string> nodeGuids = new();
         [SerializeField] private List<string> nodeIds = new();
 
         public string PatternId => patternId;
+        public IReadOnlyList<string> NodeKeys => nodeGuids != null && nodeGuids.Count > 0 ? nodeGuids : nodeIds;
+        public IReadOnlyList<string> NodeGuids => nodeGuids;
         public IReadOnlyList<string> NodeIds => nodeIds;
+
+        internal void EnsureNodeGuids(IReadOnlyDictionary<string, string> nodeIdToGuid)
+        {
+            if (nodeIds == null || nodeIdToGuid == null)
+            {
+                return;
+            }
+
+            nodeGuids ??= new List<string>();
+            nodeGuids.Clear();
+            for (int i = 0; i < nodeIds.Count; i++)
+            {
+                string nodeId = nodeIds[i];
+                if (!string.IsNullOrWhiteSpace(nodeId) && nodeIdToGuid.TryGetValue(nodeId, out string nodeGuid))
+                {
+                    nodeGuids.Add(nodeGuid);
+                }
+            }
+        }
     }
 
     [Serializable]
@@ -218,16 +303,52 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class BossTransition
     {
+        [SerializeField, HideInInspector] private string fromNodeGuid;
+        [SerializeField, HideInInspector] private string toNodeGuid;
         [SerializeField] private string fromNodeId;
         [SerializeField] private string toNodeId;
         [SerializeField] private BossTransitionConditionType conditionType;
         [SerializeField] private float threshold;
         [SerializeField] private int phaseIndex;
 
+        public string FromNodeKey => !string.IsNullOrWhiteSpace(fromNodeGuid) ? fromNodeGuid : fromNodeId;
+        public string ToNodeKey => !string.IsNullOrWhiteSpace(toNodeGuid) ? toNodeGuid : toNodeId;
+        public string FromNodeGuid => fromNodeGuid;
+        public string ToNodeGuid => toNodeGuid;
         public string FromNodeId => fromNodeId;
         public string ToNodeId => toNodeId;
         public BossTransitionConditionType ConditionType => conditionType;
         public float Threshold => threshold;
         public int PhaseIndex => phaseIndex;
+
+        public bool IsFromNode(BossStateNode node)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+
+            return !string.IsNullOrWhiteSpace(fromNodeGuid)
+                ? fromNodeGuid == node.NodeGuid
+                : fromNodeId == node.NodeId;
+        }
+
+        internal void EnsureNodeGuids(IReadOnlyDictionary<string, string> nodeIdToGuid)
+        {
+            if (nodeIdToGuid == null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(fromNodeId) && nodeIdToGuid.TryGetValue(fromNodeId, out string nextFromGuid))
+            {
+                fromNodeGuid = nextFromGuid;
+            }
+
+            if (!string.IsNullOrWhiteSpace(toNodeId) && nodeIdToGuid.TryGetValue(toNodeId, out string nextToGuid))
+            {
+                toNodeGuid = nextToGuid;
+            }
+        }
     }
 }

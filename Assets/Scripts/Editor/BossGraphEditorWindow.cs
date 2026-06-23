@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -259,6 +258,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         string nodeId = GetString(node, "nodeId", $"Node {index + 1}");
         BossGraphNodeKind nodeKind = (BossGraphNodeKind)GetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
         Vector2 position = GetVector2(node, "editorPosition", new Vector2(80f + index * 260f, 120f));
+        string displayName = GetNodeDisplayName(node, index);
         if (position == Vector2.zero)
         {
             position = new Vector2(80f + index * 260f, 120f);
@@ -266,7 +266,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         BossGraphNodeView nodeView = new(index, nodeId)
         {
-            title = nodeId
+            title = displayName
         };
         nodeView.SetDragNodeIdsProvider(() => graphView != null
             ? graphView.GetNodeIdsForDrag(nodeView)
@@ -319,6 +319,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         Vector2 nodePosition = editorPosition ?? new Vector2(80f + index * 260f, 120f);
         SerializedProperty node = stateNodes.GetArrayElementAtIndex(index);
         SetString(node, "nodeId", nodeId);
+        SetString(node, "nodeGuid", Guid.NewGuid().ToString("N"));
         SetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
         SetInt(node, "phaseIndex", 0);
         SetEnum(node, "selectionMode", 0);
@@ -676,7 +677,135 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         bool patternsChanged = SyncPatternsFromTransitions(nextTransitions);
-        return transitionsChanged || patternsChanged;
+        bool guidReferencesChanged = SyncGuidReferences();
+        return transitionsChanged || patternsChanged || guidReferencesChanged;
+    }
+
+    private bool SyncGuidReferences()
+    {
+        Dictionary<string, string> nodeIdToGuid = BuildNodeIdToGuidMap();
+        if (nodeIdToGuid.Count == 0)
+        {
+            return false;
+        }
+
+        bool changed = false;
+        SerializedProperty transitions = graphObject.FindProperty("transitions");
+        if (transitions != null)
+        {
+            for (int i = 0; i < transitions.arraySize; i++)
+            {
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
+                changed |= SetGuidFromNodeId(transition, "fromNodeId", "fromNodeGuid", nodeIdToGuid);
+                changed |= SetGuidFromNodeId(transition, "toNodeId", "toNodeGuid", nodeIdToGuid);
+            }
+        }
+
+        SerializedProperty patterns = graphObject.FindProperty("patterns");
+        if (patterns == null)
+        {
+            return changed;
+        }
+
+        for (int patternIndex = 0; patternIndex < patterns.arraySize; patternIndex++)
+        {
+            SerializedProperty pattern = patterns.GetArrayElementAtIndex(patternIndex);
+            SerializedProperty nodeIds = pattern.FindPropertyRelative("nodeIds");
+            SerializedProperty nodeGuids = pattern.FindPropertyRelative("nodeGuids");
+            if (nodeIds == null || nodeGuids == null)
+            {
+                continue;
+            }
+
+            List<string> nextGuids = new();
+            for (int nodeIndex = 0; nodeIndex < nodeIds.arraySize; nodeIndex++)
+            {
+                string nodeId = nodeIds.GetArrayElementAtIndex(nodeIndex).stringValue;
+                if (!string.IsNullOrWhiteSpace(nodeId) && nodeIdToGuid.TryGetValue(nodeId, out string nodeGuid))
+                {
+                    nextGuids.Add(nodeGuid);
+                }
+            }
+
+            if (StringArrayEquals(nodeGuids, nextGuids))
+            {
+                continue;
+            }
+
+            nodeGuids.ClearArray();
+            for (int i = 0; i < nextGuids.Count; i++)
+            {
+                nodeGuids.InsertArrayElementAtIndex(i);
+                nodeGuids.GetArrayElementAtIndex(i).stringValue = nextGuids[i];
+            }
+
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private Dictionary<string, string> BuildNodeIdToGuidMap()
+    {
+        Dictionary<string, string> nodeIdToGuid = new(StringComparer.Ordinal);
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        if (stateNodes == null)
+        {
+            return nodeIdToGuid;
+        }
+
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            string nodeId = GetString(node, "nodeId", string.Empty);
+            string nodeGuid = GetString(node, "nodeGuid", string.Empty);
+            if (!string.IsNullOrWhiteSpace(nodeId) && !string.IsNullOrWhiteSpace(nodeGuid))
+            {
+                nodeIdToGuid[nodeId] = nodeGuid;
+            }
+        }
+
+        return nodeIdToGuid;
+    }
+
+    private static bool SetGuidFromNodeId(
+        SerializedProperty root,
+        string nodeIdPropertyName,
+        string nodeGuidPropertyName,
+        IReadOnlyDictionary<string, string> nodeIdToGuid)
+    {
+        string nodeId = GetString(root, nodeIdPropertyName, string.Empty);
+        SerializedProperty nodeGuid = root.FindPropertyRelative(nodeGuidPropertyName);
+        if (nodeGuid == null || string.IsNullOrWhiteSpace(nodeId) || !nodeIdToGuid.TryGetValue(nodeId, out string nextGuid))
+        {
+            return false;
+        }
+
+        if (nodeGuid.stringValue == nextGuid)
+        {
+            return false;
+        }
+
+        nodeGuid.stringValue = nextGuid;
+        return true;
+    }
+
+    private static bool StringArrayEquals(SerializedProperty array, IReadOnlyList<string> values)
+    {
+        if (array == null || array.arraySize != values.Count)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < values.Count; i++)
+        {
+            if (array.GetArrayElementAtIndex(i).stringValue != values[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static bool AreTransitionSnapshotsEqual(
@@ -1875,7 +2004,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private void DrawGraphReferences()
     {
-        SerializedProperty references = graphObject.FindProperty("references");
+        SerializedProperty references = graphObject.FindProperty("referenceSettings");
         if (references == null)
         {
             return;
@@ -1999,7 +2128,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private BossGraphActionCategoryAsset GetActionCategoryAsset()
     {
-        SerializedProperty references = graphObject?.FindProperty("references");
+        SerializedProperty references = graphObject?.FindProperty("referenceSettings");
         return references?.FindPropertyRelative("actionCategories")?.objectReferenceValue as BossGraphActionCategoryAsset;
     }
 
@@ -2045,31 +2174,53 @@ public sealed class BossGraphEditorWindow : EditorWindow
         for (int i = 0; i < patterns.arraySize; i++)
         {
             SerializedProperty pattern = patterns.GetArrayElementAtIndex(i);
-            changed |= DrawPatternItem(pattern, i);
+            if (DrawPatternItem(pattern, i, patterns, out bool deletedPattern))
+            {
+                changed = true;
+            }
+
+            if (deletedPattern)
+            {
+                break;
+            }
         }
 
         changed |= EditorGUI.EndChangeCheck();
         if (changed)
         {
             WriteNodePositionsFromCurrentView();
+            SyncGuidReferences();
             graphObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(graphAsset);
             RefreshGroupFramesFromNodePositions();
         }
     }
 
-    private bool DrawPatternItem(SerializedProperty pattern, int patternIndex)
+    private bool DrawPatternItem(
+        SerializedProperty pattern,
+        int patternIndex,
+        SerializedProperty patterns,
+        out bool deletedPattern)
     {
+        deletedPattern = false;
         bool changed = false;
         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
             using (new EditorGUILayout.HorizontalScope())
             {
                 string fallbackLabel = $"Pattern {patternIndex + 1}";
+                string patternIdValue = GetString(pattern, "patternId", fallbackLabel);
                 pattern.isExpanded = EditorGUILayout.Foldout(
                     pattern.isExpanded,
-                    GetString(pattern, "patternId", fallbackLabel),
+                    patternIdValue,
                     true);
+
+                if (GUILayout.Button("Del", EditorStyles.miniButton, GUILayout.Width(34f)))
+                {
+                    DeletePattern(patterns, patternIndex, patternIdValue);
+                    deletedPattern = true;
+                    return true;
+                }
             }
 
             if (!pattern.isExpanded)
@@ -2151,6 +2302,103 @@ public sealed class BossGraphEditorWindow : EditorWindow
         GUI.Box(dropRect, "Drop Graph Nodes Here", EditorStyles.helpBox);
         changed |= HandlePatternNodeDrop(dropRect, nodeIds);
         return changed;
+    }
+
+    private void DeletePattern(SerializedProperty patterns, int patternIndex, string patternId)
+    {
+        if (patterns == null || patternIndex < 0 || patternIndex >= patterns.arraySize)
+        {
+            return;
+        }
+
+        Undo.RecordObject(graphAsset, "Delete Boss Graph Pattern");
+        SerializedProperty pattern = patterns.GetArrayElementAtIndex(patternIndex);
+        HashSet<string> patternNodeIds = ReadPatternNodeIdSet(pattern);
+        patterns.DeleteArrayElementAtIndex(patternIndex);
+        RemovePhasePatternReferences(patternId);
+        RemoveTransitionsInsidePattern(patternNodeIds);
+        SyncGuidReferences();
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
+        RefreshGroupFramesFromNodePositions();
+        ScheduleRebuildGraph();
+    }
+
+    private static HashSet<string> ReadPatternNodeIdSet(SerializedProperty pattern)
+    {
+        HashSet<string> nodeIds = new(StringComparer.Ordinal);
+        SerializedProperty nodeIdsProperty = pattern?.FindPropertyRelative("nodeIds");
+        if (nodeIdsProperty == null)
+        {
+            return nodeIds;
+        }
+
+        for (int i = 0; i < nodeIdsProperty.arraySize; i++)
+        {
+            string nodeId = nodeIdsProperty.GetArrayElementAtIndex(i).stringValue;
+            if (!string.IsNullOrWhiteSpace(nodeId))
+            {
+                nodeIds.Add(nodeId);
+            }
+        }
+
+        return nodeIds;
+    }
+
+    private void RemovePhasePatternReferences(string patternId)
+    {
+        if (string.IsNullOrWhiteSpace(patternId))
+        {
+            return;
+        }
+
+        SerializedProperty phases = graphObject.FindProperty("phases");
+        if (phases == null)
+        {
+            return;
+        }
+
+        for (int phaseIndex = 0; phaseIndex < phases.arraySize; phaseIndex++)
+        {
+            SerializedProperty entries = phases.GetArrayElementAtIndex(phaseIndex).FindPropertyRelative("patterns");
+            if (entries == null)
+            {
+                continue;
+            }
+
+            for (int entryIndex = entries.arraySize - 1; entryIndex >= 0; entryIndex--)
+            {
+                if (GetString(entries.GetArrayElementAtIndex(entryIndex), "patternId", string.Empty) == patternId)
+                {
+                    entries.DeleteArrayElementAtIndex(entryIndex);
+                }
+            }
+        }
+    }
+
+    private void RemoveTransitionsInsidePattern(HashSet<string> patternNodeIds)
+    {
+        if (patternNodeIds == null || patternNodeIds.Count < 2)
+        {
+            return;
+        }
+
+        SerializedProperty transitions = graphObject.FindProperty("transitions");
+        if (transitions == null)
+        {
+            return;
+        }
+
+        for (int i = transitions.arraySize - 1; i >= 0; i--)
+        {
+            SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
+            string fromNodeId = GetString(transition, "fromNodeId", string.Empty);
+            string toNodeId = GetString(transition, "toNodeId", string.Empty);
+            if (patternNodeIds.Contains(fromNodeId) && patternNodeIds.Contains(toNodeId))
+            {
+                transitions.DeleteArrayElementAtIndex(i);
+            }
+        }
     }
 
     private bool HandlePatternNodeDrop(Rect dropRect, SerializedProperty nodeIds)
@@ -2242,7 +2490,87 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
         SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
         BossGraphNodeKind nodeKind = (BossGraphNodeKind)GetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
-        return $"{nodeId} ({nodeKind})";
+        return $"{GetNodeDisplayName(node, nodeIndex)} ({nodeKind})";
+    }
+
+    private string GetNodeDisplayName(SerializedProperty node, int nodeIndex)
+    {
+        string baseName = GetNodeActionDisplayName(node);
+        int totalCount = CountNodeDisplayNames(baseName);
+        if (totalCount <= 1)
+        {
+            return baseName;
+        }
+
+        int occurrence = GetNodeDisplayNameOccurrence(baseName, nodeIndex);
+        return $"{baseName} {Mathf.Max(1, occurrence):00}";
+    }
+
+    private int CountNodeDisplayNames(string baseName)
+    {
+        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
+        if (stateNodes == null || string.IsNullOrWhiteSpace(baseName))
+        {
+            return 0;
+        }
+
+        int count = 0;
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            if (GetNodeActionDisplayName(node) == baseName)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private int GetNodeDisplayNameOccurrence(string baseName, int nodeIndex)
+    {
+        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
+        if (stateNodes == null || string.IsNullOrWhiteSpace(baseName))
+        {
+            return 1;
+        }
+
+        int maxIndex = Mathf.Min(nodeIndex, stateNodes.arraySize - 1);
+        int occurrence = 0;
+        for (int i = 0; i <= maxIndex; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            if (GetNodeActionDisplayName(node) == baseName)
+            {
+                occurrence++;
+            }
+        }
+
+        return occurrence;
+    }
+
+    private static string GetNodeActionDisplayName(SerializedProperty node)
+    {
+        Type actionType = GetNodeActionType(node);
+        if (actionType == null)
+        {
+            return "Empty Action";
+        }
+
+        string label = BossGraphActionEditorUtility.GetActionLabel(actionType);
+        int slashIndex = label.LastIndexOf('/');
+        if (slashIndex >= 0 && slashIndex < label.Length - 1)
+        {
+            label = label.Substring(slashIndex + 1);
+        }
+
+        const string actionSuffix = " Action";
+        if (label.EndsWith(actionSuffix, StringComparison.Ordinal))
+        {
+            label = label.Substring(0, label.Length - actionSuffix.Length);
+        }
+
+        return string.IsNullOrWhiteSpace(label) ? "Empty Action" : label;
     }
 
     private bool HasStateNode(string nodeId)
@@ -2578,125 +2906,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return patternIds;
     }
 
-    private void DrawBossGraphActionAssetManager()
-    {
-        EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
-
-        List<BossGraphActionAsset> sequences = GetGraphActionAssets(graphAsset);
-        using (new EditorGUILayout.HorizontalScope())
-        {
-            if (GUILayout.Button("새 Action 생성"))
-            {
-                BossGraphActionAsset sequence = CreateActionAsset(graphAsset, "Shared", sequences.Count);
-                if (sequence != null)
-                {
-                    SelectActionAsset(sequence);
-                    EditorGUIUtility.PingObject(sequence);
-                    detailsPanel?.MarkDirtyRepaint();
-                }
-            }
-
-            using (new EditorGUI.DisabledScope(selectedActionAsset == null || graphView?.GetPrimarySelection() is not BossGraphNodeView))
-            {
-                if (GUILayout.Button("선택 노드에 연결"))
-                {
-                    AppendSelectedActionToSelectedNode();
-                }
-            }
-        }
-
-        if (sequences.Count == 0)
-        {
-            EditorGUILayout.HelpBox("Graph 안에 Action Asset이 없습니다.", MessageType.Info);
-            return;
-        }
-
-        for (int i = 0; i < sequences.Count; i++)
-        {
-            BossGraphActionAsset sequence = sequences[i];
-            if (sequence == null)
-            {
-                continue;
-            }
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                bool isSelected = sequence == selectedActionAsset;
-                if (GUILayout.Toggle(isSelected, sequence.name, "Button"))
-                {
-                    SelectActionAsset(sequence);
-                }
-
-                EditorGUILayout.LabelField($"Used {GetActionUseCount(sequence)}", GUILayout.Width(54f));
-
-                if (GUILayout.Button("Ping", GUILayout.Width(42f)))
-                {
-                    EditorGUIUtility.PingObject(sequence);
-                }
-
-                if (GUILayout.Button("Del", GUILayout.Width(34f)))
-                {
-                    DeleteActionAsset(sequence);
-                    break;
-                }
-            }
-        }
-
-        DrawSelectedActionEditor();
-    }
-
-    private void DrawSelectedActionEditor()
-    {
-        if (selectedActionAsset == null)
-        {
-            return;
-        }
-
-        EditorGUILayout.Space(4f);
-        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-        {
-            EditorGUI.BeginChangeCheck();
-            string nextName = EditorGUILayout.TextField("Name", selectedActionAsset.name);
-            if (EditorGUI.EndChangeCheck() && !string.IsNullOrWhiteSpace(nextName))
-            {
-                Undo.RecordObject(selectedActionAsset, "Rename Boss Graph Action");
-                selectedActionAsset.name = SanitizeFileName(nextName);
-                EditorUtility.SetDirty(selectedActionAsset);
-                AssetDatabase.SaveAssets();
-            }
-
-            if (selectedActionEditor == null || selectedActionEditor.target != selectedActionAsset)
-            {
-                DestroyActionEditor();
-                selectedActionEditor = Editor.CreateEditor(selectedActionAsset);
-            }
-
-            BossGraphProjectileNameOptions.Set(graphProjectileNames);
-            if (TryGetSelectedNodeKind(out BossGraphNodeKind selectedNodeKind))
-            {
-                BossGraphActionFilterContext.Set(selectedNodeKind, GetActionCategoryAsset());
-            }
-            else
-            {
-                BossGraphActionFilterContext.Clear();
-            }
-
-            try
-            {
-                BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
-                BossGraphAimStartNodeOptions.Set(graphObject);
-                selectedActionEditor?.OnInspectorGUI();
-            }
-            finally
-            {
-                BossGraphBossHierarchyOptions.Clear();
-                BossGraphAimStartNodeOptions.Clear();
-                BossGraphActionFilterContext.Clear();
-                BossGraphProjectileNameOptions.Clear();
-            }
-        }
-    }
-
     private void DrawNodeDetails(BossGraphNodeView nodeView)
     {
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
@@ -2712,7 +2921,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         int oldPhaseIndex = GetInt(node, "phaseIndex", nodeView.NodeIndex);
 
         EditorGUI.BeginChangeCheck();
-        DrawNodeCoreFields(node);
+        DrawNodeCoreFields(node, nodeView.NodeIndex);
         bool nodeChanged = EditorGUI.EndChangeCheck();
 
         string newNodeId = GetString(node, "nodeId", string.Empty);
@@ -2746,15 +2955,14 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         BossGraphNodeKind nodeKind = (BossGraphNodeKind)newNodeKind;
         DrawNodeActionSelector(node, nodeKind);
-        BossGraphActionAsset actionAsset = GetNodeActionAsset(node);
-        Type actionType = GetNodeActionType(actionAsset);
-        if (actionAsset != null && !IsActionAllowedForNodeKind(actionType, nodeKind))
+        Type actionType = GetNodeActionType(node);
+        if (actionType != null && !IsActionAllowedForNodeKind(actionType, nodeKind))
         {
             EditorGUILayout.HelpBox("현재 Action 타입이 노드 Type과 맞지 않습니다. 이 Type에 맞는 Action을 다시 선택하세요.", MessageType.Warning);
             return;
         }
 
-        DrawNodeActionEditor(actionAsset, nodeKind);
+        DrawNodeActionEditor(node, nodeKind);
     }
 
     private void DrawTransitionDetails(Edge edge)
@@ -2837,9 +3045,13 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return null;
     }
 
-    private static void DrawNodeCoreFields(SerializedProperty node)
+    private void DrawNodeCoreFields(SerializedProperty node, int nodeIndex)
     {
-        EditorGUILayout.PropertyField(node.FindPropertyRelative("nodeId"));
+        using (new EditorGUI.DisabledScope(true))
+        {
+            EditorGUILayout.TextField("Action Name", GetNodeDisplayName(node, nodeIndex));
+        }
+
         EditorGUILayout.PropertyField(node.FindPropertyRelative("nodeKind"), new GUIContent("Type"));
     }
 
@@ -2855,6 +3067,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return entry.FindPropertyRelative("sequence")?.objectReferenceValue as BossGraphActionAsset;
     }
 
+    private static SerializedProperty GetNodeActionProperty(SerializedProperty node)
+    {
+        return node?.FindPropertyRelative("action");
+    }
+
     private void DrawNodeActionSelector(SerializedProperty node, BossGraphNodeKind nodeKind)
     {
         List<BossGraphActionMenuItem> allowedActions = GetAllowedActionMenuItems(nodeKind);
@@ -2864,7 +3081,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        Type currentActionType = GetNodeActionType(GetNodeActionAsset(node));
+        Type currentActionType = GetNodeActionType(node);
         List<GUIContent> labels = new() { new GUIContent("<선택>") };
         int currentIndex = 0;
         for (int i = 0; i < allowedActions.Count; i++)
@@ -2925,41 +3142,35 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return GetEffectiveActionNodeKind(actionType, GetActionCategoryAsset()) == nodeKind;
     }
 
+    private static Type GetNodeActionType(SerializedProperty node)
+    {
+        BossAction directAction = GetNodeActionProperty(node)?.managedReferenceValue as BossAction;
+        return directAction?.GetType() ?? GetNodeActionType(GetNodeActionAsset(node));
+    }
+
     private static Type GetNodeActionType(BossGraphActionAsset actionAsset)
     {
-        BossAction action = actionAsset?.Actions != null && actionAsset.Actions.Count > 0
-            ? actionAsset.Actions[0]
-            : null;
-        return action?.GetType();
+        return actionAsset?.Action?.GetType();
     }
 
     private void SetNodeAction(SerializedProperty node, BossGraphActionMenuItem actionItem)
     {
-        SerializedProperty sequences = node.FindPropertyRelative("sequences");
-        if (sequences == null)
+        SerializedProperty action = GetNodeActionProperty(node);
+        if (action == null)
         {
             return;
         }
 
         string nodeId = GetString(node, "nodeId", string.Empty);
-        BossGraphActionAsset actionAsset = GetNodeActionAsset(node);
-        if (actionAsset == null)
-        {
-            actionAsset = CreateActionAsset(graphAsset, string.IsNullOrWhiteSpace(nodeId) ? "Node" : nodeId, 0);
-            if (actionAsset == null)
-            {
-                return;
-            }
+        Undo.RecordObject(graphAsset, "Change Boss Graph Node Action");
+        action.managedReferenceValue = actionItem.Create();
+        node.FindPropertyRelative("sequences")?.ClearArray();
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
 
-            Undo.RecordObject(graphAsset, "Connect Boss Graph Action");
-            InsertActionEntry(sequences, actionAsset);
-            graphObject.ApplyModifiedProperties();
-            EditorUtility.SetDirty(graphAsset);
-        }
-
-        SetActionAssetSingleAction(actionAsset, actionItem);
-        SelectActionAsset(actionAsset);
+        SelectActionAsset(null);
         SelectNodeDetails(nodeId);
+        ScheduleRebuildGraph(nodeId);
         detailsPanel?.MarkDirtyRepaint();
     }
 
@@ -2986,8 +3197,42 @@ public sealed class BossGraphEditorWindow : EditorWindow
         AssetDatabase.SaveAssets();
     }
 
-    private void DrawNodeActionEditor(BossGraphActionAsset actionAsset, BossGraphNodeKind nodeKind)
+    private void DrawNodeActionEditor(SerializedProperty node, BossGraphNodeKind nodeKind)
     {
+        SerializedProperty action = GetNodeActionProperty(node);
+        if (action != null && action.managedReferenceValue != null)
+        {
+            selectedActionAsset = null;
+            DestroyActionEditor();
+
+            EditorGUILayout.Space(6f);
+            BossGraphProjectileNameOptions.Set(graphProjectileNames);
+            BossGraphActionFilterContext.Set(nodeKind, GetActionCategoryAsset());
+            try
+            {
+                BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+                BossGraphAimStartNodeOptions.Set(graphObject);
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(action, new GUIContent(GetNodeActionLabel(action)), true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    graphObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(graphAsset);
+                    detailsPanel?.MarkDirtyRepaint();
+                }
+            }
+            finally
+            {
+                BossGraphBossHierarchyOptions.Clear();
+                BossGraphAimStartNodeOptions.Clear();
+                BossGraphActionFilterContext.Clear();
+                BossGraphProjectileNameOptions.Clear();
+            }
+
+            return;
+        }
+
+        BossGraphActionAsset actionAsset = GetNodeActionAsset(node);
         if (actionAsset == null)
         {
             return;
@@ -3018,39 +3263,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
     }
 
-    private static void InsertActionEntry(SerializedProperty sequences, BossGraphActionAsset sequence)
+    private static string GetNodeActionLabel(SerializedProperty action)
     {
-        sequences.ClearArray();
-        int index = sequences.arraySize;
-        sequences.InsertArrayElementAtIndex(index);
-
-        SerializedProperty entry = sequences.GetArrayElementAtIndex(index);
-        SerializedProperty sequenceProperty = entry.FindPropertyRelative("sequence");
-        SerializedProperty weightProperty = entry.FindPropertyRelative("weight");
-        if (sequenceProperty != null)
-        {
-            sequenceProperty.objectReferenceValue = sequence;
-        }
-
-        if (weightProperty != null)
-        {
-            weightProperty.intValue = 1;
-        }
-    }
-
-    private static List<BossGraphActionAsset> GetGraphActionAssets(BossGraphAsset graph)
-    {
-        string graphPath = graph != null ? AssetDatabase.GetAssetPath(graph) : string.Empty;
-        if (string.IsNullOrWhiteSpace(graphPath))
-        {
-            return new List<BossGraphActionAsset>();
-        }
-
-        return AssetDatabase.LoadAllAssetsAtPath(graphPath)
-            .OfType<BossGraphActionAsset>()
-            .Where(sequence => sequence != null)
-            .OrderBy(sequence => sequence.name)
-            .ToList();
+        object value = action?.managedReferenceValue;
+        return value == null
+            ? "Action"
+            : ObjectNames.NicifyVariableName(value.GetType().Name);
     }
 
     private void SelectActionAsset(BossGraphActionAsset sequence)
@@ -3073,126 +3291,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         DestroyImmediate(selectedActionEditor);
         selectedActionEditor = null;
-    }
-
-    private void AppendSelectedActionToSelectedNode()
-    {
-        if (selectedActionAsset == null || graphView?.GetPrimarySelection() is not BossGraphNodeView nodeView)
-        {
-            return;
-        }
-
-        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
-        if (stateNodes == null || nodeView.NodeIndex < 0 || nodeView.NodeIndex >= stateNodes.arraySize)
-        {
-            return;
-        }
-
-        Undo.RecordObject(graphAsset, "Connect Boss Graph Action");
-        SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeView.NodeIndex);
-        SerializedProperty sequences = node.FindPropertyRelative("sequences");
-        if (sequences == null)
-        {
-            return;
-        }
-
-        InsertActionEntry(sequences, selectedActionAsset);
-        graphObject.ApplyModifiedProperties();
-        EditorUtility.SetDirty(graphAsset);
-        AssetDatabase.SaveAssets();
-        detailsPanel?.MarkDirtyRepaint();
-    }
-
-    private int GetActionUseCount(BossGraphActionAsset sequence)
-    {
-        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
-        if (sequence == null || stateNodes == null)
-        {
-            return 0;
-        }
-
-        int count = 0;
-        for (int nodeIndex = 0; nodeIndex < stateNodes.arraySize; nodeIndex++)
-        {
-            SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
-            SerializedProperty sequences = node.FindPropertyRelative("sequences");
-            if (sequences == null)
-            {
-                continue;
-            }
-
-            for (int entryIndex = 0; entryIndex < sequences.arraySize; entryIndex++)
-            {
-                SerializedProperty entry = sequences.GetArrayElementAtIndex(entryIndex);
-                if (entry.FindPropertyRelative("sequence")?.objectReferenceValue == sequence)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    private void DeleteActionAsset(BossGraphActionAsset sequence)
-    {
-        if (sequence == null)
-        {
-            return;
-        }
-
-        int useCount = GetActionUseCount(sequence);
-        string message = useCount > 0
-            ? $"{sequence.name} Action을 삭제하고 {useCount}개의 노드 참조도 제거할까요?"
-            : $"{sequence.name} Action을 삭제할까요?";
-        if (!EditorUtility.DisplayDialog("Action 삭제", message, "삭제", "취소"))
-        {
-            return;
-        }
-
-        Undo.RecordObject(graphAsset, "Delete Boss Graph Action References");
-        RemoveActionReferences(sequence);
-        graphObject.ApplyModifiedProperties();
-        EditorUtility.SetDirty(graphAsset);
-
-        if (selectedActionAsset == sequence)
-        {
-            SelectActionAsset(null);
-        }
-
-        Undo.DestroyObjectImmediate(sequence);
-        AssetDatabase.SaveAssets();
-        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(graphAsset));
-        ScheduleRebuildGraph();
-        detailsPanel?.MarkDirtyRepaint();
-    }
-
-    private void RemoveActionReferences(BossGraphActionAsset sequence)
-    {
-        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
-        if (stateNodes == null)
-        {
-            return;
-        }
-
-        for (int nodeIndex = 0; nodeIndex < stateNodes.arraySize; nodeIndex++)
-        {
-            SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
-            SerializedProperty sequences = node.FindPropertyRelative("sequences");
-            if (sequences == null)
-            {
-                continue;
-            }
-
-            for (int entryIndex = sequences.arraySize - 1; entryIndex >= 0; entryIndex--)
-            {
-                SerializedProperty entry = sequences.GetArrayElementAtIndex(entryIndex);
-                if (entry.FindPropertyRelative("sequence")?.objectReferenceValue == sequence)
-                {
-                    sequences.DeleteArrayElementAtIndex(entryIndex);
-                }
-            }
-        }
     }
 
     private void UpdateTransitionNodeIds(string oldNodeId, string newNodeId)
@@ -3674,98 +3772,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             child.vector2Value = value;
         }
-    }
-
-    private static BossGraphActionAsset CreateActionAsset(BossGraphAsset graph, string nodeId, int sequenceIndex)
-    {
-#pragma warning disable CS0618
-        BossGraphActionAsset sequence = ScriptableObject.CreateInstance<AttackSequenceAsset>();
-#pragma warning restore CS0618
-        string graphPath = graph != null ? AssetDatabase.GetAssetPath(graph) : string.Empty;
-        string sequenceName = GetActionAssetName(graph, nodeId, sequenceIndex);
-        sequence.name = !string.IsNullOrWhiteSpace(graphPath)
-            ? GetUniqueSubAssetName(graphPath, sequenceName)
-            : sequenceName;
-
-        if (!string.IsNullOrWhiteSpace(graphPath))
-        {
-            AssetDatabase.AddObjectToAsset(sequence, graph);
-            Undo.RegisterCreatedObjectUndo(sequence, "Create Boss Graph Action Asset");
-            EditorUtility.SetDirty(graph);
-            AssetDatabase.ImportAsset(graphPath);
-            AssetDatabase.SaveAssets();
-            return sequence;
-        }
-
-        string path = GetStandaloneActionAssetPath(sequence.name);
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            UnityEngine.Object.DestroyImmediate(sequence);
-            return null;
-        }
-
-        AssetDatabase.CreateAsset(sequence, path);
-        Undo.RegisterCreatedObjectUndo(sequence, "Create Boss Graph Action Asset");
-        AssetDatabase.SaveAssets();
-        return sequence;
-    }
-
-    private static string GetActionAssetName(BossGraphAsset graph, string nodeId, int sequenceIndex)
-    {
-        string graphName = SanitizeFileName(graph != null ? graph.name : "BossGraph");
-        string nodeName = SanitizeFileName(nodeId);
-        return $"{graphName}_{nodeName}_Action{sequenceIndex + 1}";
-    }
-
-    private static string GetStandaloneActionAssetPath(string sequenceName)
-    {
-        string path = EditorUtility.SaveFilePanelInProject(
-            "Action 생성",
-            $"{sequenceName}.asset",
-            "asset",
-            "BossGraphActionAsset 저장 위치를 선택하세요.");
-        return string.IsNullOrWhiteSpace(path) ? string.Empty : AssetDatabase.GenerateUniqueAssetPath(path);
-    }
-
-    private static string GetUniqueSubAssetName(string graphPath, string baseName)
-    {
-        UnityEngine.Object[] assets = AssetDatabase.LoadAllAssetsAtPath(graphPath);
-        HashSet<string> existingNames = new();
-        for (int i = 0; i < assets.Length; i++)
-        {
-            if (assets[i] != null && !string.IsNullOrWhiteSpace(assets[i].name))
-            {
-                existingNames.Add(assets[i].name);
-            }
-        }
-
-        if (!existingNames.Contains(baseName))
-        {
-            return baseName;
-        }
-
-        for (int i = 2; i < 1000; i++)
-        {
-            string candidate = $"{baseName}_{i}";
-            if (!existingNames.Contains(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return $"{baseName}_{System.Guid.NewGuid():N}";
-    }
-
-    private static string SanitizeFileName(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return "Node";
-        }
-
-        char[] invalidCharacters = Path.GetInvalidFileNameChars();
-        string sanitized = new(value.Select(character => invalidCharacters.Contains(character) ? '_' : character).ToArray());
-        return string.IsNullOrWhiteSpace(sanitized) ? "Node" : sanitized;
     }
 
     private readonly struct TransitionEndpoint

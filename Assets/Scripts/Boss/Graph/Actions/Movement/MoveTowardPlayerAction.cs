@@ -39,4 +39,26 @@ namespace Week14.Enemy
             }
         }
     }
+
+    [Serializable]
+    public sealed class StartMoveTowardPlayerAction : BossAction
+    {
+        [SerializeField, Min(0f)] private float speedMultiplier = 1f;
+
+        public override IEnumerator Execute(BossActionContext context)
+        {
+            context?.StartMoveTowardPlayer(speedMultiplier);
+            yield break;
+        }
+    }
+
+    [Serializable]
+    public sealed class StopMovementAction : BossAction
+    {
+        public override IEnumerator Execute(BossActionContext context)
+        {
+            context?.StopMoveTowardPlayer();
+            yield break;
+        }
+    }
 }

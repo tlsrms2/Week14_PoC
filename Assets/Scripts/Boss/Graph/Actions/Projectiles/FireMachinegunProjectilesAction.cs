@@ -7,6 +7,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
+    [Obsolete("Use StartMoveTowardPlayerAction + FireProjectileBurstAction + StopMovementAction instead.")]
     public sealed class FireMachinegunProjectilesAction : BossAction
     {
         [Serializable]

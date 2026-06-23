@@ -16,10 +16,13 @@ namespace Week14.Enemy
         private Animator animator;
         private BossAnimationEventBridge animationEventBridge;
         private bool hasBodyRootLocalBase;
+        private bool hasMoveTowardPlayerIntent;
+        private float moveTowardPlayerIntentSpeedMultiplier;
         private Vector3 bodyRootLocalBase;
         private readonly Dictionary<Transform, Vector3> transformBaseScales = new();
         private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
+        private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private string currentNodeId;
 
         public BossActionContext(
@@ -116,7 +119,7 @@ namespace Week14.Enemy
                     }
                 }
 
-                UpdateBossChildAims();
+                UpdateContinuousActions();
                 yield return null;
             }
         }
@@ -124,6 +127,34 @@ namespace Week14.Enemy
         public void MoveTowardPlayer(float speedMultiplier)
         {
             UpdateBossChildAims();
+            ApplyMoveTowardPlayer(speedMultiplier);
+        }
+
+        public void StartMoveTowardPlayer(float speedMultiplier)
+        {
+            hasMoveTowardPlayerIntent = true;
+            moveTowardPlayerIntentSpeedMultiplier = Mathf.Max(0f, speedMultiplier);
+            ApplyMoveTowardPlayer(moveTowardPlayerIntentSpeedMultiplier);
+        }
+
+        public void StopMoveTowardPlayer()
+        {
+            hasMoveTowardPlayerIntent = false;
+            moveTowardPlayerIntentSpeedMultiplier = 0f;
+            Stop();
+        }
+
+        private void UpdateContinuousActions()
+        {
+            UpdateBossChildAims();
+            if (hasMoveTowardPlayerIntent)
+            {
+                ApplyMoveTowardPlayer(moveTowardPlayerIntentSpeedMultiplier);
+            }
+        }
+
+        private void ApplyMoveTowardPlayer(float speedMultiplier)
+        {
             if (Boss == null || Boss.Body == null || Boss.Player == null)
             {
                 return;
@@ -309,6 +340,9 @@ namespace Week14.Enemy
 
         public void ClearPatternScopedBossChildAims()
         {
+            hasMoveTowardPlayerIntent = false;
+            moveTowardPlayerIntentSpeedMultiplier = 0f;
+            projectileHandles.Clear();
             if (bossChildAimStates.Count == 0)
             {
                 bossChildAimStartNodePaths.Clear();
@@ -416,6 +450,33 @@ namespace Week14.Enemy
         public BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
         {
             return Boss != null ? Boss.ResolveGraphProjectileSettingsForActions(projectileName) : null;
+        }
+
+        public void SetProjectileHandle(string handleKey, EnemyProjectile projectile)
+        {
+            if (string.IsNullOrWhiteSpace(handleKey) || projectile == null)
+            {
+                return;
+            }
+
+            projectileHandles[handleKey] = projectile;
+        }
+
+        public EnemyProjectile GetProjectileHandle(string handleKey)
+        {
+            if (string.IsNullOrWhiteSpace(handleKey)
+                || !projectileHandles.TryGetValue(handleKey, out EnemyProjectile projectile))
+            {
+                return null;
+            }
+
+            if (projectile != null)
+            {
+                return projectile;
+            }
+
+            projectileHandles.Remove(handleKey);
+            return null;
         }
 
         public void PlaySfx(string sfxId)
@@ -549,7 +610,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                UpdateBossChildAims();
+                UpdateContinuousActions();
                 remaining -= Time.deltaTime;
                 yield return null;
             }

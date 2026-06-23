@@ -78,18 +78,23 @@ internal static class BossGraphActionEditorUtility
     public static readonly IReadOnlyList<BossGraphActionMenuItem> ActionMenuItems = new List<BossGraphActionMenuItem>
     {
         new("Utility/Wait", typeof(WaitAction), () => new WaitAction()),
+        new("Utility/Windup", typeof(WindupAction), () => new WindupAction()),
         new("Animation/Play Animation", typeof(PlayAnimationAction), () => new PlayAnimationAction()),
         new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
         new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
+        new("Move/Start Move Toward Player", typeof(StartMoveTowardPlayerAction), () => new StartMoveTowardPlayerAction()),
+        new("Move/Stop Movement", typeof(StopMovementAction), () => new StopMovementAction()),
         new("Move/Move Body Root Local", typeof(MoveBodyRootLocalAction), () => new MoveBodyRootLocalAction()),
         new("Move/Reset Body Root Local", typeof(ResetBodyRootLocalAction), () => new ResetBodyRootLocalAction()),
         new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
-        new("Projectile/Fire Charged Radial Split Projectile", typeof(FireChargedRadialSplitProjectileAction), () => new FireChargedRadialSplitProjectileAction()),
-        new("Projectile/Fire Radial Projectiles", typeof(FireRadialProjectilesAction), () => new FireRadialProjectilesAction()),
-        new("Projectile/Fire Rotating Projectiles", typeof(FireRotatingProjectilesAction), () => new FireRotatingProjectilesAction()),
-        new("Projectile/Fire Machinegun Projectiles", typeof(FireMachinegunProjectilesAction), () => new FireMachinegunProjectilesAction()),
-        new("Projectile/Fire Sweep Projectiles", typeof(FireSweepProjectilesAction), () => new FireSweepProjectilesAction()),
-        new("Projectile/Fire Fan Volley Projectiles", typeof(FireFanVolleyProjectilesAction), () => new FireFanVolleyProjectilesAction()),
+        new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
+        new("Projectile/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
+        new("Projectile/Configure Radial Split", typeof(ConfigureRadialSplitAction), () => new ConfigureRadialSplitAction()),
+        new("Projectile/Wait Projectile Charge End", typeof(WaitProjectileChargeEndAction), () => new WaitProjectileChargeEndAction()),
+        new("Projectile/Fire Projectile Burst", typeof(FireProjectileBurstAction), () => new FireProjectileBurstAction()),
+        new("Projectile/Fire Radial Emission", typeof(FireRadialEmissionAction), () => new FireRadialEmissionAction()),
+        new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
+        new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Event/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Spawn/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction())
@@ -209,9 +214,7 @@ internal static class BossGraphAimStartNodeOptions
 
         BossGraphActionAsset actionAsset = sequences.GetArrayElementAtIndex(0)
             .FindPropertyRelative("sequence")?.objectReferenceValue as BossGraphActionAsset;
-        BossAction action = actionAsset?.Actions != null && actionAsset.Actions.Count > 0
-            ? actionAsset.Actions[0]
-            : null;
+        BossAction action = actionAsset?.Action;
         return action is AimBossChildAtPlayerAction aimAction
             && aimAction.Mode == BossChildAimActionMode.Start;
     }

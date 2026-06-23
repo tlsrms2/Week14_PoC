@@ -64,6 +64,8 @@ namespace Week14.Enemy
         public static BossGraphNodeKind GetDefaultNodeKind(Type actionType)
         {
             if (actionType == typeof(MoveTowardPlayerAction)
+                || actionType == typeof(StartMoveTowardPlayerAction)
+                || actionType == typeof(StopMovementAction)
                 || actionType == typeof(MoveBodyRootLocalAction)
                 || actionType == typeof(ResetBodyRootLocalAction))
             {
@@ -77,6 +79,7 @@ namespace Week14.Enemy
             }
 
             if (actionType == typeof(WaitAction)
+                || actionType == typeof(WindupAction)
                 || actionType == typeof(AimBossChildAtPlayerAction))
             {
                 return BossGraphNodeKind.Utility;

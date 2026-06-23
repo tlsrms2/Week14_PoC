@@ -6,6 +6,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
+    [Obsolete("Use FireRadialEmissionAction instead.")]
     public sealed class FireRotatingProjectilesAction : BossAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";

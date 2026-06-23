@@ -74,9 +74,10 @@ namespace Week14.Enemy
                 }
 
                 immediateTransitionCount = 0;
-                BossSequenceEntry entry = SelectSequence(node);
+                BossAction directAction = node?.HasDirectAction == true ? node.Action : null;
+                BossSequenceEntry entry = directAction == null ? SelectSequence(node) : null;
                 BossGraphActionAsset sequence = entry?.Sequence;
-                if (sequence == null)
+                if (directAction == null && sequence == null)
                 {
                     context.Stop();
                     yield return null;
@@ -88,7 +89,15 @@ namespace Week14.Enemy
                     BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousRuntimeNodeId);
                     previousRuntimeNodeId = node.NodeId;
                     context.SetCurrentNodeId(node.NodeId);
-                    yield return sequence.Execute(context);
+                    if (directAction != null)
+                    {
+                        yield return directAction.Execute(context);
+                    }
+                    else
+                    {
+                        yield return sequence.Execute(context);
+                    }
+
                     yield return context.ApplyPendingEnrageIfAny();
                     context.Stop();
                 }
@@ -109,7 +118,8 @@ namespace Week14.Enemy
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
                 BossGraphPatternEntry entry = SelectPattern(phase);
                 BossGraphPattern pattern = graph.GetPattern(entry?.PatternId);
-                if (pattern == null || pattern.NodeIds == null || pattern.NodeIds.Count == 0)
+                IReadOnlyList<string> nodeKeys = pattern?.NodeKeys;
+                if (nodeKeys == null || nodeKeys.Count == 0)
                 {
                     context.Stop();
                     yield return null;
@@ -134,21 +144,23 @@ namespace Week14.Enemy
         {
             try
             {
-                for (int i = 0; i < pattern.NodeIds.Count; i++)
+                IReadOnlyList<string> nodeKeys = pattern.NodeKeys;
+                for (int i = 0; i < nodeKeys.Count; i++)
                 {
-                    BossStateNode node = graph.GetNode(pattern.NodeIds[i]);
-                    BossGraphActionAsset actionSequence = node?.ActionSequence;
-                    if (actionSequence == null)
+                    BossStateNode node = graph.GetNode(nodeKeys[i]);
+                    BossAction action = node?.Action;
+                    if (action == null)
                     {
                         continue;
                     }
 
                     try
                     {
-                        string previousNodeId = i > 0 ? pattern.NodeIds[i - 1] : null;
+                        BossStateNode previousNode = i > 0 ? graph.GetNode(nodeKeys[i - 1]) : null;
+                        string previousNodeId = previousNode?.NodeId;
                         BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
                         context.SetCurrentNodeId(node.NodeId);
-                        yield return actionSequence.Execute(context);
+                        yield return action.Execute(context);
                     }
                     finally
                     {
@@ -192,12 +204,12 @@ namespace Week14.Enemy
             for (int i = 0; i < graph.Transitions.Count; i++)
             {
                 BossTransition transition = graph.Transitions[i];
-                if (transition == null || transition.FromNodeId != currentNode.NodeId)
+                if (transition == null || !transition.IsFromNode(currentNode))
                 {
                     continue;
                 }
 
-                BossStateNode targetNode = graph.GetNode(transition.ToNodeId);
+                BossStateNode targetNode = graph.GetNode(transition.ToNodeKey);
                 if (targetNode == null || !IsTransitionConditionMet(transition, context, sequenceEnded))
                 {
                     continue;
