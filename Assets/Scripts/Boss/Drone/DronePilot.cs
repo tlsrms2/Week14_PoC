@@ -7,7 +7,7 @@ namespace Week14.Enemy
 {
     public sealed class DronePilot : BossAI
     {
-        private enum PatternKind
+        internal enum PatternKind
         {
             BossBurst,
             SummonDrone,
@@ -22,45 +22,12 @@ namespace Week14.Enemy
         [SerializeField] private Transform projectileOrigin;
 
         [System.Serializable]
-        public sealed class ProjectileSettings
+        public sealed class ProjectileSettings : BossProjectileSettings
         {
-            [SerializeField, Tooltip("발사할 적 탄환 프리팹입니다.")] private EnemyProjectile prefab;
-            [SerializeField, Min(0), Tooltip("플레이어에게 적중했을 때 감소시킬 플레이어 탄환 수입니다.")] private int bulletDamage = 1;
-            [SerializeField, Min(0f), Tooltip("발사 전 충전 시간입니다.")] private float chargeSeconds = 0.15f;
-            [SerializeField, Min(0f), Tooltip("충전 중 탄환이 천천히 움직이는 속도입니다.")] private float chargeDriftSpeed = 0.25f;
-            [SerializeField, Tooltip("충전 중 플레이어 방향을 계속 갱신합니다.")] private bool aimAtPlayerWhileCharging = true;
-            [SerializeField, Tooltip("발사 순간 플레이어 방향으로 다시 조준합니다.")] private bool aimAtPlayerOnLaunch;
-            [SerializeField, Min(0f), Tooltip("탄환 이동 속도입니다.")] private float speed = 7f;
-            [SerializeField, Min(0f), Tooltip("탄환 수명입니다.")] private float lifetime = 3f;
-            [SerializeField, Min(0.01f), Tooltip("탄환 충돌 반지름입니다.")] private float radius = 0.12f;
-            [SerializeField, Tooltip("충전 중 색입니다.")] private Color chargingColor = new(0.35f, 0.8f, 1f, 1f);
-            [SerializeField, Tooltip("발사 후 색입니다.")] private Color launchedColor = new(1f, 0.95f, 0.25f, 1f);
-            [SerializeField, Min(0.01f), Tooltip("탄환 궤적 유지 시간입니다.")] private float trailSeconds = 0.1f;
-            [SerializeField, Min(0.1f), Tooltip("탄환 궤적 두께 배율입니다.")] private float trailWidthMultiplier = 3f;
-            [SerializeField] private bool homingEnabled;
-            [SerializeField, Min(0f), Tooltip("플레이어를 추적하는 시간입니다.")] private float homingSeconds = 0.8f;
-            [SerializeField, Min(0f), Tooltip("초당 추적 회전 각도입니다.")] private float homingTurnDegreesPerSecond = 540f;
-
-            public EnemyProjectile Prefab => prefab;
-            public int BulletDamage => bulletDamage;
-            public float ChargeSeconds => chargeSeconds;
-            public float ChargeDriftSpeed => chargeDriftSpeed;
-            public bool AimAtPlayerWhileCharging => aimAtPlayerWhileCharging;
-            public bool AimAtPlayerOnLaunch => aimAtPlayerOnLaunch;
-            public float Speed => speed;
-            public float Lifetime => lifetime;
-            public float Radius => radius;
-            public Color ChargingColor => chargingColor;
-            public Color LaunchedColor => launchedColor;
-            public float TrailSeconds => trailSeconds;
-            public float TrailWidthMultiplier => trailWidthMultiplier;
-            public bool HomingEnabled => homingEnabled;
-            public float HomingSeconds => homingSeconds;
-            public float HomingTurnDegreesPerSecond => homingTurnDegreesPerSecond;
         }
 
         [System.Serializable]
-        private sealed class BossBurstSettings
+        internal sealed class BossBurstSettings
         {
             [SerializeField] private ProjectileSettings projectile = new();
             [SerializeField, Min(0f), Tooltip("첫 발사 전 대기 시간입니다.")] private float windupSeconds = 0.45f;
@@ -76,7 +43,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class SummonSettings
+        internal sealed class SummonSettings
         {
             [SerializeField, Tooltip("소환할 드론 프리팹입니다.")] private Drone prefab;
             [SerializeField, Tooltip("씬에 이미 배치된 소유자 없는 드론도 이 보스가 함께 지휘합니다.")] private bool claimSceneDrones = true;
@@ -104,7 +71,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class DronePattern1Settings
+        internal sealed class DronePattern1Settings
         {
             [SerializeField, Tooltip("켜면 보스 일반 공격 탄환 설정을 드론도 그대로 사용합니다.")] private bool useBossProjectile = true;
             [SerializeField] private ProjectileSettings droneProjectile = new();
@@ -118,7 +85,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class DronePattern2Settings
+        internal sealed class DronePattern2Settings
         {
             [SerializeField] private ProjectileSettings orbitProjectile = new();
             [SerializeField] private ProjectileSettings stationaryProjectile = new();
@@ -138,7 +105,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class DronePattern3Settings
+        internal sealed class DronePattern3Settings
         {
             [SerializeField] private ProjectileSettings projectile = new();
             [SerializeField, Min(1), Tooltip("반복 발사 횟수입니다.")] private int volleyCount = 1;
@@ -154,7 +121,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class DronePattern4Settings
+        internal sealed class DronePattern4Settings
         {
             [SerializeField] private ProjectileSettings projectile = new();
             [SerializeField, Min(0.05f), Tooltip("돌진 지속 시간입니다.")] private float chargeSeconds = 1f;
@@ -172,7 +139,7 @@ namespace Week14.Enemy
         }
 
         [System.Serializable]
-        private sealed class DronePattern5Settings
+        internal sealed class DronePattern5Settings
         {
             [SerializeField] private ProjectileSettings bossProjectile = new();
             [SerializeField] private ProjectileSettings droneProjectile = new();
@@ -228,18 +195,19 @@ namespace Week14.Enemy
 
         private readonly List<Drone> controlledDrones = new();
         private readonly List<Drone> spawnedDrones = new();
+        private readonly DronePatternSelector patternSelector = new();
+        private readonly BossPatternMovement patternMovement = new();
+        private readonly BossPatternRecovery patternRecovery = new();
+        private DronePatternContext patternContext;
         private Coroutine bossPatternRoutine;
         private Coroutine dronePatternRoutine;
-        private ProjectileSettings synchronizedDroneProjectile;
-        private int synchronizedDroneShotsRemaining;
-        private int synchronizedDroneSyncVersion;
-        private int nextBossPatternIndex;
-        private int nextDronePatternIndex;
         private float nextAutoSummonAt;
+
+        private DronePatternContext PatternContext => patternContext ??= CreatePatternContext();
 
         protected override void OnBossStarted()
         {
-            RefreshControlledDrones();
+            PatternContext.RefreshControlledDrones();
             ScheduleNextAutoSummon();
         }
 
@@ -252,14 +220,12 @@ namespace Week14.Enemy
 
             if (bossPatternRoutine == null)
             {
-                PatternKind bossPattern = PatternKind.BossBurst;
-                bossPatternRoutine = StartCoroutine(RunBossPattern(bossPattern));
+                bossPatternRoutine = StartCoroutine(RunBossPatternLoop());
             }
 
             if (dronePatternRoutine == null)
             {
-                PatternKind dronePattern = SelectDronePattern();
-                dronePatternRoutine = StartCoroutine(RunDronePattern(dronePattern));
+                dronePatternRoutine = StartCoroutine(RunDronePatternLoop());
             }
         }
 
@@ -277,15 +243,15 @@ namespace Week14.Enemy
                 dronePatternRoutine = null;
             }
 
-            ClearSynchronizedDroneFire();
-            StopAllDrones();
+            PatternContext.ClearSynchronizedDroneFire();
+            PatternContext.StopAllDrones();
         }
 
         protected override void OnBossDied()
         {
             CancelBossAction();
-            KillSpawnedDrones();
-            ReleaseDrones();
+            PatternContext.KillSpawnedDrones();
+            PatternContext.ReleaseDrones();
         }
 
         public EnemyProjectile FireDroneProjectile(Drone source, ProjectileSettings settings, Vector3 origin, Vector2 direction, bool playMuzzleFlash)
@@ -309,25 +275,21 @@ namespace Week14.Enemy
 
             Color chargeColor = GetProjectileChargeColor(settings);
             Color projectileColor = GetProjectileColor(settings);
-            EnemyProjectile projectile = EnemyProjectile.Spawn(
-                settings.Prefab,
-                ownerBullets,
+            EnemyProjectile projectile = BossProjectileEmitter.Fire(
+                SpawnDroneProjectile,
+                settings,
                 origin,
                 direction,
-                settings.BulletDamage,
-                settings.ChargeSeconds,
-                settings.Speed,
-                settings.Lifetime,
-                settings.Radius,
+                chargeColor,
                 projectileColor,
-                settings.TrailSeconds,
-                settings.TrailWidthMultiplier,
-                settings.HomingEnabled,
-                settings.HomingSeconds,
-                settings.HomingTurnDegreesPerSecond);
-
-            projectile?.ConfigureStateColors(chargeColor, projectileColor);
-            projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, settings.AimAtPlayerWhileCharging, settings.AimAtPlayerOnLaunch);
+                settings.AimAtPlayerWhileCharging,
+                settings.AimAtPlayerOnLaunch,
+                false,
+                -1f,
+                -1f,
+                null,
+                0f,
+                null);
 
             if (projectile != null && playMuzzleFlash)
             {
@@ -335,81 +297,103 @@ namespace Week14.Enemy
             }
 
             return projectile;
+
+            EnemyProjectile SpawnDroneProjectile(
+                EnemyProjectile prefab,
+                Vector3 position,
+                Vector2 projectileDirection,
+                int projectileBulletDamage,
+                float chargeSeconds,
+                float speed,
+                float lifetime,
+                float radius,
+                Color color,
+                float trailSeconds,
+                float trailWidth,
+                bool homingEnabled,
+                float homingSeconds,
+                float homingTurnDegrees,
+                Vector3? muzzleFlashPosition,
+                float muzzleFlashScale)
+            {
+                return EnemyProjectile.Spawn(
+                    prefab,
+                    ownerBullets,
+                    position,
+                    projectileDirection,
+                    projectileBulletDamage,
+                    chargeSeconds,
+                    speed,
+                    lifetime,
+                    radius,
+                    color,
+                    trailSeconds,
+                    trailWidth,
+                    homingEnabled,
+                    homingSeconds,
+                    homingTurnDegrees);
+            }
         }
 
         private PatternKind SelectBossPattern()
         {
-            return SelectPattern(true, ref nextBossPatternIndex, PatternKind.BossBurst);
+            return patternSelector.SelectBossPattern(CreatePatternSelectorSettings());
         }
 
         private PatternKind SelectDronePattern()
         {
-            return SelectPattern(false, ref nextDronePatternIndex, PatternKind.DronePattern1);
+            return patternSelector.SelectDronePattern(CreatePatternSelectorSettings());
         }
 
-        private PatternKind SelectPattern(bool bossPattern, ref int nextIndex, PatternKind fallback)
+        private DronePatternSelector.Settings CreatePatternSelectorSettings()
         {
-            if (patternSequence == null || patternSequence.Count == 0)
-            {
-                return fallback;
-            }
-
-            if (randomizePatterns)
-            {
-                int matchCount = 0;
-                for (int i = 0; i < patternSequence.Count; i++)
-                {
-                    if (IsPatternGroup(patternSequence[i], bossPattern))
-                    {
-                        matchCount++;
-                    }
-                }
-
-                if (matchCount <= 0)
-                {
-                    return fallback;
-                }
-
-                int selected = Random.Range(0, matchCount);
-                for (int i = 0; i < patternSequence.Count; i++)
-                {
-                    if (!IsPatternGroup(patternSequence[i], bossPattern))
-                    {
-                        continue;
-                    }
-
-                    if (selected-- <= 0)
-                    {
-                        return patternSequence[i];
-                    }
-                }
-
-                return fallback;
-            }
-
-            for (int i = 0; i < patternSequence.Count; i++)
-            {
-                int index = nextIndex % patternSequence.Count;
-                PatternKind pattern = patternSequence[index];
-                nextIndex++;
-                if (IsPatternGroup(pattern, bossPattern))
-                {
-                    return pattern;
-                }
-            }
-
-            return fallback;
+            return new DronePatternSelector.Settings(patternSequence, randomizePatterns);
         }
 
-        private static bool IsPatternGroup(PatternKind pattern, bool bossPattern)
+        private IEnumerator RunBossPatternLoop()
         {
-            if (pattern == PatternKind.SummonDrone)
+            PatternKind pattern = SelectBossPattern();
+            while (true)
             {
-                return false;
+                yield return RunBossPattern(pattern);
+                yield return FinishBossPattern();
+
+                PatternKind nextPattern = SelectBossPattern();
+                yield return WaitBossPatternRecovery();
+                pattern = nextPattern;
+            }
+        }
+
+        private IEnumerator RunDronePatternLoop()
+        {
+            PatternKind pattern = SelectDronePattern();
+            while (true)
+            {
+                yield return RunDronePattern(pattern);
+                yield return FinishDronePattern();
+
+                PatternKind nextPattern = SelectDronePattern();
+                yield return WaitDronePatternRecovery();
+                pattern = nextPattern;
+            }
+        }
+
+        private IEnumerator FinishBossPattern()
+        {
+            if (ShouldRunAutoSummon())
+            {
+                yield return RunSummonPattern();
+                ScheduleNextAutoSummon();
             }
 
-            bool isBossPattern = pattern == PatternKind.BossBurst;
-            return bossPattern ? isBossPattern : !isBossPattern;
+            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
+            yield return ApplyPendingEnrageIfAny();
+        }
+
+        private IEnumerator FinishDronePattern()
+        {
+            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
+            yield return ApplyPendingEnrageIfAny();
         }
 
         private IEnumerator RunBossPattern(PatternKind pattern)
@@ -423,19 +407,6 @@ namespace Week14.Enemy
                     yield return RunBossBurst(false, bossBurst.Projectile, bossBurst.BulletCount, bossBurst.FireInterval, bossBurst.SpawnSpacing, null);
                     break;
             }
-
-            if (ShouldRunAutoSummon())
-            {
-                yield return RunSummonPattern();
-                ScheduleNextAutoSummon();
-            }
-
-            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
-            yield return ApplyPendingEnrageIfAny();
-
-            PatternKind nextPattern = PatternKind.BossBurst;
-            yield return WaitBossPatternRecovery();
-            bossPatternRoutine = StartCoroutine(RunBossPattern(nextPattern));
         }
 
         private IEnumerator RunDronePattern(PatternKind pattern)
@@ -461,20 +432,11 @@ namespace Week14.Enemy
                     yield return RunDronePattern1();
                     break;
             }
-
-            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
-            yield return ApplyPendingEnrageIfAny();
-
-            PatternKind nextPattern = SelectDronePattern();
-            yield return WaitDronePatternRecovery();
-            dronePatternRoutine = StartCoroutine(RunDronePattern(nextPattern));
         }
 
         private float GetPatternRecoverySeconds()
         {
-            return Random.Range(
-                Mathf.Min(minPatternRecoverySeconds, maxPatternRecoverySeconds),
-                Mathf.Max(minPatternRecoverySeconds, maxPatternRecoverySeconds));
+            return patternRecovery.GetRecoverySeconds(minPatternRecoverySeconds, maxPatternRecoverySeconds);
         }
 
         private void ScheduleNextAutoSummon()
@@ -491,223 +453,61 @@ namespace Week14.Enemy
                 return false;
             }
 
-            RefreshControlledDrones();
-            return summon.MaxOwnedDrones <= 0 || controlledDrones.Count < summon.MaxOwnedDrones;
+            PatternContext.RefreshControlledDrones();
+            return summon.MaxOwnedDrones <= 0 || PatternContext.ControlledDroneCount < summon.MaxOwnedDrones;
         }
 
         private IEnumerator WaitBossPatternRecovery()
         {
-            float duration = GetPatternRecoverySeconds();
-            float remaining = duration;
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
+            yield return patternRecovery.RunRecovery(GetPatternRecoverySeconds(), null, () => IsExecutionPaused, Stop);
         }
 
         private IEnumerator WaitDronePatternRecovery()
         {
-            float duration = GetPatternRecoverySeconds();
-            float remaining = duration;
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
+            yield return patternRecovery.RunRecovery(GetPatternRecoverySeconds(), null, () => IsExecutionPaused, Stop);
         }
 
         private IEnumerator RunSummonPattern()
         {
-            yield return WaitWhileExecutionPaused();
-
-            RefreshControlledDrones();
-            if (summon.Prefab == null)
-            {
-                yield break;
-            }
-
-            int maxOwned = summon.MaxOwnedDrones;
-            int currentCount = GetControlledDrones().Count;
-            int summonCount = Mathf.Max(1, summon.SummonCount);
-            if (maxOwned > 0)
-            {
-                summonCount = Mathf.Min(summonCount, Mathf.Max(0, maxOwned - currentCount));
-            }
-
-            Stop();
-            float longestIntro = 0f;
-            for (int i = 0; i < summonCount; i++)
-            {
-                yield return WaitWhileExecutionPaused();
-
-                longestIntro = Mathf.Max(longestIntro, SpawnDrone(i, currentCount + summonCount));
-                if (i < summonCount - 1 && summon.SummonInterval > 0f)
-                {
-                    yield return WaitStoppedSeconds(summon.SummonInterval);
-                }
-            }
-
-            if (longestIntro > 0f)
-            {
-                yield return WaitStoppedSeconds(longestIntro);
-            }
+            return DroneSummonRunner.Run(
+                summon,
+                PatternContext);
         }
 
         private IEnumerator RunDronePattern1()
         {
-            yield return WaitWhileExecutionPaused();
-
-            List<Drone> drones = GetControlledDrones();
-            if (!EnsureAnyDrone(drones))
-            {
-                yield break;
-            }
-
-            int syncVersion = BeginSynchronizedDroneFire(dronePattern1.DroneProjectile, bossBurst.BulletCount);
-            yield return WaitSynchronizedDroneFire(syncVersion);
+            return DronePattern1Runner.Run(
+                dronePattern1,
+                bossBurst,
+                PatternContext);
         }
 
         private IEnumerator RunDronePattern2()
         {
-            yield return WaitWhileExecutionPaused();
-
-            List<Drone> drones = GetControlledDrones();
-            if (!EnsureAnyDrone(drones))
-            {
-                yield break;
-            }
-
-            Drone orbitDrone = drones[0];
-            bool clockwise = Random.value > 0.5f;
-            float duration = orbitDrone.CommandOrbitFire(
-                dronePattern2.OrbitProjectile,
-                dronePattern2.OrbitRadius,
-                dronePattern2.OrbitSeconds,
-                dronePattern2.FireAngleStepDegrees,
-                clockwise);
-
-            for (int i = 1; i < drones.Count; i++)
-            {
-                duration = Mathf.Max(duration, drones[i].CommandStopAndFire(
-                    dronePattern2.StationaryProjectile,
-                    dronePattern2.StationaryBulletCount,
-                    dronePattern2.StationaryFireInterval,
-                    true));
-            }
-
-            yield return WaitDronePatternSeconds(duration);
+            return DronePattern2Runner.Run(
+                dronePattern2,
+                PatternContext);
         }
 
         private IEnumerator RunDronePattern3()
         {
-            yield return WaitWhileExecutionPaused();
-
-            List<Drone> drones = GetControlledDrones();
-            if (!EnsureAnyDrone(drones))
-            {
-                yield break;
-            }
-
-            float duration = 0f;
-            for (int i = 0; i < drones.Count; i++)
-            {
-                duration = Mathf.Max(duration, drones[i].CommandRadialBurst(
-                    dronePattern3.Projectile,
-                    dronePattern3.VolleyCount,
-                    dronePattern3.DirectionCount,
-                    dronePattern3.VolleyInterval,
-                    dronePattern3.SpreadDegrees,
-                    true));
-            }
-
-            yield return WaitDronePatternSeconds(duration);
+            return DronePattern3Runner.Run(
+                dronePattern3,
+                PatternContext);
         }
 
         private IEnumerator RunDronePattern4()
         {
-            yield return WaitWhileExecutionPaused();
-
-            List<Drone> drones = GetControlledDrones();
-            if (!EnsureAnyDrone(drones))
-            {
-                yield break;
-            }
-
-            float duration = 0f;
-            float offset = Mathf.Max(0f, dronePattern4.AimOffsetDegrees);
-            for (int i = 0; i < drones.Count; i++)
-            {
-                float sign = i % 2 == 0 ? 1f : -1f;
-                float ring = 1f + i / 2;
-                duration = Mathf.Max(duration, drones[i].CommandChargeSideFire(
-                    dronePattern4.Projectile,
-                    dronePattern4.ChargeSeconds,
-                    dronePattern4.ChargeSpeed,
-                    sign * offset * ring,
-                    dronePattern4.SideFireInterval,
-                    dronePattern4.SideFireAngleDegrees));
-            }
-
-            yield return WaitDronePatternSeconds(duration);
+            return DronePattern4Runner.Run(
+                dronePattern4,
+                PatternContext);
         }
 
         private IEnumerator RunDronePattern5()
         {
-            yield return WaitWhileExecutionPaused();
-
-            List<Drone> drones = GetControlledDrones();
-            if (!EnsureAnyDrone(drones))
-            {
-                yield break;
-            }
-
-            float settleSeconds = Mathf.Max(0f, dronePattern5.SettleSeconds);
-            float formationDelaySeconds = settleSeconds * 0.5f;
-            if (formationDelaySeconds > 0f)
-            {
-                yield return WaitDronePatternSeconds(formationDelaySeconds);
-            }
-
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i].CommandFormation(
-                    GetPattern5FormationAngle(i, dronePattern5.FormationAngleSpacingDegrees),
-                    dronePattern5.FormationRadius,
-                    dronePattern5.FormationSpeedMultiplier);
-            }
-
-            float formationSettleSeconds = settleSeconds - formationDelaySeconds;
-            if (formationSettleSeconds > 0f)
-            {
-                yield return WaitDronePatternSeconds(formationSettleSeconds);
-            }
-
-            int fireCount = Mathf.Max(1, dronePattern5.DroneFireCount);
-            for (int i = 0; i < fireCount; i++)
-            {
-                yield return WaitWhileExecutionPaused();
-
-                FireAllDrones(dronePattern5.DroneProjectile);
-                if (i < fireCount - 1 && dronePattern5.DroneFireInterval > 0f)
-                {
-                    yield return WaitDronePatternSeconds(dronePattern5.DroneFireInterval);
-                }
-            }
-
-            ResumeAllDrones();
+            return DronePattern5Runner.Run(
+                dronePattern5,
+                PatternContext);
         }
 
         private IEnumerator RunBossBurst(
@@ -718,33 +518,30 @@ namespace Week14.Enemy
             float spawnSpacing,
             ProjectileSettings droneProjectile)
         {
-            if (bossBurst.WindupSeconds > 0f)
-            {
-                yield return WaitPatternSeconds(bossBurst.WindupSeconds);
-            }
+            return DroneBossBurstRunner.Run(
+                bossBurst,
+                notifyDrones,
+                bossProjectile,
+                bulletCount,
+                fireInterval,
+                spawnSpacing,
+                droneProjectile,
+                PatternContext);
+        }
 
-            int count = Mathf.Max(1, bulletCount);
-            for (int i = 0; i < count; i++)
-            {
-                yield return WaitWhileExecutionPaused();
-
-                Vector3 origin = GetProjectileOrigin();
-                Vector2 direction = GetDirectionToPlayer(origin);
-                Vector2 side = new(-direction.y, direction.x);
-                Vector3 spawnPosition = origin + (Vector3)(side * GetAlternatingOffset(i, spawnSpacing));
-                FireBossProjectile(bossProjectile, spawnPosition, direction, origin);
-
-                if (notifyDrones)
-                {
-                    FireAllDrones(droneProjectile);
-                }
-
-                TryFireSynchronizedDrones();
-                if (i < count - 1 && fireInterval > 0f)
-                {
-                    yield return WaitPatternSeconds(fireInterval);
-                }
-            }
+        private DronePatternContext CreatePatternContext()
+        {
+            return new DronePatternContext(
+                this,
+                summon,
+                patternMovement,
+                controlledDrones,
+                spawnedDrones,
+                () => IsExecutionPaused,
+                Stop,
+                GetProjectileOrigin,
+                GetDirectionToPlayer,
+                FireBossProjectile);
         }
 
         private EnemyProjectile FireBossProjectile(ProjectileSettings settings, Vector3 origin, Vector2 direction, Vector3 muzzleOrigin)
@@ -756,26 +553,21 @@ namespace Week14.Enemy
 
             Color chargeColor = GetProjectileChargeColor(settings);
             Color projectileColor = GetProjectileColor(settings);
-            EnemyProjectile projectile = SpawnBossProjectile(
-                settings.Prefab,
+            return BossProjectileEmitter.Fire(
+                SpawnBossProjectile,
+                settings,
                 origin,
                 direction,
-                settings.BulletDamage,
-                settings.ChargeSeconds,
-                settings.Speed,
-                settings.Lifetime,
-                settings.Radius,
+                chargeColor,
                 projectileColor,
-                settings.TrailSeconds,
-                settings.TrailWidthMultiplier,
-                settings.HomingEnabled,
-                settings.HomingSeconds,
-                settings.HomingTurnDegreesPerSecond,
-                muzzleOrigin);
-
-            projectile?.ConfigureStateColors(chargeColor, projectileColor);
-            projectile?.ConfigureChargeMotion(settings.ChargeDriftSpeed, settings.AimAtPlayerWhileCharging, settings.AimAtPlayerOnLaunch);
-            return projectile;
+                settings.AimAtPlayerWhileCharging,
+                settings.AimAtPlayerOnLaunch,
+                false,
+                -1f,
+                -1f,
+                muzzleOrigin,
+                0.9f,
+                null);
         }
 
         private Color GetProjectileColor(ProjectileSettings settings)
@@ -792,253 +584,6 @@ namespace Week14.Enemy
                 : normalProjectileChargeColor;
         }
 
-        private float SpawnDrone(int index, int totalCount)
-        {
-            float angle = totalCount <= 0 ? Random.Range(0f, 360f) : 360f * index / Mathf.Max(1, totalCount);
-            Vector3 startPosition = transform.position;
-            Vector3 position = startPosition + (Vector3)(AngleToDirection(angle) * Mathf.Max(0f, summon.SpawnRadius));
-            Drone drone = Instantiate(summon.Prefab, startPosition, Quaternion.identity);
-            if (drone == null)
-            {
-                return 0f;
-            }
-
-            drone.SetOwner(this);
-            float introSeconds = drone.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
-            if (!controlledDrones.Contains(drone))
-            {
-                controlledDrones.Add(drone);
-            }
-
-            if (!spawnedDrones.Contains(drone))
-            {
-                spawnedDrones.Add(drone);
-            }
-
-            return introSeconds;
-        }
-
-        private List<Drone> GetControlledDrones()
-        {
-            RefreshControlledDrones();
-            return controlledDrones;
-        }
-
-        private void RefreshControlledDrones()
-        {
-            for (int i = controlledDrones.Count - 1; i >= 0; i--)
-            {
-                if (controlledDrones[i] == null || controlledDrones[i].Owner != this)
-                {
-                    controlledDrones.RemoveAt(i);
-                }
-            }
-
-            IReadOnlyList<Drone> allDrones = Drone.All;
-            for (int i = 0; i < allDrones.Count; i++)
-            {
-                Drone drone = allDrones[i];
-                if (drone == null)
-                {
-                    continue;
-                }
-
-                bool canClaim = drone.Owner == this || (summon.ClaimSceneDrones && drone.Owner == null);
-                if (!canClaim)
-                {
-                    continue;
-                }
-
-                drone.SetOwner(this);
-                if (!controlledDrones.Contains(drone))
-                {
-                    controlledDrones.Add(drone);
-                }
-            }
-        }
-
-        private bool EnsureAnyDrone()
-        {
-            return EnsureAnyDrone(GetControlledDrones());
-        }
-
-        private bool EnsureAnyDrone(List<Drone> drones)
-        {
-            if (drones != null && drones.Count > 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private void FireAllDrones(ProjectileSettings projectile)
-        {
-            if (projectile == null)
-            {
-                return;
-            }
-
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i]?.FireOnceAtPlayer(projectile);
-            }
-        }
-
-        private int BeginSynchronizedDroneFire(ProjectileSettings projectile, int shotCount)
-        {
-            synchronizedDroneProjectile = projectile;
-            synchronizedDroneShotsRemaining = projectile != null ? Mathf.Max(0, shotCount) : 0;
-            synchronizedDroneSyncVersion++;
-            return synchronizedDroneSyncVersion;
-        }
-
-        private IEnumerator WaitSynchronizedDroneFire(int syncVersion)
-        {
-            while (syncVersion == synchronizedDroneSyncVersion && synchronizedDroneShotsRemaining > 0)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                yield return null;
-            }
-        }
-
-        private void TryFireSynchronizedDrones()
-        {
-            if (synchronizedDroneProjectile == null || synchronizedDroneShotsRemaining <= 0)
-            {
-                return;
-            }
-
-            FireAllDrones(synchronizedDroneProjectile);
-            synchronizedDroneShotsRemaining--;
-            if (synchronizedDroneShotsRemaining <= 0)
-            {
-                ClearSynchronizedDroneFire();
-            }
-        }
-
-        private void ClearSynchronizedDroneFire()
-        {
-            synchronizedDroneProjectile = null;
-            synchronizedDroneShotsRemaining = 0;
-            synchronizedDroneSyncVersion++;
-        }
-
-        private void StopAllDrones()
-        {
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i]?.StopCommand();
-            }
-        }
-
-        private void ResumeAllDrones()
-        {
-            List<Drone> drones = GetControlledDrones();
-            for (int i = 0; i < drones.Count; i++)
-            {
-                drones[i]?.ResumeIdle();
-            }
-        }
-
-        private void ReleaseDrones()
-        {
-            for (int i = controlledDrones.Count - 1; i >= 0; i--)
-            {
-                if (controlledDrones[i] != null)
-                {
-                    controlledDrones[i].ClearOwner(this);
-                }
-            }
-
-            controlledDrones.Clear();
-        }
-
-        private void KillSpawnedDrones()
-        {
-            for (int i = spawnedDrones.Count - 1; i >= 0; i--)
-            {
-                Drone drone = spawnedDrones[i];
-                if (drone != null && drone.Health != null && !drone.Health.IsDead)
-                {
-                    drone.Health.Kill();
-                }
-            }
-
-            spawnedDrones.Clear();
-        }
-
-        private IEnumerator WaitPatternSeconds(float seconds)
-        {
-            float duration = Mathf.Max(0f, seconds);
-            float remaining = duration;
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Stop();
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private IEnumerator WaitStoppedSeconds(float seconds)
-        {
-            float remaining = Mathf.Max(0f, seconds);
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Stop();
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private IEnumerator WaitDronePatternSeconds(float seconds)
-        {
-            float remaining = Mathf.Max(0f, seconds);
-            while (remaining > 0f)
-            {
-                if (IsExecutionPaused)
-                {
-                    Stop();
-                    yield return null;
-                    continue;
-                }
-
-                remaining -= Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private IEnumerator WaitWhileExecutionPaused()
-        {
-            while (IsExecutionPaused)
-            {
-                Stop();
-                yield return null;
-            }
-        }
-
         private Vector3 GetProjectileOrigin()
         {
             if (projectileOrigin != null)
@@ -1047,30 +592,6 @@ namespace Week14.Enemy
             }
 
             return BodyRoot != null ? BodyRoot.position : transform.position;
-        }
-
-        private static float GetPattern5FormationAngle(int index, float spacingDegrees)
-        {
-            if (index <= 0)
-            {
-                return 0f;
-            }
-
-            int ring = (index + 1) / 2;
-            float sign = index % 2 == 1 ? 1f : -1f;
-            return sign * ring * Mathf.Max(1f, spacingDegrees);
-        }
-
-        private static float GetAlternatingOffset(int index, float spacing)
-        {
-            if (index <= 0 || spacing <= 0f)
-            {
-                return 0f;
-            }
-
-            int ring = (index + 1) / 2;
-            float sign = index % 2 == 0 ? -1f : 1f;
-            return ring * spacing * sign;
         }
     }
 }
