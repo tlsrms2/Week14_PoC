@@ -25,10 +25,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private readonly Dictionary<int, bool> bossHierarchyFoldouts = new();
     private readonly Dictionary<int, int> phasePatternAddIndexes = new();
     private Vector2 detailsScroll;
+    private Vector2 actionSettingsScroll;
     private Vector2 bossHierarchyScroll;
     private Vector2 bossHierarchyPanelPosition;
     private Vector2 bossHierarchyDragStartMouse;
     private Vector2 bossHierarchyDragStartPosition;
+    private float actionSettingsAvailableHeight = 420f;
     private int detailsTabIndex;
     private string selectedElementKey;
     private bool showActionCategories;
@@ -49,6 +51,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private const float BossHierarchyCollapsedWidth = 180f;
     private const float BossHierarchyCollapsedHeight = 34f;
     private const float BossHierarchyPanelMargin = 8f;
+    private const float ActionSettingsMinHeight = 140f;
+    private const float ActionSettingsBottomPadding = 16f;
     private const int SelectedElementDetailsIndex = -1;
 
     private void OnEnable()
@@ -1884,6 +1888,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         selectedElementKey = currentSelectionKey;
+        actionSettingsScroll = Vector2.zero;
         if (!string.IsNullOrWhiteSpace(selectedElementKey))
         {
             detailsTabIndex = SelectedElementDetailsIndex;
@@ -3164,6 +3169,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         string nodeId = GetString(node, "nodeId", string.Empty);
         Undo.RecordObject(graphAsset, "Change Boss Graph Node Action");
         action.managedReferenceValue = actionItem.Create();
+        actionSettingsScroll = Vector2.zero;
         node.FindPropertyRelative("sequences")?.ClearArray();
         graphObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(graphAsset);
@@ -3213,7 +3219,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
                 BossGraphAimStartNodeOptions.Set(graphObject);
                 EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(action, new GUIContent(GetNodeActionLabel(action)), true);
+                DrawScrollableActionProperty(action, new GUIContent(GetNodeActionLabel(action)));
                 if (EditorGUI.EndChangeCheck())
                 {
                     graphObject.ApplyModifiedProperties();
@@ -3252,7 +3258,13 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
             BossGraphAimStartNodeOptions.Set(graphObject);
+            UpdateActionSettingsAvailableHeight();
+            actionSettingsScroll = EditorGUILayout.BeginScrollView(
+                actionSettingsScroll,
+                GUI.skin.box,
+                GUILayout.Height(GetActionSettingsScrollHeight(360f)));
             selectedActionEditor?.OnInspectorGUI();
+            EditorGUILayout.EndScrollView();
         }
         finally
         {
@@ -3261,6 +3273,56 @@ public sealed class BossGraphEditorWindow : EditorWindow
             BossGraphActionFilterContext.Clear();
             BossGraphProjectileNameOptions.Clear();
         }
+    }
+
+    private void DrawScrollableActionProperty(SerializedProperty action, GUIContent label)
+    {
+        UpdateActionSettingsAvailableHeight();
+        string description = BossGraphActionEditorUtility.GetActionDescription(action?.managedReferenceValue?.GetType());
+        float contentHeight = EditorGUI.GetPropertyHeight(action, label, true) + EditorGUIUtility.standardVerticalSpacing * 2f;
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            contentHeight += 48f;
+        }
+
+        float scrollHeight = GetActionSettingsScrollHeight(contentHeight + 8f);
+        actionSettingsScroll = EditorGUILayout.BeginScrollView(
+            actionSettingsScroll,
+            GUI.skin.box,
+            GUILayout.Height(scrollHeight));
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            EditorGUILayout.HelpBox(description, MessageType.Info);
+        }
+
+        EditorGUILayout.PropertyField(action, label, true);
+        EditorGUILayout.EndScrollView();
+    }
+
+    private float GetActionSettingsScrollHeight(float contentHeight)
+    {
+        return Mathf.Clamp(contentHeight, ActionSettingsMinHeight, actionSettingsAvailableHeight);
+    }
+
+    private void UpdateActionSettingsAvailableHeight()
+    {
+        if (Event.current.type != EventType.Repaint)
+        {
+            return;
+        }
+
+        float panelHeight = detailsPanel != null && detailsPanel.contentRect.height > 0f
+            ? detailsPanel.contentRect.height
+            : position.height;
+        float currentY = GUILayoutUtility.GetLastRect().yMax;
+        if (currentY <= 0f || panelHeight <= 0f)
+        {
+            return;
+        }
+
+        actionSettingsAvailableHeight = Mathf.Max(
+            ActionSettingsMinHeight,
+            panelHeight - currentY - ActionSettingsBottomPadding);
     }
 
     private static string GetNodeActionLabel(SerializedProperty action)

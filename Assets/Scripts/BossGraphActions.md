@@ -32,8 +32,7 @@
 
 필드:
 - `explosion`: 폭발 파티클 설정.
-- `smoke`: 연기 파티클 설정.
-- `smokeInterval`: 연기 반복 재생 간격.
+- `smoke`: 연기 파티클 설정. `Smoke Interval`은 이 항목을 펼쳤을 때 함께 설정한다.
 - `muzzleFlash`: 총구 섬광 설정.
 - `cameraShake`: 카메라 흔들림 설정.
 
@@ -91,7 +90,7 @@
 
 메뉴: `Projectile/Fire Radial Emission`
 
-원형 또는 부채꼴로 투사체를 방사한다. 기존 `FireRadialProjectilesAction`, `FireRotatingProjectilesAction`의 대체 액션이다.
+원형 또는 부채꼴로 투사체를 방사한다.
 
 필드:
 - `projectileName`: 보스 인스펙터의 공통 투사체 이름.
@@ -347,14 +346,3 @@ Animator Trigger를 실행하거나 Animator State를 직접 재생한다.
 - `rotationEuler`: 생성 회전값.
 - `parentToBoss`: 생성물을 보스 자식으로 붙일지 여부.
 - `destroyAfterSeconds`: `0`보다 크면 해당 시간 뒤 제거한다.
-
-## Legacy Composite Actions
-
-아래 액션들은 기존 Hog 패턴 호환 또는 마이그레이션용으로만 남아 있다. 새 그래프에서는 작은 액션 조합으로 대체한다.
-
-- `FireRadialProjectilesAction` -> `FireRadialEmissionAction`
-- `FireRotatingProjectilesAction` -> `FireRadialEmissionAction`
-- `FireMachinegunProjectilesAction` -> `StartMoveTowardPlayerAction` + `FireProjectileBurstAction` + `StopMovementAction`
-- `FireSweepProjectilesAction` -> `WindupAction` + `FireSweepEmissionAction`
-- `FireFanVolleyProjectilesAction` -> `WindupAction` + `FireFanEmissionAction` + 필요 시 `FireProjectileBurstAction`
-- `FireChargedRadialSplitProjectileAction` -> `SpawnChargedProjectileAction` + `ConfigureProjectileGrowthAction` + `ConfigureRadialSplitAction` + `WaitProjectileChargeEndAction`

@@ -4,8 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using Week14.Enemy;
 
-#pragma warning disable CS0618
-
 internal readonly struct BossGraphValidationMessage
 {
     public BossGraphValidationMessage(MessageType type, string text)
@@ -365,25 +363,6 @@ internal static class BossGraphValidationUtility
             case WindupAction:
                 ValidateOriginSpec(action.FindPropertyRelative("effectOrigin"), $"{label}/effectOrigin", messages);
                 break;
-            case FireFanVolleyProjectilesAction:
-                WarnDeprecatedCompositeAction(label, "Windup + FireFanEmission + FireProjectileBurst", messages);
-                RequirePath(action, "projectileOriginPath", label, messages);
-                RequireString(action, "normalProjectileName", label, messages);
-                if (GetInt(action, "secondaryBulletCount") > 0)
-                {
-                    RequireString(action, "secondaryProjectileName", label, messages);
-                }
-                break;
-            case FireChargedRadialSplitProjectileAction:
-                WarnDeprecatedCompositeAction(label, "SpawnChargedProjectile + ConfigureProjectileGrowth + ConfigureRadialSplit + WaitProjectileChargeEnd", messages);
-                RequirePath(action, "projectileOriginPath", label, messages);
-                RequireString(action, "projectileName", label, messages);
-                break;
-            case FireSweepProjectilesAction:
-                WarnDeprecatedCompositeAction(label, "Windup + FireSweepEmission", messages);
-                RequirePath(action, "projectileOriginPath", label, messages);
-                RequireString(action, "projectileName", label, messages);
-                break;
             case SpawnChargedProjectileAction:
                 RequireString(action, "handleKey", label, messages);
                 RequirePath(action, "projectileOriginPath", label, messages);
@@ -397,27 +376,12 @@ internal static class BossGraphValidationUtility
                 RequireString(action, "handleKey", label, messages);
                 RequirePath(action, "projectileOriginPath", label, messages);
                 break;
-            case FireMachinegunProjectilesAction:
-                WarnDeprecatedCompositeAction(label, "StartMoveTowardPlayer + FireProjectileBurst + StopMovement", messages);
-                RequireArrayNotEmpty(action, "volleys", label, messages);
-                RequireString(action, "projectileName", label, messages);
-                break;
             case FireProjectileBurstAction:
                 RequireArrayNotEmpty(action, "volleys", label, messages);
                 RequireString(action, "projectileName", label, messages);
                 ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
                 break;
             case FireProjectileAction:
-            case FireRadialProjectilesAction:
-                if (actionValue is FireRadialProjectilesAction)
-                {
-                    WarnDeprecatedCompositeAction(label, "FireRadialEmission", messages);
-                }
-
-                RequireString(action, "projectileName", label, messages);
-                break;
-            case FireRotatingProjectilesAction:
-                WarnDeprecatedCompositeAction(label, "FireRadialEmission", messages);
                 RequireString(action, "projectileName", label, messages);
                 break;
             case FireRadialEmissionAction:

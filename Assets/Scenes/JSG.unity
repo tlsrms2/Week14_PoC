@@ -1856,7 +1856,7 @@ PrefabInstance:
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossGraph
       value: 
-      objectReference: {fileID: 11400000, guid: 5d0273e7ce0e0014d8969e1974ffc4b5, type: 2}
+      objectReference: {fileID: 11400000, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossHpBarView
       value: 

@@ -47,6 +47,13 @@ public sealed class BossGraphActionAssetEditor : Editor
         }
 
         SerializedProperty action = actions.GetArrayElementAtIndex(0);
+        Type actionType = action.managedReferenceValue?.GetType();
+        string description = BossGraphActionEditorUtility.GetActionDescription(actionType);
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            EditorGUILayout.HelpBox(description, MessageType.Info);
+        }
+
         EditorGUILayout.PropertyField(action, new GUIContent(GetActionLabel(action)), true);
     }
 
@@ -118,6 +125,116 @@ internal static class BossGraphActionEditorUtility
 
         return ObjectNames.NicifyVariableName(actionType.Name);
     }
+
+    public static string GetActionDescription(Type actionType)
+    {
+        if (actionType == typeof(WaitAction))
+        {
+            return "지정 시간 동안 대기합니다. 지속 이동이 켜져 있으면 대기 중에도 이동 갱신이 유지됩니다.";
+        }
+
+        if (actionType == typeof(WindupAction))
+        {
+            return "공격 전 준비 시간을 담당합니다. 준비 중 이동 정지와 연기 이펙트를 처리할 수 있습니다.";
+        }
+
+        if (actionType == typeof(PlayAnimationAction))
+        {
+            return "Animator Trigger를 실행하거나 Animator State를 직접 재생합니다.";
+        }
+
+        if (actionType == typeof(WaitForAnimationEventAction))
+        {
+            return "지정한 애니메이션 이벤트 ID가 들어올 때까지 대기합니다.";
+        }
+
+        if (actionType == typeof(MoveTowardPlayerAction))
+        {
+            return "지정 시간 동안 플레이어 방향으로 이동합니다.";
+        }
+
+        if (actionType == typeof(StartMoveTowardPlayerAction))
+        {
+            return "이후 대기나 발사 액션이 실행되는 동안 플레이어 방향 이동을 계속 켭니다.";
+        }
+
+        if (actionType == typeof(StopMovementAction))
+        {
+            return "Start Move Toward Player로 켠 지속 이동을 끕니다.";
+        }
+
+        if (actionType == typeof(MoveBodyRootLocalAction))
+        {
+            return "보스 BodyRoot의 로컬 오프셋을 목표값까지 이동시킵니다.";
+        }
+
+        if (actionType == typeof(ResetBodyRootLocalAction))
+        {
+            return "보스 BodyRoot의 로컬 오프셋을 초기화합니다.";
+        }
+
+        if (actionType == typeof(FireProjectileAction))
+        {
+            return "단발 투사체를 발사합니다. 간단한 1발 발사용 액션입니다.";
+        }
+
+        if (actionType == typeof(FireProjectileBurstAction))
+        {
+            return "한 방향으로 여러 발을 연속 발사합니다. 머신건류 패턴의 발사 부분을 담당합니다.";
+        }
+
+        if (actionType == typeof(FireRadialEmissionAction))
+        {
+            return "원형 또는 부채꼴로 투사체를 방사합니다.";
+        }
+
+        if (actionType == typeof(FireSweepEmissionAction))
+        {
+            return "기준 방향을 좌우로 흔들며 연속 발사합니다. 준비 시간은 Windup과 분리해서 구성합니다.";
+        }
+
+        if (actionType == typeof(FireFanEmissionAction))
+        {
+            return "부채꼴 발리를 여러 번 발사합니다. 준비 시간은 Windup과 분리해서 구성합니다.";
+        }
+
+        if (actionType == typeof(SpawnChargedProjectileAction))
+        {
+            return "차징 투사체를 생성하고 핸들에 저장합니다. 이후 성장, 분열, 차징 종료 대기 액션이 같은 핸들을 사용합니다.";
+        }
+
+        if (actionType == typeof(ConfigureProjectileGrowthAction))
+        {
+            return "핸들에 저장된 차징 투사체의 크기 성장을 설정합니다.";
+        }
+
+        if (actionType == typeof(ConfigureRadialSplitAction))
+        {
+            return "핸들에 저장된 차징 투사체가 Launch 이후 방사형으로 분열되도록 설정합니다.";
+        }
+
+        if (actionType == typeof(WaitProjectileChargeEndAction))
+        {
+            return "핸들에 저장된 차징 투사체가 차징을 끝낼 때까지 대기합니다.";
+        }
+
+        if (actionType == typeof(AimBossChildAtPlayerAction))
+        {
+            return "보스 자식 오브젝트가 플레이어를 바라보도록 켜거나 끕니다. Start와 End 노드 한 쌍으로 사용합니다.";
+        }
+
+        if (actionType == typeof(CustomEventAction))
+        {
+            return "보스 오브젝트에 SendMessage 또는 BroadcastMessage 방식으로 커스텀 이벤트를 보냅니다.";
+        }
+
+        if (actionType == typeof(SpawnPrefabAction))
+        {
+            return "프리팹을 보스 기준 위치에 생성합니다. 필요하면 보스 자식으로 붙이고 일정 시간 뒤 제거합니다.";
+        }
+
+        return string.Empty;
+    }
 }
 
 internal static class BossGraphActionFilterContext
@@ -156,6 +273,7 @@ internal static class BossGraphActionFilterContext
 internal static class BossGraphAimStartNodeOptions
 {
     private static readonly List<string> startNodeIds = new();
+    private static readonly Dictionary<string, string> startNodeLabels = new();
     private static bool hasContext;
 
     public static IReadOnlyList<string> StartNodeIds => startNodeIds;
@@ -163,6 +281,7 @@ internal static class BossGraphAimStartNodeOptions
     public static void Set(SerializedObject graphObject)
     {
         startNodeIds.Clear();
+        startNodeLabels.Clear();
         hasContext = graphObject != null;
         if (graphObject == null)
         {
@@ -187,6 +306,7 @@ internal static class BossGraphAimStartNodeOptions
             if (!startNodeIds.Contains(nodeId))
             {
                 startNodeIds.Add(nodeId);
+                startNodeLabels[nodeId] = GetNodeDisplayName(stateNodes, node, i);
             }
         }
     }
@@ -194,7 +314,15 @@ internal static class BossGraphAimStartNodeOptions
     public static void Clear()
     {
         startNodeIds.Clear();
+        startNodeLabels.Clear();
         hasContext = false;
+    }
+
+    public static string GetStartNodeLabel(string nodeId)
+    {
+        return !string.IsNullOrWhiteSpace(nodeId) && startNodeLabels.TryGetValue(nodeId, out string label)
+            ? label
+            : nodeId;
     }
 
     public static bool ContainsStartNode(string nodeId)
@@ -206,6 +334,12 @@ internal static class BossGraphAimStartNodeOptions
 
     private static bool IsAimStartNode(SerializedProperty node)
     {
+        BossAction directAction = node.FindPropertyRelative("action")?.managedReferenceValue as BossAction;
+        if (directAction is AimBossChildAtPlayerAction directAimAction)
+        {
+            return directAimAction.Mode == BossChildAimActionMode.Start;
+        }
+
         SerializedProperty sequences = node.FindPropertyRelative("sequences");
         if (sequences == null || sequences.arraySize == 0)
         {
@@ -217,6 +351,98 @@ internal static class BossGraphAimStartNodeOptions
         BossAction action = actionAsset?.Action;
         return action is AimBossChildAtPlayerAction aimAction
             && aimAction.Mode == BossChildAimActionMode.Start;
+    }
+
+    private static string GetNodeDisplayName(SerializedProperty stateNodes, SerializedProperty node, int nodeIndex)
+    {
+        string baseName = GetNodeActionDisplayName(node);
+        int totalCount = CountNodeDisplayNames(stateNodes, baseName);
+        if (totalCount <= 1)
+        {
+            return baseName;
+        }
+
+        int occurrence = GetNodeDisplayNameOccurrence(stateNodes, baseName, nodeIndex);
+        return $"{baseName} {Mathf.Max(1, occurrence):00}";
+    }
+
+    private static int CountNodeDisplayNames(SerializedProperty stateNodes, string baseName)
+    {
+        if (stateNodes == null || string.IsNullOrWhiteSpace(baseName))
+        {
+            return 0;
+        }
+
+        int count = 0;
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            if (GetNodeActionDisplayName(node) == baseName)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static int GetNodeDisplayNameOccurrence(SerializedProperty stateNodes, string baseName, int nodeIndex)
+    {
+        if (stateNodes == null || string.IsNullOrWhiteSpace(baseName))
+        {
+            return 1;
+        }
+
+        int maxIndex = Mathf.Min(nodeIndex, stateNodes.arraySize - 1);
+        int occurrence = 0;
+        for (int i = 0; i <= maxIndex; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            if (GetNodeActionDisplayName(node) == baseName)
+            {
+                occurrence++;
+            }
+        }
+
+        return occurrence;
+    }
+
+    private static string GetNodeActionDisplayName(SerializedProperty node)
+    {
+        BossAction action = node.FindPropertyRelative("action")?.managedReferenceValue as BossAction;
+        Type actionType = action?.GetType() ?? GetLegacyActionType(node);
+        if (actionType == null)
+        {
+            return "Empty Action";
+        }
+
+        string label = BossGraphActionEditorUtility.GetActionLabel(actionType);
+        int slashIndex = label.LastIndexOf('/');
+        if (slashIndex >= 0 && slashIndex < label.Length - 1)
+        {
+            label = label.Substring(slashIndex + 1);
+        }
+
+        const string actionSuffix = " Action";
+        if (label.EndsWith(actionSuffix, StringComparison.Ordinal))
+        {
+            label = label.Substring(0, label.Length - actionSuffix.Length);
+        }
+
+        return string.IsNullOrWhiteSpace(label) ? "Empty Action" : label;
+    }
+
+    private static Type GetLegacyActionType(SerializedProperty node)
+    {
+        SerializedProperty sequences = node.FindPropertyRelative("sequences");
+        if (sequences == null || sequences.arraySize == 0)
+        {
+            return null;
+        }
+
+        BossGraphActionAsset actionAsset = sequences.GetArrayElementAtIndex(0)
+            .FindPropertyRelative("sequence")?.objectReferenceValue as BossGraphActionAsset;
+        return actionAsset?.Action?.GetType();
     }
 }
 
@@ -246,6 +472,384 @@ internal static class BossGraphProjectileNameOptions
     public static void Clear()
     {
         names.Clear();
+    }
+}
+
+internal static class BossGraphDrawerDescriptionGui
+{
+    public const float HelpBoxHeight = 38f;
+
+    public static float Spacing => EditorGUIUtility.standardVerticalSpacing;
+
+    public static float GetPropertyHeight(SerializedProperty property)
+    {
+        if (property == null)
+        {
+            return 0f;
+        }
+
+        return EditorGUI.GetPropertyHeight(property, true) + Spacing;
+    }
+
+    public static void DrawDescription(ref Rect lineRect, string text)
+    {
+        Rect descriptionRect = new(lineRect.x, lineRect.y, lineRect.width, HelpBoxHeight);
+        EditorGUI.HelpBox(descriptionRect, text, MessageType.None);
+        lineRect.y += HelpBoxHeight + Spacing;
+    }
+
+    public static void DrawProperty(ref Rect lineRect, SerializedProperty property)
+    {
+        if (property == null)
+        {
+            return;
+        }
+
+        float height = EditorGUI.GetPropertyHeight(property, true);
+        Rect propertyRect = new(lineRect.x, lineRect.y, lineRect.width, height);
+        EditorGUI.PropertyField(propertyRect, property, true);
+        lineRect.y += height + Spacing;
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphProjectileOriginSpec))]
+internal sealed class BossGraphProjectileOriginSpecDrawer : PropertyDrawer
+{
+    private static readonly string[] PropertyNames =
+    {
+        "mode",
+        "bossChildPath",
+        "bossChildPaths",
+        "firstBossChildPath",
+        "secondBossChildPath",
+        "fallbackSpacing"
+    };
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        foreach (string propertyName in PropertyNames)
+        {
+            height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (!property.isExpanded)
+        {
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "투사체나 이펙트가 생성될 기준 위치를 정합니다. 보스 원점, 특정 자식, 자식 목록, 두 자식 교대를 사용할 수 있습니다.");
+        foreach (string propertyName in PropertyNames)
+        {
+            BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphProjectileAimSpec))]
+internal sealed class BossGraphProjectileAimSpecDrawer : PropertyDrawer
+{
+    private static readonly string[] PropertyNames =
+    {
+        "mode",
+        "angleDegrees"
+    };
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        foreach (string propertyName in PropertyNames)
+        {
+            height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (!property.isExpanded)
+        {
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "투사체가 향할 방향을 정합니다. 플레이어 조준 또는 고정 각도를 사용할 수 있습니다.");
+        foreach (string propertyName in PropertyNames)
+        {
+            BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphParticleEffectSettings))]
+internal sealed class BossGraphParticleEffectSettingsDrawer : PropertyDrawer
+{
+    private static readonly string[] PropertyNames =
+    {
+        "enabled",
+        "color",
+        "scale",
+        "count"
+    };
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        foreach (string propertyName in PropertyNames)
+        {
+            height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (!property.isExpanded)
+        {
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, GetDescription(property.name));
+        foreach (string propertyName in PropertyNames)
+        {
+            BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
+    }
+
+    private static string GetDescription(string propertyName)
+    {
+        return propertyName switch
+        {
+            "explosion" => "폭발 파티클 설정입니다. 켜면 발사/생성 지점에서 폭발 파티클을 재생합니다.",
+            "smoke" => "연기 파티클 설정입니다. Smoke Interval은 이 연기가 반복 재생되는 간격입니다.",
+            "muzzleFlash" => "총구 섬광 설정입니다. 켜면 발사 위치와 방향에 맞춰 섬광을 재생합니다.",
+            _ => "파티클 이펙트의 사용 여부, 색, 크기, 개수를 정합니다."
+        };
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphCameraShakeSettings))]
+internal sealed class BossGraphCameraShakeSettingsDrawer : PropertyDrawer
+{
+    private static readonly string[] PropertyNames =
+    {
+        "enabled",
+        "seconds",
+        "distance",
+        "frequency"
+    };
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        foreach (string propertyName in PropertyNames)
+        {
+            height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (!property.isExpanded)
+        {
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "카메라 흔들림 설정입니다. 켜면 지정 시간, 거리, 주기로 충격감을 줍니다.");
+        foreach (string propertyName in PropertyNames)
+        {
+            BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphEffectSettings))]
+internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
+{
+    private const string ExplosionProperty = "explosion";
+    private const string SmokeProperty = "smoke";
+    private const string SmokeIntervalProperty = "smokeInterval";
+    private const string MuzzleFlashProperty = "muzzleFlash";
+    private const string CameraShakeProperty = "cameraShake";
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        height += EditorGUIUtility.standardVerticalSpacing;
+        height += BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += GetDefaultPropertyHeight(property.FindPropertyRelative(ExplosionProperty));
+        height += GetSmokePropertyHeight(property);
+        height += GetDefaultPropertyHeight(property.FindPropertyRelative(MuzzleFlashProperty));
+        height += GetDefaultPropertyHeight(property.FindPropertyRelative(CameraShakeProperty));
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (!property.isExpanded)
+        {
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "액션과 함께 재생할 공통 이펙트 묶음입니다. SFX는 각 액션 필드에 그대로 둡니다.");
+        DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(ExplosionProperty));
+        DrawSmokeProperty(ref lineRect, property);
+        DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(MuzzleFlashProperty));
+        DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(CameraShakeProperty));
+        EditorGUI.indentLevel--;
+
+        EditorGUI.EndProperty();
+    }
+
+    private static float GetDefaultPropertyHeight(SerializedProperty property)
+    {
+        if (property == null)
+        {
+            return 0f;
+        }
+
+        return EditorGUI.GetPropertyHeight(property, true) + EditorGUIUtility.standardVerticalSpacing;
+    }
+
+    private static float GetSmokePropertyHeight(SerializedProperty property)
+    {
+        SerializedProperty smoke = property.FindPropertyRelative(SmokeProperty);
+        if (smoke == null)
+        {
+            return 0f;
+        }
+
+        float height = EditorGUI.GetPropertyHeight(smoke, true) + EditorGUIUtility.standardVerticalSpacing;
+        if (smoke.isExpanded)
+        {
+            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        }
+
+        return height;
+    }
+
+    private static void DrawDefaultProperty(ref Rect lineRect, SerializedProperty property)
+    {
+        if (property == null)
+        {
+            return;
+        }
+
+        float height = EditorGUI.GetPropertyHeight(property, true);
+        Rect propertyRect = new(lineRect.x, lineRect.y, lineRect.width, height);
+        EditorGUI.PropertyField(propertyRect, property, true);
+        lineRect.y += height + EditorGUIUtility.standardVerticalSpacing;
+    }
+
+    private static void DrawSmokeProperty(ref Rect lineRect, SerializedProperty property)
+    {
+        SerializedProperty smoke = property.FindPropertyRelative(SmokeProperty);
+        if (smoke == null)
+        {
+            return;
+        }
+
+        DrawDefaultProperty(ref lineRect, smoke);
+        if (!smoke.isExpanded)
+        {
+            return;
+        }
+
+        SerializedProperty smokeInterval = property.FindPropertyRelative(SmokeIntervalProperty);
+        if (smokeInterval == null)
+        {
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        Rect intervalRect = new(lineRect.x, lineRect.y, lineRect.width, EditorGUIUtility.singleLineHeight);
+        EditorGUI.PropertyField(intervalRect, smokeInterval);
+        lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        EditorGUI.indentLevel--;
     }
 }
 
@@ -371,7 +975,7 @@ internal sealed class BossGraphNodeIdDrawer : PropertyDrawer
         for (int i = 0; i < startNodeIds.Count; i++)
         {
             values.Add(startNodeIds[i]);
-            labels.Add(new GUIContent(startNodeIds[i]));
+            labels.Add(new GUIContent(BossGraphAimStartNodeOptions.GetStartNodeLabel(startNodeIds[i])));
         }
 
         if (!string.IsNullOrWhiteSpace(property.stringValue) && !values.Contains(property.stringValue))
@@ -530,6 +1134,7 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
         if (TryGetDroppedPath(lineRect, out string headerPath, true))
         {
             AddPath(property, headerPath);
+            GUI.changed = true;
         }
 
         if (property.isExpanded)
@@ -548,6 +1153,7 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
             if (TryGetDroppedPath(dropRect, out string path, true))
             {
                 AddPath(property, path);
+                GUI.changed = true;
             }
 
             EditorGUI.indentLevel--;
@@ -585,9 +1191,10 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
             }
         }
 
-        if (TryGetDroppedPath(valueRect, out string path, true))
+        if (TryGetDroppedPath(fieldRect, out string path, true))
         {
             property.stringValue = path;
+            GUI.changed = true;
         }
     }
 
@@ -600,8 +1207,7 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
             return false;
         }
 
-        object data = DragAndDrop.GetGenericData(BossGraphDragKeys.BossChildPath);
-        if (data is not string droppedPath || string.IsNullOrWhiteSpace(droppedPath))
+        if (!TryResolveDroppedPath(out string droppedPath))
         {
             return false;
         }
@@ -628,6 +1234,33 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
         return true;
     }
 
+    private static bool TryResolveDroppedPath(out string path)
+    {
+        path = string.Empty;
+        object data = DragAndDrop.GetGenericData(BossGraphDragKeys.BossChildPath);
+        if (data is string droppedPath && !string.IsNullOrWhiteSpace(droppedPath))
+        {
+            path = droppedPath;
+            return true;
+        }
+
+        UnityEngine.Object[] objectReferences = DragAndDrop.objectReferences;
+        if (objectReferences == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < objectReferences.Length; i++)
+        {
+            if (BossGraphBossHierarchyOptions.TryGetPath(objectReferences[i], out path))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static void AddPath(SerializedProperty property, string path)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -646,6 +1279,7 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
         int index = property.arraySize;
         property.InsertArrayElementAtIndex(index);
         property.GetArrayElementAtIndex(index).stringValue = path;
+        GUI.changed = true;
     }
 
     private static bool IsStringList(SerializedProperty property)
@@ -681,6 +1315,55 @@ internal static class BossGraphBossHierarchyOptions
         }
 
         return root == null || root.Find(path) != null || FindChildRecursive(root, path) != null;
+    }
+
+    public static bool TryGetPath(UnityEngine.Object source, out string path)
+    {
+        path = string.Empty;
+        Transform transform = source switch
+        {
+            GameObject gameObject => gameObject.transform,
+            Transform sourceTransform => sourceTransform,
+            _ => null
+        };
+
+        if (transform == null)
+        {
+            return false;
+        }
+
+        if (root == null)
+        {
+            path = transform.name;
+            return !string.IsNullOrWhiteSpace(path);
+        }
+
+        if (transform == root)
+        {
+            return false;
+        }
+
+        if (!transform.IsChildOf(root))
+        {
+            return false;
+        }
+
+        path = GetRelativePath(root, transform);
+        return !string.IsNullOrWhiteSpace(path);
+    }
+
+    private static string GetRelativePath(Transform parent, Transform child)
+    {
+        List<string> names = new();
+        Transform current = child;
+        while (current != null && current != parent)
+        {
+            names.Add(current.name);
+            current = current.parent;
+        }
+
+        names.Reverse();
+        return string.Join("/", names);
     }
 
     private static Transform FindChildRecursive(Transform parent, string name)
