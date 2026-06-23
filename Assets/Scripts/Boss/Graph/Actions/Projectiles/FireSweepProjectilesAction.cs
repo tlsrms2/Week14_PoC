@@ -1,0 +1,96 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using Week14.Combat;
+
+namespace Week14.Enemy
+{
+    [Serializable]
+    public sealed class FireSweepEmissionAction : BossAction
+    {
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
+        [SerializeField] private BossGraphProjectileOriginSpec origin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField, Min(1)] private int bulletCount = 36;
+        [SerializeField, Min(0f)] private float fireInterval = 0.045f;
+        [SerializeField, Min(0f)] private float spawnSpacing = 0.12f;
+        [SerializeField, Min(0f)] private float sweepStepDegrees = 5f;
+        [SerializeField, Min(0f)] private float maxSweepAngle = 35f;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
+        [SerializeField] private BossGraphEffectSettings effects = new();
+
+        public override IEnumerator Execute(BossActionContext context)
+        {
+            if (context == null)
+            {
+                yield break;
+            }
+
+            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            int count = Mathf.Max(1, bulletCount);
+            float currentSweepOffset = 0f;
+            float sweepDirection = 1f;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    i--;
+                    continue;
+                }
+
+                Vector3 aimOrigin = originSpec.GetAimOrigin(context, i);
+                Vector2 baseDirection = aimSpec.GetDirection(context, aimOrigin);
+                float baseAngle = Mathf.Atan2(baseDirection.y, baseDirection.x) * Mathf.Rad2Deg;
+                Vector2 finalDirection = BossActionContext.AngleToDirection(baseAngle + currentSweepOffset);
+                Vector3 spawnOrigin = originSpec.GetSpawnOrigin(context, i, finalDirection);
+                Vector2 side = new(-finalDirection.y, finalDirection.x);
+                Vector3 spawnPosition = spawnOrigin + (Vector3)(side * GetAlternatingOffset(i));
+
+                EnemyProjectile firedProjectile = context.FireProjectile(
+                    projectile,
+                    spawnPosition,
+                    finalDirection,
+                    0f,
+                    projectileName: projectileName);
+
+                if (firedProjectile != null)
+                {
+                    context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+                    context.PlayCameraShakeIfEnabled(effects, finalDirection);
+                    context.PlaySfx(fireSfxId);
+                    context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                }
+
+                currentSweepOffset += sweepStepDegrees * sweepDirection;
+                if (Mathf.Abs(currentSweepOffset) >= maxSweepAngle)
+                {
+                    sweepDirection *= -1f;
+                    currentSweepOffset = Mathf.Sign(currentSweepOffset) * maxSweepAngle;
+                }
+
+                if (fireInterval > 0f && i < count - 1)
+                {
+                    yield return context.WaitSeconds(fireInterval);
+                }
+            }
+        }
+
+        private float GetAlternatingOffset(int index)
+        {
+            if (index <= 0 || spawnSpacing <= 0f)
+            {
+                return 0f;
+            }
+
+            int ring = (index + 1) / 2;
+            float sign = index % 2 == 0 ? -1f : 1f;
+            return ring * spawnSpacing * sign;
+        }
+    }
+}

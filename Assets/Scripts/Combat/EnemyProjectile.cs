@@ -17,9 +17,10 @@ namespace Week14.Combat
         private const int MaxPathDashCount = 160;
         private const int HomingAimReticleLineCount = 3;
         private const int HomingAimReticleCircleSegments = 40;
+        private const int RadialSplitIndicatorLineCount = 2;
         private const float PathDashLength = 0.2f;
         private const float PathDashGap = 0.14f;
-        private const float DefaultHomingSeconds = 0.8f;
+        private const float DefaultHomingSeconds = 10f;
         private const float DefaultHomingTurnDegreesPerSecond = 540f;
         private const float HomingChargeBlinkMinRate = 2f;
         private const float HomingChargeBlinkMaxRate = 8f;
@@ -54,6 +55,7 @@ namespace Week14.Combat
         [SerializeField] private float parryLockOnRotationSpeedDegrees = 180f;
         private readonly List<LineRenderer> pathIndicatorDashes = new();
         private readonly List<LineRenderer> homingAimReticleLines = new();
+        private readonly List<LineRenderer> radialSplitIndicatorLines = new();
         private Transform pathIndicatorRoot;
         private BulletGauge ownerBullets;
         private BossAI ownerBoss;
@@ -96,8 +98,10 @@ namespace Week14.Combat
         private bool parryLockOnIndicatorVisible;
         private Vector2 pathIndicatorStart;
         private Vector2 pathIndicatorDirection = Vector2.left;
+        private Vector2 pathIndicatorRadialSplitPoint;
         private float pathIndicatorLength;
         private float pathIndicatorEndsAt;
+        private bool pathIndicatorHasRadialSplitPoint;
         private Vector2 lastWallCheckPosition;
         private static readonly List<EnemyProjectile> activeProjectiles = new();
         private float executionPauseStartedAt;
@@ -1316,6 +1320,8 @@ namespace Week14.Combat
             pathIndicatorActive = false;
             pathIndicatorLength = 0f;
             pathIndicatorEndsAt = 0f;
+            pathIndicatorHasRadialSplitPoint = false;
+            radialSplitIndicatorLines.Clear();
             pathIndicatorDashes.Clear();
             homingAimReticleLines.Clear();
             pathIndicatorRoot = null;
@@ -1350,7 +1356,14 @@ namespace Week14.Combat
                 return;
             }
 
-            DrawPathIndicator(transform.position, flightDirection, GetPathIndicatorLength(transform.position, flightDirection, projectileLifetime), 0f);
+            float length = GetSplitAwarePathIndicatorLength(
+                transform.position,
+                flightDirection,
+                projectileLifetime,
+                out bool hasRadialSplitPoint,
+                out Vector2 radialSplitPoint);
+            DrawPathIndicator(transform.position, flightDirection, length, 0f);
+            DrawRadialSplitIndicatorIfNeeded(hasRadialSplitPoint, radialSplitPoint);
         }
 
         private void BeginPathIndicator()
@@ -1365,7 +1378,12 @@ namespace Week14.Combat
             pathIndicatorDirection = flightDirection.sqrMagnitude > 0.0001f ? flightDirection.normalized : Vector2.left;
             float visibleSeconds = Mathf.Max(0f, destroyAt - Time.time);
             pathIndicatorEndsAt = Time.time + visibleSeconds;
-            pathIndicatorLength = GetPathIndicatorLength(pathIndicatorStart, pathIndicatorDirection, visibleSeconds);
+            pathIndicatorLength = GetSplitAwarePathIndicatorLength(
+                pathIndicatorStart,
+                pathIndicatorDirection,
+                visibleSeconds,
+                out pathIndicatorHasRadialSplitPoint,
+                out pathIndicatorRadialSplitPoint);
             pathIndicatorActive = true;
 
             if (IsHomingProjectile())
@@ -1375,6 +1393,7 @@ namespace Week14.Combat
             }
 
             DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, 0f);
+            DrawRadialSplitIndicatorIfNeeded(pathIndicatorHasRadialSplitPoint, pathIndicatorRadialSplitPoint);
         }
 
         private void TickPathIndicator()
@@ -1398,12 +1417,67 @@ namespace Week14.Combat
 
             float travelled = Vector2.Dot((Vector2)transform.position - pathIndicatorStart, pathIndicatorDirection);
             DrawPathIndicator(pathIndicatorStart, pathIndicatorDirection, pathIndicatorLength, Mathf.Max(0f, travelled));
+            DrawRadialSplitIndicatorIfNeeded(pathIndicatorHasRadialSplitPoint, pathIndicatorRadialSplitPoint);
         }
 
         private float GetPathIndicatorLength(Vector2 start, Vector2 direction, float seconds)
         {
             float length = projectileSpeed * Mathf.Max(0f, seconds);
             return GetWallClippedLength(start, direction, length);
+        }
+
+        private float GetSplitAwarePathIndicatorLength(
+            Vector2 start,
+            Vector2 direction,
+            float visibleSeconds,
+            out bool hasRadialSplitPoint,
+            out Vector2 radialSplitPoint)
+        {
+            hasRadialSplitPoint = TryGetRadialSplitIndicatorPoint(
+                start,
+                direction,
+                visibleSeconds,
+                out float radialSplitLength,
+                out radialSplitPoint);
+
+            return hasRadialSplitPoint
+                ? radialSplitLength
+                : GetPathIndicatorLength(start, direction, visibleSeconds);
+        }
+
+        private bool TryGetRadialSplitIndicatorPoint(
+            Vector2 start,
+            Vector2 direction,
+            float visibleSeconds,
+            out float length,
+            out Vector2 point)
+        {
+            length = 0f;
+            point = start;
+            if (!splitRadiallyOnLaunch || radialSplitBulletCount <= 0 || projectileSpeed <= 0f)
+            {
+                return false;
+            }
+
+            Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+            float secondsToSplit = launched && radialSplitAt > 0f
+                ? Mathf.Max(0f, radialSplitAt - Time.time)
+                : Mathf.Max(0f, radialSplitDelaySeconds);
+            float availableSeconds = Mathf.Max(0f, visibleSeconds);
+            if (secondsToSplit > availableSeconds + 0.01f)
+            {
+                return false;
+            }
+
+            float splitDistance = projectileSpeed * secondsToSplit;
+            if (TryGetWallHit(start, normalized, splitDistance, out _))
+            {
+                return false;
+            }
+
+            length = splitDistance;
+            point = start + normalized * length;
+            return true;
         }
 
         private float GetWallClippedLength(Vector2 start, Vector2 direction, float length)
@@ -1645,6 +1719,67 @@ namespace Week14.Combat
             pathIndicatorActive = visibleCount > 0;
         }
 
+        private void DrawRadialSplitIndicatorIfNeeded(bool visible, Vector2 center)
+        {
+            if (!visible)
+            {
+                SetRadialSplitIndicatorVisible(false);
+                return;
+            }
+
+            float radius = Mathf.Max(0.08f, projectileRadius * 0.72f);
+            float innerRadius = radius * 0.42f;
+            float width = Mathf.Max(0.014f, projectileRadius * 0.14f);
+            Color color = GetProjectileIndicatorColor(0.9f);
+
+            SetRadialSplitIndicatorStar(0, center, radius, innerRadius, -90f, color, width);
+            SetRadialSplitIndicatorStar(1, center, radius * 0.82f, innerRadius * 0.82f, -54f, color, width);
+            for (int i = RadialSplitIndicatorLineCount; i < radialSplitIndicatorLines.Count; i++)
+            {
+                if (radialSplitIndicatorLines[i] != null)
+                {
+                    radialSplitIndicatorLines[i].enabled = false;
+                }
+            }
+
+            pathIndicatorActive = true;
+        }
+
+        private void SetRadialSplitIndicatorStar(
+            int index,
+            Vector2 center,
+            float outerRadius,
+            float innerRadius,
+            float rotationDegrees,
+            Color color,
+            float width)
+        {
+            LineRenderer line = EnsureRadialSplitIndicatorLine(index);
+            if (line == null)
+            {
+                return;
+            }
+
+            ConfigureRadialSplitIndicatorLine(line, color, width);
+            line.loop = true;
+            line.positionCount = 10;
+            for (int i = 0; i < 10; i++)
+            {
+                float angle = (rotationDegrees + i * 36f) * Mathf.Deg2Rad;
+                float pointRadius = i % 2 == 0 ? outerRadius : innerRadius;
+                line.SetPosition(i, center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * pointRadius);
+            }
+        }
+
+        private static void ConfigureRadialSplitIndicatorLine(LineRenderer line, Color color, float width)
+        {
+            line.enabled = true;
+            line.startColor = color;
+            line.endColor = color;
+            line.startWidth = width;
+            line.endWidth = width;
+        }
+
         private void DrawHomingAimReticle(Vector2 center, Vector2 direction)
         {
             Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
@@ -1813,6 +1948,32 @@ namespace Week14.Combat
             return homingAimReticleLines[index];
         }
 
+        private LineRenderer EnsureRadialSplitIndicatorLine(int index)
+        {
+            EnsurePathIndicatorRoot();
+            if (pathIndicatorRoot == null || index < 0)
+            {
+                return null;
+            }
+
+            while (radialSplitIndicatorLines.Count <= index)
+            {
+                GameObject lineObject = new($"RadialSplitIndicator_{radialSplitIndicatorLines.Count:00}");
+                lineObject.transform.SetParent(pathIndicatorRoot, false);
+                LineRenderer line = lineObject.AddComponent<LineRenderer>();
+                line.useWorldSpace = true;
+                line.loop = false;
+                line.positionCount = 2;
+                line.numCornerVertices = 2;
+                line.numCapVertices = 2;
+                line.sortingOrder = 20;
+                line.material = GetChargeVfxMaterial();
+                radialSplitIndicatorLines.Add(line);
+            }
+
+            return radialSplitIndicatorLines[index];
+        }
+
         private void EnsurePathIndicatorRoot()
         {
             if (pathIndicatorRoot != null)
@@ -1844,6 +2005,7 @@ namespace Week14.Combat
             pathIndicatorActive = visible && pathIndicatorActive;
             SetPathDashesVisible(visible);
             SetHomingAimReticleVisible(visible);
+            SetRadialSplitIndicatorVisible(visible);
         }
 
         private void SetPathDashesVisible(bool visible)
@@ -1864,6 +2026,17 @@ namespace Week14.Combat
                 if (homingAimReticleLines[i] != null)
                 {
                     homingAimReticleLines[i].enabled = visible;
+                }
+            }
+        }
+
+        private void SetRadialSplitIndicatorVisible(bool visible)
+        {
+            for (int i = 0; i < radialSplitIndicatorLines.Count; i++)
+            {
+                if (radialSplitIndicatorLines[i] != null)
+                {
+                    radialSplitIndicatorLines[i].enabled = visible;
                 }
             }
         }

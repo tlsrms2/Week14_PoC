@@ -9,42 +9,15 @@ public sealed class HogBossAIEditor : Editor
 {
     private static readonly string[] MainTabs =
     {
-        "패턴",
         "투사체",
-        "설정"
-    };
-
-    private static readonly string[] PatternTabs =
-    {
-        "패턴1",
-        "패턴2",
-        "패턴3",
-        "패턴4",
-        "패턴5",
-        "패턴6",
-        "패턴7"
+        "설정",
+        "참조"
     };
 
     private static readonly HashSet<string> HogFields = new()
     {
-        "pattern1",
-        "pattern2",
-        "pattern3",
-        "pattern4",
-        "pattern5",
-        "pattern6",
-        "pattern7",
-        "projectiles",
-        "phasePatterns",
-        "minPatternRecoverySeconds",
-        "maxPatternRecoverySeconds",
-        "showPatternBulletPreview",
-        "patternBulletPreviewFullHoldSeconds",
-        "patternBulletPreviewSingleGroupFullHoldRatio",
-        "randomizePatterns",
-        "preventRandomRepeatPattern",
-        "debugUseFixedPattern",
-        "debugPattern",
+        "bossGraph",
+        "graphProjectiles",
         "enragePhase1Seconds",
         "enragePhase1MaxBullets",
         "enragePhase2Seconds",
@@ -63,10 +36,37 @@ public sealed class HogBossAIEditor : Editor
         "enrageShakeZoom"
     };
 
+    private static readonly HashSet<string> ReferenceFields = new()
+    {
+        "effectData",
+        "colorSettings",
+        "bodyRoot",
+        "body",
+        "statusView",
+        "obstacleMask",
+        "lockOnIndicator",
+        "executionIndicator",
+        "bossCombatUiRoot",
+        "bossHpBarView",
+        "bossLivesView",
+        "bossEnrageBarView"
+    };
+
+    private static readonly HashSet<string> LegacyColorFields = new()
+    {
+        "normalColor",
+        "hpEmptyColor",
+        "staggeredColor",
+        "statusBarBackgroundColor",
+        "hpBarColor",
+        "emptyHpBarColor",
+        "lockOnIndicatorColor",
+        "executionIndicatorColor"
+    };
+
     private static readonly Dictionary<string, bool> FoldoutStates = new();
 
     private int mainTabIndex;
-    private int patternTabIndex;
     private bool showBossBase;
 
     public override void OnInspectorGUI()
@@ -74,90 +74,69 @@ public sealed class HogBossAIEditor : Editor
         serializedObject.Update();
 
         DrawScriptField();
+        DrawBossGraphSection();
         mainTabIndex = GUILayout.SelectionGrid(mainTabIndex, MainTabs, MainTabs.Length);
         EditorGUILayout.Space(6f);
 
         switch (mainTabIndex)
         {
             case 1:
-                DrawProjectilesTab();
-                break;
-            case 2:
                 DrawSettingsTab();
                 break;
+            case 2:
+                DrawReferencesTab();
+                break;
             default:
-                DrawPatternTabs();
+                DrawProjectilesTab();
                 break;
         }
 
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void DrawPatternTabs()
+    private void DrawBossGraphSection()
     {
-        patternTabIndex = GUILayout.SelectionGrid(patternTabIndex, PatternTabs, 4);
-        EditorGUILayout.Space(6f);
-
-        switch (patternTabIndex)
+        SerializedProperty bossGraph = serializedObject.FindProperty("bossGraph");
+        if (bossGraph == null)
         {
-            case 1:
-                DrawPattern2Tab();
-                break;
-            case 2:
-                DrawPattern3Tab();
-                break;
-            case 3:
-                DrawPattern4Tab();
-                break;
-            case 4:
-                DrawPattern5Tab();
-                break;
-            case 5:
-                DrawPattern6Tab();
-                break;
-            case 6:
-                DrawPattern7Tab();
-                break;
-            default:
-                DrawPattern1Tab();
-                break;
+            return;
         }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("보스 그래프", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(bossGraph);
+
+        bool hasMultipleValues = bossGraph.hasMultipleDifferentValues;
+        BossGraphAsset graph = !hasMultipleValues ? bossGraph.objectReferenceValue as BossGraphAsset : null;
+        if (graph != null)
+        {
+            EditorGUILayout.HelpBox("현재 런타임은 Boss Graph를 사용합니다.", MessageType.Info);
+        }
+        else if (!hasMultipleValues)
+        {
+            EditorGUILayout.HelpBox("Boss Graph가 비어 있으면 HogBossAI는 패턴을 실행하지 않습니다.", MessageType.Warning);
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        using (new EditorGUI.DisabledScope(graph == null))
+        {
+            if (GUILayout.Button("그래프 에디터 열기"))
+            {
+                BossGraphEditorWindow.Open(graph, GetGraphProjectileNames(), GetBossHierarchyRoot());
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.Space(6f);
     }
 
     private void DrawSettingsTab()
     {
-        DrawProperty("randomizePatterns");
-        DrawProperty("preventRandomRepeatPattern");
-        DrawPhasePatterns();
-        DrawProperty("minPatternRecoverySeconds");
-        DrawProperty("maxPatternRecoverySeconds");
-
-        EditorGUILayout.Space(6f);
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool previewExpanded = DrawFoldout("settings.preview", "프리뷰");
-        if (previewExpanded)
-        {
-            DrawProperty("showPatternBulletPreview");
-            DrawProperty("patternBulletPreviewFullHoldSeconds");
-            DrawProperty("patternBulletPreviewSingleGroupFullHoldRatio");
-        }
-        EditorGUILayout.EndVertical();
-
-        EditorGUILayout.Space(6f);
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool debugExpanded = DrawFoldout("settings.debug", "디버그");
-        if (debugExpanded)
-        {
-            DrawProperty("debugUseFixedPattern");
-            DrawProperty("debugPattern");
-        }
-        EditorGUILayout.EndVertical();
-
-        EditorGUILayout.Space(6f);
         DrawEnrageSection();
 
         EditorGUILayout.Space(6f);
-        showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 공통/참조 설정", true);
+        showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 설정", true);
         if (showBossBase)
         {
             DrawBaseProperties();
@@ -166,34 +145,178 @@ public sealed class HogBossAIEditor : Editor
 
     private void DrawProjectilesTab()
     {
-        SerializedProperty projectiles = serializedObject.FindProperty("projectiles");
+        SerializedProperty projectiles = serializedObject.FindProperty("graphProjectiles");
         if (projectiles == null)
         {
             return;
         }
 
-        EnsureProjectileArray(projectiles);
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Boss Graph 투사체", EditorStyles.boldLabel);
+        DrawProjectileList(projectiles);
+        DrawProjectileWarnings(projectiles);
+        EditorGUILayout.EndVertical();
+    }
 
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("투사체 추가"))
-        {
-            projectiles.arraySize++;
-        }
-
-        using (new EditorGUI.DisabledScope(projectiles.arraySize <= 2))
-        {
-            if (GUILayout.Button("마지막 투사체 삭제"))
-            {
-                projectiles.DeleteArrayElementAtIndex(projectiles.arraySize - 1);
-            }
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(4f);
+    private void DrawProjectileList(SerializedProperty projectiles)
+    {
         for (int i = 0; i < projectiles.arraySize; i++)
         {
-            DrawProjectile(projectiles.GetArrayElementAtIndex(i), $"투사체 {GetProjectileLabel(i)}");
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(i);
+            SerializedProperty projectileName = entry.FindPropertyRelative("projectileName");
+            SerializedProperty projectile = entry.FindPropertyRelative("projectile");
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            bool remove = false;
+            bool stopDrawingList = false;
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField($"#{i + 1}", GUILayout.Width(28f));
+                if (projectileName != null)
+                {
+                    EditorGUILayout.PropertyField(projectileName, new GUIContent("Name"));
+                }
+
+                using (new EditorGUI.DisabledScope(i <= 0))
+                {
+                    if (GUILayout.Button("Up", GUILayout.Width(32f)))
+                    {
+                        projectiles.MoveArrayElement(i, i - 1);
+                        stopDrawingList = true;
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(i >= projectiles.arraySize - 1))
+                {
+                    if (GUILayout.Button("Dn", GUILayout.Width(32f)))
+                    {
+                        projectiles.MoveArrayElement(i, i + 1);
+                        stopDrawingList = true;
+                    }
+                }
+
+                if (GUILayout.Button("-", GUILayout.Width(24f)))
+                {
+                    remove = true;
+                }
+            }
+
+            if (remove)
+            {
+                projectiles.DeleteArrayElementAtIndex(i);
+                EditorGUILayout.EndVertical();
+                break;
+            }
+
+            if (stopDrawingList)
+            {
+                EditorGUILayout.EndVertical();
+                break;
+            }
+
+            if (projectile != null)
+            {
+                EditorGUILayout.PropertyField(projectile, new GUIContent("Settings"), true);
+            }
+
+            EditorGUILayout.EndVertical();
         }
+
+        if (GUILayout.Button("투사체 추가"))
+        {
+            int index = projectiles.arraySize;
+            projectiles.InsertArrayElementAtIndex(index);
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(index);
+            SerializedProperty projectileName = entry.FindPropertyRelative("projectileName");
+            if (projectileName != null)
+            {
+                projectileName.stringValue = GetUniqueProjectileName(projectiles, index);
+            }
+        }
+    }
+
+    private static void DrawProjectileWarnings(SerializedProperty projectiles)
+    {
+        if (projectiles.arraySize == 0)
+        {
+            EditorGUILayout.HelpBox("Boss Graph에서 사용할 투사체를 하나 이상 추가하세요.", MessageType.Warning);
+            return;
+        }
+
+        HashSet<string> names = new(System.StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(i);
+            string projectileName = entry.FindPropertyRelative("projectileName")?.stringValue;
+            if (string.IsNullOrWhiteSpace(projectileName))
+            {
+                EditorGUILayout.HelpBox($"투사체 #{i + 1}: 이름이 비어 있습니다.", MessageType.Warning);
+                continue;
+            }
+
+            if (!names.Add(projectileName))
+            {
+                EditorGUILayout.HelpBox($"투사체 이름 '{projectileName}'이 중복됩니다.", MessageType.Warning);
+            }
+
+            SerializedProperty prefab = entry.FindPropertyRelative("projectile")?.FindPropertyRelative("prefab");
+            if (prefab != null && prefab.objectReferenceValue == null)
+            {
+                EditorGUILayout.HelpBox($"투사체 '{projectileName}': Prefab을 설정하세요.", MessageType.Warning);
+            }
+        }
+    }
+
+    private void DrawReferencesTab()
+    {
+        DrawGraphReferences();
+
+        EditorGUILayout.Space(6f);
+        DrawPropertiesBox("Scene References", "bodyRoot", "body", "statusView", "obstacleMask", "lockOnIndicator", "executionIndicator");
+
+        EditorGUILayout.Space(6f);
+        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossEnrageBarView");
+    }
+
+    private void DrawGraphReferences()
+    {
+        SerializedProperty bossGraph = serializedObject.FindProperty("bossGraph");
+        if (bossGraph == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Graph References", EditorStyles.boldLabel);
+        if (bossGraph.hasMultipleDifferentValues)
+        {
+            EditorGUILayout.HelpBox("여러 Boss Graph가 선택되어 참조 설정을 표시할 수 없습니다.", MessageType.Info);
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        BossGraphAsset graph = bossGraph.objectReferenceValue as BossGraphAsset;
+        if (graph == null)
+        {
+            EditorGUILayout.HelpBox("Boss Graph가 비어 있습니다.", MessageType.Warning);
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        SerializedObject graphObject = new(graph);
+        graphObject.Update();
+        SerializedProperty references = graphObject.FindProperty("references");
+        if (references != null)
+        {
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(references, true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                graphObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(graph);
+            }
+        }
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawEnrageSection()
@@ -230,310 +353,65 @@ public sealed class HogBossAIEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawPhasePatterns()
+    private List<string> GetGraphProjectileNames()
     {
-        SerializedProperty phasePatterns = serializedObject.FindProperty("phasePatterns");
-        if (phasePatterns == null)
-        {
-            return;
-        }
-
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        SerializedProperty maxLives = serializedObject.FindProperty("maxLives");
-        int desiredCount = maxLives != null ? Mathf.Max(1, maxLives.intValue) : phasePatterns.arraySize;
-        if (phasePatterns.arraySize < desiredCount)
-        {
-            EditorGUILayout.HelpBox("페이즈 수보다 목록이 적습니다. 실행 또는 값 변경 시 부족한 페이즈가 자동 추가됩니다.", MessageType.Warning);
-        }
-
-        EditorGUILayout.PropertyField(phasePatterns, true);
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawPattern1Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern1");
-        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
-        DrawSection("발사 원점", pattern, "projectileOrigins");
-        DrawSection("발사", pattern, "radialBulletCount", "burstInterval", "spawnRadius", "angleStepDegrees");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawPattern2Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern2");
-        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
-        DrawSection("발사 원점", pattern, "projectileOrigins");
-        DrawSection("이동", pattern, "moveSpeedMultiplier");
-        DrawSection("발사 묶음", pattern, "volleys", "spawnSpacing");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawPattern3Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern3");
-        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
-        DrawSection("발사 원점", pattern, "firePoint");
-        DrawSection("준비/조준", pattern, "windupSeconds", "aimTrackingSeconds", "aimSpreadDegrees");
-        DrawSection("크기", pattern, "projectileRadiusMultiplier", "finalScaleMultiplier", "startScaleRatio");
-        DrawSection("전방위 분열", pattern, "splitDelaySeconds", "bombSfxLeadSeconds", "radialSplitBulletCount", "radialSplitStartAngleOffset", "splitSpeedMultiplier", "splitRadiusMultiplier", "splitLifetimeMultiplier");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawPattern4Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern4");
-        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
-        DrawSection("내려찍기/원점", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
-        DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawPattern5Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern5");
-        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
-        DrawSection("발사 원점", pattern, "firePoint");
-        DrawSection("기 모으기", pattern, "windupSeconds");
-        DrawSection("미니건 발사", pattern, "bulletCount", "fireInterval", "spawnSpacing", "sweepStepDegrees", "maxSweepAngle");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawPattern6Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern6");
-        DrawProjectileIndex(pattern, "projectileIndex", "투사체");
-        DrawSection("내려찍기/원점", pattern, "projectileOrigin", "slamUpOffset", "slamDownOffset", "slamRiseSeconds", "slamDropSeconds", "slamRecoverSeconds");
-        DrawSection("전방위 발사", pattern, "bulletCount", "waveCount", "waveInterval", "startAngleOffset", "spawnRadius");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawPattern7Tab()
-    {
-        SerializedProperty pattern = serializedObject.FindProperty("pattern7");
-        DrawProjectileIndex(pattern, "normalProjectileIndex", "일반 투사체");
-        DrawProjectileIndex(pattern, "secondaryProjectileIndex", "보조 투사체");
-        DrawSection("발사 원점", pattern, "firePoint");
-        DrawSection("기 모으기", pattern, "windupSeconds");
-        DrawSection("세 갈래 반복 발사", pattern, "normalVolleyCount", "normalVolleyInterval", "fanAngleDegrees", "normalSpawnSpacing");
-        DrawSection("보조 발사", pattern, "secondaryProjectileOrigins", "secondaryBulletCount", "secondarySpawnForwardOffset");
-        DrawEffects(pattern.FindPropertyRelative("effects"));
-    }
-
-    private void DrawProjectileIndex(SerializedProperty pattern, string childName, string label)
-    {
-        if (pattern == null)
-        {
-            return;
-        }
-
-        SerializedProperty projectiles = serializedObject.FindProperty("projectiles");
+        List<string> names = new();
+        SerializedProperty projectiles = serializedObject.FindProperty("graphProjectiles");
         if (projectiles == null)
         {
-            return;
+            return names;
         }
 
-        EnsureProjectileArray(projectiles);
-
-        SerializedProperty projectileIndex = pattern.FindPropertyRelative(childName);
-        if (projectileIndex == null)
+        for (int i = 0; i < projectiles.arraySize; i++)
         {
-            return;
+            string projectileName = projectiles.GetArrayElementAtIndex(i)
+                .FindPropertyRelative("projectileName")?.stringValue;
+            if (!string.IsNullOrWhiteSpace(projectileName) && !names.Contains(projectileName))
+            {
+                names.Add(projectileName);
+            }
         }
 
-        string[] labels = GetProjectileLabels(projectiles.arraySize);
-        projectileIndex.intValue = Mathf.Clamp(projectileIndex.intValue, 0, labels.Length - 1);
-        projectileIndex.intValue = EditorGUILayout.Popup(label, projectileIndex.intValue, labels);
+        return names;
     }
 
-    private static void EnsureProjectileArray(SerializedProperty projectiles)
+    private Transform GetBossHierarchyRoot()
     {
-        if (projectiles == null)
-        {
-            return;
-        }
-
-        while (projectiles.arraySize < 2)
-        {
-            projectiles.arraySize++;
-        }
+        return targets.Length == 1 && target is HogBossAI boss ? boss.transform : null;
     }
 
-    private static string[] GetProjectileLabels(int count)
+    private static string GetUniqueProjectileName(SerializedProperty projectiles, int currentIndex)
     {
-        int safeCount = Mathf.Max(1, count);
-        string[] labels = new string[safeCount];
-        for (int i = 0; i < safeCount; i++)
+        const string baseName = "Projectile";
+        int suffix = currentIndex + 1;
+        string candidate = $"{baseName}{suffix}";
+        while (HasProjectileName(projectiles, candidate, currentIndex))
         {
-            labels[i] = $"투사체 {GetProjectileLabel(i)}";
+            suffix++;
+            candidate = $"{baseName}{suffix}";
         }
 
-        return labels;
+        return candidate;
     }
 
-    private static string GetProjectileLabel(int index)
+    private static bool HasProjectileName(SerializedProperty projectiles, string name, int ignoreIndex)
     {
-        int value = Mathf.Max(0, index);
-        string label = string.Empty;
-        do
+        for (int i = 0; i < projectiles.arraySize; i++)
         {
-            label = (char)('A' + value % 26) + label;
-            value = value / 26 - 1;
-        }
-        while (value >= 0);
+            if (i == ignoreIndex)
+            {
+                continue;
+            }
 
-        return label;
-    }
-
-    private void DrawProjectile(SerializedProperty projectile, string title)
-    {
-        if (projectile == null)
-        {
-            return;
+            string existing = projectiles.GetArrayElementAtIndex(i)
+                .FindPropertyRelative("projectileName")?.stringValue;
+            if (existing == name)
+            {
+                return true;
+            }
         }
 
-        ApplyHomingDefaults(projectile);
-
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        string key = $"{projectile.propertyPath}.{title}";
-        bool expanded = DrawFoldout(key, title);
-        if (!expanded)
-        {
-            EditorGUILayout.EndVertical();
-            return;
-        }
-
-        DrawChild(projectile, "prefab");
-        DrawChild(projectile, "homingChargePrefab");
-        DrawChild(projectile, "bulletDamage");
-        DrawChild(projectile, "chargeSeconds");
-        DrawChild(projectile, "chargeDriftSpeed");
-        DrawChild(projectile, "speed");
-        DrawChild(projectile, "lifetime");
-        DrawChild(projectile, "radius");
-        DrawChild(projectile, "chargingColor");
-        DrawChild(projectile, "launchedColor");
-        DrawChild(projectile, "homingBlinkColor");
-        DrawChild(projectile, "trailColor");
-        DrawChild(projectile, "indicatorColor");
-
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool advancedExpanded = DrawFoldout($"{key}.advanced", "투사체 고급값");
-        if (advancedExpanded)
-        {
-            DrawChild(projectile, "aimAtPlayerWhileCharging");
-            DrawChild(projectile, "trailSeconds");
-            DrawChild(projectile, "trailWidthMultiplier");
-            DrawChild(projectile, "homingEnabled");
-            ApplyHomingDefaults(projectile);
-        }
-        EditorGUILayout.EndVertical();
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private static void ApplyHomingDefaults(SerializedProperty projectile)
-    {
-        SerializedProperty homingEnabled = FindChild(projectile, "homingEnabled");
-        if (homingEnabled == null || !homingEnabled.boolValue)
-        {
-            return;
-        }
-
-        SerializedProperty homingSeconds = FindChild(projectile, "homingSeconds");
-        if (homingSeconds != null && homingSeconds.floatValue <= 0f)
-        {
-            homingSeconds.floatValue = 10f;
-        }
-
-        SerializedProperty homingTurnDegrees = FindChild(projectile, "homingTurnDegreesPerSecond");
-        if (homingTurnDegrees != null && homingTurnDegrees.floatValue <= 0f)
-        {
-            homingTurnDegrees.floatValue = 540f;
-        }
-    }
-
-    private static void DrawSection(string title, SerializedProperty root, params string[] childNames)
-    {
-        if (root == null)
-        {
-            return;
-        }
-
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool expanded = DrawFoldout($"{root.propertyPath}.{title}", title);
-        if (!expanded)
-        {
-            EditorGUILayout.EndVertical();
-            return;
-        }
-
-        for (int i = 0; i < childNames.Length; i++)
-        {
-            DrawChild(root, childNames[i]);
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private static void DrawEffects(SerializedProperty effects)
-    {
-        if (effects == null)
-        {
-            return;
-        }
-
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool expanded = DrawFoldout($"{effects.propertyPath}.effects", "이펙트");
-        if (!expanded)
-        {
-            EditorGUILayout.EndVertical();
-            return;
-        }
-
-        SerializedProperty explosion = effects.FindPropertyRelative("explosion");
-        DrawParticleEffect(explosion, "폭발", true);
-
-        SerializedProperty smoke = effects.FindPropertyRelative("smoke");
-        DrawParticleEffect(smoke, "연기", true);
-        DrawNamedChild(effects, "smokeInterval", "연기 간격");
-
-        SerializedProperty muzzleFlash = effects.FindPropertyRelative("muzzleFlash");
-        DrawParticleEffect(muzzleFlash, "총구 화염", false);
-
-        SerializedProperty cameraShake = effects.FindPropertyRelative("cameraShake");
-        DrawCameraShake(cameraShake);
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private static void DrawParticleEffect(SerializedProperty effect, string labelPrefix, bool drawCount)
-    {
-        if (effect == null)
-        {
-            return;
-        }
-
-        DrawNamedChild(effect, "enabled", $"{labelPrefix} 사용");
-        DrawNamedChild(effect, "color", $"{labelPrefix} 색");
-        DrawNamedChild(effect, "scale", $"{labelPrefix} 크기");
-        if (drawCount)
-        {
-            DrawNamedChild(effect, "count", $"{labelPrefix} 개수");
-        }
-    }
-
-    private static void DrawCameraShake(SerializedProperty cameraShake)
-    {
-        if (cameraShake == null)
-        {
-            return;
-        }
-
-        DrawNamedChild(cameraShake, "enabled", "카메라 쉐이크 사용");
-        DrawNamedChild(cameraShake, "seconds", "카메라 쉐이크 시간");
-        DrawNamedChild(cameraShake, "distance", "카메라 쉐이크 거리");
-        DrawNamedChild(cameraShake, "frequency", "카메라 쉐이크 빈도");
+        return false;
     }
 
     private static bool DrawFoldout(string key, string title)
@@ -548,58 +426,6 @@ public sealed class HogBossAIEditor : Editor
         return expanded;
     }
 
-    private static void DrawChild(SerializedProperty root, string childName)
-    {
-        SerializedProperty child = FindChild(root, childName);
-        if (child != null)
-        {
-            EditorGUILayout.PropertyField(child, true);
-        }
-    }
-
-    private static void DrawNamedChild(SerializedProperty root, string childName, string label)
-    {
-        SerializedProperty child = FindChild(root, childName);
-        if (child != null)
-        {
-            EditorGUILayout.PropertyField(child, new GUIContent(label), true);
-        }
-    }
-
-    private static SerializedProperty FindChild(SerializedProperty root, string childName)
-    {
-        if (root == null)
-        {
-            return null;
-        }
-
-        SerializedProperty child = root.FindPropertyRelative(childName);
-        if (child != null)
-        {
-            return child;
-        }
-
-        SerializedProperty iterator = root.Copy();
-        SerializedProperty end = iterator.GetEndProperty();
-        bool enterChildren = true;
-        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
-        {
-            enterChildren = false;
-            if (iterator.name == childName)
-            {
-                return iterator.Copy();
-            }
-        }
-
-        return null;
-    }
-
-    private SerializedProperty FindPatternChild(string patternName, string childName)
-    {
-        SerializedProperty pattern = serializedObject.FindProperty(patternName);
-        return pattern != null ? pattern.FindPropertyRelative(childName) : null;
-    }
-
     private void DrawProperty(string propertyName)
     {
         SerializedProperty property = serializedObject.FindProperty(propertyName);
@@ -607,6 +433,18 @@ public sealed class HogBossAIEditor : Editor
         {
             EditorGUILayout.PropertyField(property, true);
         }
+    }
+
+    private void DrawPropertiesBox(string title, params string[] propertyNames)
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+        for (int i = 0; i < propertyNames.Length; i++)
+        {
+            DrawProperty(propertyNames[i]);
+        }
+
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawBaseProperties()
@@ -617,7 +455,10 @@ public sealed class HogBossAIEditor : Editor
         while (property.NextVisible(enterChildren))
         {
             enterChildren = false;
-            if (property.propertyPath == "m_Script" || HogFields.Contains(property.propertyPath))
+            if (property.propertyPath == "m_Script"
+                || HogFields.Contains(property.propertyPath)
+                || ReferenceFields.Contains(property.propertyPath)
+                || LegacyColorFields.Contains(property.propertyPath))
             {
                 continue;
             }
