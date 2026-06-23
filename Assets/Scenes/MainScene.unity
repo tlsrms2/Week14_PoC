@@ -1866,10 +1866,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 445453440}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
-      propertyPath: bossBulletBarView
-      value: 
-      objectReference: {fileID: 738254207}
-    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossEnrageBarView
       value: 
       objectReference: {fileID: 31684505}

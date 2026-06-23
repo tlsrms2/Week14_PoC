@@ -218,7 +218,7 @@ MonoBehaviour:
   enrageWindupShakeDistance: 0.01
   enrageWindupShakeFrequency: 28
   enrageBurstSprite: {fileID: -1308620352984429291, guid: 0baa10e0e47a1e94eac947c1f292f41a, type: 3}
-  enrageBurstTargetScale: 50
+  enrageBurstTargetScale: 70
   enrageBurstGrowSeconds: 5
   enrageBurstHoldSeconds: 0.1
   enrageBurstFadeSeconds: 0.35
