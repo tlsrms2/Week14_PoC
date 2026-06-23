@@ -80,8 +80,8 @@ namespace Week14.Enemy
             DeactivatePatternFirePoints();
             HidePatternBulletPreview();
             HidePattern7GuideLines();
-            BossProgressManager.ClearBoss("1");
-            BossProgressManager.UnlockBoss("2");
+            GameSaveManager.ClearBoss("1");
+            GameSaveManager.UnlockBoss("2");
         }
 
         protected override void OnCombatStarted()

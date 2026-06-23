@@ -50,7 +50,7 @@ namespace Week14.UI
 
         private bool IsUnlocked()
         {
-            return bossData != null && BossProgressManager.IsUnlocked(bossData.Id);
+            return bossData != null && GameSaveManager.IsUnlocked(bossData.Id);
         }
     }
 }

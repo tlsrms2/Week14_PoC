@@ -393,8 +393,6 @@ namespace Week14.Combat
                 return;
             }
 
-            Debug.Log($"[PlayerVisualRig DEBUG] ApplyFacing applying {nextFacing} (was {currentFacing}, hasApplied={hasAppliedFacing})", this);
-
             SetRendererAlphas(frontRenderers, frontVisibleAlphas, nextFacing == VisualFacing.Front);
             SetRendererAlphas(sideRenderers, sideVisibleAlphas, nextFacing == VisualFacing.Side);
             SetRendererAlphas(backRenderers, backVisibleAlphas, nextFacing == VisualFacing.Back);

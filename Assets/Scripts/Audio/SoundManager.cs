@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using Week14.Save;
 
 namespace Week14.Audio
 {
@@ -53,6 +54,12 @@ namespace Week14.Audio
             {
                 sfxSources.Add(CreateSfxSource());
             }
+
+            bgmVolume = SettingsManager.BgmVolume;
+            sfxVolume = SettingsManager.SfxVolume;
+            bgmMuted = SettingsManager.BgmMuted;
+            sfxMuted = SettingsManager.SfxMuted;
+            RefreshBgmSourceVolume();
         }
 
         private void OnDestroy()
@@ -165,14 +172,18 @@ namespace Week14.Audio
 
             instance.bgmVolume = Mathf.Clamp(volume, 0f, 2f);
             instance.RefreshBgmSourceVolume();
+            SettingsManager.SetBgmVolume(instance.bgmVolume);
         }
 
         public static void SetSfxVolume(float volume)
         {
-            if (instance != null)
+            if (instance == null)
             {
-                instance.sfxVolume = Mathf.Clamp(volume, 0f, 2f);
+                return;
             }
+
+            instance.sfxVolume = Mathf.Clamp(volume, 0f, 2f);
+            SettingsManager.SetSfxVolume(instance.sfxVolume);
         }
 
         public static void SetBgmMuted(bool muted)
@@ -184,14 +195,18 @@ namespace Week14.Audio
 
             instance.bgmMuted = muted;
             instance.RefreshBgmSourceVolume();
+            SettingsManager.SetBgmMuted(muted);
         }
 
         public static void SetSfxMuted(bool muted)
         {
-            if (instance != null)
+            if (instance == null)
             {
-                instance.sfxMuted = muted;
+                return;
             }
+
+            instance.sfxMuted = muted;
+            SettingsManager.SetSfxMuted(muted);
         }
 
         private void RefreshBgmSourceVolume()

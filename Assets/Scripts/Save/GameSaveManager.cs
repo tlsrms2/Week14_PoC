@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace Week14.Save
 {
-    public static class BossProgressManager
+    public static class GameSaveManager
     {
-        private const string SaveFileName = "boss_progress.json";
+        private const string SaveFileName = "game_data.json";
         private const string FirstBossId = "1";
 
         private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
-        private static BossSaveData data;
+        private static GameSaveData data;
 
-        private static BossSaveData Data
+        private static GameSaveData Data
         {
             get
             {
@@ -62,11 +62,11 @@ namespace Week14.Save
         {
             try
             {
-                data = File.Exists(SavePath) ? JsonUtility.FromJson<BossSaveData>(File.ReadAllText(SavePath)) : new BossSaveData();
+                data = File.Exists(SavePath) ? JsonUtility.FromJson<GameSaveData>(File.ReadAllText(SavePath)) : new GameSaveData();
             }
             catch (Exception)
             {
-                data = new BossSaveData();
+                data = new GameSaveData();
             }
 
             UnlockBoss(FirstBossId);

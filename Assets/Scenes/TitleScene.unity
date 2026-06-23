@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76510e5699d0a64a95e5d1ccd8e00dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.TitleMenuView
-  mainSceneName: MainScene
+  mainSceneName: LobbyScene
 --- !u!4 &105794526
 Transform:
   m_ObjectHideFlags: 0
