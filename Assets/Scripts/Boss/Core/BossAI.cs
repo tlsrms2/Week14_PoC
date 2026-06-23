@@ -64,8 +64,10 @@ namespace Week14.Enemy
         [Header("Meta")]
         [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 오브젝트 이름을 사용합니다.")]
         [SerializeField] private string displayName;
-        [Tooltip("이 보스가 사용할 공통 전투 이펙트와 색상 설정입니다.")]
+        [Tooltip("이 보스가 사용할 공통 전투 이펙트 설정입니다.")]
         [SerializeField] private CombatEffectData effectData;
+        [Tooltip("모든 보스가 공유할 색상과 상태 UI 색상 설정입니다.")]
+        [SerializeField] private BossColorSettings colorSettings;
 
         [Header("HP")]
         [Tooltip("보스가 보유할 수 있는 최대 HP입니다.")]
@@ -75,14 +77,13 @@ namespace Week14.Enemy
         [FormerlySerializedAs("bulletEmptyExecutionSeconds")]
         [SerializeField, Min(0f)] private float hpEmptyExecutionSeconds = 3f;
 
-        [Header("Color")]
         [Tooltip("기본 상태에서 보스 스프라이트에 적용할 색입니다.")]
-        [SerializeField] private Color normalColor = Color.white;
+        [SerializeField, HideInInspector] private Color normalColor = Color.white;
         [Tooltip("보스 HP가 0이 되었을 때 보스 스프라이트에 적용할 색입니다.")]
         [FormerlySerializedAs("bulletEmptyColor")]
-        [SerializeField] private Color hpEmptyColor = new(0.45f, 0.65f, 1f, 1f);
+        [SerializeField, HideInInspector] private Color hpEmptyColor = new(0.45f, 0.65f, 1f, 1f);
         [Tooltip("보스가 경직 상태일 때 보스 스프라이트에 적용할 색입니다.")]
-        [SerializeField] private Color staggeredColor = new(1f, 0.95f, 0.35f, 1f);
+        [SerializeField, HideInInspector] private Color staggeredColor = new(1f, 0.95f, 0.35f, 1f);
 
         [Header("Detection")]
         [Tooltip("플레이어를 감지할 수 있는 최대 거리입니다.")]
@@ -107,14 +108,13 @@ namespace Week14.Enemy
         [SerializeField] private BossLivesView bossLivesView;
         [SerializeField] private BossEnrageBarView bossEnrageBarView;
 
-        [Header("Status UI")]
-        [SerializeField] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
+        [SerializeField, HideInInspector] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
         [FormerlySerializedAs("bulletBarColor")]
-        [SerializeField] private Color hpBarColor = new(1f, 0.55f, 0.1f, 1f);
+        [SerializeField, HideInInspector] private Color hpBarColor = new(1f, 0.55f, 0.1f, 1f);
         [FormerlySerializedAs("emptyBulletBarColor")]
-        [SerializeField] private Color emptyHpBarColor = Color.red;
-        [SerializeField] private Color lockOnIndicatorColor = Color.white;
-        [SerializeField] private Color executionIndicatorColor = Color.red;
+        [SerializeField, HideInInspector] private Color emptyHpBarColor = Color.red;
+        [SerializeField, HideInInspector] private Color lockOnIndicatorColor = Color.white;
+        [SerializeField, HideInInspector] private Color executionIndicatorColor = Color.red;
 
         private readonly BossProjectileTracker projectileTracker = new();
         private Health health;
@@ -153,19 +153,19 @@ namespace Week14.Enemy
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
-        public Color NormalColor => normalColor;
-        public Color HpEmptyColor => hpEmptyColor;
+        public Color NormalColor => colorSettings != null ? colorSettings.NormalColor : normalColor;
+        public Color HpEmptyColor => colorSettings != null ? colorSettings.HpEmptyColor : hpEmptyColor;
         public Color BulletEmptyColor => HpEmptyColor;
-        public Color StaggeredColor => staggeredColor;
+        public Color StaggeredColor => colorSettings != null ? colorSettings.StaggeredColor : staggeredColor;
         public Color BodyHitColor => effectData != null ? effectData.EnemyBodyHitColor : new Color(1f, 0.35f, 0.25f, 1f);
         public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
-        public Color StatusBarBackgroundColor => statusBarBackgroundColor;
-        public Color HpBarColor => hpBarColor;
-        public Color EmptyHpBarColor => emptyHpBarColor;
+        public Color StatusBarBackgroundColor => colorSettings != null ? colorSettings.StatusBarBackgroundColor : statusBarBackgroundColor;
+        public Color HpBarColor => colorSettings != null ? colorSettings.HpBarColor : hpBarColor;
+        public Color EmptyHpBarColor => colorSettings != null ? colorSettings.EmptyHpBarColor : emptyHpBarColor;
         public Color BulletBarColor => HpBarColor;
         public Color EmptyBulletBarColor => EmptyHpBarColor;
-        public Color LockOnIndicatorColor => lockOnIndicatorColor;
-        public Color ExecutionIndicatorColor => executionIndicatorColor;
+        public Color LockOnIndicatorColor => colorSettings != null ? colorSettings.LockOnIndicatorColor : lockOnIndicatorColor;
+        public Color ExecutionIndicatorColor => colorSettings != null ? colorSettings.ExecutionIndicatorColor : executionIndicatorColor;
 
         protected CombatEffectData EffectData => effectData;
         public int MaxLives => Mathf.Max(1, maxLives);
@@ -957,10 +957,10 @@ namespace Week14.Enemy
                 return;
             }
 
-            Color color = normalColor;
+            Color color = NormalColor;
             if (isStaggered)
             {
-                color = staggeredColor;
+                color = StaggeredColor;
             }
             else if (isBodyHitColorActive)
             {
@@ -968,7 +968,7 @@ namespace Week14.Enemy
             }
             else if (isExecutionLocked || IsHpEmpty)
             {
-                color = hpEmptyColor;
+                color = HpEmptyColor;
             }
 
             for (int i = 0; i < renderers.Length; i++)

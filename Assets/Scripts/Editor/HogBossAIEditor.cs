@@ -11,7 +11,8 @@ public sealed class HogBossAIEditor : Editor
     {
         "패턴",
         "투사체",
-        "설정"
+        "설정",
+        "참조"
     };
 
     private static readonly string[] PatternTabs =
@@ -63,6 +64,34 @@ public sealed class HogBossAIEditor : Editor
         "enrageShakeZoom"
     };
 
+    private static readonly HashSet<string> ReferenceFields = new()
+    {
+        "effectData",
+        "colorSettings",
+        "bodyRoot",
+        "body",
+        "statusView",
+        "obstacleMask",
+        "lockOnIndicator",
+        "executionIndicator",
+        "bossCombatUiRoot",
+        "bossHpBarView",
+        "bossLivesView",
+        "bossEnrageBarView"
+    };
+
+    private static readonly HashSet<string> LegacyColorFields = new()
+    {
+        "normalColor",
+        "hpEmptyColor",
+        "staggeredColor",
+        "statusBarBackgroundColor",
+        "hpBarColor",
+        "emptyHpBarColor",
+        "lockOnIndicatorColor",
+        "executionIndicatorColor"
+    };
+
     private static readonly Dictionary<string, bool> FoldoutStates = new();
 
     private int mainTabIndex;
@@ -84,6 +113,9 @@ public sealed class HogBossAIEditor : Editor
                 break;
             case 2:
                 DrawSettingsTab();
+                break;
+            case 3:
+                DrawReferencesTab();
                 break;
             default:
                 DrawPatternTabs();
@@ -157,11 +189,23 @@ public sealed class HogBossAIEditor : Editor
         DrawEnrageSection();
 
         EditorGUILayout.Space(6f);
-        showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 공통/참조 설정", true);
+        showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 설정", true);
         if (showBossBase)
         {
             DrawBaseProperties();
         }
+    }
+
+    private void DrawReferencesTab()
+    {
+        DrawProperty("effectData");
+        DrawProperty("colorSettings");
+
+        EditorGUILayout.Space(6f);
+        DrawPropertiesBox("Scene References", "bodyRoot", "body", "statusView", "obstacleMask", "lockOnIndicator", "executionIndicator");
+
+        EditorGUILayout.Space(6f);
+        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossEnrageBarView");
     }
 
     private void DrawProjectilesTab()
@@ -609,6 +653,18 @@ public sealed class HogBossAIEditor : Editor
         }
     }
 
+    private void DrawPropertiesBox(string title, params string[] propertyNames)
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+        for (int i = 0; i < propertyNames.Length; i++)
+        {
+            DrawProperty(propertyNames[i]);
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
     private void DrawBaseProperties()
     {
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -617,7 +673,10 @@ public sealed class HogBossAIEditor : Editor
         while (property.NextVisible(enterChildren))
         {
             enterChildren = false;
-            if (property.propertyPath == "m_Script" || HogFields.Contains(property.propertyPath))
+            if (property.propertyPath == "m_Script"
+                || HogFields.Contains(property.propertyPath)
+                || ReferenceFields.Contains(property.propertyPath)
+                || LegacyColorFields.Contains(property.propertyPath))
             {
                 continue;
             }
