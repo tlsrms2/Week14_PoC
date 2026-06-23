@@ -21,13 +21,14 @@ namespace Week14.Enemy
             public float RestSeconds => Mathf.Max(0f, restSeconds);
         }
 
-        [SerializeField] private BossProjectileSettings projectile = new();
-        [SerializeField] private string firstProjectileOriginPath;
-        [SerializeField] private string secondProjectileOriginPath;
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphBossChildPath] private string firstProjectileOriginPath;
+        [SerializeField, BossGraphBossChildPath] private string secondProjectileOriginPath;
         [SerializeField, Min(0f)] private float moveSpeedMultiplier = 0.25f;
         [SerializeField, Min(0f)] private float spawnSpacing = 0.18f;
-        [SerializeField] private string fireSfxId;
-        [SerializeField] private string launchSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField] private List<Volley> volleys = new() { new Volley() };
 
@@ -95,7 +96,13 @@ namespace Week14.Enemy
                 spawnPosition += (Vector3)(side * GetAlternatingOffset(bulletIndex));
             }
 
-            EnemyProjectile firedProjectile = context.FireProjectile(projectile, spawnPosition, direction, 0f, null, false);
+            context.PlayProjectileTelegraphLine(projectileName, spawnPosition, direction, 0.08f);
+            EnemyProjectile firedProjectile = context.FireProjectile(
+                projectile,
+                spawnPosition,
+                direction,
+                0f,
+                projectileName: projectileName);
             if (firedProjectile != null)
             {
                 context.PlayOriginBurst(effects, origin);

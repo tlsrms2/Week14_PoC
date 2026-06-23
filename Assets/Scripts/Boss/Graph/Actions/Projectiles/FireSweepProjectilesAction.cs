@@ -8,18 +8,16 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class FireSweepProjectilesAction : BossAction
     {
-        [SerializeField] private BossProjectileSettings projectile = new();
-        [SerializeField] private string firePointPath;
-        [SerializeField] private string projectileOriginPath;
-        [SerializeField] private bool setFirePointActive = true;
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphBossChildPath] private string projectileOriginPath;
         [SerializeField, Min(0f)] private float windupSeconds = 1.4f;
         [SerializeField, Min(1)] private int bulletCount = 36;
         [SerializeField, Min(0f)] private float fireInterval = 0.045f;
         [SerializeField, Min(0f)] private float spawnSpacing = 0.12f;
         [SerializeField, Min(0f)] private float sweepStepDegrees = 5f;
         [SerializeField, Min(0f)] private float maxSweepAngle = 35f;
-        [SerializeField, Min(0f)] private float muzzleFlashScale;
-        [SerializeField] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -29,38 +27,38 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (setFirePointActive)
-            {
-                context.SetBossChildActive(firePointPath, true);
-            }
-
             yield return RunWindup(context);
             yield return RunSweepFire(context);
-
-            if (setFirePointActive)
-            {
-                context.SetBossChildActive(firePointPath, false);
-            }
         }
 
         private IEnumerator RunWindup(BossActionContext context)
         {
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
-            while (elapsed < windupSeconds)
+            ProjectileVfx.TelegraphLine telegraph = context.CreateProjectileTelegraphLine(projectileName);
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < windupSeconds)
                 {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
 
-                context.Stop();
-                AimFirePointToPlayer(context);
-                context.PlaySmokeIfDue(ref nextSmokeAt, effects, context.GetBossChildPosition(projectileOriginPath));
-                elapsed += Time.deltaTime;
-                yield return null;
+                    context.Stop();
+                    Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
+                    Vector2 direction = context.GetDirectionToPlayer(origin);
+                    context.SetProjectileTelegraphLine(telegraph, origin, direction);
+                    context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
+                    elapsed += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                telegraph?.Destroy();
             }
         }
 
@@ -81,7 +79,6 @@ namespace Week14.Enemy
                 }
 
                 context.Stop();
-                AimFirePointToPlayer(context);
 
                 Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
                 Vector2 baseDirection = context.GetDirectionToPlayer(origin);
@@ -89,12 +86,15 @@ namespace Week14.Enemy
                 float finalAngle = baseAngle + currentSweepOffset;
                 Vector2 finalDirection = BossActionContext.AngleToDirection(finalAngle);
 
-                context.RotateBossChildRight(firePointPath, finalDirection, true);
-                origin = context.GetBossChildPosition(projectileOriginPath);
-
                 Vector2 side = new(-finalDirection.y, finalDirection.x);
                 Vector3 spawnPosition = origin + (Vector3)(side * GetAlternatingOffset(i));
-                EnemyProjectile firedProjectile = context.FireProjectile(projectile, spawnPosition, finalDirection, muzzleFlashScale, false, false, 0f);
+                context.PlayProjectileTelegraphLine(projectileName, origin, finalDirection, 0.08f);
+                EnemyProjectile firedProjectile = context.FireProjectile(
+                    projectile,
+                    spawnPosition,
+                    finalDirection,
+                    0f,
+                    projectileName: projectileName);
                 if (firedProjectile != null)
                 {
                     context.PlayMuzzleFlashIfEnabled(effects, origin, finalDirection);
@@ -114,12 +114,6 @@ namespace Week14.Enemy
                     yield return context.WaitSeconds(fireInterval);
                 }
             }
-        }
-
-        private void AimFirePointToPlayer(BossActionContext context)
-        {
-            Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-            context.RotateBossChildRight(firePointPath, context.GetDirectionToPlayer(origin), true);
         }
 
         private float GetAlternatingOffset(int index)

@@ -9,12 +9,12 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class FireFanVolleyProjectilesAction : BossAction
     {
-        [SerializeField] private BossProjectileSettings normalProjectile = new();
-        [SerializeField] private BossProjectileSettings secondaryProjectile = new();
-        [SerializeField] private string firePointPath;
-        [SerializeField] private string projectileOriginPath;
-        [SerializeField] private List<string> secondaryOriginPaths = new();
-        [SerializeField] private bool setFirePointActive = true;
+        [SerializeField, BossGraphProjectileName] private string normalProjectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings normalProjectile = new();
+        [SerializeField, BossGraphProjectileName] private string secondaryProjectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings secondaryProjectile = new();
+        [SerializeField, BossGraphBossChildPath] private string projectileOriginPath;
+        [SerializeField, BossGraphBossChildPath] private List<string> secondaryOriginPaths = new();
         [SerializeField, Min(0f)] private float windupSeconds = 1f;
         [SerializeField, Min(1)] private int normalVolleyCount = 3;
         [SerializeField, Min(0f)] private float normalVolleyInterval = 0.18f;
@@ -22,10 +22,9 @@ namespace Week14.Enemy
         [SerializeField, Range(0f, 180f)] private float fanAngleDegrees = 42f;
         [SerializeField, Min(0f)] private float normalSpawnSpacing = 0.16f;
         [SerializeField, Min(0f)] private float secondarySpawnForwardOffset;
-        [SerializeField, Min(0f)] private float muzzleFlashScale;
-        [SerializeField] private string normalVolleySfxId;
-        [SerializeField] private string secondaryFireSfxId;
-        [SerializeField] private string secondaryLaunchSfxId;
+        [SerializeField, BossGraphSfxId] private string normalVolleySfxId;
+        [SerializeField, BossGraphSfxId] private string secondaryFireSfxId;
+        [SerializeField, BossGraphSfxId] private string secondaryLaunchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -35,16 +34,10 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (setFirePointActive)
-            {
-                context.SetBossChildActive(firePointPath, true);
-            }
-
             yield return RunWindup(context);
 
             Vector3 aimOrigin = context.GetBossChildPosition(projectileOriginPath);
             Vector2 lockedDirection = context.GetDirectionToPlayer(aimOrigin);
-            context.RotateBossChildRight(firePointPath, lockedDirection, true);
 
             int volleyCount = Mathf.Max(1, normalVolleyCount);
             for (int volleyIndex = 0; volleyIndex < volleyCount; volleyIndex++)
@@ -70,31 +63,36 @@ namespace Week14.Enemy
                 }
             }
 
-            if (setFirePointActive)
-            {
-                context.SetBossChildActive(firePointPath, false);
-            }
         }
 
         private IEnumerator RunWindup(BossActionContext context)
         {
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
-            while (elapsed < windupSeconds)
+            ProjectileVfx.TelegraphLine[] telegraphs = CreateFanTelegraphs(context);
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < windupSeconds)
                 {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
 
-                context.Stop();
-                Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-                context.RotateBossChildRight(firePointPath, context.GetDirectionToPlayer(origin), true);
-                context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
-                elapsed += Time.deltaTime;
-                yield return null;
+                    context.Stop();
+                    Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
+                    Vector2 direction = context.GetDirectionToPlayer(origin);
+                    UpdateFanTelegraphs(context, telegraphs, origin, direction);
+                    context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
+                    elapsed += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                DestroyTelegraphs(telegraphs);
             }
         }
 
@@ -111,7 +109,13 @@ namespace Week14.Enemy
                 float offsetIndex = i - 1f;
                 Vector2 direction = BossActionContext.AngleToDirection(baseAngle + halfFanAngle * offsetIndex);
                 Vector3 spawnPosition = origin + (Vector3)(side * normalSpawnSpacing * offsetIndex);
-                EnemyProjectile projectile = context.FireProjectile(normalProjectile, spawnPosition, direction, muzzleFlashScale, false, false);
+                context.PlayProjectileTelegraphLine(normalProjectileName, spawnPosition, direction, 0.08f);
+                EnemyProjectile projectile = context.FireProjectile(
+                    normalProjectile,
+                    spawnPosition,
+                    direction,
+                    0f,
+                    projectileName: normalProjectileName);
                 firedAny |= projectile != null;
             }
 
@@ -131,7 +135,13 @@ namespace Week14.Enemy
             {
                 Vector3 origin = GetSecondaryOrigin(context, i);
                 Vector3 spawnPosition = origin + (Vector3)(lockedDirection.normalized * secondarySpawnForwardOffset);
-                EnemyProjectile projectile = context.FireProjectile(secondaryProjectile, spawnPosition, lockedDirection, 0f);
+                context.PlayProjectileTelegraphLine(secondaryProjectileName, spawnPosition, lockedDirection, 0.08f);
+                EnemyProjectile projectile = context.FireProjectile(
+                    secondaryProjectile,
+                    spawnPosition,
+                    lockedDirection,
+                    0f,
+                    projectileName: secondaryProjectileName);
                 if (projectile != null)
                 {
                     firedAny = true;
@@ -156,6 +166,51 @@ namespace Week14.Enemy
             }
 
             return context.GetBossChildPosition(projectileOriginPath);
+        }
+
+        private ProjectileVfx.TelegraphLine[] CreateFanTelegraphs(BossActionContext context)
+        {
+            ProjectileVfx.TelegraphLine[] telegraphs = new ProjectileVfx.TelegraphLine[3];
+            for (int i = 0; i < telegraphs.Length; i++)
+            {
+                telegraphs[i] = context.CreateProjectileTelegraphLine(normalProjectileName, 0.045f);
+            }
+
+            return telegraphs;
+        }
+
+        private void UpdateFanTelegraphs(
+            BossActionContext context,
+            ProjectileVfx.TelegraphLine[] telegraphs,
+            Vector3 origin,
+            Vector2 lockedDirection)
+        {
+            if (telegraphs == null || lockedDirection.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            float baseAngle = Mathf.Atan2(lockedDirection.y, lockedDirection.x) * Mathf.Rad2Deg;
+            float halfFanAngle = fanAngleDegrees * 0.5f;
+            for (int i = 0; i < telegraphs.Length; i++)
+            {
+                float offsetIndex = i - 1f;
+                Vector2 direction = BossActionContext.AngleToDirection(baseAngle + halfFanAngle * offsetIndex);
+                context.SetProjectileTelegraphLine(telegraphs[i], origin, direction);
+            }
+        }
+
+        private static void DestroyTelegraphs(ProjectileVfx.TelegraphLine[] telegraphs)
+        {
+            if (telegraphs == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < telegraphs.Length; i++)
+            {
+                telegraphs[i]?.Destroy();
+            }
         }
     }
 }

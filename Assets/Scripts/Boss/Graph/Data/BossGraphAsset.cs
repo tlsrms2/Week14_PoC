@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Combat;
@@ -14,13 +14,19 @@ namespace Week14.Enemy
         {
             new BossStateNode()
         };
+        [SerializeField] private List<BossGraphPattern> patterns = new();
+        [SerializeField] private List<BossGraphPhase> phases = new();
         [SerializeField] private List<BossTransition> transitions = new();
 
         public BossGraphReferenceSettings References => references;
         public CombatEffectData EffectData => references != null ? references.EffectData : null;
         public BossColorSettings ColorSettings => references != null ? references.ColorSettings : null;
+        public BossGraphActionCategoryAsset ActionCategories => references != null ? references.ActionCategories : null;
         public IReadOnlyList<BossStateNode> StateNodes => stateNodes;
+        public IReadOnlyList<BossGraphPattern> Patterns => patterns;
+        public IReadOnlyList<BossGraphPhase> Phases => phases;
         public IReadOnlyList<BossTransition> Transitions => transitions;
+        public bool UsesPhasePatternLayout => phases != null && phases.Count > 0;
 
         public BossStateNode GetStartNode()
         {
@@ -66,6 +72,44 @@ namespace Week14.Enemy
             return null;
         }
 
+        public BossGraphPattern GetPattern(string patternId)
+        {
+            if (string.IsNullOrWhiteSpace(patternId) || patterns == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < patterns.Count; i++)
+            {
+                BossGraphPattern pattern = patterns[i];
+                if (pattern != null && pattern.PatternId == patternId)
+                {
+                    return pattern;
+                }
+            }
+
+            return null;
+        }
+
+        public BossGraphPhase GetPhase(int phaseIndex)
+        {
+            if (phases == null || phases.Count == 0)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < phases.Count; i++)
+            {
+                BossGraphPhase phase = phases[i];
+                if (phase != null && phase.PhaseIndex == phaseIndex)
+                {
+                    return phase;
+                }
+            }
+
+            return phases[0];
+        }
+
         private BossStateNode FindNode(string nodeId)
         {
             return GetNode(nodeId);
@@ -77,9 +121,11 @@ namespace Week14.Enemy
     {
         [SerializeField] private CombatEffectData effectData;
         [SerializeField] private BossColorSettings colorSettings;
+        [SerializeField] private BossGraphActionCategoryAsset actionCategories;
 
         public CombatEffectData EffectData => effectData;
         public BossColorSettings ColorSettings => colorSettings;
+        public BossGraphActionCategoryAsset ActionCategories => actionCategories;
     }
 
     public enum BossSequenceSelectionMode
@@ -110,29 +156,60 @@ namespace Week14.Enemy
     public sealed class BossStateNode
     {
         [SerializeField] private string nodeId = "Phase1";
+        [SerializeField] private BossGraphNodeKind nodeKind = BossGraphNodeKind.Attack;
         [SerializeField, Min(0)] private int phaseIndex;
         [SerializeField] private BossSequenceSelectionMode selectionMode;
-        [SerializeField, Min(0f)] private float minRecoverySeconds = 0.5f;
-        [SerializeField, Min(0f)] private float maxRecoverySeconds = 0.9f;
         [SerializeField] private List<BossSequenceEntry> sequences = new();
         [SerializeField] private Vector2 editorPosition;
 
         public string NodeId => nodeId;
+        public BossGraphNodeKind NodeKind => nodeKind;
         public int PhaseIndex => phaseIndex;
         public BossSequenceSelectionMode SelectionMode => selectionMode;
-        public float MinRecoverySeconds => minRecoverySeconds;
-        public float MaxRecoverySeconds => Mathf.Max(minRecoverySeconds, maxRecoverySeconds);
         public IReadOnlyList<BossSequenceEntry> Sequences => sequences;
+        public BossGraphActionAsset ActionSequence => sequences != null && sequences.Count > 0 ? sequences[0]?.Sequence : null;
         public Vector2 EditorPosition => editorPosition;
     }
 
     [Serializable]
     public sealed class BossSequenceEntry
     {
-        [SerializeField] private AttackSequenceAsset sequence;
+        [SerializeField] private BossGraphActionAsset sequence;
         [SerializeField, Min(0)] private int weight = 1;
 
-        public AttackSequenceAsset Sequence => sequence;
+        public BossGraphActionAsset Sequence => sequence;
+        public int Weight => Mathf.Max(0, weight);
+    }
+
+    [Serializable]
+    public sealed class BossGraphPattern
+    {
+        [SerializeField] private string patternId = "Pattern1";
+        [SerializeField] private List<string> nodeIds = new();
+
+        public string PatternId => patternId;
+        public IReadOnlyList<string> NodeIds => nodeIds;
+    }
+
+    [Serializable]
+    public sealed class BossGraphPhase
+    {
+        [SerializeField, Min(0)] private int phaseIndex;
+        [SerializeField] private BossSequenceSelectionMode selectionMode;
+        [SerializeField] private List<BossGraphPatternEntry> patterns = new();
+
+        public int PhaseIndex => phaseIndex;
+        public BossSequenceSelectionMode SelectionMode => selectionMode;
+        public IReadOnlyList<BossGraphPatternEntry> Patterns => patterns;
+    }
+
+    [Serializable]
+    public sealed class BossGraphPatternEntry
+    {
+        [SerializeField] private string patternId;
+        [SerializeField, Min(0)] private int weight = 1;
+
+        public string PatternId => patternId;
         public int Weight => Mathf.Max(0, weight);
     }
 

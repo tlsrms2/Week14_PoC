@@ -8,10 +8,9 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class FireChargedRadialSplitProjectileAction : BossAction
     {
-        [SerializeField] private BossProjectileSettings projectile = new();
-        [SerializeField] private string firePointPath;
-        [SerializeField] private string projectileOriginPath;
-        [SerializeField] private bool setFirePointActive = true;
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphBossChildPath] private string projectileOriginPath;
         [SerializeField, Min(0f)] private float windupSeconds = 1.6f;
         [SerializeField, Min(0f)] private float aimTrackingSeconds = 1f;
         [SerializeField, Min(1f)] private float projectileRadiusMultiplier = 4f;
@@ -25,8 +24,8 @@ namespace Week14.Enemy
         [SerializeField, Range(0.05f, 1f)] private float splitRadiusMultiplier = 0.62f;
         [SerializeField, Range(0.05f, 1f)] private float splitLifetimeMultiplier = 0.85f;
         [SerializeField, Min(0f)] private float bombSfxLeadSeconds = 0.15f;
-        [SerializeField] private string launchSfxId;
-        [SerializeField] private string radialSplitImminentSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
+        [SerializeField, BossGraphSfxId] private string radialSplitImminentSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -36,15 +35,10 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (setFirePointActive)
-            {
-                context.SetBossChildActive(firePointPath, true);
-            }
-
-            AimFirePointToPlayer(context);
             Transform anchor = context.GetBossChildTransform(projectileOriginPath);
             Vector3 origin = anchor != null ? anchor.position : context.GetBossChildPosition(projectileOriginPath);
-            float radius = Mathf.Max(0.01f, projectile.Radius * projectileRadiusMultiplier);
+            BossProjectileSettings projectileSettings = context.ResolveGraphProjectileSettings(projectileName) ?? projectile;
+            float radius = Mathf.Max(0.01f, projectileSettings.Radius * projectileRadiusMultiplier);
 
             EnemyProjectile spawned = context.FireProjectile(
                 projectile,
@@ -55,15 +49,11 @@ namespace Week14.Enemy
                 false,
                 Mathf.Max(0f, windupSeconds),
                 radius,
-                true);
+                true,
+                projectileName);
 
             if (spawned == null)
             {
-                if (setFirePointActive)
-                {
-                    context.SetBossChildActive(firePointPath, false);
-                }
-
                 yield break;
             }
 
@@ -84,15 +74,18 @@ namespace Week14.Enemy
             context.PlaySfxOnRadialSplitImminent(spawned, radialSplitImminentSfxId);
             context.PlayOriginBurst(effects, origin);
 
-            yield return TrackCharge(context, spawned);
-
-            if (setFirePointActive)
+            ProjectileVfx.TelegraphLine telegraph = context.CreateProjectileTelegraphLine(projectileName, 0.075f);
+            try
             {
-                context.SetBossChildActive(firePointPath, false);
+                yield return TrackCharge(context, spawned, telegraph);
+            }
+            finally
+            {
+                telegraph?.Destroy();
             }
         }
 
-        private IEnumerator TrackCharge(BossActionContext context, EnemyProjectile spawned)
+        private IEnumerator TrackCharge(BossActionContext context, EnemyProjectile spawned, ProjectileVfx.TelegraphLine telegraph)
         {
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
@@ -106,18 +99,18 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                if (!trackingStopped)
-                {
-                    AimFirePointToPlayer(context);
-                }
-
                 if (!trackingStopped && elapsed >= aimTrackingSeconds)
                 {
                     spawned.ConfigureChargeMotion(0f, false, false, aimSpreadDegrees);
                     trackingStopped = true;
                 }
 
-                context.PlaySmokeIfDue(ref nextSmokeAt, effects, context.GetBossChildPosition(projectileOriginPath));
+                Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
+                Vector2 direction = spawned.IncomingDirection.sqrMagnitude > 0.0001f
+                    ? spawned.IncomingDirection
+                    : context.GetDirectionToPlayer(origin);
+                context.SetProjectileTelegraphLine(telegraph, origin, direction);
+                context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
@@ -130,12 +123,6 @@ namespace Week14.Enemy
                     : context.GetDirectionToPlayer(launchOrigin);
                 context.PlayMuzzleFlashIfEnabled(effects, launchOrigin, launchDirection);
             }
-        }
-
-        private void AimFirePointToPlayer(BossActionContext context)
-        {
-            Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-            context.RotateBossChildRight(firePointPath, context.GetDirectionToPlayer(origin), true);
         }
 
         private Vector2 GetSpreadDirection(BossActionContext context, Vector3 origin)

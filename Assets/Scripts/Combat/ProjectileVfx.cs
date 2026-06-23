@@ -7,6 +7,57 @@ namespace Week14.Combat
         private const int RingSegments = 48;
         private static Material spriteMaterial;
 
+        public sealed class TelegraphLine
+        {
+            private readonly GameObject lineObject;
+            private readonly LineRenderer line;
+
+            internal TelegraphLine(GameObject lineObject, LineRenderer line)
+            {
+                this.lineObject = lineObject;
+                this.line = line;
+            }
+
+            public void Set(Vector3 start, Vector3 end)
+            {
+                if (line == null)
+                {
+                    return;
+                }
+
+                start.z = 0f;
+                end.z = 0f;
+                line.SetPosition(0, start);
+                line.SetPosition(1, end);
+            }
+
+            public void Destroy(float delay = 0f)
+            {
+                if (lineObject != null)
+                {
+                    Object.Destroy(lineObject, Mathf.Max(0f, delay));
+                }
+            }
+        }
+
+        public static TelegraphLine CreateTelegraphLine(Color color, float width = 0.05f)
+        {
+            GameObject lineObject = new GameObject("ProjectileTelegraphVfx");
+            LineRenderer line = lineObject.AddComponent<LineRenderer>();
+            line.useWorldSpace = true;
+            line.positionCount = 2;
+            line.startWidth = Mathf.Max(0.005f, width);
+            line.endWidth = Mathf.Max(0.005f, width * 0.65f);
+            line.startColor = color;
+            Color endColor = color;
+            endColor.a *= 0.35f;
+            line.endColor = endColor;
+            line.numCapVertices = 2;
+            line.material = GetSpriteMaterial();
+            line.sortingOrder = 72;
+            return new TelegraphLine(lineObject, line);
+        }
+
         public static void ApplyVisibility(GameObject owner, Color color, float radius, float trailSeconds, float trailWidthMultiplier)
         {
             if (owner == null)

@@ -1,88 +1,527 @@
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Enemy;
 
-[CustomEditor(typeof(AttackSequenceAsset))]
-public sealed class AttackSequenceAssetEditor : Editor
+[CustomEditor(typeof(BossGraphActionAsset), true)]
+public sealed class BossGraphActionAssetEditor : Editor
 {
     private SerializedProperty actions;
-    private ReorderableList actionList;
 
     private void OnEnable()
     {
         actions = serializedObject.FindProperty("actions");
-        actionList = new ReorderableList(serializedObject, actions, true, true, true, true)
-        {
-            drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Actions"),
-            elementHeightCallback = GetActionHeight,
-            drawElementCallback = DrawAction,
-            onAddDropdownCallback = ShowAddActionMenu
-        };
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-
-        actionList.DoLayoutList();
-
+        TrimToSingleAction();
+        DrawSingleAction();
         serializedObject.ApplyModifiedProperties();
     }
 
-    private float GetActionHeight(int index)
+    private void TrimToSingleAction()
     {
-        SerializedProperty element = actions.GetArrayElementAtIndex(index);
-        return EditorGUI.GetPropertyHeight(element, true) + EditorGUIUtility.standardVerticalSpacing;
-    }
+        if (actions == null || actions.arraySize <= 1)
+        {
+            return;
+        }
 
-    private void DrawAction(Rect rect, int index, bool isActive, bool isFocused)
-    {
-        SerializedProperty element = actions.GetArrayElementAtIndex(index);
-        rect.y += 1f;
-        rect.height = EditorGUI.GetPropertyHeight(element, true);
-        EditorGUI.PropertyField(rect, element, new GUIContent(GetActionLabel(element, index)), true);
-    }
+        Undo.RecordObject(target, "Trim Boss Graph Action");
+        while (actions.arraySize > 1)
+        {
+            actions.DeleteArrayElementAtIndex(actions.arraySize - 1);
+        }
 
-    private void ShowAddActionMenu(Rect buttonRect, ReorderableList list)
-    {
-        GenericMenu menu = new();
-        menu.AddItem(new GUIContent("Wait"), false, () => AddAction(new WaitAction()));
-        menu.AddItem(new GUIContent("Animation/Play Animation"), false, () => AddAction(new PlayAnimationAction()));
-        menu.AddItem(new GUIContent("Animation/Wait For Event"), false, () => AddAction(new WaitForAnimationEventAction()));
-        menu.AddItem(new GUIContent("Telegraph/Set Telegraph"), false, () => AddAction(new SetTelegraphAction()));
-        menu.AddItem(new GUIContent("Move/Move Toward Player"), false, () => AddAction(new MoveTowardPlayerAction()));
-        menu.AddItem(new GUIContent("Move/Move Body Root Local"), false, () => AddAction(new MoveBodyRootLocalAction()));
-        menu.AddItem(new GUIContent("Move/Reset Body Root Local"), false, () => AddAction(new ResetBodyRootLocalAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Projectile"), false, () => AddAction(new FireProjectileAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Charged Radial Split Projectile"), false, () => AddAction(new FireChargedRadialSplitProjectileAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Radial Projectiles"), false, () => AddAction(new FireRadialProjectilesAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Rotating Projectiles"), false, () => AddAction(new FireRotatingProjectilesAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Machinegun Projectiles"), false, () => AddAction(new FireMachinegunProjectilesAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Sweep Projectiles"), false, () => AddAction(new FireSweepProjectilesAction()));
-        menu.AddItem(new GUIContent("Projectile/Fire Fan Volley Projectiles"), false, () => AddAction(new FireFanVolleyProjectilesAction()));
-        menu.AddItem(new GUIContent("Event/Custom Event"), false, () => AddAction(new CustomEventAction()));
-        menu.AddItem(new GUIContent("Spawn/Spawn Prefab"), false, () => AddAction(new SpawnPrefabAction()));
-        menu.DropDown(buttonRect);
-    }
-
-    private void AddAction(BossAction action)
-    {
-        actions.arraySize++;
-        SerializedProperty element = actions.GetArrayElementAtIndex(actions.arraySize - 1);
-        element.managedReferenceValue = action;
-        serializedObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(target);
     }
 
-    private static string GetActionLabel(SerializedProperty element, int index)
+    private void DrawSingleAction()
     {
-        object action = element.managedReferenceValue;
-        if (action == null)
+        if (actions == null || actions.arraySize == 0)
         {
-            return $"{index + 1}. Empty Action";
+            return;
         }
 
-        return $"{index + 1}. {ObjectNames.NicifyVariableName(action.GetType().Name)}";
+        SerializedProperty action = actions.GetArrayElementAtIndex(0);
+        EditorGUILayout.PropertyField(action, new GUIContent(GetActionLabel(action)), true);
+    }
+
+    private static string GetActionLabel(SerializedProperty action)
+    {
+        object value = action.managedReferenceValue;
+        return value == null
+            ? "Action"
+            : ObjectNames.NicifyVariableName(value.GetType().Name);
+    }
+}
+
+internal readonly struct BossGraphActionMenuItem
+{
+    public BossGraphActionMenuItem(string menuPath, Type actionType, Func<BossAction> create)
+    {
+        MenuPath = menuPath;
+        ActionType = actionType;
+        Create = create;
+    }
+
+    public string MenuPath { get; }
+    public Type ActionType { get; }
+    public Func<BossAction> Create { get; }
+}
+
+internal static class BossGraphActionEditorUtility
+{
+    public static readonly IReadOnlyList<BossGraphActionMenuItem> ActionMenuItems = new List<BossGraphActionMenuItem>
+    {
+        new("Wait", typeof(WaitAction), () => new WaitAction()),
+        new("Animation/Play Animation", typeof(PlayAnimationAction), () => new PlayAnimationAction()),
+        new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
+        new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
+        new("Move/Move Body Root Local", typeof(MoveBodyRootLocalAction), () => new MoveBodyRootLocalAction()),
+        new("Move/Reset Body Root Local", typeof(ResetBodyRootLocalAction), () => new ResetBodyRootLocalAction()),
+        new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
+        new("Projectile/Fire Charged Radial Split Projectile", typeof(FireChargedRadialSplitProjectileAction), () => new FireChargedRadialSplitProjectileAction()),
+        new("Projectile/Fire Radial Projectiles", typeof(FireRadialProjectilesAction), () => new FireRadialProjectilesAction()),
+        new("Projectile/Fire Rotating Projectiles", typeof(FireRotatingProjectilesAction), () => new FireRotatingProjectilesAction()),
+        new("Projectile/Fire Machinegun Projectiles", typeof(FireMachinegunProjectilesAction), () => new FireMachinegunProjectilesAction()),
+        new("Projectile/Fire Sweep Projectiles", typeof(FireSweepProjectilesAction), () => new FireSweepProjectilesAction()),
+        new("Projectile/Fire Fan Volley Projectiles", typeof(FireFanVolleyProjectilesAction), () => new FireFanVolleyProjectilesAction()),
+        new("Event/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
+        new("Spawn/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction())
+    };
+
+    public static string GetActionLabel(Type actionType)
+    {
+        if (actionType == null)
+        {
+            return "Unknown Action";
+        }
+
+        for (int i = 0; i < ActionMenuItems.Count; i++)
+        {
+            BossGraphActionMenuItem item = ActionMenuItems[i];
+            if (item.ActionType == actionType)
+            {
+                return item.MenuPath;
+            }
+        }
+
+        return ObjectNames.NicifyVariableName(actionType.Name);
+    }
+}
+
+internal static class BossGraphActionFilterContext
+{
+    public static bool HasFilter { get; private set; }
+    public static BossGraphNodeKind NodeKind { get; private set; }
+    public static BossGraphActionCategoryAsset Categories { get; private set; }
+
+    public static void Set(BossGraphNodeKind nodeKind, BossGraphActionCategoryAsset categories)
+    {
+        HasFilter = true;
+        NodeKind = nodeKind;
+        Categories = categories;
+    }
+
+    public static void Clear()
+    {
+        HasFilter = false;
+        Categories = null;
+    }
+
+    public static bool IsAllowed(Type actionType)
+    {
+        if (!HasFilter)
+        {
+            return true;
+        }
+
+        BossGraphNodeKind actionNodeKind = Categories != null
+            ? Categories.GetNodeKind(actionType)
+            : BossGraphActionCategoryAsset.GetDefaultNodeKind(actionType);
+        return actionNodeKind == NodeKind;
+    }
+}
+
+internal static class BossGraphProjectileNameOptions
+{
+    private static readonly List<string> names = new();
+
+    public static IReadOnlyList<string> Names => names;
+
+    public static void Set(IEnumerable<string> projectileNames)
+    {
+        names.Clear();
+        if (projectileNames == null)
+        {
+            return;
+        }
+
+        foreach (string projectileName in projectileNames)
+        {
+            if (!string.IsNullOrWhiteSpace(projectileName) && !names.Contains(projectileName))
+            {
+                names.Add(projectileName);
+            }
+        }
+    }
+
+    public static void Clear()
+    {
+        names.Clear();
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphProjectileNameAttribute))]
+internal sealed class BossGraphProjectileNameDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        if (property.propertyType != SerializedPropertyType.String)
+        {
+            EditorGUI.PropertyField(position, property, label);
+            return;
+        }
+
+        IReadOnlyList<string> names = BossGraphProjectileNameOptions.Names;
+        List<string> values = new() { string.Empty };
+        List<GUIContent> labels = new() { new GUIContent("<기본>") };
+        for (int i = 0; i < names.Count; i++)
+        {
+            values.Add(names[i]);
+            labels.Add(new GUIContent(names[i]));
+        }
+
+        if (!string.IsNullOrWhiteSpace(property.stringValue) && !values.Contains(property.stringValue))
+        {
+            values.Add(property.stringValue);
+            labels.Add(new GUIContent($"{property.stringValue} (목록 없음)"));
+        }
+
+        int currentIndex = Mathf.Max(0, values.IndexOf(property.stringValue));
+        int nextIndex = EditorGUI.Popup(position, label, currentIndex, labels.ToArray());
+        property.stringValue = values[nextIndex];
+    }
+}
+
+internal static class BossGraphSfxIdOptions
+{
+    private const double RefreshIntervalSeconds = 1d;
+
+    private static readonly List<string> ids = new();
+    private static double nextRefreshAt;
+
+    public static IReadOnlyList<string> Ids
+    {
+        get
+        {
+            RefreshIfNeeded();
+            return ids;
+        }
+    }
+
+    private static void RefreshIfNeeded()
+    {
+        if (EditorApplication.timeSinceStartup < nextRefreshAt)
+        {
+            return;
+        }
+
+        nextRefreshAt = EditorApplication.timeSinceStartup + RefreshIntervalSeconds;
+        ids.Clear();
+
+        string[] guids = AssetDatabase.FindAssets("t:SoundLibrary");
+        for (int i = 0; i < guids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            SoundLibrary library = AssetDatabase.LoadAssetAtPath<SoundLibrary>(path);
+            if (library == null)
+            {
+                continue;
+            }
+
+            foreach (string id in library.SfxIds)
+            {
+                if (!string.IsNullOrWhiteSpace(id) && !ids.Contains(id))
+                {
+                    ids.Add(id);
+                }
+            }
+        }
+
+        ids.Sort(StringComparer.OrdinalIgnoreCase);
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphBossChildPathAttribute))]
+internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
+{
+    private const float ClearButtonWidth = 22f;
+    private const float DeleteButtonWidth = 24f;
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float lineHeight = EditorGUIUtility.singleLineHeight;
+        float spacing = EditorGUIUtility.standardVerticalSpacing;
+        if (property.propertyType == SerializedPropertyType.String)
+        {
+            return lineHeight;
+        }
+
+        if (IsStringList(property))
+        {
+            if (!property.isExpanded)
+            {
+                return lineHeight;
+            }
+
+            return lineHeight + spacing + property.arraySize * (lineHeight + spacing) + lineHeight;
+        }
+
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        if (property.propertyType == SerializedPropertyType.String)
+        {
+            EditorGUI.BeginProperty(position, label, property);
+            DrawPathField(position, property, label, null);
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        if (IsStringList(property))
+        {
+            DrawPathList(position, property, label);
+            return;
+        }
+
+        EditorGUI.PropertyField(position, property, label, true);
+    }
+
+    private static void DrawPathList(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        float lineHeight = EditorGUIUtility.singleLineHeight;
+        float spacing = EditorGUIUtility.standardVerticalSpacing;
+        Rect lineRect = new(position.x, position.y, position.width, lineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (TryGetDroppedPath(lineRect, out string headerPath, true))
+        {
+            AddPath(property, headerPath);
+        }
+
+        if (property.isExpanded)
+        {
+            EditorGUI.indentLevel++;
+            for (int i = 0; i < property.arraySize; i++)
+            {
+                lineRect.y += lineHeight + spacing;
+                SerializedProperty element = property.GetArrayElementAtIndex(i);
+                DrawPathField(lineRect, element, new GUIContent($"Element {i}"), () => property.DeleteArrayElementAtIndex(i));
+            }
+
+            lineRect.y += lineHeight + spacing;
+            Rect dropRect = EditorGUI.IndentedRect(lineRect);
+            GUI.Box(dropRect, "Drop Hierarchy Item To Add", EditorStyles.helpBox);
+            if (TryGetDroppedPath(dropRect, out string path, true))
+            {
+                AddPath(property, path);
+            }
+
+            EditorGUI.indentLevel--;
+        }
+
+        EditorGUI.EndProperty();
+    }
+
+    private static void DrawPathField(Rect position, SerializedProperty property, GUIContent label, Action onDelete)
+    {
+        Rect fieldRect = position;
+        float buttonWidth = onDelete != null ? DeleteButtonWidth : ClearButtonWidth;
+        fieldRect.width -= buttonWidth + 2f;
+        Rect buttonRect = position;
+        buttonRect.xMin = fieldRect.xMax + 2f;
+
+        Rect valueRect = EditorGUI.PrefixLabel(fieldRect, label);
+        string value = property.stringValue;
+        string displayValue = string.IsNullOrWhiteSpace(value) ? "<하이어러키에서 드롭>" : value;
+        if (!string.IsNullOrWhiteSpace(value) && !BossGraphBossHierarchyOptions.ContainsPath(value))
+        {
+            displayValue = $"{value} (없음)";
+        }
+
+        GUI.Box(valueRect, displayValue, EditorStyles.textField);
+        if (GUI.Button(buttonRect, onDelete != null ? "-" : "X"))
+        {
+            if (onDelete != null)
+            {
+                onDelete();
+            }
+            else
+            {
+                property.stringValue = string.Empty;
+            }
+        }
+
+        if (TryGetDroppedPath(valueRect, out string path, true))
+        {
+            property.stringValue = path;
+        }
+    }
+
+    private static bool TryGetDroppedPath(Rect dropRect, out string path, bool acceptOnPerform)
+    {
+        path = string.Empty;
+        Event currentEvent = Event.current;
+        if (!dropRect.Contains(currentEvent.mousePosition))
+        {
+            return false;
+        }
+
+        object data = DragAndDrop.GetGenericData(BossGraphDragKeys.BossChildPath);
+        if (data is not string droppedPath || string.IsNullOrWhiteSpace(droppedPath))
+        {
+            return false;
+        }
+
+        if (currentEvent.type == EventType.DragUpdated)
+        {
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            currentEvent.Use();
+            return false;
+        }
+
+        if (currentEvent.type != EventType.DragPerform)
+        {
+            return false;
+        }
+
+        if (acceptOnPerform)
+        {
+            DragAndDrop.AcceptDrag();
+        }
+
+        path = droppedPath;
+        currentEvent.Use();
+        return true;
+    }
+
+    private static void AddPath(SerializedProperty property, string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
+        for (int i = 0; i < property.arraySize; i++)
+        {
+            if (property.GetArrayElementAtIndex(i).stringValue == path)
+            {
+                return;
+            }
+        }
+
+        int index = property.arraySize;
+        property.InsertArrayElementAtIndex(index);
+        property.GetArrayElementAtIndex(index).stringValue = path;
+    }
+
+    private static bool IsStringList(SerializedProperty property)
+    {
+        if (!property.isArray || property.propertyType == SerializedPropertyType.String)
+        {
+            return false;
+        }
+
+        return property.arraySize == 0 || property.GetArrayElementAtIndex(0).propertyType == SerializedPropertyType.String;
+    }
+}
+
+internal static class BossGraphBossHierarchyOptions
+{
+    private static Transform root;
+
+    public static void Set(Transform bossRoot)
+    {
+        root = bossRoot;
+    }
+
+    public static void Clear()
+    {
+        root = null;
+    }
+
+    public static bool ContainsPath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return true;
+        }
+
+        return root == null || root.Find(path) != null || FindChildRecursive(root, path) != null;
+    }
+
+    private static Transform FindChildRecursive(Transform parent, string name)
+    {
+        if (parent == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.name == name)
+            {
+                return child;
+            }
+
+            Transform nested = FindChildRecursive(child, name);
+            if (nested != null)
+            {
+                return nested;
+            }
+        }
+
+        return null;
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphSfxIdAttribute))]
+internal sealed class BossGraphSfxIdDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        IReadOnlyList<string> ids = BossGraphSfxIdOptions.Ids;
+        if (property.propertyType != SerializedPropertyType.String || ids.Count == 0)
+        {
+            EditorGUI.PropertyField(position, property, label);
+            return;
+        }
+
+        List<string> values = new() { string.Empty };
+        List<GUIContent> labels = new() { new GUIContent("<없음>") };
+        for (int i = 0; i < ids.Count; i++)
+        {
+            values.Add(ids[i]);
+            labels.Add(new GUIContent(ids[i]));
+        }
+
+        if (!string.IsNullOrWhiteSpace(property.stringValue) && !values.Contains(property.stringValue))
+        {
+            values.Add(property.stringValue);
+            labels.Add(new GUIContent($"{property.stringValue} (목록 없음)"));
+        }
+
+        int currentIndex = Mathf.Max(0, values.IndexOf(property.stringValue));
+        int nextIndex = EditorGUI.Popup(position, label, currentIndex, labels.ToArray());
+        property.stringValue = values[nextIndex];
     }
 }

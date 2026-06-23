@@ -9,8 +9,12 @@ public sealed class BossGraphAssetEditor : Editor
     private SerializedProperty startNodeId;
     private SerializedProperty references;
     private SerializedProperty stateNodes;
+    private SerializedProperty patterns;
+    private SerializedProperty phases;
     private SerializedProperty transitions;
     private ReorderableList stateNodeList;
+    private ReorderableList patternList;
+    private ReorderableList phaseList;
     private ReorderableList transitionList;
 
     private void OnEnable()
@@ -18,14 +22,34 @@ public sealed class BossGraphAssetEditor : Editor
         startNodeId = serializedObject.FindProperty("startNodeId");
         references = serializedObject.FindProperty("references");
         stateNodes = serializedObject.FindProperty("stateNodes");
+        patterns = serializedObject.FindProperty("patterns");
+        phases = serializedObject.FindProperty("phases");
         transitions = serializedObject.FindProperty("transitions");
 
         stateNodeList = new ReorderableList(serializedObject, stateNodes, true, true, true, true)
         {
-            drawHeaderCallback = rect => EditorGUI.LabelField(rect, "State Nodes"),
+            drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Action Nodes"),
             elementHeightCallback = GetStateNodeHeight,
             drawElementCallback = DrawStateNode,
             onAddCallback = AddStateNode
+        };
+
+        patternList = new ReorderableList(serializedObject, patterns, true, true, true, true)
+        {
+            drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Patterns"),
+            elementHeightCallback = index => EditorGUI.GetPropertyHeight(patterns.GetArrayElementAtIndex(index), true)
+                + EditorGUIUtility.standardVerticalSpacing,
+            drawElementCallback = DrawPattern,
+            onAddCallback = AddPattern
+        };
+
+        phaseList = new ReorderableList(serializedObject, phases, true, true, true, true)
+        {
+            drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Phases"),
+            elementHeightCallback = index => EditorGUI.GetPropertyHeight(phases.GetArrayElementAtIndex(index), true)
+                + EditorGUIUtility.standardVerticalSpacing,
+            drawElementCallback = DrawPhase,
+            onAddCallback = AddPhase
         };
 
         transitionList = new ReorderableList(serializedObject, transitions, true, true, true, true)
@@ -56,6 +80,10 @@ public sealed class BossGraphAssetEditor : Editor
         EditorGUILayout.PropertyField(startNodeId);
         EditorGUILayout.Space(6f);
         stateNodeList.DoLayoutList();
+        EditorGUILayout.Space(6f);
+        patternList.DoLayoutList();
+        EditorGUILayout.Space(6f);
+        phaseList.DoLayoutList();
         EditorGUILayout.Space(6f);
         transitionList.DoLayoutList();
 
@@ -94,17 +122,55 @@ public sealed class BossGraphAssetEditor : Editor
         stateNodes.arraySize++;
         int index = stateNodes.arraySize - 1;
         SerializedProperty element = stateNodes.GetArrayElementAtIndex(index);
-        SetChildString(element, "nodeId", $"Phase{index + 1}");
-        SetChildInt(element, "phaseIndex", index);
+        SetChildString(element, "nodeId", $"Node{index + 1}");
+        SetChildEnum(element, "nodeKind", (int)BossGraphNodeKind.Attack);
+        SetChildInt(element, "phaseIndex", 0);
         SetChildEnum(element, "selectionMode", 0);
-        SetChildFloat(element, "minRecoverySeconds", 0.5f);
-        SetChildFloat(element, "maxRecoverySeconds", 0.9f);
         SerializedProperty sequences = element.FindPropertyRelative("sequences");
         if (sequences != null)
         {
             sequences.ClearArray();
         }
 
+        list.index = index;
+    }
+
+    private void DrawPattern(Rect rect, int index, bool isActive, bool isFocused)
+    {
+        SerializedProperty element = patterns.GetArrayElementAtIndex(index);
+        rect.y += 1f;
+        rect.height = EditorGUI.GetPropertyHeight(element, true);
+        EditorGUI.PropertyField(rect, element, new GUIContent($"Pattern {index + 1}"), true);
+    }
+
+    private void AddPattern(ReorderableList list)
+    {
+        patterns.arraySize++;
+        int index = patterns.arraySize - 1;
+        SerializedProperty element = patterns.GetArrayElementAtIndex(index);
+        SetChildString(element, "patternId", $"Pattern{index + 1}");
+        SerializedProperty nodeIds = element.FindPropertyRelative("nodeIds");
+        nodeIds?.ClearArray();
+        list.index = index;
+    }
+
+    private void DrawPhase(Rect rect, int index, bool isActive, bool isFocused)
+    {
+        SerializedProperty element = phases.GetArrayElementAtIndex(index);
+        rect.y += 1f;
+        rect.height = EditorGUI.GetPropertyHeight(element, true);
+        EditorGUI.PropertyField(rect, element, new GUIContent($"Phase {index + 1}"), true);
+    }
+
+    private void AddPhase(ReorderableList list)
+    {
+        phases.arraySize++;
+        int index = phases.arraySize - 1;
+        SerializedProperty element = phases.GetArrayElementAtIndex(index);
+        SetChildInt(element, "phaseIndex", index);
+        SetChildEnum(element, "selectionMode", 0);
+        SerializedProperty patternEntries = element.FindPropertyRelative("patterns");
+        patternEntries?.ClearArray();
         list.index = index;
     }
 
@@ -138,7 +204,7 @@ public sealed class BossGraphAssetEditor : Editor
             ? nodeId.stringValue
             : $"Node {index + 1}";
         int phase = phaseIndex != null ? phaseIndex.intValue + 1 : index + 1;
-        return $"{id} (Phase {phase})";
+        return $"{id} (Legacy Phase {phase})";
     }
 
     private static void SetChildString(SerializedProperty root, string childName, string value)

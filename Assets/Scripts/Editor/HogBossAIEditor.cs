@@ -9,6 +9,7 @@ public sealed class HogBossAIEditor : Editor
 {
     private static readonly string[] MainTabs =
     {
+        "투사체",
         "설정",
         "참조"
     };
@@ -16,6 +17,7 @@ public sealed class HogBossAIEditor : Editor
     private static readonly HashSet<string> HogFields = new()
     {
         "bossGraph",
+        "graphProjectiles",
         "enragePhase1Seconds",
         "enragePhase1MaxBullets",
         "enragePhase2Seconds",
@@ -79,10 +81,13 @@ public sealed class HogBossAIEditor : Editor
         switch (mainTabIndex)
         {
             case 1:
+                DrawSettingsTab();
+                break;
+            case 2:
                 DrawReferencesTab();
                 break;
             default:
-                DrawSettingsTab();
+                DrawProjectilesTab();
                 break;
         }
 
@@ -117,7 +122,7 @@ public sealed class HogBossAIEditor : Editor
         {
             if (GUILayout.Button("그래프 에디터 열기"))
             {
-                BossGraphEditorWindow.Open(graph);
+                BossGraphEditorWindow.Open(graph, GetGraphProjectileNames(), GetBossHierarchyRoot());
             }
         }
 
@@ -135,6 +140,130 @@ public sealed class HogBossAIEditor : Editor
         if (showBossBase)
         {
             DrawBaseProperties();
+        }
+    }
+
+    private void DrawProjectilesTab()
+    {
+        SerializedProperty projectiles = serializedObject.FindProperty("graphProjectiles");
+        if (projectiles == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Boss Graph 투사체", EditorStyles.boldLabel);
+        DrawProjectileList(projectiles);
+        DrawProjectileWarnings(projectiles);
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawProjectileList(SerializedProperty projectiles)
+    {
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(i);
+            SerializedProperty projectileName = entry.FindPropertyRelative("projectileName");
+            SerializedProperty projectile = entry.FindPropertyRelative("projectile");
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            bool remove = false;
+            bool stopDrawingList = false;
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField($"#{i + 1}", GUILayout.Width(28f));
+                if (projectileName != null)
+                {
+                    EditorGUILayout.PropertyField(projectileName, new GUIContent("Name"));
+                }
+
+                using (new EditorGUI.DisabledScope(i <= 0))
+                {
+                    if (GUILayout.Button("Up", GUILayout.Width(32f)))
+                    {
+                        projectiles.MoveArrayElement(i, i - 1);
+                        stopDrawingList = true;
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(i >= projectiles.arraySize - 1))
+                {
+                    if (GUILayout.Button("Dn", GUILayout.Width(32f)))
+                    {
+                        projectiles.MoveArrayElement(i, i + 1);
+                        stopDrawingList = true;
+                    }
+                }
+
+                if (GUILayout.Button("-", GUILayout.Width(24f)))
+                {
+                    remove = true;
+                }
+            }
+
+            if (remove)
+            {
+                projectiles.DeleteArrayElementAtIndex(i);
+                EditorGUILayout.EndVertical();
+                break;
+            }
+
+            if (stopDrawingList)
+            {
+                EditorGUILayout.EndVertical();
+                break;
+            }
+
+            if (projectile != null)
+            {
+                EditorGUILayout.PropertyField(projectile, new GUIContent("Settings"), true);
+            }
+
+            EditorGUILayout.EndVertical();
+        }
+
+        if (GUILayout.Button("투사체 추가"))
+        {
+            int index = projectiles.arraySize;
+            projectiles.InsertArrayElementAtIndex(index);
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(index);
+            SerializedProperty projectileName = entry.FindPropertyRelative("projectileName");
+            if (projectileName != null)
+            {
+                projectileName.stringValue = GetUniqueProjectileName(projectiles, index);
+            }
+        }
+    }
+
+    private static void DrawProjectileWarnings(SerializedProperty projectiles)
+    {
+        if (projectiles.arraySize == 0)
+        {
+            EditorGUILayout.HelpBox("Boss Graph에서 사용할 투사체를 하나 이상 추가하세요.", MessageType.Warning);
+            return;
+        }
+
+        HashSet<string> names = new(System.StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(i);
+            string projectileName = entry.FindPropertyRelative("projectileName")?.stringValue;
+            if (string.IsNullOrWhiteSpace(projectileName))
+            {
+                EditorGUILayout.HelpBox($"투사체 #{i + 1}: 이름이 비어 있습니다.", MessageType.Warning);
+                continue;
+            }
+
+            if (!names.Add(projectileName))
+            {
+                EditorGUILayout.HelpBox($"투사체 이름 '{projectileName}'이 중복됩니다.", MessageType.Warning);
+            }
+
+            SerializedProperty prefab = entry.FindPropertyRelative("projectile")?.FindPropertyRelative("prefab");
+            if (prefab != null && prefab.objectReferenceValue == null)
+            {
+                EditorGUILayout.HelpBox($"투사체 '{projectileName}': Prefab을 설정하세요.", MessageType.Warning);
+            }
         }
     }
 
@@ -279,6 +408,67 @@ public sealed class HogBossAIEditor : Editor
         DrawProperty("enrageShakeZoom");
 
         EditorGUILayout.EndVertical();
+    }
+
+    private List<string> GetGraphProjectileNames()
+    {
+        List<string> names = new();
+        SerializedProperty projectiles = serializedObject.FindProperty("graphProjectiles");
+        if (projectiles == null)
+        {
+            return names;
+        }
+
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            string projectileName = projectiles.GetArrayElementAtIndex(i)
+                .FindPropertyRelative("projectileName")?.stringValue;
+            if (!string.IsNullOrWhiteSpace(projectileName) && !names.Contains(projectileName))
+            {
+                names.Add(projectileName);
+            }
+        }
+
+        return names;
+    }
+
+    private Transform GetBossHierarchyRoot()
+    {
+        return targets.Length == 1 && target is HogBossAI boss ? boss.transform : null;
+    }
+
+    private static string GetUniqueProjectileName(SerializedProperty projectiles, int currentIndex)
+    {
+        const string baseName = "Projectile";
+        int suffix = currentIndex + 1;
+        string candidate = $"{baseName}{suffix}";
+        while (HasProjectileName(projectiles, candidate, currentIndex))
+        {
+            suffix++;
+            candidate = $"{baseName}{suffix}";
+        }
+
+        return candidate;
+    }
+
+    private static bool HasProjectileName(SerializedProperty projectiles, string name, int ignoreIndex)
+    {
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            if (i == ignoreIndex)
+            {
+                continue;
+            }
+
+            string existing = projectiles.GetArrayElementAtIndex(i)
+                .FindPropertyRelative("projectileName")?.stringValue;
+            if (existing == name)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static bool DrawFoldout(string key, string title)

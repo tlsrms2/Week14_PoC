@@ -13,12 +13,11 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class FireProjectileAction : BossAction
     {
-        [SerializeField] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField] private BossGraphAimMode aimMode;
         [SerializeField] private float angleDegrees;
-        [SerializeField] private Vector2 originOffset;
         [SerializeField, Min(0f)] private float spawnRadius;
-        [SerializeField, Min(0f)] private float muzzleFlashScale = 0.9f;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -27,7 +26,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            Vector3 origin = context.OriginPosition + (Vector3)originOffset;
+            Vector3 origin = context.OriginPosition;
             Vector2 direction = aimMode == BossGraphAimMode.Player
                 ? context.GetDirectionToPlayer(origin)
                 : BossActionContext.AngleToDirection(angleDegrees);
@@ -37,7 +36,8 @@ namespace Week14.Enemy
                 origin += (Vector3)(direction.normalized * spawnRadius);
             }
 
-            context.FireProjectile(projectile, origin, direction, muzzleFlashScale);
+            context.PlayProjectileTelegraphLine(projectileName, origin, direction);
+            context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
             yield break;
         }
     }

@@ -5,6 +5,28 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [System.Serializable]
+    public sealed class BossGraphProjectileEntry
+    {
+        [SerializeField] private string projectileName = "Default";
+        [SerializeField] private BossProjectileSettings projectile = new();
+
+        public string ProjectileName => projectileName?.Trim();
+        public BossProjectileSettings Projectile => projectile;
+    }
+
+    public sealed class BossGraphProjectileNameAttribute : PropertyAttribute
+    {
+    }
+
+    public sealed class BossGraphSfxIdAttribute : PropertyAttribute
+    {
+    }
+
+    public sealed class BossGraphBossChildPathAttribute : PropertyAttribute
+    {
+    }
+
+    [System.Serializable]
     public class BossProjectileSettings
     {
         [SerializeField, Tooltip("발사할 적 탄환 프리팹입니다.")] protected EnemyProjectile prefab;

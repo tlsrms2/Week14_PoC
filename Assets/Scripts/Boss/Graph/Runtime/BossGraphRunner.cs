@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,13 +8,17 @@ namespace Week14.Enemy
     {
         private const int MaxImmediateTransitionsPerFrame = 16;
         private readonly Dictionary<string, int> nextSequenceIndexes = new();
-        private readonly Dictionary<string, AttackSequenceAsset> lastSequences = new();
+        private readonly Dictionary<string, BossGraphActionAsset> lastSequences = new();
+        private readonly Dictionary<int, int> nextPatternIndexes = new();
+        private readonly Dictionary<int, string> lastPatterns = new();
         private string currentNodeId;
 
         public void Reset()
         {
             nextSequenceIndexes.Clear();
             lastSequences.Clear();
+            nextPatternIndexes.Clear();
+            lastPatterns.Clear();
             currentNodeId = null;
         }
 
@@ -25,6 +29,17 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (graph.UsesPhasePatternLayout)
+            {
+                yield return RunPhasePatternLoop(graph, context);
+                yield break;
+            }
+
+            yield return RunLegacyNodeLoop(graph, context);
+        }
+
+        private IEnumerator RunLegacyNodeLoop(BossGraphAsset graph, BossActionContext context)
+        {
             int immediateTransitionCount = 0;
             while (true)
             {
@@ -44,7 +59,7 @@ namespace Week14.Enemy
 
                 immediateTransitionCount = 0;
                 BossSequenceEntry entry = SelectSequence(node);
-                AttackSequenceAsset sequence = entry?.Sequence;
+                BossGraphActionAsset sequence = entry?.Sequence;
                 if (sequence == null)
                 {
                     context.Stop();
@@ -55,8 +70,47 @@ namespace Week14.Enemy
                 yield return sequence.Execute(context);
                 yield return context.ApplyPendingEnrageIfAny();
                 context.Stop();
-                yield return context.WaitSeconds(GetRecoverySeconds(node));
                 TryApplyTransition(graph, context, node, true);
+            }
+        }
+
+        private IEnumerator RunPhasePatternLoop(BossGraphAsset graph, BossActionContext context)
+        {
+            while (true)
+            {
+                BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
+                BossGraphPatternEntry entry = SelectPattern(phase);
+                BossGraphPattern pattern = graph.GetPattern(entry?.PatternId);
+                if (pattern == null || pattern.NodeIds == null || pattern.NodeIds.Count == 0)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                yield return ExecutePattern(graph, pattern, context);
+                yield return context.ApplyPendingEnrageIfAny();
+                context.Stop();
+            }
+        }
+
+        private static IEnumerator ExecutePattern(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            BossActionContext context)
+        {
+            for (int i = 0; i < pattern.NodeIds.Count; i++)
+            {
+                BossStateNode node = graph.GetNode(pattern.NodeIds[i]);
+                BossGraphActionAsset actionSequence = node?.ActionSequence;
+                if (actionSequence == null)
+                {
+                    continue;
+                }
+
+                yield return actionSequence.Execute(context);
+                yield return context.ApplyPendingEnrageIfAny();
+                context.Stop();
             }
         }
 
@@ -178,7 +232,7 @@ namespace Week14.Enemy
 
         private BossSequenceEntry SelectRandomNoRepeat(BossStateNode node, string nodeKey)
         {
-            if (node.Sequences.Count <= 1 || !lastSequences.TryGetValue(nodeKey, out AttackSequenceAsset lastSequence))
+            if (node.Sequences.Count <= 1 || !lastSequences.TryGetValue(nodeKey, out BossGraphActionAsset lastSequence))
             {
                 BossSequenceEntry firstEntry = SelectRandom(node);
                 TrackLast(nodeKey, firstEntry);
@@ -243,21 +297,117 @@ namespace Week14.Enemy
             return node.Sequences[safeIndex];
         }
 
-        private static float GetRecoverySeconds(BossStateNode node)
-        {
-            if (node == null)
-            {
-                return 0f;
-            }
-
-            return Random.Range(Mathf.Max(0f, node.MinRecoverySeconds), Mathf.Max(node.MinRecoverySeconds, node.MaxRecoverySeconds));
-        }
-
         private void TrackLast(string nodeKey, BossSequenceEntry entry)
         {
             if (entry?.Sequence != null)
             {
                 lastSequences[nodeKey] = entry.Sequence;
+            }
+        }
+
+        private BossGraphPatternEntry SelectPattern(BossGraphPhase phase)
+        {
+            if (phase == null || phase.Patterns == null || phase.Patterns.Count == 0)
+            {
+                return null;
+            }
+
+            int phaseKey = phase.PhaseIndex;
+            return phase.SelectionMode switch
+            {
+                BossSequenceSelectionMode.Random => SelectRandomPattern(phase),
+                BossSequenceSelectionMode.RandomNoRepeat => SelectRandomNoRepeatPattern(phase, phaseKey),
+                BossSequenceSelectionMode.WeightedRandom => SelectWeightedRandomPattern(phase),
+                _ => SelectSequentialPattern(phase, phaseKey)
+            };
+        }
+
+        private BossGraphPatternEntry SelectSequentialPattern(BossGraphPhase phase, int phaseKey)
+        {
+            int index = nextPatternIndexes.TryGetValue(phaseKey, out int nextIndex) ? nextIndex : 0;
+            BossGraphPatternEntry entry = GetPatternEntryWrapping(phase, index);
+            nextPatternIndexes[phaseKey] = index + 1;
+            TrackLastPattern(phaseKey, entry);
+            return entry;
+        }
+
+        private static BossGraphPatternEntry SelectRandomPattern(BossGraphPhase phase)
+        {
+            return GetPatternEntryWrapping(phase, Random.Range(0, phase.Patterns.Count));
+        }
+
+        private BossGraphPatternEntry SelectRandomNoRepeatPattern(BossGraphPhase phase, int phaseKey)
+        {
+            if (phase.Patterns.Count <= 1 || !lastPatterns.TryGetValue(phaseKey, out string lastPatternId))
+            {
+                BossGraphPatternEntry firstEntry = SelectRandomPattern(phase);
+                TrackLastPattern(phaseKey, firstEntry);
+                return firstEntry;
+            }
+
+            for (int attempts = 0; attempts < 12; attempts++)
+            {
+                BossGraphPatternEntry candidate = SelectRandomPattern(phase);
+                if (candidate != null && candidate.PatternId != lastPatternId)
+                {
+                    TrackLastPattern(phaseKey, candidate);
+                    return candidate;
+                }
+            }
+
+            return SelectSequentialPattern(phase, phaseKey);
+        }
+
+        private static BossGraphPatternEntry SelectWeightedRandomPattern(BossGraphPhase phase)
+        {
+            int totalWeight = 0;
+            for (int i = 0; i < phase.Patterns.Count; i++)
+            {
+                totalWeight += phase.Patterns[i]?.Weight ?? 0;
+            }
+
+            if (totalWeight <= 0)
+            {
+                return SelectRandomPattern(phase);
+            }
+
+            int value = Random.Range(0, totalWeight);
+            for (int i = 0; i < phase.Patterns.Count; i++)
+            {
+                BossGraphPatternEntry entry = phase.Patterns[i];
+                int weight = entry?.Weight ?? 0;
+                if (weight <= 0)
+                {
+                    continue;
+                }
+
+                if (value < weight)
+                {
+                    return entry;
+                }
+
+                value -= weight;
+            }
+
+            return SelectRandomPattern(phase);
+        }
+
+        private static BossGraphPatternEntry GetPatternEntryWrapping(BossGraphPhase phase, int index)
+        {
+            if (phase == null || phase.Patterns == null || phase.Patterns.Count == 0)
+            {
+                return null;
+            }
+
+            int safeIndex = Mathf.Abs(index) % phase.Patterns.Count;
+            return phase.Patterns[safeIndex];
+        }
+
+        private void TrackLastPattern(int phaseKey, BossGraphPatternEntry entry)
+        {
+            if (entry != null && !string.IsNullOrWhiteSpace(entry.PatternId))
+            {
+                lastPatterns[phaseKey] = entry.PatternId;
             }
         }
     }

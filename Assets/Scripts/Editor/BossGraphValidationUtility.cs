@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -28,15 +29,28 @@ internal static class BossGraphValidationUtility
 
         graphObject.UpdateIfRequiredOrScript();
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        SerializedProperty patterns = graphObject.FindProperty("patterns");
+        SerializedProperty phases = graphObject.FindProperty("phases");
         SerializedProperty transitions = graphObject.FindProperty("transitions");
         SerializedProperty startNodeId = graphObject.FindProperty("startNodeId");
         SerializedProperty references = graphObject.FindProperty("references");
+        BossGraphActionCategoryAsset actionCategories = GetActionCategories(references);
+        bool usesPhasePatternLayout = phases != null && phases.arraySize > 0;
 
         ValidateReferences(references, messages);
         Dictionary<string, int> nodeIdCounts = CollectNodeIds(stateNodes, messages);
         ValidateStartNode(startNodeId, nodeIdCounts, messages);
-        ValidateStateNodes(stateNodes, transitions, messages);
-        ValidateTransitions(transitions, nodeIdCounts, messages);
+        ValidateStateNodes(stateNodes, transitions, actionCategories, usesPhasePatternLayout, messages);
+        if (usesPhasePatternLayout)
+        {
+            Dictionary<string, int> patternIdCounts = ValidatePatterns(patterns, nodeIdCounts, messages);
+            ValidatePhases(phases, patternIdCounts, messages);
+        }
+        else
+        {
+            ValidateTransitions(transitions, nodeIdCounts, messages);
+        }
+
         return messages;
     }
 
@@ -60,9 +74,7 @@ internal static class BossGraphValidationUtility
         }
     }
 
-    private static void ValidateReferences(
-        SerializedProperty references,
-        List<BossGraphValidationMessage> messages)
+    private static void ValidateReferences(SerializedProperty references, List<BossGraphValidationMessage> messages)
     {
         if (references == null)
         {
@@ -72,6 +84,7 @@ internal static class BossGraphValidationUtility
 
         RequireReference(references, "effectData", "Graph References", messages);
         RequireReference(references, "colorSettings", "Graph References", messages);
+        RequireReference(references, "actionCategories", "Graph References", messages);
     }
 
     private static Dictionary<string, int> CollectNodeIds(
@@ -81,7 +94,7 @@ internal static class BossGraphValidationUtility
         Dictionary<string, int> nodeIdCounts = new();
         if (stateNodes == null || stateNodes.arraySize == 0)
         {
-            messages.Add(new BossGraphValidationMessage(MessageType.Error, "State Node가 없습니다."));
+            messages.Add(new BossGraphValidationMessage(MessageType.Error, "Action Node가 없습니다."));
             return nodeIdCounts;
         }
 
@@ -131,6 +144,8 @@ internal static class BossGraphValidationUtility
     private static void ValidateStateNodes(
         SerializedProperty stateNodes,
         SerializedProperty transitions,
+        BossGraphActionCategoryAsset actionCategories,
+        bool usesPhasePatternLayout,
         List<BossGraphValidationMessage> messages)
     {
         if (stateNodes == null)
@@ -142,37 +157,46 @@ internal static class BossGraphValidationUtility
         {
             SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
             string nodeLabel = GetNodeLabel(node, nodeIndex);
+            BossGraphNodeKind nodeKind = (BossGraphNodeKind)GetEnum(node, "nodeKind");
             SerializedProperty sequences = node.FindPropertyRelative("sequences");
             if (sequences == null || sequences.arraySize == 0)
             {
-                if (HasOutgoingTransition(transitions, GetString(node, "nodeId")))
+                if (!usesPhasePatternLayout && HasOutgoingTransition(transitions, GetString(node, "nodeId")))
                 {
                     continue;
                 }
 
-                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: Sequence가 없습니다."));
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: Action이 없습니다."));
                 continue;
             }
 
-            ValidateSequenceSelectionSettings(node, sequences, nodeLabel, messages);
+            if (usesPhasePatternLayout && sequences.arraySize > 1)
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{nodeLabel}: 하나의 노드에는 하나의 Action만 들어갈 수 있습니다."));
+            }
+
+            if (!usesPhasePatternLayout)
+            {
+                ValidateLegacySelectionSettings(node, sequences, nodeLabel, messages);
+            }
 
             for (int entryIndex = 0; entryIndex < sequences.arraySize; entryIndex++)
             {
                 SerializedProperty entry = sequences.GetArrayElementAtIndex(entryIndex);
-                SerializedProperty sequenceProperty = entry.FindPropertyRelative("sequence");
-                AttackSequenceAsset sequence = sequenceProperty?.objectReferenceValue as AttackSequenceAsset;
-                if (sequence == null)
+                SerializedProperty actionProperty = entry.FindPropertyRelative("sequence");
+                BossGraphActionAsset actionAsset = actionProperty?.objectReferenceValue as BossGraphActionAsset;
+                if (actionAsset == null)
                 {
-                    messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{nodeLabel}: Sequence {entryIndex + 1} 참조가 비어 있습니다."));
+                    messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{nodeLabel}: Action 참조가 비어 있습니다."));
                     continue;
                 }
 
-                ValidateSequence(sequence, $"{nodeLabel}/{sequence.name}", messages);
+                ValidateActionAsset(actionAsset, $"{nodeLabel}/{actionAsset.name}", nodeKind, actionCategories, usesPhasePatternLayout, messages);
             }
         }
     }
 
-    private static void ValidateSequenceSelectionSettings(
+    private static void ValidateLegacySelectionSettings(
         SerializedProperty node,
         SerializedProperty sequences,
         string nodeLabel,
@@ -181,25 +205,25 @@ internal static class BossGraphValidationUtility
         BossSequenceSelectionMode selectionMode = (BossSequenceSelectionMode)GetEnum(node, "selectionMode");
         if (selectionMode == BossSequenceSelectionMode.RandomNoRepeat && sequences.arraySize < 2)
         {
-            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: RandomNoRepeat은 Sequence가 2개 이상일 때 의미가 있습니다."));
+            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: RandomNoRepeat은 후보가 2개 이상일 때 의미가 있습니다."));
         }
 
-        if (selectionMode == BossSequenceSelectionMode.WeightedRandom && !HasPositiveSequenceWeight(sequences))
+        if (selectionMode == BossSequenceSelectionMode.WeightedRandom && !HasPositiveWeight(sequences))
         {
-            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: WeightedRandom은 weight가 1 이상인 Sequence가 필요합니다."));
+            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: WeightedRandom에는 1 이상의 weight가 필요합니다."));
         }
     }
 
-    private static bool HasPositiveSequenceWeight(SerializedProperty sequences)
+    private static bool HasPositiveWeight(SerializedProperty entries)
     {
-        if (sequences == null)
+        if (entries == null)
         {
             return false;
         }
 
-        for (int i = 0; i < sequences.arraySize; i++)
+        for (int i = 0; i < entries.arraySize; i++)
         {
-            SerializedProperty entry = sequences.GetArrayElementAtIndex(i);
+            SerializedProperty entry = entries.GetArrayElementAtIndex(i);
             if (GetInt(entry, "weight") > 0)
             {
                 return true;
@@ -209,17 +233,25 @@ internal static class BossGraphValidationUtility
         return false;
     }
 
-    private static void ValidateSequence(
-        AttackSequenceAsset sequence,
+    private static void ValidateActionAsset(
+        BossGraphActionAsset actionAsset,
         string label,
+        BossGraphNodeKind nodeKind,
+        BossGraphActionCategoryAsset actionCategories,
+        bool requireSingleAction,
         List<BossGraphValidationMessage> messages)
     {
-        SerializedObject sequenceObject = new(sequence);
-        SerializedProperty actions = sequenceObject.FindProperty("actions");
+        SerializedObject actionObject = new(actionAsset);
+        SerializedProperty actions = actionObject.FindProperty("actions");
         if (actions == null || actions.arraySize == 0)
         {
-            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: Action이 없습니다."));
+            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: Action 데이터가 없습니다."));
             return;
+        }
+
+        if (requireSingleAction && actions.arraySize > 1)
+        {
+            messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{label}: Action Asset 안에는 하나의 Action만 있어야 합니다."));
         }
 
         for (int actionIndex = 0; actionIndex < actions.arraySize; actionIndex++)
@@ -233,7 +265,26 @@ internal static class BossGraphValidationUtility
                 continue;
             }
 
+            ValidateActionCategory(actionValue.GetType(), nodeKind, actionCategories, actionLabel, messages);
             ValidateAction(action, actionValue, actionLabel, messages);
+        }
+    }
+
+    private static void ValidateActionCategory(
+        Type actionType,
+        BossGraphNodeKind nodeKind,
+        BossGraphActionCategoryAsset actionCategories,
+        string label,
+        List<BossGraphValidationMessage> messages)
+    {
+        BossGraphNodeKind actionNodeKind = actionCategories != null
+            ? actionCategories.GetNodeKind(actionType)
+            : BossGraphActionCategoryAsset.GetDefaultNodeKind(actionType);
+        if (actionNodeKind != nodeKind)
+        {
+            messages.Add(new BossGraphValidationMessage(
+                MessageType.Error,
+                $"{label}: {actionNodeKind} Action은 {nodeKind} 노드에 넣을 수 없습니다."));
         }
     }
 
@@ -251,32 +302,27 @@ internal static class BossGraphValidationUtility
             case WaitForAnimationEventAction:
                 RequireString(action, "eventId", label, messages);
                 break;
-            case SetTelegraphAction:
-                RequirePath(action, "telegraphPath", label, messages);
-                break;
             case FireFanVolleyProjectilesAction:
-                RequirePath(action, "firePointPath", label, messages);
                 RequirePath(action, "projectileOriginPath", label, messages);
-                RequireProjectile(action, "normalProjectile", label, messages);
+                RequireString(action, "normalProjectileName", label, messages);
                 if (GetInt(action, "secondaryBulletCount") > 0)
                 {
-                    RequireProjectile(action, "secondaryProjectile", label, messages);
+                    RequireString(action, "secondaryProjectileName", label, messages);
                 }
                 break;
             case FireChargedRadialSplitProjectileAction:
             case FireSweepProjectilesAction:
-                RequirePath(action, "firePointPath", label, messages);
                 RequirePath(action, "projectileOriginPath", label, messages);
-                RequireProjectile(action, "projectile", label, messages);
+                RequireString(action, "projectileName", label, messages);
                 break;
             case FireMachinegunProjectilesAction:
                 RequireArrayNotEmpty(action, "volleys", label, messages);
-                RequireProjectile(action, "projectile", label, messages);
+                RequireString(action, "projectileName", label, messages);
                 break;
             case FireProjectileAction:
             case FireRadialProjectilesAction:
             case FireRotatingProjectilesAction:
-                RequireProjectile(action, "projectile", label, messages);
+                RequireString(action, "projectileName", label, messages);
                 break;
             case SpawnPrefabAction:
                 RequireObject(action, "prefab", label, messages);
@@ -321,6 +367,113 @@ internal static class BossGraphValidationUtility
         return false;
     }
 
+    private static Dictionary<string, int> ValidatePatterns(
+        SerializedProperty patterns,
+        Dictionary<string, int> nodeIdCounts,
+        List<BossGraphValidationMessage> messages)
+    {
+        Dictionary<string, int> patternIdCounts = new();
+        if (patterns == null || patterns.arraySize == 0)
+        {
+            messages.Add(new BossGraphValidationMessage(MessageType.Error, "Pattern 목록이 비어 있습니다."));
+            return patternIdCounts;
+        }
+
+        for (int patternIndex = 0; patternIndex < patterns.arraySize; patternIndex++)
+        {
+            SerializedProperty pattern = patterns.GetArrayElementAtIndex(patternIndex);
+            string patternId = GetString(pattern, "patternId");
+            string patternLabel = string.IsNullOrWhiteSpace(patternId) ? $"Pattern {patternIndex + 1}" : patternId;
+            if (string.IsNullOrWhiteSpace(patternId))
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{patternLabel}: patternId가 비어 있습니다."));
+            }
+            else
+            {
+                patternIdCounts.TryGetValue(patternId, out int count);
+                patternIdCounts[patternId] = count + 1;
+            }
+
+            SerializedProperty nodeIds = pattern.FindPropertyRelative("nodeIds");
+            if (nodeIds == null || nodeIds.arraySize == 0)
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{patternLabel}: 노드 목록이 비어 있습니다."));
+                continue;
+            }
+
+            for (int nodeIndex = 0; nodeIndex < nodeIds.arraySize; nodeIndex++)
+            {
+                string nodeId = nodeIds.GetArrayElementAtIndex(nodeIndex).stringValue;
+                if (string.IsNullOrWhiteSpace(nodeId) || !nodeIdCounts.ContainsKey(nodeId))
+                {
+                    messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{patternLabel}: 노드 '{nodeId}'를 찾을 수 없습니다."));
+                }
+            }
+        }
+
+        foreach (KeyValuePair<string, int> entry in patternIdCounts)
+        {
+            if (entry.Value > 1)
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Error, $"Pattern ID '{entry.Key}'가 {entry.Value}번 중복됩니다."));
+            }
+        }
+
+        return patternIdCounts;
+    }
+
+    private static void ValidatePhases(
+        SerializedProperty phases,
+        Dictionary<string, int> patternIdCounts,
+        List<BossGraphValidationMessage> messages)
+    {
+        if (phases == null || phases.arraySize == 0)
+        {
+            messages.Add(new BossGraphValidationMessage(MessageType.Error, "Phase 목록이 비어 있습니다."));
+            return;
+        }
+
+        HashSet<int> phaseIndexes = new();
+        for (int phaseIndex = 0; phaseIndex < phases.arraySize; phaseIndex++)
+        {
+            SerializedProperty phase = phases.GetArrayElementAtIndex(phaseIndex);
+            int index = GetInt(phase, "phaseIndex");
+            string phaseLabel = $"Phase {index + 1}";
+            if (!phaseIndexes.Add(index))
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{phaseLabel}: phaseIndex가 중복됩니다."));
+            }
+
+            SerializedProperty patternEntries = phase.FindPropertyRelative("patterns");
+            if (patternEntries == null || patternEntries.arraySize == 0)
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: Pattern 목록이 비어 있습니다."));
+                continue;
+            }
+
+            BossSequenceSelectionMode selectionMode = (BossSequenceSelectionMode)GetEnum(phase, "selectionMode");
+            if (selectionMode == BossSequenceSelectionMode.RandomNoRepeat && patternEntries.arraySize < 2)
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: RandomNoRepeat은 Pattern이 2개 이상일 때 의미가 있습니다."));
+            }
+
+            if (selectionMode == BossSequenceSelectionMode.WeightedRandom && !HasPositiveWeight(patternEntries))
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: WeightedRandom에는 1 이상의 Pattern weight가 필요합니다."));
+            }
+
+            for (int entryIndex = 0; entryIndex < patternEntries.arraySize; entryIndex++)
+            {
+                SerializedProperty entry = patternEntries.GetArrayElementAtIndex(entryIndex);
+                string patternId = GetString(entry, "patternId");
+                if (string.IsNullOrWhiteSpace(patternId) || !patternIdCounts.ContainsKey(patternId))
+                {
+                    messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{phaseLabel}: Pattern '{patternId}'를 찾을 수 없습니다."));
+                }
+            }
+        }
+    }
+
     private static void ValidateTransitions(
         SerializedProperty transitions,
         Dictionary<string, int> nodeIdCounts,
@@ -357,7 +510,7 @@ internal static class BossGraphValidationUtility
             BossTransitionConditionType conditionType = (BossTransitionConditionType)GetEnum(transition, "conditionType");
             if (fromNodeId == toNodeId && conditionType != BossTransitionConditionType.SequenceEnded)
             {
-                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"Transition {i + 1}: 같은 노드로 돌아가는 즉시 전환은 루프를 만들 수 있습니다."));
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"Transition {i + 1}: 자기 자신으로 즉시 전환하면 루프가 생길 수 있습니다."));
             }
 
             float threshold = GetFloat(transition, "threshold");
@@ -367,6 +520,7 @@ internal static class BossGraphValidationUtility
             {
                 messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"Transition {i + 1}: HP 비율 조건은 0~1 범위를 권장합니다."));
             }
+
             if ((conditionType == BossTransitionConditionType.PhaseIndexEquals
                     || conditionType == BossTransitionConditionType.EnragePhaseEquals
                     || conditionType == BossTransitionConditionType.LivesLessOrEqual)
@@ -387,16 +541,6 @@ internal static class BossGraphValidationUtility
         {
             messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: {propertyName}가 비어 있습니다."));
         }
-    }
-
-    private static void RequireProjectile(
-        SerializedProperty action,
-        string propertyName,
-        string label,
-        List<BossGraphValidationMessage> messages)
-    {
-        SerializedProperty projectile = action.FindPropertyRelative(propertyName);
-        RequireObject(projectile, "prefab", $"{label}/{propertyName}", messages);
     }
 
     private static void RequireString(
@@ -437,6 +581,11 @@ internal static class BossGraphValidationUtility
         }
     }
 
+    private static BossGraphActionCategoryAsset GetActionCategories(SerializedProperty references)
+    {
+        return references?.FindPropertyRelative("actionCategories")?.objectReferenceValue as BossGraphActionCategoryAsset;
+    }
+
     private static void RequireReference(
         SerializedProperty root,
         string propertyName,
@@ -446,7 +595,7 @@ internal static class BossGraphValidationUtility
         SerializedProperty property = root?.FindPropertyRelative(propertyName);
         if (property == null || property.objectReferenceValue == null)
         {
-            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: {propertyName} 참조가 비어 있습니다. 보스 컴포넌트 fallback 값이 사용될 수 있습니다."));
+            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{label}: {propertyName} 참조가 비어 있습니다. Boss 컴포넌트 fallback 값이 사용될 수 있습니다."));
         }
     }
 

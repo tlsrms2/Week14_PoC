@@ -7,15 +7,14 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class FireRadialProjectilesAction : BossAction
     {
-        [SerializeField] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField, Min(1)] private int bulletCount = 8;
         [SerializeField] private bool centerOnPlayer;
-        [SerializeField] private float startAngleDegrees;
         [SerializeField, Range(0f, 360f)] private float arcDegrees = 360f;
         [SerializeField, Min(0f)] private float spawnRadius;
         [SerializeField, Min(0f)] private float fireInterval;
-        [SerializeField, Min(0f)] private float muzzleFlashScale = 0.9f;
-        [SerializeField] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField] private Vector2 cameraShakeDirection = Vector2.down;
 
@@ -31,7 +30,7 @@ namespace Week14.Enemy
             Vector2 playerDirection = context.GetDirectionToPlayer(originCenter);
             float baseAngle = centerOnPlayer
                 ? Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg
-                : startAngleDegrees;
+                : 0f;
             float step = GetAngleStep(count);
             float firstAngle = arcDegrees >= 360f
                 ? baseAngle
@@ -55,7 +54,8 @@ namespace Week14.Enemy
                 Vector3 origin = spawnRadius > 0f
                     ? originCenter + (Vector3)(direction * spawnRadius)
                     : originCenter;
-                context.FireProjectile(projectile, origin, direction, muzzleFlashScale);
+                context.PlayProjectileTelegraphLine(projectileName, origin, direction, 0.1f);
+                context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
 
                 if (fireInterval > 0f && i < count - 1)
                 {

@@ -169,6 +169,7 @@ namespace Week14.Enemy
 
         protected CombatEffectData EffectData => ActiveEffectData;
         protected virtual BossGraphAsset GraphAsset => null;
+        protected virtual BossProjectileSettings ResolveGraphProjectileSettings(string projectileName) => null;
         public int MaxLives => Mathf.Max(1, maxLives);
         public int CurrentLives => PhaseController.CurrentLives;
         public int CurrentPhaseIndex => PhaseController.CurrentPhaseIndex;
@@ -186,6 +187,10 @@ namespace Week14.Enemy
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
         private CombatEffectData ActiveEffectData => GraphAsset != null && GraphAsset.EffectData != null ? GraphAsset.EffectData : effectData;
         private BossColorSettings ActiveColorSettings => GraphAsset != null && GraphAsset.ColorSettings != null ? GraphAsset.ColorSettings : colorSettings;
+        internal BossProjectileSettings ResolveGraphProjectileSettingsForActions(string projectileName)
+        {
+            return ResolveGraphProjectileSettings(projectileName);
+        }
 
         protected virtual void Awake()
         {

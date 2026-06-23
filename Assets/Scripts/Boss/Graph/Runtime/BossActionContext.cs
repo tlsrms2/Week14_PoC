@@ -268,15 +268,19 @@ namespace Week14.Enemy
             bool? aimAtPlayerOnLaunchOverride = null,
             float chargeSecondsOverride = -1f,
             float radiusOverride = -1f,
-            bool suppressHoming = false)
+            bool suppressHoming = false,
+            string projectileName = null)
         {
-            if (Boss == null || projectileSettings == null || direction.sqrMagnitude <= 0.0001f)
+            BossProjectileSettings resolvedSettings = !string.IsNullOrWhiteSpace(projectileName)
+                ? ResolveGraphProjectileSettings(projectileName)
+                : ResolveGraphProjectileSettings(null) ?? projectileSettings;
+            if (Boss == null || resolvedSettings == null || direction.sqrMagnitude <= 0.0001f)
             {
                 return null;
             }
 
             return Boss.FireGraphProjectile(
-                projectileSettings,
+                resolvedSettings,
                 origin,
                 direction.normalized,
                 muzzleFlashScale,
@@ -285,6 +289,47 @@ namespace Week14.Enemy
                 chargeSecondsOverride,
                 radiusOverride,
                 suppressHoming);
+        }
+
+        public BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
+        {
+            return Boss != null ? Boss.ResolveGraphProjectileSettingsForActions(projectileName) : null;
+        }
+
+        public ProjectileVfx.TelegraphLine CreateProjectileTelegraphLine(string projectileName, float width = 0.055f)
+        {
+            BossProjectileSettings settings = ResolveGraphProjectileSettings(projectileName);
+            Color color = settings != null ? settings.LaunchedColor : new Color(1f, 0.25f, 0.15f, 1f);
+            color.a = 0.62f;
+            return ProjectileVfx.CreateTelegraphLine(color, width);
+        }
+
+        public void SetProjectileTelegraphLine(ProjectileVfx.TelegraphLine line, Vector3 origin, Vector2 direction)
+        {
+            if (line == null || direction.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            Vector2 normalized = direction.normalized;
+            line.Set(origin, origin + (Vector3)(normalized * GetProjectileTelegraphLength()));
+        }
+
+        public void PlayProjectileTelegraphLine(
+            string projectileName,
+            Vector3 origin,
+            Vector2 direction,
+            float seconds = 0.12f,
+            float width = 0.045f)
+        {
+            if (direction.sqrMagnitude <= 0.0001f || seconds <= 0f)
+            {
+                return;
+            }
+
+            ProjectileVfx.TelegraphLine line = CreateProjectileTelegraphLine(projectileName, width);
+            SetProjectileTelegraphLine(line, origin, direction);
+            line.Destroy(seconds);
         }
 
         public void PlaySfx(string sfxId)
@@ -496,6 +541,12 @@ namespace Week14.Enemy
             }
 
             ProjectileVfx.PlayHogSmokeBurst(position, smoke.Color, smoke.Scale, smoke.Count);
+        }
+
+        private float GetProjectileTelegraphLength()
+        {
+            float fallback = Boss != null ? Boss.DetectionRange : 9f;
+            return Mathf.Max(1f, fallback);
         }
 
         private Transform FindBossChild(string childPath)

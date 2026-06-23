@@ -1,11 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Week14.Enemy
 {
-    [CreateAssetMenu(menuName = "Week14/Boss/Attack Sequence", fileName = "AttackSequence")]
-    public sealed class AttackSequenceAsset : ScriptableObject
+    public class BossGraphActionAsset : ScriptableObject
     {
         [SerializeReference] private List<BossAction> actions = new();
 
@@ -29,5 +29,11 @@ namespace Week14.Enemy
                 yield return action.Execute(context);
             }
         }
+    }
+
+    [CreateAssetMenu(menuName = "Week14/Boss/Boss Graph Action", fileName = "BossGraphAction")]
+    [Obsolete("Use BossGraphActionAsset instead. This type remains only for existing serialized assets.")]
+    public sealed class AttackSequenceAsset : BossGraphActionAsset
+    {
     }
 }

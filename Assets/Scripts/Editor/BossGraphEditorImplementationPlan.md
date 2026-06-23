@@ -59,7 +59,6 @@
   - `RadialFireAction`
   - `SweepFireAction`
   - `PlayAnimationAction`
-  - `SetTelegraphAction`
   - `CustomEventAction`
   - `SpawnPrefabAction`
 

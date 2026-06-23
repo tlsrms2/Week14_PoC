@@ -5,29 +5,18 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    public enum BossGraphStartAngleMode
-    {
-        Fixed,
-        Random,
-        PlayerDirection
-    }
-
     [Serializable]
     public sealed class FireRotatingProjectilesAction : BossAction
     {
-        [SerializeField] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
+        [SerializeField, BossGraphBossChildPath] private string firstProjectileOriginPath;
+        [SerializeField, BossGraphBossChildPath] private string secondProjectileOriginPath;
         [SerializeField, Min(1)] private int bulletCount = 8;
-        [SerializeField] private BossGraphStartAngleMode startAngleMode = BossGraphStartAngleMode.Random;
-        [SerializeField] private float startAngleDegrees;
-        [SerializeField] private float angleStepDegrees = 45f;
-        [SerializeField] private Vector2 originOffset;
         [SerializeField, Min(0f)] private float spawnRadius;
         [SerializeField, Min(0f)] private float fireInterval = 0.1f;
-        [SerializeField, Min(0f)] private float muzzleFlashScale = 0.9f;
-        [SerializeField] private bool overrideAimAtPlayerOnLaunch = true;
-        [SerializeField] private bool aimAtPlayerOnLaunch = true;
-        [SerializeField] private string fireSfxId;
-        [SerializeField] private string launchSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -38,9 +27,8 @@ namespace Week14.Enemy
             }
 
             int count = Mathf.Max(1, bulletCount);
-            Vector3 center = context.OriginPosition + (Vector3)originOffset;
-            float currentAngle = ResolveStartAngle(context, center);
-            bool? aimOnLaunch = overrideAimAtPlayerOnLaunch ? aimAtPlayerOnLaunch : (bool?)null;
+            float currentAngle = UnityEngine.Random.Range(0f, 360f);
+            float angleStep = 360f / count;
 
             for (int i = 0; i < count; i++)
             {
@@ -53,11 +41,18 @@ namespace Week14.Enemy
                 }
 
                 Vector2 direction = BossActionContext.AngleToDirection(currentAngle);
+                Vector3 center = GetOriginCenter(context, i);
                 Vector3 origin = spawnRadius > 0f
                     ? center + (Vector3)(direction.normalized * spawnRadius)
                     : center;
 
-                EnemyProjectile firedProjectile = context.FireProjectile(projectile, origin, direction, muzzleFlashScale, null, aimOnLaunch);
+                context.PlayProjectileTelegraphLine(projectileName, origin, direction, 0.1f);
+                EnemyProjectile firedProjectile = context.FireProjectile(
+                    projectile,
+                    origin,
+                    direction,
+                    0.9f,
+                    projectileName: projectileName);
                 if (firedProjectile != null)
                 {
                     context.PlayOriginBurst(effects, origin);
@@ -65,7 +60,7 @@ namespace Week14.Enemy
                     context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                 }
 
-                currentAngle += angleStepDegrees;
+                currentAngle += angleStep;
 
                 if (fireInterval > 0f && i < count - 1)
                 {
@@ -74,24 +69,37 @@ namespace Week14.Enemy
             }
         }
 
-        private float ResolveStartAngle(BossActionContext context, Vector3 center)
+        private Vector3 GetOriginCenter(BossActionContext context, int bulletIndex)
         {
-            return startAngleMode switch
+            if (!HasConfiguredOrigin())
             {
-                BossGraphStartAngleMode.PlayerDirection => ToAngle(context.GetDirectionToPlayer(center)) + startAngleDegrees,
-                BossGraphStartAngleMode.Random => UnityEngine.Random.Range(0f, 360f) + startAngleDegrees,
-                _ => startAngleDegrees
-            };
-        }
-
-        private static float ToAngle(Vector2 direction)
-        {
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                return 0f;
+                return context.OriginPosition;
             }
 
-            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            return context.GetBossChildPosition(GetAlternatingOriginPath(bulletIndex));
+        }
+
+        private string GetAlternatingOriginPath(int bulletIndex)
+        {
+            bool hasFirst = !string.IsNullOrWhiteSpace(firstProjectileOriginPath);
+            bool hasSecond = !string.IsNullOrWhiteSpace(secondProjectileOriginPath);
+            if (!hasFirst)
+            {
+                return secondProjectileOriginPath;
+            }
+
+            if (!hasSecond)
+            {
+                return firstProjectileOriginPath;
+            }
+
+            return bulletIndex % 2 == 0 ? firstProjectileOriginPath : secondProjectileOriginPath;
+        }
+
+        private bool HasConfiguredOrigin()
+        {
+            return !string.IsNullOrWhiteSpace(firstProjectileOriginPath)
+                || !string.IsNullOrWhiteSpace(secondProjectileOriginPath);
         }
     }
 }
