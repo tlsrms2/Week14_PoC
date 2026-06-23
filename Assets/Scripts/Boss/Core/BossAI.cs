@@ -175,8 +175,10 @@ namespace Week14.Enemy
         public int CurrentEnragePhase => PhaseController.CurrentEnragePhase;
         public float CurrentEnrageProgress => PhaseController.CurrentEnrageProgress;
         public float CurrentEnrageRemainingSeconds => PhaseController.CurrentEnrageRemainingSeconds;
+        public bool IsCombatStarted => PhaseController.IsCombatStarted;
         public event Action<int, int> LivesChanged;
         public event Action<int, float, float> EnrageChanged;
+        public static event Action<BossAI> CombatStarted;
         public static event Action<BossAI> Defeated;
         public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
 
@@ -518,6 +520,7 @@ namespace Week14.Enemy
         internal void OnCombatStartedForController()
         {
             OnCombatStarted();
+            CombatStarted?.Invoke(this);
         }
 
         internal void OnBossPhaseChangedForController(int phaseIndex, int phaseNumber)
