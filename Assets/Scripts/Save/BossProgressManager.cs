@@ -1,11 +1,15 @@
+using System;
+using System.IO;
 using UnityEngine;
 
 namespace Week14.Save
 {
     public static class BossProgressManager
     {
-        private const string SaveKey = "BossProgress";
+        private const string SaveFileName = "boss_progress.json";
         private const string FirstBossId = "1";
+
+        private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
         private static BossSaveData data;
 
@@ -56,15 +60,21 @@ namespace Week14.Save
 
         public static void Load()
         {
-            string json = PlayerPrefs.GetString(SaveKey, string.Empty);
-            data = string.IsNullOrEmpty(json) ? new BossSaveData() : JsonUtility.FromJson<BossSaveData>(json);
+            try
+            {
+                data = File.Exists(SavePath) ? JsonUtility.FromJson<BossSaveData>(File.ReadAllText(SavePath)) : new BossSaveData();
+            }
+            catch (Exception)
+            {
+                data = new BossSaveData();
+            }
+
             UnlockBoss(FirstBossId);
         }
 
         public static void Save()
         {
-            PlayerPrefs.SetString(SaveKey, JsonUtility.ToJson(Data));
-            PlayerPrefs.Save();
+            File.WriteAllText(SavePath, JsonUtility.ToJson(Data));
         }
     }
 }

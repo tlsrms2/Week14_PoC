@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.Save;
 using Week14.UI;
 
 namespace Week14.Enemy
@@ -79,6 +80,8 @@ namespace Week14.Enemy
             DeactivatePatternFirePoints();
             HidePatternBulletPreview();
             HidePattern7GuideLines();
+            BossProgressManager.ClearBoss("1");
+            BossProgressManager.UnlockBoss("2");
         }
 
         protected override void OnCombatStarted()
