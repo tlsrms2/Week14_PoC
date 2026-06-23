@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8923717960022282282
+--- !u!114 &-7498614189011040984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,108 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
-  m_Name: Hog Pattern 2
+  m_Name: Hog Pattern 5
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
   actions:
-  - rid: 2634811916669944118
+  - rid: 2634811916669944090
   references:
     version: 2
     RefIds:
-    - rid: 2634811916669944118
-      type: {class: FireMachinegunProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 2
-          chargeDriftSpeed: 1.5
-          aimAtPlayerWhileCharging: 0
-          aimAtPlayerOnLaunch: 0
-          speed: 12
-          lifetime: 3
-          radius: 0.1
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
-          trailSeconds: 1
-          trailWidthMultiplier: 3
-          homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        firstProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
-        secondProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
-        moveSpeedMultiplier: 0.6
-        spawnSpacing: 1
-        fireSfxId: BossNormalShot
-        launchSfxId: BossSpecialShot
-        volleys:
-        - bulletCount: 1
-          fireInterval: 0.3
-          restSeconds: 2
-        - bulletCount: 2
-          fireInterval: 0.3
-          restSeconds: 2
-        - bulletCount: 4
-          fireInterval: 0.3
-          restSeconds: 2
---- !u!114 &-4694303352367861278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
-  m_Name: Hog Pattern 6
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
-  actions:
-  - rid: 2634811916669944136
-  - rid: 2634811916669944137
-  - rid: 2634811916669944138
-  - rid: 2634811916669944139
-  - rid: 2634811916669944140
-  - rid: 2634811916669944141
-  - rid: 2634811916669944142
-  - rid: 2634811916669944143
-  - rid: 2634811916669944144
-  - rid: 2634811916669944145
-  - rid: 2634811916669944146
-  - rid: 2634811916669944147
-  - rid: 2634811916669944148
-  - rid: 2634811916669944149
-  - rid: 2634811916669944150
-  - rid: 2634811916669944151
-  - rid: 2634811916669944152
-  - rid: 2634811916669944153
-  - rid: 2634811916669944154
-  - rid: 2634811916669944155
-  - rid: 2634811916669944156
-  - rid: 2634811916669944157
-  - rid: 2634811916669944158
-  - rid: 2634811916669944159
-  - rid: 2634811916669944160
-  references:
-    version: 2
-    RefIds:
-    - rid: 2634811916669944136
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944137
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944138
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+    - rid: 2634811916669944090
+      type: {class: FireSweepProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         projectile:
           prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
@@ -134,240 +41,40 @@ MonoBehaviour:
           homingEnabled: 0
           homingSeconds: 0.8
           homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 0
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
+        firePointPath: Boss-Dealer Visual/MachineGunRoot
+        projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+        setFirePointActive: 1
+        windupSeconds: 0.75
+        bulletCount: 45
+        fireInterval: 0.06
+        spawnSpacing: 0
+        sweepStepDegrees: 5
+        maxSweepAngle: 40
         muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944139
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944140
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.1
-    - rid: 2634811916669944141
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944142
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944143
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 6
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944144
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944145
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.1
-    - rid: 2634811916669944146
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944147
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944148
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 12
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944149
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944150
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.1
-    - rid: 2634811916669944151
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944152
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944153
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 18
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944154
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944155
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.1
-    - rid: 2634811916669944156
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944157
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.01
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944158
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 24
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944159
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944160
-      type: {class: ResetBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
---- !u!114 &-996222320938380819
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+--- !u!114 &-6275492118707036480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -380,11 +87,11 @@ MonoBehaviour:
   m_Name: Hog Pattern 3
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
   actions:
-  - rid: 2634811916669944119
+  - rid: 2634811916669944074
   references:
     version: 2
     RefIds:
-    - rid: 2634811916669944119
+    - rid: 2634811916669944074
       type: {class: FireChargedRadialSplitProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         projectile:
@@ -424,9 +131,962 @@ MonoBehaviour:
         splitRadiusMultiplier: 0.5
         splitLifetimeMultiplier: 1
         bombSfxLeadSeconds: 0.15
-        launchSfxId: BossNormalShot
-        radialSplitImminentSfxId: BossBomb
---- !u!114 &-745753591977173545
+        launchSfxId: 
+        radialSplitImminentSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
+  m_Name: Boss_Hog_MigratedGraph
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
+  startNodeId: Phase1
+  references:
+    effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+    colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
+  stateNodes:
+  - nodeId: Phase1
+    phaseIndex: 0
+    selectionMode: 0
+    minRecoverySeconds: 0.5
+    maxRecoverySeconds: 0.9
+    sequences:
+    - sequence: {fileID: 5897608006989542772}
+      weight: 1
+    - sequence: {fileID: 1982341036200636048}
+      weight: 1
+    - sequence: {fileID: -6275492118707036480}
+      weight: 1
+    - sequence: {fileID: 1784890914743168693}
+      weight: 1
+    - sequence: {fileID: -7498614189011040984}
+      weight: 1
+    - sequence: {fileID: 5380056226392186078}
+      weight: 1
+    - sequence: {fileID: 6097474614572547850}
+      weight: 1
+    editorPosition: {x: 47, y: 130}
+  - nodeId: Phase2
+    phaseIndex: 1
+    selectionMode: 0
+    minRecoverySeconds: 0.5
+    maxRecoverySeconds: 0.9
+    sequences:
+    - sequence: {fileID: 5897608006989542772}
+      weight: 1
+    - sequence: {fileID: 1982341036200636048}
+      weight: 1
+    - sequence: {fileID: -6275492118707036480}
+      weight: 1
+    - sequence: {fileID: 1784890914743168693}
+      weight: 1
+    - sequence: {fileID: -7498614189011040984}
+      weight: 1
+    - sequence: {fileID: 5380056226392186078}
+      weight: 1
+    - sequence: {fileID: 6097474614572547850}
+      weight: 1
+    editorPosition: {x: 372, y: -104}
+  - nodeId: Phase3
+    phaseIndex: 2
+    selectionMode: 0
+    minRecoverySeconds: 0.5
+    maxRecoverySeconds: 0.9
+    sequences:
+    - sequence: {fileID: 5897608006989542772}
+      weight: 1
+    - sequence: {fileID: 1982341036200636048}
+      weight: 1
+    - sequence: {fileID: -6275492118707036480}
+      weight: 1
+    - sequence: {fileID: 1784890914743168693}
+      weight: 1
+    - sequence: {fileID: -7498614189011040984}
+      weight: 1
+    - sequence: {fileID: 5380056226392186078}
+      weight: 1
+    - sequence: {fileID: 6097474614572547850}
+      weight: 1
+    editorPosition: {x: 708, y: 54}
+  transitions:
+  - fromNodeId: Phase2
+    toNodeId: Phase3
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeId: Phase1
+    toNodeId: Phase2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+--- !u!114 &1784890914743168693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Hog Pattern 4
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811916669944075
+  - rid: 2634811916669944076
+  - rid: 2634811916669944077
+  - rid: 2634811916669944078
+  - rid: 2634811916669944079
+  - rid: 2634811916669944080
+  - rid: 2634811916669944081
+  - rid: 2634811916669944082
+  - rid: 2634811916669944083
+  - rid: 2634811916669944084
+  - rid: 2634811916669944085
+  - rid: 2634811916669944086
+  - rid: 2634811916669944087
+  - rid: 2634811916669944088
+  - rid: 2634811916669944089
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811916669944075
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0.6, z: 0}
+        duration: 0.38
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944076
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.25
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944077
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 0
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944078
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944079
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.8
+    - rid: 2634811916669944080
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0.6, z: 0}
+        duration: 0.38
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944081
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.25
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944082
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 6
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944083
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944084
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.8
+    - rid: 2634811916669944085
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0.6, z: 0}
+        duration: 0.38
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944086
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.25
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944087
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 12
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944088
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944089
+      type: {class: ResetBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+--- !u!114 &1982341036200636048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Hog Pattern 2
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811916669944073
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811916669944073
+      type: {class: FireMachinegunProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 2
+          chargeDriftSpeed: 1.5
+          aimAtPlayerWhileCharging: 0
+          aimAtPlayerOnLaunch: 0
+          speed: 12
+          lifetime: 3
+          radius: 0.1
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
+          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
+          trailSeconds: 1
+          trailWidthMultiplier: 3
+          homingEnabled: 1
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        firstProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
+        secondProjectileOriginPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+        moveSpeedMultiplier: 0.6
+        spawnSpacing: 1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        volleys:
+        - bulletCount: 1
+          fireInterval: 0.3
+          restSeconds: 2
+        - bulletCount: 2
+          fireInterval: 0.3
+          restSeconds: 2
+        - bulletCount: 4
+          fireInterval: 0.3
+          restSeconds: 2
+--- !u!114 &5380056226392186078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Hog Pattern 6
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811916669944091
+  - rid: 2634811916669944092
+  - rid: 2634811916669944093
+  - rid: 2634811916669944094
+  - rid: 2634811916669944095
+  - rid: 2634811916669944096
+  - rid: 2634811916669944097
+  - rid: 2634811916669944098
+  - rid: 2634811916669944099
+  - rid: 2634811916669944100
+  - rid: 2634811916669944101
+  - rid: 2634811916669944102
+  - rid: 2634811916669944103
+  - rid: 2634811916669944104
+  - rid: 2634811916669944105
+  - rid: 2634811916669944106
+  - rid: 2634811916669944107
+  - rid: 2634811916669944108
+  - rid: 2634811916669944109
+  - rid: 2634811916669944110
+  - rid: 2634811916669944111
+  - rid: 2634811916669944112
+  - rid: 2634811916669944113
+  - rid: 2634811916669944114
+  - rid: 2634811916669944115
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811916669944091
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944092
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944093
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 0
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944094
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944095
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 2634811916669944096
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944097
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944098
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 6
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944099
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944100
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 2634811916669944101
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944102
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944103
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 12
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944104
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944105
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 2634811916669944106
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944107
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944108
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 18
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944109
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944110
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 2634811916669944111
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944112
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        releaseBaseAfterMove: 0
+    - rid: 2634811916669944113
+      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
+          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 30
+        centerOnPlayer: 0
+        startAngleDegrees: 24
+        arcDegrees: 360
+        spawnRadius: 0.25
+        fireInterval: 0
+        muzzleFlashScale: 0
+        fireSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        cameraShakeDirection: {x: 0, y: -1}
+    - rid: 2634811916669944114
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetLocalOffset: {x: 0, y: 0, z: 0}
+        duration: 0
+        releaseBaseAfterMove: 1
+    - rid: 2634811916669944115
+      type: {class: ResetBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+--- !u!114 &5897608006989542772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
+  m_Name: Hog Pattern 1
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
+  actions:
+  - rid: 2634811916669944072
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811916669944072
+      type: {class: FireRotatingProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 2
+          chargeDriftSpeed: 1.5
+          aimAtPlayerWhileCharging: 0
+          aimAtPlayerOnLaunch: 0
+          speed: 12
+          lifetime: 3
+          radius: 0.1
+          chargingColor: {r: 1, g: 1, b: 1, a: 1}
+          launchedColor: {r: 1, g: 1, b: 1, a: 1}
+          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
+          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
+          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
+          trailSeconds: 1
+          trailWidthMultiplier: 3
+          homingEnabled: 1
+          homingSeconds: 0.8
+          homingTurnDegreesPerSecond: 540
+        bulletCount: 5
+        startAngleMode: 1
+        startAngleDegrees: 0
+        angleStepDegrees: 25
+        originOffset: {x: 0, y: 0}
+        spawnRadius: 0.25
+        fireInterval: 0.5
+        muzzleFlashScale: 0
+        overrideAimAtPlayerOnLaunch: 1
+        aimAtPlayerOnLaunch: 1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+--- !u!114 &6097474614572547850
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -439,11 +1099,11 @@ MonoBehaviour:
   m_Name: Hog Pattern 7
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
   actions:
-  - rid: 2634811916669944161
+  - rid: 2634811916669944116
   references:
     version: 2
     RefIds:
-    - rid: 2634811916669944161
+    - rid: 2634811916669944116
       type: {class: FireFanVolleyProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         normalProjectile:
@@ -500,391 +1160,28 @@ MonoBehaviour:
         normalSpawnSpacing: 0.16
         secondarySpawnForwardOffset: 0
         muzzleFlashScale: 0
-        normalVolleySfxId: BossNormalShot
-        secondaryFireSfxId: BossNormalShot
-        secondaryLaunchSfxId: BossSpecialShot
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
-  m_Name: Boss_Hog_MigratedGraph
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
-  startNodeId: Phase1
-  stateNodes:
-  - nodeId: Phase1
-    phaseIndex: 0
-    selectionMode: 0
-    minRecoverySeconds: 0.5
-    maxRecoverySeconds: 0.9
-    sequences:
-    - sequence: {fileID: 1536468100883371470}
-      weight: 1
-    - sequence: {fileID: -8923717960022282282}
-      weight: 1
-    - sequence: {fileID: -996222320938380819}
-      weight: 1
-    - sequence: {fileID: 6181723592404550470}
-      weight: 1
-    - sequence: {fileID: 6145226865813331954}
-      weight: 1
-    - sequence: {fileID: -4694303352367861278}
-      weight: 1
-    - sequence: {fileID: -745753591977173545}
-      weight: 1
-    editorPosition: {x: 80, y: 120}
-  - nodeId: Phase2
-    phaseIndex: 1
-    selectionMode: 0
-    minRecoverySeconds: 0.5
-    maxRecoverySeconds: 0.9
-    sequences:
-    - sequence: {fileID: 1536468100883371470}
-      weight: 1
-    - sequence: {fileID: -8923717960022282282}
-      weight: 1
-    - sequence: {fileID: -996222320938380819}
-      weight: 1
-    - sequence: {fileID: 6181723592404550470}
-      weight: 1
-    - sequence: {fileID: 6145226865813331954}
-      weight: 1
-    - sequence: {fileID: -4694303352367861278}
-      weight: 1
-    - sequence: {fileID: -745753591977173545}
-      weight: 1
-    editorPosition: {x: 360, y: 120}
-  - nodeId: Phase3
-    phaseIndex: 2
-    selectionMode: 0
-    minRecoverySeconds: 0.5
-    maxRecoverySeconds: 0.9
-    sequences:
-    - sequence: {fileID: 1536468100883371470}
-      weight: 1
-    - sequence: {fileID: -8923717960022282282}
-      weight: 1
-    - sequence: {fileID: -996222320938380819}
-      weight: 1
-    - sequence: {fileID: 6181723592404550470}
-      weight: 1
-    - sequence: {fileID: 6145226865813331954}
-      weight: 1
-    - sequence: {fileID: -4694303352367861278}
-      weight: 1
-    - sequence: {fileID: -745753591977173545}
-      weight: 1
-    editorPosition: {x: 640, y: 120}
-  transitions:
-  - fromNodeId: Phase1
-    toNodeId: Phase2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeId: Phase2
-    toNodeId: Phase3
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
---- !u!114 &1536468100883371470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
-  m_Name: Hog Pattern 1
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
-  actions:
-  - rid: 2634811916669944117
-  references:
-    version: 2
-    RefIds:
-    - rid: 2634811916669944117
-      type: {class: FireRotatingProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 2
-          chargeDriftSpeed: 1.5
-          aimAtPlayerWhileCharging: 0
-          aimAtPlayerOnLaunch: 0
-          speed: 12
-          lifetime: 3
-          radius: 0.1
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
-          trailSeconds: 1
-          trailWidthMultiplier: 3
-          homingEnabled: 1
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 5
-        startAngleMode: 1
-        startAngleDegrees: 0
-        angleStepDegrees: 25
-        originOffset: {x: 0, y: 0}
-        spawnRadius: 0.25
-        fireInterval: 0.5
-        muzzleFlashScale: 0
-        overrideAimAtPlayerOnLaunch: 1
-        aimAtPlayerOnLaunch: 1
-        fireSfxId: BossNormalShot
-        launchSfxId: BossSpecialShot
---- !u!114 &6145226865813331954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
-  m_Name: Hog Pattern 5
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
-  actions:
-  - rid: 2634811916669944135
-  references:
-    version: 2
-    RefIds:
-    - rid: 2634811916669944135
-      type: {class: FireSweepProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        firePointPath: Boss-Dealer Visual/MachineGunRoot
-        projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
-        setFirePointActive: 1
-        windupSeconds: 0.75
-        bulletCount: 45
-        fireInterval: 0.06
-        spawnSpacing: 0
-        sweepStepDegrees: 5
-        maxSweepAngle: 40
-        muzzleFlashScale: 0
-        fireSfxId: BossNormalShot
---- !u!114 &6181723592404550470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc9d10fa87ec8354584fe1d6122f8c8d, type: 3}
-  m_Name: Hog Pattern 4
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AttackSequenceAsset
-  actions:
-  - rid: 2634811916669944120
-  - rid: 2634811916669944121
-  - rid: 2634811916669944122
-  - rid: 2634811916669944123
-  - rid: 2634811916669944124
-  - rid: 2634811916669944125
-  - rid: 2634811916669944126
-  - rid: 2634811916669944127
-  - rid: 2634811916669944128
-  - rid: 2634811916669944129
-  - rid: 2634811916669944130
-  - rid: 2634811916669944131
-  - rid: 2634811916669944132
-  - rid: 2634811916669944133
-  - rid: 2634811916669944134
-  references:
-    version: 2
-    RefIds:
-    - rid: 2634811916669944120
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0.6, z: 0}
-        duration: 0.38
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944121
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.25
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944122
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 0
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944123
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944124
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.8
-    - rid: 2634811916669944125
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0.6, z: 0}
-        duration: 0.38
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944126
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.25
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944127
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 6
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944128
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944129
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.8
-    - rid: 2634811916669944130
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0.6, z: 0}
-        duration: 0.38
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944131
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0.25
-        releaseBaseAfterMove: 0
-    - rid: 2634811916669944132
-      type: {class: FireRadialProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectile:
-          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-          bulletDamage: 1
-          chargeSeconds: 0
-          chargeDriftSpeed: 0
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          trailSeconds: 0.01
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-          homingSeconds: 0.8
-          homingTurnDegreesPerSecond: 540
-        bulletCount: 30
-        centerOnPlayer: 0
-        startAngleDegrees: 12
-        arcDegrees: 360
-        spawnRadius: 0.25
-        fireInterval: 0
-        muzzleFlashScale: 0
-        fireSfxId: Smash
-    - rid: 2634811916669944133
-      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        targetLocalOffset: {x: 0, y: 0, z: 0}
-        duration: 0
-        releaseBaseAfterMove: 1
-    - rid: 2634811916669944134
-      type: {class: ResetBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
+        normalVolleySfxId: 
+        secondaryFireSfxId: 
+        secondaryLaunchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
