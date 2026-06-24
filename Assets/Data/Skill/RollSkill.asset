@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: RollSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.RollSkillSO
   skillId: Roll
-  displayName: 
+  displayName: "\uAD6C\uB974\uAE30"
   icon: {fileID: 0}
-  description: 
+  description: "\uAD6C\uB978\uB2E4"
   requiredStack: 15
   rollDistance: 3
   rollDuration: 0.3

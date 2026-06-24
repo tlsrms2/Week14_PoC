@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ReloadSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.ReloadSkillSO
   skillId: Reload
-  displayName: 
+  displayName: "\uC7A5\uC804"
   icon: {fileID: 0}
-  description: 
+  description: "1\uBC1C \uC7A5\uC804"
   requiredStack: 15
   reloadAmount: 1

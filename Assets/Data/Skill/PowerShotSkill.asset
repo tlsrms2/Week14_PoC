@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PowerShotSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.PowerShotSkillSO
   skillId: PowerShot
-  displayName: 
+  displayName: "\uD30C\uC6CC\uC0F7"
   icon: {fileID: 0}
-  description: 
+  description: "\uC801\uC5D0\uAC8C 10\uB380"
   requiredStack: 30
   damage: 10
   sizeMultiplier: 3

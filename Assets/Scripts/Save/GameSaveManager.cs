@@ -48,6 +48,16 @@ namespace Week14.Save
             Save();
         }
 
+        public static void LockBoss(string bossId)
+        {
+            if (string.IsNullOrEmpty(bossId) || !Data.unlockedBossIds.Remove(bossId))
+            {
+                return;
+            }
+
+            Save();
+        }
+
         public static void ClearBoss(string bossId)
         {
             if (string.IsNullOrEmpty(bossId) || Data.clearedBossIds.Contains(bossId))
@@ -74,6 +84,16 @@ namespace Week14.Save
             }
 
             Data.unlockedSkillIds.Add(skillId);
+            Save();
+        }
+
+        public static void LockSkill(string skillId)
+        {
+            if (string.IsNullOrEmpty(skillId) || !Data.unlockedSkillIds.Remove(skillId))
+            {
+                return;
+            }
+
             Save();
         }
 

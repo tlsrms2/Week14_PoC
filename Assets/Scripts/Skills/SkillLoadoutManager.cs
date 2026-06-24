@@ -111,6 +111,24 @@ namespace Week14.Skills
             return true;
         }
 
+        public bool UnequipSkill(SkillSlot slot)
+        {
+            if (!equippedSkills.Remove(slot))
+            {
+                return false;
+            }
+
+            if (slot == ActiveSlot)
+            {
+                currentStack = 0;
+                StackChanged?.Invoke(currentStack, 1);
+            }
+
+            GameSaveManager.SetEquippedSkillId((int)slot, null);
+            SkillEquipped?.Invoke(slot, null);
+            return true;
+        }
+
         public bool TryUseSkill(SkillSlot slot)
         {
             if (!equippedSkills.TryGetValue(slot, out BaseSkillSO skill) || skill == null)
