@@ -928,7 +928,8 @@ namespace Week14.Combat
                 return;
             }
 
-            if (IsCharging)
+            PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
+            if (IsCharging && player == null)
             {
                 return;
             }
@@ -939,7 +940,6 @@ namespace Week14.Combat
                 return;
             }
 
-            PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
             if (player == null)
             {
                 BossAI hitBoss = other.GetComponentInParent<BossAI>();

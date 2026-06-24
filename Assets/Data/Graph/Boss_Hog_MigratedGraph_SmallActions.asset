@@ -26,7 +26,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908194
     sequences: []
-    editorPosition: {x: -327, y: -136}
+    editorPosition: {x: -336, y: -152}
   - nodeId: HogPattern2_Action01
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
