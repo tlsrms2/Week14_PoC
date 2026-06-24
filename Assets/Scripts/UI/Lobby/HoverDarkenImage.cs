@@ -12,8 +12,8 @@ namespace Week14.UI
         [SerializeField, Range(0f, 1f)] private float darkenAmount = 0.25f;
         [SerializeField, Min(0f)] private float transitionSeconds = 0.08f;
         [SerializeField] private Transform scaleTarget;
-        [SerializeField, Min(1f)] private float hoverScale = 1.05f;
-        [SerializeField, Min(1f)] private float popScale = 1.14f;
+        [SerializeField, Min(1f)] private float hoverScale = 1.02f;
+        [SerializeField, Min(1f)] private float popScale = 1.03f;
         [SerializeField, Min(0f)] private float popSeconds = 0.06f;
         [SerializeField, Min(0f)] private float settleSeconds = 0.1f;
         [SerializeField, Min(0f)] private float returnSeconds = 0.1f;
