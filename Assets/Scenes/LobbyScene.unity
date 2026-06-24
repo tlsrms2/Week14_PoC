@@ -213,6 +213,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &79774701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,6 +906,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &207111284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1942,6 +1954,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!1 &472982336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,6 +2284,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &540783549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3282,6 +3306,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!224 &756442841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5018,8 +5048,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
   targetGraphic: {fileID: 1458596572}
   targetSpriteRenderer: {fileID: 0}
-  darkenAmount: 0.25
+  darkenAmount: 0.15
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &1458596569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5093,7 +5129,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 243}
-  m_SizeDelta: {x: 792, y: 428}
+  m_SizeDelta: {x: 800, y: 436}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1458596572
 MonoBehaviour:
@@ -5115,7 +5151,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: df1b2175c1a372a4983f85d922dab0e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 193a84fa0e3f9f04aac99bebae36ead3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5727,6 +5763,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &1641631097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6659,6 +6701,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &2044892066
 MonoBehaviour:
   m_ObjectHideFlags: 0
