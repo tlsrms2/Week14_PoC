@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &33144151026404172
 Transform:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5626993334888473901
 RectTransform:
   m_ObjectHideFlags: 0
@@ -412,7 +412,6 @@ GameObject:
   - component: {fileID: 3327489348220524332}
   - component: {fileID: 2075240932106930298}
   - component: {fileID: 7213248953238434763}
-  - component: {fileID: 3721729926954954457}
   m_Layer: 0
   m_Name: Boss_Hog
   m_TagString: Untagged
@@ -503,316 +502,48 @@ MonoBehaviour:
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
-  pattern1:
-    projectileOrigins:
-      firstProjectileOrigin: {fileID: 4751530550925763319}
-      secondProjectileOrigin: {fileID: 3329525432054548886}
-    projectileIndex: 1
-    radialBulletCount: 5
-    burstInterval: 0.5
-    spawnRadius: 0.25
-    angleStepDegrees: 25
-    effects:
-      explosion:
-        enabled: 1
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1
-        count: 12
-      smoke:
-        enabled: 1
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 1
-        count: 15
-      smokeInterval: 0.5
-      muzzleFlash:
-        enabled: 0
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 1
-        count: 0
-      cameraShake:
-        enabled: 0
-        seconds: 0.14
-        distance: 0.22
-        frequency: 0.12
-  pattern2:
-    projectileOrigins:
-      firstProjectileOrigin: {fileID: 6360489807620193376}
-      secondProjectileOrigin: {fileID: 4059521945129302117}
-    projectileIndex: 2
-    moveSpeedMultiplier: 0.6
-    bulletCount: 30
-    fireInterval: 0.2
-    spawnSpacing: 1
-    volleys:
-    - bulletCount: 1
-      fireInterval: 0.3
-      restSeconds: 2
-    - bulletCount: 2
-      fireInterval: 0.3
-      restSeconds: 2
-    - bulletCount: 4
-      fireInterval: 0.3
-      restSeconds: 2
-    effects:
-      explosion:
-        enabled: 1
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1
-        count: 12
-      smoke:
-        enabled: 1
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 1.3
-        count: 18
-      smokeInterval: 0.35
-      muzzleFlash:
-        enabled: 0
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 1
-        count: 0
-      cameraShake:
-        enabled: 0
-        seconds: 0.14
-        distance: 0.22
-        frequency: 0.12
-  pattern3:
-    firePoint:
-      fireOrigin: {fileID: 5386927287202759199}
-      projectileOrigin: {fileID: 8950221499719562823}
-    projectileIndex: 0
-    windupSeconds: 2
-    splitDepth: 4
-    splitAngleDegrees: 48
-    splitSpeedMultiplier: 0.5
-    splitRadiusMultiplier: 0.5
-    splitLifetimeMultiplier: 1
-    projectileRadiusMultiplier: 2
-    finalScaleMultiplier: 2
-    startScaleRatio: 0.18
-    aimSpreadDegrees: 0
-    aimTrackingSeconds: 1.5
-    effects:
-      explosion:
-        enabled: 0
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1
-        count: 15
-      smoke:
-        enabled: 1
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 1.25
-        count: 24
-      smokeInterval: 0.12
-      muzzleFlash:
-        enabled: 1
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 2
-        count: 12
-      cameraShake:
-        enabled: 0
-        seconds: 0.14
-        distance: 0.22
-        frequency: 0.12
-    pattern3MuzzleFlashDefaultApplied: 1
-    radialSplitBulletCount: 30
-    radialSplitStartAngleOffset: 0
-    splitDelaySeconds: 0.35
-    bombSfxLeadSeconds: 0.15
-  pattern4:
-    projectileOrigin: {fileID: 3064024220512520814}
-    slamUpOffset: 0.6
-    slamDownOffset: 0
-    slamRiseSeconds: 0.38
-    slamDropSeconds: 0.25
-    slamRecoverSeconds: 0
-    projectileIndex: 0
-    bulletCount: 30
-    waveCount: 3
-    waveInterval: 0.8
-    startAngleOffset: 0
-    spawnRadius: 0.25
-    effects:
-      explosion:
-        enabled: 0
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1
-        count: 15
-      smoke:
-        enabled: 0
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 2
-        count: 10
-      smokeInterval: 0.12
-      muzzleFlash:
-        enabled: 0
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 1
-        count: 0
-      cameraShake:
-        enabled: 1
-        seconds: 0.24
-        distance: 1.2
-        frequency: 0.12
-  pattern5:
-    firePoint:
-      fireOrigin: {fileID: 5386927287202759199}
-      projectileOrigin: {fileID: 8950221499719562823}
-    projectileIndex: 0
-    windupSeconds: 0.75
-    bulletCount: 45
-    fireInterval: 0.06
-    spawnSpacing: 0
-    sweepStepDegrees: 5
-    maxSweepAngle: 40
-    effects:
-      explosion:
-        enabled: 0
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1
-        count: 0
-      smoke:
-        enabled: 1
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 1.5
-        count: 15
-      smokeInterval: 0.12
-      muzzleFlash:
-        enabled: 1
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 1
-        count: 0
-      cameraShake:
-        enabled: 1
-        seconds: 0.12
-        distance: 0.1
-        frequency: 0.12
-    pattern5BulletShakeDefaultApplied: 1
-  pattern6:
-    projectileOrigin: {fileID: 3064024220512520814}
-    slamUpOffset: 0
-    slamDownOffset: 0
-    slamRiseSeconds: 0.01
-    slamDropSeconds: 0.01
-    slamRecoverSeconds: 0
-    projectileIndex: 0
-    bulletCount: 30
-    waveCount: 5
-    waveInterval: 0.1
-    startAngleOffset: 0
-    spawnRadius: 0.25
-    effects:
-      explosion:
-        enabled: 1
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1.45
-        count: 28
-      smoke:
-        enabled: 0
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 1.1
-        count: 10
-      smokeInterval: 0.12
-      muzzleFlash:
-        enabled: 0
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 1
-        count: 0
-      cameraShake:
-        enabled: 1
-        seconds: 0.16
-        distance: 0.25
-        frequency: 0.12
-  pattern7:
-    firePoint:
-      fireOrigin: {fileID: 5386927287202759199}
-      projectileOrigin: {fileID: 8950221499719562823}
-    normalProjectileIndex: 0
-    secondaryProjectileIndex: 2
-    secondaryProjectileOrigins: []
-    windupSeconds: 2
-    normalVolleyCount: 5
-    normalVolleyInterval: 0.18
-    secondaryBulletCount: 1
-    fanAngleDegrees: 42
-    normalSpawnSpacing: 0.16
-    secondarySpawnForwardOffset: 0
-    effects:
-      explosion:
-        enabled: 0
-        color: {r: 1, g: 0.62, b: 0.18, a: 1}
-        scale: 1
-        count: 0
-      smoke:
-        enabled: 1
-        color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.72}
-        scale: 0.9
-        count: 8
-      smokeInterval: 0.12
-      muzzleFlash:
-        enabled: 1
-        color: {r: 1, g: 0.78, b: 0.26, a: 1}
-        scale: 1
-        count: 0
-      cameraShake:
-        enabled: 1
-        seconds: 0.05
-        distance: 0.06
-        frequency: 0.08
-  projectiles:
-  - prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-    bulletDamage: 1
-    chargeSeconds: 0
-    chargeDriftSpeed: 0
-    aimAtPlayerWhileCharging: 1
-    aimAtPlayerOnLaunch: 0
-    speed: 7
-    lifetime: 3
-    radius: 0.12
-    chargingColor: {r: 1, g: 1, b: 1, a: 1}
-    launchedColor: {r: 1, g: 1, b: 1, a: 1}
-    homingChargePrefab: {fileID: 0}
-    homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-    trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-    indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-    trailSeconds: 0.01
-    trailWidthMultiplier: 3
-    homingEnabled: 0
-    homingSeconds: 0.8
-    homingTurnDegreesPerSecond: 540
-  - prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
-    bulletDamage: 1
-    chargeSeconds: 2
-    chargeDriftSpeed: 1.5
-    aimAtPlayerWhileCharging: 0
-    aimAtPlayerOnLaunch: 0
-    speed: 12
-    lifetime: 3
-    radius: 0.1
-    chargingColor: {r: 1, g: 1, b: 1, a: 1}
-    launchedColor: {r: 1, g: 1, b: 1, a: 1}
-    homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-    homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-    trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-    indicatorColor: {r: 1, g: 0, b: 0, a: 1}
-    trailSeconds: 1
-    trailWidthMultiplier: 3
-    homingEnabled: 1
-    homingSeconds: 0.8
-    homingTurnDegreesPerSecond: 540
-  phasePatterns:
-  - phase: 1
-    patterns: 00000000010000000300000005000000
-  - phase: 2
-    patterns: 00000000010000000200000003000000040000000500000006000000
-  minPatternRecoverySeconds: 3
-  maxPatternRecoverySeconds: 3
-  showPatternBulletPreview: 1
-  patternBulletPreviewFullHoldSeconds: 0.18
-  patternBulletPreviewSingleGroupFullHoldRatio: 0.55
-  randomizePatterns: 1
-  preventRandomRepeatPattern: 1
-  debugUseFixedPattern: 0
-  debugPattern: 0
+  bossGraph: {fileID: 11400000, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
+  graphProjectiles:
+  - projectileName: "\uC77C\uBC18\uD0C4"
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 1
+      aimAtPlayerOnLaunch: 0
+      speed: 7
+      lifetime: 3
+      radius: 0.12
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
+      homingChargePrefab: {fileID: 0}
+      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailColor: {r: 1, g: 0.8078432, b: 0.13333334, a: 1}
+      indicatorColor: {r: 1, g: 0.9490197, b: 0.2509804, a: 1}
+      trailSeconds: 0.1
+      trailWidthMultiplier: 3
+      homingEnabled: 0
+  - projectileName: "\uC720\uB3C4\uD0C4"
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 2
+      chargeDriftSpeed: 1.5
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 1
+      speed: 12
+      lifetime: 3
+      radius: 0.1
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
+      indicatorColor: {r: 1, g: 0, b: 0, a: 1}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
+      homingEnabled: 1
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5
@@ -1013,34 +744,6 @@ MonoBehaviour:
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
     outlineWidth: 0.1
---- !u!114 &3721729926954954457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958469296149594014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb968fb0d29ceda43b1c05bb9a70dc0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossPatternBulletLineView
-  settings:
-    fallbackRadius: 0.85
-    radiusPadding: 0
-    anchorOffset: {x: -0.4, y: 0}
-    maxBulletsPerColumn: 10
-    bulletWidth: 0.05
-    bulletLength: 0.1
-    bulletGap: 0.15
-    bulletRowGap: 0.01
-    bulletRotationDegrees: 0
-    loadedColor: {r: 1, g: 0.76, b: 0.12, a: 0.95}
-    nextColor: {r: 1, g: 0.39, b: 0.06, a: 1}
-    spentColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
-    nextWidthScale: 1
-    sortingOrder: 9
-  targetRoot: {fileID: 3928034980745414157}
 --- !u!1 &4148056431437641574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7360286854126495715
 Transform:
   m_ObjectHideFlags: 0
@@ -1456,7 +1159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7031931205387098201
 Transform:
   m_ObjectHideFlags: 0
