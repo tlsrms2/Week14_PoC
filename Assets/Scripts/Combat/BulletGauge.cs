@@ -10,7 +10,8 @@ namespace Week14.Combat
         Hit,
         Attack,
         Parry,
-        Execution
+        Execution,
+        WeaponSwitch
     }
 
     public class BulletGauge : MonoBehaviour

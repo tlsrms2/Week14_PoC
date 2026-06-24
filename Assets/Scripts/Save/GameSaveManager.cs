@@ -128,6 +128,17 @@ namespace Week14.Save
             Save();
         }
 
+        public static string GetEquippedWeaponId()
+        {
+            return Data.equippedWeaponId;
+        }
+
+        public static void SetEquippedWeaponId(string weaponId)
+        {
+            Data.equippedWeaponId = weaponId;
+            Save();
+        }
+
         public static void Load()
         {
             try

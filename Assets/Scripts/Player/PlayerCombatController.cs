@@ -3,6 +3,7 @@ using Week14.Bootstrap;
 using Week14.Enemy;
 using Week14.Input;
 using Week14.UI;
+using Week14.Weapons;
 
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -52,6 +53,7 @@ namespace Week14.Combat
         private PlayerExecutionPresentation executionPresentation;
         private PlayerExecutionController executionController;
         private PlayerDashController dashController;
+        private bool lockOnSuppressed;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
         private PlayerCombatRig Rig => playerCombatRig ??= new PlayerCombatRig(Context);
@@ -253,7 +255,8 @@ namespace Week14.Combat
                 return;
             }
 
-            bullets.Configure(config.MaxBullets, true);
+            BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
+            bullets.Configure(weapon != null ? weapon.MaxAmmo : config.MaxBullets, true);
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
@@ -433,7 +436,18 @@ namespace Week14.Combat
 
         private void UpdateLockOnTarget()
         {
+            if (lockOnSuppressed)
+            {
+                LockOnController.SetLockOnTarget(null);
+                return;
+            }
+
             LockOnController.UpdateLockOnTarget();
+        }
+
+        public void SetLockOnSuppressed(bool suppressed)
+        {
+            lockOnSuppressed = suppressed;
         }
 
         private void ClearInvalidLockOnTarget()

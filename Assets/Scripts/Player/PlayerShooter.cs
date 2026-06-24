@@ -1,5 +1,6 @@
 using UnityEngine;
 using Week14.Audio;
+using Week14.Weapons;
 
 namespace Week14.Combat
 {
@@ -25,7 +26,11 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (config.ProjectilePrefab == null)
+            PlayerProjectile projectilePrefab = WeaponLoadoutManager.Instance != null && WeaponLoadoutManager.Instance.CurrentWeapon != null && WeaponLoadoutManager.Instance.CurrentWeapon.ProjectilePrefab != null
+                ? WeaponLoadoutManager.Instance.CurrentWeapon.ProjectilePrefab
+                : config.ProjectilePrefab;
+
+            if (projectilePrefab == null)
             {
                 Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", context.Owner);
                 return false;
@@ -46,7 +51,7 @@ namespace Week14.Combat
             aimController.LockLeftGunAim(direction);
 
             PlayerProjectile projectile = PlayerProjectile.Spawn(
-                config.ProjectilePrefab,
+                projectilePrefab,
                 fireOrigin.position,
                 direction,
                 context.Owner,
@@ -122,12 +127,18 @@ namespace Week14.Combat
         {
             PlayerCombatConfig config = context.Config;
             BulletGauge bullets = context.Bullets;
-            if (bullets == null || config == null)
+            if (bullets == null)
             {
                 return config != null ? config.AttackBulletDamage : 1;
             }
 
-            return config.GetAttackDamageForRemainingBullets(bullets.CurrentBullets);
+            BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
+            if (weapon != null)
+            {
+                return weapon.GetDamageForAmmo(bullets.CurrentBullets);
+            }
+
+            return config != null ? config.GetAttackDamageForRemainingBullets(bullets.CurrentBullets) : 1;
         }
 
         private Transform GetLeftFireOrigin()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
 using Week14.UI;
+using Week14.Weapons;
 
 namespace Week14.Combat
 {
@@ -195,7 +196,7 @@ namespace Week14.Combat
             }
 
             float scale = Mathf.Clamp(mouseParryCurrentRangeScale, Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f), 1f);
-            renderer.transform.localScale = mouseParryReticleBaseLocalScale * scale;
+            renderer.transform.localScale = mouseParryReticleBaseLocalScale * scale * WeaponParryRangeMultiplier;
         }
 
         internal void UpdateMouseParryReticle()
@@ -412,5 +413,14 @@ namespace Week14.Combat
         private float MouseParryMissShakeSeconds => context.Config != null ? context.Config.MouseParryMissShakeSeconds : 0.18f;
         private float MouseParryMissShakeAmplitude => context.Config != null ? context.Config.MouseParryMissShakeAmplitude : 0.035f;
         private float MouseParryMissShakeFrequency => context.Config != null ? context.Config.MouseParryMissShakeFrequency : 42f;
+
+        private static float WeaponParryRangeMultiplier
+        {
+            get
+            {
+                BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
+                return weapon != null ? Mathf.Max(0.01f, weapon.ParryingRange) : 1f;
+            }
+        }
     }
 }

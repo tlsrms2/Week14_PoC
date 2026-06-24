@@ -328,11 +328,11 @@ MonoBehaviour:
   initialRevealDelaySeconds: 0.2
   revealStaggerSeconds: 0.2
   revealTargets:
+  - {fileID: 4363707465498487419}
   - {fileID: 6478575438549382558}
   - {fileID: 581545510242150894}
   - {fileID: 2426072109591827430}
   - {fileID: 2968721896909309159}
-  - {fileID: 4363707465498487419}
 --- !u!1 &2426072109591827430
 GameObject:
   m_ObjectHideFlags: 0
