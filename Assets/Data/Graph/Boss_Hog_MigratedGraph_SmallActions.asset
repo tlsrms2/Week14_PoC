@@ -869,6 +869,8 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:

@@ -2005,6 +2005,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         DrawGraphReferences();
         EditorGUILayout.Space(8f);
         DrawPhaseSettings();
+        EditorGUILayout.Space(8f);
+        DrawPatternDebugSettings();
     }
 
     private void DrawGraphReferences()
@@ -2646,6 +2648,54 @@ public sealed class BossGraphEditorWindow : EditorWindow
             graphObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(graphAsset);
             RefreshGroupFramesFromNodePositions();
+        }
+    }
+
+    private void DrawPatternDebugSettings()
+    {
+        if (graphObject == null)
+        {
+            return;
+        }
+
+        SerializedProperty debugForceSinglePattern = graphObject.FindProperty("debugForceSinglePattern");
+        SerializedProperty debugForcedPatternId = graphObject.FindProperty("debugForcedPatternId");
+        SerializedProperty patterns = graphObject.FindProperty("patterns");
+        if (debugForceSinglePattern == null || debugForcedPatternId == null)
+        {
+            return;
+        }
+
+        List<string> patternIds = ReadPatternIds(patterns);
+        EditorGUI.BeginChangeCheck();
+        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+        {
+            EditorGUILayout.LabelField("디버그", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(debugForceSinglePattern, new GUIContent("단일 패턴 고정"));
+
+            using (new EditorGUI.DisabledScope(!debugForceSinglePattern.boolValue || patternIds.Count == 0))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("고정 패턴", GUILayout.Width(EditorGUIUtility.labelWidth - 4f));
+                    string nextPatternId = DrawPatternIdPopup(debugForcedPatternId.stringValue, patternIds);
+                    if (nextPatternId != debugForcedPatternId.stringValue)
+                    {
+                        debugForcedPatternId.stringValue = nextPatternId;
+                    }
+                }
+            }
+
+            if (debugForceSinglePattern.boolValue && patternIds.Count == 0)
+            {
+                EditorGUILayout.HelpBox("고정 실행할 패턴이 없습니다. 먼저 패턴을 만들어야 합니다.", MessageType.Info);
+            }
+        }
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            graphObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(graphAsset);
         }
     }
 

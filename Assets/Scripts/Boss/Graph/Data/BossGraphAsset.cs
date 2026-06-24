@@ -19,6 +19,8 @@ namespace Week14.Enemy
         [SerializeField] private List<BossGraphPattern> patterns = new();
         [SerializeField] private List<BossGraphPhase> phases = new();
         [SerializeField] private List<BossTransition> transitions = new();
+        [SerializeField] private bool debugForceSinglePattern;
+        [SerializeField] private string debugForcedPatternId;
 
         public BossGraphReferenceSettings References => referenceSettings;
         public CombatEffectData EffectData => referenceSettings != null ? referenceSettings.EffectData : null;
@@ -28,6 +30,8 @@ namespace Week14.Enemy
         public IReadOnlyList<BossGraphPattern> Patterns => patterns;
         public IReadOnlyList<BossGraphPhase> Phases => phases;
         public IReadOnlyList<BossTransition> Transitions => transitions;
+        public bool DebugForceSinglePattern => debugForceSinglePattern;
+        public string DebugForcedPatternId => debugForcedPatternId;
         public bool UsesPhasePatternLayout => phases != null && phases.Count > 0;
 
         public BossStateNode GetStartNode()
