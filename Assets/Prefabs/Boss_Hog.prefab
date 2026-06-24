@@ -634,7 +634,7 @@ MonoBehaviour:
   health: {fileID: 0}
   executionTarget: {fileID: 0}
   bossAI: {fileID: 0}
-  drone: {fileID: 0}
+  minion: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
   executionText: {fileID: 2572582979524411904}

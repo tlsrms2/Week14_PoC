@@ -2091,7 +2091,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
             {
                 BossGraphNodeKind currentKind = categories.GetNodeKind(item.ActionType);
                 if (currentKind != defaultKind
-                    && (currentKind == BossGraphNodeKind.Utility || defaultKind == BossGraphNodeKind.Utility))
+                    && (currentKind == BossGraphNodeKind.Utility
+                        || defaultKind == BossGraphNodeKind.Utility
+                        || currentKind == BossGraphNodeKind.Minion
+                        || defaultKind == BossGraphNodeKind.Minion))
                 {
                     categories.SetActionKind(item.ActionType, defaultKind);
                     changed = true;
@@ -3124,12 +3127,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
             ? categories.GetNodeKind(actionType)
             : defaultKind;
 
-        if (defaultKind == BossGraphNodeKind.Utility)
+        if (defaultKind == BossGraphNodeKind.Utility || defaultKind == BossGraphNodeKind.Minion)
         {
-            return BossGraphNodeKind.Utility;
+            return defaultKind;
         }
 
-        if (configuredKind == BossGraphNodeKind.Utility)
+        if (configuredKind == BossGraphNodeKind.Utility || configuredKind == BossGraphNodeKind.Minion)
         {
             return defaultKind;
         }
@@ -3706,6 +3709,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             BossGraphNodeKind.Move => new Color(0.12f, 0.38f, 0.78f, 1f),
             BossGraphNodeKind.Animation => new Color(0.45f, 0.22f, 0.72f, 1f),
             BossGraphNodeKind.Utility => new Color(0.24f, 0.42f, 0.34f, 1f),
+            BossGraphNodeKind.Minion => new Color(0.2f, 0.46f, 0.54f, 1f),
             _ => new Color(0.25f, 0.25f, 0.25f, 1f)
         };
     }

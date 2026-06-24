@@ -1,66 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    public sealed class DronePilot : BossAI
+    public sealed class DronePilot : BossAI, IMinionPatternHost
     {
-        internal enum PatternKind
-        {
-            BossBurst,
-            SummonDrone,
-            DronePattern1,
-            DronePattern2,
-            DronePattern3,
-            DronePattern4,
-            DronePattern5
-        }
-
         [Header("Drone Pilot References")]
         [SerializeField] private Transform projectileOrigin;
 
-        [System.Serializable]
-        public sealed class ProjectileSettings : BossProjectileSettings
+        [Header("Boss Graph")]
+        [SerializeField] private BossGraphAsset bossGraph;
+        [SerializeField] private List<BossGraphProjectileEntry> graphProjectiles = new()
         {
-        }
-
-        [System.Serializable]
-        internal sealed class BossBurstSettings
-        {
-            [SerializeField] private ProjectileSettings projectile = new();
-            [SerializeField, Min(0f), Tooltip("첫 발사 전 대기 시간입니다.")] private float windupSeconds = 0.45f;
-            [SerializeField, Min(1), Tooltip("연속 발사 수입니다.")] private int bulletCount = 5;
-            [SerializeField, Min(0f), Tooltip("연속 발사 간격입니다.")] private float fireInterval = 0.18f;
-            [SerializeField, Min(0f), Tooltip("연속 탄환을 총구 옆으로 번갈아 벌리는 거리입니다.")] private float spawnSpacing = 0.12f;
-
-            public ProjectileSettings Projectile => projectile;
-            public float WindupSeconds => windupSeconds;
-            public int BulletCount => bulletCount;
-            public float FireInterval => fireInterval;
-            public float SpawnSpacing => spawnSpacing;
-        }
+            new BossGraphProjectileEntry()
+        };
 
         [System.Serializable]
         internal sealed class SummonSettings
         {
-            [SerializeField, Tooltip("소환할 드론 프리팹입니다.")] private Drone prefab;
-            [SerializeField, Tooltip("씬에 이미 배치된 소유자 없는 드론도 이 보스가 함께 지휘합니다.")] private bool claimSceneDrones = true;
-            [SerializeField, Min(0), Tooltip("소유 드론 최대 수입니다. 0이면 제한하지 않습니다.")] private int maxOwnedDrones = 5;
-            [SerializeField, Min(1), Tooltip("소환 패턴 한 번에 생성할 드론 수입니다.")] private int summonCount = 1;
+            [SerializeField, Tooltip("소환할 미니언 프리팹입니다.")] private Minion prefab;
+            [FormerlySerializedAs("claimSceneDrones")]
+            [SerializeField, Tooltip("씬에 이미 배치된 소유자 없는 미니언도 이 보스가 함께 지휘합니다.")] private bool claimSceneMinions = true;
+            [FormerlySerializedAs("maxOwnedDrones")]
+            [SerializeField, Min(0), Tooltip("소유 미니언 최대 수입니다. 0이면 제한하지 않습니다.")] private int maxOwnedMinions = 5;
+            [SerializeField, Min(1), Tooltip("소환 패턴 한 번에 생성할 미니언 수입니다.")] private int summonCount = 1;
             [SerializeField, Min(0f), Tooltip("보스 주변 소환 반지름입니다.")] private float spawnRadius = 1.2f;
-            [SerializeField, Min(0f), Tooltip("드론을 여러 마리 소환할 때 사이 간격입니다.")] private float summonInterval = 0.2f;
+            [SerializeField, Min(0f), Tooltip("미니언을 여러 마리 소환할 때 사이 간격입니다.")] private float summonInterval = 0.2f;
 
             [SerializeField, Min(0f), Tooltip("보스 중심에서 소환 위치까지 이동하며 커지는 시간입니다.")] private float introSeconds = 0.55f;
-            [SerializeField, Range(0f, 1f), Tooltip("소환 시작 시 드론 크기 비율입니다.")] private float introStartScale = 0.05f;
+            [SerializeField, Range(0f, 1f), Tooltip("소환 시작 시 미니언 크기 비율입니다.")] private float introStartScale = 0.05f;
 
-            [SerializeField, Min(0f), Tooltip("자동 드론 소환 최소 간격입니다.")] private float minAutoSummonInterval = 4f;
-            [SerializeField, Min(0f), Tooltip("자동 드론 소환 최대 간격입니다.")] private float maxAutoSummonInterval = 7f;
+            [SerializeField, Min(0f), Tooltip("자동 미니언 소환 최소 간격입니다.")] private float minAutoSummonInterval = 4f;
+            [SerializeField, Min(0f), Tooltip("자동 미니언 소환 최대 간격입니다.")] private float maxAutoSummonInterval = 7f;
 
-            public Drone Prefab => prefab;
-            public bool ClaimSceneDrones => claimSceneDrones;
-            public int MaxOwnedDrones => maxOwnedDrones;
+            public Minion Prefab => prefab;
+            public bool ClaimSceneMinions => claimSceneMinions;
+            public int MaxOwnedMinions => maxOwnedMinions;
             public int SummonCount => summonCount;
             public float SpawnRadius => spawnRadius;
             public float SummonInterval => summonInterval;
@@ -70,145 +48,50 @@ namespace Week14.Enemy
             public float MaxAutoSummonInterval => maxAutoSummonInterval;
         }
 
-        [System.Serializable]
-        internal sealed class DronePattern1Settings
-        {
-            [SerializeField, Tooltip("켜면 보스 일반 공격 탄환 설정을 드론도 그대로 사용합니다.")] private bool useBossProjectile = true;
-            [SerializeField] private ProjectileSettings droneProjectile = new();
-            [SerializeField, Min(1), Tooltip("패턴1 동안 각 드론이 발사할 탄환 수입니다.")] private int bulletCount = 6;
-            [SerializeField, Min(0f), Tooltip("패턴1 드론 발사 간격입니다.")] private float fireInterval = 0.22f;
-
-            public bool UseBossProjectile => useBossProjectile;
-            public ProjectileSettings DroneProjectile => droneProjectile;
-            public int BulletCount => bulletCount;
-            public float FireInterval => fireInterval;
-        }
-
-        [System.Serializable]
-        internal sealed class DronePattern2Settings
-        {
-            [SerializeField] private ProjectileSettings orbitProjectile = new();
-            [SerializeField] private ProjectileSettings stationaryProjectile = new();
-            [SerializeField, Min(0.1f), Tooltip("회전 드론이 플레이어 주변을 도는 반지름입니다.")] private float orbitRadius = 2.6f;
-            [SerializeField, Min(0.1f), Tooltip("한 바퀴 회전에 걸리는 시간입니다.")] private float orbitSeconds = 3f;
-            [SerializeField, Min(1f), Tooltip("회전 중 이 각도마다 탄환을 발사합니다.")] private float fireAngleStepDegrees = 30f;
-            [SerializeField, Min(1), Tooltip("나머지 드론이 제자리에서 발사할 탄환 수입니다.")] private int stationaryBulletCount = 5;
-            [SerializeField, Min(0f), Tooltip("나머지 드론의 제자리 발사 간격입니다.")] private float stationaryFireInterval = 0.25f;
-
-            public ProjectileSettings OrbitProjectile => orbitProjectile;
-            public ProjectileSettings StationaryProjectile => stationaryProjectile;
-            public float OrbitRadius => orbitRadius;
-            public float OrbitSeconds => orbitSeconds;
-            public float FireAngleStepDegrees => fireAngleStepDegrees;
-            public int StationaryBulletCount => stationaryBulletCount;
-            public float StationaryFireInterval => stationaryFireInterval;
-        }
-
-        [System.Serializable]
-        internal sealed class DronePattern3Settings
-        {
-            [SerializeField] private ProjectileSettings projectile = new();
-            [SerializeField, Min(1), Tooltip("반복 발사 횟수입니다.")] private int volleyCount = 1;
-            [SerializeField, Min(1), Tooltip("한 번에 발사할 방향 수입니다.")] private int directionCount = 5;
-            [SerializeField, Min(0f), Tooltip("반복 발사 간격입니다.")] private float volleyInterval = 0.35f;
-            [SerializeField, Range(0f, 360f), Tooltip("플레이어 방향을 중심으로 퍼질 각도입니다. 0이면 360도입니다.")] private float spreadDegrees = 75f;
-
-            public ProjectileSettings Projectile => projectile;
-            public int VolleyCount => volleyCount;
-            public int DirectionCount => directionCount;
-            public float VolleyInterval => volleyInterval;
-            public float SpreadDegrees => spreadDegrees;
-        }
-
-        [System.Serializable]
-        internal sealed class DronePattern4Settings
-        {
-            [SerializeField] private ProjectileSettings projectile = new();
-            [SerializeField, Min(0.05f), Tooltip("돌진 지속 시간입니다.")] private float chargeSeconds = 1f;
-            [SerializeField, Min(0f), Tooltip("돌진 속도입니다.")] private float chargeSpeed = 7f;
-            [SerializeField, Range(0f, 85f), Tooltip("플레이어 방향에서 틀어지는 각도입니다.")] private float aimOffsetDegrees = 22f;
-            [SerializeField, Min(0.01f), Tooltip("돌진 중 양옆 탄환 발사 간격입니다.")] private float sideFireInterval = 0.18f;
-            [SerializeField, Range(1f, 179f), Tooltip("돌진 방향 기준 양옆 발사 각도입니다.")] private float sideFireAngleDegrees = 90f;
-
-            public ProjectileSettings Projectile => projectile;
-            public float ChargeSeconds => chargeSeconds;
-            public float ChargeSpeed => chargeSpeed;
-            public float AimOffsetDegrees => aimOffsetDegrees;
-            public float SideFireInterval => sideFireInterval;
-            public float SideFireAngleDegrees => sideFireAngleDegrees;
-        }
-
-        [System.Serializable]
-        internal sealed class DronePattern5Settings
-        {
-            [SerializeField] private ProjectileSettings bossProjectile = new();
-            [SerializeField] private ProjectileSettings droneProjectile = new();
-            [SerializeField, Min(1), Tooltip("패턴5 동안 보스가 발사할 탄환 수입니다.")] private int bossBulletCount = 6;
-            [SerializeField, Min(0f), Tooltip("패턴5 보스 발사 간격입니다.")] private float bossFireInterval = 0.22f;
-            [SerializeField, Min(0.1f), Tooltip("플레이어 기준 드론 대형 반지름입니다.")] private float formationRadius = 2.8f;
-            [SerializeField, Min(1f), Tooltip("드론들이 양옆으로 벌어지는 각도입니다.")] private float formationAngleSpacingDegrees = 28f;
-            [SerializeField, Min(0f), Tooltip("대형을 잡기 위해 기다리는 시간입니다.")] private float settleSeconds = 1f;
-            [SerializeField, Min(0f), Tooltip("대형 이동 속도 배율입니다.")] private float formationSpeedMultiplier = 1.2f;
-            [SerializeField, Min(0f), Tooltip("보스 탄환을 총구 옆으로 번갈아 벌리는 거리입니다.")] private float bossSpawnSpacing = 0.1f;
-
-            [SerializeField, Min(1), Tooltip("패턴5 동안 드론이 독립적으로 발사할 횟수입니다.")] private int droneFireCount = 6;
-            [SerializeField, Min(0f), Tooltip("패턴5 드론 독립 발사 간격입니다.")] private float droneFireInterval = 0.22f;
-
-            public ProjectileSettings BossProjectile => bossProjectile;
-            public ProjectileSettings DroneProjectile => droneProjectile;
-            public int BossBulletCount => bossBulletCount;
-            public float BossFireInterval => bossFireInterval;
-            public int DroneFireCount => droneFireCount;
-            public float DroneFireInterval => droneFireInterval;
-            public float FormationRadius => formationRadius;
-            public float FormationAngleSpacingDegrees => formationAngleSpacingDegrees;
-            public float SettleSeconds => settleSeconds;
-            public float FormationSpeedMultiplier => formationSpeedMultiplier;
-            public float BossSpawnSpacing => bossSpawnSpacing;
-        }
-
-        [Header("Drone Pilot Patterns")]
-        [SerializeField] private BossBurstSettings bossBurst = new();
+        [Header("Drone Pilot Minions")]
         [SerializeField] private SummonSettings summon = new();
-        [SerializeField] private DronePattern1Settings dronePattern1 = new();
-        [SerializeField] private DronePattern2Settings dronePattern2 = new();
-        [SerializeField] private DronePattern3Settings dronePattern3 = new();
-        [SerializeField] private DronePattern4Settings dronePattern4 = new();
-        [SerializeField] private DronePattern5Settings dronePattern5 = new();
-        [SerializeField] private List<PatternKind> patternSequence = new()
-        {
-            PatternKind.BossBurst,
-            PatternKind.SummonDrone,
-            PatternKind.DronePattern1,
-            PatternKind.DronePattern2,
-            PatternKind.DronePattern3,
-            PatternKind.DronePattern4,
-            PatternKind.DronePattern5
-        };
-        [SerializeField] private bool randomizePatterns;
-        [SerializeField, Min(0f)] private float minPatternRecoverySeconds = 0.45f;
-        [SerializeField, Min(0f)] private float maxPatternRecoverySeconds = 0.75f;
-        [SerializeField, Tooltip("유도 기능이 꺼진 드론파일럿 투사체 발사 전 색입니다.")] private Color normalProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
-        [SerializeField, Tooltip("유도 기능이 꺼진 드론파일럿 투사체 발사 후 색입니다.")] private Color normalProjectileColor = new(1f, 0.95f, 0.25f, 1f);
-        [SerializeField, Tooltip("유도 기능이 켜진 드론파일럿 투사체 발사 전 색입니다.")] private Color homingProjectileChargeColor = new(0.35f, 0.8f, 1f, 1f);
-        [SerializeField, Tooltip("유도 기능이 켜진 드론파일럿 투사체 발사 후 색입니다.")] private Color homingProjectileColor = new(0.35f, 0.75f, 1f, 1f);
 
-        private readonly List<Drone> controlledDrones = new();
-        private readonly List<Drone> spawnedDrones = new();
-        private readonly DronePatternSelector patternSelector = new();
+        private readonly List<Minion> controlledMinions = new();
+        private readonly List<Minion> spawnedMinions = new();
         private readonly BossPatternMovement patternMovement = new();
-        private readonly BossPatternRecovery patternRecovery = new();
-        private DronePatternContext patternContext;
-        private Coroutine bossPatternRoutine;
-        private Coroutine dronePatternRoutine;
+        private readonly BossGraphRunner graphRunner = new();
+        private MinionPatternContext patternContext;
+        private BossActionContext graphContext;
+        private Coroutine patternRoutine;
         private float nextAutoSummonAt;
 
-        private DronePatternContext PatternContext => patternContext ??= CreatePatternContext();
+        private MinionPatternContext PatternContext => patternContext ??= CreatePatternContext();
+        protected override BossGraphAsset GraphAsset => bossGraph;
 
         protected override void OnBossStarted()
         {
-            PatternContext.RefreshControlledDrones();
+            PatternContext.RefreshControlledMinions();
             ScheduleNextAutoSummon();
+        }
+
+        protected override BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
+        {
+            if (graphProjectiles == null || graphProjectiles.Count == 0)
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(projectileName))
+            {
+                for (int i = 0; i < graphProjectiles.Count; i++)
+                {
+                    BossGraphProjectileEntry entry = graphProjectiles[i];
+                    if (entry != null
+                        && string.Equals(entry.ProjectileName, projectileName, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return entry.Projectile;
+                    }
+                }
+
+                return null;
+            }
+
+            return graphProjectiles[0]?.Projectile;
         }
 
         protected override void OnBossTick()
@@ -218,43 +101,49 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (bossPatternRoutine == null)
+            if (bossGraph == null)
             {
-                bossPatternRoutine = StartCoroutine(RunBossPatternLoop());
+                return;
             }
 
-            if (dronePatternRoutine == null)
+            if (patternRoutine == null)
             {
-                dronePatternRoutine = StartCoroutine(RunDronePatternLoop());
+                patternRoutine = StartCoroutine(RunGraphPatternLoop());
             }
         }
 
         protected override void CancelBossAction()
         {
-            if (bossPatternRoutine != null)
+            if (patternRoutine != null)
             {
-                StopCoroutine(bossPatternRoutine);
-                bossPatternRoutine = null;
+                StopCoroutine(patternRoutine);
+                patternRoutine = null;
             }
 
-            if (dronePatternRoutine != null)
-            {
-                StopCoroutine(dronePatternRoutine);
-                dronePatternRoutine = null;
-            }
-
-            PatternContext.ClearSynchronizedDroneFire();
-            PatternContext.StopAllDrones();
+            BossGraphRuntimeState.Clear(bossGraph);
+            graphRunner.Reset();
+            graphContext?.ResetBodyRootLocalOffset();
+            graphContext = null;
+            PatternContext.ClearSynchronizedMinionFire();
+            PatternContext.StopAllMinions();
         }
 
         protected override void OnBossDied()
         {
             CancelBossAction();
-            PatternContext.KillSpawnedDrones();
-            PatternContext.ReleaseDrones();
+            PatternContext.KillSpawnedMinions();
+            PatternContext.ReleaseMinions();
         }
 
-        public EnemyProjectile FireDroneProjectile(Drone source, ProjectileSettings settings, Vector3 origin, Vector2 direction, bool playMuzzleFlash)
+        protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
+        {
+            BossGraphRuntimeState.Clear(bossGraph);
+            graphRunner.Reset();
+            PatternContext.ClearSynchronizedMinionFire();
+            PatternContext.StopAllMinions();
+        }
+
+        public EnemyProjectile FireMinionProjectile(Minion source, BossProjectileSettings settings, Vector3 origin, Vector2 direction, bool playMuzzleFlash)
         {
             if (IsExecutionPaused)
             {
@@ -276,7 +165,7 @@ namespace Week14.Enemy
             Color chargeColor = GetProjectileChargeColor(settings);
             Color projectileColor = GetProjectileColor(settings);
             EnemyProjectile projectile = BossProjectileEmitter.Fire(
-                SpawnDroneProjectile,
+                SpawnMinionProjectile,
                 settings,
                 origin,
                 direction,
@@ -298,7 +187,7 @@ namespace Week14.Enemy
 
             return projectile;
 
-            EnemyProjectile SpawnDroneProjectile(
+            EnemyProjectile SpawnMinionProjectile(
                 EnemyProjectile prefab,
                 Vector3 position,
                 Vector2 projectileDirection,
@@ -335,108 +224,345 @@ namespace Week14.Enemy
             }
         }
 
-        private PatternKind SelectBossPattern()
+        private IEnumerator RunGraphPatternLoop()
         {
-            return patternSelector.SelectBossPattern(CreatePatternSelectorSettings());
+            graphRunner.Reset();
+            graphContext = CreateGraphContext();
+            yield return graphRunner.RunLoop(bossGraph, graphContext);
+            graphContext = null;
+            patternRoutine = null;
         }
 
-        private PatternKind SelectDronePattern()
+        private BossActionContext CreateGraphContext()
         {
-            return patternSelector.SelectDronePattern(CreatePatternSelectorSettings());
+            return new BossActionContext(
+                this,
+                Stop,
+                () => IsExecutionPaused,
+                ApplyPendingEnrageIfAnyForGraph);
         }
 
-        private DronePatternSelector.Settings CreatePatternSelectorSettings()
+        BossProjectileSettings IMinionPatternHost.ResolveMinionProjectileSettings(string projectileName)
         {
-            return new DronePatternSelector.Settings(patternSequence, randomizePatterns);
+            return ResolveGraphProjectileSettings(projectileName) ?? ResolveGraphProjectileSettings(null);
         }
 
-        private IEnumerator RunBossPatternLoop()
+        IEnumerator IMinionPatternHost.SummonMinions(int summonCount)
         {
-            PatternKind pattern = SelectBossPattern();
-            while (true)
+            yield return SummonMinionsForGraph(summonCount);
+        }
+
+        IEnumerator IMinionPatternHost.EnsureMinionCount(int targetCount)
+        {
+            yield return EnsureMinionCountForGraph(targetCount);
+        }
+
+        IEnumerator IMinionPatternHost.AutoSummonIfNeeded()
+        {
+            if (!ShouldRunAutoSummon())
             {
-                yield return RunBossPattern(pattern);
-                yield return FinishBossPattern();
+                yield break;
+            }
 
-                PatternKind nextPattern = SelectBossPattern();
-                yield return WaitBossPatternRecovery();
-                pattern = nextPattern;
+            yield return SummonMinionsForGraph(0);
+            ScheduleNextAutoSummon();
+        }
+
+        IEnumerator IMinionPatternHost.FireBossBurst(MinionGraphBossBurstRequest request)
+        {
+            yield return FireBossBurstForGraph(request);
+        }
+
+        int IMinionPatternHost.FireAllMinions(BossProjectileSettings projectile)
+        {
+            if (projectile == null)
+            {
+                return 0;
+            }
+
+            List<Minion> minions = PatternContext.GetControlledMinions();
+            int firedCount = 0;
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                minion.FireOnceAtPlayer(projectile);
+                firedCount++;
+            }
+
+            return firedCount;
+        }
+
+        int IMinionPatternHost.BeginSynchronizedMinionFire(BossProjectileSettings projectile, int shotCount)
+        {
+            return PatternContext.BeginSynchronizedMinionFire(projectile, shotCount);
+        }
+
+        IEnumerator IMinionPatternHost.WaitSynchronizedMinionFire(int syncVersion)
+        {
+            yield return PatternContext.WaitSynchronizedMinionFire(syncVersion);
+        }
+
+        float IMinionPatternHost.CommandMinions(MinionGraphCommandRequest request)
+        {
+            List<Minion> minions = PatternContext.GetControlledMinions();
+            if (minions.Count == 0)
+            {
+                return 0f;
+            }
+
+            float duration = 0f;
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                duration = Mathf.Max(duration, CommandMinion(minion, i, request));
+            }
+
+            return duration;
+        }
+
+        IEnumerator IMinionPatternHost.RunOrbitCrossfire(MinionGraphOrbitCrossfireRequest request)
+        {
+            if (request.MinimumMinionCount > 0)
+            {
+                yield return EnsureMinionCountForGraph(request.MinimumMinionCount);
+            }
+
+            List<Minion> minions = PatternContext.GetControlledMinions();
+            if (minions.Count == 0 || request.OrbitProjectile == null)
+            {
+                yield break;
+            }
+
+            float duration = minions[0].CommandOrbitFire(
+                request.OrbitProjectile,
+                request.OrbitRadius,
+                request.OrbitSeconds,
+                request.FireAngleStepDegrees,
+                request.Clockwise);
+
+            if (request.StationaryProjectile != null)
+            {
+                for (int i = 1; i < minions.Count; i++)
+                {
+                    Minion minion = minions[i];
+                    if (minion == null)
+                    {
+                        continue;
+                    }
+
+                    duration = Mathf.Max(duration, minion.CommandStopAndFire(
+                        request.StationaryProjectile,
+                        request.StationaryBulletCount,
+                        request.StationaryFireInterval,
+                        request.ResumeIdle));
+                }
+            }
+
+            if (duration > 0f)
+            {
+                yield return PatternContext.WaitMinionPatternSeconds(duration);
             }
         }
 
-        private IEnumerator RunDronePatternLoop()
+        IEnumerator IMinionPatternHost.WaitForMinionCommands(float timeoutSeconds)
         {
-            PatternKind pattern = SelectDronePattern();
-            while (true)
+            float elapsed = 0f;
+            while (HasCommandedMinions())
             {
-                yield return RunDronePattern(pattern);
-                yield return FinishDronePattern();
+                if (timeoutSeconds > 0f && elapsed >= timeoutSeconds)
+                {
+                    yield break;
+                }
 
-                PatternKind nextPattern = SelectDronePattern();
-                yield return WaitDronePatternRecovery();
-                pattern = nextPattern;
+                if (IsExecutionPaused)
+                {
+                    Stop();
+                    yield return null;
+                    continue;
+                }
+
+                elapsed += Time.deltaTime;
+                yield return null;
             }
         }
 
-        private IEnumerator FinishBossPattern()
+        void IMinionPatternHost.ClearSynchronizedMinionFire()
         {
-            if (ShouldRunAutoSummon())
+            PatternContext.ClearSynchronizedMinionFire();
+        }
+
+        void IMinionPatternHost.StopAllMinions()
+        {
+            PatternContext.StopAllMinions();
+        }
+
+        void IMinionPatternHost.ResumeAllMinions()
+        {
+            PatternContext.ResumeAllMinions();
+        }
+
+        private IEnumerator SummonMinionsForGraph(int requestedCount)
+        {
+            yield return PatternContext.WaitWhileExecutionPaused();
+
+            PatternContext.RefreshControlledMinions();
+            if (summon.Prefab == null)
             {
-                yield return RunSummonPattern();
-                ScheduleNextAutoSummon();
+                yield break;
             }
 
-            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
-            yield return ApplyPendingEnrageIfAny();
-        }
-
-        private IEnumerator FinishDronePattern()
-        {
-            // 패턴이 끝난 직후(다음 패턴 시작 전)의 안전 지점에서만 광폭화 진입을 적용합니다.
-            yield return ApplyPendingEnrageIfAny();
-        }
-
-        private IEnumerator RunBossPattern(PatternKind pattern)
-        {
-            switch (pattern)
+            int maxOwned = summon.MaxOwnedMinions;
+            int currentCount = PatternContext.GetControlledMinions().Count;
+            int summonCount = requestedCount > 0 ? requestedCount : Mathf.Max(1, summon.SummonCount);
+            if (maxOwned > 0)
             {
-                case PatternKind.SummonDrone:
-                    yield return RunSummonPattern();
-                    break;
+                summonCount = Mathf.Min(summonCount, Mathf.Max(0, maxOwned - currentCount));
+            }
+
+            Stop();
+            float longestIntro = 0f;
+            for (int i = 0; i < summonCount; i++)
+            {
+                yield return PatternContext.WaitWhileExecutionPaused();
+
+                longestIntro = Mathf.Max(longestIntro, PatternContext.SpawnMinion(i, currentCount + summonCount));
+                if (i < summonCount - 1 && summon.SummonInterval > 0f)
+                {
+                    yield return PatternContext.WaitStoppedSeconds(summon.SummonInterval);
+                }
+            }
+
+            if (longestIntro > 0f)
+            {
+                yield return PatternContext.WaitStoppedSeconds(longestIntro);
+            }
+        }
+
+        private IEnumerator EnsureMinionCountForGraph(int targetCount)
+        {
+            int safeTargetCount = Mathf.Max(0, targetCount);
+            if (safeTargetCount <= 0)
+            {
+                yield break;
+            }
+
+            PatternContext.RefreshControlledMinions();
+            while (PatternContext.ControlledMinionCount < safeTargetCount)
+            {
+                int beforeCount = PatternContext.ControlledMinionCount;
+                int missingCount = safeTargetCount - beforeCount;
+                yield return SummonMinionsForGraph(missingCount);
+
+                PatternContext.RefreshControlledMinions();
+                if (PatternContext.ControlledMinionCount <= beforeCount)
+                {
+                    yield break;
+                }
+            }
+        }
+
+        private IEnumerator FireBossBurstForGraph(MinionGraphBossBurstRequest request)
+        {
+            if (request.BossProjectile == null)
+            {
+                yield break;
+            }
+
+            if (request.WindupSeconds > 0f)
+            {
+                yield return PatternContext.WaitPatternSeconds(request.WindupSeconds);
+            }
+
+            int count = Mathf.Max(1, request.BulletCount);
+            for (int i = 0; i < count; i++)
+            {
+                yield return PatternContext.WaitWhileExecutionPaused();
+
+                Vector3 origin = GetProjectileOrigin();
+                Vector2 direction = GetDirectionToPlayer(origin);
+                Vector2 side = new(-direction.y, direction.x);
+                Vector3 spawnPosition = origin + (Vector3)(side * PatternContext.GetAlternatingOffset(i, request.SpawnSpacing));
+                FireBossProjectile(request.BossProjectile, spawnPosition, direction, origin);
+
+                if (request.NotifyMinions)
+                {
+                    PatternContext.FireAllMinions(request.MinionProjectile);
+                }
+
+                PatternContext.TryFireSynchronizedMinions();
+                if (i < count - 1 && request.FireInterval > 0f)
+                {
+                    yield return PatternContext.WaitPatternSeconds(request.FireInterval);
+                }
+            }
+        }
+
+        private float CommandMinion(Minion minion, int index, MinionGraphCommandRequest request)
+        {
+            switch (request.Mode)
+            {
+                case MinionGraphCommandMode.OrbitFire:
+                    return minion.CommandOrbitFire(
+                        request.Projectile,
+                        request.OrbitRadius,
+                        request.OrbitSeconds,
+                        request.FireAngleStepDegrees,
+                        request.Clockwise);
+                case MinionGraphCommandMode.RadialBurst:
+                    return minion.CommandRadialBurst(
+                        request.Projectile,
+                        request.RepeatCount,
+                        request.DirectionCount,
+                        request.FireInterval,
+                        request.SpreadDegrees,
+                        request.ResumeIdle);
+                case MinionGraphCommandMode.ChargeSideFire:
+                    float sign = index % 2 == 0 ? 1f : -1f;
+                    float ring = 1f + index / 2;
+                    return minion.CommandChargeSideFire(
+                        request.Projectile,
+                        request.ChargeSeconds,
+                        request.ChargeSpeed,
+                        sign * request.AimOffsetDegrees * ring,
+                        request.SideFireInterval,
+                        request.SideFireAngleDegrees);
+                case MinionGraphCommandMode.Formation:
+                    minion.CommandFormation(
+                        PatternContext.GetFormationAngle(index, request.FormationAngleSpacingDegrees),
+                        request.FormationRadius,
+                        request.FormationSpeedMultiplier);
+                    return Mathf.Max(0f, request.SettleSeconds);
                 default:
-                    yield return RunBossBurst(false, bossBurst.Projectile, bossBurst.BulletCount, bossBurst.FireInterval, bossBurst.SpawnSpacing, null);
-                    break;
+                    return minion.CommandStopAndFire(
+                        request.Projectile,
+                        request.RepeatCount,
+                        request.FireInterval,
+                        request.ResumeIdle);
             }
         }
 
-        private IEnumerator RunDronePattern(PatternKind pattern)
+        private bool HasCommandedMinions()
         {
-            switch (pattern)
+            List<Minion> minions = PatternContext.GetControlledMinions();
+            for (int i = 0; i < minions.Count; i++)
             {
-                case PatternKind.DronePattern1:
-                    yield return RunDronePattern1();
-                    break;
-                case PatternKind.DronePattern2:
-                    yield return RunDronePattern2();
-                    break;
-                case PatternKind.DronePattern3:
-                    yield return RunDronePattern3();
-                    break;
-                case PatternKind.DronePattern4:
-                    yield return RunDronePattern4();
-                    break;
-                case PatternKind.DronePattern5:
-                    yield return RunDronePattern5();
-                    break;
-                default:
-                    yield return RunDronePattern1();
-                    break;
+                if (minions[i] != null && minions[i].IsCommanded)
+                {
+                    return true;
+                }
             }
-        }
 
-        private float GetPatternRecoverySeconds()
-        {
-            return patternRecovery.GetRecoverySeconds(minPatternRecoverySeconds, maxPatternRecoverySeconds);
+            return false;
         }
 
         private void ScheduleNextAutoSummon()
@@ -453,90 +579,18 @@ namespace Week14.Enemy
                 return false;
             }
 
-            PatternContext.RefreshControlledDrones();
-            return summon.MaxOwnedDrones <= 0 || PatternContext.ControlledDroneCount < summon.MaxOwnedDrones;
+            PatternContext.RefreshControlledMinions();
+            return summon.MaxOwnedMinions <= 0 || PatternContext.ControlledMinionCount < summon.MaxOwnedMinions;
         }
 
-        private IEnumerator WaitBossPatternRecovery()
+        private MinionPatternContext CreatePatternContext()
         {
-            yield return patternRecovery.RunRecovery(GetPatternRecoverySeconds(), null, () => IsExecutionPaused, Stop);
-        }
-
-        private IEnumerator WaitDronePatternRecovery()
-        {
-            yield return patternRecovery.RunRecovery(GetPatternRecoverySeconds(), null, () => IsExecutionPaused, Stop);
-        }
-
-        private IEnumerator RunSummonPattern()
-        {
-            return DroneSummonRunner.Run(
-                summon,
-                PatternContext);
-        }
-
-        private IEnumerator RunDronePattern1()
-        {
-            return DronePattern1Runner.Run(
-                dronePattern1,
-                bossBurst,
-                PatternContext);
-        }
-
-        private IEnumerator RunDronePattern2()
-        {
-            return DronePattern2Runner.Run(
-                dronePattern2,
-                PatternContext);
-        }
-
-        private IEnumerator RunDronePattern3()
-        {
-            return DronePattern3Runner.Run(
-                dronePattern3,
-                PatternContext);
-        }
-
-        private IEnumerator RunDronePattern4()
-        {
-            return DronePattern4Runner.Run(
-                dronePattern4,
-                PatternContext);
-        }
-
-        private IEnumerator RunDronePattern5()
-        {
-            return DronePattern5Runner.Run(
-                dronePattern5,
-                PatternContext);
-        }
-
-        private IEnumerator RunBossBurst(
-            bool notifyDrones,
-            ProjectileSettings bossProjectile,
-            int bulletCount,
-            float fireInterval,
-            float spawnSpacing,
-            ProjectileSettings droneProjectile)
-        {
-            return DroneBossBurstRunner.Run(
-                bossBurst,
-                notifyDrones,
-                bossProjectile,
-                bulletCount,
-                fireInterval,
-                spawnSpacing,
-                droneProjectile,
-                PatternContext);
-        }
-
-        private DronePatternContext CreatePatternContext()
-        {
-            return new DronePatternContext(
+            return new MinionPatternContext(
                 this,
                 summon,
                 patternMovement,
-                controlledDrones,
-                spawnedDrones,
+                controlledMinions,
+                spawnedMinions,
                 () => IsExecutionPaused,
                 Stop,
                 GetProjectileOrigin,
@@ -544,7 +598,7 @@ namespace Week14.Enemy
                 FireBossProjectile);
         }
 
-        private EnemyProjectile FireBossProjectile(ProjectileSettings settings, Vector3 origin, Vector2 direction, Vector3 muzzleOrigin)
+        private EnemyProjectile FireBossProjectile(BossProjectileSettings settings, Vector3 origin, Vector2 direction, Vector3 muzzleOrigin)
         {
             if (settings == null || settings.Prefab == null)
             {
@@ -570,18 +624,14 @@ namespace Week14.Enemy
                 null);
         }
 
-        private Color GetProjectileColor(ProjectileSettings settings)
+        private Color GetProjectileColor(BossProjectileSettings settings)
         {
-            return settings != null && settings.HomingEnabled
-                ? homingProjectileColor
-                : normalProjectileColor;
+            return settings != null ? settings.LaunchedColor : Color.white;
         }
 
-        private Color GetProjectileChargeColor(ProjectileSettings settings)
+        private Color GetProjectileChargeColor(BossProjectileSettings settings)
         {
-            return settings != null && settings.HomingEnabled
-                ? homingProjectileChargeColor
-                : normalProjectileChargeColor;
+            return settings != null ? settings.ChargingColor : Color.white;
         }
 
         private Vector3 GetProjectileOrigin()

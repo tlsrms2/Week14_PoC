@@ -175,10 +175,10 @@ namespace Week14.Combat
                 return false;
             }
 
-            Drone drone = other.GetComponentInParent<Drone>();
-            if (drone != null)
+            Minion minion = other.GetComponentInParent<Minion>();
+            if (minion != null)
             {
-                return !drone.SuppressesBodyContactDamage;
+                return !minion.SuppressesBodyContactDamage;
             }
 
             BossAI boss = other.GetComponentInParent<BossAI>();

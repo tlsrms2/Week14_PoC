@@ -104,7 +104,26 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
-        new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction())
+        new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
+        new("Minion/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
+        new("Minion/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
+        new("Minion/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
+        new("Minion/Fire All", typeof(MinionFireAllAction), () => new MinionFireAllAction()),
+        new("Minion/Boss Burst", typeof(MinionBossBurstAction), () => new MinionBossBurstAction()),
+        new("Minion/Synchronized Burst", typeof(MinionSynchronizedBurstAction), () => new MinionSynchronizedBurstAction()),
+        new("Minion/Command", typeof(MinionCommandAction), () => new MinionCommandAction()),
+        new("Minion/Stop And Fire", typeof(MinionStopAndFireAction), () => new MinionStopAndFireAction()),
+        new("Minion/Orbit Fire", typeof(MinionOrbitFireAction), () => new MinionOrbitFireAction()),
+        new("Minion/Orbit Crossfire", typeof(MinionOrbitCrossfireAction), () => new MinionOrbitCrossfireAction()),
+        new("Minion/Radial Burst", typeof(MinionRadialBurstAction), () => new MinionRadialBurstAction()),
+        new("Minion/Charge Side Fire", typeof(MinionChargeSideFireAction), () => new MinionChargeSideFireAction()),
+        new("Minion/Formation", typeof(MinionFormationAction), () => new MinionFormationAction()),
+        new("Minion/Formation Barrage", typeof(MinionFormationBarrageAction), () => new MinionFormationBarrageAction()),
+        new("Minion/Wait Commands", typeof(MinionWaitCommandsAction), () => new MinionWaitCommandsAction()),
+        new("Minion/Clear Synchronized Fire", typeof(MinionClearSynchronizedFireAction), () => new MinionClearSynchronizedFireAction()),
+        new("Minion/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction()),
+        new("Minion/Stop All", typeof(MinionStopAllAction), () => new MinionStopAllAction()),
+        new("Minion/Resume Idle", typeof(MinionResumeIdleAction), () => new MinionResumeIdleAction())
     };
 
     public static string GetActionLabel(Type actionType)
@@ -233,6 +252,101 @@ internal static class BossGraphActionEditorUtility
             return "프리팹을 보스 기준 위치에 생성합니다. 필요하면 보스 자식으로 붙이고 일정 시간 뒤 제거합니다.";
         }
 
+        if (actionType == typeof(MinionSummonAction))
+        {
+            return "DronePilot이 관리하는 미니언을 지정 수만큼 소환합니다.";
+        }
+
+        if (actionType == typeof(MinionEnsureCountAction))
+        {
+            return "패턴 시작에 필요한 미니언 수를 보장합니다.";
+        }
+
+        if (actionType == typeof(MinionAutoSummonIfNeededAction))
+        {
+            return "미니언이 부족할 때만 자동 보충 소환을 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionFireAllAction))
+        {
+            return "현재 관리 중인 모든 미니언이 같은 타이밍에 발사합니다.";
+        }
+
+        if (actionType == typeof(MinionBossBurstAction))
+        {
+            return "보스 본체 발사와 미니언 보조 발사를 하나의 액션에서 함께 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionSynchronizedBurstAction))
+        {
+            return "보스와 미니언의 동기화 발사 패턴을 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionCommandAction))
+        {
+            return "미니언에게 선택한 명령 타입과 투사체 설정을 전달합니다.";
+        }
+
+        if (actionType == typeof(MinionStopAndFireAction))
+        {
+            return "미니언을 정지시키고 지정 투사체를 발사하게 합니다.";
+        }
+
+        if (actionType == typeof(MinionOrbitFireAction))
+        {
+            return "미니언이 궤도 이동 중 발사하는 패턴을 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionOrbitCrossfireAction))
+        {
+            return "궤도 미니언과 고정 미니언의 교차 사격을 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionRadialBurstAction))
+        {
+            return "미니언 기준 방사형 발사를 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionChargeSideFireAction))
+        {
+            return "차지 후 양측 미니언 발사를 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionFormationAction))
+        {
+            return "미니언을 지정 반경과 각도 간격의 진형으로 이동시킵니다.";
+        }
+
+        if (actionType == typeof(MinionFormationBarrageAction))
+        {
+            return "진형 배치와 반복 발사를 묶은 미니언 포격 패턴을 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionWaitCommandsAction))
+        {
+            return "현재 미니언 명령이 끝날 때까지 대기합니다.";
+        }
+
+        if (actionType == typeof(MinionClearSynchronizedFireAction))
+        {
+            return "동기화 발사 상태를 명시적으로 비웁니다.";
+        }
+
+        if (actionType == typeof(MinionPatternCleanupAction))
+        {
+            return "미니언 명령, 동기화 발사, 대기 복귀를 패턴 종료용으로 정리합니다.";
+        }
+
+        if (actionType == typeof(MinionStopAllAction))
+        {
+            return "모든 미니언의 현재 명령을 중지합니다.";
+        }
+
+        if (actionType == typeof(MinionResumeIdleAction))
+        {
+            return "미니언을 기본 대기 이동 상태로 되돌립니다.";
+        }
+
         return string.Empty;
     }
 }
@@ -264,14 +378,19 @@ internal static class BossGraphActionFilterContext
         }
 
         BossGraphNodeKind defaultKind = BossGraphActionCategoryAsset.GetDefaultNodeKind(actionType);
-        if (defaultKind == BossGraphNodeKind.Utility)
+        if (defaultKind == BossGraphNodeKind.Utility || defaultKind == BossGraphNodeKind.Minion)
         {
-            return NodeKind == BossGraphNodeKind.Utility;
+            return NodeKind == defaultKind;
         }
 
         BossGraphNodeKind actionNodeKind = Categories != null
             ? Categories.GetNodeKind(actionType)
             : defaultKind;
+        if (actionNodeKind == BossGraphNodeKind.Utility || actionNodeKind == BossGraphNodeKind.Minion)
+        {
+            return defaultKind == actionNodeKind && NodeKind == actionNodeKind;
+        }
+
         return actionNodeKind == NodeKind;
     }
 }

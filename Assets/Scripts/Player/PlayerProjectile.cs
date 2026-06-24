@@ -288,11 +288,11 @@ namespace Week14.Combat
                 return true;
             }
 
-            Drone drone = targetHealth.GetComponent<Drone>()
-                ?? targetHealth.GetComponentInParent<Drone>();
-            if (drone != null)
+            Minion minion = targetHealth.GetComponent<Minion>()
+                ?? targetHealth.GetComponentInParent<Minion>();
+            if (minion != null)
             {
-                if (drone.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
+                if (minion.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
                     ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
                     NotifyNormalAttackDamage();
