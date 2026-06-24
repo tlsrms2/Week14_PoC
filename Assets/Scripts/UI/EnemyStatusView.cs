@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using TMPro;
 using Week14.Combat;
 using Week14.Enemy;
@@ -15,7 +16,8 @@ namespace Week14.UI
         [SerializeField, HideInInspector] private Health health;
         [SerializeField, HideInInspector] private ExecutionTarget executionTarget;
         [SerializeField, HideInInspector] private BossAI bossAI;
-        [SerializeField, HideInInspector] private Drone drone;
+        [FormerlySerializedAs("drone")]
+        [SerializeField, HideInInspector] private Minion minion;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
         [SerializeField] private TextMeshProUGUI executionText;
@@ -51,17 +53,17 @@ namespace Week14.UI
             ApplyColors();
         }
 
-        public void Configure(Drone nextDrone)
+        public void Configure(Minion nextMinion)
         {
-            if (nextDrone == null)
+            if (nextMinion == null)
             {
                 return;
             }
 
-            drone = nextDrone;
-            executionTarget = nextDrone.GetComponent<ExecutionTarget>();
-            lockOnColor = nextDrone.LockOnIndicatorColor;
-            executionColor = nextDrone.ExecutionIndicatorColor;
+            minion = nextMinion;
+            executionTarget = nextMinion.GetComponent<ExecutionTarget>();
+            lockOnColor = nextMinion.LockOnIndicatorColor;
+            executionColor = nextMinion.ExecutionIndicatorColor;
 
             EnsureView();
             ApplyColors();
@@ -95,7 +97,7 @@ namespace Week14.UI
             health ??= GetComponentInParent<Health>();
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
             bossAI ??= GetComponentInParent<BossAI>();
-            drone ??= GetComponentInParent<Drone>();
+            minion ??= GetComponentInParent<Minion>();
 
             EnsureView();
             SetTarget(health);
@@ -106,7 +108,7 @@ namespace Week14.UI
         {
             bool alive = health != null && !health.IsDead;
             bool canShowDuringEnemyState = (bossAI == null || !bossAI.IsExecutionLocked)
-                && (drone == null || !drone.IsExecutionLocked);
+                && (minion == null || !minion.IsExecutionLocked);
             bool indicatorsVisible = alive && canShowDuringEnemyState;
 
             Vector3 center = GetWorldCenter();
@@ -146,9 +148,9 @@ namespace Week14.UI
                 return true;
             }
 
-            Drone targetDrone = player.LockOnTarget.GetComponent<Drone>()
-                ?? player.LockOnTarget.GetComponentInParent<Drone>();
-            return drone != null && targetDrone == drone;
+            Minion targetMinion = player.LockOnTarget.GetComponent<Minion>()
+                ?? player.LockOnTarget.GetComponentInParent<Minion>();
+            return minion != null && targetMinion == minion;
         }
 
         private bool IsHoveredExecutionTarget()
@@ -163,7 +165,7 @@ namespace Week14.UI
         private void EnsureView()
         {
             bossAI ??= GetComponentInParent<BossAI>();
-            drone ??= GetComponentInParent<Drone>();
+            minion ??= GetComponentInParent<Minion>();
             EnsureIndicators();
         }
 

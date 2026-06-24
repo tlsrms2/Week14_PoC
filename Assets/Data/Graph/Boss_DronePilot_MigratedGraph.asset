@@ -1,0 +1,537 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
+  m_Name: Boss_DronePilot_MigratedGraph
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
+  startNodeId: P01_BossBurst_01
+  referenceSettings:
+    effectData: {fileID: 0}
+    colorSettings: {fileID: 0}
+    actionCategories: {fileID: 0}
+  stateNodes:
+  - nodeId: P01_BossBurst_01
+    nodeGuid: 965010a410714c6d8e6490194caa89d6
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928457
+    sequences: []
+    editorPosition: {x: 120, y: 120}
+  - nodeId: P01_BossBurst_02
+    nodeGuid: 1839c47df7004560b9fa1ce9cdbd3be5
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928458
+    sequences: []
+    editorPosition: {x: 400, y: 120}
+  - nodeId: P01_BossBurst_03
+    nodeGuid: e70e36922c1545c383a4fe975be281ed
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928459
+    sequences: []
+    editorPosition: {x: 680, y: 120}
+  - nodeId: P02_Summon_01
+    nodeGuid: e16cb90485534577819d1f32a99eb798
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928460
+    sequences: []
+    editorPosition: {x: 120, y: 270}
+  - nodeId: P02_Summon_02
+    nodeGuid: 740217666b1844e2a56ccb63c2d43531
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928461
+    sequences: []
+    editorPosition: {x: 400, y: 270}
+  - nodeId: P03_SynchronizedBurst_01
+    nodeGuid: 057563ec028e46a89176ab19a910d1d2
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928462
+    sequences: []
+    editorPosition: {x: 120, y: 370}
+  - nodeId: P03_SynchronizedBurst_02
+    nodeGuid: 27658e46d02541b8aa2087d528573ddf
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928463
+    sequences: []
+    editorPosition: {x: 400, y: 370}
+  - nodeId: P03_SynchronizedBurst_03
+    nodeGuid: 39e53eee717c409ebb2807e46363394e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928464
+    sequences: []
+    editorPosition: {x: 680, y: 370}
+  - nodeId: P04_OrbitCrossfire_01
+    nodeGuid: 471aa64eae3f49128cbbec7ab5b2da4a
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928465
+    sequences: []
+    editorPosition: {x: 120, y: 520}
+  - nodeId: P04_OrbitCrossfire_02
+    nodeGuid: 9d199aac14f4462da4d12f806c164157
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928466
+    sequences: []
+    editorPosition: {x: 400, y: 520}
+  - nodeId: P04_OrbitCrossfire_03
+    nodeGuid: 7d13fad8d892471097d94d647646917e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928467
+    sequences: []
+    editorPosition: {x: 680, y: 520}
+  - nodeId: P05_RadialBurst_01
+    nodeGuid: 691f31b0a8fe4511ade4182f8cf22698
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928468
+    sequences: []
+    editorPosition: {x: 120, y: 670}
+  - nodeId: P05_RadialBurst_02
+    nodeGuid: 16e106ad8119495aadc16fe7f93e9008
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928469
+    sequences: []
+    editorPosition: {x: 400, y: 670}
+  - nodeId: P05_RadialBurst_03
+    nodeGuid: 7eb3b084fcd64018bc76b45ac911b136
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928470
+    sequences: []
+    editorPosition: {x: 680, y: 670}
+  - nodeId: P05_RadialBurst_04
+    nodeGuid: 6798c5741bf441a4b80f7625d625599e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928471
+    sequences: []
+    editorPosition: {x: 960, y: 670}
+  - nodeId: P06_ChargeSideFire_01
+    nodeGuid: 1bc7665d07a34802b4ab9aef23e3e02e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928472
+    sequences: []
+    editorPosition: {x: 120, y: 870}
+  - nodeId: P06_ChargeSideFire_02
+    nodeGuid: cb589f01d98e413b8fea53056d92b137
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928473
+    sequences: []
+    editorPosition: {x: 400, y: 870}
+  - nodeId: P06_ChargeSideFire_03
+    nodeGuid: 3cd0283d7d6e447a9c82b84ed12e7a2f
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928474
+    sequences: []
+    editorPosition: {x: 680, y: 870}
+  - nodeId: P06_ChargeSideFire_04
+    nodeGuid: 0d66e9fbf8f14d318b8f40767cb92b4e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928475
+    sequences: []
+    editorPosition: {x: 960, y: 870}
+  - nodeId: P07_FormationBarrage_01
+    nodeGuid: f71582e2e9fe45828dc359d1b3b44cd0
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928476
+    sequences: []
+    editorPosition: {x: 120, y: 1070}
+  - nodeId: P07_FormationBarrage_02
+    nodeGuid: 41310c68cf9441baa2c8ce8cbdb5a92d
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928477
+    sequences: []
+    editorPosition: {x: 400, y: 1070}
+  - nodeId: P07_FormationBarrage_03
+    nodeGuid: 38cbceb1795f42b58515ce7f4447f571
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811939167928478
+    sequences: []
+    editorPosition: {x: 680, y: 1070}
+  patterns:
+  - patternId: BossBurst
+    nodeGuids:
+    - 965010a410714c6d8e6490194caa89d6
+    nodeIds:
+    - P01_BossBurst_01
+  - patternId: Pattern1
+    nodeGuids:
+    - 1839c47df7004560b9fa1ce9cdbd3be5
+    nodeIds:
+    - P01_BossBurst_02
+  - patternId: Pattern2
+    nodeGuids:
+    - e70e36922c1545c383a4fe975be281ed
+    nodeIds:
+    - P01_BossBurst_03
+  - patternId: SummonMinion
+    nodeGuids:
+    - e16cb90485534577819d1f32a99eb798
+    nodeIds:
+    - P02_Summon_01
+  - patternId: Pattern3
+    nodeGuids:
+    - 740217666b1844e2a56ccb63c2d43531
+    nodeIds:
+    - P02_Summon_02
+  - patternId: MinionPattern1_SynchronizedBurst
+    nodeGuids:
+    - 057563ec028e46a89176ab19a910d1d2
+    nodeIds:
+    - P03_SynchronizedBurst_01
+  - patternId: Pattern4
+    nodeGuids:
+    - 27658e46d02541b8aa2087d528573ddf
+    nodeIds:
+    - P03_SynchronizedBurst_02
+  - patternId: Pattern5
+    nodeGuids:
+    - 39e53eee717c409ebb2807e46363394e
+    nodeIds:
+    - P03_SynchronizedBurst_03
+  - patternId: MinionPattern2_OrbitCrossfire
+    nodeGuids:
+    - 471aa64eae3f49128cbbec7ab5b2da4a
+    nodeIds:
+    - P04_OrbitCrossfire_01
+  - patternId: Pattern6
+    nodeGuids:
+    - 9d199aac14f4462da4d12f806c164157
+    nodeIds:
+    - P04_OrbitCrossfire_02
+  - patternId: Pattern7
+    nodeGuids:
+    - 7d13fad8d892471097d94d647646917e
+    nodeIds:
+    - P04_OrbitCrossfire_03
+  - patternId: MinionPattern3_RadialBurst
+    nodeGuids:
+    - 691f31b0a8fe4511ade4182f8cf22698
+    nodeIds:
+    - P05_RadialBurst_01
+  - patternId: Pattern8
+    nodeGuids:
+    - 16e106ad8119495aadc16fe7f93e9008
+    nodeIds:
+    - P05_RadialBurst_02
+  - patternId: Pattern9
+    nodeGuids:
+    - 7eb3b084fcd64018bc76b45ac911b136
+    nodeIds:
+    - P05_RadialBurst_03
+  - patternId: Pattern10
+    nodeGuids:
+    - 6798c5741bf441a4b80f7625d625599e
+    nodeIds:
+    - P05_RadialBurst_04
+  - patternId: MinionPattern4_ChargeSideFire
+    nodeGuids:
+    - 1bc7665d07a34802b4ab9aef23e3e02e
+    nodeIds:
+    - P06_ChargeSideFire_01
+  - patternId: Pattern11
+    nodeGuids:
+    - cb589f01d98e413b8fea53056d92b137
+    nodeIds:
+    - P06_ChargeSideFire_02
+  - patternId: Pattern12
+    nodeGuids:
+    - 3cd0283d7d6e447a9c82b84ed12e7a2f
+    nodeIds:
+    - P06_ChargeSideFire_03
+  - patternId: Pattern13
+    nodeGuids:
+    - 0d66e9fbf8f14d318b8f40767cb92b4e
+    nodeIds:
+    - P06_ChargeSideFire_04
+  - patternId: MinionPattern5_FormationBarrage
+    nodeGuids:
+    - f71582e2e9fe45828dc359d1b3b44cd0
+    nodeIds:
+    - P07_FormationBarrage_01
+  - patternId: Pattern14
+    nodeGuids:
+    - 41310c68cf9441baa2c8ce8cbdb5a92d
+    nodeIds:
+    - P07_FormationBarrage_02
+  - patternId: Pattern15
+    nodeGuids:
+    - 38cbceb1795f42b58515ce7f4447f571
+    nodeIds:
+    - P07_FormationBarrage_03
+  phases:
+  - phaseIndex: 0
+    selectionMode: 0
+    patternIntervalSeconds: 0.6
+    patterns:
+    - patternId: BossBurst
+      weight: 1
+    - patternId: Pattern1
+      weight: 1
+    - patternId: Pattern2
+      weight: 1
+    - patternId: SummonMinion
+      weight: 1
+    - patternId: Pattern3
+      weight: 1
+    - patternId: MinionPattern1_SynchronizedBurst
+      weight: 1
+    - patternId: Pattern4
+      weight: 1
+    - patternId: Pattern5
+      weight: 1
+    - patternId: MinionPattern2_OrbitCrossfire
+      weight: 1
+    - patternId: Pattern6
+      weight: 1
+    - patternId: Pattern7
+      weight: 1
+    - patternId: MinionPattern3_RadialBurst
+      weight: 1
+    - patternId: Pattern8
+      weight: 1
+    - patternId: Pattern9
+      weight: 1
+    - patternId: Pattern10
+      weight: 1
+    - patternId: MinionPattern4_ChargeSideFire
+      weight: 1
+    - patternId: Pattern11
+      weight: 1
+    - patternId: Pattern12
+      weight: 1
+    - patternId: Pattern13
+      weight: 1
+    - patternId: MinionPattern5_FormationBarrage
+      weight: 1
+    - patternId: Pattern14
+      weight: 1
+    - patternId: Pattern15
+      weight: 1
+  transitions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811939167928457
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811939167928458
+      type: {class: MinionBossBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bossProjectileName: Default
+        minionProjectileName: Default
+        windupSeconds: 0.45
+        bulletCount: 5
+        fireInterval: 0.18
+        spawnSpacing: 0.12
+        notifyMinions: 0
+    - rid: 2634811939167928459
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811939167928460
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 0
+    - rid: 2634811939167928461
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811939167928462
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811939167928463
+      type: {class: MinionSynchronizedBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bossProjectileName: Default
+        minionProjectileName: Default
+        useBossProjectileForMinions: 1
+        ensureMinionCount: 1
+        windupSeconds: 0.45
+        bulletCount: 6
+        fireInterval: 0.22
+        spawnSpacing: 0.12
+    - rid: 2634811939167928464
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811939167928465
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811939167928466
+      type: {class: MinionOrbitCrossfireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        orbitProjectileName: Default
+        stationaryProjectileName: Default
+        useOrbitProjectileForStationary: 0
+        minimumMinionCount: 2
+        orbitRadius: 2.6
+        orbitSeconds: 3
+        fireAngleStepDegrees: 30
+        randomizeDirection: 1
+        clockwise: 0
+        stationaryBulletCount: 5
+        stationaryFireInterval: 0.25
+        resumeIdle: 1
+    - rid: 2634811939167928467
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811939167928468
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811939167928469
+      type: {class: MinionEnsureCountAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetCount: 1
+    - rid: 2634811939167928470
+      type: {class: MinionRadialBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: Default
+        volleyCount: 1
+        directionCount: 5
+        volleyInterval: 0.35
+        spreadDegrees: 75
+        resumeIdle: 1
+        waitForDuration: 1
+    - rid: 2634811939167928471
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811939167928472
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811939167928473
+      type: {class: MinionEnsureCountAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetCount: 1
+    - rid: 2634811939167928474
+      type: {class: MinionChargeSideFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: Default
+        chargeSeconds: 1
+        chargeSpeed: 7
+        aimOffsetDegrees: 22
+        sideFireInterval: 0.18
+        sideFireAngleDegrees: 90
+        waitForDuration: 1
+    - rid: 2634811939167928475
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811939167928476
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811939167928477
+      type: {class: MinionFormationBarrageAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: Default
+        minimumMinionCount: 1
+        formationRadius: 2.8
+        formationAngleSpacingDegrees: 28
+        formationSpeedMultiplier: 1.2
+        settleSeconds: 1
+        preFormationDelayRatio: 0.5
+        fireCount: 6
+        fireInterval: 0.22
+        resumeIdle: 1
+    - rid: 2634811939167928478
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1

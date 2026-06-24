@@ -140,8 +140,8 @@ namespace Week14.Combat
                 && !targetHealth.IsDead
                 && (targetHealth.GetComponent<BossAI>() != null
                     || targetHealth.GetComponentInParent<BossAI>() != null
-                    || targetHealth.GetComponent<Drone>() != null
-                    || targetHealth.GetComponentInParent<Drone>() != null);
+                    || targetHealth.GetComponent<Minion>() != null
+                    || targetHealth.GetComponentInParent<Minion>() != null);
         }
 
         private bool IsValidLockOnTargetInCamera(Health targetHealth, Camera camera)

@@ -59,7 +59,7 @@ namespace Week14.Combat
         private Transform pathIndicatorRoot;
         private BulletGauge ownerBullets;
         private BossAI ownerBoss;
-        private Drone ownerDrone;
+        private Minion ownerMinion;
         private int bulletDamage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
@@ -452,14 +452,14 @@ namespace Week14.Combat
                 : 0f;
             ownerBullets = nextOwnerBullets;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
-            ownerDrone = ownerBullets != null ? ownerBullets.GetComponentInParent<Drone>() : null;
+            ownerMinion = ownerBullets != null ? ownerBullets.GetComponentInParent<Minion>() : null;
             if (!activeProjectiles.Contains(this))
             {
                 activeProjectiles.Add(this);
             }
 
             ownerBoss?.RegisterActiveProjectile(this);
-            ownerDrone?.RegisterActiveProjectile(this);
+            ownerMinion?.RegisterActiveProjectile(this);
             bulletDamage = nextBulletDamage;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             baseLocalScale = transform.localScale;
@@ -954,10 +954,10 @@ namespace Week14.Combat
                     return;
                 }
 
-                Drone hitDrone = other.GetComponentInParent<Drone>();
-                if (hitDrone != null)
+                Minion hitMinion = other.GetComponentInParent<Minion>();
+                if (hitMinion != null)
                 {
-                    if (hitDrone == ownerDrone)
+                    if (hitMinion == ownerMinion)
                     {
                         return;
                     }
@@ -1191,7 +1191,7 @@ namespace Week14.Combat
 
             ownerSlotReleased = true;
             ownerBoss?.UnregisterActiveProjectile(this);
-            ownerDrone?.UnregisterActiveProjectile(this);
+            ownerMinion?.UnregisterActiveProjectile(this);
         }
 
         private void EnsureProjectileShape()

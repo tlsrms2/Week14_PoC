@@ -355,6 +355,7 @@ MonoBehaviour:
   deathAnimationFallbackSeconds: 1
   displayName: "\uB4DC\uB860 \uC870\uC885\uC0AC"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+  colorSettings: {fileID: 0}
   maxHp: 150
   hpEmptyExecutionSeconds: 4
   normalColor: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
@@ -380,36 +381,52 @@ MonoBehaviour:
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
   projectileOrigin: {fileID: 756847475993452266}
-  bossBurst:
+  bossGraph: {fileID: 11400000, guid: 89ee5ca2e9e94cf3b5745f3dd905b6b0, type: 2}
+  graphProjectiles:
+  - projectileName: "\uC77C\uBC18\uD0C4"
     projectile:
       prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
       bulletDamage: 1
-      chargeSeconds: 0.8
+      chargeSeconds: 0
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 1
       aimAtPlayerOnLaunch: 0
-      speed: 20
+      speed: 7
       lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 1, g: 0, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+      radius: 0.12
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
       homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailColor: {r: 1, g: 0.80784315, b: 0.13333334, a: 1}
+      indicatorColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
-      trailWidthMultiplier: 1
+      trailWidthMultiplier: 3
       homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    windupSeconds: 0
-    bulletCount: 3
-    fireInterval: 0.3
-    spawnSpacing: 0.04
+  - projectileName: "\uC720\uB3C4\uD0C4"
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 2
+      chargeDriftSpeed: 1.5
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 1
+      speed: 12
+      lifetime: 3
+      radius: 0.1
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
+      indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
+      homingEnabled: 1
   summon:
     prefab: {fileID: 5425313911687354837, guid: bbfa06f8edbb85c47b7c8ee952ba7f10, type: 3}
-    claimSceneDrones: 1
-    maxOwnedDrones: 2
+    claimSceneMinions: 1
+    maxOwnedMinions: 2
     summonCount: 2
     spawnRadius: 1.5
     summonInterval: 1
@@ -417,192 +434,6 @@ MonoBehaviour:
     introStartScale: 0.05
     minAutoSummonInterval: 4
     maxAutoSummonInterval: 7
-  dronePattern1:
-    useBossProjectile: 1
-    droneProjectile:
-      prefab: {fileID: 0}
-      bulletDamage: 1
-      chargeSeconds: 0.15
-      chargeDriftSpeed: 0.25
-      aimAtPlayerWhileCharging: 1
-      aimAtPlayerOnLaunch: 0
-      speed: 7
-      lifetime: 3
-      radius: 0.12
-      chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 3
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    bulletCount: 6
-    fireInterval: 0.22
-  dronePattern2:
-    orbitProjectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 0.8
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 0
-      aimAtPlayerOnLaunch: 0
-      speed: 20
-      lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 1, g: 0, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    stationaryProjectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 0.8
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 1
-      aimAtPlayerOnLaunch: 0
-      speed: 20
-      lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    orbitRadius: 2.6
-    orbitSeconds: 3
-    fireAngleStepDegrees: 30
-    stationaryBulletCount: 3
-    stationaryFireInterval: 1
-  dronePattern3:
-    projectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 0.8
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 0
-      aimAtPlayerOnLaunch: 0
-      speed: 20
-      lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 1, g: 0, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    volleyCount: 3
-    directionCount: 4
-    volleyInterval: 0.8
-    spreadDegrees: 75
-  dronePattern4:
-    projectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 0.8
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 0
-      aimAtPlayerOnLaunch: 0
-      speed: 20
-      lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 1, g: 0, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    chargeSeconds: 5
-    chargeSpeed: 7
-    aimOffsetDegrees: 22
-    sideFireInterval: 0.3
-    sideFireAngleDegrees: 90
-  dronePattern5:
-    bossProjectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 0.8
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 0
-      aimAtPlayerOnLaunch: 0
-      speed: 20
-      lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 1, g: 0, b: 0, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    droneProjectile:
-      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 0.8
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 1
-      aimAtPlayerOnLaunch: 0
-      speed: 20
-      lifetime: 3
-      radius: 0.08
-      chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-      launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-      trailColor: {r: 0, g: 0, b: 0, a: 0}
-      indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-      trailSeconds: 0.1
-      trailWidthMultiplier: 1
-      homingEnabled: 0
-      homingSeconds: 0
-      homingTurnDegreesPerSecond: 0
-    bossBulletCount: 2
-    bossFireInterval: 0.3
-    formationRadius: 2.8
-    formationAngleSpacingDegrees: 28
-    settleSeconds: 1
-    formationSpeedMultiplier: 1.2
-    bossSpawnSpacing: 0.04
-    droneFireCount: 6
-    droneFireInterval: 0.22
-  patternSequence: 00000000010000000200000003000000040000000500000006000000
-  randomizePatterns: 0
-  minPatternRecoverySeconds: 1.5
-  maxPatternRecoverySeconds: 3
-  normalProjectileChargeColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-  normalProjectileColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-  homingProjectileChargeColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-  homingProjectileColor: {r: 0.35, g: 0.75, b: 1, a: 1}
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5
@@ -693,7 +524,7 @@ MonoBehaviour:
   health: {fileID: 0}
   executionTarget: {fileID: 0}
   bossAI: {fileID: 0}
-  drone: {fileID: 0}
+  minion: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
   executionText: {fileID: 0}

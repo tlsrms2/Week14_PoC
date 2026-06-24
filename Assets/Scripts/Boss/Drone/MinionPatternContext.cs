@@ -1,0 +1,305 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Week14.Combat;
+
+namespace Week14.Enemy
+{
+    internal sealed class MinionPatternContext
+    {
+        internal delegate EnemyProjectile BossProjectileFire(
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            Vector3 muzzleOrigin);
+
+        private readonly DronePilot pilot;
+        private readonly DronePilot.SummonSettings summon;
+        private readonly BossPatternMovement patternMovement;
+        private readonly List<Minion> controlledMinions;
+        private readonly List<Minion> spawnedMinions;
+        private readonly Func<bool> isBossExecutionPaused;
+        private readonly Action stopBoss;
+        private readonly Func<Vector3> getProjectileOrigin;
+        private readonly Func<Vector3, Vector2> getDirectionToPlayer;
+        private readonly BossProjectileFire fireBossProjectile;
+        private BossProjectileSettings synchronizedMinionProjectile;
+        private int synchronizedMinionShotsRemaining;
+        private int synchronizedMinionSyncVersion;
+
+        internal MinionPatternContext(
+            DronePilot pilot,
+            DronePilot.SummonSettings summon,
+            BossPatternMovement patternMovement,
+            List<Minion> controlledMinions,
+            List<Minion> spawnedMinions,
+            Func<bool> isBossExecutionPaused,
+            Action stopBoss,
+            Func<Vector3> getProjectileOrigin,
+            Func<Vector3, Vector2> getDirectionToPlayer,
+            BossProjectileFire fireBossProjectile)
+        {
+            this.pilot = pilot;
+            this.summon = summon;
+            this.patternMovement = patternMovement;
+            this.controlledMinions = controlledMinions;
+            this.spawnedMinions = spawnedMinions;
+            this.isBossExecutionPaused = isBossExecutionPaused;
+            this.stopBoss = stopBoss;
+            this.getProjectileOrigin = getProjectileOrigin;
+            this.getDirectionToPlayer = getDirectionToPlayer;
+            this.fireBossProjectile = fireBossProjectile;
+        }
+
+        internal int ControlledMinionCount => controlledMinions.Count;
+
+        internal IEnumerator WaitWhileExecutionPaused()
+        {
+            yield return patternMovement.WaitWhileExecutionPaused(isBossExecutionPaused, stopBoss);
+        }
+
+        internal IEnumerator WaitStoppedSeconds(float seconds)
+        {
+            yield return patternMovement.WaitStoppedSeconds(seconds, isBossExecutionPaused, stopBoss);
+        }
+
+        internal IEnumerator WaitPatternSeconds(float seconds)
+        {
+            yield return patternMovement.WaitStoppedSeconds(seconds, isBossExecutionPaused, stopBoss);
+        }
+
+        internal IEnumerator WaitMinionPatternSeconds(float seconds)
+        {
+            yield return patternMovement.WaitSeconds(seconds, null, isBossExecutionPaused, stopBoss);
+        }
+
+        internal Vector3 GetProjectileOrigin()
+        {
+            return getProjectileOrigin();
+        }
+
+        internal Vector2 GetDirectionToPlayer(Vector3 origin)
+        {
+            return getDirectionToPlayer(origin);
+        }
+
+        internal EnemyProjectile FireBossProjectile(
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            Vector3 muzzleOrigin)
+        {
+            return fireBossProjectile(settings, origin, direction, muzzleOrigin);
+        }
+
+        internal void StopBoss()
+        {
+            stopBoss();
+        }
+
+        internal float SpawnMinion(int index, int totalCount)
+        {
+            float angle = totalCount <= 0 ? UnityEngine.Random.Range(0f, 360f) : 360f * index / Mathf.Max(1, totalCount);
+            Vector3 startPosition = pilot.transform.position;
+            Vector3 position = startPosition + (Vector3)(AngleToDirection(angle) * Mathf.Max(0f, summon.SpawnRadius));
+            Minion minion = UnityEngine.Object.Instantiate(summon.Prefab, startPosition, Quaternion.identity);
+            if (minion == null)
+            {
+                return 0f;
+            }
+
+            minion.SetOwner(pilot);
+            float introSeconds = minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
+            if (!controlledMinions.Contains(minion))
+            {
+                controlledMinions.Add(minion);
+            }
+
+            if (!spawnedMinions.Contains(minion))
+            {
+                spawnedMinions.Add(minion);
+            }
+
+            return introSeconds;
+        }
+
+        internal List<Minion> GetControlledMinions()
+        {
+            RefreshControlledMinions();
+            return controlledMinions;
+        }
+
+        internal void RefreshControlledMinions()
+        {
+            for (int i = controlledMinions.Count - 1; i >= 0; i--)
+            {
+                if (controlledMinions[i] == null || controlledMinions[i].Owner != pilot)
+                {
+                    controlledMinions.RemoveAt(i);
+                }
+            }
+
+            IReadOnlyList<Minion> allMinions = Minion.All;
+            for (int i = 0; i < allMinions.Count; i++)
+            {
+                Minion minion = allMinions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                bool canClaim = minion.Owner == pilot || (summon.ClaimSceneMinions && minion.Owner == null);
+                if (!canClaim)
+                {
+                    continue;
+                }
+
+                minion.SetOwner(pilot);
+                if (!controlledMinions.Contains(minion))
+                {
+                    controlledMinions.Add(minion);
+                }
+            }
+        }
+
+        internal bool EnsureAnyMinion(List<Minion> minions)
+        {
+            return minions != null && minions.Count > 0;
+        }
+
+        internal void FireAllMinions(BossProjectileSettings projectile)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            List<Minion> minions = GetControlledMinions();
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.FireOnceAtPlayer(projectile);
+            }
+        }
+
+        internal int BeginSynchronizedMinionFire(BossProjectileSettings projectile, int shotCount)
+        {
+            synchronizedMinionProjectile = projectile;
+            synchronizedMinionShotsRemaining = projectile != null ? Mathf.Max(0, shotCount) : 0;
+            synchronizedMinionSyncVersion++;
+            return synchronizedMinionSyncVersion;
+        }
+
+        internal IEnumerator WaitSynchronizedMinionFire(int syncVersion)
+        {
+            while (syncVersion == synchronizedMinionSyncVersion && synchronizedMinionShotsRemaining > 0)
+            {
+                if (isBossExecutionPaused())
+                {
+                    stopBoss();
+                    yield return null;
+                    continue;
+                }
+
+                yield return null;
+            }
+        }
+
+        internal void TryFireSynchronizedMinions()
+        {
+            if (synchronizedMinionProjectile == null || synchronizedMinionShotsRemaining <= 0)
+            {
+                return;
+            }
+
+            FireAllMinions(synchronizedMinionProjectile);
+            synchronizedMinionShotsRemaining--;
+            if (synchronizedMinionShotsRemaining <= 0)
+            {
+                ClearSynchronizedMinionFire();
+            }
+        }
+
+        internal void ClearSynchronizedMinionFire()
+        {
+            synchronizedMinionProjectile = null;
+            synchronizedMinionShotsRemaining = 0;
+            synchronizedMinionSyncVersion++;
+        }
+
+        internal void StopAllMinions()
+        {
+            List<Minion> minions = GetControlledMinions();
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.StopCommand();
+            }
+        }
+
+        internal void ResumeAllMinions()
+        {
+            List<Minion> minions = GetControlledMinions();
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.ResumeIdle();
+            }
+        }
+
+        internal void ReleaseMinions()
+        {
+            for (int i = controlledMinions.Count - 1; i >= 0; i--)
+            {
+                if (controlledMinions[i] != null)
+                {
+                    controlledMinions[i].ClearOwner(pilot);
+                }
+            }
+
+            controlledMinions.Clear();
+        }
+
+        internal void KillSpawnedMinions()
+        {
+            for (int i = spawnedMinions.Count - 1; i >= 0; i--)
+            {
+                Minion minion = spawnedMinions[i];
+                if (minion != null && minion.Health != null && !minion.Health.IsDead)
+                {
+                    minion.Health.Kill();
+                }
+            }
+
+            spawnedMinions.Clear();
+        }
+
+        internal float GetFormationAngle(int index, float spacingDegrees)
+        {
+            if (index <= 0)
+            {
+                return 0f;
+            }
+
+            int ring = (index + 1) / 2;
+            float sign = index % 2 == 1 ? 1f : -1f;
+            return sign * ring * Mathf.Max(1f, spacingDegrees);
+        }
+
+        internal float GetAlternatingOffset(int index, float spacing)
+        {
+            if (index <= 0 || spacing <= 0f)
+            {
+                return 0f;
+            }
+
+            int ring = (index + 1) / 2;
+            float sign = index % 2 == 0 ? -1f : 1f;
+            return ring * spacing * sign;
+        }
+
+        private static Vector2 AngleToDirection(float degrees)
+        {
+            float radians = degrees * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+    }
+}
