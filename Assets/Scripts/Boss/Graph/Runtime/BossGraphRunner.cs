@@ -104,7 +104,6 @@ namespace Week14.Enemy
                         yield return sequence.Execute(context);
                     }
 
-                    yield return context.ApplyPendingEnrageIfAny();
                     context.Stop();
                 }
                 finally
@@ -131,7 +130,6 @@ namespace Week14.Enemy
                 }
 
                 yield return ExecutePattern(graph, pattern, context);
-                yield return context.ApplyPendingEnrageIfAny();
                 context.Stop();
 
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
@@ -159,7 +157,6 @@ namespace Week14.Enemy
                 }
 
                 yield return ExecutePattern(graph, pattern, context);
-                yield return context.ApplyPendingEnrageIfAny();
                 context.Stop();
                 if (phase.PatternIntervalSeconds > 0f)
                 {
@@ -199,7 +196,6 @@ namespace Week14.Enemy
                         context.SetCurrentNodeId(null);
                     }
 
-                    yield return context.ApplyPendingEnrageIfAny();
                     context.Stop();
                 }
             }
@@ -279,7 +275,6 @@ namespace Week14.Enemy
                 BossTransitionConditionType.NotStaggered => !boss.IsStaggered,
                 BossTransitionConditionType.ExecutionLocked => boss.IsExecutionLocked,
                 BossTransitionConditionType.ExecutionPaused => context.IsExecutionPaused,
-                BossTransitionConditionType.EnragePhaseEquals => boss.CurrentEnragePhase == transition.PhaseIndex,
                 BossTransitionConditionType.LivesLessOrEqual => boss.CurrentLives <= transition.PhaseIndex,
                 _ => false
             };

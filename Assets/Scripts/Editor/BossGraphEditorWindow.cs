@@ -1319,7 +1319,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
             BossTransitionConditionType.SequenceEnded => string.Empty,
             BossTransitionConditionType.HpRatioLessOrEqual => $"HP <= {GetFloat(transition, "threshold", 0f):0.##}",
             BossTransitionConditionType.PhaseIndexEquals => $"Phase = {GetInt(transition, "phaseIndex", 0) + 1}",
-            BossTransitionConditionType.EnragePhaseEquals => $"Enrage = {GetInt(transition, "phaseIndex", 0)}",
             BossTransitionConditionType.LivesLessOrEqual => $"Lives <= {GetInt(transition, "phaseIndex", 0)}",
             _ => conditionType.ToString()
         };

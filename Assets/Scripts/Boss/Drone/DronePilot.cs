@@ -238,8 +238,7 @@ namespace Week14.Enemy
             return new BossActionContext(
                 this,
                 Stop,
-                () => IsExecutionPaused,
-                ApplyPendingEnrageIfAnyForGraph);
+                () => IsExecutionPaused);
         }
 
         BossProjectileSettings IMinionPatternHost.ResolveMinionProjectileSettings(string projectileName)

@@ -195,8 +195,7 @@ namespace Week14.Enemy
         NotStaggered,
         ExecutionLocked,
         ExecutionPaused,
-        EnragePhaseEquals,
-        LivesLessOrEqual
+        LivesLessOrEqual = 11
     }
 
     [Serializable]

@@ -12,7 +12,6 @@ namespace Week14.Enemy
     {
         private readonly Action stop;
         private readonly Func<bool> isExecutionPaused;
-        private readonly Func<IEnumerator> applyPendingEnrage;
         private Animator animator;
         private BossAnimationEventBridge animationEventBridge;
         private bool hasBodyRootLocalBase;
@@ -28,13 +27,11 @@ namespace Week14.Enemy
         public BossActionContext(
             BossAI boss,
             Action stop,
-            Func<bool> isExecutionPaused,
-            Func<IEnumerator> applyPendingEnrage)
+            Func<bool> isExecutionPaused)
         {
             Boss = boss;
             this.stop = stop;
             this.isExecutionPaused = isExecutionPaused;
-            this.applyPendingEnrage = applyPendingEnrage;
         }
 
         public BossAI Boss { get; }
@@ -614,16 +611,6 @@ namespace Week14.Enemy
                 remaining -= Time.deltaTime;
                 yield return null;
             }
-        }
-
-        public IEnumerator ApplyPendingEnrageIfAny()
-        {
-            if (applyPendingEnrage == null)
-            {
-                yield break;
-            }
-
-            yield return applyPendingEnrage();
         }
 
         private Animator GetAnimator()

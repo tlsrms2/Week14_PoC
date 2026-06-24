@@ -649,7 +649,6 @@ internal static class BossGraphValidationUtility
             }
 
             if ((conditionType == BossTransitionConditionType.PhaseIndexEquals
-                    || conditionType == BossTransitionConditionType.EnragePhaseEquals
                     || conditionType == BossTransitionConditionType.LivesLessOrEqual)
                 && phaseIndex < 0)
             {

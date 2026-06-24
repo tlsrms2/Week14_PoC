@@ -19,23 +19,7 @@ public sealed class DronePilotEditor : Editor
         "bossGraph",
         "graphProjectiles",
         "summon",
-        "projectileOrigin",
-        "enragePhase1Seconds",
-        "enragePhase1MaxBullets",
-        "enragePhase2Seconds",
-        "enragePhase2MaxBullets",
-        "enrageWindupSeconds",
-        "enrageWindupShakeDistance",
-        "enrageWindupShakeFrequency",
-        "enrageBurstSprite",
-        "enrageBurstTargetScale",
-        "enrageBurstGrowSeconds",
-        "enrageBurstHoldSeconds",
-        "enrageBurstFadeSeconds",
-        "enrageBurstColor",
-        "enrageShakeAmplitude",
-        "enrageShakeSeconds",
-        "enrageShakeZoom"
+        "projectileOrigin"
     };
 
     private static readonly HashSet<string> ReferenceFields = new()
@@ -51,8 +35,7 @@ public sealed class DronePilotEditor : Editor
         "executionIndicator",
         "bossCombatUiRoot",
         "bossHpBarView",
-        "bossLivesView",
-        "bossEnrageBarView"
+        "bossLivesView"
     };
 
     private static readonly Dictionary<string, bool> FoldoutStates = new();
@@ -139,8 +122,6 @@ public sealed class DronePilotEditor : Editor
     private void DrawSettingsTab()
     {
         DrawSummonSection();
-        EditorGUILayout.Space(6f);
-        DrawEnrageSection();
 
         EditorGUILayout.Space(6f);
         showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 설정", true);
@@ -166,7 +147,7 @@ public sealed class DronePilotEditor : Editor
             "executionIndicator");
 
         EditorGUILayout.Space(6f);
-        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossEnrageBarView");
+        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView");
     }
 
     private void DrawProjectileList(SerializedProperty projectiles)
@@ -346,40 +327,6 @@ public sealed class DronePilotEditor : Editor
                 EditorUtility.SetDirty(graph);
             }
         }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawEnrageSection()
-    {
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool expanded = DrawFoldout("settings.enrage", "광폭화 / 진입 연출");
-        if (!expanded)
-        {
-            EditorGUILayout.EndVertical();
-            return;
-        }
-
-        DrawProperty("enragePhase1Seconds");
-        DrawProperty("enragePhase1MaxBullets");
-        DrawProperty("enragePhase2Seconds");
-        DrawProperty("enragePhase2MaxBullets");
-
-        EditorGUILayout.Space(4f);
-        DrawProperty("enrageWindupSeconds");
-        DrawProperty("enrageWindupShakeDistance");
-        DrawProperty("enrageWindupShakeFrequency");
-
-        EditorGUILayout.Space(4f);
-        DrawProperty("enrageBurstSprite");
-        DrawProperty("enrageBurstTargetScale");
-        DrawProperty("enrageBurstGrowSeconds");
-        DrawProperty("enrageBurstHoldSeconds");
-        DrawProperty("enrageBurstFadeSeconds");
-        DrawProperty("enrageBurstColor");
-        DrawProperty("enrageShakeAmplitude");
-        DrawProperty("enrageShakeSeconds");
-        DrawProperty("enrageShakeZoom");
 
         EditorGUILayout.EndVertical();
     }
