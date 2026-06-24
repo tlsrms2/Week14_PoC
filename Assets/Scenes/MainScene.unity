@@ -914,6 +914,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &207111284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2173,6 +2179,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &540783549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4798,6 +4810,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &1641631097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5433,6 +5451,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &1968038873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6045,6 +6069,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &2044892066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8448,6 +8478,30 @@ PrefabInstance:
     - target: {fileID: 479005607939962125, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: pieceSkillReadyColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: pieceSkillReadyColor.g
+      value: 0.13725491
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: pieceSkillReadyColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: colorOnlySkillReadyColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: colorOnlySkillReadyColor.g
+      value: 0.13725491
+      objectReference: {fileID: 0}
+    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
+      propertyPath: colorOnlySkillReadyColor.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_Type

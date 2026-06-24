@@ -282,6 +282,11 @@ namespace Week14.Enemy
                 return false;
             }
 
+            if (!IsCombatStarted)
+            {
+                return false;
+            }
+
             if (IsHpEmpty)
             {
                 // 그로기 상태에서는 총격으로 목숨이 깎이지 않고 이펙트만 재생됩니다.
