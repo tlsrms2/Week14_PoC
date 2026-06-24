@@ -935,7 +935,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908195
       type: {class: StartMoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -998,7 +997,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
         volleys:
         - bulletCount: 1
           fireInterval: 0.3
@@ -1185,7 +1183,6 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908205
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1265,7 +1262,6 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908209
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1345,7 +1341,6 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908213
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1517,7 +1512,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908218
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1597,7 +1591,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908222
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1677,7 +1670,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908226
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1757,7 +1749,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908230
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1837,7 +1828,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908234
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1994,7 +1984,6 @@ MonoBehaviour:
             seconds: 0.05
             distance: 0.06
             frequency: 0.08
-        cameraShakeDirection: {x: 0, y: -1}
         volleys:
         - bulletCount: 2
           fireInterval: 0

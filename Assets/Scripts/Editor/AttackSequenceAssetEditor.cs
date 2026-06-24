@@ -103,8 +103,8 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
-        new("Event/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
-        new("Spawn/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction())
+        new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
+        new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction())
     };
 
     public static string GetActionLabel(Type actionType)
@@ -263,9 +263,15 @@ internal static class BossGraphActionFilterContext
             return true;
         }
 
+        BossGraphNodeKind defaultKind = BossGraphActionCategoryAsset.GetDefaultNodeKind(actionType);
+        if (defaultKind == BossGraphNodeKind.Utility)
+        {
+            return NodeKind == BossGraphNodeKind.Utility;
+        }
+
         BossGraphNodeKind actionNodeKind = Categories != null
             ? Categories.GetNodeKind(actionType)
-            : BossGraphActionCategoryAsset.GetDefaultNodeKind(actionType);
+            : defaultKind;
         return actionNodeKind == NodeKind;
     }
 }
