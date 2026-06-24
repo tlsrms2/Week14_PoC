@@ -26,7 +26,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908194
     sequences: []
-    editorPosition: {x: -327, y: -136}
+    editorPosition: {x: -336, y: -152}
   - nodeId: HogPattern2_Action01
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
@@ -2079,6 +2079,42 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.FireFanVolleyProjectilesAction
     nodeKind: 0
   - actionTypeName: Week14.Enemy.CustomEventAction
-    nodeKind: 3
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.SpawnPrefabAction
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.WindupAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 3
+  - actionTypeName: Week14.Enemy.StartMoveTowardPlayerAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.StopMovementAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.SpawnChargedProjectileAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConfigureProjectileGrowthAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConfigureRadialSplitAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.WaitProjectileChargeEndAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireProjectileBurstAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireRadialEmissionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireSweepEmissionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireFanEmissionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AimBossChildAtPlayerAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     nodeKind: 3
