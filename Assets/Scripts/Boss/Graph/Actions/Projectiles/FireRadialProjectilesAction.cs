@@ -21,7 +21,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
-        [SerializeField] private Vector2 cameraShakeDirection = Vector2.down;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -72,7 +71,7 @@ namespace Week14.Enemy
                     context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                     context.PlayOriginBurst(effects, spawnOrigin);
                     context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, direction);
-                    context.PlayCameraShakeIfEnabled(effects, cameraShakeDirection);
+                    context.PlayCameraShakeIfEnabled(effects, direction);
                 }
 
                 if (fireInterval > 0f && i < count - 1)

@@ -935,7 +935,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908195
       type: {class: StartMoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -998,7 +997,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
         volleys:
         - bulletCount: 1
           fireInterval: 0.3
@@ -1185,7 +1183,6 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908205
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1265,7 +1262,6 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908209
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1345,7 +1341,6 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908213
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1517,7 +1512,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908218
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1597,7 +1591,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908222
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1677,7 +1670,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908226
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1757,7 +1749,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908230
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1837,7 +1828,6 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
-        cameraShakeDirection: {x: 0, y: -1}
     - rid: 2634811931892908234
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1994,7 +1984,6 @@ MonoBehaviour:
             seconds: 0.05
             distance: 0.06
             frequency: 0.08
-        cameraShakeDirection: {x: 0, y: -1}
         volleys:
         - bulletCount: 2
           fireInterval: 0
@@ -2079,6 +2068,42 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.FireFanVolleyProjectilesAction
     nodeKind: 0
   - actionTypeName: Week14.Enemy.CustomEventAction
-    nodeKind: 3
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.SpawnPrefabAction
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.WindupAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 3
+  - actionTypeName: Week14.Enemy.StartMoveTowardPlayerAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.StopMovementAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.SpawnChargedProjectileAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConfigureProjectileGrowthAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConfigureRadialSplitAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.WaitProjectileChargeEndAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireProjectileBurstAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireRadialEmissionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireSweepEmissionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireFanEmissionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AimBossChildAtPlayerAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     nodeKind: 3
