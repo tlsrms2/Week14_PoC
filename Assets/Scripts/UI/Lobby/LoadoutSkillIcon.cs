@@ -22,13 +22,7 @@ namespace Week14.UI
 
         private void Awake()
         {
-            iconImage = GetComponent<Image>();
-            rectTransform = transform as RectTransform;
-
-            if (iconImage != null)
-            {
-                baseColor = iconImage.color;
-            }
+            EnsureInitialized();
         }
 
         private void OnEnable()
@@ -63,9 +57,27 @@ namespace Week14.UI
 
         public void SetSelected(bool selected)
         {
+            EnsureInitialized();
+
             if (iconImage != null)
             {
                 iconImage.color = selected ? selectedColor : baseColor;
+            }
+        }
+
+        private void EnsureInitialized()
+        {
+            if (iconImage != null)
+            {
+                return;
+            }
+
+            iconImage = GetComponent<Image>();
+            rectTransform = transform as RectTransform;
+
+            if (iconImage != null)
+            {
+                baseColor = iconImage.color;
             }
         }
 
