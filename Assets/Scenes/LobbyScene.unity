@@ -213,6 +213,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &79774701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,6 +906,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &207111284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1943,6 +1955,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!1 &472982336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2267,6 +2285,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &540783549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3575,6 +3599,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!224 &756442841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3584,15 +3614,15 @@ RectTransform:
   m_GameObject: {fileID: 756442836}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4996105, y: 1.4996105, z: 1.4996105}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 354936878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 697, y: -112}
-  m_SizeDelta: {x: 183, y: 277}
+  m_AnchoredPosition: {x: 647, y: 23}
+  m_SizeDelta: {x: 476, y: 740}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &756442842
 MonoBehaviour:
@@ -3614,7 +3644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a390484dec5969478cde9d6eae10c22, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 154cbc2588811d448a17b062bfbbf2d0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5701,8 +5731,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
   targetGraphic: {fileID: 1458596572}
   targetSpriteRenderer: {fileID: 0}
-  darkenAmount: 0.25
+  darkenAmount: 0.15
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.02
+  popScale: 1.03
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &1458596569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5775,8 +5811,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 76, y: 187}
-  m_SizeDelta: {x: 594, y: 321}
+  m_AnchoredPosition: {x: -34, y: 243}
+  m_SizeDelta: {x: 800, y: 436}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1458596572
 MonoBehaviour:
@@ -5798,7 +5834,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: df1b2175c1a372a4983f85d922dab0e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 193a84fa0e3f9f04aac99bebae36ead3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6503,6 +6539,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &1641631097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6783,8 +6825,8 @@ Camera:
   m_GameObject: {fileID: 1815925369}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -7937,6 +7979,12 @@ MonoBehaviour:
   targetSpriteRenderer: {fileID: 0}
   darkenAmount: 0.25
   transitionSeconds: 0.08
+  scaleTarget: {fileID: 0}
+  hoverScale: 1.05
+  popScale: 1.14
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!114 &2044892066
 MonoBehaviour:
   m_ObjectHideFlags: 0
