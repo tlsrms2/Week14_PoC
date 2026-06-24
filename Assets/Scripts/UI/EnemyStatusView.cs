@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -17,6 +18,10 @@ namespace Week14.UI
         [SerializeField, HideInInspector] private Drone drone;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
+        [SerializeField] private TextMeshProUGUI executionText;
+        [SerializeField] private GameObject executionBlinkFirstObject;
+        [SerializeField] private GameObject executionBlinkSecondObject;
+        [SerializeField, Min(0.01f)] private float executionBlinkIntervalSeconds = 0.12f;
 
         private Transform worldTarget;
         private Color lockOnColor = Color.white;
@@ -75,7 +80,9 @@ namespace Week14.UI
 
         public bool OwnsRenderer(SpriteRenderer renderer)
         {
-            return renderer != null && (renderer == lockOnRenderer || renderer == executionRenderer);
+            return renderer != null
+                && (renderer == lockOnRenderer
+                    || renderer == executionRenderer);
         }
 
         public void SetSuppressed(bool value)
@@ -116,6 +123,7 @@ namespace Week14.UI
             SetRendererEnabled(lockOnRenderer, !executionVisible && IsLockOnTarget());
             SetRendererEnabled(executionRenderer, executionVisible);
             RotateExecutionIndicator(executionVisible);
+            UpdateExecutionBlinkObjects(executionVisible);
         }
 
         private bool IsLockOnTarget()
@@ -253,6 +261,10 @@ namespace Week14.UI
         {
             SetRendererEnabled(lockOnRenderer, visible && IsLockOnTarget());
             SetRendererEnabled(executionRenderer, visible && IsHoveredExecutionTarget());
+            if (!visible)
+            {
+                UpdateExecutionBlinkObjects(false);
+            }
         }
 
         private Vector3 GetWorldCenter()
@@ -287,6 +299,23 @@ namespace Week14.UI
             executionRenderer.transform.rotation = Quaternion.Euler(0f, 0f, executionIndicatorAngle);
         }
 
+        private void UpdateExecutionBlinkObjects(bool visible)
+        {
+            SetGameObjectActive(executionText != null ? executionText.gameObject : null, visible);
+
+            if (!visible)
+            {
+                SetGameObjectActive(executionBlinkFirstObject, false);
+                SetGameObjectActive(executionBlinkSecondObject, false);
+                return;
+            }
+
+            int blinkIndex = Mathf.FloorToInt(Time.unscaledTime / executionBlinkIntervalSeconds);
+            bool showFirst = blinkIndex % 2 == 0;
+            SetGameObjectActive(executionBlinkFirstObject, showFirst);
+            SetGameObjectActive(executionBlinkSecondObject, !showFirst);
+        }
+
         private static void SetRendererEnabled(SpriteRenderer renderer, bool enabled)
         {
             if (renderer == null)
@@ -295,6 +324,14 @@ namespace Week14.UI
             }
 
             renderer.enabled = enabled;
+        }
+
+        private static void SetGameObjectActive(GameObject target, bool active)
+        {
+            if (target != null && target.activeSelf != active)
+            {
+                target.SetActive(active);
+            }
         }
     }
 }

@@ -256,7 +256,7 @@ public sealed class DronePilotEditor : Editor
         {
             DrawChildSection("기본", projectile, "prefab", "bulletDamage", "radius");
             DrawChildSection("충전", projectile, "chargeSeconds", "chargeDriftSpeed", "aimAtPlayerWhileCharging", "aimAtPlayerOnLaunch");
-            DrawChildSection("이동", projectile, "speed", "lifetime", "homingEnabled", "homingSeconds", "homingTurnDegreesPerSecond");
+            DrawChildSection("이동", projectile, "speed", "lifetime", "homingEnabled");
             DrawChildSection("색/궤적", projectile, "trailSeconds", "trailWidthMultiplier");
         });
     }
