@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.PowerShotSkillSO
   skillId: PowerShot
   displayName: "\uD30C\uC6CC\uC0F7"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d021d64bec59a8d4bac4fd95b74dbda9, type: 3}
   description: "\uC801\uC5D0\uAC8C 10\uB380"
   requiredStack: 30
   damage: 10

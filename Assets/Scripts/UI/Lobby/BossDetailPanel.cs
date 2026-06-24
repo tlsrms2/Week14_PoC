@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -20,8 +21,9 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float initialRevealDelaySeconds = 0.06f;
         [Tooltip("패널이 다 펼쳐진 후 항목들이 하나씩 나타나는 간격입니다.")]
         [SerializeField, Min(0f)] private float revealStaggerSeconds = 0.06f;
+        [Tooltip("패널이 펼쳐진 후 이 배열 순서대로 하나씩 나타납니다. 가장 마지막에 나타나야 할 항목(예: ProgressBar)을 맨 마지막에 넣으세요.")]
+        [SerializeField] private GameObject[] revealTargets = Array.Empty<GameObject>();
 
-        private GameObject[] revealTargets;
         private Coroutine growRoutine;
         private Coroutine revealRoutine;
 
@@ -32,7 +34,6 @@ namespace Week14.UI
                 panelRect = transform as RectTransform;
             }
 
-            CacheRevealTargets();
             HideImmediate();
         }
 
@@ -81,17 +82,6 @@ namespace Week14.UI
             StopRevealRoutine();
             SetRevealTargetsActive(false);
             SetHeight(0f);
-        }
-
-        private void CacheRevealTargets()
-        {
-            revealTargets = new[]
-            {
-                iconImage != null ? iconImage.gameObject : null,
-                nameText != null ? nameText.gameObject : null,
-                crimeText != null ? crimeText.gameObject : null,
-                descriptionText != null ? descriptionText.gameObject : null,
-            };
         }
 
         private void SetRevealTargetsActive(bool active)

@@ -30,6 +30,20 @@ namespace Week14.UI
             RefreshLockState();
         }
 
+        private void OnValidate()
+        {
+            if (skill == null)
+            {
+                return;
+            }
+
+            Image image = GetComponent<Image>();
+            if (image != null)
+            {
+                image.sprite = skill.Icon;
+            }
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!IsUnlocked())
@@ -78,6 +92,11 @@ namespace Week14.UI
             if (iconImage != null)
             {
                 baseColor = iconImage.color;
+
+                if (skill != null)
+                {
+                    iconImage.sprite = skill.Icon;
+                }
             }
         }
 

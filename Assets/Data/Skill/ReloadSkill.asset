@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.ReloadSkillSO
   skillId: Reload
   displayName: "\uC7A5\uC804"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 240be93dac0219540a18b7062409e791, type: 3}
   description: "1\uBC1C \uC7A5\uC804"
   requiredStack: 15
   reloadAmount: 1
