@@ -12,10 +12,6 @@ namespace Week14.Combat
         [SerializeField, Min(1)] private int maxBullets = 100;
         [Tooltip("왼쪽 권총을 한 번 발사할 때 소비하는 탄환 수입니다.")]
         [SerializeField, Min(0)] private int leftAttackBulletCost = 1;
-        [Tooltip("왼쪽 권총 공격이 적에게 적중했을 때 적 탄환을 감소시키는 양입니다. 아래 표를 사용할 수 없을 때의 기본값으로도 쓰입니다.")]
-        [SerializeField, Min(0)] private int attackBulletDamage = 16;
-        [Tooltip("남은 탄환 수에 따른 공격 데미지입니다. 인덱스 0은 탄환 1개 남았을 때, 마지막 인덱스는 탄환이 가장 많을 때입니다. 남은 탄환 수가 배열 길이를 넘으면 마지막 값을 사용합니다.")]
-        [SerializeField] private int[] attackDamageByRemainingBullets = { 5, 4, 3, 2, 1 };
         [Tooltip("패링 성공 시 플레이어가 회복하는 탄환 수입니다.")]
         [SerializeField, Min(0)] private int parryBulletRecovery = 2;
         [Tooltip("적 몸체와 접촉했을 때 플레이어가 잃는 탄환 수입니다.")]
@@ -99,21 +95,9 @@ namespace Week14.Combat
         public float HitStopTimeScale => hitStopTimeScale;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
         public int LeftAttackBulletCost => leftAttackBulletCost;
-        public int AttackBulletDamage => attackBulletDamage;
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;
         public float ProjectileRadius => projectileRadius;
-
-        public int GetAttackDamageForRemainingBullets(int remainingBullets)
-        {
-            if (attackDamageByRemainingBullets == null || attackDamageByRemainingBullets.Length == 0)
-            {
-                return attackBulletDamage;
-            }
-
-            int index = Mathf.Clamp(remainingBullets - 1, 0, attackDamageByRemainingBullets.Length - 1);
-            return Mathf.Max(0, attackDamageByRemainingBullets[index]);
-        }
 
         public float ProjectileTrailSeconds => effectData != null ? effectData.PlayerProjectileTrailSeconds : 0.08f;
         public float ProjectileTrailWidthMultiplier => effectData != null ? effectData.PlayerProjectileTrailWidthMultiplier : 2.8f;

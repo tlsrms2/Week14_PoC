@@ -21,6 +21,7 @@ namespace Week14.Combat
         private float destroyAt;
         private Vector2 previousPosition;
         private EnemyProjectile forcedParryTarget;
+        private int forcedParryTargetId;
         private float forcedParryResolveAt;
         private Vector2 flightDirection = Vector2.right;
         private Color projectileColor = Color.white;
@@ -188,7 +189,8 @@ namespace Week14.Combat
 
         public void SetForcedParryTarget(EnemyProjectile enemyProjectile)
         {
-            forcedParryTarget = enemyProjectile;
+            forcedParryTarget = enemyProjectile != null ? enemyProjectile.ResolveInterceptTarget() : null;
+            forcedParryTargetId = forcedParryTarget != null ? forcedParryTarget.InterceptGroupId : 0;
             if (forcedParryTarget == null || projectileSpeed <= 0f)
             {
                 forcedParryResolveAt = 0f;
@@ -207,13 +209,14 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (forcedParryTarget == null)
+            EnemyProjectile target = ResolveForcedParryTarget();
+            if (target == null)
             {
                 DestroyProjectile();
                 return true;
             }
 
-            Vector2 targetPosition = forcedParryTarget.transform.position;
+            Vector2 targetPosition = target.transform.position;
             float hitRadius = Mathf.Max(0.12f, collisionRadius * 2.5f);
             bool closeEnough = Vector2.Distance(transform.position, targetPosition) <= hitRadius;
             bool reachedExpectedTime = forcedParryResolveAt > 0f && Time.time >= forcedParryResolveAt;
@@ -223,8 +226,27 @@ namespace Week14.Combat
                 return false;
             }
 
-            transform.position = forcedParryTarget.transform.position;
-            return TryDestroyByEnemyProjectileClash(forcedParryTarget);
+            transform.position = target.transform.position;
+            return TryDestroyByEnemyProjectileClash(target);
+        }
+
+        private EnemyProjectile ResolveForcedParryTarget()
+        {
+            if (forcedParryTargetId > 0
+                && EnemyProjectile.TryGetActiveInterceptTarget(forcedParryTargetId, out EnemyProjectile target))
+            {
+                forcedParryTarget = target;
+                return target;
+            }
+
+            if (forcedParryTarget == null)
+            {
+                return null;
+            }
+
+            forcedParryTarget = forcedParryTarget.ResolveInterceptTarget();
+            forcedParryTargetId = forcedParryTarget != null ? forcedParryTarget.InterceptGroupId : forcedParryTargetId;
+            return forcedParryTarget;
         }
 
         private bool TryResolveCollision(Collider2D other)
@@ -369,7 +391,14 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (enemyProjectile == null || (forcedParryTarget != null && enemyProjectile != forcedParryTarget))
+            enemyProjectile = enemyProjectile != null ? enemyProjectile.ResolveInterceptTarget() : null;
+            EnemyProjectile expectedTarget = ResolveForcedParryTarget();
+            if (forcedParryTargetId > 0 && expectedTarget == null)
+            {
+                return false;
+            }
+
+            if (enemyProjectile == null || (expectedTarget != null && enemyProjectile != expectedTarget))
             {
                 return false;
             }
@@ -403,7 +432,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (!resolved && forcedParryTarget != null)
+            if (!resolved && ResolveForcedParryTarget() != null)
             {
                 forcedParryTarget.CancelInterceptReservation();
             }
