@@ -26,7 +26,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908194
     sequences: []
-    editorPosition: {x: 80, y: 120}
+    editorPosition: {x: -483, y: -756}
   - nodeId: HogPattern2_Action01
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908195
     sequences: []
-    editorPosition: {x: 340, y: 120}
+    editorPosition: {x: -485, y: -567}
   - nodeId: HogPattern4_Action01
     nodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     nodeKind: 1
@@ -287,7 +287,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908230
     sequences: []
-    editorPosition: {x: 7620, y: 120}
+    editorPosition: {x: 7596, y: 120}
   - nodeId: HogPattern6_Action21
     nodeGuid: 3600947d532846f994de2a6e69474b44
     nodeKind: 1
@@ -323,7 +323,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908234
     sequences: []
-    editorPosition: {x: 8660, y: 120}
+    editorPosition: {x: 8648, y: 120}
   - nodeId: Node2
     nodeGuid: 9e1f9a114f0c49578bd202859577b908
     nodeKind: 3
@@ -332,7 +332,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908238
     sequences: []
-    editorPosition: {x: 8920, y: 120}
+    editorPosition: {x: 8880, y: 156}
   - nodeId: Node4
     nodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeKind: 3
@@ -341,7 +341,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908239
     sequences: []
-    editorPosition: {x: 9180, y: 120}
+    editorPosition: {x: 9136, y: 120}
   - nodeId: Node3
     nodeGuid: 026997160ec14eecbdfa8d663852dc41
     nodeKind: 3
@@ -350,7 +350,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908240
     sequences: []
-    editorPosition: {x: 9440, y: 120}
+    editorPosition: {x: 9448, y: 120}
   - nodeId: HogPattern2_Action01_FireBurst
     nodeGuid: bc17b7c047f7467ea6384f77cc8be044
     nodeKind: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908196
     sequences: []
-    editorPosition: {x: 9700, y: 120}
+    editorPosition: {x: -207, y: -532}
   - nodeId: HogPattern2_Action01_StopMove
     nodeGuid: 4f166750756041f1bd28bff0851d3141
     nodeKind: 1
@@ -368,7 +368,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908197
     sequences: []
-    editorPosition: {x: 9960, y: 120}
+    editorPosition: {x: 85, y: -495}
   - nodeId: HogPattern3_Action01_Growth
     nodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
     nodeKind: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908199
     sequences: []
-    editorPosition: {x: 10220, y: 120}
+    editorPosition: {x: 10258, y: -6}
   - nodeId: HogPattern3_Action01_RadialSplit
     nodeGuid: 6ca8dbed633e4f95814d4d982619d858
     nodeKind: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908200
     sequences: []
-    editorPosition: {x: 10480, y: 120}
+    editorPosition: {x: 10390, y: 250}
   - nodeId: HogPattern3_Action01_WaitCharge
     nodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
     nodeKind: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908214
     sequences: []
-    editorPosition: {x: 11000, y: 120}
+    editorPosition: {x: 11002, y: 120}
   - nodeId: HogPattern7_Action01_FireFan
     nodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     nodeKind: 0

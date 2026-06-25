@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,28 +7,11 @@ using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Enemy;
-using Week14.Input;
 
 namespace Week14.UI
 {
     public sealed class HelpGameOverView : MonoBehaviour
     {
-        [Header("Help")]
-        [SerializeField] private GameObject helpRoot;
-        [SerializeField] private TMP_Text helpBodyText;
-        [SerializeField] private TMP_Text helpPageText;
-        [SerializeField] private Button previousButton;
-        [SerializeField] private Button nextButton;
-        [SerializeField] private Button closeHelpButton;
-        [SerializeField] private List<GameObject> helpPageImages = new();
-        [TextArea(3, 8)]
-        [SerializeField] private List<string> helpPages = new()
-        {
-            "이동: WASD / 왼쪽 스틱\n공격: 좌클릭 / 게임패드 공격 버튼\n패링: 우클릭 / 게임패드 패링 버튼",
-            "우클릭 패링은 설정된 쿨타임 후 다시 사용할 수 있습니다.\n패링 실패 시 패링 조준 각도가 줄어듭니다.",
-            "적의 탄환을 모두 깎으면 처형 가능 상태가 됩니다.\n처형 중에는 이동이 제한됩니다.\n처형 성공 시 탄환을 회복합니다."
-        };
-
         [Header("Game Over")]
         [SerializeField] private GameObject gameOverRoot;
         [SerializeField] private TMP_Text gameOverTitleText;
@@ -40,16 +22,13 @@ namespace Week14.UI
         [SerializeField] private string victoryTitle = "VICTORY";
 
         private Health subscribedPlayerHealth;
-        private int pageIndex;
         private float previousTimeScale = 1f;
-        private bool helpOpen;
         private bool gameOverOpen;
 
         private void Awake()
         {
             CacheSceneReferences();
             BindButtons();
-            SetHelpVisible(false);
             SetGameOverVisible(false);
         }
 
@@ -64,12 +43,11 @@ namespace Week14.UI
             BossAI.Defeated -= HandleBossDefeated;
             UnsubscribePlayer();
 
-            if (helpOpen || gameOverOpen)
+            if (gameOverOpen)
             {
                 UnfreezeGame();
             }
 
-            helpOpen = false;
             gameOverOpen = false;
             RefreshInputBlock();
         }
@@ -77,33 +55,6 @@ namespace Week14.UI
         private void Update()
         {
             TrySubscribePlayer();
-
-            if (!gameOverOpen && GameInput.HelpDown)
-            {
-                ToggleHelp();
-            }
-        }
-
-        public void ToggleHelp()
-        {
-            SetHelpVisible(!helpOpen);
-        }
-
-        public void ShowPreviousPage()
-        {
-            pageIndex = Mathf.Max(0, pageIndex - 1);
-            RefreshHelpPage();
-        }
-
-        public void ShowNextPage()
-        {
-            pageIndex = Mathf.Min(GetPageCount() - 1, pageIndex + 1);
-            RefreshHelpPage();
-        }
-
-        public void CloseHelp()
-        {
-            SetHelpVisible(false);
         }
 
         public void RestartScene()
@@ -124,42 +75,14 @@ namespace Week14.UI
 
         private void CacheSceneReferences()
         {
-            helpRoot ??= FindGameObject("HelpRoot");
             gameOverRoot ??= FindGameObject("GameOverRoot");
             gameOverTitleText ??= FindComponent<TMP_Text>("GameOverTitleText");
-            helpBodyText ??= FindComponent<TMP_Text>("HelpBodyText");
-            helpPageText ??= FindComponent<TMP_Text>("HelpPageText");
-            previousButton ??= FindComponent<Button>("PreviousButton");
-            nextButton ??= FindComponent<Button>("NextButton");
-            closeHelpButton ??= FindComponent<Button>("CloseHelpButton");
             restartButton ??= FindComponent<Button>("RestartButton");
             titleButton ??= FindComponent<Button>("TitleButton");
-
-            if (helpPageImages.Count == 0)
-            {
-                CacheHelpPageImages();
-            }
-        }
-
-        private void CacheHelpPageImages()
-        {
-            Transform imageRoot = FindChildRecursive(transform, "HelpPageImages");
-            if (imageRoot == null)
-            {
-                return;
-            }
-
-            foreach (Transform child in imageRoot)
-            {
-                helpPageImages.Add(child.gameObject);
-            }
         }
 
         private void BindButtons()
         {
-            previousButton?.onClick.AddListener(ShowPreviousPage);
-            nextButton?.onClick.AddListener(ShowNextPage);
-            closeHelpButton?.onClick.AddListener(CloseHelp);
             restartButton?.onClick.AddListener(RestartScene);
             titleButton?.onClick.AddListener(GoToTitle);
         }
@@ -226,13 +149,11 @@ namespace Week14.UI
         private void HandlePlayerDied(Health _)
         {
             SoundManager.StopBgm();
-            SetHelpVisible(false);
             ShowGameOver(gameOverTitle);
         }
 
         private void HandleBossDefeated(BossAI _)
         {
-            SetHelpVisible(false);
             ShowGameOver(victoryTitle);
         }
 
@@ -244,27 +165,6 @@ namespace Week14.UI
             }
 
             SetGameOverVisible(true);
-        }
-
-        private void SetHelpVisible(bool visible)
-        {
-            helpOpen = visible;
-            if (helpRoot != null)
-            {
-                helpRoot.SetActive(visible);
-            }
-            if (visible)
-            {
-                pageIndex = Mathf.Clamp(pageIndex, 0, GetPageCount() - 1);
-                RefreshHelpPage();
-                FreezeGame();
-            }
-            else if (!gameOverOpen)
-            {
-                UnfreezeGame();
-            }
-
-            RefreshInputBlock();
         }
 
         private static void FocusSelectable(Selectable target)
@@ -290,7 +190,7 @@ namespace Week14.UI
                 FocusSelectable(restartButton);
                 FreezeGame();
             }
-            else if (!helpOpen)
+            else
             {
                 UnfreezeGame();
             }
@@ -298,48 +198,9 @@ namespace Week14.UI
             RefreshInputBlock();
         }
 
-        private void RefreshHelpPage()
-        {
-            int pageCount = GetPageCount();
-            pageIndex = Mathf.Clamp(pageIndex, 0, pageCount - 1);
-
-            if (helpBodyText != null)
-            {
-                helpBodyText.text = helpPages.Count > 0 ? helpPages[pageIndex] : string.Empty;
-            }
-
-            if (helpPageText != null)
-            {
-                helpPageText.text = $"{pageIndex + 1} / {pageCount}";
-            }
-
-            for (int i = 0; i < helpPageImages.Count; i++)
-            {
-                if (helpPageImages[i] != null)
-                {
-                    helpPageImages[i].SetActive(i == pageIndex);
-                }
-            }
-
-            if (previousButton != null)
-            {
-                previousButton.interactable = pageIndex > 0;
-            }
-
-            if (nextButton != null)
-            {
-                nextButton.interactable = pageIndex < pageCount - 1;
-            }
-        }
-
-        private int GetPageCount()
-        {
-            return Mathf.Max(1, helpPages.Count);
-        }
-
         private void RefreshInputBlock()
         {
-            GameModalState.BlocksGameplayInput = helpOpen || gameOverOpen;
+            GameModalState.BlocksGameplayInput = gameOverOpen;
         }
 
         private void FreezeGame()
