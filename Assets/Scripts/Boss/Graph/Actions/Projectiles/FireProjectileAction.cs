@@ -54,6 +54,23 @@ namespace Week14.Enemy
             };
         }
 
+        public Transform GetAimOriginTransform(BossActionContext context, int shotIndex)
+        {
+            if (context == null)
+            {
+                return null;
+            }
+
+            return mode switch
+            {
+                BossGraphProjectileOriginMode.BossChild => context.GetBossChildTransform(bossChildPath),
+                BossGraphProjectileOriginMode.BossChildList => context.GetBossChildTransform(GetListPath(shotIndex, false)),
+                BossGraphProjectileOriginMode.AlternatingBossChildList => context.GetBossChildTransform(GetListPath(shotIndex, true)),
+                BossGraphProjectileOriginMode.AlternatingBossChildren => context.GetBossChildTransform(GetAlternatingPath(shotIndex)),
+                _ => null
+            };
+        }
+
         public Vector3 GetSpawnOrigin(BossActionContext context, int shotIndex, Vector2 direction)
         {
             Vector3 origin = GetAimOrigin(context, shotIndex);
@@ -108,14 +125,21 @@ namespace Week14.Enemy
 
         public Vector2 GetDirection(BossActionContext context, Vector3 origin)
         {
-            if (context == null)
+            return GetDirection(context != null ? context.GetDirectionToPlayer : null, origin);
+        }
+
+        public Vector2 GetDirection(Func<Vector3, Vector2> getDirectionToPlayer, Vector3 origin)
+        {
+            if (getDirectionToPlayer == null)
             {
-                return Vector2.left;
+                return mode == BossGraphProjectileAimMode.FixedAngle
+                    ? BossActionContext.AngleToDirection(angleDegrees)
+                    : Vector2.left;
             }
 
             return mode == BossGraphProjectileAimMode.FixedAngle
                 ? BossActionContext.AngleToDirection(angleDegrees)
-                : context.GetDirectionToPlayer(origin);
+                : getDirectionToPlayer(origin);
         }
     }
 
@@ -124,9 +148,12 @@ namespace Week14.Enemy
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
-        [SerializeField] private BossGraphAimMode aimMode;
-        [SerializeField] private float angleDegrees;
-        [SerializeField, Min(0f)] private float spawnRadius;
+        [SerializeField] private BossGraphProjectileOriginSpec origin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField, Min(0f)] private float spawnForwardOffset;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
+        [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -135,17 +162,32 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            Vector3 origin = context.OriginPosition;
-            Vector2 direction = aimMode == BossGraphAimMode.Player
-                ? context.GetDirectionToPlayer(origin)
-                : BossActionContext.AngleToDirection(angleDegrees);
-
-            if (spawnRadius > 0f)
+            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
+            Vector2 direction = aimSpec.GetDirection(context, aimOrigin);
+            Vector3 spawnOrigin = originSpec.GetSpawnOrigin(context, 0, direction);
+            Vector2 finalDirection = aimSpec.GetDirection(context, spawnOrigin);
+            if (spawnForwardOffset > 0f)
             {
-                origin += (Vector3)(direction.normalized * spawnRadius);
+                spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
             }
 
-            context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
+            EnemyProjectile firedProjectile = context.FireProjectile(
+                projectile,
+                spawnOrigin,
+                finalDirection,
+                0f,
+                projectileName: projectileName);
+            if (firedProjectile != null)
+            {
+                context.PlaySfx(fireSfxId);
+                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                context.PlayOriginBurst(effects, spawnOrigin);
+                context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+                context.PlayCameraShakeIfEnabled(effects, finalDirection);
+            }
+
             yield break;
         }
     }

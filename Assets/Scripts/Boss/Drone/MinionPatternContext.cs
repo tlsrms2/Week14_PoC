@@ -25,6 +25,7 @@ namespace Week14.Enemy
         private readonly Func<Vector3, Vector2> getDirectionToPlayer;
         private readonly BossProjectileFire fireBossProjectile;
         private BossProjectileSettings synchronizedMinionProjectile;
+        private MinionGraphProjectileFireSpec synchronizedMinionFireSpec;
         private int synchronizedMinionShotsRemaining;
         private int synchronizedMinionSyncVersion;
 
@@ -169,7 +170,7 @@ namespace Week14.Enemy
             return minions != null && minions.Count > 0;
         }
 
-        internal void FireAllMinions(BossProjectileSettings projectile)
+        internal void FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec)
         {
             if (projectile == null)
             {
@@ -179,13 +180,17 @@ namespace Week14.Enemy
             List<Minion> minions = GetControlledMinions();
             for (int i = 0; i < minions.Count; i++)
             {
-                minions[i]?.FireOnceAtPlayer(projectile);
+                minions[i]?.FireOnce(projectile, fireSpec, i);
             }
         }
 
-        internal int BeginSynchronizedMinionFire(BossProjectileSettings projectile, int shotCount)
+        internal int BeginSynchronizedMinionFire(
+            BossProjectileSettings projectile,
+            int shotCount,
+            MinionGraphProjectileFireSpec fireSpec)
         {
             synchronizedMinionProjectile = projectile;
+            synchronizedMinionFireSpec = fireSpec;
             synchronizedMinionShotsRemaining = projectile != null ? Mathf.Max(0, shotCount) : 0;
             synchronizedMinionSyncVersion++;
             return synchronizedMinionSyncVersion;
@@ -213,7 +218,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            FireAllMinions(synchronizedMinionProjectile);
+            FireAllMinions(synchronizedMinionProjectile, synchronizedMinionFireSpec);
             synchronizedMinionShotsRemaining--;
             if (synchronizedMinionShotsRemaining <= 0)
             {
@@ -224,6 +229,7 @@ namespace Week14.Enemy
         internal void ClearSynchronizedMinionFire()
         {
             synchronizedMinionProjectile = null;
+            synchronizedMinionFireSpec = default;
             synchronizedMinionShotsRemaining = 0;
             synchronizedMinionSyncVersion++;
         }

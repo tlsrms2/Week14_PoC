@@ -10,6 +10,9 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string orbitProjectileName = "Default";
         [SerializeField, BossGraphProjectileName] private string stationaryProjectileName = "Default";
         [SerializeField] private bool useOrbitProjectileForStationary;
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0)] private int minimumMinionCount = 2;
         [SerializeField, Min(0.1f)] private float orbitRadius = 2.6f;
         [SerializeField, Min(0.1f)] private float orbitSeconds = 3f;
@@ -49,6 +52,7 @@ namespace Week14.Enemy
                 resolvedClockwise,
                 stationaryBulletCount,
                 stationaryFireInterval,
+                new MinionGraphProjectileFireSpec(minionOrigin, aim, effects, context),
                 resumeIdle);
 
             yield return host.RunOrbitCrossfire(request);

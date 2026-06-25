@@ -692,6 +692,61 @@ internal sealed class BossGraphProjectileOriginSpecDrawer : PropertyDrawer
     }
 }
 
+[CustomPropertyDrawer(typeof(MinionGraphProjectileOriginSpec))]
+internal sealed class MinionGraphProjectileOriginSpecDrawer : PropertyDrawer
+{
+    private static readonly string[] PropertyNames =
+    {
+        "mode",
+        "minionChildPath",
+        "minionChildPaths",
+        "firstMinionChildPath",
+        "secondMinionChildPath",
+        "fallbackSpacing"
+    };
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        foreach (string propertyName in PropertyNames)
+        {
+            height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (!property.isExpanded)
+        {
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        EditorGUI.indentLevel++;
+        lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "미니언 투사체가 생성될 기준 위치를 정합니다. 미니언의 Projectile Origin, 루트, 특정 자식, 자식 목록, 두 자식 교대를 사용할 수 있습니다.");
+        foreach (string propertyName in PropertyNames)
+        {
+            BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
+        }
+
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
+    }
+}
+
 [CustomPropertyDrawer(typeof(BossGraphProjectileAimSpec))]
 internal sealed class BossGraphProjectileAimSpecDrawer : PropertyDrawer
 {

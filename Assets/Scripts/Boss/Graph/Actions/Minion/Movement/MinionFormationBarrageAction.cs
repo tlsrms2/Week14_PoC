@@ -8,6 +8,9 @@ namespace Week14.Enemy
     public sealed class MinionFormationBarrageAction : BossAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0)] private int minimumMinionCount = 1;
         [SerializeField, Min(0.1f)] private float formationRadius = 2.8f;
         [SerializeField, Min(1f)] private float formationAngleSpacingDegrees = 28f;
@@ -53,6 +56,7 @@ namespace Week14.Enemy
             }
 
             int safeFireCount = Mathf.Max(1, fireCount);
+            MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
             for (int i = 0; i < safeFireCount; i++)
             {
                 if (context.IsExecutionPaused)
@@ -63,7 +67,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                host.FireAllMinions(projectile);
+                host.FireAllMinions(projectile, fireSpec);
                 if (i < safeFireCount - 1 && fireInterval > 0f)
                 {
                     yield return context.WaitSeconds(fireInterval);

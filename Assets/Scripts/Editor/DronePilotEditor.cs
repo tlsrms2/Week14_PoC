@@ -17,14 +17,20 @@ public sealed class DronePilotEditor : Editor
     private static readonly HashSet<string> DronePilotFields = new()
     {
         "bossGraph",
-        "graphProjectiles",
-        "summon",
-        "projectileOrigin"
+        "graphProjectiles"
+    };
+
+    private static readonly HashSet<string> MinionFields = new()
+    {
+        "minionPatternEnabled",
+        "minionProjectileOrigin",
+        "minionSummon",
+        "releaseMinionsOnDisable",
+        "killSpawnedMinionsOnOwnerDeath"
     };
 
     private static readonly HashSet<string> ReferenceFields = new()
     {
-        "projectileOrigin",
         "effectData",
         "colorSettings",
         "bodyRoot",
@@ -121,7 +127,7 @@ public sealed class DronePilotEditor : Editor
 
     private void DrawSettingsTab()
     {
-        DrawSummonSection();
+        DrawMinionSettingsSection();
 
         EditorGUILayout.Space(6f);
         showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 설정", true);
@@ -138,7 +144,6 @@ public sealed class DronePilotEditor : Editor
         EditorGUILayout.Space(6f);
         DrawPropertiesBox(
             "Scene References",
-            "projectileOrigin",
             "bodyRoot",
             "body",
             "statusView",
@@ -259,32 +264,44 @@ public sealed class DronePilotEditor : Editor
         }
     }
 
-    private void DrawSummonSection()
+    private void DrawMinionSettingsSection()
     {
-        SerializedProperty summon = serializedObject.FindProperty("summon");
-        if (summon == null)
+        SerializedProperty enabled = FindSerializedProperty("minionPatternEnabled");
+        if (enabled == null)
         {
             return;
         }
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        bool expanded = DrawFoldout("settings.summon", "미니언 소환");
+        bool expanded = DrawFoldout("settings.minions", "소환수 설정");
         if (!expanded)
         {
             EditorGUILayout.EndVertical();
             return;
         }
 
-        DrawChild(summon, "prefab");
-        DrawChild(summon, "claimSceneMinions");
-        DrawChild(summon, "maxOwnedMinions");
-        DrawChild(summon, "summonCount");
-        DrawChild(summon, "spawnRadius");
-        DrawChild(summon, "summonInterval");
-        DrawChild(summon, "introSeconds");
-        DrawChild(summon, "introStartScale");
-        DrawChild(summon, "minAutoSummonInterval");
-        DrawChild(summon, "maxAutoSummonInterval");
+        EditorGUILayout.PropertyField(enabled, new GUIContent("소환수 사용"));
+        using (new EditorGUI.DisabledScope(!enabled.boolValue && !enabled.hasMultipleDifferentValues))
+        {
+            DrawProperty("minionProjectileOrigin");
+            SerializedProperty summon = FindSerializedProperty("minionSummon");
+            if (summon != null)
+            {
+                DrawChild(summon, "prefab");
+                DrawChild(summon, "claimSceneMinions");
+                DrawChild(summon, "maxOwnedMinions");
+                DrawChild(summon, "summonCount");
+                DrawChild(summon, "spawnRadius");
+                DrawChild(summon, "summonInterval");
+                DrawChild(summon, "introSeconds");
+                DrawChild(summon, "introStartScale");
+                DrawChild(summon, "minAutoSummonInterval");
+                DrawChild(summon, "maxAutoSummonInterval");
+            }
+
+            DrawProperty("releaseMinionsOnDisable");
+            DrawProperty("killSpawnedMinionsOnOwnerDeath");
+        }
 
         EditorGUILayout.EndVertical();
     }
@@ -406,7 +423,7 @@ public sealed class DronePilotEditor : Editor
 
     private void DrawProperty(string propertyName)
     {
-        SerializedProperty property = serializedObject.FindProperty(propertyName);
+        SerializedProperty property = FindSerializedProperty(propertyName);
         if (property != null)
         {
             EditorGUILayout.PropertyField(property, true);
@@ -442,9 +459,10 @@ public sealed class DronePilotEditor : Editor
         while (property.NextVisible(enterChildren))
         {
             enterChildren = false;
-            if (property.propertyPath == "m_Script"
-                || DronePilotFields.Contains(property.propertyPath)
-                || ReferenceFields.Contains(property.propertyPath))
+            if (IsPropertyNamed(property, "m_Script")
+                || ContainsPropertyName(DronePilotFields, property)
+                || ContainsPropertyName(MinionFields, property)
+                || ContainsPropertyName(ReferenceFields, property))
             {
                 continue;
             }
@@ -461,5 +479,57 @@ public sealed class DronePilotEditor : Editor
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
         }
+    }
+
+    private SerializedProperty FindSerializedProperty(string propertyName)
+    {
+        SerializedProperty directProperty = serializedObject.FindProperty(propertyName);
+        if (directProperty != null)
+        {
+            return directProperty;
+        }
+
+        SerializedProperty property = serializedObject.GetIterator();
+        bool enterChildren = true;
+        while (property.NextVisible(enterChildren))
+        {
+            enterChildren = false;
+            if (IsPropertyNamed(property, propertyName))
+            {
+                return property.Copy();
+            }
+        }
+
+        return null;
+    }
+
+    private static bool ContainsPropertyName(ISet<string> propertyNames, SerializedProperty property)
+    {
+        if (propertyNames == null || property == null)
+        {
+            return false;
+        }
+
+        foreach (string propertyName in propertyNames)
+        {
+            if (IsPropertyNamed(property, propertyName))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsPropertyNamed(SerializedProperty property, string propertyName)
+    {
+        if (property == null || string.IsNullOrWhiteSpace(propertyName))
+        {
+            return false;
+        }
+
+        return property.name == propertyName
+            || property.propertyPath == propertyName
+            || property.propertyPath.EndsWith($".{propertyName}", System.StringComparison.Ordinal);
     }
 }

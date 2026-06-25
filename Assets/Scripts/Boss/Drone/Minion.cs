@@ -402,20 +402,38 @@ namespace Week14.Enemy
 
         public void FireOnceAtPlayer(BossProjectileSettings projectile)
         {
+            FireOnce(projectile, default, 0);
+        }
+
+        public void FireOnce(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec, int shotIndex)
+        {
             if (Owner == null || projectile == null)
             {
                 return;
             }
 
-            Vector3 origin = GetProjectileOrigin();
-            FireCommandProjectile(projectile, origin, GetDirectionToPlayer(origin), true);
+            Vector3 aimOrigin = fireSpec.GetAimOrigin(this, shotIndex);
+            Vector2 direction = fireSpec.GetDirection(this, aimOrigin);
+            Vector3 spawnOrigin = fireSpec.GetSpawnOrigin(this, shotIndex, direction);
+            Vector2 finalDirection = fireSpec.GetDirection(this, spawnOrigin);
+            FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec);
         }
 
         public float CommandStopAndFire(BossProjectileSettings projectile, int bulletCount, float fireInterval, bool resumeIdle)
         {
+            return CommandStopAndFire(projectile, bulletCount, fireInterval, resumeIdle, default);
+        }
+
+        public float CommandStopAndFire(
+            BossProjectileSettings projectile,
+            int bulletCount,
+            float fireInterval,
+            bool resumeIdle,
+            MinionGraphProjectileFireSpec fireSpec)
+        {
             StopCommand();
             float duration = GetSequentialFireDuration(bulletCount, fireInterval);
-            commandRoutine = StartCoroutine(RunStopAndFire(projectile, bulletCount, fireInterval, resumeIdle));
+            commandRoutine = StartCoroutine(RunStopAndFire(projectile, bulletCount, fireInterval, resumeIdle, fireSpec));
             return duration;
         }
 
@@ -426,9 +444,20 @@ namespace Week14.Enemy
             float fireAngleStepDegrees,
             bool clockwise)
         {
+            return CommandOrbitFire(projectile, orbitRadius, orbitSeconds, fireAngleStepDegrees, clockwise, default);
+        }
+
+        public float CommandOrbitFire(
+            BossProjectileSettings projectile,
+            float orbitRadius,
+            float orbitSeconds,
+            float fireAngleStepDegrees,
+            bool clockwise,
+            MinionGraphProjectileFireSpec fireSpec)
+        {
             StopCommand();
             float duration = Mathf.Max(0.1f, orbitSeconds);
-            commandRoutine = StartCoroutine(RunOrbitFire(projectile, orbitRadius, duration, fireAngleStepDegrees, clockwise));
+            commandRoutine = StartCoroutine(RunOrbitFire(projectile, orbitRadius, duration, fireAngleStepDegrees, clockwise, fireSpec));
             return duration;
         }
 
@@ -440,9 +469,21 @@ namespace Week14.Enemy
             float spreadDegrees,
             bool resumeIdle)
         {
+            return CommandRadialBurst(projectile, volleyCount, directionCount, volleyInterval, spreadDegrees, resumeIdle, default);
+        }
+
+        public float CommandRadialBurst(
+            BossProjectileSettings projectile,
+            int volleyCount,
+            int directionCount,
+            float volleyInterval,
+            float spreadDegrees,
+            bool resumeIdle,
+            MinionGraphProjectileFireSpec fireSpec)
+        {
             StopCommand();
             float duration = GetSequentialFireDuration(volleyCount, volleyInterval);
-            commandRoutine = StartCoroutine(RunRadialBurst(projectile, volleyCount, directionCount, volleyInterval, spreadDegrees, resumeIdle));
+            commandRoutine = StartCoroutine(RunRadialBurst(projectile, volleyCount, directionCount, volleyInterval, spreadDegrees, resumeIdle, fireSpec));
             return duration;
         }
 
@@ -454,9 +495,21 @@ namespace Week14.Enemy
             float sideFireInterval,
             float sideFireAngleDegrees)
         {
+            return CommandChargeSideFire(projectile, chargeSeconds, chargeSpeed, aimOffsetDegrees, sideFireInterval, sideFireAngleDegrees, default);
+        }
+
+        public float CommandChargeSideFire(
+            BossProjectileSettings projectile,
+            float chargeSeconds,
+            float chargeSpeed,
+            float aimOffsetDegrees,
+            float sideFireInterval,
+            float sideFireAngleDegrees,
+            MinionGraphProjectileFireSpec fireSpec)
+        {
             StopCommand();
             float duration = Mathf.Max(0.05f, chargeSeconds);
-            commandRoutine = StartCoroutine(RunChargeSideFire(projectile, duration, chargeSpeed, aimOffsetDegrees, sideFireInterval, sideFireAngleDegrees));
+            commandRoutine = StartCoroutine(RunChargeSideFire(projectile, duration, chargeSpeed, aimOffsetDegrees, sideFireInterval, sideFireAngleDegrees, fireSpec));
             return duration;
         }
 
@@ -466,7 +519,12 @@ namespace Week14.Enemy
             commandRoutine = StartCoroutine(RunFormation(angleOffsetDegrees, radius, speedMultiplier));
         }
 
-        private IEnumerator RunStopAndFire(BossProjectileSettings projectile, int bulletCount, float fireInterval, bool resumeIdle)
+        private IEnumerator RunStopAndFire(
+            BossProjectileSettings projectile,
+            int bulletCount,
+            float fireInterval,
+            bool resumeIdle,
+            MinionGraphProjectileFireSpec fireSpec)
         {
             StopBody();
             int count = Mathf.Max(0, bulletCount);
@@ -474,7 +532,7 @@ namespace Week14.Enemy
             {
                 yield return WaitWhileExecutionPaused();
                 StopBody();
-                FireOnceAtPlayer(projectile);
+                FireOnce(projectile, fireSpec, i);
                 if (i < count - 1)
                 {
                     yield return WaitCommandSeconds(fireInterval);
@@ -528,7 +586,8 @@ namespace Week14.Enemy
             float orbitRadius,
             float orbitSeconds,
             float fireAngleStepDegrees,
-            bool clockwise)
+            bool clockwise,
+            MinionGraphProjectileFireSpec fireSpec)
         {
             Transform player = GetPlayer();
             if (player == null)
@@ -562,7 +621,7 @@ namespace Week14.Enemy
 
                 if (travelled >= nextFireAt)
                 {
-                    FireOnceAtPlayer(projectile);
+                    FireOnce(projectile, fireSpec, Mathf.RoundToInt(nextFireAt / step));
                     nextFireAt += step;
                 }
 
@@ -583,15 +642,17 @@ namespace Week14.Enemy
             int directionCount,
             float volleyInterval,
             float spreadDegrees,
-            bool resumeIdle)
+            bool resumeIdle,
+            MinionGraphProjectileFireSpec fireSpec)
         {
             StopBody();
             int volleys = Mathf.Max(1, volleyCount);
             int directions = Mathf.Max(1, directionCount);
             for (int volley = 0; volley < volleys; volley++)
             {
-                Vector3 origin = GetProjectileOrigin();
-                Vector2 playerDirection = GetDirectionToPlayer(origin);
+                Vector3 aimOrigin = fireSpec.GetAimOrigin(this, volley);
+                Vector2 playerDirection = fireSpec.GetDirection(this, aimOrigin);
+                Vector3 origin = fireSpec.GetSpawnOrigin(this, volley, playerDirection);
                 float centerAngle = DirectionToAngle(playerDirection);
                 float arc = spreadDegrees <= 0f ? 360f : Mathf.Min(360f, spreadDegrees);
                 float step = directions <= 1 ? 0f : arc / (directions - 1);
@@ -599,7 +660,12 @@ namespace Week14.Enemy
 
                 for (int i = 0; i < directions; i++)
                 {
-                    FireCommandProjectile(projectile, origin, AngleToDirection(start + step * i), i == 0);
+                    FireCommandProjectile(
+                        projectile,
+                        origin,
+                        AngleToDirection(start + step * i),
+                        i == 0 && !fireSpec.HasEffects,
+                        fireSpec);
                 }
 
                 if (volley < volleys - 1)
@@ -617,9 +683,11 @@ namespace Week14.Enemy
             float chargeSpeed,
             float aimOffsetDegrees,
             float sideFireInterval,
-            float sideFireAngleDegrees)
+            float sideFireAngleDegrees,
+            MinionGraphProjectileFireSpec fireSpec)
         {
-            Vector2 direction = RotateDirection(GetDirectionToPlayer(transform.position), aimOffsetDegrees);
+            Vector3 aimOrigin = fireSpec.GetAimOrigin(this, 0);
+            Vector2 direction = RotateDirection(fireSpec.GetDirection(this, aimOrigin), aimOffsetDegrees);
             if (direction.sqrMagnitude <= 0.0001f)
             {
                 direction = Vector2.left;
@@ -641,9 +709,10 @@ namespace Week14.Enemy
                 SetVelocity(direction.normalized * Mathf.Max(0f, chargeSpeed));
                 if (elapsed >= nextFireAt)
                 {
-                    Vector3 origin = GetProjectileOrigin();
-                    FireCommandProjectile(projectile, origin, RotateDirection(direction, sideAngle), true);
-                    FireCommandProjectile(projectile, origin, RotateDirection(direction, -sideAngle), false);
+                    int shotIndex = Mathf.RoundToInt(nextFireAt / interval);
+                    Vector3 origin = fireSpec.GetSpawnOrigin(this, shotIndex, direction);
+                    FireCommandProjectile(projectile, origin, RotateDirection(direction, sideAngle), !fireSpec.HasEffects, fireSpec);
+                    FireCommandProjectile(projectile, origin, RotateDirection(direction, -sideAngle), false, fireSpec);
 
                     nextFireAt += interval;
                 }
@@ -1093,13 +1162,29 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playMuzzleFlash)
         {
+            return FireCommandProjectile(projectile, origin, direction, playMuzzleFlash, default);
+        }
+
+        private EnemyProjectile FireCommandProjectile(
+            BossProjectileSettings projectile,
+            Vector3 origin,
+            Vector2 direction,
+            bool playMuzzleFlash,
+            MinionGraphProjectileFireSpec fireSpec)
+        {
             IMinionOwner currentOwner = Owner;
             if (IsExecutionPaused || currentOwner == null)
             {
                 return null;
             }
 
-            return currentOwner.FireMinionProjectile(this, projectile, origin, direction, playMuzzleFlash);
+            EnemyProjectile firedProjectile = currentOwner.FireMinionProjectile(this, projectile, origin, direction, playMuzzleFlash);
+            if (firedProjectile != null)
+            {
+                fireSpec.PlayEffects(origin, direction);
+            }
+
+            return firedProjectile;
         }
 
         private static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
@@ -1191,6 +1276,22 @@ namespace Week14.Enemy
             return projectileOrigin != null ? projectileOrigin.position : transform.position;
         }
 
+        internal Vector3 GetGraphProjectileOrigin()
+        {
+            return GetProjectileOrigin();
+        }
+
+        internal Vector3 GetGraphChildPosition(string childPath)
+        {
+            Transform child = FindChildPathOrName(childPath);
+            return child != null ? child.position : GetProjectileOrigin();
+        }
+
+        internal Vector2 GetGraphDirectionToPlayer(Vector3 origin)
+        {
+            return GetDirectionToPlayer(origin);
+        }
+
         private Transform GetPlayer()
         {
             IMinionOwner currentOwner = Owner;
@@ -1273,6 +1374,17 @@ namespace Week14.Enemy
             }
 
             return null;
+        }
+
+        private Transform FindChildPathOrName(string childPath)
+        {
+            if (string.IsNullOrWhiteSpace(childPath))
+            {
+                return null;
+            }
+
+            Transform child = transform.Find(childPath);
+            return child != null ? child : FindChild(childPath);
         }
     }
 }

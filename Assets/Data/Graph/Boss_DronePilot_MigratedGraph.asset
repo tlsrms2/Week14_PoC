@@ -14,35 +14,82 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
   startNodeId: P01_BossBurst_01
   referenceSettings:
-    effectData: {fileID: 0}
-    colorSettings: {fileID: 0}
-    actionCategories: {fileID: 0}
+    effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+    colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
+    actionCategories: {fileID: 7712345678901234567, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
   stateNodes:
-  - nodeId: Node1
+  - nodeId: P01_BossBurst_01
     nodeGuid: 515b688d1cf5458190ec6eae81eca8ed
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811968517832775
+    sequences: []
+    editorPosition: {x: 293, y: 324}
+  - nodeId: Node1
+    nodeGuid: 6cc8642ca6af404a91810902bf610463
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811968517832777
+    sequences: []
+    editorPosition: {x: 494, y: 322}
+  - nodeId: Node2
+    nodeGuid: 3a769c272fb8457e94cc5caf899cd576
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 2634811968517832775
     sequences: []
-    editorPosition: {x: 333, y: 360}
+    editorPosition: {x: 693, y: 323}
   patterns:
   - patternId: Pattern1
     nodeGuids:
     - 515b688d1cf5458190ec6eae81eca8ed
+    - 6cc8642ca6af404a91810902bf610463
+    - 3a769c272fb8457e94cc5caf899cd576
     nodeIds:
+    - P01_BossBurst_01
     - Node1
+    - Node2
   phases:
   - phaseIndex: 0
     selectionMode: 0
     patternIntervalSeconds: 0.6
     patterns: []
-  transitions: []
+  transitions:
+  - fromNodeGuid: 515b688d1cf5458190ec6eae81eca8ed
+    toNodeGuid: 6cc8642ca6af404a91810902bf610463
+    fromNodeId: P01_BossBurst_01
+    toNodeId: Node1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6cc8642ca6af404a91810902bf610463
+    toNodeGuid: 3a769c272fb8457e94cc5caf899cd576
+    fromNodeId: Node1
+    toNodeId: Node2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   debugForceSinglePattern: 0
   debugForcedPatternId: 
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 2634811968517832775
+      type: {class: MinionAutoSummonIfNeededAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 2634811968517832777
+      type: {class: MinionBossBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bossProjectileName: Default
+        minionProjectileName: Default
+        windupSeconds: 0.45
+        bulletCount: 5
+        fireInterval: 0.18
+        spawnSpacing: 0.12
+        notifyMinions: 0

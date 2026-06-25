@@ -9,6 +9,10 @@ namespace Week14.Enemy
     {
         [SerializeField, BossGraphProjectileName] private string bossProjectileName = "Default";
         [SerializeField, BossGraphProjectileName] private string minionProjectileName = "Default";
+        [SerializeField] private BossGraphProjectileOriginSpec ownerOrigin = new();
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0f)] private float windupSeconds = 0.45f;
         [SerializeField, Min(1)] private int bulletCount = 5;
         [SerializeField, Min(0f)] private float fireInterval = 0.18f;
@@ -39,7 +43,12 @@ namespace Week14.Enemy
                 spawnSpacing,
                 windupSeconds,
                 notifyMinions,
-                minionProjectile);
+                minionProjectile,
+                ownerOrigin,
+                aim,
+                effects,
+                new MinionGraphProjectileFireSpec(minionOrigin, aim, effects, context),
+                context);
 
             yield return host.FireBossBurst(request);
         }

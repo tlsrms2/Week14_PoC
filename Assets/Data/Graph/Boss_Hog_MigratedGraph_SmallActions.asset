@@ -2122,7 +2122,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 0
-        startNodeId: ""
+        startNodeId: 
         targetPath: Boss-Dealer Visual/MachineGunRoot
         activateOnStart: 1
         flipYByFacing: 1
@@ -2152,7 +2152,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 0
-        startNodeId: ""
+        startNodeId: 
         targetPath: Boss-Dealer Visual/MachineGunRoot
         activateOnStart: 1
         flipYByFacing: 1
@@ -2336,7 +2336,7 @@ MonoBehaviour:
         chargeSeconds: 2
         projectileRadiusMultiplier: 1
         aimSpreadDegrees: 24
-        launchSfxId: ""
+        launchSfxId: 
         effects:
           explosion:
             enabled: 0

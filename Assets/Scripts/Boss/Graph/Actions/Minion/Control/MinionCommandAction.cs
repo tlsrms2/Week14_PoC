@@ -9,6 +9,9 @@ namespace Week14.Enemy
     {
         [SerializeField] private MinionGraphCommandMode mode;
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(1)] private int repeatCount = 3;
         [SerializeField, Min(0f)] private float fireInterval = 0.2f;
         [SerializeField, Min(1)] private int directionCount = 5;
@@ -45,6 +48,7 @@ namespace Week14.Enemy
             }
 
             bool resolvedClockwise = randomizeOrbitDirection ? UnityEngine.Random.value > 0.5f : clockwise;
+            MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
             MinionGraphCommandRequest request = new(
                 mode,
                 projectile,
@@ -65,6 +69,7 @@ namespace Week14.Enemy
                 formationAngleSpacingDegrees,
                 formationSpeedMultiplier,
                 settleSeconds,
+                fireSpec,
                 resumeIdle);
 
             float duration = host.CommandMinions(request);

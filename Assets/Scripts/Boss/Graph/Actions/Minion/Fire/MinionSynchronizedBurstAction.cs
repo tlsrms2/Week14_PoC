@@ -10,6 +10,10 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string bossProjectileName = "Default";
         [SerializeField, BossGraphProjectileName] private string minionProjectileName = "Default";
         [SerializeField] private bool useBossProjectileForMinions = true;
+        [SerializeField] private BossGraphProjectileOriginSpec ownerOrigin = new();
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0)] private int ensureMinionCount = 1;
         [SerializeField, Min(0f)] private float windupSeconds = 0.45f;
         [SerializeField, Min(1)] private int bulletCount = 5;
@@ -39,7 +43,8 @@ namespace Week14.Enemy
                 yield return host.EnsureMinionCount(ensureMinionCount);
             }
 
-            int syncVersion = host.BeginSynchronizedMinionFire(minionProjectile, bulletCount);
+            MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
+            int syncVersion = host.BeginSynchronizedMinionFire(minionProjectile, bulletCount, fireSpec);
             MinionGraphBossBurstRequest request = new(
                 bossProjectile,
                 bulletCount,
@@ -47,7 +52,12 @@ namespace Week14.Enemy
                 spawnSpacing,
                 windupSeconds,
                 false,
-                null);
+                null,
+                ownerOrigin,
+                aim,
+                effects,
+                fireSpec,
+                context);
 
             yield return host.FireBossBurst(request);
             yield return host.WaitSynchronizedMinionFire(syncVersion);
