@@ -125,20 +125,15 @@ namespace Week14.Combat
 
         internal int CalculateAttackBulletDamage()
         {
-            PlayerCombatConfig config = context.Config;
             BulletGauge bullets = context.Bullets;
-            if (bullets == null)
-            {
-                return config != null ? config.AttackBulletDamage : 1;
-            }
-
             BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
-            if (weapon != null)
+            if (weapon == null)
             {
-                return weapon.GetDamageForAmmo(bullets.CurrentBullets);
+                return 1;
             }
 
-            return config != null ? config.GetAttackDamageForRemainingBullets(bullets.CurrentBullets) : 1;
+            int remainingAmmo = bullets != null ? bullets.CurrentBullets : 1;
+            return weapon.GetDamageForAmmo(remainingAmmo);
         }
 
         private Transform GetLeftFireOrigin()

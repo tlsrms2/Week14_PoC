@@ -81,13 +81,13 @@ namespace Week14.Combat
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
         public bool IsDashing => DashController.IsDashing;
         public bool ShouldStopMovementWhenBlocked => (!IsBodyContactStaggered && !IsDashing)
+            || IsPlayerControlLocked;
+        private bool CanAct => !GameModalState.BlocksGameplayInput
+            && !IsPlayerControlLocked
+            && !health.IsDead;
+        private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
-        private bool CanAct => !GameModalState.BlocksGameplayInput
-            && !IsExecuting
-            && !BossAI.IsAnyFinalDeathSequencePlaying
-            && !IsWaitingForVictoryPanel
-            && !health.IsDead;
         private bool IsWaitingForVictoryPanel => ExecutionController.IsWaitingForVictoryPanel;
 
         internal sealed class PlayerCombatContext
@@ -284,6 +284,16 @@ namespace Week14.Combat
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
+                return;
+            }
+
+            if (IsPlayerControlLocked || GameModalState.BlocksGameplayInput)
+            {
+                StopBody();
+                SetMouseParryReticleVisible(false);
+                SetProjectileLockOnIndicatorVisible(false);
+                SetHoveredExecutionTarget(null);
+                SetLockOnTarget(null);
                 return;
             }
 

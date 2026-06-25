@@ -12,6 +12,7 @@ namespace Week14.Combat
         Parry,
         Execution,
         WeaponSwitch,
+        CombatStart,
         Expired
     }
 

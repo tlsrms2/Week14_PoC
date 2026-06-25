@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -36,7 +37,19 @@ namespace Week14.Enemy
             }
 
             isCombatStarted = true;
+            RefillPlayerBulletsForCombatStart();
             boss.OnCombatStartedForController();
+        }
+
+        private static void RefillPlayerBulletsForCombatStart()
+        {
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player == null || player.Bullets == null)
+            {
+                return;
+            }
+
+            player.Bullets.Configure(player.Bullets.MaxBullets, true, BulletChangeSource.CombatStart);
         }
 
         public bool TryConsumeLife()
