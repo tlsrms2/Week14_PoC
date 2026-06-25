@@ -462,12 +462,12 @@ MonoBehaviour:
   displayName: "\uD638\uADF8"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
-  maxHp: 100
+  maxHp: 150
   hpEmptyExecutionSeconds: 10
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hpEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   staggeredColor: {r: 1, g: 0.28872737, b: 0.19339621, a: 1}
-  detectionRange: 9
+  detectionRange: 7
   moveSpeed: 1.5
   bodyRoot: {fileID: 3928034980745414157}
   body: {fileID: 8932169065044441375}
@@ -512,7 +512,7 @@ MonoBehaviour:
       prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
-      chargeDriftSpeed: 1.5
+      chargeDriftSpeed: 1
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 1
       speed: 12
