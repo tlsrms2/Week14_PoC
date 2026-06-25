@@ -126,6 +126,7 @@ public sealed class BossGraphAssetEditor : Editor
         SetChildEnum(element, "nodeKind", (int)BossGraphNodeKind.Attack);
         SetChildInt(element, "phaseIndex", 0);
         SetChildEnum(element, "selectionMode", 0);
+        SetChildVector2(element, "editorPosition", new Vector2(80f + index * 260f, 120f));
         SerializedProperty sequences = element.FindPropertyRelative("sequences");
         if (sequences != null)
         {
@@ -231,6 +232,15 @@ public sealed class BossGraphAssetEditor : Editor
         if (child != null)
         {
             child.floatValue = value;
+        }
+    }
+
+    private static void SetChildVector2(SerializedProperty root, string childName, Vector2 value)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            child.vector2Value = value;
         }
     }
 
