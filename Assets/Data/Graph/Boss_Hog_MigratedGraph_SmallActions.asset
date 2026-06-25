@@ -26,7 +26,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908194
     sequences: []
-    editorPosition: {x: 347, y: -751}
+    editorPosition: {x: 80, y: 120}
   - nodeId: HogPattern2_Action01
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908195
     sequences: []
-    editorPosition: {x: -471, y: -560}
+    editorPosition: {x: 340, y: 120}
   - nodeId: HogPattern4_Action01
     nodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     nodeKind: 1
@@ -287,7 +287,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908230
     sequences: []
-    editorPosition: {x: 7596, y: 120}
+    editorPosition: {x: 7620, y: 120}
   - nodeId: HogPattern6_Action21
     nodeGuid: 3600947d532846f994de2a6e69474b44
     nodeKind: 1
@@ -323,7 +323,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908234
     sequences: []
-    editorPosition: {x: 8648, y: 120}
+    editorPosition: {x: 8660, y: 120}
   - nodeId: Node2
     nodeGuid: 9e1f9a114f0c49578bd202859577b908
     nodeKind: 3
@@ -332,7 +332,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908238
     sequences: []
-    editorPosition: {x: 8880, y: 156}
+    editorPosition: {x: 8920, y: 120}
   - nodeId: Node4
     nodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeKind: 3
@@ -341,7 +341,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908239
     sequences: []
-    editorPosition: {x: 9136, y: 120}
+    editorPosition: {x: 9780, y: 286}
   - nodeId: Node3
     nodeGuid: 026997160ec14eecbdfa8d663852dc41
     nodeKind: 3
@@ -350,7 +350,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908240
     sequences: []
-    editorPosition: {x: 9448, y: 120}
+    editorPosition: {x: 9440, y: 120}
   - nodeId: HogPattern2_Action01_FireBurst
     nodeGuid: bc17b7c047f7467ea6384f77cc8be044
     nodeKind: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908196
     sequences: []
-    editorPosition: {x: -193, y: -606}
+    editorPosition: {x: 9700, y: 120}
   - nodeId: HogPattern2_Action01_StopMove
     nodeGuid: 4f166750756041f1bd28bff0851d3141
     nodeKind: 1
@@ -368,7 +368,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908197
     sequences: []
-    editorPosition: {x: 85, y: -495}
+    editorPosition: {x: 9960, y: 120}
   - nodeId: HogPattern3_Action01_Growth
     nodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
     nodeKind: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908199
     sequences: []
-    editorPosition: {x: 10258, y: -6}
+    editorPosition: {x: 9415, y: 376}
   - nodeId: HogPattern3_Action01_RadialSplit
     nodeGuid: 6ca8dbed633e4f95814d4d982619d858
     nodeKind: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908200
     sequences: []
-    editorPosition: {x: 10390, y: 250}
+    editorPosition: {x: 9408, y: 483}
   - nodeId: HogPattern3_Action01_WaitCharge
     nodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
     nodeKind: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908201
     sequences: []
-    editorPosition: {x: 10740, y: 120}
+    editorPosition: {x: 9408, y: 600}
   - nodeId: HogPattern5_Action01_FireSweep
     nodeGuid: 6ecdb80d596a424b80eae1b965355f04
     nodeKind: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908214
     sequences: []
-    editorPosition: {x: 11002, y: 120}
+    editorPosition: {x: 10799, y: -116}
   - nodeId: HogPattern7_Action01_FireFan
     nodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     nodeKind: 0
@@ -423,6 +423,114 @@ MonoBehaviour:
       rid: 2634811931892908236
     sequences: []
     editorPosition: {x: 11520, y: 120}
+  - nodeId: Node1
+    nodeGuid: 9f129c30acf04730b54c4a4a2916738d
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811931892908243
+    sequences: []
+    editorPosition: {x: 9279, y: 282}
+  - nodeId: HogPattern8_Action01
+    nodeGuid: bc948940258f474bbb864273b4c94147
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897314
+    sequences: []
+    editorPosition: {x: 12040, y: 120}
+  - nodeId: HogPattern8_Action02
+    nodeGuid: 4d4c777b10d748b4aef300dc52dae234
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897315
+    sequences: []
+    editorPosition: {x: 12300, y: 120}
+  - nodeId: HogPattern8_Wait01
+    nodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897316
+    sequences: []
+    editorPosition: {x: 12560, y: 120}
+  - nodeId: HogPattern8_Action03
+    nodeGuid: d731207df0924bb985ae011d9a897f60
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897317
+    sequences: []
+    editorPosition: {x: 12820, y: 120}
+  - nodeId: HogPattern8_Wait02
+    nodeGuid: 6073531e69744f6dad7877e5ff9f25b0
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897318
+    sequences: []
+    editorPosition: {x: 13080, y: 120}
+  - nodeId: HogPattern8_Action04
+    nodeGuid: 657ce8a70222473485a7835f4bd97d00
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897319
+    sequences: []
+    editorPosition: {x: 13340, y: 120}
+  - nodeId: HogPattern8_Wait03
+    nodeGuid: e1459056c764436ba482e779533a7a6a
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897320
+    sequences: []
+    editorPosition: {x: 13600, y: 120}
+  - nodeId: HogPattern8_Wait04
+    nodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897321
+    sequences: []
+    editorPosition: {x: 13860, y: 120}
+  - nodeId: HogPattern8_Action05
+    nodeGuid: faa2dc5f3f8f410893003ab68637810d
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897322
+    sequences: []
+    editorPosition: {x: 14120, y: 120}
+  - nodeId: Node5
+    nodeGuid: e330ece8d47f4556a7bed8e7095c0461
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897355
+    sequences: []
+    editorPosition: {x: 14380, y: 120}
+  - nodeId: HogPattern3_Action01_SpawnChargedProjectile
+    nodeGuid: c5e098adc418431c97fe263c92282899
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 5830051031957897377
+    sequences: []
+    editorPosition: {x: 9408, y: 282}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -440,11 +548,15 @@ MonoBehaviour:
     - HogPattern2_Action01_StopMove
   - patternId: Pattern3
     nodeGuids:
+    - 9f129c30acf04730b54c4a4a2916738d
+    - c5e098adc418431c97fe263c92282899
     - 4154f61cfbd64b47a57d61a14432fe6a
     - 6ca8dbed633e4f95814d4d982619d858
     - 69c1183ac8c64355bc30c31a8e0359e9
     - 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeIds:
+    - Node1
+    - HogPattern3_Action01_SpawnChargedProjectile
     - HogPattern3_Action01_Growth
     - HogPattern3_Action01_RadialSplit
     - HogPattern3_Action01_WaitCharge
@@ -530,17 +642,40 @@ MonoBehaviour:
     nodeGuids:
     - f0e7fffb17a84ecbb13e3a2b7c7b6c6e
     - 1a42c347f9284d4fac5955d3a99642fe
+    - e330ece8d47f4556a7bed8e7095c0461
     - 429e7d5f9ff1419982a16a6cb5654f6a
     nodeIds:
     - HogPattern7_Action01
     - HogPattern7_Action01_FireFan
+    - Node5
     - HogPattern7_Action01_FireSecondary
+  - patternId: Pattern8
+    nodeGuids:
+    - bc948940258f474bbb864273b4c94147
+    - f5ee234d3ffa44ab96ac2765aca6e74f
+    - 4d4c777b10d748b4aef300dc52dae234
+    - 6073531e69744f6dad7877e5ff9f25b0
+    - d731207df0924bb985ae011d9a897f60
+    - e1459056c764436ba482e779533a7a6a
+    - 657ce8a70222473485a7835f4bd97d00
+    - 96a3f6d17ed24aae9564b78df86d86e6
+    - faa2dc5f3f8f410893003ab68637810d
+    nodeIds:
+    - HogPattern8_Action01
+    - HogPattern8_Wait01
+    - HogPattern8_Action02
+    - HogPattern8_Wait02
+    - HogPattern8_Action03
+    - HogPattern8_Wait03
+    - HogPattern8_Action04
+    - HogPattern8_Wait04
+    - HogPattern8_Action05
   phases:
   - phaseIndex: 0
     selectionMode: 0
-    patternIntervalSeconds: 1.5
+    patternIntervalSeconds: 2
     patterns:
-    - patternId: Pattern1
+    - patternId: Pattern8
       weight: 1
     - patternId: Pattern2
       weight: 1
@@ -550,13 +685,11 @@ MonoBehaviour:
       weight: 1
   - phaseIndex: 1
     selectionMode: 0
-    patternIntervalSeconds: 1.5
+    patternIntervalSeconds: 2
     patterns:
-    - patternId: Pattern1
+    - patternId: Pattern8
       weight: 1
     - patternId: Pattern2
-      weight: 1
-    - patternId: Pattern3
       weight: 1
     - patternId: Pattern4
       weight: 1
@@ -770,13 +903,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
-    toNodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
-    fromNodeId: HogPattern3_Action01_WaitCharge
-    toNodeId: Node4
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 6ecdb80d596a424b80eae1b965355f04
     toNodeGuid: 026997160ec14eecbdfa8d663852dc41
     fromNodeId: HogPattern5_Action01_FireSweep
@@ -812,6 +938,69 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: bc17b7c047f7467ea6384f77cc8be044
+    toNodeGuid: 4f166750756041f1bd28bff0851d3141
+    fromNodeId: HogPattern2_Action01_FireBurst
+    toNodeId: HogPattern2_Action01_StopMove
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: bc948940258f474bbb864273b4c94147
+    toNodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
+    fromNodeId: HogPattern8_Action01
+    toNodeId: HogPattern8_Wait01
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
+    toNodeGuid: 4d4c777b10d748b4aef300dc52dae234
+    fromNodeId: HogPattern8_Wait01
+    toNodeId: HogPattern8_Action02
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6073531e69744f6dad7877e5ff9f25b0
+    toNodeGuid: d731207df0924bb985ae011d9a897f60
+    fromNodeId: HogPattern8_Wait02
+    toNodeId: HogPattern8_Action03
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4d4c777b10d748b4aef300dc52dae234
+    toNodeGuid: 6073531e69744f6dad7877e5ff9f25b0
+    fromNodeId: HogPattern8_Action02
+    toNodeId: HogPattern8_Wait02
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e1459056c764436ba482e779533a7a6a
+    toNodeGuid: 657ce8a70222473485a7835f4bd97d00
+    fromNodeId: HogPattern8_Wait03
+    toNodeId: HogPattern8_Action04
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d731207df0924bb985ae011d9a897f60
+    toNodeGuid: e1459056c764436ba482e779533a7a6a
+    fromNodeId: HogPattern8_Action03
+    toNodeId: HogPattern8_Wait03
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 657ce8a70222473485a7835f4bd97d00
+    toNodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
+    fromNodeId: HogPattern8_Action04
+    toNodeId: HogPattern8_Wait04
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
+    toNodeGuid: faa2dc5f3f8f410893003ab68637810d
+    fromNodeId: HogPattern8_Wait04
+    toNodeId: HogPattern8_Action05
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   - fromNodeGuid: f0e7fffb17a84ecbb13e3a2b7c7b6c6e
     toNodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     fromNodeId: HogPattern7_Action01
@@ -820,21 +1009,42 @@ MonoBehaviour:
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1a42c347f9284d4fac5955d3a99642fe
-    toNodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
+    toNodeGuid: e330ece8d47f4556a7bed8e7095c0461
     fromNodeId: HogPattern7_Action01_FireFan
+    toNodeId: Node5
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e330ece8d47f4556a7bed8e7095c0461
+    toNodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
+    fromNodeId: Node5
     toNodeId: HogPattern7_Action01_FireSecondary
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: bc17b7c047f7467ea6384f77cc8be044
-    toNodeGuid: 4f166750756041f1bd28bff0851d3141
-    fromNodeId: HogPattern2_Action01_FireBurst
-    toNodeId: HogPattern2_Action01_StopMove
+  - fromNodeGuid: 9f129c30acf04730b54c4a4a2916738d
+    toNodeGuid: c5e098adc418431c97fe263c92282899
+    fromNodeId: Node1
+    toNodeId: HogPattern3_Action01_SpawnChargedProjectile
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c5e098adc418431c97fe263c92282899
+    toNodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
+    fromNodeId: HogPattern3_Action01_SpawnChargedProjectile
+    toNodeId: HogPattern3_Action01_Growth
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
+    toNodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
+    fromNodeId: HogPattern3_Action01_WaitCharge
+    toNodeId: Node4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern6
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -862,19 +1072,24 @@ MonoBehaviour:
           trailWidthMultiplier: 3
           homingEnabled: 1
         origin:
-          mode: 4
+          mode: 2
           bossChildPath: 
-          bossChildPaths: []
+          bossChildPaths:
+          - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
+          - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_1
+          - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_2
+          - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+          - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
           firstBossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_1
           secondBossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_2
           fallbackSpacing: 0
         aim:
-          mode: 0
+          mode: 1
           angleDegrees: 0
         bulletCount: 5
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 1
+        arcDegrees: 180
+        startAngleOffset: 90
+        randomizeStartAngle: 0
         spawnRadius: 0.25
         fireInterval: 0.5
         fireSfxId: 
@@ -1872,8 +2087,8 @@ MonoBehaviour:
           secondBossChildPath: 
           fallbackSpacing: 0.18
         aim:
-          mode: 0
-          angleDegrees: 0
+          mode: 1
+          angleDegrees: 90
         spawnForwardOffset: 0
         fireSfxId: 
         launchSfxId: 
@@ -1907,7 +2122,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 0
-        startNodeId: 
+        startNodeId: ""
         targetPath: Boss-Dealer Visual/MachineGunRoot
         activateOnStart: 1
         flipYByFacing: 1
@@ -1933,6 +2148,217 @@ MonoBehaviour:
         flipYByFacing: 1
         deactivateOnEnd: 1
         deactivateOnPatternEnd: 1
+    - rid: 2634811931892908243
+      type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        mode: 0
+        startNodeId: ""
+        targetPath: Boss-Dealer Visual/MachineGunRoot
+        activateOnStart: 1
+        flipYByFacing: 1
+        deactivateOnEnd: 1
+        deactivateOnPatternEnd: 1
+    - rid: 5830051031957897314
+      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
+          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+          trailColor: {r: 0, g: 0, b: 0, a: 0}
+          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+        aimMode: 1
+        angleDegrees: 180
+        spawnRadius: 0.25
+    - rid: 5830051031957897315
+      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
+          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+          trailColor: {r: 0, g: 0, b: 0, a: 0}
+          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+        aimMode: 1
+        angleDegrees: 135
+        spawnRadius: 0.25
+    - rid: 5830051031957897316
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.5
+    - rid: 5830051031957897317
+      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
+          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+          trailColor: {r: 0, g: 0, b: 0, a: 0}
+          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+        aimMode: 1
+        angleDegrees: 90
+        spawnRadius: 0.25
+    - rid: 5830051031957897318
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.5
+    - rid: 5830051031957897319
+      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
+          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+          trailColor: {r: 0, g: 0, b: 0, a: 0}
+          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+        aimMode: 1
+        angleDegrees: 45
+        spawnRadius: 0.25
+    - rid: 5830051031957897320
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.5
+    - rid: 5830051031957897321
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.5
+    - rid: 5830051031957897322
+      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
+          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+          trailColor: {r: 0, g: 0, b: 0, a: 0}
+          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+        aimMode: 1
+        angleDegrees: 0
+        spawnRadius: 0.25
+    - rid: 5830051031957897355
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.25
+    - rid: 5830051031957897377
+      type: {class: SpawnChargedProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        handleKey: HogPattern3
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
+          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
+          homingChargePrefab: {fileID: 0}
+          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+          trailColor: {r: 0, g: 0, b: 0, a: 0}
+          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+          homingEnabled: 0
+        projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+        chargeSeconds: 2
+        projectileRadiusMultiplier: 1
+        aimSpreadDegrees: 24
+        launchSfxId: ""
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
 --- !u!114 &7712345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
