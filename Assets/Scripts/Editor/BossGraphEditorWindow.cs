@@ -13,6 +13,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private SerializedObject graphObject;
     private VisualElement graphArea;
     private BossGraphView graphView;
+    private VisualElement detailsResizeHandle;
     private IMGUIContainer detailsPanel;
     private IMGUIContainer bossHierarchyPanel;
     private BossGraphActionAsset selectedActionAsset;
@@ -39,11 +40,23 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private bool bossHierarchyPositionInitialized;
     private bool rebuildQueued;
     private bool graphStateSaveQueued;
+    private bool detailsPanelResizing;
+    private int detailsResizeControlId;
+    private float detailsPanelWidth = DetailsPanelDefaultWidth;
+    private float detailsResizeStartMouseX;
+    private float detailsResizeStartWidth;
+    private readonly List<CopiedNodeSnapshot> copiedNodeClipboard = new();
+    private readonly List<TransitionSnapshot> copiedTransitionClipboard = new();
+    private int copiedNodePasteCount;
 
     private static readonly string[] DetailTabLabels = { "패턴", "설정" };
+    private static readonly Vector2 NodePasteOffset = new(40f, 40f);
 
     private const float GraphNodeWidth = 220f;
     private const float GraphNodeHeight = 92f;
+    private const float InlineActionLabelWidth = 92f;
+    private const float InlineActionVerticalPadding = 2f;
+    private const float SelectedNodeHiddenDragHandleHeight = 16f;
     private const float PatternFramePadding = 16f;
     private const float PhaseFramePadding = 34f;
     private const float BossHierarchyPanelWidth = 340f;
@@ -51,6 +64,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private const float BossHierarchyCollapsedWidth = 180f;
     private const float BossHierarchyCollapsedHeight = 34f;
     private const float BossHierarchyPanelMargin = 8f;
+    private const float DetailsPanelDefaultWidth = 340f;
+    private const float DetailsPanelMinWidth = 260f;
+    private const float DetailsPanelMaxWidth = 720f;
+    private const float DetailsPanelGraphMinWidth = 360f;
+    private const float DetailsPanelResizeHandleWidth = 10f;
     private const float ActionSettingsMinHeight = 140f;
     private const float ActionSettingsBottomPadding = 16f;
     private const int SelectedElementDetailsIndex = -1;
@@ -58,6 +76,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private void OnEnable()
     {
         EditorApplication.update += UpdateRuntimeHighlight;
+        Undo.undoRedoPerformed -= HandleUndoRedoPerformed;
+        Undo.undoRedoPerformed += HandleUndoRedoPerformed;
     }
 
     [MenuItem("Window/Week14/Boss Graph Editor")]
@@ -140,10 +160,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
         graphView.RegisterCallback<MouseUpEvent>(evt =>
         {
             HandleGraphMouseUp(evt);
-            detailsPanel?.MarkDirtyRepaint();
-            RefreshGroupFramesFromNodePositions();
+            RefreshInlineActionFieldViews();
         });
-        graphView.RegisterCallback<KeyUpEvent>(_ => detailsPanel?.MarkDirtyRepaint());
+        graphView.RegisterCallback<KeyUpEvent>(_ => RefreshInlineActionFieldViews());
         graphArea.Add(graphView);
 
         bossHierarchyPanel = new IMGUIContainer(DrawBossHierarchyPanel)
@@ -161,21 +180,130 @@ public sealed class BossGraphEditorWindow : EditorWindow
         graphArea.Add(bossHierarchyPanel);
         content.Add(graphArea);
 
+        detailsResizeHandle = new IMGUIContainer(DrawDetailsResizeHandle)
+        {
+            style =
+            {
+                width = DetailsPanelResizeHandleWidth,
+                flexShrink = 0f,
+                backgroundColor = new Color(0.12f, 0.12f, 0.12f, 1f)
+            }
+        };
+        detailsResizeHandle.tooltip = "드래그해서 오른쪽 패널 크기 조절";
+        content.Add(detailsResizeHandle);
+
         detailsPanel = new IMGUIContainer(DrawDetailsPanel)
         {
             style =
             {
-                width = 340f,
+                width = detailsPanelWidth,
+                minWidth = DetailsPanelMinWidth,
+                maxWidth = DetailsPanelMaxWidth,
                 flexShrink = 0f
             }
         };
         content.Add(detailsPanel);
+        content.RegisterCallback<GeometryChangedEvent>(_ => SetDetailsPanelWidth(detailsPanelWidth));
         rootVisualElement.Add(content);
 
         if (graphAsset != null)
         {
             RebuildGraph();
         }
+    }
+
+    private void DrawDetailsResizeHandle()
+    {
+        float height = Mathf.Max(1f, detailsResizeHandle?.resolvedStyle.height ?? position.height);
+        Rect rect = new(0f, 0f, DetailsPanelResizeHandleWidth, height);
+        int controlId = GUIUtility.GetControlID(FocusType.Passive, rect);
+        EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeHorizontal);
+        EditorGUI.DrawRect(rect, new Color(0.12f, 0.12f, 0.12f, 1f));
+
+        Event currentEvent = Event.current;
+        switch (currentEvent.GetTypeForControl(controlId))
+        {
+            case EventType.MouseDown:
+                if (currentEvent.button == 0 && rect.Contains(currentEvent.mousePosition))
+                {
+                    detailsResizeControlId = controlId;
+                    GUIUtility.hotControl = controlId;
+                    BeginDetailsPanelResize(GetDetailsResizeMouseX(currentEvent));
+                    currentEvent.Use();
+                }
+                break;
+            case EventType.MouseDrag:
+                if (detailsPanelResizing && GUIUtility.hotControl == detailsResizeControlId)
+                {
+                    UpdateDetailsPanelResize(GetDetailsResizeMouseX(currentEvent));
+                    currentEvent.Use();
+                }
+                break;
+            case EventType.MouseUp:
+                if (detailsPanelResizing && GUIUtility.hotControl == detailsResizeControlId)
+                {
+                    detailsPanelResizing = false;
+                    detailsResizeControlId = 0;
+                    GUIUtility.hotControl = 0;
+                    currentEvent.Use();
+                }
+                break;
+        }
+    }
+
+    private static float GetDetailsResizeMouseX(Event currentEvent)
+    {
+        return GUIUtility.GUIToScreenPoint(currentEvent.mousePosition).x;
+    }
+
+    private void BeginDetailsPanelResize(float mouseX)
+    {
+        if (detailsPanel == null || detailsResizeHandle == null)
+        {
+            return;
+        }
+
+        detailsPanelResizing = true;
+        detailsResizeStartMouseX = mouseX;
+        detailsResizeStartWidth = detailsPanelWidth;
+    }
+
+    private void UpdateDetailsPanelResize(float mouseX)
+    {
+        if (!detailsPanelResizing)
+        {
+            return;
+        }
+
+        float deltaX = mouseX - detailsResizeStartMouseX;
+        SetDetailsPanelWidth(detailsResizeStartWidth - deltaX);
+    }
+
+    private void SetDetailsPanelWidth(float width)
+    {
+        float maxWidth = DetailsPanelMaxWidth;
+        float rootWidth = rootVisualElement?.layout.width ?? 0f;
+        if (rootWidth > 0f)
+        {
+            maxWidth = Mathf.Min(maxWidth, rootWidth - DetailsPanelGraphMinWidth - DetailsPanelResizeHandleWidth);
+        }
+
+        maxWidth = Mathf.Max(DetailsPanelMinWidth, maxWidth);
+        float nextWidth = Mathf.Clamp(width, DetailsPanelMinWidth, maxWidth);
+        if (Mathf.Abs(detailsPanelWidth - nextWidth) <= 0.01f && detailsPanel != null)
+        {
+            return;
+        }
+
+        detailsPanelWidth = nextWidth;
+        if (detailsPanel == null)
+        {
+            return;
+        }
+
+        detailsPanel.style.width = detailsPanelWidth;
+        detailsPanel.style.flexBasis = detailsPanelWidth;
+        detailsPanel.MarkDirtyRepaint();
     }
 
     private void SetGraph(BossGraphAsset asset)
@@ -199,9 +327,23 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private void OnDisable()
     {
         EditorApplication.update -= UpdateRuntimeHighlight;
+        Undo.undoRedoPerformed -= HandleUndoRedoPerformed;
         graphView?.ClearRuntimeHighlight();
         SaveGraphStateIfChanged("Save Boss Graph Layout", true, false);
         DestroyActionEditor();
+    }
+
+    private void HandleUndoRedoPerformed()
+    {
+        graphStateSaveQueued = false;
+        if (graphAsset != null)
+        {
+            graphObject = new SerializedObject(graphAsset);
+        }
+
+        RebuildGraph();
+        detailsPanel?.MarkDirtyRepaint();
+        bossHierarchyPanel?.MarkDirtyRepaint();
     }
 
     private void RebuildGraph()
@@ -275,6 +417,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         nodeView.SetDragNodeIdsProvider(() => graphView != null
             ? graphView.GetNodeIdsForDrag(nodeView)
             : new List<string> { nodeId });
+        nodeView.SetInlineActionFieldsDrawer(() => DrawInlineNodeActionFields(nodeId, index));
         nodeView.SetPosition(new Rect(position, new Vector2(GraphNodeWidth, GraphNodeHeight)));
         nodeView.SetNodeKind(nodeKind, GetNodeKindColor(nodeKind));
         nodeView.AddToClassList("boss-graph-node");
@@ -420,7 +563,29 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private void HandleGraphKeyDown(KeyDownEvent evt)
     {
-        if (evt.keyCode != KeyCode.Delete && evt.keyCode != KeyCode.Backspace)
+        if (evt.ctrlKey || evt.commandKey)
+        {
+            if (TryHandleGraphUndoRedoShortcut(evt))
+            {
+                return;
+            }
+
+            if (evt.keyCode == KeyCode.C)
+            {
+                CopySelectedNodes();
+                evt.StopImmediatePropagation();
+                return;
+            }
+
+            if (evt.keyCode == KeyCode.V)
+            {
+                PasteCopiedNodes();
+                evt.StopImmediatePropagation();
+                return;
+            }
+        }
+
+        if (evt.keyCode != KeyCode.Delete)
         {
             return;
         }
@@ -433,6 +598,183 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         DeleteSelectedNodes();
         evt.StopImmediatePropagation();
+    }
+
+    private bool TryHandleGraphUndoRedoShortcut(KeyDownEvent evt)
+    {
+        if (evt.keyCode == KeyCode.Z && !evt.shiftKey)
+        {
+            PerformGraphUndoRedo(false);
+            evt.StopImmediatePropagation();
+            return true;
+        }
+
+        if (evt.keyCode == KeyCode.Y || (evt.keyCode == KeyCode.Z && evt.shiftKey))
+        {
+            PerformGraphUndoRedo(true);
+            evt.StopImmediatePropagation();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void PerformGraphUndoRedo(bool redo)
+    {
+        FlushPendingGraphStateForUndoRedo();
+        if (redo)
+        {
+            Undo.PerformRedo();
+        }
+        else
+        {
+            Undo.PerformUndo();
+        }
+    }
+
+    private void FlushPendingGraphStateForUndoRedo()
+    {
+        if (graphObject == null || graphAsset == null || graphView == null)
+        {
+            graphStateSaveQueued = false;
+            return;
+        }
+
+        if (graphStateSaveQueued)
+        {
+            SaveGraphStateIfChanged("Edit Boss Graph", true, true);
+            Undo.FlushUndoRecordObjects();
+        }
+
+        graphStateSaveQueued = false;
+    }
+
+    private void CopySelectedNodes()
+    {
+        if (graphObject == null || graphView == null)
+        {
+            return;
+        }
+
+        List<BossGraphNodeView> selectedNodes = graphView.GetSelectedNodeViews();
+        if (selectedNodes.Count == 0)
+        {
+            return;
+        }
+
+        SaveGraphStateIfChanged("Save Boss Graph Before Copy", false, false);
+        graphObject.Update();
+
+        copiedNodeClipboard.Clear();
+        copiedTransitionClipboard.Clear();
+        copiedNodePasteCount = 0;
+
+        HashSet<string> selectedNodeIds = new();
+        for (int i = 0; i < selectedNodes.Count; i++)
+        {
+            BossGraphNodeView nodeView = selectedNodes[i];
+            if (string.IsNullOrWhiteSpace(nodeView.NodeId))
+            {
+                continue;
+            }
+
+            selectedNodeIds.Add(nodeView.NodeId);
+            copiedNodeClipboard.Add(new CopiedNodeSnapshot(nodeView.NodeId, nodeView.GetPosition().position));
+        }
+
+        List<TransitionSnapshot> transitions = ReadTransitionSnapshots(graphObject.FindProperty("transitions"));
+        for (int i = 0; i < transitions.Count; i++)
+        {
+            TransitionSnapshot transition = transitions[i];
+            if (selectedNodeIds.Contains(transition.Endpoint.FromNodeId)
+                && selectedNodeIds.Contains(transition.Endpoint.ToNodeId))
+            {
+                copiedTransitionClipboard.Add(transition);
+            }
+        }
+    }
+
+    private void PasteCopiedNodes()
+    {
+        if (graphObject == null || graphView == null || copiedNodeClipboard.Count == 0)
+        {
+            return;
+        }
+
+        Undo.RecordObject(graphAsset, "Paste Boss Graph Nodes");
+        graphObject.Update();
+
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        SerializedProperty transitions = graphObject.FindProperty("transitions");
+        if (stateNodes == null)
+        {
+            return;
+        }
+
+        copiedNodePasteCount++;
+        Vector2 pasteOffset = NodePasteOffset * copiedNodePasteCount;
+        Dictionary<string, string> pastedNodeIds = new(StringComparer.Ordinal);
+        List<string> newNodeIds = new();
+
+        for (int i = 0; i < copiedNodeClipboard.Count; i++)
+        {
+            CopiedNodeSnapshot copiedNode = copiedNodeClipboard[i];
+            int sourceIndex = FindStateNodeIndex(copiedNode.NodeId);
+            if (sourceIndex < 0 || sourceIndex >= stateNodes.arraySize)
+            {
+                continue;
+            }
+
+            string newNodeId = GetUniqueElementId(stateNodes, "nodeId", $"{copiedNode.NodeId}_Copy");
+            SerializedProperty sourceNode = stateNodes.GetArrayElementAtIndex(sourceIndex);
+            BossAction sourceAction = sourceNode.FindPropertyRelative("action")?.managedReferenceValue as BossAction;
+            int newIndex = DuplicateArrayElementToEnd(stateNodes, sourceIndex);
+            SerializedProperty newNode = stateNodes.GetArrayElementAtIndex(newIndex);
+            SetString(newNode, "nodeId", newNodeId);
+            SetString(newNode, "nodeGuid", Guid.NewGuid().ToString("N"));
+            SetVector2(newNode, "editorPosition", copiedNode.Position + pasteOffset);
+            SerializedProperty newAction = newNode.FindPropertyRelative("action");
+            if (newAction != null)
+            {
+                newAction.managedReferenceValue = CloneBossAction(sourceAction);
+            }
+
+            pastedNodeIds[copiedNode.NodeId] = newNodeId;
+            newNodeIds.Add(newNodeId);
+        }
+
+        if (transitions != null)
+        {
+            for (int i = 0; i < copiedTransitionClipboard.Count; i++)
+            {
+                TransitionSnapshot copiedTransition = copiedTransitionClipboard[i];
+                if (!pastedNodeIds.TryGetValue(copiedTransition.Endpoint.FromNodeId, out string nextFromNodeId)
+                    || !pastedNodeIds.TryGetValue(copiedTransition.Endpoint.ToNodeId, out string nextToNodeId))
+                {
+                    continue;
+                }
+
+                transitions.InsertArrayElementAtIndex(transitions.arraySize);
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(transitions.arraySize - 1);
+                SetString(transition, "fromNodeGuid", string.Empty);
+                SetString(transition, "toNodeGuid", string.Empty);
+                SetString(transition, "fromNodeId", nextFromNodeId);
+                SetString(transition, "toNodeId", nextToNodeId);
+                SetEnum(transition, "conditionType", copiedTransition.Values.ConditionType);
+                SetFloat(transition, "threshold", copiedTransition.Values.Threshold);
+                SetInt(transition, "phaseIndex", copiedTransition.Values.PhaseIndex);
+            }
+
+            SyncPatternsFromTransitions(ReadTransitionSnapshots(transitions));
+            SyncGuidReferences();
+        }
+
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
+        AssetDatabase.SaveAssets();
+        RebuildGraph();
+        graphView.SelectNodes(newNodeIds);
+        detailsPanel?.MarkDirtyRepaint();
     }
 
     private void SaveGraph()
@@ -475,6 +817,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         if (SaveGraphStateIfChanged("Edit Boss Graph Layout", true, true))
         {
+            graphStateSaveQueued = false;
             RefreshGroupFramesFromNodePositions();
         }
     }
@@ -503,6 +846,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
         graphStateSaveQueued = true;
         EditorApplication.delayCall += () =>
         {
+            if (!graphStateSaveQueued)
+            {
+                return;
+            }
+
             graphStateSaveQueued = false;
             if (this == null || graphObject == null || graphAsset == null || graphView == null)
             {
@@ -1327,8 +1675,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private static Rect GetNormalizedNodeRect(BossGraphNodeView nodeView)
     {
         Rect rect = nodeView.GetPosition();
-        rect.width = Mathf.Max(GraphNodeWidth, rect.width);
-        rect.height = Mathf.Max(GraphNodeHeight, rect.height);
+        rect.width = GraphNodeWidth;
+        rect.height = GraphNodeHeight;
         return rect;
     }
 
@@ -1347,6 +1695,48 @@ public sealed class BossGraphEditorWindow : EditorWindow
             out _);
         graphView.ReplacePatternFrames(patternFrames.Select(frame => new BossGraphFrameView(frame.Label, frame.Color, frame.Rect, false)));
         graphView.ReplacePhaseFrames(null);
+    }
+
+    private void RefreshInlineActionFieldViews()
+    {
+        if (graphObject == null || graphView == null)
+        {
+            return;
+        }
+
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        if (stateNodes == null)
+        {
+            return;
+        }
+
+        IReadOnlyList<BossGraphNodeView> nodeViews = graphView.NodeViews;
+        for (int i = 0; i < nodeViews.Count; i++)
+        {
+            BossGraphNodeView nodeView = nodeViews[i];
+            if (nodeView.NodeIndex < 0 || nodeView.NodeIndex >= stateNodes.arraySize)
+            {
+                continue;
+            }
+
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeView.NodeIndex);
+            bool isSelected = graphView.IsNodeSelected(nodeView.NodeId);
+            Rect rect = nodeView.GetPosition();
+            rect.width = GraphNodeWidth;
+            rect.height = isSelected
+                ? GetNodeViewHeight(node)
+                : GraphNodeHeight;
+            nodeView.SetPosition(rect);
+            nodeView.SetInlineActionFieldsVisible(isSelected);
+            nodeView.MarkInlineActionFieldsDirty();
+            if (isSelected)
+            {
+                nodeView.BringToFront();
+            }
+        }
+
+        RefreshGroupFramesFromNodePositions();
+        detailsPanel?.MarkDirtyRepaint();
     }
 
     private void BuildGroupFramesFromCurrentNodePositions(
@@ -2504,58 +2894,14 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private string GetNodeDisplayName(SerializedProperty node, int nodeIndex)
     {
-        string baseName = GetNodeActionDisplayName(node);
-        int totalCount = CountNodeDisplayNames(baseName);
-        if (totalCount <= 1)
+        string nodeId = GetString(node, "nodeId", string.Empty);
+        if (!string.IsNullOrWhiteSpace(nodeId))
         {
-            return baseName;
+            return nodeId;
         }
 
-        int occurrence = GetNodeDisplayNameOccurrence(baseName, nodeIndex);
-        return $"{baseName} {Mathf.Max(1, occurrence):00}";
-    }
-
-    private int CountNodeDisplayNames(string baseName)
-    {
-        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
-        if (stateNodes == null || string.IsNullOrWhiteSpace(baseName))
-        {
-            return 0;
-        }
-
-        int count = 0;
-        for (int i = 0; i < stateNodes.arraySize; i++)
-        {
-            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
-            if (GetNodeActionDisplayName(node) == baseName)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private int GetNodeDisplayNameOccurrence(string baseName, int nodeIndex)
-    {
-        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
-        if (stateNodes == null || string.IsNullOrWhiteSpace(baseName))
-        {
-            return 1;
-        }
-
-        int maxIndex = Mathf.Min(nodeIndex, stateNodes.arraySize - 1);
-        int occurrence = 0;
-        for (int i = 0; i <= maxIndex; i++)
-        {
-            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
-            if (GetNodeActionDisplayName(node) == baseName)
-            {
-                occurrence++;
-            }
-        }
-
-        return occurrence;
+        string fallbackName = GetNodeActionDisplayName(node);
+        return string.IsNullOrWhiteSpace(fallbackName) ? $"Node {nodeIndex + 1}" : fallbackName;
     }
 
     private static string GetNodeActionDisplayName(SerializedProperty node)
@@ -3104,12 +3450,234 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private void DrawNodeCoreFields(SerializedProperty node, int nodeIndex)
     {
-        using (new EditorGUI.DisabledScope(true))
+        SerializedProperty nodeId = node.FindPropertyRelative("nodeId");
+        if (nodeId != null)
         {
-            EditorGUILayout.TextField("Action Name", GetNodeDisplayName(node, nodeIndex));
+            string currentNodeId = nodeId.stringValue;
+            EditorGUI.BeginChangeCheck();
+            string nextNodeId = EditorGUILayout.DelayedTextField("Node Id", currentNodeId).Trim();
+            if (EditorGUI.EndChangeCheck() && nextNodeId != currentNodeId)
+            {
+                if (string.IsNullOrWhiteSpace(nextNodeId))
+                {
+                    EditorGUILayout.HelpBox("Node Id는 비워둘 수 없습니다.", MessageType.Warning);
+                }
+                else if (!IsNodeIdAvailable(nextNodeId, nodeIndex))
+                {
+                    EditorGUILayout.HelpBox($"이미 사용 중인 Node Id입니다: {nextNodeId}", MessageType.Warning);
+                }
+                else
+                {
+                    nodeId.stringValue = nextNodeId;
+                }
+            }
+        }
+        EditorGUILayout.PropertyField(node.FindPropertyRelative("nodeKind"), new GUIContent("Type"));
+    }
+
+    private bool IsNodeIdAvailable(string nodeId, int currentNodeIndex)
+    {
+        if (graphObject == null || string.IsNullOrWhiteSpace(nodeId))
+        {
+            return false;
         }
 
-        EditorGUILayout.PropertyField(node.FindPropertyRelative("nodeKind"), new GUIContent("Type"));
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        if (stateNodes == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            if (i == currentNodeIndex)
+            {
+                continue;
+            }
+
+            string existingNodeId = GetString(stateNodes.GetArrayElementAtIndex(i), "nodeId", string.Empty);
+            if (string.Equals(existingNodeId, nodeId, StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void DrawInlineNodeActionFields(string nodeId, int nodeIndex)
+    {
+        if (graphObject == null || string.IsNullOrWhiteSpace(nodeId) || nodeIndex < 0)
+        {
+            return;
+        }
+
+        if (graphView == null || !graphView.IsNodeSelected(nodeId))
+        {
+            return;
+        }
+
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        if (stateNodes == null || nodeIndex >= stateNodes.arraySize)
+        {
+            return;
+        }
+
+        SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
+        if (GetString(node, "nodeId", string.Empty) != nodeId)
+        {
+            return;
+        }
+
+        SerializedProperty action = GetNodeActionProperty(node);
+        if (action == null || action.managedReferenceValue == null)
+        {
+            return;
+        }
+
+        BossGraphNodeKind nodeKind = (BossGraphNodeKind)GetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
+        BossGraphProjectileNameOptions.Set(graphProjectileNames);
+        BossGraphActionFilterContext.Set(nodeKind, GetActionCategoryAsset());
+        try
+        {
+            BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+            BossGraphAimStartNodeOptions.Set(graphObject);
+
+            float previousLabelWidth = EditorGUIUtility.labelWidth;
+            try
+            {
+                EditorGUIUtility.labelWidth = InlineActionLabelWidth;
+                using (new EditorGUILayout.VerticalScope(GUIStyle.none, GUILayout.ExpandWidth(true)))
+                {
+                    EditorGUI.BeginChangeCheck();
+                    DrawInlineActionProperties(action);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(graphAsset, "Edit Boss Graph Node Action");
+                        graphObject.ApplyModifiedProperties();
+                        EditorUtility.SetDirty(graphAsset);
+                        ResizeNodeViewToActionFields(nodeId);
+                        detailsPanel?.MarkDirtyRepaint();
+                        RefreshGroupFramesFromNodePositions();
+                    }
+                }
+            }
+            finally
+            {
+                EditorGUIUtility.labelWidth = previousLabelWidth;
+            }
+        }
+        finally
+        {
+            BossGraphBossHierarchyOptions.Clear();
+            BossGraphAimStartNodeOptions.Clear();
+            BossGraphActionFilterContext.Clear();
+            BossGraphProjectileNameOptions.Clear();
+        }
+    }
+
+    private void ResizeNodeViewToActionFields(string nodeId)
+    {
+        BossGraphNodeView nodeView = graphView?.FindNode(nodeId);
+        int nodeIndex = FindStateNodeIndex(nodeId);
+        if (nodeView == null || nodeIndex < 0)
+        {
+            return;
+        }
+
+        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
+        if (stateNodes == null || nodeIndex >= stateNodes.arraySize)
+        {
+            return;
+        }
+
+        SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
+        Rect rect = nodeView.GetPosition();
+        rect.width = GraphNodeWidth;
+        rect.height = GetNodeViewHeight(node);
+        nodeView.SetPosition(rect);
+    }
+
+    private static void DrawInlineActionProperties(SerializedProperty action)
+    {
+        SerializedProperty iterator = action.Copy();
+        SerializedProperty end = iterator.GetEndProperty();
+        bool enterChildren = true;
+        bool drewAnyField = false;
+        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        {
+            enterChildren = false;
+            if (ShouldSkipInlineActionProperty(iterator))
+            {
+                continue;
+            }
+
+            drewAnyField = true;
+            EditorGUILayout.PropertyField(iterator, true);
+        }
+
+        if (!drewAnyField)
+        {
+            EditorGUILayout.LabelField("설정 필드 없음", EditorStyles.miniLabel);
+        }
+    }
+
+    private static bool ShouldSkipInlineActionProperty(SerializedProperty property)
+    {
+        if (property == null)
+        {
+            return true;
+        }
+
+        string propertyName = property.name;
+        if (propertyName == "origin"
+            || propertyName == "effectOrigin"
+            || propertyName == "effects")
+        {
+            return true;
+        }
+
+        return property.type == nameof(BossGraphProjectileOriginSpec)
+            || property.type == nameof(BossGraphEffectSettings);
+    }
+
+    private static float GetNodeViewHeight(SerializedProperty node)
+    {
+        float selectedBaseHeight = GraphNodeHeight - SelectedNodeHiddenDragHandleHeight;
+        SerializedProperty action = GetNodeActionProperty(node);
+        if (action == null || action.managedReferenceValue == null)
+        {
+            return selectedBaseHeight;
+        }
+
+        return selectedBaseHeight + GetInlineActionPropertiesHeight(action);
+    }
+
+    private static float GetInlineActionPropertiesHeight(SerializedProperty action)
+    {
+        SerializedProperty iterator = action.Copy();
+        SerializedProperty end = iterator.GetEndProperty();
+        bool enterChildren = true;
+        bool hasFields = false;
+        float height = InlineActionVerticalPadding * 2f;
+        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        {
+            enterChildren = false;
+            if (ShouldSkipInlineActionProperty(iterator))
+            {
+                continue;
+            }
+
+            hasFields = true;
+            height += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
+        }
+
+        if (!hasFields)
+        {
+            height += EditorGUIUtility.singleLineHeight;
+        }
+
+        return height;
     }
 
     private static BossGraphActionAsset GetNodeActionAsset(SerializedProperty node)
@@ -3790,6 +4358,36 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return $"{prefix}{Guid.NewGuid():N}";
     }
 
+    private static int DuplicateArrayElementToEnd(SerializedProperty array, int sourceIndex)
+    {
+        array.InsertArrayElementAtIndex(sourceIndex);
+        int duplicateIndex = sourceIndex;
+        int lastIndex = array.arraySize - 1;
+        if (duplicateIndex != lastIndex)
+        {
+            array.MoveArrayElement(duplicateIndex, lastIndex);
+        }
+
+        return lastIndex;
+    }
+
+    private static BossAction CloneBossAction(BossAction sourceAction)
+    {
+        if (sourceAction == null)
+        {
+            return null;
+        }
+
+        BossAction clone = Activator.CreateInstance(sourceAction.GetType()) as BossAction;
+        if (clone == null)
+        {
+            return null;
+        }
+
+        EditorJsonUtility.FromJsonOverwrite(EditorJsonUtility.ToJson(sourceAction), clone);
+        return clone;
+    }
+
     private static string GetString(SerializedProperty root, string childName, string fallback)
     {
         SerializedProperty child = root.FindPropertyRelative(childName);
@@ -3954,6 +4552,18 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         public string PatternId { get; }
         public int Weight { get; }
+    }
+
+    private readonly struct CopiedNodeSnapshot
+    {
+        public CopiedNodeSnapshot(string nodeId, Vector2 position)
+        {
+            NodeId = nodeId;
+            Position = position;
+        }
+
+        public string NodeId { get; }
+        public Vector2 Position { get; }
     }
 
     private readonly struct FrameLayout
@@ -4153,6 +4763,18 @@ internal sealed class BossGraphView : GraphView
             .ToList();
     }
 
+    public bool IsNodeSelected(string nodeId)
+    {
+        if (string.IsNullOrWhiteSpace(nodeId))
+        {
+            return false;
+        }
+
+        return selection
+            .OfType<BossGraphNodeView>()
+            .Any(nodeView => nodeView.NodeId == nodeId);
+    }
+
     public List<string> GetNodeIdsForDrag(BossGraphNodeView draggedNode)
     {
         if (draggedNode == null)
@@ -4186,6 +4808,27 @@ internal sealed class BossGraphView : GraphView
         ClearSelection();
         AddToSelection(nodeView);
         nodeView.BringToFront();
+    }
+
+    public void SelectNodes(IEnumerable<string> nodeIds)
+    {
+        ClearSelection();
+        if (nodeIds == null)
+        {
+            return;
+        }
+
+        foreach (string nodeId in nodeIds)
+        {
+            BossGraphNodeView nodeView = FindNode(nodeId);
+            if (nodeView == null)
+            {
+                continue;
+            }
+
+            AddToSelection(nodeView);
+            nodeView.BringToFront();
+        }
     }
 
     public void SetRuntimeHighlight(string nodeId, string edgeFromNodeId, string edgeToNodeId)
@@ -4257,6 +4900,11 @@ internal sealed class BossGraphView : GraphView
         }
 
         return compatiblePorts;
+    }
+
+    public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+    {
+        evt.StopImmediatePropagation();
     }
 }
 
@@ -4408,6 +5056,7 @@ internal sealed class BossGraphNodeView : Node
     private const float DragStartDistance = 5f;
     private static readonly Color RuntimeNodeOutlineColor = new(1f, 0.78f, 0.08f, 1f);
 
+    private readonly IMGUIContainer inlineActionFields;
     private readonly VisualElement dragHandle;
     private Func<IReadOnlyList<string>> dragNodeIdsProvider;
     private Vector2 dragStartMousePosition;
@@ -4426,6 +5075,45 @@ internal sealed class BossGraphNodeView : Node
         OutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
         OutputPort.portName = "Out";
         outputContainer.Add(OutputPort);
+
+        extensionContainer.style.marginLeft = 0f;
+        extensionContainer.style.marginRight = 0f;
+        extensionContainer.style.paddingLeft = 0f;
+        extensionContainer.style.paddingRight = 0f;
+        extensionContainer.style.paddingTop = 0f;
+        extensionContainer.style.paddingBottom = 0f;
+
+        inlineActionFields = new IMGUIContainer
+        {
+            style =
+            {
+                alignSelf = Align.Stretch,
+                flexGrow = 1f,
+                flexShrink = 0f,
+                marginTop = 0f,
+                marginLeft = 0f,
+                marginRight = 0f,
+                marginBottom = 0f,
+                paddingLeft = 2f,
+                paddingRight = 2f,
+                paddingTop = 2f,
+                paddingBottom = 2f,
+                backgroundColor = new Color(0.16f, 0.16f, 0.16f, 1f),
+                borderTopWidth = 1f,
+                borderBottomWidth = 1f,
+                borderLeftWidth = 1f,
+                borderRightWidth = 1f,
+                borderTopColor = new Color(0.06f, 0.06f, 0.06f, 1f),
+                borderBottomColor = new Color(0.06f, 0.06f, 0.06f, 1f),
+                borderLeftColor = new Color(0.06f, 0.06f, 0.06f, 1f),
+                borderRightColor = new Color(0.06f, 0.06f, 0.06f, 1f)
+            }
+        };
+        inlineActionFields.RegisterCallback<MouseDownEvent>(evt => evt.StopPropagation());
+        inlineActionFields.RegisterCallback<MouseMoveEvent>(evt => evt.StopPropagation());
+        inlineActionFields.RegisterCallback<KeyDownEvent>(evt => evt.StopPropagation());
+        inlineActionFields.style.display = DisplayStyle.None;
+        extensionContainer.Add(inlineActionFields);
 
         dragHandle = new VisualElement
         {
@@ -4448,6 +5136,23 @@ internal sealed class BossGraphNodeView : Node
     public string NodeId { get; }
     public Port InputPort { get; }
     public Port OutputPort { get; }
+
+    public void SetInlineActionFieldsDrawer(Action drawer)
+    {
+        inlineActionFields.onGUIHandler = drawer;
+        inlineActionFields.MarkDirtyRepaint();
+    }
+
+    public void MarkInlineActionFieldsDirty()
+    {
+        inlineActionFields.MarkDirtyRepaint();
+    }
+
+    public void SetInlineActionFieldsVisible(bool visible)
+    {
+        inlineActionFields.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        dragHandle.style.display = visible ? DisplayStyle.None : DisplayStyle.Flex;
+    }
 
     public void SetDragNodeIdsProvider(Func<IReadOnlyList<string>> provider)
     {
@@ -4480,6 +5185,11 @@ internal sealed class BossGraphNodeView : Node
         style.borderBottomColor = RuntimeNodeOutlineColor;
         style.borderLeftColor = RuntimeNodeOutlineColor;
         style.borderRightColor = RuntimeNodeOutlineColor;
+    }
+
+    public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+    {
+        evt.StopImmediatePropagation();
     }
 
     private void OnDragMouseDown(MouseDownEvent evt)
