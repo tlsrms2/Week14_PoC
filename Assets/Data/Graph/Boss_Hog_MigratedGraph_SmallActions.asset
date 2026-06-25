@@ -423,15 +423,6 @@ MonoBehaviour:
       rid: 2634811931892908236
     sequences: []
     editorPosition: {x: 11520, y: 120}
-  - nodeId: Node1
-    nodeGuid: 9f129c30acf04730b54c4a4a2916738d
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811931892908243
-    sequences: []
-    editorPosition: {x: 11780, y: 120}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -544,11 +535,6 @@ MonoBehaviour:
     - HogPattern3_Action01_RadialSplit
     - HogPattern3_Action01_WaitCharge
     - Node4
-  - patternId: Pattern8
-    nodeGuids:
-    - 9f129c30acf04730b54c4a4a2916738d
-    nodeIds:
-    - Node1
   phases:
   - phaseIndex: 0
     selectionMode: 0
@@ -571,8 +557,6 @@ MonoBehaviour:
     - patternId: Pattern2
       weight: 1
     - patternId: Pattern3
-      weight: 1
-    - patternId: Pattern8
       weight: 1
     - patternId: Pattern4
       weight: 1
@@ -1945,16 +1929,6 @@ MonoBehaviour:
         mode: 2
         startNodeId: Node2
         targetPath: 
-        activateOnStart: 1
-        flipYByFacing: 1
-        deactivateOnEnd: 1
-        deactivateOnPatternEnd: 1
-    - rid: 2634811931892908243
-      type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        mode: 0
-        startNodeId: 
-        targetPath: Boss-Dealer Visual/MachineGunRoot
         activateOnStart: 1
         flipYByFacing: 1
         deactivateOnEnd: 1

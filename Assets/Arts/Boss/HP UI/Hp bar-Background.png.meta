@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 42138d1a1a0087646b12ea7686804523
+guid: 0a200e945f3d4a247aabbc0d6035319a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4622778809047455861
-    second: Boss-Phase_0
+      213: -6498633979361200907
+    second: Hp bar-Background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss-Phase_0
+      name: Hp bar-Background_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 1
+        y: 1
+        width: 160
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b87e58b6a2798dfb0800000000000000
-      internalID: -4622778809047455861
+      spriteID: 5f474e6b3d630d5a0800000000000000
+      internalID: -6498633979361200907
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss-Phase_0: -4622778809047455861
+      Hp bar-Background_0: -6498633979361200907
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 42138d1a1a0087646b12ea7686804523
+guid: 19d9b7273c7c003418e5d2999227f769
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4622778809047455861
-    second: Boss-Phase_0
+      213: 712342987349998317
+    second: Cursor-pressed_0
+  - first:
+      213: -1835106396394011468
+    second: Cursor-pressed_1
+  - first:
+      213: 3470070210464780170
+    second: Cursor-pressed_2
+  - first:
+      213: -1572014800063378072
+    second: Cursor-pressed_3
+  - first:
+      213: 426253877272378910
+    second: Cursor-pressed_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 96
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss-Phase_0
+      name: Cursor-pressed_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 12
+        y: 25
+        width: 9
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +140,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b87e58b6a2798dfb0800000000000000
-      internalID: -4622778809047455861
+      spriteID: deabc3f3c20c2e900800000000000000
+      internalID: 712342987349998317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cursor-pressed_1
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 12
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b443ed84746886e0800000000000000
+      internalID: -1835106396394011468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cursor-pressed_2
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 10
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8f0b60a87a282030800000000000000
+      internalID: 3470070210464780170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cursor-pressed_3
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 12
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86dc0944ed41f2ae0800000000000000
+      internalID: -1572014800063378072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cursor-pressed_4
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 2
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1ef3fa94ab5ae500800000000000000
+      internalID: 426253877272378910
       vertices: []
       indices: 
       edges: []
@@ -148,7 +248,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss-Phase_0: -4622778809047455861
+      Cursor-pressed_0: 712342987349998317
+      Cursor-pressed_1: -1835106396394011468
+      Cursor-pressed_2: 3470070210464780170
+      Cursor-pressed_3: -1572014800063378072
+      Cursor-pressed_4: 426253877272378910
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
