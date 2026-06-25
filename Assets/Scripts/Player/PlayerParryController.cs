@@ -68,15 +68,8 @@ namespace Week14.Combat
 
         internal bool TryParryProjectile()
         {
-            PlayerCombatConfig config = context.Config;
-            if (config == null)
+            if (!HasValidParryConfig())
             {
-                return false;
-            }
-
-            if (config.ProjectilePrefab == null)
-            {
-                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", context.Owner);
                 return false;
             }
 
@@ -90,6 +83,63 @@ namespace Week14.Combat
                 return false;
             }
 
+            return ExecuteParry(target);
+        }
+
+        internal int AutoParryProjectilesNear(Vector2 center, float radius)
+        {
+            if (!HasValidParryConfig() || radius <= 0f)
+            {
+                return 0;
+            }
+
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            float sqrRadius = radius * radius;
+            int parriedCount = 0;
+
+            for (int i = 0; i < activeProjectiles.Count; i++)
+            {
+                EnemyProjectile target = activeProjectiles[i];
+                if (target == null || !target.CanBeIntercepted)
+                {
+                    continue;
+                }
+
+                Vector2 targetPosition = target.transform.position;
+                if ((targetPosition - center).sqrMagnitude > sqrRadius)
+                {
+                    continue;
+                }
+
+                if (ExecuteParry(target, playSfx: false))
+                {
+                    parriedCount++;
+                }
+            }
+
+            return parriedCount;
+        }
+
+        private bool HasValidParryConfig()
+        {
+            PlayerCombatConfig config = context.Config;
+            if (config == null)
+            {
+                return false;
+            }
+
+            if (config.ProjectilePrefab == null)
+            {
+                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", context.Owner);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ExecuteParry(EnemyProjectile target, bool playSfx = true)
+        {
+            PlayerCombatConfig config = context.Config;
             Transform fireOrigin = GetLeftFireOrigin();
             Vector2 firePosition = fireOrigin != null ? fireOrigin.position : context.PlayerTransform.position;
             Vector2 direction = (Vector2)target.transform.position - firePosition;
@@ -126,8 +176,13 @@ namespace Week14.Combat
             parryShot.SetForcedParryTarget(target);
             ProjectileVfx.PlayMuzzleFlash(firePosition, direction.normalized, config.ParryEffectColor, 1f);
             context.Visual?.PlayIntercept();
-            int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
-            SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, 1.3f));
+
+            if (playSfx)
+            {
+                int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
+                SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, 1.3f));
+            }
+
             ProjectileParried?.Invoke();
             return true;
         }
