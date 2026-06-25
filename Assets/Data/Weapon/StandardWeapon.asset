@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.StandardWeaponSO
   weaponId: StandardWeapon
   displayName: "\uAE30\uBCF8\uBB34\uAE30"
-  icon: {fileID: 21300000, guid: d021d64bec59a8d4bac4fd95b74dbda9, type: 3}
+  icon: {fileID: -1250021020546060479, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
   description: "\uAE30\uBCF8\uBB34\uAE30\uB2E4"
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
