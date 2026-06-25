@@ -41,15 +41,17 @@ namespace Week14.Combat
                 : (Vector2)context.PlayerTransform.up;
         }
 
-        private IEnumerator DashRoutine(Vector2 direction, float speed, float duration)
+        private IEnumerator DashRoutine(Vector2 direction, float averageSpeed, float duration)
         {
             IsDashing = true;
             context.Visual?.PlayRoll();
 
             Rigidbody2D body = context.Body;
+            float peakSpeed = averageSpeed * 2f;
             float elapsed = 0f;
             while (elapsed < duration)
             {
+                float speed = Mathf.Lerp(peakSpeed, 0f, elapsed / duration);
                 body.linearVelocity = direction * speed;
                 elapsed += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
