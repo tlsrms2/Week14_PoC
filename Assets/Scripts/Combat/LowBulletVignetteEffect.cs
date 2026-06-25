@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Week14.UI;
 
 namespace Week14.Combat
 {
@@ -153,7 +154,7 @@ namespace Week14.Combat
                 return;
             }
 
-            float targetWeight = isActive ? 1f : 0f;
+            float targetWeight = isActive && !GameModalState.BlocksGameplayInput ? 1f : 0f;
             float fadeSpeed = 1f / Mathf.Max(0.01f, fadeSeconds);
             currentWeight = Mathf.MoveTowards(currentWeight, targetWeight, fadeSpeed * deltaTime);
             volume.weight = currentWeight;
