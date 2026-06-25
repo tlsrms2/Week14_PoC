@@ -451,22 +451,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HogBossAI
   maxLives: 2
   phaseTransitionWaitSeconds: 1.5
-  enragePhase1Seconds: 40
-  enragePhase1MaxBullets: 3
-  enragePhase2Seconds: 20
-  enragePhase2MaxBullets: 1
-  enrageWindupSeconds: 3
-  enrageWindupShakeDistance: 0.01
-  enrageWindupShakeFrequency: 28
-  enrageBurstSprite: {fileID: -1308620352984429291, guid: 0baa10e0e47a1e94eac947c1f292f41a, type: 3}
-  enrageBurstTargetScale: 70
-  enrageBurstGrowSeconds: 5
-  enrageBurstHoldSeconds: 0.1
-  enrageBurstFadeSeconds: 0.35
-  enrageBurstColor: {r: 1, g: 1, b: 1, a: 1}
-  enrageShakeAmplitude: 0.25
-  enrageShakeSeconds: 1
-  enrageShakeZoom: 0.12
   deathAnimator: {fileID: 8640302714323975246}
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
@@ -496,7 +480,6 @@ MonoBehaviour:
   bossCombatUiRoot: {fileID: 0}
   bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
-  bossEnrageBarView: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}

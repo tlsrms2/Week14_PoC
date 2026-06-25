@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Week14.Bootstrap;
 
 namespace Week14.UI
 {
@@ -42,7 +42,7 @@ namespace Week14.UI
                 return;
             }
 
-            SceneManager.LoadScene(selectedBossData.SceneName);
+            SceneTransition.LoadScene(selectedBossData.SceneName);
         }
 
         private void ClearSelection()

@@ -111,7 +111,7 @@ namespace Week14.UI
             Time.timeScale = 1f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public void GoToTitle()
