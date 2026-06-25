@@ -12,6 +12,17 @@ namespace Week14.Skills
         [SerializeField, Min(0.05f)] private float rollDuration = 0.3f;
         [Tooltip("구르기 도중 플레이어 주변의 투사체를 자동으로 패링하는 범위(반지름)입니다.")]
         [SerializeField, Min(0f)] private float autoParryRadius = 2f;
+        [Header("VFX")]
+        [Tooltip("구르기 잔상이 생성되는 간격입니다.")]
+        [SerializeField, Min(0.01f)] private float afterimageInterval = 0.045f;
+        [Tooltip("구르기 잔상이 사라지는 데 걸리는 시간입니다. 0이면 잔상을 끕니다.")]
+        [SerializeField, Min(0f)] private float afterimageDuration = 0.18f;
+        [Tooltip("구르기 잔상 색상입니다. 알파로 투명도를 조절합니다.")]
+        [SerializeField] private Color afterimageColor = new Color(0.55f, 0.95f, 1f, 0.38f);
+        [Tooltip("자동 패링된 투사체가 플레이어에게 흡수되는 연출 시간입니다. 0이면 흡수 연출을 끕니다.")]
+        [SerializeField, Min(0f)] private float autoParryAbsorbDuration = 0.18f;
+        [Tooltip("자동 패링 투사체 흡수 연출 색상입니다. 알파로 투명도를 조절합니다.")]
+        [SerializeField] private Color autoParryAbsorbColor = new Color(0.45f, 0.95f, 1f, 0.85f);
 
         public override void Execute(GameObject user)
         {
@@ -21,7 +32,17 @@ namespace Week14.Skills
                 return;
             }
 
-            controller.TryDash(rollDistance, rollDuration, autoParryRadius);
+            controller.TryDash(rollDistance, rollDuration, autoParryRadius, CreateVfxSettings());
+        }
+
+        private RollSkillVfxSettings CreateVfxSettings()
+        {
+            return new RollSkillVfxSettings(
+                afterimageInterval,
+                afterimageDuration,
+                afterimageColor,
+                autoParryAbsorbDuration,
+                autoParryAbsorbColor);
         }
     }
 }
