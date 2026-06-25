@@ -14,8 +14,8 @@ namespace Week14.Enemy
             Vector2 direction,
             Vector3 muzzleOrigin);
 
-        private readonly DronePilot pilot;
-        private readonly DronePilot.SummonSettings summon;
+        private readonly IMinionOwner owner;
+        private readonly MinionSummonSettings summon;
         private readonly BossPatternMovement patternMovement;
         private readonly List<Minion> controlledMinions;
         private readonly List<Minion> spawnedMinions;
@@ -29,8 +29,8 @@ namespace Week14.Enemy
         private int synchronizedMinionSyncVersion;
 
         internal MinionPatternContext(
-            DronePilot pilot,
-            DronePilot.SummonSettings summon,
+            IMinionOwner owner,
+            MinionSummonSettings summon,
             BossPatternMovement patternMovement,
             List<Minion> controlledMinions,
             List<Minion> spawnedMinions,
@@ -40,7 +40,7 @@ namespace Week14.Enemy
             Func<Vector3, Vector2> getDirectionToPlayer,
             BossProjectileFire fireBossProjectile)
         {
-            this.pilot = pilot;
+            this.owner = owner;
             this.summon = summon;
             this.patternMovement = patternMovement;
             this.controlledMinions = controlledMinions;
@@ -101,7 +101,8 @@ namespace Week14.Enemy
         internal float SpawnMinion(int index, int totalCount)
         {
             float angle = totalCount <= 0 ? UnityEngine.Random.Range(0f, 360f) : 360f * index / Mathf.Max(1, totalCount);
-            Vector3 startPosition = pilot.transform.position;
+            Transform ownerTransform = owner?.MinionOwnerTransform;
+            Vector3 startPosition = ownerTransform != null ? ownerTransform.position : Vector3.zero;
             Vector3 position = startPosition + (Vector3)(AngleToDirection(angle) * Mathf.Max(0f, summon.SpawnRadius));
             Minion minion = UnityEngine.Object.Instantiate(summon.Prefab, startPosition, Quaternion.identity);
             if (minion == null)
@@ -109,7 +110,7 @@ namespace Week14.Enemy
                 return 0f;
             }
 
-            minion.SetOwner(pilot);
+            minion.SetOwner(owner);
             float introSeconds = minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
             if (!controlledMinions.Contains(minion))
             {
@@ -134,7 +135,7 @@ namespace Week14.Enemy
         {
             for (int i = controlledMinions.Count - 1; i >= 0; i--)
             {
-                if (controlledMinions[i] == null || controlledMinions[i].Owner != pilot)
+                if (controlledMinions[i] == null || controlledMinions[i].Owner != owner)
                 {
                     controlledMinions.RemoveAt(i);
                 }
@@ -149,13 +150,13 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                bool canClaim = minion.Owner == pilot || (summon.ClaimSceneMinions && minion.Owner == null);
+                bool canClaim = minion.Owner == owner || (summon.ClaimSceneMinions && minion.Owner == null);
                 if (!canClaim)
                 {
                     continue;
                 }
 
-                minion.SetOwner(pilot);
+                minion.SetOwner(owner);
                 if (!controlledMinions.Contains(minion))
                 {
                     controlledMinions.Add(minion);
@@ -251,7 +252,7 @@ namespace Week14.Enemy
             {
                 if (controlledMinions[i] != null)
                 {
-                    controlledMinions[i].ClearOwner(pilot);
+                    controlledMinions[i].ClearOwner(owner);
                 }
             }
 

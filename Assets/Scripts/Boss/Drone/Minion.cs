@@ -24,7 +24,7 @@ namespace Week14.Enemy
         private static readonly List<Minion> ActiveMinions = new();
 
         [Header("Owner")]
-        [SerializeField] private DronePilot owner;
+        [SerializeField] private MonoBehaviour owner;
 
         [Header("Bullet")]
         [SerializeField, Min(1)] private int maxBullets = 12;
@@ -95,8 +95,9 @@ namespace Week14.Enemy
         private bool ownsStatusView;
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
+        private IMinionOwner runtimeOwner;
 
-        public DronePilot Owner => owner;
+        public IMinionOwner Owner => ResolveOwner();
         public Health Health => health;
         public BulletGauge Bullets => bullets;
         public bool IsCommanded => commandRoutine != null;
@@ -224,9 +225,36 @@ namespace Week14.Enemy
             FaceMovementDirection();
         }
 
-        public void SetOwner(DronePilot nextOwner)
+        private IMinionOwner ResolveOwner()
         {
-            owner = nextOwner;
+            if (runtimeOwner is UnityEngine.Object runtimeObject && runtimeObject == null)
+            {
+                runtimeOwner = null;
+            }
+
+            if (runtimeOwner != null)
+            {
+                return runtimeOwner;
+            }
+
+            if (owner == null)
+            {
+                return null;
+            }
+
+            runtimeOwner = owner as IMinionOwner;
+            if (runtimeOwner == null)
+            {
+                owner = null;
+            }
+
+            return runtimeOwner;
+        }
+
+        public void SetOwner(IMinionOwner nextOwner)
+        {
+            runtimeOwner = nextOwner;
+            owner = nextOwner as MonoBehaviour;
         }
 
         public float BeginSummonIntro(Vector3 startPosition, Vector3 targetPosition, float duration, float startScale)
@@ -346,10 +374,11 @@ namespace Week14.Enemy
             ApplyBodyStateColor();
         }
 
-        public void ClearOwner(DronePilot expectedOwner)
+        public void ClearOwner(IMinionOwner expectedOwner)
         {
-            if (owner == expectedOwner)
+            if (ResolveOwner() == expectedOwner)
             {
+                runtimeOwner = null;
                 owner = null;
             }
         }
@@ -373,7 +402,7 @@ namespace Week14.Enemy
 
         public void FireOnceAtPlayer(BossProjectileSettings projectile)
         {
-            if (owner == null || projectile == null)
+            if (Owner == null || projectile == null)
             {
                 return;
             }
@@ -630,8 +659,15 @@ namespace Week14.Enemy
         private IEnumerator RunFormation(float angleOffsetDegrees, float radius, float speedMultiplier)
         {
             bool lockedToPattern = false;
-            while (owner != null && owner.Player != null)
+            while (true)
             {
+                IMinionOwner currentOwner = Owner;
+                Transform player = currentOwner?.MinionTarget;
+                if (currentOwner == null || player == null)
+                {
+                    break;
+                }
+
                 if (IsExecutionPaused)
                 {
                     StopBody();
@@ -639,10 +675,13 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Vector2 bossToPlayer = (Vector2)(owner.Player.position - owner.transform.position);
+                Transform ownerTransform = currentOwner.MinionOwnerTransform;
+                Vector2 bossToPlayer = ownerTransform != null
+                    ? (Vector2)(player.position - ownerTransform.position)
+                    : Vector2.right;
                 Vector2 baseDirection = bossToPlayer.sqrMagnitude > 0.0001f ? bossToPlayer.normalized : Vector2.right;
                 Vector2 targetDirection = RotateDirection(baseDirection, angleOffsetDegrees);
-                Vector2 target = (Vector2)owner.Player.position + targetDirection * Mathf.Max(0.1f, radius);
+                Vector2 target = (Vector2)player.position + targetDirection * Mathf.Max(0.1f, radius);
                 SetPatternPosition(target, ref lockedToPattern);
                 yield return null;
             }
@@ -1054,12 +1093,13 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playMuzzleFlash)
         {
-            if (IsExecutionPaused || owner == null)
+            IMinionOwner currentOwner = Owner;
+            if (IsExecutionPaused || currentOwner == null)
             {
                 return null;
             }
 
-            return owner.FireMinionProjectile(this, projectile, origin, direction, playMuzzleFlash);
+            return currentOwner.FireMinionProjectile(this, projectile, origin, direction, playMuzzleFlash);
         }
 
         private static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
@@ -1153,9 +1193,10 @@ namespace Week14.Enemy
 
         private Transform GetPlayer()
         {
-            if (owner != null && owner.Player != null)
+            IMinionOwner currentOwner = Owner;
+            if (currentOwner?.MinionTarget != null)
             {
-                return owner.Player;
+                return currentOwner.MinionTarget;
             }
 
             return PlayerCombatController.Active != null ? PlayerCombatController.Active.transform : null;

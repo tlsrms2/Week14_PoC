@@ -105,25 +105,25 @@ internal static class BossGraphActionEditorUtility
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
-        new("Minion/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
-        new("Minion/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
-        new("Minion/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
-        new("Minion/Fire All", typeof(MinionFireAllAction), () => new MinionFireAllAction()),
-        new("Minion/Boss Burst", typeof(MinionBossBurstAction), () => new MinionBossBurstAction()),
-        new("Minion/Synchronized Burst", typeof(MinionSynchronizedBurstAction), () => new MinionSynchronizedBurstAction()),
-        new("Minion/Command", typeof(MinionCommandAction), () => new MinionCommandAction()),
-        new("Minion/Stop And Fire", typeof(MinionStopAndFireAction), () => new MinionStopAndFireAction()),
-        new("Minion/Orbit Fire", typeof(MinionOrbitFireAction), () => new MinionOrbitFireAction()),
-        new("Minion/Orbit Crossfire", typeof(MinionOrbitCrossfireAction), () => new MinionOrbitCrossfireAction()),
-        new("Minion/Radial Burst", typeof(MinionRadialBurstAction), () => new MinionRadialBurstAction()),
-        new("Minion/Charge Side Fire", typeof(MinionChargeSideFireAction), () => new MinionChargeSideFireAction()),
-        new("Minion/Formation", typeof(MinionFormationAction), () => new MinionFormationAction()),
-        new("Minion/Formation Barrage", typeof(MinionFormationBarrageAction), () => new MinionFormationBarrageAction()),
-        new("Minion/Wait Commands", typeof(MinionWaitCommandsAction), () => new MinionWaitCommandsAction()),
-        new("Minion/Clear Synchronized Fire", typeof(MinionClearSynchronizedFireAction), () => new MinionClearSynchronizedFireAction()),
-        new("Minion/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction()),
-        new("Minion/Stop All", typeof(MinionStopAllAction), () => new MinionStopAllAction()),
-        new("Minion/Resume Idle", typeof(MinionResumeIdleAction), () => new MinionResumeIdleAction())
+        new("Minion/Spawn/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
+        new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
+        new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
+        new("Minion/Fire/Fire All", typeof(MinionFireAllAction), () => new MinionFireAllAction()),
+        new("Minion/Fire/Boss Burst", typeof(MinionBossBurstAction), () => new MinionBossBurstAction()),
+        new("Minion/Fire/Synchronized Burst", typeof(MinionSynchronizedBurstAction), () => new MinionSynchronizedBurstAction()),
+        new("Minion/Fire/Stop And Fire", typeof(MinionStopAndFireAction), () => new MinionStopAndFireAction()),
+        new("Minion/Fire/Radial Burst", typeof(MinionRadialBurstAction), () => new MinionRadialBurstAction()),
+        new("Minion/Movement/Orbit Fire", typeof(MinionOrbitFireAction), () => new MinionOrbitFireAction()),
+        new("Minion/Movement/Orbit Crossfire", typeof(MinionOrbitCrossfireAction), () => new MinionOrbitCrossfireAction()),
+        new("Minion/Movement/Charge Side Fire", typeof(MinionChargeSideFireAction), () => new MinionChargeSideFireAction()),
+        new("Minion/Movement/Formation", typeof(MinionFormationAction), () => new MinionFormationAction()),
+        new("Minion/Movement/Formation Barrage", typeof(MinionFormationBarrageAction), () => new MinionFormationBarrageAction()),
+        new("Minion/Control/Command", typeof(MinionCommandAction), () => new MinionCommandAction()),
+        new("Minion/Control/Wait Commands", typeof(MinionWaitCommandsAction), () => new MinionWaitCommandsAction()),
+        new("Minion/Control/Clear Synchronized Fire", typeof(MinionClearSynchronizedFireAction), () => new MinionClearSynchronizedFireAction()),
+        new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction()),
+        new("Minion/Control/Stop All", typeof(MinionStopAllAction), () => new MinionStopAllAction()),
+        new("Minion/Control/Resume Idle", typeof(MinionResumeIdleAction), () => new MinionResumeIdleAction())
     };
 
     public static string GetActionLabel(Type actionType)
@@ -254,7 +254,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MinionSummonAction))
         {
-            return "DronePilot이 관리하는 미니언을 지정 수만큼 소환합니다.";
+            return "호스트 보스가 관리하는 미니언을 지정 수만큼 소환합니다.";
         }
 
         if (actionType == typeof(MinionEnsureCountAction))

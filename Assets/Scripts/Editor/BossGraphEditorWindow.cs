@@ -3740,26 +3740,57 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         Type currentActionType = GetNodeActionType(node);
-        List<GUIContent> labels = new() { new GUIContent("<선택>") };
-        int currentIndex = 0;
-        for (int i = 0; i < allowedActions.Count; i++)
-        {
-            BossGraphActionMenuItem item = allowedActions[i];
-            labels.Add(new GUIContent(item.MenuPath));
-            if (currentActionType == item.ActionType)
-            {
-                currentIndex = i + 1;
-            }
-        }
+        string currentLabel = currentActionType == null
+            ? "<선택>"
+            : GetActionSelectionMenuPath(BossGraphActionEditorUtility.GetActionLabel(currentActionType), nodeKind);
 
-        EditorGUI.BeginChangeCheck();
-        int nextIndex = EditorGUILayout.Popup(new GUIContent("Action"), currentIndex, labels.ToArray());
-        if (!EditorGUI.EndChangeCheck() || nextIndex <= 0)
+        Rect controlRect = EditorGUILayout.GetControlRect();
+        Rect buttonRect = EditorGUI.PrefixLabel(controlRect, new GUIContent("Action"));
+        if (!EditorGUI.DropdownButton(buttonRect, new GUIContent(currentLabel), FocusType.Keyboard))
         {
             return;
         }
 
-        SetNodeAction(node, allowedActions[nextIndex - 1]);
+        ShowNodeActionSelectionMenu(buttonRect, node, nodeKind, allowedActions, currentActionType);
+    }
+
+    private void ShowNodeActionSelectionMenu(
+        Rect buttonRect,
+        SerializedProperty node,
+        BossGraphNodeKind nodeKind,
+        IReadOnlyList<BossGraphActionMenuItem> allowedActions,
+        Type currentActionType)
+    {
+        if (node == null || allowedActions == null || allowedActions.Count == 0)
+        {
+            return;
+        }
+
+        string nodeId = GetString(node, "nodeId", string.Empty);
+        GenericMenu menu = new();
+        for (int i = 0; i < allowedActions.Count; i++)
+        {
+            BossGraphActionMenuItem item = allowedActions[i];
+            string menuPath = GetActionSelectionMenuPath(item.MenuPath, nodeKind);
+            bool selected = currentActionType == item.ActionType;
+            menu.AddItem(new GUIContent(menuPath), selected, () => SetNodeAction(nodeId, item));
+        }
+
+        menu.DropDown(buttonRect);
+    }
+
+    private static string GetActionSelectionMenuPath(string menuPath, BossGraphNodeKind nodeKind)
+    {
+        if (string.IsNullOrWhiteSpace(menuPath))
+        {
+            return "Unknown Action";
+        }
+
+        string root = nodeKind.ToString();
+        string prefix = $"{root}/";
+        return menuPath.StartsWith(prefix, StringComparison.Ordinal)
+            ? menuPath.Substring(prefix.Length)
+            : menuPath;
     }
 
     private List<BossGraphActionMenuItem> GetAllowedActionMenuItems(BossGraphNodeKind nodeKind)
@@ -3831,6 +3862,23 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SelectNodeDetails(nodeId);
         ScheduleRebuildGraph(nodeId);
         detailsPanel?.MarkDirtyRepaint();
+    }
+
+    private void SetNodeAction(string nodeId, BossGraphActionMenuItem actionItem)
+    {
+        int nodeIndex = FindStateNodeIndex(nodeId);
+        if (nodeIndex < 0)
+        {
+            return;
+        }
+
+        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
+        if (stateNodes == null || nodeIndex >= stateNodes.arraySize)
+        {
+            return;
+        }
+
+        SetNodeAction(stateNodes.GetArrayElementAtIndex(nodeIndex), actionItem);
     }
 
     private static void SetActionAssetSingleAction(BossGraphActionAsset actionAsset, BossGraphActionMenuItem actionItem)

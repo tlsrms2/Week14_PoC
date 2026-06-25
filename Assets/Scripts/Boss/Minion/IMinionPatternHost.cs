@@ -296,7 +296,7 @@ namespace Week14.Enemy
         public bool ResumeIdle { get; }
     }
 
-    public interface IMinionPatternHost
+    public interface IMinionPatternHost : IMinionOwner
     {
         BossProjectileSettings ResolveMinionProjectileSettings(string projectileName);
         IEnumerator SummonMinions(int summonCount);
