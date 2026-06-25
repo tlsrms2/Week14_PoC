@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Week14.UI
     public sealed class WeaponTooltipPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;
+        [Tooltip("실제로 위치를 이동시킬 툴팁 전체(배경, 텍스트 등 포함)의 최상위 RectTransform입니다. 비워두면 이 컴포넌트가 붙은 오브젝트를 사용합니다.")]
+        [SerializeField] private RectTransform rootRect;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private TMP_Text maxAmmoText;
@@ -26,10 +29,20 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float initialRevealDelaySeconds = 0.06f;
         [Tooltip("패널이 다 펼쳐진 후 항목들이 하나씩 나타나는 간격입니다.")]
         [SerializeField, Min(0f)] private float revealStaggerSeconds = 0.06f;
+        [Tooltip("패널이 펼쳐진 후 이 배열 순서대로 하나씩 나타납니다. 가장 마지막에 나타나야 할 항목을 맨 마지막에 넣으세요.")]
+        [SerializeField] private GameObject[] revealTargets = Array.Empty<GameObject>();
+        [Tooltip("가장 먼저 FillAmount가 0에서 1로 채워지며 나타나는 이미지입니다.")]
+        [SerializeField] private Image firstFillRevealImage;
+        [Tooltip("첫 번째 이미지의 FillAmount가 0에서 1로 채워지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float firstFillRevealSeconds = 0.15f;
+        [Tooltip("첫 번째 연출이 끝난 후, 패널의 높이가 커지기 전에 FillAmount가 0에서 1로 채워지며 나타나는 이미지입니다.")]
+        [SerializeField] private Image fillRevealImage;
+        [Tooltip("FillAmount가 0에서 1로 채워지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float fillRevealSeconds = 0.15f;
 
         public static WeaponTooltipPanel Instance { get; private set; }
 
-        private GameObject[] revealTargets;
+        private Coroutine showRoutine;
         private Coroutine growRoutine;
         private Coroutine revealRoutine;
 
@@ -42,7 +55,11 @@ namespace Week14.UI
                 panelRect = transform as RectTransform;
             }
 
-            CacheRevealTargets();
+            if (rootRect == null)
+            {
+                rootRect = transform as RectTransform;
+            }
+
             HideImmediate();
         }
 
@@ -90,18 +107,24 @@ namespace Week14.UI
             PositionAt(anchor);
 
             SetRevealTargetsActive(false);
-            PlayGrow(expandedHeight, revealAfterGrow: true);
+            ResetFillImages();
+            StopShowRoutine();
+            showRoutine = StartCoroutine(ShowSequenceRoutine());
         }
 
         public void Hide()
         {
+            StopShowRoutine();
             StopRevealRoutine();
             SetRevealTargetsActive(false);
+            ResetFillImages();
             PlayGrow(0f, revealAfterGrow: false);
         }
 
         public void HideImmediate()
         {
+            StopShowRoutine();
+
             if (growRoutine != null)
             {
                 StopCoroutine(growRoutine);
@@ -110,28 +133,75 @@ namespace Week14.UI
 
             StopRevealRoutine();
             SetRevealTargetsActive(false);
+            ResetFillImages();
             SetHeight(0f);
+        }
+
+        private IEnumerator ShowSequenceRoutine()
+        {
+            yield return FillRevealRoutine(firstFillRevealImage, firstFillRevealSeconds);
+            yield return FillRevealRoutine(fillRevealImage, fillRevealSeconds);
+            showRoutine = null;
+            PlayGrow(expandedHeight, revealAfterGrow: true);
+        }
+
+        private IEnumerator FillRevealRoutine(Image image, float seconds)
+        {
+            if (image == null)
+            {
+                yield break;
+            }
+
+            float t = 0f;
+            while (seconds > 0f && t < seconds)
+            {
+                t += Time.unscaledDeltaTime;
+                image.fillAmount = Mathf.Clamp01(t / seconds);
+                yield return null;
+            }
+
+            image.fillAmount = 1f;
+        }
+
+        private void StopShowRoutine()
+        {
+            if (showRoutine != null)
+            {
+                StopCoroutine(showRoutine);
+                showRoutine = null;
+            }
+        }
+
+        private void ResetFillImages()
+        {
+            SetFillAmount(firstFillRevealImage, 0f);
+            SetFillAmount(fillRevealImage, 0f);
+        }
+
+        private void SetFillAmount(Image image, float amount)
+        {
+            if (image != null)
+            {
+                image.fillAmount = amount;
+            }
         }
 
         private void PositionAt(RectTransform anchor)
         {
-            if (anchor == null || panelRect == null)
+            if (anchor == null || rootRect == null)
             {
                 return;
             }
 
-            float signedOffsetX = anchor.position.x >= Screen.width / 2f
-                ? Mathf.Abs(anchorOffset.x)
-                : -Mathf.Abs(anchorOffset.x);
-            Vector3 targetPosition = anchor.position + new Vector3(signedOffsetX, anchorOffset.y, 0f);
-            panelRect.position = ClampToScreen(targetPosition);
+            Vector3 targetPosition = anchor.position + new Vector3(anchorOffset.x, anchorOffset.y, 0f);
+            rootRect.position = ClampToScreen(targetPosition);
         }
 
         private Vector3 ClampToScreen(Vector3 position)
         {
-            float width = panelRect.rect.width * panelRect.lossyScale.x;
-            float height = expandedHeight * panelRect.lossyScale.y;
-            Vector2 pivot = panelRect.pivot;
+            float width = rootRect.rect.width * rootRect.lossyScale.x;
+            float height = expandedHeight * rootRect.lossyScale.y;
+            Vector2 pivot = rootRect.pivot;
 
             float minX = screenEdgePadding + (pivot.x * width);
             float maxX = Screen.width - screenEdgePadding - ((1f - pivot.x) * width);
@@ -149,18 +219,6 @@ namespace Week14.UI
             }
 
             return position;
-        }
-
-        private void CacheRevealTargets()
-        {
-            revealTargets = new[]
-            {
-                iconImage != null ? iconImage.gameObject : null,
-                nameText != null ? nameText.gameObject : null,
-                maxAmmoText != null ? maxAmmoText.gameObject : null,
-                parryingRangeText != null ? parryingRangeText.gameObject : null,
-                descriptionText != null ? descriptionText.gameObject : null,
-            };
         }
 
         private void SetRevealTargetsActive(bool active)
