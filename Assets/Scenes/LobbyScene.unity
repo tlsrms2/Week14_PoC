@@ -3608,7 +3608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4068938510250503784, guid: e807e54c4051fa744a3435ddd1310efb, type: 3}
       propertyPath: m_Name
-      value: BossDetailPanel2
+      value: BossDetailPanel
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: e807e54c4051fa744a3435ddd1310efb, type: 3}
       propertyPath: m_Pivot.x
@@ -6184,7 +6184,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4068938510250503784, guid: e807e54c4051fa744a3435ddd1310efb, type: 3}
       propertyPath: m_Name
-      value: BossDetailPanel1
+      value: BossDetailPanel
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: e807e54c4051fa744a3435ddd1310efb, type: 3}
       propertyPath: m_Pivot.x
