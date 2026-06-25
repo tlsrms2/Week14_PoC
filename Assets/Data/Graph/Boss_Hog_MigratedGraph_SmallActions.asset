@@ -26,7 +26,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908194
     sequences: []
-    editorPosition: {x: -483, y: -756}
+    editorPosition: {x: 347, y: -751}
   - nodeId: HogPattern2_Action01
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908195
     sequences: []
-    editorPosition: {x: -485, y: -567}
+    editorPosition: {x: -471, y: -560}
   - nodeId: HogPattern4_Action01
     nodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     nodeKind: 1
@@ -359,7 +359,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908196
     sequences: []
-    editorPosition: {x: -207, y: -532}
+    editorPosition: {x: -193, y: -606}
   - nodeId: HogPattern2_Action01_StopMove
     nodeGuid: 4f166750756041f1bd28bff0851d3141
     nodeKind: 1
@@ -438,6 +438,17 @@ MonoBehaviour:
     - HogPattern2_Action01
     - HogPattern2_Action01_FireBurst
     - HogPattern2_Action01_StopMove
+  - patternId: Pattern3
+    nodeGuids:
+    - 4154f61cfbd64b47a57d61a14432fe6a
+    - 6ca8dbed633e4f95814d4d982619d858
+    - 69c1183ac8c64355bc30c31a8e0359e9
+    - 7bdfb2d0f4f7400299ee51fe4a2706b0
+    nodeIds:
+    - HogPattern3_Action01_Growth
+    - HogPattern3_Action01_RadialSplit
+    - HogPattern3_Action01_WaitCharge
+    - Node4
   - patternId: Pattern4
     nodeGuids:
     - a4ba62b19fcb47859e32d9982ee907cc
@@ -524,17 +535,6 @@ MonoBehaviour:
     - HogPattern7_Action01
     - HogPattern7_Action01_FireFan
     - HogPattern7_Action01_FireSecondary
-  - patternId: Pattern3
-    nodeGuids:
-    - 4154f61cfbd64b47a57d61a14432fe6a
-    - 6ca8dbed633e4f95814d4d982619d858
-    - 69c1183ac8c64355bc30c31a8e0359e9
-    - 7bdfb2d0f4f7400299ee51fe4a2706b0
-    nodeIds:
-    - HogPattern3_Action01_Growth
-    - HogPattern3_Action01_RadialSplit
-    - HogPattern3_Action01_WaitCharge
-    - Node4
   phases:
   - phaseIndex: 0
     selectionMode: 0

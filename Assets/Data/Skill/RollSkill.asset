@@ -19,3 +19,9 @@ MonoBehaviour:
   requiredStack: 15
   rollDistance: 3
   rollDuration: 0.3
+  autoParryRadius: 2
+  afterimageInterval: 0.045
+  afterimageDuration: 0.18
+  afterimageColor: {r: 0.55, g: 0.95, b: 1, a: 0.78431374}
+  autoParryAbsorbDuration: 0.18
+  autoParryAbsorbColor: {r: 0.45, g: 0.95, b: 1, a: 0.85}

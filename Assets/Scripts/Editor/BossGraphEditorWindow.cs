@@ -405,10 +405,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
         BossGraphNodeKind nodeKind = (BossGraphNodeKind)GetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
         Vector2 position = GetVector2(node, "editorPosition", new Vector2(80f + index * 260f, 120f));
         string displayName = GetNodeDisplayName(node, index);
-        if (position == Vector2.zero)
-        {
-            position = new Vector2(80f + index * 260f, 120f);
-        }
 
         BossGraphNodeView nodeView = new(index, nodeId)
         {
@@ -455,9 +451,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        SaveGraph();
         Undo.RecordObject(graphAsset, "Add Boss Graph Node");
         graphObject.Update();
+        WriteNodePositionsFromCurrentView();
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
         string nodeId = GetUniqueElementId(stateNodes, "nodeId", "Node");
         stateNodes.arraySize++;
@@ -786,20 +782,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         graphObject.Update();
         Undo.RecordObject(graphAsset, "Save Boss Graph Node Positions");
-        SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
-        IReadOnlyList<BossGraphNodeView> nodeViews = graphView.NodeViews;
-        for (int i = 0; i < nodeViews.Count; i++)
-        {
-            BossGraphNodeView nodeView = nodeViews[i];
-            if (nodeView.NodeIndex < 0 || nodeView.NodeIndex >= stateNodes.arraySize)
-            {
-                continue;
-            }
-
-            SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeView.NodeIndex);
-            SetVector2(node, "editorPosition", nodeView.GetPosition().position);
-        }
-
+        WriteNodePositionsFromCurrentView();
         SaveTransitions();
         graphObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(graphAsset);
@@ -910,12 +893,13 @@ public sealed class BossGraphEditorWindow : EditorWindow
         for (int i = 0; i < nodeViews.Count; i++)
         {
             BossGraphNodeView nodeView = nodeViews[i];
-            if (nodeView.NodeIndex < 0 || nodeView.NodeIndex >= stateNodes.arraySize)
+            int nodeIndex = FindStateNodeIndex(nodeView.NodeId);
+            if (nodeIndex < 0 || nodeIndex >= stateNodes.arraySize)
             {
                 continue;
             }
 
-            SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeView.NodeIndex);
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
             SerializedProperty editorPosition = node.FindPropertyRelative("editorPosition");
             if (editorPosition == null)
             {
@@ -1302,7 +1286,34 @@ public sealed class BossGraphEditorWindow : EditorWindow
             nextPatterns.Add(new PatternSnapshot(patternId, orderedNodeIds));
         }
 
-        return nextPatterns;
+        return OrderPatternSnapshotsByCurrentOrder(nextPatterns, currentPatterns);
+    }
+
+    private static List<PatternSnapshot> OrderPatternSnapshotsByCurrentOrder(
+        IReadOnlyList<PatternSnapshot> nextPatterns,
+        IReadOnlyList<PatternSnapshot> currentPatterns)
+    {
+        Dictionary<string, int> currentOrder = new(StringComparer.Ordinal);
+        for (int i = 0; i < currentPatterns.Count; i++)
+        {
+            string patternId = currentPatterns[i].PatternId;
+            if (!string.IsNullOrWhiteSpace(patternId) && !currentOrder.ContainsKey(patternId))
+            {
+                currentOrder[patternId] = i;
+            }
+        }
+
+        return nextPatterns
+            .Select((pattern, index) => new
+            {
+                Pattern = pattern,
+                OriginalIndex = index,
+                Order = currentOrder.TryGetValue(pattern.PatternId, out int order) ? order : int.MaxValue
+            })
+            .OrderBy(item => item.Order)
+            .ThenBy(item => item.OriginalIndex)
+            .Select(item => item.Pattern)
+            .ToList();
     }
 
     private static List<List<string>> BuildConnectedComponents(
@@ -2573,12 +2584,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
         for (int i = 0; i < patterns.arraySize; i++)
         {
             SerializedProperty pattern = patterns.GetArrayElementAtIndex(i);
-            if (DrawPatternItem(pattern, i, patterns, out bool deletedPattern))
+            if (DrawPatternItem(pattern, i, patterns, out bool stopDrawing))
             {
                 changed = true;
             }
 
-            if (deletedPattern)
+            if (stopDrawing)
             {
                 break;
             }
@@ -2599,9 +2610,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty pattern,
         int patternIndex,
         SerializedProperty patterns,
-        out bool deletedPattern)
+        out bool stopDrawing)
     {
-        deletedPattern = false;
+        stopDrawing = false;
         bool changed = false;
         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
@@ -2614,10 +2625,32 @@ public sealed class BossGraphEditorWindow : EditorWindow
                     patternIdValue,
                     true);
 
+                using (new EditorGUI.DisabledScope(patternIndex == 0))
+                {
+                    if (GUILayout.Button("Up", EditorStyles.miniButtonMid, GUILayout.Width(34f)))
+                    {
+                        Undo.RecordObject(graphAsset, "Edit Boss Graph Pattern Order");
+                        patterns.MoveArrayElement(patternIndex, patternIndex - 1);
+                        stopDrawing = true;
+                        return true;
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(patternIndex >= patterns.arraySize - 1))
+                {
+                    if (GUILayout.Button("Down", EditorStyles.miniButtonMid, GUILayout.Width(48f)))
+                    {
+                        Undo.RecordObject(graphAsset, "Edit Boss Graph Pattern Order");
+                        patterns.MoveArrayElement(patternIndex, patternIndex + 1);
+                        stopDrawing = true;
+                        return true;
+                    }
+                }
+
                 if (GUILayout.Button("Del", EditorStyles.miniButton, GUILayout.Width(34f)))
                 {
                     DeletePattern(patterns, patternIndex, patternIdValue);
-                    deletedPattern = true;
+                    stopDrawing = true;
                     return true;
                 }
             }
@@ -4049,6 +4082,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 return;
             }
 
+            SaveNodePositionsBeforeRebuild();
             RebuildGraph();
             if (restoreSelectedNodeDetails)
             {
@@ -4057,6 +4091,23 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
             detailsPanel?.MarkDirtyRepaint();
         };
+    }
+
+    private void SaveNodePositionsBeforeRebuild()
+    {
+        if (graphObject == null || graphAsset == null || graphView == null)
+        {
+            return;
+        }
+
+        graphObject.Update();
+        if (!WriteNodePositionsFromCurrentView())
+        {
+            return;
+        }
+
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
     }
 
     private void RemoveTransitionsForNodes(HashSet<string> nodeIds)
@@ -4162,11 +4213,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
             }
 
             Vector2 position = GetVector2(node, "editorPosition", new Vector2(80f + nodeIndex * 260f, 120f));
-            if (position == Vector2.zero)
-            {
-                position = new Vector2(80f + nodeIndex * 260f, 120f);
-            }
-
             nodeRects[nodeId] = new Rect(position, new Vector2(GraphNodeWidth, GraphNodeHeight));
         }
 
