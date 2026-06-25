@@ -523,8 +523,12 @@ namespace Week14.Combat
 
         private void UpdateCursorPresentation()
         {
+            if (GameModalState.BlocksGameplayInput)
+            {
+                return;
+            }
+
             bool gameplayMouseActive = config != null
-                && !GameModalState.BlocksGameplayInput
                 && !IsExecuting
                 && health != null
                 && !health.IsDead;

@@ -7457,42 +7457,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: pieceSkillReadyColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: pieceSkillReadyColor.g
-      value: 0.13725491
-      objectReference: {fileID: 0}
-    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: pieceSkillReadyColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: colorOnlySkillReadyColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: colorOnlySkillReadyColor.g
-      value: 0.13725491
-      objectReference: {fileID: 0}
-    - target: {fileID: 522378119315174641, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: colorOnlySkillReadyColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: m_Type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4629058515024922256, guid: 5198d635b02d49d438e98964595764ba, type: 3}
-      propertyPath: m_FillMethod
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6490100093232909321, guid: 5198d635b02d49d438e98964595764ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

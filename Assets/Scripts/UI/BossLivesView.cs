@@ -77,7 +77,7 @@ namespace Week14.UI
             fallbackMaxLives = maxLives;
 
             SetActiveByCount(lifeBackgrounds, maxLives);
-            SetActiveByCount(lifeImages, currentLives);
+            SetLifeImages(lifeImages, currentLives, maxLives);
         }
 
         private static void SetActiveByCount(IReadOnlyList<GameObject> objects, int activeCount)
@@ -88,6 +88,20 @@ namespace Week14.UI
                 if (objects[i] != null)
                 {
                     objects[i].SetActive(i < activeCount);
+                }
+            }
+        }
+
+        private static void SetLifeImages(IReadOnlyList<GameObject> objects, int currentLives, int maxLives)
+        {
+            int visibleLifeCount = Mathf.Min(maxLives, objects.Count);
+            int firstActiveIndex = Mathf.Max(0, visibleLifeCount - currentLives);
+
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if (objects[i] != null)
+                {
+                    objects[i].SetActive(i < visibleLifeCount && i >= firstActiveIndex);
                 }
             }
         }
