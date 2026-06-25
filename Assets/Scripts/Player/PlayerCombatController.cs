@@ -315,6 +315,7 @@ namespace Week14.Combat
             UpdateMouseParryReticleThreat();
             UpdateProjectileLockOnIndicator();
             UpdateBodyColor();
+            UpdateDashAutoParry();
 
             if (GameInput.LeftAttackDown && CanAct)
             {
@@ -404,9 +405,9 @@ namespace Week14.Combat
             visual?.PlayReload();
         }
 
-        public bool TryDash(float distance, float duration)
+        public bool TryDash(float distance, float duration, float autoParryRadius)
         {
-            return DashController.TryDash(distance, duration);
+            return DashController.TryDash(distance, duration, autoParryRadius);
         }
 
         public bool FireSkillProjectile(int damage, float sizeMultiplier, Color color)
@@ -561,6 +562,16 @@ namespace Week14.Combat
         private void UpdateProjectileLockOnIndicator()
         {
             ParryController.UpdateProjectileLockOnIndicator();
+        }
+
+        private void UpdateDashAutoParry()
+        {
+            if (!IsDashing)
+            {
+                return;
+            }
+
+            ParryController.AutoParryProjectilesNear(Context.CombatCenterOrigin.position, DashController.AutoParryRadius);
         }
 
         private void SetProjectileLockOnIndicatorVisible(bool visible)

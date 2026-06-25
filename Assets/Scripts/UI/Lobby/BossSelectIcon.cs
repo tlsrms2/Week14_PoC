@@ -19,6 +19,8 @@ namespace Week14.UI
         [SerializeField, Min(0.1f)] private float holdSecondsToStart = 1.5f;
         [Tooltip("누르고 있는 동안 차오르는 진행 바 이미지입니다. Image Type이 Filled여야 합니다.")]
         [SerializeField] private Image holdFillImage;
+        [Tooltip("진행 바가 채워지는 감속 곡선의 강도입니다. 클수록 처음에 더 빠르게 차오르고 끝에 갈수록 더 느려집니다. 1 = 일정한 속도.")]
+        [SerializeField, Min(1f)] private float holdFillEaseExponent = 4f;
 
         private Image iconImage;
         private Color baseColor;
@@ -109,7 +111,8 @@ namespace Week14.UI
             while (elapsed < holdSecondsToStart)
             {
                 elapsed += Time.deltaTime;
-                SetHoldFillAmount(Mathf.Clamp01(elapsed / holdSecondsToStart));
+                float ratio = Mathf.Clamp01(elapsed / holdSecondsToStart);
+                SetHoldFillAmount(1f - Mathf.Pow(1f - ratio, holdFillEaseExponent));
                 yield return null;
             }
 

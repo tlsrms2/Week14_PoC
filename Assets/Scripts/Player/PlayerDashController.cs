@@ -15,14 +15,16 @@ namespace Week14.Combat
         }
 
         internal bool IsDashing { get; private set; }
+        internal float AutoParryRadius { get; private set; }
 
-        internal bool TryDash(float distance, float duration)
+        internal bool TryDash(float distance, float duration, float autoParryRadius)
         {
             if (IsDashing || context.Body == null || distance <= 0f || duration <= 0f)
             {
                 return false;
             }
 
+            AutoParryRadius = autoParryRadius;
             dashRoutine = context.CoroutineHost.StartCoroutine(DashRoutine(GetDashDirection(), distance / duration, duration));
             return true;
         }
