@@ -699,6 +699,8 @@ MonoBehaviour:
       weight: 1
     - patternId: Pattern7
       weight: 1
+    - patternId: Pattern3
+      weight: 1
   transitions:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: 266779658870470e92d2caaf9062946e
