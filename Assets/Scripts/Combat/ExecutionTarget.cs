@@ -79,7 +79,7 @@ namespace Week14.Combat
             health.Kill();
             if (recoverBullets)
             {
-                RecoverPlayerBullets(player, activeConfig);
+                RecoverPlayerBullets(player);
             }
 
             if (destroyAfterExecute && activeConfig.DestroyTargetOnExecute)
@@ -104,7 +104,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            return RecoverPlayerBullets(player, activeConfig);
+            return RecoverPlayerBullets(player);
         }
 
         public bool CompleteExecution(PlayerCombatController player, bool recoverBullets)
@@ -119,30 +119,21 @@ namespace Week14.Combat
             ReleaseExecutionLock();
             if (recoverBullets)
             {
-                RecoverPlayerBullets(player, activeConfig);
+                RecoverPlayerBullets(player);
             }
 
             return true;
         }
 
-        private bool RecoverPlayerBullets(PlayerCombatController player, PlayerCombatConfig activeConfig)
+        private static bool RecoverPlayerBullets(PlayerCombatController player)
         {
-            if (ShouldRestoreExecutorMaxBullets(player, activeConfig))
+            BulletGauge playerBullets = player != null ? player.Bullets : null;
+            if (playerBullets == null)
             {
-                player.Bullets.Configure(activeConfig.MaxBullets, true, BulletChangeSource.Execution);
-                return true;
+                return false;
             }
 
-            return player.Bullets.Restore(activeConfig.ExecutionBulletRecovery, BulletChangeSource.Execution);
-        }
-
-        private bool ShouldRestoreExecutorMaxBullets(PlayerCombatController player, PlayerCombatConfig activeConfig)
-        {
-            return bossAI != null
-                && minion == null
-                && bossAI.CurrentLives > 1
-                && player.Bullets != null
-                && player.Bullets.MaxBullets < activeConfig.MaxBullets;
+            return playerBullets.Restore(playerBullets.MaxBullets, BulletChangeSource.Execution);
         }
 
         public void CompleteExecutionWithoutKill()

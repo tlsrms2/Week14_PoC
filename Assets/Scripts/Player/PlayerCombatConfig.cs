@@ -62,8 +62,6 @@ namespace Week14.Combat
         [Header("Execution")]
         [Tooltip("처형을 시작할 수 있는 최대 거리입니다.")]
         [SerializeField, Min(0f)] private float executionRange = 1.2f;
-        [Tooltip("처형 성공 시 플레이어가 회복하는 탄환 수입니다.")]
-        [SerializeField, Min(0)] private int executionBulletRecovery = 45;
         [Tooltip("처형 완료 후 대상을 파괴할지 여부입니다.")]
         [SerializeField] private bool destroyTargetOnExecute = true;
         [Tooltip("처형 시작 후 조준 자세를 유지하는 시간입니다.")]
@@ -136,7 +134,6 @@ namespace Week14.Combat
         public Color PlayerBodyHitColor => effectData != null ? effectData.PlayerBodyHitColor : new Color(1f, 0.85f, 0.25f, 1f);
         public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
         public float ExecutionRange => executionRange;
-        public int ExecutionBulletRecovery => executionBulletRecovery;
         public bool DestroyTargetOnExecute => destroyTargetOnExecute;
         public float ExecutionAimSeconds => executionAimSeconds;
         public float ExecutionShotDelaySeconds => executionShotDelaySeconds;
