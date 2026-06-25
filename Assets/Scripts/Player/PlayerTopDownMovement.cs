@@ -26,15 +26,14 @@ namespace Week14.Combat
 
         private void Update()
         {
-            moveInput = GameInput.Move;
+            moveInput = combat == null || combat.CanMove ? GameInput.Move : Vector2.zero;
         }
 
         private void FixedUpdate()
         {
-            moveInput = GameInput.Move;
-
             if (combat != null && !combat.CanMove)
             {
+                moveInput = Vector2.zero;
                 if (combat.ShouldStopMovementWhenBlocked)
                 {
                     body.linearVelocity = Vector2.zero;
@@ -43,6 +42,7 @@ namespace Week14.Combat
                 return;
             }
 
+            moveInput = GameInput.Move;
             PlayerCombatConfig config = combat != null ? combat.Config : null;
             if (config == null)
             {

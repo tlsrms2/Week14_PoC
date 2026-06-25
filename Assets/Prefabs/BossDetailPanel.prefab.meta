@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/BossDetailPanel.prefab.meta
+guid: e807e54c4051fa744a3435ddd1310efb
+PrefabImporter:
+========
+guid: c6192ea9eda9dc14a8d4770d3ff1de69
+TextScriptImporter:
+>>>>>>>> develop:Assets/Scripts/Boss/Graph/Actions/Minion/MinionGraphActionsGuide.md.meta
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -54,6 +54,7 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 180f)] private float backMaxAngleFromUp = 50f;
         [SerializeField, Min(0f)] private float flipDeadZone = 0.05f;
 
+        private PlayerCombatController combat;
         private SpriteRenderer[] frontRenderers;
         private SpriteRenderer[] sideRenderers;
         private SpriteRenderer[] backRenderers;
@@ -201,6 +202,11 @@ namespace Week14.Combat
 
         private void ResolveReferences()
         {
+            if (combat == null)
+            {
+                combat = GetComponentInParent<PlayerCombatController>();
+            }
+
             if (visualRoot == null)
             {
                 visualRoot = FindDescendant(transform, "VisualRoot");
@@ -289,7 +295,8 @@ namespace Week14.Combat
 
         private void UpdateWalkAnimation(bool force)
         {
-            bool isWalking = GameInput.Move.sqrMagnitude > 0.0001f;
+            bool canWalk = combat == null || combat.CanMove;
+            bool isWalking = canWalk && GameInput.Move.sqrMagnitude > 0.0001f;
             if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
             {
                 return;

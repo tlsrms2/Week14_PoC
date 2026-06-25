@@ -23,7 +23,16 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float revealStaggerSeconds = 0.06f;
         [Tooltip("패널이 펼쳐진 후 이 배열 순서대로 하나씩 나타납니다. 가장 마지막에 나타나야 할 항목(예: ProgressBar)을 맨 마지막에 넣으세요.")]
         [SerializeField] private GameObject[] revealTargets = Array.Empty<GameObject>();
+        [Tooltip("가장 먼저 FillAmount가 0에서 1로 채워지며 나타나는 이미지입니다.")]
+        [SerializeField] private Image firstFillRevealImage;
+        [Tooltip("첫 번째 이미지의 FillAmount가 0에서 1로 채워지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float firstFillRevealSeconds = 0.15f;
+        [Tooltip("첫 번째 연출이 끝난 후, 패널의 높이가 커지기 전에 FillAmount가 0에서 1로 채워지며 나타나는 이미지입니다.")]
+        [SerializeField] private Image fillRevealImage;
+        [Tooltip("FillAmount가 0에서 1로 채워지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0f)] private float fillRevealSeconds = 0.15f;
 
+        private Coroutine showRoutine;
         private Coroutine growRoutine;
         private Coroutine revealRoutine;
 
@@ -61,18 +70,24 @@ namespace Week14.UI
             }
 
             SetRevealTargetsActive(false);
-            PlayGrow(expandedHeight, revealAfterGrow: true);
+            ResetFillImages();
+            StopShowRoutine();
+            showRoutine = StartCoroutine(ShowSequenceRoutine());
         }
 
         public void Hide()
         {
+            StopShowRoutine();
             StopRevealRoutine();
             SetRevealTargetsActive(false);
+            ResetFillImages();
             PlayGrow(0f, revealAfterGrow: false);
         }
 
         public void HideImmediate()
         {
+            StopShowRoutine();
+
             if (growRoutine != null)
             {
                 StopCoroutine(growRoutine);
@@ -81,7 +96,57 @@ namespace Week14.UI
 
             StopRevealRoutine();
             SetRevealTargetsActive(false);
+            ResetFillImages();
             SetHeight(0f);
+        }
+
+        private IEnumerator ShowSequenceRoutine()
+        {
+            yield return FillRevealRoutine(firstFillRevealImage, firstFillRevealSeconds);
+            yield return FillRevealRoutine(fillRevealImage, fillRevealSeconds);
+            showRoutine = null;
+            PlayGrow(expandedHeight, revealAfterGrow: true);
+        }
+
+        private IEnumerator FillRevealRoutine(Image image, float seconds)
+        {
+            if (image == null)
+            {
+                yield break;
+            }
+
+            float t = 0f;
+            while (seconds > 0f && t < seconds)
+            {
+                t += Time.unscaledDeltaTime;
+                image.fillAmount = Mathf.Clamp01(t / seconds);
+                yield return null;
+            }
+
+            image.fillAmount = 1f;
+        }
+
+        private void StopShowRoutine()
+        {
+            if (showRoutine != null)
+            {
+                StopCoroutine(showRoutine);
+                showRoutine = null;
+            }
+        }
+
+        private void ResetFillImages()
+        {
+            SetFillAmount(firstFillRevealImage, 0f);
+            SetFillAmount(fillRevealImage, 0f);
+        }
+
+        private void SetFillAmount(Image image, float amount)
+        {
+            if (image != null)
+            {
+                image.fillAmount = amount;
+            }
         }
 
         private void SetRevealTargetsActive(bool active)

@@ -925,9 +925,15 @@ namespace Week14.UI
             float now = Time.time;
             lastExpiredBulletIndex = -1;
 
+            if (source == BulletChangeSource.CombatStart)
+            {
+                ResetBulletTimers(targetCount, true, now);
+                return;
+            }
+
             if (!hasSnapshot || source == BulletChangeSource.WeaponSwitch)
             {
-                ResetBulletTimers(targetCount);
+                ResetBulletTimers(targetCount, false, now);
                 return;
             }
 
@@ -962,12 +968,13 @@ namespace Week14.UI
             return expiredIndex >= 0 ? expiredIndex : 0;
         }
 
-        private void ResetBulletTimers(int count)
+        private void ResetBulletTimers(int count, bool timed, float loadedAt)
         {
             bulletLoadedTimes.Clear();
+            float value = timed ? loadedAt : UntimedBulletLoadedAt;
             for (int i = 0; i < count; i++)
             {
-                bulletLoadedTimes.Add(UntimedBulletLoadedAt);
+                bulletLoadedTimes.Add(value);
             }
         }
 

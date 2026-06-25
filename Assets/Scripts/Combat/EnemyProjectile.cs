@@ -96,6 +96,7 @@ namespace Week14.Combat
         private bool pathIndicatorActive;
         private bool suppressPathIndicator;
         private bool parryLockOnIndicatorVisible;
+        private int interceptGroupId;
         private Vector2 pathIndicatorStart;
         private Vector2 pathIndicatorDirection = Vector2.left;
         private Vector2 pathIndicatorRadialSplitPoint;
@@ -107,6 +108,8 @@ namespace Week14.Combat
         private float executionPauseStartedAt;
         private bool pausedByExecution;
         private static Material chargeVfxMaterial;
+        private static int nextInterceptGroupId = 1;
+        private static readonly Dictionary<int, EnemyProjectile> activeProjectileByInterceptGroup = new();
 
         public event System.Action<EnemyProjectile> Launched;
         public event System.Action<EnemyProjectile> RadialSplit;
@@ -115,8 +118,31 @@ namespace Week14.Combat
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
+        public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public static IReadOnlyList<EnemyProjectile> ActiveProjectiles => activeProjectiles;
+
+        public static bool TryGetActiveInterceptTarget(int groupId, out EnemyProjectile projectile)
+        {
+            if (groupId > 0
+                && activeProjectileByInterceptGroup.TryGetValue(groupId, out projectile)
+                && projectile != null
+                && !projectile.resolved
+                && !projectile.isDestroying)
+            {
+                return true;
+            }
+
+            projectile = null;
+            return false;
+        }
+
+        public EnemyProjectile ResolveInterceptTarget()
+        {
+            return TryGetActiveInterceptTarget(interceptGroupId, out EnemyProjectile projectile)
+                ? projectile
+                : this;
+        }
 
         public void SetParryLockOnIndicatorVisible(bool visible)
         {
@@ -228,6 +254,26 @@ namespace Week14.Combat
         {
             indicatorColor = nextIndicatorColor;
             customIndicatorColorConfigured = true;
+        }
+
+        private void AssignInterceptGroup(int existingGroupId)
+        {
+            interceptGroupId = existingGroupId > 0 ? existingGroupId : nextInterceptGroupId++;
+            activeProjectileByInterceptGroup[interceptGroupId] = this;
+        }
+
+        private void UnregisterInterceptGroup()
+        {
+            if (interceptGroupId <= 0)
+            {
+                return;
+            }
+
+            if (activeProjectileByInterceptGroup.TryGetValue(interceptGroupId, out EnemyProjectile projectile)
+                && projectile == this)
+            {
+                activeProjectileByInterceptGroup.Remove(interceptGroupId);
+            }
         }
 
         public void ConfigureLaunchReplacementPrefab(EnemyProjectile nextLaunchPrefab)
@@ -384,7 +430,8 @@ namespace Week14.Combat
             bool homingEnabled,
             float homingSeconds,
             float homingTurnDegrees,
-            bool suppressPathIndicator = false)
+            bool suppressPathIndicator = false,
+            int existingInterceptGroupId = 0)
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
@@ -403,7 +450,8 @@ namespace Week14.Combat
                 homingEnabled,
                 homingSeconds,
                 homingTurnDegrees,
-                suppressPathIndicator);
+                suppressPathIndicator,
+                existingInterceptGroupId);
             ProjectileVfx.ApplyVisibility(
                 projectile.gameObject, color, radius, trailSeconds, trailWidth);
             projectile.BeginTrail();
@@ -426,7 +474,8 @@ namespace Week14.Combat
             float trailSeconds, float trailWidth,
             bool enableHoming,
             float homingSeconds, float nextHomingTurnDegrees,
-            bool nextSuppressPathIndicator)
+            bool nextSuppressPathIndicator,
+            int existingInterceptGroupId)
         {
             projectileSpeed = speed;
             projectileLifetime = lifetime;
@@ -457,6 +506,7 @@ namespace Week14.Combat
             {
                 activeProjectiles.Add(this);
             }
+            AssignInterceptGroup(existingInterceptGroupId);
 
             ownerBoss?.RegisterActiveProjectile(this);
             ownerMinion?.RegisterActiveProjectile(this);
@@ -651,7 +701,8 @@ namespace Week14.Combat
                 homingEnabled,
                 homingSeconds,
                 homingTurnDegreesPerSecond,
-                suppressPathIndicator);
+                suppressPathIndicator,
+                interceptGroupId);
 
             if (replacement == null)
             {
@@ -704,6 +755,7 @@ namespace Week14.Combat
                 aimAtPlayerOnLaunch,
                 aimAtPlayerOnLaunchSpreadDegrees);
             replacement.canBeIntercepted = canBeIntercepted;
+            replacement.interceptPending = interceptPending;
             replacement.splitOnObstacle = splitOnObstacle;
             replacement.splitRadiallyOnLaunch = splitRadiallyOnLaunch;
             replacement.splitRemaining = splitRemaining;
@@ -1151,6 +1203,7 @@ namespace Week14.Combat
             }
 
             isDestroying = true;
+            UnregisterInterceptGroup();
             ReleaseOwnerProjectileSlot();
             if (body != null)
             {
@@ -1178,6 +1231,7 @@ namespace Week14.Combat
 
         private void OnDestroy()
         {
+            UnregisterInterceptGroup();
             activeProjectiles.Remove(this);
             ReleaseOwnerProjectileSlot();
         }

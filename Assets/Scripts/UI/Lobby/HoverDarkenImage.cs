@@ -28,6 +28,7 @@ namespace Week14.UI
         private float scaleDuration;
         private bool hasBaseScale;
         private bool isHovering;
+        private bool scaleEffectSuppressed;
         private Vector2 lastPointerPosition;
         private ScalePhase scalePhase;
         private PointerEventData hoverPointerEventData;
@@ -95,6 +96,28 @@ namespace Week14.UI
             }
         }
 
+        public void SetScaleEffectSuppressed(bool suppressed)
+        {
+            if (scaleEffectSuppressed == suppressed)
+            {
+                return;
+            }
+
+            scaleEffectSuppressed = suppressed;
+
+            if (suppressed)
+            {
+                isHovering = false;
+                scalePhase = ScalePhase.Idle;
+            }
+            else
+            {
+                // 억제가 풀리는 시점엔 scaleTarget이 이미 외부에서 다른 크기로 바뀌어 있을 수 있으니,
+                // 다음 호버 때 그 크기를 새 기준(baseScale)으로 다시 캐싱하게 한다.
+                hasBaseScale = false;
+            }
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             lastPointerPosition = eventData.position;
@@ -142,7 +165,7 @@ namespace Week14.UI
 
         private void UpdateScale()
         {
-            if (scaleTarget == null || scalePhase == ScalePhase.Idle)
+            if (scaleEffectSuppressed || scaleTarget == null || scalePhase == ScalePhase.Idle)
             {
                 return;
             }
@@ -167,7 +190,7 @@ namespace Week14.UI
 
         private void StartHover()
         {
-            if (isHovering)
+            if (isHovering || scaleEffectSuppressed)
             {
                 return;
             }
