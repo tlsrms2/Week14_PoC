@@ -1037,8 +1037,12 @@ namespace Week14.Combat
                 return;
             }
 
+            if (!player.ReceiveAttack(bulletDamage, transform.position, flightDirection))
+            {
+                return;
+            }
+
             resolved = true;
-            player.ReceiveAttack(bulletDamage, transform.position, flightDirection);
             DestroyProjectile();
         }
 

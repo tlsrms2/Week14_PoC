@@ -14,6 +14,8 @@ namespace Week14.Combat
             this.context = context;
         }
 
+        private const float DashMass = 0.01f;
+
         internal bool IsDashing { get; private set; }
         internal float AutoParryRadius { get; private set; }
         internal RollSkillVfxSettings VfxSettings { get; private set; } = RollSkillVfxSettings.Default;
@@ -61,6 +63,8 @@ namespace Week14.Combat
             context.Visual?.PlayRoll();
 
             Rigidbody2D body = context.Body;
+            float originalMass = body.mass;
+            body.mass = DashMass;
             float peakSpeed = averageSpeed * 2f;
             float elapsed = 0f;
             float nextAfterimageAt = 0f;
@@ -83,6 +87,7 @@ namespace Week14.Combat
             }
 
             body.linearVelocity = Vector2.zero;
+            body.mass = originalMass;
             IsDashing = false;
             dashRoutine = null;
         }
