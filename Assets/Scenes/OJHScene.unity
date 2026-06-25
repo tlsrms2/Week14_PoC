@@ -25733,7 +25733,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.volleyCount
+      propertyPath: minionPattern3.volleyCount
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
@@ -25749,55 +25749,55 @@ PrefabInstance:
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.chargeSeconds
+      propertyPath: minionPattern4.chargeSeconds
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.directionCount
+      propertyPath: minionPattern3.directionCount
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.volleyInterval
+      propertyPath: minionPattern3.volleyInterval
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossBulletCount
+      propertyPath: minionPattern5.bossBulletCount
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.speed
+      propertyPath: minionPattern3.projectile.speed
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.speed
+      propertyPath: minionPattern4.projectile.speed
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.sideFireInterval
+      propertyPath: minionPattern4.sideFireInterval
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossFireInterval
+      propertyPath: minionPattern5.bossFireInterval
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossSpawnSpacing
+      propertyPath: minionPattern5.bossSpawnSpacing
       value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.prefab
+      propertyPath: minionPattern3.projectile.prefab
       value: 
       objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.radius
+      propertyPath: minionPattern3.projectile.radius
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.prefab
+      propertyPath: minionPattern4.projectile.prefab
       value: 
       objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.radius
+      propertyPath: minionPattern4.projectile.radius
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
@@ -25805,47 +25805,47 @@ PrefabInstance:
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.speed
+      propertyPath: minionPattern5.bossProjectile.speed
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.speed
+      propertyPath: minionPattern2.orbitProjectile.speed
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryBulletCount
+      propertyPath: minionPattern2.stationaryBulletCount
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.prefab
+      propertyPath: minionPattern5.bossProjectile.prefab
       value: 
       objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.radius
+      propertyPath: minionPattern5.bossProjectile.radius
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.droneProjectile.speed
+      propertyPath: minionPattern5.minionProjectile.speed
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.prefab
+      propertyPath: minionPattern2.orbitProjectile.prefab
       value: 
       objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.radius
+      propertyPath: minionPattern2.orbitProjectile.radius
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryFireInterval
+      propertyPath: minionPattern2.stationaryFireInterval
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.droneProjectile.prefab
+      propertyPath: minionPattern5.minionProjectile.prefab
       value: 
       objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.droneProjectile.radius
+      propertyPath: minionPattern5.minionProjectile.radius
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
@@ -25853,15 +25853,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.chargeSeconds
+      propertyPath: minionPattern3.projectile.chargeSeconds
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.chargeSeconds
+      propertyPath: minionPattern4.projectile.chargeSeconds
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryProjectile.speed
+      propertyPath: minionPattern2.stationaryProjectile.speed
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
@@ -25869,91 +25869,91 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryProjectile.prefab
+      propertyPath: minionPattern2.stationaryProjectile.prefab
       value: 
       objectReference: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryProjectile.radius
+      propertyPath: minionPattern2.stationaryProjectile.radius
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.chargeDriftSpeed
+      propertyPath: minionPattern3.projectile.chargeDriftSpeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.chargeDriftSpeed
+      propertyPath: minionPattern4.projectile.chargeDriftSpeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.chargeSeconds
+      propertyPath: minionPattern5.bossProjectile.chargeSeconds
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.chargeSeconds
+      propertyPath: minionPattern2.orbitProjectile.chargeSeconds
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.droneProjectile.chargeSeconds
+      propertyPath: minionPattern5.minionProjectile.chargeSeconds
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.trailWidthMultiplier
+      propertyPath: minionPattern3.projectile.trailWidthMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.trailWidthMultiplier
+      propertyPath: minionPattern4.projectile.trailWidthMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.chargeDriftSpeed
+      propertyPath: minionPattern5.bossProjectile.chargeDriftSpeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.chargeDriftSpeed
+      propertyPath: minionPattern2.orbitProjectile.chargeDriftSpeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.droneProjectile.chargeDriftSpeed
+      propertyPath: minionPattern5.minionProjectile.chargeDriftSpeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryProjectile.chargeSeconds
+      propertyPath: minionPattern2.stationaryProjectile.chargeSeconds
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern3.projectile.aimAtPlayerWhileCharging
+      propertyPath: minionPattern3.projectile.aimAtPlayerWhileCharging
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern4.projectile.aimAtPlayerWhileCharging
+      propertyPath: minionPattern4.projectile.aimAtPlayerWhileCharging
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.trailWidthMultiplier
+      propertyPath: minionPattern5.bossProjectile.trailWidthMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.trailWidthMultiplier
+      propertyPath: minionPattern2.orbitProjectile.trailWidthMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.droneProjectile.trailWidthMultiplier
+      propertyPath: minionPattern5.minionProjectile.trailWidthMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryProjectile.chargeDriftSpeed
+      propertyPath: minionPattern2.stationaryProjectile.chargeDriftSpeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern5.bossProjectile.aimAtPlayerWhileCharging
+      propertyPath: minionPattern5.bossProjectile.aimAtPlayerWhileCharging
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.orbitProjectile.aimAtPlayerWhileCharging
+      propertyPath: minionPattern2.orbitProjectile.aimAtPlayerWhileCharging
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: dronePattern2.stationaryProjectile.trailWidthMultiplier
+      propertyPath: minionPattern2.stationaryProjectile.trailWidthMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}

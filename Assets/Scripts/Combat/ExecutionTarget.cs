@@ -11,7 +11,7 @@ namespace Week14.Combat
         private Health health;
         private BulletGauge bullets;
         private BossAI bossAI;
-        private Drone drone;
+        private Minion minion;
         private bool executionInProgress;
 
         private void Awake()
@@ -19,7 +19,7 @@ namespace Week14.Combat
             health = GetComponent<Health>();
             bullets = GetComponent<BulletGauge>();
             bossAI = GetComponent<BossAI>() ?? GetComponentInParent<BossAI>();
-            drone = GetComponent<Drone>() ?? GetComponentInParent<Drone>();
+            minion = GetComponent<Minion>() ?? GetComponentInParent<Minion>();
         }
 
         public void SetConfig(PlayerCombatConfig nextConfig)
@@ -53,7 +53,7 @@ namespace Week14.Combat
 
             executionInProgress = true;
             bossAI?.SetExecutionLocked(true);
-            drone?.SetExecutionLocked(true);
+            minion?.SetExecutionLocked(true);
             return true;
         }
 
@@ -93,7 +93,7 @@ namespace Week14.Combat
         public void PlayHitReaction(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
             bossAI?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
-            drone?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
+            minion?.PlayExecutionHitReaction(hitPosition, hitDirection, hitColor);
         }
 
         public bool RecoverExecutorBullets(PlayerCombatController player)
@@ -139,7 +139,7 @@ namespace Week14.Combat
         private bool ShouldRestoreExecutorMaxBullets(PlayerCombatController player, PlayerCombatConfig activeConfig)
         {
             return bossAI != null
-                && drone == null
+                && minion == null
                 && bossAI.CurrentLives > 1
                 && player.Bullets != null
                 && player.Bullets.MaxBullets < activeConfig.MaxBullets;
@@ -162,7 +162,7 @@ namespace Week14.Combat
         {
             executionInProgress = false;
             bossAI?.SetExecutionLocked(false);
-            drone?.SetExecutionLocked(false);
+            minion?.SetExecutionLocked(false);
         }
 
         private PlayerCombatConfig Config => config != null ? config : PlayerCombatController.Active?.Config;

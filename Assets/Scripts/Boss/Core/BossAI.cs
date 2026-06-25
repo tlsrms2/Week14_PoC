@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,39 +17,6 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int maxLives = 3;
         [Tooltip("처형 후 다음 페이즈 패턴을 시작하기 전, 보스가 제자리에서 대기하는 시간입니다.")]
         [SerializeField, Min(0f)] private float phaseTransitionWaitSeconds = 1.2f;
-
-        [Header("Enrage System")]
-        [Tooltip("전투 시작 후 1단계 광폭화(최대 탄환 감소)까지 걸리는 시간입니다.")]
-        [SerializeField] private float enragePhase1Seconds = 30f;
-        [SerializeField] private int enragePhase1MaxBullets = 3;
-        [Tooltip("1단계 광폭화 후 2단계 광폭화까지 추가로 걸리는 시간입니다.")]
-        [SerializeField] private float enragePhase2Seconds = 30f;
-        [SerializeField] private int enragePhase2MaxBullets = 1;
-
-        [Header("Enrage Windup")]
-        [Tooltip("광폭화 진입 연출이 재생되기 전, 보스가 부들부들 떠는 시간입니다. 0이면 떨림 없이 바로 진입 연출이 재생됩니다.")]
-        [SerializeField, Min(0f)] private float enrageWindupSeconds = 0.6f;
-        [Tooltip("떨림 중 좌우로 움직이는 거리입니다.")]
-        [SerializeField, Min(0f)] private float enrageWindupShakeDistance = 0.05f;
-        [Tooltip("떨림이 좌우로 진동하는 빈도입니다.")]
-        [SerializeField, Min(0f)] private float enrageWindupShakeFrequency = 28f;
-
-        [Header("Enrage Burst Effect")]
-        [Tooltip("광폭화 단계로 넘어갈 때 스폰할 이미지입니다.")]
-        [SerializeField] private Sprite enrageBurstSprite;
-        [Tooltip("이펙트가 빠르게 커지면서 도달할 최종 스케일(N)입니다.")]
-        [SerializeField, Min(0.01f)] private float enrageBurstTargetScale = 4f;
-        [Tooltip("0에서 최종 스케일까지 커지는 데 걸리는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float enrageBurstGrowSeconds = 0.15f;
-        [Tooltip("최종 스케일에 도달한 뒤 사라지기 전까지 유지하는 시간입니다.")]
-        [SerializeField, Min(0f)] private float enrageBurstHoldSeconds = 0.1f;
-        [Tooltip("유지 시간이 끝난 뒤 페이드아웃되는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float enrageBurstFadeSeconds = 0.35f;
-        [SerializeField] private Color enrageBurstColor = Color.white;
-        [Tooltip("광폭화 진입 시 카메라 쉐이크 강도입니다.")]
-        [SerializeField, Min(0f)] private float enrageShakeAmplitude = 0.25f;
-        [SerializeField, Min(0f)] private float enrageShakeSeconds = 0.3f;
-        [SerializeField, Min(0f)] private float enrageShakeZoom = 0.12f;
 
         [Header("Death Sequence")]
         [SerializeField] private Animator deathAnimator;
@@ -106,7 +73,6 @@ namespace Week14.Enemy
         [FormerlySerializedAs("bossBulletBarView")]
         [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private BossLivesView bossLivesView;
-        [SerializeField] private BossEnrageBarView bossEnrageBarView;
 
         [SerializeField, HideInInspector] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
         [FormerlySerializedAs("bulletBarColor")]
@@ -174,12 +140,8 @@ namespace Week14.Enemy
         public int CurrentLives => PhaseController.CurrentLives;
         public int CurrentPhaseIndex => PhaseController.CurrentPhaseIndex;
         public int CurrentPhaseNumber => PhaseController.CurrentPhaseNumber;
-        public int CurrentEnragePhase => PhaseController.CurrentEnragePhase;
-        public float CurrentEnrageProgress => PhaseController.CurrentEnrageProgress;
-        public float CurrentEnrageRemainingSeconds => PhaseController.CurrentEnrageRemainingSeconds;
         public bool IsCombatStarted => PhaseController.IsCombatStarted;
         public event Action<int, int> LivesChanged;
-        public event Action<int, float, float> EnrageChanged;
         public static event Action<BossAI> CombatStarted;
         public static event Action<BossAI> Defeated;
         public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
@@ -389,8 +351,6 @@ namespace Week14.Enemy
 
         internal void TickActiveBehaviorForState()
         {
-            PhaseController.TickEnrage();
-
             TryActivateBossCombatUiOnCombatStart();
             if (RotatesBodyToPlayer)
             {
@@ -398,63 +358,6 @@ namespace Week14.Enemy
             }
 
             OnBossTick();
-        }
-
-        protected IEnumerator ApplyPendingEnrageIfAny()
-        {
-            yield return PhaseController.ApplyPendingEnrageIfAny();
-        }
-
-        internal IEnumerator ApplyPendingEnrageIfAnyForGraph()
-        {
-            yield return ApplyPendingEnrageIfAny();
-        }
-
-        private void PlayEnrageTransitionEffect()
-        {
-            Vector3 spawnPosition = bodyRoot != null ? bodyRoot.position : transform.position;
-
-            SoundManager.PlaySfx("BossRoar");
-
-            if (enrageBurstSprite != null)
-            {
-                GameObject burstObject = new GameObject("EnrageBurstVfx");
-                burstObject.transform.position = spawnPosition;
-                EnrageBurstVfx burst = burstObject.AddComponent<EnrageBurstVfx>();
-                burst.Play(
-                    enrageBurstSprite,
-                    spawnPosition,
-                    bodyRoot,
-                    enrageBurstTargetScale,
-                    enrageBurstGrowSeconds,
-                    enrageBurstHoldSeconds,
-                    enrageBurstFadeSeconds,
-                    enrageBurstColor);
-            }
-
-            PlayEnemyHitCameraImpact(Vector2.zero, enrageShakeAmplitude, enrageShakeSeconds, enrageShakeZoom);
-        }
-
-        private IEnumerator PlayEnrageWindupTremble()
-        {
-            if (enrageWindupSeconds <= 0f || bodyRoot == null)
-            {
-                yield break;
-            }
-
-            Vector3 baseLocalPosition = bodyRoot.localPosition;
-            float elapsed = 0f;
-
-            while (elapsed < enrageWindupSeconds)
-            {
-                Stop();
-                float sign = Mathf.Sin(Time.time * enrageWindupShakeFrequency * Mathf.PI * 2f) >= 0f ? 1f : -1f;
-                bodyRoot.localPosition = baseLocalPosition + Vector3.right * (enrageWindupShakeDistance * sign);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            bodyRoot.localPosition = baseLocalPosition;
         }
 
         public bool TryConsumeLife()
@@ -520,20 +423,6 @@ namespace Week14.Enemy
         }
 
         internal float PhaseTransitionWaitSeconds => phaseTransitionWaitSeconds;
-        internal float EnragePhase1Seconds => enragePhase1Seconds;
-        internal int EnragePhase1MaxBullets => enragePhase1MaxBullets;
-        internal float EnragePhase2Seconds => enragePhase2Seconds;
-        internal int EnragePhase2MaxBullets => enragePhase2MaxBullets;
-
-        internal IEnumerator PlayEnrageWindupTrembleForController()
-        {
-            return PlayEnrageWindupTremble();
-        }
-
-        internal void PlayEnrageTransitionEffectForController()
-        {
-            PlayEnrageTransitionEffect();
-        }
 
         internal void OnCombatStartedForController()
         {
@@ -827,11 +716,6 @@ namespace Week14.Enemy
 
             bossLivesView?.SetTarget(this);
 
-            bossEnrageBarView ??= bossCombatUiRoot != null
-                ? bossCombatUiRoot.GetComponentInChildren<BossEnrageBarView>(true)
-                : GetComponentInChildren<BossEnrageBarView>(true);
-
-            bossEnrageBarView?.SetTarget(this);
         }
 
         private void BindBossCombatUiTargetsIfVisible()
@@ -883,12 +767,6 @@ namespace Week14.Enemy
         {
             LivesChanged?.Invoke(CurrentLives, MaxLives);
             bossLivesView?.Refresh();
-        }
-
-        internal void NotifyEnrageChanged()
-        {
-            EnrageChanged?.Invoke(CurrentEnragePhase, CurrentEnrageProgress, CurrentEnrageRemainingSeconds);
-            bossEnrageBarView?.Refresh();
         }
 
         private void SuppressEnemyStatusView()
@@ -1044,10 +922,6 @@ namespace Week14.Enemy
             if (bossLivesView != null)
             {
                 bossLivesView.gameObject.SetActive(false);
-            }
-            if (bossEnrageBarView != null)
-            {
-                bossEnrageBarView.gameObject.SetActive(false);
             }
 
             OnBossDied();

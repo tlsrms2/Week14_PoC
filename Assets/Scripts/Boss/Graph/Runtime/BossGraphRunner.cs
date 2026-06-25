@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +36,12 @@ namespace Week14.Enemy
             activeGraph = graph;
             try
             {
+                if (graph.DebugForceSinglePattern && graph.GetPattern(graph.DebugForcedPatternId) != null)
+                {
+                    yield return RunForcedPatternLoop(graph, context);
+                    yield break;
+                }
+
                 if (graph.UsesPhasePatternLayout)
                 {
                     yield return RunPhasePatternLoop(graph, context);
@@ -98,7 +104,6 @@ namespace Week14.Enemy
                         yield return sequence.Execute(context);
                     }
 
-                    yield return context.ApplyPendingEnrageIfAny();
                     context.Stop();
                 }
                 finally
@@ -108,6 +113,31 @@ namespace Week14.Enemy
                 }
 
                 TryApplyTransition(graph, context, node, true);
+            }
+        }
+
+        private IEnumerator RunForcedPatternLoop(BossGraphAsset graph, BossActionContext context)
+        {
+            while (true)
+            {
+                BossGraphPattern pattern = graph.GetPattern(graph.DebugForcedPatternId);
+                IReadOnlyList<string> nodeKeys = pattern?.NodeKeys;
+                if (nodeKeys == null || nodeKeys.Count == 0)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                yield return ExecutePattern(graph, pattern, context);
+                context.Stop();
+
+                BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
+                if (phase != null && phase.PatternIntervalSeconds > 0f)
+                {
+                    yield return context.WaitSeconds(phase.PatternIntervalSeconds);
+                    context.Stop();
+                }
             }
         }
 
@@ -127,7 +157,6 @@ namespace Week14.Enemy
                 }
 
                 yield return ExecutePattern(graph, pattern, context);
-                yield return context.ApplyPendingEnrageIfAny();
                 context.Stop();
                 if (phase.PatternIntervalSeconds > 0f)
                 {
@@ -167,7 +196,6 @@ namespace Week14.Enemy
                         context.SetCurrentNodeId(null);
                     }
 
-                    yield return context.ApplyPendingEnrageIfAny();
                     context.Stop();
                 }
             }
@@ -247,7 +275,6 @@ namespace Week14.Enemy
                 BossTransitionConditionType.NotStaggered => !boss.IsStaggered,
                 BossTransitionConditionType.ExecutionLocked => boss.IsExecutionLocked,
                 BossTransitionConditionType.ExecutionPaused => context.IsExecutionPaused,
-                BossTransitionConditionType.EnragePhaseEquals => boss.CurrentEnragePhase == transition.PhaseIndex,
                 BossTransitionConditionType.LivesLessOrEqual => boss.CurrentLives <= transition.PhaseIndex,
                 _ => false
             };

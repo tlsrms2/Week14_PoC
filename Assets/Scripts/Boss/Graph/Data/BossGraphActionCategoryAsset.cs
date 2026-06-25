@@ -9,7 +9,8 @@ namespace Week14.Enemy
         Attack,
         Move,
         Animation,
-        Utility
+        Utility,
+        Minion
     }
 
     [CreateAssetMenu(menuName = "Week14/Boss/Boss Graph Action Categories", fileName = "BossGraphActionCategories")]
@@ -21,12 +22,18 @@ namespace Week14.Enemy
 
         public BossGraphNodeKind GetNodeKind(Type actionType)
         {
+            BossGraphNodeKind defaultNodeKind = GetDefaultNodeKind(actionType);
+            if (defaultNodeKind == BossGraphNodeKind.Minion)
+            {
+                return defaultNodeKind;
+            }
+
             if (TryGetConfiguredNodeKind(actionType, out BossGraphNodeKind nodeKind))
             {
                 return nodeKind;
             }
 
-            return GetDefaultNodeKind(actionType);
+            return defaultNodeKind;
         }
 
         public bool IsActionAllowed(Type actionType, BossGraphNodeKind nodeKind)
@@ -63,6 +70,11 @@ namespace Week14.Enemy
 
         public static BossGraphNodeKind GetDefaultNodeKind(Type actionType)
         {
+            if (IsMinionAction(actionType))
+            {
+                return BossGraphNodeKind.Minion;
+            }
+
             if (actionType == typeof(MoveTowardPlayerAction)
                 || actionType == typeof(StartMoveTowardPlayerAction)
                 || actionType == typeof(StopMovementAction)
@@ -88,6 +100,13 @@ namespace Week14.Enemy
             }
 
             return BossGraphNodeKind.Attack;
+        }
+
+        private static bool IsMinionAction(Type actionType)
+        {
+            return actionType != null
+                && typeof(BossAction).IsAssignableFrom(actionType)
+                && actionType.Name.StartsWith("Minion", StringComparison.Ordinal);
         }
 
         private bool TryGetConfiguredNodeKind(Type actionType, out BossGraphNodeKind nodeKind)

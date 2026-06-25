@@ -431,7 +431,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908236
     sequences: []
-    editorPosition: {x: -5, y: 1025}
+    editorPosition: {x: -218, y: 1159}
   - nodeId: Node1
     nodeGuid: 9f129c30acf04730b54c4a4a2916738d
     nodeKind: 3
@@ -869,6 +869,8 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:
@@ -2068,9 +2070,9 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.FireFanVolleyProjectilesAction
     nodeKind: 0
   - actionTypeName: Week14.Enemy.CustomEventAction
-    nodeKind: 0
+    nodeKind: 3
   - actionTypeName: Week14.Enemy.SpawnPrefabAction
-    nodeKind: 0
+    nodeKind: 3
   - actionTypeName: Week14.Enemy.WindupAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 3
@@ -2107,3 +2109,60 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.AimBossChildAtPlayerAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 3
+  - actionTypeName: Week14.Enemy.MinionSummonAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionEnsureCountAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionAutoSummonIfNeededAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionFireAllAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionBossBurstAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionSynchronizedBurstAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionCommandAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionStopAndFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionOrbitFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionOrbitCrossfireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionRadialBurstAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionChargeSideFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionFormationAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionFormationBarrageAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionWaitCommandsAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionClearSynchronizedFireAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionPatternCleanupAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionStopAllAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionResumeIdleAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4

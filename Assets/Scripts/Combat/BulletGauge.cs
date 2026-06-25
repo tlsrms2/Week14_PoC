@@ -11,7 +11,8 @@ namespace Week14.Combat
         Attack,
         Parry,
         Execution,
-        WeaponSwitch
+        WeaponSwitch,
+        Expired
     }
 
     public class BulletGauge : MonoBehaviour

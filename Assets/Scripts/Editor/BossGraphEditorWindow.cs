@@ -1319,7 +1319,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
             BossTransitionConditionType.SequenceEnded => string.Empty,
             BossTransitionConditionType.HpRatioLessOrEqual => $"HP <= {GetFloat(transition, "threshold", 0f):0.##}",
             BossTransitionConditionType.PhaseIndexEquals => $"Phase = {GetInt(transition, "phaseIndex", 0) + 1}",
-            BossTransitionConditionType.EnragePhaseEquals => $"Enrage = {GetInt(transition, "phaseIndex", 0)}",
             BossTransitionConditionType.LivesLessOrEqual => $"Lives <= {GetInt(transition, "phaseIndex", 0)}",
             _ => conditionType.ToString()
         };
@@ -2005,6 +2004,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         DrawGraphReferences();
         EditorGUILayout.Space(8f);
         DrawPhaseSettings();
+        EditorGUILayout.Space(8f);
+        DrawPatternDebugSettings();
     }
 
     private void DrawGraphReferences()
@@ -2091,7 +2092,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
             {
                 BossGraphNodeKind currentKind = categories.GetNodeKind(item.ActionType);
                 if (currentKind != defaultKind
-                    && (currentKind == BossGraphNodeKind.Utility || defaultKind == BossGraphNodeKind.Utility))
+                    && (currentKind == BossGraphNodeKind.Utility
+                        || defaultKind == BossGraphNodeKind.Utility
+                        || currentKind == BossGraphNodeKind.Minion
+                        || defaultKind == BossGraphNodeKind.Minion))
                 {
                     categories.SetActionKind(item.ActionType, defaultKind);
                     changed = true;
@@ -2646,6 +2650,54 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
     }
 
+    private void DrawPatternDebugSettings()
+    {
+        if (graphObject == null)
+        {
+            return;
+        }
+
+        SerializedProperty debugForceSinglePattern = graphObject.FindProperty("debugForceSinglePattern");
+        SerializedProperty debugForcedPatternId = graphObject.FindProperty("debugForcedPatternId");
+        SerializedProperty patterns = graphObject.FindProperty("patterns");
+        if (debugForceSinglePattern == null || debugForcedPatternId == null)
+        {
+            return;
+        }
+
+        List<string> patternIds = ReadPatternIds(patterns);
+        EditorGUI.BeginChangeCheck();
+        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+        {
+            EditorGUILayout.LabelField("디버그", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(debugForceSinglePattern, new GUIContent("단일 패턴 고정"));
+
+            using (new EditorGUI.DisabledScope(!debugForceSinglePattern.boolValue || patternIds.Count == 0))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("고정 패턴", GUILayout.Width(EditorGUIUtility.labelWidth - 4f));
+                    string nextPatternId = DrawPatternIdPopup(debugForcedPatternId.stringValue, patternIds);
+                    if (nextPatternId != debugForcedPatternId.stringValue)
+                    {
+                        debugForcedPatternId.stringValue = nextPatternId;
+                    }
+                }
+            }
+
+            if (debugForceSinglePattern.boolValue && patternIds.Count == 0)
+            {
+                EditorGUILayout.HelpBox("고정 실행할 패턴이 없습니다. 먼저 패턴을 만들어야 합니다.", MessageType.Info);
+            }
+        }
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            graphObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(graphAsset);
+        }
+    }
+
     private bool DrawPhaseItem(
         SerializedProperty phase,
         int phaseArrayIndex,
@@ -3124,12 +3176,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
             ? categories.GetNodeKind(actionType)
             : defaultKind;
 
-        if (defaultKind == BossGraphNodeKind.Utility)
+        if (defaultKind == BossGraphNodeKind.Utility || defaultKind == BossGraphNodeKind.Minion)
         {
-            return BossGraphNodeKind.Utility;
+            return defaultKind;
         }
 
-        if (configuredKind == BossGraphNodeKind.Utility)
+        if (configuredKind == BossGraphNodeKind.Utility || configuredKind == BossGraphNodeKind.Minion)
         {
             return defaultKind;
         }
@@ -3706,6 +3758,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             BossGraphNodeKind.Move => new Color(0.12f, 0.38f, 0.78f, 1f),
             BossGraphNodeKind.Animation => new Color(0.45f, 0.22f, 0.72f, 1f),
             BossGraphNodeKind.Utility => new Color(0.24f, 0.42f, 0.34f, 1f),
+            BossGraphNodeKind.Minion => new Color(0.2f, 0.46f, 0.54f, 1f),
             _ => new Color(0.25f, 0.25f, 0.25f, 1f)
         };
     }
