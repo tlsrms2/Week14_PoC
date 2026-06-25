@@ -752,6 +752,7 @@ MonoBehaviour:
   selectedColor: {r: 0.04707265, g: 1, b: 0, a: 1}
   holdSecondsToStart: 1.5
   holdFillImage: {fileID: 8332757570609867250}
+  holdFillEaseExponent: 4
 --- !u!1 &267793746
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,6 +2183,7 @@ MonoBehaviour:
   selectedColor: {r: 0.04707265, g: 1, b: 0, a: 1}
   holdSecondsToStart: 1.5
   holdFillImage: {fileID: 481264911}
+  holdFillEaseExponent: 4
 --- !u!114 &667602995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3690,6 +3692,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7871147203767782486, guid: e807e54c4051fa744a3435ddd1310efb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a056b1188ef73234fbaf3e85b1b09ebe, type: 3}
     - target: {fileID: 7942856736912746509, guid: e807e54c4051fa744a3435ddd1310efb, type: 3}
       propertyPath: firstFillRevealImage
       value: 
