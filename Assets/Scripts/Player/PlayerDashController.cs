@@ -16,8 +16,19 @@ namespace Week14.Combat
 
         internal bool IsDashing { get; private set; }
         internal float AutoParryRadius { get; private set; }
+        internal RollSkillVfxSettings VfxSettings { get; private set; } = RollSkillVfxSettings.Default;
+
+        internal bool TryDash(float distance, float duration)
+        {
+            return TryDash(distance, duration, 0f);
+        }
 
         internal bool TryDash(float distance, float duration, float autoParryRadius)
+        {
+            return TryDash(distance, duration, autoParryRadius, RollSkillVfxSettings.Default);
+        }
+
+        internal bool TryDash(float distance, float duration, float autoParryRadius, RollSkillVfxSettings vfxSettings)
         {
             if (IsDashing || context.Body == null || distance <= 0f || duration <= 0f)
             {
@@ -25,6 +36,7 @@ namespace Week14.Combat
             }
 
             AutoParryRadius = autoParryRadius;
+            VfxSettings = vfxSettings.Sanitized;
             dashRoutine = context.CoroutineHost.StartCoroutine(DashRoutine(GetDashDirection(), distance / duration, duration));
             return true;
         }
@@ -51,8 +63,19 @@ namespace Week14.Combat
             Rigidbody2D body = context.Body;
             float peakSpeed = averageSpeed * 2f;
             float elapsed = 0f;
+            float nextAfterimageAt = 0f;
             while (elapsed < duration)
             {
+                if (elapsed >= nextAfterimageAt)
+                {
+                    PlayerDashVfx.SpawnRollAfterimage(
+                        context.CoroutineHost,
+                        context.BodyRenderers,
+                        VfxSettings.AfterimageSeconds,
+                        VfxSettings.AfterimageColor);
+                    nextAfterimageAt += VfxSettings.AfterimageInterval;
+                }
+
                 float speed = Mathf.Lerp(peakSpeed, 0f, elapsed / duration);
                 body.linearVelocity = direction * speed;
                 elapsed += Time.fixedDeltaTime;

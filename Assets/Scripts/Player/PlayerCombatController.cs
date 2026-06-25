@@ -410,6 +410,20 @@ namespace Week14.Combat
             return DashController.TryDash(distance, duration, autoParryRadius);
         }
 
+        public bool TryDash(
+            float distance,
+            float duration,
+            float autoParryRadius,
+            RollSkillVfxSettings vfxSettings)
+        {
+            return DashController.TryDash(distance, duration, autoParryRadius, vfxSettings);
+        }
+
+        public bool TryDash(float distance, float duration)
+        {
+            return TryDash(distance, duration, 0f);
+        }
+
         public bool FireSkillProjectile(int damage, float sizeMultiplier, Color color)
         {
             return Shooter.TryFireSkillProjectile(damage, sizeMultiplier, color);
@@ -575,7 +589,11 @@ namespace Week14.Combat
                 return;
             }
 
-            ParryController.AutoParryProjectilesNear(Context.CombatCenterOrigin.position, DashController.AutoParryRadius);
+            Vector2 autoParryCenter = Context.CombatCenterOrigin.position;
+            ParryController.AutoParryProjectilesNear(
+                autoParryCenter,
+                DashController.AutoParryRadius,
+                DashController.VfxSettings);
         }
 
         private void SetProjectileLockOnIndicatorVisible(bool visible)

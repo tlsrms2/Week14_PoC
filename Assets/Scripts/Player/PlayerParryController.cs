@@ -88,11 +88,17 @@ namespace Week14.Combat
 
         internal int AutoParryProjectilesNear(Vector2 center, float radius)
         {
+            return AutoParryProjectilesNear(center, radius, RollSkillVfxSettings.Default);
+        }
+
+        internal int AutoParryProjectilesNear(Vector2 center, float radius, RollSkillVfxSettings vfxSettings)
+        {
             if (!HasValidParryConfig() || radius <= 0f)
             {
                 return 0;
             }
 
+            RollSkillVfxSettings sanitizedVfxSettings = vfxSettings.Sanitized;
             IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
             float sqrRadius = radius * radius;
             int parriedCount = 0;
@@ -113,6 +119,12 @@ namespace Week14.Combat
 
                 if (ExecuteParry(target, playSfx: false))
                 {
+                    PlayerDashVfx.PlayProjectileAbsorb(
+                        context.CoroutineHost,
+                        target,
+                        context.CombatCenterOrigin.position,
+                        sanitizedVfxSettings.AutoParryAbsorbSeconds,
+                        sanitizedVfxSettings.AutoParryAbsorbColor);
                     parriedCount++;
                 }
             }
