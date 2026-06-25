@@ -127,6 +127,8 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphAimMode aimMode;
         [SerializeField] private float angleDegrees;
         [SerializeField, Min(0f)] private float spawnRadius;
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -145,8 +147,12 @@ namespace Week14.Enemy
                 origin += (Vector3)(direction.normalized * spawnRadius);
             }
 
-            context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
-            yield break;
+            EnemyProjectile firedProjectile = context.FireProjectile(projectile, origin, direction, 0.9f, projectileName: projectileName);
+            if (firedProjectile != null)
+            {
+                context.PlaySfx(fireSfxId);
+                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            }
         }
     }
 

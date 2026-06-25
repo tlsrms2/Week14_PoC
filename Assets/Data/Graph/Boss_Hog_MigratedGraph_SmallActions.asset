@@ -26,7 +26,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908194
     sequences: []
-    editorPosition: {x: 80, y: 120}
+    editorPosition: {x: -185, y: -671}
   - nodeId: HogPattern2_Action01
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908195
     sequences: []
-    editorPosition: {x: 340, y: 120}
+    editorPosition: {x: -187, y: -490}
   - nodeId: HogPattern4_Action01
     nodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     nodeKind: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908202
     sequences: []
-    editorPosition: {x: 600, y: 120}
+    editorPosition: {x: -223, y: -86}
   - nodeId: HogPattern4_Action02
     nodeGuid: 266779658870470e92d2caaf9062946e
     nodeKind: 1
@@ -53,7 +53,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908203
     sequences: []
-    editorPosition: {x: 860, y: 120}
+    editorPosition: {x: 37, y: -86}
   - nodeId: HogPattern4_Action03
     nodeGuid: 6b9cb46fa8ff45779719798b81e23367
     nodeKind: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908204
     sequences: []
-    editorPosition: {x: 1120, y: 120}
+    editorPosition: {x: 297, y: -86}
   - nodeId: HogPattern4_Action05
     nodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
     nodeKind: 3
@@ -71,7 +71,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908205
     sequences: []
-    editorPosition: {x: 1380, y: 120}
+    editorPosition: {x: 557, y: -86}
   - nodeId: HogPattern4_Action06
     nodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
     nodeKind: 1
@@ -80,7 +80,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908206
     sequences: []
-    editorPosition: {x: 1640, y: 120}
+    editorPosition: {x: 817, y: -86}
   - nodeId: HogPattern4_Action07
     nodeGuid: 05e87771345d40f38b36daeb46a72fe4
     nodeKind: 1
@@ -89,7 +89,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908207
     sequences: []
-    editorPosition: {x: 1900, y: 120}
+    editorPosition: {x: 1077, y: -86}
   - nodeId: HogPattern4_Action08
     nodeGuid: ec2d10c5f5b5423291d90c573763374a
     nodeKind: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908208
     sequences: []
-    editorPosition: {x: 2160, y: 120}
+    editorPosition: {x: 1337, y: -86}
   - nodeId: HogPattern4_Action10
     nodeGuid: 52076fff63ad4879af076bea9518ac7e
     nodeKind: 3
@@ -107,7 +107,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908209
     sequences: []
-    editorPosition: {x: 2420, y: 120}
+    editorPosition: {x: 1597, y: -86}
   - nodeId: HogPattern4_Action11
     nodeGuid: dc151c7ad02d420cbb25278e1af7d217
     nodeKind: 1
@@ -116,7 +116,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908210
     sequences: []
-    editorPosition: {x: 2680, y: 120}
+    editorPosition: {x: 1857, y: -86}
   - nodeId: HogPattern4_Action12
     nodeGuid: dbb3c2a625b54e2194035fb6cd895f88
     nodeKind: 1
@@ -125,7 +125,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908211
     sequences: []
-    editorPosition: {x: 2940, y: 120}
+    editorPosition: {x: 2117, y: -86}
   - nodeId: HogPattern4_Action13
     nodeGuid: 55d7655e94ff40d797850d3ef53faf33
     nodeKind: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908212
     sequences: []
-    editorPosition: {x: 3200, y: 120}
+    editorPosition: {x: 2377, y: -86}
   - nodeId: HogPattern5_Action01
     nodeGuid: f64e87439a744250ada746965fef8941
     nodeKind: 3
@@ -143,7 +143,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908213
     sequences: []
-    editorPosition: {x: 3460, y: 120}
+    editorPosition: {x: -64, y: 71}
   - nodeId: HogPattern6_Action01
     nodeGuid: ce4123afab7d4dd1a1006edc046127ae
     nodeKind: 1
@@ -152,7 +152,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908215
     sequences: []
-    editorPosition: {x: 3720, y: 120}
+    editorPosition: {x: -237, y: 261}
   - nodeId: HogPattern6_Action02
     nodeGuid: 95e98c45d91f40ebaa39891809eb0608
     nodeKind: 1
@@ -161,7 +161,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908216
     sequences: []
-    editorPosition: {x: 3980, y: 120}
+    editorPosition: {x: 23, y: 261}
   - nodeId: HogPattern6_Action03
     nodeGuid: 9f8c1fc4eb744cd384a3643ef74d455a
     nodeKind: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908217
     sequences: []
-    editorPosition: {x: 4240, y: 120}
+    editorPosition: {x: 283, y: 261}
   - nodeId: HogPattern6_Action05
     nodeGuid: 8dfda553c39943a58e5177d1346527c2
     nodeKind: 3
@@ -179,7 +179,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908218
     sequences: []
-    editorPosition: {x: 4500, y: 120}
+    editorPosition: {x: 543, y: 261}
   - nodeId: HogPattern6_Action06
     nodeGuid: 0acd709aa19344e79ad72ae80ed9fdcb
     nodeKind: 1
@@ -188,7 +188,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908219
     sequences: []
-    editorPosition: {x: 4760, y: 120}
+    editorPosition: {x: 803, y: 261}
   - nodeId: HogPattern6_Action07
     nodeGuid: 7c4770aa65154af98e33055a559f6b7e
     nodeKind: 1
@@ -197,7 +197,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908220
     sequences: []
-    editorPosition: {x: 5020, y: 120}
+    editorPosition: {x: 1063, y: 261}
   - nodeId: HogPattern6_Action08
     nodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
     nodeKind: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908221
     sequences: []
-    editorPosition: {x: 5280, y: 120}
+    editorPosition: {x: 1323, y: 261}
   - nodeId: HogPattern6_Action10
     nodeGuid: 8c27086e8f584597a5bc7125fced5d11
     nodeKind: 3
@@ -215,7 +215,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908222
     sequences: []
-    editorPosition: {x: 5540, y: 120}
+    editorPosition: {x: 1583, y: 261}
   - nodeId: HogPattern6_Action11
     nodeGuid: 7e0bd7072aab4922bcc429c8f2929853
     nodeKind: 1
@@ -224,7 +224,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908223
     sequences: []
-    editorPosition: {x: 5800, y: 120}
+    editorPosition: {x: 1843, y: 261}
   - nodeId: HogPattern6_Action12
     nodeGuid: 67d9c894747a4aaebeda59d6935820c9
     nodeKind: 1
@@ -233,7 +233,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908224
     sequences: []
-    editorPosition: {x: 6060, y: 120}
+    editorPosition: {x: 2103, y: 261}
   - nodeId: HogPattern6_Action13
     nodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
     nodeKind: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908225
     sequences: []
-    editorPosition: {x: 6320, y: 120}
+    editorPosition: {x: 2363, y: 261}
   - nodeId: HogPattern6_Action15
     nodeGuid: 93f8a75329124d559a1799f7dda03cdb
     nodeKind: 3
@@ -251,7 +251,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908226
     sequences: []
-    editorPosition: {x: 6580, y: 120}
+    editorPosition: {x: 2623, y: 261}
   - nodeId: HogPattern6_Action16
     nodeGuid: 1d6dbb80b83640088c83456b28f5d70a
     nodeKind: 1
@@ -260,7 +260,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908227
     sequences: []
-    editorPosition: {x: 6840, y: 120}
+    editorPosition: {x: 2883, y: 261}
   - nodeId: HogPattern6_Action17
     nodeGuid: 43cb0c9274d249438ad006337ace37ef
     nodeKind: 1
@@ -269,7 +269,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908228
     sequences: []
-    editorPosition: {x: 7100, y: 120}
+    editorPosition: {x: 3143, y: 261}
   - nodeId: HogPattern6_Action18
     nodeGuid: 2a97dae38643419da32275bdb5c96da2
     nodeKind: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908229
     sequences: []
-    editorPosition: {x: 7360, y: 120}
+    editorPosition: {x: 3403, y: 261}
   - nodeId: HogPattern6_Action20
     nodeGuid: e22393eb8224461d82b26890b75ed7a3
     nodeKind: 3
@@ -287,7 +287,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908230
     sequences: []
-    editorPosition: {x: 7620, y: 120}
+    editorPosition: {x: 3663, y: 261}
   - nodeId: HogPattern6_Action21
     nodeGuid: 3600947d532846f994de2a6e69474b44
     nodeKind: 1
@@ -296,7 +296,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908231
     sequences: []
-    editorPosition: {x: 7880, y: 120}
+    editorPosition: {x: 3923, y: 261}
   - nodeId: HogPattern6_Action22
     nodeGuid: 35be3ef8c8d943e58a6387d109e9d4ea
     nodeKind: 1
@@ -305,7 +305,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908232
     sequences: []
-    editorPosition: {x: 8140, y: 120}
+    editorPosition: {x: 4184, y: 261}
   - nodeId: HogPattern6_Action23
     nodeGuid: 012e402336f44732aa1ece9020f26813
     nodeKind: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908233
     sequences: []
-    editorPosition: {x: 8400, y: 120}
+    editorPosition: {x: 4443, y: 261}
   - nodeId: HogPattern7_Action01
     nodeGuid: f0e7fffb17a84ecbb13e3a2b7c7b6c6e
     nodeKind: 3
@@ -323,7 +323,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908234
     sequences: []
-    editorPosition: {x: 8660, y: 120}
+    editorPosition: {x: -254, y: 446}
   - nodeId: Node2
     nodeGuid: 9e1f9a114f0c49578bd202859577b908
     nodeKind: 3
@@ -332,7 +332,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908238
     sequences: []
-    editorPosition: {x: 8920, y: 120}
+    editorPosition: {x: -223, y: 71}
   - nodeId: Node4
     nodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeKind: 3
@@ -341,7 +341,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908239
     sequences: []
-    editorPosition: {x: 9780, y: 286}
+    editorPosition: {x: 1092, y: -257}
   - nodeId: Node3
     nodeGuid: 026997160ec14eecbdfa8d663852dc41
     nodeKind: 3
@@ -350,7 +350,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908240
     sequences: []
-    editorPosition: {x: 9440, y: 120}
+    editorPosition: {x: 424, y: 71}
   - nodeId: HogPattern2_Action01_FireBurst
     nodeGuid: bc17b7c047f7467ea6384f77cc8be044
     nodeKind: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908196
     sequences: []
-    editorPosition: {x: 9700, y: 120}
+    editorPosition: {x: 104, y: -490}
   - nodeId: HogPattern2_Action01_StopMove
     nodeGuid: 4f166750756041f1bd28bff0851d3141
     nodeKind: 1
@@ -368,7 +368,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908197
     sequences: []
-    editorPosition: {x: 9960, y: 120}
+    editorPosition: {x: 419, y: -490}
   - nodeId: HogPattern3_Action01_Growth
     nodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
     nodeKind: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908199
     sequences: []
-    editorPosition: {x: 9415, y: 376}
+    editorPosition: {x: 283, y: -257}
   - nodeId: HogPattern3_Action01_RadialSplit
     nodeGuid: 6ca8dbed633e4f95814d4d982619d858
     nodeKind: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908200
     sequences: []
-    editorPosition: {x: 9408, y: 483}
+    editorPosition: {x: 536, y: -257}
   - nodeId: HogPattern3_Action01_WaitCharge
     nodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
     nodeKind: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908201
     sequences: []
-    editorPosition: {x: 9408, y: 600}
+    editorPosition: {x: 798, y: -257}
   - nodeId: HogPattern5_Action01_FireSweep
     nodeGuid: 6ecdb80d596a424b80eae1b965355f04
     nodeKind: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908214
     sequences: []
-    editorPosition: {x: 10799, y: -116}
+    editorPosition: {x: 140, y: 71}
   - nodeId: HogPattern7_Action01_FireFan
     nodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     nodeKind: 0
@@ -413,7 +413,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908235
     sequences: []
-    editorPosition: {x: 11260, y: 120}
+    editorPosition: {x: -42, y: 446}
   - nodeId: HogPattern7_Action01_FireSecondary
     nodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
     nodeKind: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908236
     sequences: []
-    editorPosition: {x: 11520, y: 120}
+    editorPosition: {x: 356, y: 446}
   - nodeId: Node1
     nodeGuid: 9f129c30acf04730b54c4a4a2916738d
     nodeKind: 3
@@ -431,7 +431,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908243
     sequences: []
-    editorPosition: {x: 9279, y: 282}
+    editorPosition: {x: -223, y: -257}
   - nodeId: HogPattern8_Action01
     nodeGuid: bc948940258f474bbb864273b4c94147
     nodeKind: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897314
     sequences: []
-    editorPosition: {x: 12040, y: 120}
+    editorPosition: {x: -254, y: 629}
   - nodeId: HogPattern8_Action02
     nodeGuid: 4d4c777b10d748b4aef300dc52dae234
     nodeKind: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897315
     sequences: []
-    editorPosition: {x: 12300, y: 120}
+    editorPosition: {x: 1, y: 629}
   - nodeId: HogPattern8_Wait01
     nodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
     nodeKind: 3
@@ -458,7 +458,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897316
     sequences: []
-    editorPosition: {x: 12560, y: 120}
+    editorPosition: {x: 266, y: 629}
   - nodeId: HogPattern8_Action03
     nodeGuid: d731207df0924bb985ae011d9a897f60
     nodeKind: 0
@@ -467,7 +467,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897317
     sequences: []
-    editorPosition: {x: 12820, y: 120}
+    editorPosition: {x: 528, y: 629}
   - nodeId: HogPattern8_Wait02
     nodeGuid: 6073531e69744f6dad7877e5ff9f25b0
     nodeKind: 3
@@ -476,7 +476,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897318
     sequences: []
-    editorPosition: {x: 13080, y: 120}
+    editorPosition: {x: 786, y: 629}
   - nodeId: HogPattern8_Action04
     nodeGuid: 657ce8a70222473485a7835f4bd97d00
     nodeKind: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897319
     sequences: []
-    editorPosition: {x: 13340, y: 120}
+    editorPosition: {x: 1046, y: 629}
   - nodeId: HogPattern8_Wait03
     nodeGuid: e1459056c764436ba482e779533a7a6a
     nodeKind: 3
@@ -494,7 +494,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897320
     sequences: []
-    editorPosition: {x: 13600, y: 120}
+    editorPosition: {x: 1306, y: 629}
   - nodeId: HogPattern8_Wait04
     nodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
     nodeKind: 3
@@ -503,7 +503,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897321
     sequences: []
-    editorPosition: {x: 13860, y: 120}
+    editorPosition: {x: 1566, y: 629}
   - nodeId: HogPattern8_Action05
     nodeGuid: faa2dc5f3f8f410893003ab68637810d
     nodeKind: 0
@@ -512,7 +512,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897322
     sequences: []
-    editorPosition: {x: 14120, y: 120}
+    editorPosition: {x: 1826, y: 629}
   - nodeId: Node5
     nodeGuid: e330ece8d47f4556a7bed8e7095c0461
     nodeKind: 3
@@ -521,7 +521,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897355
     sequences: []
-    editorPosition: {x: 14380, y: 120}
+    editorPosition: {x: 198, y: 446}
   - nodeId: HogPattern3_Action01_SpawnChargedProjectile
     nodeGuid: c5e098adc418431c97fe263c92282899
     nodeKind: 0
@@ -530,7 +530,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897377
     sequences: []
-    editorPosition: {x: 9408, y: 282}
+    editorPosition: {x: -94, y: -257}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1043,8 +1043,8 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern8
   references:
     version: 2
     RefIds:
@@ -1092,8 +1092,8 @@ MonoBehaviour:
         randomizeStartAngle: 0
         spawnRadius: 0.25
         fireInterval: 0.5
-        fireSfxId: 
-        launchSfxId: 
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
         effects:
           explosion:
             enabled: 1
@@ -1154,8 +1154,8 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        fireSfxId: 
-        launchSfxId: 
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
         effects:
           explosion:
             enabled: 1
@@ -1208,7 +1208,7 @@ MonoBehaviour:
         splitRadiusMultiplier: 0.5
         splitLifetimeMultiplier: 1
         splitSfxLeadSeconds: 0.15
-        splitImminentSfxId: 
+        splitImminentSfxId: BossBomb
     - rid: 2634811931892908201
       type: {class: WaitProjectileChargeEndAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1244,12 +1244,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0.6, z: 0}
         duration: 0.38
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908203
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.25
         releaseBaseAfterMove: 0
+        completeSfxId: Smash
     - rid: 2634811931892908204
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1323,12 +1325,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0.6, z: 0}
         duration: 0.38
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908207
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.25
         releaseBaseAfterMove: 0
+        completeSfxId: Smash
     - rid: 2634811931892908208
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1402,12 +1406,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0.6, z: 0}
         duration: 0.38
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908211
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.25
         releaseBaseAfterMove: 0
+        completeSfxId: Smash
     - rid: 2634811931892908212
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1543,7 +1549,7 @@ MonoBehaviour:
         spawnSpacing: 0
         sweepStepDegrees: 5
         maxSweepAngle: 40
-        fireSfxId: 
+        fireSfxId: BossNormalShot
         launchSfxId: 
         effects:
           explosion:
@@ -1573,12 +1579,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908216
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: Smash
     - rid: 2634811931892908217
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1652,12 +1660,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908220
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: Smash
     - rid: 2634811931892908221
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1731,12 +1741,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908224
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: Smash
     - rid: 2634811931892908225
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1810,12 +1822,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908228
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908229
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1889,12 +1903,14 @@ MonoBehaviour:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908232
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetLocalOffset: {x: 0, y: 0, z: 0}
         duration: 0.01
         releaseBaseAfterMove: 0
+        completeSfxId: 
     - rid: 2634811931892908233
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2030,7 +2046,7 @@ MonoBehaviour:
         volleyInterval: 0.18
         fanAngleDegrees: 42
         spawnSpacing: 0.16
-        fireSfxId: 
+        fireSfxId: BossNormalShot
         launchSfxId: 
         effects:
           explosion:
@@ -2090,8 +2106,8 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0
-        fireSfxId: 
-        launchSfxId: 
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
         effects:
           explosion:
             enabled: 0
@@ -2122,7 +2138,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 0
-        startNodeId: ""
+        startNodeId: 
         targetPath: Boss-Dealer Visual/MachineGunRoot
         activateOnStart: 1
         flipYByFacing: 1
@@ -2152,7 +2168,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 0
-        startNodeId: ""
+        startNodeId: 
         targetPath: Boss-Dealer Visual/MachineGunRoot
         activateOnStart: 1
         flipYByFacing: 1
@@ -2184,6 +2200,8 @@ MonoBehaviour:
         aimMode: 1
         angleDegrees: 180
         spawnRadius: 0.25
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
     - rid: 5830051031957897315
       type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2210,6 +2228,8 @@ MonoBehaviour:
         aimMode: 1
         angleDegrees: 135
         spawnRadius: 0.25
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
     - rid: 5830051031957897316
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2240,6 +2260,8 @@ MonoBehaviour:
         aimMode: 1
         angleDegrees: 90
         spawnRadius: 0.25
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
     - rid: 5830051031957897318
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2270,6 +2292,8 @@ MonoBehaviour:
         aimMode: 1
         angleDegrees: 45
         spawnRadius: 0.25
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
     - rid: 5830051031957897320
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2304,6 +2328,8 @@ MonoBehaviour:
         aimMode: 1
         angleDegrees: 0
         spawnRadius: 0.25
+        fireSfxId: BossNormalShot
+        launchSfxId: BossSpecialShot
     - rid: 5830051031957897355
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2336,7 +2362,7 @@ MonoBehaviour:
         chargeSeconds: 2
         projectileRadiusMultiplier: 1
         aimSpreadDegrees: 24
-        launchSfxId: ""
+        launchSfxId: BossNormalShot
         effects:
           explosion:
             enabled: 0
