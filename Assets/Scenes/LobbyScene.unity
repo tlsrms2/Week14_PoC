@@ -5884,6 +5884,7 @@ GameObject:
   - component: {fileID: 220341201}
   - component: {fileID: 220341200}
   - component: {fileID: 220341199}
+  - component: {fileID: 220341202}
   m_Layer: 0
   m_Name: Gun2
   m_TagString: Untagged
@@ -6025,6 +6026,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &220341202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220341197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
+  targetGraphic: {fileID: 0}
+  targetSpriteRenderer: {fileID: 0}
+  darkenAmount: 0
+  transitionSeconds: 0.08
+  scaleTarget: {fileID: 220341198}
+  hoverScale: 1.02
+  popScale: 1.15
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!1 &267793746
 GameObject:
   m_ObjectHideFlags: 0
@@ -6824,14 +6847,14 @@ MonoBehaviour:
   bossOpenOrthographicSize: 2.5
   bossObjectsToHideWhenOpen:
   - {fileID: 1430278532}
-  bossHoverHighlight: {fileID: 0}
+  bossHoverHighlight: {fileID: 2083016464}
   loadoutRoot: {fileID: 1571761067}
   loadoutPanelContent: {fileID: 2032863090}
   loadoutFocusPoint: {fileID: 1571761067}
   loadoutOpenOrthographicSize: 3
   loadoutObjectsToHideWhenOpen:
   - {fileID: 1396986721}
-  loadoutHoverHighlight: {fileID: 0}
+  loadoutHoverHighlight: {fileID: 918100254}
   zoomSeconds: 0.25
   closeAllButtons:
   - {fileID: 1700663169}
@@ -8377,6 +8400,8 @@ GameObject:
   - component: {fileID: 642730776}
   - component: {fileID: 642730775}
   - component: {fileID: 642730774}
+  - component: {fileID: 642730777}
+  - component: {fileID: 642730778}
   m_Layer: 0
   m_Name: Boss2
   m_TagString: Untagged
@@ -8525,6 +8550,42 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &642730777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642730772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
+  targetGraphic: {fileID: 0}
+  targetSpriteRenderer: {fileID: 0}
+  darkenAmount: 0
+  transitionSeconds: 0.08
+  scaleTarget: {fileID: 642730773}
+  hoverScale: 1.02
+  popScale: 1.15
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
+--- !u!114 &642730778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642730772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b259a1f6f6c2e458e66b7f62e29d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
+  outlineGraphic: {fileID: 0}
+  outlineSpriteRenderer: {fileID: 1687516869}
 --- !u!1 &649467949
 GameObject:
   m_ObjectHideFlags: 0
@@ -9241,6 +9302,11 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!224 &730644441 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4032166510154694898, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+  m_PrefabInstance: {fileID: 1325660929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &739310735
 GameObject:
   m_ObjectHideFlags: 0
@@ -11435,12 +11501,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4032166510154694898, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032166510154694898, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000022888
+      value: -0.000022888184
       objectReference: {fileID: 0}
     - target: {fileID: 4032166510154694898, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.6
+      value: 101.399994
       objectReference: {fileID: 0}
     - target: {fileID: 4068938510250503784, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_Name
@@ -11512,7 +11582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.1
+      value: 4.100006
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11526,6 +11596,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: panelRect
+      value: 
+      objectReference: {fileID: 730644441}
     - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: panelRoot
       value: 
@@ -11774,6 +11848,7 @@ GameObject:
   - component: {fileID: 1413153333}
   - component: {fileID: 1413153332}
   - component: {fileID: 1413153331}
+  - component: {fileID: 1413153334}
   m_Layer: 0
   m_Name: Gun3
   m_TagString: Untagged
@@ -11915,6 +11990,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1413153334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413153329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
+  targetGraphic: {fileID: 0}
+  targetSpriteRenderer: {fileID: 0}
+  darkenAmount: 0
+  transitionSeconds: 0.08
+  scaleTarget: {fileID: 1413153330}
+  hoverScale: 1.02
+  popScale: 1.15
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!1 &1430278532
 GameObject:
   m_ObjectHideFlags: 0
@@ -12792,6 +12889,7 @@ GameObject:
   - component: {fileID: 1578164895}
   - component: {fileID: 1578164894}
   - component: {fileID: 1578164893}
+  - component: {fileID: 1578164896}
   m_Layer: 0
   m_Name: Gun1
   m_TagString: Untagged
@@ -12933,6 +13031,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1578164896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578164891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
+  targetGraphic: {fileID: 0}
+  targetSpriteRenderer: {fileID: 0}
+  darkenAmount: 0
+  transitionSeconds: 0.08
+  scaleTarget: {fileID: 1578164892}
+  hoverScale: 1.02
+  popScale: 1.15
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!1 &1587686331
 GameObject:
   m_ObjectHideFlags: 0
@@ -12945,6 +13065,8 @@ GameObject:
   - component: {fileID: 1587686333}
   - component: {fileID: 1587686335}
   - component: {fileID: 1587686334}
+  - component: {fileID: 1587686336}
+  - component: {fileID: 1587686337}
   m_Layer: 0
   m_Name: Boss1
   m_TagString: Untagged
@@ -13093,6 +13215,42 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.375, y: 0.5}
   m_EdgeRadius: 0
+--- !u!114 &1587686336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587686331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
+  targetGraphic: {fileID: 0}
+  targetSpriteRenderer: {fileID: 0}
+  darkenAmount: 0
+  transitionSeconds: 0.08
+  scaleTarget: {fileID: 1587686332}
+  hoverScale: 1.02
+  popScale: 1.15
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
+--- !u!114 &1587686337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587686331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b259a1f6f6c2e458e66b7f62e29d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
+  outlineGraphic: {fileID: 0}
+  outlineSpriteRenderer: {fileID: 1260400105}
 --- !u!1 &1607881319
 GameObject:
   m_ObjectHideFlags: 0
@@ -15917,6 +16075,7 @@ GameObject:
   - component: {fileID: 2112124567}
   - component: {fileID: 2112124566}
   - component: {fileID: 2112124565}
+  - component: {fileID: 2112124568}
   m_Layer: 0
   m_Name: Gun4
   m_TagString: Untagged
@@ -16058,6 +16217,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2112124568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112124563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverDarkenImage
+  targetGraphic: {fileID: 0}
+  targetSpriteRenderer: {fileID: 0}
+  darkenAmount: 0
+  transitionSeconds: 0.08
+  scaleTarget: {fileID: 2112124564}
+  hoverScale: 1.02
+  popScale: 1.15
+  popSeconds: 0.06
+  settleSeconds: 0.1
+  returnSeconds: 0.1
 --- !u!1 &2145659647
 GameObject:
   m_ObjectHideFlags: 0
@@ -16118,6 +16299,10 @@ PrefabInstance:
     - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: lobbyMenuController
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: revealStaggerSeconds
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2117426165531532304, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: m_Pivot.x
@@ -16286,11 +16471,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -42.199963
+      value: -42.199966
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.5999985
+      value: 0.6000061
       objectReference: {fileID: 0}
     - target: {fileID: 5276117982896232758, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

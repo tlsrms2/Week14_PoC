@@ -199,6 +199,18 @@ namespace Week14.UI
             SetHoverScaleSuppressed(otherRoot, true);
             SetObjectsActive(objectsToHide, false);
             SetCloseAllButtonVisible(true);
+
+            // otherRoot의 콜라이더가 방금 꺼져서 PointerExit가 다시는 안 올 수 있다.
+            // 그 전에 호버 중이었다면 hovering 플래그가 영영 true로 남아있게 되니 여기서 같이 꺼준다.
+            if (otherRoot == bossRoot)
+            {
+                bossRootHovering = false;
+            }
+            else if (otherRoot == loadoutRoot)
+            {
+                loadoutRootHovering = false;
+            }
+
             RefreshAllHoverHighlights();
 
             Vector3 targetPosition = focusPoint != null
@@ -272,6 +284,14 @@ namespace Week14.UI
             {
                 button.interactable = interactable;
             }
+
+            // bossRoot/loadoutRoot가 이제 Button이 아니라 Collider2D + EventTrigger로 클릭을 받는
+            // 월드 오브젝트라, 반대쪽 패널이 열려있는 동안엔 콜라이더 자체를 꺼서 클릭/호버가 안 먹게 막는다.
+            Collider2D collider = root.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                collider.enabled = interactable;
+            }
         }
 
         private static void SetContentInteractable(Transform content, bool interactable)
@@ -301,7 +321,10 @@ namespace Week14.UI
 
             // 패널이 열려있는 동안에는 마우스가 버튼 위를 벗어나도(카메라가 줌인되며 버튼 위치가 바뀌므로
             // 호버가 쉽게 풀린다) 계속 켜져 있어야 하므로, 호버 여부와 "지금 이 root로 열려있는지"를 같이 본다.
-            highlight.SetActive(hovering || activeRoot == root);
+            // 단, 반대쪽 패널이 열려있는 동안에는(activeRoot가 다른 root) 이쪽을 호버해도 켜지면 안 된다.
+            bool isThisOpen = activeRoot == root;
+            bool hoverAllowed = hovering && activeRoot == null;
+            highlight.SetActive(isThisOpen || hoverAllowed);
         }
 
         private void RefreshAllHoverHighlights()
