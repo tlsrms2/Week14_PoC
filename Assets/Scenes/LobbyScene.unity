@@ -2379,13 +2379,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Save.DevUnlockTools
   skillDatabase: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
-  bosses: []
-  enableUnlockAllHotkey: 1
-  enableLockAllHotkey: 1
+  bosses:
+  - {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
+  - {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
+  weaponDatabase: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
+  enableUnlockAllHotkey: 0
+  enableLockAllHotkey: 0
   unlockAllHotkey: 102
   lockAllHotkey: 103
   targetSkill: {fileID: 0}
   targetBoss: {fileID: 0}
+  targetWeapon: {fileID: 0}
 --- !u!4 &702327667
 Transform:
   m_ObjectHideFlags: 0

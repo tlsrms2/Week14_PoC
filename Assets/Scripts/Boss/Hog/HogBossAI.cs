@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
-using Week14.Save;
 
 namespace Week14.Enemy
 {
@@ -47,12 +46,6 @@ namespace Week14.Enemy
             }
 
             return graphProjectiles[0]?.Projectile;
-        }
-
-        protected override void OnBossDied()
-        {
-            GameSaveManager.ClearBoss("1");
-            GameSaveManager.UnlockBoss("2");
         }
 
         protected override void OnCombatStarted()

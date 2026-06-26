@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: SkillDatabase
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.SkillDatabase
   skills:
-  - {fileID: 11400000, guid: e01de6c70d8e01342a262d11900f442a, type: 2}
-  - {fileID: 11400000, guid: 629d3949d96145745bca104a4011bde5, type: 2}
-  - {fileID: 11400000, guid: 3968fa6280c5bdb45852a60292ef743a, type: 2}
   - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}

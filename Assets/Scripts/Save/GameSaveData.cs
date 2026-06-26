@@ -16,6 +16,7 @@ namespace Week14.Save
         public List<string> unlockedBossIds = new();
         public List<string> clearedBossIds = new();
         public List<string> unlockedSkillIds = new();
+        public List<string> unlockedWeaponIds = new();
         public List<SkillSlotData> equippedSkills = new();
         public string equippedWeaponId;
     }
