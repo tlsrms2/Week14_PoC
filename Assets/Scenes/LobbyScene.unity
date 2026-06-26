@@ -854,8 +854,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1727014597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2438,7 +2438,7 @@ RectTransform:
   m_Father: {fileID: 2037963199}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3236,6 +3236,7 @@ GameObject:
   - component: {fileID: 977922114}
   - component: {fileID: 977922116}
   - component: {fileID: 977922115}
+  - component: {fileID: 977922117}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3304,6 +3305,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977922113}
   m_CullTransparentMesh: 1
+--- !u!114 &977922117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977922113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411406fd7b3419242b5783c07a863766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
+  hoverSfxId: UI_Hover
 --- !u!1 &990000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -3448,7 +3462,7 @@ RectTransform:
   m_Father: {fileID: 1679104120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4060,6 +4074,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: panelRoot
+      value: 
+      objectReference: {fileID: 1424105527}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: showSfxId
+      value: Panel_Hover
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: lobbyMenuController
+      value: 
+      objectReference: {fileID: 424779773}
     - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: firstFillRevealImage
       value: 
@@ -4771,7 +4797,7 @@ RectTransform:
   m_Father: {fileID: 939025995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4992,13 +5018,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1607881320}
   - component: {fileID: 1607881321}
+  - component: {fileID: 1607881322}
   m_Layer: 5
   m_Name: OptionPanelRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1607881320
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5038,6 +5065,19 @@ MonoBehaviour:
   sfxVolumeSlider: {fileID: 2008331514}
   bgmMuteToggle: {fileID: 1140183782}
   sfxMuteToggle: {fileID: 1841570147}
+--- !u!114 &1607881322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607881319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411406fd7b3419242b5783c07a863766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
+  hoverSfxId: UI_Hover
 --- !u!1 &1626476256
 GameObject:
   m_ObjectHideFlags: 0
@@ -6183,7 +6223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2014571390
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6631,6 +6671,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 522931319}
     m_Modifications:
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: panelRoot
+      value: 
+      objectReference: {fileID: 522931319}
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: showSfxId
+      value: Panel_Hover
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: lobbyMenuController
+      value: 
+      objectReference: {fileID: 424779773}
     - target: {fileID: 2117426165531532304, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6816,6 +6868,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: panelRoot
+      value: 
+      objectReference: {fileID: 1424105527}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: showSfxId
+      value: Panel_Hover
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: lobbyMenuController
+      value: 
+      objectReference: {fileID: 424779773}
     - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: firstFillRevealImage
       value: 

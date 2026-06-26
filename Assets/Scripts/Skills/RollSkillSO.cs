@@ -1,5 +1,7 @@
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
+using Week14.Enemy;
 
 namespace Week14.Skills
 {
@@ -12,6 +14,10 @@ namespace Week14.Skills
         [SerializeField, Min(0.05f)] private float rollDuration = 0.3f;
         [Tooltip("구르기 도중 플레이어 주변의 투사체를 자동으로 패링하는 범위(반지름)입니다.")]
         [SerializeField, Min(0f)] private float autoParryRadius = 2f;
+        [Header("Sound")]
+        [Tooltip("구르기가 실제로 시작됐을 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string rollSfxId = "Dash";
         [Header("VFX")]
         [Tooltip("구르기 잔상이 생성되는 간격입니다.")]
         [SerializeField, Min(0.01f)] private float afterimageInterval = 0.045f;
@@ -32,7 +38,11 @@ namespace Week14.Skills
                 return;
             }
 
-            controller.TryDash(rollDistance, rollDuration, autoParryRadius, CreateVfxSettings());
+            if (controller.TryDash(rollDistance, rollDuration, autoParryRadius, CreateVfxSettings())
+                && !string.IsNullOrEmpty(rollSfxId))
+            {
+                SoundManager.PlaySfx(rollSfxId);
+            }
         }
 
         private RollSkillVfxSettings CreateVfxSettings()

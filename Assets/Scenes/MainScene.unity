@@ -2971,6 +2971,7 @@ GameObject:
   - component: {fileID: 977922114}
   - component: {fileID: 977922116}
   - component: {fileID: 977922115}
+  - component: {fileID: 977922117}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3040,6 +3041,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977922113}
   m_CullTransparentMesh: 1
+--- !u!114 &977922117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977922113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411406fd7b3419242b5783c07a863766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
+  hoverSfxId: UI_Hover
 --- !u!1 &1001309530
 GameObject:
   m_ObjectHideFlags: 0
@@ -3391,14 +3405,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140183780}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4596, y: 1.4596, z: 1.4596}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 267793747}
   - {fileID: 612043409}
-  m_Father: {fileID: 1607881320}
+  m_Father: {fileID: 1248351050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3476,6 +3490,7 @@ GameObject:
   - component: {fileID: 1248351050}
   - component: {fileID: 1248351052}
   - component: {fileID: 1248351051}
+  - component: {fileID: 1248351053}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3500,6 +3515,9 @@ RectTransform:
   - {fileID: 472982337}
   - {fileID: 2050247761}
   - {fileID: 2008331513}
+  - {fileID: 1140183781}
+  - {fileID: 1841570146}
+  - {fileID: 2044892063}
   m_Father: {fileID: 1607881320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3545,6 +3563,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248351049}
   m_CullTransparentMesh: 1
+--- !u!114 &1248351053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248351049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411406fd7b3419242b5783c07a863766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
+  hoverSfxId: UI_Hover
 --- !u!1 &1436232671
 GameObject:
   m_ObjectHideFlags: 0
@@ -4164,9 +4195,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1248351050}
-  - {fileID: 1140183781}
-  - {fileID: 1841570146}
-  - {fileID: 2044892063}
   m_Father: {fileID: 1683254465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4668,14 +4696,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841570145}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4596, y: 1.4596, z: 1.4596}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2013015707}
   - {fileID: 1571981450}
-  m_Father: {fileID: 1607881320}
+  m_Father: {fileID: 1248351050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5261,7 +5289,7 @@ RectTransform:
   m_Children:
   - {fileID: 514857663}
   - {fileID: 97710038}
-  m_Father: {fileID: 1607881320}
+  m_Father: {fileID: 1248351050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5621,6 +5649,7 @@ GameObject:
   - component: {fileID: 2100001211}
   - component: {fileID: 2100001212}
   - component: {fileID: 2100001213}
+  - component: {fileID: 2100001214}
   m_Layer: 5
   m_Name: GameOverPanel
   m_TagString: Untagged
@@ -5689,6 +5718,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2100001214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100001210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411406fd7b3419242b5783c07a863766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
+  hoverSfxId: UI_Hover
 --- !u!1 &2100001220
 GameObject:
   m_ObjectHideFlags: 0

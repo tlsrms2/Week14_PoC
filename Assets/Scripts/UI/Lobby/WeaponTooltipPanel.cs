@@ -3,6 +3,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.Audio;
+using Week14.Enemy;
 using Week14.Weapons;
 
 namespace Week14.UI
@@ -10,6 +12,9 @@ namespace Week14.UI
     public sealed class WeaponTooltipPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;
+        [Tooltip("패널이 펼쳐질 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string showSfxId;
         [Tooltip("실제로 위치를 이동시킬 툴팁 전체(배경, 텍스트 등 포함)의 최상위 RectTransform입니다. 비워두면 이 컴포넌트가 붙은 오브젝트를 사용합니다.")]
         [SerializeField] private RectTransform rootRect;
         [SerializeField] private TMP_Text nameText;
@@ -105,6 +110,11 @@ namespace Week14.UI
             }
 
             PositionAt(anchor);
+
+            if (!string.IsNullOrEmpty(showSfxId))
+            {
+                SoundManager.PlaySfx(showSfxId);
+            }
 
             SetRevealTargetsActive(false);
             ResetFillImages();

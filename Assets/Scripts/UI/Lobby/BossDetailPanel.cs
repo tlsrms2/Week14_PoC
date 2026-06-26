@@ -3,12 +3,17 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.Audio;
+using Week14.Enemy;
 
 namespace Week14.UI
 {
     public sealed class BossDetailPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;
+        [Tooltip("패널이 펼쳐질 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string showSfxId;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text crimeText;
         [SerializeField] private TMP_Text descriptionText;
@@ -67,6 +72,11 @@ namespace Week14.UI
             {
                 iconImage.sprite = icon;
                 iconImage.enabled = icon != null;
+            }
+
+            if (!string.IsNullOrEmpty(showSfxId))
+            {
+                SoundManager.PlaySfx(showSfxId);
             }
 
             SetRevealTargetsActive(false);

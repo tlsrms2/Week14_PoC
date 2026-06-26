@@ -70,3 +70,19 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: bde5655eab502e148a43a2de46b7df95, type: 3}
     volume: 0.7
     pitch: 1
+  - id: Dash
+    clip: {fileID: 8300000, guid: 10be5807a51c2874abd9ce36e582809f, type: 3}
+    volume: 0.8
+    pitch: 1.2
+  - id: Title_Button
+    clip: {fileID: 8300000, guid: 4259470e5a7e7be47bc5968392d4facf, type: 3}
+    volume: 0.5
+    pitch: 1
+  - id: Panel_Hover
+    clip: {fileID: 8300000, guid: 924236407fd486749a264b4e261703cb, type: 3}
+    volume: 0.7
+    pitch: 1
+  - id: UI_Hover
+    clip: {fileID: 8300000, guid: 0624761abd18ae748b978a4a9b9b5f7a, type: 3}
+    volume: 0.7
+    pitch: 1
