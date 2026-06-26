@@ -18,6 +18,8 @@ namespace Week14.UI
         [SerializeField] private Transform bossFocusPoint;
         [Tooltip("보스 패널이 열렸을 때 카메라의 orthographic size입니다. 작을수록 더 확대됩니다.")]
         [SerializeField, Min(0.01f)] private float bossOpenOrthographicSize = 2f;
+        [Tooltip("보스 패널이 확대될 때 꺼지고, 닫히면 다시 켜질 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] bossObjectsToHideWhenOpen = Array.Empty<GameObject>();
 
         [Tooltip("로비에 떠있는 로드아웃 선택 버튼(클릭 대상)입니다.")]
         [SerializeField] private Transform loadoutRoot;
@@ -27,6 +29,8 @@ namespace Week14.UI
         [SerializeField] private Transform loadoutFocusPoint;
         [Tooltip("로드아웃 패널이 열렸을 때 카메라의 orthographic size입니다.")]
         [SerializeField, Min(0.01f)] private float loadoutOpenOrthographicSize = 2f;
+        [Tooltip("로드아웃 패널이 확대될 때 꺼지고, 닫히면 다시 켜질 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] loadoutObjectsToHideWhenOpen = Array.Empty<GameObject>();
 
         [Tooltip("평소(닫힘) 상태로 돌아가거나 줌인하는 데 걸리는 시간입니다.")]
         [SerializeField, Min(0f)] private float zoomSeconds = 0.25f;
@@ -40,6 +44,7 @@ namespace Week14.UI
         private Transform activeRoot;
         private Transform activeContent;
         private Transform activeOtherRoot;
+        private GameObject[] activeObjectsToHide;
         private Coroutine zoomRoutine;
 
         private void Awake()
@@ -60,12 +65,12 @@ namespace Week14.UI
 
         public void OpenBossSelect()
         {
-            Open(bossRoot, bossPanelContent, bossFocusPoint, bossOpenOrthographicSize, loadoutRoot);
+            Open(bossRoot, bossPanelContent, bossFocusPoint, bossOpenOrthographicSize, loadoutRoot, bossObjectsToHideWhenOpen);
         }
 
         public void OpenLoadoutSelect()
         {
-            Open(loadoutRoot, loadoutPanelContent, loadoutFocusPoint, loadoutOpenOrthographicSize, bossRoot);
+            Open(loadoutRoot, loadoutPanelContent, loadoutFocusPoint, loadoutOpenOrthographicSize, bossRoot, loadoutObjectsToHideWhenOpen);
         }
 
         public void CloseAll()
@@ -78,10 +83,12 @@ namespace Week14.UI
             Transform root = activeRoot;
             Transform content = activeContent;
             Transform otherRoot = activeOtherRoot;
+            GameObject[] objectsToHide = activeObjectsToHide;
 
             activeRoot = null;
             activeContent = null;
             activeOtherRoot = null;
+            activeObjectsToHide = null;
 
             SetInteractable(root, true);
             SetContentInteractable(content, false);
@@ -89,6 +96,7 @@ namespace Week14.UI
             SetHoverScaleSuppressed(content, false);
             SetInteractable(otherRoot, true);
             SetHoverScaleSuppressed(otherRoot, false);
+            SetObjectsActive(objectsToHide, true);
             SetCloseAllButtonVisible(false);
             PlayZoom(restCameraPosition, restOrthographicSize);
         }
@@ -99,11 +107,14 @@ namespace Week14.UI
             activeRoot = null;
             activeContent = null;
             activeOtherRoot = null;
+            activeObjectsToHide = null;
 
             SetInteractable(bossRoot, true);
             SetContentInteractable(bossPanelContent, false);
+            SetObjectsActive(bossObjectsToHideWhenOpen, true);
             SetInteractable(loadoutRoot, true);
             SetContentInteractable(loadoutPanelContent, false);
+            SetObjectsActive(loadoutObjectsToHideWhenOpen, true);
 
             ApplyCameraTransform(restCameraPosition, restOrthographicSize);
             SetCloseAllButtonVisible(false);
@@ -130,7 +141,8 @@ namespace Week14.UI
             Transform content,
             Transform focusPoint,
             float openOrthographicSize,
-            Transform otherRoot)
+            Transform otherRoot,
+            GameObject[] objectsToHide)
         {
             if (root == null)
             {
@@ -145,6 +157,7 @@ namespace Week14.UI
             activeRoot = root;
             activeContent = content;
             activeOtherRoot = otherRoot;
+            activeObjectsToHide = objectsToHide;
 
             SetInteractable(root, false);
             SetContentInteractable(content, true);
@@ -152,6 +165,7 @@ namespace Week14.UI
             SetHoverScaleSuppressed(content, true);
             SetInteractable(otherRoot, false);
             SetHoverScaleSuppressed(otherRoot, true);
+            SetObjectsActive(objectsToHide, false);
             SetCloseAllButtonVisible(true);
 
             Vector3 targetPosition = focusPoint != null
@@ -242,6 +256,22 @@ namespace Week14.UI
             for (int i = 0; i < gated.Length; i++)
             {
                 gated[i].SetPanelOpen(interactable);
+            }
+        }
+
+        private static void SetObjectsActive(GameObject[] objects, bool active)
+        {
+            if (objects == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i] != null)
+                {
+                    objects[i].SetActive(active);
+                }
             }
         }
 
