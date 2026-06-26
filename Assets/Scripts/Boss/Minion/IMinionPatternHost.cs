@@ -28,10 +28,10 @@ namespace Week14.Enemy
     public sealed class MinionGraphProjectileOriginSpec
     {
         [SerializeField] private MinionGraphProjectileOriginMode mode;
-        [SerializeField] private string minionChildPath;
-        [SerializeField] private List<string> minionChildPaths = new();
-        [SerializeField] private string firstMinionChildPath;
-        [SerializeField] private string secondMinionChildPath;
+        [SerializeField, BossGraphMinionChildPath] private string minionChildPath;
+        [SerializeField, BossGraphMinionChildPath] private List<string> minionChildPaths = new();
+        [SerializeField, BossGraphMinionChildPath] private string firstMinionChildPath;
+        [SerializeField, BossGraphMinionChildPath] private string secondMinionChildPath;
         [SerializeField, Min(0f)] private float fallbackSpacing = 0.18f;
 
         public Vector3 GetAimOrigin(Minion minion, int shotIndex)

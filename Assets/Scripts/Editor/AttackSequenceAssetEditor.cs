@@ -49,7 +49,7 @@ public sealed class BossGraphActionAssetEditor : Editor
         SerializedProperty action = actions.GetArrayElementAtIndex(0);
         Type actionType = action.managedReferenceValue?.GetType();
         string description = BossGraphActionEditorUtility.GetActionDescription(actionType);
-        if (!string.IsNullOrWhiteSpace(description))
+        if (!BossGraphDrawerDescriptionGui.SuppressDescriptions && !string.IsNullOrWhiteSpace(description))
         {
             EditorGUILayout.HelpBox(description, MessageType.Info);
         }
@@ -603,8 +603,17 @@ internal static class BossGraphProjectileNameOptions
 internal static class BossGraphDrawerDescriptionGui
 {
     public const float HelpBoxHeight = 38f;
+    private static int suppressDescriptionsDepth;
 
     public static float Spacing => EditorGUIUtility.standardVerticalSpacing;
+    public static bool SuppressDescriptions => suppressDescriptionsDepth > 0;
+    public static float FoldoutDescriptionHeight => SuppressDescriptions ? Spacing : Spacing + HelpBoxHeight + Spacing;
+    public static float InlineDescriptionHeight => SuppressDescriptions ? 0f : HelpBoxHeight + Spacing;
+
+    public static IDisposable SuppressDescriptionsScope()
+    {
+        return new SuppressDescriptionScope();
+    }
 
     public static float GetPropertyHeight(SerializedProperty property)
     {
@@ -618,6 +627,11 @@ internal static class BossGraphDrawerDescriptionGui
 
     public static void DrawDescription(ref Rect lineRect, string text)
     {
+        if (SuppressDescriptions)
+        {
+            return;
+        }
+
         Rect descriptionRect = new(lineRect.x, lineRect.y, lineRect.width, HelpBoxHeight);
         EditorGUI.HelpBox(descriptionRect, text, MessageType.None);
         lineRect.y += HelpBoxHeight + Spacing;
@@ -634,6 +648,27 @@ internal static class BossGraphDrawerDescriptionGui
         Rect propertyRect = new(lineRect.x, lineRect.y, lineRect.width, height);
         EditorGUI.PropertyField(propertyRect, property, true);
         lineRect.y += height + Spacing;
+    }
+
+    private sealed class SuppressDescriptionScope : IDisposable
+    {
+        private bool disposed;
+
+        public SuppressDescriptionScope()
+        {
+            suppressDescriptionsDepth++;
+        }
+
+        public void Dispose()
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            disposed = true;
+            suppressDescriptionsDepth = Mathf.Max(0, suppressDescriptionsDepth - 1);
+        }
     }
 }
 
@@ -658,7 +693,7 @@ internal sealed class BossGraphProjectileOriginSpecDrawer : PropertyDrawer
             return height;
         }
 
-        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += BossGraphDrawerDescriptionGui.FoldoutDescriptionHeight;
         foreach (string propertyName in PropertyNames)
         {
             height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
@@ -713,7 +748,7 @@ internal sealed class MinionGraphProjectileOriginSpecDrawer : PropertyDrawer
             return height;
         }
 
-        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += BossGraphDrawerDescriptionGui.FoldoutDescriptionHeight;
         foreach (string propertyName in PropertyNames)
         {
             height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
@@ -764,7 +799,7 @@ internal sealed class BossGraphProjectileAimSpecDrawer : PropertyDrawer
             return height;
         }
 
-        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += BossGraphDrawerDescriptionGui.FoldoutDescriptionHeight;
         foreach (string propertyName in PropertyNames)
         {
             height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
@@ -817,7 +852,7 @@ internal sealed class BossGraphParticleEffectSettingsDrawer : PropertyDrawer
             return height;
         }
 
-        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += BossGraphDrawerDescriptionGui.FoldoutDescriptionHeight;
         foreach (string propertyName in PropertyNames)
         {
             height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
@@ -881,7 +916,7 @@ internal sealed class BossGraphCameraShakeSettingsDrawer : PropertyDrawer
             return height;
         }
 
-        height += BossGraphDrawerDescriptionGui.Spacing + BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += BossGraphDrawerDescriptionGui.FoldoutDescriptionHeight;
         foreach (string propertyName in PropertyNames)
         {
             height += BossGraphDrawerDescriptionGui.GetPropertyHeight(property.FindPropertyRelative(propertyName));
@@ -933,7 +968,7 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
         }
 
         height += EditorGUIUtility.standardVerticalSpacing;
-        height += BossGraphDrawerDescriptionGui.HelpBoxHeight + BossGraphDrawerDescriptionGui.Spacing;
+        height += BossGraphDrawerDescriptionGui.InlineDescriptionHeight;
         height += GetDefaultPropertyHeight(property.FindPropertyRelative(ExplosionProperty));
         height += GetSmokePropertyHeight(property);
         height += GetDefaultPropertyHeight(property.FindPropertyRelative(MuzzleFlashProperty));
@@ -1473,6 +1508,223 @@ internal sealed class BossGraphBossChildPathDrawer : PropertyDrawer
     }
 }
 
+[CustomPropertyDrawer(typeof(BossGraphMinionChildPathAttribute))]
+internal sealed class BossGraphMinionChildPathDrawer : PropertyDrawer
+{
+    private const float ClearButtonWidth = 22f;
+    private const float DeleteButtonWidth = 24f;
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float lineHeight = EditorGUIUtility.singleLineHeight;
+        float spacing = EditorGUIUtility.standardVerticalSpacing;
+        if (property.propertyType == SerializedPropertyType.String)
+        {
+            return lineHeight;
+        }
+
+        if (IsStringList(property))
+        {
+            if (!property.isExpanded)
+            {
+                return lineHeight;
+            }
+
+            return lineHeight + spacing + property.arraySize * (lineHeight + spacing) + lineHeight;
+        }
+
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        if (property.propertyType == SerializedPropertyType.String)
+        {
+            EditorGUI.BeginProperty(position, label, property);
+            DrawPathField(position, property, label, null);
+            EditorGUI.EndProperty();
+            return;
+        }
+
+        if (IsStringList(property))
+        {
+            DrawPathList(position, property, label);
+            return;
+        }
+
+        EditorGUI.PropertyField(position, property, label, true);
+    }
+
+    private static void DrawPathList(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        float lineHeight = EditorGUIUtility.singleLineHeight;
+        float spacing = EditorGUIUtility.standardVerticalSpacing;
+        Rect lineRect = new(position.x, position.y, position.width, lineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+        if (TryGetDroppedPath(lineRect, out string headerPath, true))
+        {
+            AddPath(property, headerPath);
+            GUI.changed = true;
+        }
+
+        if (property.isExpanded)
+        {
+            EditorGUI.indentLevel++;
+            for (int i = 0; i < property.arraySize; i++)
+            {
+                lineRect.y += lineHeight + spacing;
+                SerializedProperty element = property.GetArrayElementAtIndex(i);
+                DrawPathField(lineRect, element, new GUIContent($"Element {i}"), () => property.DeleteArrayElementAtIndex(i));
+            }
+
+            lineRect.y += lineHeight + spacing;
+            Rect dropRect = EditorGUI.IndentedRect(lineRect);
+            GUI.Box(dropRect, "Drop Minion Hierarchy Item To Add", EditorStyles.helpBox);
+            if (TryGetDroppedPath(dropRect, out string path, true))
+            {
+                AddPath(property, path);
+                GUI.changed = true;
+            }
+
+            EditorGUI.indentLevel--;
+        }
+
+        EditorGUI.EndProperty();
+    }
+
+    private static void DrawPathField(Rect position, SerializedProperty property, GUIContent label, Action onDelete)
+    {
+        Rect fieldRect = position;
+        float buttonWidth = onDelete != null ? DeleteButtonWidth : ClearButtonWidth;
+        fieldRect.width -= buttonWidth + 2f;
+        Rect buttonRect = position;
+        buttonRect.xMin = fieldRect.xMax + 2f;
+
+        Rect valueRect = EditorGUI.PrefixLabel(fieldRect, label);
+        string value = property.stringValue;
+        string displayValue = string.IsNullOrWhiteSpace(value) ? "<미니언 하이어러키에서 드롭>" : value;
+        if (!string.IsNullOrWhiteSpace(value) && !BossGraphMinionHierarchyOptions.ContainsPath(value))
+        {
+            displayValue = $"{value} (없음)";
+        }
+
+        GUI.Box(valueRect, displayValue, EditorStyles.textField);
+        if (GUI.Button(buttonRect, onDelete != null ? "-" : "X"))
+        {
+            if (onDelete != null)
+            {
+                onDelete();
+            }
+            else
+            {
+                property.stringValue = string.Empty;
+            }
+        }
+
+        if (TryGetDroppedPath(fieldRect, out string path, true))
+        {
+            property.stringValue = path;
+            GUI.changed = true;
+        }
+    }
+
+    private static bool TryGetDroppedPath(Rect dropRect, out string path, bool acceptOnPerform)
+    {
+        path = string.Empty;
+        Event currentEvent = Event.current;
+        if (!dropRect.Contains(currentEvent.mousePosition))
+        {
+            return false;
+        }
+
+        if (!TryResolveDroppedPath(out string droppedPath))
+        {
+            return false;
+        }
+
+        if (currentEvent.type == EventType.DragUpdated)
+        {
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            currentEvent.Use();
+            return false;
+        }
+
+        if (currentEvent.type != EventType.DragPerform)
+        {
+            return false;
+        }
+
+        if (acceptOnPerform)
+        {
+            DragAndDrop.AcceptDrag();
+        }
+
+        path = droppedPath;
+        currentEvent.Use();
+        return true;
+    }
+
+    private static bool TryResolveDroppedPath(out string path)
+    {
+        path = string.Empty;
+        object data = DragAndDrop.GetGenericData(BossGraphDragKeys.MinionChildPath);
+        if (data is string droppedPath && !string.IsNullOrWhiteSpace(droppedPath))
+        {
+            path = droppedPath;
+            return true;
+        }
+
+        UnityEngine.Object[] objectReferences = DragAndDrop.objectReferences;
+        if (objectReferences == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < objectReferences.Length; i++)
+        {
+            if (BossGraphMinionHierarchyOptions.TryGetPath(objectReferences[i], out path))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static void AddPath(SerializedProperty property, string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
+        for (int i = 0; i < property.arraySize; i++)
+        {
+            if (property.GetArrayElementAtIndex(i).stringValue == path)
+            {
+                return;
+            }
+        }
+
+        int index = property.arraySize;
+        property.InsertArrayElementAtIndex(index);
+        property.GetArrayElementAtIndex(index).stringValue = path;
+        GUI.changed = true;
+    }
+
+    private static bool IsStringList(SerializedProperty property)
+    {
+        if (!property.isArray || property.propertyType == SerializedPropertyType.String)
+        {
+            return false;
+        }
+
+        return property.arraySize == 0 || property.GetArrayElementAtIndex(0).propertyType == SerializedPropertyType.String;
+    }
+}
+
 internal static class BossGraphBossHierarchyOptions
 {
     private static Transform root;
@@ -1480,6 +1732,105 @@ internal static class BossGraphBossHierarchyOptions
     public static void Set(Transform bossRoot)
     {
         root = bossRoot;
+    }
+
+    public static void Clear()
+    {
+        root = null;
+    }
+
+    public static bool ContainsPath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return true;
+        }
+
+        return root == null || root.Find(path) != null || FindChildRecursive(root, path) != null;
+    }
+
+    public static bool TryGetPath(UnityEngine.Object source, out string path)
+    {
+        path = string.Empty;
+        Transform transform = source switch
+        {
+            GameObject gameObject => gameObject.transform,
+            Transform sourceTransform => sourceTransform,
+            _ => null
+        };
+
+        if (transform == null)
+        {
+            return false;
+        }
+
+        if (root == null)
+        {
+            path = transform.name;
+            return !string.IsNullOrWhiteSpace(path);
+        }
+
+        if (transform == root)
+        {
+            return false;
+        }
+
+        if (!transform.IsChildOf(root))
+        {
+            return false;
+        }
+
+        path = GetRelativePath(root, transform);
+        return !string.IsNullOrWhiteSpace(path);
+    }
+
+    private static string GetRelativePath(Transform parent, Transform child)
+    {
+        List<string> names = new();
+        Transform current = child;
+        while (current != null && current != parent)
+        {
+            names.Add(current.name);
+            current = current.parent;
+        }
+
+        names.Reverse();
+        return string.Join("/", names);
+    }
+
+    private static Transform FindChildRecursive(Transform parent, string name)
+    {
+        if (parent == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.name == name)
+            {
+                return child;
+            }
+
+            Transform nested = FindChildRecursive(child, name);
+            if (nested != null)
+            {
+                return nested;
+            }
+        }
+
+        return null;
+    }
+}
+
+internal static class BossGraphMinionHierarchyOptions
+{
+    private static Transform root;
+
+    public static void Set(Transform minionRoot)
+    {
+        root = minionRoot;
     }
 
     public static void Clear()

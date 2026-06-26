@@ -32,7 +32,6 @@ internal static class BossGraphValidationUtility
         SerializedProperty patterns = graphObject.FindProperty("patterns");
         SerializedProperty phases = graphObject.FindProperty("phases");
         SerializedProperty transitions = graphObject.FindProperty("transitions");
-        SerializedProperty startNodeId = graphObject.FindProperty("startNodeId");
         SerializedProperty references = graphObject.FindProperty("referenceSettings");
         BossGraphActionCategoryAsset actionCategories = GetActionCategories(references);
         bool usesPhasePatternLayout = phases != null && phases.arraySize > 0;
@@ -40,7 +39,6 @@ internal static class BossGraphValidationUtility
         ValidateReferences(references, messages);
         Dictionary<string, int> nodeIdCounts = CollectNodeIds(stateNodes, messages);
         Dictionary<string, int> nodeGuidCounts = ValidateNodeGuids(stateNodes, messages);
-        ValidateStartNode(startNodeId, nodeIdCounts, nodeGuidCounts, messages);
         ValidateStateNodes(stateNodes, transitions, actionCategories, usesPhasePatternLayout, messages);
         if (usesPhasePatternLayout)
         {
@@ -161,25 +159,6 @@ internal static class BossGraphValidationUtility
         }
 
         return guidCounts;
-    }
-
-    private static void ValidateStartNode(
-        SerializedProperty startNodeId,
-        Dictionary<string, int> nodeIdCounts,
-        Dictionary<string, int> nodeGuidCounts,
-        List<BossGraphValidationMessage> messages)
-    {
-        string id = startNodeId != null ? startNodeId.stringValue : string.Empty;
-        if (string.IsNullOrWhiteSpace(id))
-        {
-            messages.Add(new BossGraphValidationMessage(MessageType.Warning, "startNodeId가 비어 있습니다. 첫 노드로 fallback됩니다."));
-            return;
-        }
-
-        if (!nodeIdCounts.ContainsKey(id) && !nodeGuidCounts.ContainsKey(id))
-        {
-            messages.Add(new BossGraphValidationMessage(MessageType.Error, $"startNodeId '{id}'와 일치하는 노드가 없습니다."));
-        }
     }
 
     private static void ValidateStateNodes(

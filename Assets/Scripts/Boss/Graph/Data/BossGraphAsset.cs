@@ -9,7 +9,6 @@ namespace Week14.Enemy
     [CreateAssetMenu(menuName = "Week14/Boss/Boss Graph", fileName = "BossGraph")]
     public sealed class BossGraphAsset : ScriptableObject
     {
-        [SerializeField] private string startNodeId = "Phase1";
         [FormerlySerializedAs("references")]
         [SerializeField] private BossGraphReferenceSettings referenceSettings = new();
         [SerializeField] private List<BossStateNode> stateNodes = new()
@@ -34,12 +33,6 @@ namespace Week14.Enemy
         public string DebugForcedPatternId => debugForcedPatternId;
         public bool UsesPhasePatternLayout => phases != null && phases.Count > 0;
 
-        public BossStateNode GetStartNode()
-        {
-            BossStateNode node = FindNode(startNodeId);
-            return node ?? (stateNodes != null && stateNodes.Count > 0 ? stateNodes[0] : null);
-        }
-
         public BossStateNode GetNodeForPhase(int phaseIndex)
         {
             if (stateNodes == null || stateNodes.Count == 0)
@@ -56,7 +49,7 @@ namespace Week14.Enemy
                 }
             }
 
-            return GetStartNode();
+            return stateNodes[0];
         }
 
         public BossStateNode GetNode(string nodeId)
@@ -155,11 +148,6 @@ namespace Week14.Enemy
                     transitions[i]?.EnsureNodeGuids(nodeIdToGuid);
                 }
             }
-        }
-
-        private BossStateNode FindNode(string nodeId)
-        {
-            return GetNode(nodeId);
         }
     }
 

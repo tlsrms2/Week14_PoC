@@ -26,6 +26,10 @@ namespace Week14.Enemy
     {
     }
 
+    public sealed class BossGraphMinionChildPathAttribute : PropertyAttribute
+    {
+    }
+
     public sealed class BossGraphNodeIdAttribute : PropertyAttribute
     {
     }
