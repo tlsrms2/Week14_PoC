@@ -672,8 +672,9 @@ MonoBehaviour:
     - HogPattern8_Action05
   phases:
   - phaseIndex: 0
-    selectionMode: 0
+    selectionMode: 4
     patternIntervalSeconds: 2
+    openingPatternId: Pattern8
     patterns:
     - patternId: Pattern8
       weight: 1
@@ -684,8 +685,9 @@ MonoBehaviour:
     - patternId: Pattern6
       weight: 1
   - phaseIndex: 1
-    selectionMode: 0
+    selectionMode: 4
     patternIntervalSeconds: 2
+    openingPatternId: Pattern5
     patterns:
     - patternId: Pattern8
       weight: 1

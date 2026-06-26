@@ -9,8 +9,11 @@ namespace Week14.Enemy
         private const int MaxImmediateTransitionsPerFrame = 16;
         private readonly Dictionary<string, int> nextSequenceIndexes = new();
         private readonly Dictionary<string, BossGraphActionAsset> lastSequences = new();
+        private readonly Dictionary<string, List<BossSequenceEntry>> sequenceBags = new();
         private readonly Dictionary<int, int> nextPatternIndexes = new();
         private readonly Dictionary<int, string> lastPatterns = new();
+        private readonly Dictionary<int, List<BossGraphPatternEntry>> patternBags = new();
+        private readonly HashSet<int> openingPatternsPlayed = new();
         private string currentNodeId;
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
@@ -20,8 +23,11 @@ namespace Week14.Enemy
             BossGraphRuntimeState.Clear(activeGraph);
             nextSequenceIndexes.Clear();
             lastSequences.Clear();
+            sequenceBags.Clear();
             nextPatternIndexes.Clear();
             lastPatterns.Clear();
+            patternBags.Clear();
+            openingPatternsPlayed.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;
         }
@@ -146,8 +152,7 @@ namespace Week14.Enemy
             while (true)
             {
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
-                BossGraphPatternEntry entry = SelectPattern(phase);
-                BossGraphPattern pattern = graph.GetPattern(entry?.PatternId);
+                BossGraphPattern pattern = ResolvePhasePattern(graph, phase);
                 IReadOnlyList<string> nodeKeys = pattern?.NodeKeys;
                 if (nodeKeys == null || nodeKeys.Count == 0)
                 {
@@ -303,6 +308,7 @@ namespace Week14.Enemy
                 BossSequenceSelectionMode.Random => SelectRandom(node),
                 BossSequenceSelectionMode.RandomNoRepeat => SelectRandomNoRepeat(node, nodeKey),
                 BossSequenceSelectionMode.WeightedRandom => SelectWeightedRandom(node),
+                BossSequenceSelectionMode.ShuffledBag => SelectShuffledBag(node, nodeKey),
                 _ => SelectSequential(node, nodeKey)
             };
         }
@@ -378,6 +384,32 @@ namespace Week14.Enemy
             return SelectRandom(node);
         }
 
+        private BossSequenceEntry SelectShuffledBag(BossStateNode node, string nodeKey)
+        {
+            if (!sequenceBags.TryGetValue(nodeKey, out List<BossSequenceEntry> bag) || bag == null || bag.Count == 0)
+            {
+                bag = BuildShuffledBag(node.Sequences);
+                sequenceBags[nodeKey] = bag;
+            }
+
+            BossSequenceEntry entry = bag[^1];
+            bag.RemoveAt(bag.Count - 1);
+            TrackLast(nodeKey, entry);
+            return entry;
+        }
+
+        private static List<T> BuildShuffledBag<T>(IReadOnlyList<T> source)
+        {
+            List<T> bag = new(source);
+            for (int i = bag.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+                (bag[i], bag[j]) = (bag[j], bag[i]);
+            }
+
+            return bag;
+        }
+
         private static BossSequenceEntry GetEntryWrapping(BossStateNode node, int index)
         {
             if (node == null || node.Sequences == null || node.Sequences.Count == 0)
@@ -397,6 +429,23 @@ namespace Week14.Enemy
             }
         }
 
+        private BossGraphPattern ResolvePhasePattern(BossGraphAsset graph, BossGraphPhase phase)
+        {
+            if (phase == null)
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(phase.OpeningPatternId) && openingPatternsPlayed.Add(phase.PhaseIndex))
+            {
+                lastPatterns[phase.PhaseIndex] = phase.OpeningPatternId;
+                return graph.GetPattern(phase.OpeningPatternId);
+            }
+
+            BossGraphPatternEntry entry = SelectPattern(phase);
+            return graph.GetPattern(entry?.PatternId);
+        }
+
         private BossGraphPatternEntry SelectPattern(BossGraphPhase phase)
         {
             if (phase == null || phase.Patterns == null || phase.Patterns.Count == 0)
@@ -410,6 +459,7 @@ namespace Week14.Enemy
                 BossSequenceSelectionMode.Random => SelectRandomPattern(phase),
                 BossSequenceSelectionMode.RandomNoRepeat => SelectRandomNoRepeatPattern(phase, phaseKey),
                 BossSequenceSelectionMode.WeightedRandom => SelectWeightedRandomPattern(phase),
+                BossSequenceSelectionMode.ShuffledBag => SelectShuffledBagPattern(phase, phaseKey),
                 _ => SelectSequentialPattern(phase, phaseKey)
             };
         }
@@ -482,6 +532,20 @@ namespace Week14.Enemy
             }
 
             return SelectRandomPattern(phase);
+        }
+
+        private BossGraphPatternEntry SelectShuffledBagPattern(BossGraphPhase phase, int phaseKey)
+        {
+            if (!patternBags.TryGetValue(phaseKey, out List<BossGraphPatternEntry> bag) || bag == null || bag.Count == 0)
+            {
+                bag = BuildShuffledBag(phase.Patterns);
+                patternBags[phaseKey] = bag;
+            }
+
+            BossGraphPatternEntry entry = bag[^1];
+            bag.RemoveAt(bag.Count - 1);
+            TrackLastPattern(phaseKey, entry);
+            return entry;
         }
 
         private static BossGraphPatternEntry GetPatternEntryWrapping(BossGraphPhase phase, int index)

@@ -180,7 +180,8 @@ namespace Week14.Enemy
         Sequential,
         Random,
         RandomNoRepeat,
-        WeightedRandom
+        WeightedRandom,
+        ShuffledBag
     }
 
     public enum BossTransitionConditionType
@@ -285,11 +286,13 @@ namespace Week14.Enemy
         [SerializeField, Min(0)] private int phaseIndex;
         [SerializeField] private BossSequenceSelectionMode selectionMode;
         [SerializeField, Min(0f)] private float patternIntervalSeconds;
+        [SerializeField] private string openingPatternId;
         [SerializeField] private List<BossGraphPatternEntry> patterns = new();
 
         public int PhaseIndex => phaseIndex;
         public BossSequenceSelectionMode SelectionMode => selectionMode;
         public float PatternIntervalSeconds => Mathf.Max(0f, patternIntervalSeconds);
+        public string OpeningPatternId => openingPatternId;
         public IReadOnlyList<BossGraphPatternEntry> Patterns => patterns;
     }
 
