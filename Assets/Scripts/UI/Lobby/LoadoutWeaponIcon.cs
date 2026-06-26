@@ -1,22 +1,22 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Week14.Save;
 using Week14.Weapons;
 
 namespace Week14.UI
 {
-    [RequireComponent(typeof(Image))]
-    public sealed class LoadoutWeaponIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
+    public sealed class LoadoutWeaponIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPanelGatedInteractable
     {
         [SerializeField] private BaseWeaponSO weapon;
         [Tooltip("장착됐을 때 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
         [SerializeField] private Color selectedColor = new(1f, 0.85f, 0.3f);
 
-        private Image iconImage;
-        private RectTransform rectTransform;
+        private SpriteRenderer iconRenderer;
+        private Collider2D iconCollider;
         private Color baseColor;
         private bool subscribedToWeaponChanged;
+        private bool panelOpen;
 
         public BaseWeaponSO Weapon => weapon;
 
@@ -70,10 +70,10 @@ namespace Week14.UI
                 return;
             }
 
-            Image image = GetComponent<Image>();
-            if (image != null)
+            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            if (renderer != null)
             {
-                image.sprite = weapon.Icon;
+                renderer.sprite = weapon.Icon;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Week14.UI
                 return;
             }
 
-            WeaponTooltipPanel.Instance?.Show(weapon, rectTransform);
+            WeaponTooltipPanel.Instance?.Show(weapon, transform);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -118,44 +118,46 @@ namespace Week14.UI
         private void SetSelected(bool selected)
         {
             EnsureInitialized();
-
-            if (iconImage != null)
-            {
-                iconImage.color = selected ? selectedColor : baseColor;
-            }
+            iconRenderer.color = selected ? selectedColor : baseColor;
         }
 
         private void EnsureInitialized()
         {
-            if (iconImage != null)
+            if (iconRenderer != null)
             {
                 return;
             }
 
-            iconImage = GetComponent<Image>();
-            rectTransform = transform as RectTransform;
+            iconRenderer = GetComponent<SpriteRenderer>();
+            iconCollider = GetComponent<Collider2D>();
+            baseColor = iconRenderer.color;
 
-            if (iconImage != null)
+            if (weapon != null)
             {
-                baseColor = iconImage.color;
-
-                if (weapon != null)
-                {
-                    iconImage.sprite = weapon.Icon;
-                }
+                iconRenderer.sprite = weapon.Icon;
             }
+        }
+
+        public void SetPanelOpen(bool open)
+        {
+            EnsureInitialized();
+            panelOpen = open;
+            UpdateColliderEnabled();
         }
 
         private void RefreshLockState()
         {
             EnsureInitialized();
-            bool unlocked = IsUnlocked();
+            iconRenderer.enabled = IsUnlocked();
+            UpdateColliderEnabled();
+        }
 
-            if (iconImage != null)
-            {
-                iconImage.enabled = unlocked;
-                iconImage.raycastTarget = unlocked;
-            }
+        private void UpdateColliderEnabled()
+        {
+            // LobbyMenuController(Awake)와 이 컴포넌트(OnEnable/Start)는 어느 쪽이 먼저 실행될지 보장되지 않아서,
+            // 한쪽이 Collider2D.enabled를 직접 덮어쓰면 다른 쪽이 나중에 실행되며 그 값을 다시 뒤집어버린다.
+            // 두 조건(잠금 해제 여부 / 패널이 열려 있는지)을 항상 같이 계산해서 순서와 무관하게 일치시킨다.
+            iconCollider.enabled = IsUnlocked() && panelOpen;
         }
 
         private bool IsUnlocked()

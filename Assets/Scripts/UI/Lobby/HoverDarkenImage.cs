@@ -308,9 +308,19 @@ namespace Week14.UI
 
         private void ApplyScale(Vector3 scale)
         {
-            if (scaleTarget != null)
+            if (scaleTarget == null)
             {
-                scaleTarget.localScale = scale;
+                return;
+            }
+
+            scaleTarget.localScale = scale;
+
+            if (targetSpriteRenderer != null)
+            {
+                // 프로젝트 Physics2D 설정의 autoSyncTransforms가 꺼져 있어, 콜라이더와 같은 트랜스폼을
+                // 매 프레임 스크립트로 스케일 변경하면 다음 FixedUpdate 전까지 레이캐스트가 갱신 전 콜라이더를
+                // 봐서 호버가 깜빡이고 Pop 애니메이션이 계속 재시작되는 것처럼 보인다. 직접 동기화해서 막는다.
+                Physics2D.SyncTransforms();
             }
         }
 

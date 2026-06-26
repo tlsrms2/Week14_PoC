@@ -17,6 +17,8 @@ namespace Week14.UI
         [SerializeField] private string showSfxId;
         [Tooltip("실제로 위치를 이동시킬 툴팁 전체(배경, 텍스트 등 포함)의 최상위 RectTransform입니다. 비워두면 이 컴포넌트가 붙은 오브젝트를 사용합니다.")]
         [SerializeField] private RectTransform rootRect;
+        [Tooltip("월드<->스크린 좌표 변환에 사용할 카메라입니다. 비워두면 Camera.main을 사용합니다. (World Space Canvas 기준 위치 계산용)")]
+        [SerializeField] private Camera worldCamera;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private TMP_Text maxAmmoText;
@@ -65,6 +67,11 @@ namespace Week14.UI
                 rootRect = transform as RectTransform;
             }
 
+            if (worldCamera == null)
+            {
+                worldCamera = Camera.main;
+            }
+
             HideImmediate();
         }
 
@@ -76,7 +83,7 @@ namespace Week14.UI
             }
         }
 
-        public void Show(BaseWeaponSO weapon, RectTransform anchor)
+        public void Show(BaseWeaponSO weapon, Transform anchor)
         {
             if (weapon == null)
             {
@@ -196,21 +203,35 @@ namespace Week14.UI
             }
         }
 
-        private void PositionAt(RectTransform anchor)
+        private void PositionAt(Transform anchor)
         {
             if (anchor == null || rootRect == null)
             {
                 return;
             }
 
-            Vector3 targetPosition = anchor.position + new Vector3(anchorOffset.x, anchorOffset.y, 0f);
-            rootRect.position = ClampToScreen(targetPosition);
+            if (worldCamera == null)
+            {
+                rootRect.position = anchor.position + new Vector3(anchorOffset.x, anchorOffset.y, 0f);
+                return;
+            }
+
+            // World Space Canvas라 rootRect.position은 월드 좌표라서, 오프셋/가장자리 클램프는
+            // 화면 픽셀 공간으로 변환해서 계산한 뒤 다시 월드 좌표로 되돌린다.
+            Vector3 anchorScreenPoint = worldCamera.WorldToScreenPoint(anchor.position);
+            Vector3 targetScreenPoint = anchorScreenPoint + new Vector3(anchorOffset.x, anchorOffset.y, 0f);
+            Vector3 clampedScreenPoint = ClampToScreen(targetScreenPoint);
+            rootRect.position = worldCamera.ScreenToWorldPoint(
+                new Vector3(clampedScreenPoint.x, clampedScreenPoint.y, anchorScreenPoint.z));
         }
 
-        private Vector3 ClampToScreen(Vector3 position)
+        private Vector3 ClampToScreen(Vector3 screenPoint)
         {
-            float width = rootRect.rect.width * rootRect.lossyScale.x;
-            float height = expandedHeight * rootRect.lossyScale.y;
+            float pixelsPerWorldUnit = worldCamera != null && worldCamera.orthographicSize > 0f
+                ? Screen.height / (worldCamera.orthographicSize * 2f)
+                : 1f;
+            float width = rootRect.rect.width * rootRect.lossyScale.x * pixelsPerWorldUnit;
+            float height = expandedHeight * rootRect.lossyScale.y * pixelsPerWorldUnit;
             Vector2 pivot = rootRect.pivot;
 
             float minX = screenEdgePadding + (pivot.x * width);
@@ -220,15 +241,15 @@ namespace Week14.UI
 
             if (maxX >= minX)
             {
-                position.x = Mathf.Clamp(position.x, minX, maxX);
+                screenPoint.x = Mathf.Clamp(screenPoint.x, minX, maxX);
             }
 
             if (maxY >= minY)
             {
-                position.y = Mathf.Clamp(position.y, minY, maxY);
+                screenPoint.y = Mathf.Clamp(screenPoint.y, minY, maxY);
             }
 
-            return position;
+            return screenPoint;
         }
 
         private void SetRevealTargetsActive(bool active)
