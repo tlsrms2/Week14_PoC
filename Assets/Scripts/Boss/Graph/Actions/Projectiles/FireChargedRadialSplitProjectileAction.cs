@@ -11,7 +11,8 @@ namespace Week14.Enemy
         [SerializeField] private string handleKey = "Projectile";
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
-        [SerializeField, BossGraphBossChildPath] private string projectileOriginPath;
+        [SerializeField] private BossGraphProjectileOriginSpec origin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField, Min(0f)] private float chargeSeconds = 1.6f;
         [SerializeField, Min(0.01f)] private float projectileRadiusMultiplier = 1f;
         [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees = 24f;
@@ -25,14 +26,17 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            Transform anchor = context.GetBossChildTransform(projectileOriginPath);
-            Vector3 origin = anchor != null ? anchor.position : context.GetBossChildPosition(projectileOriginPath);
+            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            Transform anchor = originSpec.GetAimOriginTransform(context, 0);
+            Vector3 spawnOrigin = anchor != null ? anchor.position : originSpec.GetAimOrigin(context, 0);
+            Vector2 direction = GetSpreadDirection(aimSpec.GetDirection(context, spawnOrigin));
             BossProjectileSettings projectileSettings = context.ResolveGraphProjectileSettings(projectileName) ?? projectile;
             float radius = Mathf.Max(0.01f, projectileSettings.Radius * projectileRadiusMultiplier);
             EnemyProjectile spawned = context.FireProjectile(
                 projectile,
-                origin,
-                GetSpreadDirection(context, origin),
+                spawnOrigin,
+                direction,
                 0f,
                 true,
                 false,
@@ -52,12 +56,11 @@ namespace Week14.Enemy
             spawned.ConfigureInterceptable(false);
             context.SetProjectileHandle(handleKey, spawned);
             context.PlaySfxOnLaunch(spawned, launchSfxId);
-            context.PlayOriginBurst(effects, origin);
+            context.PlayOriginBurst(effects, spawnOrigin);
         }
 
-        private Vector2 GetSpreadDirection(BossActionContext context, Vector3 origin)
+        private Vector2 GetSpreadDirection(Vector2 direction)
         {
-            Vector2 direction = context.GetDirectionToPlayer(origin);
             float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             float halfSpread = aimSpreadDegrees * 0.5f;
             return BossActionContext.AngleToDirection(baseAngle + UnityEngine.Random.Range(-halfSpread, halfSpread));
@@ -116,7 +119,8 @@ namespace Week14.Enemy
     public sealed class WaitProjectileChargeEndAction : BossAction
     {
         [SerializeField] private string handleKey = "Projectile";
-        [SerializeField, BossGraphBossChildPath] private string projectileOriginPath;
+        [SerializeField] private BossGraphProjectileOriginSpec origin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField, Min(0f)] private float aimTrackingSeconds = 1f;
         [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees = 24f;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -129,6 +133,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
             bool trackingStopped = false;
@@ -147,18 +153,18 @@ namespace Week14.Enemy
                     trackingStopped = true;
                 }
 
-                Vector3 origin = context.GetBossChildPosition(projectileOriginPath);
-                context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
+                Vector3 smokeOrigin = originSpec.GetAimOrigin(context, 0);
+                context.PlaySmokeIfDue(ref nextSmokeAt, effects, smokeOrigin);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
             if (projectile != null)
             {
-                Vector3 launchOrigin = context.GetBossChildPosition(projectileOriginPath);
+                Vector3 launchOrigin = originSpec.GetAimOrigin(context, 0);
                 Vector2 launchDirection = projectile.IncomingDirection.sqrMagnitude > 0.0001f
                     ? projectile.IncomingDirection
-                    : context.GetDirectionToPlayer(launchOrigin);
+                    : aimSpec.GetDirection(context, launchOrigin);
                 context.PlayMuzzleFlashIfEnabled(effects, launchOrigin, launchDirection);
             }
         }

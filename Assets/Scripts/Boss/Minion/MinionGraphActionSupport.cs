@@ -7,6 +7,11 @@ namespace Week14.Enemy
         public static bool TryGet(BossActionContext context, out IMinionPatternHost host)
         {
             host = context?.Boss as IMinionPatternHost;
+            if (host == null || !host.MinionPatternEnabled)
+            {
+                host = null;
+            }
+
             return host != null;
         }
 

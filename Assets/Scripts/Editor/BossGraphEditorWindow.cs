@@ -20,14 +20,19 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private Editor selectedActionEditor;
     private Transform explicitBossHierarchyRoot;
     private Transform bossHierarchyRoot;
+    private Transform minionHierarchyRoot;
     private Transform bossHierarchySelectedTransform;
+    private Transform minionHierarchySelectedTransform;
     private string bossHierarchySelectedPath;
+    private string minionHierarchySelectedPath;
     private List<string> graphProjectileNames = new();
     private readonly Dictionary<int, bool> bossHierarchyFoldouts = new();
+    private readonly Dictionary<int, bool> minionHierarchyFoldouts = new();
     private readonly Dictionary<int, int> phasePatternAddIndexes = new();
     private Vector2 detailsScroll;
     private Vector2 actionSettingsScroll;
     private Vector2 bossHierarchyScroll;
+    private Vector2 minionHierarchyScroll;
     private Vector2 bossHierarchyPanelPosition;
     private Vector2 bossHierarchyDragStartMouse;
     private Vector2 bossHierarchyDragStartPosition;
@@ -311,6 +316,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         graphAsset = asset;
         graphObject = graphAsset != null ? new SerializedObject(graphAsset) : null;
         bossHierarchyRoot = explicitBossHierarchyRoot != null ? explicitBossHierarchyRoot : FindBossHierarchyRoot(graphAsset);
+        RefreshMinionHierarchyRoot();
         SetBossHierarchySelection(bossHierarchyRoot, string.Empty);
         if (graphProjectileNames.Count == 0)
         {
@@ -1810,6 +1816,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private void DrawBossHierarchyPanel()
     {
+        RefreshMinionHierarchyRoot();
         ApplyBossHierarchyPanelSize();
         Vector2 panelSize = GetBossHierarchyPanelSize();
         EditorGUI.DrawRect(new Rect(0f, 0f, panelSize.x, panelSize.y), new Color(0.18f, 0.18f, 0.18f, 1f));
@@ -1837,13 +1844,14 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(BossHierarchyPanelWidth - 4f)))
+        float expandedWidth = GetExpandedBossHierarchyPanelWidth();
+        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(expandedWidth - 4f)))
         {
             Rect headerRect = GUILayoutUtility.GetRect(0f, EditorGUIUtility.singleLineHeight, GUILayout.ExpandWidth(true));
             Rect collapseRect = new(headerRect.xMax - 48f, headerRect.y, 48f, headerRect.height);
             Rect titleRect = headerRect;
             titleRect.xMax = collapseRect.xMin - 4f;
-            EditorGUI.LabelField(titleRect, "Boss", EditorStyles.boldLabel);
+            EditorGUI.LabelField(titleRect, minionHierarchyRoot != null ? "Boss / Minion" : "Boss", EditorStyles.boldLabel);
             if (GUI.Button(collapseRect, "축소"))
             {
                 bossHierarchyCollapsed = true;
@@ -1862,17 +1870,98 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
             using (new EditorGUILayout.VerticalScope())
             {
-                using (new EditorGUI.DisabledScope(true))
+                if (minionHierarchyRoot == null)
                 {
-                    EditorGUILayout.ObjectField("Boss", bossHierarchyRoot, typeof(Transform), true);
+                    DrawBossHierarchyColumn();
                 }
+                else
+                {
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        using (new EditorGUILayout.VerticalScope(GUILayout.Width(BossHierarchyPanelWidth - 16f)))
+                        {
+                            DrawBossHierarchyColumn();
+                        }
 
-                EditorGUILayout.LabelField("투사체 위치 필드로 드래그", EditorStyles.miniLabel);
-                bossHierarchyScroll = EditorGUILayout.BeginScrollView(bossHierarchyScroll, GUILayout.Height(BossHierarchyPanelHeight - 86f));
-                DrawBossHierarchyNode(bossHierarchyRoot, string.Empty, 0, true);
-                EditorGUILayout.EndScrollView();
+                        using (new EditorGUILayout.VerticalScope(GUILayout.Width(BossHierarchyPanelWidth - 16f)))
+                        {
+                            DrawMinionHierarchyColumn();
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private void DrawBossHierarchyColumn()
+    {
+        using (new EditorGUI.DisabledScope(true))
+        {
+            EditorGUILayout.ObjectField("Boss", bossHierarchyRoot, typeof(Transform), true);
+        }
+
+        EditorGUILayout.LabelField("투사체 위치 필드로 드래그", EditorStyles.miniLabel);
+        bossHierarchyScroll = EditorGUILayout.BeginScrollView(bossHierarchyScroll, GUILayout.Height(BossHierarchyPanelHeight - 86f));
+        DrawBossHierarchyNode(bossHierarchyRoot, string.Empty, 0, true);
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawMinionHierarchyColumn()
+    {
+        using (new EditorGUI.DisabledScope(true))
+        {
+            EditorGUILayout.ObjectField("Minion Prefab", minionHierarchyRoot, typeof(Transform), false);
+        }
+
+        EditorGUILayout.LabelField("미니언 위치 필드로 드래그", EditorStyles.miniLabel);
+        minionHierarchyScroll = EditorGUILayout.BeginScrollView(minionHierarchyScroll, GUILayout.Height(BossHierarchyPanelHeight - 86f));
+        DrawMinionHierarchyNode(minionHierarchyRoot, string.Empty, 0, true);
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void RefreshMinionHierarchyRoot()
+    {
+        Transform nextRoot = GetMinionHierarchyRoot(bossHierarchyRoot);
+        if (minionHierarchyRoot == nextRoot)
+        {
+            return;
+        }
+
+        minionHierarchyRoot = nextRoot;
+        minionHierarchySelectedTransform = null;
+        minionHierarchySelectedPath = string.Empty;
+        minionHierarchyScroll = Vector2.zero;
+        minionHierarchyFoldouts.Clear();
+    }
+
+    private static Transform GetMinionHierarchyRoot(Transform bossRoot)
+    {
+        if (bossRoot == null)
+        {
+            return null;
+        }
+
+        BossAI boss = bossRoot.GetComponent<BossAI>();
+        if (boss == null)
+        {
+            return null;
+        }
+
+        SerializedObject bossObject = new(boss);
+        SerializedProperty enabled = bossObject.FindProperty("minionPatternEnabled");
+        if (enabled == null || !enabled.boolValue)
+        {
+            return null;
+        }
+
+        SerializedProperty summon = bossObject.FindProperty("minionSummon");
+        SerializedProperty prefab = summon?.FindPropertyRelative("prefab");
+        if (prefab?.objectReferenceValue is Minion minionPrefab)
+        {
+            return minionPrefab.transform;
+        }
+
+        return null;
     }
 
     private void ApplyBossHierarchyPanelSize()
@@ -1882,7 +1971,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        bossHierarchyPanel.style.width = bossHierarchyCollapsed ? BossHierarchyCollapsedWidth : BossHierarchyPanelWidth;
+        bossHierarchyPanel.style.width = bossHierarchyCollapsed ? BossHierarchyCollapsedWidth : GetExpandedBossHierarchyPanelWidth();
         bossHierarchyPanel.style.height = bossHierarchyCollapsed ? BossHierarchyCollapsedHeight : BossHierarchyPanelHeight;
         EnsureBossHierarchyPanelPosition();
     }
@@ -1891,7 +1980,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
     {
         return bossHierarchyCollapsed
             ? new Vector2(BossHierarchyCollapsedWidth, BossHierarchyCollapsedHeight)
-            : new Vector2(BossHierarchyPanelWidth, BossHierarchyPanelHeight);
+            : new Vector2(GetExpandedBossHierarchyPanelWidth(), BossHierarchyPanelHeight);
+    }
+
+    private float GetExpandedBossHierarchyPanelWidth()
+    {
+        return minionHierarchyRoot != null ? BossHierarchyPanelWidth * 2f : BossHierarchyPanelWidth;
     }
 
     private void EnsureBossHierarchyPanelPosition()
@@ -2166,6 +2260,192 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         DragAndDrop.PrepareStartDrag();
         DragAndDrop.SetGenericData(BossGraphDragKeys.BossChildPath, path);
+        DragAndDrop.objectReferences = new UnityEngine.Object[] { node.gameObject };
+        DragAndDrop.StartDrag(path);
+        currentEvent.Use();
+    }
+
+    private void SetMinionHierarchySelection(Transform target, string targetPath)
+    {
+        minionHierarchySelectedTransform = target;
+        minionHierarchySelectedPath = !string.IsNullOrWhiteSpace(targetPath)
+            ? targetPath
+            : GetMinionHierarchyPath(target);
+        ExpandMinionHierarchyFoldouts(target);
+        bossHierarchyPanel?.MarkDirtyRepaint();
+        Repaint();
+    }
+
+    private void ExpandMinionHierarchyFoldouts(Transform target)
+    {
+        if (minionHierarchyRoot == null || target == null)
+        {
+            return;
+        }
+
+        Transform current = target;
+        while (current != null)
+        {
+            minionHierarchyFoldouts[current.GetInstanceID()] = true;
+            if (current == minionHierarchyRoot)
+            {
+                break;
+            }
+
+            current = current.parent;
+        }
+    }
+
+    private string GetMinionHierarchyPath(Transform target)
+    {
+        if (target == null || target == minionHierarchyRoot || !IsMinionHierarchyTransform(target))
+        {
+            return string.Empty;
+        }
+
+        List<string> names = new();
+        Transform current = target;
+        while (current != null && current != minionHierarchyRoot)
+        {
+            names.Add(current.name);
+            current = current.parent;
+        }
+
+        names.Reverse();
+        return string.Join("/", names);
+    }
+
+    private bool IsMinionHierarchyTransform(Transform target)
+    {
+        if (target == null || minionHierarchyRoot == null)
+        {
+            return false;
+        }
+
+        Transform current = target;
+        while (current != null)
+        {
+            if (current == minionHierarchyRoot)
+            {
+                return true;
+            }
+
+            current = current.parent;
+        }
+
+        return false;
+    }
+
+    private void DrawMinionHierarchyNode(Transform node, string path, int depth, bool isRoot)
+    {
+        if (node == null)
+        {
+            return;
+        }
+
+        int foldoutKey = node.GetInstanceID();
+        if (!minionHierarchyFoldouts.ContainsKey(foldoutKey))
+        {
+            minionHierarchyFoldouts[foldoutKey] = true;
+        }
+
+        Rect rowRect = GUILayoutUtility.GetRect(0f, EditorGUIUtility.singleLineHeight, GUILayout.ExpandWidth(true));
+        Rect indentedRect = rowRect;
+        indentedRect.xMin += depth * 14f;
+
+        bool hasChildren = node.childCount > 0;
+        Rect foldoutRect = new(indentedRect.x, indentedRect.y, 14f, indentedRect.height);
+        Rect labelRect = indentedRect;
+        labelRect.xMin += hasChildren ? 14f : 16f;
+        bool selected = IsMinionHierarchySelectedNode(node, path, isRoot);
+        if (selected)
+        {
+            EditorGUI.DrawRect(rowRect, new Color(0.18f, 0.58f, 0.42f, 0.24f));
+        }
+
+        if (hasChildren)
+        {
+            minionHierarchyFoldouts[foldoutKey] = EditorGUI.Foldout(foldoutRect, minionHierarchyFoldouts[foldoutKey], GUIContent.none);
+        }
+
+        string label = isRoot ? $"{node.name} (Prefab)" : node.name;
+        EditorGUI.LabelField(labelRect, label);
+        HandleMinionHierarchySelection(labelRect, node, path);
+        if (!isRoot)
+        {
+            HandleMinionHierarchyDrag(labelRect, node, path);
+        }
+
+        if (!hasChildren || !minionHierarchyFoldouts[foldoutKey])
+        {
+            return;
+        }
+
+        for (int i = 0; i < node.childCount; i++)
+        {
+            Transform child = node.GetChild(i);
+            string childPath = string.IsNullOrWhiteSpace(path) ? child.name : $"{path}/{child.name}";
+            DrawMinionHierarchyNode(child, childPath, depth + 1, false);
+        }
+    }
+
+    private void HandleMinionHierarchySelection(Rect selectionRect, Transform node, string path)
+    {
+        Event currentEvent = Event.current;
+        if (node == null
+            || currentEvent.type != EventType.MouseDown
+            || currentEvent.button != 0
+            || !selectionRect.Contains(currentEvent.mousePosition))
+        {
+            return;
+        }
+
+        SetMinionHierarchySelection(node, path);
+        GUIUtility.keyboardControl = 0;
+        currentEvent.Use();
+    }
+
+    private bool IsMinionHierarchySelectedNode(Transform node, string path, bool isRoot)
+    {
+        if (node == null || minionHierarchySelectedTransform == null)
+        {
+            return false;
+        }
+
+        if (minionHierarchySelectedTransform == node)
+        {
+            return true;
+        }
+
+        if (isRoot)
+        {
+            return minionHierarchySelectedTransform == minionHierarchyRoot
+                || (minionHierarchySelectedTransform == node && string.IsNullOrWhiteSpace(minionHierarchySelectedPath));
+        }
+
+        if (!string.IsNullOrWhiteSpace(minionHierarchySelectedPath))
+        {
+            return minionHierarchySelectedPath == path;
+        }
+
+        return false;
+    }
+
+    private static void HandleMinionHierarchyDrag(Rect dragRect, Transform node, string path)
+    {
+        Event currentEvent = Event.current;
+        if (node == null || string.IsNullOrWhiteSpace(path) || !dragRect.Contains(currentEvent.mousePosition))
+        {
+            return;
+        }
+
+        if (currentEvent.type != EventType.MouseDrag)
+        {
+            return;
+        }
+
+        DragAndDrop.PrepareStartDrag();
+        DragAndDrop.SetGenericData(BossGraphDragKeys.MinionChildPath, path);
         DragAndDrop.objectReferences = new UnityEngine.Object[] { node.gameObject };
         DragAndDrop.StartDrag(path);
         currentEvent.Use();
@@ -3126,7 +3406,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(phase.FindPropertyRelative("phaseIndex"), new GUIContent("Phase Index"));
-            EditorGUILayout.PropertyField(phase.FindPropertyRelative("selectionMode"), new GUIContent("Selection Mode"));
             EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
@@ -3171,6 +3450,14 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return changed;
         }
 
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            EditorGUILayout.LabelField("Pattern");
+            EditorGUILayout.LabelField("Weight", GUILayout.Width(42f));
+            EditorGUILayout.LabelField("Cooldown", GUILayout.Width(48f));
+            GUILayout.Space(122f);
+        }
+
         for (int i = 0; i < phasePatterns.arraySize; i++)
         {
             SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(i);
@@ -3190,6 +3477,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         bool changed = false;
         SerializedProperty patternId = entry.FindPropertyRelative("patternId");
         SerializedProperty weight = entry.FindPropertyRelative("weight");
+        SerializedProperty cooldownSeconds = entry.FindPropertyRelative("cooldownSeconds");
         using (new EditorGUILayout.HorizontalScope())
         {
             string nextPatternId = DrawPatternIdPopup(patternId.stringValue, patternIds);
@@ -3204,6 +3492,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
             if (nextWeight != weight.intValue)
             {
                 weight.intValue = nextWeight;
+                changed = true;
+            }
+
+            float currentCooldown = cooldownSeconds != null ? cooldownSeconds.floatValue : 0f;
+            float nextCooldown = EditorGUILayout.FloatField(Mathf.Max(0f, currentCooldown), GUILayout.Width(48f));
+            nextCooldown = Mathf.Max(0f, nextCooldown);
+            if (cooldownSeconds != null && !Mathf.Approximately(nextCooldown, cooldownSeconds.floatValue))
+            {
+                cooldownSeconds.floatValue = nextCooldown;
                 changed = true;
             }
 
@@ -3277,7 +3574,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         phases.InsertArrayElementAtIndex(phaseArrayIndex);
         SerializedProperty phase = phases.GetArrayElementAtIndex(phaseArrayIndex);
         SetInt(phase, "phaseIndex", phaseArrayIndex);
-        SetEnum(phase, "selectionMode", 0);
+        SetEnum(phase, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SetFloat(phase, "patternIntervalSeconds", 0f);
         SetString(phase, "openingPatternId", string.Empty);
         SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
@@ -3297,6 +3594,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(entryIndex);
         SetString(entry, "patternId", patternId);
         SetInt(entry, "weight", 1);
+        SetFloat(entry, "cooldownSeconds", 0f);
     }
 
     private static bool HasPhasePatternEntry(SerializedProperty phasePatterns, string patternId)
@@ -3590,6 +3888,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         try
         {
             BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+            BossGraphMinionHierarchyOptions.Set(minionHierarchyRoot);
             BossGraphAimStartNodeOptions.Set(graphObject);
 
             float previousLabelWidth = EditorGUIUtility.labelWidth;
@@ -3619,6 +3918,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         finally
         {
             BossGraphBossHierarchyOptions.Clear();
+            BossGraphMinionHierarchyOptions.Clear();
             BossGraphAimStartNodeOptions.Clear();
             BossGraphActionFilterContext.Clear();
             BossGraphProjectileNameOptions.Clear();
@@ -3649,25 +3949,28 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private static void DrawInlineActionProperties(SerializedProperty action)
     {
-        SerializedProperty iterator = action.Copy();
-        SerializedProperty end = iterator.GetEndProperty();
-        bool enterChildren = true;
-        bool drewAnyField = false;
-        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        using (BossGraphDrawerDescriptionGui.SuppressDescriptionsScope())
         {
-            enterChildren = false;
-            if (ShouldSkipInlineActionProperty(iterator))
+            SerializedProperty iterator = action.Copy();
+            SerializedProperty end = iterator.GetEndProperty();
+            bool enterChildren = true;
+            bool drewAnyField = false;
+            while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
             {
-                continue;
+                enterChildren = false;
+                if (ShouldSkipInlineActionProperty(iterator))
+                {
+                    continue;
+                }
+
+                drewAnyField = true;
+                EditorGUILayout.PropertyField(iterator, true);
             }
 
-            drewAnyField = true;
-            EditorGUILayout.PropertyField(iterator, true);
-        }
-
-        if (!drewAnyField)
-        {
-            EditorGUILayout.LabelField("설정 필드 없음", EditorStyles.miniLabel);
+            if (!drewAnyField)
+            {
+                EditorGUILayout.LabelField("설정 필드 없음", EditorStyles.miniLabel);
+            }
         }
     }
 
@@ -3704,29 +4007,32 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private static float GetInlineActionPropertiesHeight(SerializedProperty action)
     {
-        SerializedProperty iterator = action.Copy();
-        SerializedProperty end = iterator.GetEndProperty();
-        bool enterChildren = true;
-        bool hasFields = false;
-        float height = InlineActionVerticalPadding * 2f;
-        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        using (BossGraphDrawerDescriptionGui.SuppressDescriptionsScope())
         {
-            enterChildren = false;
-            if (ShouldSkipInlineActionProperty(iterator))
+            SerializedProperty iterator = action.Copy();
+            SerializedProperty end = iterator.GetEndProperty();
+            bool enterChildren = true;
+            bool hasFields = false;
+            float height = InlineActionVerticalPadding * 2f;
+            while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
             {
-                continue;
+                enterChildren = false;
+                if (ShouldSkipInlineActionProperty(iterator))
+                {
+                    continue;
+                }
+
+                hasFields = true;
+                height += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
             }
 
-            hasFields = true;
-            height += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
-        }
+            if (!hasFields)
+            {
+                height += EditorGUIUtility.singleLineHeight;
+            }
 
-        if (!hasFields)
-        {
-            height += EditorGUIUtility.singleLineHeight;
+            return height;
         }
-
-        return height;
     }
 
     private static BossGraphActionAsset GetNodeActionAsset(SerializedProperty node)
@@ -3756,26 +4062,57 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         Type currentActionType = GetNodeActionType(node);
-        List<GUIContent> labels = new() { new GUIContent("<선택>") };
-        int currentIndex = 0;
-        for (int i = 0; i < allowedActions.Count; i++)
-        {
-            BossGraphActionMenuItem item = allowedActions[i];
-            labels.Add(new GUIContent(item.MenuPath));
-            if (currentActionType == item.ActionType)
-            {
-                currentIndex = i + 1;
-            }
-        }
+        string currentLabel = currentActionType == null
+            ? "<선택>"
+            : GetActionSelectionMenuPath(BossGraphActionEditorUtility.GetActionLabel(currentActionType), nodeKind);
 
-        EditorGUI.BeginChangeCheck();
-        int nextIndex = EditorGUILayout.Popup(new GUIContent("Action"), currentIndex, labels.ToArray());
-        if (!EditorGUI.EndChangeCheck() || nextIndex <= 0)
+        Rect controlRect = EditorGUILayout.GetControlRect();
+        Rect buttonRect = EditorGUI.PrefixLabel(controlRect, new GUIContent("Action"));
+        if (!EditorGUI.DropdownButton(buttonRect, new GUIContent(currentLabel), FocusType.Keyboard))
         {
             return;
         }
 
-        SetNodeAction(node, allowedActions[nextIndex - 1]);
+        ShowNodeActionSelectionMenu(buttonRect, node, nodeKind, allowedActions, currentActionType);
+    }
+
+    private void ShowNodeActionSelectionMenu(
+        Rect buttonRect,
+        SerializedProperty node,
+        BossGraphNodeKind nodeKind,
+        IReadOnlyList<BossGraphActionMenuItem> allowedActions,
+        Type currentActionType)
+    {
+        if (node == null || allowedActions == null || allowedActions.Count == 0)
+        {
+            return;
+        }
+
+        string nodeId = GetString(node, "nodeId", string.Empty);
+        GenericMenu menu = new();
+        for (int i = 0; i < allowedActions.Count; i++)
+        {
+            BossGraphActionMenuItem item = allowedActions[i];
+            string menuPath = GetActionSelectionMenuPath(item.MenuPath, nodeKind);
+            bool selected = currentActionType == item.ActionType;
+            menu.AddItem(new GUIContent(menuPath), selected, () => SetNodeAction(nodeId, item));
+        }
+
+        menu.DropDown(buttonRect);
+    }
+
+    private static string GetActionSelectionMenuPath(string menuPath, BossGraphNodeKind nodeKind)
+    {
+        if (string.IsNullOrWhiteSpace(menuPath))
+        {
+            return "Unknown Action";
+        }
+
+        string root = nodeKind.ToString();
+        string prefix = $"{root}/";
+        return menuPath.StartsWith(prefix, StringComparison.Ordinal)
+            ? menuPath.Substring(prefix.Length)
+            : menuPath;
     }
 
     private List<BossGraphActionMenuItem> GetAllowedActionMenuItems(BossGraphNodeKind nodeKind)
@@ -3849,6 +4186,23 @@ public sealed class BossGraphEditorWindow : EditorWindow
         detailsPanel?.MarkDirtyRepaint();
     }
 
+    private void SetNodeAction(string nodeId, BossGraphActionMenuItem actionItem)
+    {
+        int nodeIndex = FindStateNodeIndex(nodeId);
+        if (nodeIndex < 0)
+        {
+            return;
+        }
+
+        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
+        if (stateNodes == null || nodeIndex >= stateNodes.arraySize)
+        {
+            return;
+        }
+
+        SetNodeAction(stateNodes.GetArrayElementAtIndex(nodeIndex), actionItem);
+    }
+
     private static void SetActionAssetSingleAction(BossGraphActionAsset actionAsset, BossGraphActionMenuItem actionItem)
     {
         if (actionAsset == null)
@@ -3886,6 +4240,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             try
             {
                 BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+                BossGraphMinionHierarchyOptions.Set(minionHierarchyRoot);
                 BossGraphAimStartNodeOptions.Set(graphObject);
                 EditorGUI.BeginChangeCheck();
                 DrawScrollableActionProperty(action, new GUIContent(GetNodeActionLabel(action)));
@@ -3899,6 +4254,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             finally
             {
                 BossGraphBossHierarchyOptions.Clear();
+                BossGraphMinionHierarchyOptions.Clear();
                 BossGraphAimStartNodeOptions.Clear();
                 BossGraphActionFilterContext.Clear();
                 BossGraphProjectileNameOptions.Clear();
@@ -3926,6 +4282,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         try
         {
             BossGraphBossHierarchyOptions.Set(bossHierarchyRoot);
+            BossGraphMinionHierarchyOptions.Set(minionHierarchyRoot);
             BossGraphAimStartNodeOptions.Set(graphObject);
             UpdateActionSettingsAvailableHeight();
             actionSettingsScroll = EditorGUILayout.BeginScrollView(
@@ -3938,6 +4295,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         finally
         {
             BossGraphBossHierarchyOptions.Clear();
+            BossGraphMinionHierarchyOptions.Clear();
             BossGraphAimStartNodeOptions.Clear();
             BossGraphActionFilterContext.Clear();
             BossGraphProjectileNameOptions.Clear();
@@ -4648,6 +5006,7 @@ internal static class BossGraphDragKeys
 {
     public const string NodeIds = "Week14.BossGraph.NodeIds";
     public const string BossChildPath = "Week14.BossGraph.BossChildPath";
+    public const string MinionChildPath = "Week14.BossGraph.MinionChildPath";
 }
 
 internal sealed class BossGraphView : GraphView

@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Week14.Combat;
 using Week14.UI;
@@ -9,20 +8,17 @@ using Week14.UI;
 public class CursorController : MonoBehaviour
 {
     [SerializeField] private Image normalCursorImage;
-    [SerializeField] private Image interactableCursorImage;
+    [FormerlySerializedAs("interactableCursorImage")]
+    [SerializeField] private Image pressedCursorImage;
     [SerializeField] private bool dontDestroyOnLoad = true;
     [SerializeField] private int persistentCanvasSortingOrder = 32767;
 
     private static CursorController instance;
 
     private RectTransform normalCursorRectTransform;
-    private RectTransform interactableCursorRectTransform;
+    private RectTransform pressedCursorRectTransform;
     private RectTransform parentRectTransform;
     private Canvas parentCanvas;
-    private EventSystem cachedEventSystem;
-    private PointerEventData pointerEventData;
-    private readonly List<RaycastResult> raycastResults = new();
-    private readonly List<MonoBehaviour> handlerComponents = new();
     private bool skipCursorRestore;
     private bool customCursorVisible;
 
@@ -40,7 +36,7 @@ public class CursorController : MonoBehaviour
 
         CacheCursorReferences();
         ConfigureCursorImage(normalCursorImage);
-        ConfigureCursorImage(interactableCursorImage);
+        ConfigureCursorImage(pressedCursorImage);
         SetCustomCursorVisible(false, false);
     }
 
@@ -85,11 +81,11 @@ public class CursorController : MonoBehaviour
 
         Vector2 mousePosition = mouse.position.ReadValue();
         bool cursorVisible = CanRenderCustomCursor();
-        bool interactable = cursorVisible
-            && interactableCursorImage != null
-            && IsPointerOverInteractable(mousePosition);
+        bool pressed = cursorVisible
+            && pressedCursorImage != null
+            && mouse.leftButton.isPressed;
 
-        SetCustomCursorVisible(cursorVisible, interactable);
+        SetCustomCursorVisible(cursorVisible, pressed);
         ApplyOsCursorVisible(!cursorVisible);
 
         if (!cursorVisible)
@@ -140,14 +136,14 @@ public class CursorController : MonoBehaviour
         canvas.sortingOrder = persistentCanvasSortingOrder;
 
         MoveImageToCanvas(normalCursorImage, canvasTransform);
-        MoveImageToCanvas(interactableCursorImage, canvasTransform);
+        MoveImageToCanvas(pressedCursorImage, canvasTransform);
         DontDestroyOnLoad(canvas.gameObject);
     }
 
     private void CacheCursorReferences()
     {
         normalCursorRectTransform = normalCursorImage != null ? normalCursorImage.rectTransform : null;
-        interactableCursorRectTransform = interactableCursorImage != null ? interactableCursorImage.rectTransform : null;
+        pressedCursorRectTransform = pressedCursorImage != null ? pressedCursorImage.rectTransform : null;
         parentRectTransform = ResolveParentRectTransform();
         parentCanvas = ResolveParentCanvas();
     }
@@ -159,9 +155,9 @@ public class CursorController : MonoBehaviour
             return normalParent;
         }
 
-        if (interactableCursorRectTransform != null && interactableCursorRectTransform.parent is RectTransform interactableParent)
+        if (pressedCursorRectTransform != null && pressedCursorRectTransform.parent is RectTransform pressedParent)
         {
-            return interactableParent;
+            return pressedParent;
         }
 
         return transform.parent as RectTransform;
@@ -174,9 +170,9 @@ public class CursorController : MonoBehaviour
             return normalCanvas;
         }
 
-        if (interactableCursorImage != null && interactableCursorImage.GetComponentInParent<Canvas>() is Canvas interactableCanvas)
+        if (pressedCursorImage != null && pressedCursorImage.GetComponentInParent<Canvas>() is Canvas pressedCanvas)
         {
-            return interactableCanvas;
+            return pressedCanvas;
         }
 
         return GetComponentInParent<Canvas>();
@@ -194,9 +190,9 @@ public class CursorController : MonoBehaviour
             return normalCanvas;
         }
 
-        if (interactableCursorImage != null && interactableCursorImage.GetComponentInParent<Canvas>() is Canvas interactableCanvas)
+        if (pressedCursorImage != null && pressedCursorImage.GetComponentInParent<Canvas>() is Canvas pressedCanvas)
         {
-            return interactableCanvas;
+            return pressedCanvas;
         }
 
         return GetComponentInParent<Canvas>();
@@ -204,7 +200,7 @@ public class CursorController : MonoBehaviour
 
     private void FollowMousePosition(Vector2 mousePosition)
     {
-        if (normalCursorRectTransform == null && interactableCursorRectTransform == null)
+        if (normalCursorRectTransform == null && pressedCursorRectTransform == null)
         {
             return;
         }
@@ -234,16 +230,16 @@ public class CursorController : MonoBehaviour
             && isActiveAndEnabled;
     }
 
-    private void SetCustomCursorVisible(bool visible, bool interactable)
+    private void SetCustomCursorVisible(bool visible, bool pressed)
     {
         if (normalCursorImage != null)
         {
-            normalCursorImage.enabled = visible && !interactable;
+            normalCursorImage.enabled = visible && !pressed;
         }
 
-        if (interactableCursorImage != null)
+        if (pressedCursorImage != null)
         {
-            interactableCursorImage.enabled = visible && interactable;
+            pressedCursorImage.enabled = visible && pressed;
         }
 
         customCursorVisible = visible;
@@ -284,9 +280,9 @@ public class CursorController : MonoBehaviour
             normalCursorRectTransform.position = mousePosition;
         }
 
-        if (interactableCursorRectTransform != null)
+        if (pressedCursorRectTransform != null)
         {
-            interactableCursorRectTransform.position = mousePosition;
+            pressedCursorRectTransform.position = mousePosition;
         }
     }
 
@@ -297,53 +293,10 @@ public class CursorController : MonoBehaviour
             normalCursorRectTransform.anchoredPosition = localPosition;
         }
 
-        if (interactableCursorRectTransform != null)
+        if (pressedCursorRectTransform != null)
         {
-            interactableCursorRectTransform.anchoredPosition = localPosition;
+            pressedCursorRectTransform.anchoredPosition = localPosition;
         }
-    }
-
-    private bool IsPointerOverInteractable(Vector2 mousePosition)
-    {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem == null)
-        {
-            return false;
-        }
-
-        if (pointerEventData == null || cachedEventSystem != eventSystem)
-        {
-            cachedEventSystem = eventSystem;
-            pointerEventData = new PointerEventData(eventSystem);
-        }
-
-        pointerEventData.Reset();
-        pointerEventData.position = mousePosition;
-        raycastResults.Clear();
-        eventSystem.RaycastAll(pointerEventData, raycastResults);
-
-        for (int i = 0; i < raycastResults.Count; i++)
-        {
-            GameObject target = raycastResults[i].gameObject;
-            if (target != null && IsInteractable(target))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private bool IsInteractable(GameObject target)
-    {
-        Selectable selectable = target.GetComponentInParent<Selectable>();
-        if (selectable != null && selectable.IsActive() && selectable.IsInteractable())
-        {
-            return true;
-        }
-
-        return HasEnabledPointerHandler<IPointerClickHandler>(target)
-            || HasEnabledPointerHandler<IPointerDownHandler>(target);
     }
 
     private bool ShouldSuppressCustomCursor()
@@ -356,22 +309,4 @@ public class CursorController : MonoBehaviour
             && !player.Health.IsDead;
     }
 
-    private bool HasEnabledPointerHandler<T>(GameObject target) where T : class
-    {
-        handlerComponents.Clear();
-        target.GetComponentsInParent(false, handlerComponents);
-
-        for (int i = 0; i < handlerComponents.Count; i++)
-        {
-            MonoBehaviour component = handlerComponents[i];
-            if (component != null && component.isActiveAndEnabled && component is T)
-            {
-                handlerComponents.Clear();
-                return true;
-            }
-        }
-
-        handlerComponents.Clear();
-        return false;
-    }
 }

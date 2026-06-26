@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
   m_Name: Boss_Hog_MigratedGraph_SmallActions
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
-  startNodeId: HogPattern1_Action01
   referenceSettings:
     effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
     colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
@@ -395,7 +394,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908201
     sequences: []
-    editorPosition: {x: 798, y: -257}
+    editorPosition: {x: 798, y: -256}
   - nodeId: HogPattern5_Action01_FireSweep
     nodeGuid: 6ecdb80d596a424b80eae1b965355f04
     nodeKind: 0
@@ -512,7 +511,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897322
     sequences: []
-    editorPosition: {x: 1826, y: 629}
+    editorPosition: {x: 1826, y: 632}
   - nodeId: Node5
     nodeGuid: e330ece8d47f4556a7bed8e7095c0461
     nodeKind: 3
@@ -678,12 +677,16 @@ MonoBehaviour:
     patterns:
     - patternId: Pattern8
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern2
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern4
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern6
       weight: 1
+      cooldownSeconds: 0
   - phaseIndex: 1
     selectionMode: 4
     patternIntervalSeconds: 2
@@ -691,18 +694,25 @@ MonoBehaviour:
     patterns:
     - patternId: Pattern8
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern2
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern4
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern5
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern6
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern7
       weight: 1
+      cooldownSeconds: 0
     - patternId: Pattern3
       weight: 1
+      cooldownSeconds: 0
   transitions:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: 266779658870470e92d2caaf9062946e
@@ -1048,7 +1058,7 @@ MonoBehaviour:
     threshold: 0
     phaseIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern8
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -1217,7 +1227,16 @@ MonoBehaviour:
       type: {class: WaitProjectileChargeEndAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         handleKey: HogPattern3
-        projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
         aimTrackingSeconds: 1.5
         aimSpreadDegrees: 0
         effects:
@@ -2201,11 +2220,41 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        aimMode: 1
-        angleDegrees: 180
-        spawnRadius: 0.25
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
+        effects:
+          explosion:
+            enabled: 1
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 1
+            count: 15
+          smokeInterval: 0.5
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 5830051031957897315
       type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2229,11 +2278,41 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        aimMode: 1
-        angleDegrees: 135
-        spawnRadius: 0.25
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
+        effects:
+          explosion:
+            enabled: 1
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 1
+            count: 15
+          smokeInterval: 0.5
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 5830051031957897316
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2261,11 +2340,41 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        aimMode: 1
-        angleDegrees: 90
-        spawnRadius: 0.25
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
+        effects:
+          explosion:
+            enabled: 1
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 1
+            count: 15
+          smokeInterval: 0.5
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 5830051031957897318
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2293,11 +2402,41 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        aimMode: 1
-        angleDegrees: 45
-        spawnRadius: 0.25
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
+        effects:
+          explosion:
+            enabled: 1
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
+            scale: 1
+            count: 15
+          smokeInterval: 0.5
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 5830051031957897320
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2329,11 +2468,41 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        aimMode: 1
-        angleDegrees: 0
-        spawnRadius: 0.25
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
+        effects:
+          explosion:
+            enabled: 1
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
+            scale: 1
+            count: 15
+          smokeInterval: 0.5
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 5830051031957897355
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2362,7 +2531,16 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        projectileOriginPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
         chargeSeconds: 2
         projectileRadiusMultiplier: 1
         aimSpreadDegrees: 24

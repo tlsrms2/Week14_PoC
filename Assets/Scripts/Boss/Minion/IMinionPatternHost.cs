@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Week14.Enemy
 {
@@ -9,6 +12,142 @@ namespace Week14.Enemy
         RadialBurst,
         ChargeSideFire,
         Formation
+    }
+
+    public enum MinionGraphProjectileOriginMode
+    {
+        ProjectileOrigin,
+        MinionRoot,
+        MinionChild,
+        MinionChildList,
+        AlternatingMinionChildList,
+        AlternatingMinionChildren
+    }
+
+    [Serializable]
+    public sealed class MinionGraphProjectileOriginSpec
+    {
+        [SerializeField] private MinionGraphProjectileOriginMode mode;
+        [SerializeField, BossGraphMinionChildPath] private string minionChildPath;
+        [SerializeField, BossGraphMinionChildPath] private List<string> minionChildPaths = new();
+        [SerializeField, BossGraphMinionChildPath] private string firstMinionChildPath;
+        [SerializeField, BossGraphMinionChildPath] private string secondMinionChildPath;
+        [SerializeField, Min(0f)] private float fallbackSpacing = 0.18f;
+
+        public Vector3 GetAimOrigin(Minion minion, int shotIndex)
+        {
+            if (minion == null)
+            {
+                return Vector3.zero;
+            }
+
+            return mode switch
+            {
+                MinionGraphProjectileOriginMode.MinionRoot => minion.transform.position,
+                MinionGraphProjectileOriginMode.MinionChild => minion.GetGraphChildPosition(minionChildPath),
+                MinionGraphProjectileOriginMode.MinionChildList => minion.GetGraphChildPosition(GetListPath(shotIndex, false)),
+                MinionGraphProjectileOriginMode.AlternatingMinionChildList => minion.GetGraphChildPosition(GetListPath(shotIndex, true)),
+                MinionGraphProjectileOriginMode.AlternatingMinionChildren => minion.GetGraphChildPosition(GetAlternatingPath(shotIndex)),
+                _ => minion.GetGraphProjectileOrigin()
+            };
+        }
+
+        public Vector3 GetSpawnOrigin(Minion minion, int shotIndex, Vector2 direction)
+        {
+            Vector3 origin = GetAimOrigin(minion, shotIndex);
+            if (mode != MinionGraphProjectileOriginMode.ProjectileOrigin || fallbackSpacing <= 0f || shotIndex <= 0)
+            {
+                return origin;
+            }
+
+            Vector2 normalizedDirection = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+            Vector2 side = new(-normalizedDirection.y, normalizedDirection.x);
+            int ring = (shotIndex + 1) / 2;
+            float sign = shotIndex % 2 == 0 ? -1f : 1f;
+            return origin + (Vector3)(side * ring * fallbackSpacing * sign);
+        }
+
+        private string GetAlternatingPath(int shotIndex)
+        {
+            bool hasFirst = !string.IsNullOrWhiteSpace(firstMinionChildPath);
+            bool hasSecond = !string.IsNullOrWhiteSpace(secondMinionChildPath);
+            if (!hasFirst)
+            {
+                return secondMinionChildPath;
+            }
+
+            if (!hasSecond)
+            {
+                return firstMinionChildPath;
+            }
+
+            return shotIndex % 2 == 0 ? firstMinionChildPath : secondMinionChildPath;
+        }
+
+        private string GetListPath(int shotIndex, bool loop)
+        {
+            if (minionChildPaths == null || minionChildPaths.Count == 0)
+            {
+                return minionChildPath;
+            }
+
+            int index = loop
+                ? Mathf.Abs(shotIndex) % minionChildPaths.Count
+                : Mathf.Clamp(shotIndex, 0, minionChildPaths.Count - 1);
+            return minionChildPaths[index];
+        }
+    }
+
+    public readonly struct MinionGraphProjectileFireSpec
+    {
+        private static readonly MinionGraphProjectileOriginSpec DefaultOrigin = new();
+        private static readonly BossGraphProjectileAimSpec DefaultAim = new();
+
+        public MinionGraphProjectileFireSpec(
+            MinionGraphProjectileOriginSpec origin,
+            BossGraphProjectileAimSpec aim,
+            BossGraphEffectSettings effects,
+            BossActionContext context)
+        {
+            Origin = origin;
+            Aim = aim;
+            Effects = effects;
+            Context = context;
+        }
+
+        public MinionGraphProjectileOriginSpec Origin { get; }
+        public BossGraphProjectileAimSpec Aim { get; }
+        public BossGraphEffectSettings Effects { get; }
+        public BossActionContext Context { get; }
+        public bool HasEffects => Effects != null;
+
+        public Vector3 GetAimOrigin(Minion minion, int shotIndex)
+        {
+            return (Origin ?? DefaultOrigin).GetAimOrigin(minion, shotIndex);
+        }
+
+        public Vector3 GetSpawnOrigin(Minion minion, int shotIndex, Vector2 direction)
+        {
+            return (Origin ?? DefaultOrigin).GetSpawnOrigin(minion, shotIndex, direction);
+        }
+
+        public Vector2 GetDirection(Minion minion, Vector3 origin)
+        {
+            Func<Vector3, Vector2> getDirectionToPlayer = minion != null ? minion.GetGraphDirectionToPlayer : null;
+            return (Aim ?? DefaultAim).GetDirection(getDirectionToPlayer, origin);
+        }
+
+        public void PlayEffects(Vector3 origin, Vector2 direction)
+        {
+            if (Context == null || Effects == null)
+            {
+                return;
+            }
+
+            Context.PlayOriginBurst(Effects, origin);
+            Context.PlayMuzzleFlashIfEnabled(Effects, origin, direction);
+            Context.PlayCameraShakeIfEnabled(Effects, direction);
+        }
     }
 
     public readonly struct MinionGraphCommandRequest
@@ -33,6 +172,7 @@ namespace Week14.Enemy
             float formationAngleSpacingDegrees,
             float formationSpeedMultiplier,
             float settleSeconds,
+            MinionGraphProjectileFireSpec fireSpec,
             bool resumeIdle)
         {
             Mode = mode;
@@ -54,6 +194,7 @@ namespace Week14.Enemy
             FormationAngleSpacingDegrees = formationAngleSpacingDegrees;
             FormationSpeedMultiplier = formationSpeedMultiplier;
             SettleSeconds = settleSeconds;
+            FireSpec = fireSpec;
             ResumeIdle = resumeIdle;
         }
 
@@ -76,12 +217,14 @@ namespace Week14.Enemy
         public float FormationAngleSpacingDegrees { get; }
         public float FormationSpeedMultiplier { get; }
         public float SettleSeconds { get; }
+        public MinionGraphProjectileFireSpec FireSpec { get; }
         public bool ResumeIdle { get; }
 
         public static MinionGraphCommandRequest StopAndFire(
             BossProjectileSettings projectile,
             int repeatCount,
             float fireInterval,
+            MinionGraphProjectileFireSpec fireSpec,
             bool resumeIdle)
         {
             return new MinionGraphCommandRequest(
@@ -104,6 +247,7 @@ namespace Week14.Enemy
                 1f,
                 1f,
                 0f,
+                fireSpec,
                 resumeIdle);
         }
 
@@ -112,6 +256,7 @@ namespace Week14.Enemy
             float orbitRadius,
             float orbitSeconds,
             float fireAngleStepDegrees,
+            MinionGraphProjectileFireSpec fireSpec,
             bool clockwise)
         {
             return new MinionGraphCommandRequest(
@@ -134,6 +279,7 @@ namespace Week14.Enemy
                 1f,
                 1f,
                 0f,
+                fireSpec,
                 true);
         }
 
@@ -143,6 +289,7 @@ namespace Week14.Enemy
             int directionCount,
             float volleyInterval,
             float spreadDegrees,
+            MinionGraphProjectileFireSpec fireSpec,
             bool resumeIdle)
         {
             return new MinionGraphCommandRequest(
@@ -165,6 +312,7 @@ namespace Week14.Enemy
                 1f,
                 1f,
                 0f,
+                fireSpec,
                 resumeIdle);
         }
 
@@ -174,6 +322,7 @@ namespace Week14.Enemy
             float chargeSpeed,
             float aimOffsetDegrees,
             float sideFireInterval,
+            MinionGraphProjectileFireSpec fireSpec,
             float sideFireAngleDegrees)
         {
             return new MinionGraphCommandRequest(
@@ -196,6 +345,7 @@ namespace Week14.Enemy
                 1f,
                 1f,
                 0f,
+                fireSpec,
                 true);
         }
 
@@ -225,6 +375,7 @@ namespace Week14.Enemy
                 angleSpacingDegrees,
                 speedMultiplier,
                 settleSeconds,
+                default,
                 true);
         }
     }
@@ -238,7 +389,12 @@ namespace Week14.Enemy
             float spawnSpacing,
             float windupSeconds,
             bool notifyMinions,
-            BossProjectileSettings minionProjectile)
+            BossProjectileSettings minionProjectile,
+            BossGraphProjectileOriginSpec bossOrigin,
+            BossGraphProjectileAimSpec aim,
+            BossGraphEffectSettings effects,
+            MinionGraphProjectileFireSpec minionFireSpec,
+            BossActionContext context)
         {
             BossProjectile = bossProjectile;
             BulletCount = bulletCount;
@@ -247,6 +403,11 @@ namespace Week14.Enemy
             WindupSeconds = windupSeconds;
             NotifyMinions = notifyMinions;
             MinionProjectile = minionProjectile;
+            BossOrigin = bossOrigin;
+            Aim = aim;
+            Effects = effects;
+            MinionFireSpec = minionFireSpec;
+            Context = context;
         }
 
         public BossProjectileSettings BossProjectile { get; }
@@ -256,6 +417,11 @@ namespace Week14.Enemy
         public float WindupSeconds { get; }
         public bool NotifyMinions { get; }
         public BossProjectileSettings MinionProjectile { get; }
+        public BossGraphProjectileOriginSpec BossOrigin { get; }
+        public BossGraphProjectileAimSpec Aim { get; }
+        public BossGraphEffectSettings Effects { get; }
+        public MinionGraphProjectileFireSpec MinionFireSpec { get; }
+        public BossActionContext Context { get; }
     }
 
     public readonly struct MinionGraphOrbitCrossfireRequest
@@ -270,6 +436,7 @@ namespace Week14.Enemy
             bool clockwise,
             int stationaryBulletCount,
             float stationaryFireInterval,
+            MinionGraphProjectileFireSpec fireSpec,
             bool resumeIdle)
         {
             OrbitProjectile = orbitProjectile;
@@ -281,6 +448,7 @@ namespace Week14.Enemy
             Clockwise = clockwise;
             StationaryBulletCount = stationaryBulletCount;
             StationaryFireInterval = stationaryFireInterval;
+            FireSpec = fireSpec;
             ResumeIdle = resumeIdle;
         }
 
@@ -293,18 +461,20 @@ namespace Week14.Enemy
         public bool Clockwise { get; }
         public int StationaryBulletCount { get; }
         public float StationaryFireInterval { get; }
+        public MinionGraphProjectileFireSpec FireSpec { get; }
         public bool ResumeIdle { get; }
     }
 
-    public interface IMinionPatternHost
+    public interface IMinionPatternHost : IMinionOwner
     {
+        bool MinionPatternEnabled { get; }
         BossProjectileSettings ResolveMinionProjectileSettings(string projectileName);
         IEnumerator SummonMinions(int summonCount);
         IEnumerator EnsureMinionCount(int targetCount);
         IEnumerator AutoSummonIfNeeded();
         IEnumerator FireBossBurst(MinionGraphBossBurstRequest request);
-        int FireAllMinions(BossProjectileSettings projectile);
-        int BeginSynchronizedMinionFire(BossProjectileSettings projectile, int shotCount);
+        int FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec);
+        int BeginSynchronizedMinionFire(BossProjectileSettings projectile, int shotCount, MinionGraphProjectileFireSpec fireSpec);
         IEnumerator WaitSynchronizedMinionFire(int syncVersion);
         float CommandMinions(MinionGraphCommandRequest request);
         IEnumerator RunOrbitCrossfire(MinionGraphOrbitCrossfireRequest request);

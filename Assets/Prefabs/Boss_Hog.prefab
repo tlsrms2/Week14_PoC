@@ -486,6 +486,21 @@ MonoBehaviour:
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
+  minionPatternEnabled: 0
+  minionProjectileOrigin: {fileID: 0}
+  minionSummon:
+    prefab: {fileID: 0}
+    claimSceneMinions: 1
+    maxOwnedMinions: 5
+    summonCount: 1
+    spawnRadius: 1.2
+    summonInterval: 0.2
+    introSeconds: 0.55
+    introStartScale: 0.05
+    minAutoSummonInterval: 4
+    maxAutoSummonInterval: 7
+  releaseMinionsOnDisable: 1
+  killSpawnedMinionsOnOwnerDeath: 1
   bossGraph: {fileID: 11400000, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
   graphProjectiles:
   - projectileName: "\uC77C\uBC18\uD0C4"

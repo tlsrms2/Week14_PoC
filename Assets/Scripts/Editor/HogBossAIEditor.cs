@@ -20,6 +20,15 @@ public sealed class HogBossAIEditor : Editor
         "graphProjectiles"
     };
 
+    private static readonly HashSet<string> MinionFields = new()
+    {
+        "minionPatternEnabled",
+        "minionProjectileOrigin",
+        "minionSummon",
+        "releaseMinionsOnDisable",
+        "killSpawnedMinionsOnOwnerDeath"
+    };
+
     private static readonly HashSet<string> ReferenceFields = new()
     {
         "effectData",
@@ -116,11 +125,56 @@ public sealed class HogBossAIEditor : Editor
 
     private void DrawSettingsTab()
     {
+        DrawMinionSettingsSection();
+
+        EditorGUILayout.Space(6f);
         showBossBase = EditorGUILayout.Foldout(showBossBase, "보스 설정", true);
         if (showBossBase)
         {
             DrawBaseProperties();
         }
+    }
+
+    private void DrawMinionSettingsSection()
+    {
+        SerializedProperty enabled = FindSerializedProperty("minionPatternEnabled");
+        if (enabled == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        bool expanded = DrawFoldout("settings.minions", "소환수 설정");
+        if (!expanded)
+        {
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        EditorGUILayout.PropertyField(enabled, new GUIContent("소환수 사용"));
+        using (new EditorGUI.DisabledScope(!enabled.boolValue && !enabled.hasMultipleDifferentValues))
+        {
+            DrawProperty("minionProjectileOrigin");
+            SerializedProperty summon = FindSerializedProperty("minionSummon");
+            if (summon != null)
+            {
+                DrawChild(summon, "prefab");
+                DrawChild(summon, "claimSceneMinions");
+                DrawChild(summon, "maxOwnedMinions");
+                DrawChild(summon, "summonCount");
+                DrawChild(summon, "spawnRadius");
+                DrawChild(summon, "summonInterval");
+                DrawChild(summon, "introSeconds");
+                DrawChild(summon, "introStartScale");
+                DrawChild(summon, "minAutoSummonInterval");
+                DrawChild(summon, "maxAutoSummonInterval");
+            }
+
+            DrawProperty("releaseMinionsOnDisable");
+            DrawProperty("killSpawnedMinionsOnOwnerDeath");
+        }
+
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawProjectilesTab()
@@ -374,10 +428,19 @@ public sealed class HogBossAIEditor : Editor
 
     private void DrawProperty(string propertyName)
     {
-        SerializedProperty property = serializedObject.FindProperty(propertyName);
+        SerializedProperty property = FindSerializedProperty(propertyName);
         if (property != null)
         {
             EditorGUILayout.PropertyField(property, true);
+        }
+    }
+
+    private static void DrawChild(SerializedProperty root, string childName)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            EditorGUILayout.PropertyField(child, true);
         }
     }
 
@@ -401,10 +464,11 @@ public sealed class HogBossAIEditor : Editor
         while (property.NextVisible(enterChildren))
         {
             enterChildren = false;
-            if (property.propertyPath == "m_Script"
-                || HogFields.Contains(property.propertyPath)
-                || ReferenceFields.Contains(property.propertyPath)
-                || LegacyColorFields.Contains(property.propertyPath))
+            if (IsPropertyNamed(property, "m_Script")
+                || ContainsPropertyName(HogFields, property)
+                || ContainsPropertyName(MinionFields, property)
+                || ContainsPropertyName(ReferenceFields, property)
+                || ContainsPropertyName(LegacyColorFields, property))
             {
                 continue;
             }
@@ -421,5 +485,57 @@ public sealed class HogBossAIEditor : Editor
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
         }
+    }
+
+    private SerializedProperty FindSerializedProperty(string propertyName)
+    {
+        SerializedProperty directProperty = serializedObject.FindProperty(propertyName);
+        if (directProperty != null)
+        {
+            return directProperty;
+        }
+
+        SerializedProperty property = serializedObject.GetIterator();
+        bool enterChildren = true;
+        while (property.NextVisible(enterChildren))
+        {
+            enterChildren = false;
+            if (IsPropertyNamed(property, propertyName))
+            {
+                return property.Copy();
+            }
+        }
+
+        return null;
+    }
+
+    private static bool ContainsPropertyName(ISet<string> propertyNames, SerializedProperty property)
+    {
+        if (propertyNames == null || property == null)
+        {
+            return false;
+        }
+
+        foreach (string propertyName in propertyNames)
+        {
+            if (IsPropertyNamed(property, propertyName))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsPropertyNamed(SerializedProperty property, string propertyName)
+    {
+        if (property == null || string.IsNullOrWhiteSpace(propertyName))
+        {
+            return false;
+        }
+
+        return property.name == propertyName
+            || property.propertyPath == propertyName
+            || property.propertyPath.EndsWith($".{propertyName}", System.StringComparison.Ordinal);
     }
 }

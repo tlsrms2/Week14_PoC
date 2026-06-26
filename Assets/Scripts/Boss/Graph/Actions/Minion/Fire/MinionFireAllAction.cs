@@ -8,6 +8,9 @@ namespace Week14.Enemy
     public sealed class MinionFireAllAction : BossAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(1)] private int shotCount = 1;
         [SerializeField, Min(0f)] private float fireInterval;
 
@@ -23,6 +26,7 @@ namespace Week14.Enemy
             }
 
             int safeShotCount = Mathf.Max(1, shotCount);
+            MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
             for (int i = 0; i < safeShotCount; i++)
             {
                 if (context.IsExecutionPaused)
@@ -33,7 +37,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                host.FireAllMinions(projectile);
+                host.FireAllMinions(projectile, fireSpec);
                 if (i < safeShotCount - 1 && fireInterval > 0f)
                 {
                     yield return context.WaitSeconds(fireInterval);

@@ -6,7 +6,6 @@ using Week14.Enemy;
 [CustomEditor(typeof(BossGraphAsset))]
 public sealed class BossGraphAssetEditor : Editor
 {
-    private SerializedProperty startNodeId;
     private SerializedProperty references;
     private SerializedProperty stateNodes;
     private SerializedProperty patterns;
@@ -19,7 +18,6 @@ public sealed class BossGraphAssetEditor : Editor
 
     private void OnEnable()
     {
-        startNodeId = serializedObject.FindProperty("startNodeId");
         references = serializedObject.FindProperty("references");
         stateNodes = serializedObject.FindProperty("stateNodes");
         patterns = serializedObject.FindProperty("patterns");
@@ -76,8 +74,6 @@ public sealed class BossGraphAssetEditor : Editor
         EditorGUILayout.LabelField("검증", EditorStyles.boldLabel);
         BossGraphValidationUtility.DrawMessages(BossGraphValidationUtility.Validate(serializedObject), 6);
 
-        EditorGUILayout.Space(6f);
-        EditorGUILayout.PropertyField(startNodeId);
         EditorGUILayout.Space(6f);
         stateNodeList.DoLayoutList();
         EditorGUILayout.Space(6f);
@@ -169,7 +165,7 @@ public sealed class BossGraphAssetEditor : Editor
         int index = phases.arraySize - 1;
         SerializedProperty element = phases.GetArrayElementAtIndex(index);
         SetChildInt(element, "phaseIndex", index);
-        SetChildEnum(element, "selectionMode", 0);
+        SetChildEnum(element, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SerializedProperty patternEntries = element.FindPropertyRelative("patterns");
         patternEntries?.ClearArray();
         list.index = index;

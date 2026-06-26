@@ -8,6 +8,9 @@ namespace Week14.Enemy
     public sealed class MinionOrbitFireAction : BossAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
+        [SerializeField] private BossGraphProjectileAimSpec aim = new();
+        [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0.1f)] private float orbitRadius = 2.6f;
         [SerializeField, Min(0.1f)] private float orbitSeconds = 3f;
         [SerializeField, Min(1f)] private float fireAngleStepDegrees = 30f;
@@ -27,11 +30,13 @@ namespace Week14.Enemy
             }
 
             bool resolvedClockwise = randomizeDirection ? UnityEngine.Random.value > 0.5f : clockwise;
+            MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
             MinionGraphCommandRequest request = MinionGraphCommandRequest.OrbitFire(
                 projectile,
                 orbitRadius,
                 orbitSeconds,
                 fireAngleStepDegrees,
+                fireSpec,
                 resolvedClockwise);
             float duration = host.CommandMinions(request);
             yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(context, duration, waitForDuration);

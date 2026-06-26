@@ -12,7 +12,7 @@ using Week14.UI;
 namespace Week14.Enemy
 {
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
-    public abstract class BossAI : MonoBehaviour
+    public abstract partial class BossAI : MonoBehaviour, IMinionPatternHost
     {
         [Header("Boss Lives")]
         [Tooltip("보스의 총 목숨(페이즈) 수입니다. 처형될 때마다 1씩 깎입니다.")]
@@ -202,6 +202,7 @@ namespace Week14.Enemy
                 health.Died -= HandleDied;
             }
 
+            DisableMinionPatternHost();
             SetFinalDeathSequencePlaying(false);
         }
 
@@ -215,6 +216,7 @@ namespace Week14.Enemy
             PrepareStatusViews();
             ApplyBodyStateColor();
             ResolvePlayer();
+            InitializeMinionPatternHost();
             OnBossStarted();
         }
 
@@ -237,6 +239,7 @@ namespace Week14.Enemy
             if (locked)
             {
                 CancelBossAction();
+                CancelMinionPatternAction();
                 Stop();
             }
         }
@@ -382,6 +385,7 @@ namespace Week14.Enemy
             try
             {
                 CancelBossAction();
+                CancelMinionPatternAction();
                 Stop();
                 projectileTracker.DestroyAll();
 
@@ -437,11 +441,13 @@ namespace Week14.Enemy
         internal void OnBossPhaseChangedForController(int phaseIndex, int phaseNumber)
         {
             OnBossPhaseChanged(phaseIndex, phaseNumber);
+            HandleMinionBossPhaseChanged();
         }
 
         internal void CancelBossActionForController()
         {
             CancelBossAction();
+            CancelMinionPatternAction();
         }
 
         internal void RefillHpForPhaseController()
@@ -457,6 +463,7 @@ namespace Week14.Enemy
         internal void BeginHpEmptyForState()
         {
             CancelBossAction();
+            CancelMinionPatternAction();
             Stop();
             ApplyBodyStateColor();
             bossHpBarView?.SetExecutionWindow(true, 1f);
@@ -930,6 +937,7 @@ namespace Week14.Enemy
 
             ApplyBossClearRewards();
             OnBossDied();
+            HandleMinionBossDied();
             Defeated?.Invoke(this);
         }
 
