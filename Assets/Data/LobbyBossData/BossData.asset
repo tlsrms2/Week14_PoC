@@ -24,3 +24,5 @@ MonoBehaviour:
   unlocksSkillIds: []
   unlocksWeaponIds:
   - 3BulletsWeapon
+  - NoLockOn
+  - 1BulletWeapon
