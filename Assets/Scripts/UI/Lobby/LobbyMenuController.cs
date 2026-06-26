@@ -20,6 +20,8 @@ namespace Week14.UI
         [SerializeField, Min(0.01f)] private float bossOpenOrthographicSize = 2f;
         [Tooltip("보스 패널이 확대될 때 꺼지고, 닫히면 다시 켜질 오브젝트들입니다.")]
         [SerializeField] private GameObject[] bossObjectsToHideWhenOpen = Array.Empty<GameObject>();
+        [Tooltip("bossRoot에 마우스를 올리면 켜지는 오브젝트입니다. 보스 패널이 열려있는 동안에는 호버 여부와 상관없이 계속 켜져 있습니다.")]
+        [SerializeField] private GameObject bossHoverHighlight;
 
         [Tooltip("로비에 떠있는 로드아웃 선택 버튼(클릭 대상)입니다.")]
         [SerializeField] private Transform loadoutRoot;
@@ -31,6 +33,8 @@ namespace Week14.UI
         [SerializeField, Min(0.01f)] private float loadoutOpenOrthographicSize = 2f;
         [Tooltip("로드아웃 패널이 확대될 때 꺼지고, 닫히면 다시 켜질 오브젝트들입니다.")]
         [SerializeField] private GameObject[] loadoutObjectsToHideWhenOpen = Array.Empty<GameObject>();
+        [Tooltip("loadoutRoot에 마우스를 올리면 켜지는 오브젝트입니다. 로드아웃 패널이 열려있는 동안에는 호버 여부와 상관없이 계속 켜져 있습니다.")]
+        [SerializeField] private GameObject loadoutHoverHighlight;
 
         [Tooltip("평소(닫힘) 상태로 돌아가거나 줌인하는 데 걸리는 시간입니다.")]
         [SerializeField, Min(0f)] private float zoomSeconds = 0.25f;
@@ -46,6 +50,8 @@ namespace Week14.UI
         private Transform activeOtherRoot;
         private GameObject[] activeObjectsToHide;
         private Coroutine zoomRoutine;
+        private bool bossRootHovering;
+        private bool loadoutRootHovering;
 
         private void Awake()
         {
@@ -61,6 +67,30 @@ namespace Week14.UI
             }
 
             CloseAllImmediate();
+        }
+
+        public void OnBossRootPointerEnter()
+        {
+            bossRootHovering = true;
+            RefreshHoverHighlight(bossHoverHighlight, bossRootHovering, bossRoot);
+        }
+
+        public void OnBossRootPointerExit()
+        {
+            bossRootHovering = false;
+            RefreshHoverHighlight(bossHoverHighlight, bossRootHovering, bossRoot);
+        }
+
+        public void OnLoadoutRootPointerEnter()
+        {
+            loadoutRootHovering = true;
+            RefreshHoverHighlight(loadoutHoverHighlight, loadoutRootHovering, loadoutRoot);
+        }
+
+        public void OnLoadoutRootPointerExit()
+        {
+            loadoutRootHovering = false;
+            RefreshHoverHighlight(loadoutHoverHighlight, loadoutRootHovering, loadoutRoot);
         }
 
         public void OpenBossSelect()
@@ -98,6 +128,7 @@ namespace Week14.UI
             SetHoverScaleSuppressed(otherRoot, false);
             SetObjectsActive(objectsToHide, true);
             SetCloseAllButtonVisible(false);
+            RefreshAllHoverHighlights();
             PlayZoom(restCameraPosition, restOrthographicSize);
         }
 
@@ -118,6 +149,7 @@ namespace Week14.UI
 
             ApplyCameraTransform(restCameraPosition, restOrthographicSize);
             SetCloseAllButtonVisible(false);
+            RefreshAllHoverHighlights();
         }
 
         private void SetCloseAllButtonVisible(bool visible)
@@ -167,6 +199,7 @@ namespace Week14.UI
             SetHoverScaleSuppressed(otherRoot, true);
             SetObjectsActive(objectsToHide, false);
             SetCloseAllButtonVisible(true);
+            RefreshAllHoverHighlights();
 
             Vector3 targetPosition = focusPoint != null
                 ? new Vector3(focusPoint.position.x, focusPoint.position.y, restCameraPosition.z)
@@ -257,6 +290,24 @@ namespace Week14.UI
             {
                 gated[i].SetPanelOpen(interactable);
             }
+        }
+
+        private void RefreshHoverHighlight(GameObject highlight, bool hovering, Transform root)
+        {
+            if (highlight == null)
+            {
+                return;
+            }
+
+            // 패널이 열려있는 동안에는 마우스가 버튼 위를 벗어나도(카메라가 줌인되며 버튼 위치가 바뀌므로
+            // 호버가 쉽게 풀린다) 계속 켜져 있어야 하므로, 호버 여부와 "지금 이 root로 열려있는지"를 같이 본다.
+            highlight.SetActive(hovering || activeRoot == root);
+        }
+
+        private void RefreshAllHoverHighlights()
+        {
+            RefreshHoverHighlight(bossHoverHighlight, bossRootHovering, bossRoot);
+            RefreshHoverHighlight(loadoutHoverHighlight, loadoutRootHovering, loadoutRoot);
         }
 
         private static void SetObjectsActive(GameObject[] objects, bool active)

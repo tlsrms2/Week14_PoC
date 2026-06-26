@@ -1470,12 +1470,14 @@ MonoBehaviour:
   bossOpenOrthographicSize: 2.5
   bossObjectsToHideWhenOpen:
   - {fileID: 1430278532}
+  bossHoverHighlight: {fileID: 0}
   loadoutRoot: {fileID: 1571761067}
   loadoutPanelContent: {fileID: 2032863090}
   loadoutFocusPoint: {fileID: 1571761067}
   loadoutOpenOrthographicSize: 3
   loadoutObjectsToHideWhenOpen:
   - {fileID: 1396986721}
+  loadoutHoverHighlight: {fileID: 0}
   zoomSeconds: 0.25
   closeAllButtons:
   - {fileID: 1700663169}
@@ -5173,6 +5175,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OnLoadoutRootPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OnLoadoutRootPointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1571981449
 GameObject:
   m_ObjectHideFlags: 0
@@ -7437,6 +7471,38 @@ MonoBehaviour:
         - m_Target: {fileID: 424779773}
           m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
           m_MethodName: OpenBossSelect
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OnBossRootPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OnBossRootPointerExit
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
