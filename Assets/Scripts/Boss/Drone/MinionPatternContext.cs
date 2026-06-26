@@ -24,10 +24,6 @@ namespace Week14.Enemy
         private readonly Func<Vector3> getProjectileOrigin;
         private readonly Func<Vector3, Vector2> getDirectionToPlayer;
         private readonly BossProjectileFire fireBossProjectile;
-        private BossProjectileSettings synchronizedMinionProjectile;
-        private MinionGraphProjectileFireSpec synchronizedMinionFireSpec;
-        private int synchronizedMinionShotsRemaining;
-        private int synchronizedMinionSyncVersion;
 
         internal MinionPatternContext(
             IMinionOwner owner,
@@ -241,56 +237,6 @@ namespace Week14.Enemy
             {
                 minions[i]?.FireOnce(projectile, fireSpec, i);
             }
-        }
-
-        internal int BeginSynchronizedMinionFire(
-            BossProjectileSettings projectile,
-            int shotCount,
-            MinionGraphProjectileFireSpec fireSpec)
-        {
-            synchronizedMinionProjectile = projectile;
-            synchronizedMinionFireSpec = fireSpec;
-            synchronizedMinionShotsRemaining = projectile != null ? Mathf.Max(0, shotCount) : 0;
-            synchronizedMinionSyncVersion++;
-            return synchronizedMinionSyncVersion;
-        }
-
-        internal IEnumerator WaitSynchronizedMinionFire(int syncVersion)
-        {
-            while (syncVersion == synchronizedMinionSyncVersion && synchronizedMinionShotsRemaining > 0)
-            {
-                if (isBossExecutionPaused())
-                {
-                    stopBoss();
-                    yield return null;
-                    continue;
-                }
-
-                yield return null;
-            }
-        }
-
-        internal void TryFireSynchronizedMinions()
-        {
-            if (synchronizedMinionProjectile == null || synchronizedMinionShotsRemaining <= 0)
-            {
-                return;
-            }
-
-            FireAllMinions(synchronizedMinionProjectile, synchronizedMinionFireSpec);
-            synchronizedMinionShotsRemaining--;
-            if (synchronizedMinionShotsRemaining <= 0)
-            {
-                ClearSynchronizedMinionFire();
-            }
-        }
-
-        internal void ClearSynchronizedMinionFire()
-        {
-            synchronizedMinionProjectile = null;
-            synchronizedMinionFireSpec = default;
-            synchronizedMinionShotsRemaining = 0;
-            synchronizedMinionSyncVersion++;
         }
 
         internal void StopAllMinions()

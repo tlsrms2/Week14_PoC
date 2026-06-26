@@ -7,6 +7,7 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class MinionPlayerPathAction : BossAction
     {
+        [SerializeField] private MinionGraphPlayerPathMode mode;
         [SerializeField, Min(0.1f)] private float distanceFromPlayer = 2.8f;
         [SerializeField, Min(0f)] private float moveToStartSeconds = 0.6f;
         [SerializeField, Min(0.05f)] private float moveSeconds = 2f;
@@ -20,6 +21,7 @@ namespace Week14.Enemy
             }
 
             MinionGraphCommandRequest request = MinionGraphCommandRequest.PlayerPath(
+                mode,
                 distanceFromPlayer,
                 moveToStartSeconds,
                 moveSeconds);

@@ -668,6 +668,13 @@ namespace Week14.Enemy
             movementRoutine = StartCoroutine(RunFormationStraight(lateralOffset, distanceFromPlayer, mode, moveSpeed));
         }
 
+        public void CommandAngleDistance(float angleDegrees, float distanceFromPlayer, float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunAngleDistance(angleDegrees, distanceFromPlayer, moveSpeed));
+        }
+
         public float CommandPlayerPath(
             MinionGraphPlayerPathType pathType,
             Vector2 pathCenter,
@@ -1110,6 +1117,38 @@ namespace Week14.Enemy
             FinishMovementCommand();
         }
 
+        private IEnumerator RunAngleDistance(
+            float angleDegrees,
+            float distanceFromPlayer,
+            float moveSpeed)
+        {
+            bool lockedToPattern = false;
+            while (true)
+            {
+                IMinionOwner currentOwner = Owner;
+                Transform player = currentOwner?.MinionTarget;
+                if (currentOwner == null || player == null)
+                {
+                    break;
+                }
+
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 target = (Vector2)player.position
+                    + AngleToDirection(angleDegrees) * Mathf.Max(0.1f, distanceFromPlayer);
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
+                FacePlayer();
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
         private IEnumerator RunPlayerPath(
             MinionGraphPlayerPathType pathType,
             Vector2 pathCenter,
@@ -1185,17 +1224,33 @@ namespace Week14.Enemy
             float distance = Mathf.Max(0.1f, distanceFromPlayer);
             switch (pathType)
             {
-                case MinionGraphPlayerPathType.Vertical:
+                case MinionGraphPlayerPathType.VerticalTopToBottom:
                     startOffset = Vector2.up * distance;
                     endOffset = Vector2.down * distance;
                     break;
-                case MinionGraphPlayerPathType.LeftToRightDiagonal:
+                case MinionGraphPlayerPathType.HorizontalRightToLeft:
+                    startOffset = Vector2.right * distance;
+                    endOffset = Vector2.left * distance;
+                    break;
+                case MinionGraphPlayerPathType.VerticalBottomToTop:
+                    startOffset = Vector2.down * distance;
+                    endOffset = Vector2.up * distance;
+                    break;
+                case MinionGraphPlayerPathType.DiagonalLeftTopToRightBottom:
                     startOffset = new Vector2(-distance, distance);
                     endOffset = new Vector2(distance, -distance);
                     break;
-                case MinionGraphPlayerPathType.RightToLeftDiagonal:
+                case MinionGraphPlayerPathType.DiagonalRightTopToLeftBottom:
                     startOffset = new Vector2(distance, distance);
                     endOffset = new Vector2(-distance, -distance);
+                    break;
+                case MinionGraphPlayerPathType.DiagonalRightBottomToLeftTop:
+                    startOffset = new Vector2(distance, -distance);
+                    endOffset = new Vector2(-distance, distance);
+                    break;
+                case MinionGraphPlayerPathType.DiagonalLeftBottomToRightTop:
+                    startOffset = new Vector2(-distance, -distance);
+                    endOffset = new Vector2(distance, distance);
                     break;
                 default:
                     startOffset = Vector2.left * distance;

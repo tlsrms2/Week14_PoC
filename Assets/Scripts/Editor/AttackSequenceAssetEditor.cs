@@ -111,7 +111,7 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
         new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
         new("Minion/Fire/Fire All", typeof(MinionFireAllAction), () => new MinionFireAllAction()),
-        new("Minion/Fire/Boss Burst", typeof(MinionBossBurstAction), () => new MinionBossBurstAction()),
+        new("Minion/Fire/Sequential Fire", typeof(MinionSequentialFireAction), () => new MinionSequentialFireAction()),
         new("Minion/Fire/Repeat Fire", typeof(MinionRepeatFireAction), () => new MinionRepeatFireAction()),
         new("Minion/Fire/Radial Burst", typeof(MinionRadialBurstAction), () => new MinionRadialBurstAction()),
         new("Minion/Fire/Side Fire", typeof(MinionSideFireAction), () => new MinionSideFireAction()),
@@ -122,6 +122,7 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Movement/Formation Circle", typeof(MinionFormationAction), () => new MinionFormationAction()),
         new("Minion/Movement/Formation Straight", typeof(MinionFormationStraightAction), () => new MinionFormationStraightAction()),
         new("Minion/Movement/Player Path", typeof(MinionPlayerPathAction), () => new MinionPlayerPathAction()),
+        new("Minion/Movement/Angle Distance Move", typeof(MinionAngleDistanceMoveAction), () => new MinionAngleDistanceMoveAction()),
         new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction())
     };
 
@@ -281,9 +282,9 @@ internal static class BossGraphActionEditorUtility
             return "현재 관리 중인 모든 미니언이 같은 타이밍에 발사합니다.";
         }
 
-        if (actionType == typeof(MinionBossBurstAction))
+        if (actionType == typeof(MinionSequentialFireAction))
         {
-            return "보스 본체 발사와 미니언 보조 발사를 하나의 액션에서 함께 실행합니다.";
+            return "현재 관리 중인 미니언들이 순서대로 하나씩 발사합니다.";
         }
 
         if (actionType == typeof(MinionRepeatFireAction))

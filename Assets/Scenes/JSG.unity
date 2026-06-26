@@ -3411,6 +3411,18 @@ PrefabInstance:
       propertyPath: minionSummon.maxOwnedMinions
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[1].projectile.prefab
+      value: 
+      objectReference: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[1].projectile.chargeDriftSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[1].projectile.homingChargePrefab
+      value: 
+      objectReference: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3454,6 +3466,10 @@ PrefabInstance:
     - target: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_Name
       value: Boss_DronePilot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

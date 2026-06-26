@@ -25,18 +25,48 @@ namespace Week14.Enemy
         BetweenBossAndPlayer
     }
 
+    public enum MinionGraphPlayerPathMode
+    {
+        HorizontalVertical,
+        Diagonal
+    }
+
     public enum MinionGraphPlayerPathType
     {
-        Horizontal,
-        Vertical,
-        LeftToRightDiagonal,
-        RightToLeftDiagonal
+        HorizontalLeftToRight,
+        VerticalTopToBottom,
+        HorizontalRightToLeft,
+        VerticalBottomToTop,
+        DiagonalLeftTopToRightBottom,
+        DiagonalRightTopToLeftBottom,
+        DiagonalRightBottomToLeftTop,
+        DiagonalLeftBottomToRightTop
     }
 
     public enum MinionGraphSideFireOriginMode
     {
         SharedOrigin,
         BodySides
+    }
+
+    [Serializable]
+    public sealed class MinionGraphAngleDistanceSlot
+    {
+        [SerializeField] private float angleDegrees;
+        [SerializeField, Min(0.1f)] private float distance = 2f;
+
+        public MinionGraphAngleDistanceSlot()
+        {
+        }
+
+        public MinionGraphAngleDistanceSlot(float angleDegrees, float distance)
+        {
+            this.angleDegrees = angleDegrees;
+            this.distance = distance;
+        }
+
+        public float AngleDegrees => angleDegrees;
+        public float Distance => Mathf.Max(0.1f, distance);
     }
 
     public enum MinionGraphProjectileOriginMode
@@ -263,7 +293,8 @@ namespace Week14.Enemy
             float wanderRetargetSeconds,
             float settleSeconds,
             MinionGraphProjectileFireSpec fireSpec,
-            bool resumeIdle)
+            bool resumeIdle,
+            MinionGraphPlayerPathMode playerPathMode = MinionGraphPlayerPathMode.HorizontalVertical)
         {
             Mode = mode;
             Projectile = projectile;
@@ -297,6 +328,7 @@ namespace Week14.Enemy
             SettleSeconds = settleSeconds;
             FireSpec = fireSpec;
             ResumeIdle = resumeIdle;
+            PlayerPathMode = playerPathMode;
         }
 
         public MinionGraphCommandMode Mode { get; }
@@ -331,6 +363,7 @@ namespace Week14.Enemy
         public float SettleSeconds { get; }
         public MinionGraphProjectileFireSpec FireSpec { get; }
         public bool ResumeIdle { get; }
+        public MinionGraphPlayerPathMode PlayerPathMode { get; }
 
         public MinionGraphCommandRequest WithFireSpec(MinionGraphProjectileFireSpec fireSpec)
         {
@@ -366,7 +399,8 @@ namespace Week14.Enemy
                 WanderRetargetSeconds,
                 SettleSeconds,
                 fireSpec,
-                ResumeIdle);
+                ResumeIdle,
+                PlayerPathMode);
         }
 
         public static MinionGraphCommandRequest RepeatFire(
@@ -743,6 +777,7 @@ namespace Week14.Enemy
         }
 
         public static MinionGraphCommandRequest PlayerPath(
+            MinionGraphPlayerPathMode mode,
             float distanceFromPlayer,
             float moveToStartSeconds,
             float moveSeconds)
@@ -779,52 +814,9 @@ namespace Week14.Enemy
                 0.1f,
                 moveSeconds,
                 default,
-                true);
+                true,
+                mode);
         }
-    }
-
-    public readonly struct MinionGraphBossBurstRequest
-    {
-        public MinionGraphBossBurstRequest(
-            BossProjectileSettings bossProjectile,
-            int bulletCount,
-            float fireInterval,
-            float spawnSpacing,
-            float windupSeconds,
-            bool notifyMinions,
-            BossProjectileSettings minionProjectile,
-            BossGraphProjectileOriginSpec bossOrigin,
-            BossGraphProjectileAimSpec aim,
-            BossGraphEffectSettings effects,
-            MinionGraphProjectileFireSpec minionFireSpec,
-            BossActionContext context)
-        {
-            BossProjectile = bossProjectile;
-            BulletCount = bulletCount;
-            FireInterval = fireInterval;
-            SpawnSpacing = spawnSpacing;
-            WindupSeconds = windupSeconds;
-            NotifyMinions = notifyMinions;
-            MinionProjectile = minionProjectile;
-            BossOrigin = bossOrigin;
-            Aim = aim;
-            Effects = effects;
-            MinionFireSpec = minionFireSpec;
-            Context = context;
-        }
-
-        public BossProjectileSettings BossProjectile { get; }
-        public int BulletCount { get; }
-        public float FireInterval { get; }
-        public float SpawnSpacing { get; }
-        public float WindupSeconds { get; }
-        public bool NotifyMinions { get; }
-        public BossProjectileSettings MinionProjectile { get; }
-        public BossGraphProjectileOriginSpec BossOrigin { get; }
-        public BossGraphProjectileAimSpec Aim { get; }
-        public BossGraphEffectSettings Effects { get; }
-        public MinionGraphProjectileFireSpec MinionFireSpec { get; }
-        public BossActionContext Context { get; }
     }
 
     public interface IMinionPatternHost : IMinionOwner
@@ -834,13 +826,11 @@ namespace Week14.Enemy
         IEnumerator SummonMinions(int summonCount);
         IEnumerator EnsureMinionCount(int targetCount);
         IEnumerator AutoSummonIfNeeded();
-        IEnumerator FireBossBurst(MinionGraphBossBurstRequest request);
         int FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec);
-        int BeginSynchronizedMinionFire(BossProjectileSettings projectile, int shotCount, MinionGraphProjectileFireSpec fireSpec);
-        IEnumerator WaitSynchronizedMinionFire(int syncVersion);
+        IEnumerator FireMinionsSequentially(BossProjectileSettings projectile, int cycleCount, float fireInterval, MinionGraphProjectileFireSpec fireSpec);
         float CommandMinions(MinionGraphCommandRequest request);
+        float CommandMinionAngleDistanceList(IReadOnlyList<MinionGraphAngleDistanceSlot> slots, float speedMultiplier, float settleSeconds);
         IEnumerator WaitForMinionCommands(float timeoutSeconds);
-        void ClearSynchronizedMinionFire();
         void StopAllMinions();
         void ResumeAllMinions();
     }

@@ -1009,7 +1009,7 @@ namespace Week14.Combat
                 Minion hitMinion = other.GetComponentInParent<Minion>();
                 if (hitMinion != null)
                 {
-                    if (hitMinion == ownerMinion)
+                    if (ShouldIgnoreMinionCollision(hitMinion))
                     {
                         return;
                     }
@@ -1044,6 +1044,33 @@ namespace Week14.Combat
 
             resolved = true;
             DestroyProjectile();
+        }
+
+        private bool ShouldIgnoreMinionCollision(Minion hitMinion)
+        {
+            if (hitMinion == null)
+            {
+                return false;
+            }
+
+            if (hitMinion == ownerMinion)
+            {
+                return true;
+            }
+
+            Transform hitOwnerTransform = hitMinion.Owner?.MinionOwnerTransform;
+            if (hitOwnerTransform == null)
+            {
+                return false;
+            }
+
+            if (ownerMinion != null)
+            {
+                Transform sourceOwnerTransform = ownerMinion.Owner?.MinionOwnerTransform;
+                return sourceOwnerTransform != null && sourceOwnerTransform == hitOwnerTransform;
+            }
+
+            return ownerBoss != null && ownerBoss.transform == hitOwnerTransform;
         }
 
         private bool TrySplitOnObstacle(Collider2D obstacle)

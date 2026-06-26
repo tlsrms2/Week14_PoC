@@ -12,7 +12,7 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 - 미니언만 발사하는 액션은 `minionOrigin`, `aim`, `effects`를 사용합니다.
 - 소환자만 발사하는 액션은 `ownerOrigin`, `aim`, `effects`를 사용합니다.
 - 소환자와 미니언이 함께 발사하는 액션은 `ownerOrigin`, `minionOrigin`, `aim`, `effects`를 사용합니다.
-- `projectileName`, `bossProjectileName`, `minionProjectileName`, `orbitProjectileName`은 호스트 보스의 Boss Graph 투사체 목록에 있는 `Name`입니다.
+- `projectileName`은 호스트 보스의 Boss Graph 투사체 목록에 있는 `Name`입니다.
 - 투사체 이름 해석은 호스트 보스의 `ResolveMinionProjectileSettings` 구현을 따릅니다. 결과가 `null`이면 해당 액션은 실행되지 않습니다.
 - 패턴 끝에는 보통 `Minion/Control/Pattern Cleanup`을 붙여 명령 대기, 동기화 발사 해제, 정지, 대기 복귀를 정리합니다.
 
@@ -54,23 +54,19 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 | `shotCount` | `1` | 전체 미니언 반복 발사 횟수입니다. |
 | `fireInterval` | `0` | 반복 발사 간격입니다. |
 
-## Minion/Fire/Boss Burst
+## Minion/Fire/Sequential Fire
 
-소환자가 연속 발사합니다. `notifyMinions`를 켜면 소환자가 한 발 쏠 때마다 미니언도 함께 발사합니다.
+현재 관리 중인 미니언들이 한 번에 쏘지 않고 순서대로 하나씩 발사합니다.
 
-| Field | 기본값 | 의미 |
+| Field | 기본값 | 설명 |
 | --- | --- | --- |
-| `bossProjectileName` | `Default` | 소환자가 발사할 투사체 이름입니다. |
-| `minionProjectileName` | `Default` | `notifyMinions`가 켜졌을 때 미니언이 발사할 투사체 이름입니다. |
-| `ownerOrigin` | `BossOrigin` | 소환자의 발사 위치입니다. |
-| `minionOrigin` | `ProjectileOrigin` | 보조 발사 미니언의 발사 위치입니다. `notifyMinions`가 꺼져 있으면 사용하지 않습니다. |
-| `aim` | `AtPlayer` | 소환자와 미니언의 조준 방향입니다. |
-| `effects` | 꺼짐 | 소환자와 미니언 발사 이펙트입니다. |
-| `windupSeconds` | `0.45` | 첫 발사 전 대기 시간입니다. |
-| `bulletCount` | `5` | 소환자 발사 횟수입니다. |
-| `fireInterval` | `0.18` | 소환자 반복 발사 간격입니다. |
-| `spawnSpacing` | `0.12` | 소환자 연속 발사를 좌우로 벌리는 거리입니다. |
-| `notifyMinions` | `false` | 켜면 소환자 발사마다 미니언도 한 번 발사합니다. |
+| `projectileName` | `Default` | 미니언이 발사할 투사체 이름입니다. |
+| `minionOrigin` | `ProjectileOrigin` | 각 미니언의 발사 위치입니다. |
+| `aim` | `AtPlayer` | 각 미니언의 조준 방향입니다. |
+| `effects` | 꺼짐 | 발사 이펙트입니다. |
+| `windupSeconds` | `0` | 첫 발사 전 대기 시간입니다. |
+| `cycleCount` | `1` | 전체 미니언 순차 발사를 반복할 횟수입니다. |
+| `fireInterval` | `0.12` | 미니언 한 마리씩 발사하는 간격입니다. |
 
 ## Minion/Fire/Repeat Fire
 

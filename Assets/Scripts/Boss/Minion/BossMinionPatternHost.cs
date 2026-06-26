@@ -151,16 +151,6 @@ namespace Week14.Enemy
             ScheduleNextAutoSummon();
         }
 
-        public IEnumerator FireBossBurst(MinionGraphBossBurstRequest request)
-        {
-            if (!minionPatternEnabled)
-            {
-                yield break;
-            }
-
-            yield return FireBossBurstForGraph(request);
-        }
-
         public int FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec)
         {
             if (!minionPatternEnabled || projectile == null)
@@ -186,24 +176,47 @@ namespace Week14.Enemy
             return firedCount;
         }
 
-        public int BeginSynchronizedMinionFire(
+        public IEnumerator FireMinionsSequentially(
             BossProjectileSettings projectile,
-            int shotCount,
+            int cycleCount,
+            float fireInterval,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            return minionPatternEnabled
-                ? MinionPatternContext.BeginSynchronizedMinionFire(projectile, shotCount, fireSpec)
-                : 0;
-        }
-
-        public IEnumerator WaitSynchronizedMinionFire(int syncVersion)
-        {
-            if (!minionPatternEnabled)
+            if (!minionPatternEnabled || projectile == null)
             {
                 yield break;
             }
 
-            yield return MinionPatternContext.WaitSynchronizedMinionFire(syncVersion);
+            List<Minion> minions = MinionPatternContext.GetControlledMinions();
+            int totalShots = CountActiveMinions(minions) * Mathf.Max(1, cycleCount);
+            if (totalShots <= 0)
+            {
+                yield break;
+            }
+
+            fireSpec = MinionPatternContext.ResolveSharedMinionAim(fireSpec, minions);
+            float safeInterval = Mathf.Max(0f, fireInterval);
+            int firedCount = 0;
+            for (int cycle = 0; cycle < Mathf.Max(1, cycleCount); cycle++)
+            {
+                for (int i = 0; i < minions.Count; i++)
+                {
+                    Minion minion = minions[i];
+                    if (minion == null)
+                    {
+                        continue;
+                    }
+
+                    yield return MinionPatternContext.WaitWhileExecutionPaused();
+
+                    minion.FireOnce(projectile, fireSpec, firedCount);
+                    firedCount++;
+                    if (firedCount < totalShots && safeInterval > 0f)
+                    {
+                        yield return MinionPatternContext.WaitMinionPatternSeconds(safeInterval);
+                    }
+                }
+            }
         }
 
         public float CommandMinions(MinionGraphCommandRequest request)
@@ -247,6 +260,40 @@ namespace Week14.Enemy
             return duration;
         }
 
+        public float CommandMinionAngleDistanceList(
+            IReadOnlyList<MinionGraphAngleDistanceSlot> slots,
+            float speedMultiplier,
+            float settleSeconds)
+        {
+            if (!minionPatternEnabled || slots == null || slots.Count == 0)
+            {
+                return 0f;
+            }
+
+            List<Minion> minions = MinionPatternContext.GetControlledMinions();
+            int commandIndex = 0;
+            float moveSpeed = 24f * Mathf.Max(0f, speedMultiplier);
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                MinionGraphAngleDistanceSlot slot = slots[commandIndex % slots.Count];
+                if (slot == null)
+                {
+                    slot = new MinionGraphAngleDistanceSlot(0f, 2f);
+                }
+
+                minion.CommandAngleDistance(slot.AngleDegrees, slot.Distance, moveSpeed);
+                commandIndex++;
+            }
+
+            return Mathf.Max(0f, settleSeconds);
+        }
+
         public IEnumerator WaitForMinionCommands(float timeoutSeconds)
         {
             if (!minionPatternEnabled)
@@ -272,11 +319,6 @@ namespace Week14.Enemy
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-        }
-
-        public void ClearSynchronizedMinionFire()
-        {
-            minionPatternContext?.ClearSynchronizedMinionFire();
         }
 
         public void StopAllMinions()
@@ -307,7 +349,6 @@ namespace Week14.Enemy
                 return;
             }
 
-            minionPatternContext.ClearSynchronizedMinionFire();
             minionPatternContext.StopAllMinions();
             if (releaseMinionsOnDisable)
             {
@@ -322,7 +363,6 @@ namespace Week14.Enemy
                 return;
             }
 
-            minionPatternContext.ClearSynchronizedMinionFire();
             minionPatternContext.StopAllMinions();
         }
 
@@ -338,7 +378,6 @@ namespace Week14.Enemy
                 return;
             }
 
-            minionPatternContext.ClearSynchronizedMinionFire();
             minionPatternContext.StopAllMinions();
             if (killSpawnedMinionsOnOwnerDeath)
             {
@@ -404,58 +443,6 @@ namespace Week14.Enemy
                 if (MinionPatternContext.ControlledMinionCount <= beforeCount)
                 {
                     yield break;
-                }
-            }
-        }
-
-        private IEnumerator FireBossBurstForGraph(MinionGraphBossBurstRequest request)
-        {
-            if (request.BossProjectile == null)
-            {
-                yield break;
-            }
-
-            if (request.WindupSeconds > 0f)
-            {
-                yield return MinionPatternContext.WaitPatternSeconds(request.WindupSeconds);
-            }
-
-            int count = Mathf.Max(1, request.BulletCount);
-            BossActionContext fireContext = request.Context;
-            BossGraphProjectileOriginSpec ownerOrigin = request.BossOrigin ?? new BossGraphProjectileOriginSpec();
-            BossGraphProjectileAimSpec aim = request.Aim ?? new BossGraphProjectileAimSpec();
-            for (int i = 0; i < count; i++)
-            {
-                yield return MinionPatternContext.WaitWhileExecutionPaused();
-
-                Vector3 aimOrigin = fireContext != null ? ownerOrigin.GetAimOrigin(fireContext, i) : GetMinionProjectileOrigin();
-                Vector2 direction = fireContext != null ? aim.GetDirection(fireContext, aimOrigin) : GetMinionDirectionToPlayer(aimOrigin);
-                Vector3 origin = fireContext != null ? ownerOrigin.GetSpawnOrigin(fireContext, i, direction) : aimOrigin;
-                Vector2 finalDirection = fireContext != null ? aim.GetDirection(fireContext, origin) : direction;
-                Vector2 side = new(-finalDirection.y, finalDirection.x);
-                Vector3 spawnPosition = origin + (Vector3)(side * MinionPatternContext.GetAlternatingOffset(i, request.SpawnSpacing));
-                EnemyProjectile firedProjectile = FireOwnerMinionPatternProjectile(
-                    request.BossProjectile,
-                    spawnPosition,
-                    finalDirection,
-                    origin,
-                    request.Effects == null);
-                if (firedProjectile != null && fireContext != null)
-                {
-                    fireContext.PlayOriginBurst(request.Effects, spawnPosition);
-                    fireContext.PlayMuzzleFlashIfEnabled(request.Effects, spawnPosition, finalDirection);
-                    fireContext.PlayCameraShakeIfEnabled(request.Effects, finalDirection);
-                }
-
-                if (request.NotifyMinions)
-                {
-                    MinionPatternContext.FireAllMinions(request.MinionProjectile, request.MinionFireSpec);
-                }
-
-                MinionPatternContext.TryFireSynchronizedMinions();
-                if (i < count - 1 && request.FireInterval > 0f)
-                {
-                    yield return MinionPatternContext.WaitPatternSeconds(request.FireInterval);
                 }
             }
         }
@@ -530,7 +517,7 @@ namespace Week14.Enemy
                     return Mathf.Max(0f, request.SettleSeconds);
                 case MinionGraphCommandMode.PlayerPath:
                     minion.CommandPlayerPath(
-                        (MinionGraphPlayerPathType)(index % 4),
+                        GetPlayerPathType(request.PlayerPathMode, index),
                         playerPathCenter,
                         request.FormationLineDistance,
                         request.PlayerPathMoveToStartSeconds,
@@ -543,6 +530,29 @@ namespace Week14.Enemy
                         request.FireInterval,
                         request.FireSpec);
             }
+        }
+
+        private static MinionGraphPlayerPathType GetPlayerPathType(MinionGraphPlayerPathMode mode, int index)
+        {
+            int normalizedIndex = Mathf.Abs(index) % 4;
+            if (mode == MinionGraphPlayerPathMode.Diagonal)
+            {
+                return normalizedIndex switch
+                {
+                    1 => MinionGraphPlayerPathType.DiagonalRightTopToLeftBottom,
+                    2 => MinionGraphPlayerPathType.DiagonalRightBottomToLeftTop,
+                    3 => MinionGraphPlayerPathType.DiagonalLeftBottomToRightTop,
+                    _ => MinionGraphPlayerPathType.DiagonalLeftTopToRightBottom
+                };
+            }
+
+            return normalizedIndex switch
+            {
+                1 => MinionGraphPlayerPathType.VerticalTopToBottom,
+                2 => MinionGraphPlayerPathType.HorizontalRightToLeft,
+                3 => MinionGraphPlayerPathType.VerticalBottomToTop,
+                _ => MinionGraphPlayerPathType.HorizontalLeftToRight
+            };
         }
 
         private bool HasCommandedMinions()
