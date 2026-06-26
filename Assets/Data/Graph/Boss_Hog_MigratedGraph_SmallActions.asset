@@ -1057,7 +1057,7 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  debugForceSinglePattern: 1
+  debugForceSinglePattern: 0
   debugForcedPatternId: Pattern3
   references:
     version: 2
