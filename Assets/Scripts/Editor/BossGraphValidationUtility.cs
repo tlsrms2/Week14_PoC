@@ -270,6 +270,11 @@ internal static class BossGraphValidationUtility
         {
             messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: WeightedRandom에는 1 이상의 weight가 필요합니다."));
         }
+
+        if (selectionMode == BossSequenceSelectionMode.ShuffledBag && sequences.arraySize < 2)
+        {
+            messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{nodeLabel}: ShuffledBag은 후보가 2개 이상일 때 의미가 있습니다."));
+        }
     }
 
     private static bool HasPositiveWeight(SerializedProperty entries)
@@ -564,6 +569,12 @@ internal static class BossGraphValidationUtility
                 messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{phaseLabel}: phaseIndex가 중복됩니다."));
             }
 
+            string openingPatternId = GetString(phase, "openingPatternId");
+            if (!string.IsNullOrWhiteSpace(openingPatternId) && !patternIdCounts.ContainsKey(openingPatternId))
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{phaseLabel}: Opening Pattern '{openingPatternId}'를 찾을 수 없습니다."));
+            }
+
             SerializedProperty patternEntries = phase.FindPropertyRelative("patterns");
             if (patternEntries == null || patternEntries.arraySize == 0)
             {
@@ -580,6 +591,11 @@ internal static class BossGraphValidationUtility
             if (selectionMode == BossSequenceSelectionMode.WeightedRandom && !HasPositiveWeight(patternEntries))
             {
                 messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: WeightedRandom에는 1 이상의 Pattern weight가 필요합니다."));
+            }
+
+            if (selectionMode == BossSequenceSelectionMode.ShuffledBag && patternEntries.arraySize < 2)
+            {
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: ShuffledBag은 Pattern이 2개 이상일 때 의미가 있습니다."));
             }
 
             for (int entryIndex = 0; entryIndex < patternEntries.arraySize; entryIndex++)

@@ -3131,6 +3131,21 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
 
+            SerializedProperty openingPatternId = phase.FindPropertyRelative("openingPatternId");
+            if (openingPatternId != null)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Opening Pattern", GUILayout.Width(EditorGUIUtility.labelWidth - 4f));
+                    string nextOpeningPatternId = DrawPatternIdPopup(openingPatternId.stringValue, patternIds);
+                    if (nextOpeningPatternId != openingPatternId.stringValue)
+                    {
+                        openingPatternId.stringValue = nextOpeningPatternId;
+                        changed = true;
+                    }
+                }
+            }
+
             SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
             if (phasePatterns != null)
             {
@@ -3264,6 +3279,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SetInt(phase, "phaseIndex", phaseArrayIndex);
         SetEnum(phase, "selectionMode", 0);
         SetFloat(phase, "patternIntervalSeconds", 0f);
+        SetString(phase, "openingPatternId", string.Empty);
         SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
         phasePatterns?.ClearArray();
     }
