@@ -165,7 +165,7 @@ public sealed class BossGraphAssetEditor : Editor
         int index = phases.arraySize - 1;
         SerializedProperty element = phases.GetArrayElementAtIndex(index);
         SetChildInt(element, "phaseIndex", index);
-        SetChildEnum(element, "selectionMode", 0);
+        SetChildEnum(element, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SerializedProperty patternEntries = element.FindPropertyRelative("patterns");
         patternEntries?.ClearArray();
         list.index = index;

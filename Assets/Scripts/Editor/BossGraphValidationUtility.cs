@@ -349,8 +349,8 @@ internal static class BossGraphValidationUtility
                 break;
             case SpawnChargedProjectileAction:
                 RequireString(action, "handleKey", label, messages);
-                RequirePath(action, "projectileOriginPath", label, messages);
                 RequireString(action, "projectileName", label, messages);
+                ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
                 break;
             case ConfigureProjectileGrowthAction:
             case ConfigureRadialSplitAction:
@@ -358,7 +358,7 @@ internal static class BossGraphValidationUtility
                 break;
             case WaitProjectileChargeEndAction:
                 RequireString(action, "handleKey", label, messages);
-                RequirePath(action, "projectileOriginPath", label, messages);
+                ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
                 break;
             case FireProjectileBurstAction:
                 RequireArrayNotEmpty(action, "volleys", label, messages);
@@ -561,20 +561,9 @@ internal static class BossGraphValidationUtility
                 continue;
             }
 
-            BossSequenceSelectionMode selectionMode = (BossSequenceSelectionMode)GetEnum(phase, "selectionMode");
-            if (selectionMode == BossSequenceSelectionMode.RandomNoRepeat && patternEntries.arraySize < 2)
+            if (!HasPositiveWeight(patternEntries))
             {
-                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: RandomNoRepeat은 Pattern이 2개 이상일 때 의미가 있습니다."));
-            }
-
-            if (selectionMode == BossSequenceSelectionMode.WeightedRandom && !HasPositiveWeight(patternEntries))
-            {
-                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: WeightedRandom에는 1 이상의 Pattern weight가 필요합니다."));
-            }
-
-            if (selectionMode == BossSequenceSelectionMode.ShuffledBag && patternEntries.arraySize < 2)
-            {
-                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: ShuffledBag은 Pattern이 2개 이상일 때 의미가 있습니다."));
+                messages.Add(new BossGraphValidationMessage(MessageType.Warning, $"{phaseLabel}: Pattern weight가 1 이상인 항목이 필요합니다."));
             }
 
             for (int entryIndex = 0; entryIndex < patternEntries.arraySize; entryIndex++)

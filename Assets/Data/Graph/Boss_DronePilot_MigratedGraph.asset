@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
   m_Name: Boss_DronePilot_MigratedGraph
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
-  startNodeId: P01_BossBurst_01
   referenceSettings:
     effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
     colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
@@ -184,6 +183,7 @@ MonoBehaviour:
   - phaseIndex: 0
     selectionMode: 0
     patternIntervalSeconds: 0.6
+    openingPatternId: 
     patterns: []
   transitions:
   - fromNodeGuid: 515b688d1cf5458190ec6eae81eca8ed

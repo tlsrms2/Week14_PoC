@@ -3406,7 +3406,6 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(phase.FindPropertyRelative("phaseIndex"), new GUIContent("Phase Index"));
-            EditorGUILayout.PropertyField(phase.FindPropertyRelative("selectionMode"), new GUIContent("Selection Mode"));
             EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
@@ -3451,6 +3450,14 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return changed;
         }
 
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            EditorGUILayout.LabelField("Pattern");
+            EditorGUILayout.LabelField("Weight", GUILayout.Width(42f));
+            EditorGUILayout.LabelField("Cooldown", GUILayout.Width(48f));
+            GUILayout.Space(122f);
+        }
+
         for (int i = 0; i < phasePatterns.arraySize; i++)
         {
             SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(i);
@@ -3470,6 +3477,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         bool changed = false;
         SerializedProperty patternId = entry.FindPropertyRelative("patternId");
         SerializedProperty weight = entry.FindPropertyRelative("weight");
+        SerializedProperty cooldownSeconds = entry.FindPropertyRelative("cooldownSeconds");
         using (new EditorGUILayout.HorizontalScope())
         {
             string nextPatternId = DrawPatternIdPopup(patternId.stringValue, patternIds);
@@ -3484,6 +3492,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
             if (nextWeight != weight.intValue)
             {
                 weight.intValue = nextWeight;
+                changed = true;
+            }
+
+            float currentCooldown = cooldownSeconds != null ? cooldownSeconds.floatValue : 0f;
+            float nextCooldown = EditorGUILayout.FloatField(Mathf.Max(0f, currentCooldown), GUILayout.Width(48f));
+            nextCooldown = Mathf.Max(0f, nextCooldown);
+            if (cooldownSeconds != null && !Mathf.Approximately(nextCooldown, cooldownSeconds.floatValue))
+            {
+                cooldownSeconds.floatValue = nextCooldown;
                 changed = true;
             }
 
@@ -3557,7 +3574,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         phases.InsertArrayElementAtIndex(phaseArrayIndex);
         SerializedProperty phase = phases.GetArrayElementAtIndex(phaseArrayIndex);
         SetInt(phase, "phaseIndex", phaseArrayIndex);
-        SetEnum(phase, "selectionMode", 0);
+        SetEnum(phase, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SetFloat(phase, "patternIntervalSeconds", 0f);
         SetString(phase, "openingPatternId", string.Empty);
         SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
@@ -3577,6 +3594,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(entryIndex);
         SetString(entry, "patternId", patternId);
         SetInt(entry, "weight", 1);
+        SetFloat(entry, "cooldownSeconds", 0f);
     }
 
     private static bool HasPhasePatternEntry(SerializedProperty phasePatterns, string patternId)

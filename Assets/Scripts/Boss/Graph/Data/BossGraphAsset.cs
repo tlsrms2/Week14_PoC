@@ -272,7 +272,7 @@ namespace Week14.Enemy
     public sealed class BossGraphPhase
     {
         [SerializeField, Min(0)] private int phaseIndex;
-        [SerializeField] private BossSequenceSelectionMode selectionMode;
+        [SerializeField, HideInInspector] private BossSequenceSelectionMode selectionMode;
         [SerializeField, Min(0f)] private float patternIntervalSeconds;
         [SerializeField] private string openingPatternId;
         [SerializeField] private List<BossGraphPatternEntry> patterns = new();
@@ -289,9 +289,11 @@ namespace Week14.Enemy
     {
         [SerializeField] private string patternId;
         [SerializeField, Min(0)] private int weight = 1;
+        [SerializeField, Min(0f)] private float cooldownSeconds;
 
         public string PatternId => patternId;
         public int Weight => Mathf.Max(0, weight);
+        public float CooldownSeconds => Mathf.Max(0f, cooldownSeconds);
     }
 
     [Serializable]
