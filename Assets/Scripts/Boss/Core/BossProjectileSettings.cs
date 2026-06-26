@@ -22,6 +22,10 @@ namespace Week14.Enemy
     {
     }
 
+    public sealed class BossGraphBgmIdAttribute : PropertyAttribute
+    {
+    }
+
     public sealed class BossGraphBossChildPathAttribute : PropertyAttribute
     {
     }

@@ -17,6 +17,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 3cafd06b23d732248b601961dfafb490, type: 3}
     volume: 0.4
     pitch: 1
+  - id: TitleBgm
+    clip: {fileID: 8300000, guid: bb7e58f926fb3824b9089b99bbf6024b, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: LobbyBgm
+    clip: {fileID: 8300000, guid: 3196e637d5ebb2b4fbad29c25de304af, type: 3}
+    volume: 0.6
+    pitch: 1
   sfxEntries:
   - id: PlayerShot
     clip: {fileID: 8300000, guid: 5b7bfe1023f81c2429be1d8741f1ac2e, type: 3}

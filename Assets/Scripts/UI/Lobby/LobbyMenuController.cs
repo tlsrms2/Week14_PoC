@@ -2,11 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.Audio;
+using Week14.Enemy;
 
 namespace Week14.UI
 {
     public sealed class LobbyMenuController : MonoBehaviour
     {
+        [Tooltip("로비 씬이 시작될 때 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string lobbyBgmId;
+
         [Tooltip("실제로 줌인/줌아웃시킬 카메라입니다. 비워두면 Camera.main을 사용합니다.")]
         [SerializeField] private Camera targetCamera;
 
@@ -66,7 +72,20 @@ namespace Week14.UI
                 restOrthographicSize = targetCamera.orthographicSize;
             }
 
+            if (!string.IsNullOrEmpty(lobbyBgmId))
+            {
+                SoundManager.PlayBgm(lobbyBgmId);
+            }
+
             CloseAllImmediate();
+        }
+
+        private void OnDestroy()
+        {
+            if (!string.IsNullOrEmpty(lobbyBgmId))
+            {
+                SoundManager.StopBgm();
+            }
         }
 
         public void OnBossRootPointerEnter()
