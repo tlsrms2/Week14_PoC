@@ -215,7 +215,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.97, y: 80.06, z: 0}
-  m_LocalScale: {x: 0.6869, y: 0.2619, z: 1}
+  m_LocalScale: {x: 0.4363804, y: 0.16638233, z: 0.6352895}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3025411932169106235}
@@ -383,20 +383,10 @@ MonoBehaviour:
   staggerSeconds: 0.18
   staggerShakeDistance: 0.06
   staggerShakeFrequency: 32
-  idleMovement: 0
-  moveSpeed: 2
-  patternCatchUpSpeed: 24
-  keepPlayerDistance: 3.5
-  keepDistanceTolerance: 0.35
-  wanderRadius: 2.8
-  wanderRetargetSeconds: 1.5
-  strafeAngularSpeedDegrees: 85
-  pingPongSeconds: 2
   bodyRoot: {fileID: 3270307445686639313}
   projectileOrigin: {fileID: 3270307445686639313}
   body: {fileID: 4043645167298043163}
   statusView: {fileID: 0}
-  attackTimingOutline: {fileID: 0}
   lockOnIndicator: {fileID: 2377328325086529979}
   executionIndicator: {fileID: 5724727393675789359}
 --- !u!114 &4912170951151867422

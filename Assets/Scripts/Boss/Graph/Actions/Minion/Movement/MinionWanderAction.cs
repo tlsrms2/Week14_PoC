@@ -5,13 +5,12 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionFormationAction : BossAction
+    public sealed class MinionWanderAction : BossAction
     {
+        [SerializeField, Min(0f)] private float wanderSeconds = 1f;
+        [SerializeField, Min(0f)] private float speed = 3.2f;
         [SerializeField, Min(0.1f)] private float radius = 2.8f;
-        [SerializeField] private bool sideBySide;
-        [SerializeField, Min(1f)] private float angleSpacingDegrees = 28f;
-        [SerializeField, Min(0f)] private float speedMultiplier = 1.2f;
-        [SerializeField, Min(0f)] private float settleSeconds = 1f;
+        [SerializeField, Min(0.1f)] private float retargetSeconds = 1.5f;
         [SerializeField] private bool waitForDuration = true;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -21,12 +20,11 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            MinionGraphCommandRequest request = MinionGraphCommandRequest.FormationCircle(
+            MinionGraphCommandRequest request = MinionGraphCommandRequest.Wander(
+                wanderSeconds,
+                speed,
                 radius,
-                sideBySide,
-                angleSpacingDegrees,
-                speedMultiplier,
-                settleSeconds);
+                retargetSeconds);
             float duration = host.CommandMinions(request);
             yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(context, duration, waitForDuration);
         }

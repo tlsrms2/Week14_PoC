@@ -45,6 +45,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private bool bossHierarchyPositionInitialized;
     private bool rebuildQueued;
     private bool graphStateSaveQueued;
+    private bool graphSaveRequested;
     private bool detailsPanelResizing;
     private int detailsResizeControlId;
     private float detailsPanelWidth = DetailsPanelDefaultWidth;
@@ -58,7 +59,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private static readonly Vector2 NodePasteOffset = new(40f, 40f);
 
     private const float GraphNodeWidth = 220f;
-    private const float GraphNodeHeight = 92f;
+    private const float GraphNodeHeight = 116f;
     private const float InlineActionLabelWidth = 92f;
     private const float InlineActionVerticalPadding = 2f;
     private const float SelectedNodeHiddenDragHandleHeight = 16f;
@@ -335,7 +336,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
         EditorApplication.update -= UpdateRuntimeHighlight;
         Undo.undoRedoPerformed -= HandleUndoRedoPerformed;
         graphView?.ClearRuntimeHighlight();
+        ApplyPendingGraphProperties();
         SaveGraphStateIfChanged("Save Boss Graph Layout", true, false);
+        SaveDirtyGraphAsset();
         DestroyActionEditor();
     }
 
@@ -429,16 +432,35 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private void AddTransitionViews()
     {
         SerializedProperty transitions = graphObject.FindProperty("transitions");
-        if (transitions == null)
+        if (transitions != null)
+        {
+            for (int i = 0; i < transitions.arraySize; i++)
+            {
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
+                string fromNodeId = GetString(transition, "fromNodeId", string.Empty);
+                string toNodeId = GetString(transition, "toNodeId", string.Empty);
+                BossGraphNodeView fromNode = graphView.FindNode(fromNodeId);
+                BossGraphNodeView toNode = graphView.FindNode(toNodeId);
+                if (fromNode == null || toNode == null || fromNode == toNode)
+                {
+                    continue;
+                }
+
+                graphView.AddTransitionEdge(fromNode, toNode, GetTransitionLabel(transition));
+            }
+        }
+
+        SerializedProperty parallelEdges = graphObject.FindProperty("parallelEdges");
+        if (parallelEdges == null)
         {
             return;
         }
 
-        for (int i = 0; i < transitions.arraySize; i++)
+        for (int i = 0; i < parallelEdges.arraySize; i++)
         {
-            SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
-            string fromNodeId = GetString(transition, "fromNodeId", string.Empty);
-            string toNodeId = GetString(transition, "toNodeId", string.Empty);
+            SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+            string fromNodeId = GetString(parallelEdge, "fromNodeId", string.Empty);
+            string toNodeId = GetString(parallelEdge, "toNodeId", string.Empty);
             BossGraphNodeView fromNode = graphView.FindNode(fromNodeId);
             BossGraphNodeView toNode = graphView.FindNode(toNodeId);
             if (fromNode == null || toNode == null || fromNode == toNode)
@@ -446,7 +468,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 continue;
             }
 
-            graphView.AddTransitionEdge(fromNode, toNode, GetTransitionLabel(transition));
+            graphView.AddParallelEdge(fromNode, toNode);
         }
     }
 
@@ -547,7 +569,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         RemoveTransitionsForNodes(deletedNodeIds);
         RemovePatternNodeReferences(deletedNodeIds);
-        SyncPatternsFromTransitions(ReadTransitionSnapshots(graphObject.FindProperty("transitions")));
+        SyncPatternsFromTransitions(
+            ReadTransitionSnapshots(graphObject.FindProperty("transitions")),
+            ReadParallelEdgeSnapshots(graphObject.FindProperty("parallelEdges")));
         if (indexes.Count == 0)
         {
             graphView.DeleteEdges(selectedEdges);
@@ -767,7 +791,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SetInt(transition, "phaseIndex", copiedTransition.Values.PhaseIndex);
             }
 
-            SyncPatternsFromTransitions(ReadTransitionSnapshots(transitions));
+            SyncPatternsFromTransitions(
+                ReadTransitionSnapshots(transitions),
+                ReadParallelEdgeSnapshots(graphObject.FindProperty("parallelEdges")));
             SyncGuidReferences();
         }
 
@@ -786,7 +812,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        graphObject.Update();
+        ApplyPendingGraphProperties();
         Undo.RecordObject(graphAsset, "Save Boss Graph Node Positions");
         WriteNodePositionsFromCurrentView();
         SaveTransitions();
@@ -795,6 +821,33 @@ public sealed class BossGraphEditorWindow : EditorWindow
         AssetDatabase.SaveAssets();
         RebuildGraph();
         detailsPanel?.MarkDirtyRepaint();
+    }
+
+    private void FlushGraphSaveRequest()
+    {
+        if (!graphSaveRequested)
+        {
+            return;
+        }
+
+        graphSaveRequested = false;
+        SaveGraph();
+    }
+
+    private void ApplyPendingGraphProperties()
+    {
+        if (graphObject != null && graphObject.hasModifiedProperties)
+        {
+            graphObject.ApplyModifiedProperties();
+        }
+    }
+
+    private void SaveDirtyGraphAsset()
+    {
+        if (graphAsset != null && EditorUtility.IsDirty(graphAsset))
+        {
+            AssetDatabase.SaveAssets();
+        }
     }
 
     private void HandleGraphMouseUp(MouseUpEvent evt)
@@ -963,6 +1016,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             if (edge?.output?.node is not BossGraphNodeView fromNode
                 || edge.input?.node is not BossGraphNodeView toNode
+                || !fromNode.IsNormalOutputPort(edge.output)
+                || !toNode.IsNormalInputPort(edge.input)
                 || fromNode == toNode
                 || string.IsNullOrWhiteSpace(fromNode.NodeId)
                 || string.IsNullOrWhiteSpace(toNode.NodeId))
@@ -1018,9 +1073,60 @@ public sealed class BossGraphEditorWindow : EditorWindow
             }
         }
 
-        bool patternsChanged = SyncPatternsFromTransitions(nextTransitions);
+        bool parallelEdgesChanged = SaveParallelEdges(out List<ParallelEdgeSnapshot> nextParallelEdges);
+        bool patternsChanged = SyncPatternsFromTransitions(nextTransitions, nextParallelEdges);
         bool guidReferencesChanged = SyncGuidReferences();
-        return transitionsChanged || patternsChanged || guidReferencesChanged;
+        return transitionsChanged || parallelEdgesChanged || patternsChanged || guidReferencesChanged;
+    }
+
+    private bool SaveParallelEdges(out List<ParallelEdgeSnapshot> nextParallelEdges)
+    {
+        nextParallelEdges = new List<ParallelEdgeSnapshot>();
+        SerializedProperty parallelEdges = graphObject.FindProperty("parallelEdges");
+        if (parallelEdges == null || graphView == null)
+        {
+            return false;
+        }
+
+        HashSet<string> addedKeys = new(StringComparer.Ordinal);
+        foreach (Edge edge in graphView.EdgeViews)
+        {
+            if (!TryGetParallelEdgeData(edge, out string fromNodeId, out string toNodeId)
+                || fromNodeId == toNodeId)
+            {
+                continue;
+            }
+
+            string key = GetParallelEdgeKey(fromNodeId, toNodeId);
+            if (!addedKeys.Add(key))
+            {
+                continue;
+            }
+
+            nextParallelEdges.Add(new ParallelEdgeSnapshot(fromNodeId, toNodeId));
+        }
+
+        bool changed = !AreParallelEdgeSnapshotsEqual(parallelEdges, nextParallelEdges);
+        if (!changed)
+        {
+            return false;
+        }
+
+        parallelEdges.ClearArray();
+        for (int i = 0; i < nextParallelEdges.Count; i++)
+        {
+            ParallelEdgeSnapshot snapshot = nextParallelEdges[i];
+            parallelEdges.InsertArrayElementAtIndex(i);
+            SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+            SetString(parallelEdge, "fromNodeGuid", string.Empty);
+            SetString(parallelEdge, "toNodeGuid", string.Empty);
+            SetString(parallelEdge, "fromNodeId", snapshot.FromNodeId);
+            SetString(parallelEdge, "toNodeId", snapshot.ToNodeId);
+            SetInt(parallelEdge, "laneIndex", 0);
+            SetInt(parallelEdge, "targetLaneIndex", 0);
+        }
+
+        return true;
     }
 
     private bool SyncGuidReferences()
@@ -1040,6 +1146,17 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
                 changed |= SetGuidFromNodeId(transition, "fromNodeId", "fromNodeGuid", nodeIdToGuid);
                 changed |= SetGuidFromNodeId(transition, "toNodeId", "toNodeGuid", nodeIdToGuid);
+            }
+        }
+
+        SerializedProperty parallelEdges = graphObject.FindProperty("parallelEdges");
+        if (parallelEdges != null)
+        {
+            for (int i = 0; i < parallelEdges.arraySize; i++)
+            {
+                SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+                changed |= SetGuidFromNodeId(parallelEdge, "fromNodeId", "fromNodeGuid", nodeIdToGuid);
+                changed |= SetGuidFromNodeId(parallelEdge, "toNodeId", "toNodeGuid", nodeIdToGuid);
             }
         }
 
@@ -1176,6 +1293,29 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return true;
     }
 
+    private static bool AreParallelEdgeSnapshotsEqual(
+        SerializedProperty parallelEdges,
+        IReadOnlyList<ParallelEdgeSnapshot> nextParallelEdges)
+    {
+        if (parallelEdges == null || parallelEdges.arraySize != nextParallelEdges.Count)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < parallelEdges.arraySize; i++)
+        {
+            SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+            ParallelEdgeSnapshot snapshot = nextParallelEdges[i];
+            if (GetString(parallelEdge, "fromNodeId", string.Empty) != snapshot.FromNodeId
+                || GetString(parallelEdge, "toNodeId", string.Empty) != snapshot.ToNodeId)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private static List<TransitionSnapshot> ReadTransitionSnapshots(SerializedProperty transitions)
     {
         List<TransitionSnapshot> snapshots = new();
@@ -1205,7 +1345,35 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return snapshots;
     }
 
-    private bool SyncPatternsFromTransitions(IReadOnlyList<TransitionSnapshot> transitions)
+    private static List<ParallelEdgeSnapshot> ReadParallelEdgeSnapshots(SerializedProperty parallelEdges)
+    {
+        List<ParallelEdgeSnapshot> snapshots = new();
+        if (parallelEdges == null)
+        {
+            return snapshots;
+        }
+
+        for (int i = 0; i < parallelEdges.arraySize; i++)
+        {
+            SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+            string fromNodeId = GetString(parallelEdge, "fromNodeId", string.Empty);
+            string toNodeId = GetString(parallelEdge, "toNodeId", string.Empty);
+            if (string.IsNullOrWhiteSpace(fromNodeId) || string.IsNullOrWhiteSpace(toNodeId) || fromNodeId == toNodeId)
+            {
+                continue;
+            }
+
+            snapshots.Add(new ParallelEdgeSnapshot(
+                fromNodeId,
+                toNodeId));
+        }
+
+        return snapshots;
+    }
+
+    private bool SyncPatternsFromTransitions(
+        IReadOnlyList<TransitionSnapshot> transitions,
+        IReadOnlyList<ParallelEdgeSnapshot> parallelEdges)
     {
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
         SerializedProperty patterns = graphObject.FindProperty("patterns");
@@ -1216,7 +1384,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         List<string> stateNodeIds = ReadStateNodeIds(stateNodes);
         List<PatternSnapshot> currentPatterns = ReadPatternSnapshots(patterns);
-        List<PatternSnapshot> nextPatterns = BuildConnectedPatternSnapshots(stateNodeIds, transitions, currentPatterns);
+        List<PatternSnapshot> nextPatterns = BuildConnectedPatternSnapshots(
+            stateNodeIds,
+            transitions,
+            parallelEdges,
+            currentPatterns);
         bool patternsChanged = RewritePatternSnapshots(patterns, nextPatterns);
         bool phasesChanged = RewritePhasePatternIds(
             graphObject.FindProperty("phases"),
@@ -1243,6 +1415,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private static List<PatternSnapshot> BuildConnectedPatternSnapshots(
         IReadOnlyList<string> stateNodeIds,
         IReadOnlyList<TransitionSnapshot> transitions,
+        IReadOnlyList<ParallelEdgeSnapshot> parallelEdges,
         IReadOnlyList<PatternSnapshot> currentPatterns)
     {
         Dictionary<string, int> nodeOrder = new();
@@ -1271,6 +1444,22 @@ public sealed class BossGraphEditorWindow : EditorWindow
             AddUnique(undirectedLinks[toNodeId], fromNodeId);
             AddUnique(outgoingLinks[fromNodeId], toNodeId);
             AddUnique(incomingLinks[toNodeId], fromNodeId);
+        }
+
+        if (parallelEdges != null)
+        {
+            for (int i = 0; i < parallelEdges.Count; i++)
+            {
+                string fromNodeId = parallelEdges[i].FromNodeId;
+                string toNodeId = parallelEdges[i].ToNodeId;
+                if (!nodeOrder.ContainsKey(fromNodeId) || !nodeOrder.ContainsKey(toNodeId) || fromNodeId == toNodeId)
+                {
+                    continue;
+                }
+
+                AddUnique(undirectedLinks[fromNodeId], toNodeId);
+                AddUnique(undirectedLinks[toNodeId], fromNodeId);
+            }
         }
 
         List<List<string>> components = BuildConnectedComponents(stateNodeIds, undirectedLinks, nodeOrder);
@@ -1671,6 +1860,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
     }
 
     private static string GetTransitionKey(string fromNodeId, string toNodeId)
+    {
+        return $"{fromNodeId}->{toNodeId}";
+    }
+
+    private static string GetParallelEdgeKey(string fromNodeId, string toNodeId)
     {
         return $"{fromNodeId}->{toNodeId}";
     }
@@ -2533,6 +2727,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             EditorGUILayout.HelpBox("BossGraphAsset을 선택하세요.", MessageType.Info);
             EditorGUILayout.EndScrollView();
+            FlushGraphSaveRequest();
             return;
         }
 
@@ -2543,6 +2738,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         if (detailsTabIndex == SelectedElementDetailsIndex && DrawSelectedElementDetails())
         {
             EditorGUILayout.EndScrollView();
+            FlushGraphSaveRequest();
             return;
         }
 
@@ -2557,6 +2753,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         EditorGUILayout.EndScrollView();
+        FlushGraphSaveRequest();
     }
 
     private void SyncSelectedElementDetailsState()
@@ -2661,7 +2858,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             {
                 if (GUILayout.Button("Save"))
                 {
-                    SaveGraph();
+                    graphSaveRequested = true;
                 }
             }
         }
@@ -3717,6 +3914,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private void DrawTransitionDetails(Edge edge)
     {
+        if (TryGetParallelEdgeData(edge, out string parallelFromNodeId, out string parallelToNodeId))
+        {
+            EditorGUILayout.LabelField(
+                $"P: {parallelFromNodeId} -> {parallelToNodeId}",
+                EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("이 연결의 대상 Action은 출발 노드 Action과 동시에 실행됩니다.", MessageType.Info);
+            return;
+        }
+
         if (!TryGetEdgeNodeIds(edge, out string fromNodeId, out string toNodeId))
         {
             EditorGUILayout.HelpBox("선택한 연결 데이터를 찾을 수 없습니다.", MessageType.Warning);
@@ -3765,6 +3971,33 @@ public sealed class BossGraphEditorWindow : EditorWindow
             || edge.input?.node is not BossGraphNodeView toNode
             || string.IsNullOrWhiteSpace(fromNode.NodeId)
             || string.IsNullOrWhiteSpace(toNode.NodeId))
+        {
+            return false;
+        }
+
+        fromNodeId = fromNode.NodeId;
+        toNodeId = toNode.NodeId;
+        return true;
+    }
+
+    private static bool TryGetParallelEdgeData(
+        Edge edge,
+        out string fromNodeId,
+        out string toNodeId)
+    {
+        fromNodeId = string.Empty;
+        toNodeId = string.Empty;
+        if (edge?.output?.node is not BossGraphNodeView fromNode
+            || edge.input?.node is not BossGraphNodeView toNode
+            || string.IsNullOrWhiteSpace(fromNode.NodeId)
+            || string.IsNullOrWhiteSpace(toNode.NodeId))
+        {
+            return false;
+        }
+
+        int portLaneIndex = fromNode.GetParallelOutputPortIndex(edge.output);
+        int portTargetLaneIndex = toNode.GetParallelInputPortIndex(edge.input);
+        if (portLaneIndex < 0 || portTargetLaneIndex < 0)
         {
             return false;
         }
@@ -4385,23 +4618,38 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private void UpdateTransitionNodeIds(string oldNodeId, string newNodeId)
     {
         SerializedProperty transitions = graphObject.FindProperty("transitions");
-        if (transitions == null)
+        if (transitions != null)
         {
-            UpdatePatternNodeIds(oldNodeId, newNodeId);
-            return;
+            for (int i = 0; i < transitions.arraySize; i++)
+            {
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
+                if (GetString(transition, "fromNodeId", string.Empty) == oldNodeId)
+                {
+                    SetString(transition, "fromNodeId", newNodeId);
+                }
+
+                if (GetString(transition, "toNodeId", string.Empty) == oldNodeId)
+                {
+                    SetString(transition, "toNodeId", newNodeId);
+                }
+            }
         }
 
-        for (int i = 0; i < transitions.arraySize; i++)
+        SerializedProperty parallelEdges = graphObject.FindProperty("parallelEdges");
+        if (parallelEdges != null)
         {
-            SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
-            if (GetString(transition, "fromNodeId", string.Empty) == oldNodeId)
+            for (int i = 0; i < parallelEdges.arraySize; i++)
             {
-                SetString(transition, "fromNodeId", newNodeId);
-            }
+                SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+                if (GetString(parallelEdge, "fromNodeId", string.Empty) == oldNodeId)
+                {
+                    SetString(parallelEdge, "fromNodeId", newNodeId);
+                }
 
-            if (GetString(transition, "toNodeId", string.Empty) == oldNodeId)
-            {
-                SetString(transition, "toNodeId", newNodeId);
+                if (GetString(parallelEdge, "toNodeId", string.Empty) == oldNodeId)
+                {
+                    SetString(parallelEdge, "toNodeId", newNodeId);
+                }
             }
         }
 
@@ -4492,19 +4740,34 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         SerializedProperty transitions = graphObject.FindProperty("transitions");
-        if (transitions == null)
+        if (transitions != null)
+        {
+            for (int i = transitions.arraySize - 1; i >= 0; i--)
+            {
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
+                string fromNodeId = GetString(transition, "fromNodeId", string.Empty);
+                string toNodeId = GetString(transition, "toNodeId", string.Empty);
+                if (nodeIds.Contains(fromNodeId) || nodeIds.Contains(toNodeId))
+                {
+                    transitions.DeleteArrayElementAtIndex(i);
+                }
+            }
+        }
+
+        SerializedProperty parallelEdges = graphObject.FindProperty("parallelEdges");
+        if (parallelEdges == null)
         {
             return;
         }
 
-        for (int i = transitions.arraySize - 1; i >= 0; i--)
+        for (int i = parallelEdges.arraySize - 1; i >= 0; i--)
         {
-            SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
-            string fromNodeId = GetString(transition, "fromNodeId", string.Empty);
-            string toNodeId = GetString(transition, "toNodeId", string.Empty);
+            SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(i);
+            string fromNodeId = GetString(parallelEdge, "fromNodeId", string.Empty);
+            string toNodeId = GetString(parallelEdge, "toNodeId", string.Empty);
             if (nodeIds.Contains(fromNodeId) || nodeIds.Contains(toNodeId))
             {
-                transitions.DeleteArrayElementAtIndex(i);
+                parallelEdges.DeleteArrayElementAtIndex(i);
             }
         }
     }
@@ -4950,6 +5213,18 @@ public sealed class BossGraphEditorWindow : EditorWindow
         public TransitionValues Values { get; }
     }
 
+    private readonly struct ParallelEdgeSnapshot
+    {
+        public ParallelEdgeSnapshot(string fromNodeId, string toNodeId)
+        {
+            FromNodeId = fromNodeId;
+            ToNodeId = toNodeId;
+        }
+
+        public string FromNodeId { get; }
+        public string ToNodeId { get; }
+    }
+
     private sealed class PatternSnapshot
     {
         public PatternSnapshot(string patternId, List<string> nodeIds)
@@ -5061,6 +5336,25 @@ internal sealed class BossGraphView : GraphView
         {
             output = fromNode.OutputPort,
             input = toNode.InputPort
+        };
+        edge.output.Connect(edge);
+        edge.input.Connect(edge);
+        AddElement(edge);
+    }
+
+    public void AddParallelEdge(BossGraphNodeView fromNode, BossGraphNodeView toNode)
+    {
+        Port outputPort = fromNode?.GetParallelOutputPort();
+        Port inputPort = toNode?.GetParallelInputPort();
+        if (fromNode == null || toNode == null || outputPort == null || inputPort == null)
+        {
+            return;
+        }
+
+        BossGraphEdgeView edge = new(string.Empty, true)
+        {
+            output = outputPort,
+            input = inputPort
         };
         edge.output.Connect(edge);
         edge.input.Connect(edge);
@@ -5308,11 +5602,28 @@ internal sealed class BossGraphView : GraphView
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
     {
         List<Port> compatiblePorts = new();
+        if (startPort?.node is not BossGraphNodeView startNode)
+        {
+            return compatiblePorts;
+        }
+
         List<Port> allPorts = ports.ToList();
         for (int i = 0; i < allPorts.Count; i++)
         {
             Port port = allPorts[i];
-            if (port == startPort || port.node == startPort.node || port.direction == startPort.direction)
+            if (port == startPort || port.node == startPort.node || port.node is not BossGraphNodeView targetNode)
+            {
+                continue;
+            }
+
+            bool isNormalConnection =
+                (startNode.IsNormalOutputPort(startPort) && targetNode.IsNormalInputPort(port))
+                || (startNode.IsNormalInputPort(startPort) && targetNode.IsNormalOutputPort(port));
+            bool isParallelConnection =
+                startNode.IsParallelPort(startPort)
+                && targetNode.IsParallelPort(port)
+                && startPort.direction != port.direction;
+            if (!isNormalConnection && !isParallelConnection)
             {
                 continue;
             }
@@ -5427,10 +5738,13 @@ internal sealed class BossGraphEdgeView : Edge
 {
     private static readonly Color RuntimeEdgeColor = new(1f, 0.78f, 0.08f, 1f);
     private static readonly Color DefaultEdgeColor = new(0.68f, 0.68f, 0.68f, 1f);
+    private static readonly Color ParallelEdgeColor = new(0.3f, 0.78f, 1f, 1f);
+    private readonly bool parallel;
     private bool runtimeActive;
 
-    public BossGraphEdgeView(string label)
+    public BossGraphEdgeView(string label, bool parallel = false)
     {
+        this.parallel = parallel;
         if (string.IsNullOrWhiteSpace(label))
         {
             return;
@@ -5467,6 +5781,11 @@ internal sealed class BossGraphEdgeView : Edge
 
         edgeControl.inputColor = active ? RuntimeEdgeColor : DefaultEdgeColor;
         edgeControl.outputColor = active ? RuntimeEdgeColor : DefaultEdgeColor;
+        if (!active && parallel)
+        {
+            edgeControl.inputColor = ParallelEdgeColor;
+            edgeControl.outputColor = ParallelEdgeColor;
+        }
         edgeControl.edgeWidth = active ? 5 : 2;
         edgeControl.MarkDirtyRepaint();
     }
@@ -5475,6 +5794,7 @@ internal sealed class BossGraphEdgeView : Edge
 internal sealed class BossGraphNodeView : Node
 {
     private const float DragStartDistance = 5f;
+    private const int ParallelPortCount = 1;
     private static readonly Color RuntimeNodeOutlineColor = new(1f, 0.78f, 0.08f, 1f);
 
     private readonly IMGUIContainer inlineActionFields;
@@ -5496,6 +5816,26 @@ internal sealed class BossGraphNodeView : Node
         OutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
         OutputPort.portName = "Out";
         outputContainer.Add(OutputPort);
+
+        ParallelInputPorts = new Port[ParallelPortCount];
+        for (int i = 0; i < ParallelInputPorts.Length; i++)
+        {
+            Port parallelPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
+            parallelPort.portName = "P";
+            parallelPort.tooltip = "동시 실행";
+            ParallelInputPorts[i] = parallelPort;
+            inputContainer.Add(parallelPort);
+        }
+
+        ParallelOutputPorts = new Port[ParallelPortCount];
+        for (int i = 0; i < ParallelOutputPorts.Length; i++)
+        {
+            Port parallelPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+            parallelPort.portName = "P";
+            parallelPort.tooltip = "동시 실행";
+            ParallelOutputPorts[i] = parallelPort;
+            outputContainer.Add(parallelPort);
+        }
 
         extensionContainer.style.marginLeft = 0f;
         extensionContainer.style.marginRight = 0f;
@@ -5557,6 +5897,59 @@ internal sealed class BossGraphNodeView : Node
     public string NodeId { get; }
     public Port InputPort { get; }
     public Port OutputPort { get; }
+    public Port[] ParallelInputPorts { get; }
+    public Port[] ParallelOutputPorts { get; }
+
+    public Port GetParallelInputPort(int laneIndex = 0)
+    {
+        return laneIndex >= 0 && laneIndex < ParallelInputPorts.Length ? ParallelInputPorts[laneIndex] : null;
+    }
+
+    public Port GetParallelOutputPort(int laneIndex = 0)
+    {
+        return laneIndex >= 0 && laneIndex < ParallelOutputPorts.Length ? ParallelOutputPorts[laneIndex] : null;
+    }
+
+    public int GetParallelInputPortIndex(Port port)
+    {
+        for (int i = 0; i < ParallelInputPorts.Length; i++)
+        {
+            if (ParallelInputPorts[i] == port)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int GetParallelOutputPortIndex(Port port)
+    {
+        for (int i = 0; i < ParallelOutputPorts.Length; i++)
+        {
+            if (ParallelOutputPorts[i] == port)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public bool IsNormalOutputPort(Port port)
+    {
+        return port == OutputPort;
+    }
+
+    public bool IsNormalInputPort(Port port)
+    {
+        return port == InputPort;
+    }
+
+    public bool IsParallelPort(Port port)
+    {
+        return GetParallelInputPortIndex(port) >= 0 || GetParallelOutputPortIndex(port) >= 0;
+    }
 
     public void SetInlineActionFieldsDrawer(Action drawer)
     {

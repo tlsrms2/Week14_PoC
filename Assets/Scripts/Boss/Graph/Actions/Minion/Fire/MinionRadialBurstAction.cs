@@ -11,11 +11,12 @@ namespace Week14.Enemy
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
+        [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, Min(1)] private int volleyCount = 1;
         [SerializeField, Min(1)] private int directionCount = 5;
         [SerializeField, Min(0f)] private float volleyInterval = 0.35f;
         [SerializeField, Range(0f, 360f)] private float spreadDegrees = 75f;
-        [SerializeField] private bool resumeIdle = true;
+        [SerializeField, HideInInspector] private bool resumeIdle = true;
         [SerializeField] private bool waitForDuration = true;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -30,6 +31,7 @@ namespace Week14.Enemy
             }
 
             MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
+            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
             MinionGraphCommandRequest request = MinionGraphCommandRequest.RadialBurst(
                 projectile,
                 Mathf.Max(1, volleyCount),

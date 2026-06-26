@@ -5,15 +5,18 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionStopAndFireAction : BossAction
+    public sealed class MinionSideFireAction : BossAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
-        [SerializeField, Min(1)] private int bulletCount = 3;
-        [SerializeField, Min(0f)] private float fireInterval = 0.2f;
-        [SerializeField] private bool resumeIdle = true;
+        [SerializeField, Min(0f)] private float windupSeconds;
+        [SerializeField, Min(0.05f)] private float fireSeconds = 1f;
+        [SerializeField, Min(0.01f)] private float fireInterval = 0.18f;
+        [SerializeField, Range(1f, 179f)] private float sideFireAngleDegrees = 90f;
+        [SerializeField] private MinionGraphSideFireOriginMode originMode = MinionGraphSideFireOriginMode.BodySides;
+        [SerializeField, Min(0f)] private float bodySideSpacing = 0.35f;
         [SerializeField] private bool waitForDuration = true;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -28,12 +31,15 @@ namespace Week14.Enemy
             }
 
             MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
-            MinionGraphCommandRequest request = MinionGraphCommandRequest.StopAndFire(
+            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
+            MinionGraphCommandRequest request = MinionGraphCommandRequest.SideFire(
                 projectile,
-                Mathf.Max(1, bulletCount),
-                Mathf.Max(0f, fireInterval),
+                fireSeconds,
+                fireInterval,
                 fireSpec,
-                resumeIdle);
+                sideFireAngleDegrees,
+                originMode,
+                bodySideSpacing);
             float duration = host.CommandMinions(request);
             yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(context, duration, waitForDuration);
         }

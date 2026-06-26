@@ -24,7 +24,8 @@ namespace Week14.Enemy
     public enum BossGraphProjectileAimMode
     {
         AtPlayer,
-        FixedAngle
+        FixedAngle,
+        ClosestMinionToPlayer
     }
 
     [Serializable]
@@ -123,6 +124,8 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileAimMode mode;
         [SerializeField] private float angleDegrees;
 
+        public BossGraphProjectileAimMode Mode => mode;
+
         public Vector2 GetDirection(BossActionContext context, Vector3 origin)
         {
             return GetDirection(context != null ? context.GetDirectionToPlayer : null, origin);
@@ -130,16 +133,17 @@ namespace Week14.Enemy
 
         public Vector2 GetDirection(Func<Vector3, Vector2> getDirectionToPlayer, Vector3 origin)
         {
-            if (getDirectionToPlayer == null)
+            if (mode == BossGraphProjectileAimMode.FixedAngle)
             {
-                return mode == BossGraphProjectileAimMode.FixedAngle
-                    ? BossActionContext.AngleToDirection(angleDegrees)
-                    : Vector2.left;
+                return BossActionContext.AngleToDirection(angleDegrees);
             }
 
-            return mode == BossGraphProjectileAimMode.FixedAngle
-                ? BossActionContext.AngleToDirection(angleDegrees)
-                : getDirectionToPlayer(origin);
+            if (getDirectionToPlayer == null)
+            {
+                return Vector2.left;
+            }
+
+            return getDirectionToPlayer(origin);
         }
     }
 

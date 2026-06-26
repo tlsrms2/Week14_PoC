@@ -20,11 +20,6 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (waitForCommands)
-            {
-                yield return host.WaitForMinionCommands(waitTimeoutSeconds);
-            }
-
             if (clearSynchronizedFire)
             {
                 host.ClearSynchronizedMinionFire();
@@ -38,6 +33,11 @@ namespace Week14.Enemy
             if (resumeIdle)
             {
                 host.ResumeAllMinions();
+            }
+
+            if (waitForCommands)
+            {
+                yield return host.WaitForMinionCommands(waitTimeoutSeconds);
             }
         }
     }

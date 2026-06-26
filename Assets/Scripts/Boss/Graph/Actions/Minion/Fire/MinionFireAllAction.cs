@@ -11,6 +11,7 @@ namespace Week14.Enemy
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
+        [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, Min(1)] private int shotCount = 1;
         [SerializeField, Min(0f)] private float fireInterval;
 
@@ -27,6 +28,7 @@ namespace Week14.Enemy
 
             int safeShotCount = Mathf.Max(1, shotCount);
             MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
+            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
             for (int i = 0; i < safeShotCount; i++)
             {
                 if (context.IsExecutionPaused)

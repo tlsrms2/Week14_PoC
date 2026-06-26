@@ -170,6 +170,64 @@ namespace Week14.Enemy
             return minions != null && minions.Count > 0;
         }
 
+        internal MinionGraphProjectileFireSpec ResolveSharedMinionAim(
+            MinionGraphProjectileFireSpec fireSpec,
+            IReadOnlyList<Minion> minions)
+        {
+            if (!fireSpec.UsesClosestMinionAim || minions == null || minions.Count == 0)
+            {
+                return fireSpec;
+            }
+
+            return fireSpec.WithSharedMinionAimDirectionProvider(() => GetClosestMinionAimDirection(fireSpec, minions));
+        }
+
+        private Vector2 GetClosestMinionAimDirection(
+            MinionGraphProjectileFireSpec fireSpec,
+            IReadOnlyList<Minion> minions)
+        {
+            Minion closestMinion = FindClosestMinionToTarget(minions);
+            if (closestMinion == null)
+            {
+                return Vector2.zero;
+            }
+
+            Vector3 aimOrigin = fireSpec.GetAimOrigin(closestMinion, 0);
+            return closestMinion.GetGraphDirectionToPlayer(aimOrigin);
+        }
+
+        private Minion FindClosestMinionToTarget(IReadOnlyList<Minion> minions)
+        {
+            Transform target = owner?.MinionTarget;
+            if (target == null)
+            {
+                return null;
+            }
+
+            Minion closest = null;
+            float closestSqrDistance = float.PositiveInfinity;
+            Vector2 targetPosition = target.position;
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                float sqrDistance = ((Vector2)minion.transform.position - targetPosition).sqrMagnitude;
+                if (sqrDistance >= closestSqrDistance)
+                {
+                    continue;
+                }
+
+                closest = minion;
+                closestSqrDistance = sqrDistance;
+            }
+
+            return closest;
+        }
+
         internal void FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec)
         {
             if (projectile == null)
@@ -178,6 +236,7 @@ namespace Week14.Enemy
             }
 
             List<Minion> minions = GetControlledMinions();
+            fireSpec = ResolveSharedMinionAim(fireSpec, minions);
             for (int i = 0; i < minions.Count; i++)
             {
                 minions[i]?.FireOnce(projectile, fireSpec, i);
@@ -288,6 +347,13 @@ namespace Week14.Enemy
 
             int ring = (index + 1) / 2;
             float sign = index % 2 == 1 ? 1f : -1f;
+            return sign * ring * Mathf.Max(1f, spacingDegrees);
+        }
+
+        internal float GetSideBySideFormationAngle(int index, float spacingDegrees)
+        {
+            int ring = Mathf.Max(0, index) / 2 + 1;
+            float sign = index % 2 == 0 ? 1f : -1f;
             return sign * ring * Mathf.Max(1f, spacingDegrees);
         }
 

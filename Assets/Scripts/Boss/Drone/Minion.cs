@@ -13,14 +13,6 @@ namespace Week14.Enemy
     {
         private const string DynamicStatusViewName = "MinionStatusView";
 
-        public enum IdleMovementMode
-        {
-            Wander,
-            KeepPlayerDistance,
-            StrafeAroundPlayer,
-            PingPong
-        }
-
         private static readonly List<Minion> ActiveMinions = new();
 
         [Header("Owner")]
@@ -50,17 +42,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float staggerShakeDistance = 0.06f;
         [SerializeField, Min(0f)] private float staggerShakeFrequency = 32f;
 
-        [Header("Movement")]
-        [SerializeField] private IdleMovementMode idleMovement = IdleMovementMode.Wander;
-        [SerializeField, Min(0f)] private float moveSpeed = 3.2f;
-        [SerializeField, Min(0f)] private float patternCatchUpSpeed = 24f;
-        [SerializeField, Min(0f)] private float keepPlayerDistance = 3.5f;
-        [SerializeField, Min(0f)] private float keepDistanceTolerance = 0.35f;
-        [SerializeField, Min(0f)] private float wanderRadius = 2.8f;
-        [SerializeField, Min(0.1f)] private float wanderRetargetSeconds = 1.5f;
-        [SerializeField, Min(0f)] private float strafeAngularSpeedDegrees = 85f;
-        [SerializeField, Min(0.1f)] private float pingPongSeconds = 2f;
-
         [Header("Scene References")]
         [SerializeField] private Transform bodyRoot;
         [SerializeField] private Transform projectileOrigin;
@@ -70,8 +51,11 @@ namespace Week14.Enemy
         [SerializeField] private SpriteRenderer executionIndicator;
 
         private readonly List<EnemyProjectile> activeProjectiles = new();
-        private Coroutine commandRoutine;
+        private Coroutine movementRoutine;
+        private Coroutine fireRoutine;
         private Coroutine summonRoutine;
+        private MinionGraphProjectileFireSpec commandFireSpec;
+        private bool isFormationCommand;
         private Health health;
         private BulletGauge bullets;
         private ExecutionTarget executionTarget;
@@ -82,7 +66,6 @@ namespace Week14.Enemy
         private Vector2 wanderTarget;
         private Vector3 authoredScale = Vector3.one;
         private float nextWanderRetargetAt;
-        private float strafeAngle;
         private bool isBulletEmpty;
         private float bulletEmptyEndsAt;
         private bool isBodyHitColorActive;
@@ -100,7 +83,7 @@ namespace Week14.Enemy
         public IMinionOwner Owner => ResolveOwner();
         public Health Health => health;
         public BulletGauge Bullets => bullets;
-        public bool IsCommanded => commandRoutine != null;
+        public bool IsCommanded => movementRoutine != null || fireRoutine != null;
         public bool SuppressesBodyContactDamage => suppressBodyContactDamage;
         public bool IsBulletEmpty => isBulletEmpty || (bullets != null && bullets.IsEmpty);
         public bool IsExecutionLocked => isExecutionLocked;
@@ -149,6 +132,8 @@ namespace Week14.Enemy
             {
                 ActiveMinions.Add(this);
             }
+
+            RefreshIgnoredCollisionPairs();
 
             if (health != null)
             {
@@ -215,14 +200,33 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (commandRoutine != null)
+            if (IsCommanded)
             {
-                FaceMovementDirection();
+                if (TryFaceSharedMinionAim())
+                {
+                    if (isFormationCommand)
+                    {
+                        StopBody();
+                    }
+                }
+                else if (isFormationCommand)
+                {
+                    StopBody();
+                    FacePlayer();
+                }
+                else if (movementRoutine != null)
+                {
+                    FaceMovementDirection();
+                }
+                else
+                {
+                    StopBody();
+                }
+
                 return;
             }
 
-            TickIdleMovement();
-            FaceMovementDirection();
+            StopBody();
         }
 
         private IMinionOwner ResolveOwner()
@@ -255,6 +259,77 @@ namespace Week14.Enemy
         {
             runtimeOwner = nextOwner;
             owner = nextOwner as MonoBehaviour;
+            RefreshIgnoredCollisionPairs();
+        }
+
+        private void RefreshIgnoredCollisionPairs()
+        {
+            IgnoreOtherMinionCollisions();
+            IgnoreOwnerCollisions();
+        }
+
+        private void IgnoreOtherMinionCollisions()
+        {
+            if (colliders == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < ActiveMinions.Count; i++)
+            {
+                Minion other = ActiveMinions[i];
+                if (other == null || other == this)
+                {
+                    continue;
+                }
+
+                IgnoreColliderPairs(colliders, other.colliders);
+            }
+        }
+
+        private void IgnoreOwnerCollisions()
+        {
+            if (colliders == null)
+            {
+                return;
+            }
+
+            Transform ownerTransform = Owner?.MinionOwnerTransform;
+            if (ownerTransform == null)
+            {
+                return;
+            }
+
+            Collider2D[] ownerColliders = ownerTransform.GetComponentsInChildren<Collider2D>(true);
+            IgnoreColliderPairs(colliders, ownerColliders);
+        }
+
+        private static void IgnoreColliderPairs(Collider2D[] sourceColliders, Collider2D[] targetColliders)
+        {
+            if (sourceColliders == null || targetColliders == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < sourceColliders.Length; i++)
+            {
+                Collider2D source = sourceColliders[i];
+                if (source == null)
+                {
+                    continue;
+                }
+
+                for (int j = 0; j < targetColliders.Length; j++)
+                {
+                    Collider2D target = targetColliders[j];
+                    if (target == null || target == source)
+                    {
+                        continue;
+                    }
+
+                    Physics2D.IgnoreCollision(source, target, true);
+                }
+            }
         }
 
         public float BeginSummonIntro(Vector3 startPosition, Vector3 targetPosition, float duration, float startScale)
@@ -390,14 +465,35 @@ namespace Week14.Enemy
 
         public void StopCommand()
         {
-            if (commandRoutine != null)
-            {
-                StopCoroutine(commandRoutine);
-                commandRoutine = null;
-            }
+            StopMovementCommand();
+            StopFireCommand();
 
+            isFormationCommand = false;
             suppressBodyContactDamage = false;
             StopBody();
+        }
+
+        private void StopMovementCommand()
+        {
+            if (movementRoutine != null)
+            {
+                StopCoroutine(movementRoutine);
+                movementRoutine = null;
+            }
+
+            isFormationCommand = false;
+            suppressBodyContactDamage = false;
+        }
+
+        private void StopFireCommand()
+        {
+            if (fireRoutine != null)
+            {
+                StopCoroutine(fireRoutine);
+                fireRoutine = null;
+            }
+
+            commandFireSpec = default;
         }
 
         public void FireOnceAtPlayer(BossProjectileSettings projectile)
@@ -416,48 +512,67 @@ namespace Week14.Enemy
             Vector2 direction = fireSpec.GetDirection(this, aimOrigin);
             Vector3 spawnOrigin = fireSpec.GetSpawnOrigin(this, shotIndex, direction);
             Vector2 finalDirection = fireSpec.GetDirection(this, spawnOrigin);
+            FaceClosestMinionAim(fireSpec, finalDirection);
             FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec);
         }
 
-        public float CommandStopAndFire(BossProjectileSettings projectile, int bulletCount, float fireInterval, bool resumeIdle)
+        public float CommandRepeatFire(BossProjectileSettings projectile, int bulletCount, float fireInterval)
         {
-            return CommandStopAndFire(projectile, bulletCount, fireInterval, resumeIdle, default);
+            return CommandRepeatFire(projectile, bulletCount, fireInterval, default);
         }
 
-        public float CommandStopAndFire(
+        public float CommandRepeatFire(
             BossProjectileSettings projectile,
             int bulletCount,
             float fireInterval,
-            bool resumeIdle,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            StopCommand();
+            StopFireCommand();
+            commandFireSpec = fireSpec;
             float duration = GetSequentialFireDuration(bulletCount, fireInterval);
-            commandRoutine = StartCoroutine(RunStopAndFire(projectile, bulletCount, fireInterval, resumeIdle, fireSpec));
+            fireRoutine = StartCoroutine(RunRepeatFire(projectile, bulletCount, fireInterval, fireSpec));
             return duration;
         }
 
-        public float CommandOrbitFire(
-            BossProjectileSettings projectile,
+        public float CommandOrbit(
             float orbitRadius,
             float orbitSeconds,
-            float fireAngleStepDegrees,
             bool clockwise)
         {
-            return CommandOrbitFire(projectile, orbitRadius, orbitSeconds, fireAngleStepDegrees, clockwise, default);
+            return CommandOrbit(orbitRadius, orbitSeconds, clockwise, 24f, 0f);
         }
 
-        public float CommandOrbitFire(
-            BossProjectileSettings projectile,
+        public float CommandOrbit(
             float orbitRadius,
             float orbitSeconds,
-            float fireAngleStepDegrees,
             bool clockwise,
-            MinionGraphProjectileFireSpec fireSpec)
+            float moveSpeed,
+            float angleOffsetDegrees)
         {
-            StopCommand();
+            StopMovementCommand();
             float duration = Mathf.Max(0.1f, orbitSeconds);
-            commandRoutine = StartCoroutine(RunOrbitFire(projectile, orbitRadius, duration, fireAngleStepDegrees, clockwise, fireSpec));
+            movementRoutine = StartCoroutine(RunOrbit(
+                orbitRadius,
+                duration,
+                clockwise,
+                Mathf.Max(0f, moveSpeed),
+                angleOffsetDegrees));
+            return duration;
+        }
+
+        public float CommandWander(
+            float wanderSeconds,
+            float wanderSpeed,
+            float wanderRadius,
+            float wanderRetargetSeconds)
+        {
+            StopMovementCommand();
+            float duration = Mathf.Max(0f, wanderSeconds);
+            movementRoutine = StartCoroutine(RunWander(
+                duration,
+                Mathf.Max(0f, wanderSpeed),
+                Mathf.Max(0.1f, wanderRadius),
+                Mathf.Max(0.1f, wanderRetargetSeconds)));
             return duration;
         }
 
@@ -481,57 +596,107 @@ namespace Week14.Enemy
             bool resumeIdle,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            StopCommand();
+            StopFireCommand();
+            commandFireSpec = fireSpec;
             float duration = GetSequentialFireDuration(volleyCount, volleyInterval);
-            commandRoutine = StartCoroutine(RunRadialBurst(projectile, volleyCount, directionCount, volleyInterval, spreadDegrees, resumeIdle, fireSpec));
+            fireRoutine = StartCoroutine(RunRadialBurst(projectile, volleyCount, directionCount, volleyInterval, spreadDegrees, fireSpec));
             return duration;
         }
 
-        public float CommandChargeSideFire(
-            BossProjectileSettings projectile,
+        public float CommandCharge(
             float chargeSeconds,
             float chargeSpeed,
             float aimOffsetDegrees,
-            float sideFireInterval,
-            float sideFireAngleDegrees)
+            MinionGraphProjectileFireSpec aimSpec)
         {
-            return CommandChargeSideFire(projectile, chargeSeconds, chargeSpeed, aimOffsetDegrees, sideFireInterval, sideFireAngleDegrees, default);
+            StopMovementCommand();
+            float duration = Mathf.Max(0.05f, chargeSeconds);
+            movementRoutine = StartCoroutine(RunCharge(duration, chargeSpeed, aimOffsetDegrees, aimSpec));
+            return duration;
         }
 
-        public float CommandChargeSideFire(
+        public float CommandSideFire(
             BossProjectileSettings projectile,
-            float chargeSeconds,
-            float chargeSpeed,
-            float aimOffsetDegrees,
-            float sideFireInterval,
+            float fireSeconds,
+            float fireInterval,
             float sideFireAngleDegrees,
+            MinionGraphSideFireOriginMode sideFireOriginMode,
+            float sideFireOriginSpacing,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            StopCommand();
-            float duration = Mathf.Max(0.05f, chargeSeconds);
-            commandRoutine = StartCoroutine(RunChargeSideFire(projectile, duration, chargeSpeed, aimOffsetDegrees, sideFireInterval, sideFireAngleDegrees, fireSpec));
+            StopFireCommand();
+            commandFireSpec = fireSpec;
+            float duration = Mathf.Max(0.05f, fireSeconds);
+            fireRoutine = StartCoroutine(RunSideFire(
+                projectile,
+                duration,
+                fireInterval,
+                sideFireAngleDegrees,
+                sideFireOriginMode,
+                sideFireOriginSpacing,
+                fireSpec));
             return duration;
         }
 
-        public void CommandFormation(float angleOffsetDegrees, float radius, float speedMultiplier)
+        public float CommandHoldPosition(float holdSeconds)
         {
-            StopCommand();
-            commandRoutine = StartCoroutine(RunFormation(angleOffsetDegrees, radius, speedMultiplier));
+            StopMovementCommand();
+            float duration = Mathf.Max(0f, holdSeconds);
+            movementRoutine = StartCoroutine(RunHoldPosition(duration));
+            return duration;
         }
 
-        private IEnumerator RunStopAndFire(
+        public void CommandFormationCircle(
+            float angleOffsetDegrees,
+            float radius,
+            bool sideBySide,
+            float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunFormationCircle(angleOffsetDegrees, radius, sideBySide, moveSpeed));
+        }
+
+        public void CommandFormationStraight(
+            float lateralOffset,
+            float distanceFromPlayer,
+            MinionGraphFormationStraightMode mode,
+            float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunFormationStraight(lateralOffset, distanceFromPlayer, mode, moveSpeed));
+        }
+
+        public float CommandPlayerPath(
+            MinionGraphPlayerPathType pathType,
+            Vector2 pathCenter,
+            float distanceFromPlayer,
+            float moveToStartSeconds,
+            float moveSeconds)
+        {
+            StopMovementCommand();
+            float safeMoveToStartSeconds = Mathf.Max(0f, moveToStartSeconds);
+            float safeMoveSeconds = Mathf.Max(0.05f, moveSeconds);
+            movementRoutine = StartCoroutine(RunPlayerPath(
+                pathType,
+                pathCenter,
+                Mathf.Max(0.1f, distanceFromPlayer),
+                safeMoveToStartSeconds,
+                safeMoveSeconds));
+            return safeMoveToStartSeconds + safeMoveSeconds;
+        }
+
+        private IEnumerator RunRepeatFire(
             BossProjectileSettings projectile,
             int bulletCount,
             float fireInterval,
-            bool resumeIdle,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            StopBody();
             int count = Mathf.Max(0, bulletCount);
             for (int i = 0; i < count; i++)
             {
                 yield return WaitWhileExecutionPaused();
-                StopBody();
                 FireOnce(projectile, fireSpec, i);
                 if (i < count - 1)
                 {
@@ -539,7 +704,7 @@ namespace Week14.Enemy
                 }
             }
 
-            FinishCommand(resumeIdle);
+            FinishFireCommand();
         }
 
         private IEnumerator RunSummonIntro(Vector3 startPosition, Vector3 targetPosition, float duration, float startScale)
@@ -581,28 +746,25 @@ namespace Week14.Enemy
             FinishSummonIntro(targetPosition);
         }
 
-        private IEnumerator RunOrbitFire(
-            BossProjectileSettings projectile,
+        private IEnumerator RunOrbit(
             float orbitRadius,
             float orbitSeconds,
-            float fireAngleStepDegrees,
             bool clockwise,
-            MinionGraphProjectileFireSpec fireSpec)
+            float moveSpeed,
+            float angleOffsetDegrees)
         {
             Transform player = GetPlayer();
             if (player == null)
             {
-                FinishCommand(true);
+                FinishMovementCommand();
                 yield break;
             }
 
             float radius = Mathf.Max(0.1f, orbitRadius);
             float duration = Mathf.Max(0.1f, orbitSeconds);
             float signedSpeed = 360f / duration * (clockwise ? -1f : 1f);
-            float angle = GetAngleFromPlayer(player);
+            float angle = GetAngleFromPlayer(player) + angleOffsetDegrees;
             float travelled = 0f;
-            float nextFireAt = 0f;
-            float step = Mathf.Max(1f, fireAngleStepDegrees);
             bool lockedToPattern = false;
 
             while (travelled < 360f)
@@ -619,21 +781,43 @@ namespace Week14.Enemy
                     break;
                 }
 
-                if (travelled >= nextFireAt)
-                {
-                    FireOnce(projectile, fireSpec, Mathf.RoundToInt(nextFireAt / step));
-                    nextFireAt += step;
-                }
-
                 angle += signedSpeed * Time.deltaTime;
                 travelled += Mathf.Abs(signedSpeed * Time.deltaTime);
                 Vector2 target = (Vector2)player.position + AngleToDirection(angle) * radius;
-                SetPatternPosition(target, ref lockedToPattern);
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
                 yield return null;
             }
 
             StopBody();
-            FinishCommand(true);
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunWander(
+            float wanderSeconds,
+            float wanderSpeed,
+            float wanderRadius,
+            float wanderRetargetSeconds)
+        {
+            spawnPosition = transform.position;
+            wanderTarget = transform.position;
+            nextWanderRetargetAt = 0f;
+
+            float elapsed = 0f;
+            while (wanderSeconds <= 0f || elapsed < wanderSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                TickWander(wanderSpeed, wanderRadius, wanderRetargetSeconds);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            FinishMovementCommand();
         }
 
         private IEnumerator RunRadialBurst(
@@ -642,16 +826,15 @@ namespace Week14.Enemy
             int directionCount,
             float volleyInterval,
             float spreadDegrees,
-            bool resumeIdle,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            StopBody();
             int volleys = Mathf.Max(1, volleyCount);
             int directions = Mathf.Max(1, directionCount);
             for (int volley = 0; volley < volleys; volley++)
             {
                 Vector3 aimOrigin = fireSpec.GetAimOrigin(this, volley);
                 Vector2 playerDirection = fireSpec.GetDirection(this, aimOrigin);
+                FaceClosestMinionAim(fireSpec, playerDirection);
                 Vector3 origin = fireSpec.GetSpawnOrigin(this, volley, playerDirection);
                 float centerAngle = DirectionToAngle(playerDirection);
                 float arc = spreadDegrees <= 0f ? 360f : Mathf.Min(360f, spreadDegrees);
@@ -674,29 +857,24 @@ namespace Week14.Enemy
                 }
             }
 
-            FinishCommand(resumeIdle);
+            FinishFireCommand();
         }
 
-        private IEnumerator RunChargeSideFire(
-            BossProjectileSettings projectile,
+        private IEnumerator RunCharge(
             float chargeSeconds,
             float chargeSpeed,
             float aimOffsetDegrees,
-            float sideFireInterval,
-            float sideFireAngleDegrees,
-            MinionGraphProjectileFireSpec fireSpec)
+            MinionGraphProjectileFireSpec aimSpec)
         {
-            Vector3 aimOrigin = fireSpec.GetAimOrigin(this, 0);
-            Vector2 direction = RotateDirection(fireSpec.GetDirection(this, aimOrigin), aimOffsetDegrees);
+            Vector3 aimOrigin = transform.position;
+            Vector2 direction = RotateDirection(aimSpec.GetDirection(this, aimOrigin), aimOffsetDegrees);
             if (direction.sqrMagnitude <= 0.0001f)
             {
                 direction = Vector2.left;
             }
 
+            RotateToDirection(direction);
             float elapsed = 0f;
-            float nextFireAt = 0f;
-            float interval = Mathf.Max(0.01f, sideFireInterval);
-            float sideAngle = Mathf.Max(1f, sideFireAngleDegrees);
             while (elapsed < chargeSeconds)
             {
                 if (IsExecutionPaused)
@@ -707,12 +885,67 @@ namespace Week14.Enemy
                 }
 
                 SetVelocity(direction.normalized * Mathf.Max(0f, chargeSpeed));
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            StopBody();
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunSideFire(
+            BossProjectileSettings projectile,
+            float fireSeconds,
+            float fireInterval,
+            float sideFireAngleDegrees,
+            MinionGraphSideFireOriginMode sideFireOriginMode,
+            float sideFireOriginSpacing,
+            MinionGraphProjectileFireSpec fireSpec)
+        {
+            float elapsed = 0f;
+            float nextFireAt = 0f;
+            float interval = Mathf.Max(0.01f, fireInterval);
+            float sideAngle = Mathf.Max(1f, sideFireAngleDegrees);
+            while (elapsed < fireSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
                 if (elapsed >= nextFireAt)
                 {
                     int shotIndex = Mathf.RoundToInt(nextFireAt / interval);
+                    Vector3 aimOrigin = fireSpec.GetAimOrigin(this, shotIndex);
+                    Vector2 direction = fireSpec.GetDirection(this, aimOrigin);
+                    if (direction.sqrMagnitude <= 0.0001f)
+                    {
+                        direction = Vector2.left;
+                    }
+
                     Vector3 origin = fireSpec.GetSpawnOrigin(this, shotIndex, direction);
-                    FireCommandProjectile(projectile, origin, RotateDirection(direction, sideAngle), !fireSpec.HasEffects, fireSpec);
-                    FireCommandProjectile(projectile, origin, RotateDirection(direction, -sideAngle), false, fireSpec);
+                    FaceClosestMinionAim(fireSpec, direction);
+                    Vector2 sideFireForward = GetSideFireForward(direction, sideFireOriginMode);
+                    GetSideFireOrigins(
+                        origin,
+                        sideFireForward,
+                        sideFireOriginMode,
+                        sideFireOriginSpacing,
+                        out Vector3 firstOrigin,
+                        out Vector3 secondOrigin);
+                    FireCommandProjectile(
+                        projectile,
+                        firstOrigin,
+                        RotateDirection(sideFireForward, sideAngle),
+                        !fireSpec.HasEffects,
+                        fireSpec);
+                    FireCommandProjectile(
+                        projectile,
+                        secondOrigin,
+                        RotateDirection(sideFireForward, -sideAngle),
+                        false,
+                        fireSpec);
 
                     nextFireAt += interval;
                 }
@@ -721,11 +954,68 @@ namespace Week14.Enemy
                 yield return null;
             }
 
-            StopBody();
-            FinishCommand(true);
+            FinishFireCommand();
         }
 
-        private IEnumerator RunFormation(float angleOffsetDegrees, float radius, float speedMultiplier)
+        private Vector2 GetSideFireForward(Vector2 aimDirection, MinionGraphSideFireOriginMode sideFireOriginMode)
+        {
+            if (sideFireOriginMode == MinionGraphSideFireOriginMode.BodySides && transform.right.sqrMagnitude > 0.0001f)
+            {
+                return (Vector2)transform.right.normalized;
+            }
+
+            return aimDirection.sqrMagnitude > 0.0001f ? aimDirection.normalized : Vector2.left;
+        }
+
+        private void GetSideFireOrigins(
+            Vector3 origin,
+            Vector2 direction,
+            MinionGraphSideFireOriginMode sideFireOriginMode,
+            float sideFireOriginSpacing,
+            out Vector3 firstOrigin,
+            out Vector3 secondOrigin)
+        {
+            firstOrigin = origin;
+            secondOrigin = origin;
+            if (sideFireOriginMode != MinionGraphSideFireOriginMode.BodySides || sideFireOriginSpacing <= 0f)
+            {
+                return;
+            }
+
+            Vector2 facing = transform.right.sqrMagnitude > 0.0001f
+                ? (Vector2)transform.right.normalized
+                : direction.normalized;
+            Vector2 side = new(-facing.y, facing.x);
+            Vector3 offset = (Vector3)(side * sideFireOriginSpacing);
+            firstOrigin += offset;
+            secondOrigin -= offset;
+        }
+
+        private IEnumerator RunHoldPosition(float holdSeconds)
+        {
+            float elapsed = 0f;
+            while (holdSeconds <= 0f || elapsed < holdSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                StopBody();
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunFormationCircle(
+            float angleOffsetDegrees,
+            float radius,
+            bool sideBySide,
+            float moveSpeed)
         {
             bool lockedToPattern = false;
             while (true)
@@ -744,41 +1034,247 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Transform ownerTransform = currentOwner.MinionOwnerTransform;
-                Vector2 bossToPlayer = ownerTransform != null
-                    ? (Vector2)(player.position - ownerTransform.position)
-                    : Vector2.right;
-                Vector2 baseDirection = bossToPlayer.sqrMagnitude > 0.0001f ? bossToPlayer.normalized : Vector2.right;
-                Vector2 targetDirection = RotateDirection(baseDirection, angleOffsetDegrees);
-                Vector2 target = (Vector2)player.position + targetDirection * Mathf.Max(0.1f, radius);
-                SetPatternPosition(target, ref lockedToPattern);
+                Vector2 target = GetFormationTarget(
+                    currentOwner,
+                    player,
+                    angleOffsetDegrees,
+                    radius,
+                    sideBySide);
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
+                FacePlayer();
                 yield return null;
             }
 
-            FinishCommand(true);
+            FinishMovementCommand();
         }
 
-        private void TickIdleMovement()
+        private IEnumerator RunFormationStraight(
+            float lateralOffset,
+            float distanceFromPlayer,
+            MinionGraphFormationStraightMode mode,
+            float moveSpeed)
         {
-            Transform player = GetPlayer();
-            switch (idleMovement)
+            bool lockedToPattern = false;
+            bool hasLastPlayerPosition = false;
+            Vector2 lastPlayerPosition = Vector2.zero;
+            Vector2 trackedPlayerForward = Vector2.zero;
+            while (true)
             {
-                case IdleMovementMode.KeepPlayerDistance:
-                    TickKeepPlayerDistance(player);
+                IMinionOwner currentOwner = Owner;
+                Transform player = currentOwner?.MinionTarget;
+                if (currentOwner == null || player == null)
+                {
                     break;
-                case IdleMovementMode.StrafeAroundPlayer:
-                    TickStrafeAroundPlayer(player);
+                }
+
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 playerPosition = player.position;
+                if (mode == MinionGraphFormationStraightMode.PlayerForward)
+                {
+                    if (hasLastPlayerPosition)
+                    {
+                        Vector2 delta = playerPosition - lastPlayerPosition;
+                        if (delta.sqrMagnitude > 0.0001f)
+                        {
+                            trackedPlayerForward = delta.normalized;
+                        }
+                    }
+
+                    if (trackedPlayerForward.sqrMagnitude <= 0.0001f)
+                    {
+                        trackedPlayerForward = GetBossToPlayerDirection(currentOwner, player);
+                    }
+
+                    lastPlayerPosition = playerPosition;
+                    hasLastPlayerPosition = true;
+                }
+
+                Vector2 target = GetFormationStraightTarget(
+                    currentOwner,
+                    player,
+                    lateralOffset,
+                    distanceFromPlayer,
+                    mode,
+                    trackedPlayerForward);
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
+                FacePlayer();
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunPlayerPath(
+            MinionGraphPlayerPathType pathType,
+            Vector2 pathCenter,
+            float distanceFromPlayer,
+            float moveToStartSeconds,
+            float moveSeconds)
+        {
+            GetPlayerPathOffsets(
+                pathType,
+                distanceFromPlayer,
+                out Vector2 startOffset,
+                out Vector2 endOffset);
+
+            Vector2 startPosition = pathCenter + startOffset;
+            yield return MoveToPlayerPathStart(startPosition, moveToStartSeconds);
+
+            float elapsed = 0f;
+            while (elapsed < moveSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                float t = Mathf.Clamp01(elapsed / moveSeconds);
+                Vector2 target = pathCenter + Vector2.Lerp(startOffset, endOffset, t);
+                SetPatternPosition(target, true);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            SetPatternPosition(pathCenter + endOffset, true);
+            FinishMovementCommand();
+        }
+
+        private IEnumerator MoveToPlayerPathStart(Vector2 target, float moveToStartSeconds)
+        {
+            if (moveToStartSeconds <= 0f)
+            {
+                SetPatternPosition(target, true);
+                yield break;
+            }
+
+            Vector2 start = transform.position;
+            float elapsed = 0f;
+            while (elapsed < moveToStartSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                float t = Mathf.Clamp01(elapsed / moveToStartSeconds);
+                SetPatternPosition(Vector2.Lerp(start, target, t), true);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            SetPatternPosition(target, true);
+        }
+
+        private static void GetPlayerPathOffsets(
+            MinionGraphPlayerPathType pathType,
+            float distanceFromPlayer,
+            out Vector2 startOffset,
+            out Vector2 endOffset)
+        {
+            float distance = Mathf.Max(0.1f, distanceFromPlayer);
+            switch (pathType)
+            {
+                case MinionGraphPlayerPathType.Vertical:
+                    startOffset = Vector2.up * distance;
+                    endOffset = Vector2.down * distance;
                     break;
-                case IdleMovementMode.PingPong:
-                    TickPingPong(player);
+                case MinionGraphPlayerPathType.LeftToRightDiagonal:
+                    startOffset = new Vector2(-distance, distance);
+                    endOffset = new Vector2(distance, -distance);
+                    break;
+                case MinionGraphPlayerPathType.RightToLeftDiagonal:
+                    startOffset = new Vector2(distance, distance);
+                    endOffset = new Vector2(-distance, -distance);
                     break;
                 default:
-                    TickWander();
+                    startOffset = Vector2.left * distance;
+                    endOffset = Vector2.right * distance;
                     break;
             }
         }
 
-        private void TickWander()
+        private Vector2 GetFormationTarget(
+            IMinionOwner currentOwner,
+            Transform player,
+            float angleOffsetDegrees,
+            float radius,
+            bool sideBySide)
+        {
+            Transform ownerTransform = currentOwner.MinionOwnerTransform;
+            Vector2 bossToPlayer = ownerTransform != null
+                ? (Vector2)(player.position - ownerTransform.position)
+                : Vector2.right;
+            Vector2 playerToBoss = -bossToPlayer;
+            float bossPlayerDistance = playerToBoss.magnitude;
+            Vector2 baseDirection;
+            float targetRadius;
+            if (sideBySide)
+            {
+                baseDirection = bossPlayerDistance > 0.0001f
+                    ? playerToBoss / bossPlayerDistance
+                    : Vector2.left;
+                targetRadius = bossPlayerDistance > 0.0001f
+                    ? Mathf.Max(0.1f, bossPlayerDistance)
+                    : Mathf.Max(0.1f, radius);
+            }
+            else
+            {
+                baseDirection = bossToPlayer.sqrMagnitude > 0.0001f
+                    ? bossToPlayer.normalized
+                    : Vector2.right;
+                targetRadius = Mathf.Max(0.1f, radius);
+            }
+
+            Vector2 targetDirection = RotateDirection(baseDirection, angleOffsetDegrees);
+            return (Vector2)player.position + targetDirection * targetRadius;
+        }
+
+        private Vector2 GetFormationStraightTarget(
+            IMinionOwner currentOwner,
+            Transform player,
+            float lateralOffset,
+            float distanceFromPlayer,
+            MinionGraphFormationStraightMode mode,
+            Vector2 trackedPlayerForward)
+        {
+            Vector2 centerDirection = mode == MinionGraphFormationStraightMode.BetweenBossAndPlayer
+                ? -GetBossToPlayerDirection(currentOwner, player)
+                : trackedPlayerForward;
+            if (centerDirection.sqrMagnitude <= 0.0001f)
+            {
+                centerDirection = GetBossToPlayerDirection(currentOwner, player);
+            }
+
+            centerDirection.Normalize();
+            Vector2 lineAxis = new(-centerDirection.y, centerDirection.x);
+            Vector2 center = (Vector2)player.position + centerDirection * Mathf.Max(0.1f, distanceFromPlayer);
+            return center + lineAxis * lateralOffset;
+        }
+
+        private Vector2 GetBossToPlayerDirection(IMinionOwner currentOwner, Transform player)
+        {
+            Transform ownerTransform = currentOwner?.MinionOwnerTransform;
+            if (ownerTransform == null || player == null)
+            {
+                return Vector2.right;
+            }
+
+            Vector2 bossToPlayer = (Vector2)(player.position - ownerTransform.position);
+            return bossToPlayer.sqrMagnitude > 0.0001f ? bossToPlayer.normalized : Vector2.right;
+        }
+
+        private void TickWander(float wanderSpeed, float wanderRadius, float wanderRetargetSeconds)
         {
             if (Time.time >= nextWanderRetargetAt || Vector2.Distance(transform.position, wanderTarget) < 0.2f)
             {
@@ -786,58 +1282,7 @@ namespace Week14.Enemy
                 nextWanderRetargetAt = Time.time + Mathf.Max(0.1f, wanderRetargetSeconds);
             }
 
-            MoveTo(wanderTarget, moveSpeed);
-        }
-
-        private void TickKeepPlayerDistance(Transform player)
-        {
-            if (player == null)
-            {
-                TickWander();
-                return;
-            }
-
-            Vector2 offset = (Vector2)transform.position - (Vector2)player.position;
-            float distance = offset.magnitude;
-            if (Mathf.Abs(distance - keepPlayerDistance) <= keepDistanceTolerance)
-            {
-                StopBody();
-                return;
-            }
-
-            Vector2 direction = distance > keepPlayerDistance
-                ? -offset.normalized
-                : offset.sqrMagnitude > 0.0001f ? offset.normalized : Random.insideUnitCircle.normalized;
-            SetVelocity(direction * moveSpeed);
-        }
-
-        private void TickStrafeAroundPlayer(Transform player)
-        {
-            if (player == null)
-            {
-                TickWander();
-                return;
-            }
-
-            strafeAngle += strafeAngularSpeedDegrees * Time.deltaTime;
-            Vector2 target = (Vector2)player.position + AngleToDirection(strafeAngle) * Mathf.Max(0.1f, keepPlayerDistance);
-            MoveTo(target, moveSpeed);
-        }
-
-        private void TickPingPong(Transform player)
-        {
-            Vector2 forward = player != null
-                ? (Vector2)player.position - (Vector2)transform.position
-                : Vector2.right;
-            if (forward.sqrMagnitude <= 0.0001f)
-            {
-                forward = Vector2.right;
-            }
-
-            Vector2 side = new(-forward.normalized.y, forward.normalized.x);
-            float phase = Mathf.Sin(Time.time / Mathf.Max(0.1f, pingPongSeconds) * Mathf.PI * 2f);
-            Vector2 target = spawnPosition + side * phase * Mathf.Max(0.1f, wanderRadius);
-            MoveTo(target, moveSpeed);
+            MoveTo(wanderTarget, wanderSpeed);
         }
 
         private void MoveTo(Vector2 target, float speed)
@@ -878,10 +1323,13 @@ namespace Week14.Enemy
             }
 
             transform.position = new Vector3(target.x, target.y, transform.position.z);
-            RotateToDirection(delta);
+            if (!TryFaceSharedMinionAim())
+            {
+                RotateToDirection(delta);
+            }
         }
 
-        private void SetPatternPosition(Vector2 target, ref bool lockedToPattern)
+        private void SetPatternPosition(Vector2 target, ref bool lockedToPattern, float moveSpeed)
         {
             if (lockedToPattern)
             {
@@ -890,7 +1338,7 @@ namespace Week14.Enemy
             }
 
             Vector2 current = transform.position;
-            float maxDistance = patternCatchUpSpeed * Time.deltaTime;
+            float maxDistance = Mathf.Max(0f, moveSpeed) * Time.deltaTime;
             if (maxDistance <= 0f)
             {
                 lockedToPattern = true;
@@ -1128,6 +1576,7 @@ namespace Week14.Enemy
             transform.localScale = authoredScale;
             spawnPosition = targetPosition;
             SetCollidersEnabled(true);
+            RefreshIgnoredCollisionPairs();
             isSummoning = false;
             summonRoutine = null;
             StopBody();
@@ -1261,6 +1710,36 @@ namespace Week14.Enemy
             RotateToDirection(direction);
         }
 
+        private void FacePlayer()
+        {
+            RotateToDirection(GetDirectionToPlayer(transform.position));
+        }
+
+        private bool TryFaceSharedMinionAim()
+        {
+            if (!commandFireSpec.TryGetSharedMinionAimDirection(out Vector2 direction))
+            {
+                return false;
+            }
+
+            RotateToDirection(direction);
+            return true;
+        }
+
+        private void FaceClosestMinionAim(MinionGraphProjectileFireSpec fireSpec, Vector2 fallbackDirection)
+        {
+            if (fireSpec.TryGetSharedMinionAimDirection(out Vector2 direction))
+            {
+                RotateToDirection(direction);
+                return;
+            }
+
+            if (fireSpec.UsesClosestMinionAim)
+            {
+                RotateToDirection(fallbackDirection);
+            }
+        }
+
         private void RotateToDirection(Vector2 direction)
         {
             if (direction.sqrMagnitude <= 0.0001f)
@@ -1326,14 +1805,18 @@ namespace Week14.Enemy
             return DirectionToAngle(offset);
         }
 
-        private void FinishCommand(bool resumeIdle)
+        private void FinishMovementCommand()
         {
-            commandRoutine = null;
+            movementRoutine = null;
+            isFormationCommand = false;
             suppressBodyContactDamage = false;
-            if (!resumeIdle)
-            {
-                StopBody();
-            }
+            StopBody();
+        }
+
+        private void FinishFireCommand()
+        {
+            fireRoutine = null;
+            commandFireSpec = default;
         }
 
         private static float GetSequentialFireDuration(int count, float interval)

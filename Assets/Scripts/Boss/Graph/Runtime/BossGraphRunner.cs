@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Week14.Enemy
 {
@@ -176,26 +179,26 @@ namespace Week14.Enemy
             try
             {
                 IReadOnlyList<string> nodeKeys = pattern.NodeKeys;
+                Dictionary<string, List<BossStateNode>> parallelGroups = BuildPatternParallelGroups(graph, nodeKeys);
+                HashSet<string> executedNodeKeys = new(StringComparer.Ordinal);
                 for (int i = 0; i < nodeKeys.Count; i++)
                 {
                     BossStateNode node = graph.GetNode(nodeKeys[i]);
-                    BossAction action = node?.Action;
-                    if (action == null)
+                    string runtimeNodeKey = GetRuntimeNodeKey(node);
+                    if (node == null || executedNodeKeys.Contains(runtimeNodeKey))
                     {
                         continue;
                     }
 
-                    try
+                    BossStateNode previousNode = i > 0 ? graph.GetNode(nodeKeys[i - 1]) : null;
+                    string previousNodeId = previousNode?.NodeId;
+                    List<BossStateNode> group = parallelGroups.TryGetValue(runtimeNodeKey, out List<BossStateNode> linkedGroup)
+                        ? linkedGroup
+                        : new List<BossStateNode> { node };
+                    yield return ExecutePatternNodeGroup(graph, group, previousNodeId, context);
+                    for (int groupIndex = 0; groupIndex < group.Count; groupIndex++)
                     {
-                        BossStateNode previousNode = i > 0 ? graph.GetNode(nodeKeys[i - 1]) : null;
-                        string previousNodeId = previousNode?.NodeId;
-                        BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
-                        context.SetCurrentNodeId(node.NodeId);
-                        yield return action.Execute(context);
-                    }
-                    finally
-                    {
-                        context.SetCurrentNodeId(null);
+                        executedNodeKeys.Add(GetRuntimeNodeKey(group[groupIndex]));
                     }
 
                     context.Stop();
@@ -204,6 +207,177 @@ namespace Week14.Enemy
             finally
             {
                 context.ClearPatternScopedBossChildAims();
+            }
+        }
+
+        private static IEnumerator ExecutePatternNodeGroup(
+            BossGraphAsset graph,
+            IReadOnlyList<BossStateNode> nodes,
+            string previousNodeId,
+            BossActionContext context)
+        {
+            List<IEnumerator> routines = new();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                BossStateNode node = nodes[i];
+                if (node?.Action != null)
+                {
+                    routines.Add(ExecuteSinglePatternNode(graph, node, previousNodeId, context));
+                }
+            }
+
+            if (routines.Count == 0)
+            {
+                yield break;
+            }
+
+            yield return RunParallelRoutines(routines);
+        }
+
+        private static IEnumerator ExecuteSinglePatternNode(
+            BossGraphAsset graph,
+            BossStateNode node,
+            string previousNodeId,
+            BossActionContext context)
+        {
+            try
+            {
+                BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
+                context.SetCurrentNodeId(node.NodeId);
+                yield return node.Action.Execute(context);
+            }
+            finally
+            {
+                context.SetCurrentNodeId(null);
+            }
+        }
+
+        private static IEnumerator RunParallelRoutines(IReadOnlyList<IEnumerator> routines)
+        {
+            List<CoroutineStack> stacks = new();
+            for (int i = 0; i < routines.Count; i++)
+            {
+                if (routines[i] != null)
+                {
+                    stacks.Add(new CoroutineStack(routines[i]));
+                }
+            }
+
+            while (stacks.Count > 0)
+            {
+                for (int i = stacks.Count - 1; i >= 0; i--)
+                {
+                    if (!stacks[i].MoveNext())
+                    {
+                        stacks.RemoveAt(i);
+                    }
+                }
+
+                if (stacks.Count > 0)
+                {
+                    yield return null;
+                }
+            }
+        }
+
+        private static string GetRuntimeNodeKey(BossStateNode node)
+        {
+            if (node == null)
+            {
+                return string.Empty;
+            }
+
+            return !string.IsNullOrWhiteSpace(node.NodeGuid) ? node.NodeGuid : node.NodeId;
+        }
+
+        private static Dictionary<string, List<BossStateNode>> BuildPatternParallelGroups(
+            BossGraphAsset graph,
+            IReadOnlyList<string> nodeKeys)
+        {
+            Dictionary<string, List<BossStateNode>> groupsByNodeKey = new(StringComparer.Ordinal);
+            if (graph?.ParallelEdges == null || nodeKeys == null || nodeKeys.Count == 0)
+            {
+                return groupsByNodeKey;
+            }
+
+            Dictionary<string, BossStateNode> patternNodes = new(StringComparer.Ordinal);
+            Dictionary<string, int> patternOrder = new(StringComparer.Ordinal);
+            Dictionary<string, List<string>> links = new(StringComparer.Ordinal);
+            for (int i = 0; i < nodeKeys.Count; i++)
+            {
+                BossStateNode node = graph.GetNode(nodeKeys[i]);
+                string runtimeNodeKey = GetRuntimeNodeKey(node);
+                if (node == null || string.IsNullOrWhiteSpace(runtimeNodeKey) || patternNodes.ContainsKey(runtimeNodeKey))
+                {
+                    continue;
+                }
+
+                patternNodes[runtimeNodeKey] = node;
+                patternOrder[runtimeNodeKey] = i;
+                links[runtimeNodeKey] = new List<string>();
+            }
+
+            for (int i = 0; i < graph.ParallelEdges.Count; i++)
+            {
+                BossParallelEdge edge = graph.ParallelEdges[i];
+                BossStateNode sourceNode = graph.GetNode(edge?.FromNodeKey);
+                BossStateNode targetNode = graph.GetNode(edge?.ToNodeKey);
+                string sourceKey = GetRuntimeNodeKey(sourceNode);
+                string targetKey = GetRuntimeNodeKey(targetNode);
+                if (!string.IsNullOrWhiteSpace(sourceKey)
+                    && !string.IsNullOrWhiteSpace(targetKey)
+                    && sourceKey != targetKey
+                    && links.ContainsKey(sourceKey)
+                    && links.ContainsKey(targetKey))
+                {
+                    AddUnique(links[sourceKey], targetKey);
+                    AddUnique(links[targetKey], sourceKey);
+                }
+            }
+
+            HashSet<string> visitedNodeKeys = new(StringComparer.Ordinal);
+            foreach (string startKey in patternNodes.Keys.OrderBy(key => patternOrder[key]))
+            {
+                if (!visitedNodeKeys.Add(startKey) || links[startKey].Count == 0)
+                {
+                    continue;
+                }
+
+                List<string> groupKeys = new();
+                Queue<string> queue = new();
+                queue.Enqueue(startKey);
+                while (queue.Count > 0)
+                {
+                    string nodeKey = queue.Dequeue();
+                    groupKeys.Add(nodeKey);
+                    for (int i = 0; i < links[nodeKey].Count; i++)
+                    {
+                        string linkedKey = links[nodeKey][i];
+                        if (visitedNodeKeys.Add(linkedKey))
+                        {
+                            queue.Enqueue(linkedKey);
+                        }
+                    }
+                }
+
+                List<BossStateNode> group = groupKeys
+                    .OrderBy(key => patternOrder[key])
+                    .Select(key => patternNodes[key])
+                    .ToList();
+                for (int i = 0; i < groupKeys.Count; i++)
+                {
+                    groupsByNodeKey[groupKeys[i]] = group;
+                }
+            }
+
+            return groupsByNodeKey;
+        }
+
+        private static void AddUnique(List<string> values, string value)
+        {
+            if (!values.Contains(value))
+            {
+                values.Add(value);
             }
         }
 
@@ -600,6 +774,42 @@ namespace Week14.Enemy
         private static string GetPatternCooldownKey(BossGraphPhase phase, string patternId)
         {
             return $"{phase.PhaseIndex}:{patternId}";
+        }
+    }
+
+    internal sealed class CoroutineStack
+    {
+        private readonly Stack<IEnumerator> stack = new();
+
+        public CoroutineStack(IEnumerator root)
+        {
+            if (root != null)
+            {
+                stack.Push(root);
+            }
+        }
+
+        public bool MoveNext()
+        {
+            while (stack.Count > 0)
+            {
+                IEnumerator current = stack.Peek();
+                if (!current.MoveNext())
+                {
+                    stack.Pop();
+                    continue;
+                }
+
+                if (current.Current is IEnumerator nested)
+                {
+                    stack.Push(nested);
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 

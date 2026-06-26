@@ -1,0 +1,732 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
+  m_Name: Boss_DronePilot
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
+  referenceSettings:
+    effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+    colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
+    actionCategories: {fileID: 7712345678901234567, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
+  stateNodes:
+  - nodeId: P01_Auto Summon If Needed
+    nodeGuid: c32d22e16164404da15f17eb09055dd2
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423339
+    sequences: []
+    editorPosition: {x: -475, y: -244}
+  - nodeId: Formation
+    nodeGuid: 555900de7cf44027a24ff126ca720cc1
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423326
+    sequences: []
+    editorPosition: {x: -218, y: -222}
+  - nodeId: Pattern Cleanup
+    nodeGuid: 6046c43ad3154d0e85c88c84ecede958
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423324
+    sequences: []
+    editorPosition: {x: 575, y: -228}
+  - nodeId: Boss Burst
+    nodeGuid: 26515eb0638a43f1806915f4cdb037e0
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423327
+    sequences: []
+    editorPosition: {x: 319, y: -64}
+  - nodeId: Maintain Player Distance
+    nodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423329
+    sequences: []
+    editorPosition: {x: 308, y: -231}
+  - nodeId: Maintain Player Distance_Copy1
+    nodeGuid: 79f4da400cad4c25bdd7e167bd353eb0
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423330
+    sequences: []
+    editorPosition: {x: -20, y: -226}
+  - nodeId: Summon
+    nodeGuid: b89fd992a2034081a9219bdf69da5449
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423331
+    sequences: []
+    editorPosition: {x: -460, y: 156}
+  - nodeId: P03_Formation Straight
+    nodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423334
+    sequences: []
+    editorPosition: {x: -196, y: 538}
+  - nodeId: Start Move Away From Player_Copy1
+    nodeGuid: b0b0d0134d3e44af806747ac0785d8fa
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423333
+    sequences: []
+    editorPosition: {x: -224, y: 387}
+  - nodeId: Fire All
+    nodeGuid: d873030243f44eb68eef550c40dae7db
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423335
+    sequences: []
+    editorPosition: {x: 125, y: 397}
+  - nodeId: Pattern Cleanup_Copy1
+    nodeGuid: 592ce7f11b89418cadd2cd36ed467a53
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423336
+    sequences: []
+    editorPosition: {x: 310, y: 400}
+  - nodeId: Summon Copy1
+    nodeGuid: a1f539730cf5496b8548a3059409cf3e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423337
+    sequences: []
+    editorPosition: {x: -483, y: 380}
+  - nodeId: Orbit
+    nodeGuid: 2ce7f678991b4759b57ff441d7a111b2
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423347
+    sequences: []
+    editorPosition: {x: -167, y: 714}
+  - nodeId: P04_Summon
+    nodeGuid: 228ddca3e30143e7bcf39e55250e59d7
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423340
+    sequences: []
+    editorPosition: {x: -516, y: 715}
+  - nodeId: Repeat Fire
+    nodeGuid: e50a18f0d7b548739910c9df3e52bd6e
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423348
+    sequences: []
+    editorPosition: {x: -171, y: 852}
+  - nodeId: P04_Pattern Cleanup
+    nodeGuid: 6e01c5dcb63748f7ad6473290756dd02
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423349
+    sequences: []
+    editorPosition: {x: 43, y: 713}
+  - nodeId: Player Path
+    nodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423356
+    sequences: []
+    editorPosition: {x: -230, y: 1053}
+  - nodeId: P05_Summon
+    nodeGuid: b4f3a2b34b0240a5b074f7886b5b08ac
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423352
+    sequences: []
+    editorPosition: {x: -489, y: 1046}
+  - nodeId: Side Fire
+    nodeGuid: 71e3398d27ad4926aa6ab542889090fd
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423354
+    sequences: []
+    editorPosition: {x: -235, y: 1192}
+  - nodeId: P05_Pattern Cleanup
+    nodeGuid: f02177d5f46a4bf1a3a5cfdfa1981c1b
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634811984531423355
+    sequences: []
+    editorPosition: {x: -10, y: 1056}
+  patterns:
+  - patternId: Pattern1
+    nodeGuids:
+    - c32d22e16164404da15f17eb09055dd2
+    - 555900de7cf44027a24ff126ca720cc1
+    - 79f4da400cad4c25bdd7e167bd353eb0
+    - 97f24aeaed5640e2b90e1a5f4a59bca7
+    - 26515eb0638a43f1806915f4cdb037e0
+    - 6046c43ad3154d0e85c88c84ecede958
+    nodeIds:
+    - P01_Auto Summon If Needed
+    - Formation
+    - Maintain Player Distance_Copy1
+    - Maintain Player Distance
+    - Boss Burst
+    - Pattern Cleanup
+  - patternId: Pattern2
+    nodeGuids:
+    - b89fd992a2034081a9219bdf69da5449
+    nodeIds:
+    - Summon
+  - patternId: Pattern3
+    nodeGuids:
+    - a1f539730cf5496b8548a3059409cf3e
+    - b0b0d0134d3e44af806747ac0785d8fa
+    - 65cfcc2352924679b7ec85066ff3d4e8
+    - d873030243f44eb68eef550c40dae7db
+    - 592ce7f11b89418cadd2cd36ed467a53
+    nodeIds:
+    - Summon Copy1
+    - Start Move Away From Player_Copy1
+    - P03_Formation Straight
+    - Fire All
+    - Pattern Cleanup_Copy1
+  - patternId: Pattern4
+    nodeGuids:
+    - 228ddca3e30143e7bcf39e55250e59d7
+    - 2ce7f678991b4759b57ff441d7a111b2
+    - e50a18f0d7b548739910c9df3e52bd6e
+    - 6e01c5dcb63748f7ad6473290756dd02
+    nodeIds:
+    - P04_Summon
+    - Orbit
+    - Repeat Fire
+    - P04_Pattern Cleanup
+  - patternId: Pattern5
+    nodeGuids:
+    - b4f3a2b34b0240a5b074f7886b5b08ac
+    - f9254dfe1f1b415ba4c10e85a0c44f8c
+    - 71e3398d27ad4926aa6ab542889090fd
+    - f02177d5f46a4bf1a3a5cfdfa1981c1b
+    nodeIds:
+    - P05_Summon
+    - Player Path
+    - Side Fire
+    - P05_Pattern Cleanup
+  phases:
+  - phaseIndex: 0
+    selectionMode: 3
+    patternIntervalSeconds: 2
+    openingPatternId: Pattern1
+    patterns: []
+  transitions:
+  - fromNodeGuid: 26515eb0638a43f1806915f4cdb037e0
+    toNodeGuid: 6046c43ad3154d0e85c88c84ecede958
+    fromNodeId: Boss Burst
+    toNodeId: Pattern Cleanup
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c32d22e16164404da15f17eb09055dd2
+    toNodeGuid: 555900de7cf44027a24ff126ca720cc1
+    fromNodeId: P01_Auto Summon If Needed
+    toNodeId: Formation
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 555900de7cf44027a24ff126ca720cc1
+    toNodeGuid: 79f4da400cad4c25bdd7e167bd353eb0
+    fromNodeId: Formation
+    toNodeId: Maintain Player Distance_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 79f4da400cad4c25bdd7e167bd353eb0
+    toNodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
+    fromNodeId: Maintain Player Distance_Copy1
+    toNodeId: Maintain Player Distance
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b0b0d0134d3e44af806747ac0785d8fa
+    toNodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
+    fromNodeId: Start Move Away From Player_Copy1
+    toNodeId: P03_Formation Straight
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
+    toNodeGuid: d873030243f44eb68eef550c40dae7db
+    fromNodeId: P03_Formation Straight
+    toNodeId: Fire All
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d873030243f44eb68eef550c40dae7db
+    toNodeGuid: 592ce7f11b89418cadd2cd36ed467a53
+    fromNodeId: Fire All
+    toNodeId: Pattern Cleanup_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a1f539730cf5496b8548a3059409cf3e
+    toNodeGuid: b0b0d0134d3e44af806747ac0785d8fa
+    fromNodeId: Summon Copy1
+    toNodeId: Start Move Away From Player_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 228ddca3e30143e7bcf39e55250e59d7
+    toNodeGuid: 2ce7f678991b4759b57ff441d7a111b2
+    fromNodeId: P04_Summon
+    toNodeId: Orbit
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e50a18f0d7b548739910c9df3e52bd6e
+    toNodeGuid: 6e01c5dcb63748f7ad6473290756dd02
+    fromNodeId: Repeat Fire
+    toNodeId: P04_Pattern Cleanup
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b4f3a2b34b0240a5b074f7886b5b08ac
+    toNodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
+    fromNodeId: P05_Summon
+    toNodeId: Player Path
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 71e3398d27ad4926aa6ab542889090fd
+    toNodeGuid: f02177d5f46a4bf1a3a5cfdfa1981c1b
+    fromNodeId: Side Fire
+    toNodeId: P05_Pattern Cleanup
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  parallelEdges:
+  - fromNodeGuid: 26515eb0638a43f1806915f4cdb037e0
+    toNodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
+    fromNodeId: Boss Burst
+    toNodeId: Maintain Player Distance
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 2ce7f678991b4759b57ff441d7a111b2
+    toNodeGuid: e50a18f0d7b548739910c9df3e52bd6e
+    fromNodeId: Orbit
+    toNodeId: Repeat Fire
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
+    toNodeGuid: 71e3398d27ad4926aa6ab542889090fd
+    fromNodeId: Player Path
+    toNodeId: Side Fire
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern5
+  references:
+    version: 2
+    RefIds:
+    - rid: 2634811984531423324
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811984531423326
+      type: {class: MinionFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        radius: 2.2
+        sideBySide: 1
+        angleSpacingDegrees: 30
+        speedMultiplier: 1.2
+        settleSeconds: 1
+        waitForDuration: 1
+    - rid: 2634811984531423327
+      type: {class: MinionBossBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bossProjectileName: "\uC77C\uBC18\uD0C4"
+        minionProjectileName: "\uC77C\uBC18\uD0C4"
+        ownerOrigin:
+          mode: 0
+          bossChildPath: Visual/LeftGun/FirePoint
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 5
+        fireInterval: 0.5
+        spawnSpacing: 0
+        notifyMinions: 1
+    - rid: 2634811984531423329
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 3
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 2634811984531423330
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 1
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 2634811984531423331
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 3
+    - rid: 2634811984531423333
+      type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 0.5
+        speedMultiplier: 3.5
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: -0.75461215
+            outSlope: -0.75461215
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.6047123
+            value: 0.54367673
+            inSlope: -1.4752324
+            outSlope: -1.4752324
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.1255521
+            outWeight: 0.21058458
+          - serializedVersion: 3
+            time: 0.9957886
+            value: -0.00022888184
+            inSlope: -1.3907917
+            outSlope: -1.3907917
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+    - rid: 2634811984531423334
+      type: {class: MinionFormationStraightAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        mode: 1
+        distanceFromPlayer: 5.5
+        spacing: 1
+        speedMultiplier: 1.2
+        settleSeconds: 1
+        waitForDuration: 1
+    - rid: 2634811984531423335
+      type: {class: MinionFireAllAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 2
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        shotCount: 3
+        fireInterval: 0.3
+    - rid: 2634811984531423336
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811984531423337
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 6
+    - rid: 2634811984531423339
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 2
+    - rid: 2634811984531423340
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 6
+    - rid: 2634811984531423347
+      type: {class: MinionOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        orbitRadius: 6.5
+        orbitSeconds: 7
+        moveSpeed: 24
+        randomizeDirection: 1
+        clockwise: 0
+        waitForDuration: 1
+    - rid: 2634811984531423348
+      type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0.7
+        bulletCount: 6
+        fireInterval: 1
+        waitForDuration: 1
+    - rid: 2634811984531423349
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811984531423352
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 3
+    - rid: 2634811984531423354
+      type: {class: MinionSideFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0.6
+        fireSeconds: 3
+        fireInterval: 0.3
+        sideFireAngleDegrees: 90
+        originMode: 1
+        bodySideSpacing: 0
+        waitForDuration: 1
+    - rid: 2634811984531423355
+      type: {class: MinionPatternCleanupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        waitForCommands: 1
+        waitTimeoutSeconds: 0
+        clearSynchronizedFire: 1
+        stopAllMinions: 0
+        resumeIdle: 1
+    - rid: 2634811984531423356
+      type: {class: MinionPlayerPathAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distanceFromPlayer: 10
+        moveToStartSeconds: 0.6
+        moveSeconds: 3
+        waitForDuration: 1

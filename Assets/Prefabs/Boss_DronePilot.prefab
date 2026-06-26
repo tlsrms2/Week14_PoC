@@ -329,22 +329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.DronePilot
   maxLives: 3
   phaseTransitionWaitSeconds: 1.2
-  enragePhase1Seconds: 30
-  enragePhase1MaxBullets: 3
-  enragePhase2Seconds: 30
-  enragePhase2MaxBullets: 1
-  enrageWindupSeconds: 0.6
-  enrageWindupShakeDistance: 0.05
-  enrageWindupShakeFrequency: 28
-  enrageBurstSprite: {fileID: 0}
-  enrageBurstTargetScale: 4
-  enrageBurstGrowSeconds: 0.15
-  enrageBurstHoldSeconds: 0.1
-  enrageBurstFadeSeconds: 0.35
-  enrageBurstColor: {r: 1, g: 1, b: 1, a: 1}
-  enrageShakeAmplitude: 0.25
-  enrageShakeSeconds: 0.3
-  enrageShakeZoom: 0.12
   deathAnimator: {fileID: 0}
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
@@ -374,13 +358,26 @@ MonoBehaviour:
   bossCombatUiRoot: {fileID: 0}
   bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
-  bossEnrageBarView: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
-  projectileOrigin: {fileID: 756847475993452266}
+  minionPatternEnabled: 1
+  minionProjectileOrigin: {fileID: 756847475993452266}
+  minionSummon:
+    prefab: {fileID: 5425313911687354837, guid: bbfa06f8edbb85c47b7c8ee952ba7f10, type: 3}
+    claimSceneMinions: 1
+    maxOwnedMinions: 4
+    summonCount: 1
+    spawnRadius: 1.5
+    summonInterval: 1
+    introSeconds: 1.5
+    introStartScale: 0.05
+    minAutoSummonInterval: 4
+    maxAutoSummonInterval: 7
+  releaseMinionsOnDisable: 1
+  killSpawnedMinionsOnOwnerDeath: 1
   bossGraph: {fileID: 11400000, guid: 89ee5ca2e9e94cf3b5745f3dd905b6b0, type: 2}
   graphProjectiles:
   - projectileName: "\uC77C\uBC18\uD0C4"
@@ -423,17 +420,6 @@ MonoBehaviour:
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
-  summon:
-    prefab: {fileID: 5425313911687354837, guid: bbfa06f8edbb85c47b7c8ee952ba7f10, type: 3}
-    claimSceneMinions: 1
-    maxOwnedMinions: 2
-    summonCount: 2
-    spawnRadius: 1.5
-    summonInterval: 1
-    introSeconds: 1.5
-    introStartScale: 0.05
-    minAutoSummonInterval: 4
-    maxAutoSummonInterval: 7
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5
