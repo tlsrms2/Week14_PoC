@@ -20,6 +20,7 @@ MonoBehaviour:
     \uC694\uACA9 \uBC94\uC704\uB97C \uCC59\uAE34 \uAD8C\uCD1D"
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  leftArmController: {fileID: 9100000, guid: 43e31a386bff554418cfed91b63ef2a8, type: 2}
   maxAmmo: 3
   parryingRange: 1.25
   damagePerAmmoStep: 050000000400000003000000

@@ -19,6 +19,8 @@ namespace Week14.Weapons
         [SerializeField] private Sprite inGameSprite;
         [Tooltip("이 총기로 발사할 투사체 프리팹입니다. 비워두면 PlayerCombatConfig의 기본 투사체를 사용합니다.")]
         [SerializeField] private PlayerProjectile projectilePrefab;
+        [Tooltip("이 총기를 장착했을 때 플레이어 왼팔 애니메이터에 적용할 컨트롤러입니다. 비워두면 기본 컨트롤러를 유지합니다.")]
+        [SerializeField] private RuntimeAnimatorController leftArmController;
         [Tooltip("이 총기가 보유할 수 있는 최대 탄환 수입니다. 장착 시 BulletGauge가 이 값으로 재설정됩니다.")]
         [SerializeField, Min(1)] private int maxAmmo = 5;
         [Tooltip("패링 판정 범위 배수입니다. 1 = 기본값과 동일. 마우스 패링 리티클 스케일에 곱해지는 멀티플라이어로 적용됩니다(절대 거리 값이 아님).")]
@@ -34,6 +36,7 @@ namespace Week14.Weapons
         public string Description => description;
         public Sprite InGameSprite => inGameSprite;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
+        public RuntimeAnimatorController LeftArmController => leftArmController;
         public int MaxAmmo => maxAmmo;
         public float ParryingRange => parryingRange;
 
