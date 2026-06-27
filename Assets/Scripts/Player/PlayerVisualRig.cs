@@ -1,5 +1,6 @@
 using UnityEngine;
 using Week14.Input;
+using Week14.Weapons;
 
 namespace Week14.Combat
 {
@@ -45,6 +46,8 @@ namespace Week14.Combat
 
         [Header("Left Arm Aim")]
         [SerializeField] private Transform leftArm;
+        [Tooltip("왼팔 애니메이터입니다. 비워두면 leftArm(또는 \"Arm_L\" 이름의 자식)에서 자동으로 찾습니다.")]
+        [SerializeField] private Animator leftArmAnimator;
         [SerializeField] private Vector2 leftArmAimAngleLimits = new Vector2(-105f, 75f);
         [SerializeField] private float leftArmAimAngleOffset;
         [SerializeField, Min(0f)] private float leftArmAimRotateSpeed;
@@ -59,7 +62,7 @@ namespace Week14.Combat
         private SpriteRenderer[] sideRenderers;
         private SpriteRenderer[] backRenderers;
         private Animator[] partAnimators;
-        private Animator leftArmAnimator;
+        private RuntimeAnimatorController defaultLeftArmController;
         private Animator frontRightArmAnimator;
         private Animator sideRightArmAnimator;
         private Animator backRightArmAnimator;
@@ -84,10 +87,27 @@ namespace Week14.Combat
             CachePartAnimators();
         }
 
+        private void OnEnable()
+        {
+            if (WeaponLoadoutManager.Instance != null)
+            {
+                WeaponLoadoutManager.Instance.WeaponChanged += HandleWeaponChanged;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (WeaponLoadoutManager.Instance != null)
+            {
+                WeaponLoadoutManager.Instance.WeaponChanged -= HandleWeaponChanged;
+            }
+        }
+
         private void Start()
         {
             ApplyFacing(currentFacing);
             UpdateWalkAnimation(true);
+            ApplyLeftArmController(WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null);
         }
 
         private void LateUpdate()
@@ -143,6 +163,28 @@ namespace Week14.Combat
             if (leftArmAnimator != null)
             {
                 leftArmAnimator.SetTrigger(DoShotParameter);
+            }
+        }
+
+        private void HandleWeaponChanged(BaseWeaponSO weapon)
+        {
+            ApplyLeftArmController(weapon);
+        }
+
+        private void ApplyLeftArmController(BaseWeaponSO weapon)
+        {
+            if (leftArmAnimator == null)
+            {
+                return;
+            }
+
+            RuntimeAnimatorController controller = weapon != null && weapon.LeftArmController != null
+                ? weapon.LeftArmController
+                : defaultLeftArmController;
+
+            if (leftArmAnimator.runtimeAnimatorController != controller)
+            {
+                leftArmAnimator.runtimeAnimatorController = controller;
             }
         }
 
@@ -256,7 +298,12 @@ namespace Week14.Combat
             System.Array.Copy(sideAnimators, 0, partAnimators, frontAnimators.Length, sideAnimators.Length);
             System.Array.Copy(backAnimators, 0, partAnimators, frontAnimators.Length + sideAnimators.Length, backAnimators.Length);
 
-            leftArmAnimator = leftArm != null ? leftArm.GetComponent<Animator>() : null;
+            if (leftArmAnimator == null)
+            {
+                leftArmAnimator = leftArm != null ? leftArm.GetComponent<Animator>() : null;
+            }
+
+            defaultLeftArmController = leftArmAnimator != null ? leftArmAnimator.runtimeAnimatorController : null;
             frontBodyAnimator = GetNamedChildAnimator(frontVisualRoot, "Front_Body");
             sideBodyAnimator = GetNamedChildAnimator(sideVisualRoot, "Side_Body");
             backBodyAnimator = GetNamedChildAnimator(backVisualRoot, "Back_Body");
