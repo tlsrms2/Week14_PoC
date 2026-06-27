@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.NoLockOnWeaponSO
   weaponId: NoLockOn
   displayName: "\uC218\uB3D9 \uC870\uC900 \uAD8C\uCD1D"
-  icon: {fileID: -3616075707040771709, guid: 7df580d7e5d630743ba59621992f082e, type: 3}
+  icon: {fileID: 6792507738954065177, guid: 448730ad98c5fd5439c6fd28c670f0e2, type: 3}
   description: "- \uD0C4\uD658 \uB300\uBBF8\uC9C0: 1-2-4-5-6\n- \uC870\uC900 \uBCF4\uC815
     \uC5C6\uC74C\n- \uD0C4\uD658 \uD53C\uD574\uB7C9 \uC18C\uD3ED \uC99D\uAC00"
   inGameSprite: {fileID: 0}
