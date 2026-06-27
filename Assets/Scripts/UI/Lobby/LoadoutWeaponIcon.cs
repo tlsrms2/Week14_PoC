@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using Week14.Save;
 using Week14.Weapons;
 
@@ -9,14 +10,16 @@ namespace Week14.UI
     public sealed class LoadoutWeaponIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPanelGatedInteractable
     {
         [SerializeField] private BaseWeaponSO weapon;
-        [Tooltip("장착됐을 때 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
-        [SerializeField] private Color selectedColor = new(1f, 0.85f, 0.3f);
+        [Tooltip("총기의 OutlineIcon을 표시할 SpriteRenderer입니다. 선택됐을 때만 보이고, 비워두면 아웃라인을 갱신하지 않습니다.")]
+        [SerializeField] private SpriteRenderer outlineRenderer;
+        [Tooltip("총기의 OutlineIcon을 라이트 쿠키로 사용할 Light2D입니다(Light Type이 Sprite일 때). 선택됐을 때만 보이고, 비워두면 아웃라인을 갱신하지 않습니다.")]
+        [SerializeField] private Light2D outlineLight;
 
         private SpriteRenderer iconRenderer;
         private Collider2D iconCollider;
-        private Color baseColor;
         private bool subscribedToWeaponChanged;
         private bool panelOpen;
+        private bool isSelected;
 
         public BaseWeaponSO Weapon => weapon;
 
@@ -75,6 +78,8 @@ namespace Week14.UI
             {
                 renderer.sprite = weapon.Icon;
             }
+
+            SetOutlineSprite(weapon.OutlineIcon);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -118,7 +123,8 @@ namespace Week14.UI
         private void SetSelected(bool selected)
         {
             EnsureInitialized();
-            iconRenderer.color = selected ? selectedColor : baseColor;
+            isSelected = selected;
+            UpdateOutlineVisible();
         }
 
         private void EnsureInitialized()
@@ -130,11 +136,24 @@ namespace Week14.UI
 
             iconRenderer = GetComponent<SpriteRenderer>();
             iconCollider = GetComponent<Collider2D>();
-            baseColor = iconRenderer.color;
 
             if (weapon != null)
             {
                 iconRenderer.sprite = weapon.Icon;
+                SetOutlineSprite(weapon.OutlineIcon);
+            }
+        }
+
+        private void SetOutlineSprite(Sprite sprite)
+        {
+            if (outlineRenderer != null)
+            {
+                outlineRenderer.sprite = sprite;
+            }
+
+            if (outlineLight != null)
+            {
+                outlineLight.lightCookieSprite = sprite;
             }
         }
 
@@ -149,7 +168,23 @@ namespace Week14.UI
         {
             EnsureInitialized();
             iconRenderer.enabled = IsUnlocked();
+            UpdateOutlineVisible();
             UpdateColliderEnabled();
+        }
+
+        private void UpdateOutlineVisible()
+        {
+            bool visible = isSelected && IsUnlocked();
+
+            if (outlineRenderer != null)
+            {
+                outlineRenderer.enabled = visible;
+            }
+
+            if (outlineLight != null)
+            {
+                outlineLight.enabled = visible;
+            }
         }
 
         private void UpdateColliderEnabled()

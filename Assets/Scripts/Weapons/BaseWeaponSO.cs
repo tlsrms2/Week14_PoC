@@ -11,6 +11,8 @@ namespace Week14.Weapons
         [SerializeField] private string displayName;
         [Tooltip("UI에 표시할 총기 아이콘입니다.")]
         [SerializeField] private Sprite icon;
+        [Tooltip("UI에 표시할 총기 아이콘의 아웃라인(테두리) 스프라이트입니다.")]
+        [SerializeField] private Sprite outlineIcon;
         [Tooltip("UI에 표시할 총기 설명입니다.")]
         [SerializeField, TextArea] private string description;
         [Tooltip("인게임에서 보여줄 총기 비주얼입니다. (선택, 이번 패스에는 아무 코드도 읽지 않는 자리만 잡아둔 필드)")]
@@ -28,6 +30,7 @@ namespace Week14.Weapons
         public string WeaponId => weaponId;
         public string DisplayName => displayName;
         public Sprite Icon => icon;
+        public Sprite OutlineIcon => outlineIcon;
         public string Description => description;
         public Sprite InGameSprite => inGameSprite;
         public PlayerProjectile ProjectilePrefab => projectilePrefab;
