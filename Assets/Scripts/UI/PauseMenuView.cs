@@ -44,6 +44,11 @@ namespace Week14.UI
 
         public void TogglePause()
         {
+            if (!isPaused && GameModalState.BlocksGameplayInput)
+            {
+                return;
+            }
+
             SetPaused(!isPaused);
         }
 
