@@ -149,6 +149,7 @@ namespace Week14.Enemy
         public static event Action<BossAI> CombatStarted;
         public static event Action<BossAI> Defeated;
         public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
+        public BossData BossData => bossData;
 
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
         private CombatEffectData ActiveEffectData => GraphAsset != null && GraphAsset.EffectData != null ? GraphAsset.EffectData : effectData;

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Enemy;
+using Week14.Weapons;
 
 namespace Week14.UI
 {
@@ -22,6 +24,10 @@ namespace Week14.UI
         [Header("Victory")]
         [SerializeField] private GameObject victoryRoot;
         [SerializeField] private Button victoryLobbyButton;
+        [SerializeField] private TMP_Text equippedWeaponText;
+        [SerializeField] private Image equippedWeaponIcon;
+        [SerializeField] private TMP_Text defeatedBossText;
+        [SerializeField] private Image defeatedBossPortrait;
 
         [Header("Scene")]
         [FormerlySerializedAs("titleSceneName")]
@@ -88,6 +94,14 @@ namespace Week14.UI
                 ?? FindComponent<Button>("GameOverLobbyButton");
             victoryLobbyButton ??= FindComponentIn<Button>(victoryRoot, "LobbyButton")
                 ?? FindComponent<Button>("VictoryLobbyButton");
+            equippedWeaponText ??= FindComponentIn<TMP_Text>(victoryRoot, "EquippedWeaponText")
+                ?? FindComponentIn<TMP_Text>(victoryRoot, "VictoryWeaponText");
+            equippedWeaponIcon ??= FindComponentIn<Image>(victoryRoot, "EquippedWeaponIcon")
+                ?? FindComponentIn<Image>(victoryRoot, "VictoryWeaponIcon");
+            defeatedBossText ??= FindComponentIn<TMP_Text>(victoryRoot, "DefeatedBossText")
+                ?? FindComponentIn<TMP_Text>(victoryRoot, "VictoryBossText");
+            defeatedBossPortrait ??= FindComponentIn<Image>(victoryRoot, "DefeatedBossPortrait")
+                ?? FindComponentIn<Image>(victoryRoot, "VictoryBossPortrait");
         }
 
         private void BindButtons()
@@ -176,9 +190,9 @@ namespace Week14.UI
             ShowGameOver();
         }
 
-        private void HandleBossDefeated(BossAI _)
+        private void HandleBossDefeated(BossAI boss)
         {
-            ShowVictory();
+            ShowVictory(boss);
         }
 
         private void ShowGameOver()
@@ -186,11 +200,30 @@ namespace Week14.UI
             ShowResult(gameOverRoot, restartButton);
         }
 
-        private void ShowVictory()
+        private void ShowVictory(BossAI boss)
         {
+            RefreshVictorySummary(boss);
+
             GameObject targetRoot = victoryRoot != null ? victoryRoot : gameOverRoot;
             Selectable focusTarget = victoryLobbyButton != null ? victoryLobbyButton : gameOverLobbyButton;
             ShowResult(targetRoot, focusTarget);
+        }
+
+        private void RefreshVictorySummary(BossAI boss)
+        {
+            BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null
+                ? WeaponLoadoutManager.Instance.CurrentWeapon
+                : null;
+            BossData bossData = boss != null ? boss.BossData : null;
+
+            SetText(equippedWeaponText, weapon != null ? weapon.DisplayName : string.Empty);
+            SetImage(equippedWeaponIcon, weapon != null ? weapon.Icon : null);
+
+            string bossName = bossData != null && !string.IsNullOrWhiteSpace(bossData.BossName)
+                ? bossData.BossName
+                : boss != null ? boss.DisplayName : string.Empty;
+            SetText(defeatedBossText, bossName);
+            SetImage(defeatedBossPortrait, bossData != null ? bossData.Icon : null);
         }
 
         private void ShowResult(GameObject targetRoot, Selectable focusTarget)
@@ -243,6 +276,25 @@ namespace Week14.UI
             {
                 root.SetActive(visible);
             }
+        }
+
+        private static void SetText(TMP_Text text, string value)
+        {
+            if (text != null)
+            {
+                text.text = value;
+            }
+        }
+
+        private static void SetImage(Image image, Sprite sprite)
+        {
+            if (image == null)
+            {
+                return;
+            }
+
+            image.sprite = sprite;
+            image.enabled = sprite != null;
         }
 
         private void RefreshInputBlock()
