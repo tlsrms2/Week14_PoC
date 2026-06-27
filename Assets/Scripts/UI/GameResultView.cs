@@ -1,7 +1,7 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Bootstrap;
@@ -10,26 +10,32 @@ using Week14.Enemy;
 
 namespace Week14.UI
 {
-    public sealed class HelpGameOverView : MonoBehaviour
+    public sealed class GameResultView : MonoBehaviour
     {
         [Header("Game Over")]
         [SerializeField] private GameObject gameOverRoot;
-        [SerializeField] private TMP_Text gameOverTitleText;
         [SerializeField] private Button restartButton;
-        [SerializeField] private Button titleButton;
-        [SerializeField] private string titleSceneName = "TitleScene";
-        [SerializeField] private string gameOverTitle = "GAME OVER";
-        [SerializeField] private string victoryTitle = "VICTORY";
+
+        [FormerlySerializedAs("titleButton")]
+        [SerializeField] private Button gameOverLobbyButton;
+
+        [Header("Victory")]
+        [SerializeField] private GameObject victoryRoot;
+        [SerializeField] private Button victoryLobbyButton;
+
+        [Header("Scene")]
+        [FormerlySerializedAs("titleSceneName")]
+        [SerializeField] private string lobbySceneName = "LobbyScene";
 
         private Health subscribedPlayerHealth;
         private float previousTimeScale = 1f;
-        private bool gameOverOpen;
+        private bool resultOpen;
 
         private void Awake()
         {
             CacheSceneReferences();
             BindButtons();
-            SetGameOverVisible(false);
+            SetResultVisible(false);
         }
 
         private void OnEnable()
@@ -43,12 +49,12 @@ namespace Week14.UI
             BossAI.Defeated -= HandleBossDefeated;
             UnsubscribePlayer();
 
-            if (gameOverOpen)
+            if (resultOpen)
             {
                 UnfreezeGame();
             }
 
-            gameOverOpen = false;
+            resultOpen = false;
             RefreshInputBlock();
         }
 
@@ -65,26 +71,33 @@ namespace Week14.UI
             SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        public void GoToTitle()
+        public void ReturnToLobby()
         {
             Time.timeScale = 1f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(titleSceneName);
+            SceneTransition.LoadScene(lobbySceneName);
         }
 
         private void CacheSceneReferences()
         {
             gameOverRoot ??= FindGameObject("GameOverRoot");
-            gameOverTitleText ??= FindComponent<TMP_Text>("GameOverTitleText");
+            victoryRoot ??= FindGameObject("VictoryRoot");
             restartButton ??= FindComponent<Button>("RestartButton");
-            titleButton ??= FindComponent<Button>("TitleButton");
+            gameOverLobbyButton ??= FindComponentIn<Button>(gameOverRoot, "LobbyButton")
+                ?? FindComponent<Button>("GameOverLobbyButton");
+            victoryLobbyButton ??= FindComponentIn<Button>(victoryRoot, "LobbyButton")
+                ?? FindComponent<Button>("VictoryLobbyButton");
         }
 
         private void BindButtons()
         {
             restartButton?.onClick.AddListener(RestartScene);
-            titleButton?.onClick.AddListener(GoToTitle);
+            gameOverLobbyButton?.onClick.AddListener(ReturnToLobby);
+            if (victoryLobbyButton != gameOverLobbyButton)
+            {
+                victoryLobbyButton?.onClick.AddListener(ReturnToLobby);
+            }
         }
 
         private GameObject FindGameObject(string childName)
@@ -96,6 +109,17 @@ namespace Week14.UI
         private T FindComponent<T>(string childName) where T : Component
         {
             Transform child = FindChildRecursive(transform, childName);
+            return child != null ? child.GetComponent<T>() : null;
+        }
+
+        private T FindComponentIn<T>(GameObject root, string childName) where T : Component
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            Transform child = FindChildRecursive(root.transform, childName);
             return child != null ? child.GetComponent<T>() : null;
         }
 
@@ -149,22 +173,29 @@ namespace Week14.UI
         private void HandlePlayerDied(Health _)
         {
             SoundManager.StopBgm();
-            ShowGameOver(gameOverTitle);
+            ShowGameOver();
         }
 
         private void HandleBossDefeated(BossAI _)
         {
-            ShowGameOver(victoryTitle);
+            ShowVictory();
         }
 
-        private void ShowGameOver(string title)
+        private void ShowGameOver()
         {
-            if (gameOverTitleText != null)
-            {
-                gameOverTitleText.text = title;
-            }
+            ShowResult(gameOverRoot, restartButton);
+        }
 
-            SetGameOverVisible(true);
+        private void ShowVictory()
+        {
+            GameObject targetRoot = victoryRoot != null ? victoryRoot : gameOverRoot;
+            Selectable focusTarget = victoryLobbyButton != null ? victoryLobbyButton : gameOverLobbyButton;
+            ShowResult(targetRoot, focusTarget);
+        }
+
+        private void ShowResult(GameObject targetRoot, Selectable focusTarget)
+        {
+            SetResultVisible(true, targetRoot, focusTarget);
         }
 
         private static void FocusSelectable(Selectable target)
@@ -177,17 +208,25 @@ namespace Week14.UI
             EventSystem.current.SetSelectedGameObject(target.gameObject);
         }
 
-        private void SetGameOverVisible(bool visible)
+        private void SetResultVisible(bool visible)
         {
-            gameOverOpen = visible;
-            if (gameOverRoot != null)
+            SetResultVisible(visible, null, null);
+        }
+
+        private void SetResultVisible(bool visible, GameObject activeRoot, Selectable focusTarget)
+        {
+            resultOpen = visible;
+            if (visible && activeRoot == null)
             {
-                gameOverRoot.SetActive(visible);
+                activeRoot = gameOverRoot;
             }
+
+            SetRootVisible(gameOverRoot, visible && activeRoot == gameOverRoot);
+            SetRootVisible(victoryRoot, visible && activeRoot == victoryRoot);
 
             if (visible)
             {
-                FocusSelectable(restartButton);
+                FocusSelectable(focusTarget);
                 FreezeGame();
             }
             else
@@ -198,9 +237,17 @@ namespace Week14.UI
             RefreshInputBlock();
         }
 
+        private static void SetRootVisible(GameObject root, bool visible)
+        {
+            if (root != null)
+            {
+                root.SetActive(visible);
+            }
+        }
+
         private void RefreshInputBlock()
         {
-            GameModalState.BlocksGameplayInput = gameOverOpen;
+            GameModalState.BlocksGameplayInput = resultOpen;
         }
 
         private void FreezeGame()
