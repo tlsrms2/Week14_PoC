@@ -15,6 +15,7 @@ MonoBehaviour:
   weaponId: StandardWeapon
   displayName: "\uAE30\uBCF8 \uAD8C\uCD1D"
   icon: {fileID: -1250021020546060479, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
+  outlineIcon: {fileID: -5253834672664389118, guid: 4941473ac3b03dc4bb08ab5c77d2b6bc, type: 3}
   description: "- \uD0C4\uD658 \uB300\uBBF8\uC9C0: 1-2-3-4-5\n- \uD2B9\uBCC4\uD560
     \uAC83 \uC5C6\uB294 \uAE30\uBCF8 \uAD8C\uCD1D"
   inGameSprite: {fileID: 0}

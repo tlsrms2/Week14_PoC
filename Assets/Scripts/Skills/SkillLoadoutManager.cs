@@ -151,7 +151,6 @@ namespace Week14.Skills
 
         private void HandleNormalAttackDamageDealt(int damage)
         {
-            Debug.Log($"[SkillLoadout] 평타 데미지 수신: {damage}. currentStack={currentStack}");
             AddStack(ActiveSlot, damage);
         }
 
@@ -162,7 +161,6 @@ namespace Week14.Skills
             if (scene.name == "MainScene")
             {
                 BaseSkillSO equippedSkill = GetEquippedSkill(ActiveSlot);
-                Debug.Log($"[SkillLoadout] MainScene 시작. 장착 스킬: {(equippedSkill != null ? equippedSkill.SkillId : "없음")}");
             }
         }
 
@@ -195,12 +193,10 @@ namespace Week14.Skills
             int nextStack = Mathf.Min(requiredStack, currentStack + amount);
             if (nextStack == currentStack)
             {
-                Debug.Log($"[SkillLoadout] AddStack 변화 없음: 이미 {currentStack}/{requiredStack}.");
                 return;
             }
 
             currentStack = nextStack;
-            Debug.Log($"[SkillLoadout] 스택 증가: {currentStack}/{requiredStack}.");
             StackChanged?.Invoke(currentStack, requiredStack);
         }
 

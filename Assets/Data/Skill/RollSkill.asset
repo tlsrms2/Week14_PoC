@@ -20,6 +20,7 @@ MonoBehaviour:
   rollDistance: 3
   rollDuration: 0.3
   autoParryRadius: 1.5
+  rollSfxId: Dash
   afterimageInterval: 0.045
   afterimageDuration: 0.18
   afterimageColor: {r: 0.55, g: 0.95, b: 1, a: 0.78431374}

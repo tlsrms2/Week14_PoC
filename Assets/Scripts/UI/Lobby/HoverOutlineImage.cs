@@ -23,6 +23,14 @@ namespace Week14.UI
             SetOutlineVisible(false);
         }
 
+        private void Start()
+        {
+            // OnEnable 시점엔 outlineGraphic/outlineSpriteRenderer를 설정하는 다른 스크립트의 Awake가
+            // 아직 실행 전일 수 있다. Start는 모든 Awake 이후에 실행되니 여기서 한 번 더 꺼서 보장한다.
+            isHovering = false;
+            SetOutlineVisible(false);
+        }
+
         private void OnDisable()
         {
             isHovering = false;

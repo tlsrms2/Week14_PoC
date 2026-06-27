@@ -2,88 +2,124 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.Audio;
+using Week14.Enemy;
 
 namespace Week14.UI
 {
     public sealed class LobbyMenuController : MonoBehaviour
     {
-        [Tooltip("로비에 작게 떠있는 보스 선택 버튼입니다. 클릭하면 이 오브젝트의 위치가 화면 중앙으로 이동합니다.")]
-        [SerializeField] private RectTransform bossRoot;
-        [Tooltip("bossRoot의 자식으로, 항상 활성화돼 있는 보스 패널 내용물입니다. 에디터에 세팅해둔 현재 localScale을 평소(닫힘) 크기로 그대로 사용합니다.")]
-        [SerializeField] private RectTransform bossPanelContent;
-        [Tooltip("패널이 열렸을 때 bossPanelContent가 가질 localScale입니다. 평소 크기보다 커야 확대되는 게 보입니다.")]
-        [SerializeField, Min(0.01f)] private float bossOpenScale = 4f;
+        [Tooltip("로비 씬이 시작될 때 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string lobbyBgmId;
 
-        [Tooltip("로비에 작게 떠있는 로드아웃 선택 버튼입니다. 클릭하면 이 오브젝트의 위치가 화면 중앙으로 이동합니다.")]
-        [SerializeField] private RectTransform loadoutRoot;
-        [Tooltip("loadoutRoot의 자식으로, 항상 활성화돼 있는 로드아웃 패널 내용물입니다. 에디터에 세팅해둔 현재 localScale을 평소(닫힘) 크기로 그대로 사용합니다.")]
-        [SerializeField] private RectTransform loadoutPanelContent;
-        [Tooltip("패널이 열렸을 때 loadoutPanelContent가 가질 localScale입니다. 평소 크기보다 커야 확대되는 게 보입니다.")]
-        [SerializeField, Min(0.01f)] private float loadoutOpenScale = 4f;
+        [Tooltip("실제로 줌인/줌아웃시킬 카메라입니다. 비워두면 Camera.main을 사용합니다.")]
+        [SerializeField] private Camera targetCamera;
 
-        [Tooltip("로비 배경(BG 등)이 들어있는 컨테이너입니다. 패널이 열릴 때 이 전체가 클릭한 버튼 쪽으로 확대됩니다. bossRoot/loadoutRoot는 여기 들어있지 않아야 합니다.")]
-        [SerializeField] private RectTransform backgroundRoot;
-        [Tooltip("작은 상태에서 전체 크기로 확대/축소되는 데 걸리는 시간입니다.")]
+        [Tooltip("로비에 떠있는 보스 선택 버튼(클릭 대상)입니다. Button/HoverDarkenImage가 붙어있어야 합니다.")]
+        [SerializeField] private Transform bossRoot;
+        [Tooltip("bossRoot에 대응하는 보스 패널 콘텐츠 루트입니다. 이 아래에 있는 모든 Collider2D가 패널이 열렸을 때만 활성화됩니다.")]
+        [SerializeField] private Transform bossPanelContent;
+        [Tooltip("보스 패널이 열렸을 때 카메라가 바라볼 월드 포지션입니다. 씬에 빈 오브젝트로 만들어 배치하세요.")]
+        [SerializeField] private Transform bossFocusPoint;
+        [Tooltip("보스 패널이 열렸을 때 카메라의 orthographic size입니다. 작을수록 더 확대됩니다.")]
+        [SerializeField, Min(0.01f)] private float bossOpenOrthographicSize = 2f;
+        [Tooltip("보스 패널이 확대될 때 꺼지고, 닫히면 다시 켜질 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] bossObjectsToHideWhenOpen = Array.Empty<GameObject>();
+        [Tooltip("bossRoot에 마우스를 올리면 켜지는 오브젝트입니다. 보스 패널이 열려있는 동안에는 호버 여부와 상관없이 계속 켜져 있습니다.")]
+        [SerializeField] private GameObject bossHoverHighlight;
+
+        [Tooltip("로비에 떠있는 로드아웃 선택 버튼(클릭 대상)입니다.")]
+        [SerializeField] private Transform loadoutRoot;
+        [Tooltip("loadoutRoot에 대응하는 로드아웃 패널 콘텐츠 루트입니다. 이 아래에 있는 모든 Collider2D가 패널이 열렸을 때만 활성화됩니다.")]
+        [SerializeField] private Transform loadoutPanelContent;
+        [Tooltip("로드아웃 패널이 열렸을 때 카메라가 바라볼 월드 포지션입니다.")]
+        [SerializeField] private Transform loadoutFocusPoint;
+        [Tooltip("로드아웃 패널이 열렸을 때 카메라의 orthographic size입니다.")]
+        [SerializeField, Min(0.01f)] private float loadoutOpenOrthographicSize = 2f;
+        [Tooltip("로드아웃 패널이 확대될 때 꺼지고, 닫히면 다시 켜질 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] loadoutObjectsToHideWhenOpen = Array.Empty<GameObject>();
+        [Tooltip("loadoutRoot에 마우스를 올리면 켜지는 오브젝트입니다. 로드아웃 패널이 열려있는 동안에는 호버 여부와 상관없이 계속 켜져 있습니다.")]
+        [SerializeField] private GameObject loadoutHoverHighlight;
+
+        [Tooltip("평소(닫힘) 상태로 돌아가거나 줌인하는 데 걸리는 시간입니다.")]
         [SerializeField, Min(0f)] private float zoomSeconds = 0.25f;
-        [Tooltip("패널이 열릴 때 배경이 확대되는 배율입니다. 1 = 확대 안 함.")]
-        [SerializeField, Min(1f)] private float backgroundZoomScale = 1.6f;
 
         [Tooltip("보스/로드아웃 패널이 확대되어 있을 때만 보여줄 CloseAll 버튼들입니다. 평소(닫힘) 상태에서는 모두 비활성화됩니다.")]
         [SerializeField] private GameObject[] closeAllButtons = Array.Empty<GameObject>();
 
-        private Vector2 bossRestPosition;
-        private Vector2 loadoutRestPosition;
-        private float bossRestScale = 1f;
-        private float loadoutRestScale = 1f;
-        private Vector2 backgroundBasePosition;
+        private Vector3 restCameraPosition;
+        private float restOrthographicSize = 5f;
 
-        private RectTransform activeRoot;
-        private RectTransform activeContent;
-        private Vector2 activeRestPosition;
-        private float activeRestScale;
-        private RectTransform activeOtherRoot;
-        private Vector2 activeOtherRestPosition;
+        private Transform activeRoot;
+        private Transform activeContent;
+        private Transform activeOtherRoot;
+        private GameObject[] activeObjectsToHide;
         private Coroutine zoomRoutine;
+        private bool bossRootHovering;
+        private bool loadoutRootHovering;
 
         private void Awake()
         {
-            if (bossRoot != null)
+            if (targetCamera == null)
             {
-                bossRestPosition = bossRoot.anchoredPosition;
+                targetCamera = Camera.main;
             }
 
-            if (loadoutRoot != null)
+            if (targetCamera != null)
             {
-                loadoutRestPosition = loadoutRoot.anchoredPosition;
+                restCameraPosition = targetCamera.transform.position;
+                restOrthographicSize = targetCamera.orthographicSize;
             }
 
-            // 평소(닫힘) 크기는 강제로 정하지 않고, 에디터에 이미 세팅해둔 현재 localScale을 그대로 기준으로 쓴다.
-            if (bossPanelContent != null)
+            if (!string.IsNullOrEmpty(lobbyBgmId))
             {
-                bossRestScale = bossPanelContent.localScale.x;
-            }
-
-            if (loadoutPanelContent != null)
-            {
-                loadoutRestScale = loadoutPanelContent.localScale.x;
-            }
-
-            if (backgroundRoot != null)
-            {
-                backgroundBasePosition = backgroundRoot.anchoredPosition;
+                SoundManager.PlayBgm(lobbyBgmId);
             }
 
             CloseAllImmediate();
         }
 
+        private void OnDestroy()
+        {
+            if (!string.IsNullOrEmpty(lobbyBgmId))
+            {
+                SoundManager.StopBgm();
+            }
+        }
+
+        public void OnBossRootPointerEnter()
+        {
+            bossRootHovering = true;
+            RefreshHoverHighlight(bossHoverHighlight, bossRootHovering, bossRoot);
+        }
+
+        public void OnBossRootPointerExit()
+        {
+            bossRootHovering = false;
+            RefreshHoverHighlight(bossHoverHighlight, bossRootHovering, bossRoot);
+        }
+
+        public void OnLoadoutRootPointerEnter()
+        {
+            loadoutRootHovering = true;
+            RefreshHoverHighlight(loadoutHoverHighlight, loadoutRootHovering, loadoutRoot);
+        }
+
+        public void OnLoadoutRootPointerExit()
+        {
+            loadoutRootHovering = false;
+            RefreshHoverHighlight(loadoutHoverHighlight, loadoutRootHovering, loadoutRoot);
+        }
+
         public void OpenBossSelect()
         {
-            Open(bossRoot, bossPanelContent, bossRestPosition, bossRestScale, bossOpenScale, loadoutRoot, loadoutRestPosition);
+            Open(bossRoot, bossPanelContent, bossFocusPoint, bossOpenOrthographicSize, loadoutRoot, bossObjectsToHideWhenOpen);
         }
 
         public void OpenLoadoutSelect()
         {
-            Open(loadoutRoot, loadoutPanelContent, loadoutRestPosition, loadoutRestScale, loadoutOpenScale, bossRoot, bossRestPosition);
+            Open(loadoutRoot, loadoutPanelContent, loadoutFocusPoint, loadoutOpenOrthographicSize, bossRoot, loadoutObjectsToHideWhenOpen);
         }
 
         public void CloseAll()
@@ -93,16 +129,15 @@ namespace Week14.UI
                 return;
             }
 
-            RectTransform root = activeRoot;
-            RectTransform content = activeContent;
-            Vector2 targetPosition = activeRestPosition;
-            float targetScale = activeRestScale;
-            RectTransform otherRoot = activeOtherRoot;
-            Vector2 otherRestPosition = activeOtherRestPosition;
+            Transform root = activeRoot;
+            Transform content = activeContent;
+            Transform otherRoot = activeOtherRoot;
+            GameObject[] objectsToHide = activeObjectsToHide;
 
             activeRoot = null;
             activeContent = null;
             activeOtherRoot = null;
+            activeObjectsToHide = null;
 
             SetInteractable(root, true);
             SetContentInteractable(content, false);
@@ -110,8 +145,10 @@ namespace Week14.UI
             SetHoverScaleSuppressed(content, false);
             SetInteractable(otherRoot, true);
             SetHoverScaleSuppressed(otherRoot, false);
+            SetObjectsActive(objectsToHide, true);
             SetCloseAllButtonVisible(false);
-            PlayZoom(root, content, targetPosition, targetScale, 1f, backgroundBasePosition, otherRoot, otherRestPosition);
+            RefreshAllHoverHighlights();
+            PlayZoom(restCameraPosition, restOrthographicSize);
         }
 
         private void CloseAllImmediate()
@@ -120,17 +157,18 @@ namespace Week14.UI
             activeRoot = null;
             activeContent = null;
             activeOtherRoot = null;
+            activeObjectsToHide = null;
 
-            ResetImmediate(bossRoot, bossPanelContent, bossRestPosition, bossRestScale);
-            ResetImmediate(loadoutRoot, loadoutPanelContent, loadoutRestPosition, loadoutRestScale);
+            SetInteractable(bossRoot, true);
+            SetContentInteractable(bossPanelContent, false);
+            SetObjectsActive(bossObjectsToHideWhenOpen, true);
+            SetInteractable(loadoutRoot, true);
+            SetContentInteractable(loadoutPanelContent, false);
+            SetObjectsActive(loadoutObjectsToHideWhenOpen, true);
 
-            if (backgroundRoot != null)
-            {
-                backgroundRoot.localScale = Vector3.one;
-                backgroundRoot.anchoredPosition = backgroundBasePosition;
-            }
-
+            ApplyCameraTransform(restCameraPosition, restOrthographicSize);
             SetCloseAllButtonVisible(false);
+            RefreshAllHoverHighlights();
         }
 
         private void SetCloseAllButtonVisible(bool visible)
@@ -149,30 +187,13 @@ namespace Week14.UI
             }
         }
 
-        private static void ResetImmediate(RectTransform root, RectTransform content, Vector2 restPosition, float restScale)
-        {
-            if (root != null)
-            {
-                root.localScale = Vector3.one;
-                root.anchoredPosition = restPosition;
-                SetInteractable(root, true);
-            }
-
-            if (content != null)
-            {
-                content.localScale = new Vector3(restScale, restScale, 1f);
-                SetContentInteractable(content, false);
-            }
-        }
-
         private void Open(
-            RectTransform root,
-            RectTransform content,
-            Vector2 restPosition,
-            float restScale,
-            float openScale,
-            RectTransform otherRoot,
-            Vector2 otherRestPosition)
+            Transform root,
+            Transform content,
+            Transform focusPoint,
+            float openOrthographicSize,
+            Transform otherRoot,
+            GameObject[] objectsToHide)
         {
             if (root == null)
             {
@@ -186,10 +207,8 @@ namespace Week14.UI
 
             activeRoot = root;
             activeContent = content;
-            activeRestPosition = restPosition;
-            activeRestScale = restScale;
             activeOtherRoot = otherRoot;
-            activeOtherRestPosition = otherRestPosition;
+            activeObjectsToHide = objectsToHide;
 
             SetInteractable(root, false);
             SetContentInteractable(content, true);
@@ -197,42 +216,39 @@ namespace Week14.UI
             SetHoverScaleSuppressed(content, true);
             SetInteractable(otherRoot, false);
             SetHoverScaleSuppressed(otherRoot, true);
+            SetObjectsActive(objectsToHide, false);
             SetCloseAllButtonVisible(true);
 
-            // 배경 전체가 클릭한 버튼 지점을 향해 확대되도록, 버튼의 평소 위치(focal)를 기준으로
-            // 배경의 목표 anchoredPosition을 계산한다. 확대가 끝나는 시점엔 focal 지점이
-            // 화면 정중앙(0,0)에 오도록 한다: screenPos = position + focal * scale = 0 -> position = -focal * scale.
-            Vector2 backgroundTargetPosition = -restPosition * backgroundZoomScale;
+            // otherRoot의 콜라이더가 방금 꺼져서 PointerExit가 다시는 안 올 수 있다.
+            // 그 전에 호버 중이었다면 hovering 플래그가 영영 true로 남아있게 되니 여기서 같이 꺼준다.
+            if (otherRoot == bossRoot)
+            {
+                bossRootHovering = false;
+            }
+            else if (otherRoot == loadoutRoot)
+            {
+                loadoutRootHovering = false;
+            }
 
-            PlayZoom(root, content, Vector2.zero, openScale, backgroundZoomScale, backgroundTargetPosition, otherRoot, otherRestPosition);
+            RefreshAllHoverHighlights();
+
+            Vector3 targetPosition = focusPoint != null
+                ? new Vector3(focusPoint.position.x, focusPoint.position.y, restCameraPosition.z)
+                : restCameraPosition;
+
+            PlayZoom(targetPosition, openOrthographicSize);
         }
 
-        private void PlayZoom(
-            RectTransform root,
-            RectTransform content,
-            Vector2 rootTargetPosition,
-            float contentTargetScale,
-            float backgroundTargetScale,
-            Vector2 backgroundTargetPosition,
-            RectTransform otherRoot,
-            Vector2 otherRestPosition)
+        private void PlayZoom(Vector3 targetPosition, float targetOrthographicSize)
         {
             StopZoom();
 
-            if (root == null)
+            if (targetCamera == null)
             {
                 return;
             }
 
-            zoomRoutine = StartCoroutine(ZoomRoutine(
-                root,
-                content,
-                rootTargetPosition,
-                contentTargetScale,
-                backgroundTargetScale,
-                backgroundTargetPosition,
-                otherRoot,
-                otherRestPosition));
+            zoomRoutine = StartCoroutine(ZoomRoutine(targetPosition, targetOrthographicSize));
         }
 
         private void StopZoom()
@@ -244,80 +260,38 @@ namespace Week14.UI
             }
         }
 
-        private IEnumerator ZoomRoutine(
-            RectTransform root,
-            RectTransform content,
-            Vector2 rootTargetPosition,
-            float contentTargetScale,
-            float backgroundTargetScale,
-            Vector2 backgroundTargetPosition,
-            RectTransform otherRoot,
-            Vector2 otherRestPosition)
+        private IEnumerator ZoomRoutine(Vector3 targetPosition, float targetOrthographicSize)
         {
-            Vector2 rootStartPosition = root.anchoredPosition;
-            float contentStartScale = content != null ? content.localScale.x : 1f;
-            float backgroundStartScale = backgroundRoot != null ? backgroundRoot.localScale.x : 1f;
-            Vector2 backgroundStartPosition = backgroundRoot != null ? backgroundRoot.anchoredPosition : Vector2.zero;
+            Vector3 startPosition = targetCamera.transform.position;
+            float startOrthographicSize = targetCamera.orthographicSize;
             float t = 0f;
 
             while (zoomSeconds > 0f && t < zoomSeconds)
             {
                 t += Time.unscaledDeltaTime;
                 float ratio = t / zoomSeconds;
-                root.anchoredPosition = Vector2.Lerp(rootStartPosition, rootTargetPosition, ratio);
-
-                if (content != null)
-                {
-                    float scale = Mathf.Lerp(contentStartScale, contentTargetScale, ratio);
-                    content.localScale = new Vector3(scale, scale, 1f);
-                }
-
-                float bgScale = Mathf.Lerp(backgroundStartScale, backgroundTargetScale, ratio);
-                Vector2 bgPosition = Vector2.Lerp(backgroundStartPosition, backgroundTargetPosition, ratio);
-                ApplyBackgroundTransform(backgroundRoot, bgScale, bgPosition);
-                ApplyOtherRootTransform(otherRoot, otherRestPosition, bgScale, bgPosition);
-
+                ApplyCameraTransform(
+                    Vector3.Lerp(startPosition, targetPosition, ratio),
+                    Mathf.Lerp(startOrthographicSize, targetOrthographicSize, ratio));
                 yield return null;
             }
 
-            root.anchoredPosition = rootTargetPosition;
-
-            if (content != null)
-            {
-                content.localScale = new Vector3(contentTargetScale, contentTargetScale, 1f);
-            }
-
-            ApplyBackgroundTransform(backgroundRoot, backgroundTargetScale, backgroundTargetPosition);
-            ApplyOtherRootTransform(otherRoot, otherRestPosition, backgroundTargetScale, backgroundTargetPosition);
-
+            ApplyCameraTransform(targetPosition, targetOrthographicSize);
             zoomRoutine = null;
         }
 
-        private static void ApplyBackgroundTransform(RectTransform background, float scale, Vector2 position)
+        private void ApplyCameraTransform(Vector3 position, float orthographicSize)
         {
-            if (background == null)
+            if (targetCamera == null)
             {
                 return;
             }
 
-            background.localScale = new Vector3(scale, scale, 1f);
-            background.anchoredPosition = position;
+            targetCamera.transform.position = position;
+            targetCamera.orthographicSize = orthographicSize;
         }
 
-        private static void ApplyOtherRootTransform(RectTransform otherRoot, Vector2 otherRestPosition, float backgroundScale, Vector2 backgroundPosition)
-        {
-            if (otherRoot == null)
-            {
-                return;
-            }
-
-            // otherRoot는 backgroundRoot의 자식은 아니지만, 같은 줌에 묶인 것처럼
-            // backgroundRoot와 똑같은 비율로 같이 움직이고 커지게 한다.
-            otherRoot.localScale = new Vector3(backgroundScale, backgroundScale, 1f);
-            otherRoot.anchoredPosition = backgroundPosition + (otherRestPosition * backgroundScale);
-        }
-
-        private static void SetInteractable(RectTransform root, bool interactable)
+        private static void SetInteractable(Transform root, bool interactable)
         {
             if (root == null)
             {
@@ -329,24 +303,72 @@ namespace Week14.UI
             {
                 button.interactable = interactable;
             }
+
+            // bossRoot/loadoutRoot가 이제 Button이 아니라 Collider2D + EventTrigger로 클릭을 받는
+            // 월드 오브젝트라, 반대쪽 패널이 열려있는 동안엔 콜라이더 자체를 꺼서 클릭/호버가 안 먹게 막는다.
+            Collider2D collider = root.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                collider.enabled = interactable;
+            }
         }
 
-        private static void SetContentInteractable(RectTransform content, bool interactable)
+        private static void SetContentInteractable(Transform content, bool interactable)
         {
             if (content == null)
             {
                 return;
             }
 
-            CanvasGroup group = content.GetComponent<CanvasGroup>();
-            if (group != null)
+            // 아이콘의 Collider2D.enabled를 여기서 직접 건드리면, 아이콘 자신의 OnEnable/Start(잠금 상태 갱신)가
+            // 실행되는 시점과 경쟁해서 어느 쪽이 나중에 실행되느냐에 따라 값이 다시 뒤집힐 수 있다.
+            // 대신 각 아이콘에게 "패널이 열렸다"는 사실만 알려주고, 콜라이더 활성화 여부는 아이콘이
+            // (잠금 해제 여부 + 패널 열림 여부) 둘을 합쳐서 직접 계산하게 한다.
+            IPanelGatedInteractable[] gated = content.GetComponentsInChildren<IPanelGatedInteractable>(true);
+            for (int i = 0; i < gated.Length; i++)
             {
-                group.blocksRaycasts = interactable;
-                group.interactable = interactable;
+                gated[i].SetPanelOpen(interactable);
             }
         }
 
-        private static void SetHoverScaleSuppressed(RectTransform target, bool suppressed)
+        private void RefreshHoverHighlight(GameObject highlight, bool hovering, Transform root)
+        {
+            if (highlight == null)
+            {
+                return;
+            }
+
+            // 패널이 열려있는 동안에는 마우스가 버튼 위를 벗어나도(카메라가 줌인되며 버튼 위치가 바뀌므로
+            // 호버가 쉽게 풀린다) 계속 켜져 있어야 하므로, 호버 여부와 "지금 이 root로 열려있는지"를 같이 본다.
+            // 단, 반대쪽 패널이 열려있는 동안에는(activeRoot가 다른 root) 이쪽을 호버해도 켜지면 안 된다.
+            bool isThisOpen = activeRoot == root;
+            bool hoverAllowed = hovering && activeRoot == null;
+            highlight.SetActive(isThisOpen || hoverAllowed);
+        }
+
+        private void RefreshAllHoverHighlights()
+        {
+            RefreshHoverHighlight(bossHoverHighlight, bossRootHovering, bossRoot);
+            RefreshHoverHighlight(loadoutHoverHighlight, loadoutRootHovering, loadoutRoot);
+        }
+
+        private static void SetObjectsActive(GameObject[] objects, bool active)
+        {
+            if (objects == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i] != null)
+                {
+                    objects[i].SetActive(active);
+                }
+            }
+        }
+
+        private static void SetHoverScaleSuppressed(Transform target, bool suppressed)
         {
             if (target == null)
             {

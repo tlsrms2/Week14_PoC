@@ -19,3 +19,10 @@ MonoBehaviour:
     \uBC00\uB9E4\uC0C1\uC774\uB2E4."
   icon: {fileID: -6223629233855118504, guid: 7a5129de2f924994286606028341ce05, type: 3}
   sceneName: MainScene
+  unlocksBossIds:
+  - 2
+  unlocksSkillIds: []
+  unlocksWeaponIds:
+  - 3BulletsWeapon
+  - NoLockOn
+  - 1BulletWeapon

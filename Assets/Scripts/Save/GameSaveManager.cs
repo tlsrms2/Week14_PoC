@@ -69,6 +69,16 @@ namespace Week14.Save
             Save();
         }
 
+        public static void UnclearBoss(string bossId)
+        {
+            if (string.IsNullOrEmpty(bossId) || !Data.clearedBossIds.Remove(bossId))
+            {
+                return;
+            }
+
+            Save();
+        }
+
         public static IReadOnlyList<string> UnlockedSkillIds => Data.unlockedSkillIds;
 
         public static bool IsSkillUnlocked(string skillId)
@@ -125,6 +135,34 @@ namespace Week14.Save
             }
 
             equippedSkills.Add(new SkillSlotData { slot = slot, skillId = skillId });
+            Save();
+        }
+
+        public static IReadOnlyList<string> UnlockedWeaponIds => Data.unlockedWeaponIds;
+
+        public static bool IsWeaponUnlocked(string weaponId)
+        {
+            return !string.IsNullOrEmpty(weaponId) && Data.unlockedWeaponIds.Contains(weaponId);
+        }
+
+        public static void UnlockWeapon(string weaponId)
+        {
+            if (string.IsNullOrEmpty(weaponId) || Data.unlockedWeaponIds.Contains(weaponId))
+            {
+                return;
+            }
+
+            Data.unlockedWeaponIds.Add(weaponId);
+            Save();
+        }
+
+        public static void LockWeapon(string weaponId)
+        {
+            if (string.IsNullOrEmpty(weaponId) || !Data.unlockedWeaponIds.Remove(weaponId))
+            {
+                return;
+            }
+
             Save();
         }
 

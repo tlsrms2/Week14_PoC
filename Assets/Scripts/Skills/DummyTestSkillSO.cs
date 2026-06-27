@@ -7,7 +7,6 @@ namespace Week14.Skills
     {
         public override void Execute(GameObject user)
         {
-            Debug.Log($"[Skill] '{SkillId}' executed by {(user != null ? user.name : "Unknown")}.", user);
         }
     }
 }

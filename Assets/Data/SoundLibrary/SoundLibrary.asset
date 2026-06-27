@@ -17,6 +17,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 3cafd06b23d732248b601961dfafb490, type: 3}
     volume: 0.4
     pitch: 1
+  - id: TitleBgm
+    clip: {fileID: 8300000, guid: bb7e58f926fb3824b9089b99bbf6024b, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: LobbyBgm
+    clip: {fileID: 8300000, guid: 3196e637d5ebb2b4fbad29c25de304af, type: 3}
+    volume: 0.6
+    pitch: 1
   sfxEntries:
   - id: PlayerShot
     clip: {fileID: 8300000, guid: 5b7bfe1023f81c2429be1d8741f1ac2e, type: 3}
@@ -68,5 +76,25 @@ MonoBehaviour:
     pitch: 1
   - id: BossBomb
     clip: {fileID: 8300000, guid: bde5655eab502e148a43a2de46b7df95, type: 3}
+    volume: 0.7
+    pitch: 1
+  - id: Dash
+    clip: {fileID: 8300000, guid: 10be5807a51c2874abd9ce36e582809f, type: 3}
+    volume: 0.8
+    pitch: 1.2
+  - id: Title_Button
+    clip: {fileID: 8300000, guid: 4259470e5a7e7be47bc5968392d4facf, type: 3}
+    volume: 0.5
+    pitch: 1
+  - id: Panel_Hover
+    clip: {fileID: 8300000, guid: 2b63caa1bd7f09a4daebb1b87a527ab9, type: 3}
+    volume: 0.7
+    pitch: 1
+  - id: UI_Hover
+    clip: {fileID: 8300000, guid: cf5d4a554e6a0404ab0e7689e3f21b8e, type: 3}
+    volume: 0.7
+    pitch: 1
+  - id: Panel_Close
+    clip: {fileID: 8300000, guid: 09e5cb9d58b649a438a610328fe8e86f, type: 3}
     volume: 0.7
     pitch: 1

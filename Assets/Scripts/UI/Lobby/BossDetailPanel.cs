@@ -3,12 +3,22 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.Audio;
+using Week14.Enemy;
 
 namespace Week14.UI
 {
     public sealed class BossDetailPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;
+        [Tooltip("패널이 펼쳐질 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string showSfxId;
+        [Tooltip("패널이 닫힐 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string hideSfxId;
+        [Tooltip("같은 SFX가 이 시간(초) 안에 다시 재생되려 하면 막습니다. 마우스 잔떨림 등으로 Show/Hide가 짧은 간격에 반복될 때 중복 재생을 막는 용도입니다.")]
+        [SerializeField, Min(0f)] private float sfxDebounceSeconds = 0.1f;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text crimeText;
         [SerializeField] private TMP_Text descriptionText;
@@ -35,6 +45,8 @@ namespace Week14.UI
         private Coroutine showRoutine;
         private Coroutine growRoutine;
         private Coroutine revealRoutine;
+        private float lastShowSfxTime = float.NegativeInfinity;
+        private float lastHideSfxTime = float.NegativeInfinity;
 
         private void Awake()
         {
@@ -69,6 +81,16 @@ namespace Week14.UI
                 iconImage.enabled = icon != null;
             }
 
+            if (!string.IsNullOrEmpty(showSfxId))
+            {
+                float now = Time.unscaledTime;
+                if (now - lastShowSfxTime >= sfxDebounceSeconds)
+                {
+                    lastShowSfxTime = now;
+                    SoundManager.PlaySfx(showSfxId);
+                }
+            }
+
             SetRevealTargetsActive(false);
             ResetFillImages();
             StopShowRoutine();
@@ -77,6 +99,16 @@ namespace Week14.UI
 
         public void Hide()
         {
+            if (!string.IsNullOrEmpty(hideSfxId))
+            {
+                float now = Time.unscaledTime;
+                if (now - lastHideSfxTime >= sfxDebounceSeconds)
+                {
+                    lastHideSfxTime = now;
+                    SoundManager.PlaySfx(hideSfxId);
+                }
+            }
+
             StopShowRoutine();
             StopRevealRoutine();
             SetRevealTargetsActive(false);

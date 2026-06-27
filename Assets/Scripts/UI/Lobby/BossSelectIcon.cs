@@ -6,8 +6,8 @@ using Week14.Save;
 
 namespace Week14.UI
 {
-    [RequireComponent(typeof(Image))]
-    public sealed class BossSelectIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+    [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
+    public sealed class BossSelectIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IPanelGatedInteractable
     {
         [SerializeField] private BossPanelController panelController;
         [SerializeField] private BossData bossData;
@@ -21,19 +21,30 @@ namespace Week14.UI
         [SerializeField] private Image holdFillImage;
         [Tooltip("진행 바가 채워지는 감속 곡선의 강도입니다. 클수록 처음에 더 빠르게 차오르고 끝에 갈수록 더 느려집니다. 1 = 일정한 속도.")]
         [SerializeField, Min(1f)] private float holdFillEaseExponent = 4f;
+        [Tooltip("이 아이콘과 같이 숨겨질 아웃라인 SpriteRenderer입니다. 잠겨있으면 아이콘과 함께 꺼집니다.")]
+        [SerializeField] private SpriteRenderer outlineRenderer;
 
-        private Image iconImage;
+        private SpriteRenderer iconRenderer;
+        private Collider2D iconCollider;
         private Color baseColor;
         private Coroutine holdRoutine;
+        private bool panelOpen;
 
         private void Awake()
         {
-            iconImage = GetComponent<Image>();
+            EnsureInitialized();
+        }
 
-            if (iconImage != null)
+        private void EnsureInitialized()
+        {
+            if (iconRenderer != null)
             {
-                baseColor = iconImage.color;
+                return;
             }
+
+            iconRenderer = GetComponent<SpriteRenderer>();
+            iconCollider = GetComponent<Collider2D>();
+            baseColor = iconRenderer.color;
         }
 
         private void OnEnable()
@@ -83,21 +94,36 @@ namespace Week14.UI
 
         public void SetSelected(bool selected)
         {
-            if (iconImage != null)
-            {
-                iconImage.color = selected ? selectedColor : baseColor;
-            }
+            iconRenderer.color = selected ? selectedColor : baseColor;
+        }
+
+        public void SetPanelOpen(bool open)
+        {
+            EnsureInitialized();
+            panelOpen = open;
+            UpdateColliderEnabled();
         }
 
         private void RefreshLockState()
         {
+            EnsureInitialized();
             bool unlocked = IsUnlocked();
+            iconRenderer.enabled = unlocked;
 
-            if (iconImage != null)
+            if (outlineRenderer != null)
             {
-                iconImage.enabled = unlocked;
-                iconImage.raycastTarget = unlocked;
+                outlineRenderer.enabled = unlocked;
             }
+
+            UpdateColliderEnabled();
+        }
+
+        private void UpdateColliderEnabled()
+        {
+            // LobbyMenuController(Awake)와 이 컴포넌트(OnEnable)는 어느 쪽이 먼저 실행될지 보장되지 않아서,
+            // 한쪽이 Collider2D.enabled를 직접 덮어쓰면 다른 쪽이 나중에 실행되며 그 값을 다시 뒤집어버린다.
+            // 두 조건(잠금 해제 여부 / 패널이 열려 있는지)을 항상 같이 계산해서 순서와 무관하게 일치시킨다.
+            iconCollider.enabled = IsUnlocked() && panelOpen;
         }
 
         private bool IsUnlocked()

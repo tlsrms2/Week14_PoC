@@ -37,6 +37,7 @@ namespace Week14.Weapons
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
 
+            UnlockDefaultWeapon();
             LoadEquippedWeapon();
             EquipDefaultWeaponIfNeeded();
         }
@@ -109,6 +110,14 @@ namespace Week14.Weapons
                 GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
                 currentWeapon?.ApplyWeaponTrait(playerObject);
                 ApplyAmmoConfig(currentWeapon);
+            }
+        }
+
+        private void UnlockDefaultWeapon()
+        {
+            if (defaultWeapon != null)
+            {
+                GameSaveManager.UnlockWeapon(defaultWeapon.WeaponId);
             }
         }
 

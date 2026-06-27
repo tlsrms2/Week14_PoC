@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.Save;
 using Week14.UI;
 
 namespace Week14.Enemy
@@ -29,6 +31,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float deathAnimationFallbackSeconds = 1f;
 
         [Header("Meta")]
+        [Tooltip("로비의 BossData 에셋입니다. 클리어 시 이 데이터의 ID로 ClearBoss를 기록하고, UnlocksBossIds/UnlocksSkillIds/UnlocksWeaponIds에 등록된 ID들을 자동으로 해금합니다.")]
+        [SerializeField] private BossData bossData;
         [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 오브젝트 이름을 사용합니다.")]
         [SerializeField] private string displayName;
         [Tooltip("이 보스가 사용할 공통 전투 이펙트 설정입니다.")]
@@ -931,9 +935,38 @@ namespace Week14.Enemy
                 bossLivesView.gameObject.SetActive(false);
             }
 
+            ApplyBossClearRewards();
             OnBossDied();
             HandleMinionBossDied();
             Defeated?.Invoke(this);
+        }
+
+        private void ApplyBossClearRewards()
+        {
+            if (bossData == null)
+            {
+                return;
+            }
+
+            GameSaveManager.ClearBoss(bossData.Id);
+
+            IReadOnlyList<string> unlocksBossIds = bossData.UnlocksBossIds;
+            for (int i = 0; i < unlocksBossIds.Count; i++)
+            {
+                GameSaveManager.UnlockBoss(unlocksBossIds[i]);
+            }
+
+            IReadOnlyList<string> unlocksSkillIds = bossData.UnlocksSkillIds;
+            for (int i = 0; i < unlocksSkillIds.Count; i++)
+            {
+                GameSaveManager.UnlockSkill(unlocksSkillIds[i]);
+            }
+
+            IReadOnlyList<string> unlocksWeaponIds = bossData.UnlocksWeaponIds;
+            for (int i = 0; i < unlocksWeaponIds.Count; i++)
+            {
+                GameSaveManager.UnlockWeapon(unlocksWeaponIds[i]);
+            }
         }
 
         private void QueueDestroyAfterDeath()

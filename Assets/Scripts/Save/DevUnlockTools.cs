@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Week14.Skills;
 using Week14.UI;
+using Week14.Weapons;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -15,6 +16,8 @@ namespace Week14.Save
         [SerializeField] private SkillDatabase skillDatabase;
         [Tooltip("전체 해금 대상 보스 목록입니다. 테스트하려는 보스 데이터를 등록하세요.")]
         [SerializeField] private List<BossData> bosses = new();
+        [Tooltip("전체 해금 대상 총기를 가져올 데이터베이스입니다.")]
+        [SerializeField] private WeaponDatabase weaponDatabase;
         [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스를 즉시 해금합니다.")]
         [SerializeField] private bool enableUnlockAllHotkey = true;
         [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스 해금을 되돌립니다.")]
@@ -32,6 +35,8 @@ namespace Week14.Save
         [SerializeField] private BaseSkillSO targetSkill;
         [Tooltip("아래 '선택 보스 해금/되돌리기'가 대상으로 삼을 보스입니다.")]
         [SerializeField] private BossData targetBoss;
+        [Tooltip("아래 '선택 총기 해금/되돌리기'가 대상으로 삼을 총기입니다.")]
+        [SerializeField] private BaseWeaponSO targetWeapon;
 
         private void Update()
         {
@@ -58,20 +63,22 @@ namespace Week14.Save
         }
 #endif
 
-        [ContextMenu("전체 해금 (스킬 + 보스)")]
+        [ContextMenu("전체 해금 (스킬 + 보스 + 총기)")]
         public void UnlockAll()
         {
             UnlockAllSkills();
             UnlockAllBosses();
-            Debug.Log("[DevUnlockTools] 모든 스킬/보스를 해금했습니다.");
+            UnlockAllWeapons();
+            Debug.Log("[DevUnlockTools] 모든 스킬/보스/총기를 해금했습니다.");
         }
 
-        [ContextMenu("전체 해금 되돌리기 (스킬 + 보스)")]
+        [ContextMenu("전체 해금 되돌리기 (스킬 + 보스 + 총기)")]
         public void LockAll()
         {
             LockAllSkills();
             LockAllBosses();
-            Debug.Log("[DevUnlockTools] 모든 스킬/보스 해금을 되돌렸습니다.");
+            LockAllWeapons();
+            Debug.Log("[DevUnlockTools] 모든 스킬/보스/총기 해금을 되돌렸습니다.");
         }
 
         [ContextMenu("스킬 전체 해금")]
@@ -130,6 +137,43 @@ namespace Week14.Save
                 if (boss != null)
                 {
                     GameSaveManager.LockBoss(boss.Id);
+                    GameSaveManager.UnclearBoss(boss.Id);
+                }
+            }
+        }
+
+        [ContextMenu("총기 전체 해금")]
+        public void UnlockAllWeapons()
+        {
+            if (weaponDatabase == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] weaponDatabase가 비어있어 총기를 해금할 수 없습니다.");
+                return;
+            }
+
+            foreach (BaseWeaponSO weapon in weaponDatabase.AllWeapons)
+            {
+                if (weapon != null)
+                {
+                    GameSaveManager.UnlockWeapon(weapon.WeaponId);
+                }
+            }
+        }
+
+        [ContextMenu("총기 전체 해금 되돌리기")]
+        public void LockAllWeapons()
+        {
+            if (weaponDatabase == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] weaponDatabase가 비어있어 총기를 잠글 수 없습니다.");
+                return;
+            }
+
+            foreach (BaseWeaponSO weapon in weaponDatabase.AllWeapons)
+            {
+                if (weapon != null)
+                {
+                    GameSaveManager.LockWeapon(weapon.WeaponId);
                 }
             }
         }
@@ -180,6 +224,31 @@ namespace Week14.Save
             }
 
             GameSaveManager.LockBoss(targetBoss.Id);
+            GameSaveManager.UnclearBoss(targetBoss.Id);
+        }
+
+        [ContextMenu("선택 총기 해금")]
+        public void UnlockTargetWeapon()
+        {
+            if (targetWeapon == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetWeapon이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.UnlockWeapon(targetWeapon.WeaponId);
+        }
+
+        [ContextMenu("선택 총기 해금 되돌리기")]
+        public void LockTargetWeapon()
+        {
+            if (targetWeapon == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetWeapon이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.LockWeapon(targetWeapon.WeaponId);
         }
     }
 }

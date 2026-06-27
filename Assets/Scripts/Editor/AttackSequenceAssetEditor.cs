@@ -1949,3 +1949,84 @@ internal sealed class BossGraphSfxIdDrawer : PropertyDrawer
         property.stringValue = values[nextIndex];
     }
 }
+
+internal static class BossGraphBgmIdOptions
+{
+    private const double RefreshIntervalSeconds = 1d;
+
+    private static readonly List<string> ids = new();
+    private static double nextRefreshAt;
+
+    public static IReadOnlyList<string> Ids
+    {
+        get
+        {
+            RefreshIfNeeded();
+            return ids;
+        }
+    }
+
+    private static void RefreshIfNeeded()
+    {
+        if (EditorApplication.timeSinceStartup < nextRefreshAt)
+        {
+            return;
+        }
+
+        nextRefreshAt = EditorApplication.timeSinceStartup + RefreshIntervalSeconds;
+        ids.Clear();
+
+        string[] guids = AssetDatabase.FindAssets("t:SoundLibrary");
+        for (int i = 0; i < guids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            SoundLibrary library = AssetDatabase.LoadAssetAtPath<SoundLibrary>(path);
+            if (library == null)
+            {
+                continue;
+            }
+
+            foreach (string id in library.BgmIds)
+            {
+                if (!string.IsNullOrWhiteSpace(id) && !ids.Contains(id))
+                {
+                    ids.Add(id);
+                }
+            }
+        }
+
+        ids.Sort(StringComparer.OrdinalIgnoreCase);
+    }
+}
+
+[CustomPropertyDrawer(typeof(BossGraphBgmIdAttribute))]
+internal sealed class BossGraphBgmIdDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        IReadOnlyList<string> ids = BossGraphBgmIdOptions.Ids;
+        if (property.propertyType != SerializedPropertyType.String || ids.Count == 0)
+        {
+            EditorGUI.PropertyField(position, property, label);
+            return;
+        }
+
+        List<string> values = new() { string.Empty };
+        List<GUIContent> labels = new() { new GUIContent("<없음>") };
+        for (int i = 0; i < ids.Count; i++)
+        {
+            values.Add(ids[i]);
+            labels.Add(new GUIContent(ids[i]));
+        }
+
+        if (!string.IsNullOrWhiteSpace(property.stringValue) && !values.Contains(property.stringValue))
+        {
+            values.Add(property.stringValue);
+            labels.Add(new GUIContent($"{property.stringValue} (목록 없음)"));
+        }
+
+        int currentIndex = Mathf.Max(0, values.IndexOf(property.stringValue));
+        int nextIndex = EditorGUI.Popup(position, label, currentIndex, labels.ToArray());
+        property.stringValue = values[nextIndex];
+    }
+}
