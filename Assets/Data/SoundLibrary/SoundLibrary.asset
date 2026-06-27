@@ -87,10 +87,10 @@ MonoBehaviour:
     volume: 0.5
     pitch: 1
   - id: Panel_Hover
-    clip: {fileID: 8300000, guid: 924236407fd486749a264b4e261703cb, type: 3}
+    clip: {fileID: 8300000, guid: 2b63caa1bd7f09a4daebb1b87a527ab9, type: 3}
     volume: 0.7
     pitch: 1
   - id: UI_Hover
-    clip: {fileID: 8300000, guid: 0624761abd18ae748b978a4a9b9b5f7a, type: 3}
+    clip: {fileID: 8300000, guid: cf5d4a554e6a0404ab0e7689e3f21b8e, type: 3}
     volume: 0.7
     pitch: 1
