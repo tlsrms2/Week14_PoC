@@ -263,6 +263,7 @@ MonoBehaviour:
   sideVisualRoot: {fileID: 3198408802143607012}
   backVisualRoot: {fileID: 7139469826155396230}
   leftArm: {fileID: 8526673574357053572}
+  leftArmAnimator: {fileID: 0}
   leftArmAimAngleLimits: {x: -105, y: 90}
   leftArmAimAngleOffset: 0
   leftArmAimRotateSpeed: 0
@@ -876,6 +877,10 @@ PrefabInstance:
     - target: {fileID: 4958753470749675896, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_Name
       value: VisualRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958753470749675896, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9188277074883341737, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_LocalPosition.x
