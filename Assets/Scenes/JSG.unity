@@ -3388,10 +3388,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: bossGraph
-      value: 
-      objectReference: {fileID: 11400000, guid: 8adfe995149a25f46a5f965ee071cbb6, type: 2}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossHpBarView
       value: 
       objectReference: {fileID: 77867402}
@@ -3403,170 +3399,6 @@ PrefabInstance:
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 644640114}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: minionSummon.introSeconds
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: minionSummon.summonInterval
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: minionSummon.maxOwnedMinions
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[1].projectileName
-      value: "\uC720\uB3C4\uD0C4_\uBCF4\uC2A4"
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectileName
-      value: "\uC720\uB3C4\uD0C4_\uB4DC\uB860"
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.speed
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[1].projectile.prefab
-      value: 
-      objectReference: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.prefab
-      value: 
-      objectReference: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.radius
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.lifetime
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.bulletDamage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.trailColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.trailColor.b
-      value: 0.6039216
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.trailColor.g
-      value: 0.6039216
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.trailColor.r
-      value: 0.6039216
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.trailSeconds
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.chargeSeconds
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.homingEnabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.chargingColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.chargingColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.chargingColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.chargingColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.launchedColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.launchedColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.launchedColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.launchedColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[1].projectile.chargeDriftSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.chargeDriftSpeed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.indicatorColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.indicatorColor.b
-      value: 0.14901961
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.indicatorColor.g
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.indicatorColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[1].projectile.homingChargePrefab
-      value: 
-      objectReference: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.homingBlinkColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.homingBlinkColor.b
-      value: 0.14901961
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.homingBlinkColor.g
-      value: 0.2509804
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.homingBlinkColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.homingChargePrefab
-      value: 
-      objectReference: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.aimAtPlayerOnLaunch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[2].projectile.trailWidthMultiplier
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3610,10 +3442,6 @@ PrefabInstance:
     - target: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_Name
       value: Boss_DronePilot
-      objectReference: {fileID: 0}
-    - target: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4049,10 +3877,6 @@ PrefabInstance:
     - target: {fileID: 2958469296149594014, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: m_Name
       value: Boss_Hog
-      objectReference: {fileID: 0}
-    - target: {fileID: 2958469296149594014, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
