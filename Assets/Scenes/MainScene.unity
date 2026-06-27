@@ -3174,6 +3174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
   hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
 --- !u!1 &1001309530
 GameObject:
   m_ObjectHideFlags: 0
@@ -3696,6 +3697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
   hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
 --- !u!1 &1436232671
 GameObject:
   m_ObjectHideFlags: 0
@@ -5926,6 +5928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundBroadcaster
   hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
 --- !u!1 &2100001220
 GameObject:
   m_ObjectHideFlags: 0
