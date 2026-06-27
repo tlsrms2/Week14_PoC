@@ -9,8 +9,6 @@ namespace Week14.UI
     {
         [SerializeField] private Graphic targetGraphic;
         [SerializeField] private SpriteRenderer targetSpriteRenderer;
-        [SerializeField, Range(0f, 1f)] private float darkenAmount = 0.25f;
-        [SerializeField, Min(0f)] private float transitionSeconds = 0.08f;
         [SerializeField] private Transform scaleTarget;
         [SerializeField, Min(1f)] private float hoverScale = 1.02f;
         [SerializeField, Min(1f)] private float popScale = 1.03f;
@@ -18,9 +16,6 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float settleSeconds = 0.1f;
         [SerializeField, Min(0f)] private float returnSeconds = 0.1f;
 
-        private Color baseColor;
-        private Color targetColor;
-        private bool hasBaseColor;
         private Vector3 baseScale;
         private Vector3 scaleFrom;
         private Vector3 scaleTo;
@@ -70,9 +65,6 @@ namespace Week14.UI
 
         private void OnEnable()
         {
-            CacheBaseColor();
-            targetColor = baseColor;
-            ApplyColor(baseColor);
             CacheBaseScale();
             ApplyScale(baseScale);
             isHovering = false;
@@ -82,13 +74,7 @@ namespace Week14.UI
         private void OnDisable()
         {
             isHovering = false;
-            targetColor = baseColor;
             scalePhase = ScalePhase.Idle;
-
-            if (hasBaseColor)
-            {
-                ApplyColor(baseColor);
-            }
 
             if (hasBaseScale)
             {
@@ -109,6 +95,11 @@ namespace Week14.UI
             {
                 isHovering = false;
                 scalePhase = ScalePhase.Idle;
+
+                // 애니메이션 도중(커진 상태)에 억제가 걸리면 그 크기로 멈춰버리므로,
+                // 항상 진짜 베이스 크기로 즉시 되돌려 다음 캐싱이 오염되지 않게 한다.
+                CacheBaseScale();
+                ApplyScale(baseScale);
             }
             else
             {
@@ -142,25 +133,7 @@ namespace Week14.UI
                 EndHover();
             }
 
-            UpdateColor();
             UpdateScale();
-        }
-
-        private void UpdateColor()
-        {
-            if (!HasTarget)
-            {
-                return;
-            }
-
-            if (transitionSeconds <= 0f)
-            {
-                ApplyColor(targetColor);
-                return;
-            }
-
-            float maxDelta = Time.unscaledDeltaTime / transitionSeconds;
-            ApplyColor(MoveColor(GetColor(), targetColor, maxDelta));
         }
 
         private void UpdateScale()
@@ -196,7 +169,6 @@ namespace Week14.UI
             }
 
             isHovering = true;
-            targetColor = GetDarkenedColor();
             StartScalePhase(ScalePhase.Pop, GetScaledBase(Mathf.Max(popScale, hoverScale)), popSeconds);
         }
 
@@ -208,19 +180,7 @@ namespace Week14.UI
             }
 
             isHovering = false;
-            targetColor = baseColor;
             StartScalePhase(ScalePhase.Return, baseScale, returnSeconds);
-        }
-
-        private void CacheBaseColor()
-        {
-            if (hasBaseColor || !HasTarget)
-            {
-                return;
-            }
-
-            baseColor = GetColor();
-            hasBaseColor = true;
         }
 
         private void CacheBaseScale()
@@ -232,13 +192,6 @@ namespace Week14.UI
 
             baseScale = scaleTarget.localScale;
             hasBaseScale = true;
-        }
-
-        private Color GetDarkenedColor()
-        {
-            Color darkened = baseColor * (1f - darkenAmount);
-            darkened.a = baseColor.a;
-            return darkened;
         }
 
         private Vector3 GetScaledBase(float multiplier)
@@ -287,23 +240,6 @@ namespace Week14.UI
             }
 
             scalePhase = ScalePhase.Idle;
-        }
-
-        private Color GetColor()
-        {
-            return targetGraphic != null ? targetGraphic.color : targetSpriteRenderer.color;
-        }
-
-        private void ApplyColor(Color color)
-        {
-            if (targetGraphic != null)
-            {
-                targetGraphic.color = color;
-            }
-            else if (targetSpriteRenderer != null)
-            {
-                targetSpriteRenderer.color = color;
-            }
         }
 
         private void ApplyScale(Vector3 scale)
@@ -368,15 +304,6 @@ namespace Week14.UI
 
             return targetSpriteRenderer != null
                    && (hitTransform == targetSpriteRenderer.transform || hitTransform.IsChildOf(targetSpriteRenderer.transform));
-        }
-
-        private static Color MoveColor(Color current, Color target, float maxDelta)
-        {
-            return new Color(
-                Mathf.MoveTowards(current.r, target.r, maxDelta),
-                Mathf.MoveTowards(current.g, target.g, maxDelta),
-                Mathf.MoveTowards(current.b, target.b, maxDelta),
-                Mathf.MoveTowards(current.a, target.a, maxDelta));
         }
     }
 }
