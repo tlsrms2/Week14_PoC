@@ -18,6 +18,8 @@ namespace Week14.UI
         [Tooltip("패널이 닫힐 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [SerializeField] private string hideSfxId;
+        [Tooltip("같은 SFX가 이 시간(초) 안에 다시 재생되려 하면 막습니다. 마우스 잔떨림 등으로 Show/Hide가 짧은 간격에 반복될 때 중복 재생을 막는 용도입니다.")]
+        [SerializeField, Min(0f)] private float sfxDebounceSeconds = 0.1f;
         [Tooltip("실제로 위치를 이동시킬 툴팁 전체(배경, 텍스트 등 포함)의 최상위 RectTransform입니다. 비워두면 이 컴포넌트가 붙은 오브젝트를 사용합니다.")]
         [SerializeField] private RectTransform rootRect;
         [Tooltip("월드<->스크린 좌표 변환에 사용할 카메라입니다. 비워두면 Camera.main을 사용합니다. (World Space Canvas 기준 위치 계산용)")]
@@ -55,6 +57,8 @@ namespace Week14.UI
         private Coroutine showRoutine;
         private Coroutine growRoutine;
         private Coroutine revealRoutine;
+        private float lastShowSfxTime = float.NegativeInfinity;
+        private float lastHideSfxTime = float.NegativeInfinity;
 
         private void Awake()
         {
@@ -123,7 +127,12 @@ namespace Week14.UI
 
             if (!string.IsNullOrEmpty(showSfxId))
             {
-                SoundManager.PlaySfx(showSfxId);
+                float now = Time.unscaledTime;
+                if (now - lastShowSfxTime >= sfxDebounceSeconds)
+                {
+                    lastShowSfxTime = now;
+                    SoundManager.PlaySfx(showSfxId);
+                }
             }
 
             SetRevealTargetsActive(false);
@@ -136,7 +145,12 @@ namespace Week14.UI
         {
             if (!string.IsNullOrEmpty(hideSfxId))
             {
-                SoundManager.PlaySfx(hideSfxId);
+                float now = Time.unscaledTime;
+                if (now - lastHideSfxTime >= sfxDebounceSeconds)
+                {
+                    lastHideSfxTime = now;
+                    SoundManager.PlaySfx(hideSfxId);
+                }
             }
 
             StopShowRoutine();
