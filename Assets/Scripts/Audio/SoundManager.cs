@@ -13,8 +13,8 @@ namespace Week14.Audio
         [SerializeField] private SoundLibrary library;
         [SerializeField] private AudioMixerGroup bgmOutput;
         [SerializeField] private AudioMixerGroup sfxOutput;
-        [SerializeField, Range(0f, 1f)] private float bgmVolume = 1f;
-        [SerializeField, Range(0f, 1f)] private float sfxVolume = 1f;
+        [SerializeField, Range(0f, 1f)] private float bgmVolume = 0.7f;
+        [SerializeField, Range(0f, 1f)] private float sfxVolume = 0.7f;
         [SerializeField] private bool bgmMuted;
         [SerializeField] private bool sfxMuted;
 
@@ -28,8 +28,8 @@ namespace Week14.Audio
 
         public static SoundManager Instance => instance;
 
-        public static float BgmVolume => instance != null ? instance.bgmVolume : 1f;
-        public static float SfxVolume => instance != null ? instance.sfxVolume : 1f;
+        public static float BgmVolume => instance != null ? instance.bgmVolume : 0.7f;
+        public static float SfxVolume => instance != null ? instance.sfxVolume : 0.7f;
         public static bool IsBgmMuted => instance != null && instance.bgmMuted;
         public static bool IsSfxMuted => instance != null && instance.sfxMuted;
 
