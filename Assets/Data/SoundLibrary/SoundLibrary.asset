@@ -94,3 +94,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: cf5d4a554e6a0404ab0e7689e3f21b8e, type: 3}
     volume: 0.7
     pitch: 1
+  - id: Panel_Close
+    clip: {fileID: 8300000, guid: 09e5cb9d58b649a438a610328fe8e86f, type: 3}
+    volume: 0.7
+    pitch: 1

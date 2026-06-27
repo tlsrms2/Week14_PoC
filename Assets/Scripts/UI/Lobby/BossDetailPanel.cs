@@ -14,6 +14,9 @@ namespace Week14.UI
         [Tooltip("패널이 펼쳐질 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [SerializeField] private string showSfxId;
+        [Tooltip("패널이 닫힐 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string hideSfxId;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text crimeText;
         [SerializeField] private TMP_Text descriptionText;
@@ -87,6 +90,11 @@ namespace Week14.UI
 
         public void Hide()
         {
+            if (!string.IsNullOrEmpty(hideSfxId))
+            {
+                SoundManager.PlaySfx(hideSfxId);
+            }
+
             StopShowRoutine();
             StopRevealRoutine();
             SetRevealTargetsActive(false);

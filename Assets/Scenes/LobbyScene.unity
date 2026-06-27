@@ -11674,6 +11674,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: hideSfxId
+      value: Panel_Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: panelRect
       value: 
       objectReference: {fileID: 730644441}
@@ -16541,6 +16545,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 649467953}
     m_Modifications:
     - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: hideSfxId
+      value: Panel_Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: panelRoot
       value: 
       objectReference: {fileID: 0}
@@ -16740,6 +16748,10 @@ PrefabInstance:
     - target: {fileID: 5276117982896232758, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
+      propertyPath: hideSfxId
+      value: Panel_Close
       objectReference: {fileID: 0}
     - target: {fileID: 7942856736912746509, guid: 978e9118ef65bfc4bbff753819541c25, type: 3}
       propertyPath: panelRoot

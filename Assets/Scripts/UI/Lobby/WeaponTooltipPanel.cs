@@ -15,6 +15,9 @@ namespace Week14.UI
         [Tooltip("패널이 펼쳐질 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [SerializeField] private string showSfxId;
+        [Tooltip("패널이 닫힐 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string hideSfxId;
         [Tooltip("실제로 위치를 이동시킬 툴팁 전체(배경, 텍스트 등 포함)의 최상위 RectTransform입니다. 비워두면 이 컴포넌트가 붙은 오브젝트를 사용합니다.")]
         [SerializeField] private RectTransform rootRect;
         [Tooltip("월드<->스크린 좌표 변환에 사용할 카메라입니다. 비워두면 Camera.main을 사용합니다. (World Space Canvas 기준 위치 계산용)")]
@@ -131,6 +134,11 @@ namespace Week14.UI
 
         public void Hide()
         {
+            if (!string.IsNullOrEmpty(hideSfxId))
+            {
+                SoundManager.PlaySfx(hideSfxId);
+            }
+
             StopShowRoutine();
             StopRevealRoutine();
             SetRevealTargetsActive(false);
