@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionFormationAction : BossAction
+    public sealed class MinionFormationStraightAction : BossAction
     {
-        [SerializeField, Min(0.1f)] private float radius = 2.8f;
-        [SerializeField] private bool sideBySide;
-        [SerializeField, Min(1f)] private float angleSpacingDegrees = 28f;
+        [SerializeField] private MinionGraphFormationStraightMode mode;
+        [SerializeField, Min(0.1f)] private float distanceFromPlayer = 2f;
+        [SerializeField, Min(0.1f)] private float spacing = 0.7f;
         [SerializeField, Min(0f)] private float speedMultiplier = 1.2f;
         [SerializeField, Min(0f)] private float settleSeconds = 1f;
         [SerializeField] private bool waitForDuration = true;
@@ -21,10 +21,10 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            MinionGraphCommandRequest request = MinionGraphCommandRequest.FormationCircle(
-                radius,
-                sideBySide,
-                angleSpacingDegrees,
+            MinionGraphCommandRequest request = MinionGraphCommandRequest.FormationStraight(
+                mode,
+                distanceFromPlayer,
+                spacing,
                 speedMultiplier,
                 settleSeconds);
             float duration = host.CommandMinions(request);

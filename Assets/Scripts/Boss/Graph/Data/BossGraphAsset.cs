@@ -18,6 +18,7 @@ namespace Week14.Enemy
         [SerializeField] private List<BossGraphPattern> patterns = new();
         [SerializeField] private List<BossGraphPhase> phases = new();
         [SerializeField] private List<BossTransition> transitions = new();
+        [SerializeField] private List<BossParallelEdge> parallelEdges = new();
         [SerializeField] private bool debugForceSinglePattern;
         [SerializeField] private string debugForcedPatternId;
 
@@ -29,6 +30,7 @@ namespace Week14.Enemy
         public IReadOnlyList<BossGraphPattern> Patterns => patterns;
         public IReadOnlyList<BossGraphPhase> Phases => phases;
         public IReadOnlyList<BossTransition> Transitions => transitions;
+        public IReadOnlyList<BossParallelEdge> ParallelEdges => parallelEdges;
         public bool DebugForceSinglePattern => debugForceSinglePattern;
         public string DebugForcedPatternId => debugForcedPatternId;
         public bool UsesPhasePatternLayout => phases != null && phases.Count > 0;
@@ -146,6 +148,14 @@ namespace Week14.Enemy
                 for (int i = 0; i < transitions.Count; i++)
                 {
                     transitions[i]?.EnsureNodeGuids(nodeIdToGuid);
+                }
+            }
+
+            if (parallelEdges != null)
+            {
+                for (int i = 0; i < parallelEdges.Count; i++)
+                {
+                    parallelEdges[i]?.EnsureNodeGuids(nodeIdToGuid);
                 }
             }
         }
@@ -316,6 +326,56 @@ namespace Week14.Enemy
         public BossTransitionConditionType ConditionType => conditionType;
         public float Threshold => threshold;
         public int PhaseIndex => phaseIndex;
+
+        public bool IsFromNode(BossStateNode node)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+
+            return !string.IsNullOrWhiteSpace(fromNodeGuid)
+                ? fromNodeGuid == node.NodeGuid
+                : fromNodeId == node.NodeId;
+        }
+
+        internal void EnsureNodeGuids(IReadOnlyDictionary<string, string> nodeIdToGuid)
+        {
+            if (nodeIdToGuid == null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(fromNodeId) && nodeIdToGuid.TryGetValue(fromNodeId, out string nextFromGuid))
+            {
+                fromNodeGuid = nextFromGuid;
+            }
+
+            if (!string.IsNullOrWhiteSpace(toNodeId) && nodeIdToGuid.TryGetValue(toNodeId, out string nextToGuid))
+            {
+                toNodeGuid = nextToGuid;
+            }
+        }
+    }
+
+    [Serializable]
+    public sealed class BossParallelEdge
+    {
+        [SerializeField, HideInInspector] private string fromNodeGuid;
+        [SerializeField, HideInInspector] private string toNodeGuid;
+        [SerializeField] private string fromNodeId;
+        [SerializeField] private string toNodeId;
+        [SerializeField, HideInInspector, Min(0)] private int laneIndex;
+        [SerializeField, HideInInspector, Min(0)] private int targetLaneIndex;
+
+        public string FromNodeKey => !string.IsNullOrWhiteSpace(fromNodeGuid) ? fromNodeGuid : fromNodeId;
+        public string ToNodeKey => !string.IsNullOrWhiteSpace(toNodeGuid) ? toNodeGuid : toNodeId;
+        public string FromNodeGuid => fromNodeGuid;
+        public string ToNodeGuid => toNodeGuid;
+        public string FromNodeId => fromNodeId;
+        public string ToNodeId => toNodeId;
+        public int LaneIndex => Mathf.Clamp(laneIndex, 0, 0);
+        public int TargetLaneIndex => Mathf.Clamp(targetLaneIndex, 0, 0);
 
         public bool IsFromNode(BossStateNode node)
         {

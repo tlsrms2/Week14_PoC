@@ -15,8 +15,12 @@ namespace Week14.Enemy
         private Animator animator;
         private BossAnimationEventBridge animationEventBridge;
         private bool hasBodyRootLocalBase;
-        private bool hasMoveTowardPlayerIntent;
-        private float moveTowardPlayerIntentSpeedMultiplier;
+        private bool hasPlayerRelativeMoveIntent;
+        private float playerRelativeMoveDirectionSign = 1f;
+        private float playerRelativeMoveSpeedMultiplier = 1f;
+        private float playerRelativeMoveElapsedSeconds;
+        private float playerRelativeMoveDurationSeconds;
+        private AnimationCurve playerRelativeMoveSpeedCurve;
         private Vector3 bodyRootLocalBase;
         private readonly Dictionary<Transform, Vector3> transformBaseScales = new();
         private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
@@ -124,33 +128,134 @@ namespace Week14.Enemy
         public void MoveTowardPlayer(float speedMultiplier)
         {
             UpdateBossChildAims();
-            ApplyMoveTowardPlayer(speedMultiplier);
+            ApplyPlayerRelativeMove(1f, speedMultiplier);
+        }
+
+        public void MoveTowardPlayer(AnimationCurve speedCurve, float elapsedSeconds)
+        {
+            MoveTowardPlayer(1f, speedCurve, elapsedSeconds, 0f);
+        }
+
+        public void MoveTowardPlayer(
+            float speedMultiplier,
+            AnimationCurve speedCurve,
+            float elapsedSeconds,
+            float durationSeconds)
+        {
+            UpdateBossChildAims();
+            ApplyPlayerRelativeMove(1f, speedMultiplier, speedCurve, elapsedSeconds, durationSeconds);
+        }
+
+        public void MaintainPlayerDistance(
+            float targetDistance,
+            float tolerance,
+            float speedMultiplier,
+            AnimationCurve speedCurve,
+            float elapsedSeconds,
+            float durationSeconds)
+        {
+            UpdateBossChildAims();
+            ApplyMaintainPlayerDistance(
+                targetDistance,
+                tolerance,
+                Mathf.Max(0f, speedMultiplier) * EvaluateMoveSpeedCurve(speedCurve, elapsedSeconds, durationSeconds));
         }
 
         public void StartMoveTowardPlayer(float speedMultiplier)
         {
-            hasMoveTowardPlayerIntent = true;
-            moveTowardPlayerIntentSpeedMultiplier = Mathf.Max(0f, speedMultiplier);
-            ApplyMoveTowardPlayer(moveTowardPlayerIntentSpeedMultiplier);
+            StartPlayerRelativeMove(1f, speedMultiplier, BossMoveSpeedCurve.CreateConstant(), 0f);
+        }
+
+        public void StartMoveTowardPlayer(AnimationCurve speedCurve)
+        {
+            StartMoveTowardPlayer(1f, speedCurve, 0f);
+        }
+
+        public void StartMoveTowardPlayer(float speedMultiplier, AnimationCurve speedCurve, float durationSeconds)
+        {
+            StartPlayerRelativeMove(1f, speedMultiplier, speedCurve, durationSeconds);
+        }
+
+        public void StartMoveAwayFromPlayer(AnimationCurve speedCurve)
+        {
+            StartMoveAwayFromPlayer(1f, speedCurve, 0f);
+        }
+
+        public void StartMoveAwayFromPlayer(float speedMultiplier, AnimationCurve speedCurve, float durationSeconds)
+        {
+            StartPlayerRelativeMove(-1f, speedMultiplier, speedCurve, durationSeconds);
         }
 
         public void StopMoveTowardPlayer()
         {
-            hasMoveTowardPlayerIntent = false;
-            moveTowardPlayerIntentSpeedMultiplier = 0f;
+            ClearPlayerRelativeMove();
             Stop();
         }
 
         private void UpdateContinuousActions()
         {
             UpdateBossChildAims();
-            if (hasMoveTowardPlayerIntent)
+            if (hasPlayerRelativeMoveIntent)
             {
-                ApplyMoveTowardPlayer(moveTowardPlayerIntentSpeedMultiplier);
+                ApplyPlayerRelativeMove(
+                    playerRelativeMoveDirectionSign,
+                    playerRelativeMoveSpeedMultiplier,
+                    playerRelativeMoveSpeedCurve,
+                    playerRelativeMoveElapsedSeconds,
+                    playerRelativeMoveDurationSeconds);
+                playerRelativeMoveElapsedSeconds += Time.deltaTime;
+                if (playerRelativeMoveDurationSeconds > 0f
+                    && playerRelativeMoveElapsedSeconds >= playerRelativeMoveDurationSeconds)
+                {
+                    ClearPlayerRelativeMove();
+                    Stop();
+                }
             }
         }
 
-        private void ApplyMoveTowardPlayer(float speedMultiplier)
+        private void StartPlayerRelativeMove(
+            float directionSign,
+            float speedMultiplier,
+            AnimationCurve speedCurve,
+            float durationSeconds)
+        {
+            hasPlayerRelativeMoveIntent = true;
+            playerRelativeMoveDirectionSign = directionSign < 0f ? -1f : 1f;
+            playerRelativeMoveSpeedMultiplier = Mathf.Max(0f, speedMultiplier);
+            playerRelativeMoveElapsedSeconds = 0f;
+            playerRelativeMoveDurationSeconds = Mathf.Max(0f, durationSeconds);
+            playerRelativeMoveSpeedCurve = speedCurve;
+            ApplyPlayerRelativeMove(
+                playerRelativeMoveDirectionSign,
+                playerRelativeMoveSpeedMultiplier,
+                speedCurve,
+                0f,
+                playerRelativeMoveDurationSeconds);
+        }
+
+        private void ClearPlayerRelativeMove()
+        {
+            hasPlayerRelativeMoveIntent = false;
+            playerRelativeMoveDirectionSign = 1f;
+            playerRelativeMoveSpeedMultiplier = 1f;
+            playerRelativeMoveElapsedSeconds = 0f;
+            playerRelativeMoveDurationSeconds = 0f;
+            playerRelativeMoveSpeedCurve = null;
+        }
+
+        private void ApplyPlayerRelativeMove(
+            float directionSign,
+            float speedMultiplier,
+            AnimationCurve speedCurve,
+            float elapsedSeconds,
+            float durationSeconds)
+        {
+            ApplyPlayerRelativeMove(
+                directionSign,
+                Mathf.Max(0f, speedMultiplier) * EvaluateMoveSpeedCurve(speedCurve, elapsedSeconds, durationSeconds));
+        }
+
+        private void ApplyPlayerRelativeMove(float directionSign, float speedMultiplier)
         {
             if (Boss == null || Boss.Body == null || Boss.Player == null)
             {
@@ -164,7 +269,58 @@ namespace Week14.Enemy
                 return;
             }
 
-            Boss.Body.linearVelocity = direction.normalized * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier));
+            Boss.Body.linearVelocity = direction.normalized
+                * (directionSign < 0f ? -1f : 1f)
+                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier));
+        }
+
+        private void ApplyMaintainPlayerDistance(float targetDistance, float tolerance, float speedMultiplier)
+        {
+            if (Boss == null || Boss.Body == null || Boss.Player == null)
+            {
+                return;
+            }
+
+            Vector2 toPlayer = (Vector2)Boss.Player.position - (Vector2)Boss.transform.position;
+            float currentDistance = toPlayer.magnitude;
+            if (currentDistance <= 0.0001f)
+            {
+                Stop();
+                return;
+            }
+
+            float safeDistance = Mathf.Max(0.1f, targetDistance);
+            float safeTolerance = Mathf.Max(0f, tolerance);
+            float distanceDelta = currentDistance - safeDistance;
+            float absoluteDelta = Mathf.Abs(distanceDelta);
+            if (absoluteDelta <= 0.01f)
+            {
+                Stop();
+                return;
+            }
+
+            float directionSign = distanceDelta > 0f ? 1f : -1f;
+            float smoothingRange = Mathf.Max(0.01f, safeTolerance);
+            float speedScale = Mathf.Clamp01(absoluteDelta / smoothingRange);
+            Boss.Body.linearVelocity = toPlayer.normalized
+                * directionSign
+                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier) * speedScale);
+        }
+
+        private static float EvaluateMoveSpeedCurve(
+            AnimationCurve speedCurve,
+            float elapsedSeconds,
+            float durationSeconds)
+        {
+            if (speedCurve == null || speedCurve.length == 0)
+            {
+                return 1f;
+            }
+
+            float normalizedTime = durationSeconds > 0f
+                ? Mathf.Clamp01(Mathf.Max(0f, elapsedSeconds) / durationSeconds)
+                : Mathf.Max(0f, elapsedSeconds);
+            return Mathf.Max(0f, speedCurve.Evaluate(normalizedTime));
         }
 
         public IEnumerator MoveBodyRootLocalOffset(Vector3 targetLocalOffset, float seconds, bool releaseBaseAfterMove)
@@ -337,8 +493,7 @@ namespace Week14.Enemy
 
         public void ClearPatternScopedBossChildAims()
         {
-            hasMoveTowardPlayerIntent = false;
-            moveTowardPlayerIntentSpeedMultiplier = 0f;
+            ClearPlayerRelativeMove();
             projectileHandles.Clear();
             if (bossChildAimStates.Count == 0)
             {

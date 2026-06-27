@@ -76,7 +76,9 @@ namespace Week14.Enemy
             }
 
             if (actionType == typeof(MoveTowardPlayerAction)
+                || actionType == typeof(MaintainPlayerDistanceAction)
                 || actionType == typeof(StartMoveTowardPlayerAction)
+                || actionType == typeof(StartMoveAwayFromPlayerAction)
                 || actionType == typeof(StopMovementAction)
                 || actionType == typeof(MoveBodyRootLocalAction)
                 || actionType == typeof(ResetBodyRootLocalAction))

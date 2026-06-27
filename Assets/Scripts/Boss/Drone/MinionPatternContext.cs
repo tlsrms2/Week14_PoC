@@ -24,10 +24,6 @@ namespace Week14.Enemy
         private readonly Func<Vector3> getProjectileOrigin;
         private readonly Func<Vector3, Vector2> getDirectionToPlayer;
         private readonly BossProjectileFire fireBossProjectile;
-        private BossProjectileSettings synchronizedMinionProjectile;
-        private MinionGraphProjectileFireSpec synchronizedMinionFireSpec;
-        private int synchronizedMinionShotsRemaining;
-        private int synchronizedMinionSyncVersion;
 
         internal MinionPatternContext(
             IMinionOwner owner,
@@ -65,6 +61,19 @@ namespace Week14.Enemy
             yield return patternMovement.WaitStoppedSeconds(seconds, isBossExecutionPaused, stopBoss);
         }
 
+        internal IEnumerator WaitForSummonIntros(IReadOnlyList<Minion> minions, bool stopBossWhileWaiting)
+        {
+            while (HasSummoningMinion(minions))
+            {
+                if (stopBossWhileWaiting)
+                {
+                    stopBoss();
+                }
+
+                yield return null;
+            }
+        }
+
         internal IEnumerator WaitPatternSeconds(float seconds)
         {
             yield return patternMovement.WaitStoppedSeconds(seconds, isBossExecutionPaused, stopBoss);
@@ -99,7 +108,7 @@ namespace Week14.Enemy
             stopBoss();
         }
 
-        internal float SpawnMinion(int index, int totalCount)
+        internal Minion SpawnMinion(int index, int totalCount)
         {
             float angle = totalCount <= 0 ? UnityEngine.Random.Range(0f, 360f) : 360f * index / Mathf.Max(1, totalCount);
             Transform ownerTransform = owner?.MinionOwnerTransform;
@@ -108,11 +117,11 @@ namespace Week14.Enemy
             Minion minion = UnityEngine.Object.Instantiate(summon.Prefab, startPosition, Quaternion.identity);
             if (minion == null)
             {
-                return 0f;
+                return null;
             }
 
             minion.SetOwner(owner);
-            float introSeconds = minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
+            minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
             if (!controlledMinions.Contains(minion))
             {
                 controlledMinions.Add(minion);
@@ -123,7 +132,7 @@ namespace Week14.Enemy
                 spawnedMinions.Add(minion);
             }
 
-            return introSeconds;
+            return minion;
         }
 
         internal List<Minion> GetControlledMinions()
@@ -170,68 +179,62 @@ namespace Week14.Enemy
             return minions != null && minions.Count > 0;
         }
 
-        internal void FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec)
+        internal MinionGraphProjectileFireSpec ResolveSharedMinionAim(
+            MinionGraphProjectileFireSpec fireSpec,
+            IReadOnlyList<Minion> minions)
         {
-            if (projectile == null)
+            if (!fireSpec.UsesClosestMinionAim || minions == null || minions.Count == 0)
             {
-                return;
+                return fireSpec;
             }
 
-            List<Minion> minions = GetControlledMinions();
+            return fireSpec.WithSharedMinionAimDirectionProvider(() => GetClosestMinionAimDirection(fireSpec, minions));
+        }
+
+        private Vector2 GetClosestMinionAimDirection(
+            MinionGraphProjectileFireSpec fireSpec,
+            IReadOnlyList<Minion> minions)
+        {
+            Minion closestMinion = FindClosestMinionToTarget(minions);
+            if (closestMinion == null)
+            {
+                return Vector2.zero;
+            }
+
+            Vector3 aimOrigin = fireSpec.GetAimOrigin(closestMinion, 0);
+            return closestMinion.GetGraphDirectionToPlayer(aimOrigin);
+        }
+
+        private Minion FindClosestMinionToTarget(IReadOnlyList<Minion> minions)
+        {
+            Transform target = owner?.MinionTarget;
+            if (target == null)
+            {
+                return null;
+            }
+
+            Minion closest = null;
+            float closestSqrDistance = float.PositiveInfinity;
+            Vector2 targetPosition = target.position;
             for (int i = 0; i < minions.Count; i++)
             {
-                minions[i]?.FireOnce(projectile, fireSpec, i);
-            }
-        }
-
-        internal int BeginSynchronizedMinionFire(
-            BossProjectileSettings projectile,
-            int shotCount,
-            MinionGraphProjectileFireSpec fireSpec)
-        {
-            synchronizedMinionProjectile = projectile;
-            synchronizedMinionFireSpec = fireSpec;
-            synchronizedMinionShotsRemaining = projectile != null ? Mathf.Max(0, shotCount) : 0;
-            synchronizedMinionSyncVersion++;
-            return synchronizedMinionSyncVersion;
-        }
-
-        internal IEnumerator WaitSynchronizedMinionFire(int syncVersion)
-        {
-            while (syncVersion == synchronizedMinionSyncVersion && synchronizedMinionShotsRemaining > 0)
-            {
-                if (isBossExecutionPaused())
+                Minion minion = minions[i];
+                if (minion == null)
                 {
-                    stopBoss();
-                    yield return null;
                     continue;
                 }
 
-                yield return null;
-            }
-        }
+                float sqrDistance = ((Vector2)minion.transform.position - targetPosition).sqrMagnitude;
+                if (sqrDistance >= closestSqrDistance)
+                {
+                    continue;
+                }
 
-        internal void TryFireSynchronizedMinions()
-        {
-            if (synchronizedMinionProjectile == null || synchronizedMinionShotsRemaining <= 0)
-            {
-                return;
+                closest = minion;
+                closestSqrDistance = sqrDistance;
             }
 
-            FireAllMinions(synchronizedMinionProjectile, synchronizedMinionFireSpec);
-            synchronizedMinionShotsRemaining--;
-            if (synchronizedMinionShotsRemaining <= 0)
-            {
-                ClearSynchronizedMinionFire();
-            }
-        }
-
-        internal void ClearSynchronizedMinionFire()
-        {
-            synchronizedMinionProjectile = null;
-            synchronizedMinionFireSpec = default;
-            synchronizedMinionShotsRemaining = 0;
-            synchronizedMinionSyncVersion++;
+            return closest;
         }
 
         internal void StopAllMinions()
@@ -291,6 +294,13 @@ namespace Week14.Enemy
             return sign * ring * Mathf.Max(1f, spacingDegrees);
         }
 
+        internal float GetSideBySideFormationAngle(int index, float spacingDegrees)
+        {
+            int ring = Mathf.Max(0, index) / 2 + 1;
+            float sign = index % 2 == 0 ? 1f : -1f;
+            return sign * ring * Mathf.Max(1f, spacingDegrees);
+        }
+
         internal float GetAlternatingOffset(int index, float spacing)
         {
             if (index <= 0 || spacing <= 0f)
@@ -307,6 +317,25 @@ namespace Week14.Enemy
         {
             float radians = degrees * Mathf.Deg2Rad;
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        private static bool HasSummoningMinion(IReadOnlyList<Minion> minions)
+        {
+            if (minions == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion != null && minion.IsSummoning)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -42,6 +42,14 @@ namespace Week14.Enemy
 
     internal static class MinionGraphCommandRunner
     {
+        public static IEnumerator WaitWindupIfNeeded(BossActionContext context, float windupSeconds)
+        {
+            if (context != null && windupSeconds > 0f)
+            {
+                yield return context.WaitSeconds(windupSeconds);
+            }
+        }
+
         public static IEnumerator WaitForDurationIfNeeded(
             BossActionContext context,
             float duration,

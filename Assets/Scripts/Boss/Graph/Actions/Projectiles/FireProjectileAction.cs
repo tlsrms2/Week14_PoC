@@ -24,7 +24,8 @@ namespace Week14.Enemy
     public enum BossGraphProjectileAimMode
     {
         AtPlayer,
-        FixedAngle
+        FixedAngle,
+        ClosestMinionToPlayer
     }
 
     [Serializable]
@@ -123,6 +124,8 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileAimMode mode;
         [SerializeField] private float angleDegrees;
 
+        public BossGraphProjectileAimMode Mode => mode;
+
         public Vector2 GetDirection(BossActionContext context, Vector3 origin)
         {
             return GetDirection(context != null ? context.GetDirectionToPlayer : null, origin);
@@ -130,16 +133,17 @@ namespace Week14.Enemy
 
         public Vector2 GetDirection(Func<Vector3, Vector2> getDirectionToPlayer, Vector3 origin)
         {
-            if (getDirectionToPlayer == null)
+            if (mode == BossGraphProjectileAimMode.FixedAngle)
             {
-                return mode == BossGraphProjectileAimMode.FixedAngle
-                    ? BossActionContext.AngleToDirection(angleDegrees)
-                    : Vector2.left;
+                return BossActionContext.AngleToDirection(angleDegrees);
             }
 
-            return mode == BossGraphProjectileAimMode.FixedAngle
-                ? BossActionContext.AngleToDirection(angleDegrees)
-                : getDirectionToPlayer(origin);
+            if (getDirectionToPlayer == null)
+            {
+                return Vector2.left;
+            }
+
+            return getDirectionToPlayer(origin);
         }
     }
 
@@ -164,14 +168,7 @@ namespace Week14.Enemy
 
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
             BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
-            Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
-            Vector2 direction = aimSpec.GetDirection(context, aimOrigin);
-            Vector3 spawnOrigin = originSpec.GetSpawnOrigin(context, 0, direction);
-            Vector2 finalDirection = aimSpec.GetDirection(context, spawnOrigin);
-            if (spawnForwardOffset > 0f)
-            {
-                spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
-            }
+            ResolveShot(context, originSpec, aimSpec, 0, out Vector3 spawnOrigin, out Vector2 finalDirection);
 
             EnemyProjectile firedProjectile = context.FireProjectile(
                 projectile,
@@ -189,6 +186,24 @@ namespace Week14.Enemy
             }
 
             yield break;
+        }
+
+        private void ResolveShot(
+            BossActionContext context,
+            BossGraphProjectileOriginSpec originSpec,
+            BossGraphProjectileAimSpec aimSpec,
+            int shotIndex,
+            out Vector3 spawnOrigin,
+            out Vector2 finalDirection)
+        {
+            Vector3 aimOrigin = originSpec.GetAimOrigin(context, shotIndex);
+            Vector2 direction = aimSpec.GetDirection(context, aimOrigin);
+            spawnOrigin = originSpec.GetSpawnOrigin(context, shotIndex, direction);
+            finalDirection = aimSpec.GetDirection(context, spawnOrigin);
+            if (spawnForwardOffset > 0f)
+            {
+                spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
+            }
         }
     }
 
@@ -263,14 +278,7 @@ namespace Week14.Enemy
         {
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
             BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
-            Vector3 aimOrigin = originSpec.GetAimOrigin(context, shotIndex);
-            Vector2 direction = aimSpec.GetDirection(context, aimOrigin);
-            Vector3 spawnOrigin = originSpec.GetSpawnOrigin(context, shotIndex, direction);
-            Vector2 finalDirection = aimSpec.GetDirection(context, spawnOrigin);
-            if (spawnForwardOffset > 0f)
-            {
-                spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
-            }
+            ResolveShot(context, originSpec, aimSpec, shotIndex, out Vector3 spawnOrigin, out Vector2 finalDirection);
 
             EnemyProjectile firedProjectile = context.FireProjectile(
                 projectile,
@@ -289,6 +297,24 @@ namespace Week14.Enemy
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
+        }
+
+        private void ResolveShot(
+            BossActionContext context,
+            BossGraphProjectileOriginSpec originSpec,
+            BossGraphProjectileAimSpec aimSpec,
+            int shotIndex,
+            out Vector3 spawnOrigin,
+            out Vector2 finalDirection)
+        {
+            Vector3 aimOrigin = originSpec.GetAimOrigin(context, shotIndex);
+            Vector2 direction = aimSpec.GetDirection(context, aimOrigin);
+            spawnOrigin = originSpec.GetSpawnOrigin(context, shotIndex, direction);
+            finalDirection = aimSpec.GetDirection(context, spawnOrigin);
+            if (spawnForwardOffset > 0f)
+            {
+                spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
+            }
         }
     }
 }

@@ -89,7 +89,9 @@ internal static class BossGraphActionEditorUtility
         new("Animation/Play Animation", typeof(PlayAnimationAction), () => new PlayAnimationAction()),
         new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
         new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
+        new("Move/Maintain Player Distance", typeof(MaintainPlayerDistanceAction), () => new MaintainPlayerDistanceAction()),
         new("Move/Start Move Toward Player", typeof(StartMoveTowardPlayerAction), () => new StartMoveTowardPlayerAction()),
+        new("Move/Start Move Away From Player", typeof(StartMoveAwayFromPlayerAction), () => new StartMoveAwayFromPlayerAction()),
         new("Move/Stop Movement", typeof(StopMovementAction), () => new StopMovementAction()),
         new("Move/Move Body Root Local", typeof(MoveBodyRootLocalAction), () => new MoveBodyRootLocalAction()),
         new("Move/Reset Body Root Local", typeof(ResetBodyRootLocalAction), () => new ResetBodyRootLocalAction()),
@@ -108,22 +110,20 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Spawn/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
         new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
         new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
-        new("Minion/Fire/Fire All", typeof(MinionFireAllAction), () => new MinionFireAllAction()),
-        new("Minion/Fire/Boss Burst", typeof(MinionBossBurstAction), () => new MinionBossBurstAction()),
-        new("Minion/Fire/Synchronized Burst", typeof(MinionSynchronizedBurstAction), () => new MinionSynchronizedBurstAction()),
-        new("Minion/Fire/Stop And Fire", typeof(MinionStopAndFireAction), () => new MinionStopAndFireAction()),
+        new("Minion/Fire/Sequential Fire", typeof(MinionSequentialFireAction), () => new MinionSequentialFireAction()),
+        new("Minion/Fire/Repeat Fire", typeof(MinionRepeatFireAction), () => new MinionRepeatFireAction()),
         new("Minion/Fire/Radial Burst", typeof(MinionRadialBurstAction), () => new MinionRadialBurstAction()),
-        new("Minion/Movement/Orbit Fire", typeof(MinionOrbitFireAction), () => new MinionOrbitFireAction()),
-        new("Minion/Movement/Orbit Crossfire", typeof(MinionOrbitCrossfireAction), () => new MinionOrbitCrossfireAction()),
-        new("Minion/Movement/Charge Side Fire", typeof(MinionChargeSideFireAction), () => new MinionChargeSideFireAction()),
-        new("Minion/Movement/Formation", typeof(MinionFormationAction), () => new MinionFormationAction()),
-        new("Minion/Movement/Formation Barrage", typeof(MinionFormationBarrageAction), () => new MinionFormationBarrageAction()),
-        new("Minion/Control/Command", typeof(MinionCommandAction), () => new MinionCommandAction()),
-        new("Minion/Control/Wait Commands", typeof(MinionWaitCommandsAction), () => new MinionWaitCommandsAction()),
-        new("Minion/Control/Clear Synchronized Fire", typeof(MinionClearSynchronizedFireAction), () => new MinionClearSynchronizedFireAction()),
-        new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction()),
-        new("Minion/Control/Stop All", typeof(MinionStopAllAction), () => new MinionStopAllAction()),
-        new("Minion/Control/Resume Idle", typeof(MinionResumeIdleAction), () => new MinionResumeIdleAction())
+        new("Minion/Fire/Side Fire", typeof(MinionSideFireAction), () => new MinionSideFireAction()),
+        new("Minion/Movement/Orbit", typeof(MinionOrbitAction), () => new MinionOrbitAction()),
+        new("Minion/Movement/Wander", typeof(MinionWanderAction), () => new MinionWanderAction()),
+        new("Minion/Movement/Dash", typeof(MinionDashAction), () => new MinionDashAction()),
+        new("Minion/Movement/Gather", typeof(MinionGatherAction), () => new MinionGatherAction()),
+        new("Minion/Movement/Hold Position", typeof(MinionHoldPositionAction), () => new MinionHoldPositionAction()),
+        new("Minion/Movement/Formation Circle", typeof(MinionFormationAction), () => new MinionFormationAction()),
+        new("Minion/Movement/Formation Straight", typeof(MinionFormationStraightAction), () => new MinionFormationStraightAction()),
+        new("Minion/Movement/Player Path", typeof(MinionPlayerPathAction), () => new MinionPlayerPathAction()),
+        new("Minion/Movement/Angle Distance Move", typeof(MinionAngleDistanceMoveAction), () => new MinionAngleDistanceMoveAction()),
+        new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction())
     };
 
     public static string GetActionLabel(Type actionType)
@@ -172,14 +172,24 @@ internal static class BossGraphActionEditorUtility
             return "지정 시간 동안 플레이어 방향으로 이동합니다.";
         }
 
+        if (actionType == typeof(MaintainPlayerDistanceAction))
+        {
+            return "지정 시간 동안 플레이어와 목표 거리를 유지합니다. 멀면 접근하고 가까우면 후퇴합니다.";
+        }
+
         if (actionType == typeof(StartMoveTowardPlayerAction))
         {
-            return "이후 대기나 발사 액션이 실행되는 동안 플레이어 방향 이동을 계속 켭니다.";
+            return "플레이어 방향 이동을 켭니다. Duration Seconds가 0이면 Stop Movement나 패턴 종료까지 유지됩니다.";
+        }
+
+        if (actionType == typeof(StartMoveAwayFromPlayerAction))
+        {
+            return "플레이어 반대 방향 이동을 켭니다. Duration Seconds가 0이면 Stop Movement나 패턴 종료까지 유지됩니다.";
         }
 
         if (actionType == typeof(StopMovementAction))
         {
-            return "Start Move Toward Player로 켠 지속 이동을 끕니다.";
+            return "Start Move 계열 액션으로 켠 지속 이동을 끕니다.";
         }
 
         if (actionType == typeof(MoveBodyRootLocalAction))
@@ -267,39 +277,24 @@ internal static class BossGraphActionEditorUtility
             return "미니언이 부족할 때만 자동 보충 소환을 실행합니다.";
         }
 
-        if (actionType == typeof(MinionFireAllAction))
+        if (actionType == typeof(MinionSequentialFireAction))
         {
-            return "현재 관리 중인 모든 미니언이 같은 타이밍에 발사합니다.";
+            return "현재 관리 중인 미니언들이 순서대로 하나씩 발사합니다.";
         }
 
-        if (actionType == typeof(MinionBossBurstAction))
+        if (actionType == typeof(MinionRepeatFireAction))
         {
-            return "보스 본체 발사와 미니언 보조 발사를 하나의 액션에서 함께 실행합니다.";
+            return "미니언의 현재 이동을 유지한 채 Volley 목록 순서대로 반복 발사합니다.";
         }
 
-        if (actionType == typeof(MinionSynchronizedBurstAction))
+        if (actionType == typeof(MinionOrbitAction))
         {
-            return "보스와 미니언의 동기화 발사 패턴을 실행합니다.";
+            return "미니언이 플레이어 주변을 궤도 이동합니다. 발사는 별도 Fire 액션과 병렬로 조합합니다.";
         }
 
-        if (actionType == typeof(MinionCommandAction))
+        if (actionType == typeof(MinionWanderAction))
         {
-            return "미니언에게 선택한 명령 타입과 투사체 설정을 전달합니다.";
-        }
-
-        if (actionType == typeof(MinionStopAndFireAction))
-        {
-            return "미니언을 정지시키고 지정 투사체를 발사하게 합니다.";
-        }
-
-        if (actionType == typeof(MinionOrbitFireAction))
-        {
-            return "미니언이 궤도 이동 중 발사하는 패턴을 실행합니다.";
-        }
-
-        if (actionType == typeof(MinionOrbitCrossfireAction))
-        {
-            return "궤도 미니언과 고정 미니언의 교차 사격을 실행합니다.";
+            return "미니언이 현재 위치를 중심으로 기본 Wander 이동을 수행합니다. 발사는 별도 Fire 액션과 병렬로 조합합니다.";
         }
 
         if (actionType == typeof(MinionRadialBurstAction))
@@ -307,44 +302,44 @@ internal static class BossGraphActionEditorUtility
             return "미니언 기준 방사형 발사를 실행합니다.";
         }
 
-        if (actionType == typeof(MinionChargeSideFireAction))
+        if (actionType == typeof(MinionDashAction))
         {
-            return "차지 후 양측 미니언 발사를 실행합니다.";
+            return "미니언이 지정 방향으로 즉시 돌진합니다. 발사는 별도 Fire 액션과 병렬로 조합합니다.";
+        }
+
+        if (actionType == typeof(MinionGatherAction))
+        {
+            return "미니언을 거리 기준 대표 미니언부터 플레이어 기준 배치로 집합시킵니다.";
+        }
+
+        if (actionType == typeof(MinionSideFireAction))
+        {
+            return "미니언의 현재 이동을 유지한 채 조준 방향 양옆으로 반복 발사합니다. BodySides 원점이면 몸체 양옆에서 나갑니다.";
+        }
+
+        if (actionType == typeof(MinionHoldPositionAction))
+        {
+            return "미니언을 현재 위치에 정지시킵니다. Repeat Fire와 병렬로 쓰면 정지 발사를 구성할 수 있습니다.";
         }
 
         if (actionType == typeof(MinionFormationAction))
         {
-            return "미니언을 지정 반경과 각도 간격의 진형으로 이동시킵니다.";
+            return "미니언을 플레이어 기준 원형 진형으로 이동시킵니다. Side By Side를 켜면 보스 양옆의 원호에 배치합니다.";
         }
 
-        if (actionType == typeof(MinionFormationBarrageAction))
+        if (actionType == typeof(MinionFormationStraightAction))
         {
-            return "진형 배치와 반복 발사를 묶은 미니언 포격 패턴을 실행합니다.";
+            return "미니언을 플레이어 앞 또는 보스-플레이어 사이에 1자 진형으로 배치하고, 플레이어 이동에 맞춰 유지합니다.";
         }
 
-        if (actionType == typeof(MinionWaitCommandsAction))
+        if (actionType == typeof(MinionPlayerPathAction))
         {
-            return "현재 미니언 명령이 끝날 때까지 대기합니다.";
-        }
-
-        if (actionType == typeof(MinionClearSynchronizedFireAction))
-        {
-            return "동기화 발사 상태를 명시적으로 비웁니다.";
+            return "액션 시작 시 플레이어 위치에 고정 정사각형을 만들고, 미니언을 시작점으로 보낸 뒤 수평, 수직, 좌우 대각선, 우좌 대각선 순서로 이동시킵니다.";
         }
 
         if (actionType == typeof(MinionPatternCleanupAction))
         {
             return "미니언 명령, 동기화 발사, 대기 복귀를 패턴 종료용으로 정리합니다.";
-        }
-
-        if (actionType == typeof(MinionStopAllAction))
-        {
-            return "모든 미니언의 현재 명령을 중지합니다.";
-        }
-
-        if (actionType == typeof(MinionResumeIdleAction))
-        {
-            return "미니언을 기본 대기 이동 상태로 되돌립니다.";
         }
 
         return string.Empty;
@@ -822,7 +817,7 @@ internal sealed class BossGraphProjectileAimSpecDrawer : PropertyDrawer
 
         EditorGUI.indentLevel++;
         lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
-        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "투사체가 향할 방향을 정합니다. 플레이어 조준 또는 고정 각도를 사용할 수 있습니다.");
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "투사체가 향할 방향을 정합니다. 미니언 Fire에서는 가장 가까운 미니언의 플레이어 조준 방향을 공유할 수 있습니다.");
         foreach (string propertyName in PropertyNames)
         {
             BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));

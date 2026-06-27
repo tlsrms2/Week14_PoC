@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionFormationAction : BossAction
+    public sealed class MinionAngleDistanceMoveAction : BossAction
     {
-        [SerializeField, Min(0.1f)] private float radius = 2.8f;
-        [SerializeField] private bool sideBySide;
-        [SerializeField, Min(1f)] private float angleSpacingDegrees = 28f;
+        [SerializeField] private List<MinionGraphAngleDistanceSlot> slots = new()
+        {
+            new MinionGraphAngleDistanceSlot(0f, 2f),
+            new MinionGraphAngleDistanceSlot(180f, 2f)
+        };
         [SerializeField, Min(0f)] private float speedMultiplier = 1.2f;
         [SerializeField, Min(0f)] private float settleSeconds = 1f;
         [SerializeField] private bool waitForDuration = true;
@@ -21,13 +24,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            MinionGraphCommandRequest request = MinionGraphCommandRequest.FormationCircle(
-                radius,
-                sideBySide,
-                angleSpacingDegrees,
-                speedMultiplier,
-                settleSeconds);
-            float duration = host.CommandMinions(request);
+            float duration = host.CommandMinionAngleDistanceList(slots, speedMultiplier, settleSeconds);
             yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(context, duration, waitForDuration);
         }
     }

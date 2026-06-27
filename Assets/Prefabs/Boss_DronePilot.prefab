@@ -329,22 +329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.DronePilot
   maxLives: 3
   phaseTransitionWaitSeconds: 1.2
-  enragePhase1Seconds: 30
-  enragePhase1MaxBullets: 3
-  enragePhase2Seconds: 30
-  enragePhase2MaxBullets: 1
-  enrageWindupSeconds: 0.6
-  enrageWindupShakeDistance: 0.05
-  enrageWindupShakeFrequency: 28
-  enrageBurstSprite: {fileID: 0}
-  enrageBurstTargetScale: 4
-  enrageBurstGrowSeconds: 0.15
-  enrageBurstHoldSeconds: 0.1
-  enrageBurstFadeSeconds: 0.35
-  enrageBurstColor: {r: 1, g: 1, b: 1, a: 1}
-  enrageShakeAmplitude: 0.25
-  enrageShakeSeconds: 0.3
-  enrageShakeZoom: 0.12
   deathAnimator: {fileID: 0}
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
@@ -353,6 +337,7 @@ MonoBehaviour:
   finalDeathExplosionSparkCount: 24
   finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
   deathAnimationFallbackSeconds: 1
+  bossData: {fileID: 0}
   displayName: "\uB4DC\uB860 \uC870\uC885\uC0AC"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 0}
@@ -374,14 +359,27 @@ MonoBehaviour:
   bossCombatUiRoot: {fileID: 0}
   bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
-  bossEnrageBarView: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
   lockOnIndicatorColor: {r: 1, g: 1, b: 1, a: 1}
   executionIndicatorColor: {r: 1, g: 0, b: 0, a: 1}
-  projectileOrigin: {fileID: 756847475993452266}
-  bossGraph: {fileID: 11400000, guid: 89ee5ca2e9e94cf3b5745f3dd905b6b0, type: 2}
+  minionPatternEnabled: 1
+  minionProjectileOrigin: {fileID: 756847475993452266}
+  minionSummon:
+    prefab: {fileID: 5425313911687354837, guid: bbfa06f8edbb85c47b7c8ee952ba7f10, type: 3}
+    claimSceneMinions: 1
+    maxOwnedMinions: 4
+    summonCount: 1
+    spawnRadius: 1.5
+    summonInterval: 0
+    introSeconds: 1
+    introStartScale: 0.05
+    minAutoSummonInterval: 4
+    maxAutoSummonInterval: 7
+  releaseMinionsOnDisable: 1
+  killSpawnedMinionsOnOwnerDeath: 1
+  bossGraph: {fileID: 11400000, guid: 8adfe995149a25f46a5f965ee071cbb6, type: 2}
   graphProjectiles:
   - projectileName: "\uC77C\uBC18\uD0C4"
     projectile:
@@ -403,12 +401,12 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
       homingEnabled: 0
-  - projectileName: "\uC720\uB3C4\uD0C4"
+  - projectileName: "\uC720\uB3C4\uD0C4_\uBCF4\uC2A4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
-      chargeDriftSpeed: 1.5
+      chargeDriftSpeed: 1
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 1
       speed: 12
@@ -416,24 +414,33 @@ MonoBehaviour:
       radius: 0.1
       chargingColor: {r: 1, g: 1, b: 1, a: 1}
       launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
       homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
       indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
-  summon:
-    prefab: {fileID: 5425313911687354837, guid: bbfa06f8edbb85c47b7c8ee952ba7f10, type: 3}
-    claimSceneMinions: 1
-    maxOwnedMinions: 2
-    summonCount: 2
-    spawnRadius: 1.5
-    summonInterval: 1
-    introSeconds: 1.5
-    introStartScale: 0.05
-    minAutoSummonInterval: 4
-    maxAutoSummonInterval: 7
+  - projectileName: "\uC720\uB3C4\uD0C4_\uB4DC\uB860"
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 2
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 1
+      speed: 12
+      lifetime: 3
+      radius: 0.1
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
+      indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
+      homingEnabled: 1
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5

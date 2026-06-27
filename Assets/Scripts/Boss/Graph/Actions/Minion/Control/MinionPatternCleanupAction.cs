@@ -9,7 +9,6 @@ namespace Week14.Enemy
     {
         [SerializeField] private bool waitForCommands = true;
         [SerializeField, Min(0f)] private float waitTimeoutSeconds;
-        [SerializeField] private bool clearSynchronizedFire = true;
         [SerializeField] private bool stopAllMinions;
         [SerializeField] private bool resumeIdle = true;
 
@@ -20,16 +19,6 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (waitForCommands)
-            {
-                yield return host.WaitForMinionCommands(waitTimeoutSeconds);
-            }
-
-            if (clearSynchronizedFire)
-            {
-                host.ClearSynchronizedMinionFire();
-            }
-
             if (stopAllMinions)
             {
                 host.StopAllMinions();
@@ -38,6 +27,11 @@ namespace Week14.Enemy
             if (resumeIdle)
             {
                 host.ResumeAllMinions();
+            }
+
+            if (waitForCommands)
+            {
+                yield return host.WaitForMinionCommands(waitTimeoutSeconds);
             }
         }
     }
