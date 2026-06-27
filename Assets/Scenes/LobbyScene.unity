@@ -4963,6 +4963,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2032863090}
     m_Modifications:
+    - target: {fileID: 653176636007630648, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: hoverSfxId
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1054130079052128409, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_Name
       value: Gun1
@@ -4971,6 +4975,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 2a81ea58f6ea7cd4ea05cf406be3acb9, type: 2}
+    - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: equipSfxId
+      value: Gun_Equip
+      objectReference: {fileID: 0}
     - target: {fileID: 3664202853478326550, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -6066,6 +6074,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2032863090}
     m_Modifications:
+    - target: {fileID: 653176636007630648, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: hoverSfxId
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1054130079052128409, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_Name
       value: Gun2
@@ -6074,6 +6086,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 285a8e06b8b2dd643b9dc0fdf75872d9, type: 2}
+    - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: equipSfxId
+      value: Gun_Equip
+      objectReference: {fileID: 0}
     - target: {fileID: 3664202853478326550, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.438
@@ -7110,6 +7126,8 @@ MonoBehaviour:
   popSeconds: 0.06
   settleSeconds: 0.1
   returnSeconds: 0.1
+  hoverSfxId: 
+  hoverSfxDebounceSeconds: 0.1
 --- !u!114 &642730778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8081,6 +8099,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2032863090}
     m_Modifications:
+    - target: {fileID: 653176636007630648, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: hoverSfxId
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1054130079052128409, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_Name
       value: Gun4
@@ -8089,6 +8111,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: aeb25b9af84450b4f95dc70ab62041da, type: 2}
+    - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: equipSfxId
+      value: Gun_Equip
+      objectReference: {fileID: 0}
     - target: {fileID: 3664202853478326550, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -15157,6 +15183,8 @@ MonoBehaviour:
   popSeconds: 0.06
   settleSeconds: 0.1
   returnSeconds: 0.1
+  hoverSfxId: LightOn
+  hoverSfxDebounceSeconds: 0.1
 --- !u!114 &1571761070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15400,6 +15428,8 @@ MonoBehaviour:
   popSeconds: 0.06
   settleSeconds: 0.1
   returnSeconds: 0.1
+  hoverSfxId: 
+  hoverSfxDebounceSeconds: 0.1
 --- !u!114 &1587686337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16878,6 +16908,8 @@ MonoBehaviour:
   popSeconds: 0.06
   settleSeconds: 0.1
   returnSeconds: 0.1
+  hoverSfxId: LightOn
+  hoverSfxDebounceSeconds: 0.1
 --- !u!114 &2073577266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17575,6 +17607,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2032863090}
     m_Modifications:
+    - target: {fileID: 653176636007630648, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: hoverSfxId
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1054130079052128409, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_Name
       value: Gun3
@@ -17583,6 +17619,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: d8327ad369500bf4da6791cbb8e84621, type: 2}
+    - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: equipSfxId
+      value: Gun_Equip
+      objectReference: {fileID: 0}
     - target: {fileID: 3664202853478326550, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.066
