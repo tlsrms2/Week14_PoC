@@ -50,5 +50,8 @@ TagManager:
   - name: Dust
     uniqueID: 1008449415
     locked: 0
+  - name: Panel
+    uniqueID: 1835429459
+    locked: 0
   m_RenderingLayers:
   - Default
