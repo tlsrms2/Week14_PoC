@@ -1322,8 +1322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -32}
-  m_SizeDelta: {x: 480, y: 80}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 480, y: 99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1219587737
 MonoBehaviour:
@@ -1990,7 +1990,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1756834966302092320, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 2195461279338371444, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2006,7 +2006,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2409618039278951534, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409618039278951534, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 3388050743727679300, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2014,11 +2018,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3388050743727679300, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 3388050743727679300, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -165
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 3539204742999253097, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Pivot.x
@@ -2114,11 +2118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5364321327869350505, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_text
-      value: "\uB85C\uBE44"
-      objectReference: {fileID: 0}
-    - target: {fileID: 7076000772586305822, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
-      propertyPath: m_text
-      value: "\uACC4\uC18D"
+      value: "\uB85C\uBE44\uB85C \uAC00\uAE30"
       objectReference: {fileID: 0}
     - target: {fileID: 7113382959732691671, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
