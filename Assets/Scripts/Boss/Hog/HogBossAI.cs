@@ -55,7 +55,14 @@ namespace Week14.Enemy
 
         protected override void OnBossTick()
         {
-            if (patternRoutine != null || !IsPlayerDetected() || bossGraph == null)
+            if (patternRoutine != null || bossGraph == null)
+            {
+                return;
+            }
+
+            // 전투가 아직 시작되지 않았을 때(WaitingForPlayer)는 첫 감지 전까지 패턴을 시작하지 않는다.
+            // 한 번 전투가 시작된 뒤(Combat)에는 페이즈 전환 등으로 패턴이 끊겨도 거리와 무관하게 재시작한다.
+            if (!IsCombatStartedForState && !IsPlayerDetected())
             {
                 return;
             }

@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatConfig
   maxBullets: 5
   leftAttackBulletCost: 1
-  attackBulletDamage: 1
-  attackDamageByRemainingBullets: 0500000002000000020000000100000001000000
   parryBulletRecovery: 1
   enemyBodyContactBulletDamage: 1
   enemyBodyContactCooldownSeconds: 0.35
@@ -40,7 +38,6 @@ MonoBehaviour:
   mouseParryMissShakeAmplitude: 0.035
   mouseParryMissShakeFrequency: 42
   executionRange: 8.5
-  executionBulletRecovery: 5
   destroyTargetOnExecute: 1
   executionAimSeconds: 0.2
   executionShotDelaySeconds: 0.3
