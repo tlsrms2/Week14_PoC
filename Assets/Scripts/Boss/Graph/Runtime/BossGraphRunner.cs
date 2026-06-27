@@ -180,27 +180,14 @@ namespace Week14.Enemy
             {
                 IReadOnlyList<string> nodeKeys = pattern.NodeKeys;
                 Dictionary<string, List<BossStateNode>> parallelGroups = BuildPatternParallelGroups(graph, nodeKeys);
-                HashSet<string> executedNodeKeys = new(StringComparer.Ordinal);
-                for (int i = 0; i < nodeKeys.Count; i++)
+                List<List<BossStateNode>> executionGroups = BuildPatternExecutionGroups(graph, nodeKeys, parallelGroups);
+                string previousNodeId = null;
+                for (int i = 0; i < executionGroups.Count; i++)
                 {
-                    BossStateNode node = graph.GetNode(nodeKeys[i]);
-                    string runtimeNodeKey = GetRuntimeNodeKey(node);
-                    if (node == null || executedNodeKeys.Contains(runtimeNodeKey))
-                    {
-                        continue;
-                    }
-
-                    BossStateNode previousNode = i > 0 ? graph.GetNode(nodeKeys[i - 1]) : null;
-                    string previousNodeId = previousNode?.NodeId;
-                    List<BossStateNode> group = parallelGroups.TryGetValue(runtimeNodeKey, out List<BossStateNode> linkedGroup)
-                        ? linkedGroup
-                        : new List<BossStateNode> { node };
+                    List<BossStateNode> group = executionGroups[i];
                     yield return ExecutePatternNodeGroup(graph, group, previousNodeId, context);
-                    for (int groupIndex = 0; groupIndex < group.Count; groupIndex++)
-                    {
-                        executedNodeKeys.Add(GetRuntimeNodeKey(group[groupIndex]));
-                    }
 
+                    previousNodeId = group.Count > 0 ? group[group.Count - 1]?.NodeId : previousNodeId;
                     context.Stop();
                 }
             }
@@ -371,6 +358,194 @@ namespace Week14.Enemy
             }
 
             return groupsByNodeKey;
+        }
+
+        private static List<List<BossStateNode>> BuildPatternExecutionGroups(
+            BossGraphAsset graph,
+            IReadOnlyList<string> nodeKeys,
+            IReadOnlyDictionary<string, List<BossStateNode>> parallelGroups)
+        {
+            Dictionary<string, BossStateNode> patternNodes = new(StringComparer.Ordinal);
+            Dictionary<string, int> nodeOrder = BuildNodeOrder(graph);
+            for (int i = 0; i < nodeKeys.Count; i++)
+            {
+                BossStateNode node = graph.GetNode(nodeKeys[i]);
+                string nodeKey = GetRuntimeNodeKey(node);
+                if (node == null || string.IsNullOrWhiteSpace(nodeKey) || patternNodes.ContainsKey(nodeKey))
+                {
+                    continue;
+                }
+
+                patternNodes[nodeKey] = node;
+            }
+
+            Dictionary<string, string> nodeGroupKeys = new(StringComparer.Ordinal);
+            Dictionary<string, List<BossStateNode>> groupNodes = new(StringComparer.Ordinal);
+            foreach (KeyValuePair<string, BossStateNode> pair in patternNodes)
+            {
+                string groupKey = GetCanonicalGroupKey(pair.Key, parallelGroups, patternNodes, nodeOrder);
+                nodeGroupKeys[pair.Key] = groupKey;
+                if (!groupNodes.ContainsKey(groupKey))
+                {
+                    groupNodes[groupKey] = GetGroupNodes(groupKey, parallelGroups, patternNodes, nodeOrder);
+                }
+            }
+
+            Dictionary<string, List<string>> outgoingGroups = new(StringComparer.Ordinal);
+            Dictionary<string, List<string>> incomingGroups = new(StringComparer.Ordinal);
+            foreach (string groupKey in groupNodes.Keys)
+            {
+                outgoingGroups[groupKey] = new List<string>();
+                incomingGroups[groupKey] = new List<string>();
+            }
+
+            if (graph?.Transitions != null)
+            {
+                for (int i = 0; i < graph.Transitions.Count; i++)
+                {
+                    BossTransition transition = graph.Transitions[i];
+                    BossStateNode fromNode = graph.GetNode(transition?.FromNodeKey);
+                    BossStateNode toNode = graph.GetNode(transition?.ToNodeKey);
+                    string fromNodeKey = GetRuntimeNodeKey(fromNode);
+                    string toNodeKey = GetRuntimeNodeKey(toNode);
+                    if (!nodeGroupKeys.TryGetValue(fromNodeKey, out string fromGroupKey)
+                        || !nodeGroupKeys.TryGetValue(toNodeKey, out string toGroupKey)
+                        || fromGroupKey == toGroupKey)
+                    {
+                        continue;
+                    }
+
+                    AddUnique(outgoingGroups[fromGroupKey], toGroupKey);
+                    AddUnique(incomingGroups[toGroupKey], fromGroupKey);
+                }
+            }
+
+            List<string> startGroupKeys = groupNodes.Keys
+                .Where(groupKey => incomingGroups[groupKey].Count == 0)
+                .OrderBy(groupKey => GetGroupOrder(groupKey, groupNodes, nodeOrder))
+                .ToList();
+            if (startGroupKeys.Count == 0)
+            {
+                startGroupKeys.AddRange(groupNodes.Keys.OrderBy(groupKey => GetGroupOrder(groupKey, groupNodes, nodeOrder)));
+            }
+
+            List<List<BossStateNode>> executionGroups = new();
+            HashSet<string> visitedGroupKeys = new(StringComparer.Ordinal);
+            for (int i = 0; i < startGroupKeys.Count; i++)
+            {
+                AppendExecutionGroupOrder(
+                    startGroupKeys[i],
+                    groupNodes,
+                    outgoingGroups,
+                    nodeOrder,
+                    visitedGroupKeys,
+                    executionGroups);
+            }
+
+            foreach (string groupKey in groupNodes.Keys.OrderBy(groupKey => GetGroupOrder(groupKey, groupNodes, nodeOrder)))
+            {
+                AppendExecutionGroupOrder(
+                    groupKey,
+                    groupNodes,
+                    outgoingGroups,
+                    nodeOrder,
+                    visitedGroupKeys,
+                    executionGroups);
+            }
+
+            return executionGroups;
+        }
+
+        private static Dictionary<string, int> BuildNodeOrder(BossGraphAsset graph)
+        {
+            Dictionary<string, int> nodeOrder = new(StringComparer.Ordinal);
+            if (graph?.StateNodes == null)
+            {
+                return nodeOrder;
+            }
+
+            for (int i = 0; i < graph.StateNodes.Count; i++)
+            {
+                string nodeKey = GetRuntimeNodeKey(graph.StateNodes[i]);
+                if (!string.IsNullOrWhiteSpace(nodeKey) && !nodeOrder.ContainsKey(nodeKey))
+                {
+                    nodeOrder[nodeKey] = i;
+                }
+            }
+
+            return nodeOrder;
+        }
+
+        private static string GetCanonicalGroupKey(
+            string nodeKey,
+            IReadOnlyDictionary<string, List<BossStateNode>> parallelGroups,
+            IReadOnlyDictionary<string, BossStateNode> patternNodes,
+            IReadOnlyDictionary<string, int> nodeOrder)
+        {
+            if (parallelGroups == null || !parallelGroups.TryGetValue(nodeKey, out List<BossStateNode> group))
+            {
+                return nodeKey;
+            }
+
+            return group
+                .Select(GetRuntimeNodeKey)
+                .Where(patternNodes.ContainsKey)
+                .OrderBy(key => nodeOrder.TryGetValue(key, out int order) ? order : int.MaxValue)
+                .FirstOrDefault() ?? nodeKey;
+        }
+
+        private static List<BossStateNode> GetGroupNodes(
+            string groupKey,
+            IReadOnlyDictionary<string, List<BossStateNode>> parallelGroups,
+            IReadOnlyDictionary<string, BossStateNode> patternNodes,
+            IReadOnlyDictionary<string, int> nodeOrder)
+        {
+            IEnumerable<BossStateNode> nodes = parallelGroups != null && parallelGroups.TryGetValue(groupKey, out List<BossStateNode> group)
+                ? group.Where(node => patternNodes.ContainsKey(GetRuntimeNodeKey(node)))
+                : new[] { patternNodes[groupKey] };
+            return nodes
+                .GroupBy(GetRuntimeNodeKey)
+                .Select(nodeGroup => nodeGroup.First())
+                .OrderBy(node => nodeOrder.TryGetValue(GetRuntimeNodeKey(node), out int order) ? order : int.MaxValue)
+                .ToList();
+        }
+
+        private static int GetGroupOrder(
+            string groupKey,
+            IReadOnlyDictionary<string, List<BossStateNode>> groupNodes,
+            IReadOnlyDictionary<string, int> nodeOrder)
+        {
+            if (!groupNodes.TryGetValue(groupKey, out List<BossStateNode> nodes) || nodes.Count == 0)
+            {
+                return int.MaxValue;
+            }
+
+            return nodes.Min(node => nodeOrder.TryGetValue(GetRuntimeNodeKey(node), out int order) ? order : int.MaxValue);
+        }
+
+        private static void AppendExecutionGroupOrder(
+            string groupKey,
+            IReadOnlyDictionary<string, List<BossStateNode>> groupNodes,
+            IReadOnlyDictionary<string, List<string>> outgoingGroups,
+            IReadOnlyDictionary<string, int> nodeOrder,
+            HashSet<string> visitedGroupKeys,
+            List<List<BossStateNode>> executionGroups)
+        {
+            if (!groupNodes.ContainsKey(groupKey) || !visitedGroupKeys.Add(groupKey))
+            {
+                return;
+            }
+
+            executionGroups.Add(groupNodes[groupKey]);
+            if (!outgoingGroups.TryGetValue(groupKey, out List<string> nextGroupKeys))
+            {
+                return;
+            }
+
+            foreach (string nextGroupKey in nextGroupKeys.OrderBy(key => GetGroupOrder(key, groupNodes, nodeOrder)))
+            {
+                AppendExecutionGroupOrder(nextGroupKey, groupNodes, outgoingGroups, nodeOrder, visitedGroupKeys, executionGroups);
+            }
         }
 
         private static void AddUnique(List<string> values, string value)

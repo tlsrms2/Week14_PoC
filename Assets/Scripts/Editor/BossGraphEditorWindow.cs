@@ -411,11 +411,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private BossGraphNodeView CreateNodeView(SerializedProperty node, int index)
     {
         string nodeId = GetString(node, "nodeId", $"Node {index + 1}");
+        string nodeGuid = GetString(node, "nodeGuid", string.Empty);
         BossGraphNodeKind nodeKind = (BossGraphNodeKind)GetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
         Vector2 position = GetVector2(node, "editorPosition", new Vector2(80f + index * 260f, 120f));
         string displayName = GetNodeDisplayName(node, index);
 
-        BossGraphNodeView nodeView = new(index, nodeId)
+        BossGraphNodeView nodeView = new(index, nodeId, nodeGuid)
         {
             title = displayName
         };
@@ -424,7 +425,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             : new List<string> { nodeId });
         nodeView.SetInlineActionFieldsDrawer(() => DrawInlineNodeActionFields(nodeId, index));
         nodeView.SetPosition(new Rect(position, new Vector2(GraphNodeWidth, GraphNodeHeight)));
-        nodeView.SetNodeKind(nodeKind, GetNodeKindColor(nodeKind));
+        nodeView.SetNodeKind(nodeKind, GetNodeColor(nodeKind, GetNodeActionType(node)));
         nodeView.AddToClassList("boss-graph-node");
         return nodeView;
     }
@@ -952,7 +953,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         for (int i = 0; i < nodeViews.Count; i++)
         {
             BossGraphNodeView nodeView = nodeViews[i];
-            int nodeIndex = FindStateNodeIndex(nodeView.NodeId);
+            int nodeIndex = nodeView.NodeIndex;
             if (nodeIndex < 0 || nodeIndex >= stateNodes.arraySize)
             {
                 continue;
@@ -1207,6 +1208,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private Dictionary<string, string> BuildNodeIdToGuidMap()
     {
         Dictionary<string, string> nodeIdToGuid = new(StringComparer.Ordinal);
+        HashSet<string> duplicateNodeIds = new(StringComparer.Ordinal);
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
         if (stateNodes == null)
         {
@@ -1220,6 +1222,18 @@ public sealed class BossGraphEditorWindow : EditorWindow
             string nodeGuid = GetString(node, "nodeGuid", string.Empty);
             if (!string.IsNullOrWhiteSpace(nodeId) && !string.IsNullOrWhiteSpace(nodeGuid))
             {
+                if (duplicateNodeIds.Contains(nodeId))
+                {
+                    continue;
+                }
+
+                if (nodeIdToGuid.ContainsKey(nodeId))
+                {
+                    nodeIdToGuid.Remove(nodeId);
+                    duplicateNodeIds.Add(nodeId);
+                    continue;
+                }
+
                 nodeIdToGuid[nodeId] = nodeGuid;
             }
         }
@@ -1968,18 +1982,18 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             SerializedProperty pattern = patterns.GetArrayElementAtIndex(patternIndex);
             string patternId = GetString(pattern, "patternId", $"Pattern {patternIndex + 1}");
-            SerializedProperty nodeIds = pattern.FindPropertyRelative("nodeIds");
-            if (nodeIds == null || nodeIds.arraySize == 0)
+            SerializedProperty nodeKeys = GetPatternNodeReferenceArray(pattern);
+            if (nodeKeys == null || nodeKeys.arraySize == 0)
             {
                 continue;
             }
 
             bool hasBounds = false;
             Rect bounds = default;
-            for (int nodeIndex = 0; nodeIndex < nodeIds.arraySize; nodeIndex++)
+            for (int nodeIndex = 0; nodeIndex < nodeKeys.arraySize; nodeIndex++)
             {
-                string nodeId = nodeIds.GetArrayElementAtIndex(nodeIndex).stringValue;
-                BossGraphNodeView nodeView = graphView.FindNode(nodeId);
+                string nodeKey = nodeKeys.GetArrayElementAtIndex(nodeIndex).stringValue;
+                BossGraphNodeView nodeView = graphView.FindNode(nodeKey);
                 if (nodeView == null)
                 {
                     continue;
@@ -3887,7 +3901,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             if (oldNodeKind != newNodeKind)
             {
                 BossGraphNodeKind updatedNodeKind = (BossGraphNodeKind)newNodeKind;
-                nodeView.SetNodeKind(updatedNodeKind, GetNodeKindColor(updatedNodeKind));
+                nodeView.SetNodeKind(updatedNodeKind, GetNodeColor(updatedNodeKind, GetNodeActionType(node)));
             }
 
             if (oldNodeId != newNodeId || oldPhaseIndex != newPhaseIndex || oldNodeKind != newNodeKind)
@@ -4843,14 +4857,19 @@ public sealed class BossGraphEditorWindow : EditorWindow
         for (int nodeIndex = 0; nodeIndex < stateNodes.arraySize; nodeIndex++)
         {
             SerializedProperty node = stateNodes.GetArrayElementAtIndex(nodeIndex);
-            string nodeId = GetString(node, "nodeId", string.Empty);
-            if (string.IsNullOrWhiteSpace(nodeId) || nodeRects.ContainsKey(nodeId))
+            string nodeKey = GetString(node, "nodeGuid", string.Empty);
+            if (string.IsNullOrWhiteSpace(nodeKey))
+            {
+                nodeKey = GetString(node, "nodeId", string.Empty);
+            }
+
+            if (string.IsNullOrWhiteSpace(nodeKey) || nodeRects.ContainsKey(nodeKey))
             {
                 continue;
             }
 
             Vector2 position = GetVector2(node, "editorPosition", new Vector2(80f + nodeIndex * 260f, 120f));
-            nodeRects[nodeId] = new Rect(position, new Vector2(GraphNodeWidth, GraphNodeHeight));
+            nodeRects[nodeKey] = new Rect(position, new Vector2(GraphNodeWidth, GraphNodeHeight));
         }
 
         Dictionary<string, Rect> patternBounds = new();
@@ -4860,8 +4879,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
             Rect bounds = default;
             for (int nodeIndex = 0; nodeIndex < pair.Value.Count; nodeIndex++)
             {
-                string nodeId = pair.Value[nodeIndex];
-                if (string.IsNullOrWhiteSpace(nodeId) || !nodeRects.TryGetValue(nodeId, out Rect nodeRect))
+                string nodeKey = pair.Value[nodeIndex];
+                if (string.IsNullOrWhiteSpace(nodeKey) || !nodeRects.TryGetValue(nodeKey, out Rect nodeRect))
                 {
                     continue;
                 }
@@ -4893,7 +4912,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             }
 
             List<string> nodeIds = new();
-            SerializedProperty nodeIdsProperty = pattern.FindPropertyRelative("nodeIds");
+            SerializedProperty nodeIdsProperty = GetPatternNodeReferenceArray(pattern);
             if (nodeIdsProperty != null)
             {
                 for (int nodeIndex = 0; nodeIndex < nodeIdsProperty.arraySize; nodeIndex++)
@@ -4910,6 +4929,20 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         return patternNodeIds;
+    }
+
+    private static SerializedProperty GetPatternNodeReferenceArray(SerializedProperty pattern)
+    {
+        SerializedProperty nodeIds = pattern?.FindPropertyRelative("nodeIds");
+        SerializedProperty nodeGuids = pattern?.FindPropertyRelative("nodeGuids");
+        if (nodeGuids != null
+            && nodeGuids.arraySize > 0
+            && (nodeIds == null || nodeGuids.arraySize == nodeIds.arraySize))
+        {
+            return nodeGuids;
+        }
+
+        return nodeIds;
     }
 
     private static void BuildPhaseFrames(
@@ -5012,6 +5045,37 @@ public sealed class BossGraphEditorWindow : EditorWindow
             BossGraphNodeKind.Minion => new Color(0.2f, 0.46f, 0.54f, 1f),
             _ => new Color(0.25f, 0.25f, 0.25f, 1f)
         };
+    }
+
+    private static Color GetNodeColor(BossGraphNodeKind nodeKind, Type actionType)
+    {
+        if (nodeKind != BossGraphNodeKind.Minion || actionType == null)
+        {
+            return GetNodeKindColor(nodeKind);
+        }
+
+        string label = BossGraphActionEditorUtility.GetActionLabel(actionType);
+        if (label.StartsWith("Minion/Fire/", StringComparison.Ordinal))
+        {
+            return new Color(0.72f, 0.24f, 0.14f, 1f);
+        }
+
+        if (label.StartsWith("Minion/Movement/", StringComparison.Ordinal))
+        {
+            return new Color(0.14f, 0.38f, 0.74f, 1f);
+        }
+
+        if (label.StartsWith("Minion/Spawn/", StringComparison.Ordinal))
+        {
+            return new Color(0.18f, 0.54f, 0.28f, 1f);
+        }
+
+        if (label.StartsWith("Minion/Control/", StringComparison.Ordinal))
+        {
+            return new Color(0.42f, 0.32f, 0.62f, 1f);
+        }
+
+        return GetNodeKindColor(nodeKind);
     }
 
     private static string GetUniqueElementId(SerializedProperty elements, string idPropertyName, string prefix)
@@ -5432,6 +5496,14 @@ internal sealed class BossGraphView : GraphView
 
         for (int i = 0; i < nodeViews.Count; i++)
         {
+            if (nodeViews[i].NodeGuid == nodeId)
+            {
+                return nodeViews[i];
+            }
+        }
+
+        for (int i = 0; i < nodeViews.Count; i++)
+        {
             if (nodeViews[i].NodeId == nodeId)
             {
                 return nodeViews[i];
@@ -5804,10 +5876,11 @@ internal sealed class BossGraphNodeView : Node
     private bool dragCandidate;
     private bool runtimeActive;
 
-    public BossGraphNodeView(int nodeIndex, string nodeId)
+    public BossGraphNodeView(int nodeIndex, string nodeId, string nodeGuid = null)
     {
         NodeIndex = nodeIndex;
         NodeId = nodeId;
+        NodeGuid = nodeGuid ?? string.Empty;
 
         InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
         InputPort.portName = "In";
@@ -5895,6 +5968,7 @@ internal sealed class BossGraphNodeView : Node
 
     public int NodeIndex { get; }
     public string NodeId { get; }
+    public string NodeGuid { get; }
     public Port InputPort { get; }
     public Port OutputPort { get; }
     public Port[] ParallelInputPorts { get; }

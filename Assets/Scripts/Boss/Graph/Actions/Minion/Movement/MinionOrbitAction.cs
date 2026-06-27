@@ -10,6 +10,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0.1f)] private float orbitRadius = 2.6f;
         [SerializeField, Min(0.1f)] private float orbitSeconds = 3f;
         [SerializeField, Min(0f)] private float moveSpeed = 24f;
+        [SerializeField] private bool useStartPlayerPosition;
         [SerializeField] private bool randomizeDirection = true;
         [SerializeField] private bool clockwise;
         [SerializeField] private bool waitForDuration = true;
@@ -26,7 +27,8 @@ namespace Week14.Enemy
                 orbitRadius,
                 orbitSeconds,
                 moveSpeed,
-                resolvedClockwise);
+                resolvedClockwise,
+                useStartPlayerPosition);
             float duration = host.CommandMinions(request);
             yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(context, duration, waitForDuration);
         }

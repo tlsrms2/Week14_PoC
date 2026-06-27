@@ -61,6 +61,19 @@ namespace Week14.Enemy
             yield return patternMovement.WaitStoppedSeconds(seconds, isBossExecutionPaused, stopBoss);
         }
 
+        internal IEnumerator WaitForSummonIntros(IReadOnlyList<Minion> minions, bool stopBossWhileWaiting)
+        {
+            while (HasSummoningMinion(minions))
+            {
+                if (stopBossWhileWaiting)
+                {
+                    stopBoss();
+                }
+
+                yield return null;
+            }
+        }
+
         internal IEnumerator WaitPatternSeconds(float seconds)
         {
             yield return patternMovement.WaitStoppedSeconds(seconds, isBossExecutionPaused, stopBoss);
@@ -95,7 +108,7 @@ namespace Week14.Enemy
             stopBoss();
         }
 
-        internal float SpawnMinion(int index, int totalCount)
+        internal Minion SpawnMinion(int index, int totalCount)
         {
             float angle = totalCount <= 0 ? UnityEngine.Random.Range(0f, 360f) : 360f * index / Mathf.Max(1, totalCount);
             Transform ownerTransform = owner?.MinionOwnerTransform;
@@ -104,11 +117,11 @@ namespace Week14.Enemy
             Minion minion = UnityEngine.Object.Instantiate(summon.Prefab, startPosition, Quaternion.identity);
             if (minion == null)
             {
-                return 0f;
+                return null;
             }
 
             minion.SetOwner(owner);
-            float introSeconds = minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
+            minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
             if (!controlledMinions.Contains(minion))
             {
                 controlledMinions.Add(minion);
@@ -119,7 +132,7 @@ namespace Week14.Enemy
                 spawnedMinions.Add(minion);
             }
 
-            return introSeconds;
+            return minion;
         }
 
         internal List<Minion> GetControlledMinions()
@@ -224,21 +237,6 @@ namespace Week14.Enemy
             return closest;
         }
 
-        internal void FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec)
-        {
-            if (projectile == null)
-            {
-                return;
-            }
-
-            List<Minion> minions = GetControlledMinions();
-            fireSpec = ResolveSharedMinionAim(fireSpec, minions);
-            for (int i = 0; i < minions.Count; i++)
-            {
-                minions[i]?.FireOnce(projectile, fireSpec, i);
-            }
-        }
-
         internal void StopAllMinions()
         {
             List<Minion> minions = GetControlledMinions();
@@ -319,6 +317,25 @@ namespace Week14.Enemy
         {
             float radians = degrees * Mathf.Deg2Rad;
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        private static bool HasSummoningMinion(IReadOnlyList<Minion> minions)
+        {
+            if (minions == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion != null && minion.IsSummoning)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

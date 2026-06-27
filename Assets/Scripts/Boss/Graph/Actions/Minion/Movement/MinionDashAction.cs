@@ -5,12 +5,12 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionChargeAction : BossAction
+    public sealed class MinionDashAction : BossAction
     {
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
-        [SerializeField, Min(0.05f)] private float chargeSeconds = 1f;
-        [SerializeField, Min(0f)] private float chargeSpeed = 7f;
-        [SerializeField, Range(0f, 85f)] private float aimOffsetDegrees = 22f;
+        [SerializeField, Min(0.05f)] private float dashSeconds = 1f;
+        [SerializeField, Min(0f)] private float dashSpeed = 7f;
+        [SerializeField, Range(0f, 85f)] private float aimOffsetDegrees = 0f;
         [SerializeField] private bool waitForDuration = true;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -21,9 +21,9 @@ namespace Week14.Enemy
             }
 
             MinionGraphProjectileFireSpec aimSpec = new(null, aim, null, context);
-            MinionGraphCommandRequest request = MinionGraphCommandRequest.Charge(
-                chargeSeconds,
-                chargeSpeed,
+            MinionGraphCommandRequest request = MinionGraphCommandRequest.Dash(
+                dashSeconds,
+                dashSpeed,
                 aimOffsetDegrees,
                 aimSpec);
             float duration = host.CommandMinions(request);

@@ -10,13 +10,29 @@ namespace Week14.Enemy
         RepeatFire,
         Orbit,
         RadialBurst,
-        Charge,
+        Dash,
         SideFire,
         HoldPosition,
         FormationCircle,
         FormationStraight,
         Wander,
         PlayerPath
+    }
+
+    public enum MinionGraphGatherAnchorMode
+    {
+        ClosestToPlayer,
+        FarthestFromPlayer,
+        MiddleDistanceToPlayer,
+        FixedAngle
+    }
+
+    public enum MinionGraphGatherLayout
+    {
+        Circle,
+        Vertical,
+        Orthogonal,
+        Random
     }
 
     public enum MinionGraphFormationStraightMode
@@ -294,7 +310,8 @@ namespace Week14.Enemy
             float settleSeconds,
             MinionGraphProjectileFireSpec fireSpec,
             bool resumeIdle,
-            MinionGraphPlayerPathMode playerPathMode = MinionGraphPlayerPathMode.HorizontalVertical)
+            MinionGraphPlayerPathMode playerPathMode = MinionGraphPlayerPathMode.HorizontalVertical,
+            bool orbitUseStartPlayerPosition = false)
         {
             Mode = mode;
             Projectile = projectile;
@@ -329,6 +346,7 @@ namespace Week14.Enemy
             FireSpec = fireSpec;
             ResumeIdle = resumeIdle;
             PlayerPathMode = playerPathMode;
+            OrbitUseStartPlayerPosition = orbitUseStartPlayerPosition;
         }
 
         public MinionGraphCommandMode Mode { get; }
@@ -364,6 +382,7 @@ namespace Week14.Enemy
         public MinionGraphProjectileFireSpec FireSpec { get; }
         public bool ResumeIdle { get; }
         public MinionGraphPlayerPathMode PlayerPathMode { get; }
+        public bool OrbitUseStartPlayerPosition { get; }
 
         public MinionGraphCommandRequest WithFireSpec(MinionGraphProjectileFireSpec fireSpec)
         {
@@ -400,7 +419,8 @@ namespace Week14.Enemy
                 SettleSeconds,
                 fireSpec,
                 ResumeIdle,
-                PlayerPathMode);
+                PlayerPathMode,
+                OrbitUseStartPlayerPosition);
         }
 
         public static MinionGraphCommandRequest RepeatFire(
@@ -448,7 +468,8 @@ namespace Week14.Enemy
             float orbitRadius,
             float orbitSeconds,
             float orbitMoveSpeed,
-            bool clockwise)
+            bool clockwise,
+            bool useStartPlayerPosition)
         {
             return new MinionGraphCommandRequest(
                 MinionGraphCommandMode.Orbit,
@@ -482,7 +503,9 @@ namespace Week14.Enemy
                 0.1f,
                 0f,
                 default,
-                true);
+                true,
+                MinionGraphPlayerPathMode.HorizontalVertical,
+                useStartPlayerPosition);
         }
 
         public static MinionGraphCommandRequest Wander(
@@ -570,14 +593,14 @@ namespace Week14.Enemy
                 resumeIdle);
         }
 
-        public static MinionGraphCommandRequest Charge(
-            float chargeSeconds,
-            float chargeSpeed,
+        public static MinionGraphCommandRequest Dash(
+            float dashSeconds,
+            float dashSpeed,
             float aimOffsetDegrees,
             MinionGraphProjectileFireSpec aimSpec)
         {
             return new MinionGraphCommandRequest(
-                MinionGraphCommandMode.Charge,
+                MinionGraphCommandMode.Dash,
                 null,
                 1,
                 0f,
@@ -588,8 +611,8 @@ namespace Week14.Enemy
                 0f,
                 1f,
                 false,
-                chargeSeconds,
-                chargeSpeed,
+                dashSeconds,
+                dashSpeed,
                 aimOffsetDegrees,
                 0.01f,
                 90f,
@@ -823,12 +846,19 @@ namespace Week14.Enemy
     {
         bool MinionPatternEnabled { get; }
         BossProjectileSettings ResolveMinionProjectileSettings(string projectileName);
-        IEnumerator SummonMinions(int summonCount);
+        IEnumerator SummonMinions(int summonCount, bool stopBossWhileSummoning);
         IEnumerator EnsureMinionCount(int targetCount);
         IEnumerator AutoSummonIfNeeded();
-        int FireAllMinions(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec);
         IEnumerator FireMinionsSequentially(BossProjectileSettings projectile, int cycleCount, float fireInterval, MinionGraphProjectileFireSpec fireSpec);
         float CommandMinions(MinionGraphCommandRequest request);
+        float CommandMinionGather(
+            MinionGraphGatherAnchorMode anchorMode,
+            float angleDegrees,
+            MinionGraphGatherLayout layout,
+            float radius,
+            float spacing,
+            float moveSpeed,
+            float settleSeconds);
         float CommandMinionAngleDistanceList(IReadOnlyList<MinionGraphAngleDistanceSlot> slots, float speedMultiplier, float settleSeconds);
         IEnumerator WaitForMinionCommands(float timeoutSeconds);
         void StopAllMinions();

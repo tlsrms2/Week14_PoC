@@ -84,6 +84,7 @@ namespace Week14.Enemy
         public Health Health => health;
         public BulletGauge Bullets => bullets;
         public bool IsCommanded => movementRoutine != null || fireRoutine != null;
+        public bool IsSummoning => isSummoning;
         public bool SuppressesBodyContactDamage => suppressBodyContactDamage;
         public bool IsBulletEmpty => isBulletEmpty || (bullets != null && bullets.IsEmpty);
         public bool IsExecutionLocked => isExecutionLocked;
@@ -516,21 +517,21 @@ namespace Week14.Enemy
             FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec);
         }
 
-        public float CommandRepeatFire(BossProjectileSettings projectile, int bulletCount, float fireInterval)
+        public float CommandRepeatFire(BossProjectileSettings projectile, int volleys, float fireInterval)
         {
-            return CommandRepeatFire(projectile, bulletCount, fireInterval, default);
+            return CommandRepeatFire(projectile, volleys, fireInterval, default);
         }
 
         public float CommandRepeatFire(
             BossProjectileSettings projectile,
-            int bulletCount,
+            int volleys,
             float fireInterval,
             MinionGraphProjectileFireSpec fireSpec)
         {
             StopFireCommand();
             commandFireSpec = fireSpec;
-            float duration = GetSequentialFireDuration(bulletCount, fireInterval);
-            fireRoutine = StartCoroutine(RunRepeatFire(projectile, bulletCount, fireInterval, fireSpec));
+            float duration = GetSequentialFireDuration(volleys, fireInterval);
+            fireRoutine = StartCoroutine(RunRepeatFire(projectile, volleys, fireInterval, fireSpec));
             return duration;
         }
 
@@ -539,7 +540,7 @@ namespace Week14.Enemy
             float orbitSeconds,
             bool clockwise)
         {
-            return CommandOrbit(orbitRadius, orbitSeconds, clockwise, 24f, 0f);
+            return CommandOrbit(orbitRadius, orbitSeconds, clockwise, 24f, 0f, false);
         }
 
         public float CommandOrbit(
@@ -547,7 +548,8 @@ namespace Week14.Enemy
             float orbitSeconds,
             bool clockwise,
             float moveSpeed,
-            float angleOffsetDegrees)
+            float angleOffsetDegrees,
+            bool useStartPlayerPosition)
         {
             StopMovementCommand();
             float duration = Mathf.Max(0.1f, orbitSeconds);
@@ -556,7 +558,8 @@ namespace Week14.Enemy
                 duration,
                 clockwise,
                 Mathf.Max(0f, moveSpeed),
-                angleOffsetDegrees));
+                angleOffsetDegrees,
+                useStartPlayerPosition));
             return duration;
         }
 
@@ -603,15 +606,22 @@ namespace Week14.Enemy
             return duration;
         }
 
-        public float CommandCharge(
-            float chargeSeconds,
-            float chargeSpeed,
+        public float CommandDash(
+            float dashSeconds,
+            float dashSpeed,
             float aimOffsetDegrees,
             MinionGraphProjectileFireSpec aimSpec)
         {
             StopMovementCommand();
-            float duration = Mathf.Max(0.05f, chargeSeconds);
-            movementRoutine = StartCoroutine(RunCharge(duration, chargeSpeed, aimOffsetDegrees, aimSpec));
+            float duration = Mathf.Max(0.05f, dashSeconds);
+            Vector2 direction = GetDashDirection(aimOffsetDegrees, aimSpec);
+            RotateToDirection(direction);
+            if (!IsExecutionPaused)
+            {
+                SetVelocity(direction.normalized * Mathf.Max(0f, dashSpeed));
+            }
+
+            movementRoutine = StartCoroutine(RunDash(duration, dashSpeed, direction));
             return duration;
         }
 
@@ -672,7 +682,32 @@ namespace Week14.Enemy
         {
             StopMovementCommand();
             isFormationCommand = true;
+            bool lockedToPattern = false;
+            TickAngleDistance(angleDegrees, distanceFromPlayer, moveSpeed, ref lockedToPattern);
             movementRoutine = StartCoroutine(RunAngleDistance(angleDegrees, distanceFromPlayer, moveSpeed));
+        }
+
+        public void CommandGather(
+            MinionGraphGatherLayout layout,
+            int slotIndex,
+            int slotCount,
+            float baseAngleDegrees,
+            float radius,
+            float spacing,
+            Vector2 randomOffset,
+            float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunGather(
+                layout,
+                slotIndex,
+                slotCount,
+                baseAngleDegrees,
+                radius,
+                spacing,
+                randomOffset,
+                moveSpeed));
         }
 
         public float CommandPlayerPath(
@@ -696,11 +731,11 @@ namespace Week14.Enemy
 
         private IEnumerator RunRepeatFire(
             BossProjectileSettings projectile,
-            int bulletCount,
+            int volleys,
             float fireInterval,
             MinionGraphProjectileFireSpec fireSpec)
         {
-            int count = Mathf.Max(0, bulletCount);
+            int count = Mathf.Max(0, volleys);
             for (int i = 0; i < count; i++)
             {
                 yield return WaitWhileExecutionPaused();
@@ -758,7 +793,8 @@ namespace Week14.Enemy
             float orbitSeconds,
             bool clockwise,
             float moveSpeed,
-            float angleOffsetDegrees)
+            float angleOffsetDegrees,
+            bool useStartPlayerPosition)
         {
             Transform player = GetPlayer();
             if (player == null)
@@ -771,6 +807,7 @@ namespace Week14.Enemy
             float duration = Mathf.Max(0.1f, orbitSeconds);
             float signedSpeed = 360f / duration * (clockwise ? -1f : 1f);
             float angle = GetAngleFromPlayer(player) + angleOffsetDegrees;
+            Vector2 startCenter = player.position;
             float travelled = 0f;
             bool lockedToPattern = false;
 
@@ -783,14 +820,15 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                if (player == null)
+                if (!useStartPlayerPosition && player == null)
                 {
                     break;
                 }
 
                 angle += signedSpeed * Time.deltaTime;
                 travelled += Mathf.Abs(signedSpeed * Time.deltaTime);
-                Vector2 target = (Vector2)player.position + AngleToDirection(angle) * radius;
+                Vector2 center = useStartPlayerPosition ? startCenter : (Vector2)player.position;
+                Vector2 target = center + AngleToDirection(angle) * radius;
                 SetPatternPosition(target, ref lockedToPattern, moveSpeed);
                 yield return null;
             }
@@ -867,22 +905,14 @@ namespace Week14.Enemy
             FinishFireCommand();
         }
 
-        private IEnumerator RunCharge(
-            float chargeSeconds,
-            float chargeSpeed,
-            float aimOffsetDegrees,
-            MinionGraphProjectileFireSpec aimSpec)
+        private IEnumerator RunDash(
+            float dashSeconds,
+            float dashSpeed,
+            Vector2 direction)
         {
-            Vector3 aimOrigin = transform.position;
-            Vector2 direction = RotateDirection(aimSpec.GetDirection(this, aimOrigin), aimOffsetDegrees);
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                direction = Vector2.left;
-            }
-
             RotateToDirection(direction);
             float elapsed = 0f;
-            while (elapsed < chargeSeconds)
+            while (elapsed < dashSeconds)
             {
                 if (IsExecutionPaused)
                 {
@@ -891,13 +921,20 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                SetVelocity(direction.normalized * Mathf.Max(0f, chargeSpeed));
+                SetVelocity(direction.normalized * Mathf.Max(0f, dashSpeed));
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
             StopBody();
             FinishMovementCommand();
+        }
+
+        private Vector2 GetDashDirection(float aimOffsetDegrees, MinionGraphProjectileFireSpec aimSpec)
+        {
+            Vector3 aimOrigin = transform.position;
+            Vector2 direction = RotateDirection(aimSpec.GetDirection(this, aimOrigin), aimOffsetDegrees);
+            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
         }
 
         private IEnumerator RunSideFire(
@@ -1125,6 +1162,56 @@ namespace Week14.Enemy
             bool lockedToPattern = false;
             while (true)
             {
+                if (!TickAngleDistance(angleDegrees, distanceFromPlayer, moveSpeed, ref lockedToPattern))
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
+        private bool TickAngleDistance(
+            float angleDegrees,
+            float distanceFromPlayer,
+            float moveSpeed,
+            ref bool lockedToPattern)
+        {
+            IMinionOwner currentOwner = Owner;
+            Transform player = currentOwner?.MinionTarget;
+            if (currentOwner == null || player == null)
+            {
+                return false;
+            }
+
+            if (IsExecutionPaused)
+            {
+                StopBody();
+                return true;
+            }
+
+            Vector2 target = (Vector2)player.position
+                + AngleToDirection(angleDegrees) * Mathf.Max(0.1f, distanceFromPlayer);
+            SetPatternPosition(target, ref lockedToPattern, moveSpeed);
+            FacePlayer();
+            return true;
+        }
+
+        private IEnumerator RunGather(
+            MinionGraphGatherLayout layout,
+            int slotIndex,
+            int slotCount,
+            float baseAngleDegrees,
+            float radius,
+            float spacing,
+            Vector2 randomOffset,
+            float moveSpeed)
+        {
+            bool lockedToPattern = false;
+            while (true)
+            {
                 IMinionOwner currentOwner = Owner;
                 Transform player = currentOwner?.MinionTarget;
                 if (currentOwner == null || player == null)
@@ -1139,8 +1226,15 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Vector2 target = (Vector2)player.position
-                    + AngleToDirection(angleDegrees) * Mathf.Max(0.1f, distanceFromPlayer);
+                Vector2 target = GetGatherTarget(
+                    player,
+                    layout,
+                    slotIndex,
+                    slotCount,
+                    baseAngleDegrees,
+                    radius,
+                    spacing,
+                    randomOffset);
                 SetPatternPosition(target, ref lockedToPattern, moveSpeed);
                 FacePlayer();
                 yield return null;
@@ -1256,6 +1350,38 @@ namespace Week14.Enemy
                     startOffset = Vector2.left * distance;
                     endOffset = Vector2.right * distance;
                     break;
+            }
+        }
+
+        private static Vector2 GetGatherTarget(
+            Transform player,
+            MinionGraphGatherLayout layout,
+            int slotIndex,
+            int slotCount,
+            float baseAngleDegrees,
+            float radius,
+            float spacing,
+            Vector2 randomOffset)
+        {
+            Vector2 center = player.position;
+            float safeRadius = Mathf.Max(0.1f, radius);
+            float safeSpacing = Mathf.Max(0.1f, spacing);
+            int safeSlotIndex = Mathf.Max(0, slotIndex);
+            int safeSlotCount = Mathf.Max(1, slotCount);
+            Vector2 radial = AngleToDirection(baseAngleDegrees);
+            Vector2 tangent = new(-radial.y, radial.x);
+            float centeredIndex = safeSlotIndex - (safeSlotCount - 1) * 0.5f;
+            switch (layout)
+            {
+                case MinionGraphGatherLayout.Vertical:
+                    return center + radial * (safeRadius + safeSlotIndex * safeSpacing);
+                case MinionGraphGatherLayout.Orthogonal:
+                    return center + radial * safeRadius + tangent * centeredIndex * safeSpacing;
+                case MinionGraphGatherLayout.Random:
+                    return center + randomOffset;
+                default:
+                    float step = safeSlotCount <= 1 ? 0f : 360f / safeSlotCount;
+                    return center + AngleToDirection(baseAngleDegrees + step * safeSlotIndex) * safeRadius;
             }
         }
 

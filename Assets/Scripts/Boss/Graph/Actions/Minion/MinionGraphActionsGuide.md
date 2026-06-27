@@ -41,19 +41,6 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 | --- | --- | --- |
 | `targetCount` | `1` | 최소 보유 미니언 수입니다. 이미 충분하면 바로 통과합니다. |
 
-## Minion/Fire/Fire All
-
-현재 관리 중인 모든 미니언이 같은 타이밍에 발사합니다.
-
-| Field | 기본값 | 의미 |
-| --- | --- | --- |
-| `projectileName` | `Default` | 미니언이 발사할 투사체 이름입니다. |
-| `minionOrigin` | `ProjectileOrigin` | 각 미니언의 발사 위치입니다. |
-| `aim` | `AtPlayer` | 각 미니언의 조준 방향입니다. |
-| `effects` | 꺼짐 | 발사 이펙트입니다. |
-| `shotCount` | `1` | 전체 미니언 반복 발사 횟수입니다. |
-| `fireInterval` | `0` | 반복 발사 간격입니다. |
-
 ## Minion/Fire/Sequential Fire
 
 현재 관리 중인 미니언들이 한 번에 쏘지 않고 순서대로 하나씩 발사합니다.
@@ -70,7 +57,7 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 
 ## Minion/Fire/Repeat Fire
 
-모든 미니언을 정지시키고 반복 발사시킵니다.
+모든 미니언이 현재 움직임을 유지한 채 Volley 목록 순서대로 반복 발사합니다.
 
 | Field | 기본값 | 의미 |
 | --- | --- | --- |
@@ -78,9 +65,9 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 | `minionOrigin` | `ProjectileOrigin` | 미니언 발사 위치입니다. |
 | `aim` | `AtPlayer` | 미니언 조준 방향입니다. |
 | `effects` | 꺼짐 | 발사 이펙트입니다. |
-| `bulletCount` | `3` | 각 미니언의 발사 횟수입니다. |
-| `fireInterval` | `0.2` | 각 미니언의 반복 발사 간격입니다. |
-| `resumeIdle` | `true` | 종료 후 기본 대기 이동으로 복귀할지 여부입니다. |
+| `Volleys[].bulletCount` | `3` | 해당 Volley에서 각 미니언이 발사할 횟수입니다. |
+| `Volleys[].fireInterval` | `0.2` | 해당 Volley 안에서 반복 발사 간격입니다. |
+| `Volleys[].restSeconds` | `0.35` | 다음 Volley로 넘어가기 전 대기 시간입니다. |
 | `waitForDuration` | `true` | 예상 발사 시간이 끝날 때까지 다음 노드로 넘어가지 않을지 여부입니다. |
 
 ## Minion/Fire/Radial Burst
@@ -113,6 +100,7 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 | `orbitRadius` | `2.6` | 플레이어 기준 회전 반지름입니다. |
 | `orbitSeconds` | `3` | 회전에 사용할 시간입니다. |
 | `fireAngleStepDegrees` | `30` | 이 각도만큼 이동할 때마다 발사합니다. |
+| `useStartPlayerPosition` | `false` | 켜면 Orbit 시작 순간의 플레이어 위치를 원 중심으로 고정합니다. |
 | `randomizeDirection` | `true` | 회전 방향을 랜덤으로 정합니다. |
 | `clockwise` | `false` | 랜덤이 꺼져 있을 때 시계 방향 회전 여부입니다. |
 | `waitForDuration` | `true` | 회전 시간이 끝날 때까지 대기할지 여부입니다. |
@@ -134,7 +122,7 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 | `clockwise` | `false` | 랜덤이 꺼져 있을 때 시계 방향 회전 여부입니다. |
 | `resumeIdle` | `true` | 종료 후 기본 대기 이동으로 복귀할지 여부입니다. |
 
-## Minion/Movement/Charge
+## Minion/Movement/Dash
 
 미니언들이 플레이어 방향에서 좌우로 비껴 돌진하며 측면으로 발사합니다.
 
@@ -150,6 +138,21 @@ Minion 액션은 특정 보스 클래스를 직접 참조하지 않고, 모든 `
 | `sideFireInterval` | `0.18` | 돌진 중 측면 발사 간격입니다. |
 | `sideFireAngleDegrees` | `90` | 돌진 방향 기준 측면 발사 각도입니다. |
 | `waitForDuration` | `true` | 돌진 시간이 끝날 때까지 대기할지 여부입니다. |
+
+## Minion/Movement/Gather
+
+미니언을 플레이어 기준 배치로 집합시킵니다.
+
+| Field | 기본값 | 설명 |
+| --- | --- | --- |
+| `anchorMode` | `ClosestToPlayer` | 가까운/먼/중간 거리 미니언 중 어떤 미니언을 첫 슬롯으로 삼을지 정합니다. |
+| `angleDegrees` | `0` | `FixedAngle`일 때 플레이어 기준 원의 시작 각도입니다. |
+| `layout` | `Circle` | `Circle`, `Vertical`, `Orthogonal`, `Random` 중 하나로 집합 배치를 정합니다. `Vertical`은 원의 법선 방향 바깥쪽, `Orthogonal`은 그 법선에 직교하는 접선 방향입니다. |
+| `radius` | `2` | 원형/직교/무작위 배치의 기준 반지름입니다. |
+| `spacing` | `0.75` | 수직/직교 배치에서 슬롯 사이 간격입니다. |
+| `moveSpeed` | `24` | 집합 위치로 이동하는 속도입니다. |
+| `settleSeconds` | `0.5` | 다음 노드로 넘어가기 전 대기 시간입니다. |
+| `waitForDuration` | `true` | `settleSeconds` 동안 기다릴지 정합니다. |
 
 ## Minion/Movement/Formation Circle
 

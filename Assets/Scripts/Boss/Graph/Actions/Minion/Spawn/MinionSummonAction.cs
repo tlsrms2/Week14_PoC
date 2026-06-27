@@ -8,6 +8,7 @@ namespace Week14.Enemy
     public sealed class MinionSummonAction : BossAction
     {
         [SerializeField, Min(0)] private int summonCount;
+        [SerializeField] private bool stopBossWhileSummoning;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -16,7 +17,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            yield return host.SummonMinions(summonCount);
+            yield return host.SummonMinions(summonCount, stopBossWhileSummoning);
         }
     }
 }

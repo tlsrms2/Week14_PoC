@@ -997,7 +997,7 @@ namespace Week14.Combat
                 BossAI hitBoss = other.GetComponentInParent<BossAI>();
                 if (hitBoss != null)
                 {
-                    if (hitBoss == ownerBoss)
+                    if (ShouldIgnoreBossCollision(hitBoss))
                     {
                         return;
                     }
@@ -1044,6 +1044,22 @@ namespace Week14.Combat
 
             resolved = true;
             DestroyProjectile();
+        }
+
+        private bool ShouldIgnoreBossCollision(BossAI hitBoss)
+        {
+            if (hitBoss == null)
+            {
+                return false;
+            }
+
+            if (hitBoss == ownerBoss)
+            {
+                return true;
+            }
+
+            Transform sourceOwnerTransform = ownerMinion?.Owner?.MinionOwnerTransform;
+            return sourceOwnerTransform != null && sourceOwnerTransform == hitBoss.transform;
         }
 
         private bool ShouldIgnoreMinionCollision(Minion hitMinion)

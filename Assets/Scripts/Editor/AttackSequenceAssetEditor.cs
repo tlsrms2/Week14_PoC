@@ -110,14 +110,14 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Spawn/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
         new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
         new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
-        new("Minion/Fire/Fire All", typeof(MinionFireAllAction), () => new MinionFireAllAction()),
         new("Minion/Fire/Sequential Fire", typeof(MinionSequentialFireAction), () => new MinionSequentialFireAction()),
         new("Minion/Fire/Repeat Fire", typeof(MinionRepeatFireAction), () => new MinionRepeatFireAction()),
         new("Minion/Fire/Radial Burst", typeof(MinionRadialBurstAction), () => new MinionRadialBurstAction()),
         new("Minion/Fire/Side Fire", typeof(MinionSideFireAction), () => new MinionSideFireAction()),
         new("Minion/Movement/Orbit", typeof(MinionOrbitAction), () => new MinionOrbitAction()),
         new("Minion/Movement/Wander", typeof(MinionWanderAction), () => new MinionWanderAction()),
-        new("Minion/Movement/Charge", typeof(MinionChargeAction), () => new MinionChargeAction()),
+        new("Minion/Movement/Dash", typeof(MinionDashAction), () => new MinionDashAction()),
+        new("Minion/Movement/Gather", typeof(MinionGatherAction), () => new MinionGatherAction()),
         new("Minion/Movement/Hold Position", typeof(MinionHoldPositionAction), () => new MinionHoldPositionAction()),
         new("Minion/Movement/Formation Circle", typeof(MinionFormationAction), () => new MinionFormationAction()),
         new("Minion/Movement/Formation Straight", typeof(MinionFormationStraightAction), () => new MinionFormationStraightAction()),
@@ -277,11 +277,6 @@ internal static class BossGraphActionEditorUtility
             return "미니언이 부족할 때만 자동 보충 소환을 실행합니다.";
         }
 
-        if (actionType == typeof(MinionFireAllAction))
-        {
-            return "현재 관리 중인 모든 미니언이 같은 타이밍에 발사합니다.";
-        }
-
         if (actionType == typeof(MinionSequentialFireAction))
         {
             return "현재 관리 중인 미니언들이 순서대로 하나씩 발사합니다.";
@@ -289,7 +284,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MinionRepeatFireAction))
         {
-            return "미니언의 현재 이동을 유지한 채 지정 횟수만큼 투사체를 반복 발사합니다.";
+            return "미니언의 현재 이동을 유지한 채 Volley 목록 순서대로 반복 발사합니다.";
         }
 
         if (actionType == typeof(MinionOrbitAction))
@@ -307,9 +302,14 @@ internal static class BossGraphActionEditorUtility
             return "미니언 기준 방사형 발사를 실행합니다.";
         }
 
-        if (actionType == typeof(MinionChargeAction))
+        if (actionType == typeof(MinionDashAction))
         {
-            return "미니언이 지정 방향으로 돌진합니다. 측면 발사는 Side Fire와 병렬로 조합합니다.";
+            return "미니언이 지정 방향으로 즉시 돌진합니다. 발사는 별도 Fire 액션과 병렬로 조합합니다.";
+        }
+
+        if (actionType == typeof(MinionGatherAction))
+        {
+            return "미니언을 거리 기준 대표 미니언부터 플레이어 기준 배치로 집합시킵니다.";
         }
 
         if (actionType == typeof(MinionSideFireAction))
