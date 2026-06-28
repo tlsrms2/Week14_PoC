@@ -1277,6 +1277,15 @@ MonoBehaviour:
       rid: 2634812007888978079
     sequences: []
     editorPosition: {x: 74, y: 2209}
+  - nodeId: Node3
+    nodeGuid: 8f7721ce8ed74c56b8ee3abad1a8b0e1
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634812012643483717
+    sequences: []
+    editorPosition: {x: 1894, y: 166}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1600,6 +1609,11 @@ MonoBehaviour:
     - Dash_Copy1_Copy1_Copy1_Copy1
     - P09_Repeat Fire_Copy1_Copy1_Copy1_Copy1
     - P09_Wander 2_Copy2
+  - patternId: Pattern6
+    nodeGuids:
+    - 8f7721ce8ed74c56b8ee3abad1a8b0e1
+    nodeIds:
+    - Node3
   phases:
   - phaseIndex: 0
     selectionMode: 3
@@ -5444,3 +5458,33 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
+    - rid: 2634812012643483717
+      type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 0
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
