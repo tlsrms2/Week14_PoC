@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
+using Week14.Audio;
+using Week14.Enemy;
 using Week14.Save;
 using Week14.Weapons;
 
@@ -14,6 +16,9 @@ namespace Week14.UI
         [SerializeField] private SpriteRenderer outlineRenderer;
         [Tooltip("총기의 OutlineIcon을 라이트 쿠키로 사용할 Light2D입니다(Light Type이 Sprite일 때). 선택됐을 때만 보이고, 비워두면 아웃라인을 갱신하지 않습니다.")]
         [SerializeField] private Light2D outlineLight;
+        [Tooltip("이 무기를 클릭해서 장착했을 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string equipSfxId;
 
         private SpriteRenderer iconRenderer;
         private Collider2D iconCollider;
@@ -104,7 +109,17 @@ namespace Week14.UI
                 return;
             }
 
+            if (WeaponLoadoutManager.Instance.CurrentWeapon == weapon)
+            {
+                return;
+            }
+
             WeaponLoadoutManager.Instance.EquipWeapon(weapon.WeaponId);
+
+            if (!string.IsNullOrEmpty(equipSfxId))
+            {
+                SoundManager.PlaySfx(equipSfxId);
+            }
         }
 
         private void HandleWeaponChanged(BaseWeaponSO _)
