@@ -1,0 +1,22 @@
+using UnityEngine;
+using Week14.Audio;
+
+namespace Week14.Enemy
+{
+    public sealed class NewGraphBossAI : GraphBossAI
+    {
+        [Header("Boss Specific")]
+        [SerializeField] private string bgmId;
+        [SerializeField] private bool rotateBodyToPlayer = true;
+
+        protected override bool RotatesBodyToPlayer => rotateBodyToPlayer;
+
+        protected override void OnCombatStarted()
+        {
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
+        }
+    }
+}
