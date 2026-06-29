@@ -17,6 +17,8 @@ namespace Week14.UI
         [SerializeField] private bool useUnscaledTime = true;
         [Tooltip("검은 화면이 보이는 동안 UI 입력을 막을지 여부입니다.")]
         [SerializeField] private bool blockRaycastsWhileVisible = true;
+        [Tooltip("CanvasGroup alpha가 이 값 이하가 되면 UI 입력 차단을 해제합니다.")]
+        [SerializeField, Range(0f, 1f)] private float unblockRaycastsAtAlpha = 0.5f;
 
         private Coroutine fadeRoutine;
 
@@ -86,7 +88,14 @@ namespace Week14.UI
             {
                 float ratio = 1f - Mathf.Clamp01((fadeEndTime - GetTime()) / fadeSeconds);
                 float easedRatio = Mathf.SmoothStep(0f, 1f, ratio);
-                SetAlpha(1f - easedRatio);
+                float alpha = 1f - easedRatio;
+                SetAlpha(alpha);
+
+                if (blockRaycastsWhileVisible && alpha <= unblockRaycastsAtAlpha)
+                {
+                    SetBlocksRaycasts(false);
+                }
+
                 yield return null;
             }
 
