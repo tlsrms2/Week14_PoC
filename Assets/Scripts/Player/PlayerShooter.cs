@@ -146,15 +146,15 @@ namespace Week14.Combat
 
     internal static class PlayerBulletAudio
     {
+        private const float MinPitch = 1f;
+        private const int PitchStepReferenceBulletCount = 5;
+
         internal static float GetBulletCountPitch(int currentBullets, int maxBullets, float maxPitch = 2f)
         {
-            if (maxBullets <= 1)
-            {
-                return currentBullets >= maxBullets ? maxPitch : 1f;
-            }
-
-            float t = Mathf.Clamp01((currentBullets - 1f) / (maxBullets - 1f));
-            return Mathf.Lerp(1f, maxPitch, t);
+            float pitchStepPerBullet = (maxPitch - MinPitch) / (PitchStepReferenceBulletCount - 1);
+            int bulletDeficit = maxBullets - currentBullets;
+            float pitch = maxPitch - pitchStepPerBullet * bulletDeficit;
+            return Mathf.Clamp(pitch, MinPitch, maxPitch);
         }
 
         internal static void PlayBulletRestoreSfx(int currentBullets, int maxBullets)
