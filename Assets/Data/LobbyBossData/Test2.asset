@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Test2
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossData
   id: 2
-  bossName: "\uC548\uC5F4\uB9B0 \uD14C\uC2A4\uD2B8"
-  crime: 
-  description: "\uD14C\uC2A4\uD2B8\uC8FC\uC81C\uC5D0 \uB2A6\uAC8C \uC5F4\uB824\uC11C
-    \uB098\uC068"
+  bossName: "\uD14C\uC2A4\uD2B8 \uBCF4\uC2A4"
+  crime: "\uC704\uD5D8\uB3C4: 2"
+  description: "\uC900\uBE44 \uC911\uC785\uB2C8\uB2E4."
   icon: {fileID: 21300000, guid: 065da6c7b90ca904dab9cbc6b415fd19, type: 3}
   sceneName: 
   unlocksBossIds: []
