@@ -20,7 +20,7 @@ namespace Week14.UI
         [Tooltip("누르고 있는 동안 차오르는 진행 바 이미지입니다. Image Type이 Filled여야 합니다.")]
         [SerializeField] private Image holdFillImage;
         [Tooltip("진행 바가 채워지는 감속 곡선의 강도입니다. 클수록 처음에 더 빠르게 차오르고 끝에 갈수록 더 느려집니다. 1 = 일정한 속도.")]
-        [SerializeField, Min(1f)] private float holdFillEaseExponent = 4f;
+        [SerializeField, Min(1f)] private float holdFillEaseExponent = 2f;
         [Tooltip("이 아이콘과 같이 숨겨질 아웃라인 SpriteRenderer입니다. 잠겨있으면 아이콘과 함께 꺼집니다.")]
         [SerializeField] private SpriteRenderer outlineRenderer;
 

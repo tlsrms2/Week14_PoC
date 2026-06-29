@@ -6999,7 +6999,7 @@ MonoBehaviour:
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   holdSecondsToStart: 1.5
   holdFillImage: {fileID: 1411869748}
-  holdFillEaseExponent: 4
+  holdFillEaseExponent: 2
   outlineRenderer: {fileID: 1687516869}
 --- !u!61 &642730775
 BoxCollider2D:
@@ -15383,7 +15383,7 @@ MonoBehaviour:
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   holdSecondsToStart: 1.5
   holdFillImage: {fileID: 5267693784785233881}
-  holdFillEaseExponent: 4
+  holdFillEaseExponent: 2
   outlineRenderer: {fileID: 1260400105}
 --- !u!61 &1587686335
 BoxCollider2D:
