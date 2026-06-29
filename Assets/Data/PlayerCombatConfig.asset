@@ -50,3 +50,5 @@ MonoBehaviour:
   executionFlourishDelaySeconds: 0.5
   executionFlourishShotCount: 3
   executionFlourishShotInterval: 0.1
+  deathCameraFocusWeight: 1
+  deathCameraZoomMultiplier: 0.4

@@ -44,6 +44,11 @@ namespace Week14.Combat
         [SerializeField] private Transform sideVisualRoot;
         [SerializeField] private Transform backVisualRoot;
 
+        [Header("Death")]
+        [Tooltip("사망 시 visualRoot를 끄고 대신 켜줄 사망용 비주얼 루트입니다.")]
+        [SerializeField] private GameObject deathVisualRoot;
+        [SerializeField, Min(0f)] private float deathAnimationSeconds = 1.5333333f;
+
         [Header("Left Arm Aim")]
         [SerializeField] private Transform leftArm;
         [Tooltip("왼팔 애니메이터입니다. 비워두면 leftArm(또는 \"Arm_L\" 이름의 자식)에서 자동으로 찾습니다.")]
@@ -85,6 +90,11 @@ namespace Week14.Combat
             ResolveReferences();
             CacheRenderers();
             CachePartAnimators();
+
+            if (deathVisualRoot != null)
+            {
+                deathVisualRoot.SetActive(false);
+            }
         }
 
         private void OnEnable()
@@ -164,6 +174,28 @@ namespace Week14.Combat
             {
                 leftArmAnimator.SetTrigger(DoShotParameter);
             }
+        }
+
+        public float PlayDeath()
+        {
+            if (visualRoot != null)
+            {
+                visualRoot.gameObject.SetActive(false);
+            }
+
+            if (deathVisualRoot != null)
+            {
+                deathVisualRoot.SetActive(true);
+
+                Animator deathAnimator = deathVisualRoot.GetComponent<Animator>();
+                if (deathAnimator != null)
+                {
+                    // 사망 대기 중 Time.timeScale이 0이 되어도 애니메이션이 끝까지 재생되도록 합니다.
+                    deathAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                }
+            }
+
+            return deathAnimationSeconds;
         }
 
         private void HandleWeaponChanged(BaseWeaponSO weapon)

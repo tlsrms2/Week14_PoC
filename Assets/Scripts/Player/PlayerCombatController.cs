@@ -73,6 +73,9 @@ namespace Week14.Combat
 
         public Health Health => Context.Health;
         public BulletGauge Bullets => Context.Bullets;
+        public PlayerVisualRig Visual => Context.Visual;
+        public CameraFollow2D CameraFollow => Context.CameraFollow;
+        public Transform BodyRoot => Context.BodyRoot;
         public Health LockOnTarget => Context.LockOnTarget;
         public ExecutionTarget HoveredExecutionTarget => ExecutionController.HoveredExecutionTarget;
         public bool IsExecuting => ExecutionController.IsExecuting;

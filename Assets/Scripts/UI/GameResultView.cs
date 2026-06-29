@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -186,7 +187,39 @@ namespace Week14.UI
 
         private void HandlePlayerDied(Health _)
         {
+            StartCoroutine(PlayPlayerDeathThenShowGameOver());
+        }
+
+        private IEnumerator PlayPlayerDeathThenShowGameOver()
+        {
             SoundManager.StopBgm();
+
+            PlayerCombatController player = PlayerCombatController.Active;
+            CameraFollow2D playerCamera = player?.CameraFollow;
+            PlayerCombatConfig config = player?.Config;
+            Transform deathFocusTarget = player != null
+                ? (player.BodyRoot != null ? player.BodyRoot : player.transform)
+                : null;
+
+            if (playerCamera != null && deathFocusTarget != null)
+            {
+                playerCamera.BeginCinematicFocus(
+                    deathFocusTarget,
+                    config != null ? config.DeathCameraFocusWeight : 1f,
+                    config != null ? config.DeathCameraZoomMultiplier : 0.7f);
+            }
+
+            PlayerVisualRig visual = player?.Visual;
+            if (visual != null)
+            {
+                float deathAnimationSeconds = visual.PlayDeath();
+                if (deathAnimationSeconds > 0f)
+                {
+                    yield return new WaitForSecondsRealtime(deathAnimationSeconds);
+                }
+            }
+
+            playerCamera?.EndCinematicFocus();
             ShowGameOver();
         }
 
