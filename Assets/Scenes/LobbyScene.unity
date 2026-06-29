@@ -17519,6 +17519,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1815925371}
     - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: anchorOffset.x
+      value: -75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
+      propertyPath: anchorOffset.y
+      value: -102.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2040245273866834668, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: revealTargets.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -17588,11 +17596,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2117426165531532304, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 405
+      value: 413
       objectReference: {fileID: 0}
     - target: {fileID: 2117426165531532304, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 55
+      value: 117
       objectReference: {fileID: 0}
     - target: {fileID: 2117426165531532304, guid: 562cedc8dacafb542ab96ee41a973269, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
