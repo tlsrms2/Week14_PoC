@@ -100,7 +100,7 @@ MonoBehaviour:
     pitch: 1
   - id: Gun_Equip
     clip: {fileID: 8300000, guid: e40f3b85490fa684daeb64d831f76467, type: 3}
-    volume: 0.7
+    volume: 0.5
     pitch: 1
   - id: LightOn
     clip: {fileID: 8300000, guid: e9bdb1d399fcaa7458843a619f46beec, type: 3}
