@@ -209,15 +209,33 @@ namespace Week14.UI
                     config != null ? config.DeathCameraZoomMultiplier : 0.7f);
             }
 
+            // 카메라 줌인이 끝날 때까지(정상 시간으로) 기다린 뒤 적/투사체를 멈춥니다. 줌인이 끝나지 않아도 최대 대기 시간을 넘기면 진행합니다.
+            float maxWorldFreezeDelaySeconds = config != null ? config.DeathWorldFreezeDelaySeconds : 0.3f;
+            float zoomWaitElapsed = 0f;
+            while (playerCamera != null
+                && !playerCamera.IsCinematicZoomSettled()
+                && zoomWaitElapsed < maxWorldFreezeDelaySeconds)
+            {
+                zoomWaitElapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            float previousTimeScaleBeforeDeath = Time.timeScale;
+            Time.timeScale = 0f;
+
             PlayerVisualRig visual = player?.Visual;
             if (visual != null)
             {
-                float deathAnimationSeconds = visual.PlayDeath();
+                // deathAnimator는 UnscaledTime으로 갱신되므로 Time.timeScale=0이어도 정상 재생됩니다.
+                visual.PlayDeath();
+                float deathAnimationSeconds = config != null ? config.DeathAnimationSeconds : 1.5333333f;
                 if (deathAnimationSeconds > 0f)
                 {
                     yield return new WaitForSecondsRealtime(deathAnimationSeconds);
                 }
             }
+
+            Time.timeScale = previousTimeScaleBeforeDeath;
 
             playerCamera?.EndCinematicFocus();
             ShowGameOver();

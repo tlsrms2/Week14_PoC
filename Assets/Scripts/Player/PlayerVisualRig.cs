@@ -47,7 +47,6 @@ namespace Week14.Combat
         [Header("Death")]
         [Tooltip("사망 시 visualRoot를 끄고 대신 켜줄 사망용 비주얼 루트입니다.")]
         [SerializeField] private GameObject deathVisualRoot;
-        [SerializeField, Min(0f)] private float deathAnimationSeconds = 1.5333333f;
 
         [Header("Left Arm Aim")]
         [SerializeField] private Transform leftArm;
@@ -176,7 +175,7 @@ namespace Week14.Combat
             }
         }
 
-        public float PlayDeath()
+        public void PlayDeath()
         {
             if (visualRoot != null)
             {
@@ -194,8 +193,6 @@ namespace Week14.Combat
                     deathAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
                 }
             }
-
-            return deathAnimationSeconds;
         }
 
         private void HandleWeaponChanged(BaseWeaponSO weapon)

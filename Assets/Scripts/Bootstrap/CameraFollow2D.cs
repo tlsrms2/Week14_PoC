@@ -118,6 +118,18 @@ namespace Week14.Bootstrap
             ApplyFocusTarget(nextFocusTarget);
         }
 
+        public bool IsCinematicZoomSettled(float toleranceRatio = 0.02f)
+        {
+            if (controlledCamera == null || !controlledCamera.orthographic || baseOrthographicSize <= 0f)
+            {
+                return true;
+            }
+
+            float targetSize = baseOrthographicSize * cinematicZoomMultiplier;
+            float tolerance = baseOrthographicSize * Mathf.Max(0f, toleranceRatio);
+            return Mathf.Abs(controlledCamera.orthographicSize - targetSize) <= tolerance;
+        }
+
         public void EndCinematicFocus()
         {
             if (!cinematicFocusActive)
