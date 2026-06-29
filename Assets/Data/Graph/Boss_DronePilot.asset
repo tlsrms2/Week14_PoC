@@ -1213,7 +1213,7 @@ MonoBehaviour:
     action:
       rid: 2634812007888978074
     sequences: []
-    editorPosition: {x: -157, y: 2256}
+    editorPosition: {x: -166, y: 2216}
   - nodeId: Dash_Copy2
     nodeGuid: 2d6d925aaefd4a0283a56966c2b97f15
     nodeKind: 4
@@ -1641,7 +1641,7 @@ MonoBehaviour:
     patternIntervalSeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
-    openingPatternId: Upgrade/Pattern5
+    openingPatternId: Pattern8
     patterns:
     - patternId: Pattern1
       weight: 1
@@ -2490,7 +2490,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern5-2
+  debugForcedPatternId: Pattern8
   references:
     version: 2
     RefIds:
@@ -3188,7 +3188,7 @@ MonoBehaviour:
         layout: 2
         radius: 5
         spacing: 1
-        moveSpeed: 24
+        moveSpeed: 30
         settleSeconds: 0.5
         waitForDuration: 1
     - rid: 2634811994844954701
@@ -3243,7 +3243,7 @@ MonoBehaviour:
         layout: 2
         radius: 4
         spacing: 1
-        moveSpeed: 24
+        moveSpeed: 30
         settleSeconds: 0.5
         waitForDuration: 1
     - rid: 2634811994844954704
@@ -3298,7 +3298,7 @@ MonoBehaviour:
         layout: 2
         radius: 5
         spacing: 1
-        moveSpeed: 24
+        moveSpeed: 30
         settleSeconds: 0.5
         waitForDuration: 1
     - rid: 2634811994844954707
@@ -3353,7 +3353,7 @@ MonoBehaviour:
         layout: 2
         radius: 5
         spacing: 1
-        moveSpeed: 24
+        moveSpeed: 30
         settleSeconds: 0.5
         waitForDuration: 1
     - rid: 2634811994844954710
@@ -4337,7 +4337,7 @@ MonoBehaviour:
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         durationSeconds: 2
-        speedMultiplier: 0.5
+        speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -4416,7 +4416,7 @@ MonoBehaviour:
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         durationSeconds: 2
-        speedMultiplier: 0.5
+        speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -4690,8 +4690,8 @@ MonoBehaviour:
         layout: 1
         radius: 6.5
         spacing: 1
-        moveSpeed: 24
-        settleSeconds: 0.5
+        moveSpeed: 30
+        settleSeconds: 0.75
         waitForDuration: 1
     - rid: 2634812007888978013
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4833,8 +4833,8 @@ MonoBehaviour:
         layout: 1
         radius: 6.5
         spacing: 1
-        moveSpeed: 24
-        settleSeconds: 0.5
+        moveSpeed: 30
+        settleSeconds: 0.75
         waitForDuration: 1
     - rid: 2634812007888978020
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4898,8 +4898,8 @@ MonoBehaviour:
         layout: 1
         radius: 6.5
         spacing: 1
-        moveSpeed: 24
-        settleSeconds: 0.5
+        moveSpeed: 30
+        settleSeconds: 0.75
         waitForDuration: 1
     - rid: 2634812007888978023
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4963,8 +4963,8 @@ MonoBehaviour:
         layout: 1
         radius: 6.5
         spacing: 1
-        moveSpeed: 24
-        settleSeconds: 0.5
+        moveSpeed: 30
+        settleSeconds: 0.75
         waitForDuration: 1
     - rid: 2634812007888978026
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
