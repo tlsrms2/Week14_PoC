@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: "\uAE30\uBCF8 \uAD8C\uCD1D"
   icon: {fileID: -1250021020546060479, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
   outlineIcon: {fileID: -5253834672664389118, guid: 4941473ac3b03dc4bb08ab5c77d2b6bc, type: 3}
-  description: "- \uD2B9\uBCC4\uD560 \uAC83 \uC5C6\uB294 \uAE30\uBCF8 \uAD8C\uCD1D"
+  description: "\uD2B9\uBCC4\uD560 \uAC83 \uC5C6\uB294 \uAE30\uBCF8 \uAD8C\uCD1D\uC774\uB2E4."
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 4a7491b219f6bc5469d444267d523369, type: 2}

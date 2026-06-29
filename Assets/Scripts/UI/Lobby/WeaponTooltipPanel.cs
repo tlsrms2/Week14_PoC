@@ -122,7 +122,7 @@ namespace Week14.UI
             if (bulletDamageText != null)
             {
                 int[] damagePerAmmoStep = weapon.DamagePerAmmoStep ?? Array.Empty<int>();
-                bulletDamageText.text = $"탄환 데미지: {string.Join("-", damagePerAmmoStep.Reverse())}";
+                bulletDamageText.text = $"탄환 대미지: {string.Join("-", damagePerAmmoStep.Reverse())}";
             }
 
             if (iconImage != null)
