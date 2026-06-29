@@ -1162,9 +1162,19 @@ namespace Week14.UI
         private void UpdateRotationRootPosition()
         {
             CacheRotationRoot();
+            if (!hasBaseRotationRootTransform || rotationRoot == null)
+            {
+                return;
+            }
+
+            if (GameModalState.BlocksGameplayInput)
+            {
+                return;
+            }
+
             PlayerCombatController player = PlayerCombatController.Active;
             Camera camera = Camera.main;
-            if (!hasBaseRotationRootTransform || rotationRoot == null || player == null || camera == null)
+            if (player == null || camera == null)
             {
                 return;
             }
