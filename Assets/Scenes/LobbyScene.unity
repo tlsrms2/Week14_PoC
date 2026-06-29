@@ -17912,6 +17912,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1815925371}
+    - target: {fileID: 3388050743727679300, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -70
+      objectReference: {fileID: 0}
     - target: {fileID: 3539204742999253097, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -18004,12 +18008,25 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5364321327869350505, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_text
+      value: "\uD0C0\uC774\uD2C0\uB85C \uB3CC\uC544\uAC00\uAE30"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113382959732691671, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnToTitle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333452412212431720, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7625243295146896537, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Name
       value: UICanvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8890303972852327274, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
