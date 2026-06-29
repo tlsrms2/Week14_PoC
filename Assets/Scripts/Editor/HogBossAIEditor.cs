@@ -45,6 +45,12 @@ public sealed class HogBossAIEditor : Editor
         "bossNameText"
     };
 
+    private static readonly HashSet<string> CombatEffectFields = new()
+    {
+        "hitFlashColor",
+        "hitFlashSeconds"
+    };
+
     private static readonly HashSet<string> LegacyColorFields = new()
     {
         "normalColor",
@@ -311,6 +317,9 @@ public sealed class HogBossAIEditor : Editor
 
         EditorGUILayout.Space(6f);
         DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossNameText");
+
+        EditorGUILayout.Space(6f);
+        DrawPropertiesBox("피격 플래시", "hitFlashColor", "hitFlashSeconds");
     }
 
     private void DrawGraphReferences()
@@ -469,6 +478,7 @@ public sealed class HogBossAIEditor : Editor
                 || ContainsPropertyName(HogFields, property)
                 || ContainsPropertyName(MinionFields, property)
                 || ContainsPropertyName(ReferenceFields, property)
+                || ContainsPropertyName(CombatEffectFields, property)
                 || ContainsPropertyName(LegacyColorFields, property))
             {
                 continue;

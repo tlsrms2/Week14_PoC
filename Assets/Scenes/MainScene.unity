@@ -2062,6 +2062,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1521775367}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: hitFlashSeconds
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
@@ -2109,6 +2113,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss_Hog
       objectReference: {fileID: 0}
+    - target: {fileID: 5934946677590981819, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3483,7 +3491,6 @@ MonoBehaviour:
   sideVisualRoot: {fileID: 7547452285691577877}
   backVisualRoot: {fileID: 7547452285691577876}
   deathVisualRoot: {fileID: 659833840}
-  deathAnimationSeconds: 2.1
   leftArm: {fileID: 7547452285691577875}
   leftArmAnimator: {fileID: 0}
   leftArmAimAngleLimits: {x: -105, y: 90}
@@ -4322,19 +4329,19 @@ PrefabInstance:
     - target: {fileID: 2647152791380730544, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
     - target: {fileID: 3079455408925606049, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
     - target: {fileID: 3492010023583049287, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
     - target: {fileID: 4105692278019693102, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
     - target: {fileID: 4958753470749675896, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_Name
       value: VisualRoot
@@ -4354,7 +4361,7 @@ PrefabInstance:
     - target: {fileID: 9157381059863066139, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
     - target: {fileID: 9188277074883341737, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0107

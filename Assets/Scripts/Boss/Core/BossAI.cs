@@ -49,6 +49,10 @@ namespace Week14.Enemy
         [FormerlySerializedAs("bulletEmptyExecutionSeconds")]
         [SerializeField, Min(0f)] private float hpEmptyExecutionSeconds = 3f;
 
+        [Tooltip("보스가 피격당했을 때 흰색으로 깜빡이는 플래시 효과의 색입니다.")]
+        [SerializeField] private Color hitFlashColor = Color.white;
+        [Tooltip("보스가 피격당했을 때 플래시 효과가 유지되는 시간입니다.")]
+        [SerializeField, Min(0f)] private float hitFlashSeconds = 0.08f;
         [Tooltip("기본 상태에서 보스 스프라이트에 적용할 색입니다.")]
         [SerializeField, HideInInspector] private Color normalColor = Color.white;
         [Tooltip("보스 HP가 0이 되었을 때 보스 스프라이트에 적용할 색입니다.")]
@@ -88,14 +92,20 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private Color lockOnIndicatorColor = Color.white;
         [SerializeField, HideInInspector] private Color executionIndicatorColor = Color.red;
 
+        private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
+
         private readonly BossProjectileTracker projectileTracker = new();
         private Health health;
         private BulletGauge hpGauge;
         private SpriteRenderer[] renderers;
+        private MaterialPropertyBlock hitFlashPropertyBlock;
         private Transform player;
         private bool isExecutionLocked;
         private bool isBodyHitColorActive;
         private float bodyHitColorEndsAt;
+        private bool isHitFlashActive;
+        private float hitFlashEndsAt;
         private bool isStaggered;
         private float staggerEndsAt;
         private float staggerShakeDistance;
@@ -341,6 +351,7 @@ namespace Week14.Enemy
         internal void TickVisualStateForState()
         {
             UpdateBodyHitColor();
+            UpdateHitFlash();
             UpdateStagger();
         }
 
@@ -842,6 +853,19 @@ namespace Week14.Enemy
         {
             isBodyHitColorActive = true;
             bodyHitColorEndsAt = Time.time + BodyHitColorSeconds;
+            isHitFlashActive = true;
+            hitFlashEndsAt = Time.time + hitFlashSeconds;
+            ApplyBodyStateColor();
+        }
+
+        private void UpdateHitFlash()
+        {
+            if (!isHitFlashActive || Time.time < hitFlashEndsAt)
+            {
+                return;
+            }
+
+            isHitFlashActive = false;
             ApplyBodyStateColor();
         }
 
@@ -914,6 +938,9 @@ namespace Week14.Enemy
                 color = HpEmptyColor;
             }
 
+            float flashAmount = isHitFlashActive ? 1f : 0f;
+            hitFlashPropertyBlock ??= new MaterialPropertyBlock();
+
             for (int i = 0; i < renderers.Length; i++)
             {
                 if (renderers[i] == null || IsStatusRenderer(renderers[i]) || ShouldIgnoreBodyStateRenderer(renderers[i]))
@@ -922,6 +949,11 @@ namespace Week14.Enemy
                 }
 
                 renderers[i].color = color;
+
+                renderers[i].GetPropertyBlock(hitFlashPropertyBlock);
+                hitFlashPropertyBlock.SetColor(FlashColorId, hitFlashColor);
+                hitFlashPropertyBlock.SetFloat(FlashAmountId, flashAmount);
+                renderers[i].SetPropertyBlock(hitFlashPropertyBlock);
             }
         }
 
