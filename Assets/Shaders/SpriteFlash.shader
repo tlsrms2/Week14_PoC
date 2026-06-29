@@ -2,55 +2,200 @@ Shader "Custom/SpriteFlash"
 {
     Properties
     {
-        _MainTex ("Sprite Texture", 2D) = "white" {}
-        _Color ("Tint", Color) = (1,1,1,1)
-        [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-        [HideInInspector] _RendererColor ("RendererColor", Color) = (1,1,1,1)
-        [HideInInspector] _Flip ("Flip", Vector) = (1,1,1,1)
-        [PerRendererData] _AlphaTex ("External Alpha", 2D) = "white" {}
-        [PerRendererData] _EnableExternalAlpha ("Enable External Alpha", Float) = 0
+        _MainTex("Diffuse", 2D) = "white" {}
+        _MaskTex("Mask", 2D) = "white" {}
+        _NormalMap("Normal Map", 2D) = "bump" {}
+        [MaterialToggle] _ZWrite("ZWrite", Float) = 0
+
         _FlashColor ("Flash Color", Color) = (1,1,1,1)
         _FlashAmount ("Flash Amount", Range(0,1)) = 0
+
+        // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
+        [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
+        [HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
+        [HideInInspector] _Flip("Flip", Vector) = (1,1,1,1)
+        [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
+        [HideInInspector] _AlphaTex("External Alpha", 2D) = "white" {}
+        [HideInInspector] _EnableExternalAlpha("Enable External Alpha", Float) = 0
     }
 
     SubShader
     {
-        Tags
-        {
-            "Queue"="Transparent"
-            "IgnoreProjector"="True"
-            "RenderType"="Transparent"
-            "PreviewType"="Plane"
-            "CanUseSpriteAtlas"="True"
-        }
+        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
 
+        Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
         Cull Off
-        Lighting Off
-        ZWrite Off
-        Blend One OneMinusSrcAlpha
+        ZWrite [_ZWrite]
 
         Pass
         {
-            CGPROGRAM
-                #pragma vertex SpriteVert
-                #pragma fragment SpriteFlashFrag
-                #pragma target 2.0
-                #pragma multi_compile_instancing
-                #pragma multi_compile _ PIXELSNAP_ON
-                #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
-                #include "UnitySprites.cginc"
+            Tags { "LightMode" = "Universal2D" }
 
-                fixed4 _FlashColor;
-                fixed _FlashAmount;
+            HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
 
-                fixed4 SpriteFlashFrag(v2f IN) : SV_Target
-                {
-                    fixed4 c = SampleSpriteTexture(IN.texcoord) * IN.color;
-                    c.rgb = lerp(c.rgb, _FlashColor.rgb, _FlashAmount);
-                    c.rgb *= c.a;
-                    return c;
-                }
-            ENDCG
+            #pragma vertex LitVertex
+            #pragma fragment LitFragment
+
+            #include_with_pragmas "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/ShapeLightShared.hlsl"
+
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DEBUG_DISPLAY
+            #pragma multi_compile _ SKINNED_SPRITE
+
+            struct Attributes
+            {
+                COMMON_2D_INPUTS
+                half4 color        : COLOR;
+                UNITY_SKINNED_VERTEX_INPUTS
+            };
+
+            struct Varyings
+            {
+                COMMON_2D_LIT_OUTPUTS
+                half4 color        : COLOR;
+            };
+
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Lit2DCommon.hlsl"
+
+            // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
+            CBUFFER_START(UnityPerMaterial)
+                half4 _Color;
+                half4 _FlashColor;
+                half _FlashAmount;
+            CBUFFER_END
+
+            Varyings LitVertex(Attributes input)
+            {
+                UNITY_SKINNED_VERTEX_COMPUTE(input);
+                SetUpSpriteInstanceProperties();
+                input.positionOS = UnityFlipSprite(input.positionOS, unity_SpriteProps.xy);
+
+                Varyings o = CommonLitVertex(input);
+                o.color = input.color * _Color * unity_SpriteColor;
+
+                return o;
+            }
+
+            half4 LitFragment(Varyings input) : SV_Target
+            {
+                half4 result = CommonLitFragment(input, input.color);
+                result.rgb = lerp(result.rgb, _FlashColor.rgb, _FlashAmount);
+                return result;
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Tags { "LightMode" = "NormalsRendering"}
+
+            HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
+
+            #pragma vertex NormalsRenderingVertex
+            #pragma fragment NormalsRenderingFragment
+
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ SKINNED_SPRITE
+
+            struct Attributes
+            {
+                COMMON_2D_NORMALS_INPUTS
+                float4 color        : COLOR;
+                UNITY_SKINNED_VERTEX_INPUTS
+            };
+
+            struct Varyings
+            {
+                COMMON_2D_NORMALS_OUTPUTS
+                half4   color           : COLOR;
+            };
+
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Normals2DCommon.hlsl"
+
+            // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
+            CBUFFER_START( UnityPerMaterial )
+                half4 _Color;
+                half4 _FlashColor;
+                half _FlashAmount;
+            CBUFFER_END
+
+            Varyings NormalsRenderingVertex(Attributes input)
+            {
+                UNITY_SKINNED_VERTEX_COMPUTE(input);
+                SetUpSpriteInstanceProperties();
+                input.positionOS = UnityFlipSprite(input.positionOS, unity_SpriteProps.xy);
+
+                Varyings o = CommonNormalsVertex(input);
+                o.color = input.color * _Color * unity_SpriteColor;
+
+                return o;
+            }
+
+            half4 NormalsRenderingFragment(Varyings input) : SV_Target
+            {
+                return CommonNormalsFragment(input, input.color);
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Tags { "LightMode" = "UniversalForward" "Queue"="Transparent" "RenderType"="Transparent"}
+
+            HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
+
+            #pragma vertex UnlitVertex
+            #pragma fragment UnlitFragment
+
+            struct Attributes
+            {
+                COMMON_2D_INPUTS
+                half4 color : COLOR;
+                UNITY_SKINNED_VERTEX_INPUTS
+            };
+
+            struct Varyings
+            {
+                COMMON_2D_OUTPUTS
+                half4 color : COLOR;
+            };
+
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/2DCommon.hlsl"
+
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DEBUG_DISPLAY SKINNED_SPRITE
+
+            // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
+            CBUFFER_START(UnityPerMaterial)
+                half4 _Color;
+                half4 _FlashColor;
+                half _FlashAmount;
+            CBUFFER_END
+
+            Varyings UnlitVertex(Attributes input)
+            {
+                UNITY_SKINNED_VERTEX_COMPUTE(input);
+                SetUpSpriteInstanceProperties();
+                input.positionOS = UnityFlipSprite(input.positionOS, unity_SpriteProps.xy);
+
+                Varyings o = CommonUnlitVertex(input);
+                o.color = input.color * _Color * unity_SpriteColor;
+                return o;
+            }
+
+            half4 UnlitFragment(Varyings input) : SV_Target
+            {
+                half4 result = CommonUnlitFragment(input, input.color);
+                result.rgb = lerp(result.rgb, _FlashColor.rgb, _FlashAmount);
+                return result;
+            }
+            ENDHLSL
         }
     }
 }
