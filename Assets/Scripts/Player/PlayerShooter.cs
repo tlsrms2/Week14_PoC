@@ -146,17 +146,20 @@ namespace Week14.Combat
 
     internal static class PlayerBulletAudio
     {
-        private const int BulletRestorePitchReferenceMax = 5;
-
-        internal static float GetBulletCountPitch(int currentBullets, float maxPitch = 2f)
+        internal static float GetBulletCountPitch(int currentBullets, int maxBullets, float maxPitch = 2f)
         {
-            float t = Mathf.Clamp01((currentBullets - 1f) / (BulletRestorePitchReferenceMax - 1f));
+            if (maxBullets <= 1)
+            {
+                return currentBullets >= maxBullets ? maxPitch : 1f;
+            }
+
+            float t = Mathf.Clamp01((currentBullets - 1f) / (maxBullets - 1f));
             return Mathf.Lerp(1f, maxPitch, t);
         }
 
-        internal static void PlayBulletRestoreSfx(int currentBullets)
+        internal static void PlayBulletRestoreSfx(int currentBullets, int maxBullets)
         {
-            SoundManager.PlaySfx("BulletRestore2", GetBulletCountPitch(currentBullets));
+            SoundManager.PlaySfx("BulletRestore2", GetBulletCountPitch(currentBullets, maxBullets));
         }
     }
 }

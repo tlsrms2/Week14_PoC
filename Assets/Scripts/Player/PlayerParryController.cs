@@ -47,7 +47,7 @@ namespace Week14.Combat
 
             if (bullets != null && bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry))
             {
-                PlayerBulletAudio.PlayBulletRestoreSfx(bullets.CurrentBullets);
+                PlayerBulletAudio.PlayBulletRestoreSfx(bullets.CurrentBullets, bullets.MaxBullets);
             }
 
             ProjectileVfx.PlayParry(
@@ -192,7 +192,8 @@ namespace Week14.Combat
             if (playSfx)
             {
                 int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
-                SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, 1.3f));
+                int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
+                SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
             }
 
             ProjectileParried?.Invoke();
