@@ -3665,7 +3665,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             EditorGUILayout.LabelField("Pattern");
             EditorGUILayout.LabelField("Weight", GUILayout.Width(42f));
-            EditorGUILayout.LabelField("Cooldown", GUILayout.Width(48f));
+            EditorGUILayout.LabelField(new GUIContent("Wait", "이 패턴 실행 후 다시 후보가 되기 전까지 기다릴 다른 패턴 실행 횟수입니다."), GUILayout.Width(48f));
             GUILayout.Space(122f);
         }
 
@@ -3688,7 +3688,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         bool changed = false;
         SerializedProperty patternId = entry.FindPropertyRelative("patternId");
         SerializedProperty weight = entry.FindPropertyRelative("weight");
-        SerializedProperty cooldownSeconds = entry.FindPropertyRelative("cooldownSeconds");
+        SerializedProperty cooldownPatternCount = entry.FindPropertyRelative("cooldownPatternCount");
         using (new EditorGUILayout.HorizontalScope())
         {
             string nextPatternId = DrawPatternIdPopup(patternId.stringValue, patternIds);
@@ -3706,12 +3706,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 changed = true;
             }
 
-            float currentCooldown = cooldownSeconds != null ? cooldownSeconds.floatValue : 0f;
-            float nextCooldown = EditorGUILayout.FloatField(Mathf.Max(0f, currentCooldown), GUILayout.Width(48f));
-            nextCooldown = Mathf.Max(0f, nextCooldown);
-            if (cooldownSeconds != null && !Mathf.Approximately(nextCooldown, cooldownSeconds.floatValue))
+            int currentCooldown = cooldownPatternCount != null ? cooldownPatternCount.intValue : 0;
+            int nextCooldown = EditorGUILayout.IntField(
+                new GUIContent(string.Empty, "이 패턴 실행 후 다시 후보가 되기 전까지 기다릴 다른 패턴 실행 횟수입니다."),
+                Mathf.Max(0, currentCooldown),
+                GUILayout.Width(48f));
+            nextCooldown = Mathf.Max(0, nextCooldown);
+            if (cooldownPatternCount != null && nextCooldown != cooldownPatternCount.intValue)
             {
-                cooldownSeconds.floatValue = nextCooldown;
+                cooldownPatternCount.intValue = nextCooldown;
                 changed = true;
             }
 
@@ -3805,7 +3808,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty entry = phasePatterns.GetArrayElementAtIndex(entryIndex);
         SetString(entry, "patternId", patternId);
         SetInt(entry, "weight", 1);
-        SetFloat(entry, "cooldownSeconds", 0f);
+        SetInt(entry, "cooldownPatternCount", 0);
     }
 
     private static bool HasPhasePatternEntry(SerializedProperty phasePatterns, string patternId)
