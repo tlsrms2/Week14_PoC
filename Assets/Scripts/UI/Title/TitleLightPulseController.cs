@@ -37,6 +37,41 @@ namespace Week14.UI
             }
         }
 
+        [Serializable]
+        private sealed class SynchronizedLight
+        {
+            [Tooltip("그룹 점등 타이밍과 같은 위상으로 움직일 Light2D입니다.")]
+            [SerializeField] private Light2D light = null;
+            [Tooltip("그룹 Light가 기본 상태일 때 사용할 Intensity입니다.")]
+            [SerializeField, Min(0f)] private float minIntensity = 0.5f;
+            [Tooltip("그룹 Light가 피크 상태일 때 사용할 Intensity입니다.")]
+            [SerializeField, Min(0f)] private float maxIntensity = 2f;
+
+            public void SetToMin()
+            {
+                if (light != null)
+                {
+                    light.intensity = minIntensity;
+                }
+            }
+
+            public void SetToMax()
+            {
+                if (light != null)
+                {
+                    light.intensity = maxIntensity;
+                }
+            }
+
+            public void ApplyWeight(float peakWeight)
+            {
+                if (light != null)
+                {
+                    light.intensity = Mathf.Lerp(minIntensity, maxIntensity, Mathf.Clamp01(peakWeight));
+                }
+            }
+        }
+
         [Header("Light 그룹")]
         [Tooltip("순서와 관계없이 무작위로 선택될 Light 그룹들입니다. 한 번에 하나의 그룹만 점등됩니다.")]
         [SerializeField] private LightGroup[] lightGroups = Array.Empty<LightGroup>();
@@ -52,6 +87,14 @@ namespace Week14.UI
         [SerializeField] private bool resetGroupedLightsOnEnable = true;
         [Tooltip("비활성화될 때 그룹에 포함된 모든 Light를 기본 Intensity로 되돌릴지 여부입니다.")]
         [SerializeField] private bool resetGroupedLightsOnDisable = true;
+
+        [Header("동기화 Light")]
+        [Tooltip("현재 선택된 Light 그룹과 같은 타이밍/위상으로 Intensity를 조절할 Light들입니다. Eye Light를 여기에 연결합니다.")]
+        [SerializeField] private SynchronizedLight[] synchronizedLights = Array.Empty<SynchronizedLight>();
+        [Tooltip("활성화될 때 동기화 Light들을 최소 Intensity로 초기화할지 여부입니다.")]
+        [SerializeField] private bool resetSynchronizedLightsOnEnable = true;
+        [Tooltip("비활성화될 때 동기화 Light들을 최소 Intensity로 되돌릴지 여부입니다.")]
+        [SerializeField] private bool resetSynchronizedLightsOnDisable = true;
 
         [Header("타이밍")]
         [Tooltip("활성화 후 첫 점등이 시작되기 전 대기하는 랜덤 시간 범위입니다.")]
@@ -81,6 +124,11 @@ namespace Week14.UI
                 SetAllGroupedLightsToBase();
             }
 
+            if (resetSynchronizedLightsOnEnable)
+            {
+                SetSynchronizedLightsToMin();
+            }
+
             if (playOnEnable)
             {
                 StartPulsing();
@@ -94,6 +142,11 @@ namespace Week14.UI
             if (resetGroupedLightsOnDisable)
             {
                 SetAllGroupedLightsToBase();
+            }
+
+            if (resetSynchronizedLightsOnDisable)
+            {
+                SetSynchronizedLightsToMin();
             }
         }
 
@@ -160,6 +213,7 @@ namespace Week14.UI
             if (fadeInSeconds <= 0f)
             {
                 SetGroupToPeak(group);
+                SetSynchronizedLightsToMax();
                 yield break;
             }
 
@@ -178,10 +232,12 @@ namespace Week14.UI
                     }
                 }
 
+                ApplySynchronizedLightWeight(peakWeight);
                 yield return null;
             }
 
             SetGroupToPeak(group);
+            SetSynchronizedLightsToMax();
         }
 
         private IEnumerator FadeGroupToBase(LightGroup group)
@@ -209,10 +265,12 @@ namespace Week14.UI
                     }
                 }
 
+                ApplySynchronizedLightWeight(peakWeight);
                 yield return null;
             }
 
             SetGroupToBase(group);
+            SetSynchronizedLightsToMin();
         }
 
         private int PickNextGroupIndex()
@@ -309,6 +367,45 @@ namespace Week14.UI
                 {
                     lights[i].intensity = baseIntensity;
                 }
+            }
+        }
+
+        private void SetSynchronizedLightsToMin()
+        {
+            if (synchronizedLights == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < synchronizedLights.Length; i++)
+            {
+                synchronizedLights[i]?.SetToMin();
+            }
+        }
+
+        private void SetSynchronizedLightsToMax()
+        {
+            if (synchronizedLights == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < synchronizedLights.Length; i++)
+            {
+                synchronizedLights[i]?.SetToMax();
+            }
+        }
+
+        private void ApplySynchronizedLightWeight(float peakWeight)
+        {
+            if (synchronizedLights == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < synchronizedLights.Length; i++)
+            {
+                synchronizedLights[i]?.ApplyWeight(peakWeight);
             }
         }
 
