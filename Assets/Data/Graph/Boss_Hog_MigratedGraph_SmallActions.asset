@@ -412,7 +412,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908235
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 108, y: 112}
   - nodeId: HogPattern7_Action01_FireSecondary
     nodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
     nodeKind: 0
@@ -677,16 +677,16 @@ MonoBehaviour:
     patterns:
     - patternId: Pattern8
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 2
     - patternId: Pattern2
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 2
     - patternId: Pattern4
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 2
     - patternId: Pattern6
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 2
   - phaseIndex: 1
     selectionMode: 4
     patternIntervalSeconds: 2
@@ -694,25 +694,25 @@ MonoBehaviour:
     patterns:
     - patternId: Pattern8
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
     - patternId: Pattern2
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
     - patternId: Pattern4
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
     - patternId: Pattern5
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
     - patternId: Pattern6
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
     - patternId: Pattern7
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
     - patternId: Pattern3
       weight: 1
-      cooldownSeconds: 0
+      cooldownSeconds: 3
   transitions:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: 266779658870470e92d2caaf9062946e

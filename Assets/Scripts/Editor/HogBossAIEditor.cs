@@ -41,7 +41,8 @@ public sealed class HogBossAIEditor : Editor
         "executionIndicator",
         "bossCombatUiRoot",
         "bossHpBarView",
-        "bossLivesView"
+        "bossLivesView",
+        "bossNameText"
     };
 
     private static readonly HashSet<string> LegacyColorFields = new()
@@ -309,7 +310,7 @@ public sealed class HogBossAIEditor : Editor
         DrawPropertiesBox("Scene References", "bodyRoot", "body", "statusView", "obstacleMask", "lockOnIndicator", "executionIndicator");
 
         EditorGUILayout.Space(6f);
-        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView");
+        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossNameText");
     }
 
     private void DrawGraphReferences()
