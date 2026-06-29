@@ -6997,9 +6997,9 @@ MonoBehaviour:
   bossData: {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
   detailPanel: {fileID: 1881657931}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
-  holdSecondsToStart: 1.5
+  holdSecondsToStart: 1
   holdFillImage: {fileID: 1411869748}
-  holdFillEaseExponent: 4
+  holdFillEaseExponent: 2
   outlineRenderer: {fileID: 1687516869}
 --- !u!61 &642730775
 BoxCollider2D:
@@ -15381,9 +15381,9 @@ MonoBehaviour:
   bossData: {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
   detailPanel: {fileID: 5267693784785233884}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
-  holdSecondsToStart: 1.5
+  holdSecondsToStart: 1
   holdFillImage: {fileID: 5267693784785233881}
-  holdFillEaseExponent: 4
+  holdFillEaseExponent: 2
   outlineRenderer: {fileID: 1260400105}
 --- !u!61 &1587686335
 BoxCollider2D:
@@ -17939,6 +17939,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1815925371}
+    - target: {fileID: 3388050743727679300, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -70
+      objectReference: {fileID: 0}
     - target: {fileID: 3539204742999253097, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -18043,6 +18047,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5364321327869350505, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_text
+      value: "\uD0C0\uC774\uD2C0\uB85C \uB3CC\uC544\uAC00\uAE30"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113382959732691671, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnToTitle
+      objectReference: {fileID: 0}
     - target: {fileID: 7333452412212431720, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -18056,7 +18068,8 @@ PrefabInstance:
       value: 0.362
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8890303972852327274, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1613180128374150396, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}

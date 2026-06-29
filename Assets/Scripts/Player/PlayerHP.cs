@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Week14.Combat;
+using Week14.Input;
 
 namespace Week14.UI
 {
@@ -651,6 +652,7 @@ namespace Week14.UI
         [SerializeField, Range(0f, 1f)] private float shineMaxAlpha = 0.85f;
         [Header("Hit Shake")]
         [SerializeField] private RectTransform rotationRoot;
+        [SerializeField] private float leftMouseRotationRootPosX = -200f;
         [SerializeField, Min(0f)] private float hitShakeSeconds = 0.18f;
         [SerializeField, Min(0f)] private float hitShakeRotationDegrees = 12f;
         [SerializeField, Min(0f)] private float hitShakeScaleAmount = 0.15f;
@@ -675,6 +677,7 @@ namespace Week14.UI
         private bool hasSnapshot;
         private int previousCurrent;
         private int previousMax;
+        private Vector2 baseRotationRootAnchoredPosition;
         private Quaternion baseRotationRootLocalRotation;
         private Vector3 baseRotationRootLocalScale;
         private bool hasBaseRotationRootTransform;
@@ -713,6 +716,7 @@ namespace Week14.UI
             TickEffects();
             TickBulletTimeouts();
             UpdateTimeoutVisuals();
+            UpdateRotationRootPosition();
 
             if (!bindPlayerOnEnable || PlayerCombatController.Active == null)
             {
@@ -1148,10 +1152,41 @@ namespace Week14.UI
 
             if (rotationRoot != null)
             {
+                baseRotationRootAnchoredPosition = rotationRoot.anchoredPosition;
                 baseRotationRootLocalRotation = rotationRoot.localRotation;
                 baseRotationRootLocalScale = rotationRoot.localScale;
                 hasBaseRotationRootTransform = true;
             }
+        }
+
+        private void UpdateRotationRootPosition()
+        {
+            CacheRotationRoot();
+            if (!hasBaseRotationRootTransform || rotationRoot == null)
+            {
+                return;
+            }
+
+            if (GameModalState.BlocksGameplayInput)
+            {
+                return;
+            }
+
+            PlayerCombatController player = PlayerCombatController.Active;
+            Camera camera = Camera.main;
+            if (player == null || camera == null)
+            {
+                return;
+            }
+
+            Vector3 mouseWorldPosition = camera.ScreenToWorldPoint(GameInput.MouseScreenPosition);
+            Vector2 nextPosition = baseRotationRootAnchoredPosition;
+            if (mouseWorldPosition.x < player.transform.position.x)
+            {
+                nextPosition.x = leftMouseRotationRootPosX;
+            }
+
+            rotationRoot.anchoredPosition = nextPosition;
         }
 
         private void PlayHitShake()

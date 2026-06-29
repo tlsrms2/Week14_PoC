@@ -295,15 +295,33 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class BossGraphPatternEntry
+    public sealed class BossGraphPatternEntry : ISerializationCallbackReceiver
     {
         [SerializeField] private string patternId;
         [SerializeField, Min(0)] private int weight = 1;
-        [SerializeField, Min(0f)] private float cooldownSeconds;
+        [FormerlySerializedAs("cooldownSeconds")]
+        [SerializeField, HideInInspector] private float legacyCooldownSeconds = -1f;
+        [SerializeField, Min(0)] private int cooldownPatternCount;
 
         public string PatternId => patternId;
         public int Weight => Mathf.Max(0, weight);
-        public float CooldownSeconds => Mathf.Max(0f, cooldownSeconds);
+        public int CooldownPatternCount => Mathf.Max(0, cooldownPatternCount);
+
+        public void OnBeforeSerialize()
+        {
+            legacyCooldownSeconds = -1f;
+        }
+
+        public void OnAfterDeserialize()
+        {
+            if (legacyCooldownSeconds <= 0f || cooldownPatternCount > 0)
+            {
+                return;
+            }
+
+            cooldownPatternCount = Mathf.CeilToInt(legacyCooldownSeconds);
+            legacyCooldownSeconds = -1f;
+        }
     }
 
     [Serializable]

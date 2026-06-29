@@ -16,11 +16,11 @@ namespace Week14.UI
         [Tooltip("누르고 있는 동안 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
         [SerializeField] private Color selectedColor = new(1f, 0.85f, 0.3f);
         [Tooltip("이 아이콘을 누르고 있어야 하는 시간(초)입니다. 다 차면 해당 보스전이 시작됩니다.")]
-        [SerializeField, Min(0.1f)] private float holdSecondsToStart = 1.5f;
+        [SerializeField, Min(0.1f)] private float holdSecondsToStart = 1f;
         [Tooltip("누르고 있는 동안 차오르는 진행 바 이미지입니다. Image Type이 Filled여야 합니다.")]
         [SerializeField] private Image holdFillImage;
         [Tooltip("진행 바가 채워지는 감속 곡선의 강도입니다. 클수록 처음에 더 빠르게 차오르고 끝에 갈수록 더 느려집니다. 1 = 일정한 속도.")]
-        [SerializeField, Min(1f)] private float holdFillEaseExponent = 4f;
+        [SerializeField, Min(1f)] private float holdFillEaseExponent = 2f;
         [Tooltip("이 아이콘과 같이 숨겨질 아웃라인 SpriteRenderer입니다. 잠겨있으면 아이콘과 함께 꺼집니다.")]
         [SerializeField] private SpriteRenderer outlineRenderer;
 
