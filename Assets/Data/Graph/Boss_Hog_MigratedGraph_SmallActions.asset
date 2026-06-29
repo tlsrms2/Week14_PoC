@@ -673,8 +673,6 @@ MonoBehaviour:
   - phaseIndex: 0
     selectionMode: 4
     patternIntervalSeconds: 2
-    bossCanFlyOverGround: 0
-    minionsCanFlyOverGround: 0
     openingPatternId: Pattern8
     patterns:
     - patternId: Pattern8
@@ -696,8 +694,6 @@ MonoBehaviour:
   - phaseIndex: 1
     selectionMode: 4
     patternIntervalSeconds: 2
-    bossCanFlyOverGround: 0
-    minionsCanFlyOverGround: 0
     openingPatternId: Pattern5
     patterns:
     - patternId: Pattern8
