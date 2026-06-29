@@ -139,7 +139,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.31, y: 0.18}
+  m_Size: {x: 0.35, y: 0.3}
   m_EdgeRadius: 0
 --- !u!114 &2278703389101142776
 MonoBehaviour:
@@ -156,6 +156,7 @@ MonoBehaviour:
   weapon: {fileID: 0}
   outlineRenderer: {fileID: 4663915944224372311}
   outlineLight: {fileID: 7141274058631949862}
+  equipSfxId: 
 --- !u!114 &653176636007630648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +177,8 @@ MonoBehaviour:
   popSeconds: 0.06
   settleSeconds: 0.1
   returnSeconds: 0.1
+  hoverSfxId: 
+  hoverSfxDebounceSeconds: 0.1
 --- !u!1 &1255011784211741039
 GameObject:
   m_ObjectHideFlags: 0

@@ -196,7 +196,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908220
     sequences: []
-    editorPosition: {x: 767, y: 290}
+    editorPosition: {x: 768, y: 290}
   - nodeId: HogPattern6_Action08
     nodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
     nodeKind: 0
@@ -1070,7 +1070,7 @@ MonoBehaviour:
     phaseIndex: 0
   parallelEdges: []
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:
@@ -1894,7 +1894,7 @@ MonoBehaviour:
     - rid: 2634811931892908229
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: Default
+        projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
           bulletDamage: 1
@@ -1975,7 +1975,7 @@ MonoBehaviour:
     - rid: 2634811931892908233
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: Default
+        projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
           bulletDamage: 1
