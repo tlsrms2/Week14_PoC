@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Audio;
@@ -77,6 +78,7 @@ namespace Week14.Enemy
         [FormerlySerializedAs("bossBulletBarView")]
         [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private BossLivesView bossLivesView;
+        [SerializeField] private TMP_Text bossNameText;
 
         [SerializeField, HideInInspector] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
         [FormerlySerializedAs("bulletBarColor")]
@@ -728,6 +730,10 @@ namespace Week14.Enemy
 
             bossLivesView?.SetTarget(this);
 
+            if (bossNameText != null)
+            {
+                bossNameText.text = DisplayName;
+            }
         }
 
         private void BindBossCombatUiTargetsIfVisible()
