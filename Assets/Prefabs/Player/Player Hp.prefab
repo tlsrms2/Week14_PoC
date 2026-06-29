@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 2061679438800647822}
   - component: {fileID: 3158468067727090255}
   m_Layer: 0
-  m_Name: Image_background
+  m_Name: SkillGaugeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
