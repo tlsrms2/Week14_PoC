@@ -14,6 +14,7 @@ namespace Week14.Combat
         private const string ParryLockOnIndicatorName = "ParryLockOnIndicator";
         private const string LegacyParryLockOnIndicatorName = "ProjectileLockOnIndicator";
         private const string WallLayerName = "Wall";
+        private const string GroundLayerName = "Ground";
         private const int MaxPathDashCount = 160;
         private const int HomingAimReticleLineCount = 3;
         private const int HomingAimReticleCircleSegments = 40;
@@ -968,6 +969,11 @@ namespace Week14.Combat
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (IsGroundCollider(other))
+            {
+                return;
+            }
+
             PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
             if (playerProjectile != null)
             {
@@ -1626,6 +1632,14 @@ namespace Week14.Combat
             return wallLayer >= 0
                 && collider != null
                 && collider.gameObject.layer == wallLayer;
+        }
+
+        private static bool IsGroundCollider(Collider2D collider)
+        {
+            int groundLayer = LayerMask.NameToLayer(GroundLayerName);
+            return groundLayer >= 0
+                && collider != null
+                && collider.gameObject.layer == groundLayer;
         }
 
         private static int GetWallMask()

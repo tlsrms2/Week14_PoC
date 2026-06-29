@@ -359,6 +359,7 @@ MonoBehaviour:
   bossCombatUiRoot: {fileID: 0}
   bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
+  bossNameText: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}

@@ -1604,6 +1604,8 @@ MonoBehaviour:
   - phaseIndex: 0
     selectionMode: 3
     patternIntervalSeconds: 0
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 1
     openingPatternId: Pattern2
     patterns:
     - patternId: Pattern1
@@ -1637,6 +1639,8 @@ MonoBehaviour:
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 0
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 1
     openingPatternId: Upgrade/Pattern5
     patterns:
     - patternId: Pattern1
@@ -2486,7 +2490,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern5-1
+  debugForcedPatternId: Pattern5-2
   references:
     version: 2
     RefIds:
@@ -5270,7 +5274,7 @@ MonoBehaviour:
         radius: 6.5
         spacing: 1
         moveSpeed: 24
-        settleSeconds: 0.5
+        settleSeconds: 1
         waitForDuration: 1
     - rid: 2634812007888978074
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}

@@ -284,12 +284,16 @@ namespace Week14.Enemy
         [SerializeField, Min(0)] private int phaseIndex;
         [SerializeField, HideInInspector] private BossSequenceSelectionMode selectionMode;
         [SerializeField, Min(0f)] private float patternIntervalSeconds;
+        [SerializeField] private bool bossCanFlyOverGround;
+        [SerializeField] private bool minionsCanFlyOverGround;
         [SerializeField] private string openingPatternId;
         [SerializeField] private List<BossGraphPatternEntry> patterns = new();
 
         public int PhaseIndex => phaseIndex;
         public BossSequenceSelectionMode SelectionMode => selectionMode;
         public float PatternIntervalSeconds => Mathf.Max(0f, patternIntervalSeconds);
+        public bool BossCanFlyOverGround => bossCanFlyOverGround;
+        public bool MinionsCanFlyOverGround => minionsCanFlyOverGround;
         public string OpeningPatternId => openingPatternId;
         public IReadOnlyList<BossGraphPatternEntry> Patterns => patterns;
     }

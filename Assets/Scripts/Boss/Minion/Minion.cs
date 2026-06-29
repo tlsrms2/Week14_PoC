@@ -1482,7 +1482,9 @@ namespace Week14.Enemy
         {
             if (body != null)
             {
-                body.linearVelocity = velocity;
+                body.linearVelocity = CanFlyOverGround()
+                    ? velocity
+                    : GroundMovementConstraint.ClampVelocity(body, velocity, colliders);
             }
         }
 
@@ -1494,6 +1496,9 @@ namespace Week14.Enemy
         private void SetPatternPosition(Vector2 target, bool suppressContactDamage)
         {
             Vector2 current = transform.position;
+            target = CanFlyOverGround()
+                ? target
+                : GroundMovementConstraint.ClampStep(current, target, colliders);
             Vector2 delta = target - current;
             suppressBodyContactDamage = suppressContactDamage;
             if (body != null)
@@ -1535,6 +1540,11 @@ namespace Week14.Enemy
             }
 
             SetPatternPosition(next, true);
+        }
+
+        private bool CanFlyOverGround()
+        {
+            return Owner?.MinionsCanFlyOverGround == true;
         }
 
         private void StopBody()

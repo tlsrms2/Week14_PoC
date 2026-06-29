@@ -165,7 +165,8 @@ namespace Week14.Combat
 
             float staggerSeconds = Mathf.Max(0f, config.EnemyBodyContactStaggerSeconds);
             enemyBodyContactStaggerEndsAt = Mathf.Max(enemyBodyContactStaggerEndsAt, Time.time + staggerSeconds);
-            body.linearVelocity = direction * Mathf.Max(0f, config.EnemyBodyContactKnockbackSpeed);
+            Vector2 velocity = direction * Mathf.Max(0f, config.EnemyBodyContactKnockbackSpeed);
+            body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, velocity);
         }
 
         private bool IsEnemyBodyContact(Collider2D other)

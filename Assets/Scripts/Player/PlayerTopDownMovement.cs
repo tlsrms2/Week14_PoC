@@ -50,7 +50,8 @@ namespace Week14.Combat
                 return;
             }
 
-            body.linearVelocity = moveInput * config.MoveSpeed;
+            Vector2 velocity = moveInput * config.MoveSpeed;
+            body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, velocity);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Week14.Enemy
     {
         Transform MinionOwnerTransform { get; }
         Transform MinionTarget { get; }
+        bool MinionsCanFlyOverGround { get; }
 
         EnemyProjectile FireMinionProjectile(
             Minion source,

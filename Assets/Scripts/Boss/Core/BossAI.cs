@@ -92,6 +92,7 @@ namespace Week14.Enemy
         private Health health;
         private BulletGauge hpGauge;
         private SpriteRenderer[] renderers;
+        private Collider2D[] groundProbeColliders;
         private Transform player;
         private bool isExecutionLocked;
         private bool isBodyHitColorActive;
@@ -156,6 +157,9 @@ namespace Week14.Enemy
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
         private CombatEffectData ActiveEffectData => GraphAsset != null && GraphAsset.EffectData != null ? GraphAsset.EffectData : effectData;
         private BossColorSettings ActiveColorSettings => GraphAsset != null && GraphAsset.ColorSettings != null ? GraphAsset.ColorSettings : colorSettings;
+        private BossGraphPhase ActiveGraphPhase => GraphAsset != null ? GraphAsset.GetPhase(CurrentPhaseIndex) : null;
+        private bool BossCanFlyOverGround => ActiveGraphPhase != null && ActiveGraphPhase.BossCanFlyOverGround;
+        public bool MinionsCanFlyOverGround => ActiveGraphPhase != null && ActiveGraphPhase.MinionsCanFlyOverGround;
         internal BossProjectileSettings ResolveGraphProjectileSettingsForActions(string projectileName)
         {
             return ResolveGraphProjectileSettings(projectileName);
@@ -186,6 +190,7 @@ namespace Week14.Enemy
             renderers = bodyRoot != null
                 ? bodyRoot.GetComponentsInChildren<SpriteRenderer>(true)
                 : GetComponentsInChildren<SpriteRenderer>(true);
+            groundProbeColliders = GetComponentsInChildren<Collider2D>(true);
             phaseController = new BossPhaseController(this);
             stateMachine = new BossStateMachine(this);
         }
@@ -318,7 +323,19 @@ namespace Week14.Enemy
             }
 
             Vector2 direction = (target - (Vector2)transform.position).normalized;
-            body.linearVelocity = direction * moveSpeed;
+            SetMovementVelocity(direction * moveSpeed);
+        }
+
+        internal void SetMovementVelocity(Vector2 velocity)
+        {
+            if (body == null)
+            {
+                return;
+            }
+
+            body.linearVelocity = BossCanFlyOverGround
+                ? velocity
+                : GroundMovementConstraint.ClampVelocity(body, velocity, groundProbeColliders);
         }
 
         public void Stop()
