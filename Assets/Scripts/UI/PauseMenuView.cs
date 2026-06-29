@@ -12,15 +12,18 @@ namespace Week14.UI
     {
         [SerializeField] private GameObject panelRoot;
         [SerializeField] private GameObject optionsPanelRoot;
+        [SerializeField] private PixelBlockRevealView panelRevealView;
         [SerializeField] private string titleSceneName = "TitleScene";
         [SerializeField] private string lobbySceneName = "LobbyScene";
 
         private float previousTimeScale = 1f;
         private bool isPaused;
+        private bool isClosing;
 
         private void Awake()
         {
-            SetPaused(false);
+            CachePanelRevealView();
+            SetPausedImmediate(false);
         }
 
         private void OnDisable()
@@ -31,6 +34,7 @@ namespace Week14.UI
             }
 
             isPaused = false;
+            isClosing = false;
             GameModalState.BlocksGameplayInput = false;
         }
 
@@ -44,6 +48,11 @@ namespace Week14.UI
 
         public void TogglePause()
         {
+            if (isClosing)
+            {
+                return;
+            }
+
             if (!isPaused && GameModalState.BlocksGameplayInput)
             {
                 return;
@@ -59,11 +68,6 @@ namespace Week14.UI
 
         public void OpenOptions()
         {
-            if (panelRoot != null)
-            {
-                panelRoot.SetActive(false);
-            }
-
             if (optionsPanelRoot != null)
             {
                 optionsPanelRoot.SetActive(true);
@@ -118,16 +122,86 @@ namespace Week14.UI
 
         private void SetPaused(bool paused)
         {
+            if (paused)
+            {
+                OpenPauseMenu();
+                return;
+            }
+
+            ClosePauseMenu();
+        }
+
+        private void OpenPauseMenu()
+        {
+            isPaused = true;
+            isClosing = false;
+
+            if (panelRoot != null && !panelRoot.activeSelf)
+            {
+                panelRoot.SetActive(true);
+            }
+
+            if (optionsPanelRoot != null)
+            {
+                optionsPanelRoot.SetActive(false);
+            }
+
+            Freeze();
+            GameModalState.BlocksGameplayInput = true;
+        }
+
+        private void ClosePauseMenu()
+        {
+            if (!isPaused && !isClosing)
+            {
+                return;
+            }
+
+            if (optionsPanelRoot != null)
+            {
+                optionsPanelRoot.SetActive(false);
+            }
+
+            CachePanelRevealView();
+
+            if (panelRoot != null && panelRoot.activeInHierarchy && panelRevealView != null)
+            {
+                isClosing = true;
+                GameModalState.BlocksGameplayInput = true;
+                panelRevealView.PlayHide(CompleteClose);
+                return;
+            }
+
+            CompleteClose();
+        }
+
+        private void CompleteClose()
+        {
+            isPaused = false;
+            isClosing = false;
+
+            if (panelRoot != null)
+            {
+                panelRoot.SetActive(false);
+            }
+
+            Unfreeze();
+            GameModalState.BlocksGameplayInput = false;
+        }
+
+        private void SetPausedImmediate(bool paused)
+        {
             isPaused = paused;
+            isClosing = false;
 
             if (panelRoot != null)
             {
                 panelRoot.SetActive(paused);
             }
 
-            if (!paused)
+            if (optionsPanelRoot != null)
             {
-                CloseOptions();
+                optionsPanelRoot.SetActive(false);
             }
 
             if (paused)
@@ -140,6 +214,14 @@ namespace Week14.UI
             }
 
             GameModalState.BlocksGameplayInput = paused;
+        }
+
+        private void CachePanelRevealView()
+        {
+            if (panelRevealView == null && panelRoot != null)
+            {
+                panelRevealView = panelRoot.GetComponent<PixelBlockRevealView>();
+            }
         }
 
         private void Freeze()
