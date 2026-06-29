@@ -13,7 +13,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, int> nextSequenceIndexes = new();
         private readonly Dictionary<string, BossGraphActionAsset> lastSequences = new();
         private readonly Dictionary<string, List<BossSequenceEntry>> sequenceBags = new();
-        private readonly Dictionary<string, float> patternCooldownReadyTimes = new();
+        private readonly Dictionary<string, int> patternCooldownRemainingCounts = new();
         private readonly HashSet<int> openingPatternsPlayed = new();
         private string currentNodeId;
         private string previousRuntimeNodeId;
@@ -25,7 +25,7 @@ namespace Week14.Enemy
             nextSequenceIndexes.Clear();
             lastSequences.Clear();
             sequenceBags.Clear();
-            patternCooldownReadyTimes.Clear();
+            patternCooldownRemainingCounts.Clear();
             openingPatternsPlayed.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;
@@ -160,8 +160,8 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                StartPatternCooldown(phase, patternEntry);
                 yield return ExecutePattern(graph, pattern, context);
+                RegisterCompletedPattern(phase, patternEntry);
                 context.Stop();
                 if (phase.PatternIntervalSeconds > 0f)
                 {
@@ -803,21 +803,19 @@ namespace Week14.Enemy
                 return null;
             }
 
-            float now = Time.time;
-            return SelectWeightedReadyPattern(phase, now, true)
-                ?? SelectWeightedReadyPattern(phase, now, false);
+            return SelectWeightedReadyPattern(phase, true)
+                ?? SelectWeightedReadyPattern(phase, false);
         }
 
         private BossGraphPatternEntry SelectWeightedReadyPattern(
             BossGraphPhase phase,
-            float now,
             bool requireCooldownReady)
         {
             int totalWeight = 0;
             for (int i = 0; i < phase.Patterns.Count; i++)
             {
                 BossGraphPatternEntry entry = phase.Patterns[i];
-                if (!CanSelectPatternEntry(phase, entry, now, requireCooldownReady))
+                if (!CanSelectPatternEntry(phase, entry, requireCooldownReady))
                 {
                     continue;
                 }
@@ -827,14 +825,14 @@ namespace Week14.Enemy
 
             if (totalWeight <= 0)
             {
-                return SelectRandomReadyPattern(phase, now, requireCooldownReady);
+                return SelectRandomReadyPattern(phase, requireCooldownReady);
             }
 
             int value = Random.Range(0, totalWeight);
             for (int i = 0; i < phase.Patterns.Count; i++)
             {
                 BossGraphPatternEntry entry = phase.Patterns[i];
-                if (!CanSelectPatternEntry(phase, entry, now, requireCooldownReady))
+                if (!CanSelectPatternEntry(phase, entry, requireCooldownReady))
                 {
                     continue;
                 }
@@ -847,18 +845,17 @@ namespace Week14.Enemy
                 value -= entry.Weight;
             }
 
-            return SelectRandomReadyPattern(phase, now, requireCooldownReady);
+            return SelectRandomReadyPattern(phase, requireCooldownReady);
         }
 
         private BossGraphPatternEntry SelectRandomReadyPattern(
             BossGraphPhase phase,
-            float now,
             bool requireCooldownReady)
         {
             int selectableCount = 0;
             for (int i = 0; i < phase.Patterns.Count; i++)
             {
-                if (CanSelectPatternEntry(phase, phase.Patterns[i], now, requireCooldownReady))
+                if (CanSelectPatternEntry(phase, phase.Patterns[i], requireCooldownReady))
                 {
                     selectableCount++;
                 }
@@ -873,7 +870,7 @@ namespace Week14.Enemy
             for (int i = 0; i < phase.Patterns.Count; i++)
             {
                 BossGraphPatternEntry entry = phase.Patterns[i];
-                if (!CanSelectPatternEntry(phase, entry, now, requireCooldownReady))
+                if (!CanSelectPatternEntry(phase, entry, requireCooldownReady))
                 {
                     continue;
                 }
@@ -892,7 +889,6 @@ namespace Week14.Enemy
         private bool CanSelectPatternEntry(
             BossGraphPhase phase,
             BossGraphPatternEntry entry,
-            float now,
             bool requireCooldownReady)
         {
             if (entry == null || string.IsNullOrWhiteSpace(entry.PatternId))
@@ -906,7 +902,7 @@ namespace Week14.Enemy
             }
 
             string key = GetPatternCooldownKey(phase, entry.PatternId);
-            return !patternCooldownReadyTimes.TryGetValue(key, out float readyTime) || now >= readyTime;
+            return !patternCooldownRemainingCounts.TryGetValue(key, out int remainingCount) || remainingCount <= 0;
         }
 
         private static BossGraphPatternEntry FindPatternEntry(BossGraphPhase phase, string patternId)
@@ -928,22 +924,53 @@ namespace Week14.Enemy
             return null;
         }
 
-        private void StartPatternCooldown(BossGraphPhase phase, BossGraphPatternEntry entry)
+        private void RegisterCompletedPattern(BossGraphPhase phase, BossGraphPatternEntry entry)
         {
             if (phase == null || entry == null || string.IsNullOrWhiteSpace(entry.PatternId))
             {
                 return;
             }
 
-            string key = GetPatternCooldownKey(phase, entry.PatternId);
-            float cooldown = entry.CooldownSeconds;
-            if (cooldown <= 0f)
+            string completedKey = GetPatternCooldownKey(phase, entry.PatternId);
+            ReduceOtherPatternCooldowns(phase, completedKey);
+
+            int cooldownPatternCount = entry.CooldownPatternCount;
+            if (cooldownPatternCount <= 0)
             {
-                patternCooldownReadyTimes.Remove(key);
+                patternCooldownRemainingCounts.Remove(completedKey);
                 return;
             }
 
-            patternCooldownReadyTimes[key] = Time.time + cooldown;
+            patternCooldownRemainingCounts[completedKey] = cooldownPatternCount;
+        }
+
+        private void ReduceOtherPatternCooldowns(BossGraphPhase phase, string completedKey)
+        {
+            if (patternCooldownRemainingCounts.Count == 0)
+            {
+                return;
+            }
+
+            string phaseKeyPrefix = $"{phase.PhaseIndex}:";
+            List<string> keys = patternCooldownRemainingCounts.Keys.ToList();
+            for (int i = 0; i < keys.Count; i++)
+            {
+                string key = keys[i];
+                if (key == completedKey || !key.StartsWith(phaseKeyPrefix, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                int nextCount = patternCooldownRemainingCounts[key] - 1;
+                if (nextCount <= 0)
+                {
+                    patternCooldownRemainingCounts.Remove(key);
+                }
+                else
+                {
+                    patternCooldownRemainingCounts[key] = nextCount;
+                }
+            }
         }
 
         private static string GetPatternCooldownKey(BossGraphPhase phase, string patternId)
