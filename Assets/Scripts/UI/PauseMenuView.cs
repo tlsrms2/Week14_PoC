@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Week14.Bootstrap;
@@ -90,18 +89,26 @@ namespace Week14.UI
 
         public void RestartStage()
         {
-            int buildIndex = SceneManager.GetActiveScene().buildIndex;
-            CloseThenLoadScene(() => SceneTransition.LoadScene(buildIndex));
+            Time.timeScale = 1f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public void ReturnToLobby()
         {
-            CloseThenLoadScene(() => SceneTransition.LoadScene(lobbySceneName));
+            Time.timeScale = 1f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneTransition.LoadScene(lobbySceneName);
         }
 
         public void ReturnToTitle()
         {
-            CloseThenLoadScene(() => SceneTransition.LoadScene(titleSceneName));
+            Time.timeScale = 1f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneTransition.LoadScene(titleSceneName);
         }
 
         public void QuitGame()
@@ -121,7 +128,7 @@ namespace Week14.UI
                 return;
             }
 
-            ClosePauseMenu(null);
+            ClosePauseMenu();
         }
 
         private void OpenPauseMenu()
@@ -143,7 +150,7 @@ namespace Week14.UI
             GameModalState.BlocksGameplayInput = true;
         }
 
-        private void ClosePauseMenu(Action onClosed)
+        private void ClosePauseMenu()
         {
             if (isClosing)
             {
@@ -152,7 +159,6 @@ namespace Week14.UI
 
             if (!isPaused)
             {
-                onClosed?.Invoke();
                 return;
             }
 
@@ -167,14 +173,14 @@ namespace Week14.UI
             {
                 isClosing = true;
                 GameModalState.BlocksGameplayInput = true;
-                panelRevealView.PlayHide(() => CompleteClose(onClosed));
+                panelRevealView.PlayHide(CompleteClose);
                 return;
             }
 
-            CompleteClose(onClosed);
+            CompleteClose();
         }
 
-        private void CompleteClose(Action onClosed)
+        private void CompleteClose()
         {
             isPaused = false;
             isClosing = false;
@@ -186,19 +192,6 @@ namespace Week14.UI
 
             Unfreeze();
             GameModalState.BlocksGameplayInput = false;
-            onClosed?.Invoke();
-        }
-
-        private void CloseThenLoadScene(Action loadScene)
-        {
-            ClosePauseMenu(() =>
-            {
-                Time.timeScale = 1f;
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                GameModalState.BlocksGameplayInput = true;
-                loadScene?.Invoke();
-            });
         }
 
         private void SetPausedImmediate(bool paused)

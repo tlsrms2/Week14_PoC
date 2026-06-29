@@ -118,24 +118,6 @@ namespace Week14.UI
             PlayFromTo(currentProgress, 0f, closeDuration, onComplete);
         }
 
-        public static bool TryPlayHide(GameObject root, Action onComplete)
-        {
-            if (root == null || !root.activeInHierarchy)
-            {
-                return false;
-            }
-
-            PixelBlockRevealView revealView = root.GetComponent<PixelBlockRevealView>()
-                ?? root.GetComponentInChildren<PixelBlockRevealView>();
-            if (revealView == null || !revealView.isActiveAndEnabled)
-            {
-                return false;
-            }
-
-            revealView.PlayHide(onComplete);
-            return true;
-        }
-
         [ContextMenu("Show Immediate")]
         public void ShowImmediate()
         {

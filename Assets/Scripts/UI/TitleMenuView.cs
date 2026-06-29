@@ -15,8 +15,6 @@ namespace Week14.UI
         [BossGraphSfxId]
         [SerializeField] private string startGameSfxId;
 
-        private bool sceneTransitionPending;
-
         private void Awake()
         {
             if (!string.IsNullOrEmpty(titleBgmId))
@@ -27,21 +25,9 @@ namespace Week14.UI
 
         public void StartGame()
         {
-            if (sceneTransitionPending)
-            {
-                return;
-            }
-
-            sceneTransitionPending = true;
-
             if (!string.IsNullOrEmpty(startGameSfxId))
             {
                 SoundManager.PlaySfx(startGameSfxId);
-            }
-
-            if (PixelBlockRevealView.TryPlayHide(gameObject, () => SceneTransition.LoadScene(mainSceneName)))
-            {
-                return;
             }
 
             SceneTransition.LoadScene(mainSceneName);
