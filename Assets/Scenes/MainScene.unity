@@ -3949,7 +3949,8 @@ MonoBehaviour:
   hitShakeFrequency: 40
   bulletLifetimeSeconds: 10
   timeoutGaugeFullRatio: 0.8
-  timeoutGaugeColor: {r: 1, g: 0, b: 0, a: 0}
+  timeoutGaugeColor: {r: 1, g: 0, b: 0, a: 0.6666667}
+  timeoutFillSprite: {fileID: -9097902205996102869, guid: da418193f948df34c8b9b0c2fe28c069, type: 3}
   timeoutShiftSeconds: 0.18
   warningBlinkFrequency: 7
   warningBlinkMinAlpha: 0.35

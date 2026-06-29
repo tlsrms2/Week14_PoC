@@ -29,6 +29,7 @@ namespace Week14.UI
 
             private Image timeoutFillImage;
             private Image ejectedTimeoutFillImage;
+            private Sprite timeoutFillSpriteOverride;
             private Image shineImage;
             private Image ejectedBodyImage;
             private EffectKind effectKind;
@@ -282,6 +283,11 @@ namespace Week14.UI
                 return worldDelta;
             }
 
+            public void SetTimeoutFillSpriteOverride(Sprite sprite)
+            {
+                timeoutFillSpriteOverride = sprite;
+            }
+
             public void SetTimeoutVisual(bool usable, bool recovered, float fillAmount, Color fillColor, float iconAlpha)
             {
                 lastTimeoutFillAmount = Mathf.Clamp01(fillAmount);
@@ -293,18 +299,18 @@ namespace Week14.UI
                     EnsureTimeoutFillImage();
                 }
 
-                ApplyTimeoutFill(timeoutFillImage, bodyImage, showFill, lastTimeoutFillAmount, fillColor);
+                ApplyTimeoutFill(timeoutFillImage, bodyImage, showFill, lastTimeoutFillAmount, fillColor, timeoutFillSpriteOverride);
                 float alpha = usable && recovered ? Mathf.Clamp01(iconAlpha) : 0f;
                 SetImageAlpha(bodyImage, alpha);
-                SetImageAlpha(timeoutFillImage, showFill ? alpha : 0f);
+                SetImageAlpha(timeoutFillImage, showFill ? alpha * fillColor.a : 0f);
             }
 
             private void EnsureTimeoutFillImage()
             {
-                timeoutFillImage = EnsureTimeoutFillChild(timeoutFillImage, bodyImage, "TimeoutFill");
+                timeoutFillImage = EnsureTimeoutFillChild(timeoutFillImage, bodyImage, "TimeoutFill", timeoutFillSpriteOverride);
             }
 
-            private static Image EnsureTimeoutFillChild(Image current, Image parentImage, string objectName)
+            private static Image EnsureTimeoutFillChild(Image current, Image parentImage, string objectName, Sprite overrideSprite)
             {
                 if (current != null || parentImage == null)
                 {
@@ -326,7 +332,7 @@ namespace Week14.UI
                 Image fill = fillObject.AddComponent<Image>();
                 fill.raycastTarget = false;
                 fill.preserveAspect = parentImage.preserveAspect;
-                fill.sprite = parentImage.sprite;
+                fill.sprite = overrideSprite != null ? overrideSprite : parentImage.sprite;
                 fill.type = Image.Type.Filled;
                 fill.fillMethod = Image.FillMethod.Horizontal;
                 fill.fillOrigin = (int)Image.OriginHorizontal.Left;
@@ -335,14 +341,19 @@ namespace Week14.UI
                 return fill;
             }
 
-            private static void ApplyTimeoutFill(Image fill, Image source, bool visible, float fillAmount, Color fillColor)
+            private static void ApplyTimeoutFill(Image fill, Image source, bool visible, float fillAmount, Color fillColor, Sprite overrideSprite)
             {
                 if (fill == null)
                 {
                     return;
                 }
 
-                if (source != null)
+                if (overrideSprite != null)
+                {
+                    fill.sprite = overrideSprite;
+                    fill.preserveAspect = source != null ? source.preserveAspect : fill.preserveAspect;
+                }
+                else if (source != null)
                 {
                     fill.sprite = source.sprite;
                     fill.preserveAspect = source.preserveAspect;
@@ -396,7 +407,7 @@ namespace Week14.UI
             {
                 EnsureTimeoutFillImage();
                 ejectedBodyImage = EnsureEjectedImage(ejectedBodyImage, bodyImage, "EjectedBody");
-                ejectedTimeoutFillImage = EnsureTimeoutFillChild(ejectedTimeoutFillImage, ejectedBodyImage, "EjectedTimeoutFill");
+                ejectedTimeoutFillImage = EnsureTimeoutFillChild(ejectedTimeoutFillImage, ejectedBodyImage, "EjectedTimeoutFill", timeoutFillSpriteOverride);
             }
 
             private static Image EnsureEjectedImage(Image current, Image source, string objectName)
@@ -458,7 +469,7 @@ namespace Week14.UI
                     return;
                 }
 
-                ApplyTimeoutFill(ejectedTimeoutFillImage, ejectedBodyImage, lastTimeoutFillAmount > 0f, lastTimeoutFillAmount, lastTimeoutFillColor);
+                ApplyTimeoutFill(ejectedTimeoutFillImage, ejectedBodyImage, lastTimeoutFillAmount > 0f, lastTimeoutFillAmount, lastTimeoutFillColor, timeoutFillSpriteOverride);
                 ejectedTimeoutFillImage.gameObject.SetActive(lastTimeoutFillAmount > 0f);
             }
 
@@ -648,6 +659,7 @@ namespace Week14.UI
         [SerializeField, Min(0.01f)] private float bulletLifetimeSeconds = 10f;
         [SerializeField, Range(0.01f, 1f)] private float timeoutGaugeFullRatio = 0.8f;
         [SerializeField] private Color timeoutGaugeColor = new(1f, 0.12f, 0.08f, 1f);
+        [SerializeField] private Sprite timeoutFillSprite;
         [SerializeField, Min(0f)] private float timeoutShiftSeconds = 0.18f;
         [SerializeField, Min(0f)] private float warningBlinkFrequency = 7f;
         [SerializeField, Range(0f, 1f)] private float warningBlinkMinAlpha = 0.35f;
@@ -676,9 +688,19 @@ namespace Week14.UI
         {
             hasSnapshot = false;
             CacheRotationRoot();
+            ApplyTimeoutFillSpriteOverride();
             TryBindPlayer();
             Subscribe();
             Refresh();
+        }
+
+        private void ApplyTimeoutFillSpriteOverride()
+        {
+            hp5?.SetTimeoutFillSpriteOverride(timeoutFillSprite);
+            hp4?.SetTimeoutFillSpriteOverride(timeoutFillSprite);
+            hp3?.SetTimeoutFillSpriteOverride(timeoutFillSprite);
+            hp2?.SetTimeoutFillSpriteOverride(timeoutFillSprite);
+            hp1?.SetTimeoutFillSpriteOverride(timeoutFillSprite);
         }
 
         private void OnDisable()
