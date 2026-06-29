@@ -908,6 +908,22 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2167468118962500727, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
   m_PrefabInstance: {fileID: 1023516955}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &1110529567 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8645842534855480184, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+  m_PrefabInstance: {fileID: 7783583770325630785}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1110529569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7646426946194293539, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+  m_PrefabInstance: {fileID: 7783583770325630785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1457255910
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,6 +1011,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: maxHp
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: bossHpBarView
       value: 
@@ -1867,6 +1887,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+--- !u!1 &1945637656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2723632015128479934, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+  m_PrefabInstance: {fileID: 7783583770325630785}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1945637660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945637656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0378606600034c446b365fdaae04e6ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.PixelBlockRevealView
+  panelGraphic: {fileID: 1110529569}
+  contentRoot: {fileID: 1110529567}
+  playOnEnable: 1
+  useUnscaledTime: 1
+  openDuration: 0.9
+  closeDuration: 0.45
+  cellSize: 15
+  maxCellCount: 2000
+  cellOverlap: 0.1
+  edgeRandomness: 0.14
+  cellAppearWindow: 0.12
+  blockFadeStart: 0.9
+  revealCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panelRevealShader: {fileID: 4800000, guid: e3f8603d624e63d419c60242501b029e, type: 3}
+  effectCellDensity: 0.85
+  syncContentWithReveal: 1
+  contentFadeStart: 0.92
+  contentFadeWindow: 0.08
+  blockInteractionUntilComplete: 1
+  edgeColor: {r: 0.5, g: 1, b: 1, a: 0.19607843}
+  glowColor: {r: 0.13, g: 0.95, b: 1, a: 0.19607843}
+  panelRevealTintStrength: 0.6
+  panelRevealTintDuration: 0.05
+  glowScale: 1.3
+  isolateRuntimeCanvases: 1
 --- !u!1 &1952302281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1944,6 +2029,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952302281}
   m_CullTransparentMesh: 1
+--- !u!1 &1999337116 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3476607205703203748, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+  m_PrefabInstance: {fileID: 7783583770325630785}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1999337120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999337116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0378606600034c446b365fdaae04e6ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.PixelBlockRevealView
+  panelGraphic: {fileID: 7783583770325630788}
+  contentRoot: {fileID: 7783583770325630786}
+  playOnEnable: 1
+  useUnscaledTime: 1
+  openDuration: 0.9
+  closeDuration: 0.45
+  cellSize: 15
+  maxCellCount: 2000
+  cellOverlap: 0.1
+  edgeRandomness: 0.14
+  cellAppearWindow: 0.12
+  blockFadeStart: 0.9
+  revealCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panelRevealShader: {fileID: 4800000, guid: e3f8603d624e63d419c60242501b029e, type: 3}
+  effectCellDensity: 0.85
+  syncContentWithReveal: 1
+  contentFadeStart: 0.92
+  contentFadeWindow: 0.08
+  blockInteractionUntilComplete: 1
+  edgeColor: {r: 0.5, g: 1, b: 1, a: 0.19607843}
+  glowColor: {r: 0.13, g: 0.95, b: 1, a: 0.19607843}
+  panelRevealTintStrength: 0.6
+  panelRevealTintDuration: 0.05
+  glowScale: 1.3
+  isolateRuntimeCanvases: 1
 --- !u!1 &2013734558
 GameObject:
   m_ObjectHideFlags: 0
@@ -3912,13 +4062,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 612028804103317327, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1952302282}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2723632015128479934, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1945637660}
+    - targetCorrespondingSourceObject: {fileID: 3476607205703203748, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1999337120}
   m_SourcePrefab: {fileID: 100100000, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
 --- !u!224 &7783583770325630786 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 612028804103317327, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
   m_PrefabInstance: {fileID: 7783583770325630785}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7783583770325630788 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8935226095694333147, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+  m_PrefabInstance: {fileID: 7783583770325630785}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!4 &7977371578386556056
 Transform:
   m_ObjectHideFlags: 0

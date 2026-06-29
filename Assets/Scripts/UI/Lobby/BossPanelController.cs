@@ -7,10 +7,12 @@ namespace Week14.UI
     {
         private BossData selectedBossData;
         private BossSelectIcon selectedIcon;
+        private bool sceneTransitionPending;
 
         private void OnEnable()
         {
             ClearSelection();
+            sceneTransitionPending = false;
         }
 
         public void SelectBoss(BossSelectIcon icon, BossData bossData)
@@ -37,12 +39,20 @@ namespace Week14.UI
 
         public void EnterSelectedBoss()
         {
-            if (selectedBossData == null || string.IsNullOrEmpty(selectedBossData.SceneName))
+            if (sceneTransitionPending || selectedBossData == null || string.IsNullOrEmpty(selectedBossData.SceneName))
             {
                 return;
             }
 
-            SceneTransition.LoadScene(selectedBossData.SceneName);
+            sceneTransitionPending = true;
+            string sceneName = selectedBossData.SceneName;
+
+            if (PixelBlockRevealView.TryPlayHide(gameObject, () => SceneTransition.LoadScene(sceneName)))
+            {
+                return;
+            }
+
+            SceneTransition.LoadScene(sceneName);
         }
 
         private void ClearSelection()

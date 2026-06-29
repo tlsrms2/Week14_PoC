@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,6 +37,8 @@ namespace Week14.UI
         private Health subscribedPlayerHealth;
         private float previousTimeScale = 1f;
         private bool resultOpen;
+        private bool sceneTransitionPending;
+        private GameObject activeResultRoot;
 
         private void Awake()
         {
@@ -61,6 +64,8 @@ namespace Week14.UI
             }
 
             resultOpen = false;
+            sceneTransitionPending = false;
+            activeResultRoot = null;
             RefreshInputBlock();
         }
 
@@ -71,18 +76,13 @@ namespace Week14.UI
 
         public void RestartScene()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
+            CloseThenLoadScene(() => SceneTransition.LoadScene(buildIndex));
         }
 
         public void ReturnToLobby()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(lobbySceneName);
+            CloseThenLoadScene(() => SceneTransition.LoadScene(lobbySceneName));
         }
 
         private void CacheSceneReferences()
@@ -253,6 +253,7 @@ namespace Week14.UI
             {
                 activeRoot = gameOverRoot;
             }
+            activeResultRoot = visible ? activeRoot : null;
 
             SetRootVisible(gameOverRoot, visible && activeRoot == gameOverRoot);
             SetRootVisible(victoryRoot, visible && activeRoot == victoryRoot);
@@ -299,7 +300,33 @@ namespace Week14.UI
 
         private void RefreshInputBlock()
         {
-            GameModalState.BlocksGameplayInput = resultOpen;
+            GameModalState.BlocksGameplayInput = resultOpen || sceneTransitionPending;
+        }
+
+        private void CloseThenLoadScene(Action loadScene)
+        {
+            if (sceneTransitionPending)
+            {
+                return;
+            }
+
+            sceneTransitionPending = true;
+            RefreshInputBlock();
+
+            void Complete()
+            {
+                Time.timeScale = 1f;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                loadScene?.Invoke();
+            }
+
+            if (PixelBlockRevealView.TryPlayHide(activeResultRoot, Complete))
+            {
+                return;
+            }
+
+            Complete();
         }
 
         private void FreezeGame()
