@@ -6997,7 +6997,7 @@ MonoBehaviour:
   bossData: {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
   detailPanel: {fileID: 1881657931}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
-  holdSecondsToStart: 1.5
+  holdSecondsToStart: 1
   holdFillImage: {fileID: 1411869748}
   holdFillEaseExponent: 2
   outlineRenderer: {fileID: 1687516869}
@@ -15381,7 +15381,7 @@ MonoBehaviour:
   bossData: {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
   detailPanel: {fileID: 5267693784785233884}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
-  holdSecondsToStart: 1.5
+  holdSecondsToStart: 1
   holdFillImage: {fileID: 5267693784785233881}
   holdFillEaseExponent: 2
   outlineRenderer: {fileID: 1260400105}
