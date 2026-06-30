@@ -19,6 +19,8 @@ namespace Week14.Audio
         [SerializeField] private bool sfxMuted;
 
         private static SoundManager instance;
+        private static string pendingBgmId;
+        private static float pendingBgmFadeSeconds;
 
         private AudioSource bgmSource;
         private readonly List<AudioSource> sfxSources = new();
@@ -60,6 +62,14 @@ namespace Week14.Audio
             bgmMuted = SettingsManager.BgmMuted;
             sfxMuted = SettingsManager.SfxMuted;
             RefreshBgmSourceVolume();
+
+            if (pendingBgmId != null)
+            {
+                string id = pendingBgmId;
+                float fadeSeconds = pendingBgmFadeSeconds;
+                pendingBgmId = null;
+                PlayBgm(id, fadeSeconds);
+            }
         }
 
         private void OnDestroy()
@@ -77,7 +87,14 @@ namespace Week14.Audio
 
         public static void PlayBgm(string id, float fadeSeconds = 0.5f)
         {
-            if (instance == null || instance.library == null)
+            if (instance == null)
+            {
+                pendingBgmId = id;
+                pendingBgmFadeSeconds = fadeSeconds;
+                return;
+            }
+
+            if (instance.library == null)
             {
                 return;
             }

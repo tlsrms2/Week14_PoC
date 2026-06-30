@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ namespace Week14.UI
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private TMP_Text maxAmmoText;
         [SerializeField] private TMP_Text parryingRangeText;
+        [SerializeField] private TMP_Text bulletDamageText;
         [SerializeField] private Image iconImage;
         [Tooltip("호버한 버튼 기준 이 패널이 나타날 오프셋입니다.")]
         [SerializeField] private Vector2 anchorOffset = new(0f, 16f);
@@ -115,6 +117,12 @@ namespace Week14.UI
             if (parryingRangeText != null)
             {
                 parryingRangeText.text = $"패링 범위: x{weapon.ParryingRange:0.##}";
+            }
+
+            if (bulletDamageText != null)
+            {
+                int[] damagePerAmmoStep = weapon.DamagePerAmmoStep ?? Array.Empty<int>();
+                bulletDamageText.text = $"탄환 대미지: {string.Join("-", damagePerAmmoStep.Reverse())}";
             }
 
             if (iconImage != null)

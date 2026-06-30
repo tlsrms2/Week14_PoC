@@ -19,7 +19,7 @@ namespace Week14.Skills
 
             if (controller.Bullets != null && controller.Bullets.Restore(reloadAmount, BulletChangeSource.Generic))
             {
-                PlayerBulletAudio.PlayBulletRestoreSfx(controller.Bullets.CurrentBullets);
+                PlayerBulletAudio.PlayBulletRestoreSfx(controller.Bullets.CurrentBullets, controller.Bullets.MaxBullets);
             }
 
             controller.PlayReloadAnimation();

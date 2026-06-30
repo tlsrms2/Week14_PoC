@@ -39,6 +39,7 @@ namespace Week14.Weapons
         public RuntimeAnimatorController LeftArmController => leftArmController;
         public int MaxAmmo => maxAmmo;
         public float ParryingRange => parryingRange;
+        public int[] DamagePerAmmoStep => damagePerAmmoStep;
 
         public int GetDamageForAmmo(int remainingAmmo)
         {

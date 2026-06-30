@@ -1179,6 +1179,11 @@ namespace Week14.UI
                 return;
             }
 
+            if (player.Health != null && player.Health.IsDead)
+            {
+                return;
+            }
+
             Vector3 mouseWorldPosition = camera.ScreenToWorldPoint(GameInput.MouseScreenPosition);
             Vector2 nextPosition = baseRotationRootAnchoredPosition;
             if (mouseWorldPosition.x < player.transform.position.x)

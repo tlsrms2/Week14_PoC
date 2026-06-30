@@ -154,7 +154,9 @@ namespace Week14.Combat
                 return;
             }
 
-            float targetWeight = isActive && !GameModalState.BlocksGameplayInput ? 1f : 0f;
+            bool playerDead = PlayerCombatController.Active != null && PlayerCombatController.Active.Health != null
+                && PlayerCombatController.Active.Health.IsDead;
+            float targetWeight = isActive && !GameModalState.BlocksGameplayInput && !playerDead ? 1f : 0f;
             float fadeSpeed = 1f / Mathf.Max(0.01f, fadeSeconds);
             currentWeight = Mathf.MoveTowards(currentWeight, targetWeight, fadeSpeed * deltaTime);
             volume.weight = currentWeight;
