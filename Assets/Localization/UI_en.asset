@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44328653258752
-    m_Localized: HOLD TO REACH
+    m_Localized: HOLD TO GO
     m_Metadata:
       m_Items: []
   - m_Id: 56983963140096
@@ -64,6 +64,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 58052210425856
     m_Localized: RETRY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98681342754816
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98699957075968
+    m_Localized: SFX
     m_Metadata:
       m_Items: []
   references:

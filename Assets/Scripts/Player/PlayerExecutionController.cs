@@ -71,6 +71,7 @@ namespace Week14.Combat
             lockOnController.ClearInvalidLockOnTarget();
             UpdateHoveredExecutionTarget();
             presentation.RestorePlayerHpAfterExecution();
+            presentation.StartPendingExecutionBulletTimers();
             context.ExecutionImage?.Stop();
         }
 

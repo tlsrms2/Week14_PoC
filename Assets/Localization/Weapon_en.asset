@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 201567862784
-    m_Localized: "This is pistol. \nYou can lock-on. "
+    m_Localized: Auto-Aiming function included
     m_Metadata:
       m_Items: []
   - m_Id: 465628659712
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 753810898944
-    m_Localized: "This is shotgun. \nUse all bullets."
+    m_Localized: Fire all bullets at once
     m_Metadata:
       m_Items: []
   - m_Id: 860581101568
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 913773264896
-    m_Localized: "This is sniper. \nCharge Damage."
+    m_Localized: Damage increases when charged
     m_Metadata:
       m_Items: []
   - m_Id: 5028800724992
@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5404807495680
-    m_Localized: 'Damage: 2-2-4-4-5'
+    m_Localized: 'Damage: 5-4-4-2-2'
     m_Metadata:
       m_Items: []
   - m_Id: 5851316322304

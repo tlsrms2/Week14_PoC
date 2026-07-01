@@ -10,6 +10,7 @@ namespace Week14.UI
     {
         private const int VisibleSlotCount = 5;
         private const float UntimedBulletLoadedAt = -1f;
+        private const float PendingExecutionBulletLoadedAt = -2f;
 
         private enum EffectKind
         {
@@ -686,10 +687,17 @@ namespace Week14.UI
         private int pendingExpiredBulletIndex = -1;
         private int lastExpiredBulletIndex = -1;
         private bool isNewestBulletFrozen;
+        private bool preserveBulletTimersOnNextEnable;
 
         private void OnEnable()
         {
-            hasSnapshot = false;
+            bool preserveBulletTimers = preserveBulletTimersOnNextEnable;
+            preserveBulletTimersOnNextEnable = false;
+            if (!preserveBulletTimers)
+            {
+                hasSnapshot = false;
+            }
+
             CacheRotationRoot();
             ApplyTimeoutFillSpriteOverride();
             TryBindPlayer();
@@ -741,6 +749,42 @@ namespace Week14.UI
             isNewestBulletFrozen = freeze;
         }
 
+        public void StartPendingExecutionBulletTimers()
+        {
+            float now = Time.time;
+            bool changed = false;
+            for (int i = 0; i < bulletLoadedTimes.Count; i++)
+            {
+                if (bulletLoadedTimes[i] != PendingExecutionBulletLoadedAt)
+                {
+                    continue;
+                }
+
+                bulletLoadedTimes[i] = now;
+                changed = true;
+            }
+
+            if (changed)
+            {
+                UpdateTimeoutVisuals();
+            }
+        }
+
+        private void DeferCurrentBulletTimersUntilExecutionEnds()
+        {
+            int current = target != null ? Mathf.Max(0, target.CurrentBullets) : bulletLoadedTimes.Count;
+            if (target != null && bulletLoadedTimes.Count != current)
+            {
+                SyncBulletTimers(current, target.LastChangeSource);
+            }
+
+            int count = Mathf.Min(current, bulletLoadedTimes.Count);
+            for (int i = 0; i < count; i++)
+            {
+                bulletLoadedTimes[i] = PendingExecutionBulletLoadedAt;
+            }
+        }
+
         public void SetTarget(BulletGauge nextTarget)
         {
             if (target == nextTarget)
@@ -765,6 +809,12 @@ namespace Week14.UI
                 }
 
                 return;
+            }
+
+            if (!visible)
+            {
+                DeferCurrentBulletTimersUntilExecutionEnds();
+                preserveBulletTimersOnNextEnable = true;
             }
 
             gameObject.SetActive(visible);
@@ -985,11 +1035,21 @@ namespace Week14.UI
                 bulletLoadedTimes.RemoveAt(removeIndex);
             }
 
-            float loadedAt = source == BulletChangeSource.Parry ? now : UntimedBulletLoadedAt;
+            float loadedAt = GetLoadedAtForRecoverySource(source, now);
             while (bulletLoadedTimes.Count < targetCount)
             {
                 bulletLoadedTimes.Add(loadedAt);
             }
+        }
+
+        private static float GetLoadedAtForRecoverySource(BulletChangeSource source, float now)
+        {
+            return source switch
+            {
+                BulletChangeSource.Parry => now,
+                BulletChangeSource.Execution => PendingExecutionBulletLoadedAt,
+                _ => UntimedBulletLoadedAt
+            };
         }
 
         private int ResolveExpiredBulletIndex()

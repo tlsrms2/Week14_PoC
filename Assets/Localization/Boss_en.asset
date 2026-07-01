@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 6813745152
-    m_Localized: Kill
+    m_Localized: Execute
     m_Metadata:
       m_Items: []
   - m_Id: 2169673711616
@@ -31,11 +31,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2249952690176
-    m_Localized: Detail...
+    m_Localized: He is a gun trafficker who illegally occupied a subway station.
     m_Metadata:
       m_Items: []
   - m_Id: 3242782195712
-    m_Localized: Detail...
+    m_Localized: Preparing update.
     m_Metadata:
       m_Items: []
   - m_Id: 3213078134784

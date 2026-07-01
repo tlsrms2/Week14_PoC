@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 82db55f9b7f918e43a79b940360a217d
+guid: 61cb3c931758bfb4fa3c9679fe65cc10
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6159529629939934899
-    second: Arm_L_Shot-gun5_0
-  - first:
-      213: -6699255051384642708
-    second: Arm_L_Shot-gun5_1
+      213: -8442289504879645074
+    second: BulletHole3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,34 +113,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arm_L_Shot-gun5_0
+      name: BulletHole3_0
       rect:
         serializedVersion: 2
-        x: 29
-        y: 28
-        width: 23
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d49dfe7af64f48aa0800000000000000
-      internalID: -6159529629939934899
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arm_L_Shot-gun5_1
-      rect:
-        serializedVersion: 2
-        x: 91
-        y: 29
-        width: 19
+        x: 73
+        y: 62
+        width: 24
         height: 23
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -153,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c632a7266077703a0800000000000000
-      internalID: -6699255051384642708
+      spriteID: e6ee3aaac66f6da80800000000000000
+      internalID: -8442289504879645074
       vertices: []
       indices: 
       edges: []
@@ -173,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Arm_L_Shot-gun5_0: -6159529629939934899
-      Arm_L_Shot-gun5_1: -6699255051384642708
+      BulletHole3_0: -8442289504879645074
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
