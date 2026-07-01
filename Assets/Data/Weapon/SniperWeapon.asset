@@ -39,9 +39,9 @@ MonoBehaviour:
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
-  maxAmmo: 2
+  maxAmmo: 3
   parryingRange: 1
-  damagePerAmmoStep: 0500000005000000
+  damagePerAmmoStep: 050000000500000005000000
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
@@ -74,9 +74,8 @@ MonoBehaviour:
     m_LocalVariables: []
   skills:
   - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
-  maxChargeTime: 1
-  minDamageMultiplier: 0.4
-  maxDamageMultiplier: 2
+  bulletConsumeInterval: 0.5
+  damageMultiplierPerExtraBullet: 0.5
   references:
     version: 2
     RefIds: []

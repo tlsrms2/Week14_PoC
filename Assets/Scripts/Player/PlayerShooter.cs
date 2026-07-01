@@ -11,6 +11,8 @@ namespace Week14.Combat
 
         private float chargeTime;
         private bool isCharging;
+        private int chargeConsumedBulletCount;
+        private int chargeAccumulatedDamage;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -22,11 +24,15 @@ namespace Week14.Combat
 
         public int CurrentBullets => context.Bullets != null ? context.Bullets.CurrentBullets : 0;
         public bool IsCharging => isCharging;
+        public int ChargeConsumedBulletCount => chargeConsumedBulletCount;
+        public int ChargeAccumulatedDamage => chargeAccumulatedDamage;
 
         internal void BeginAttack()
         {
             chargeTime = 0f;
             isCharging = true;
+            chargeConsumedBulletCount = 0;
+            chargeAccumulatedDamage = 0;
             context.SniperChargeIndicator?.SetChargeRatio(0f);
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
@@ -36,17 +42,16 @@ namespace Week14.Combat
         {
             if (!isCharging) return;
 
-            if (CurrentBullets <= 0)
+            chargeTime += dt;
+            WeaponLoadoutManager.Instance?.CurrentWeapon?.HoldAttack(this, chargeTime);
+
+            if (isCharging && CurrentBullets <= 0)
             {
                 context.PlayerHpView?.FreezeNewestBullet(false);
                 context.SniperChargeIndicator?.SetChargeRatio(0f);
                 isCharging = false;
                 chargeTime = 0f;
-                return;
             }
-
-            chargeTime += dt;
-            WeaponLoadoutManager.Instance?.CurrentWeapon?.HoldAttack(this, chargeTime);
         }
 
         internal void ReleaseAttack()
@@ -57,11 +62,35 @@ namespace Week14.Combat
             context.SniperChargeIndicator?.SetChargeRatio(0f);
             isCharging = false;
             chargeTime = 0f;
+            chargeConsumedBulletCount = 0;
+            chargeAccumulatedDamage = 0;
         }
 
         public void UpdateChargeVisual(float ratio)
         {
             context.SniperChargeIndicator?.SetChargeRatio(ratio);
+        }
+
+        public bool TryConsumeChargeBullet()
+        {
+            if (CurrentBullets <= 0) return false;
+
+            int damage = CalculateAttackBulletDamage();
+            if (!TrySpendOneBullet()) return false;
+
+            chargeAccumulatedDamage += damage;
+            chargeConsumedBulletCount++;
+            return true;
+        }
+
+        public void EndChargeAfterAutoFire()
+        {
+            context.PlayerHpView?.FreezeNewestBullet(false);
+            context.SniperChargeIndicator?.SetChargeRatio(0f);
+            isCharging = false;
+            chargeTime = 0f;
+            chargeConsumedBulletCount = 0;
+            chargeAccumulatedDamage = 0;
         }
 
         public bool TrySpendAllBullets()

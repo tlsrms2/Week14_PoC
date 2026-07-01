@@ -6,12 +6,11 @@ namespace Week14.Weapons
     [CreateAssetMenu(menuName = "Week14/Weapons/Sniper", fileName = "SniperWeapon")]
     public sealed class SniperWeaponSO : BaseWeaponSO
     {
-        [Tooltip("최대 차지 시간(초)입니다. 이 시간을 채우면 최대 대미지가 됩니다.")]
-        [SerializeField, Min(0.01f)] private float maxChargeTime = 2f;
-        [Tooltip("차지 0%(즉시 발사)일 때 기본 대미지에 곱해지는 배율입니다.")]
-        [SerializeField, Min(0f)] private float minDamageMultiplier = 0.5f;
-        [Tooltip("차지 100%일 때 기본 대미지에 곱해지는 배율입니다.")]
-        [SerializeField, Min(0f)] private float maxDamageMultiplier = 3f;
+        [Tooltip("차징 중 탄환을 한 발씩 소모하는 주기(초)입니다.")]
+        [SerializeField, Min(0.01f)] private float bulletConsumeInterval = 0.35f;
+        [Tooltip("소모탄 1개당 붙는 데미지 배율입니다. 최종 데미지 = (소모한 탄들의 데미지 합) * (1 + 이 배율 * (소모탄 개수 - 1)). " +
+            "즉 1발만 소모했을 때는 배율 보너스가 붙지 않고, 2발째부터 배율이 적용됩니다.")]
+        [SerializeField, Min(0f)] private float damageMultiplierPerExtraBullet = 0.5f;
 
         public override void BeginAttack(PlayerShooter shooter)
         {
@@ -19,18 +18,34 @@ namespace Week14.Weapons
 
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)
         {
-            shooter.UpdateChargeVisual(chargeTime / maxChargeTime);
+            int ticksDue = Mathf.FloorToInt(chargeTime / bulletConsumeInterval);
+            while (shooter.ChargeConsumedBulletCount < ticksDue)
+            {
+                if (!shooter.TryConsumeChargeBullet())
+                {
+                    if (shooter.ChargeConsumedBulletCount > 0)
+                    {
+                        FireChargedShot(shooter);
+                    }
+                    shooter.EndChargeAfterAutoFire();
+                    return;
+                }
+            }
         }
 
         public override void ReleaseAttack(PlayerShooter shooter, float chargeTime)
         {
-            if (shooter.CurrentBullets <= 0) return;
+            if (shooter.ChargeConsumedBulletCount <= 0 && !shooter.TryConsumeChargeBullet()) return;
 
-            float ratio = Mathf.Clamp01(chargeTime / maxChargeTime);
-            int baseDamage = shooter.CalculateAttackBulletDamage();
-            int finalDamage = Mathf.Max(1, Mathf.RoundToInt(baseDamage * Mathf.Lerp(minDamageMultiplier, maxDamageMultiplier, ratio)));
+            FireChargedShot(shooter);
+        }
 
-            if (!shooter.TrySpendOneBullet()) return;
+        private void FireChargedShot(PlayerShooter shooter)
+        {
+            int consumedCount = shooter.ChargeConsumedBulletCount;
+            int damageSum = shooter.ChargeAccumulatedDamage;
+            float multiplier = 1f + damageMultiplierPerExtraBullet * Mathf.Max(0, consumedCount - 1);
+            int finalDamage = Mathf.Max(1, Mathf.RoundToInt(damageSum * multiplier));
 
             shooter.FireSingle(finalDamage);
         }
