@@ -38,6 +38,7 @@ namespace Week14.UI
         private float previousTimeScale = 1f;
         private bool resultOpen;
         private BossData localizedVictoryBossData;
+        private BaseWeaponSO localizedVictoryWeaponData;
 
         private void Awake()
         {
@@ -57,6 +58,7 @@ namespace Week14.UI
             BossAI.Defeated -= HandleBossDefeated;
             UnsubscribePlayer();
             UnbindLocalizedVictoryBossName();
+            UnbindLocalizedVictoryWeaponName();
 
             if (resultOpen)
             {
@@ -251,6 +253,7 @@ namespace Week14.UI
         private void ShowGameOver()
         {
             UnbindLocalizedVictoryBossName();
+            UnbindLocalizedVictoryWeaponName();
             ShowResult(gameOverRoot, restartButton);
         }
 
@@ -271,6 +274,7 @@ namespace Week14.UI
             BossData bossData = boss != null ? boss.BossData : null;
 
             SetText(equippedWeaponText, weapon != null ? weapon.DisplayName : string.Empty);
+            BindLocalizedVictoryWeaponName(weapon);
             SetImage(equippedWeaponIcon, weapon != null ? weapon.Icon : null);
 
             string bossName = bossData != null && !string.IsNullOrWhiteSpace(bossData.BossName)
@@ -306,6 +310,7 @@ namespace Week14.UI
             if (!visible)
             {
                 UnbindLocalizedVictoryBossName();
+                UnbindLocalizedVictoryWeaponName();
             }
 
             resultOpen = visible;
@@ -389,6 +394,40 @@ namespace Week14.UI
         private void SetDefeatedBossText(string value)
         {
             SetText(defeatedBossText, value);
+        }
+
+        private void BindLocalizedVictoryWeaponName(BaseWeaponSO weapon)
+        {
+            UnbindLocalizedVictoryWeaponName();
+
+            if (weapon == null || !weapon.HasLocalizedDisplayName)
+            {
+                return;
+            }
+
+            localizedVictoryWeaponData = weapon;
+            weapon.LocalizedDisplayName.StringChanged += SetEquippedWeaponText;
+            weapon.LocalizedDisplayName.RefreshString();
+        }
+
+        private void UnbindLocalizedVictoryWeaponName()
+        {
+            if (localizedVictoryWeaponData == null)
+            {
+                return;
+            }
+
+            if (localizedVictoryWeaponData.HasLocalizedDisplayName)
+            {
+                localizedVictoryWeaponData.LocalizedDisplayName.StringChanged -= SetEquippedWeaponText;
+            }
+
+            localizedVictoryWeaponData = null;
+        }
+
+        private void SetEquippedWeaponText(string value)
+        {
+            SetText(equippedWeaponText, value);
         }
 
         private void RefreshInputBlock()

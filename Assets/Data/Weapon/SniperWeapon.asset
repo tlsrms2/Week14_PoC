@@ -14,18 +14,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.SniperWeaponSO
   weaponId: sniper
   displayName: "\uC800\uACA9\uCD1D"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 860581101568
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 6012509553752412986, guid: f93d70b828bdacc43b738d5bbd8ce888, type: 3}
   outlineIcon: {fileID: -5437695937391495453, guid: 4eab4295f55bb464eb6b801858b75c54, type: 3}
   description: "\uC800\uACA9\uCD1D\uC774\uB2E4. \uCC28\uC9C0\uD558\uBA74 \uB310\uC9C0
     \uC314\uC9D0.\n\uC2A4\uD0AC \uAD6C\uB974\uAE30\uC784."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 913773264896
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
   maxAmmo: 2
   parryingRange: 1
   damagePerAmmoStep: 0500000005000000
+  maxAmmoTooltipTextFormat: 
+  localizedMaxAmmoTooltipText:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 5835298275328
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  parryingRangeTooltipTextFormat: 
+  localizedParryingRangeTooltipText:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 5808177905664
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  bulletDamageTooltipTextFormat: 
+  localizedBulletDamageTooltipText:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 5851316322304
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   skills:
   - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
   maxChargeTime: 1
   minDamageMultiplier: 0.4
   maxDamageMultiplier: 2
+  references:
+    version: 2
+    RefIds: []

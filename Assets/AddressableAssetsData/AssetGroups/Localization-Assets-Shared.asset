@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 844e39019e591984499c4858a8ec6fa8
+    m_Address: Assets/Localization/Weapon Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b1a0083a9ae987c4c95c94f0dce7f455
     m_Address: Assets/Localization/Boss Shared Data.asset
     m_ReadOnly: 1
