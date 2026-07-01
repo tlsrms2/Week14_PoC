@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 
 namespace Week14.UI
 {
@@ -10,6 +12,9 @@ namespace Week14.UI
         [SerializeField] private string bossName;
         [SerializeField] private string crime;
         [SerializeField, TextArea] private string description;
+        [SerializeField] private LocalizedString localizedBossName;
+        [SerializeField] private LocalizedString localizedCrime;
+        [SerializeField] private LocalizedString localizedDescription;
         [SerializeField] private Sprite icon;
         [SerializeField] private string sceneName;
 
@@ -25,10 +30,23 @@ namespace Week14.UI
         public string BossName => bossName;
         public string Crime => crime;
         public string Description => description;
+        public LocalizedString LocalizedBossName => localizedBossName;
+        public LocalizedString LocalizedCrime => localizedCrime;
+        public LocalizedString LocalizedDescription => localizedDescription;
+        public bool HasLocalizedBossName => HasLocalizedString(localizedBossName);
+        public bool HasLocalizedCrime => HasLocalizedString(localizedCrime);
+        public bool HasLocalizedDescription => HasLocalizedString(localizedDescription);
         public Sprite Icon => icon;
         public string SceneName => sceneName;
         public IReadOnlyList<string> UnlocksBossIds => unlocksBossIds;
         public IReadOnlyList<string> UnlocksSkillIds => unlocksSkillIds;
         public IReadOnlyList<string> UnlocksWeaponIds => unlocksWeaponIds;
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
+        }
     }
 }

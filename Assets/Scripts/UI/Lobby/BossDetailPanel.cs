@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Enemy;
@@ -47,6 +48,7 @@ namespace Week14.UI
         private Coroutine revealRoutine;
         private float lastShowSfxTime = float.NegativeInfinity;
         private float lastHideSfxTime = float.NegativeInfinity;
+        private BossData localizedBossData;
 
         private void Awake()
         {
@@ -60,27 +62,35 @@ namespace Week14.UI
 
         public void Show(string bossName, string crime, string description, Sprite icon)
         {
-            if (nameText != null)
+            UnbindLocalizedBossData();
+            SetNameText(bossName);
+            SetCrimeText(crime);
+            SetDescriptionText(description);
+            SetIcon(icon);
+            PlayShow();
+        }
+
+        public void Show(BossData bossData)
+        {
+            UnbindLocalizedBossData();
+
+            if (bossData == null)
             {
-                nameText.text = bossName;
+                Hide();
+                return;
             }
 
-            if (crimeText != null)
-            {
-                crimeText.text = crime;
-            }
+            localizedBossData = bossData;
+            SetNameText(bossData.BossName);
+            SetCrimeText(bossData.Crime);
+            SetDescriptionText(bossData.Description);
+            BindLocalizedBossData();
+            SetIcon(bossData.Icon);
+            PlayShow();
+        }
 
-            if (descriptionText != null)
-            {
-                descriptionText.text = description;
-            }
-
-            if (iconImage != null)
-            {
-                iconImage.sprite = icon;
-                iconImage.enabled = icon != null;
-            }
-
+        private void PlayShow()
+        {
             if (!string.IsNullOrEmpty(showSfxId))
             {
                 float now = Time.unscaledTime;
@@ -99,6 +109,8 @@ namespace Week14.UI
 
         public void Hide()
         {
+            UnbindLocalizedBossData();
+
             if (!string.IsNullOrEmpty(hideSfxId))
             {
                 float now = Time.unscaledTime;
@@ -118,6 +130,7 @@ namespace Week14.UI
 
         public void HideImmediate()
         {
+            UnbindLocalizedBossData();
             StopShowRoutine();
 
             if (growRoutine != null)
@@ -130,6 +143,85 @@ namespace Week14.UI
             SetRevealTargetsActive(false);
             ResetFillImages();
             SetHeight(0f);
+        }
+
+        private void SetNameText(string value)
+        {
+            if (nameText != null)
+            {
+                nameText.text = value;
+            }
+        }
+
+        private void SetCrimeText(string value)
+        {
+            if (crimeText != null)
+            {
+                crimeText.text = value;
+            }
+        }
+
+        private void SetDescriptionText(string value)
+        {
+            if (descriptionText != null)
+            {
+                descriptionText.text = value;
+            }
+        }
+
+        private void SetIcon(Sprite icon)
+        {
+            if (iconImage != null)
+            {
+                iconImage.sprite = icon;
+                iconImage.enabled = icon != null;
+            }
+        }
+
+        private void BindLocalizedBossData()
+        {
+            if (localizedBossData == null)
+            {
+                return;
+            }
+
+            BindLocalizedString(localizedBossData.LocalizedBossName, localizedBossData.HasLocalizedBossName, SetNameText);
+            BindLocalizedString(localizedBossData.LocalizedCrime, localizedBossData.HasLocalizedCrime, SetCrimeText);
+            BindLocalizedString(localizedBossData.LocalizedDescription, localizedBossData.HasLocalizedDescription, SetDescriptionText);
+        }
+
+        private void UnbindLocalizedBossData()
+        {
+            if (localizedBossData == null)
+            {
+                return;
+            }
+
+            UnbindLocalizedString(localizedBossData.LocalizedBossName, localizedBossData.HasLocalizedBossName, SetNameText);
+            UnbindLocalizedString(localizedBossData.LocalizedCrime, localizedBossData.HasLocalizedCrime, SetCrimeText);
+            UnbindLocalizedString(localizedBossData.LocalizedDescription, localizedBossData.HasLocalizedDescription, SetDescriptionText);
+            localizedBossData = null;
+        }
+
+        private static void BindLocalizedString(LocalizedString localizedString, bool enabled, LocalizedString.ChangeHandler handler)
+        {
+            if (!enabled)
+            {
+                return;
+            }
+
+            localizedString.StringChanged += handler;
+            localizedString.RefreshString();
+        }
+
+        private static void UnbindLocalizedString(LocalizedString localizedString, bool enabled, LocalizedString.ChangeHandler handler)
+        {
+            if (!enabled)
+            {
+                return;
+            }
+
+            localizedString.StringChanged -= handler;
         }
 
         private IEnumerator ShowSequenceRoutine()

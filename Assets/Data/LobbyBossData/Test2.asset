@@ -16,8 +16,38 @@ MonoBehaviour:
   bossName: "\uD14C\uC2A4\uD2B8 \uBCF4\uC2A4"
   crime: "\uC704\uD5D8\uB3C4: 2"
   description: "\uC900\uBE44 \uC911\uC785\uB2C8\uB2E4."
+  localizedBossName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 3144186691584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedCrime:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 3213078134784
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 3242782195712
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 21300000, guid: 065da6c7b90ca904dab9cbc6b415fd19, type: 3}
   sceneName: 
   unlocksBossIds: []
   unlocksSkillIds: []
   unlocksWeaponIds: []
+  references:
+    version: 2
+    RefIds: []

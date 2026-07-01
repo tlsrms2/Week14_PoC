@@ -9,5 +9,6 @@ namespace Week14.Save
         public float sfxVolume = 0.7f;
         public bool bgmMuted;
         public bool sfxMuted;
+        public string languageCode = "ko-KR";
     }
 }

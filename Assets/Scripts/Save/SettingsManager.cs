@@ -7,6 +7,7 @@ namespace Week14.Save
     public static class SettingsManager
     {
         private const string SaveFileName = "settings.json";
+        private const string DefaultLanguageCode = "ko-KR";
 
         private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
@@ -29,6 +30,7 @@ namespace Week14.Save
         public static float SfxVolume => Data.sfxVolume;
         public static bool BgmMuted => Data.bgmMuted;
         public static bool SfxMuted => Data.sfxMuted;
+        public static string LanguageCode => string.IsNullOrWhiteSpace(Data.languageCode) ? DefaultLanguageCode : Data.languageCode;
 
         public static void SetBgmVolume(float volume)
         {
@@ -54,11 +56,22 @@ namespace Week14.Save
             Save();
         }
 
+        public static void SetLanguageCode(string languageCode)
+        {
+            Data.languageCode = string.IsNullOrWhiteSpace(languageCode) ? DefaultLanguageCode : languageCode;
+            Save();
+        }
+
         public static void Load()
         {
             try
             {
                 data = File.Exists(SavePath) ? JsonUtility.FromJson<SettingsData>(File.ReadAllText(SavePath)) : new SettingsData();
+                data ??= new SettingsData();
+                if (string.IsNullOrWhiteSpace(data.languageCode))
+                {
+                    data.languageCode = DefaultLanguageCode;
+                }
             }
             catch (Exception)
             {
