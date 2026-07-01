@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3025411932169106235}
   - component: {fileID: 2377328325086529979}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LockOnIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3819555408039170658}
   - component: {fileID: 5724727393675789359}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExecutionIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 4912170951151867422}
   - component: {fileID: 4892281673371484212}
   - component: {fileID: 6897453684406167031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Minion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7754808717796362439}
   - component: {fileID: 5879243788866844603}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 33144151026404172}
   - component: {fileID: 6735452240196518299}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExecutionIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7248746899097906334}
   - component: {fileID: 8546933736409174099}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 3117858263439591997}
   - component: {fileID: 3327489348220524332}
   - component: {fileID: 2075240932106930298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Boss_DronePilot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,7 +578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3407841392189740982}
   - component: {fileID: 6099675610774649578}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212848327682889569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3712059568550044760}
   - component: {fileID: 147950243426083973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -794,7 +794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 756847475993452266}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -826,7 +826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6502647366495056629}
   - component: {fileID: 8837883821217332569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LockOnIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
