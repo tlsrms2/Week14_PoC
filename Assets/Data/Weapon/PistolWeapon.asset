@@ -14,14 +14,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.PistolWeaponSO
   weaponId: pistol
   displayName: "\uAD8C\uCD1D"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 20524924928
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: -1250021020546060479, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
   outlineIcon: {fileID: -5253834672664389118, guid: 4941473ac3b03dc4bb08ab5c77d2b6bc, type: 3}
   description: "\uAD8C\uCD1D\uC774\uB2E4\n\uC2A4\uD0AC \uAD6C\uB974\uAE30\uC784"
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 201567862784
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 4a7491b219f6bc5469d444267d523369, type: 2}
   maxAmmo: 5
   parryingRange: 1
   damagePerAmmoStep: 0500000004000000030000000200000001000000
+  maxAmmoTooltipTextFormat: 
+  localizedMaxAmmoTooltipText:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 5101211189248
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  parryingRangeTooltipTextFormat: 
+  localizedParryingRangeTooltipText:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 5028800724992
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  bulletDamageTooltipTextFormat: 
+  localizedBulletDamageTooltipText:
+    m_TableReference:
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+    m_TableEntryReference:
+      m_KeyId: 5168085172224
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   skills:
   - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
+  references:
+    version: 2
+    RefIds: []
