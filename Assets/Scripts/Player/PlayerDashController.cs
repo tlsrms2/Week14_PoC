@@ -14,7 +14,7 @@ namespace Week14.Combat
             this.context = context;
         }
 
-        private const float DashMass = 0.01f;
+        private const float DashMass = 0.001f;
 
         internal bool IsDashing { get; private set; }
         internal float AutoParryRadius { get; private set; }
@@ -32,7 +32,8 @@ namespace Week14.Combat
 
         internal bool TryDash(float distance, float duration, float autoParryRadius, RollSkillVfxSettings vfxSettings)
         {
-            if (IsDashing || context.Body == null || distance <= 0f || duration <= 0f)
+            if (IsDashing || context.Body == null || distance <= 0f || duration <= 0f
+                || (context.Health != null && context.Health.IsDead))
             {
                 return false;
             }
