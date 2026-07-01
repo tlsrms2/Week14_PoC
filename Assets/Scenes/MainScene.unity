@@ -3227,7 +3227,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: e5f0b0c4d6a04b0a8ad0cf0f0aa58a34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3478,8 +3478,8 @@ MonoBehaviour:
   pieceThreatenedColor: {r: 1, g: 1, b: 1, a: 1}
   colorOnlyIdleColor: {r: 0.19607845, g: 0.70980394, b: 0.76470596, a: 1}
   colorOnlyThreatenedColor: {r: 0.19607845, g: 0.70980394, b: 0.76470596, a: 1}
-  missPieceColor: {r: 0.99607843, g: 0.54901963, b: 0.10980392, a: 0.39215687}
-  missColorOnlyColor: {r: 0.99607843, g: 0.54901963, b: 0.10980392, a: 0.39215687}
+  missPieceColor: {r: 0.99607843, g: 0.3949549, b: 0.10980393, a: 1}
+  missColorOnlyColor: {r: 0.99607843, g: 0.39607844, b: 0.11372549, a: 1}
   moveScale: 1
   moveCurve:
     serializedVersion: 2
@@ -3678,7 +3678,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: e5f0b0c4d6a04b0a8ad0cf0f0aa58a34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
