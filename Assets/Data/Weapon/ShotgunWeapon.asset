@@ -38,7 +38,7 @@ MonoBehaviour:
     m_LocalVariables: []
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  leftArmController: {fileID: 9100000, guid: 96fc110f19ecd044c929a019f01bb253, type: 2}
+  leftArmController: {fileID: 9100000, guid: b4e9d4969d58fbd46a6aedebda815ccd, type: 2}
   maxAmmo: 5
   parryingRange: 1
   damagePerAmmoStep: 0200000002000000040000000400000005000000

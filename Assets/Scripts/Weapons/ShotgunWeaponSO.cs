@@ -19,17 +19,21 @@ namespace Week14.Weapons
         public override void BeginAttack(PlayerShooter shooter)
         {
             int pelletCount = shooter.CurrentBullets;
-            if (pelletCount <= 0) return;
-
-            int[] damages = new int[pelletCount];
-            for (int i = 0; i < pelletCount; i++)
+            if (pelletCount > 0)
             {
-                damages[i] = GetDamageForAmmo(pelletCount - i);
+                int[] damages = new int[pelletCount];
+                for (int i = 0; i < pelletCount; i++)
+                {
+                    damages[i] = GetDamageForAmmo(pelletCount - i);
+                }
+
+                if (shooter.TrySpendAllBullets())
+                {
+                    shooter.FireSpread(damages, pelletStep, maxRange);
+                }
             }
 
-            if (!shooter.TrySpendAllBullets()) return;
-
-            shooter.FireSpread(damages, pelletStep, maxRange);
+            shooter.EndCharge();
         }
 
         public override void ApplyWeaponTrait(GameObject player)

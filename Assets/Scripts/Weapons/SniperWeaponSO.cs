@@ -19,17 +19,9 @@ namespace Week14.Weapons
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)
         {
             int ticksDue = Mathf.FloorToInt(chargeTime / bulletConsumeInterval);
-            while (shooter.ChargeConsumedBulletCount < ticksDue)
+            while (shooter.ChargeConsumedBulletCount < ticksDue && shooter.CurrentBullets > 0)
             {
-                if (!shooter.TryConsumeChargeBullet())
-                {
-                    if (shooter.ChargeConsumedBulletCount > 0)
-                    {
-                        FireChargedShot(shooter);
-                    }
-                    shooter.EndChargeAfterAutoFire();
-                    return;
-                }
+                shooter.TryConsumeChargeBullet();
             }
         }
 

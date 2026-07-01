@@ -44,14 +44,6 @@ namespace Week14.Combat
 
             chargeTime += dt;
             WeaponLoadoutManager.Instance?.CurrentWeapon?.HoldAttack(this, chargeTime);
-
-            if (isCharging && CurrentBullets <= 0)
-            {
-                context.PlayerHpView?.FreezeNewestBullet(false);
-                context.SniperChargeIndicator?.SetChargeRatio(0f);
-                isCharging = false;
-                chargeTime = 0f;
-            }
         }
 
         internal void ReleaseAttack()
@@ -83,7 +75,7 @@ namespace Week14.Combat
             return true;
         }
 
-        public void EndChargeAfterAutoFire()
+        public void EndCharge()
         {
             context.PlayerHpView?.FreezeNewestBullet(false);
             context.SniperChargeIndicator?.SetChargeRatio(0f);
