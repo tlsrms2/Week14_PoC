@@ -25,7 +25,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225195
     sequences: []
-    editorPosition: {x: -307, y: -11}
+    editorPosition: {x: -307, y: -16}
   - nodeId: Node1
     nodeGuid: 8be623fe70134e86a5718bfa00394cb7
     nodeKind: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225197
     sequences: []
-    editorPosition: {x: -59, y: -11}
+    editorPosition: {x: -17, y: -16}
   - nodeId: Node2_Copy1_Copy2
     nodeGuid: 86d98a8e5878447097ee858f98d2f1dc
     nodeKind: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225198
     sequences: []
-    editorPosition: {x: 274, y: -11}
+    editorPosition: {x: 319, y: -16}
   patterns:
   - patternId: Pattern1
     nodeGuids:
