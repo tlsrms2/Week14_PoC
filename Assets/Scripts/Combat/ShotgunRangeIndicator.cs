@@ -7,6 +7,7 @@ namespace Week14.Combat
     public sealed class ShotgunRangeIndicator : MonoBehaviour
     {
         [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] private Shader lineShader;
         [SerializeField, Min(3)] private int arcSegments = 24;
         [SerializeField] private Color lineColor = new Color(1f, 0.7f, 0.2f, 0.8f);
         [SerializeField, Min(0f)] private float lineWidth = 0.05f;
@@ -124,7 +125,20 @@ namespace Week14.Combat
             });
             dashTex.Apply();
 
-            lineMaterial = new Material(Shader.Find("Unlit/Transparent")) { mainTexture = dashTex };
+            Shader shader = lineShader != null ? lineShader : Shader.Find("Universal Render Pipeline/Unlit");
+            if (shader == null)
+            {
+                Debug.LogError("ShotgunRangeIndicator: Line Shader is not assigned. Assign a URP-compatible shader in the inspector " +
+                    "(Shader.Find fallback is stripped from builds if unused elsewhere).", this);
+                return;
+            }
+
+            lineMaterial = new Material(shader) { mainTexture = dashTex };
+            lineMaterial.SetFloat("_Surface", 1f);
+            lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            lineMaterial.SetInt("_ZWrite", 0);
+            lineMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
             lineRenderer.sharedMaterial = lineMaterial;
         }
     }

@@ -16,7 +16,7 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: b1a0083a9ae987c4c95c94f0dce7f455
   m_Entries:
   - m_Id: 6813745152
-    m_Key: boss.kill
+    m_Key: boss.execute
     m_Metadata:
       m_Items: []
   - m_Id: 2169673711616

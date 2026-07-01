@@ -50,9 +50,8 @@ MonoBehaviour:
   - 2
   unlocksSkillIds: []
   unlocksWeaponIds:
-  - 3BulletsWeapon
-  - NoLockOn
-  - 1BulletWeapon
+  - shotgun
+  - sniper
   references:
     version: 2
     RefIds: []
