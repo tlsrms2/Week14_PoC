@@ -89,7 +89,7 @@ namespace Week14.Combat
                 }
 
                 float speed = Mathf.Lerp(peakSpeed, 0f, elapsed / duration);
-                body.linearVelocity = direction * speed;
+                body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, direction * speed);
                 elapsed += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }

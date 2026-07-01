@@ -382,6 +382,30 @@ namespace Week14.Enemy
                 return false;
             }
 
+            if (Owner is IMinionPlayerHitHandler hitHandler
+                && hitHandler.TryHandleMinionPlayerHit(this, bulletDamage, strongHit, hitPosition, hitDirection, hitColor))
+            {
+                FlashBodyHitColor();
+                if (strongHit)
+                {
+                    BeginStagger();
+                }
+
+                ProjectileVfx.PlayPlayerAttackImpact(
+                    hitPosition,
+                    hitDirection,
+                    GetAttackImpactSparkColor(hitColor),
+                    GetAttackImpactBackSparkColor(hitColor),
+                    GetAttackImpactFlameColor(hitColor),
+                    GetAttackImpactRingColor(hitColor),
+                    effectData != null ? effectData.AttackImpactSparkCount : 14,
+                    effectData != null ? effectData.AttackImpactBackSparkCount : 6,
+                    effectData != null ? effectData.AttackImpactFlameCount : 8,
+                    effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                PlayEnemyHitCameraImpact(hitDirection);
+                return true;
+            }
+
             if (IsBulletEmpty)
             {
                 health.Kill();
@@ -1482,7 +1506,9 @@ namespace Week14.Enemy
         {
             if (body != null)
             {
-                body.linearVelocity = velocity;
+                body.linearVelocity = CanFlyOverGround()
+                    ? velocity
+                    : GroundMovementConstraint.ClampVelocity(body, velocity, colliders);
             }
         }
 
@@ -1494,6 +1520,9 @@ namespace Week14.Enemy
         private void SetPatternPosition(Vector2 target, bool suppressContactDamage)
         {
             Vector2 current = transform.position;
+            target = CanFlyOverGround()
+                ? target
+                : GroundMovementConstraint.ClampStep(current, target, colliders);
             Vector2 delta = target - current;
             suppressBodyContactDamage = suppressContactDamage;
             if (body != null)
@@ -1535,6 +1564,11 @@ namespace Week14.Enemy
             }
 
             SetPatternPosition(next, true);
+        }
+
+        private bool CanFlyOverGround()
+        {
+            return Owner?.MinionsCanFlyOverGround == true;
         }
 
         private void StopBody()

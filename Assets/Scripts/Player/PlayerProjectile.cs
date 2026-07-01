@@ -9,6 +9,7 @@ namespace Week14.Combat
     public sealed class PlayerProjectile : MonoBehaviour
     {
         private const string BulletVisualName = "BulletVisual";
+        private const string GroundLayerName = "Ground";
 
         internal static event Action<int> NormalAttackDamageDealt;
 
@@ -256,6 +257,11 @@ namespace Week14.Combat
                 return false;
             }
 
+            if (IsGroundCollider(other))
+            {
+                return false;
+            }
+
             if (owner != null && other.transform.IsChildOf(owner.transform))
             {
                 return false;
@@ -300,9 +306,13 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)
             {
+                int appliedDamage = boss is DronePilot dronePilot
+                    ? dronePilot.GetBodySharedDamage(bulletDamage)
+                    : bulletDamage;
+
                 if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
-                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                    ShowFloatingDamage(targetHealth, appliedDamage, damageStyleBulletNumber);
                     NotifyNormalAttackDamage();
                 }
 
@@ -314,9 +324,16 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<Minion>();
             if (minion != null)
             {
+                int appliedDamage = bulletDamage;
+                if (minion.Owner is DronePilot dronePilot
+                    && dronePilot.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
+                {
+                    appliedDamage = sharedDamage;
+                }
+
                 if (minion.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
-                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                    ShowFloatingDamage(targetHealth, appliedDamage, damageStyleBulletNumber);
                     NotifyNormalAttackDamage();
                 }
 
@@ -356,6 +373,14 @@ namespace Week14.Combat
 
             DestroyProjectile();
             return true;
+        }
+
+        private static bool IsGroundCollider(Collider2D collider)
+        {
+            int groundLayer = LayerMask.NameToLayer(GroundLayerName);
+            return groundLayer >= 0
+                && collider != null
+                && collider.gameObject.layer == groundLayer;
         }
 
         private void NotifyNormalAttackDamage()

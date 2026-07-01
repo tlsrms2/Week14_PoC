@@ -17,7 +17,9 @@ public sealed class DronePilotEditor : Editor
     private static readonly HashSet<string> DronePilotFields = new()
     {
         "bossGraph",
-        "graphProjectiles"
+        "graphProjectiles",
+        "bodyHitDamageMultiplier",
+        "minionHitDamageMultiplier"
     };
 
     private static readonly HashSet<string> MinionFields = new()
@@ -127,6 +129,8 @@ public sealed class DronePilotEditor : Editor
 
     private void DrawSettingsTab()
     {
+        DrawDronePilotSettingsSection();
+        EditorGUILayout.Space(6f);
         DrawMinionSettingsSection();
 
         EditorGUILayout.Space(6f);
@@ -135,6 +139,25 @@ public sealed class DronePilotEditor : Editor
         {
             DrawBaseProperties();
         }
+    }
+
+    private void DrawDronePilotSettingsSection()
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Drone Pilot Settings", EditorStyles.boldLabel);
+        SerializedProperty bodyDamage = FindSerializedProperty("bodyHitDamageMultiplier");
+        if (bodyDamage != null)
+        {
+            EditorGUILayout.PropertyField(bodyDamage, new GUIContent("Body Hit Damage Multiplier"));
+        }
+
+        SerializedProperty minionDamage = FindSerializedProperty("minionHitDamageMultiplier");
+        if (minionDamage != null)
+        {
+            EditorGUILayout.PropertyField(minionDamage, new GUIContent("Minion Hit Damage Multiplier"));
+        }
+
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawReferencesTab()

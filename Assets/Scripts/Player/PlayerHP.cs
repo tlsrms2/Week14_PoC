@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Week14.Combat;
-using Week14.Input;
 
 namespace Week14.UI
 {
@@ -716,7 +715,6 @@ namespace Week14.UI
             TickEffects();
             TickBulletTimeouts();
             UpdateTimeoutVisuals();
-            UpdateRotationRootPosition();
 
             if (!bindPlayerOnEnable || PlayerCombatController.Active == null)
             {
@@ -730,6 +728,11 @@ namespace Week14.UI
             }
 
             SetTarget(playerBullets);
+        }
+
+        private void LateUpdate()
+        {
+            UpdateRotationRootPosition();
         }
 
         public void SetTarget(BulletGauge nextTarget)
@@ -1173,8 +1176,12 @@ namespace Week14.UI
             }
 
             PlayerCombatController player = PlayerCombatController.Active;
-            Camera camera = Camera.main;
-            if (player == null || camera == null)
+            if (player == null)
+            {
+                return;
+            }
+
+            if (player.IsExecuting)
             {
                 return;
             }
@@ -1184,9 +1191,8 @@ namespace Week14.UI
                 return;
             }
 
-            Vector3 mouseWorldPosition = camera.ScreenToWorldPoint(GameInput.MouseScreenPosition);
             Vector2 nextPosition = baseRotationRootAnchoredPosition;
-            if (mouseWorldPosition.x < player.transform.position.x)
+            if (player.Visual != null && player.Visual.IsFacingLeft)
             {
                 nextPosition.x = leftMouseRotationRootPosX;
             }

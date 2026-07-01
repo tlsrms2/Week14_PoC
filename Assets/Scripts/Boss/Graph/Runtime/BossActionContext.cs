@@ -269,9 +269,9 @@ namespace Week14.Enemy
                 return;
             }
 
-            Boss.Body.linearVelocity = direction.normalized
+            Boss.SetMovementVelocity(direction.normalized
                 * (directionSign < 0f ? -1f : 1f)
-                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier));
+                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier)));
         }
 
         private void ApplyMaintainPlayerDistance(float targetDistance, float tolerance, float speedMultiplier)
@@ -302,9 +302,9 @@ namespace Week14.Enemy
             float directionSign = distanceDelta > 0f ? 1f : -1f;
             float smoothingRange = Mathf.Max(0.01f, safeTolerance);
             float speedScale = Mathf.Clamp01(absoluteDelta / smoothingRange);
-            Boss.Body.linearVelocity = toPlayer.normalized
+            Boss.SetMovementVelocity(toPlayer.normalized
                 * directionSign
-                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier) * speedScale);
+                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier) * speedScale));
         }
 
         private static float EvaluateMoveSpeedCurve(

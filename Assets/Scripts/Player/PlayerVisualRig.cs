@@ -125,6 +125,8 @@ namespace Week14.Combat
             SyncRightArmAfterHolstering();
         }
 
+        public bool IsFacingLeft => visualRoot != null && visualRoot.localScale.x < 0f;
+
         public void SetBodyAimDirection(Vector2 direction)
         {
             if (direction.sqrMagnitude <= 0.0001f)

@@ -3620,6 +3620,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
             EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
+            EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("bossCanFlyOverGround"),
+                new GUIContent("Boss Can Fly Over Ground"));
+            EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("minionsCanFlyOverGround"),
+                new GUIContent("Minions Can Fly Over Ground"));
 
             SerializedProperty openingPatternId = phase.FindPropertyRelative("openingPatternId");
             if (openingPatternId != null)
