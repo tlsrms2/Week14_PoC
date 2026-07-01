@@ -111,6 +111,23 @@ namespace Week14.Skills
             return true;
         }
 
+        public void SetWeaponSkills(BaseSkillSO[] skills)
+        {
+            equippedSkills.Clear();
+            if (skills != null)
+            {
+                SkillSlot[] slots = (SkillSlot[])Enum.GetValues(typeof(SkillSlot));
+                for (int i = 0; i < skills.Length && i < slots.Length; i++)
+                {
+                    if (skills[i] == null) continue;
+                    equippedSkills[slots[i]] = skills[i];
+                    SkillEquipped?.Invoke(slots[i], skills[i]);
+                }
+            }
+
+            ResetStack();
+        }
+
         public bool UnequipSkill(SkillSlot slot)
         {
             if (!equippedSkills.Remove(slot))
@@ -157,11 +174,6 @@ namespace Week14.Skills
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             ResetStack();
-
-            if (scene.name == "MainScene")
-            {
-                BaseSkillSO equippedSkill = GetEquippedSkill(ActiveSlot);
-            }
         }
 
         private void ResetStack()
@@ -185,7 +197,6 @@ namespace Week14.Skills
 
             if (!equippedSkills.TryGetValue(slot, out BaseSkillSO skill) || skill == null)
             {
-                Debug.LogWarning($"[SkillLoadout] AddStack 무시됨: {slot}에 장착된 스킬이 없습니다.");
                 return;
             }
 

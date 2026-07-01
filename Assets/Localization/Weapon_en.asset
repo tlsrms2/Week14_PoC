@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Weapon_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 844e39019e591984499c4858a8ec6fa8, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 20524924928
+    m_Localized: Pistol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 201567862784
+    m_Localized: "This is pistol. \nYou can lock-on. "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 465628659712
+    m_Localized: Shotgun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753810898944
+    m_Localized: "This is shotgun. \nUse all bullets."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 860581101568
+    m_Localized: Sniper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 913773264896
+    m_Localized: "This is sniper. \nCharge Damage."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5028800724992
+    m_Localized: 'Parry Range: x1'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5101211189248
+    m_Localized: 'Max Bullets: 5'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5168085172224
+    m_Localized: 'Damage: 1-2-3-4-5'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5361870405632
+    m_Localized: 'Parry Range: x1'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5374021304320
+    m_Localized: 'Max Bullets: 5'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5404807495680
+    m_Localized: 'Damage: 2-2-4-4-5'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5851316322304
+    m_Localized: 'Damage: 5-5'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5835298275328
+    m_Localized: 'Max Bullets: 2'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5808177905664
+    m_Localized: 'Parry Range: x1'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

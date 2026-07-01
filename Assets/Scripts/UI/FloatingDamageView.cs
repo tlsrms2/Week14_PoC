@@ -12,8 +12,8 @@ namespace Week14.UI
         [Serializable]
         private sealed class BulletTextStyle
         {
-            [FormerlySerializedAs("minDamage")]
-            [SerializeField, Min(0)] private int bulletNumber = 1;
+            [FormerlySerializedAs("bulletNumber")]
+            [SerializeField, Min(0)] private int minDamage = 1;
             [SerializeField, Min(1f)] private float fontSize = 28f;
             [SerializeField] private Color textColor = Color.white;
             [SerializeField] private Color outlineColor = Color.black;
@@ -23,16 +23,16 @@ namespace Week14.UI
             {
             }
 
-            public BulletTextStyle(int bulletNumber, float fontSize, Color textColor, Color outlineColor, float outlineWidth)
+            public BulletTextStyle(int minDamage, float fontSize, Color textColor, Color outlineColor, float outlineWidth)
             {
-                this.bulletNumber = bulletNumber;
+                this.minDamage = minDamage;
                 this.fontSize = fontSize;
                 this.textColor = textColor;
                 this.outlineColor = outlineColor;
                 this.outlineWidth = outlineWidth;
             }
 
-            public int BulletNumber => bulletNumber;
+            public int MinDamage => minDamage;
             public float FontSize => fontSize;
             public Color TextColor => textColor;
             public Color OutlineColor => outlineColor;
@@ -60,11 +60,11 @@ namespace Week14.UI
         [SerializeField] private string format = "{0}";
         [SerializeField] private BulletTextStyle[] styles =
         {
-            new(5, 18f, Color.white, Color.black, 0.16f),
-            new(4, 20f, new Color(0.72f, 0.95f, 1f, 1f), new Color(0.05f, 0.24f, 0.32f, 1f), 0.18f),
-            new(3, 23f, new Color(1f, 0.92f, 0.45f, 1f), new Color(0.35f, 0.12f, 0f, 1f), 0.2f),
-            new(2, 26f, new Color(1f, 0.64f, 0.2f, 1f), new Color(0.45f, 0.08f, 0f, 1f), 0.23f),
-            new(1, 30f, new Color(1f, 0.42f, 0.16f, 1f), new Color(0.55f, 0f, 0f, 1f), 0.26f)
+            new(1, 18f, Color.white,                        Color.black,                        0.16f),
+            new(2, 20f, new Color(0.72f, 0.95f, 1f,   1f), new Color(0.05f, 0.24f, 0.32f, 1f), 0.18f),
+            new(3, 23f, new Color(1f,   0.92f, 0.45f, 1f), new Color(0.35f, 0.12f, 0f,    1f), 0.2f),
+            new(4, 26f, new Color(1f,   0.64f, 0.2f,  1f), new Color(0.45f, 0.08f, 0f,    1f), 0.23f),
+            new(5, 30f, new Color(1f,   0.42f, 0.16f, 1f), new Color(0.55f, 0f,    0f,    1f), 0.26f)
         };
 
         private readonly List<Popup> popups = new();
@@ -73,7 +73,7 @@ namespace Week14.UI
         private Collider2D areaCollider2D;
         private Collider areaCollider3D;
 
-        public void Show(int damage, int bulletNumber)
+        public void Show(int damage)
         {
             EnsureCanvas();
             if (canvasRect == null)
@@ -81,7 +81,7 @@ namespace Week14.UI
                 return;
             }
 
-            BulletTextStyle style = ResolveStyle(bulletNumber);
+            BulletTextStyle style = ResolveStyle(damage);
             GameObject textObject = new(PopupName, typeof(RectTransform));
             textObject.transform.SetParent(canvasRect, false);
 
@@ -273,34 +273,26 @@ namespace Week14.UI
             return areaCollider.ClosestPoint(bounds.center);
         }
 
-        private BulletTextStyle ResolveStyle(int bulletNumber)
+        private BulletTextStyle ResolveStyle(int damage)
         {
             if (styles == null || styles.Length == 0)
             {
                 return null;
             }
 
-            BulletTextStyle fallback = null;
+            BulletTextStyle best = null;
             for (int i = 0; i < styles.Length; i++)
             {
                 BulletTextStyle style = styles[i];
-                if (style == null)
+                if (style == null) continue;
+                if (damage >= style.MinDamage)
                 {
-                    continue;
-                }
-
-                if (fallback == null)
-                {
-                    fallback = style;
-                }
-
-                if (style.BulletNumber == bulletNumber)
-                {
-                    return style;
+                    if (best == null || style.MinDamage > best.MinDamage)
+                        best = style;
                 }
             }
 
-            return fallback;
+            return best ?? styles[0];
         }
 
         private static void ApplyStyle(TextMeshProUGUI text, BulletTextStyle style)

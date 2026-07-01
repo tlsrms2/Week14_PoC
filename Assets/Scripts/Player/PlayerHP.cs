@@ -685,6 +685,7 @@ namespace Week14.UI
         private readonly List<float> bulletLoadedTimes = new(VisibleSlotCount);
         private int pendingExpiredBulletIndex = -1;
         private int lastExpiredBulletIndex = -1;
+        private bool isNewestBulletFrozen;
 
         private void OnEnable()
         {
@@ -733,6 +734,11 @@ namespace Week14.UI
         private void LateUpdate()
         {
             UpdateRotationRootPosition();
+        }
+
+        public void FreezeNewestBullet(bool freeze)
+        {
+            isNewestBulletFrozen = freeze;
         }
 
         public void SetTarget(BulletGauge nextTarget)
@@ -1045,7 +1051,8 @@ namespace Week14.UI
 
         private int FindExpiredTimedBulletIndex(float now)
         {
-            for (int i = 0; i < bulletLoadedTimes.Count; i++)
+            int limit = isNewestBulletFrozen ? bulletLoadedTimes.Count - 1 : bulletLoadedTimes.Count;
+            for (int i = 0; i < limit; i++)
             {
                 if (!IsTimedBullet(i))
                 {
@@ -1064,6 +1071,7 @@ namespace Week14.UI
         private void UpdateTimeoutVisuals()
         {
             float now = Time.time;
+            int frozenIndex = isNewestBulletFrozen ? bulletLoadedTimes.Count - 1 : -1;
             for (int hp = 1; hp <= VisibleSlotCount; hp++)
             {
                 HpSlot slot = GetSlot(hp);
@@ -1072,12 +1080,14 @@ namespace Week14.UI
                     continue;
                 }
 
+                int bulletIndex = hp - 1;
                 bool usable = target != null && target.MaxBullets >= hp;
-                bool recovered = usable && hp - 1 < bulletLoadedTimes.Count;
-                bool timed = recovered && IsTimedBullet(hp - 1);
-                float age = timed ? Mathf.Max(0f, now - bulletLoadedTimes[hp - 1]) : 0f;
+                bool recovered = usable && bulletIndex < bulletLoadedTimes.Count;
+                bool timed = recovered && IsTimedBullet(bulletIndex);
+                bool frozen = timed && bulletIndex == frozenIndex;
+                float age = timed && !frozen ? Mathf.Max(0f, now - bulletLoadedTimes[bulletIndex]) : 0f;
                 float fillAmount = GetTimeoutFillAmount(age);
-                float iconAlpha = timed && IsInTimeoutWarning(age) ? GetWarningBlinkAlpha() : 1f;
+                float iconAlpha = timed && !frozen && IsInTimeoutWarning(age) ? GetWarningBlinkAlpha() : 1f;
                 slot.SetTimeoutVisual(usable, recovered, fillAmount, timeoutGaugeColor, iconAlpha);
             }
         }

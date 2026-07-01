@@ -33,6 +33,7 @@ namespace Week14.Combat
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
         [SerializeField] private MouseParryReticle mouseParryReticle;
+        [SerializeField] private SniperChargeIndicator sniperChargeIndicator;
 
         private Health health;
         private BulletGauge bullets;
@@ -73,6 +74,12 @@ namespace Week14.Combat
 
         public Health Health => Context.Health;
         public BulletGauge Bullets => Context.Bullets;
+        public Transform LeftGunOrigin => Context.LeftGunOrigin;
+        public bool IsReticleVisible => config != null
+            && !GameModalState.BlocksGameplayInput
+            && !IsExecuting
+            && health != null
+            && !health.IsDead;
         public PlayerVisualRig Visual => Context.Visual;
         public CameraFollow2D CameraFollow => Context.CameraFollow;
         public Transform BodyRoot => Context.BodyRoot;
@@ -153,6 +160,7 @@ namespace Week14.Combat
                 get => controller.mouseParryReticle;
                 internal set => controller.mouseParryReticle = value;
             }
+            public SniperChargeIndicator SniperChargeIndicator => controller.sniperChargeIndicator;
             public SpriteRenderer[] BodyRenderers
             {
                 get => controller.bodyRenderers;
@@ -324,8 +332,18 @@ namespace Week14.Combat
             {
                 if (!TryBeginExecution())
                 {
-                    TryShootEnemy();
+                    Shooter.BeginAttack();
                 }
+            }
+
+            if (GameInput.LeftAttackHeld && CanAct)
+            {
+                Shooter.HoldAttack(Time.deltaTime);
+            }
+
+            if (GameInput.LeftAttackUp)
+            {
+                Shooter.ReleaseAttack();
             }
 
             if (GameInput.RightAttackDown)
@@ -333,6 +351,9 @@ namespace Week14.Combat
                 if (!CanAct)
                 {
                     Debug.LogWarning($"[Player] 패링 입력 차단됨: Modal={GameModalState.BlocksGameplayInput}, IsExecuting={IsExecuting}, FinalDeath={BossAI.IsAnyFinalDeathSequencePlaying}, WaitingVictory={IsWaitingForVictoryPanel}, Dead={health.IsDead}");
+                }
+                else if (Shooter.IsCharging)
+                {
                 }
                 else if (!TryParryProjectile())
                 {
@@ -430,11 +451,6 @@ namespace Week14.Combat
         public bool FireSkillProjectile(int damage, float sizeMultiplier, Color color)
         {
             return Shooter.TryFireSkillProjectile(damage, sizeMultiplier, color);
-        }
-
-        private bool TryShootEnemy()
-        {
-            return Shooter.TryShootEnemy();
         }
 
         private bool TryBeginExecution()

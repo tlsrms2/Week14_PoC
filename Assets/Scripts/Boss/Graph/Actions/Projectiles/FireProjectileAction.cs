@@ -227,6 +227,7 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileOriginSpec origin = new();
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField, Min(0f)] private float spawnForwardOffset;
+        [SerializeField, Min(0f)] private float startDelaySeconds;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -237,6 +238,11 @@ namespace Week14.Enemy
             if (context == null || volleys == null || volleys.Count == 0)
             {
                 yield break;
+            }
+
+            if (startDelaySeconds > 0f)
+            {
+                yield return context.WaitSeconds(startDelaySeconds);
             }
 
             int shotIndex = 0;

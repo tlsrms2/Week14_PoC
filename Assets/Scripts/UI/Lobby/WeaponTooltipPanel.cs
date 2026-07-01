@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Enemy;
@@ -61,6 +61,7 @@ namespace Week14.UI
         private Coroutine revealRoutine;
         private float lastShowSfxTime = float.NegativeInfinity;
         private float lastHideSfxTime = float.NegativeInfinity;
+        private BaseWeaponSO localizedWeapon;
 
         private void Awake()
         {
@@ -86,6 +87,8 @@ namespace Week14.UI
 
         private void OnDestroy()
         {
+            UnbindLocalizedWeaponText();
+
             if (Instance == this)
             {
                 Instance = null;
@@ -96,34 +99,17 @@ namespace Week14.UI
         {
             if (weapon == null)
             {
+                UnbindLocalizedWeaponText();
                 return;
             }
 
-            if (nameText != null)
-            {
-                nameText.text = weapon.DisplayName;
-            }
-
-            if (descriptionText != null)
-            {
-                descriptionText.text = weapon.Description;
-            }
-
-            if (maxAmmoText != null)
-            {
-                maxAmmoText.text = $"최대 탄환: {weapon.MaxAmmo}";
-            }
-
-            if (parryingRangeText != null)
-            {
-                parryingRangeText.text = $"패링 범위: x{weapon.ParryingRange:0.##}";
-            }
-
-            if (bulletDamageText != null)
-            {
-                int[] damagePerAmmoStep = weapon.DamagePerAmmoStep ?? Array.Empty<int>();
-                bulletDamageText.text = $"탄환 대미지: {string.Join("-", damagePerAmmoStep.Reverse())}";
-            }
+            UnbindLocalizedWeaponText();
+            SetNameText(weapon.DisplayName);
+            SetDescriptionText(weapon.Description);
+            SetMaxAmmoText(weapon.MaxAmmoTooltipText);
+            SetParryingRangeText(weapon.ParryingRangeTooltipText);
+            SetBulletDamageText(weapon.BulletDamageTooltipText);
+            BindLocalizedWeaponText(weapon);
 
             if (iconImage != null)
             {
@@ -151,6 +137,8 @@ namespace Week14.UI
 
         public void Hide()
         {
+            UnbindLocalizedWeaponText();
+
             if (!string.IsNullOrEmpty(hideSfxId))
             {
                 float now = Time.unscaledTime;
@@ -170,6 +158,7 @@ namespace Week14.UI
 
         public void HideImmediate()
         {
+            UnbindLocalizedWeaponText();
             StopShowRoutine();
 
             if (growRoutine != null)
@@ -182,6 +171,102 @@ namespace Week14.UI
             SetRevealTargetsActive(false);
             ResetFillImages();
             SetHeight(0f);
+        }
+
+        private void BindLocalizedWeaponText(BaseWeaponSO weapon)
+        {
+            if (weapon == null)
+            {
+                return;
+            }
+
+            localizedWeapon = weapon;
+            BindLocalizedString(weapon.LocalizedDisplayName, weapon.HasLocalizedDisplayName, SetNameText);
+            BindLocalizedString(weapon.LocalizedDescription, weapon.HasLocalizedDescription, SetDescriptionText);
+            BindLocalizedString(weapon.LocalizedMaxAmmoTooltipText, weapon.HasLocalizedMaxAmmoTooltipText, SetMaxAmmoText, weapon.MaxAmmoTooltipArguments);
+            BindLocalizedString(weapon.LocalizedParryingRangeTooltipText, weapon.HasLocalizedParryingRangeTooltipText, SetParryingRangeText, weapon.ParryingRangeTooltipArguments);
+            BindLocalizedString(weapon.LocalizedBulletDamageTooltipText, weapon.HasLocalizedBulletDamageTooltipText, SetBulletDamageText, weapon.BulletDamageTooltipArguments);
+        }
+
+        private void UnbindLocalizedWeaponText()
+        {
+            if (localizedWeapon == null)
+            {
+                return;
+            }
+
+            UnbindLocalizedString(localizedWeapon.LocalizedDisplayName, localizedWeapon.HasLocalizedDisplayName, SetNameText);
+            UnbindLocalizedString(localizedWeapon.LocalizedDescription, localizedWeapon.HasLocalizedDescription, SetDescriptionText);
+            UnbindLocalizedString(localizedWeapon.LocalizedMaxAmmoTooltipText, localizedWeapon.HasLocalizedMaxAmmoTooltipText, SetMaxAmmoText);
+            UnbindLocalizedString(localizedWeapon.LocalizedParryingRangeTooltipText, localizedWeapon.HasLocalizedParryingRangeTooltipText, SetParryingRangeText);
+            UnbindLocalizedString(localizedWeapon.LocalizedBulletDamageTooltipText, localizedWeapon.HasLocalizedBulletDamageTooltipText, SetBulletDamageText);
+            localizedWeapon = null;
+        }
+
+        private static void BindLocalizedString(LocalizedString localizedString, bool enabled, LocalizedString.ChangeHandler handler, params object[] arguments)
+        {
+            if (!enabled)
+            {
+                return;
+            }
+
+            if (arguments.Length > 0)
+            {
+                localizedString.Arguments = arguments;
+            }
+
+            localizedString.StringChanged += handler;
+            localizedString.RefreshString();
+        }
+
+        private static void UnbindLocalizedString(LocalizedString localizedString, bool enabled, LocalizedString.ChangeHandler handler)
+        {
+            if (!enabled)
+            {
+                return;
+            }
+
+            localizedString.StringChanged -= handler;
+        }
+
+        private void SetNameText(string value)
+        {
+            if (nameText != null)
+            {
+                nameText.text = value;
+            }
+        }
+
+        private void SetDescriptionText(string value)
+        {
+            if (descriptionText != null)
+            {
+                descriptionText.text = value;
+            }
+        }
+
+        private void SetMaxAmmoText(string value)
+        {
+            if (maxAmmoText != null)
+            {
+                maxAmmoText.text = value;
+            }
+        }
+
+        private void SetParryingRangeText(string value)
+        {
+            if (parryingRangeText != null)
+            {
+                parryingRangeText.text = value;
+            }
+        }
+
+        private void SetBulletDamageText(string value)
+        {
+            if (bulletDamageText != null)
+            {
+                bulletDamageText.text = value;
+            }
         }
 
         private IEnumerator ShowSequenceRoutine()
