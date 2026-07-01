@@ -1070,7 +1070,7 @@ MonoBehaviour:
     phaseIndex: 0
   parallelEdges: []
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern6
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
