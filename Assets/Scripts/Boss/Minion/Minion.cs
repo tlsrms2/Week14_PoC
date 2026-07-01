@@ -382,6 +382,30 @@ namespace Week14.Enemy
                 return false;
             }
 
+            if (Owner is IMinionPlayerHitHandler hitHandler
+                && hitHandler.TryHandleMinionPlayerHit(this, bulletDamage, strongHit, hitPosition, hitDirection, hitColor))
+            {
+                FlashBodyHitColor();
+                if (strongHit)
+                {
+                    BeginStagger();
+                }
+
+                ProjectileVfx.PlayPlayerAttackImpact(
+                    hitPosition,
+                    hitDirection,
+                    GetAttackImpactSparkColor(hitColor),
+                    GetAttackImpactBackSparkColor(hitColor),
+                    GetAttackImpactFlameColor(hitColor),
+                    GetAttackImpactRingColor(hitColor),
+                    effectData != null ? effectData.AttackImpactSparkCount : 14,
+                    effectData != null ? effectData.AttackImpactBackSparkCount : 6,
+                    effectData != null ? effectData.AttackImpactFlameCount : 8,
+                    effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                PlayEnemyHitCameraImpact(hitDirection);
+                return true;
+            }
+
             if (IsBulletEmpty)
             {
                 health.Kill();

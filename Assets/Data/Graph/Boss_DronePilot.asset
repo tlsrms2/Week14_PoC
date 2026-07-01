@@ -80,15 +80,6 @@ MonoBehaviour:
       rid: 2634811994844954729
     sequences: []
     editorPosition: {x: 122, y: 3342}
-  - nodeId: P03_Summon
-    nodeGuid: a1f539730cf5496b8548a3059409cf3e
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811984531423337
-    sequences: []
-    editorPosition: {x: -638, y: 3472}
   - nodeId: Player Path
     nodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
     nodeKind: 4
@@ -98,15 +89,6 @@ MonoBehaviour:
       rid: 2634811984531423356
     sequences: []
     editorPosition: {x: -307, y: 606}
-  - nodeId: P05_Summon
-    nodeGuid: b4f3a2b34b0240a5b074f7886b5b08ac
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811984531423352
-    sequences: []
-    editorPosition: {x: -560, y: 677}
   - nodeId: Side Fire
     nodeGuid: 71e3398d27ad4926aa6ab542889090fd
     nodeKind: 4
@@ -125,15 +107,6 @@ MonoBehaviour:
       rid: 2634811984531423362
     sequences: []
     editorPosition: {x: -332, y: 1082}
-  - nodeId: P06_Summon
-    nodeGuid: e134f529be614ca0939c33f52217a567
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811984531423363
-    sequences: []
-    editorPosition: {x: -611, y: 1204}
   - nodeId: Side Fire_Copy1
     nodeGuid: af4447b1afdb4580ab91541ce6c33a5d
     nodeKind: 4
@@ -161,15 +134,6 @@ MonoBehaviour:
       rid: 2634811984531423370
     sequences: []
     editorPosition: {x: -329, y: -311}
-  - nodeId: Summon_Copy1
-    nodeGuid: e4b7c43912764cd6990b069c87545536
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811984531423376
-    sequences: []
-    editorPosition: {x: 344, y: -286}
   - nodeId: UP02_Angle DIstance Move Action
     nodeGuid: 8cde7af96a1d4f78b0ded57c74d52492
     nodeKind: 4
@@ -215,15 +179,6 @@ MonoBehaviour:
       rid: 2634811984531423382
     sequences: []
     editorPosition: {x: 777, y: 904}
-  - nodeId: P05_Summon_Copy1
-    nodeGuid: c597579c8a6f4e09b8b58a1fce129b45
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811984531423383
-    sequences: []
-    editorPosition: {x: 376, y: 948}
   - nodeId: Side Fire_Copy2
     nodeGuid: af261808967e42878f831a46566e6f8f
     nodeKind: 4
@@ -260,15 +215,6 @@ MonoBehaviour:
       rid: 2634811984531423396
     sequences: []
     editorPosition: {x: -65, y: -689}
-  - nodeId: P09_Summon
-    nodeGuid: 958821ff57604e58baeed9addcfbe2cf
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954694
-    sequences: []
-    editorPosition: {x: -657, y: 1681}
   - nodeId: Gather
     nodeGuid: 27cdd94773084609bc7a5dc234a9cac9
     nodeKind: 4
@@ -296,15 +242,6 @@ MonoBehaviour:
       rid: 2634811994844954697
     sequences: []
     editorPosition: {x: -124, y: 1597}
-  - nodeId: P10_Summon
-    nodeGuid: 4f20f2e41e074a5ca2e42aff8d0af714
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954699
-    sequences: []
-    editorPosition: {x: -638, y: 2599}
   - nodeId: P10_Gather
     nodeGuid: 7639ad02ebae4263b6191218d9dc7f60
     nodeKind: 4
@@ -431,51 +368,6 @@ MonoBehaviour:
       rid: 2634811994844954722
     sequences: []
     editorPosition: {x: 3, y: -475}
-  - nodeId: P02_Summon
-    nodeGuid: 741cfe70bcb343818d34b5f02e2975ba
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954724
-    sequences: []
-    editorPosition: {x: -543, y: -307}
-  - nodeId: P01_Summon
-    nodeGuid: 7d0ae2ec3fed4b028e33794f00c406f4
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954726
-    sequences: []
-    editorPosition: {x: -602, y: -814}
-  - nodeId: P01_Wander 2
-    nodeGuid: b44835734f024e7ba4dbb7a5907377c9
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954727
-    sequences: []
-    editorPosition: {x: -614, y: -967}
-  - nodeId: P02_Wander 2
-    nodeGuid: a9d62a0fc3c0436b9cbfaef9edf4d34d
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954728
-    sequences: []
-    editorPosition: {x: -568, y: -481}
-  - nodeId: P03_Wander_Copy1
-    nodeGuid: 6650c8d7fb6b44c2a947e87892f36e35
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811994844954730
-    sequences: []
-    editorPosition: {x: -656, y: 3326}
   - nodeId: P03_Maintain Player Distance
     nodeGuid: ed3cd1e09ff2457198f777d3ff88cec3
     nodeKind: 1
@@ -503,15 +395,6 @@ MonoBehaviour:
       rid: 2634812004397482064
     sequences: []
     editorPosition: {x: -278, y: 74}
-  - nodeId: P04_Summon
-    nodeGuid: 34a98155abe64c788bbee5b375f70f93
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812004397482065
-    sequences: []
-    editorPosition: {x: -599, y: 193}
   - nodeId: Repeat Fire_Copy1
     nodeGuid: de91b3605e7e4c119104d701bb5fbd53
     nodeKind: 4
@@ -521,15 +404,6 @@ MonoBehaviour:
       rid: 2634812004397482066
     sequences: []
     editorPosition: {x: -298, y: 198}
-  - nodeId: P03_Wander 2
-    nodeGuid: 94646b8db52446289640c85d1e8f5000
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812004397482067
-    sequences: []
-    editorPosition: {x: -590, y: 62}
   - nodeId: P04_Wander2_Copy1
     nodeGuid: 3fd2b6ec8a764d1aa98ed2dc25aebe36
     nodeKind: 4
@@ -539,15 +413,6 @@ MonoBehaviour:
       rid: 2634812004397482068
     sequences: []
     editorPosition: {x: -9, y: 82}
-  - nodeId: UP02_Wander
-    nodeGuid: 10a396c9028e43cb9538d6599f56acbc
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812004397482069
-    sequences: []
-    editorPosition: {x: 346, y: -475}
   - nodeId: UP02_Wander 2
     nodeGuid: d8522cf832ca46bb958e5e5e934f3bb8
     nodeKind: 4
@@ -602,15 +467,6 @@ MonoBehaviour:
       rid: 2634812006979338320
     sequences: []
     editorPosition: {x: 631, y: 63}
-  - nodeId: P04_Summon_Copy1_Copy1
-    nodeGuid: b1e9c89b7faa4d949791c452a083babb
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338321
-    sequences: []
-    editorPosition: {x: 318, y: 228}
   - nodeId: Repeat Fire_Copy1_Copy1
     nodeGuid: 8a0cf91811cb4c8db941acac72258022
     nodeKind: 4
@@ -620,15 +476,6 @@ MonoBehaviour:
       rid: 2634812006979338322
     sequences: []
     editorPosition: {x: 611, y: 212}
-  - nodeId: P04_Wander_Copy1_Copy1
-    nodeGuid: 9efae6f7e73744c6b067f10579e01ef5
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338323
-    sequences: []
-    editorPosition: {x: 319, y: 47}
   - nodeId: P04_Wander2_Copy1_Copy1
     nodeGuid: 5628159cf8f64d80bc395e1c64a087f4
     nodeKind: 4
@@ -665,51 +512,6 @@ MonoBehaviour:
       rid: 2634812006979338327
     sequences: []
     editorPosition: {x: 918, y: 218}
-  - nodeId: UP04_Maintain Player Distance 2
-    nodeGuid: c59eae3a2745459f93f597d1c6559ecf
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338328
-    sequences: []
-    editorPosition: {x: 306, y: 387}
-  - nodeId: P01_Maintain Player Distance 2
-    nodeGuid: 86518ab403b34914bf90cdc6ef8a6a02
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338329
-    sequences: []
-    editorPosition: {x: -670, y: -684}
-  - nodeId: UP02_Maintain Player Distance_Copy1
-    nodeGuid: 17dabf7ce4894e45ad78fda1c508dfeb
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338330
-    sequences: []
-    editorPosition: {x: 305, y: -150}
-  - nodeId: P02_Maintain Player Distance 2
-    nodeGuid: 6cbc0abfcfb748cf8fb679c1e3efd726
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338331
-    sequences: []
-    editorPosition: {x: -665, y: -153}
-  - nodeId: UP04_Maintain Player Distance 2_Copy1
-    nodeGuid: 61fd0b2cab5c4303904ea09358ecbb35
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338332
-    sequences: []
-    editorPosition: {x: -685, y: 320}
   - nodeId: UP04_Maintain Player Distance_Copy1
     nodeGuid: 3505afd6e95e43519fe68377c2016077
     nodeKind: 1
@@ -737,24 +539,6 @@ MonoBehaviour:
       rid: 2634812007888977988
     sequences: []
     editorPosition: {x: 115, y: 3488}
-  - nodeId: P04_Wander_Copy1_Copy2
-    nodeGuid: 0fbc48e59c094d2ab1d0ce786f6b37ee
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888977989
-    sequences: []
-    editorPosition: {x: -569, y: 530}
-  - nodeId: UP04_Maintain Player Distance 2_Copy1_Copy1
-    nodeGuid: 41dc72f2ed3d4485b963b74443556525
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888977990
-    sequences: []
-    editorPosition: {x: -644, y: 825}
   - nodeId: P04_Wander2_Copy1_Copy2
     nodeGuid: 86b1670e9e284e8597380d35c91f0a40
     nodeKind: 4
@@ -773,24 +557,6 @@ MonoBehaviour:
       rid: 2634812007888977992
     sequences: []
     editorPosition: {x: -145, y: 760}
-  - nodeId: P04_Wander_Copy1_Copy2_Copy1
-    nodeGuid: 92206f7789474c15805085b24c58f1d5
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888977993
-    sequences: []
-    editorPosition: {x: -676, y: 1044}
-  - nodeId: UP04_Maintain Player Distance 2_Copy1_Copy1_Copy1
-    nodeGuid: 88443bd7b07e4a6cab662a3e3b19306b
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888977994
-    sequences: []
-    editorPosition: {x: -686, y: 1374}
   - nodeId: P04_Wander2_Copy1_Copy2_Copy1
     nodeGuid: 947bf3f45d624fc2ab6a21690f0b3f71
     nodeKind: 4
@@ -809,24 +575,6 @@ MonoBehaviour:
       rid: 2634812007888977996
     sequences: []
     editorPosition: {x: -30, y: 1235}
-  - nodeId: P04_Wander_Copy1_Copy2_Copy2
-    nodeGuid: 96f4df26f4fb43b28590723fc9d47094
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888977997
-    sequences: []
-    editorPosition: {x: 344, y: 806}
-  - nodeId: UP04_Maintain Player Distance 2_Copy1_Copy1_Copy2
-    nodeGuid: e0bdfdd1b54f4541be21bd8fd61dc3b7
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888977998
-    sequences: []
-    editorPosition: {x: 355, y: 1094}
   - nodeId: P04_Wander2_Copy1_Copy2_Copy2
     nodeGuid: e433785d72214e2eb36cce9d13b8137c
     nodeKind: 4
@@ -845,24 +593,6 @@ MonoBehaviour:
       rid: 2634812007888978000
     sequences: []
     editorPosition: {x: 1330, y: 988}
-  - nodeId: P09_Wander
-    nodeGuid: b9a2e7e2a7ba49b39b77a4de1c4d86f0
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978001
-    sequences: []
-    editorPosition: {x: -642, y: 1549}
-  - nodeId: P09_Move Toward Player
-    nodeGuid: 52f38a24079a42dfbd8b6cc98bbb2a19
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978005
-    sequences: []
-    editorPosition: {x: -659, y: 1823}
   - nodeId: P09_Wander 2
     nodeGuid: c68cd4c4bb474830b4ded29177d1a764
     nodeKind: 4
@@ -881,24 +611,6 @@ MonoBehaviour:
       rid: 2634812007888978006
     sequences: []
     editorPosition: {x: 110, y: 1725}
-  - nodeId: P09_Wander_Copy1
-    nodeGuid: 03193fc7cf6a4751ab2abd52b78d21b5
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978007
-    sequences: []
-    editorPosition: {x: -658, y: 2464}
-  - nodeId: P09_Move Toward Player_Copy1
-    nodeGuid: 0e0fa42e14cc497f970a29574627f2a8
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978008
-    sequences: []
-    editorPosition: {x: -648, y: 2729}
   - nodeId: P09_Wander 2_Copy1
     nodeGuid: caeeebb90c3b4d649fdd1ce3585f9648
     nodeKind: 4
@@ -917,15 +629,6 @@ MonoBehaviour:
       rid: 2634812007888978010
     sequences: []
     editorPosition: {x: 1794, y: 2683}
-  - nodeId: P09_Summon_Copy1
-    nodeGuid: 22ebe46b27c54937ab8c03654ab87712
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978011
-    sequences: []
-    editorPosition: {x: 388, y: 1657}
   - nodeId: Gather_Copy1
     nodeGuid: dc97284f657142888a98cefb28a96090
     nodeKind: 4
@@ -953,24 +656,6 @@ MonoBehaviour:
       rid: 2634812007888978014
     sequences: []
     editorPosition: {x: 921, y: 1574}
-  - nodeId: P09_Wander_Copy2
-    nodeGuid: 7a09cf3a6de1430d9ab30e6d82aeb31d
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978015
-    sequences: []
-    editorPosition: {x: 403, y: 1525}
-  - nodeId: P09_Move Toward Player_Copy2
-    nodeGuid: 81c021e87a7b481ebdceb3470d77f84c
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978016
-    sequences: []
-    editorPosition: {x: 386, y: 1799}
   - nodeId: P09_Wander 2_Copy2
     nodeGuid: a2af149be1f54142a7738429b5bb9ff2
     nodeKind: 4
@@ -1070,15 +755,6 @@ MonoBehaviour:
       rid: 2634812007888978027
     sequences: []
     editorPosition: {x: 2363, y: 1583}
-  - nodeId: P09_Summon_Copy2
-    nodeGuid: 7f6d23b2179e4bd29fd0ff3c701f3d41
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978048
-    sequences: []
-    editorPosition: {x: -659, y: 3021}
   - nodeId: P11_Orbit
     nodeGuid: d4b4da5e0bae42f2b036ec03f664915e
     nodeKind: 4
@@ -1097,24 +773,6 @@ MonoBehaviour:
       rid: 2634812007888978057
     sequences: []
     editorPosition: {x: -363, y: 3126}
-  - nodeId: P09_Wander_Copy3
-    nodeGuid: 9d25f318c9724961b46c2c7be28e342e
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978052
-    sequences: []
-    editorPosition: {x: -644, y: 2889}
-  - nodeId: P09_Move Toward Player_Copy3
-    nodeGuid: 614eaf91da0d4b4e80cddc5790819b77
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978053
-    sequences: []
-    editorPosition: {x: -661, y: 3163}
   - nodeId: P09_Wander 2_Copy3
     nodeGuid: edd34270becd45719f73cfacbad66fdd
     nodeKind: 4
@@ -1187,15 +845,6 @@ MonoBehaviour:
       rid: 2634812007888978063
     sequences: []
     editorPosition: {x: 339, y: 3004}
-  - nodeId: P09_Summon_Copy3
-    nodeGuid: e294eea43af04977adb6c864a12c560e
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978072
-    sequences: []
-    editorPosition: {x: -659, y: 2117}
   - nodeId: Gather_Copy2
     nodeGuid: fee049ef154f4852a212de570a636e9c
     nodeKind: 4
@@ -1223,24 +872,6 @@ MonoBehaviour:
       rid: 2634812007888978075
     sequences: []
     editorPosition: {x: -127, y: 2033}
-  - nodeId: P09_Wander_Copy4
-    nodeGuid: c254d69ebb1948b1866e9a3aa35c5422
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978076
-    sequences: []
-    editorPosition: {x: -645, y: 1985}
-  - nodeId: P09_Move Toward Player_Copy4
-    nodeGuid: 2f4a7ccd94f543eb91ce83a1e062f2a1
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812007888978077
-    sequences: []
-    editorPosition: {x: -662, y: 2259}
   - nodeId: P09_Wander 2_Copy4
     nodeGuid: 4fc948e44bd04d1fa24a72d5002bebae
     nodeKind: 4
@@ -1277,6 +908,51 @@ MonoBehaviour:
       rid: 2634812049179803717
     sequences: []
     editorPosition: {x: -30, y: -307}
+  - nodeId: P01_Wander_Copy1
+    nodeGuid: 52807003c9334e2ba91f979e7668eaa9
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634812080860692548
+    sequences: []
+    editorPosition: {x: 817, y: -942}
+  - nodeId: P01_Summon_Copy1
+    nodeGuid: a72ac519bd064ca9a260fcb39e49b836
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634812080860692549
+    sequences: []
+    editorPosition: {x: 518, y: -810}
+  - nodeId: P01_Wander 2_Copy1
+    nodeGuid: 631205d2ef87491f9bd6e91b47875965
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634812080860692550
+    sequences: []
+    editorPosition: {x: 506, y: -963}
+  - nodeId: P01_Maintain Player Distance 2_Copy1
+    nodeGuid: ec4ca827679f477a9a7618b2093d31d4
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634812080860692551
+    sequences: []
+    editorPosition: {x: 450, y: -680}
+  - nodeId: P01_Maintain Player Distance 4_Copy1
+    nodeGuid: d91c2d368dee4a92ae646127aa39c772
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 2634812080860692552
+    sequences: []
+    editorPosition: {x: 787, y: -753}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1285,10 +961,7 @@ MonoBehaviour:
     - 26515eb0638a43f1806915f4cdb037e0
     - a573702db7e24a31b029fca55ab4b55a
     - 5acd38a936824a9cbeb10fcec9bd6aaf
-    - 7d0ae2ec3fed4b028e33794f00c406f4
     - 1c8b136783bf4ee5a096e1c0649b9c89
-    - b44835734f024e7ba4dbb7a5907377c9
-    - 86518ab403b34914bf90cdc6ef8a6a02
     - 9f214db9980d4ddbab7aaaa4d621e3fc
     nodeIds:
     - P01_Formation
@@ -1296,124 +969,84 @@ MonoBehaviour:
     - P01_Fire All
     - P01_Fire Projectile
     - P01_Wander
-    - P01_Summon
     - P01_Maintain Player Distance 3
-    - P01_Wander 2
-    - P01_Maintain Player Distance 2
     - P01_Maintain Player Distance 4
   - patternId: Pattern2
     nodeGuids:
-    - 55cd71eeaf904684bbaf5b0a7494f44a
-    - 741cfe70bcb343818d34b5f02e2975ba
     - 0be5c027008d462383e9165e9c2d4352
-    - a9d62a0fc3c0436b9cbfaef9edf4d34d
+    - 55cd71eeaf904684bbaf5b0a7494f44a
     - 11a518c41d64444db10f19382d8cfbfe
     - e484e55cfd4849069bcdd837a65572e8
-    - 6cbc0abfcfb748cf8fb679c1e3efd726
     - c753001eaad64c058e78470e2f5213aa
     nodeIds:
-    - P02_Radial Burst
-    - P02_Summon
     - P02_Angle DIstance Move Action
-    - P02_Wander 2
+    - P02_Radial Burst
     - P02_Maintain Player Distance
     - P02_Wander
-    - P02_Maintain Player Distance 2
     - P02_Maintain Player Distance 3
   - patternId: Pattern3
     nodeGuids:
-    - 34a98155abe64c788bbee5b375f70f93
     - 3962ebd6f81c4815babe6d8c51de40eb
     - de91b3605e7e4c119104d701bb5fbd53
     - 3fd2b6ec8a764d1aa98ed2dc25aebe36
-    - 94646b8db52446289640c85d1e8f5000
-    - 61fd0b2cab5c4303904ea09358ecbb35
     - 3505afd6e95e43519fe68377c2016077
     - f46d6a4cbd6d479ab8d120555bf2d9ba
     nodeIds:
-    - P04_Summon
     - Orbit_Copy1
     - Repeat Fire_Copy1
     - P04_Wander2_Copy1
-    - P03_Wander 2
-    - UP04_Maintain Player Distance 2_Copy1
     - UP04_Maintain Player Distance_Copy1
     - UP04_Move Away From Player_Copy1
   - patternId: Pattern4-1
     nodeGuids:
-    - b4f3a2b34b0240a5b074f7886b5b08ac
     - f9254dfe1f1b415ba4c10e85a0c44f8c
     - 71e3398d27ad4926aa6ab542889090fd
     - 86b1670e9e284e8597380d35c91f0a40
-    - 0fbc48e59c094d2ab1d0ce786f6b37ee
-    - 41dc72f2ed3d4485b963b74443556525
     - 46faccf9d8084608b458c917e1b632c4
     nodeIds:
-    - P05_Summon
     - Player Path
     - Side Fire
     - P04_Wander2_Copy1_Copy2
-    - P04_Wander_Copy1_Copy2
-    - UP04_Maintain Player Distance 2_Copy1_Copy1
     - UP04_Move Away From Player_Copy1_Copy1
   - patternId: Pattern4-2
     nodeGuids:
-    - e134f529be614ca0939c33f52217a567
     - c4116958ba4142278e4fe0a7b444e180
     - af4447b1afdb4580ab91541ce6c33a5d
     - 947bf3f45d624fc2ab6a21690f0b3f71
-    - 92206f7789474c15805085b24c58f1d5
-    - 88443bd7b07e4a6cab662a3e3b19306b
     - 1547862340bf4d97a048e92a227af8f0
     nodeIds:
-    - P06_Summon
     - Player Path_Copy1
     - Side Fire_Copy1
     - P04_Wander2_Copy1_Copy2_Copy1
-    - P04_Wander_Copy1_Copy2_Copy1
-    - UP04_Maintain Player Distance 2_Copy1_Copy1_Copy1
     - UP04_Move Away From Player_Copy1_Copy1_Copy1
   - patternId: Pattern5-1
     nodeGuids:
-    - 958821ff57604e58baeed9addcfbe2cf
     - 27cdd94773084609bc7a5dc234a9cac9
     - b7e96598b0fc440e90e02dfebf9a096b
     - 8f2b0be547f142a9bf6e0935cc0be024
     - c68cd4c4bb474830b4ded29177d1a764
-    - b9a2e7e2a7ba49b39b77a4de1c4d86f0
-    - 52f38a24079a42dfbd8b6cc98bbb2a19
     - 85002708af00467c913a7afc7d5159cf
     nodeIds:
-    - P09_Summon
     - Gather
     - Dash
     - P09_Repeat Fire
     - P09_Wander 2
-    - P09_Wander
-    - P09_Move Toward Player
     - P09_Move Toward Player 2
   - patternId: Pattern5-2
     nodeGuids:
-    - e294eea43af04977adb6c864a12c560e
     - fee049ef154f4852a212de570a636e9c
     - 2d6d925aaefd4a0283a56966c2b97f15
     - d85b4838a8e243c796063fda5d9b3a57
     - 4fc948e44bd04d1fa24a72d5002bebae
-    - c254d69ebb1948b1866e9a3aa35c5422
-    - 2f4a7ccd94f543eb91ce83a1e062f2a1
     - ecaefbb9637043ac8fbbb55a7c652621
     nodeIds:
-    - P09_Summon_Copy3
     - Gather_Copy2
     - Dash_Copy2
     - P09_Repeat Fire_Copy3
     - P09_Wander 2_Copy4
-    - P09_Wander_Copy4
-    - P09_Move Toward Player_Copy4
     - P09_Move Toward Player 2_Copy4
   - patternId: Pattern6
     nodeGuids:
-    - 4f20f2e41e074a5ca2e42aff8d0af714
     - 7639ad02ebae4263b6191218d9dc7f60
     - f9e326a138da4ac59f8dc4c075253089
     - 3526b10030a149b48e20a4ca09547956
@@ -1427,11 +1060,8 @@ MonoBehaviour:
     - badb409374654b82989f58fbddc5659f
     - d1954071620a4009988a16c8b47b0627
     - caeeebb90c3b4d649fdd1ce3585f9648
-    - 03193fc7cf6a4751ab2abd52b78d21b5
-    - 0e0fa42e14cc497f970a29574627f2a8
     - b99e0873ec124d019abc371765ab7a2e
     nodeIds:
-    - P10_Summon
     - P10_Gather
     - P10_Repeat Fire
     - Node1
@@ -1445,18 +1075,13 @@ MonoBehaviour:
     - P10_Repeat Fire_Copy1_Copy1_Copy1
     - Node1_Copy1_Copy1_Copy1
     - P09_Wander 2_Copy1
-    - P09_Wander_Copy1
-    - P09_Move Toward Player_Copy1
     - P09_Move Toward Player 2_Copy1
   - patternId: Pattern7
     nodeGuids:
-    - 7f6d23b2179e4bd29fd0ff3c701f3d41
     - d4b4da5e0bae42f2b036ec03f664915e
     - 4d6138659f77449ba6cf4e4493002702
     - 9cf47d93d7de43318bbff1a066295c7a
     - 90b61588b2364fb0a1ee9c50daf3287c
-    - 9d25f318c9724961b46c2c7be28e342e
-    - 614eaf91da0d4b4e80cddc5790819b77
     - 5458d8c35152446fabe8dbf52a59dabd
     - ce073d379e58465fa28920db20da2c63
     - 5d6c5c9d90f34c39a2dafc51b4bc5ac5
@@ -1464,13 +1089,10 @@ MonoBehaviour:
     - ef0538cfad3b4f51adc0bdc6b3b4f8c2
     - edd34270becd45719f73cfacbad66fdd
     nodeIds:
-    - P09_Summon_Copy2
     - P11_Orbit
     - P09_Repeat Fire_Copy2
     - Node2
     - P11_Orbit_Copy1
-    - P09_Wander_Copy3
-    - P09_Move Toward Player_Copy3
     - P09_Move Toward Player 2_Copy3
     - P09_Repeat Fire_Copy2_Copy1
     - Node2_Copy1
@@ -1480,99 +1102,74 @@ MonoBehaviour:
   - patternId: Pattern8
     nodeGuids:
     - 65cfcc2352924679b7ec85066ff3d4e8
-    - d873030243f44eb68eef550c40dae7db
-    - 592ce7f11b89418cadd2cd36ed467a53
-    - a1f539730cf5496b8548a3059409cf3e
     - b0b0d0134d3e44af806747ac0785d8fa
     - ed3cd1e09ff2457198f777d3ff88cec3
-    - 6650c8d7fb6b44c2a947e87892f36e35
+    - d873030243f44eb68eef550c40dae7db
+    - 592ce7f11b89418cadd2cd36ed467a53
     - 5cb38fc807a444fdafe49d4caf3b046b
     nodeIds:
     - P03_Formation Straight
-    - P03_Fire All
-    - P03_Wander
-    - P03_Summon
     - P03_Start Move Away From Player
     - P03_Maintain Player Distance
-    - P03_Wander_Copy1
+    - P03_Fire All
+    - P03_Wander
     - P03_Move Away From Player
   - patternId: Upgrade/Pattern2
     nodeGuids:
-    - e4b7c43912764cd6990b069c87545536
     - 8cde7af96a1d4f78b0ded57c74d52492
     - 46845d159c8d48d49b7e1b763091590a
     - a54c6e43061d4a559d97a11d547557d3
-    - 10a396c9028e43cb9538d6599f56acbc
     - 39f17b678e99463f99c7ca0ebfdff78c
     - f5553ede00224a21936fe18e0f7bcbf8
     - 28332fa5b0454eb0a274fb587fbc77f5
     - b6d267ce8d8d4fa29d6ea9ee5c8621eb
     - d8522cf832ca46bb958e5e5e934f3bb8
-    - 17dabf7ce4894e45ad78fda1c508dfeb
     nodeIds:
-    - Summon_Copy1
     - UP02_Angle DIstance Move Action
     - Radial Burst_Copy1
     - Radial Burst_Copy1_Copy1
-    - UP02_Wander
     - UP02_Maintain Player Distance
     - UP02_Angle DIstance Move Action 2
     - UP02_Move Away From Player
     - UP02_Maintain Player Distance 2
     - UP02_Wander 2
-    - UP02_Maintain Player Distance_Copy1
   - patternId: Upgrade/Pattern3
     nodeGuids:
-    - b1e9c89b7faa4d949791c452a083babb
     - 10ae2931996944e7968c41323349368e
     - 8a0cf91811cb4c8db941acac72258022
     - 5628159cf8f64d80bc395e1c64a087f4
-    - 9efae6f7e73744c6b067f10579e01ef5
     - 7ec92e4541a24e4ca49db2f712bde19b
     - 4eeeb5be9d184e38bd631c0337079345
     - a029c9156aa7471faf9e0701ef615c85
-    - c59eae3a2745459f93f597d1c6559ecf
     nodeIds:
-    - P04_Summon_Copy1_Copy1
     - Orbit_Copy1_Copy1
     - Repeat Fire_Copy1_Copy1
     - P04_Wander2_Copy1_Copy1
-    - P04_Wander_Copy1_Copy1
     - UP04_Fire Projectile Burst
     - UP04_Maintain Player Distance
     - UP04_Move Away From Player
-    - UP04_Maintain Player Distance 2
   - patternId: Upgrade/Pattern4
     nodeGuids:
-    - c597579c8a6f4e09b8b58a1fce129b45
     - 3bc519dc1704445eab09d338eb78d53c
     - af261808967e42878f831a46566e6f8f
     - c7e03389464945bb9135624d2af78ff0
     - e228037507a64af88fcd38835c74be98
     - e433785d72214e2eb36cce9d13b8137c
-    - 96f4df26f4fb43b28590723fc9d47094
-    - e0bdfdd1b54f4541be21bd8fd61dc3b7
     - f323e406040e45fdbbf20ab68089389b
     nodeIds:
-    - P05_Summon_Copy1
     - Player Path_Copy2
     - Side Fire_Copy2
     - Player Path_Copy1_Copy1
     - Side Fire_Copy1_Copy1
     - P04_Wander2_Copy1_Copy2_Copy2
-    - P04_Wander_Copy1_Copy2_Copy2
-    - UP04_Maintain Player Distance 2_Copy1_Copy1_Copy2
     - UP04_Move Away From Player_Copy1_Copy1_Copy2
   - patternId: Upgrade/Pattern5
     nodeGuids:
-    - 22ebe46b27c54937ab8c03654ab87712
     - dc97284f657142888a98cefb28a96090
     - 655488e2b7d44602bc4d8b09aedcfc5b
     - 12e475903eb6441bb867c70ee8e35a5c
     - 050794e260544acc87e50b2b70a7477f
     - ed88f8a525a34666b20e79e06bac98a2
-    - 7a09cf3a6de1430d9ab30e6d82aeb31d
-    - 81c021e87a7b481ebdceb3470d77f84c
     - 280b8b269a354aa2be4c5c0db40c9d63
     - 04d963f4263449ef955965e37c04de8b
     - f98986b955b94e8395d415b4cfcf920f
@@ -1583,14 +1180,11 @@ MonoBehaviour:
     - 6206e2c363d84b44aa8c2a8910d867be
     - a2af149be1f54142a7738429b5bb9ff2
     nodeIds:
-    - P09_Summon_Copy1
     - Gather_Copy1
     - Dash_Copy1
     - P09_Repeat Fire_Copy1
     - Gather_Copy1_Copy1
     - Dash_Copy1_Copy1
-    - P09_Wander_Copy2
-    - P09_Move Toward Player_Copy2
     - P09_Move Toward Player 2_Copy2
     - P09_Repeat Fire_Copy1_Copy1
     - Gather_Copy1_Copy1_Copy1
@@ -1600,43 +1194,91 @@ MonoBehaviour:
     - Dash_Copy1_Copy1_Copy1_Copy1
     - P09_Repeat Fire_Copy1_Copy1_Copy1_Copy1
     - P09_Wander 2_Copy2
+  - patternId: Summon
+    nodeGuids:
+    - a72ac519bd064ca9a260fcb39e49b836
+    - 631205d2ef87491f9bd6e91b47875965
+    - ec4ca827679f477a9a7618b2093d31d4
+    - 52807003c9334e2ba91f979e7668eaa9
+    - d91c2d368dee4a92ae646127aa39c772
+    nodeIds:
+    - P01_Summon_Copy1
+    - P01_Wander 2_Copy1
+    - P01_Maintain Player Distance 2_Copy1
+    - P01_Wander_Copy1
+    - P01_Maintain Player Distance 4_Copy1
   phases:
   - phaseIndex: 0
     selectionMode: 3
     patternIntervalSeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
-    openingPatternId: Pattern2
+    openingPatternId: Summon
     patterns:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern4-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern4-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern5-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern5-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
   - phaseIndex: 1
+    selectionMode: 3
+    patternIntervalSeconds: 0
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 1
+    openingPatternId: Summon
+    patterns:
+    - patternId: Pattern1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern4-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern4-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern5-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern5-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+  - phaseIndex: 2
     selectionMode: 3
     patternIntervalSeconds: 0
     bossCanFlyOverGround: 0
@@ -1646,57 +1288,36 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
   transitions:
-  - fromNodeGuid: b4f3a2b34b0240a5b074f7886b5b08ac
-    toNodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
-    fromNodeId: P05_Summon
-    toNodeId: Player Path
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e134f529be614ca0939c33f52217a567
-    toNodeGuid: c4116958ba4142278e4fe0a7b444e180
-    fromNodeId: P06_Summon
-    toNodeId: Player Path_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: c597579c8a6f4e09b8b58a1fce129b45
-    toNodeGuid: 3bc519dc1704445eab09d338eb78d53c
-    fromNodeId: P05_Summon_Copy1
-    toNodeId: Player Path_Copy2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: af261808967e42878f831a46566e6f8f
     toNodeGuid: c7e03389464945bb9135624d2af78ff0
     fromNodeId: Side Fire_Copy2
@@ -1704,24 +1325,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 958821ff57604e58baeed9addcfbe2cf
-    toNodeGuid: 27cdd94773084609bc7a5dc234a9cac9
-    fromNodeId: P09_Summon
-    toNodeId: Gather
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 27cdd94773084609bc7a5dc234a9cac9
     toNodeGuid: b7e96598b0fc440e90e02dfebf9a096b
     fromNodeId: Gather
     toNodeId: Dash
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 4f20f2e41e074a5ca2e42aff8d0af714
-    toNodeGuid: 7639ad02ebae4263b6191218d9dc7f60
-    fromNodeId: P10_Summon
-    toNodeId: P10_Gather
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1802,13 +1409,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: a1f539730cf5496b8548a3059409cf3e
-    toNodeGuid: b0b0d0134d3e44af806747ac0785d8fa
-    fromNodeId: P03_Summon
-    toNodeId: P03_Start Move Away From Player
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: b0b0d0134d3e44af806747ac0785d8fa
     toNodeGuid: ed3cd1e09ff2457198f777d3ff88cec3
     fromNodeId: P03_Start Move Away From Player
@@ -1827,13 +1427,6 @@ MonoBehaviour:
     toNodeGuid: 3fd2b6ec8a764d1aa98ed2dc25aebe36
     fromNodeId: Repeat Fire_Copy1
     toNodeId: P04_Wander2_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 34a98155abe64c788bbee5b375f70f93
-    toNodeGuid: 3962ebd6f81c4815babe6d8c51de40eb
-    fromNodeId: P04_Summon
-    toNodeId: Orbit_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1862,27 +1455,6 @@ MonoBehaviour:
     toNodeGuid: d8522cf832ca46bb958e5e5e934f3bb8
     fromNodeId: UP02_Maintain Player Distance 2
     toNodeId: UP02_Wander 2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e4b7c43912764cd6990b069c87545536
-    toNodeGuid: 8cde7af96a1d4f78b0ded57c74d52492
-    fromNodeId: Summon_Copy1
-    toNodeId: UP02_Angle DIstance Move Action
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 741cfe70bcb343818d34b5f02e2975ba
-    toNodeGuid: 0be5c027008d462383e9165e9c2d4352
-    fromNodeId: P02_Summon
-    toNodeId: P02_Angle DIstance Move Action
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 7d0ae2ec3fed4b028e33794f00c406f4
-    toNodeGuid: 1c8b136783bf4ee5a096e1c0649b9c89
-    fromNodeId: P01_Summon
-    toNodeId: P01_Maintain Player Distance 3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1921,24 +1493,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: b1e9c89b7faa4d949791c452a083babb
-    toNodeGuid: 10ae2931996944e7968c41323349368e
-    fromNodeId: P04_Summon_Copy1_Copy1
-    toNodeId: Orbit_Copy1_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: d1954071620a4009988a16c8b47b0627
     toNodeGuid: caeeebb90c3b4d649fdd1ce3585f9648
     fromNodeId: Node1_Copy1_Copy1_Copy1
     toNodeId: P09_Wander 2_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 22ebe46b27c54937ab8c03654ab87712
-    toNodeGuid: dc97284f657142888a98cefb28a96090
-    fromNodeId: P09_Summon_Copy1
-    toNodeId: Gather_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1998,13 +1556,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 7f6d23b2179e4bd29fd0ff3c701f3d41
-    toNodeGuid: d4b4da5e0bae42f2b036ec03f664915e
-    fromNodeId: P09_Summon_Copy2
-    toNodeId: P11_Orbit
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: ef0538cfad3b4f51adc0bdc6b3b4f8c2
     toNodeGuid: edd34270becd45719f73cfacbad66fdd
     fromNodeId: P09_Repeat Fire_Copy2_Copy2
@@ -2040,13 +1591,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: e294eea43af04977adb6c864a12c560e
-    toNodeGuid: fee049ef154f4852a212de570a636e9c
-    fromNodeId: P09_Summon_Copy3
-    toNodeId: Gather_Copy2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: fee049ef154f4852a212de570a636e9c
     toNodeGuid: 2d6d925aaefd4a0283a56966c2b97f15
     fromNodeId: Gather_Copy2
@@ -2065,6 +1609,13 @@ MonoBehaviour:
     toNodeGuid: 4fc948e44bd04d1fa24a72d5002bebae
     fromNodeId: P09_Repeat Fire_Copy3
     toNodeId: P09_Wander 2_Copy4
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ec4ca827679f477a9a7618b2093d31d4
+    toNodeGuid: 52807003c9334e2ba91f979e7668eaa9
+    fromNodeId: P01_Maintain Player Distance 2_Copy1
+    toNodeId: P01_Wander_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2129,24 +1680,6 @@ MonoBehaviour:
     toNodeId: P01_Fire Projectile
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: b44835734f024e7ba4dbb7a5907377c9
-    toNodeGuid: 7d0ae2ec3fed4b028e33794f00c406f4
-    fromNodeId: P01_Wander 2
-    toNodeId: P01_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: a9d62a0fc3c0436b9cbfaef9edf4d34d
-    toNodeGuid: 741cfe70bcb343818d34b5f02e2975ba
-    fromNodeId: P02_Wander 2
-    toNodeId: P02_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 6650c8d7fb6b44c2a947e87892f36e35
-    toNodeGuid: a1f539730cf5496b8548a3059409cf3e
-    fromNodeId: P03_Wander_Copy1
-    toNodeId: P03_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: ed3cd1e09ff2457198f777d3ff88cec3
     toNodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
     fromNodeId: P03_Maintain Player Distance
@@ -2165,22 +1698,10 @@ MonoBehaviour:
     toNodeId: P01_Formation
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 94646b8db52446289640c85d1e8f5000
-    toNodeGuid: 34a98155abe64c788bbee5b375f70f93
-    fromNodeId: P03_Wander 2
-    toNodeId: P04_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 3962ebd6f81c4815babe6d8c51de40eb
     toNodeGuid: de91b3605e7e4c119104d701bb5fbd53
     fromNodeId: Orbit_Copy1
     toNodeId: Repeat Fire_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 10a396c9028e43cb9538d6599f56acbc
-    toNodeGuid: e4b7c43912764cd6990b069c87545536
-    fromNodeId: UP02_Wander
-    toNodeId: Summon_Copy1
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 55cd71eeaf904684bbaf5b0a7494f44a
@@ -2207,12 +1728,6 @@ MonoBehaviour:
     toNodeId: UP02_Maintain Player Distance 2
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 9efae6f7e73744c6b067f10579e01ef5
-    toNodeGuid: b1e9c89b7faa4d949791c452a083babb
-    fromNodeId: P04_Wander_Copy1_Copy1
-    toNodeId: P04_Summon_Copy1_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 10ae2931996944e7968c41323349368e
     toNodeGuid: 8a0cf91811cb4c8db941acac72258022
     fromNodeId: Orbit_Copy1_Copy1
@@ -2237,36 +1752,6 @@ MonoBehaviour:
     toNodeId: UP04_Move Away From Player
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: b1e9c89b7faa4d949791c452a083babb
-    toNodeGuid: c59eae3a2745459f93f597d1c6559ecf
-    fromNodeId: P04_Summon_Copy1_Copy1
-    toNodeId: UP04_Maintain Player Distance 2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 7d0ae2ec3fed4b028e33794f00c406f4
-    toNodeGuid: 86518ab403b34914bf90cdc6ef8a6a02
-    fromNodeId: P01_Summon
-    toNodeId: P01_Maintain Player Distance 2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: e4b7c43912764cd6990b069c87545536
-    toNodeGuid: 17dabf7ce4894e45ad78fda1c508dfeb
-    fromNodeId: Summon_Copy1
-    toNodeId: UP02_Maintain Player Distance_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 741cfe70bcb343818d34b5f02e2975ba
-    toNodeGuid: 6cbc0abfcfb748cf8fb679c1e3efd726
-    fromNodeId: P02_Summon
-    toNodeId: P02_Maintain Player Distance 2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 34a98155abe64c788bbee5b375f70f93
-    toNodeGuid: 61fd0b2cab5c4303904ea09358ecbb35
-    fromNodeId: P04_Summon
-    toNodeId: UP04_Maintain Player Distance 2_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: de91b3605e7e4c119104d701bb5fbd53
     toNodeGuid: 3505afd6e95e43519fe68377c2016077
     fromNodeId: Repeat Fire_Copy1
@@ -2285,18 +1770,6 @@ MonoBehaviour:
     toNodeId: P03_Move Away From Player
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 0fbc48e59c094d2ab1d0ce786f6b37ee
-    toNodeGuid: b4f3a2b34b0240a5b074f7886b5b08ac
-    fromNodeId: P04_Wander_Copy1_Copy2
-    toNodeId: P05_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: b4f3a2b34b0240a5b074f7886b5b08ac
-    toNodeGuid: 41dc72f2ed3d4485b963b74443556525
-    fromNodeId: P05_Summon
-    toNodeId: UP04_Maintain Player Distance 2_Copy1_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 86b1670e9e284e8597380d35c91f0a40
     toNodeGuid: 46faccf9d8084608b458c917e1b632c4
     fromNodeId: P04_Wander2_Copy1_Copy2
@@ -2309,34 +1782,10 @@ MonoBehaviour:
     toNodeId: UP04_Move Away From Player_Copy1_Copy1_Copy1
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 92206f7789474c15805085b24c58f1d5
-    toNodeGuid: e134f529be614ca0939c33f52217a567
-    fromNodeId: P04_Wander_Copy1_Copy2_Copy1
-    toNodeId: P06_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: e134f529be614ca0939c33f52217a567
-    toNodeGuid: 88443bd7b07e4a6cab662a3e3b19306b
-    fromNodeId: P06_Summon
-    toNodeId: UP04_Maintain Player Distance 2_Copy1_Copy1_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: e433785d72214e2eb36cce9d13b8137c
     toNodeGuid: f323e406040e45fdbbf20ab68089389b
     fromNodeId: P04_Wander2_Copy1_Copy2_Copy2
     toNodeId: UP04_Move Away From Player_Copy1_Copy1_Copy2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: c597579c8a6f4e09b8b58a1fce129b45
-    toNodeGuid: e0bdfdd1b54f4541be21bd8fd61dc3b7
-    fromNodeId: P05_Summon_Copy1
-    toNodeId: UP04_Maintain Player Distance 2_Copy1_Copy1_Copy2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 96f4df26f4fb43b28590723fc9d47094
-    toNodeGuid: c597579c8a6f4e09b8b58a1fce129b45
-    fromNodeId: P04_Wander_Copy1_Copy2_Copy2
-    toNodeId: P05_Summon_Copy1
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: c68cd4c4bb474830b4ded29177d1a764
@@ -2345,46 +1794,10 @@ MonoBehaviour:
     toNodeId: P09_Move Toward Player 2
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 958821ff57604e58baeed9addcfbe2cf
-    toNodeGuid: 52f38a24079a42dfbd8b6cc98bbb2a19
-    fromNodeId: P09_Summon
-    toNodeId: P09_Move Toward Player
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: b9a2e7e2a7ba49b39b77a4de1c4d86f0
-    toNodeGuid: 958821ff57604e58baeed9addcfbe2cf
-    fromNodeId: P09_Wander
-    toNodeId: P09_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: caeeebb90c3b4d649fdd1ce3585f9648
     toNodeGuid: b99e0873ec124d019abc371765ab7a2e
     fromNodeId: P09_Wander 2_Copy1
     toNodeId: P09_Move Toward Player 2_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 4f20f2e41e074a5ca2e42aff8d0af714
-    toNodeGuid: 0e0fa42e14cc497f970a29574627f2a8
-    fromNodeId: P10_Summon
-    toNodeId: P09_Move Toward Player_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 03193fc7cf6a4751ab2abd52b78d21b5
-    toNodeGuid: 4f20f2e41e074a5ca2e42aff8d0af714
-    fromNodeId: P09_Wander_Copy1
-    toNodeId: P10_Summon
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 7a09cf3a6de1430d9ab30e6d82aeb31d
-    toNodeGuid: 22ebe46b27c54937ab8c03654ab87712
-    fromNodeId: P09_Wander_Copy2
-    toNodeId: P09_Summon_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 22ebe46b27c54937ab8c03654ab87712
-    toNodeGuid: 81c021e87a7b481ebdceb3470d77f84c
-    fromNodeId: P09_Summon_Copy1
-    toNodeId: P09_Move Toward Player_Copy2
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 655488e2b7d44602bc4d8b09aedcfc5b
@@ -2417,18 +1830,6 @@ MonoBehaviour:
     toNodeId: P09_Repeat Fire_Copy1_Copy1_Copy1_Copy1
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 9d25f318c9724961b46c2c7be28e342e
-    toNodeGuid: 7f6d23b2179e4bd29fd0ff3c701f3d41
-    fromNodeId: P09_Wander_Copy3
-    toNodeId: P09_Summon_Copy2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 7f6d23b2179e4bd29fd0ff3c701f3d41
-    toNodeGuid: 614eaf91da0d4b4e80cddc5790819b77
-    fromNodeId: P09_Summon_Copy2
-    toNodeId: P09_Move Toward Player_Copy3
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: edd34270becd45719f73cfacbad66fdd
     toNodeGuid: 5458d8c35152446fabe8dbf52a59dabd
     fromNodeId: P09_Wander 2_Copy3
@@ -2451,18 +1852,6 @@ MonoBehaviour:
     toNodeGuid: ef0538cfad3b4f51adc0bdc6b3b4f8c2
     fromNodeId: P11_Orbit_Copy2
     toNodeId: P09_Repeat Fire_Copy2_Copy2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: c254d69ebb1948b1866e9a3aa35c5422
-    toNodeGuid: e294eea43af04977adb6c864a12c560e
-    fromNodeId: P09_Wander_Copy4
-    toNodeId: P09_Summon_Copy3
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: e294eea43af04977adb6c864a12c560e
-    toNodeGuid: 2f4a7ccd94f543eb91ce83a1e062f2a1
-    fromNodeId: P09_Summon_Copy3
-    toNodeId: P09_Move Toward Player_Copy4
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 2d6d925aaefd4a0283a56966c2b97f15
@@ -2489,8 +1878,26 @@ MonoBehaviour:
     toNodeId: P02_Maintain Player Distance 3
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern8
+  - fromNodeGuid: 631205d2ef87491f9bd6e91b47875965
+    toNodeGuid: a72ac519bd064ca9a260fcb39e49b836
+    fromNodeId: P01_Wander 2_Copy1
+    toNodeId: P01_Summon_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: a72ac519bd064ca9a260fcb39e49b836
+    toNodeGuid: ec4ca827679f477a9a7618b2093d31d4
+    fromNodeId: P01_Summon_Copy1
+    toNodeId: P01_Maintain Player Distance 2_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 52807003c9334e2ba91f979e7668eaa9
+    toNodeGuid: d91c2d368dee4a92ae646127aa39c772
+    fromNodeId: P01_Wander_Copy1
+    toNodeId: P01_Maintain Player Distance 4_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:
@@ -2584,16 +1991,6 @@ MonoBehaviour:
         speedMultiplier: 1.2
         settleSeconds: 1
         waitForDuration: 1
-    - rid: 2634811984531423337
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
-    - rid: 2634811984531423352
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634811984531423354
       type: {class: MinionSideFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2653,11 +2050,6 @@ MonoBehaviour:
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForDuration: 1
-    - rid: 2634811984531423363
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634811984531423364
       type: {class: MinionSideFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2759,11 +2151,6 @@ MonoBehaviour:
         spreadDegrees: 80
         resumeIdle: 1
         waitForDuration: 1
-    - rid: 2634811984531423376
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634811984531423377
       type: {class: MinionAngleDistanceMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2888,11 +2275,6 @@ MonoBehaviour:
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForDuration: 1
-    - rid: 2634811984531423383
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634811984531423384
       type: {class: MinionSideFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3105,11 +2487,6 @@ MonoBehaviour:
         - bulletCount: 4
           fireInterval: 0.5
           restSeconds: 0
-    - rid: 2634811994844954694
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634811994844954695
       type: {class: MinionGatherAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3175,11 +2552,6 @@ MonoBehaviour:
         dashSpeed: 7
         aimOffsetDegrees: 0
         waitForDuration: 1
-    - rid: 2634811994844954699
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634811994844954700
       type: {class: MinionGatherAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3448,44 +2820,10 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 2634811994844954724
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
-    - rid: 2634811994844954726
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
-    - rid: 2634811994844954727
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634811994844954728
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
     - rid: 2634811994844954729
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         wanderSeconds: 2
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634811994844954730
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3566,11 +2904,6 @@ MonoBehaviour:
         randomizeDirection: 0
         clockwise: 1
         waitForDuration: 1
-    - rid: 2634812004397482065
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634812004397482066
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3615,26 +2948,10 @@ MonoBehaviour:
           fireInterval: 0.15
           restSeconds: 0
         waitForDuration: 1
-    - rid: 2634812004397482067
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
     - rid: 2634812004397482068
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         wanderSeconds: 2
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812004397482069
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3786,11 +3103,6 @@ MonoBehaviour:
         randomizeDirection: 0
         clockwise: 1
         waitForDuration: 1
-    - rid: 2634812006979338321
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634812006979338322
       type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3834,14 +3146,6 @@ MonoBehaviour:
         - bulletCount: 20
           fireInterval: 0.15
           restSeconds: 0
-        waitForDuration: 1
-    - rid: 2634812006979338323
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
         waitForDuration: 1
     - rid: 2634812006979338324
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -3976,171 +3280,6 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-    - rid: 2634812006979338328
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 8.5
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-    - rid: 2634812006979338329
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0.004837036
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-    - rid: 2634812006979338330
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-    - rid: 2634812006979338331
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-    - rid: 2634812006979338332
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7.5
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812006979338333
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4284,47 +3423,6 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-    - rid: 2634812007888977989
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888977990
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7.5
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888977991
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4363,47 +3461,6 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-    - rid: 2634812007888977993
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888977994
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7.5
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888977995
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4442,47 +3499,6 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-    - rid: 2634812007888977997
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888977998
-      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        durationSeconds: 1
-        distance: 7.5
-        tolerance: 0.3
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888977999
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4521,14 +3537,6 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-    - rid: 2634812007888978001
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
     - rid: 2634812007888978003
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4537,77 +3545,7 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 2634812007888978005
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
-        speedMultiplier: 0.3
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888978006
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
-        speedMultiplier: 0.3
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-    - rid: 2634812007888978007
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888978008
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
@@ -4677,11 +3615,6 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
-    - rid: 2634812007888978011
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634812007888978012
       type: {class: MinionGatherAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4747,45 +3680,6 @@ MonoBehaviour:
         dashSpeed: 14
         aimOffsetDegrees: 0
         waitForDuration: 1
-    - rid: 2634812007888978015
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888978016
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
-        speedMultiplier: 0.3
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888978017
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5020,50 +3914,6 @@ MonoBehaviour:
         dashSpeed: 14
         aimOffsetDegrees: 0
         waitForDuration: 1
-    - rid: 2634812007888978048
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
-    - rid: 2634812007888978052
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888978053
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
-        speedMultiplier: 0.3
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888978054
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5260,11 +4110,6 @@ MonoBehaviour:
       data:
         holdSeconds: 1
         waitForDuration: 1
-    - rid: 2634812007888978072
-      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        summonCount: 4
-        stopBossWhileSummoning: 0
     - rid: 2634812007888978073
       type: {class: MinionGatherAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5330,45 +4175,6 @@ MonoBehaviour:
         dashSpeed: 7
         aimOffsetDegrees: 0
         waitForDuration: 1
-    - rid: 2634812007888978076
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 1
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 2634812007888978077
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
-        speedMultiplier: 0.3
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 2634812007888978078
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5442,6 +4248,93 @@ MonoBehaviour:
         speedCurveInitialized: 1
         stopWhenFinished: 1
     - rid: 2634812049179803717
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 2
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 2634812080860692548
+      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        wanderSeconds: 2
+        speed: 3.2
+        radius: 2.8
+        retargetSeconds: 1.5
+        waitForDuration: 1
+    - rid: 2634812080860692549
+      type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        summonCount: 2
+        stopBossWhileSummoning: 1
+    - rid: 2634812080860692550
+      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        wanderSeconds: 1
+        speed: 3.2
+        radius: 2.8
+        retargetSeconds: 1.5
+        waitForDuration: 1
+    - rid: 2634812080860692551
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 1
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.004837036
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 2634812080860692552
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         durationSeconds: 2

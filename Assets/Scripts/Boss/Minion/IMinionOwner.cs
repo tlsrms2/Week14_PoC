@@ -16,4 +16,15 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playMuzzleFlash);
     }
+
+    public interface IMinionPlayerHitHandler
+    {
+        bool TryHandleMinionPlayerHit(
+            Minion minion,
+            int bulletDamage,
+            bool strongHit,
+            Vector3 hitPosition,
+            Vector2 hitDirection,
+            Color hitColor);
+    }
 }

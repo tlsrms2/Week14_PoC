@@ -410,6 +410,10 @@ namespace Week14.Enemy
             minionPatternContext.ReleaseMinions();
         }
 
+        protected virtual void OnMinionSpawned(Minion minion)
+        {
+        }
+
         private IEnumerator SummonMinionsForGraph(int requestedCount, bool stopBossWhileSummoning)
         {
             yield return MinionPatternContext.WaitWhileExecutionPaused();
@@ -441,6 +445,7 @@ namespace Week14.Enemy
                 Minion spawnedMinion = MinionPatternContext.SpawnMinion(i, currentCount + summonCount);
                 if (spawnedMinion != null)
                 {
+                    OnMinionSpawned(spawnedMinion);
                     spawnedThisAction.Add(spawnedMinion);
                 }
 

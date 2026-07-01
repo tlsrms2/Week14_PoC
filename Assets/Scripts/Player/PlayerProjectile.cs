@@ -306,9 +306,13 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)
             {
+                int appliedDamage = boss is DronePilot dronePilot
+                    ? dronePilot.GetBodySharedDamage(bulletDamage)
+                    : bulletDamage;
+
                 if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
-                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                    ShowFloatingDamage(targetHealth, appliedDamage, damageStyleBulletNumber);
                     NotifyNormalAttackDamage();
                 }
 
@@ -320,9 +324,16 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<Minion>();
             if (minion != null)
             {
+                int appliedDamage = bulletDamage;
+                if (minion.Owner is DronePilot dronePilot
+                    && dronePilot.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
+                {
+                    appliedDamage = sharedDamage;
+                }
+
                 if (minion.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
-                    ShowFloatingDamage(targetHealth, bulletDamage, damageStyleBulletNumber);
+                    ShowFloatingDamage(targetHealth, appliedDamage, damageStyleBulletNumber);
                     NotifyNormalAttackDamage();
                 }
 

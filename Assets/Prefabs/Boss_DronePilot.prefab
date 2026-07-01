@@ -341,8 +341,10 @@ MonoBehaviour:
   displayName: "\uB4DC\uB860 \uC870\uC885\uC0AC"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 0}
-  maxHp: 150
+  maxHp: 100
   hpEmptyExecutionSeconds: 4
+  hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  hitFlashSeconds: 0.08
   normalColor: {r: 1, g: 0.4198113, b: 0.4198113, a: 1}
   hpEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   staggeredColor: {r: 0.8962264, g: 0.16487186, b: 0.16487186, a: 1}
@@ -442,6 +444,8 @@ MonoBehaviour:
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
+  bodyHitDamageMultiplier: 1
+  minionHitDamageMultiplier: 0.7
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5
