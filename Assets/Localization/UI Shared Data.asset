@@ -63,6 +63,14 @@ MonoBehaviour:
     m_Key: ui.retry
     m_Metadata:
       m_Items: []
+  - m_Id: 98681342754816
+    m_Key: ui.BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98699957075968
+    m_Key: ui.SFX
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

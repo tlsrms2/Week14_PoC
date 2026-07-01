@@ -64,6 +64,11 @@ namespace Week14.Combat
             playerHpHiddenForExecution = false;
         }
 
+        internal void StartPendingExecutionBulletTimers()
+        {
+            GetPlayerHpView()?.StartPendingExecutionBulletTimers();
+        }
+
         internal PlayerHP GetPlayerHpView()
         {
             if (context.PlayerHpView == null)
