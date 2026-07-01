@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: UI
+  m_TableCollectionNameGuidString: 54d974a73685256428bdf277f9c3cd3b
+  m_Entries:
+  - m_Id: 35762831360
+    m_Key: ui.start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103836385280
+    m_Key: ui.option
+    m_Metadata:
+      m_Items: []
+  - m_Id: 221037821952
+    m_Key: ui.exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7022185644032
+    m_Key: ui.return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7504308305920
+    m_Key: ui.mute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44034297004032
+    m_Key: ui.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44079612264448
+    m_Key: ui.pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44213293121536
+    m_Key: ui.resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44328653258752
+    m_Key: ui.hold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56983963140096
+    m_Key: ui.retryDetail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57536428474368
+    m_Key: ui.lobby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58052210425856
+    m_Key: ui.retry
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6489938878495195437
+  references:
+    version: 2
+    RefIds:
+    - rid: 6489938878495195437
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1782893079087

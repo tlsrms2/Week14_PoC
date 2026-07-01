@@ -66,7 +66,7 @@ namespace Week14.UI
                 return;
             }
 
-            detailPanel?.Show(bossData.BossName, bossData.Crime, bossData.Description, bossData.Icon);
+            detailPanel?.Show(bossData);
         }
 
         public void OnPointerExit(PointerEventData eventData)
