@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: e0fe64a6731a698439e72cf5598f143a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6104961007454896683
+    second: Jungle Game Lab_Turquoise_250616_0
+  - first:
+      213: -5890975427865452946
+    second: Jungle Game Lab_Turquoise_250616_1
+  - first:
+      213: 7541087255664631406
+    second: Jungle Game Lab_Turquoise_250616_2
+  - first:
+      213: 4041735444617513598
+    second: Jungle Game Lab_Turquoise_250616_3
+  - first:
+      213: -2809374616289229457
+    second: Jungle Game Lab_Turquoise_250616_4
+  - first:
+      213: -8095326051606785085
+    second: Jungle Game Lab_Turquoise_250616_5
+  - first:
+      213: -1231405398310249671
+    second: Jungle Game Lab_Turquoise_250616_6
+  - first:
+      213: -477136998970364439
+    second: Jungle Game Lab_Turquoise_250616_7
+  - first:
+      213: -1270440287832418138
+    second: Jungle Game Lab_Turquoise_250616_8
+  - first:
+      213: -60747726399564060
+    second: Jungle Game Lab_Turquoise_250616_9
+  - first:
+      213: -8549304927047435048
+    second: Jungle Game Lab_Turquoise_250616_10
+  - first:
+      213: -4308336235438064642
+    second: Jungle Game Lab_Turquoise_250616_11
+  - first:
+      213: -5757917543134938591
+    second: Jungle Game Lab_Turquoise_250616_12
+  - first:
+      213: 2795442810513797735
+    second: Jungle Game Lab_Turquoise_250616_13
+  - first:
+      213: 8520979421143162808
+    second: Jungle Game Lab_Turquoise_250616_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 688
+        width: 587
+        height: 1147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b22c5f8d0bd29b450800000000000000
+      internalID: 6104961007454896683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_1
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 688
+        width: 898
+        height: 880
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6e56816f0d0f3ea0800000000000000
+      internalID: -5890975427865452946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_2
+      rect:
+        serializedVersion: 2
+        x: 1818
+        y: 706
+        width: 898
+        height: 880
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6e9d1697e257a860800000000000000
+      internalID: 7541087255664631406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_3
+      rect:
+        serializedVersion: 2
+        x: 2857
+        y: 0
+        width: 897
+        height: 1586
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7a488c09f0271830800000000000000
+      internalID: 4041735444617513598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_4
+      rect:
+        serializedVersion: 2
+        x: 3834
+        y: 706
+        width: 584
+        height: 1129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f65c413dba81309d0800000000000000
+      internalID: -2809374616289229457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_5
+      rect:
+        serializedVersion: 2
+        x: 4395
+        y: 688
+        width: 879
+        height: 898
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c31301d8df97af80800000000000000
+      internalID: -8095326051606785085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_6
+      rect:
+        serializedVersion: 2
+        x: 5577
+        y: 503
+        width: 1615
+        height: 1534
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93b1833805b29eee0800000000000000
+      internalID: -1231405398310249671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_7
+      rect:
+        serializedVersion: 2
+        x: 7495
+        y: 666
+        width: 660
+        height: 939
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9edec2b6d6ed069f0800000000000000
+      internalID: -477136998970364439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_8
+      rect:
+        serializedVersion: 2
+        x: 8265
+        y: 936
+        width: 669
+        height: 669
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a8576f0a4d7e5ee0800000000000000
+      internalID: -1270440287832418138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_9
+      rect:
+        serializedVersion: 2
+        x: 9082
+        y: 949
+        width: 1013
+        height: 656
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e69a03c34e282ff0800000000000000
+      internalID: -60747726399564060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_10
+      rect:
+        serializedVersion: 2
+        x: 10189
+        y: 935
+        width: 653
+        height: 672
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dc37da0774ca5980800000000000000
+      internalID: -8549304927047435048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_11
+      rect:
+        serializedVersion: 2
+        x: 11050
+        y: 1364
+        width: 357
+        height: 546
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efb35c93507b534c0800000000000000
+      internalID: -4308336235438064642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_12
+      rect:
+        serializedVersion: 2
+        x: 11436
+        y: 1356
+        width: 391
+        height: 392
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12ab3735084c710b0800000000000000
+      internalID: -5757917543134938591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_13
+      rect:
+        serializedVersion: 2
+        x: 11912
+        y: 1356
+        width: 391
+        height: 554
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 762389edc686bc620800000000000000
+      internalID: 2795442810513797735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle Game Lab_Turquoise_250616_14
+      rect:
+        serializedVersion: 2
+        x: 12371
+        y: 1356
+        width: 130
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bfd6af23a9904670800000000000000
+      internalID: 8520979421143162808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Jungle Game Lab_Turquoise_250616_0: 6104961007454896683
+      Jungle Game Lab_Turquoise_250616_1: -5890975427865452946
+      Jungle Game Lab_Turquoise_250616_10: -8549304927047435048
+      Jungle Game Lab_Turquoise_250616_11: -4308336235438064642
+      Jungle Game Lab_Turquoise_250616_12: -5757917543134938591
+      Jungle Game Lab_Turquoise_250616_13: 2795442810513797735
+      Jungle Game Lab_Turquoise_250616_14: 8520979421143162808
+      Jungle Game Lab_Turquoise_250616_2: 7541087255664631406
+      Jungle Game Lab_Turquoise_250616_3: 4041735444617513598
+      Jungle Game Lab_Turquoise_250616_4: -2809374616289229457
+      Jungle Game Lab_Turquoise_250616_5: -8095326051606785085
+      Jungle Game Lab_Turquoise_250616_6: -1231405398310249671
+      Jungle Game Lab_Turquoise_250616_7: -477136998970364439
+      Jungle Game Lab_Turquoise_250616_8: -1270440287832418138
+      Jungle Game Lab_Turquoise_250616_9: -60747726399564060
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -5632,6 +5632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ShotgunRangeIndicator
   lineRenderer: {fileID: 1577784156}
+  lineShader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   arcSegments: 7
   lineColor: {r: 1, g: 0.7, b: 0.2, a: 0.8}
   lineWidth: 0.05
@@ -8689,6 +8690,10 @@ PrefabInstance:
     - target: {fileID: 5085111366917276974, guid: dde99aa840ddf6e408f8207f4cff9082, type: 3}
       propertyPath: m_Name
       value: SkillGaugeImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312815904548779283, guid: dde99aa840ddf6e408f8207f4cff9082, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7765992712847667262, guid: dde99aa840ddf6e408f8207f4cff9082, type: 3}
       propertyPath: m_Pivot.x
