@@ -23,8 +23,8 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  icon: {fileID: 6792507738954065177, guid: 448730ad98c5fd5439c6fd28c670f0e2, type: 3}
-  outlineIcon: {fileID: -916170003961828807, guid: 01002905b688b3645b7046d7453772a0, type: 3}
+  icon: {fileID: 6311387014929728421, guid: 14706f9efe08f3745b1665556b4948ea, type: 3}
+  outlineIcon: {fileID: -8445745358050674670, guid: 6f03f2ab7b7f4d941ab017abe43a89c4, type: 3}
   description: "\uC0B0\uD0C4\uCD1D\uC774\uB2E4. \uD0C4 \uD55C\uBC88\uC5D0 \uC3E8.\n\uC2A4\uD0AC
     \uAD6C\uB974\uAE30\uC784."
   localizedDescription:
@@ -38,7 +38,7 @@ MonoBehaviour:
     m_LocalVariables: []
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  leftArmController: {fileID: 9100000, guid: 2877dd89b03684b489bc67063565df28, type: 2}
+  leftArmController: {fileID: 9100000, guid: 96fc110f19ecd044c929a019f01bb253, type: 2}
   maxAmmo: 5
   parryingRange: 1
   damagePerAmmoStep: 0200000002000000040000000400000005000000
