@@ -7,14 +7,14 @@ namespace Week14.Combat
     internal sealed class PlayerDashController
     {
         private readonly PlayerCombatController.PlayerCombatContext context;
-        private Coroutine dashRoutine;
 
         internal PlayerDashController(PlayerCombatController.PlayerCombatContext context)
         {
             this.context = context;
         }
 
-        private const float DashMass = 0.001f;
+        private const string EnemyLayerName = "Enemy";
+        private const string EnemyBulletLayerName = "EnemyBullet";
 
         internal bool IsDashing { get; private set; }
         internal float AutoParryRadius { get; private set; }
@@ -40,7 +40,7 @@ namespace Week14.Combat
 
             AutoParryRadius = autoParryRadius;
             VfxSettings = vfxSettings.Sanitized;
-            dashRoutine = context.CoroutineHost.StartCoroutine(DashRoutine(GetDashDirection(), distance / duration, duration));
+            context.CoroutineHost.StartCoroutine(DashRoutine(GetDashDirection(), distance / duration, duration));
             return true;
         }
 
@@ -63,9 +63,16 @@ namespace Week14.Combat
             IsDashing = true;
             context.Visual?.PlayRoll();
 
+            int playerLayer = context.PlayerGameObject.layer;
+            int enemyLayer = LayerMask.NameToLayer(EnemyLayerName);
+            int enemyBulletLayer = LayerMask.NameToLayer(EnemyBulletLayerName);
+            bool ignoreEnemy = enemyLayer >= 0;
+            bool ignoreEnemyBullet = enemyBulletLayer >= 0;
+
+            if (ignoreEnemy) Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+            if (ignoreEnemyBullet) Physics2D.IgnoreLayerCollision(playerLayer, enemyBulletLayer, true);
+
             Rigidbody2D body = context.Body;
-            float originalMass = body.mass;
-            body.mass = DashMass;
             float peakSpeed = averageSpeed * 2f;
             float elapsed = 0f;
             float nextAfterimageAt = 0f;
@@ -88,9 +95,9 @@ namespace Week14.Combat
             }
 
             body.linearVelocity = Vector2.zero;
-            body.mass = originalMass;
+            if (ignoreEnemy) Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+            if (ignoreEnemyBullet) Physics2D.IgnoreLayerCollision(playerLayer, enemyBulletLayer, false);
             IsDashing = false;
-            dashRoutine = null;
         }
     }
 }
