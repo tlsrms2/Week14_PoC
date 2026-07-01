@@ -1181,6 +1181,11 @@ namespace Week14.UI
                 return;
             }
 
+            if (player.IsExecuting)
+            {
+                return;
+            }
+
             if (player.Health != null && player.Health.IsDead)
             {
                 return;
