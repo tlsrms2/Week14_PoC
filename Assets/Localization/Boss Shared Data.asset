@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Boss Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Boss
+  m_TableCollectionNameGuidString: b1a0083a9ae987c4c95c94f0dce7f455
+  m_Entries:
+  - m_Id: 6813745152
+    m_Key: boss.kill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2169673711616
+    m_Key: dealer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2201940492288
+    m_Key: dealer.crime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2249952690176
+    m_Key: dealer.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3144186691584
+    m_Key: conductor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3213078134784
+    m_Key: conductor.crime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3242782195712
+    m_Key: conductor.description
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6489938878495195458
+  references:
+    version: 2
+    RefIds:
+    - rid: 6489938878495195458
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1782905561931

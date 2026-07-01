@@ -17,6 +17,33 @@ MonoBehaviour:
   crime: "\uC704\uD5D8\uB3C4: 1"
   description: "\uC9C0\uD558\uCCA0\uC5ED\uC744 \uBD88\uBC95 \uC810\uAC70\uD55C \uCD1D\uAE30
     \uBC00\uB9E4\uC0C1\uC774\uB2E4."
+  localizedBossName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 2169673711616
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedCrime:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 2201940492288
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 2249952690176
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: -6223629233855118504, guid: 7a5129de2f924994286606028341ce05, type: 3}
   sceneName: MainScene
   unlocksBossIds:
@@ -26,3 +53,6 @@ MonoBehaviour:
   - 3BulletsWeapon
   - NoLockOn
   - 1BulletWeapon
+  references:
+    version: 2
+    RefIds: []

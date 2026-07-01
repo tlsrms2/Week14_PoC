@@ -11,6 +11,7 @@ namespace Week14.UI
         [SerializeField] private Graphic outlineGraphic;
         [Tooltip("호버 중일 때 활성화할 아웃라인 SpriteRenderer입니다.")]
         [SerializeField] private SpriteRenderer outlineSpriteRenderer;
+        [SerializeField] private bool ignoreChildDropdownList = true;
 
         private bool isHovering;
         private Vector2 lastPointerPosition;
@@ -40,6 +41,12 @@ namespace Week14.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             lastPointerPosition = eventData.position;
+            if (IsIgnoredChildDropdownList(eventData.pointerEnter != null ? eventData.pointerEnter.transform : null))
+            {
+                EndHover();
+                return;
+            }
+
             StartHover();
         }
 
@@ -119,7 +126,8 @@ namespace Week14.UI
                 return false;
             }
 
-            return IsOwnTransform(raycastResults[0].gameObject.transform);
+            Transform hitTransform = raycastResults[0].gameObject.transform;
+            return !IsIgnoredChildDropdownList(hitTransform) && IsOwnTransform(hitTransform);
         }
 
         private bool IsOwnTransform(Transform hitTransform)
@@ -141,6 +149,24 @@ namespace Week14.UI
 
             return outlineSpriteRenderer != null
                    && (hitTransform == outlineSpriteRenderer.transform || hitTransform.IsChildOf(outlineSpriteRenderer.transform));
+        }
+
+        private bool IsIgnoredChildDropdownList(Transform hitTransform)
+        {
+            if (!ignoreChildDropdownList || hitTransform == null)
+            {
+                return false;
+            }
+
+            for (Transform current = hitTransform; current != null && current != transform; current = current.parent)
+            {
+                if (current.name.StartsWith("Dropdown List") && current.IsChildOf(transform))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
