@@ -4974,7 +4974,7 @@ PrefabInstance:
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 11400000, guid: 2a81ea58f6ea7cd4ea05cf406be3acb9, type: 2}
+      objectReference: {fileID: 11400000, guid: 2bf6afb4ebac7f945a335649b3c70755, type: 2}
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: equipSfxId
       value: Gun_Equip
@@ -6106,7 +6106,7 @@ PrefabInstance:
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 11400000, guid: 285a8e06b8b2dd643b9dc0fdf75872d9, type: 2}
+      objectReference: {fileID: 11400000, guid: 390dc9bd7ce1b204cacc8d2fbb4e4dc7, type: 2}
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: equipSfxId
       value: Gun_Equip
@@ -6152,6 +6152,10 @@ PrefabInstance:
       value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4663915944224372311, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5437695937391495453, guid: 4eab4295f55bb464eb6b801858b75c54, type: 3}
+    - target: {fileID: 4663915944224372311, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
@@ -6167,6 +6171,10 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 0.35
       objectReference: {fileID: 0}
+    - target: {fileID: 6631043828631334923, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 6012509553752412986, guid: f93d70b828bdacc43b738d5bbd8ce888, type: 3}
     - target: {fileID: 6631043828631334923, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -7795,7 +7803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.SkillLoadoutManager
   database: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
   defaultTestSkill: {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
-  forceDefaultTestSkill: 1
+  forceDefaultTestSkill: 0
 --- !u!4 &757410853
 Transform:
   m_ObjectHideFlags: 0
@@ -8135,6 +8143,10 @@ PrefabInstance:
     - target: {fileID: 1054130079052128409, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: m_Name
       value: Gun4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054130079052128409, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: weapon
@@ -15542,7 +15554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.WeaponLoadoutManager
   database: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
-  defaultWeapon: {fileID: 11400000, guid: 2a81ea58f6ea7cd4ea05cf406be3acb9, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: 2bf6afb4ebac7f945a335649b3c70755, type: 2}
   forceDefaultWeapon: 0
 --- !u!4 &1626476258
 Transform:
@@ -17710,7 +17722,7 @@ PrefabInstance:
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 11400000, guid: d8327ad369500bf4da6791cbb8e84621, type: 2}
+      objectReference: {fileID: 11400000, guid: 78968c280a3232e478be7e46610c5bb4, type: 2}
     - target: {fileID: 2278703389101142776, guid: 162595dfc3eb39340aa90d86d668975b, type: 3}
       propertyPath: equipSfxId
       value: Gun_Equip

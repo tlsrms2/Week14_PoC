@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Week14.Combat;
 using Week14.Save;
+using Week14.Skills;
 
 namespace Week14.Weapons
 {
@@ -68,6 +69,7 @@ namespace Week14.Weapons
 
             GameSaveManager.SetEquippedWeaponId(weaponId);
             ApplyAmmoConfig(currentWeapon);
+            SkillLoadoutManager.Instance?.SetWeaponSkills(currentWeapon.Skills);
             WeaponChanged?.Invoke(currentWeapon);
             return true;
         }
@@ -105,12 +107,10 @@ namespace Week14.Weapons
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name == "MainScene")
-            {
-                GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
-                currentWeapon?.ApplyWeaponTrait(playerObject);
-                ApplyAmmoConfig(currentWeapon);
-            }
+            GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
+            currentWeapon?.ApplyWeaponTrait(playerObject);
+            ApplyAmmoConfig(currentWeapon);
+            SkillLoadoutManager.Instance?.SetWeaponSkills(currentWeapon?.Skills);
         }
 
         private void UnlockDefaultWeapon()

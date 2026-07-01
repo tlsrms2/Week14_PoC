@@ -9,18 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab17cf1bfbc11d74094f7c72ff0d8f7e, type: 3}
-  m_Name: NoLockOnWeapon
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.NoLockOnWeaponSO
-  weaponId: NoLockOn
-  displayName: "\uC218\uB3D9 \uC870\uC900 \uAD8C\uCD1D"
+  m_Script: {fileID: 11500000, guid: 10a3ff7cad1d0874ab113fc9b6ef3596, type: 3}
+  m_Name: ShotgunWeapon
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.ShotgunWeaponSO
+  weaponId: shotgun
+  displayName: "\uC0B0\uD0C4\uCD1D"
   icon: {fileID: 6792507738954065177, guid: 448730ad98c5fd5439c6fd28c670f0e2, type: 3}
   outlineIcon: {fileID: -916170003961828807, guid: 01002905b688b3645b7046d7453772a0, type: 3}
-  description: "\uC870\uC900 \uBCF4\uC815 \uAE30\uB2A5\uC774 \uC5C6\uC5B4\n\uC801\uC744
-    \uC9C1\uC811 \uC870\uC900\uD574\uC57C \uD55C\uB2E4."
+  description: "\uC0B0\uD0C4\uCD1D\uC774\uB2E4. \uD0C4 \uD55C\uBC88\uC5D0 \uC3E8.\n\uC2A4\uD0AC
+    \uAD6C\uB974\uAE30\uC784."
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 2877dd89b03684b489bc67063565df28, type: 2}
   maxAmmo: 5
   parryingRange: 1
-  damagePerAmmoStep: 0600000005000000040000000200000001000000
+  damagePerAmmoStep: 0200000002000000040000000400000005000000
+  skills:
+  - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
+  pelletStep: 7.5
+  maxRange: 4

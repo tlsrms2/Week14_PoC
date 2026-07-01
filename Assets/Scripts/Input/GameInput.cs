@@ -63,6 +63,8 @@ namespace Week14.Input
 
         public static Vector2 Move => ReadVector2(moveAction);
         public static bool LeftAttackDown => WasPressed(leftAttackAction);
+        public static bool LeftAttackHeld => IsHeld(leftAttackAction);
+        public static bool LeftAttackUp => WasReleased(leftAttackAction);
         public static bool RightAttackDown => WasPressed(rightAttackAction);
         public static bool HelpDown => WasPressed(helpAction);
         public static bool UseSkillDown => WasPressed(useSkillAction);
@@ -133,6 +135,16 @@ namespace Week14.Input
             return action != null && action.WasPressedThisFrame() && IsKeyboardMouseAction(action);
         }
 
+        private static bool IsHeld(InputAction action)
+        {
+            return action != null && action.IsPressed() && IsKeyboardMouseAction(action);
+        }
+
+        private static bool WasReleased(InputAction action)
+        {
+            return action != null && action.WasReleasedThisFrame() && IsKeyboardMouseAction(action);
+        }
+
         private static Pointer GetActivePointer()
         {
             InputControl activeControl = lookAction != null ? lookAction.activeControl : null;
@@ -154,6 +166,8 @@ namespace Week14.Input
 #else
         private static Vector2 ReadVector2(object _) => Vector2.zero;
         private static bool WasPressed(object _) => false;
+        private static bool IsHeld(object _) => false;
+        private static bool WasReleased(object _) => false;
 #endif
     }
 }

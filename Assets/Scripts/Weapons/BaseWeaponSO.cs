@@ -1,5 +1,6 @@
 using UnityEngine;
 using Week14.Combat;
+using Week14.Skills;
 
 namespace Week14.Weapons
 {
@@ -28,6 +29,8 @@ namespace Week14.Weapons
         [Tooltip("남은 탄환 수에 따른 공격 데미지입니다. 인덱스 0은 탄환 1개 남았을 때, 마지막 인덱스는 탄환이 가장 많을 때입니다. " +
             "배열 길이는 항상 Max Ammo와 같게 자동으로 맞춰집니다. int[]를 쓰는 이유: BossAI.ReceivePlayerHit/PlayerProjectile이 전부 int 데미지를 쓰기 때문입니다.")]
         [SerializeField] private int[] damagePerAmmoStep = { 5, 2, 2, 1, 1 };
+        [Tooltip("이 총기를 장착했을 때 자동으로 장착되는 스킬입니다. 슬롯 순서대로 SkillSlot에 할당됩니다.")]
+        [SerializeField] private BaseSkillSO[] skills;
 
         public string WeaponId => weaponId;
         public string DisplayName => displayName;
@@ -40,6 +43,7 @@ namespace Week14.Weapons
         public int MaxAmmo => maxAmmo;
         public float ParryingRange => parryingRange;
         public int[] DamagePerAmmoStep => damagePerAmmoStep;
+        public BaseSkillSO[] Skills => skills;
 
         public int GetDamageForAmmo(int remainingAmmo)
         {
@@ -50,6 +54,16 @@ namespace Week14.Weapons
 
             int index = Mathf.Clamp(remainingAmmo - 1, 0, damagePerAmmoStep.Length - 1);
             return Mathf.Max(0, damagePerAmmoStep[index]);
+        }
+
+        public abstract void BeginAttack(PlayerShooter shooter);
+
+        public virtual void HoldAttack(PlayerShooter shooter, float chargeTime)
+        {
+        }
+
+        public virtual void ReleaseAttack(PlayerShooter shooter, float chargeTime)
+        {
         }
 
         public virtual void ApplyWeaponTrait(GameObject player)

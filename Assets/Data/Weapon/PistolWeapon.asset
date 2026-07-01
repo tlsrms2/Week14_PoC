@@ -9,17 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 997ec83fcff35804c8eb9897386e4c90, type: 3}
-  m_Name: StandardWeapon
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.StandardWeaponSO
-  weaponId: StandardWeapon
-  displayName: "\uAE30\uBCF8 \uAD8C\uCD1D"
+  m_Script: {fileID: 11500000, guid: b351ea4d6be01ce4dbb1f222d0c89678, type: 3}
+  m_Name: PistolWeapon
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.PistolWeaponSO
+  weaponId: pistol
+  displayName: "\uAD8C\uCD1D"
   icon: {fileID: -1250021020546060479, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
   outlineIcon: {fileID: -5253834672664389118, guid: 4941473ac3b03dc4bb08ab5c77d2b6bc, type: 3}
-  description: "\uD2B9\uBCC4\uD560 \uAC83 \uC5C6\uB294 \uAE30\uBCF8 \uAD8C\uCD1D\uC774\uB2E4."
+  description: "\uAD8C\uCD1D\uC774\uB2E4\n\uC2A4\uD0AC \uAD6C\uB974\uAE30\uC784"
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 4a7491b219f6bc5469d444267d523369, type: 2}
   maxAmmo: 5
   parryingRange: 1
   damagePerAmmoStep: 0500000004000000030000000200000001000000
+  skills:
+  - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
