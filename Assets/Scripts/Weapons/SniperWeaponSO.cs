@@ -39,7 +39,7 @@ namespace Week14.Weapons
             float multiplier = 1f + damageMultiplierPerExtraBullet * Mathf.Max(0, consumedCount - 1);
             int finalDamage = Mathf.Max(1, Mathf.RoundToInt(damageSum * multiplier));
 
-            shooter.FireSingle(finalDamage);
+            shooter.FireSingle(finalDamage, consumedCount);
         }
 
         public override void ApplyWeaponTrait(GameObject player)

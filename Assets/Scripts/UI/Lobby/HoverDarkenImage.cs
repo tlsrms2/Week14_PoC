@@ -196,7 +196,7 @@ namespace Week14.UI
 
         private void PlayHoverSfx()
         {
-            if (string.IsNullOrEmpty(hoverSfxId))
+            if (string.IsNullOrEmpty(hoverSfxId) || scaleEffectSuppressed)
             {
                 return;
             }

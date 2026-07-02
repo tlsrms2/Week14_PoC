@@ -95,7 +95,7 @@ namespace Week14.Combat
             return bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack);
         }
 
-        public void FireSingle(int damage)
+        public void FireSingle(int damage, int consumedBulletCount)
         {
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -103,8 +103,6 @@ namespace Week14.Combat
             PlayerProjectile projectilePrefab = ResolveProjectilePrefab(config);
             if (projectilePrefab == null) return;
 
-            BulletGauge bullets = context.Bullets;
-            int firedBulletNumber = bullets != null ? bullets.CurrentBullets : 0;
             Transform fireOrigin = GetLeftFireOrigin();
             Vector2 direction = aimController.AimGunAndGetDirection(
                 context.LeftGunOrigin,
@@ -127,7 +125,7 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, config.AttackEffectColor, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
+            SoundManager.PlaySfx(consumedBulletCount >= 2 ? "PlayerPowerShot" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
         }
 
@@ -180,7 +178,7 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, baseDirection, config.AttackEffectColor, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx("PlayerShot");
+            SoundManager.PlaySfx(pelletCount >= 2 ? "PlayerPowerShot" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
         }
 
