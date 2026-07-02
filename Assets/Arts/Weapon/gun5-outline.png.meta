@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 89ce67215afd75d4d989c54916269d38
+guid: 6f03f2ab7b7f4d941ab017abe43a89c4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6159529629939934899
-    second: Arm_L_Shot-gun5_0
-  - first:
-      213: -6699255051384642708
-    second: Arm_L_Shot-gun5_1
+      213: -8445745358050674670
+    second: gun5-outline_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -103,45 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arm_L_Shot-gun5_0
+      name: gun5-outline_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 64
-        height: 64
+        y: 7
+        width: 32
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d49dfe7af64f48aa0800000000000000
-      internalID: -6159529629939934899
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arm_L_Shot-gun5_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c632a7266077703a0800000000000000
-      internalID: -6699255051384642708
+      spriteID: 2183cf5285faaca80800000000000000
+      internalID: -8445745358050674670
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ddda631927aadf84a84ea6b1ba96eba9
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -158,12 +133,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      Arm_L_Shot-gun5_0: -6159529629939934899
-      Arm_L_Shot-gun5_1: -6699255051384642708
+      gun5-outline_0: -8445745358050674670
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

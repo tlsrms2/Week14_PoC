@@ -9,6 +9,7 @@ namespace Week14.Weapons
         public override void BeginAttack(PlayerShooter shooter)
         {
             shooter.TryShootEnemy();
+            shooter.EndCharge();
         }
     }
 }

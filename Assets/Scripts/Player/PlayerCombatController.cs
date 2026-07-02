@@ -77,7 +77,7 @@ namespace Week14.Combat
         public Transform LeftGunOrigin => Context.LeftGunOrigin;
         public bool IsReticleVisible => config != null
             && !GameModalState.BlocksGameplayInput
-            && !IsExecuting
+            && !IsPlayerControlLocked
             && health != null
             && !health.IsDead;
         public PlayerVisualRig Visual => Context.Visual;

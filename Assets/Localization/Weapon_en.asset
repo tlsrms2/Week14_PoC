@@ -67,11 +67,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5851316322304
-    m_Localized: 'Damage: 5-5'
+    m_Localized: 'Damage: 5-5-5'
     m_Metadata:
       m_Items: []
   - m_Id: 5835298275328
-    m_Localized: 'Max Bullets: 2'
+    m_Localized: 'Max Bullets: 3'
     m_Metadata:
       m_Items: []
   - m_Id: 5808177905664
