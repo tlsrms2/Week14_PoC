@@ -8,7 +8,6 @@ namespace Week14.Combat
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public sealed class PlayerProjectile : MonoBehaviour
     {
-        private const string BulletVisualName = "BulletVisual";
         private const string GroundLayerName = "Ground";
 
         internal static event Action<int> NormalAttackDamageDealt;
@@ -53,16 +52,20 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            projectile.Initialize(owner, fireDirection, speed, lifetime, radius, bulletDamage, color, canDamageHealth, canClashWithEnemyProjectile, isSkillShot);
-            PlayerCombatConfig config = owner != null ? owner.Config : null;
-            if (config != null)
-            {
-                ProjectileVfx.ApplyVisibility(
-                    projectile.gameObject,
-                    color,
+            if (!projectile.Initialize(
+                    owner,
+                    fireDirection,
+                    speed,
+                    lifetime,
                     radius,
-                    config.ProjectileTrailSeconds,
-                    config.ProjectileTrailWidthMultiplier);
+                    bulletDamage,
+                    color,
+                    canDamageHealth,
+                    canClashWithEnemyProjectile,
+                    isSkillShot))
+            {
+                Destroy(projectile.gameObject);
+                return null;
             }
 
             return projectile;
@@ -73,7 +76,7 @@ namespace Week14.Combat
             body = GetComponent<Rigidbody2D>();
         }
 
-        private void Initialize(
+        private bool Initialize(
             PlayerCombatController nextOwner,
             Vector2 direction,
             float speed,
@@ -88,7 +91,7 @@ namespace Week14.Combat
             owner = nextOwner;
             projectileSpeed = speed;
             bulletDamage = nextBulletDamage;
-            collisionRadius = radius;
+            collisionRadius = ResolveCollisionRadius(radius);
             canDamageHealth = nextCanDamageHealth;
             canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
             isSkillShot = nextIsSkillShot;
@@ -99,15 +102,16 @@ namespace Week14.Combat
 
             if (body == null)
             {
-                body = gameObject.AddComponent<Rigidbody2D>();
+                Debug.LogWarning($"{nameof(PlayerProjectile)} prefab requires {nameof(Rigidbody2D)}.", this);
+                return false;
             }
 
-            EnsureProjectileShape(color, radius);
             body.gravityScale = 0f;
             body.freezeRotation = true;
             body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
             body.linearVelocity = flightDirection * speed;
+            return true;
         }
 
         private void Update()
@@ -479,56 +483,23 @@ namespace Week14.Combat
             Destroy(gameObject);
         }
 
-        private void EnsureProjectileShape(Color color, float radius)
+        private float ResolveCollisionRadius(float fallbackRadius)
         {
-            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            float radius = 0f;
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+            for (int i = 0; i < colliders.Length; i++)
             {
-                spriteRenderer.enabled = false;
+                Collider2D hitbox = colliders[i];
+                if (hitbox == null || !hitbox.enabled)
+                {
+                    continue;
+                }
+
+                Bounds bounds = hitbox.bounds;
+                radius = Mathf.Max(radius, bounds.extents.x, bounds.extents.y);
             }
 
-            Transform visual = transform.Find(BulletVisualName);
-            if (visual == null)
-            {
-                GameObject visualObject = new GameObject(BulletVisualName);
-                visualObject.transform.SetParent(transform, false);
-                visual = visualObject.transform;
-            }
-
-            SpriteRenderer visualRenderer = visual.GetComponent<SpriteRenderer>();
-            if (visualRenderer == null)
-            {
-                visualRenderer = visual.gameObject.AddComponent<SpriteRenderer>();
-            }
-
-            if (visualRenderer.sprite == null)
-            {
-                visualRenderer.sprite = CreateRuntimeSprite();
-            }
-
-            visualRenderer.color = color;
-            visualRenderer.sortingOrder = 21;
-            visual.localPosition = Vector3.zero;
-            visual.localRotation = Quaternion.identity;
-            visual.localScale = new Vector3(Mathf.Max(0.14f, radius * 6f), Mathf.Max(0.018f, radius * 0.75f), 1f);
-
-            CircleCollider2D hitbox = GetComponent<CircleCollider2D>();
-            if (hitbox == null)
-            {
-                hitbox = gameObject.AddComponent<CircleCollider2D>();
-            }
-
-            hitbox.isTrigger = true;
-            hitbox.radius = radius;
-            transform.localScale = Vector3.one;
-        }
-
-        private static Sprite CreateRuntimeSprite()
-        {
-            Texture2D texture = new Texture2D(1, 1);
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-            return Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
+            return Mathf.Max(0.001f, radius > 0f ? radius : fallbackRadius);
         }
     }
 }

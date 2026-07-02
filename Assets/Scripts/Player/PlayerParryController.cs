@@ -140,9 +140,9 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (config.ProjectilePrefab == null)
+            if (config.ParryProjectilePrefab == null)
             {
-                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ProjectilePrefab)}.", context.Owner);
+                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ParryProjectilePrefab)}.", context.Owner);
                 return false;
             }
 
@@ -168,7 +168,7 @@ namespace Week14.Combat
             }
 
             PlayerProjectile parryShot = PlayerProjectile.Spawn(
-                config.ProjectilePrefab,
+                config.ParryProjectilePrefab,
                 firePosition,
                 direction.normalized,
                 context.Owner,
