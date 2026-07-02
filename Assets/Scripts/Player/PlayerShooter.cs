@@ -33,7 +33,7 @@ namespace Week14.Combat
             isCharging = true;
             chargeConsumedBulletCount = 0;
             chargeAccumulatedDamage = 0;
-            context.SniperChargeIndicator?.SetChargeRatio(0f);
+            context.SniperChargeIndicator?.BeginCharge(CurrentBullets);
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
         }
@@ -51,16 +51,11 @@ namespace Week14.Combat
             if (!isCharging) return;
             context.PlayerHpView?.FreezeNewestBullet(false);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.ReleaseAttack(this, chargeTime);
-            context.SniperChargeIndicator?.SetChargeRatio(0f);
+            context.SniperChargeIndicator?.EndCharge();
             isCharging = false;
             chargeTime = 0f;
             chargeConsumedBulletCount = 0;
             chargeAccumulatedDamage = 0;
-        }
-
-        public void UpdateChargeVisual(float ratio)
-        {
-            context.SniperChargeIndicator?.SetChargeRatio(ratio);
         }
 
         public bool TryConsumeChargeBullet()
@@ -72,13 +67,14 @@ namespace Week14.Combat
 
             chargeAccumulatedDamage += damage;
             chargeConsumedBulletCount++;
+            context.SniperChargeIndicator?.ConsumeBullet();
             return true;
         }
 
         public void EndCharge()
         {
             context.PlayerHpView?.FreezeNewestBullet(false);
-            context.SniperChargeIndicator?.SetChargeRatio(0f);
+            context.SniperChargeIndicator?.EndCharge();
             isCharging = false;
             chargeTime = 0f;
             chargeConsumedBulletCount = 0;
