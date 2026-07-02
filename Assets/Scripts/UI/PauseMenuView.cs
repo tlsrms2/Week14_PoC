@@ -2,13 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Week14.Bootstrap;
 
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
-
 namespace Week14.UI
 {
-    public sealed class PauseMenuView : MonoBehaviour
+    public sealed class PauseMenuView : MonoBehaviour, IBackClosable
     {
         [SerializeField] private GameObject panelRoot;
         [SerializeField] private GameObject optionsPanelRoot;
@@ -26,8 +22,16 @@ namespace Week14.UI
             SetPausedImmediate(false);
         }
 
+        private void OnEnable()
+        {
+            UIBackStack.BackPressedWithoutTarget += HandleBackPressedWithoutTarget;
+        }
+
         private void OnDisable()
         {
+            UIBackStack.BackPressedWithoutTarget -= HandleBackPressedWithoutTarget;
+            UIBackStack.Remove(this);
+
             if (isPaused)
             {
                 Unfreeze();
@@ -36,14 +40,6 @@ namespace Week14.UI
             isPaused = false;
             isClosing = false;
             GameModalState.BlocksGameplayInput = false;
-        }
-
-        private void Update()
-        {
-            if (EscapePressed())
-            {
-                TogglePause();
-            }
         }
 
         public void TogglePause()
@@ -120,6 +116,28 @@ namespace Week14.UI
 #endif
         }
 
+        public bool CloseByBack()
+        {
+            if (isClosing)
+            {
+                return true;
+            }
+
+            if (!isPaused)
+            {
+                return false;
+            }
+
+            if (optionsPanelRoot != null && optionsPanelRoot.activeSelf)
+            {
+                CloseOptions();
+                return true;
+            }
+
+            ClosePauseMenu();
+            return true;
+        }
+
         private void SetPaused(bool paused)
         {
             if (paused)
@@ -148,6 +166,7 @@ namespace Week14.UI
 
             Freeze();
             GameModalState.BlocksGameplayInput = true;
+            UIBackStack.Push(this);
         }
 
         private void ClosePauseMenu()
@@ -192,6 +211,7 @@ namespace Week14.UI
 
             Unfreeze();
             GameModalState.BlocksGameplayInput = false;
+            UIBackStack.Remove(this);
         }
 
         private void SetPausedImmediate(bool paused)
@@ -219,6 +239,19 @@ namespace Week14.UI
             }
 
             GameModalState.BlocksGameplayInput = paused;
+            if (paused)
+            {
+                UIBackStack.Push(this);
+            }
+            else
+            {
+                UIBackStack.Remove(this);
+            }
+        }
+
+        private void HandleBackPressedWithoutTarget()
+        {
+            TogglePause();
         }
 
         private void CachePanelRevealView()
@@ -244,13 +277,5 @@ namespace Week14.UI
             Time.timeScale = previousTimeScale <= 0f ? 1f : previousTimeScale;
         }
 
-        private static bool EscapePressed()
-        {
-#if ENABLE_INPUT_SYSTEM
-            return Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
-#else
-            return Input.GetKeyDown(KeyCode.Escape);
-#endif
-        }
     }
 }
