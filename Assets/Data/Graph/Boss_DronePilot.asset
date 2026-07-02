@@ -3047,7 +3047,7 @@ MonoBehaviour:
       type: {class: MinionOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         orbitRadius: 6.5
-        orbitSeconds: 5
+        orbitSeconds: 6
         moveSpeed: 30
         useStartPlayerPosition: 0
         randomizeDirection: 0
@@ -3310,7 +3310,7 @@ MonoBehaviour:
     - rid: 2634812006979338333
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 5
+        durationSeconds: 6
         distance: 7.5
         tolerance: 0.3
         speedMultiplier: 1
