@@ -3906,6 +3906,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map1_Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 3852833696087534762, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433867525501855556, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6292351910150845621, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
@@ -6197,6 +6205,10 @@ MonoBehaviour:
   minionProjectileOrigin: {fileID: 0}
   minionSummon:
     prefab: {fileID: 0}
+    additionalPrefabs:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     claimSceneMinions: 1
     maxOwnedMinions: 5
     summonCount: 1
@@ -6218,7 +6230,7 @@ MonoBehaviour:
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 1
       aimAtPlayerOnLaunch: 0
-      speed: 7
+      speed: 18
       lifetime: 3
       radius: 0.12
       chargingColor: {r: 1, g: 1, b: 1, a: 1}

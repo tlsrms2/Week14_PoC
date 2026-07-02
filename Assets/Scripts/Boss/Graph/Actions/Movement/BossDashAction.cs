@@ -12,6 +12,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float windupSeconds = 1.5f;
         [Tooltip("대쉬 시작 몇 초 전에 방향을 고정할지 설정합니다.")]
         [SerializeField, Min(0f)] private float lockSeconds = 0.5f;
+        [Tooltip("켜져 있으면 방향 잠금 전까지 플레이어를 계속 추적합니다. 끄면 차징 시작 시점의 방향으로 즉시 고정됩니다.")]
+        [SerializeField] private bool trackPlayerDuringWindup = true;
         [SerializeField, BossGraphSfxId] private string windupSfxId;
         [SerializeField] private BossGraphEffectSettings windupEffects = new();
 
@@ -59,7 +61,10 @@ namespace Week14.Enemy
                 }
 
                 context.Stop();
-                dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
+                if (trackPlayerDuringWindup)
+                {
+                    dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
+                }
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
                 trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
                 elapsed += Time.deltaTime;

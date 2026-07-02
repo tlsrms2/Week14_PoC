@@ -105,6 +105,7 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
         new("Projectile/Fire Radial Emission", typeof(FireRadialEmissionAction), () => new FireRadialEmissionAction()),
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
+        new("Projectile/Fire Dash Formation", typeof(FireDashFormationAction), () => new FireDashFormationAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
@@ -226,6 +227,11 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
         if (actionType == typeof(FireFanEmissionAction))
         {
             return "부채꼴 발리를 여러 번 발사합니다. 준비 시간은 Windup과 분리해서 구성합니다.";
+        }
+
+        if (actionType == typeof(FireDashFormationAction))
+        {
+            return "보스 대시 방향에 맞춰 투사체를 진형(수직 산개/평행 산개)으로 정렬한 뒤 발사합니다. Center Offset은 PerpendicularWall에서는 중앙을 비우고 첫 탄이 놓일 좌우 간격, ParallelLane에서는 중앙선-레인 간 거리로 쓰입니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
         }
 
         if (actionType == typeof(SpawnChargedProjectileAction))

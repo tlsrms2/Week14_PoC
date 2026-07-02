@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908211
     sequences: []
-    editorPosition: {x: 1569, y: -41}
+    editorPosition: {x: 1570, y: -39}
   - nodeId: HogPattern4_Action13
     nodeGuid: 55d7655e94ff40d797850d3ef53faf33
     nodeKind: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908224
     sequences: []
-    editorPosition: {x: 1507, y: 286}
+    editorPosition: {x: 1505, y: 288}
   - nodeId: HogPattern6_Action13
     nodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
     nodeKind: 0
