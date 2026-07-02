@@ -78,9 +78,9 @@ namespace Week14.Enemy
             }
         }
 
-        public void PlayAnimationState(string stateName, int layer, float normalizedTime)
+        public void SetAnimationFloat(string parameterName, float value)
         {
-            if (string.IsNullOrWhiteSpace(stateName))
+            if (string.IsNullOrWhiteSpace(parameterName))
             {
                 return;
             }
@@ -88,7 +88,35 @@ namespace Week14.Enemy
             Animator targetAnimator = GetAnimator();
             if (targetAnimator != null)
             {
-                targetAnimator.Play(stateName, layer, normalizedTime);
+                targetAnimator.SetFloat(parameterName, value);
+            }
+        }
+
+        public void SetAnimationInt(string parameterName, int value)
+        {
+            if (string.IsNullOrWhiteSpace(parameterName))
+            {
+                return;
+            }
+
+            Animator targetAnimator = GetAnimator();
+            if (targetAnimator != null)
+            {
+                targetAnimator.SetInteger(parameterName, value);
+            }
+        }
+
+        public void SetAnimationBool(string parameterName, bool value)
+        {
+            if (string.IsNullOrWhiteSpace(parameterName))
+            {
+                return;
+            }
+
+            Animator targetAnimator = GetAnimator();
+            if (targetAnimator != null)
+            {
+                targetAnimator.SetBool(parameterName, value);
             }
         }
 
