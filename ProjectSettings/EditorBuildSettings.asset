@@ -13,8 +13,8 @@ EditorBuildSettings:
     guid: 05e1924a38326e84289b61aa1ec81029
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
-    guid: 02e421b3cdcc1d74ebd8cb3879dd5669
-  - enabled: 0
+    guid: 48fd59add01fc254985ad491ddbcb691
+  - enabled: 1
     path: Assets/Scenes/JSG.unity
     guid: 3a58c4a2941184a48af8bf7085ca4444
   m_configObjects:

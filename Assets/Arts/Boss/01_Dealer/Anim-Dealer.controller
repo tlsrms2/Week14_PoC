@@ -57,7 +57,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boss-Dealer
+  m_Name: Anim-Dealer
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Die
