@@ -74,7 +74,7 @@ MonoBehaviour:
     m_LocalVariables: []
   skills:
   - {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
-  bulletConsumeInterval: 0.7
+  bulletConsumeInterval: 0.5
   damageMultiplierPerExtraBullet: 0.3
   references:
     version: 2

@@ -687,6 +687,7 @@ namespace Week14.UI
         private int pendingExpiredBulletIndex = -1;
         private int lastExpiredBulletIndex = -1;
         private bool isNewestBulletFrozen;
+        private float frozenNewestBulletAge;
         private bool preserveBulletTimersOnNextEnable;
 
         private void OnEnable()
@@ -746,7 +747,23 @@ namespace Week14.UI
 
         public void FreezeNewestBullet(bool freeze)
         {
+            if (freeze && !isNewestBulletFrozen)
+            {
+                frozenNewestBulletAge = ComputeNewestBulletAge();
+            }
+
             isNewestBulletFrozen = freeze;
+        }
+
+        private float ComputeNewestBulletAge()
+        {
+            int index = bulletLoadedTimes.Count - 1;
+            if (!IsTimedBullet(index))
+            {
+                return 0f;
+            }
+
+            return Mathf.Max(0f, Time.time - bulletLoadedTimes[index]);
         }
 
         public void StartPendingExecutionBulletTimers()
@@ -1145,7 +1162,7 @@ namespace Week14.UI
                 bool recovered = usable && bulletIndex < bulletLoadedTimes.Count;
                 bool timed = recovered && IsTimedBullet(bulletIndex);
                 bool frozen = timed && bulletIndex == frozenIndex;
-                float age = timed && !frozen ? Mathf.Max(0f, now - bulletLoadedTimes[bulletIndex]) : 0f;
+                float age = !timed ? 0f : frozen ? frozenNewestBulletAge : Mathf.Max(0f, now - bulletLoadedTimes[bulletIndex]);
                 float fillAmount = GetTimeoutFillAmount(age);
                 float iconAlpha = timed && !frozen && IsInTimeoutWarning(age) ? GetWarningBlinkAlpha() : 1f;
                 slot.SetTimeoutVisual(usable, recovered, fillAmount, timeoutGaugeColor, iconAlpha);
