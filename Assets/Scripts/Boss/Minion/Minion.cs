@@ -12,6 +12,11 @@ namespace Week14.Enemy
     public sealed class Minion : MonoBehaviour
     {
         private const string DynamicStatusViewName = "MinionStatusView";
+        private const string PlayerPathIndicatorName = "PlayerPathIndicator";
+        private const int MaxPlayerPathDashCount = 160;
+        private const float PlayerPathDashLength = 0.2f;
+        private const float PlayerPathDashGap = 0.14f;
+        private const float PlayerPathIndicatorWidth = 0.025f;
 
         private static readonly List<Minion> ActiveMinions = new();
 
@@ -51,10 +56,16 @@ namespace Week14.Enemy
         [SerializeField] private SpriteRenderer executionIndicator;
 
         private readonly List<EnemyProjectile> activeProjectiles = new();
+        private readonly List<LineRenderer> playerPathIndicatorDashes = new();
         private Coroutine movementRoutine;
         private Coroutine fireRoutine;
         private Coroutine summonRoutine;
         private MinionGraphProjectileFireSpec commandFireSpec;
+        private Transform playerPathIndicatorRoot;
+        private bool playerPathIndicatorActive;
+        private Vector2 playerPathIndicatorStart;
+        private Vector2 playerPathIndicatorDirection = Vector2.right;
+        private float playerPathIndicatorLength;
         private bool isFormationCommand;
         private Health health;
         private BulletGauge bullets;
@@ -79,6 +90,7 @@ namespace Week14.Enemy
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
         private IMinionOwner runtimeOwner;
+        private static Material pathIndicatorMaterial;
 
         public IMinionOwner Owner => ResolveOwner();
         public Health Health => health;
@@ -145,6 +157,7 @@ namespace Week14.Enemy
         private void OnDisable()
         {
             ActiveMinions.Remove(this);
+            SetPlayerPathIndicatorVisible(false);
             if (health != null)
             {
                 health.Died -= HandleDied;
@@ -506,6 +519,7 @@ namespace Week14.Enemy
                 movementRoutine = null;
             }
 
+            SetPlayerPathIndicatorVisible(false);
             isFormationCommand = false;
             suppressBodyContactDamage = false;
         }
@@ -1281,6 +1295,8 @@ namespace Week14.Enemy
                 out Vector2 endOffset);
 
             Vector2 startPosition = pathCenter + startOffset;
+            Vector2 endPosition = pathCenter + endOffset;
+            BeginPlayerPathIndicator(startPosition, endPosition);
             yield return MoveToPlayerPathStart(startPosition, moveToStartSeconds);
 
             float elapsed = 0f;
@@ -1296,12 +1312,14 @@ namespace Week14.Enemy
                 float t = Mathf.Clamp01(elapsed / moveSeconds);
                 Vector2 target = pathCenter + Vector2.Lerp(startOffset, endOffset, t);
                 SetPatternPosition(target, true);
+                TickPlayerPathIndicator(transform.position);
 
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
-            SetPatternPosition(pathCenter + endOffset, true);
+            SetPatternPosition(endPosition, true);
+            SetPlayerPathIndicatorVisible(false);
             FinishMovementCommand();
         }
 
@@ -1564,6 +1582,165 @@ namespace Week14.Enemy
             }
 
             SetPatternPosition(next, true);
+        }
+
+        private void BeginPlayerPathIndicator(Vector2 start, Vector2 end)
+        {
+            Vector2 delta = end - start;
+            playerPathIndicatorLength = delta.magnitude;
+            if (playerPathIndicatorLength <= 0.01f)
+            {
+                SetPlayerPathIndicatorVisible(false);
+                return;
+            }
+
+            playerPathIndicatorStart = start;
+            playerPathIndicatorDirection = delta / playerPathIndicatorLength;
+            playerPathIndicatorActive = true;
+            DrawPlayerPathIndicator(0f);
+        }
+
+        private void TickPlayerPathIndicator(Vector2 current)
+        {
+            if (!playerPathIndicatorActive)
+            {
+                return;
+            }
+
+            float travelled = Vector2.Dot(current - playerPathIndicatorStart, playerPathIndicatorDirection);
+            DrawPlayerPathIndicator(Mathf.Max(0f, travelled));
+        }
+
+        private void DrawPlayerPathIndicator(float travelled)
+        {
+            if (playerPathIndicatorLength <= 0.01f)
+            {
+                SetPlayerPathIndicatorVisible(false);
+                return;
+            }
+
+            int dashCount = Mathf.Min(
+                MaxPlayerPathDashCount,
+                Mathf.CeilToInt(playerPathIndicatorLength / (PlayerPathDashLength + PlayerPathDashGap)));
+            Color color = GetPlayerPathIndicatorColor(0.58f);
+            int visibleCount = 0;
+
+            for (int i = 0; i < dashCount; i++)
+            {
+                float segmentStart = i * (PlayerPathDashLength + PlayerPathDashGap);
+                float segmentEnd = Mathf.Min(segmentStart + PlayerPathDashLength, playerPathIndicatorLength);
+                if (segmentEnd <= travelled)
+                {
+                    SetPlayerPathDashVisible(i, false);
+                    continue;
+                }
+
+                segmentStart = Mathf.Max(segmentStart, travelled);
+                LineRenderer dash = EnsurePlayerPathIndicatorDash(i);
+                if (dash == null)
+                {
+                    continue;
+                }
+
+                dash.enabled = true;
+                dash.startColor = color;
+                dash.endColor = color;
+                dash.startWidth = PlayerPathIndicatorWidth;
+                dash.endWidth = PlayerPathIndicatorWidth;
+                dash.SetPosition(0, playerPathIndicatorStart + playerPathIndicatorDirection * segmentStart);
+                dash.SetPosition(1, playerPathIndicatorStart + playerPathIndicatorDirection * segmentEnd);
+                visibleCount++;
+            }
+
+            for (int i = dashCount; i < playerPathIndicatorDashes.Count; i++)
+            {
+                SetPlayerPathDashVisible(i, false);
+            }
+
+            playerPathIndicatorActive = visibleCount > 0;
+        }
+
+        private LineRenderer EnsurePlayerPathIndicatorDash(int index)
+        {
+            EnsurePlayerPathIndicatorRoot();
+            if (playerPathIndicatorRoot == null)
+            {
+                return null;
+            }
+
+            while (playerPathIndicatorDashes.Count <= index)
+            {
+                GameObject dashObject = new($"{PlayerPathIndicatorName}_{playerPathIndicatorDashes.Count:00}");
+                dashObject.transform.SetParent(playerPathIndicatorRoot, false);
+                LineRenderer dash = dashObject.AddComponent<LineRenderer>();
+                dash.useWorldSpace = true;
+                dash.loop = false;
+                dash.positionCount = 2;
+                dash.numCornerVertices = 0;
+                dash.numCapVertices = 1;
+                dash.sortingOrder = 17;
+                dash.material = GetPathIndicatorMaterial();
+                playerPathIndicatorDashes.Add(dash);
+            }
+
+            return playerPathIndicatorDashes[index];
+        }
+
+        private void EnsurePlayerPathIndicatorRoot()
+        {
+            if (playerPathIndicatorRoot != null)
+            {
+                return;
+            }
+
+            Transform existing = transform.Find(PlayerPathIndicatorName);
+            GameObject rootObject = existing != null ? existing.gameObject : new GameObject(PlayerPathIndicatorName);
+            rootObject.transform.SetParent(transform, false);
+            rootObject.transform.localPosition = Vector3.zero;
+            rootObject.transform.localRotation = Quaternion.identity;
+            rootObject.transform.localScale = Vector3.one;
+            playerPathIndicatorRoot = rootObject.transform;
+        }
+
+        private Color GetPlayerPathIndicatorColor(float alpha)
+        {
+            Color color = bulletBarColor;
+            color.a = alpha;
+            return color;
+        }
+
+        private static Material GetPathIndicatorMaterial()
+        {
+            if (pathIndicatorMaterial != null)
+            {
+                return pathIndicatorMaterial;
+            }
+
+            Shader shader = Shader.Find("Sprites/Default");
+            pathIndicatorMaterial = shader != null ? new Material(shader) : null;
+            return pathIndicatorMaterial;
+        }
+
+        private void SetPlayerPathDashVisible(int index, bool visible)
+        {
+            if (index < 0 || index >= playerPathIndicatorDashes.Count || playerPathIndicatorDashes[index] == null)
+            {
+                return;
+            }
+
+            playerPathIndicatorDashes[index].enabled = visible;
+        }
+
+        private void SetPlayerPathIndicatorVisible(bool visible)
+        {
+            playerPathIndicatorActive = visible && playerPathIndicatorActive;
+            for (int i = 0; i < playerPathIndicatorDashes.Count; i++)
+            {
+                if (playerPathIndicatorDashes[i] != null)
+                {
+                    playerPathIndicatorDashes[i].enabled = visible;
+                }
+            }
         }
 
         private bool CanFlyOverGround()
@@ -2023,6 +2200,7 @@ namespace Week14.Enemy
         private void FinishMovementCommand()
         {
             movementRoutine = null;
+            SetPlayerPathIndicatorVisible(false);
             isFormationCommand = false;
             suppressBodyContactDamage = false;
             StopBody();
