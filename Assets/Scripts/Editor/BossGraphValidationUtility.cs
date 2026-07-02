@@ -435,14 +435,7 @@ internal static class BossGraphValidationUtility
         string label,
         List<BossGraphValidationMessage> messages)
     {
-        BossAnimationPlayMode playMode = (BossAnimationPlayMode)GetEnum(action, "playMode");
-        if (playMode == BossAnimationPlayMode.Trigger)
-        {
-            RequireString(action, "triggerName", label, messages);
-            return;
-        }
-
-        RequireString(action, "stateName", label, messages);
+        RequireString(action, "parameterName", label, messages);
     }
 
     private static bool HasOutgoingTransition(SerializedProperty transitions, string nodeId)

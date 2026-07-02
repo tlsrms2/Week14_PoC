@@ -1,23 +1,26 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Week14.Enemy
 {
-    public enum BossAnimationPlayMode
+    public enum BossAnimationParameterType
     {
-        Trigger,
-        State
+        Float,
+        Int,
+        Bool,
+        Trigger
     }
 
     [Serializable]
     public sealed class PlayAnimationAction : BossAction
     {
-        [SerializeField] private BossAnimationPlayMode playMode;
-        [SerializeField] private string triggerName;
-        [SerializeField] private string stateName;
-        [SerializeField] private int layer;
-        [SerializeField, Range(0f, 1f)] private float normalizedTime;
+        [SerializeField] private BossAnimationParameterType parameterType = BossAnimationParameterType.Trigger;
+        [SerializeField, FormerlySerializedAs("triggerName")] private string parameterName;
+        [SerializeField] private float floatValue;
+        [SerializeField] private int intValue;
+        [SerializeField] private bool boolValue;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -26,13 +29,20 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (playMode == BossAnimationPlayMode.Trigger)
+            switch (parameterType)
             {
-                context.PlayAnimationTrigger(triggerName);
-            }
-            else
-            {
-                context.PlayAnimationState(stateName, layer, normalizedTime);
+                case BossAnimationParameterType.Float:
+                    context.SetAnimationFloat(parameterName, floatValue);
+                    break;
+                case BossAnimationParameterType.Int:
+                    context.SetAnimationInt(parameterName, intValue);
+                    break;
+                case BossAnimationParameterType.Bool:
+                    context.SetAnimationBool(parameterName, boolValue);
+                    break;
+                case BossAnimationParameterType.Trigger:
+                    context.PlayAnimationTrigger(parameterName);
+                    break;
             }
         }
     }

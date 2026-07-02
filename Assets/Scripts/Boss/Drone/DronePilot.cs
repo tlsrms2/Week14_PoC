@@ -7,14 +7,22 @@ namespace Week14.Enemy
 {
     public sealed class DronePilot : GraphBossAI, IMinionPlayerHitHandler
     {
+        private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
+        private const string FacingSpriteRendererName = "Conductor-side-Idle-x64_0";
+
         [SerializeField, Min(0f)] private float bodyHitDamageMultiplier = 1f;
         [SerializeField, Min(0f)] private float minionHitDamageMultiplier = 0.5f;
         [SerializeField, Range(0f, 1f)] private float minionOutlineIdleAlpha = 0.3f;
         [SerializeField, Min(0f)] private float minionOutlineFlashSeconds = 0.12f;
+        [SerializeField] private Animator walkAnimator;
+        [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
 
         private readonly Dictionary<Health, Minion> spawnedMinionsByHealth = new();
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
         private readonly Dictionary<Minion, Coroutine> outlineFlashRoutines = new();
+        private bool hasAppliedWalkState;
+        private bool lastIsWalking;
+        private SpriteRenderer facingSpriteRenderer;
 
         protected override bool RotatesBodyToPlayer => false;
 
@@ -85,18 +93,23 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            ApplyWalkState(false, true);
             UntrackAllSpawnedMinions();
             base.OnBossDied();
         }
 
         protected override void OnDisable()
         {
+            ApplyWalkState(false, true);
             UntrackAllSpawnedMinions();
             base.OnDisable();
         }
 
         private void LateUpdate()
         {
+            UpdateFacingSprite();
+            UpdateWalkState();
+
             foreach (KeyValuePair<Minion, Transform> entry in spawnedMinionOutlines)
             {
                 if (entry.Key == null
@@ -108,6 +121,83 @@ namespace Week14.Enemy
 
                 ApplyMinionOutlineIdle(entry.Value);
             }
+        }
+
+        private void UpdateFacingSprite()
+        {
+            SpriteRenderer spriteRenderer = ResolveFacingSpriteRenderer();
+            if (spriteRenderer == null || Player == null)
+            {
+                return;
+            }
+
+            spriteRenderer.flipX = Player.position.x > transform.position.x;
+        }
+
+        private void UpdateWalkState()
+        {
+            if (Body == null)
+            {
+                ApplyWalkState(false, false);
+                return;
+            }
+
+            float threshold = Mathf.Max(0f, walkVelocityThreshold);
+            bool isWalking = Body.linearVelocity.sqrMagnitude > threshold * threshold;
+            ApplyWalkState(isWalking, false);
+        }
+
+        private void ApplyWalkState(bool isWalking, bool force)
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
+            {
+                return;
+            }
+
+            targetAnimator.SetBool(IsWalkParameter, isWalking);
+            lastIsWalking = isWalking;
+            hasAppliedWalkState = true;
+        }
+
+        private Animator ResolveWalkAnimator()
+        {
+            if (walkAnimator != null)
+            {
+                return walkAnimator;
+            }
+
+            walkAnimator = BodyRoot != null
+                ? BodyRoot.GetComponentInChildren<Animator>(true)
+                : GetComponentInChildren<Animator>(true);
+            return walkAnimator;
+        }
+
+        private SpriteRenderer ResolveFacingSpriteRenderer()
+        {
+            if (facingSpriteRenderer != null)
+            {
+                return facingSpriteRenderer;
+            }
+
+            Transform root = BodyRoot != null ? BodyRoot : transform;
+            Transform[] children = root.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < children.Length; i++)
+            {
+                Transform child = children[i];
+                if (child != null && child.name == FacingSpriteRendererName)
+                {
+                    facingSpriteRenderer = child.GetComponent<SpriteRenderer>();
+                    return facingSpriteRenderer;
+                }
+            }
+
+            return null;
         }
 
         private void TrackSpawnedMinion(Minion minion)

@@ -86,7 +86,7 @@ internal static class BossGraphActionEditorUtility
     {
         new("Utility/Wait", typeof(WaitAction), () => new WaitAction()),
         new("Utility/Windup", typeof(WindupAction), () => new WindupAction()),
-        new("Animation/Play Animation", typeof(PlayAnimationAction), () => new PlayAnimationAction()),
+        new("Animation/Set Parameter", typeof(PlayAnimationAction), () => new PlayAnimationAction()),
         new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
         new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
         new("Move/Maintain Player Distance", typeof(MaintainPlayerDistanceAction), () => new MaintainPlayerDistanceAction()),
@@ -161,7 +161,7 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
 
         if (actionType == typeof(PlayAnimationAction))
         {
-            return "Animator Trigger를 실행하거나 Animator State를 직접 재생합니다.";
+            return "Animator 파라미터(Float, Int, Bool, Trigger)를 설정합니다.";
         }
 
         if (actionType == typeof(WaitForAnimationEventAction))

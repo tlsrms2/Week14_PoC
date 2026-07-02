@@ -23,7 +23,9 @@ public sealed class DronePilotEditor : Editor
         "bodyHitDamageMultiplier",
         "minionHitDamageMultiplier",
         "minionOutlineIdleAlpha",
-        "minionOutlineFlashSeconds"
+        "minionOutlineFlashSeconds",
+        "walkAnimator",
+        "walkVelocityThreshold"
     };
 
     private static readonly HashSet<string> MinionFields = new()
@@ -171,6 +173,18 @@ public sealed class DronePilotEditor : Editor
         if (outlineSeconds != null)
         {
             EditorGUILayout.PropertyField(outlineSeconds, new GUIContent("Minion Outline Flash Seconds"));
+        }
+
+        SerializedProperty walkAnimator = FindSerializedProperty("walkAnimator");
+        if (walkAnimator != null)
+        {
+            EditorGUILayout.PropertyField(walkAnimator, new GUIContent("Walk Animator"));
+        }
+
+        SerializedProperty walkVelocityThreshold = FindSerializedProperty("walkVelocityThreshold");
+        if (walkVelocityThreshold != null)
+        {
+            EditorGUILayout.PropertyField(walkVelocityThreshold, new GUIContent("Walk Velocity Threshold"));
         }
 
         EditorGUILayout.EndVertical();
