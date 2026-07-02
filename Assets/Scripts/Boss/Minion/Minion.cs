@@ -57,6 +57,7 @@ namespace Week14.Enemy
 
         private readonly List<EnemyProjectile> activeProjectiles = new();
         private readonly List<LineRenderer> playerPathIndicatorDashes = new();
+        private readonly List<Collider2D> ignoredPlayerCollisionColliders = new();
         private Coroutine movementRoutine;
         private Coroutine fireRoutine;
         private Coroutine summonRoutine;
@@ -89,6 +90,7 @@ namespace Week14.Enemy
         private bool ownsStatusView;
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
+        private bool ignoringPlayerCollision;
         private IMinionOwner runtimeOwner;
         private static Material pathIndicatorMaterial;
 
@@ -157,6 +159,7 @@ namespace Week14.Enemy
         private void OnDisable()
         {
             ActiveMinions.Remove(this);
+            SetPlayerCollisionIgnored(false);
             SetPlayerPathIndicatorVisible(false);
             if (health != null)
             {
@@ -520,6 +523,7 @@ namespace Week14.Enemy
             }
 
             SetPlayerPathIndicatorVisible(false);
+            SetPlayerCollisionIgnored(false);
             isFormationCommand = false;
             suppressBodyContactDamage = false;
         }
@@ -1311,23 +1315,27 @@ namespace Week14.Enemy
 
                 float t = Mathf.Clamp01(elapsed / moveSeconds);
                 Vector2 target = pathCenter + Vector2.Lerp(startOffset, endOffset, t);
-                SetPatternPosition(target, true);
+                SetPatternPosition(target);
                 TickPlayerPathIndicator(transform.position);
 
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
-            SetPatternPosition(endPosition, true);
+            SetPatternPosition(endPosition);
             SetPlayerPathIndicatorVisible(false);
             FinishMovementCommand();
         }
 
         private IEnumerator MoveToPlayerPathStart(Vector2 target, float moveToStartSeconds)
         {
+            suppressBodyContactDamage = true;
+            SetPlayerCollisionIgnored(true);
             if (moveToStartSeconds <= 0f)
             {
                 SetPatternPosition(target, true);
+                SetPlayerCollisionIgnored(false);
+                suppressBodyContactDamage = false;
                 yield break;
             }
 
@@ -1349,6 +1357,8 @@ namespace Week14.Enemy
             }
 
             SetPatternPosition(target, true);
+            SetPlayerCollisionIgnored(false);
+            suppressBodyContactDamage = false;
         }
 
         private static void GetPlayerPathOffsets(
@@ -1561,10 +1571,12 @@ namespace Week14.Enemy
         {
             if (lockedToPattern)
             {
+                SetPlayerCollisionIgnored(false);
                 SetPatternPosition(target);
                 return;
             }
 
+            SetPlayerCollisionIgnored(true);
             Vector2 current = transform.position;
             float maxDistance = Mathf.Max(0f, moveSpeed) * Time.deltaTime;
             if (maxDistance <= 0f)
@@ -1739,6 +1751,68 @@ namespace Week14.Enemy
                 if (playerPathIndicatorDashes[i] != null)
                 {
                     playerPathIndicatorDashes[i].enabled = visible;
+                }
+            }
+        }
+
+        private void SetPlayerCollisionIgnored(bool ignored)
+        {
+            if (ignored == ignoringPlayerCollision)
+            {
+                return;
+            }
+
+            if (!ignored)
+            {
+                SetIgnoredPlayerCollisionPairs(false);
+                ignoredPlayerCollisionColliders.Clear();
+                ignoringPlayerCollision = false;
+                return;
+            }
+
+            Transform player = Owner?.MinionTarget;
+            if (player == null)
+            {
+                return;
+            }
+
+            Collider2D[] playerColliders = player.GetComponentsInChildren<Collider2D>(true);
+            ignoredPlayerCollisionColliders.Clear();
+            for (int i = 0; i < playerColliders.Length; i++)
+            {
+                Collider2D playerCollider = playerColliders[i];
+                if (playerCollider != null)
+                {
+                    ignoredPlayerCollisionColliders.Add(playerCollider);
+                }
+            }
+
+            SetIgnoredPlayerCollisionPairs(true);
+            ignoringPlayerCollision = ignoredPlayerCollisionColliders.Count > 0;
+        }
+
+        private void SetIgnoredPlayerCollisionPairs(bool ignored)
+        {
+            if (colliders == null || ignoredPlayerCollisionColliders.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D source = colliders[i];
+                if (source == null)
+                {
+                    continue;
+                }
+
+                for (int j = 0; j < ignoredPlayerCollisionColliders.Count; j++)
+                {
+                    Collider2D target = ignoredPlayerCollisionColliders[j];
+                    if (target != null && target != source)
+                    {
+                        Physics2D.IgnoreCollision(source, target, ignored);
+                    }
                 }
             }
         }
@@ -2201,6 +2275,7 @@ namespace Week14.Enemy
         {
             movementRoutine = null;
             SetPlayerPathIndicatorVisible(false);
+            SetPlayerCollisionIgnored(false);
             isFormationCommand = false;
             suppressBodyContactDamage = false;
             StopBody();
