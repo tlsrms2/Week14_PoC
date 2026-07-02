@@ -30,7 +30,7 @@ namespace Week14.Weapons
 
         public override void ReleaseAttack(PlayerShooter shooter, float chargeTime)
         {
-            if (shooter.ChargeConsumedBulletCount <= 0 && !shooter.TryConsumeChargeBullet()) return;
+            if (shooter.ChargeConsumedBulletCount <= 0) return;
 
             FireChargedShot(shooter);
         }
@@ -42,7 +42,7 @@ namespace Week14.Weapons
             float multiplier = 1f + damageMultiplierPerExtraBullet * Mathf.Max(0, consumedCount - 1);
             int finalDamage = Mathf.Max(1, Mathf.RoundToInt(damageSum * multiplier));
 
-            shooter.FireSingle(finalDamage, consumedCount);
+            shooter.FireSingle(finalDamage);
         }
 
         public override void ApplyWeaponTrait(GameObject player)

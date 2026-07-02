@@ -3924,7 +3924,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7977371578386556056}
@@ -3943,11 +3943,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.SniperChargeIndicator
   renderers:
   - {fileID: 1196698058}
-  maxScale: 1
+  maxScale: 0.85
   minScale: 0.4
+  totalRotationDegrees: -90
   normalColor: {r: 1, g: 0, b: 0, a: 1}
   maxChargeColor: {r: 1, g: 0.85, b: 0, a: 1}
   colorTransitionSpeed: 50
+  scaleTransitionSpeed: 15
+  rotationTransitionSpeed: 15
 --- !u!212 &1196698058
 SpriteRenderer:
   serializedVersion: 2

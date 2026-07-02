@@ -102,7 +102,7 @@ namespace Week14.Combat
             return bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack);
         }
 
-        public void FireSingle(int damage, int consumedBulletCount)
+        public void FireSingle(int damage)
         {
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -132,7 +132,7 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, config.AttackEffectColor, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx(consumedBulletCount >= 2 ? "SniperFire" : "PlayerShot");
+            SoundManager.PlaySfx("SniperFire");
             SoundManager.PlaySfx("BulletLoss");
         }
 
