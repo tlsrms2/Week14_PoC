@@ -7,6 +7,8 @@ using Week14.Enemy;
 [CanEditMultipleObjects]
 public sealed class DronePilotEditor : Editor
 {
+    private const int DronePilotAdditionalPrefabSlotCount = 3;
+
     private static readonly string[] MainTabs =
     {
         "투사체",
@@ -19,7 +21,9 @@ public sealed class DronePilotEditor : Editor
         "bossGraph",
         "graphProjectiles",
         "bodyHitDamageMultiplier",
-        "minionHitDamageMultiplier"
+        "minionHitDamageMultiplier",
+        "minionOutlineIdleAlpha",
+        "minionOutlineFlashSeconds"
     };
 
     private static readonly HashSet<string> MinionFields = new()
@@ -155,6 +159,18 @@ public sealed class DronePilotEditor : Editor
         if (minionDamage != null)
         {
             EditorGUILayout.PropertyField(minionDamage, new GUIContent("Minion Hit Damage Multiplier"));
+        }
+
+        SerializedProperty outlineSeconds = FindSerializedProperty("minionOutlineFlashSeconds");
+        SerializedProperty outlineIdleAlpha = FindSerializedProperty("minionOutlineIdleAlpha");
+        if (outlineIdleAlpha != null)
+        {
+            EditorGUILayout.PropertyField(outlineIdleAlpha, new GUIContent("Minion Outline Idle Alpha"));
+        }
+
+        if (outlineSeconds != null)
+        {
+            EditorGUILayout.PropertyField(outlineSeconds, new GUIContent("Minion Outline Flash Seconds"));
         }
 
         EditorGUILayout.EndVertical();
@@ -310,7 +326,7 @@ public sealed class DronePilotEditor : Editor
             SerializedProperty summon = FindSerializedProperty("minionSummon");
             if (summon != null)
             {
-                DrawChild(summon, "prefab");
+                DrawDronePilotSummonPrefabs(summon);
                 DrawChild(summon, "claimSceneMinions");
                 DrawChild(summon, "maxOwnedMinions");
                 DrawChild(summon, "summonCount");
@@ -453,12 +469,48 @@ public sealed class DronePilotEditor : Editor
         }
     }
 
+    private static void DrawDronePilotSummonPrefabs(SerializedProperty summon)
+    {
+        DrawChild(summon, "prefab", new GUIContent("Prefab 1"));
+
+        SerializedProperty additionalPrefabs = summon.FindPropertyRelative("additionalPrefabs");
+        if (additionalPrefabs == null || !additionalPrefabs.isArray)
+        {
+            return;
+        }
+
+        if (additionalPrefabs.arraySize != DronePilotAdditionalPrefabSlotCount)
+        {
+            additionalPrefabs.arraySize = DronePilotAdditionalPrefabSlotCount;
+        }
+
+        for (int i = 0; i < DronePilotAdditionalPrefabSlotCount; i++)
+        {
+            EditorGUILayout.PropertyField(
+                additionalPrefabs.GetArrayElementAtIndex(i),
+                new GUIContent($"Prefab {i + 2}"),
+                true);
+        }
+    }
+
     private static void DrawChild(SerializedProperty root, string childName)
+    {
+        DrawChild(root, childName, null);
+    }
+
+    private static void DrawChild(SerializedProperty root, string childName, GUIContent label)
     {
         SerializedProperty child = root.FindPropertyRelative(childName);
         if (child != null)
         {
-            EditorGUILayout.PropertyField(child, true);
+            if (label != null)
+            {
+                EditorGUILayout.PropertyField(child, label, true);
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(child, true);
+            }
         }
     }
 

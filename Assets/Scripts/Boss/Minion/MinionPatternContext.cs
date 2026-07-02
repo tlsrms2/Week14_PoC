@@ -114,7 +114,13 @@ namespace Week14.Enemy
             Transform ownerTransform = owner?.MinionOwnerTransform;
             Vector3 startPosition = ownerTransform != null ? ownerTransform.position : Vector3.zero;
             Vector3 position = startPosition + (Vector3)(AngleToDirection(angle) * Mathf.Max(0f, summon.SpawnRadius));
-            Minion minion = UnityEngine.Object.Instantiate(summon.Prefab, startPosition, Quaternion.identity);
+            Minion prefab = summon.GetPrefabForSummonIndex(index);
+            if (prefab == null)
+            {
+                return null;
+            }
+
+            Minion minion = UnityEngine.Object.Instantiate(prefab, startPosition, Quaternion.identity);
             if (minion == null)
             {
                 return null;

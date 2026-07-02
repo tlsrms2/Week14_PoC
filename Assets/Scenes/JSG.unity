@@ -3748,7 +3748,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1172870656
 Transform:
   m_ObjectHideFlags: 0
@@ -5507,6 +5507,10 @@ PrefabInstance:
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: minionOutlineIdleAlpha
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7864,6 +7868,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 949636609365861392, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 949636609365861392, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 949636609365861392, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1077324988874985520, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1077324988874985520, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1077324988874985520, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1409660588677655031, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
       propertyPath: m_Name
       value: Map1_Grid

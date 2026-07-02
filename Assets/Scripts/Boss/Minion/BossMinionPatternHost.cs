@@ -41,7 +41,7 @@ namespace Week14.Enemy
                 ?? ResolveGraphProjectileSettingsForActions(null);
         }
 
-        public EnemyProjectile FireMinionProjectile(
+        public virtual EnemyProjectile FireMinionProjectile(
             Minion source,
             BossProjectileSettings settings,
             Vector3 origin,
@@ -419,14 +419,14 @@ namespace Week14.Enemy
             yield return MinionPatternContext.WaitWhileExecutionPaused();
 
             MinionPatternContext.RefreshControlledMinions();
-            if (minionSummon.Prefab == null)
+            if (!minionSummon.HasAnyPrefab)
             {
                 yield break;
             }
 
             int maxOwned = minionSummon.MaxOwnedMinions;
             int currentCount = MinionPatternContext.GetControlledMinions().Count;
-            int summonCount = requestedCount > 0 ? requestedCount : Mathf.Max(1, minionSummon.SummonCount);
+            int summonCount = minionSummon.ResolveSummonCount(requestedCount);
             if (maxOwned > 0)
             {
                 summonCount = Mathf.Min(summonCount, Mathf.Max(0, maxOwned - currentCount));
@@ -772,7 +772,7 @@ namespace Week14.Enemy
 
         private bool ShouldRunAutoSummon()
         {
-            if (Time.time < nextAutoMinionSummonAt || minionSummon.Prefab == null)
+            if (Time.time < nextAutoMinionSummonAt || !minionSummon.HasAnyPrefab)
             {
                 return false;
             }

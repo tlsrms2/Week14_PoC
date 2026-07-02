@@ -300,7 +300,7 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
 
         if (actionType == typeof(MinionRadialBurstAction))
         {
-            return "미니언 기준 방사형 발사를 실행합니다.";
+            return "미니언 기준 방사형 발사를 Volley 목록 순서대로 실행합니다.";
         }
 
         if (actionType == typeof(MinionDashAction))

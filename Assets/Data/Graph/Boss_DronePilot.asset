@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 2634811984531423394
     sequences: []
-    editorPosition: {x: -52, y: -829}
+    editorPosition: {x: -41, y: -841}
   - nodeId: P01_Maintain Player Distance
     nodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
     nodeKind: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 2634811984531423329
     sequences: []
-    editorPosition: {x: -93, y: -957}
+    editorPosition: {x: -84, y: -993}
   - nodeId: P03_Formation Straight
     nodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
     nodeKind: 4
@@ -62,15 +62,6 @@ MonoBehaviour:
       rid: 2634811984531423333
     sequences: []
     editorPosition: {x: -432, y: 3330}
-  - nodeId: P03_Fire All
-    nodeGuid: d873030243f44eb68eef550c40dae7db
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634812006979338345
-    sequences: []
-    editorPosition: {x: -135, y: 3607}
   - nodeId: P03_Wander
     nodeGuid: 592ce7f11b89418cadd2cd36ed467a53
     nodeKind: 4
@@ -151,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 2634811984531423378
     sequences: []
-    editorPosition: {x: 603, y: -296}
+    editorPosition: {x: 604, y: -296}
   - nodeId: UP02_Angle DIstance Move Action 2
     nodeGuid: f5553ede00224a21936fe18e0f7bcbf8
     nodeKind: 4
@@ -206,15 +197,6 @@ MonoBehaviour:
       rid: 2634811984531423388
     sequences: []
     editorPosition: {x: 976, y: 1086}
-  - nodeId: P01_Fire Projectile
-    nodeGuid: a573702db7e24a31b029fca55ab4b55a
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 2634811984531423396
-    sequences: []
-    editorPosition: {x: -65, y: -689}
   - nodeId: Gather
     nodeGuid: 27cdd94773084609bc7a5dc234a9cac9
     nodeKind: 4
@@ -331,7 +313,7 @@ MonoBehaviour:
     action:
       rid: 2634811994844954718
     sequences: []
-    editorPosition: {x: 435, y: 2731}
+    editorPosition: {x: 411, y: 2687}
   - nodeId: Node1_Copy1_Copy1
     nodeGuid: ae7703ee0f5a4befa00f41081d38c905
     nodeKind: 4
@@ -358,7 +340,7 @@ MonoBehaviour:
     action:
       rid: 2634811994844954721
     sequences: []
-    editorPosition: {x: 174, y: -955}
+    editorPosition: {x: 2297, y: -1009}
   - nodeId: P02_Wander
     nodeGuid: e484e55cfd4849069bcdd837a65572e8
     nodeKind: 4
@@ -403,7 +385,7 @@ MonoBehaviour:
     action:
       rid: 2634812004397482066
     sequences: []
-    editorPosition: {x: -298, y: 198}
+    editorPosition: {x: -297, y: 198}
   - nodeId: P04_Wander2_Copy1
     nodeGuid: 3fd2b6ec8a764d1aa98ed2dc25aebe36
     nodeKind: 4
@@ -478,11 +460,11 @@ MonoBehaviour:
     editorPosition: {x: 895, y: 72}
   - nodeId: UP04_Fire Projectile Burst
     nodeGuid: 7ec92e4541a24e4ca49db2f712bde19b
-    nodeKind: 0
+    nodeKind: 4
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 2634812006979338325
+      rid: 6489938906219806795
     sequences: []
     editorPosition: {x: 613, y: 386}
   - nodeId: UP04_Maintain Player Distance
@@ -583,7 +565,7 @@ MonoBehaviour:
     action:
       rid: 2634812007888978009
     sequences: []
-    editorPosition: {x: 1810, y: 2503}
+    editorPosition: {x: 1812, y: 2503}
   - nodeId: Gather_Copy1
     nodeGuid: dc97284f657142888a98cefb28a96090
     nodeKind: 4
@@ -817,7 +799,7 @@ MonoBehaviour:
     action:
       rid: 2634812007888978078
     sequences: []
-    editorPosition: {x: 82, y: 2033}
+    editorPosition: {x: 79, y: 2034}
   - nodeId: P09_Move Toward Player 2_Copy4
     nodeGuid: ecaefbb9637043ac8fbbb55a7c652621
     nodeKind: 1
@@ -835,7 +817,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692548
     sequences: []
-    editorPosition: {x: 817, y: -942}
+    editorPosition: {x: 23, y: -1517}
   - nodeId: P01_Summon_Copy1
     nodeGuid: a72ac519bd064ca9a260fcb39e49b836
     nodeKind: 4
@@ -844,7 +826,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692549
     sequences: []
-    editorPosition: {x: 518, y: -810}
+    editorPosition: {x: -276, y: -1385}
   - nodeId: P01_Wander 2_Copy1
     nodeGuid: 631205d2ef87491f9bd6e91b47875965
     nodeKind: 4
@@ -853,7 +835,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692550
     sequences: []
-    editorPosition: {x: 506, y: -963}
+    editorPosition: {x: -288, y: -1538}
   - nodeId: P01_Maintain Player Distance 2_Copy1
     nodeGuid: ec4ca827679f477a9a7618b2093d31d4
     nodeKind: 1
@@ -862,7 +844,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692551
     sequences: []
-    editorPosition: {x: 450, y: -680}
+    editorPosition: {x: -344, y: -1255}
   - nodeId: P09_Move Toward Player 2_Copy5
     nodeGuid: c0a223d6adb74a3da9d4245ef6eb1677
     nodeKind: 1
@@ -871,7 +853,7 @@ MonoBehaviour:
     action:
       rid: 6489938902049095680
     sequences: []
-    editorPosition: {x: 136, y: -796}
+    editorPosition: {x: 2259, y: -850}
   - nodeId: P09_Move Toward Player 2_Copy5_Copy1
     nodeGuid: 313edaa347cb4cb8b573c03a20f537ce
     nodeKind: 1
@@ -934,7 +916,7 @@ MonoBehaviour:
     action:
       rid: 6489938902049095687
     sequences: []
-    editorPosition: {x: 811, y: -776}
+    editorPosition: {x: 17, y: -1351}
   - nodeId: P09_Move Toward Player 2_Copy5_Copy2_Copy1
     nodeGuid: 697131b28f584fe6b49d9c1f8b9e0174
     nodeKind: 1
@@ -953,24 +935,163 @@ MonoBehaviour:
       rid: 6489938902049095689
     sequences: []
     editorPosition: {x: 883, y: 239}
+  - nodeId: P01_Formation_Copy1
+    nodeGuid: d356adc35ae84c2caeb0683b961a9505
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806800
+    sequences: []
+    editorPosition: {x: 213, y: -808}
+  - nodeId: P01_Fire All_Copy1
+    nodeGuid: 7056a5d14a0249a28f5ba8f1a1447832
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806801
+    sequences: []
+    editorPosition: {x: 523, y: -826}
+  - nodeId: P01_Maintain Player Distance_Copy1
+    nodeGuid: cfd368d220c04a89af437746f0b47226
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806802
+    sequences: []
+    editorPosition: {x: 483, y: -971}
+  - nodeId: P01_Maintain Player Distance 3_Copy1
+    nodeGuid: 75ea4bf519ce4f9f92cc715d5fc28f4e
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806803
+    sequences: []
+    editorPosition: {x: 187, y: -982}
+  - nodeId: P01_Formation_Copy1_Copy1
+    nodeGuid: ba0e0de306e747a6aa93eb702ef0214b
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806804
+    sequences: []
+    editorPosition: {x: 837, y: -839}
+  - nodeId: P01_Fire All_Copy1_Copy1
+    nodeGuid: 41e358a603724e9baf17b5a29624fb96
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806805
+    sequences: []
+    editorPosition: {x: 1149, y: -857}
+  - nodeId: P01_Maintain Player Distance_Copy1_Copy1
+    nodeGuid: ef73936c8416444c9384a678a50f3c19
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806806
+    sequences: []
+    editorPosition: {x: 1108, y: -1002}
+  - nodeId: P01_Maintain Player Distance 3_Copy1_Copy1
+    nodeGuid: c1c9e74eb7204136beb2bb20cc29196d
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806807
+    sequences: []
+    editorPosition: {x: 799, y: -1009}
+  - nodeId: P01_Formation_Copy1_Copy1_Copy1
+    nodeGuid: 7b2571cb4d064f2994a449d7313dfddb
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806808
+    sequences: []
+    editorPosition: {x: 1486, y: -830}
+  - nodeId: P01_Fire All_Copy1_Copy1_Copy1
+    nodeGuid: 91a3a7d403da4b7899dd37319540cc53
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806809
+    sequences: []
+    editorPosition: {x: 1906, y: -826}
+  - nodeId: P01_Maintain Player Distance_Copy1_Copy1_Copy1
+    nodeGuid: 07c29c8e732248ed8cbd5ca99fc4a56e
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806810
+    sequences: []
+    editorPosition: {x: 1866, y: -999}
+  - nodeId: P01_Maintain Player Distance 3_Copy1_Copy1_Copy1
+    nodeGuid: 1bbe4b92a8a74e41b052e80fd905094d
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806811
+    sequences: []
+    editorPosition: {x: 1448, y: -1000}
+  - nodeId: P03_Fire All_Copy1
+    nodeGuid: c477ba5d12ec4a7392f05f791f634f19
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938906219806813
+    sequences: []
+    editorPosition: {x: -110, y: 3595}
   patterns:
   - patternId: Pattern1
     nodeGuids:
     - 555900de7cf44027a24ff126ca720cc1
     - 97f24aeaed5640e2b90e1a5f4a59bca7
+    - 75ea4bf519ce4f9f92cc715d5fc28f4e
     - 26515eb0638a43f1806915f4cdb037e0
-    - a573702db7e24a31b029fca55ab4b55a
-    - 5acd38a936824a9cbeb10fcec9bd6aaf
     - 1c8b136783bf4ee5a096e1c0649b9c89
     - c0a223d6adb74a3da9d4245ef6eb1677
+    - d356adc35ae84c2caeb0683b961a9505
+    - cfd368d220c04a89af437746f0b47226
+    - 7056a5d14a0249a28f5ba8f1a1447832
+    - c1c9e74eb7204136beb2bb20cc29196d
+    - ba0e0de306e747a6aa93eb702ef0214b
+    - ef73936c8416444c9384a678a50f3c19
+    - 41e358a603724e9baf17b5a29624fb96
+    - 1bbe4b92a8a74e41b052e80fd905094d
+    - 7b2571cb4d064f2994a449d7313dfddb
+    - 07c29c8e732248ed8cbd5ca99fc4a56e
+    - 91a3a7d403da4b7899dd37319540cc53
+    - 5acd38a936824a9cbeb10fcec9bd6aaf
     nodeIds:
     - P01_Formation
     - P01_Maintain Player Distance
+    - P01_Maintain Player Distance 3_Copy1
     - P01_Fire All
-    - P01_Fire Projectile
-    - P01_Wander
     - P01_Maintain Player Distance 3
     - P09_Move Toward Player 2_Copy5
+    - P01_Formation_Copy1
+    - P01_Maintain Player Distance_Copy1
+    - P01_Fire All_Copy1
+    - P01_Maintain Player Distance 3_Copy1_Copy1
+    - P01_Formation_Copy1_Copy1
+    - P01_Maintain Player Distance_Copy1_Copy1
+    - P01_Fire All_Copy1_Copy1
+    - P01_Maintain Player Distance 3_Copy1_Copy1_Copy1
+    - P01_Formation_Copy1_Copy1_Copy1
+    - P01_Maintain Player Distance_Copy1_Copy1_Copy1
+    - P01_Fire All_Copy1_Copy1_Copy1
+    - P01_Wander
   - patternId: Pattern2
     nodeGuids:
     - 0be5c027008d462383e9165e9c2d4352
@@ -1104,16 +1225,16 @@ MonoBehaviour:
     - 65cfcc2352924679b7ec85066ff3d4e8
     - b0b0d0134d3e44af806747ac0785d8fa
     - ed3cd1e09ff2457198f777d3ff88cec3
-    - d873030243f44eb68eef550c40dae7db
-    - 592ce7f11b89418cadd2cd36ed467a53
     - 6d68a3ef54df4162a39bacc78321a52e
+    - c477ba5d12ec4a7392f05f791f634f19
+    - 592ce7f11b89418cadd2cd36ed467a53
     nodeIds:
     - P03_Formation Straight
     - P03_Start Move Away From Player
     - P03_Maintain Player Distance
-    - P03_Fire All
-    - P03_Wander
     - P09_Move Toward Player 2_Copy4_Copy1_Copy1_Copy1
+    - P03_Fire All_Copy1
+    - P03_Wander
   - patternId: Upgrade/Pattern2
     nodeGuids:
     - 8cde7af96a1d4f78b0ded57c74d52492
@@ -1218,31 +1339,35 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern4-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern4-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern5-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern5-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
+    - patternId: Pattern8
+      weight: 99
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 0
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 0
@@ -1288,35 +1413,35 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Upgrade/Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Upgrade/Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Upgrade/Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
     - patternId: Upgrade/Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 0
   transitions:
   - fromNodeGuid: af261808967e42878f831a46566e6f8f
     toNodeGuid: c7e03389464945bb9135624d2af78ff0
@@ -1430,13 +1555,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: a573702db7e24a31b029fca55ab4b55a
-    toNodeGuid: 5acd38a936824a9cbeb10fcec9bd6aaf
-    fromNodeId: P01_Fire Projectile
-    toNodeId: P01_Wander
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 11a518c41d64444db10f19382d8cfbfe
     toNodeGuid: e484e55cfd4849069bcdd837a65572e8
     fromNodeId: P02_Maintain Player Distance
@@ -1455,13 +1573,6 @@ MonoBehaviour:
     toNodeGuid: d8522cf832ca46bb958e5e5e934f3bb8
     fromNodeId: UP02_Maintain Player Distance 2
     toNodeId: UP02_Wander 2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: d873030243f44eb68eef550c40dae7db
-    toNodeGuid: 592ce7f11b89418cadd2cd36ed467a53
-    fromNodeId: P03_Fire All
-    toNodeId: P03_Wander
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1619,6 +1730,62 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: d356adc35ae84c2caeb0683b961a9505
+    toNodeGuid: cfd368d220c04a89af437746f0b47226
+    fromNodeId: P01_Formation_Copy1
+    toNodeId: P01_Maintain Player Distance_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
+    toNodeGuid: 75ea4bf519ce4f9f92cc715d5fc28f4e
+    fromNodeId: P01_Maintain Player Distance
+    toNodeId: P01_Maintain Player Distance 3_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ba0e0de306e747a6aa93eb702ef0214b
+    toNodeGuid: ef73936c8416444c9384a678a50f3c19
+    fromNodeId: P01_Formation_Copy1_Copy1
+    toNodeId: P01_Maintain Player Distance_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 7056a5d14a0249a28f5ba8f1a1447832
+    toNodeGuid: c1c9e74eb7204136beb2bb20cc29196d
+    fromNodeId: P01_Fire All_Copy1
+    toNodeId: P01_Maintain Player Distance 3_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 7b2571cb4d064f2994a449d7313dfddb
+    toNodeGuid: 07c29c8e732248ed8cbd5ca99fc4a56e
+    fromNodeId: P01_Formation_Copy1_Copy1_Copy1
+    toNodeId: P01_Maintain Player Distance_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 41e358a603724e9baf17b5a29624fb96
+    toNodeGuid: 1bbe4b92a8a74e41b052e80fd905094d
+    fromNodeId: P01_Fire All_Copy1_Copy1
+    toNodeId: P01_Maintain Player Distance 3_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 91a3a7d403da4b7899dd37319540cc53
+    toNodeGuid: 5acd38a936824a9cbeb10fcec9bd6aaf
+    fromNodeId: P01_Fire All_Copy1_Copy1_Copy1
+    toNodeId: P01_Wander
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c477ba5d12ec4a7392f05f791f634f19
+    toNodeGuid: 592ce7f11b89418cadd2cd36ed467a53
+    fromNodeId: P03_Fire All_Copy1
+    toNodeId: P03_Wander
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
     toNodeGuid: 71e3398d27ad4926aa6ab542889090fd
@@ -1674,22 +1841,10 @@ MonoBehaviour:
     toNodeId: P01_Fire All
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 26515eb0638a43f1806915f4cdb037e0
-    toNodeGuid: a573702db7e24a31b029fca55ab4b55a
-    fromNodeId: P01_Fire All
-    toNodeId: P01_Fire Projectile
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: ed3cd1e09ff2457198f777d3ff88cec3
     toNodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
     fromNodeId: P03_Maintain Player Distance
     toNodeId: P03_Formation Straight
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
-    toNodeGuid: d873030243f44eb68eef550c40dae7db
-    fromNodeId: P03_Formation Straight
-    toNodeId: P03_Fire All
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 1c8b136783bf4ee5a096e1c0649b9c89
@@ -1896,6 +2051,48 @@ MonoBehaviour:
     toNodeId: P09_Move Toward Player 2_Copy5_Copy2_Copy1_Copy1
     laneIndex: 0
     targetLaneIndex: 0
+  - fromNodeGuid: 75ea4bf519ce4f9f92cc715d5fc28f4e
+    toNodeGuid: d356adc35ae84c2caeb0683b961a9505
+    fromNodeId: P01_Maintain Player Distance 3_Copy1
+    toNodeId: P01_Formation_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: cfd368d220c04a89af437746f0b47226
+    toNodeGuid: 7056a5d14a0249a28f5ba8f1a1447832
+    fromNodeId: P01_Maintain Player Distance_Copy1
+    toNodeId: P01_Fire All_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: c1c9e74eb7204136beb2bb20cc29196d
+    toNodeGuid: ba0e0de306e747a6aa93eb702ef0214b
+    fromNodeId: P01_Maintain Player Distance 3_Copy1_Copy1
+    toNodeId: P01_Formation_Copy1_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: ef73936c8416444c9384a678a50f3c19
+    toNodeGuid: 41e358a603724e9baf17b5a29624fb96
+    fromNodeId: P01_Maintain Player Distance_Copy1_Copy1
+    toNodeId: P01_Fire All_Copy1_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 1bbe4b92a8a74e41b052e80fd905094d
+    toNodeGuid: 7b2571cb4d064f2994a449d7313dfddb
+    fromNodeId: P01_Maintain Player Distance 3_Copy1_Copy1_Copy1
+    toNodeId: P01_Formation_Copy1_Copy1_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 07c29c8e732248ed8cbd5ca99fc4a56e
+    toNodeGuid: 91a3a7d403da4b7899dd37319540cc53
+    fromNodeId: P01_Maintain Player Distance_Copy1_Copy1_Copy1
+    toNodeId: P01_Fire All_Copy1_Copy1_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 65cfcc2352924679b7ec85066ff3d4e8
+    toNodeGuid: c477ba5d12ec4a7392f05f791f634f19
+    fromNodeId: P03_Formation Straight
+    toNodeId: P03_Fire All_Copy1
+    laneIndex: 0
+    targetLaneIndex: 0
   debugForceSinglePattern: 0
   debugForcedPatternId: Pattern6
   references:
@@ -1913,7 +2110,7 @@ MonoBehaviour:
     - rid: 2634811984531423329
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 8
+        durationSeconds: 0.9
         distance: 7
         tolerance: 0.3
         speedMultiplier: 1
@@ -2145,10 +2342,20 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0.6
-        volleyCount: 2
-        directionCount: 5
-        volleyInterval: 1.5
-        spreadDegrees: 80
+        legacyVolleyCount: 0
+        legacyDirectionCount: 0
+        legacyVolleyInterval: -1
+        legacySpreadDegrees: -1
+        volleyGroups:
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0.8
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0.8
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0
         resumeIdle: 1
         waitForDuration: 1
     - rid: 2634811984531423377
@@ -2203,10 +2410,20 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0.6
-        volleyCount: 1
-        directionCount: 5
-        volleyInterval: 0.5
-        spreadDegrees: 80
+        legacyVolleyCount: 0
+        legacyDirectionCount: 0
+        legacyVolleyInterval: -1
+        legacySpreadDegrees: -1
+        volleyGroups:
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0.8
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0.8
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0
         resumeIdle: 1
         waitForDuration: 1
     - rid: 2634811984531423380
@@ -2260,11 +2477,21 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.6
-        volleyCount: 1
-        directionCount: 5
-        volleyInterval: 0.5
-        spreadDegrees: 80
+        windupSeconds: 1.5
+        legacyVolleyCount: 0
+        legacyDirectionCount: 0
+        legacyVolleyInterval: -1
+        legacySpreadDegrees: -1
+        volleyGroups:
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0.8
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0.8
+        - directionCount: 5
+          spreadDegrees: 80
+          restSeconds: 0
         resumeIdle: 1
         waitForDuration: 1
     - rid: 2634811984531423382
@@ -2405,89 +2632,14 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.5
+        windupSeconds: 0
         legacyVolleyCount: 0
         legacyFireInterval: -1
         volleyGroups:
-        - bulletCount: 2
-          fireInterval: 0.3
-          restSeconds: 1.9
-        - bulletCount: 3
-          fireInterval: 0.3
-          restSeconds: 2.5
-        - bulletCount: 4
-          fireInterval: 0.3
+        - bulletCount: 6
+          fireInterval: 0.15
           restSeconds: 0
         waitForDuration: 1
-    - rid: 2634811984531423396
-      type: {class: FireProjectileBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC720\uB3C4\uD0C4_\uBCF4\uC2A4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-        origin:
-          mode: 1
-          bossChildPath: Visual/LeftGun/FirePoint
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
-        startDelaySeconds: 0
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - bulletCount: 2
-          fireInterval: 0.5
-          restSeconds: 1.5
-        - bulletCount: 3
-          fireInterval: 0.5
-          restSeconds: 1.5
-        - bulletCount: 4
-          fireInterval: 0.5
-          restSeconds: 0
     - rid: 2634811994844954695
       type: {class: MinionGatherAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2776,7 +2928,7 @@ MonoBehaviour:
     - rid: 2634811994844954717
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 1
+        wanderSeconds: 0.25
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -2784,7 +2936,7 @@ MonoBehaviour:
     - rid: 2634811994844954718
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 1
+        wanderSeconds: 0.25
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -2792,7 +2944,7 @@ MonoBehaviour:
     - rid: 2634811994844954719
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 1
+        wanderSeconds: 0.25
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -2800,7 +2952,7 @@ MonoBehaviour:
     - rid: 2634811994844954720
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 1
+        wanderSeconds: 0.25
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -2865,7 +3017,7 @@ MonoBehaviour:
     - rid: 2634812004397482055
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.5
+        durationSeconds: 1
         distance: 7
         tolerance: 0.3
         speedMultiplier: 1
@@ -3126,69 +3278,6 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 2634812006979338325
-      type: {class: FireProjectileBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC720\uB3C4\uD0C4_\uBCF4\uC2A4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-          homingEnabled: 0
-        origin:
-          mode: 1
-          bossChildPath: Visual/LeftGun/FirePoint
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
-        startDelaySeconds: 0
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - bulletCount: 6
-          fireInterval: 1
-          restSeconds: 0
     - rid: 2634812006979338326
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3255,56 +3344,6 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
-    - rid: 2634812006979338345
-      type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4"
-        minionOrigin:
-          mode: 0
-          minionChildPath: 
-          minionChildPaths: []
-          firstMinionChildPath: 
-          secondMinionChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 2
-          angleDegrees: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        windupSeconds: 0.6
-        legacyVolleyCount: 0
-        legacyFireInterval: -1
-        volleyGroups:
-        - bulletCount: 3
-          fireInterval: 0.3
-          restSeconds: 1
-        - bulletCount: 3
-          fireInterval: 0.3
-          restSeconds: 1
-        - bulletCount: 3
-          fireInterval: 0.3
-          restSeconds: 0
-        waitForDuration: 1
     - rid: 2634812007888977991
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3422,7 +3461,7 @@ MonoBehaviour:
     - rid: 2634812007888978003
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2
+        wanderSeconds: 0.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3430,7 +3469,7 @@ MonoBehaviour:
     - rid: 2634812007888978006
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1
+        seconds: 0.5
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -3461,7 +3500,7 @@ MonoBehaviour:
     - rid: 2634812007888978009
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2
+        wanderSeconds: 1
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3534,7 +3573,7 @@ MonoBehaviour:
     - rid: 2634812007888978017
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2
+        wanderSeconds: 0.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3967,7 +4006,7 @@ MonoBehaviour:
     - rid: 2634812007888978078
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2
+        wanderSeconds: 0.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3975,7 +4014,7 @@ MonoBehaviour:
     - rid: 2634812007888978079
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1
+        seconds: 0.5
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -4014,7 +4053,7 @@ MonoBehaviour:
     - rid: 2634812080860692549
       type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        summonCount: 2
+        summonCount: 4
         stopBossWhileSummoning: 1
     - rid: 2634812080860692550
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4246,7 +4285,7 @@ MonoBehaviour:
     - rid: 6489938902049095686
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1
+        seconds: 0.5
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -4367,3 +4406,475 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
+    - rid: 6489938906219806795
+      type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4_\uBCF4\uC2A4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 2
+        legacyVolleyCount: 0
+        legacyFireInterval: -1
+        volleyGroups:
+        - bulletCount: 1
+          fireInterval: 0
+          restSeconds: 0
+        waitForDuration: 1
+    - rid: 6489938906219806800
+      type: {class: MinionFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        radius: 2.2
+        sideBySide: 1
+        angleSpacingDegrees: 45
+        speedMultiplier: 1.2
+        settleSeconds: 1
+        waitForDuration: 1
+    - rid: 6489938906219806801
+      type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        legacyVolleyCount: 0
+        legacyFireInterval: -1
+        volleyGroups:
+        - bulletCount: 6
+          fireInterval: 0.15
+          restSeconds: 0
+        waitForDuration: 1
+    - rid: 6489938906219806802
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 0.9
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489938906219806803
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 1
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.004837036
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489938906219806804
+      type: {class: MinionFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        radius: 2.2
+        sideBySide: 1
+        angleSpacingDegrees: 60
+        speedMultiplier: 1.2
+        settleSeconds: 1
+        waitForDuration: 1
+    - rid: 6489938906219806805
+      type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        legacyVolleyCount: 0
+        legacyFireInterval: -1
+        volleyGroups:
+        - bulletCount: 6
+          fireInterval: 0.15
+          restSeconds: 0
+        waitForDuration: 1
+    - rid: 6489938906219806806
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 0.9
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489938906219806807
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 1
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.004837036
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489938906219806808
+      type: {class: MinionFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        radius: 2.2
+        sideBySide: 1
+        angleSpacingDegrees: 75
+        speedMultiplier: 1.2
+        settleSeconds: 1
+        waitForDuration: 1
+    - rid: 6489938906219806809
+      type: {class: MinionRepeatFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        legacyVolleyCount: 0
+        legacyFireInterval: -1
+        volleyGroups:
+        - bulletCount: 6
+          fireInterval: 0.15
+          restSeconds: 0
+        waitForDuration: 1
+    - rid: 6489938906219806810
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 0.9
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489938906219806811
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 1
+        distance: 7
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.004837036
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489938906219806813
+      type: {class: MinionRadialBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        minionOrigin:
+          mode: 1
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 2
+          angleDegrees: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0.6
+        legacyVolleyCount: 0
+        legacyDirectionCount: 0
+        legacyVolleyInterval: -1
+        legacySpreadDegrees: -1
+        volleyGroups:
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 1
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 1
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        - directionCount: 3
+          spreadDegrees: 45
+          restSeconds: 0.3
+        resumeIdle: 1
+        waitForDuration: 1

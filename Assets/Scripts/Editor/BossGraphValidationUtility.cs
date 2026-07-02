@@ -366,6 +366,7 @@ internal static class BossGraphValidationUtility
                 ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
                 break;
             case MinionRepeatFireAction:
+            case MinionRadialBurstAction:
                 RequireArrayNotEmpty(action, "volleyGroups", label, messages);
                 RequireString(action, "projectileName", label, messages);
                 break;
