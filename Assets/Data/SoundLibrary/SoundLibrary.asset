@@ -111,8 +111,8 @@ MonoBehaviour:
     volume: 0.55
     pitch: 1
   - id: SniperCharge
-    clip: {fileID: 8300000, guid: 6bc8287c02110374aa2182ef94c94ece, type: 3}
-    volume: 0.7
+    clip: {fileID: 8300000, guid: 47b04ae06681a8b40bea89a3c99ecbac, type: 3}
+    volume: 1
     pitch: 1
   - id: ShotgunFire
     clip: {fileID: 8300000, guid: 06f1984fb44143341983e4e3cb614965, type: 3}
