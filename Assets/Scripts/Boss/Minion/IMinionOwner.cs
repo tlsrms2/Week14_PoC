@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -26,5 +27,12 @@ namespace Week14.Enemy
             Vector3 hitPosition,
             Vector2 hitDirection,
             Color hitColor);
+    }
+
+    public interface IMinionMovementPathIndicatorOwner
+    {
+        void BeginMinionMovementPathIndicator(Minion minion, IReadOnlyList<Vector2> points, bool loop);
+        void TickMinionMovementPathIndicator(Minion minion, Vector2 current);
+        void EndMinionMovementPathIndicator(Minion minion);
     }
 }
