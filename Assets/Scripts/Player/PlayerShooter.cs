@@ -67,7 +67,6 @@ namespace Week14.Combat
 
             chargeAccumulatedDamage += damage;
             chargeConsumedBulletCount++;
-            context.SniperChargeIndicator?.ConsumeBullet();
             return true;
         }
 

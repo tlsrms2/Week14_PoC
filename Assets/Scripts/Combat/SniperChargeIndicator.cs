@@ -19,7 +19,6 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float rotationTransitionSpeed = 15f;
 
         private int totalBulletCount;
-        private int consumedBulletCount;
         private float scaleStep;
         private float rotationStep;
         private float currentScale;
@@ -33,7 +32,6 @@ namespace Week14.Combat
         public void BeginCharge(int currentBulletCount)
         {
             totalBulletCount = Mathf.Max(0, currentBulletCount);
-            consumedBulletCount = 0;
             currentScale = maxScale;
             currentRotationZ = 0f;
 
@@ -55,16 +53,9 @@ namespace Week14.Combat
             }
         }
 
-        public void ConsumeBullet()
-        {
-            if (totalBulletCount <= 0) return;
-            consumedBulletCount = Mathf.Min(consumedBulletCount + 1, totalBulletCount);
-        }
-
         public void EndCharge()
         {
             totalBulletCount = 0;
-            consumedBulletCount = 0;
             if (gameObject.activeSelf)
             {
                 gameObject.SetActive(false);
@@ -81,7 +72,12 @@ namespace Week14.Combat
             }
 
             FollowCursor();
-            ApplyVisual();
+
+            int liveBulletCount = player.Bullets != null ? player.Bullets.CurrentBullets : totalBulletCount;
+            int consumedBulletCount = totalBulletCount > 0
+                ? Mathf.Clamp(totalBulletCount - liveBulletCount, 0, totalBulletCount)
+                : 0;
+            ApplyVisual(consumedBulletCount);
         }
 
         private void FollowCursor()
@@ -93,7 +89,7 @@ namespace Week14.Combat
             transform.position = worldPos;
         }
 
-        private void ApplyVisual()
+        private void ApplyVisual(int consumedBulletCount)
         {
             float targetScale = totalBulletCount > 0
                 ? Mathf.Max(minScale, maxScale - scaleStep * consumedBulletCount)
