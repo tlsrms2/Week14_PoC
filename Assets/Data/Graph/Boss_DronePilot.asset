@@ -2453,6 +2453,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        startDelaySeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3189,6 +3190,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        startDelaySeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3214,7 +3216,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
-        - bulletCount: 8
+        - bulletCount: 6
           fireInterval: 1
           restSeconds: 0
     - rid: 2634812006979338326
@@ -4103,12 +4105,12 @@ MonoBehaviour:
     - rid: 2634812007888978062
       type: {class: MinionHoldPositionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        holdSeconds: 1
+        holdSeconds: 1.75
         waitForDuration: 1
     - rid: 2634812007888978063
       type: {class: MinionHoldPositionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        holdSeconds: 1
+        holdSeconds: 1.75
         waitForDuration: 1
     - rid: 2634812007888978073
       type: {class: MinionGatherAction, ns: Week14.Enemy, asm: Assembly-CSharp}
