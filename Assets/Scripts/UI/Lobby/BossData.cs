@@ -16,6 +16,7 @@ namespace Week14.UI
         [SerializeField] private LocalizedString localizedCrime;
         [SerializeField] private LocalizedString localizedDescription;
         [SerializeField] private Sprite icon;
+        [SerializeField] private Sprite deathImage;
         [SerializeField] private string sceneName;
 
         [Header("클리어 보상")]
@@ -37,6 +38,8 @@ namespace Week14.UI
         public bool HasLocalizedCrime => HasLocalizedString(localizedCrime);
         public bool HasLocalizedDescription => HasLocalizedString(localizedDescription);
         public Sprite Icon => icon;
+        public Sprite DeathImage => deathImage;
+        public Sprite ResultPortrait => deathImage != null ? deathImage : icon;
         public string SceneName => sceneName;
         public IReadOnlyList<string> UnlocksBossIds => unlocksBossIds;
         public IReadOnlyList<string> UnlocksSkillIds => unlocksSkillIds;

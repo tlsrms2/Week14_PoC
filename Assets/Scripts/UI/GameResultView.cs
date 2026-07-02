@@ -323,7 +323,7 @@ namespace Week14.UI
                 : boss != null ? boss.DisplayName : string.Empty;
             SetText(defeatedBossText, bossName);
             BindLocalizedVictoryBossName(bossData);
-            SetImage(defeatedBossPortrait, bossData != null ? bossData.Icon : null);
+            SetImage(defeatedBossPortrait, bossData != null ? bossData.ResultPortrait : null);
         }
 
         private void ShowResult(GameObject targetRoot, Selectable focusTarget)
