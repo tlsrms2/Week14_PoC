@@ -2747,3 +2747,45 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.MinionResumeIdleAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 4
+  - actionTypeName: Week14.Enemy.MaintainPlayerDistanceAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.StartMoveAwayFromPlayerAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.BossDashAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.MinionSequentialFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionRepeatFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionSideFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionOrbitAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionWanderAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionDashAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionGatherAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionHoldPositionAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionFormationStraightAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionPlayerPathAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 4
+  - actionTypeName: Week14.Enemy.MinionAngleDistanceMoveAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 4

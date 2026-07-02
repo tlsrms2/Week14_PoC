@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 2634811984531423394
     sequences: []
-    editorPosition: {x: -41, y: -841}
+    editorPosition: {x: -41, y: -848}
   - nodeId: P01_Maintain Player Distance
     nodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
     nodeKind: 1
@@ -745,7 +745,7 @@ MonoBehaviour:
     action:
       rid: 2634812007888978061
     sequences: []
-    editorPosition: {x: 571, y: 3133}
+    editorPosition: {x: 571, y: 3131}
   - nodeId: Node2
     nodeGuid: 9cf47d93d7de43318bbff1a066295c7a
     nodeKind: 4
@@ -1024,7 +1024,7 @@ MonoBehaviour:
     action:
       rid: 6489938906219806809
     sequences: []
-    editorPosition: {x: 1906, y: -826}
+    editorPosition: {x: 1907, y: -826}
   - nodeId: P01_Maintain Player Distance_Copy1_Copy1_Copy1
     nodeGuid: 07c29c8e732248ed8cbd5ca99fc4a56e
     nodeKind: 1
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     action:
       rid: 6489938906219806813
     sequences: []
-    editorPosition: {x: -110, y: 3595}
+    editorPosition: {x: -147, y: 3615}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1339,35 +1339,31 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern4-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern4-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern5-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern5-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
-    - patternId: Pattern8
-      weight: 99
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 0
@@ -1413,35 +1409,35 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
     - patternId: Upgrade/Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
   transitions:
   - fromNodeGuid: af261808967e42878f831a46566e6f8f
     toNodeGuid: c7e03389464945bb9135624d2af78ff0
@@ -2209,14 +2205,14 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2268,14 +2264,14 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2332,8 +2328,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2400,8 +2396,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2468,8 +2464,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2523,14 +2519,14 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2574,14 +2570,14 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2613,18 +2609,18 @@ MonoBehaviour:
         effects:
           explosion:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 0.4
+            count: 8
           smoke:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2678,8 +2674,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.2588235, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2743,8 +2739,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2798,8 +2794,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2853,8 +2849,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2908,8 +2904,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -2968,7 +2964,7 @@ MonoBehaviour:
     - rid: 2634811994844954722
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2
+        wanderSeconds: 1
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3078,18 +3074,18 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.7
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
-            enabled: 0
+            enabled: 1
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
@@ -3112,7 +3108,7 @@ MonoBehaviour:
     - rid: 2634812004397482070
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2
+        wanderSeconds: 1
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -3247,18 +3243,18 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.7
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
-            enabled: 0
+            enabled: 1
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
@@ -3543,8 +3539,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3616,8 +3612,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3681,8 +3677,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3746,8 +3742,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3818,8 +3814,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3867,8 +3863,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3916,8 +3912,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -3976,8 +3972,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28082043, b: 0.2588235, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -4053,7 +4049,7 @@ MonoBehaviour:
     - rid: 2634812080860692549
       type: {class: MinionSummonAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        summonCount: 4
+        summonCount: 2
         stopBossWhileSummoning: 1
     - rid: 2634812080860692550
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4433,8 +4429,8 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.28235295, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -4476,18 +4472,18 @@ MonoBehaviour:
         effects:
           explosion:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 0.4
+            count: 8
           smoke:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -4595,18 +4591,18 @@ MonoBehaviour:
         effects:
           explosion:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 0.4
+            count: 8
           smoke:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -4714,18 +4710,18 @@ MonoBehaviour:
         effects:
           explosion:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
+            scale: 0.4
+            count: 8
           smoke:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -4828,14 +4824,14 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
+            scale: 0.7
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
             scale: 1
             count: 12
           cameraShake:
@@ -4849,32 +4845,32 @@ MonoBehaviour:
         legacyVolleyInterval: -1
         legacySpreadDegrees: -1
         volleyGroups:
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 0.3
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 0.3
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 1
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 0.3
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 0.3
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 1
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 0.3
-        - directionCount: 3
-          spreadDegrees: 45
+        - directionCount: 2
+          spreadDegrees: 30
           restSeconds: 0.3
-        - directionCount: 3
-          spreadDegrees: 45
-          restSeconds: 0.3
+        - directionCount: 2
+          spreadDegrees: 30
+          restSeconds: 0
         resumeIdle: 1
         waitForDuration: 1
