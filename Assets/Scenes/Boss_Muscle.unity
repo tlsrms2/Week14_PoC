@@ -1525,6 +1525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
   outlineGraphic: {fileID: 1602277701}
   outlineSpriteRenderer: {fileID: 0}
+  ignoreChildDropdownList: 1
 --- !u!114 &1219587738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4450,6 +4451,7 @@ MonoBehaviour:
   victoryPanelDelaySeconds: 1.5
   mouseParryReticleRenderer: {fileID: 1045558378459951955}
   mouseParryReticle: {fileID: 2751947015125262930}
+  sniperChargeIndicator: {fileID: 0}
 --- !u!4 &4535951969440991530
 Transform:
   m_ObjectHideFlags: 0
@@ -5110,27 +5112,27 @@ MonoBehaviour:
     m_RotationOrder: 4
   format: '{0}'
   styles:
-  - bulletNumber: 5
+  - minDamage: 1
     fontSize: 6
     textColor: {r: 0.11965811, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.38823533, g: 0.7137255, b: 0.34509805, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 4
+  - minDamage: 2
     fontSize: 10
     textColor: {r: 0.49650347, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.57254905, g: 0.7960785, b: 0.34901962, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 3
+  - minDamage: 3
     fontSize: 16
     textColor: {r: 1, g: 0.86184216, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.7294118, b: 0.32156864, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 2
+  - minDamage: 4
     fontSize: 24
     textColor: {r: 1, g: 0.52662724, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.54509807, b: 0.26666668, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 1
+  - minDamage: 5
     fontSize: 38
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}

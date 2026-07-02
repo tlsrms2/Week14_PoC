@@ -45,6 +45,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   icon: {fileID: -6223629233855118504, guid: 7a5129de2f924994286606028341ce05, type: 3}
+  deathImage: {fileID: -1941720728488181491, guid: b9537ce96924abd46b4e97a42b3148c8, type: 3}
   sceneName: MainScene
   unlocksBossIds:
   - 2

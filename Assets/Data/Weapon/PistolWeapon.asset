@@ -23,8 +23,8 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  icon: {fileID: -1250021020546060479, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
-  outlineIcon: {fileID: -5253834672664389118, guid: 4941473ac3b03dc4bb08ab5c77d2b6bc, type: 3}
+  icon: {fileID: 21300000, guid: 5b544a887a800b645892f58eca438dc6, type: 3}
+  outlineIcon: {fileID: 21300000, guid: 4941473ac3b03dc4bb08ab5c77d2b6bc, type: 3}
   description: "\uAD8C\uCD1D\uC774\uB2E4\n\uC2A4\uD0AC \uAD6C\uB974\uAE30\uC784"
   localizedDescription:
     m_TableReference:
