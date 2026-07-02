@@ -31,10 +31,10 @@ MonoBehaviour:
   attackImpactBackSparkColor: {r: 1, g: 0.52, b: 0.12, a: 1}
   attackImpactFlameColor: {r: 1, g: 0.48, b: 0.08, a: 1}
   attackImpactRingColor: {r: 1, g: 0.92, b: 0.62, a: 0.72}
-  attackImpactSparkCount: 10
-  attackImpactBackSparkCount: 20
-  attackImpactFlameCount: 12
-  attackImpactEffectScale: 0.8
+  attackImpactSparkCount: 25
+  attackImpactBackSparkCount: 15
+  attackImpactFlameCount: 16
+  attackImpactEffectScale: 1
   playerHitSparkCount: 5
   playerHitBackSparkCount: 12
   playerHitFlameCount: 6
