@@ -7,7 +7,7 @@ using Week14.Enemy;
 
 namespace Week14.UI
 {
-    public sealed class LobbyMenuController : MonoBehaviour
+    public sealed class LobbyMenuController : MonoBehaviour, IBackClosable
     {
         [Tooltip("로비 씬이 시작될 때 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphBgmId]
@@ -82,6 +82,8 @@ namespace Week14.UI
 
         private void OnDestroy()
         {
+            UIBackStack.Remove(this);
+
             if (!string.IsNullOrEmpty(lobbyBgmId))
             {
                 SoundManager.StopBgm();
@@ -122,10 +124,22 @@ namespace Week14.UI
             Open(loadoutRoot, loadoutPanelContent, loadoutFocusPoint, loadoutOpenOrthographicSize, bossRoot, loadoutObjectsToHideWhenOpen);
         }
 
+        public bool CloseByBack()
+        {
+            if (activeRoot == null)
+            {
+                return false;
+            }
+
+            CloseAll();
+            return true;
+        }
+
         public void CloseAll()
         {
             if (activeRoot == null)
             {
+                UIBackStack.Remove(this);
                 return;
             }
 
@@ -149,10 +163,12 @@ namespace Week14.UI
             SetCloseAllButtonVisible(false);
             RefreshAllHoverHighlights();
             PlayZoom(restCameraPosition, restOrthographicSize);
+            UIBackStack.Remove(this);
         }
 
         private void CloseAllImmediate()
         {
+            UIBackStack.Remove(this);
             StopZoom();
             activeRoot = null;
             activeContent = null;
@@ -218,6 +234,7 @@ namespace Week14.UI
             SetHoverScaleSuppressed(otherRoot, true);
             SetObjectsActive(objectsToHide, false);
             SetCloseAllButtonVisible(true);
+            UIBackStack.Push(this);
 
             // otherRoot의 콜라이더가 방금 꺼져서 PointerExit가 다시는 안 올 수 있다.
             // 그 전에 호버 중이었다면 hovering 플래그가 영영 true로 남아있게 되니 여기서 같이 꺼준다.

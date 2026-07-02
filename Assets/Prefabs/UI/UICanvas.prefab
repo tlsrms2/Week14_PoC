@@ -530,7 +530,8 @@ MonoBehaviour:
   contentRoot: {fileID: 2936243297833531533}
   playOnEnable: 1
   useUnscaledTime: 1
-  revealDuration: 0.9
+  openDuration: 0.9
+  closeDuration: 0.45
   cellSize: 15
   maxCellCount: 2000
   cellOverlap: 0.1
@@ -1522,6 +1523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
   outlineGraphic: {fileID: 3307378415621292672}
   outlineSpriteRenderer: {fileID: 0}
+  ignoreChildDropdownList: 1
 --- !u!1 &3936387915870443681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,7 +1708,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -2364,6 +2366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
   outlineGraphic: {fileID: 8430919212230522805}
   outlineSpriteRenderer: {fileID: 0}
+  ignoreChildDropdownList: 1
 --- !u!114 &3871804197666784477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3275,6 +3278,10 @@ MonoBehaviour:
   sfxVolumeSlider: {fileID: 8425426992879152449}
   bgmMuteToggle: {fileID: 4074811944263941150}
   sfxMuteToggle: {fileID: 1614286399624235965}
+  languageDropdown: {fileID: 0}
+  languageLocaleCodes:
+  - ko-KR
+  - en
 --- !u!1 &7625243295146896537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3393,6 +3400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.PauseMenuView
   panelRoot: {fileID: 1613180128374150396}
   optionsPanelRoot: {fileID: 7333452412212431720}
+  panelRevealView: {fileID: 0}
   titleSceneName: TitleScene
   lobbySceneName: LobbyScene
 --- !u!1 &7629979080116271728
@@ -3504,7 +3512,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -3681,6 +3689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
   outlineGraphic: {fileID: 2098466778779107200}
   outlineSpriteRenderer: {fileID: 0}
+  ignoreChildDropdownList: 1
 --- !u!1 &8076579519061952387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,6 +4088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
   outlineGraphic: {fileID: 8891259481195054536}
   outlineSpriteRenderer: {fileID: 0}
+  ignoreChildDropdownList: 1
 --- !u!1 &8813257461328973288
 GameObject:
   m_ObjectHideFlags: 0
@@ -4304,6 +4314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverOutlineImage
   outlineGraphic: {fileID: 270476727750381134}
   outlineSpriteRenderer: {fileID: 0}
+  ignoreChildDropdownList: 1
 --- !u!1 &9175706723232312608
 GameObject:
   m_ObjectHideFlags: 0

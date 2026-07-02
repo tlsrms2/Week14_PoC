@@ -8,7 +8,7 @@ using Week14.Save;
 
 namespace Week14.UI
 {
-    public sealed class OptionsPanelView : MonoBehaviour
+    public sealed class OptionsPanelView : MonoBehaviour, IBackClosable
     {
         [SerializeField] private Slider bgmVolumeSlider;
         [SerializeField] private Slider sfxVolumeSlider;
@@ -27,6 +27,8 @@ namespace Week14.UI
 
         private void OnEnable()
         {
+            UIBackStack.Push(this);
+
             if (bgmVolumeSlider != null)
             {
                 bgmVolumeSlider.SetValueWithoutNotify(SoundManager.BgmVolume);
@@ -52,11 +54,19 @@ namespace Week14.UI
 
         private void OnDisable()
         {
+            UIBackStack.Remove(this);
+
             if (languageDropdownSyncRoutine != null)
             {
                 StopCoroutine(languageDropdownSyncRoutine);
                 languageDropdownSyncRoutine = null;
             }
+        }
+
+        public bool CloseByBack()
+        {
+            gameObject.SetActive(false);
+            return true;
         }
 
         public void SetBgmVolume(float volume)
