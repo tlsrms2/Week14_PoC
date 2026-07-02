@@ -22,9 +22,9 @@ MonoBehaviour:
   moveSpeed: 3.5
   hitStopSeconds: 0.12
   hitStopTimeScale: 0.05
-  projectilePrefab: {fileID: 5254751781592273283, guid: cf9d70a9cb6ed814cb784a42666c49a7, type: 3}
+  projectilePrefab: {fileID: -4256479927641206161, guid: 781d9b25501e6c549bde38d632c6d2bb, type: 3}
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
-  projectileSpeed: 60
+  projectileSpeed: 30
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15

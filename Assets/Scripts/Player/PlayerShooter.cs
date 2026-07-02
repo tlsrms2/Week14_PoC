@@ -199,8 +199,7 @@ namespace Week14.Combat
 
         private PlayerProjectile ResolveProjectilePrefab(PlayerCombatConfig config)
         {
-            PlayerProjectile weaponPrefab = WeaponLoadoutManager.Instance?.CurrentWeapon?.ProjectilePrefab;
-            return weaponPrefab != null ? weaponPrefab : config.ProjectilePrefab;
+            return config != null ? config.ProjectilePrefab : null;
         }
 
         public bool TryShootEnemy()
