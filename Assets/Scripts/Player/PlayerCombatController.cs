@@ -95,6 +95,7 @@ namespace Week14.Combat
         private bool CanAct => !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
             && !health.IsDead;
+        private bool CanShoot => CanAct && BossAI.IsAnyCombatStarted;
         private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
@@ -330,13 +331,13 @@ namespace Week14.Combat
 
             if (GameInput.LeftAttackDown && CanAct)
             {
-                if (!TryBeginExecution())
+                if (!TryBeginExecution() && CanShoot)
                 {
                     Shooter.BeginAttack();
                 }
             }
 
-            if (GameInput.LeftAttackHeld && CanAct)
+            if (GameInput.LeftAttackHeld && CanShoot)
             {
                 Shooter.HoldAttack(Time.deltaTime);
             }
