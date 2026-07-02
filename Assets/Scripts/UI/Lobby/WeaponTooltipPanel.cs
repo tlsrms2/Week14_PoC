@@ -30,6 +30,8 @@ namespace Week14.UI
         [SerializeField] private TMP_Text maxAmmoText;
         [SerializeField] private TMP_Text parryingRangeText;
         [SerializeField] private TMP_Text bulletDamageText;
+        [Tooltip("BulletDamageBG 오브젝트에 붙은 탄 개수/데미지 표시 컴포넌트입니다.")]
+        [SerializeField] private BulletDamageDisplay bulletDamageDisplay;
         [SerializeField] private Image iconImage;
         [Tooltip("호버한 버튼 기준 이 패널이 나타날 오프셋입니다.")]
         [SerializeField] private Vector2 anchorOffset = new(0f, 16f);
@@ -111,6 +113,11 @@ namespace Week14.UI
             SetBulletDamageText(weapon.BulletDamageTooltipText);
             BindLocalizedWeaponText(weapon);
 
+            if (bulletDamageDisplay != null)
+            {
+                bulletDamageDisplay.Refresh(weapon);
+            }
+
             if (iconImage != null)
             {
                 iconImage.sprite = weapon.Icon;
@@ -154,6 +161,11 @@ namespace Week14.UI
             SetRevealTargetsActive(false);
             ResetFillImages();
             PlayGrow(0f, revealAfterGrow: false);
+
+            if (bulletDamageDisplay != null)
+            {
+                bulletDamageDisplay.Clear();
+            }
         }
 
         public void HideImmediate()
@@ -171,6 +183,11 @@ namespace Week14.UI
             SetRevealTargetsActive(false);
             ResetFillImages();
             SetHeight(0f);
+
+            if (bulletDamageDisplay != null)
+            {
+                bulletDamageDisplay.Clear();
+            }
         }
 
         private void BindLocalizedWeaponText(BaseWeaponSO weapon)

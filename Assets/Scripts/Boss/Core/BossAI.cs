@@ -119,6 +119,8 @@ namespace Week14.Enemy
         private BossPhaseController phaseController;
         private BossStateMachine stateMachine;
         private static int finalDeathSequencePlayCount;
+        private bool combatStartedCounted;
+        private static int combatStartedCount;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -162,6 +164,7 @@ namespace Week14.Enemy
         public static event Action<BossAI> CombatStarted;
         public static event Action<BossAI> Defeated;
         public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
+        public static bool IsAnyCombatStarted => combatStartedCount > 0;
         public BossData BossData => bossData;
 
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
@@ -222,6 +225,12 @@ namespace Week14.Enemy
 
             DisableMinionPatternHost();
             SetFinalDeathSequencePlaying(false);
+
+            if (combatStartedCounted)
+            {
+                combatStartedCounted = false;
+                combatStartedCount = Mathf.Max(0, combatStartedCount - 1);
+            }
         }
 
         protected virtual void Start()
@@ -465,6 +474,12 @@ namespace Week14.Enemy
 
         internal void OnCombatStartedForController()
         {
+            if (!combatStartedCounted)
+            {
+                combatStartedCounted = true;
+                combatStartedCount++;
+            }
+
             OnCombatStarted();
             CombatStarted?.Invoke(this);
         }
