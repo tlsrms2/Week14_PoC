@@ -21,7 +21,10 @@ namespace Week14.Weapons
             int ticksDue = Mathf.FloorToInt(chargeTime / bulletConsumeInterval);
             while (shooter.ChargeConsumedBulletCount < ticksDue && shooter.CurrentBullets > 0)
             {
-                shooter.TryConsumeChargeBullet();
+                if (shooter.TryConsumeChargeBullet())
+                {
+                    shooter.PlaySniperChargeSfx();
+                }
             }
         }
 
