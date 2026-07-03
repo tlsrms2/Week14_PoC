@@ -6277,7 +6277,7 @@ MonoBehaviour:
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 1
       aimAtPlayerOnLaunch: 0
-      speed: 7
+      speed: 10
       lifetime: 3
       radius: 0.12
       chargingColor: {r: 1, g: 1, b: 1, a: 1}
@@ -6289,9 +6289,6 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
       homingEnabled: 0
-      explodeIfNotParried: 0
-      explosionRadius: 2
-      explosionDamage: 1
   - projectileName: "\uC720\uB3C4\uD0C4"
     projectile:
       prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
@@ -6312,9 +6309,6 @@ MonoBehaviour:
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
-      explodeIfNotParried: 0
-      explosionRadius: 2
-      explosionDamage: 1
   - projectileName: "\uD3ED\uD0C4"
     projectile:
       prefab: {fileID: 5897565683229663206, guid: aa5574e84bfb7844cb64ffa4b085348a, type: 3}
@@ -6335,9 +6329,6 @@ MonoBehaviour:
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 0
-      explodeIfNotParried: 1
-      explosionRadius: 5
-      explosionDamage: 1
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917013
     sequences: []
-    editorPosition: {x: -7, y: 238}
+    editorPosition: {x: -17, y: 238}
   - nodeId: Node1_Copy3_Copy1
     nodeGuid: 57dfcb1f63074b3bad9503bbdadca18c
     nodeKind: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917015
     sequences: []
-    editorPosition: {x: 352, y: 238}
+    editorPosition: {x: 289, y: 238}
   - nodeId: Node3_Copy1
     nodeGuid: 94f389bd55d54e5e85bad76e66dfa71a
     nodeKind: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917023
     sequences: []
-    editorPosition: {x: 187, y: 238}
+    editorPosition: {x: 145, y: 238}
   - nodeId: Node4
     nodeGuid: 9052884a28bd4972abf00ddf436b845b
     nodeKind: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634125
     sequences: []
-    editorPosition: {x: -7, y: 391}
+    editorPosition: {x: -7, y: 376}
   - nodeId: Node4_Copy1
     nodeGuid: 5d32fab279404fd4b1204cd6bc0eda01
     nodeKind: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634126
     sequences: []
-    editorPosition: {x: 352, y: 400}
+    editorPosition: {x: 289, y: 376}
   - nodeId: Node3_Copy1_Copy1
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
@@ -269,37 +269,12 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 1
-    - patternId: Pattern2
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 1
+      cooldownPatternCount: 0
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 1
+      cooldownPatternCount: 0
   transitions:
-  - fromNodeGuid: 442b7f6c09ca4411a6b2017755639bda
-    toNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
-    fromNodeId: Node3
-    toNodeId: Node1_Copy3
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
-    toNodeGuid: 94f389bd55d54e5e85bad76e66dfa71a
-    fromNodeId: Node1_Copy3
-    toNodeId: Node3_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 94f389bd55d54e5e85bad76e66dfa71a
-    toNodeGuid: 57dfcb1f63074b3bad9503bbdadca18c
-    fromNodeId: Node3_Copy1
-    toNodeId: Node1_Copy3_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     fromNodeId: Node3_Copy1_Copy1
@@ -370,6 +345,27 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 442b7f6c09ca4411a6b2017755639bda
+    toNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
+    fromNodeId: Node3
+    toNodeId: Node1_Copy3
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
+    toNodeGuid: 94f389bd55d54e5e85bad76e66dfa71a
+    fromNodeId: Node1_Copy3
+    toNodeId: Node3_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 94f389bd55d54e5e85bad76e66dfa71a
+    toNodeGuid: 57dfcb1f63074b3bad9503bbdadca18c
+    fromNodeId: Node3_Copy1
+    toNodeId: Node1_Copy3_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: 8be623fe70134e86a5718bfa00394cb7
     toNodeGuid: 1b40313f298d441c9ee0c7c00c91b3a6
@@ -402,7 +398,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern3
+  debugForcedPatternId: Pattern2
   references:
     version: 2
     RefIds:
@@ -994,7 +990,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        bulletCount: 26
+        pattern: 0
+        bulletCount: 22
         spacing: 0.7
         centerOffset: 0
         dashAim:
@@ -1076,7 +1073,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
           homingEnabled: 0
-        bulletCount: 26
+        pattern: 0
+        bulletCount: 22
         spacing: 0.7
         centerOffset: 0
         dashAim:
@@ -1362,7 +1360,7 @@ MonoBehaviour:
     - rid: 4705777899588288596
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1.5
+        seconds: 1.7
     - rid: 4705777899588288597
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

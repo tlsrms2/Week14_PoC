@@ -5,6 +5,16 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
+    // Shared by two dash-synced bullet patterns:
+    //  - PerpendicularWall: bullets line up across the dash direction, then fire parallel to the dash.
+    //  - ParallelLane: bullets line up along the dash direction offset from its centerline,
+    //    then fire outward, closest-to-boss pair first.
+    public enum BossGraphDashFormationPattern
+    {
+        PerpendicularWall,
+        ParallelLane
+    }
+
     public enum BossGraphDashFormationFireOrder
     {
         Simultaneous,
@@ -17,9 +27,10 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
 
+        [SerializeField] private BossGraphDashFormationPattern pattern = BossGraphDashFormationPattern.PerpendicularWall;
         [SerializeField, Min(1)] private int bulletCount = 6;
         [SerializeField, Min(0f)] private float spacing = 0.6f;
-        [Tooltip("총알벽 전체를 대시 방향으로 얼마나 이동시킬지(원점 기준 고정 거리, 음수면 후방).")]
+        [Tooltip("PerpendicularWall: 총알벽 전체를 대시 방향으로 얼마나 이동시킬지(원점 기준 고정 거리, 음수면 후방). ParallelLane: 중앙선에서 좌/우 레인까지의 고정 거리.")]
         [SerializeField] private float centerOffset = 1.2f;
         [Tooltip("페어링된 BossDashAction과 같은 방향이 나오도록 설정하세요. AtPlayer는 BossDashAction의 기본 방향 계산과 동일합니다.")]
         [SerializeField] private BossGraphProjectileAimSpec dashAim = new();
@@ -55,12 +66,13 @@ namespace Week14.Enemy
             for (int i = 0; i < bulletCount; i++)
             {
                 Vector3 targetPosition = GetFormationTargetPosition(originPosition, dashDirection, perpendicular, i);
+                Vector2 launchDirection = GetLaunchDirection(dashDirection, perpendicular, i);
                 float chargeSeconds = alignDuration + GetBulletHoldSeconds(i);
 
                 EnemyProjectile spawned = context.FireProjectile(
                     projectile,
                     originPosition,
-                    dashDirection,
+                    launchDirection,
                     0f,
                     false,
                     false,
@@ -86,7 +98,7 @@ namespace Week14.Enemy
                 context.PlaySfx(fireSfxId);
                 context.PlaySfxOnLaunch(spawned, launchSfxId);
                 context.PlayOriginBurst(effects, originPosition);
-                context.PlayMuzzleFlashIfEnabled(effects, targetPosition, dashDirection);
+                context.PlayMuzzleFlashIfEnabled(effects, targetPosition, launchDirection);
             }
 
             context.PlayCameraShakeIfEnabled(effects, dashDirection);
@@ -107,8 +119,26 @@ namespace Week14.Enemy
         {
             int laneIndex = index / 2;
             float side = index % 2 == 0 ? -1f : 1f;
-            float offset = spacing * laneIndex + spacing * 0.5f;
-            return origin + (Vector3)(dashDirection * centerOffset) + (Vector3)(perpendicular * offset * side);
+
+            if (pattern == BossGraphDashFormationPattern.PerpendicularWall)
+            {
+                float offset = spacing * laneIndex + spacing * 0.5f;
+                return origin + (Vector3)(dashDirection * centerOffset) + (Vector3)(perpendicular * offset * side);
+            }
+
+            float alongDash = spacing * (laneIndex + 1);
+            return origin + (Vector3)(dashDirection * alongDash) + (Vector3)(perpendicular * centerOffset * side);
+        }
+
+        private Vector2 GetLaunchDirection(Vector2 dashDirection, Vector2 perpendicular, int index)
+        {
+            if (pattern == BossGraphDashFormationPattern.PerpendicularWall)
+            {
+                return dashDirection;
+            }
+
+            float side = index % 2 == 0 ? -1f : 1f;
+            return perpendicular * side;
         }
 
         private void EnsureAlignEase()
