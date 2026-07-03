@@ -25,7 +25,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225195
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: 51}
   - nodeId: Node1
     nodeGuid: 8be623fe70134e86a5718bfa00394cb7
     nodeKind: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225179
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: -104}
   - nodeId: Node1_Copy1
     nodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     nodeKind: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225181
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 187, y: -104}
   - nodeId: Node1_Copy2
     nodeGuid: 23069c19801242dda0a90b4e84e5a83a
     nodeKind: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225183
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 530, y: -104}
   - nodeId: Node2_Copy1_Copy1
     nodeGuid: f9701f9af2504cd3abc337a964d3d8ab
     nodeKind: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225197
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 187, y: 40}
   - nodeId: Node2_Copy1_Copy2
     nodeGuid: 86d98a8e5878447097ee858f98d2f1dc
     nodeKind: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225198
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 530, y: 62}
   - nodeId: Node3
     nodeGuid: 442b7f6c09ca4411a6b2017755639bda
     nodeKind: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917022
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -148, y: 238}
   - nodeId: Node1_Copy3
     nodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     nodeKind: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917013
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -7, y: 238}
   - nodeId: Node1_Copy3_Copy1
     nodeGuid: 57dfcb1f63074b3bad9503bbdadca18c
     nodeKind: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917015
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 352, y: 238}
   - nodeId: Node3_Copy1
     nodeGuid: 94f389bd55d54e5e85bad76e66dfa71a
     nodeKind: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917023
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 187, y: 238}
   - nodeId: Node4
     nodeGuid: 9052884a28bd4972abf00ddf436b845b
     nodeKind: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634125
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -7, y: 423}
   - nodeId: Node4_Copy1
     nodeGuid: 5d32fab279404fd4b1204cd6bc0eda01
     nodeKind: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634126
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 352, y: 433}
   - nodeId: Node3_Copy1_Copy1
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
     action:
       rid: 4705777894816219217
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -7, y: -104}
   - nodeId: Node3_Copy1_Copy2
     nodeGuid: ca7bb0279b08489da9d9b138d5955278
     nodeKind: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 4705777894816219218
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 342, y: -104}
   patterns:
   - patternId: Pattern1
     nodeGuids:
