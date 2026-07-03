@@ -121,6 +121,10 @@ namespace Week14.Combat
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
         public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
+        public BossAI OwnerBoss => ownerBoss;
+        public float ChargeProgress01 => projectileChargeSeconds > 0f
+            ? 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds)
+            : 1f;
         public static IReadOnlyList<EnemyProjectile> ActiveProjectiles => activeProjectiles;
 
         public static bool TryGetActiveInterceptTarget(int groupId, out EnemyProjectile projectile)

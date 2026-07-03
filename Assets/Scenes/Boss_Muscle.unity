@@ -4395,8 +4395,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.01959107}
-  m_Radius: 0.26980427
+  m_Offset: {x: 0, y: 0.0014384587}
+  m_Radius: 0.25165167
 --- !u!4 &3491375724907850748
 Transform:
   m_ObjectHideFlags: 0
@@ -5492,7 +5492,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9185060628594991249}
@@ -6119,7 +6119,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: bca3a62094ffb1c42942f7edbee11f0c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4b40fc0f65c85f14fbc9c7c5f40ca686, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6219,7 +6219,7 @@ MonoBehaviour:
   finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 0}
-  displayName: "\uD5EC\uC2A4\uD2B8\uB808\uC774\uB108"
+  displayName: "\uACBD\uD638\uC2E4\uC7A5"
   effectData: {fileID: 0}
   colorSettings: {fileID: 0}
   maxHp: 150
@@ -6289,6 +6289,9 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
       homingEnabled: 0
+      explodeIfNotParried: 0
+      explosionRadius: 2
+      explosionDamage: 1
   - projectileName: "\uC720\uB3C4\uD0C4"
     projectile:
       prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
@@ -6309,6 +6312,32 @@ MonoBehaviour:
       trailSeconds: 1
       trailWidthMultiplier: 3
       homingEnabled: 1
+      explodeIfNotParried: 0
+      explosionRadius: 2
+      explosionDamage: 1
+  - projectileName: "\uD3ED\uD0C4"
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: aa5574e84bfb7844cb64ffa4b085348a, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 2
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 0
+      lifetime: 3
+      radius: 0.1
+      chargingColor: {r: 1, g: 1, b: 1, a: 1}
+      launchedColor: {r: 1, g: 1, b: 1, a: 1}
+      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
+      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
+      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
+      indicatorColor: {r: 1, g: 0, b: 0, a: 1}
+      trailSeconds: 1
+      trailWidthMultiplier: 3
+      homingEnabled: 0
+      explodeIfNotParried: 1
+      explosionRadius: 5
+      explosionDamage: 1
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

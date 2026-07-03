@@ -77,6 +77,7 @@ namespace Week14.Enemy
 
             if (actionType == typeof(MoveTowardPlayerAction)
                 || actionType == typeof(MaintainPlayerDistanceAction)
+                || actionType == typeof(MoveUntilPlayerDistanceAction)
                 || actionType == typeof(StartMoveTowardPlayerAction)
                 || actionType == typeof(StartMoveAwayFromPlayerAction)
                 || actionType == typeof(StopMovementAction)

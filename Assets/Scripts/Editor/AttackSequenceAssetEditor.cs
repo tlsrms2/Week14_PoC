@@ -90,6 +90,7 @@ internal static class BossGraphActionEditorUtility
         new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
         new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
         new("Move/Maintain Player Distance", typeof(MaintainPlayerDistanceAction), () => new MaintainPlayerDistanceAction()),
+        new("Move/Move Until Player Distance", typeof(MoveUntilPlayerDistanceAction), () => new MoveUntilPlayerDistanceAction()),
         new("Move/Start Move Toward Player", typeof(StartMoveTowardPlayerAction), () => new StartMoveTowardPlayerAction()),
         new("Move/Start Move Away From Player", typeof(StartMoveAwayFromPlayerAction), () => new StartMoveAwayFromPlayerAction()),
         new("Move/Stop Movement", typeof(StopMovementAction), () => new StopMovementAction()),
@@ -177,6 +178,11 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
         if (actionType == typeof(MaintainPlayerDistanceAction))
         {
             return "지정 시간 동안 플레이어와 목표 거리를 유지합니다. 멀면 접근하고 가까우면 후퇴합니다.";
+        }
+
+        if (actionType == typeof(MoveUntilPlayerDistanceAction))
+        {
+            return "플레이어와의 거리가 목표 거리 이하가 될 때까지 접근합니다. 도달하면(또는 타임아웃되면) 멈추고 다음으로 넘어갑니다.";
         }
 
         if (actionType == typeof(StartMoveTowardPlayerAction))
