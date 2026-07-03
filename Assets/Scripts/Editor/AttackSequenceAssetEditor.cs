@@ -90,6 +90,7 @@ internal static class BossGraphActionEditorUtility
         new("Animation/Wait For Event", typeof(WaitForAnimationEventAction), () => new WaitForAnimationEventAction()),
         new("Move/Move Toward Player", typeof(MoveTowardPlayerAction), () => new MoveTowardPlayerAction()),
         new("Move/Maintain Player Distance", typeof(MaintainPlayerDistanceAction), () => new MaintainPlayerDistanceAction()),
+        new("Move/Move Until Player Distance", typeof(MoveUntilPlayerDistanceAction), () => new MoveUntilPlayerDistanceAction()),
         new("Move/Start Move Toward Player", typeof(StartMoveTowardPlayerAction), () => new StartMoveTowardPlayerAction()),
         new("Move/Start Move Away From Player", typeof(StartMoveAwayFromPlayerAction), () => new StartMoveAwayFromPlayerAction()),
         new("Move/Stop Movement", typeof(StopMovementAction), () => new StopMovementAction()),
@@ -179,6 +180,11 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
             return "지정 시간 동안 플레이어와 목표 거리를 유지합니다. 멀면 접근하고 가까우면 후퇴합니다.";
         }
 
+        if (actionType == typeof(MoveUntilPlayerDistanceAction))
+        {
+            return "플레이어와의 거리가 목표 거리 이하가 될 때까지 접근합니다. 도달하면(또는 타임아웃되면) 멈추고 다음으로 넘어갑니다.";
+        }
+
         if (actionType == typeof(StartMoveTowardPlayerAction))
         {
             return "플레이어 방향 이동을 켭니다. Duration Seconds가 0이면 Stop Movement나 패턴 종료까지 유지됩니다.";
@@ -231,7 +237,7 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
 
         if (actionType == typeof(FireDashFormationAction))
         {
-            return "보스 대시 방향에 맞춰 투사체를 진형(수직 산개/평행 산개)으로 정렬한 뒤 발사합니다. Center Offset은 PerpendicularWall에서는 중앙을 비우고 첫 탄이 놓일 좌우 간격, ParallelLane에서는 중앙선-레인 간 거리로 쓰입니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
+            return "보스 대시 방향에 수직으로 투사체 벽을 정렬한 뒤 발사합니다. Center Offset은 총알벽 전체를 대시 방향으로 이동시키는 거리(음수면 후방)입니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
         }
 
         if (actionType == typeof(SpawnChargedProjectileAction))
