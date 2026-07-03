@@ -634,7 +634,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern5
+  debugForcedPatternId: Pattern4
   references:
     version: 2
     RefIds:

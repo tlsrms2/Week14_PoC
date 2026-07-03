@@ -10,6 +10,8 @@ namespace Week14.Enemy
 {
     public sealed class BossActionContext
     {
+        private const float OvershootGuardSeconds = 0.12f;
+
         private readonly Action stop;
         private readonly Func<bool> isExecutionPaused;
         private Animator animator;
@@ -330,9 +332,16 @@ namespace Week14.Enemy
             float directionSign = distanceDelta > 0f ? 1f : -1f;
             float smoothingRange = Mathf.Max(0.01f, safeTolerance);
             float speedScale = Mathf.Clamp01(absoluteDelta / smoothingRange);
-            Boss.SetMovementVelocity(toPlayer.normalized
-                * directionSign
-                * (Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier) * speedScale));
+            float desiredSpeed = Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier) * speedScale;
+
+            // 보스 속도가 플레이어보다 빠르면 한 프레임에 목표 거리를 지나쳐버려 다음 프레임 Stop()이
+            // 걸리고, 그 다음 프레임에 다시 전속력으로 움직이는 식으로 멈췄다 움직였다를 반복하게 된다.
+            // 남은 오차를 한 프레임이 아니라 최소 정착 시간(OvershootGuardSeconds)에 걸쳐 줄이도록
+            // 속도를 캡 씌워, 오버슈트도 막고 프레임 타이밍에 예민하지 않은 부드러운 감속을 만든다.
+            float settleSeconds = Mathf.Max(Time.deltaTime, OvershootGuardSeconds);
+            float appliedSpeed = Mathf.Min(desiredSpeed, absoluteDelta / settleSeconds);
+
+            Boss.SetMovementVelocity(toPlayer.normalized * directionSign * appliedSpeed);
         }
 
         private static float EvaluateMoveSpeedCurve(
