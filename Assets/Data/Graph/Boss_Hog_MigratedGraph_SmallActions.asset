@@ -1092,18 +1092,8 @@ MonoBehaviour:
           speed: 12
           lifetime: 3
           radius: 0.1
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
           trailSeconds: 1
           trailWidthMultiplier: 3
-          homingEnabled: 1
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 2
           bossChildPath: 
@@ -1193,18 +1183,8 @@ MonoBehaviour:
           speed: 12
           lifetime: 3
           radius: 0.1
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
           trailSeconds: 1
           trailWidthMultiplier: 3
-          homingEnabled: 1
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 4
           bossChildPath: 
@@ -1338,18 +1318,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -1422,18 +1392,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -1506,18 +1466,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -1606,18 +1556,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
@@ -1685,18 +1625,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -1769,18 +1699,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -1853,18 +1773,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -1937,18 +1847,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -2021,18 +1921,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 0
           bossChildPath: 
@@ -2121,18 +2011,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 1, g: 0.82, b: 0.18, a: 1}
-          indicatorColor: {r: 1, g: 0.95, b: 0.25, a: 1}
           trailSeconds: 0.01
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
@@ -2186,18 +2066,8 @@ MonoBehaviour:
           speed: 12
           lifetime: 3
           radius: 0.1
-          chargingColor: {r: 1, g: 1, b: 1, a: 1}
-          launchedColor: {r: 1, g: 1, b: 1, a: 1}
-          homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-          homingBlinkColor: {r: 1, g: 0.25, b: 0.15, a: 1}
-          trailColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-          indicatorColor: {r: 1, g: 0, b: 0, a: 1}
           trailSeconds: 1
           trailWidthMultiplier: 3
-          homingEnabled: 1
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 2
           bossChildPath: 
@@ -2294,18 +2164,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
@@ -2317,6 +2177,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        chargeSecondsOverride: -1
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
@@ -2355,18 +2216,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
@@ -2378,6 +2229,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        chargeSecondsOverride: -1
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
@@ -2420,18 +2272,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
@@ -2443,6 +2285,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        chargeSecondsOverride: -1
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
@@ -2485,18 +2328,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
@@ -2508,6 +2341,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        chargeSecondsOverride: -1
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
@@ -2554,18 +2388,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
@@ -2577,6 +2401,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
+        chargeSecondsOverride: -1
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
@@ -2620,18 +2445,8 @@ MonoBehaviour:
           speed: 7
           lifetime: 3
           radius: 0.12
-          chargingColor: {r: 0.35, g: 0.8, b: 1, a: 1}
-          launchedColor: {r: 1, g: 0.95, b: 0.25, a: 1}
-          homingChargePrefab: {fileID: 0}
-          homingBlinkColor: {r: 0, g: 0, b: 0, a: 0}
-          trailColor: {r: 0, g: 0, b: 0, a: 0}
-          indicatorColor: {r: 0, g: 0, b: 0, a: 0}
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-          homingEnabled: 0
-          explodeIfNotParried: 0
-          explosionRadius: 2
-          explosionDamage: 1
         origin:
           mode: 1
           bossChildPath: Boss-Dealer Visual/MachineGunRoot/MachineGun/ProjectileOrigin_6
