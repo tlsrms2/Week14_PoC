@@ -4,6 +4,15 @@ using Week14.Enemy;
 
 namespace Week14.Combat
 {
+    public enum EnemyProjectileDestroyReason
+    {
+        Unknown,
+        Expired,
+        Intercepted,
+        PlayerHit,
+        OwnerDestroyed
+    }
+
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public sealed class EnemyProjectile : MonoBehaviour
     {
@@ -115,6 +124,7 @@ namespace Week14.Combat
         public event System.Action<EnemyProjectile> Launched;
         public event System.Action<EnemyProjectile> RadialSplit;
         public event System.Action<EnemyProjectile> RadialSplitImminent;
+        public event System.Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> Destroyed;
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
@@ -601,7 +611,7 @@ namespace Week14.Combat
             }
             if (Time.time >= destroyAt)
             {
-                DestroyProjectile();
+                DestroyProjectile(EnemyProjectileDestroyReason.Expired);
             }
         }
 
@@ -1049,7 +1059,7 @@ namespace Week14.Combat
             }
 
             resolved = true;
-            DestroyProjectile();
+            DestroyProjectile(EnemyProjectileDestroyReason.PlayerHit);
         }
 
         private bool ShouldIgnoreBossCollision(BossAI hitBoss)
@@ -1216,7 +1226,7 @@ namespace Week14.Combat
             parried = true;
             resolved = true;
 
-            DestroyProjectile();
+            DestroyProjectile(EnemyProjectileDestroyReason.Intercepted);
             return true;
         }
 
@@ -1245,10 +1255,10 @@ namespace Week14.Combat
         public void DestroyFromOwner()
         {
             resolved = true;
-            DestroyProjectile();
+            DestroyProjectile(EnemyProjectileDestroyReason.OwnerDestroyed);
         }
 
-        private void DestroyProjectile()
+        private void DestroyProjectile(EnemyProjectileDestroyReason reason = EnemyProjectileDestroyReason.Unknown)
         {
             if (isDestroying)
             {
@@ -1256,6 +1266,7 @@ namespace Week14.Combat
             }
 
             isDestroying = true;
+            Destroyed?.Invoke(this, reason, transform.position);
             UnregisterInterceptGroup();
             ReleaseOwnerProjectileSlot();
             if (body != null)
