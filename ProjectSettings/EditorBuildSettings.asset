@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 48fd59add01fc254985ad491ddbcb691
   - enabled: 1
-    path: Assets/Scenes/JSG.unity
+    path: Assets/Scenes/Boss_Conductor.unity
     guid: 3a58c4a2941184a48af8bf7085ca4444
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 9e14f820d840b104d9ba781945888600, type: 2}

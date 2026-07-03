@@ -23,6 +23,7 @@ namespace Week14.Combat
         [SerializeField] private Transform combatCenter;
         [SerializeField] private Transform leftGunOrigin;
         [SerializeField] private Transform leftGunFireOrigin;
+        [SerializeField] private Transform rightGunFireOrigin;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private ExecutionImageEffect executionImage;
@@ -138,6 +139,11 @@ namespace Week14.Combat
             {
                 get => controller.leftGunFireOrigin;
                 internal set => controller.leftGunFireOrigin = value;
+            }
+            public Transform RightGunFireOrigin
+            {
+                get => controller.rightGunFireOrigin;
+                internal set => controller.rightGunFireOrigin = value;
             }
             public LayerMask EnemyMask => controller.enemyMask;
             public Rigidbody2D Body => controller.body;

@@ -1339,31 +1339,31 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern4-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern4-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern5-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern5-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 0
@@ -1374,31 +1374,31 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern4-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern4-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern5-1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern5-2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
   - phaseIndex: 2
     selectionMode: 3
     patternIntervalSeconds: 0
@@ -1409,35 +1409,35 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Upgrade/Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Upgrade/Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Upgrade/Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
     - patternId: Upgrade/Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 3
   transitions:
   - fromNodeGuid: af261808967e42878f831a46566e6f8f
     toNodeGuid: c7e03389464945bb9135624d2af78ff0
@@ -3047,7 +3047,7 @@ MonoBehaviour:
       type: {class: MinionOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         orbitRadius: 6.5
-        orbitSeconds: 8
+        orbitSeconds: 6
         moveSpeed: 30
         useStartPlayerPosition: 0
         randomizeDirection: 0
@@ -3310,7 +3310,7 @@ MonoBehaviour:
     - rid: 2634812006979338333
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 8
+        durationSeconds: 6
         distance: 7.5
         tolerance: 0.3
         speedMultiplier: 1

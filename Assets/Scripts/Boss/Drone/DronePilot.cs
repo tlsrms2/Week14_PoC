@@ -5,10 +5,12 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    public sealed class DronePilot : GraphBossAI, IMinionPlayerHitHandler
+    public sealed class DronePilot : GraphBossAI, IMinionPlayerHitHandler, IMinionMovementPathIndicatorOwner
     {
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
         private const string FacingSpriteRendererName = "Conductor-side-Idle-x64_0";
+        private const string MovementPathIndicatorName = "MovementPathIndicator";
+        private const float MovementPathIndicatorWidth = 0.025f;
 
         [SerializeField, Min(0f)] private float bodyHitDamageMultiplier = 1f;
         [SerializeField, Min(0f)] private float minionHitDamageMultiplier = 0.5f;
@@ -20,9 +22,11 @@ namespace Week14.Enemy
         private readonly Dictionary<Health, Minion> spawnedMinionsByHealth = new();
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
         private readonly Dictionary<Minion, Coroutine> outlineFlashRoutines = new();
+        private readonly Dictionary<Minion, MovementPathIndicatorState> movementPathIndicators = new();
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
+        private static Material movementPathIndicatorMaterial;
 
         protected override bool RotatesBodyToPlayer => false;
 
@@ -66,6 +70,56 @@ namespace Week14.Enemy
 
             base.ReceivePlayerHit(sharedDamage, strongHit, hitPosition, hitDirection, hitColor);
             return true;
+        }
+
+        public void BeginMinionMovementPathIndicator(Minion minion, IReadOnlyList<Vector2> points, bool loop)
+        {
+            if (minion == null || points == null || points.Count < 2)
+            {
+                EndMinionMovementPathIndicator(minion);
+                return;
+            }
+
+            MovementPathIndicatorState state = GetMovementPathIndicatorState(minion);
+            state.Points.Clear();
+            for (int i = 0; i < points.Count; i++)
+            {
+                state.Points.Add(points[i]);
+            }
+
+            state.Loop = loop;
+            state.Active = true;
+            DrawMinionMovementPathIndicator(state, 0f);
+        }
+
+        public void TickMinionMovementPathIndicator(Minion minion, Vector2 current)
+        {
+            if (minion == null
+                || !movementPathIndicators.TryGetValue(minion, out MovementPathIndicatorState state)
+                || !state.Active)
+            {
+                return;
+            }
+
+            if (state.Loop)
+            {
+                DrawMinionMovementPathIndicator(state, 0f);
+                return;
+            }
+
+            float travelled = GetTravelledDistanceOnPath(state.Points, current);
+            DrawMinionMovementPathIndicator(state, travelled);
+        }
+
+        public void EndMinionMovementPathIndicator(Minion minion)
+        {
+            if (minion == null || !movementPathIndicators.TryGetValue(minion, out MovementPathIndicatorState state))
+            {
+                return;
+            }
+
+            state.Active = false;
+            SetMinionMovementPathIndicatorVisible(state, false);
         }
 
         public override EnemyProjectile FireMinionProjectile(
@@ -231,6 +285,11 @@ namespace Week14.Enemy
 
         private void UntrackAllSpawnedMinions()
         {
+            foreach (MovementPathIndicatorState indicator in movementPathIndicators.Values)
+            {
+                SetMinionMovementPathIndicatorVisible(indicator, false);
+            }
+
             foreach (Minion minion in spawnedMinionsByHealth.Values)
             {
                 UntrackMinionOutline(minion);
@@ -247,6 +306,7 @@ namespace Week14.Enemy
             spawnedMinionsByHealth.Clear();
             spawnedMinionOutlines.Clear();
             outlineFlashRoutines.Clear();
+            movementPathIndicators.Clear();
         }
 
         private void TrackMinionOutline(Minion minion)
@@ -302,6 +362,9 @@ namespace Week14.Enemy
             {
                 return;
             }
+
+            EndMinionMovementPathIndicator(minion);
+            movementPathIndicators.Remove(minion);
 
             if (outlineFlashRoutines.TryGetValue(minion, out Coroutine routine) && routine != null)
             {
@@ -366,6 +429,212 @@ namespace Week14.Enemy
             }
 
             return null;
+        }
+
+        private MovementPathIndicatorState GetMovementPathIndicatorState(Minion minion)
+        {
+            if (movementPathIndicators.TryGetValue(minion, out MovementPathIndicatorState state))
+            {
+                return state;
+            }
+
+            state = new MovementPathIndicatorState
+            {
+                Root = EnsureMinionMovementPathIndicatorRoot(minion)
+            };
+            movementPathIndicators[minion] = state;
+            return state;
+        }
+
+        private static Transform EnsureMinionMovementPathIndicatorRoot(Minion minion)
+        {
+            Transform existing = minion.transform.Find(MovementPathIndicatorName);
+            GameObject rootObject = existing != null ? existing.gameObject : new GameObject(MovementPathIndicatorName);
+            rootObject.transform.SetParent(minion.transform, false);
+            rootObject.transform.localPosition = Vector3.zero;
+            rootObject.transform.localRotation = Quaternion.identity;
+            rootObject.transform.localScale = Vector3.one;
+            return rootObject.transform;
+        }
+
+        private static void DrawMinionMovementPathIndicator(MovementPathIndicatorState state, float travelled)
+        {
+            if (state == null || state.Root == null || state.Points.Count < 2)
+            {
+                SetMinionMovementPathIndicatorVisible(state, false);
+                return;
+            }
+
+            LineRenderer line = EnsureMinionMovementPathIndicatorLine(state);
+            if (line == null)
+            {
+                return;
+            }
+
+            state.RenderPoints.Clear();
+            if (state.Loop)
+            {
+                for (int i = 0; i < state.Points.Count; i++)
+                {
+                    state.RenderPoints.Add(state.Points[i]);
+                }
+            }
+            else
+            {
+                BuildRemainingPath(state.Points, Mathf.Max(0f, travelled), state.RenderPoints);
+            }
+
+            if (state.RenderPoints.Count < 2)
+            {
+                line.enabled = false;
+                state.Active = false;
+                return;
+            }
+
+            line.enabled = true;
+            line.loop = state.Loop;
+            line.positionCount = state.RenderPoints.Count;
+            line.startColor = Color.black;
+            line.endColor = Color.black;
+            line.startWidth = MovementPathIndicatorWidth;
+            line.endWidth = MovementPathIndicatorWidth;
+            for (int i = 0; i < state.RenderPoints.Count; i++)
+            {
+                line.SetPosition(i, state.RenderPoints[i]);
+            }
+
+            state.Active = true;
+        }
+
+        private static LineRenderer EnsureMinionMovementPathIndicatorLine(MovementPathIndicatorState state)
+        {
+            if (state == null || state.Root == null)
+            {
+                return null;
+            }
+
+            if (state.Line != null)
+            {
+                return state.Line;
+            }
+
+            GameObject lineObject = new($"{MovementPathIndicatorName}_Line");
+            lineObject.transform.SetParent(state.Root, false);
+            LineRenderer line = lineObject.AddComponent<LineRenderer>();
+            line.useWorldSpace = true;
+            line.loop = false;
+            line.positionCount = 2;
+            line.numCornerVertices = 2;
+            line.numCapVertices = 2;
+            line.sortingOrder = 17;
+            line.material = GetMovementPathIndicatorMaterial();
+            state.Line = line;
+            return line;
+        }
+
+        private static void SetMinionMovementPathIndicatorVisible(MovementPathIndicatorState state, bool visible)
+        {
+            if (state == null)
+            {
+                return;
+            }
+
+            state.Active = visible && state.Active;
+            if (state.Line != null)
+            {
+                state.Line.enabled = visible;
+            }
+        }
+
+        private static Material GetMovementPathIndicatorMaterial()
+        {
+            if (movementPathIndicatorMaterial != null)
+            {
+                return movementPathIndicatorMaterial;
+            }
+
+            Shader shader = Shader.Find("Sprites/Default");
+            movementPathIndicatorMaterial = shader != null ? new Material(shader) : null;
+            return movementPathIndicatorMaterial;
+        }
+
+        private static float GetTravelledDistanceOnPath(IReadOnlyList<Vector2> points, Vector2 current)
+        {
+            float bestDistance = 0f;
+            float bestSqrDistance = float.MaxValue;
+            float totalDistance = 0f;
+
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                Vector2 start = points[i];
+                Vector2 end = points[i + 1];
+                Vector2 segment = end - start;
+                float segmentLength = segment.magnitude;
+                if (segmentLength <= 0.0001f)
+                {
+                    continue;
+                }
+
+                float t = Mathf.Clamp01(Vector2.Dot(current - start, segment) / (segmentLength * segmentLength));
+                Vector2 closest = start + segment * t;
+                float sqrDistance = ((Vector2)current - closest).sqrMagnitude;
+                if (sqrDistance < bestSqrDistance)
+                {
+                    bestSqrDistance = sqrDistance;
+                    bestDistance = totalDistance + segmentLength * t;
+                }
+
+                totalDistance += segmentLength;
+            }
+
+            return bestDistance;
+        }
+
+        private static void BuildRemainingPath(
+            IReadOnlyList<Vector2> points,
+            float travelled,
+            List<Vector3> results)
+        {
+            results.Clear();
+            float remainingTravel = travelled;
+
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                Vector2 start = points[i];
+                Vector2 end = points[i + 1];
+                float segmentLength = Vector2.Distance(start, end);
+                if (segmentLength <= 0.0001f)
+                {
+                    continue;
+                }
+
+                if (remainingTravel >= segmentLength)
+                {
+                    remainingTravel -= segmentLength;
+                    continue;
+                }
+
+                Vector2 segmentStart = remainingTravel > 0f
+                    ? Vector2.Lerp(start, end, remainingTravel / segmentLength)
+                    : start;
+                results.Add(segmentStart);
+                for (int j = i + 1; j < points.Count; j++)
+                {
+                    results.Add(points[j]);
+                }
+
+                return;
+            }
+        }
+
+        private sealed class MovementPathIndicatorState
+        {
+            public readonly List<Vector2> Points = new();
+            public readonly List<Vector3> RenderPoints = new();
+            public Transform Root;
+            public LineRenderer Line;
+            public bool Active;
+            public bool Loop;
         }
 
         private static int GetSharedDamage(int bulletDamage, float multiplier)

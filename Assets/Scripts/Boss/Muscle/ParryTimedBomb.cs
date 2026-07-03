@@ -1,10 +1,8 @@
 using UnityEngine;
-using Week14.Enemy;
 
 namespace Week14.Combat
 {
-    [RequireComponent(typeof(EnemyProjectile))]
-    public sealed class ParryTimedBomb : MonoBehaviour
+    public sealed class ParryTimedBomb : EnemyProjectile
     {
         [SerializeField, Min(0f), Tooltip("폭발 판정 반경입니다.")] private float explosionRadius = 2f;
         [SerializeField, Min(0), Tooltip("폭발 시 플레이어에게 감소시킬 탄환 수입니다.")] private int explosionDamage = 1;
@@ -14,29 +12,18 @@ namespace Week14.Combat
         [SerializeField, Tooltip("중앙에서 차오르는 채움 색상입니다.")] private Color rangeFillColor = new(1f, 0.4f, 0.15f, 0.55f);
         [SerializeField] private int rangeSortingOrder = 15;
 
-        private EnemyProjectile projectile;
         private SpriteRenderer rangeBackground;
         private SpriteRenderer rangeFill;
         private float rangeFullScale = 1f;
 
-        private void Awake()
+        protected override void OnProjectileAwake()
         {
-            projectile = GetComponent<EnemyProjectile>();
-            projectile.Launched += HandleParryTimeout;
             SetupRangeIndicator();
         }
 
-        private void OnDestroy()
+        protected override void OnProjectileChargeTick()
         {
-            if (projectile != null)
-            {
-                projectile.Launched -= HandleParryTimeout;
-            }
-        }
-
-        private void Update()
-        {
-            if (projectile == null || !projectile.IsCharging || rangeBackground == null || rangeFill == null)
+            if (!IsCharging || rangeBackground == null || rangeFill == null)
             {
                 return;
             }
@@ -44,7 +31,7 @@ namespace Week14.Combat
             Vector3 center = ResolveExplosionCenter();
             rangeBackground.transform.position = center;
             rangeFill.transform.position = center;
-            rangeFill.transform.localScale = Vector3.one * (rangeFullScale * projectile.ChargeProgress01);
+            rangeFill.transform.localScale = Vector3.one * (rangeFullScale * ChargeProgress01);
         }
 
         private void SetupRangeIndicator()
@@ -76,12 +63,12 @@ namespace Week14.Combat
 
         private Vector3 ResolveExplosionCenter()
         {
-            return projectile.OwnerBoss != null
-                ? projectile.OwnerBoss.transform.position
+            return OwnerBoss != null
+                ? OwnerBoss.transform.position
                 : transform.position;
         }
 
-        private void HandleParryTimeout(EnemyProjectile _)
+        protected override void OnProjectileLaunched()
         {
             Vector3 explosionCenter = ResolveExplosionCenter();
 
@@ -104,7 +91,7 @@ namespace Week14.Combat
                 }
             }
 
-            projectile.DestroyFromOwner();
+            DestroyFromOwner();
         }
     }
 }
