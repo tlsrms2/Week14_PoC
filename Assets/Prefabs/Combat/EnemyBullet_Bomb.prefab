@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
   - component: {fileID: 6470095641802324841}
-  - component: {fileID: 5897565683229663206}
   - component: {fileID: -4836479999064069895}
   m_Layer: 7
   m_Name: EnemyBullet_Bomb
@@ -100,22 +99,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.000000014901161, y: 0.0022179484}
   m_Radius: 0.15399449
---- !u!114 &5897565683229663206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 744419277602116065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7adab327b2876a4db7387db73fb3dc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.EnemyProjectile
-  parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
-  parryLockOnReticle: {fileID: 3563560499679751554}
-  parryLockOnRotatingRoot: {fileID: 992607595532873848}
-  parryLockOnRotationSpeedDegrees: 180
 --- !u!114 &-4836479999064069895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcfd179e00d03543a1e784067df51c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ParryTimedBomb
+  parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
+  parryLockOnReticle: {fileID: 3563560499679751554}
+  parryLockOnRotatingRoot: {fileID: 992607595532873848}
+  parryLockOnRotationSpeedDegrees: 180
   explosionRadius: 8
   explosionDamage: 1
   explosionColor: {r: 1, g: 0.6, b: 0.2, a: 1}
