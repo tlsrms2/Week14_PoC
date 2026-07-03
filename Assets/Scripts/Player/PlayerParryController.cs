@@ -152,7 +152,7 @@ namespace Week14.Combat
         private bool ExecuteParry(EnemyProjectile target, bool playSfx = true)
         {
             PlayerCombatConfig config = context.Config;
-            Transform fireOrigin = GetLeftFireOrigin();
+            Transform fireOrigin = GetParryFireOrigin();
             Vector2 firePosition = fireOrigin != null ? fireOrigin.position : context.PlayerTransform.position;
             Vector2 direction = (Vector2)target.transform.position - firePosition;
             if (direction.sqrMagnitude <= 0.0001f)
@@ -466,11 +466,19 @@ namespace Week14.Combat
                 && !health.IsDead;
         }
 
-        private Transform GetLeftFireOrigin()
+        private Transform GetParryFireOrigin()
         {
-            return context.LeftGunFireOrigin != null
-                ? context.LeftGunFireOrigin
-                : (context.LeftGunOrigin != null ? context.LeftGunOrigin : context.PlayerTransform);
+            if (context.RightGunFireOrigin != null)
+            {
+                return context.RightGunFireOrigin;
+            }
+
+            if (context.LeftGunFireOrigin != null)
+            {
+                return context.LeftGunFireOrigin;
+            }
+
+            return context.LeftGunOrigin != null ? context.LeftGunOrigin : context.PlayerTransform;
         }
 
         private float MouseParryMinimumRangeScale => context.Config != null ? context.Config.MouseParryMinimumRangeScale : 0.5f;
