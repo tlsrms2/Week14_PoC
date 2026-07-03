@@ -664,7 +664,7 @@ MonoBehaviour:
       data:
         windupSeconds: 1
         lockSeconds: 0.5
-        trackPlayerDuringWindup: 0
+        trackPlayerDuringWindup: 1
         windupSfxId: 
         windupEffects:
           explosion:
@@ -725,8 +725,8 @@ MonoBehaviour:
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 1
-        lockSeconds: 1.5
-        trackPlayerDuringWindup: 0
+        lockSeconds: 0.5
+        trackPlayerDuringWindup: 1
         windupSfxId: 
         windupEffects:
           explosion:
@@ -873,13 +873,13 @@ MonoBehaviour:
           trailWidthMultiplier: 3
           homingEnabled: 0
         pattern: 0
-        bulletCount: 16
+        bulletCount: 26
         spacing: 0.7
-        centerOffset: 1.5
+        centerOffset: 0
         dashAim:
           mode: 0
           angleDegrees: 0
-        alignDuration: 0.5
+        alignDuration: 1
         alignEase:
           serializedVersion: 2
           m_Curve:
@@ -956,13 +956,13 @@ MonoBehaviour:
           trailWidthMultiplier: 3
           homingEnabled: 0
         pattern: 0
-        bulletCount: 16
+        bulletCount: 26
         spacing: 0.7
-        centerOffset: 1.5
+        centerOffset: 0
         dashAim:
           mode: 0
           angleDegrees: 0
-        alignDuration: 0.5
+        alignDuration: 1
         alignEase:
           serializedVersion: 2
           m_Curve:

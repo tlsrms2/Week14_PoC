@@ -30,8 +30,8 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphDashFormationPattern pattern = BossGraphDashFormationPattern.PerpendicularWall;
         [SerializeField, Min(1)] private int bulletCount = 6;
         [SerializeField, Min(0f)] private float spacing = 0.6f;
-        [Tooltip("PerpendicularWall: 중앙(대시 경로)을 비우고 첫 탄이 놓일 좌우 간격. ParallelLane: 중앙선에서 좌/우 레인까지의 고정 거리.")]
-        [SerializeField, Min(0f)] private float centerOffset = 1.2f;
+        [Tooltip("PerpendicularWall: 총알벽 전체를 대시 방향으로 얼마나 이동시킬지(원점 기준 고정 거리, 음수면 후방). ParallelLane: 중앙선에서 좌/우 레인까지의 고정 거리.")]
+        [SerializeField] private float centerOffset = 1.2f;
         [Tooltip("페어링된 BossDashAction과 같은 방향이 나오도록 설정하세요. AtPlayer는 BossDashAction의 기본 방향 계산과 동일합니다.")]
         [SerializeField] private BossGraphProjectileAimSpec dashAim = new();
 
@@ -122,8 +122,8 @@ namespace Week14.Enemy
 
             if (pattern == BossGraphDashFormationPattern.PerpendicularWall)
             {
-                float offset = centerOffset + spacing * laneIndex;
-                return origin + (Vector3)(perpendicular * offset * side);
+                float offset = spacing * laneIndex + spacing * 0.5f;
+                return origin + (Vector3)(dashDirection * centerOffset) + (Vector3)(perpendicular * offset * side);
             }
 
             float alongDash = spacing * (laneIndex + 1);
