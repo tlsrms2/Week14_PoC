@@ -65,8 +65,6 @@ namespace Week14.Enemy
                 settings,
                 origin,
                 direction,
-                settings.ChargingColor,
-                settings.LaunchedColor,
                 settings.AimAtPlayerWhileCharging,
                 settings.AimAtPlayerOnLaunch,
                 false,
@@ -78,7 +76,7 @@ namespace Week14.Enemy
 
             if (projectile != null && playMuzzleFlash)
             {
-                ProjectileVfx.PlayMuzzleFlash(origin, direction, settings.LaunchedColor, 0.75f);
+                ProjectileVfx.PlayMuzzleFlash(origin, direction, Color.white, 0.75f);
             }
 
             return projectile;
@@ -822,8 +820,6 @@ namespace Week14.Enemy
                 settings,
                 origin,
                 direction,
-                settings.ChargingColor,
-                settings.LaunchedColor,
                 settings.AimAtPlayerWhileCharging,
                 settings.AimAtPlayerOnLaunch,
                 false,

@@ -11,7 +11,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (homingEnabled)
+            if (ShouldAimAtPlayerOnLaunch())
             {
                 AimAtPlayerWhileCharging();
             }
@@ -19,6 +19,11 @@ namespace Week14.Combat
             {
                 AimAtPlayerWhileCharging(aimAtPlayerOnLaunchSpreadDegrees);
             }
+
+            GetHomingSpawnConfig(
+                out bool homingEnabled,
+                out float homingSeconds,
+                out float homingTurnDegrees);
 
             EnemyProjectile replacement = SpawnInternal(
                 launchReplacementPrefab,
@@ -35,7 +40,7 @@ namespace Week14.Combat
                 projectileTrailWidthMultiplier,
                 homingEnabled,
                 homingSeconds,
-                homingTurnDegreesPerSecond,
+                homingTurnDegrees,
                 suppressPathIndicator,
                 interceptGroupId);
 
@@ -74,7 +79,7 @@ namespace Week14.Combat
 
         private void CopyLaunchRuntimeStateTo(EnemyProjectile replacement)
         {
-            replacement.ConfigureStateColors(chargingColor, launchedColor, homingBlinkColor);
+            replacement.ConfigureStateColors(chargingColor, launchedColor);
             if (customTrailColorConfigured && projectileTrail != null)
             {
                 replacement.ConfigureTrailColor(projectileTrail.startColor);
@@ -107,6 +112,7 @@ namespace Week14.Combat
             replacement.RadialSplit = RadialSplit;
             replacement.RadialSplitImminent = RadialSplitImminent;
             replacement.SetParryLockOnIndicatorVisible(parryLockOnIndicatorVisible);
+            CopySpecialRuntimeStateTo(replacement);
         }
 
         private void RetireAfterLaunchReplacement()

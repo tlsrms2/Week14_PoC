@@ -33,11 +33,6 @@ namespace Week14.Combat
             Destroy(existing.gameObject);
         }
 
-        private bool IsHomingProjectile()
-        {
-            return homingEnabled;
-        }
-
         private void UpdatePathIndicatorPreview()
         {
             if (!ShouldShowPathIndicator())
@@ -46,7 +41,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (IsHomingProjectile())
+            if (IsHomingProjectile)
             {
                 DrawHomingPathIndicator();
                 return;
@@ -82,7 +77,7 @@ namespace Week14.Combat
                 out pathIndicatorRadialSplitPoint);
             pathIndicatorActive = true;
 
-            if (IsHomingProjectile())
+            if (IsHomingProjectile)
             {
                 DrawHomingPathIndicator();
                 return;
@@ -105,7 +100,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (IsHomingProjectile())
+            if (IsHomingProjectile)
             {
                 DrawHomingPathIndicator();
                 return;

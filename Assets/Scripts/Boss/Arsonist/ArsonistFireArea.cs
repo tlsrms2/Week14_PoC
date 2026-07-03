@@ -8,12 +8,12 @@ namespace Week14.Enemy
     internal sealed class ArsonistFireArea : MonoBehaviour
     {
         private readonly Dictionary<PlayerCombatController, float> nextDamageAtByPlayer = new();
-        private Arsonist owner;
+        private ArsonistBossAI owner;
         private float radius;
         private float expiresAt;
         private bool initialized;
 
-        public void Initialize(Arsonist nextOwner, float nextRadius, float duration, Color fireColor)
+        public void Initialize(ArsonistBossAI nextOwner, float nextRadius, float duration, Color fireColor)
         {
             owner = nextOwner;
             radius = Mathf.Max(0.05f, nextRadius);

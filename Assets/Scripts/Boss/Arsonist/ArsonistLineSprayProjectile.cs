@@ -7,7 +7,7 @@ namespace Week14.Enemy
     {
         private const string WallLayerName = "Wall";
 
-        [SerializeField] private Arsonist owner;
+        [SerializeField] private ArsonistBossAI owner;
         [SerializeField, Min(0f)] private float speed = 7f;
         [SerializeField, Min(0.05f)] private float lifetime = 0.55f;
         [SerializeField, Min(0.05f)] private float patchRadius = 0.35f;
@@ -23,11 +23,11 @@ namespace Week14.Enemy
         private bool launched;
         private bool paintedInitial;
 
-        protected Arsonist Owner => owner;
+        protected ArsonistBossAI Owner => owner;
         protected float PatchRadius => patchRadius;
         protected float PatchDuration => patchDuration;
 
-        public void Launch(Arsonist nextOwner, Vector2 launchDirection)
+        public void Launch(ArsonistBossAI nextOwner, Vector2 launchDirection)
         {
             owner = nextOwner != null ? nextOwner : ResolveOwner();
             direction = launchDirection.sqrMagnitude > 0.0001f ? launchDirection.normalized : transform.right;
@@ -101,17 +101,17 @@ namespace Week14.Enemy
             PaintSegment(previousPosition, previousPosition);
         }
 
-        private Arsonist ResolveOwner()
+        private ArsonistBossAI ResolveOwner()
         {
             if (owner != null)
             {
                 return owner;
             }
 
-            owner = GetComponentInParent<Arsonist>();
+            owner = GetComponentInParent<ArsonistBossAI>();
             if (owner == null)
             {
-                owner = FindFirstObjectByType<Arsonist>();
+                owner = FindFirstObjectByType<ArsonistBossAI>();
             }
 
             return owner;

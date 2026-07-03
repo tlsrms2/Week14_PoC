@@ -86,6 +86,11 @@ namespace Week14.Combat
 
         private void SpawnSplitChild(Vector2 direction)
         {
+            GetHomingSpawnConfig(
+                out bool homingEnabled,
+                out float homingSeconds,
+                out float homingTurnDegrees);
+
             EnemyProjectile child = SpawnInternal(
                 this,
                 ownerBullets,
@@ -101,7 +106,7 @@ namespace Week14.Combat
                 3f,
                 homingEnabled,
                 homingSeconds,
-                homingTurnDegreesPerSecond,
+                homingTurnDegrees,
                 suppressPathIndicator: true);
 
             if (child == null)

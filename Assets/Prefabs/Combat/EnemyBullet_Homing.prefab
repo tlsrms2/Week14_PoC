@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
-  - component: {fileID: 6470095641802324841}
-  - component: {fileID: 5897565683229663206}
+  - component: {fileID: 7349401339806173716}
+  - component: {fileID: -8187778193616843994}
   m_Layer: 7
-  m_Name: EnemyBullet_GuidedCharging
+  m_Name: EnemyBullet_Homing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &6470095641802324841
+--- !u!58 &7349401339806173716
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,9 +97,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.000000014901161, y: 0.0022179484}
-  m_Radius: 0.15399449
---- !u!114 &5897565683229663206
+  m_Offset: {x: 0.03880857, y: 0.0019086003}
+  m_Radius: 0.12845413
+--- !u!114 &-8187778193616843994
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,13 +108,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 744419277602116065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7adab327b2876a4db7387db73fb3dc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ea252e077cfe0a4ca9e82766e53fdb3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.EnemyProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.HomingEnemyProjectile
+  indicatorColor: {r: 0.9960785, g: 0, b: 0, a: 1}
   parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
+  defaultHomingSeconds: 10
+  defaultTurnDegreesPerSecond: 540
+  chargeBlinkColor: {r: 1, g: 0, b: 0, a: 1}
+  chargeBlinkMinRate: 2
+  chargeBlinkMaxRate: 8
+  chargeSolidColorRemainingRatio: 0.25
+  chargingSprite: {fileID: 21300000, guid: 6f479044915767c4eb3d500336c7945d, type: 3}
+  launchedSprite: {fileID: 21300000, guid: f4fff6b4cac2c4a49b5f839ea219d580, type: 3}
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,13 +240,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3615603145030084618}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2354031526117083692}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &1110524402997206301
 SpriteRenderer:
   serializedVersion: 2
@@ -287,12 +296,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 6f479044915767c4eb3d500336c7945d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f4fff6b4cac2c4a49b5f839ea219d580, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

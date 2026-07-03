@@ -27,8 +27,8 @@ namespace Week14.Combat
 
             float pausedSeconds = Mathf.Max(0f, Time.time - executionPauseStartedAt);
             chargeEndsAt += pausedSeconds;
-            homingEndsAt += pausedSeconds;
             destroyAt += pausedSeconds;
+            ExtendSpecialTimers(pausedSeconds);
             if (radialSplitAt > 0f)
             {
                 radialSplitAt += pausedSeconds;

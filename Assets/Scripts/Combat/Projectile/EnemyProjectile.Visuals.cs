@@ -4,6 +4,22 @@ namespace Week14.Combat
 {
     public partial class EnemyProjectile
     {
+        private Color ResolveInitialProjectileColor(Color overrideColor)
+        {
+            if (overrideColor != Color.clear)
+            {
+                return overrideColor;
+            }
+
+            SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
+            if (visualRenderer != null && visualRenderer.color != Color.clear)
+            {
+                return visualRenderer.color;
+            }
+
+            return Color.white;
+        }
+
         private void EnsureProjectileShape()
         {
             SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
@@ -28,7 +44,7 @@ namespace Week14.Combat
             }
         }
 
-        private void ApplyProjectileColor(Color color)
+        protected void ApplyProjectileColor(Color color)
         {
             projectileColor = color;
 
@@ -42,6 +58,26 @@ namespace Week14.Combat
             {
                 ConfigureTrailColor(projectileColor);
                 customTrailColorConfigured = false;
+            }
+        }
+
+        protected Sprite GetProjectileSprite()
+        {
+            SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
+            return visualRenderer != null ? visualRenderer.sprite : null;
+        }
+
+        protected void ApplyProjectileSprite(Sprite sprite)
+        {
+            if (sprite == null)
+            {
+                return;
+            }
+
+            SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
+            if (visualRenderer != null)
+            {
+                visualRenderer.sprite = sprite;
             }
         }
 

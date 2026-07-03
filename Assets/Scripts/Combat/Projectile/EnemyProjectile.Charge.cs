@@ -49,7 +49,7 @@ namespace Week14.Combat
                 baseLocalScale = transform.localScale;
             }
 
-            if (homingEnabled)
+            if (ShouldAimAtPlayerOnLaunch())
             {
                 AimAtPlayerWhileCharging();
             }
@@ -101,28 +101,6 @@ namespace Week14.Combat
             float t = 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds);
             t = Mathf.SmoothStep(0f, 1f, t);
             transform.localScale = Vector3.Lerp(chargeGrowthStartScale, chargeGrowthEndScale, t);
-        }
-
-        private void UpdateHomingChargeBlink()
-        {
-            if (!homingEnabled || projectileChargeSeconds <= 0f)
-            {
-                return;
-            }
-
-            float remainingRatio = Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds);
-            if (remainingRatio <= HomingChargeSolidColorRemainingRatio)
-            {
-                ApplyProjectileColor(homingBlinkColor);
-                return;
-            }
-
-            float blinkRate = Mathf.Lerp(HomingChargeBlinkMaxRate, HomingChargeBlinkMinRate, remainingRatio);
-            homingBlinkPhase += Time.deltaTime * blinkRate;
-            Color nextColor = Mathf.Repeat(homingBlinkPhase, 1f) >= 0.5f
-                ? homingBlinkColor
-                : chargingColor;
-            ApplyProjectileColor(nextColor);
         }
 
         private void UpdateChargeTrail()

@@ -31,22 +31,17 @@ namespace Week14.Combat
             projectileChargeSeconds = Mathf.Max(0f, chargeSeconds);
             projectileTrailSeconds = Mathf.Max(0.025f, trailSeconds);
             projectileTrailWidthMultiplier = Mathf.Max(0.1f, trailWidth);
-            projectileColor = color;
-            chargingColor = color;
-            launchedColor = color;
-            homingBlinkColor = color;
-            indicatorColor = color;
-            homingBlinkPhase = 0f;
+            Color prefabIndicatorColor = indicatorColor;
+            bool hasPrefabIndicatorColor = prefabIndicatorColor != Color.clear;
+            Color resolvedColor = ResolveInitialProjectileColor(color);
+            projectileColor = resolvedColor;
+            chargingColor = resolvedColor;
+            launchedColor = resolvedColor;
+            indicatorColor = hasPrefabIndicatorColor ? prefabIndicatorColor : resolvedColor;
+            ConfigureSpecialStateColors(resolvedColor, resolvedColor, null);
             customTrailColorConfigured = false;
-            customIndicatorColorConfigured = false;
+            customIndicatorColorConfigured = hasPrefabIndicatorColor;
             launchReplacementPrefab = null;
-            homingEnabled = enableHoming;
-            this.homingSeconds = homingEnabled
-                ? Mathf.Max(0.01f, homingSeconds > 0f ? homingSeconds : DefaultHomingSeconds)
-                : 0f;
-            homingTurnDegreesPerSecond = homingEnabled
-                ? Mathf.Max(0.01f, nextHomingTurnDegrees > 0f ? nextHomingTurnDegrees : DefaultHomingTurnDegreesPerSecond)
-                : 0f;
             ownerBullets = nextOwnerBullets;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
             ownerMinion = ownerBullets != null ? ownerBullets.GetComponentInParent<Minion>() : null;
@@ -83,8 +78,8 @@ namespace Week14.Combat
             lastWallCheckPosition = transform.position;
             chargeEndsAt = Time.time + projectileChargeSeconds;
             float launchTime = launched ? Time.time : chargeEndsAt;
-            homingEndsAt = launchTime + this.homingSeconds;
             destroyAt = launchTime + lifetime;
+            ConfigureHoming(enableHoming, homingSeconds, nextHomingTurnDegrees, launchTime);
 
             if (body == null)
             {
@@ -163,6 +158,13 @@ namespace Week14.Combat
         protected virtual void OnProjectileTick() { }
         protected virtual void OnProjectileChargeTick() { }
         protected virtual void OnProjectileLaunched() { }
+        protected virtual void TickHoming() { }
+        protected virtual void UpdateHomingChargeBlink() { }
+        protected virtual bool ShouldAimAtPlayerOnLaunch()
+        {
+            return false;
+        }
+        protected virtual void ExtendSpecialTimers(float pausedSeconds) { }
 
     }
 }

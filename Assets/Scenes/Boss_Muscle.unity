@@ -4771,6 +4771,7 @@ MonoBehaviour:
   combatCenter: {fileID: 7547452285691577874}
   leftGunOrigin: {fileID: 7547452285691577875}
   leftGunFireOrigin: {fileID: 1879438382522516112}
+  rightGunFireOrigin: {fileID: 0}
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
@@ -6220,12 +6221,12 @@ MonoBehaviour:
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 0}
   displayName: "\uACBD\uD638\uC2E4\uC7A5"
-  effectData: {fileID: 0}
-  colorSettings: {fileID: 0}
+  effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+  colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
   maxHp: 150
   hpEmptyExecutionSeconds: 5
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
-  hitFlashSeconds: 0.08
+  hitFlashSeconds: 0.02
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hpEmptyColor: {r: 0.45, g: 0.65, b: 1, a: 1}
   staggeredColor: {r: 1, g: 0.95, b: 0.35, a: 1}
@@ -6280,21 +6281,11 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.12
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 1, g: 0.80784315, b: 0.13333334, a: 1}
-      indicatorColor: {r: 1, g: 0.9490196, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 3
-      homingEnabled: 0
-      explodeIfNotParried: 0
-      explosionRadius: 2
-      explosionDamage: 1
   - projectileName: "\uC720\uB3C4\uD0C4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      prefab: {fileID: -8187778193616843994, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1
@@ -6303,21 +6294,11 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
-      indicatorColor: {r: 1, g: 0, b: 0, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
-      homingEnabled: 1
-      explodeIfNotParried: 0
-      explosionRadius: 2
-      explosionDamage: 1
   - projectileName: "\uD3ED\uD0C4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: aa5574e84bfb7844cb64ffa4b085348a, type: 3}
+      prefab: {fileID: -4836479999064069895, guid: aa5574e84bfb7844cb64ffa4b085348a, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 0
@@ -6326,18 +6307,8 @@ MonoBehaviour:
       speed: 0
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
-      indicatorColor: {r: 1, g: 0, b: 0, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
-      homingEnabled: 0
-      explodeIfNotParried: 1
-      explosionRadius: 5
-      explosionDamage: 1
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

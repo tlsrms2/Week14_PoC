@@ -41,10 +41,22 @@ public class GraphBossAIEditor : Editor
         "executionIndicator",
         "bossCombatUiRoot",
         "bossHpBarView",
-        "bossLivesView"
+        "bossLivesView",
+        "bossNameText"
     };
 
-    private static readonly HashSet<string> HiddenBaseColorFields = new()
+    private static readonly HashSet<string> CombatEffectFields = new()
+    {
+        "hitFlashColor",
+        "hitFlashSeconds"
+    };
+
+    private static readonly HashSet<string> MetaFields = new()
+    {
+        "displayName"
+    };
+
+    private static readonly HashSet<string> LegacyColorFields = new()
     {
         "normalColor",
         "hpEmptyColor",
@@ -57,8 +69,9 @@ public class GraphBossAIEditor : Editor
     };
 
     private int mainTabIndex;
-    private bool showBossBase;
     private bool showBossSpecific = true;
+    private bool showMinionSettings = true;
+    private bool showBossBase;
 
     public override void OnInspectorGUI()
     {
@@ -67,6 +80,7 @@ public class GraphBossAIEditor : Editor
         DrawScriptField();
         DrawBossGraphSection();
 
+        mainTabIndex = Mathf.Clamp(mainTabIndex, 0, MainTabs.Length - 1);
         mainTabIndex = GUILayout.SelectionGrid(mainTabIndex, MainTabs, MainTabs.Length);
         EditorGUILayout.Space(6f);
 
@@ -102,12 +116,12 @@ public class GraphBossAIEditor : Editor
         BossGraphAsset graph = !hasMultipleValues ? bossGraph.objectReferenceValue as BossGraphAsset : null;
         if (graph == null && !hasMultipleValues)
         {
-            EditorGUILayout.HelpBox("Boss Graph가 비어 있으면 패턴을 실행하지 않습니다.", MessageType.Warning);
+            EditorGUILayout.HelpBox("Boss Graph가 비어 있으면 패턴이 실행되지 않습니다.", MessageType.Warning);
         }
 
         using (new EditorGUI.DisabledScope(graph == null))
         {
-            if (GUILayout.Button("Boss Graph 열기"))
+            if (GUILayout.Button("Graph Editor 열기"))
             {
                 BossGraphEditorWindow.Open(graph, GetGraphProjectileNames(), GetBossHierarchyRoot());
             }
@@ -147,23 +161,57 @@ public class GraphBossAIEditor : Editor
 
     private void DrawReferencesTab()
     {
-        DrawPropertiesBox(
-            "Graph References",
-            "effectData",
-            "colorSettings");
+        DrawGraphReferences();
+        DrawPropertiesBox("Boss References", "effectData", "colorSettings");
+        DrawPropertiesBox("Scene References", "bodyRoot", "body", "statusView", "obstacleMask", "lockOnIndicator", "executionIndicator");
+        DrawPropertiesBox("Boss Name", "displayName");
+        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossNameText");
+        DrawPropertiesBox("Hit Flash", "hitFlashColor", "hitFlashSeconds");
+    }
 
-        EditorGUILayout.Space(6f);
-        DrawPropertiesBox(
-            "Scene References",
-            "bodyRoot",
-            "body",
-            "statusView",
-            "obstacleMask",
-            "lockOnIndicator",
-            "executionIndicator");
+    private void DrawGraphReferences()
+    {
+        SerializedProperty bossGraph = FindSerializedProperty("bossGraph");
+        if (bossGraph == null)
+        {
+            return;
+        }
 
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Graph References", EditorStyles.boldLabel);
+        if (bossGraph.hasMultipleDifferentValues)
+        {
+            EditorGUILayout.HelpBox("여러 Boss Graph가 선택되어 참조 설정을 표시할 수 없습니다.", MessageType.Info);
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space(6f);
+            return;
+        }
+
+        BossGraphAsset graph = bossGraph.objectReferenceValue as BossGraphAsset;
+        if (graph == null)
+        {
+            EditorGUILayout.HelpBox("Boss Graph가 비어 있습니다.", MessageType.Warning);
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space(6f);
+            return;
+        }
+
+        SerializedObject graphObject = new SerializedObject(graph);
+        graphObject.Update();
+        SerializedProperty references = graphObject.FindProperty("references");
+        if (references != null)
+        {
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(references, true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                graphObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(graph);
+            }
+        }
+
+        EditorGUILayout.EndVertical();
         EditorGUILayout.Space(6f);
-        DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView");
     }
 
     private void DrawBossSpecificSection()
@@ -197,7 +245,13 @@ public class GraphBossAIEditor : Editor
         }
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        EditorGUILayout.LabelField("미니언 설정", EditorStyles.boldLabel);
+        showMinionSettings = EditorGUILayout.Foldout(showMinionSettings, "미니언 설정", true);
+        if (!showMinionSettings)
+        {
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
         EditorGUILayout.PropertyField(enabled, new GUIContent("미니언 사용"));
         using (new EditorGUI.DisabledScope(!enabled.boolValue && !enabled.hasMultipleDifferentValues))
         {
@@ -233,47 +287,54 @@ public class GraphBossAIEditor : Editor
             SerializedProperty projectile = entry.FindPropertyRelative("projectile");
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            bool remove = false;
+            bool stopDrawingList = false;
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField($"#{i + 1}", GUILayout.Width(28f));
                 if (projectileName != null)
                 {
-                    EditorGUILayout.PropertyField(projectileName, GUIContent.none);
+                    EditorGUILayout.PropertyField(projectileName, new GUIContent("Name"));
                 }
 
                 using (new EditorGUI.DisabledScope(i <= 0))
                 {
-                    if (GUILayout.Button("Up", GUILayout.Width(36f)))
+                    if (GUILayout.Button("Up", GUILayout.Width(32f)))
                     {
                         projectiles.MoveArrayElement(i, i - 1);
-                        EditorGUILayout.EndVertical();
-                        return;
+                        stopDrawingList = true;
                     }
                 }
 
                 using (new EditorGUI.DisabledScope(i >= projectiles.arraySize - 1))
                 {
-                    if (GUILayout.Button("Down", GUILayout.Width(52f)))
+                    if (GUILayout.Button("Dn", GUILayout.Width(32f)))
                     {
                         projectiles.MoveArrayElement(i, i + 1);
-                        EditorGUILayout.EndVertical();
-                        return;
+                        stopDrawingList = true;
                     }
                 }
 
                 if (GUILayout.Button("-", GUILayout.Width(24f)))
                 {
-                    projectiles.DeleteArrayElementAtIndex(i);
-                    EditorGUILayout.EndVertical();
-                    return;
+                    remove = true;
                 }
             }
 
-            if (projectile != null)
+            if (remove)
             {
-                EditorGUILayout.PropertyField(projectile, new GUIContent("Settings"), true);
+                projectiles.DeleteArrayElementAtIndex(i);
+                EditorGUILayout.EndVertical();
+                break;
             }
 
+            if (stopDrawingList)
+            {
+                EditorGUILayout.EndVertical();
+                break;
+            }
+
+            DrawCommonProjectileSettings(projectile);
             EditorGUILayout.EndVertical();
         }
 
@@ -282,32 +343,64 @@ public class GraphBossAIEditor : Editor
             int index = projectiles.arraySize;
             projectiles.InsertArrayElementAtIndex(index);
             SerializedProperty entry = projectiles.GetArrayElementAtIndex(index);
-            entry.FindPropertyRelative("projectileName").stringValue = index == 0 ? "Default" : $"Projectile{index + 1}";
+            SerializedProperty projectileName = entry.FindPropertyRelative("projectileName");
+            if (projectileName != null)
+            {
+                projectileName.stringValue = GetUniqueProjectileName(projectiles, index);
+            }
         }
+    }
+
+    private static void DrawCommonProjectileSettings(SerializedProperty projectile)
+    {
+        if (projectile == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.Space(3f);
+        EditorGUILayout.LabelField("공통 설정", EditorStyles.boldLabel);
+        DrawChild(projectile, "prefab", "Prefab");
+        DrawChild(projectile, "bulletDamage");
+        DrawChild(projectile, "chargeSeconds");
+        DrawChild(projectile, "chargeDriftSpeed");
+        DrawChild(projectile, "aimAtPlayerWhileCharging");
+        DrawChild(projectile, "aimAtPlayerOnLaunch");
+        DrawChild(projectile, "speed");
+        DrawChild(projectile, "lifetime");
+        DrawChild(projectile, "radius");
+        DrawChild(projectile, "trailSeconds");
+        DrawChild(projectile, "trailWidthMultiplier");
     }
 
     private void DrawProjectileWarnings(SerializedProperty projectiles)
     {
         if (projectiles.arraySize == 0)
         {
-            EditorGUILayout.HelpBox("기본 투사체가 없습니다. BossGraph 발사 액션이 실행되지 않을 수 있습니다.", MessageType.Warning);
+            EditorGUILayout.HelpBox("기본 투사체가 없습니다. Boss Graph 발사 액션이 실행되지 않을 수 있습니다.", MessageType.Warning);
             return;
         }
 
-        HashSet<string> names = new();
+        HashSet<string> names = new(System.StringComparer.OrdinalIgnoreCase);
         for (int i = 0; i < projectiles.arraySize; i++)
         {
             SerializedProperty entry = projectiles.GetArrayElementAtIndex(i);
-            string projectileName = entry.FindPropertyRelative("projectileName")?.stringValue?.Trim();
+            SerializedProperty projectileNameProperty = entry.FindPropertyRelative("projectileName");
+            string projectileName = projectileNameProperty?.stringValue?.Trim();
             if (string.IsNullOrWhiteSpace(projectileName))
             {
-                EditorGUILayout.HelpBox($"#{i + 1} 투사체 이름이 비어 있습니다. 이름 없는 액션은 첫 항목만 기본값으로 사용합니다.", MessageType.Info);
-                continue;
+                EditorGUILayout.HelpBox($"#{i + 1} 투사체 Name이 비어 있습니다. 그래프에서 이름 없이 참조하면 첫 항목이 사용됩니다.", MessageType.Info);
+            }
+            else if (!names.Add(projectileName))
+            {
+                EditorGUILayout.HelpBox($"중복 투사체 Name '{projectileName}'이 있습니다. 먼저 발견된 항목이 사용됩니다.", MessageType.Warning);
             }
 
-            if (!names.Add(projectileName))
+            SerializedProperty projectile = entry.FindPropertyRelative("projectile");
+            SerializedProperty prefab = projectile?.FindPropertyRelative("prefab");
+            if (prefab != null && prefab.objectReferenceValue == null)
             {
-                EditorGUILayout.HelpBox($"중복 투사체 이름 '{projectileName}'이 있습니다. 먼저 발견된 항목이 사용됩니다.", MessageType.Warning);
+                EditorGUILayout.HelpBox($"#{i + 1} 투사체 Prefab이 비어 있습니다.", MessageType.Warning);
             }
         }
     }
@@ -330,6 +423,11 @@ public class GraphBossAIEditor : Editor
 
     private void DrawPropertiesBox(string title, params string[] propertyNames)
     {
+        if (!ContainsPropertyName(propertyNames))
+        {
+            return;
+        }
+
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
         for (int i = 0; i < propertyNames.Length; i++)
@@ -338,6 +436,7 @@ public class GraphBossAIEditor : Editor
         }
 
         EditorGUILayout.EndVertical();
+        EditorGUILayout.Space(6f);
     }
 
     private List<SerializedProperty> GetBossSpecificProperties()
@@ -361,22 +460,31 @@ public class GraphBossAIEditor : Editor
 
     private bool ShouldSkipBaseProperty(SerializedProperty property)
     {
-        return property.propertyPath == "m_Script"
+        return IsAlwaysHiddenProperty(property)
             || GraphFields.Contains(property.name)
             || MinionFields.Contains(property.name)
             || ReferenceFields.Contains(property.name)
-            || HiddenBaseColorFields.Contains(property.name)
-            || IsBossSpecificProperty(property);
+            || CombatEffectFields.Contains(property.name)
+            || MetaFields.Contains(property.name)
+            || LegacyColorFields.Contains(property.name)
+            || !IsBossBaseProperty(property);
     }
 
     private bool ShouldSkipKnownProperty(SerializedProperty property)
     {
-        return property.propertyPath == "m_Script"
+        return IsAlwaysHiddenProperty(property)
             || GraphFields.Contains(property.name)
             || MinionFields.Contains(property.name)
             || ReferenceFields.Contains(property.name)
-            || HiddenBaseColorFields.Contains(property.name)
+            || CombatEffectFields.Contains(property.name)
+            || MetaFields.Contains(property.name)
+            || LegacyColorFields.Contains(property.name)
             || IsBossBaseProperty(property);
+    }
+
+    private static bool IsAlwaysHiddenProperty(SerializedProperty property)
+    {
+        return property.propertyPath == "m_Script";
     }
 
     private static bool IsBossBaseProperty(SerializedProperty property)
@@ -400,11 +508,6 @@ public class GraphBossAIEditor : Editor
             || path == "moveSpeed";
     }
 
-    private static bool IsBossSpecificProperty(SerializedProperty property)
-    {
-        return !IsBossBaseProperty(property);
-    }
-
     private void DrawProperty(string propertyName)
     {
         SerializedProperty property = FindSerializedProperty(propertyName);
@@ -414,12 +517,34 @@ public class GraphBossAIEditor : Editor
         }
     }
 
-    private static void DrawChild(SerializedProperty parent, string childName)
+    private bool ContainsPropertyName(params string[] propertyNames)
+    {
+        for (int i = 0; i < propertyNames.Length; i++)
+        {
+            if (FindSerializedProperty(propertyNames[i]) != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static void DrawChild(SerializedProperty parent, string childName, string label = null)
     {
         SerializedProperty child = parent.FindPropertyRelative(childName);
-        if (child != null)
+        if (child == null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(label))
         {
             EditorGUILayout.PropertyField(child, true);
+        }
+        else
+        {
+            EditorGUILayout.PropertyField(child, new GUIContent(label), true);
         }
     }
 
@@ -484,5 +609,39 @@ public class GraphBossAIEditor : Editor
         }
 
         return null;
+    }
+
+    private static string GetUniqueProjectileName(SerializedProperty projectiles, int currentIndex)
+    {
+        string baseName = currentIndex == 0 ? "Default" : $"Projectile{currentIndex + 1}";
+        string nextName = baseName;
+        int suffix = 2;
+        while (HasProjectileName(projectiles, nextName, currentIndex))
+        {
+            nextName = $"{baseName}_{suffix}";
+            suffix++;
+        }
+
+        return nextName;
+    }
+
+    private static bool HasProjectileName(SerializedProperty projectiles, string projectileName, int exceptIndex)
+    {
+        for (int i = 0; i < projectiles.arraySize; i++)
+        {
+            if (i == exceptIndex)
+            {
+                continue;
+            }
+
+            SerializedProperty entry = projectiles.GetArrayElementAtIndex(i);
+            string value = entry.FindPropertyRelative("projectileName")?.stringValue?.Trim();
+            if (string.Equals(value, projectileName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

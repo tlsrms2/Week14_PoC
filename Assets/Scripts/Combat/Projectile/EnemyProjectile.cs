@@ -31,11 +31,6 @@ namespace Week14.Combat
         private const int RadialSplitIndicatorLineCount = 2;
         private const float PathDashLength = 0.2f;
         private const float PathDashGap = 0.14f;
-        private const float DefaultHomingSeconds = 10f;
-        private const float DefaultHomingTurnDegreesPerSecond = 540f;
-        private const float HomingChargeBlinkMinRate = 2f;
-        private const float HomingChargeBlinkMaxRate = 8f;
-        private const float HomingChargeSolidColorRemainingRatio = 0.25f;
         private float projectileSpeed;
         private float projectileLifetime;
         private float projectileRadius;
@@ -45,14 +40,9 @@ namespace Week14.Combat
         private Color projectileColor;
         private Color chargingColor;
         private Color launchedColor;
-        private Color homingBlinkColor;
-        private Color indicatorColor;
-        private float homingBlinkPhase;
-        private bool homingEnabled;
-        private float homingTurnDegreesPerSecond;
-        private float homingSeconds;
+        [SerializeField, Tooltip("경로/호밍 조준 인디케이터 색입니다. 투명색이면 투사체 색을 사용합니다.")]
+        private Color indicatorColor = Color.clear;
         private float chargeDriftSpeed;
-        private float homingEndsAt;
         private float chargeEndsAt;
         private Rigidbody2D body;
         private LineRenderer chargeVfx;
@@ -142,11 +132,16 @@ namespace Week14.Combat
         protected bool IsLaunched => launched;
         protected bool IsResolved => resolved;
         protected bool IsDestroying => isDestroying;
+        protected float ProjectileChargeSeconds => projectileChargeSeconds;
+        protected float ChargeEndsAt => chargeEndsAt;
+        protected Color ChargingColor => chargingColor;
+        protected Color LaunchedColor => launchedColor;
         protected Vector2 FlightDirection
         {
             get => flightDirection;
             set => ApplyFlightDirection(value);
         }
+        protected virtual bool IsHomingProjectile => false;
         public float ChargeProgress01 => projectileChargeSeconds > 0f
             ? 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds)
             : 1f;
@@ -273,10 +268,11 @@ namespace Week14.Combat
         {
             chargingColor = nextChargingColor;
             launchedColor = nextLaunchedColor;
-            homingBlinkColor = nextHomingBlinkColor ?? nextLaunchedColor;
-            homingBlinkPhase = 0f;
+            ConfigureSpecialStateColors(nextChargingColor, nextLaunchedColor, nextHomingBlinkColor);
             ApplyProjectileColor(launched ? launchedColor : chargingColor);
         }
+
+        protected virtual void ConfigureSpecialStateColors(Color nextChargingColor, Color nextLaunchedColor, Color? nextHomingBlinkColor) { }
 
         public void ConfigureTrailColor(Color nextTrailColor)
         {
@@ -483,6 +479,11 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            if (homingEnabled && projectile is not HomingEnemyProjectile)
+            {
+                Debug.LogWarning($"{projectile.name} is configured as homing but does not inherit {nameof(HomingEnemyProjectile)}.", projectile);
+            }
+
             projectile.Initialize(
                 direction,
                 bulletDamage,
@@ -500,10 +501,21 @@ namespace Week14.Combat
                 suppressPathIndicator,
                 existingInterceptGroupId);
             ProjectileVfx.ApplyVisibility(
-                projectile.gameObject, color, radius, trailSeconds, trailWidth);
+                projectile.gameObject, projectile.projectileColor, radius, trailSeconds, trailWidth);
             projectile.BeginTrail();
             return projectile;
         }
+
+        protected virtual void ConfigureHoming(bool enabled, float seconds, float turnDegrees, float launchTime) { }
+
+        protected virtual void GetHomingSpawnConfig(out bool enabled, out float seconds, out float turnDegrees)
+        {
+            enabled = false;
+            seconds = 0f;
+            turnDegrees = 0f;
+        }
+
+        protected virtual void CopySpecialRuntimeStateTo(EnemyProjectile replacement) { }
 
     }
 }

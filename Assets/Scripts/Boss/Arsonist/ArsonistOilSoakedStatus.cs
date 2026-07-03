@@ -8,7 +8,7 @@ namespace Week14.Enemy
     internal sealed class ArsonistOilSoakedStatus : MonoBehaviour
     {
         private readonly List<ArsonistOilPatch> trailPatches = new();
-        private Arsonist owner;
+        private ArsonistBossAI owner;
         private PlayerCombatController player;
         private float expiresAt;
         private float trailInterval;
@@ -20,7 +20,7 @@ namespace Week14.Enemy
         public PlayerCombatController Player => player;
 
         public void Configure(
-            Arsonist nextOwner,
+            ArsonistBossAI nextOwner,
             PlayerCombatController nextPlayer,
             float duration,
             float nextTrailInterval,

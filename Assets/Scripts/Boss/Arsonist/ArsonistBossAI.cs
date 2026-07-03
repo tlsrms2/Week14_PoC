@@ -7,7 +7,7 @@ namespace Week14.Enemy
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Week14/Boss/Arsonist Boss")]
-    public sealed class Arsonist : GraphBossAI
+    public sealed class ArsonistBossAI : GraphBossAI
     {
         private const string BgmId = "ArsonistBgm";
 

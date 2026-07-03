@@ -534,6 +534,10 @@ MonoBehaviour:
   minionProjectileOrigin: {fileID: 0}
   minionSummon:
     prefab: {fileID: 0}
+    additionalPrefabs:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     claimSceneMinions: 1
     maxOwnedMinions: 5
     summonCount: 1
@@ -558,18 +562,11 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.12
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 1, g: 0.8078432, b: 0.13333334, a: 1}
-      indicatorColor: {r: 1, g: 0.9490197, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 3
-      homingEnabled: 0
   - projectileName: "\uC720\uB3C4\uD0C4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      prefab: {fileID: -8187778193616843994, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1
@@ -578,15 +575,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
-      indicatorColor: {r: 1, g: 0, b: 0, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
-      homingEnabled: 1
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5
@@ -762,27 +752,27 @@ MonoBehaviour:
     m_RotationOrder: 4
   format: '{0}'
   styles:
-  - bulletNumber: 5
+  - minDamage: 1
     fontSize: 6
     textColor: {r: 0.11965811, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.38823533, g: 0.7137255, b: 0.34509805, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 4
+  - minDamage: 2
     fontSize: 10
     textColor: {r: 0.49650347, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.57254905, g: 0.7960785, b: 0.34901962, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 3
+  - minDamage: 3
     fontSize: 16
     textColor: {r: 1, g: 0.86184216, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.7294118, b: 0.32156864, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 2
+  - minDamage: 4
     fontSize: 24
     textColor: {r: 1, g: 0.52662724, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.54509807, b: 0.26666668, a: 1}
     outlineWidth: 0.1
-  - bulletNumber: 1
+  - minDamage: 5
     fontSize: 38
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
