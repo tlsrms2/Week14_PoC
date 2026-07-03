@@ -136,6 +136,8 @@ namespace Week14.Combat
         protected float ChargeEndsAt => chargeEndsAt;
         protected Color ChargingColor => chargingColor;
         protected Color LaunchedColor => launchedColor;
+        protected virtual bool UsesProjectileVisibility => true;
+        protected virtual bool ShowsPathIndicator => true;
         protected Vector2 FlightDirection
         {
             get => flightDirection;
@@ -500,9 +502,13 @@ namespace Week14.Combat
                 homingTurnDegrees,
                 suppressPathIndicator,
                 existingInterceptGroupId);
-            ProjectileVfx.ApplyVisibility(
-                projectile.gameObject, projectile.projectileColor, radius, trailSeconds, trailWidth);
-            projectile.BeginTrail();
+            if (projectile.UsesProjectileVisibility)
+            {
+                ProjectileVfx.ApplyVisibility(
+                    projectile.gameObject, projectile.projectileColor, radius, trailSeconds, trailWidth);
+                projectile.BeginTrail();
+            }
+
             return projectile;
         }
 

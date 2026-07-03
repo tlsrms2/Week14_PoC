@@ -15,6 +15,7 @@ namespace Week14.Enemy
         private float trailMinDistance;
         private float nextTrailAt;
         private Vector3 lastTrailPosition;
+        private Color oilColor;
         private bool initialized;
 
         public PlayerCombatController Player => player;
@@ -22,12 +23,14 @@ namespace Week14.Enemy
         public void Configure(
             ArsonistBossAI nextOwner,
             PlayerCombatController nextPlayer,
+            Color nextOilColor,
             float duration,
             float nextTrailInterval,
             float nextTrailMinDistance)
         {
             owner = nextOwner;
             player = nextPlayer;
+            oilColor = nextOilColor;
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             trailInterval = Mathf.Max(0.01f, nextTrailInterval);
             trailMinDistance = Mathf.Max(0.01f, nextTrailMinDistance);
@@ -94,7 +97,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            ArsonistOilPatch patch = owner.CreateOilTrailPatch(transform.position, player);
+            ArsonistOilPatch patch = owner.CreateOilTrailPatch(transform.position, player, oilColor);
             AddTrailPatch(patch);
             lastTrailPosition = transform.position;
             nextTrailAt = Time.time + trailInterval;

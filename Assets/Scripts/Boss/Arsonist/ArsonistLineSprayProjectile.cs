@@ -1,108 +1,143 @@
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-    public abstract class ArsonistLineSprayProjectile : MonoBehaviour
+    public abstract class ArsonistLineSprayProjectile : EnemyProjectile
     {
         private const string WallLayerName = "Wall";
 
         [SerializeField] private ArsonistBossAI owner;
-        [SerializeField, Min(0f)] private float speed = 7f;
-        [SerializeField, Min(0.05f)] private float lifetime = 0.55f;
         [SerializeField, Min(0.05f)] private float patchRadius = 0.35f;
         [SerializeField, Min(0.05f)] private float patchDuration = 4f;
         [SerializeField, Min(0.05f)] private float paintSpacing = 0.28f;
         [SerializeField] private bool destroyOnWall = true;
 
-        private Rigidbody2D body;
-        private Vector2 direction = Vector2.right;
         private Vector2 previousPosition;
-        private float destroyAt;
         private float distanceSinceLastPaint;
-        private bool launched;
+        private bool paintStarted;
         private bool paintedInitial;
 
         protected ArsonistBossAI Owner => owner;
         protected float PatchRadius => patchRadius;
         protected float PatchDuration => patchDuration;
+        protected override bool UsesProjectileVisibility => false;
+        protected override bool ShowsPathIndicator => true;
 
         public void Launch(ArsonistBossAI nextOwner, Vector2 launchDirection)
         {
             owner = nextOwner != null ? nextOwner : ResolveOwner();
-            direction = launchDirection.sqrMagnitude > 0.0001f ? launchDirection.normalized : transform.right;
-            BeginFlight();
+            FlightDirection = launchDirection.sqrMagnitude > 0.0001f ? launchDirection.normalized : transform.right;
         }
 
         protected abstract void PlaceHazard(Vector3 position, float radius, float duration);
 
-        protected virtual void Awake()
+        protected override void OnProjectileInitialized()
         {
-            body = GetComponent<Rigidbody2D>();
-        }
-
-        protected virtual void Start()
-        {
-            if (!launched)
+            ResolveOwner();
+            ConfigureInterceptable(false);
+            DisableCarrierVisuals();
+            ResetPaintState();
+            if (IsLaunched)
             {
-                Launch(ResolveOwner(), transform.right);
+                BeginPaint();
             }
         }
 
-        private void Update()
+        protected override void OnProjectileLaunched()
         {
-            if (!launched)
+            ConfigureInterceptable(false);
+            DisableCarrierVisuals();
+            ResetPaintState();
+            BeginPaint();
+        }
+
+        protected override void OnProjectileTick()
+        {
+            if (!IsLaunched || IsDestroying)
             {
                 return;
+            }
+
+            if (!paintStarted)
+            {
+                BeginPaint();
             }
 
             Vector2 currentPosition = transform.position;
             PaintSegment(previousPosition, currentPosition);
             previousPosition = currentPosition;
-
-            if (Time.time >= destroyAt)
-            {
-                Destroy(gameObject);
-            }
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        protected override void OnTriggerEnter2D(Collider2D other)
         {
+            if (other == null)
+            {
+                return;
+            }
+
+            PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
+            if (playerProjectile != null)
+            {
+                playerProjectile.TryDestroyByEnemyProjectileClash(this);
+                return;
+            }
+
             if (destroyOnWall && IsWallCollider(other))
             {
-                Destroy(gameObject);
+                DestroyProjectile();
             }
         }
 
-        private void BeginFlight()
+        protected override bool CanHitPlayer(PlayerCombatController player)
         {
-            launched = true;
+            return false;
+        }
+
+        private void DisableCarrierVisuals()
+        {
+            SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+            for (int i = 0; i < spriteRenderers.Length; i++)
+            {
+                if (spriteRenderers[i] != null)
+                {
+                    spriteRenderers[i].enabled = false;
+                }
+            }
+
+            TrailRenderer[] trailRenderers = GetComponentsInChildren<TrailRenderer>(true);
+            for (int i = 0; i < trailRenderers.Length; i++)
+            {
+                if (trailRenderers[i] != null)
+                {
+                    trailRenderers[i].enabled = false;
+                }
+            }
+        }
+
+        private void ResetPaintState()
+        {
             previousPosition = transform.position;
-            destroyAt = Time.time + Mathf.Max(0.05f, lifetime);
             distanceSinceLastPaint = 0f;
+            paintStarted = false;
             paintedInitial = false;
+        }
 
-            if (body == null)
-            {
-                body = GetComponent<Rigidbody2D>();
-            }
-
-            if (body != null)
-            {
-                body.gravityScale = 0f;
-                body.freezeRotation = true;
-                body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-                body.interpolation = RigidbodyInterpolation2D.Interpolate;
-                body.linearVelocity = direction * Mathf.Max(0f, speed);
-            }
-
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        private void BeginPaint()
+        {
+            paintStarted = true;
+            previousPosition = transform.position;
             PaintSegment(previousPosition, previousPosition);
         }
 
         private ArsonistBossAI ResolveOwner()
         {
+            if (owner != null)
+            {
+                return owner;
+            }
+
+            owner = OwnerBoss as ArsonistBossAI;
             if (owner != null)
             {
                 return owner;

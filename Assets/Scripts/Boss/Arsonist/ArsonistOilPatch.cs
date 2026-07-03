@@ -11,28 +11,34 @@ namespace Week14.Enemy
         private ArsonistBossAI owner;
         private float radius;
         private float expiresAt;
+        private Color oilColor;
+        private Color fireColor;
         private bool initialized;
         private bool ignited;
 
         public float Radius => radius;
         public bool IsIgnited => ignited;
         public bool CanIgnite => initialized && !ignited;
+        public Color FireColor => fireColor;
 
-        public void Initialize(ArsonistBossAI nextOwner, float nextRadius, float duration, Color oilColor, Color fireColor)
+        public void Initialize(ArsonistBossAI nextOwner, float nextRadius, float duration, Color nextOilColor)
         {
             owner = nextOwner;
             radius = Mathf.Max(0.05f, nextRadius);
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
+            oilColor = nextOilColor;
+            fireColor = Color.white;
             initialized = true;
             ignited = false;
-            ArsonistHazardVisual.ConfigureCircle(gameObject, radius, oilColor, 7);
+            ArsonistHazardVisual.ConfigureCircle(gameObject, radius, oilColor, false);
         }
 
-        public void IgniteLocal(float duration, Color fireColor)
+        public void IgniteLocal(float duration, Color nextFireColor)
         {
             ignited = true;
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
-            ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, 9);
+            fireColor = nextFireColor;
+            ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, true);
         }
 
         private void Update()
@@ -65,9 +71,10 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (other.GetComponentInParent<ArsonistFireArea>() != null)
+            ArsonistFireArea fireArea = other.GetComponentInParent<ArsonistFireArea>();
+            if (fireArea != null)
             {
-                owner.IgniteOilNetwork(this);
+                owner.IgniteOilNetwork(this, fireArea.FireColor);
                 return;
             }
 
@@ -83,7 +90,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            owner.ApplyOilSoaked(player);
+            owner.ApplyOilSoaked(player, oilColor);
         }
     }
 }

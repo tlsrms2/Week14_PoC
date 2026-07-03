@@ -6,7 +6,8 @@ namespace Week14.Combat
     {
         private bool ShouldShowPathIndicator()
         {
-            return !suppressPathIndicator
+            return ShowsPathIndicator
+                && !suppressPathIndicator
                 && projectileSpeed > 0f
                 && projectileLifetime > 0f;
         }

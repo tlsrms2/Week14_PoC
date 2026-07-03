@@ -23,22 +23,130 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 6489938926213267532
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 2, y: -2}
+  - nodeId: Node1
+    nodeGuid: bfec3d2f9b8742ee9e5ced30be0e91df
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489938926213267534
+    sequences: []
+    editorPosition: {x: 188, y: -1}
   patterns:
   - patternId: Pattern1
     nodeGuids:
     - 5f1b92446e09448f8ec39fb737e8d4d0
+    - bfec3d2f9b8742ee9e5ced30be0e91df
     nodeIds:
     - Phase1
-  phases: []
-  transitions: []
+    - Node1
+  phases:
+  - phaseIndex: 0
+    selectionMode: 3
+    patternIntervalSeconds: 0
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 0
+    openingPatternId: 
+    patterns: []
+  transitions:
+  - fromNodeGuid: 5f1b92446e09448f8ec39fb737e8d4d0
+    toNodeGuid: bfec3d2f9b8742ee9e5ced30be0e91df
+    fromNodeId: Phase1
+    toNodeId: Node1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges: []
-  debugForceSinglePattern: 0
-  debugForcedPatternId: 
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern1
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 6489938926213267532
+      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD654\uC5FC\uBCD1"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 6489938926213267534
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 3
+        distance: 7
+        tolerance: 0.15
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1

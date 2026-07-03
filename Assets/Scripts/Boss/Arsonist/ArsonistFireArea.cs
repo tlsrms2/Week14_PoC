@@ -11,16 +11,27 @@ namespace Week14.Enemy
         private ArsonistBossAI owner;
         private float radius;
         private float expiresAt;
+        private float playerDamageStartsAt;
+        private Color fireColor;
         private bool initialized;
 
-        public void Initialize(ArsonistBossAI nextOwner, float nextRadius, float duration, Color fireColor)
+        public Color FireColor => fireColor;
+
+        public void Initialize(
+            ArsonistBossAI nextOwner,
+            float nextRadius,
+            float duration,
+            Color fireColor,
+            float playerDamageDelay = 0f)
         {
             owner = nextOwner;
             radius = Mathf.Max(0.05f, nextRadius);
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
+            playerDamageStartsAt = Time.time + Mathf.Max(0f, playerDamageDelay);
             initialized = true;
-            ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, 10);
-            owner?.TryIgniteOilAt(transform.position, radius);
+            this.fireColor = fireColor;
+            ArsonistHazardVisual.ConfigureCircle(gameObject, radius, this.fireColor, true);
+            owner?.TryIgniteOilAt(transform.position, radius, this.fireColor);
         }
 
         public bool CanIgniteOilAt(Vector3 position, float oilRadius)
@@ -62,13 +73,18 @@ namespace Week14.Enemy
             ArsonistOilPatch oilPatch = other.GetComponentInParent<ArsonistOilPatch>();
             if (oilPatch != null)
             {
-                owner.IgniteOilNetwork(oilPatch);
+                owner.IgniteOilNetwork(oilPatch, fireColor);
                 return;
             }
 
             PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
             if (player != null)
             {
+                if (Time.time < playerDamageStartsAt)
+                {
+                    return;
+                }
+
                 owner.ApplyFireContact(player, transform.position, nextDamageAtByPlayer);
             }
         }
