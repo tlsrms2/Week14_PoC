@@ -28,6 +28,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
+        private readonly List<GameObject> transientVisuals = new();
         private string currentNodeId;
 
         public BossActionContext(
@@ -528,10 +529,27 @@ namespace Week14.Enemy
             }
         }
 
+        public void RegisterTransientVisual(GameObject visual)
+        {
+            if (visual != null)
+            {
+                transientVisuals.Add(visual);
+            }
+        }
+
+        public void UnregisterTransientVisual(GameObject visual)
+        {
+            if (visual != null)
+            {
+                transientVisuals.Remove(visual);
+            }
+        }
+
         public void ClearPatternScopedBossChildAims()
         {
             ClearPlayerRelativeMove();
             projectileHandles.Clear();
+            DestroyTransientVisuals();
             if (bossChildAimStates.Count == 0)
             {
                 bossChildAimStartNodePaths.Clear();
@@ -562,6 +580,24 @@ namespace Week14.Enemy
             {
                 UpdateBossChildAim(state.ChildPath, state.FlipYByFacing);
             }
+        }
+
+        private void DestroyTransientVisuals()
+        {
+            if (transientVisuals.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < transientVisuals.Count; i++)
+            {
+                if (transientVisuals[i] != null)
+                {
+                    UnityEngine.Object.Destroy(transientVisuals[i]);
+                }
+            }
+
+            transientVisuals.Clear();
         }
 
         private void RemoveBossChildAimStartNodePaths(string childPath)

@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908204
     sequences: []
-    editorPosition: {x: 203, y: -52}
+    editorPosition: {x: 205, y: -52}
   - nodeId: HogPattern4_Action05
     nodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
     nodeKind: 3
@@ -1073,7 +1073,7 @@ MonoBehaviour:
     threshold: 0
     phaseIndex: 0
   parallelEdges: []
-  debugForceSinglePattern: 0
+  debugForceSinglePattern: 1
   debugForcedPatternId: Pattern3
   references:
     version: 2
