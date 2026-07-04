@@ -16,14 +16,12 @@ namespace Week14.Enemy
         private readonly Func<bool> isExecutionPaused;
         private Animator animator;
         private BossAnimationEventBridge animationEventBridge;
-        private bool hasBodyRootLocalBase;
         private bool hasPlayerRelativeMoveIntent;
         private float playerRelativeMoveDirectionSign = 1f;
         private float playerRelativeMoveSpeedMultiplier = 1f;
         private float playerRelativeMoveElapsedSeconds;
         private float playerRelativeMoveDurationSeconds;
         private AnimationCurve playerRelativeMoveSpeedCurve;
-        private Vector3 bodyRootLocalBase;
         private readonly Dictionary<Transform, Vector3> transformBaseScales = new();
         private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
@@ -144,7 +142,7 @@ namespace Week14.Enemy
 
                 if (timeoutSeconds > 0f)
                 {
-                    remaining -= EnemyTimeScale.DeltaTime;
+                    remaining -= Time.deltaTime;
                     if (remaining <= 0f)
                     {
                         yield break;
@@ -234,7 +232,7 @@ namespace Week14.Enemy
                     playerRelativeMoveSpeedCurve,
                     playerRelativeMoveElapsedSeconds,
                     playerRelativeMoveDurationSeconds);
-                playerRelativeMoveElapsedSeconds += EnemyTimeScale.DeltaTime;
+                playerRelativeMoveElapsedSeconds += Time.deltaTime;
                 if (playerRelativeMoveDurationSeconds > 0f
                     && playerRelativeMoveElapsedSeconds >= playerRelativeMoveDurationSeconds)
                 {
@@ -339,7 +337,7 @@ namespace Week14.Enemy
             // 걸리고, 그 다음 프레임에 다시 전속력으로 움직이는 식으로 멈췄다 움직였다를 반복하게 된다.
             // 남은 오차를 한 프레임이 아니라 최소 정착 시간(OvershootGuardSeconds)에 걸쳐 줄이도록
             // 속도를 캡 씌워, 오버슈트도 막고 프레임 타이밍에 예민하지 않은 부드러운 감속을 만든다.
-            float settleSeconds = Mathf.Max(EnemyTimeScale.DeltaTime, OvershootGuardSeconds);
+            float settleSeconds = Mathf.Max(Time.deltaTime, OvershootGuardSeconds);
             float appliedSpeed = Mathf.Min(desiredSpeed, absoluteDelta / settleSeconds);
 
             Boss.SetMovementVelocity(toPlayer.normalized * directionSign * appliedSpeed);
@@ -361,27 +359,31 @@ namespace Week14.Enemy
             return Mathf.Max(0f, speedCurve.Evaluate(normalizedTime));
         }
 
-        public IEnumerator MoveBodyRootLocalOffset(Vector3 targetLocalOffset, float seconds, bool releaseBaseAfterMove)
+        public IEnumerator MoveBodyRootToPosition(Vector3 targetPosition, float seconds, bool stopWhenFinished)
         {
-            Transform target = Boss != null ? Boss.BodyRoot : null;
-            if (target == null || Boss == null || target == Boss.transform)
+            if (Boss == null || Boss.Body == null)
             {
                 yield break;
             }
 
-            if (!hasBodyRootLocalBase)
+            Vector2 target = targetPosition;
+            if (seconds <= 0f)
             {
-                bodyRootLocalBase = target.localPosition;
-                hasBodyRootLocalBase = true;
+                Boss.Body.position = target;
+                Boss.transform.position = new Vector3(target.x, target.y, Boss.transform.position.z);
+                if (stopWhenFinished)
+                {
+                    Stop();
+                }
+
+                yield break;
             }
 
-            Vector3 from = target.localPosition;
-            Vector3 to = bodyRootLocalBase + targetLocalOffset;
             float duration = Mathf.Max(0.01f, seconds);
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (target == null)
+                if (Boss == null || Boss.Body == null)
                 {
                     yield break;
                 }
@@ -393,37 +395,38 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Stop();
-                elapsed += EnemyTimeScale.DeltaTime;
-                target.localPosition = Vector3.Lerp(from, to, Mathf.Clamp01(elapsed / duration));
+                float remaining = Mathf.Max(Time.deltaTime, duration - elapsed);
+                Vector2 toTarget = target - Boss.Body.position;
+                Boss.SetMovementVelocity(toTarget / remaining);
+                elapsed += Time.deltaTime;
                 yield return null;
             }
 
-            if (target != null)
+            if (Boss != null && Boss.Body != null)
             {
-                target.localPosition = to;
+                Boss.Body.position = target;
+                Boss.transform.position = new Vector3(target.x, target.y, Boss.transform.position.z);
             }
 
-            if (releaseBaseAfterMove)
+            if (stopWhenFinished)
             {
-                ResetBodyRootLocalOffset();
+                Stop();
             }
+        }
+
+        public IEnumerator MoveBodyRootLocalOffset(Vector3 targetLocalOffset, float seconds, bool releaseBaseAfterMove)
+        {
+            yield return MoveBodyRootToPosition(targetLocalOffset, seconds, true);
+        }
+
+        public void StopBodyRootMovement()
+        {
+            Stop();
         }
 
         public void ResetBodyRootLocalOffset()
         {
-            if (!hasBodyRootLocalBase)
-            {
-                return;
-            }
-
-            Transform target = Boss != null ? Boss.BodyRoot : null;
-            if (target != null)
-            {
-                target.localPosition = bodyRootLocalBase;
-            }
-
-            hasBodyRootLocalBase = false;
+            StopBodyRootMovement();
         }
 
         public Vector3 GetBossChildPosition(string childPath)
@@ -836,7 +839,7 @@ namespace Week14.Enemy
                 }
 
                 UpdateContinuousActions();
-                remaining -= EnemyTimeScale.DeltaTime;
+                remaining -= Time.deltaTime;
                 yield return null;
             }
         }

@@ -564,7 +564,7 @@ MonoBehaviour:
   finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 0}
-  displayName: 
+  displayName: "\uBC29\uD654\uBC94"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
   maxHp: 150
@@ -625,18 +625,11 @@ MonoBehaviour:
       speed: 7
       lifetime: 3
       radius: 0.12
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 0}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 1, g: 0.8078432, b: 0.13333334, a: 1}
-      indicatorColor: {r: 1, g: 0.9490197, b: 0.2509804, a: 1}
       trailSeconds: 0.1
       trailWidthMultiplier: 3
-      homingEnabled: 0
   - projectileName: "\uC720\uB3C4\uD0C4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      prefab: {fileID: -8187778193616843994, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1
@@ -645,15 +638,8 @@ MonoBehaviour:
       speed: 12
       lifetime: 3
       radius: 0.1
-      chargingColor: {r: 1, g: 1, b: 1, a: 1}
-      launchedColor: {r: 1, g: 1, b: 1, a: 1}
-      homingChargePrefab: {fileID: 5897565683229663206, guid: 5efbf9fcff06c6844b8fae1818ba1104, type: 3}
-      homingBlinkColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
-      trailColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
-      indicatorColor: {r: 1, g: 0.2509804, b: 0.14901961, a: 1}
       trailSeconds: 1
       trailWidthMultiplier: 3
-      homingEnabled: 1
   oilTrailDuration: 3.5
   oilTrailRadius: 0.28
   ignitedOilDuration: 3.5

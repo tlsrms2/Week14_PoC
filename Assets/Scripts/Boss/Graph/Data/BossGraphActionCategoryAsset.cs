@@ -83,7 +83,9 @@ namespace Week14.Enemy
                 || actionType == typeof(StopMovementAction)
                 || actionType == typeof(MoveBodyRootLocalAction)
                 || actionType == typeof(ResetBodyRootLocalAction)
-                || actionType == typeof(BossDashAction))
+                || actionType == typeof(BossDashAction)
+                || actionType == typeof(WanderAroundPlayerDistanceAction)
+                || actionType == typeof(MoveBetweenMapPointsAction))
             {
                 return BossGraphNodeKind.Move;
             }

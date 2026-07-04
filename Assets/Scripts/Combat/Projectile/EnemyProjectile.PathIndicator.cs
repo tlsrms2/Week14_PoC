@@ -6,7 +6,8 @@ namespace Week14.Combat
     {
         private bool ShouldShowPathIndicator()
         {
-            return !suppressPathIndicator
+            return ShowsPathIndicator
+                && !suppressPathIndicator
                 && projectileSpeed > 0f
                 && projectileLifetime > 0f;
         }
@@ -55,6 +56,17 @@ namespace Week14.Combat
                 out Vector2 radialSplitPoint);
             DrawPathIndicator(transform.position, flightDirection, length, 0f);
             DrawRadialSplitIndicatorIfNeeded(hasRadialSplitPoint, radialSplitPoint);
+        }
+
+        private void RefreshPathIndicator()
+        {
+            if (launched)
+            {
+                BeginPathIndicator();
+                return;
+            }
+
+            UpdatePathIndicatorPreview();
         }
 
         private void BeginPathIndicator()

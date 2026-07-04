@@ -7,23 +7,23 @@ namespace Week14.Enemy
     internal sealed class ArsonistBurnStatus : MonoBehaviour
     {
         private PlayerCombatController player;
-        private int damage;
+        private int remainingDamage;
+        private int remainingTicks;
         private float tickInterval;
         private float expiresAt;
         private float nextTickAt;
         private bool initialized;
 
-        public void Configure(PlayerCombatController nextPlayer, int nextDamage, float nextTickInterval, float duration)
+        public void Configure(PlayerCombatController nextPlayer, int totalDamage, float nextTickInterval, float duration)
         {
             player = nextPlayer;
-            damage = Mathf.Max(1, nextDamage);
             tickInterval = Mathf.Max(0.05f, nextTickInterval);
-            expiresAt = Time.time + Mathf.Max(0.05f, duration);
-            if (!initialized)
-            {
-                initialized = true;
-                nextTickAt = Time.time + tickInterval;
-            }
+            float safeDuration = Mathf.Max(0.05f, duration);
+            expiresAt = Time.time + safeDuration;
+            remainingDamage = Mathf.Max(1, totalDamage);
+            remainingTicks = Mathf.Max(1, Mathf.FloorToInt((safeDuration + 0.0001f) / tickInterval));
+            initialized = true;
+            nextTickAt = Time.time + Mathf.Min(tickInterval, safeDuration);
         }
 
         private void Update()
@@ -34,18 +34,26 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (Time.time >= expiresAt)
+            if (Time.time < nextTickAt)
+            {
+                if (Time.time >= expiresAt)
+                {
+                    Destroy(this);
+                }
+
+                return;
+            }
+
+            int tickDamage = Mathf.CeilToInt((float)remainingDamage / remainingTicks);
+            player.ReceiveAttack(tickDamage, transform.position, Vector2.up);
+            remainingDamage -= tickDamage;
+            remainingTicks--;
+            if (remainingDamage <= 0 || remainingTicks <= 0)
             {
                 Destroy(this);
                 return;
             }
 
-            if (Time.time < nextTickAt)
-            {
-                return;
-            }
-
-            player.ReceiveAttack(damage, transform.position, Vector2.up);
             nextTickAt = Time.time + tickInterval;
         }
     }

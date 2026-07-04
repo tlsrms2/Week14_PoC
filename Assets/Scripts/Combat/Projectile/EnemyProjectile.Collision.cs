@@ -12,6 +12,11 @@ namespace Week14.Combat
                 return;
             }
 
+            if (IsArsonistGroundHazardCollider(other))
+            {
+                return;
+            }
+
             PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
             if (playerProjectile != null)
             {
@@ -103,6 +108,13 @@ namespace Week14.Combat
         }
 
         protected virtual void OnPlayerHit(PlayerCombatController player) { }
+
+        private static bool IsArsonistGroundHazardCollider(Collider2D collider)
+        {
+            return collider != null
+                && (collider.GetComponentInParent<ArsonistOilPatch>() != null
+                    || collider.GetComponentInParent<ArsonistFireArea>() != null);
+        }
 
         private bool ShouldIgnoreBossCollision(BossAI hitBoss)
         {

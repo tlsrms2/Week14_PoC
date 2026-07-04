@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Week14.Enemy
 {
     [Serializable]
     public sealed class MoveBodyRootLocalAction : BossAction
     {
-        [SerializeField] private Vector3 targetLocalOffset;
+        [FormerlySerializedAs("targetLocalOffset")]
+        [FormerlySerializedAs("targetOffset")]
+        [SerializeField] private Vector3 targetPosition;
         [SerializeField, Min(0f)] private float duration = 0.1f;
-        [SerializeField] private bool releaseBaseAfterMove;
+        [SerializeField] private bool stopWhenFinished = true;
         [Tooltip("이동이 끝났을 때 재생할 사운드 ID입니다.")]
         [SerializeField, BossGraphSfxId] private string completeSfxId;
 
@@ -20,7 +23,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            yield return context.MoveBodyRootLocalOffset(targetLocalOffset, duration, releaseBaseAfterMove);
+            yield return context.MoveBodyRootToPosition(targetPosition, duration, stopWhenFinished);
             context.PlaySfx(completeSfxId);
         }
     }
@@ -30,7 +33,7 @@ namespace Week14.Enemy
     {
         public override IEnumerator Execute(BossActionContext context)
         {
-            context?.ResetBodyRootLocalOffset();
+            context?.StopBodyRootMovement();
             yield break;
         }
     }

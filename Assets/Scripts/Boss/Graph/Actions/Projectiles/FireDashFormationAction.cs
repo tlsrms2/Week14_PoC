@@ -53,6 +53,7 @@ namespace Week14.Enemy
 
         [SerializeField] private BossGraphDashFormationFireOrder fireOrder = BossGraphDashFormationFireOrder.Simultaneous;
         [SerializeField, Min(0f)] private float fireInterval = 0.05f;
+        [SerializeField, Min(0f)] private float windupSeconds;
 
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
@@ -66,6 +67,11 @@ namespace Week14.Enemy
             if (context == null || bulletCount <= 0)
             {
                 yield break;
+            }
+
+            if (windupSeconds > 0f)
+            {
+                yield return context.WaitSeconds(windupSeconds);
             }
 
             EnsureAlignEase();
