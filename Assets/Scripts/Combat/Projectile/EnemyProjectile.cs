@@ -136,6 +136,7 @@ namespace Week14.Combat
         protected float ChargeEndsAt => chargeEndsAt;
         protected Color ChargingColor => chargingColor;
         protected Color LaunchedColor => launchedColor;
+        protected bool WillSplitRadiallyOnLaunch => splitRadiallyOnLaunch && radialSplitBulletCount > 0;
         protected virtual bool UsesProjectileVisibility => true;
         protected virtual bool ShowsPathIndicator => true;
         protected Vector2 FlightDirection
@@ -301,6 +302,12 @@ namespace Week14.Combat
             customIndicatorColorConfigured = true;
         }
 
+        public void ConfigurePathIndicatorSuppressed(bool suppressed)
+        {
+            suppressPathIndicator = suppressed;
+            RefreshPathIndicator();
+        }
+
         private void AssignInterceptGroup(int existingGroupId)
         {
             interceptGroupId = existingGroupId > 0 ? existingGroupId : nextInterceptGroupId++;
@@ -390,6 +397,7 @@ namespace Week14.Combat
             splitSpeedMultiplier = Mathf.Max(0.01f, speedMultiplier);
             splitRadiusMultiplier = Mathf.Clamp(radiusMultiplier, 0.05f, 1f);
             splitLifetimeMultiplier = Mathf.Clamp(lifetimeMultiplier, 0.05f, 1f);
+            RefreshPathIndicator();
 
             if (splitRadiallyOnLaunch && launched && radialSplitDelaySeconds <= 0f && !resolved && !isDestroying)
             {
@@ -417,6 +425,19 @@ namespace Week14.Combat
             {
                 trail.startWidth = Mathf.Max(trail.startWidth, projectileRadius * 0.35f);
             }
+        }
+
+        protected void OverrideProjectileLifetime(float lifetime)
+        {
+            projectileLifetime = Mathf.Max(0f, lifetime);
+            float lifetimeStart = launched ? Time.time : chargeEndsAt;
+            destroyAt = lifetimeStart + projectileLifetime;
+            RefreshPathIndicator();
+        }
+
+        protected virtual float ResolveProjectileLifetime(float configuredLifetime)
+        {
+            return configuredLifetime;
         }
 
         public void MultiplyProjectileScale(float scaleMultiplier)

@@ -10,32 +10,54 @@ namespace Week14.Enemy
         private readonly Dictionary<PlayerCombatController, float> nextDamageAtByPlayer = new();
         private ArsonistBossAI owner;
         private float radius;
+        private float trailSpacing;
         private float expiresAt;
         private Color oilColor;
         private Color fireColor;
         private bool initialized;
         private bool ignited;
+        private bool ignitionPending;
 
         public float Radius => radius;
+        public float TrailSpacing => trailSpacing;
         public bool IsIgnited => ignited;
-        public bool CanIgnite => initialized && !ignited;
+        public bool CanIgnite => initialized && !ignited && !ignitionPending;
         public Color FireColor => fireColor;
 
-        public void Initialize(ArsonistBossAI nextOwner, float nextRadius, float duration, Color nextOilColor)
+        public void Initialize(
+            ArsonistBossAI nextOwner,
+            float nextRadius,
+            float duration,
+            Color nextOilColor,
+            float nextTrailSpacing)
         {
             owner = nextOwner;
             radius = Mathf.Max(0.05f, nextRadius);
+            trailSpacing = Mathf.Max(0.01f, nextTrailSpacing);
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             oilColor = nextOilColor;
             fireColor = Color.white;
             initialized = true;
             ignited = false;
+            ignitionPending = false;
             ArsonistHazardVisual.ConfigureCircle(gameObject, radius, oilColor, false);
+        }
+
+        public bool TryReserveIgnition()
+        {
+            if (!CanIgnite)
+            {
+                return false;
+            }
+
+            ignitionPending = true;
+            return true;
         }
 
         public void IgniteLocal(float duration, Color nextFireColor)
         {
             ignited = true;
+            ignitionPending = false;
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             fireColor = nextFireColor;
             ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, true);
@@ -90,7 +112,12 @@ namespace Week14.Enemy
                 return;
             }
 
-            owner.ApplyOilSoaked(player, oilColor);
+            if (ignitionPending)
+            {
+                return;
+            }
+
+            owner.ApplyOilSoaked(player, oilColor, radius, trailSpacing);
         }
     }
 }

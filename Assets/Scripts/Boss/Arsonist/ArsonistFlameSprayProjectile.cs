@@ -7,9 +7,11 @@ namespace Week14.Enemy
     {
         [SerializeField] private Color fireColor = new(1f, 0.35f, 0.05f, 0.9f);
 
+        protected override Color HazardColor => fireColor;
+
         protected override void PlaceHazard(Vector3 position, float radius, float duration)
         {
-            Owner?.CreateFireArea(position, radius, duration, fireColor);
+            Owner?.CreateFireArea(position, radius, duration, HazardColor);
         }
     }
 }

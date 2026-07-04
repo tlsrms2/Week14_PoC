@@ -327,72 +327,6 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class OrbitLockedPlayerPositionAction : BossAction
-    {
-        [SerializeField, Min(0f)] private float preWaitSeconds = 0.4f;
-        [SerializeField, Min(0f)] private float durationSeconds = 2f;
-        [SerializeField, Min(0f)] private float orbitRadius;
-        [SerializeField] private float angularSpeedDegrees = 180f;
-        [SerializeField, Min(0f)] private float speedMultiplier = 1f;
-        [SerializeField] private bool stopWhenFinished = true;
-
-        public override IEnumerator Execute(BossActionContext context)
-        {
-            if (context == null || context.Boss == null || context.Boss.Body == null || context.Boss.Player == null)
-            {
-                yield break;
-            }
-
-            Vector2 center = context.Boss.Player.position;
-            if (preWaitSeconds > 0f)
-            {
-                context.Stop();
-                yield return context.WaitSeconds(preWaitSeconds);
-            }
-
-            Vector2 startOffset = (Vector2)context.Boss.transform.position - center;
-            float radius = orbitRadius > 0f ? orbitRadius : Mathf.Max(0.1f, startOffset.magnitude);
-            float angle = startOffset.sqrMagnitude > 0.0001f
-                ? Mathf.Atan2(startOffset.y, startOffset.x) * Mathf.Rad2Deg
-                : 0f;
-            float elapsed = 0f;
-            while (elapsed < durationSeconds)
-            {
-                if (context.IsExecutionPaused)
-                {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
-
-                angle += angularSpeedDegrees * Time.deltaTime;
-                Vector2 target = center + BossActionContext.AngleToDirection(angle) * radius;
-                MoveTowardPoint(context, target);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            if (stopWhenFinished)
-            {
-                context.Stop();
-            }
-        }
-
-        private void MoveTowardPoint(BossActionContext context, Vector2 target)
-        {
-            Vector2 current = context.Boss.Body.position;
-            Vector2 toTarget = target - current;
-            if (toTarget.sqrMagnitude <= 0.0001f)
-            {
-                context.Stop();
-                return;
-            }
-
-            context.Boss.SetMovementVelocity(toTarget.normalized * (context.Boss.MoveSpeed * Mathf.Max(0f, speedMultiplier)));
-        }
-    }
-
-    [Serializable]
     public sealed class WanderAroundPlayerDistanceAction : BossAction
     {
         [SerializeField, Min(0f)] private float durationSeconds = 2f;
@@ -401,6 +335,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
         [SerializeField, Min(0.05f)] private float retargetInterval = 0.6f;
         [SerializeField, Min(0.05f)] private float arriveDistance = 0.25f;
+        [SerializeField, Range(1f, 180f)] private float maxRetargetAngleDegrees = 70f;
         [SerializeField] private bool stopWhenFinished = true;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -412,7 +347,16 @@ namespace Week14.Enemy
 
             float elapsed = 0f;
             float nextRetargetAt = 0f;
-            Vector2 target = context.Boss.Body.position;
+            Vector2 playerStart = context.Boss.Player.position;
+            Vector2 bossStart = context.Boss.Body.position;
+            Vector2 startRadial = bossStart - playerStart;
+            float safeMin = Mathf.Min(minDistance, maxDistance);
+            float safeMax = Mathf.Max(minDistance, maxDistance);
+            float targetAngle = DirectionToAngleOrFallback(startRadial, UnityEngine.Random.Range(0f, 360f));
+            float targetDistance = Mathf.Clamp(startRadial.magnitude, safeMin, safeMax);
+            Vector2 target = BuildPlayerRelativeTarget(playerStart, targetAngle, targetDistance);
+            bool hasTarget = false;
+
             while (elapsed < durationSeconds)
             {
                 if (context.IsExecutionPaused)
@@ -424,23 +368,24 @@ namespace Week14.Enemy
 
                 Vector2 playerPosition = context.Boss.Player.position;
                 Vector2 bossPosition = context.Boss.Body.position;
-                float distance = Vector2.Distance(bossPosition, playerPosition);
-                if (elapsed >= nextRetargetAt || Vector2.Distance(bossPosition, target) <= arriveDistance)
+                Vector2 radial = bossPosition - playerPosition;
+                float distance = radial.magnitude;
+                bool outsideDistanceBand = distance < safeMin || distance > safeMax;
+                target = BuildPlayerRelativeTarget(playerPosition, targetAngle, targetDistance);
+                if (outsideDistanceBand)
                 {
-                    target = PickTarget(playerPosition);
+                    targetAngle = DirectionToAngleOrFallback(radial, targetAngle);
+                    targetDistance = Mathf.Clamp(distance, safeMin, safeMax);
+                    target = BuildPlayerRelativeTarget(playerPosition, targetAngle, targetDistance);
                     nextRetargetAt = elapsed + retargetInterval;
+                    hasTarget = true;
                 }
-
-                if (distance < minDistance || distance > maxDistance)
+                else if (!hasTarget || elapsed >= nextRetargetAt || Vector2.Distance(bossPosition, target) <= arriveDistance)
                 {
-                    Vector2 radial = bossPosition - playerPosition;
-                    if (radial.sqrMagnitude <= 0.0001f)
-                    {
-                        radial = Vector2.right;
-                    }
-
-                    float clampedDistance = Mathf.Clamp(distance, minDistance, maxDistance);
-                    target = playerPosition + radial.normalized * clampedDistance;
+                    RetargetAroundPlayer(ref targetAngle, ref targetDistance, safeMin, safeMax);
+                    target = BuildPlayerRelativeTarget(playerPosition, targetAngle, targetDistance);
+                    nextRetargetAt = elapsed + retargetInterval;
+                    hasTarget = true;
                 }
 
                 MoveTowardPoint(context, target);
@@ -454,13 +399,28 @@ namespace Week14.Enemy
             }
         }
 
-        private Vector2 PickTarget(Vector2 playerPosition)
+        private void RetargetAroundPlayer(ref float targetAngle, ref float targetDistance, float safeMin, float safeMax)
         {
-            float safeMin = Mathf.Min(minDistance, maxDistance);
-            float safeMax = Mathf.Max(minDistance, maxDistance);
-            float distance = UnityEngine.Random.Range(safeMin, safeMax);
-            float angle = UnityEngine.Random.Range(0f, 360f);
-            return playerPosition + BossActionContext.AngleToDirection(angle) * distance;
+            float angleDelta = UnityEngine.Random.Range(-maxRetargetAngleDegrees, maxRetargetAngleDegrees);
+            float distanceRange = Mathf.Max(0f, safeMax - safeMin);
+            float distanceStep = Mathf.Max(0.05f, distanceRange * 0.35f);
+            targetAngle += angleDelta;
+            targetDistance = Mathf.Clamp(targetDistance + UnityEngine.Random.Range(-distanceStep, distanceStep), safeMin, safeMax);
+        }
+
+        private static Vector2 BuildPlayerRelativeTarget(Vector2 playerPosition, float angleDegrees, float distance)
+        {
+            return playerPosition + BossActionContext.AngleToDirection(angleDegrees) * distance;
+        }
+
+        private static float DirectionToAngleOrFallback(Vector2 direction, float fallbackAngle)
+        {
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                return fallbackAngle;
+            }
+
+            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         }
 
         private void MoveTowardPoint(BossActionContext context, Vector2 target)

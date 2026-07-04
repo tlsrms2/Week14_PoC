@@ -110,16 +110,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc69d1d089a6ef4f8a1cc6e69fe4a71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.ArsonistFlameSprayProjectile
-  indicatorColor: {r: 0, g: 0, b: 0, a: 0}
+  indicatorColor: {r: 1, g: 0.34901962, b: 0.050980393, a: 1}
   parryLockOnIndicatorRoot: {fileID: 0}
   parryLockOnReticle: {fileID: 0}
   parryLockOnRotatingRoot: {fileID: 0}
   parryLockOnRotationSpeedDegrees: 180
   owner: {fileID: 0}
-  patchRadius: 1
+  patchRadius: 0.8
   patchDuration: 4
   paintSpacing: 0.3
   destroyOnWall: 1
+  fireColor: {r: 1, g: 0.35, b: 0.05, a: 0.9}
 --- !u!1 &3615603145030084618
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +203,7 @@ SpriteRenderer:
   m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: b8cf7d2177bbc8d488174517b26182ed, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.34901962, b: 0.050980393, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

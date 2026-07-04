@@ -5,6 +5,8 @@ namespace Week14.Enemy
 {
     public abstract class ArsonistLineSprayProjectile : EnemyProjectile
     {
+        private const string BulletVisualName = "BulletVisual";
+        private const string VisualName = "Visual";
         private const string WallLayerName = "Wall";
 
         [SerializeField] private ArsonistBossAI owner;
@@ -21,8 +23,10 @@ namespace Week14.Enemy
         protected ArsonistBossAI Owner => owner;
         protected float PatchRadius => patchRadius;
         protected float PatchDuration => patchDuration;
+        protected float PaintSpacing => Mathf.Max(0.05f, paintSpacing);
         protected override bool UsesProjectileVisibility => false;
         protected override bool ShowsPathIndicator => true;
+        protected abstract Color HazardColor { get; }
 
         public void Launch(ArsonistBossAI nextOwner, Vector2 launchDirection)
         {
@@ -36,18 +40,21 @@ namespace Week14.Enemy
         {
             ResolveOwner();
             ConfigureInterceptable(false);
-            DisableCarrierVisuals();
             ResetPaintState();
             if (IsLaunched)
             {
+                SetProjectileVisualVisible(false);
                 BeginPaint();
+                return;
             }
+
+            SetProjectileVisualVisible(true);
         }
 
         protected override void OnProjectileLaunched()
         {
             ConfigureInterceptable(false);
-            DisableCarrierVisuals();
+            SetProjectileVisualVisible(WillSplitRadiallyOnLaunch);
             ResetPaintState();
             BeginPaint();
         }
@@ -94,25 +101,65 @@ namespace Week14.Enemy
             return false;
         }
 
-        private void DisableCarrierVisuals()
+        private void SetProjectileVisualVisible(bool visible)
         {
-            SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+            Transform visual = ResolveProjectileVisualRoot();
+            if (visual != null && visible)
+            {
+                visual.gameObject.SetActive(true);
+            }
+
+            SpriteRenderer[] spriteRenderers = visual != null
+                ? visual.GetComponentsInChildren<SpriteRenderer>(true)
+                : GetComponents<SpriteRenderer>();
             for (int i = 0; i < spriteRenderers.Length; i++)
             {
                 if (spriteRenderers[i] != null)
                 {
-                    spriteRenderers[i].enabled = false;
+                    if (visible)
+                    {
+                        spriteRenderers[i].gameObject.SetActive(true);
+                    }
+
+                    spriteRenderers[i].enabled = visible;
                 }
             }
 
-            TrailRenderer[] trailRenderers = GetComponentsInChildren<TrailRenderer>(true);
+            TrailRenderer[] trailRenderers = visual != null
+                ? visual.GetComponentsInChildren<TrailRenderer>(true)
+                : GetComponents<TrailRenderer>();
             for (int i = 0; i < trailRenderers.Length; i++)
             {
                 if (trailRenderers[i] != null)
                 {
-                    trailRenderers[i].enabled = false;
+                    if (visible)
+                    {
+                        trailRenderers[i].gameObject.SetActive(true);
+                    }
+
+                    trailRenderers[i].enabled = visible;
                 }
             }
+        }
+
+        private Transform ResolveProjectileVisualRoot()
+        {
+            Transform visual = transform.Find(BulletVisualName);
+            if (visual != null)
+            {
+                return visual;
+            }
+
+            visual = transform.Find(VisualName);
+            if (visual != null)
+            {
+                return visual;
+            }
+
+            SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>(true);
+            return childRenderer != null && childRenderer.transform != transform
+                ? childRenderer.transform
+                : null;
         }
 
         private void ResetPaintState()
@@ -168,7 +215,7 @@ namespace Week14.Enemy
             }
 
             Vector2 normal = delta / distance;
-            float spacing = Mathf.Max(0.05f, paintSpacing);
+            float spacing = PaintSpacing;
             float remaining = distance;
             Vector2 cursor = from;
 
@@ -191,5 +238,6 @@ namespace Week14.Enemy
                 && collider != null
                 && collider.gameObject.layer == wallLayer;
         }
+
     }
 }

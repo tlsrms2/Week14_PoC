@@ -1109,12 +1109,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 5
-        arcDegrees: 180
-        startAngleOffset: 90
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0.5
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
@@ -1139,6 +1133,20 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 5
+          arcDegrees: 180
+          startAngleOffset: 90
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0.5
+          restSeconds: 0
     - rid: 2634811931892908195
       type: {class: StartMoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1330,12 +1338,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1360,6 +1362,20 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908205
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1404,12 +1420,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1434,6 +1444,20 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908209
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1478,12 +1502,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1508,6 +1526,20 @@ MonoBehaviour:
             seconds: 0.24
             distance: 1.2
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908213
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1637,12 +1669,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1667,6 +1693,20 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908218
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1711,12 +1751,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1741,6 +1775,20 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908222
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1785,12 +1833,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1815,6 +1857,20 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908226
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1859,12 +1915,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1889,6 +1939,20 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908230
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1933,12 +1997,6 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 0
-        bulletCount: 30
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1963,6 +2021,20 @@ MonoBehaviour:
             seconds: 0.16
             distance: 0.25
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 2634811931892908234
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

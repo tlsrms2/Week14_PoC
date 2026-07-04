@@ -26,7 +26,7 @@ namespace Week14.Combat
             int existingInterceptGroupId)
         {
             projectileSpeed = speed;
-            projectileLifetime = lifetime;
+            projectileLifetime = Mathf.Max(0f, ResolveProjectileLifetime(lifetime));
             projectileRadius = radius;
             projectileChargeSeconds = Mathf.Max(0f, chargeSeconds);
             projectileTrailSeconds = Mathf.Max(0.025f, trailSeconds);

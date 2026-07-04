@@ -21,6 +21,7 @@ namespace Week14.Enemy
         [SerializeField] private bool randomizeStartAngle;
         [SerializeField, Min(0f)] private float motionDurationSeconds;
         [SerializeField] private bool destroyOnMotionEnd;
+        [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -30,6 +31,11 @@ namespace Week14.Enemy
             if (context == null)
             {
                 yield break;
+            }
+
+            if (windupSeconds > 0f)
+            {
+                yield return context.WaitSeconds(windupSeconds);
             }
 
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
@@ -66,6 +72,7 @@ namespace Week14.Enemy
 
                 if (firedProjectile != null)
                 {
+                    firedProjectile.ConfigurePathIndicatorSuppressed(true);
                     firedProjectile.gameObject.AddComponent<BossSpiralProjectileMotion>().Initialize(
                         center,
                         spiralAngle,

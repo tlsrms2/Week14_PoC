@@ -97,15 +97,16 @@ internal static class BossGraphActionEditorUtility
         new("Move/Move Body Root Local", typeof(MoveBodyRootLocalAction), () => new MoveBodyRootLocalAction()),
         new("Move/Reset Body Root Local", typeof(ResetBodyRootLocalAction), () => new ResetBodyRootLocalAction()),
         new("Move/Boss Dash", typeof(BossDashAction), () => new BossDashAction()),
-        new("Move/Orbit Locked Player Position", typeof(OrbitLockedPlayerPositionAction), () => new OrbitLockedPlayerPositionAction()),
         new("Move/Wander Around Player Distance", typeof(WanderAroundPlayerDistanceAction), () => new WanderAroundPlayerDistanceAction()),
         new("Move/Move Between Map Points", typeof(MoveBetweenMapPointsAction), () => new MoveBetweenMapPointsAction()),
         new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
-new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
-        new("Projectile/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
-        new("Projectile/Configure Radial Split", typeof(ConfigureRadialSplitAction), () => new ConfigureRadialSplitAction()),
-        new("Projectile/Wait Projectile Charge End", typeof(WaitProjectileChargeEndAction), () => new WaitProjectileChargeEndAction()),
+        new("Projectile/Charged/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
+        new("Projectile/Charged/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
+        new("Projectile/Charged/Configure Radial Split", typeof(ConfigureRadialSplitAction), () => new ConfigureRadialSplitAction()),
+        new("Projectile/Charged/Wait Projectile Charge End", typeof(WaitProjectileChargeEndAction), () => new WaitProjectileChargeEndAction()),
         new("Projectile/Fire Projectile Burst", typeof(FireProjectileBurstAction), () => new FireProjectileBurstAction()),
+        new("Projectile/Fire Random Cone Burst", typeof(FireRandomConeBurstAction), () => new FireRandomConeBurstAction()),
+        new("Projectile/Fire Player Side Fan Sweep", typeof(FirePlayerSideFanSweepAction), () => new FirePlayerSideFanSweepAction()),
         new("Projectile/Fire Radial Emission", typeof(FireRadialEmissionAction), () => new FireRadialEmissionAction()),
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
@@ -114,7 +115,7 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
         new("Projectile/Fire Attached Projectiles", typeof(FireAttachedProjectilesAction), () => new FireAttachedProjectilesAction()),
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
         new("Projectile/Fire Player Circle", typeof(FirePlayerCircleProjectilesAction), () => new FirePlayerCircleProjectilesAction()),
-        new("Projectile/Fire Stop Then Fan", typeof(FireStopThenFanProjectilesAction), () => new FireStopThenFanProjectilesAction()),
+        new("Projectile/Arsonist/Fire Circle Orbit Attack", typeof(ArsonistCircleOrbitAttackAction), () => new ArsonistCircleOrbitAttackAction()),
         new("Projectile/Arsonist/Fire Character", typeof(ArsonistFireCharacterProjectileAction), () => new ArsonistFireCharacterProjectileAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
@@ -244,9 +245,9 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
             return "패턴 시작 시점의 플레이어 위치를 중심으로 투사체가 원을 그리며 이동합니다.";
         }
 
-        if (actionType == typeof(FireStopThenFanProjectilesAction))
+        if (actionType == typeof(ArsonistCircleOrbitAttackAction))
         {
-            return "플레이어 옆 방향으로 투사체를 보내 거리별로 정지시킨 뒤, 대기 후 보스 기준 부채꼴로 일제히 재발사합니다.";
+            return "Arsonist 전용 액션입니다. 플레이어 위치를 중심으로 기름 원을 깔고, 보스가 같은 원주를 돌며 설정한 발리를 발사합니다.";
         }
 
         if (actionType == typeof(ArsonistFireCharacterProjectileAction))
@@ -259,9 +260,19 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
             return "한 방향으로 여러 발을 연속 발사합니다. 머신건류 패턴의 발사 부분을 담당합니다.";
         }
 
+        if (actionType == typeof(FireRandomConeBurstAction))
+        {
+            return "지정한 기준 방향을 중심으로 각도 범위 안에서 매 발 무작위 방향으로 난사합니다. Origin이 보스 자식이면 자식의 오른쪽 방향을 바라보는 방향으로 사용합니다.";
+        }
+
+        if (actionType == typeof(FirePlayerSideFanSweepAction))
+        {
+            return "플레이어 왼쪽 방향에 투사체를 일렬로 배치한 뒤, 대기 후 보스 위치를 중심으로 플레이어 방향 부채꼴 원호를 동시에 휩쓸게 합니다. Player Side Angle Degrees를 음수로 두면 오른쪽 배치도 가능합니다.";
+        }
+
         if (actionType == typeof(FireRadialEmissionAction))
         {
-            return "원형 또는 부채꼴로 투사체를 방사합니다.";
+            return "원형 또는 부채꼴 투사체 방사를 Volley 목록 순서대로 실행합니다.";
         }
 
         if (actionType == typeof(FireSweepEmissionAction))
@@ -279,14 +290,9 @@ new("Projectile/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction),
             return "보스 대시 방향에 수직으로 투사체 벽을 정렬한 뒤 발사합니다. Center Offset은 총알벽 전체를 대시 방향으로 이동시키는 거리(음수면 후방)입니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
         }
 
-        if (actionType == typeof(OrbitLockedPlayerPositionAction))
-        {
-            return "패턴 시작 시점의 플레이어 위치를 중심으로 보스가 원형 이동합니다. 이동 전 대기 시간을 설정할 수 있습니다.";
-        }
-
         if (actionType == typeof(WanderAroundPlayerDistanceAction))
         {
-            return "보스가 플레이어 주변의 최소-최대 거리 안에서 자유롭게 목표점을 바꿔 이동합니다.";
+            return "보스가 플레이어 주변의 최소-최대 거리 안에서 이전 목표와 가까운 새 목표를 고르며 이동합니다.";
         }
 
         if (actionType == typeof(MoveBetweenMapPointsAction))

@@ -58,6 +58,17 @@ namespace Week14.Combat
             DrawRadialSplitIndicatorIfNeeded(hasRadialSplitPoint, radialSplitPoint);
         }
 
+        private void RefreshPathIndicator()
+        {
+            if (launched)
+            {
+                BeginPathIndicator();
+                return;
+            }
+
+            UpdatePathIndicatorPreview();
+        }
+
         private void BeginPathIndicator()
         {
             if (!ShouldShowPathIndicator())

@@ -7,9 +7,11 @@ namespace Week14.Enemy
     {
         [SerializeField] private Color oilColor = new(0.12f, 0.09f, 0.04f, 0.75f);
 
+        protected override Color HazardColor => oilColor;
+
         protected override void PlaceHazard(Vector3 position, float radius, float duration)
         {
-            Owner?.CreateOilPatch(position, radius, duration, oilColor);
+            Owner?.CreateOilPatch(position, radius, duration, HazardColor, PaintSpacing);
         }
     }
 }

@@ -309,79 +309,103 @@ namespace Week14.Enemy
     }
 
     [AddComponentMenu("")]
-    internal sealed class BossStopThenFanProjectileMotion : MonoBehaviour
+    internal sealed class BossDelayedPathProjectileMotion : MonoBehaviour
     {
         private EnemyProjectile projectile;
         private Rigidbody2D body;
-        private Vector2 initialDirection;
-        private Vector2 fanDirection;
         private Vector2 startPosition;
-        private Vector2 stopPosition;
-        private float setupSpeed;
-        private float fanSpeed;
-        private float stopDistance;
-        private bool fanLaunched;
+        private Vector2[] points;
+        private float[] cumulativeLengths;
+        private float totalLength;
+        private float waitSeconds;
+        private float durationSeconds;
+        private float elapsed;
+        private bool destroyOnComplete;
 
-        public bool HasStopped { get; private set; }
-
-        public void Initialize(Vector2 nextInitialDirection, float nextSetupSpeed, float nextStopDistance)
+        public void Initialize(
+            Vector2 nextStartPosition,
+            Vector2[] nextPoints,
+            float nextWaitSeconds,
+            float nextDurationSeconds,
+            bool nextDestroyOnComplete)
         {
             projectile = GetComponent<EnemyProjectile>();
             body = GetComponent<Rigidbody2D>();
-            initialDirection = nextInitialDirection.sqrMagnitude > 0.0001f ? nextInitialDirection.normalized : Vector2.left;
-            setupSpeed = Mathf.Max(0f, nextSetupSpeed);
-            stopDistance = Mathf.Max(0f, nextStopDistance);
-            startPosition = body != null ? body.position : (Vector2)transform.position;
-            stopPosition = startPosition;
-        }
-
-        public void BeginFanLaunch(Vector2 nextFanDirection, float nextFanSpeed)
-        {
-            fanDirection = nextFanDirection.sqrMagnitude > 0.0001f ? nextFanDirection.normalized : Vector2.left;
-            fanSpeed = Mathf.Max(0f, nextFanSpeed);
-            fanLaunched = true;
-            HasStopped = true;
+            startPosition = nextStartPosition;
+            points = nextPoints;
+            waitSeconds = Mathf.Max(0f, nextWaitSeconds);
+            durationSeconds = Mathf.Max(0.01f, nextDurationSeconds);
+            destroyOnComplete = nextDestroyOnComplete;
+            BuildLengths();
+            MoveTo(startPosition, 0f);
         }
 
         private void LateUpdate()
         {
-            if (projectile == null || PlayerCombatController.IsExecutionCinematicActive)
+            if (projectile == null || points == null || points.Length == 0 || PlayerCombatController.IsExecutionCinematicActive)
             {
                 StopBody();
                 return;
             }
 
             float deltaTime = Time.deltaTime;
-            if (fanLaunched)
+            elapsed += deltaTime;
+            if (elapsed < waitSeconds)
             {
-                MoveBy(fanDirection * fanSpeed, deltaTime);
+                MoveTo(startPosition, deltaTime);
                 return;
             }
 
-            if (HasStopped || setupSpeed <= 0f)
-            {
-                HasStopped = true;
-                MoveTo(stopPosition, deltaTime);
-                return;
-            }
+            float t = Mathf.Clamp01((elapsed - waitSeconds) / durationSeconds);
+            MoveTo(Evaluate(t), deltaTime);
 
-            Vector2 currentPosition = body != null ? body.position : (Vector2)transform.position;
-            float nextDistance = Vector2.Distance(startPosition, currentPosition) + setupSpeed * deltaTime;
-            if (nextDistance >= stopDistance)
+            if (destroyOnComplete && t >= 1f)
             {
-                stopPosition = startPosition + initialDirection * stopDistance;
-                HasStopped = true;
-                MoveTo(stopPosition, deltaTime);
-                return;
+                projectile.DestroyFromOwner();
             }
-
-            MoveBy(initialDirection * setupSpeed, deltaTime);
         }
 
-        private void MoveBy(Vector2 velocity, float deltaTime)
+        private void BuildLengths()
         {
-            Vector2 currentPosition = body != null ? body.position : (Vector2)transform.position;
-            MoveTo(currentPosition + velocity * deltaTime, deltaTime);
+            if (points == null || points.Length < 2)
+            {
+                cumulativeLengths = new[] { 0f };
+                totalLength = 0f;
+                return;
+            }
+
+            cumulativeLengths = new float[points.Length];
+            totalLength = 0f;
+            for (int i = 1; i < points.Length; i++)
+            {
+                totalLength += Vector2.Distance(points[i - 1], points[i]);
+                cumulativeLengths[i] = totalLength;
+            }
+        }
+
+        private Vector2 Evaluate(float t)
+        {
+            if (points.Length == 1 || totalLength <= 0.0001f)
+            {
+                return points[0];
+            }
+
+            float targetLength = totalLength * t;
+            for (int i = 1; i < points.Length; i++)
+            {
+                if (targetLength > cumulativeLengths[i])
+                {
+                    continue;
+                }
+
+                float segmentLength = cumulativeLengths[i] - cumulativeLengths[i - 1];
+                float segmentT = segmentLength > 0.0001f
+                    ? (targetLength - cumulativeLengths[i - 1]) / segmentLength
+                    : 1f;
+                return Vector2.Lerp(points[i - 1], points[i], segmentT);
+            }
+
+            return points[^1];
         }
 
         private void MoveTo(Vector2 position, float deltaTime)

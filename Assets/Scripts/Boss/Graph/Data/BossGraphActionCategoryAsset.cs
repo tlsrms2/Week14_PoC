@@ -84,7 +84,6 @@ namespace Week14.Enemy
                 || actionType == typeof(MoveBodyRootLocalAction)
                 || actionType == typeof(ResetBodyRootLocalAction)
                 || actionType == typeof(BossDashAction)
-                || actionType == typeof(OrbitLockedPlayerPositionAction)
                 || actionType == typeof(WanderAroundPlayerDistanceAction)
                 || actionType == typeof(MoveBetweenMapPointsAction))
             {
