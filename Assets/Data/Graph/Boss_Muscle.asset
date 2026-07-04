@@ -655,7 +655,7 @@ MonoBehaviour:
       cooldownPatternCount: 3
   - phaseIndex: 1
     selectionMode: 3
-    patternIntervalSeconds: 3
+    patternIntervalSeconds: 2
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern6
@@ -983,7 +983,7 @@ MonoBehaviour:
     toNodeId: Pattern8_A3_2
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
+  debugForceSinglePattern: 0
   debugForcedPatternId: Pattern6
   references:
     version: 2
