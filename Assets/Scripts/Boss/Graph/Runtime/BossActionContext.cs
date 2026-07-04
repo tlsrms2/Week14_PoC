@@ -142,7 +142,7 @@ namespace Week14.Enemy
 
                 if (timeoutSeconds > 0f)
                 {
-                    remaining -= Time.deltaTime;
+                    remaining -= EnemyTimeScale.DeltaTime;
                     if (remaining <= 0f)
                     {
                         yield break;
@@ -232,7 +232,7 @@ namespace Week14.Enemy
                     playerRelativeMoveSpeedCurve,
                     playerRelativeMoveElapsedSeconds,
                     playerRelativeMoveDurationSeconds);
-                playerRelativeMoveElapsedSeconds += Time.deltaTime;
+                playerRelativeMoveElapsedSeconds += EnemyTimeScale.DeltaTime;
                 if (playerRelativeMoveDurationSeconds > 0f
                     && playerRelativeMoveElapsedSeconds >= playerRelativeMoveDurationSeconds)
                 {
@@ -337,7 +337,7 @@ namespace Week14.Enemy
             // 걸리고, 그 다음 프레임에 다시 전속력으로 움직이는 식으로 멈췄다 움직였다를 반복하게 된다.
             // 남은 오차를 한 프레임이 아니라 최소 정착 시간(OvershootGuardSeconds)에 걸쳐 줄이도록
             // 속도를 캡 씌워, 오버슈트도 막고 프레임 타이밍에 예민하지 않은 부드러운 감속을 만든다.
-            float settleSeconds = Mathf.Max(Time.deltaTime, OvershootGuardSeconds);
+            float settleSeconds = Mathf.Max(EnemyTimeScale.DeltaTime, OvershootGuardSeconds);
             float appliedSpeed = Mathf.Min(desiredSpeed, absoluteDelta / settleSeconds);
 
             Boss.SetMovementVelocity(toPlayer.normalized * directionSign * appliedSpeed);
@@ -839,7 +839,7 @@ namespace Week14.Enemy
                 }
 
                 UpdateContinuousActions();
-                remaining -= Time.deltaTime;
+                remaining -= EnemyTimeScale.DeltaTime;
                 yield return null;
             }
         }

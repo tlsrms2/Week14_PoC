@@ -1073,8 +1073,8 @@ MonoBehaviour:
     toNodeId: Pattern8_A3_2
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern8
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -1229,7 +1229,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        startDelaySeconds: 1.55
+        windupSeconds: 1.55
         fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
@@ -1285,7 +1285,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        startDelaySeconds: 1.55
+        windupSeconds: 1.55
         fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
@@ -1462,6 +1462,7 @@ MonoBehaviour:
         holdSeconds: 0.7
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1550,6 +1551,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
+        windupSeconds: 0
         chargeSecondsOverride: 0.7
         fireSfxId: 
         launchSfxId: 
@@ -1634,6 +1636,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
+        windupSeconds: 0
         chargeSecondsOverride: 0.7
         fireSfxId: 
         launchSfxId: 
@@ -1905,6 +1908,7 @@ MonoBehaviour:
         holdSeconds: 0.5
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1982,6 +1986,7 @@ MonoBehaviour:
         holdSeconds: 0.5
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -2347,12 +2352,7 @@ MonoBehaviour:
         aim:
           mode: 0
           angleDegrees: 0
-        bulletCount: 40
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -2377,6 +2377,20 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 40
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 4705777899588288627
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2716,7 +2730,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        startDelaySeconds: 0.85
+        windupSeconds: 0.85
         fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
@@ -2772,7 +2786,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        startDelaySeconds: 0.75
+        windupSeconds: 0.75
         fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
@@ -2828,7 +2842,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        startDelaySeconds: 0.65
+        windupSeconds: 0.65
         fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
@@ -2884,7 +2898,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         spawnForwardOffset: 0
-        startDelaySeconds: 0.55
+        windupSeconds: 0.55
         fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
@@ -2940,6 +2954,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
+        windupSeconds: 0
         chargeSecondsOverride: 0.9
         fireSfxId: 
         launchSfxId: 
@@ -3240,6 +3255,7 @@ MonoBehaviour:
         holdSeconds: 0.9
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3317,6 +3333,7 @@ MonoBehaviour:
         holdSeconds: 0.9
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3394,6 +3411,7 @@ MonoBehaviour:
         holdSeconds: 0.7
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3471,6 +3489,7 @@ MonoBehaviour:
         holdSeconds: 0.7
         fireOrder: 0
         fireInterval: 0.05
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3522,6 +3541,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
+        windupSeconds: 0
         chargeSecondsOverride: 0.7
         fireSfxId: 
         launchSfxId: 
@@ -3670,7 +3690,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0
-        startDelaySeconds: 0
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3763,12 +3783,7 @@ MonoBehaviour:
         aim:
           mode: 0
           angleDegrees: 0
-        bulletCount: 40
-        arcDegrees: 360
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0.25
-        fireInterval: 0
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3793,6 +3808,20 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 40
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
     - rid: 4705777917832200317
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3819,12 +3848,7 @@ MonoBehaviour:
         aim:
           mode: 0
           angleDegrees: 90
-        bulletCount: 2
-        arcDegrees: 90
-        startAngleOffset: 0
-        randomizeStartAngle: 0
-        spawnRadius: 0
-        fireInterval: 0
+        windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3849,6 +3873,20 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 2
+          arcDegrees: 90
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0
+          restSeconds: 0
     - rid: 4705777917832200318
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
