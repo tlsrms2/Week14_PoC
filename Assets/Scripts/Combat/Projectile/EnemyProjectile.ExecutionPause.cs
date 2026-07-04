@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -43,7 +44,7 @@ namespace Week14.Combat
             executionPauseStartedAt = 0f;
             if (launched && body != null)
             {
-                body.linearVelocity = flightDirection * projectileSpeed;
+                body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
             }
         }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -165,7 +166,7 @@ namespace Week14.Combat
                 return;
             }
 
-            float maxRadians = homingTurnDegreesPerSecond * Mathf.Deg2Rad * Time.deltaTime;
+            float maxRadians = homingTurnDegreesPerSecond * Mathf.Deg2Rad * EnemyTimeScale.DeltaTime;
             Vector3 nextDirection = Vector3.RotateTowards(FlightDirection, toTarget.normalized, maxRadians, 0f);
             ApplyFlightDirection(nextDirection);
             if (ProjectileBody != null)

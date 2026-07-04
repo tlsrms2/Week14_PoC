@@ -133,7 +133,7 @@ namespace Week14.Enemy
             {
                 if (!context.IsExecutionPaused)
                 {
-                    waited += Time.deltaTime;
+                    waited += EnemyTimeScale.DeltaTime;
                 }
 
                 yield return null;
@@ -169,7 +169,7 @@ namespace Week14.Enemy
                     break;
                 }
 
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 

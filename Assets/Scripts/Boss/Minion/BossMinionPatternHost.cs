@@ -337,7 +337,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
         }

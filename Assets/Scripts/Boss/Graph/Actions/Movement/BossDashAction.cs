@@ -71,7 +71,7 @@ namespace Week14.Enemy
                 }
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
                 trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -88,7 +88,7 @@ namespace Week14.Enemy
                 context.Stop();
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
                 trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -111,8 +111,8 @@ namespace Week14.Enemy
                 }
 
                 float t = Mathf.Clamp01(elapsed / dashDuration);
-                context.Boss.Body.linearVelocity = dashDirection * (dashSpeed * speedCurve.Evaluate(t));
-                elapsed += Time.deltaTime;
+                context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedCurve.Evaluate(t)));
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 

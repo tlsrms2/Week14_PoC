@@ -23,7 +23,7 @@ namespace Week14.Enemy
                 }
 
                 onTick?.Invoke();
-                remaining -= Time.deltaTime;
+                remaining -= EnemyTimeScale.DeltaTime;
                 yield return null;
             }
         }

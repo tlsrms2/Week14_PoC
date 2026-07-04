@@ -32,8 +32,8 @@ namespace Week14.Enemy
                 }
 
                 context.MoveTowardPlayer(speedMultiplier, GetSpeedCurve(), elapsed, seconds);
-                remaining -= Time.deltaTime;
-                elapsed += Time.deltaTime;
+                remaining -= EnemyTimeScale.DeltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -101,7 +101,7 @@ namespace Week14.Enemy
                 }
 
                 context.MaintainPlayerDistance(distance, tolerance, speedMultiplier, GetSpeedCurve(), elapsed, duration);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -172,7 +172,7 @@ namespace Week14.Enemy
                 }
 
                 context.MoveTowardPlayer(speedMultiplier, GetSpeedCurve(), elapsed, 0f);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 

@@ -56,6 +56,13 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (body != null)
+            {
+                body.linearVelocity = direction * Mathf.Max(0f, speed) * EnemyTimeScale.Current;
+            }
+
+            destroyAt += EnemyTimeScale.DeltaTimeDebt;
+
             Vector2 currentPosition = transform.position;
             PaintSegment(previousPosition, currentPosition);
             previousPosition = currentPosition;
@@ -93,7 +100,7 @@ namespace Week14.Enemy
                 body.freezeRotation = true;
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 body.interpolation = RigidbodyInterpolation2D.Interpolate;
-                body.linearVelocity = direction * Mathf.Max(0f, speed);
+                body.linearVelocity = direction * Mathf.Max(0f, speed) * EnemyTimeScale.Current;
             }
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

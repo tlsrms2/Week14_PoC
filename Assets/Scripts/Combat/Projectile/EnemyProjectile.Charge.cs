@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -15,7 +16,7 @@ namespace Week14.Combat
 
             if (body != null)
             {
-                body.linearVelocity = flightDirection * chargeDriftSpeed;
+                body.linearVelocity = flightDirection * chargeDriftSpeed * EnemyTimeScale.Current;
             }
 
             UpdateChargeGrowth();
@@ -69,7 +70,7 @@ namespace Week14.Combat
             BeginPathIndicator();
             if (body != null)
             {
-                body.linearVelocity = flightDirection * projectileSpeed;
+                body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
             }
 
             Launched?.Invoke(this);

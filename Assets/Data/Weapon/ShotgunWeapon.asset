@@ -73,7 +73,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   activeSkill: {fileID: 0}
-  passiveSkill: {fileID: 0}
+  passiveSkill: {fileID: 11400000, guid: 528f643d25714f24a8456d3a39a9ddf2, type: 2}
   pelletStep: 7.5
   maxRange: 4
   references:
