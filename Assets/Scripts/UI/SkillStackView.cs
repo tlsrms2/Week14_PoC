@@ -8,9 +8,9 @@ namespace Week14.UI
     {
         [Tooltip("스킬 스택 비율을 아래에서 위로 채울 Image입니다.")]
         [SerializeField] private Image fillImage;
-        [Tooltip("스택이 요구치보다 낮을 때의 게이지 색상입니다.")]
+        [Tooltip("쿨타임이 아직 남았을 때의 게이지 색상입니다.")]
         [SerializeField] private Color normalColor = Color.white;
-        [Tooltip("스택이 요구치에 도달했을 때의 게이지 색상입니다.")]
+        [Tooltip("쿨타임이 끝나 사용 가능할 때의 게이지 색상입니다.")]
         [SerializeField] private Color fullColor = Color.yellow;
 
         private SkillLoadoutManager target;
@@ -68,7 +68,7 @@ namespace Week14.UI
                 return;
             }
 
-            target.StackChanged += HandleStackChanged;
+            target.CooldownChanged += HandleCooldownChanged;
         }
 
         private void Unsubscribe()
@@ -78,26 +78,26 @@ namespace Week14.UI
                 return;
             }
 
-            target.StackChanged -= HandleStackChanged;
+            target.CooldownChanged -= HandleCooldownChanged;
         }
 
-        private void HandleStackChanged(int current, int required)
+        private void HandleCooldownChanged(float remaining, float duration)
         {
-            SetFillAmount(current, required);
+            SetFillAmount(remaining, duration);
         }
 
         private void Refresh()
         {
             if (target == null)
             {
-                SetFillAmount(0, 1);
+                SetFillAmount(0f, -1f);
                 return;
             }
 
-            SetFillAmount(target.CurrentStack, target.RequiredStack);
+            SetFillAmount(target.CooldownRemaining, target.CooldownDuration);
         }
 
-        private void SetFillAmount(int current, int required)
+        private void SetFillAmount(float remaining, float duration)
         {
             if (fillImage == null)
             {
@@ -105,8 +105,18 @@ namespace Week14.UI
             }
 
             PrepareFillImage();
-            fillImage.fillAmount = Mathf.Clamp01(current / (float)Mathf.Max(1, required));
-            fillImage.color = required > 0 && current >= required ? fullColor : normalColor;
+
+            if (duration < 0f)
+            {
+                // 장착된 액티브 스킬이 없는 상태 - 게이지를 비워서 사용 불가임을 표시합니다.
+                fillImage.fillAmount = 0f;
+                fillImage.color = normalColor;
+                return;
+            }
+
+            bool ready = remaining <= 0f;
+            fillImage.fillAmount = duration > 0f ? Mathf.Clamp01(1f - (remaining / duration)) : 1f;
+            fillImage.color = ready ? fullColor : normalColor;
         }
 
         private void PrepareFillImage()

@@ -75,6 +75,7 @@ namespace Week14.Enemy
             }
 
             ResetGraphRuntime();
+            graphContext?.ClearPatternScopedBossChildAims();
             graphContext?.ResetBodyRootLocalOffset();
             graphContext = null;
         }

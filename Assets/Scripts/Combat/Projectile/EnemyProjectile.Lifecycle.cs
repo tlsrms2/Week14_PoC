@@ -26,7 +26,7 @@ namespace Week14.Combat
             int existingInterceptGroupId)
         {
             projectileSpeed = speed;
-            projectileLifetime = lifetime;
+            projectileLifetime = Mathf.Max(0f, ResolveProjectileLifetime(lifetime));
             projectileRadius = radius;
             projectileChargeSeconds = Mathf.Max(0f, chargeSeconds);
             projectileTrailSeconds = Mathf.Max(0.025f, trailSeconds);
@@ -78,7 +78,7 @@ namespace Week14.Combat
             lastWallCheckPosition = transform.position;
             chargeEndsAt = Time.time + projectileChargeSeconds;
             float launchTime = launched ? Time.time : chargeEndsAt;
-            destroyAt = launchTime + lifetime;
+            destroyAt = launchTime + projectileLifetime;
             ConfigureHoming(enableHoming, homingSeconds, nextHomingTurnDegrees, launchTime);
 
             if (body == null)
@@ -93,7 +93,7 @@ namespace Week14.Combat
                 body.freezeRotation = true;
                 body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 body.interpolation = RigidbodyInterpolation2D.Interpolate;
-                body.linearVelocity = launched ? flightDirection * projectileSpeed : Vector2.zero;
+                body.linearVelocity = launched ? flightDirection * projectileSpeed * EnemyTimeScale.Current : Vector2.zero;
             }
 
             if (launched)
@@ -124,6 +124,7 @@ namespace Week14.Combat
             }
 
             ResumeFromExecutionPause();
+            ApplyEnemyTimeScaleDeadlineCompensation();
             TickParryLockOnIndicator();
             OnProjectileTick();
             if (isDestroying)
@@ -144,6 +145,10 @@ namespace Week14.Combat
                 }
 
                 TickHoming();
+                if (body != null)
+                {
+                    body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
+                }
                 TickRadialSplitDelay();
                 TickPathIndicator();
                 lastWallCheckPosition = transform.position;
@@ -152,6 +157,29 @@ namespace Week14.Combat
             {
                 DestroyProjectile(EnemyProjectileDestroyReason.Expired);
             }
+        }
+
+        private void ApplyEnemyTimeScaleDeadlineCompensation()
+        {
+            float timeDebt = EnemyTimeScale.DeltaTimeDebt;
+            if (timeDebt <= 0f)
+            {
+                return;
+            }
+
+            destroyAt += timeDebt;
+            chargeEndsAt += timeDebt;
+            if (radialSplitAt > 0f)
+            {
+                radialSplitAt += timeDebt;
+            }
+
+            if (pathIndicatorEndsAt > 0f)
+            {
+                pathIndicatorEndsAt += timeDebt;
+            }
+
+            ExtendSpecialTimers(timeDebt);
         }
         protected virtual void OnProjectileAwake() { }
         protected virtual void OnProjectileInitialized() { }

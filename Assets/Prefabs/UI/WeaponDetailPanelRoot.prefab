@@ -410,6 +410,7 @@ MonoBehaviour:
   maxAmmoText: {fileID: 7678857052288120353}
   parryingRangeText: {fileID: 1660918311769269170}
   bulletDamageText: {fileID: 5100278829526065074}
+  bulletDamageDisplay: {fileID: 0}
   iconImage: {fileID: 0}
   anchorOffset: {x: -157.9, y: -197}
   screenEdgePadding: 8
@@ -633,7 +634,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4702408712909218800, guid: 398165dab765c3b4fa6f5720b2169a1b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 398165dab765c3b4fa6f5720b2169a1b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

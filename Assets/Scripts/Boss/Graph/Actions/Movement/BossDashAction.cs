@@ -49,6 +49,10 @@ namespace Week14.Enemy
             Vector2 dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
 
             BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx();
+            if (trajectoryVfx != null)
+            {
+                context.RegisterTransientVisual(trajectoryVfx.gameObject);
+            }
 
             // 추적 페이즈
             while (elapsed < trackDuration)
@@ -67,7 +71,7 @@ namespace Week14.Enemy
                 }
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
                 trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -84,12 +88,13 @@ namespace Week14.Enemy
                 context.Stop();
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
                 trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
             if (trajectoryVfx != null)
             {
+                context.UnregisterTransientVisual(trajectoryVfx.gameObject);
                 UnityEngine.Object.Destroy(trajectoryVfx.gameObject);
             }
 
@@ -106,8 +111,8 @@ namespace Week14.Enemy
                 }
 
                 float t = Mathf.Clamp01(elapsed / dashDuration);
-                context.Boss.Body.linearVelocity = dashDirection * (dashSpeed * speedCurve.Evaluate(t));
-                elapsed += Time.deltaTime;
+                context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedCurve.Evaluate(t)));
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 

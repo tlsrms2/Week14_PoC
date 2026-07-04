@@ -352,9 +352,10 @@ namespace Week14.Enemy
                 return;
             }
 
+            Vector2 scaledVelocity = velocity * EnemyTimeScale.Current;
             body.linearVelocity = BossCanFlyOverGround
-                ? velocity
-                : GroundMovementConstraint.ClampVelocity(body, velocity, groundProbeColliders);
+                ? scaledVelocity
+                : GroundMovementConstraint.ClampVelocity(body, scaledVelocity, groundProbeColliders);
         }
 
         public void Stop()

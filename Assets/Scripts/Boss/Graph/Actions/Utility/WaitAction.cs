@@ -54,7 +54,7 @@ namespace Week14.Enemy
 
                 Vector3 origin = originSpec.GetAimOrigin(context, 0);
                 context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
         }

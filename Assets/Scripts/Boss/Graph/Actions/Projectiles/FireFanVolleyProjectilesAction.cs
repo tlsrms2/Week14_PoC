@@ -17,6 +17,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float volleyInterval = 0.18f;
         [SerializeField, Range(0f, 180f)] private float fanAngleDegrees = 42f;
         [SerializeField, Min(0f)] private float spawnSpacing = 0.16f;
+        [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -26,6 +27,11 @@ namespace Week14.Enemy
             if (context == null)
             {
                 yield break;
+            }
+
+            if (windupSeconds > 0f)
+            {
+                yield return context.WaitSeconds(windupSeconds);
             }
 
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();

@@ -365,6 +365,17 @@ internal static class BossGraphValidationUtility
                 RequireString(action, "projectileName", label, messages);
                 ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
                 break;
+            case FireRandomConeBurstAction:
+                RequireString(action, "projectileName", label, messages);
+                ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
+                break;
+            case FirePlayerSideFanSweepAction:
+                RequireString(action, "projectileName", label, messages);
+                break;
+            case ArsonistCircleOrbitAttackAction:
+                RequireString(action, "circleProjectileName", label, messages);
+                RequireArrayNotEmpty(action, "attackVolleys", label, messages);
+                break;
             case MinionRepeatFireAction:
             case MinionRadialBurstAction:
                 RequireArrayNotEmpty(action, "volleyGroups", label, messages);
@@ -374,6 +385,10 @@ internal static class BossGraphValidationUtility
                 RequireString(action, "projectileName", label, messages);
                 break;
             case FireRadialEmissionAction:
+                RequireArrayNotEmpty(action, "volleys", label, messages);
+                RequireString(action, "projectileName", label, messages);
+                ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
+                break;
             case FireSweepEmissionAction:
             case FireFanEmissionAction:
                 RequireString(action, "projectileName", label, messages);

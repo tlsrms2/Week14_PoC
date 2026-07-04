@@ -816,7 +816,7 @@ namespace Week14.Enemy
                 transform.localScale = Vector3.Lerp(authoredScale * Mathf.Max(0f, startScale), authoredScale, eased);
                 RotateToDirection(targetPosition - startPosition);
                 StopBody();
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -861,8 +861,8 @@ namespace Week14.Enemy
                     break;
                 }
 
-                angle += signedSpeed * Time.deltaTime;
-                travelled += Mathf.Abs(signedSpeed * Time.deltaTime);
+                angle += signedSpeed * EnemyTimeScale.DeltaTime;
+                travelled += Mathf.Abs(signedSpeed * EnemyTimeScale.DeltaTime);
                 Vector2 center = useStartPlayerPosition ? startCenter : (Vector2)player.position;
                 Vector2 target = center + AngleToDirection(angle) * radius;
                 BeginOrbitMovementPathIndicator(center, radius);
@@ -895,7 +895,7 @@ namespace Week14.Enemy
                 }
 
                 TickWander(wanderSpeed, wanderRadius, wanderRetargetSeconds);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -960,7 +960,7 @@ namespace Week14.Enemy
 
                 SetVelocity(direction.normalized * Mathf.Max(0f, dashSpeed));
                 TickMovementPathIndicator(transform.position);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -1032,7 +1032,7 @@ namespace Week14.Enemy
                     nextFireAt += interval;
                 }
 
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -1086,7 +1086,7 @@ namespace Week14.Enemy
                 }
 
                 StopBody();
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -1314,7 +1314,7 @@ namespace Week14.Enemy
                 SetPatternPosition(target);
                 TickMovementPathIndicator(transform.position);
 
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -1348,7 +1348,7 @@ namespace Week14.Enemy
 
                 float t = Mathf.Clamp01(elapsed / moveToStartSeconds);
                 SetPatternPosition(Vector2.Lerp(start, target, t), true);
-                elapsed += Time.deltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -1505,6 +1505,7 @@ namespace Week14.Enemy
 
         private void TickWander(float wanderSpeed, float wanderRadius, float wanderRetargetSeconds)
         {
+            nextWanderRetargetAt += EnemyTimeScale.DeltaTimeDebt;
             if (Time.time >= nextWanderRetargetAt || Vector2.Distance(transform.position, wanderTarget) < 0.2f)
             {
                 wanderTarget = spawnPosition + Random.insideUnitCircle * Mathf.Max(0.1f, wanderRadius);
@@ -1530,9 +1531,10 @@ namespace Week14.Enemy
         {
             if (body != null)
             {
+                Vector2 scaledVelocity = velocity * EnemyTimeScale.Current;
                 body.linearVelocity = CanFlyOverGround()
-                    ? velocity
-                    : GroundMovementConstraint.ClampVelocity(body, velocity, colliders);
+                    ? scaledVelocity
+                    : GroundMovementConstraint.ClampVelocity(body, scaledVelocity, colliders);
             }
         }
 
@@ -1584,7 +1586,7 @@ namespace Week14.Enemy
 
             SetPlayerCollisionIgnored(true);
             Vector2 current = transform.position;
-            float maxDistance = Mathf.Max(0f, moveSpeed) * Time.deltaTime;
+            float maxDistance = Mathf.Max(0f, moveSpeed) * EnemyTimeScale.DeltaTime;
             if (maxDistance <= 0f)
             {
                 lockedToPattern = true;
@@ -2003,7 +2005,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                remaining -= Time.deltaTime;
+                remaining -= EnemyTimeScale.DeltaTime;
                 yield return null;
             }
         }

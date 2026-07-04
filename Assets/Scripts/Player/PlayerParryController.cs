@@ -36,7 +36,7 @@ namespace Week14.Combat
             PlayParryImpact(position, Vector2.right);
         }
 
-        internal void PlayParryImpact(Vector3 position, Vector2 direction)
+        internal void PlayParryImpact(Vector3 position, Vector2 direction, bool restoreBullets = true)
         {
             PlayerCombatConfig config = context.Config;
             BulletGauge bullets = context.Bullets;
@@ -45,7 +45,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (bullets != null && bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry))
+            if (restoreBullets && bullets != null && bullets.Restore(config.ParryBulletRecovery, BulletChangeSource.Parry))
             {
                 PlayerBulletAudio.PlayBulletRestoreSfx(bullets.CurrentBullets, bullets.MaxBullets);
             }
@@ -117,7 +117,7 @@ namespace Week14.Combat
                     continue;
                 }
 
-                if (ExecuteParry(target, playSfx: false))
+                if (ExecuteParry(target, playSfx: false, restoreBulletsOnParry: false))
                 {
                     PlayerDashVfx.PlayProjectileAbsorb(
                         context.CoroutineHost,
@@ -149,7 +149,7 @@ namespace Week14.Combat
             return true;
         }
 
-        private bool ExecuteParry(EnemyProjectile target, bool playSfx = true)
+        private bool ExecuteParry(EnemyProjectile target, bool playSfx = true, bool restoreBulletsOnParry = true)
         {
             PlayerCombatConfig config = context.Config;
             Transform fireOrigin = GetParryFireOrigin();
@@ -178,7 +178,9 @@ namespace Week14.Combat
                 0,
                 config.ParryEffectColor,
                 false,
-                true);
+                true,
+                isSkillShot: false,
+                restoresBulletsOnParry: restoreBulletsOnParry);
             if (parryShot == null)
             {
                 target.CancelInterceptReservation();

@@ -12,9 +12,11 @@ namespace Week14.Enemy
         private PlayerCombatController player;
         private float expiresAt;
         private float trailInterval;
+        private float trailRadius;
         private float trailMinDistance;
         private float nextTrailAt;
         private Vector3 lastTrailPosition;
+        private Color oilColor;
         private bool initialized;
 
         public PlayerCombatController Player => player;
@@ -22,15 +24,19 @@ namespace Week14.Enemy
         public void Configure(
             ArsonistBossAI nextOwner,
             PlayerCombatController nextPlayer,
+            Color nextOilColor,
             float duration,
             float nextTrailInterval,
-            float nextTrailMinDistance)
+            float nextTrailRadius,
+            float nextTrailSpacing)
         {
             owner = nextOwner;
             player = nextPlayer;
+            oilColor = nextOilColor;
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             trailInterval = Mathf.Max(0.01f, nextTrailInterval);
-            trailMinDistance = Mathf.Max(0.01f, nextTrailMinDistance);
+            trailRadius = Mathf.Max(0.05f, nextTrailRadius);
+            trailMinDistance = Mathf.Max(0.01f, nextTrailSpacing);
             if (!initialized)
             {
                 initialized = true;
@@ -69,6 +75,19 @@ namespace Week14.Enemy
                 <= maxDistance * maxDistance;
         }
 
+        public void IgniteFromOilPatch()
+        {
+            if (!initialized)
+            {
+                return;
+            }
+
+            initialized = false;
+            trailPatches.Clear();
+            owner?.ApplyBurn(player);
+            Destroy(this);
+        }
+
         private void Update()
         {
             if (!initialized || owner == null || player == null || player.Health == null || player.Health.IsDead)
@@ -94,7 +113,12 @@ namespace Week14.Enemy
                 return;
             }
 
-            ArsonistOilPatch patch = owner.CreateOilTrailPatch(transform.position, player);
+            ArsonistOilPatch patch = owner.CreateOilTrailPatch(
+                transform.position,
+                player,
+                oilColor,
+                trailRadius,
+                trailMinDistance);
             AddTrailPatch(patch);
             lastTrailPosition = transform.position;
             nextTrailAt = Time.time + trailInterval;

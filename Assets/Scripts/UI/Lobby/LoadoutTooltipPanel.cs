@@ -72,7 +72,7 @@ namespace Week14.UI
 
             if (requiredStackText != null)
             {
-                requiredStackText.text = $"필요 스택: {skill.RequiredStack}";
+                requiredStackText.text = $"쿨타임: {skill.CooldownSeconds}초";
             }
 
             if (iconImage != null)

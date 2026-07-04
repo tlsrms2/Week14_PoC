@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -68,7 +69,7 @@ namespace Week14.Combat
             replacement.BeginPathIndicator();
             if (replacement.body != null)
             {
-                replacement.body.linearVelocity = replacement.flightDirection * replacement.projectileSpeed;
+                replacement.body.linearVelocity = replacement.flightDirection * replacement.projectileSpeed * EnemyTimeScale.Current;
             }
 
             replacement.Launched?.Invoke(replacement);
