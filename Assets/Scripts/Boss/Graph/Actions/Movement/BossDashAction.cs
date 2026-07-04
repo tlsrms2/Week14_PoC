@@ -49,6 +49,10 @@ namespace Week14.Enemy
             Vector2 dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
 
             BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx();
+            if (trajectoryVfx != null)
+            {
+                context.RegisterTransientVisual(trajectoryVfx.gameObject);
+            }
 
             // 추적 페이즈
             while (elapsed < trackDuration)
@@ -90,6 +94,7 @@ namespace Week14.Enemy
 
             if (trajectoryVfx != null)
             {
+                context.UnregisterTransientVisual(trajectoryVfx.gameObject);
                 UnityEngine.Object.Destroy(trajectoryVfx.gameObject);
             }
 

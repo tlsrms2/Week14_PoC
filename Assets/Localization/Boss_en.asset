@@ -46,6 +46,18 @@ MonoBehaviour:
     m_Localized: Conductor
     m_Metadata:
       m_Items: []
+  - m_Id: 1036685002768384
+    m_Localized: Security Director
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036872689483776
+    m_Localized: 'Danger: 2'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036882034393088
+    m_Localized: Preparing update.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
