@@ -25,7 +25,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225195
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: 51}
   - nodeId: Node1
     nodeGuid: 8be623fe70134e86a5718bfa00394cb7
     nodeKind: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225179
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: -104}
   - nodeId: Node1_Copy1
     nodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     nodeKind: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225181
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 187, y: -104}
   - nodeId: Node1_Copy2
     nodeGuid: 23069c19801242dda0a90b4e84e5a83a
     nodeKind: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225183
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 530, y: -104}
   - nodeId: Node2_Copy1_Copy1
     nodeGuid: f9701f9af2504cd3abc337a964d3d8ab
     nodeKind: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225197
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 124, y: 74}
   - nodeId: Node2_Copy1_Copy2
     nodeGuid: 86d98a8e5878447097ee858f98d2f1dc
     nodeKind: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225198
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 530, y: 62}
   - nodeId: Node3
     nodeGuid: 442b7f6c09ca4411a6b2017755639bda
     nodeKind: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917022
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -148, y: 238}
   - nodeId: Node1_Copy3
     nodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     nodeKind: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917013
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -17, y: 238}
   - nodeId: Node4
     nodeGuid: 9052884a28bd4972abf00ddf436b845b
     nodeKind: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634125
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -7, y: 376}
   - nodeId: Node3_Copy1_Copy1
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705777894816219217
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -7, y: -104}
   - nodeId: Node3_Copy1_Copy2
     nodeGuid: ca7bb0279b08489da9d9b138d5955278
     nodeKind: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705777894816219218
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 342, y: -104}
   - nodeId: Node2
     nodeGuid: dbd1b9f57dc34140b36f7939ff09a3b0
     nodeKind: 3
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288588
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -91, y: -222}
   - nodeId: Node2_Copy2
     nodeGuid: 24cc188b75c845e18299a66848b8ea06
     nodeKind: 3
@@ -133,7 +133,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288589
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 232, y: -239}
   - nodeId: Node5
     nodeGuid: b283cca93e0f4171b4ab5f011cda833e
     nodeKind: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288590
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 6, y: 580}
   - nodeId: Node6
     nodeGuid: dd2c409e76354ed08de7552b29dfee4e
     nodeKind: 1
@@ -151,7 +151,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288593
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: 580}
   - nodeId: Node5_Copy1
     nodeGuid: 7868165e9ab04f82a2183ccf567263c9
     nodeKind: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288594
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 530, y: 580}
   - nodeId: Node7
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
@@ -169,7 +169,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288596
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 187, y: 580}
   - nodeId: Node6_Copy1
     nodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     nodeKind: 1
@@ -178,7 +178,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288602
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 342, y: 580}
   - nodeId: Node3_Copy2
     nodeGuid: f9067e3ab9cd4c118f62347c84af469f
     nodeKind: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288603
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: 765}
   - nodeId: Node1_Copy3_Copy2
     nodeGuid: febd09203906470486d228f80fc19c01
     nodeKind: 1
@@ -196,7 +196,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288604
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 19, y: 765}
   - nodeId: Node1_Copy3_Copy1_Copy1
     nodeGuid: a6d837d55c884ba583edce60f2ae0e5f
     nodeKind: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288605
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 424, y: 765}
   - nodeId: Node3_Copy1_Copy3
     nodeGuid: 062ef5e90ce8471c9058edbc8d18e523
     nodeKind: 1
@@ -214,7 +214,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288619
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 229, y: 765}
   - nodeId: Node4_Copy2
     nodeGuid: a1f246c7ac574f8990fc4a0ca8fb83c8
     nodeKind: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288607
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 19, y: 920}
   - nodeId: Node4_Copy2_Copy1
     nodeGuid: f2e6bdaa9564427d8772f2ec8da7cc27
     nodeKind: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288609
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 424, y: 920}
   - nodeId: Node1_Copy3_Copy2_Copy1
     nodeGuid: 25beafe770334374b83e7b18a4dee9ce
     nodeKind: 1
@@ -241,7 +241,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288620
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 42, y: 1087}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy1
     nodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     nodeKind: 1
@@ -250,7 +250,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288621
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 271, y: 1087}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy2
     nodeGuid: 8f62d2ec9fdc4384b6871602c338b0e3
     nodeKind: 1
@@ -259,7 +259,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288622
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 542, y: 1087}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy3
     nodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
     nodeKind: 1
@@ -268,7 +268,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288623
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 814, y: 1087}
   - nodeId: Node8
     nodeGuid: 9aca0817834c4c7891e79f35869aba73
     nodeKind: 3
@@ -277,7 +277,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288624
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 1093, y: 1087}
   - nodeId: Node9
     nodeGuid: c517f9f56605491eb81eb6a799a8cd60
     nodeKind: 0
@@ -286,7 +286,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288626
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 1255, y: 1087}
   - nodeId: Node6_Copy2
     nodeGuid: b4288a57c12f4d029fbdd02df164a32e
     nodeKind: 1
@@ -295,7 +295,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288627
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -142, y: 1087}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy4
     nodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     nodeKind: 1
@@ -304,7 +304,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200267
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 95, y: 1277}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy1_Copy1
     nodeGuid: 30cd97d6b32c40778ee567e351bf4cc9
     nodeKind: 1
@@ -313,7 +313,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200268
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 387, y: 1277}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy2_Copy1
     nodeGuid: d79fb59e26364649a80c98c326ad044d
     nodeKind: 1
@@ -322,7 +322,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200269
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 694, y: 1277}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy3_Copy1
     nodeGuid: 32166bb39f414bbbad5793c88c365ad4
     nodeKind: 1
@@ -331,7 +331,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200270
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 1022, y: 1277}
   - nodeId: Node6_Copy2_Copy1
     nodeGuid: 45b3ee192e41440f9f4eb924fc903862
     nodeKind: 1
@@ -340,7 +340,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200273
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -136, y: 1288}
   - nodeId: Node2_Copy1_Copy3
     nodeGuid: 69cd2eab21304708aa6edc12de730d30
     nodeKind: 0
@@ -349,7 +349,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200274
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 100, y: 1417}
   - nodeId: Node2_Copy1_Copy3_Copy1
     nodeGuid: d43b737f69114464a386a87607407c56
     nodeKind: 0
@@ -358,7 +358,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200278
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 391, y: 1428}
   - nodeId: Node2_Copy1_Copy3_Copy2
     nodeGuid: 2e53978eb2b0423893235d651601d4a9
     nodeKind: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200279
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 698, y: 1443}
   - nodeId: Node2_Copy1_Copy3_Copy3
     nodeGuid: 829650b15d2d48db996405b243c105a4
     nodeKind: 0
@@ -376,7 +376,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200280
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 1022, y: 1443}
   - nodeId: Node5_Copy2
     nodeGuid: bd1d0c8d399740698d2d32680eafe6cd
     nodeKind: 0
@@ -385,7 +385,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200281
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 1351, y: 1428}
   - nodeId: Node6_Copy3
     nodeGuid: 9d360200b2194cc4830bccdd7e622e9d
     nodeKind: 1
@@ -394,7 +394,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200282
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 1342, y: 1277}
   - nodeId: Node3_Copy2_Copy1
     nodeGuid: de96c4c233b94f6db624c65fe92ce58f
     nodeKind: 1
@@ -403,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200289
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: -136, y: 1610}
   - nodeId: Node1_Copy3_Copy2_Copy2
     nodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
     nodeKind: 1
@@ -412,7 +412,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200290
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 58, y: 1610}
   - nodeId: Node1_Copy3_Copy1_Copy1_Copy1
     nodeGuid: c6ac1ac2a9474011b93e8e5ae34ec231
     nodeKind: 1
@@ -421,7 +421,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200291
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 540, y: 1610}
   - nodeId: Node3_Copy1_Copy3_Copy1
     nodeGuid: b7708a519d25435795fc32fe065e3fef
     nodeKind: 1
@@ -430,7 +430,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200292
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 306, y: 1610}
   - nodeId: Node4_Copy2_Copy2
     nodeGuid: 2790ba62d4a04942b2e6089138b6d8e0
     nodeKind: 0
@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200293
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 58, y: 1764}
   - nodeId: Node4_Copy2_Copy1_Copy1
     nodeGuid: e6528c576f7343e79db7d3ab871e2ebb
     nodeKind: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200294
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 550, y: 1764}
   - nodeId: Node4_Copy3
     nodeGuid: f1d7e09b75f34285b1abae2082197aa2
     nodeKind: 0
@@ -457,7 +457,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200295
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 58, y: 1924}
   - nodeId: Node4_Copy1_Copy1
     nodeGuid: c8790027682c4d84b315defd05121b9c
     nodeKind: 0
@@ -466,7 +466,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200296
     sequences: []
-    editorPosition: {x: 0, y: 0}
+    editorPosition: {x: 550, y: 1902}
   patterns:
   - patternId: Pattern1
     nodeGuids:
