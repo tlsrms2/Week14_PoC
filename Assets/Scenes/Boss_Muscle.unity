@@ -2471,7 +2471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.WeaponLoadoutManager
   database: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
-  defaultWeapon: {fileID: 11400000, guid: 2bf6afb4ebac7f945a335649b3c70755, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: 78968c280a3232e478be7e46610c5bb4, type: 2}
   forceDefaultWeapon: 1
 --- !u!4 &1626476258
 Transform:
@@ -4846,7 +4846,7 @@ MonoBehaviour:
   displayName: "\uACBD\uD638\uC2E4\uC7A5"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
-  maxHp: 200
+  maxHp: 150
   hpEmptyExecutionSeconds: 5
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.08

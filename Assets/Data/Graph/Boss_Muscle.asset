@@ -983,8 +983,8 @@ MonoBehaviour:
     toNodeId: Pattern8_A3_2
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern8
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:
@@ -1460,7 +1460,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
-        chargeSecondsOverride: 1.5
+        chargeSecondsOverride: 0.7
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1544,7 +1544,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
-        chargeSecondsOverride: 1.5
+        chargeSecondsOverride: 0.7
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -2850,7 +2850,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
-        chargeSecondsOverride: 1
+        chargeSecondsOverride: 0.9
         fireSfxId: 
         launchSfxId: 
         effects:
