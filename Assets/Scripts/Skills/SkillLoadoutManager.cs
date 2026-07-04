@@ -22,21 +22,24 @@ namespace Week14.Skills
         private static SkillLoadoutManager instance;
 
         private readonly Dictionary<SkillSlot, BaseSkillSO> equippedSkills = new();
-        private int currentStack;
+        private float cooldownRemaining;
 
         public static SkillLoadoutManager Instance => instance;
 
-        public event Action<int, int> StackChanged;
+        public event Action<float, float> CooldownChanged;
         public event Action<SkillSlot, BaseSkillSO> SkillEquipped;
         public event Action<SkillSlot, BaseSkillSO> SkillUsed;
 
-        public int CurrentStack => currentStack;
-        public int RequiredStack
+        public float CooldownRemaining => cooldownRemaining;
+
+        // 액티브 스킬이 장착되어 있지 않을 때는 -1을 반환합니다.
+        // (0을 쓰면 "쿨타임 0초짜리 스킬이 준비됨"과 "장착된 스킬이 없음"을 구분할 수 없기 때문)
+        public float CooldownDuration
         {
             get
             {
                 BaseSkillSO skill = GetEquippedSkill(ActiveSlot);
-                return skill != null ? Mathf.Max(1, skill.RequiredStack) : 1;
+                return skill != null ? skill.CooldownSeconds : -1f;
             }
         }
 
@@ -58,18 +61,18 @@ namespace Week14.Skills
 
         private void OnEnable()
         {
-            PlayerProjectile.NormalAttackDamageDealt += HandleNormalAttackDamageDealt;
             SceneManager.sceneLoaded += HandleSceneLoaded;
         }
 
         private void OnDisable()
         {
-            PlayerProjectile.NormalAttackDamageDealt -= HandleNormalAttackDamageDealt;
             SceneManager.sceneLoaded -= HandleSceneLoaded;
         }
 
         private void Update()
         {
+            TickCooldown(Time.deltaTime);
+
             if (GameInput.UseSkillDown)
             {
                 TryUseSkill(ActiveSlot);
@@ -102,8 +105,7 @@ namespace Week14.Skills
             equippedSkills[slot] = skill;
             if (slot == ActiveSlot)
             {
-                currentStack = 0;
-                StackChanged?.Invoke(currentStack, skill.RequiredStack);
+                ResetCooldown();
             }
 
             GameSaveManager.SetEquippedSkillId((int)slot, skillId);
@@ -111,21 +113,19 @@ namespace Week14.Skills
             return true;
         }
 
-        public void SetWeaponSkills(BaseSkillSO[] skills)
+        public void SetWeaponSkill(BaseSkillSO skill)
         {
-            equippedSkills.Clear();
-            if (skills != null)
+            if (skill != null)
             {
-                SkillSlot[] slots = (SkillSlot[])Enum.GetValues(typeof(SkillSlot));
-                for (int i = 0; i < skills.Length && i < slots.Length; i++)
-                {
-                    if (skills[i] == null) continue;
-                    equippedSkills[slots[i]] = skills[i];
-                    SkillEquipped?.Invoke(slots[i], skills[i]);
-                }
+                equippedSkills[ActiveSlot] = skill;
+            }
+            else
+            {
+                equippedSkills.Remove(ActiveSlot);
             }
 
-            ResetStack();
+            SkillEquipped?.Invoke(ActiveSlot, skill);
+            ResetCooldown();
         }
 
         public bool UnequipSkill(SkillSlot slot)
@@ -137,8 +137,7 @@ namespace Week14.Skills
 
             if (slot == ActiveSlot)
             {
-                currentStack = 0;
-                StackChanged?.Invoke(currentStack, 1);
+                ResetCooldown();
             }
 
             GameSaveManager.SetEquippedSkillId((int)slot, null);
@@ -153,62 +152,41 @@ namespace Week14.Skills
                 return false;
             }
 
-            if (currentStack < skill.RequiredStack)
+            if (cooldownRemaining > 0f)
             {
                 return false;
             }
 
-            currentStack -= skill.RequiredStack;
+            cooldownRemaining = skill.CooldownSeconds;
             GameObject user = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : gameObject;
             skill.Execute(user);
             SkillUsed?.Invoke(slot, skill);
-            StackChanged?.Invoke(currentStack, skill.RequiredStack);
+            CooldownChanged?.Invoke(cooldownRemaining, skill.CooldownSeconds);
             return true;
-        }
-
-        private void HandleNormalAttackDamageDealt(int damage)
-        {
-            AddStack(ActiveSlot, damage);
         }
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            ResetStack();
+            ResetCooldown();
         }
 
-        private void ResetStack()
+        private void TickCooldown(float deltaTime)
         {
-            if (currentStack == 0)
+            if (cooldownRemaining <= 0f)
             {
                 return;
             }
 
-            currentStack = 0;
+            cooldownRemaining = Mathf.Max(0f, cooldownRemaining - deltaTime);
             BaseSkillSO skill = GetEquippedSkill(ActiveSlot);
-            StackChanged?.Invoke(currentStack, skill != null ? skill.RequiredStack : 0);
+            CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
         }
 
-        private void AddStack(SkillSlot slot, int amount)
+        private void ResetCooldown()
         {
-            if (amount <= 0)
-            {
-                return;
-            }
-
-            if (!equippedSkills.TryGetValue(slot, out BaseSkillSO skill) || skill == null)
-            {
-                return;
-            }
-
-            int requiredStack = Mathf.Max(1, skill.RequiredStack);
-            int nextStack = Mathf.Min(requiredStack, currentStack + amount);
-            if (nextStack == currentStack)
-            {
-                return;
-            }
-
-            currentStack = nextStack;
-            StackChanged?.Invoke(currentStack, requiredStack);
+            cooldownRemaining = 0f;
+            BaseSkillSO skill = GetEquippedSkill(ActiveSlot);
+            CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
         }
 
         private void EquipDefaultTestSkillIfNeeded()
@@ -224,15 +202,14 @@ namespace Week14.Skills
             }
 
             equippedSkills[ActiveSlot] = defaultTestSkill;
-            currentStack = 0;
-            StackChanged?.Invoke(currentStack, defaultTestSkill.RequiredStack);
+            ResetCooldown();
             SkillEquipped?.Invoke(ActiveSlot, defaultTestSkill);
         }
 
         private void LoadEquippedSkills()
         {
             equippedSkills.Clear();
-            currentStack = 0;
+            cooldownRemaining = 0f;
 
             if (forceDefaultTestSkill)
             {

@@ -27,6 +27,7 @@ namespace Week14.Combat
         private bool canDamageHealth;
         private bool canClashWithEnemyProjectile;
         private bool isSkillShot;
+        private bool restoresBulletsOnParry = true;
         private bool resolved;
         private bool isDestroying;
 
@@ -42,7 +43,8 @@ namespace Week14.Combat
             Color color,
             bool canDamageHealth,
             bool canClashWithEnemyProjectile = false,
-            bool isSkillShot = false)
+            bool isSkillShot = false,
+            bool restoresBulletsOnParry = true)
         {
             if (prefab == null)
             {
@@ -62,7 +64,8 @@ namespace Week14.Combat
                     color,
                     canDamageHealth,
                     canClashWithEnemyProjectile,
-                    isSkillShot))
+                    isSkillShot,
+                    restoresBulletsOnParry))
             {
                 Destroy(projectile.gameObject);
                 return null;
@@ -86,7 +89,8 @@ namespace Week14.Combat
             Color color,
             bool nextCanDamageHealth,
             bool nextCanClashWithEnemyProjectile,
-            bool nextIsSkillShot)
+            bool nextIsSkillShot,
+            bool nextRestoresBulletsOnParry = true)
         {
             owner = nextOwner;
             projectileSpeed = speed;
@@ -95,6 +99,7 @@ namespace Week14.Combat
             canDamageHealth = nextCanDamageHealth;
             canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
             isSkillShot = nextIsSkillShot;
+            restoresBulletsOnParry = nextRestoresBulletsOnParry;
             destroyAt = Time.time + lifetime;
             previousPosition = transform.position;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
@@ -437,7 +442,7 @@ namespace Week14.Combat
 
             if (parried)
             {
-                owner?.PlayParryImpact(impactPosition, incomingDirection);
+                owner?.PlayParryImpact(impactPosition, incomingDirection, restoresBulletsOnParry);
             }
 
             DestroyByClash();

@@ -40,8 +40,10 @@ namespace Week14.Weapons
         [SerializeField] private LocalizedString localizedParryingRangeTooltipText;
         [SerializeField] private string bulletDamageTooltipTextFormat;
         [SerializeField] private LocalizedString localizedBulletDamageTooltipText;
-        [Tooltip("이 총기를 장착했을 때 자동으로 장착되는 스킬입니다. 슬롯 순서대로 SkillSlot에 할당됩니다.")]
-        [SerializeField] private BaseSkillSO[] skills;
+        [Tooltip("이 총기를 장착했을 때 자동으로 장착되는 액티브 스킬입니다. 비워두면 액티브 스킬 없는 무기가 됩니다.")]
+        [SerializeField] private BaseSkillSO activeSkill;
+        [Tooltip("이 총기를 장착하는 동안 지속 적용되는 패시브 스킬입니다. 비워두면 패시브 효과 없는 무기가 됩니다.")]
+        [SerializeField] private BasePassiveSkillSO passiveSkill;
 
         public string WeaponId => weaponId;
         public string DisplayName => displayName;
@@ -71,7 +73,8 @@ namespace Week14.Weapons
         public LocalizedString LocalizedBulletDamageTooltipText => localizedBulletDamageTooltipText;
         public bool HasLocalizedBulletDamageTooltipText => HasLocalizedString(localizedBulletDamageTooltipText);
         public object[] BulletDamageTooltipArguments => new object[] { BulletDamageSequenceText };
-        public BaseSkillSO[] Skills => skills;
+        public BaseSkillSO ActiveSkill => activeSkill;
+        public BasePassiveSkillSO PassiveSkill => passiveSkill;
 
         private static string FormatTooltipText(string format, params object[] arguments)
         {

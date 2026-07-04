@@ -88,6 +88,7 @@ namespace Week14.Combat
         public ExecutionTarget HoveredExecutionTarget => ExecutionController.HoveredExecutionTarget;
         public bool IsExecuting => ExecutionController.IsExecuting;
         public PlayerCombatConfig Config => Context.Config;
+        public float MoveSpeedMultiplier { get; private set; } = 1f;
         public bool CanMove => CanAct && !IsBodyContactStaggered && !IsDashing;
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
         public bool IsDashing => DashController.IsDashing;
@@ -282,6 +283,11 @@ namespace Week14.Combat
             config = nextConfig;
         }
 
+        public void SetMoveSpeedMultiplier(float multiplier)
+        {
+            MoveSpeedMultiplier = Mathf.Max(0f, multiplier);
+        }
+
         private void Update()
         {
             UpdateCursorPresentation();
@@ -429,6 +435,11 @@ namespace Week14.Combat
         public void PlayParryImpact(Vector3 position, Vector2 direction)
         {
             ParryController.PlayParryImpact(position, direction);
+        }
+
+        public void PlayParryImpact(Vector3 position, Vector2 direction, bool restoreBullets)
+        {
+            ParryController.PlayParryImpact(position, direction, restoreBullets);
         }
 
         public void PlayReloadAnimation()
