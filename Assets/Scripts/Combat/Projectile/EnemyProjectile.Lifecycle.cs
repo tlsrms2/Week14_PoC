@@ -78,7 +78,7 @@ namespace Week14.Combat
             lastWallCheckPosition = transform.position;
             chargeEndsAt = Time.time + projectileChargeSeconds;
             float launchTime = launched ? Time.time : chargeEndsAt;
-            destroyAt = launchTime + lifetime;
+            destroyAt = launchTime + projectileLifetime;
             ConfigureHoming(enableHoming, homingSeconds, nextHomingTurnDegrees, launchTime);
 
             if (body == null)

@@ -264,12 +264,12 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            Vector2 lockedCenter = context.Boss.Player.position;
             if (windupSeconds > 0f)
             {
                 yield return context.WaitSeconds(windupSeconds);
             }
 
-            Vector2 lockedCenter = context.Boss.Player.position;
             int count = Mathf.Max(1, bulletCount);
             float firstAngle = randomizeStartAngle ? UnityEngine.Random.Range(0f, 360f) : startAngleOffset;
             for (int i = 0; i < count; i++)

@@ -2105,6 +2105,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 261457479}
     - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
+      propertyPath: oilTrailDuration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
+      propertyPath: ignitedOilDuration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
       propertyPath: graphProjectiles.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -2130,7 +2138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectile.speed
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
       propertyPath: graphProjectiles.Array.data[4].projectile.speed

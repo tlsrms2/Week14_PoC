@@ -14,14 +14,12 @@ namespace Week14.Enemy
         private readonly Func<bool> isExecutionPaused;
         private Animator animator;
         private BossAnimationEventBridge animationEventBridge;
-        private bool hasBodyRootLocalBase;
         private bool hasPlayerRelativeMoveIntent;
         private float playerRelativeMoveDirectionSign = 1f;
         private float playerRelativeMoveSpeedMultiplier = 1f;
         private float playerRelativeMoveElapsedSeconds;
         private float playerRelativeMoveDurationSeconds;
         private AnimationCurve playerRelativeMoveSpeedCurve;
-        private Vector3 bodyRootLocalBase;
         private readonly Dictionary<Transform, Vector3> transformBaseScales = new();
         private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
@@ -351,27 +349,31 @@ namespace Week14.Enemy
             return Mathf.Max(0f, speedCurve.Evaluate(normalizedTime));
         }
 
-        public IEnumerator MoveBodyRootLocalOffset(Vector3 targetLocalOffset, float seconds, bool releaseBaseAfterMove)
+        public IEnumerator MoveBodyRootToPosition(Vector3 targetPosition, float seconds, bool stopWhenFinished)
         {
-            Transform target = Boss != null ? Boss.BodyRoot : null;
-            if (target == null || Boss == null || target == Boss.transform)
+            if (Boss == null || Boss.Body == null)
             {
                 yield break;
             }
 
-            if (!hasBodyRootLocalBase)
+            Vector2 target = targetPosition;
+            if (seconds <= 0f)
             {
-                bodyRootLocalBase = target.localPosition;
-                hasBodyRootLocalBase = true;
+                Boss.Body.position = target;
+                Boss.transform.position = new Vector3(target.x, target.y, Boss.transform.position.z);
+                if (stopWhenFinished)
+                {
+                    Stop();
+                }
+
+                yield break;
             }
 
-            Vector3 from = target.localPosition;
-            Vector3 to = bodyRootLocalBase + targetLocalOffset;
             float duration = Mathf.Max(0.01f, seconds);
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (target == null)
+                if (Boss == null || Boss.Body == null)
                 {
                     yield break;
                 }
@@ -383,37 +385,38 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Stop();
+                float remaining = Mathf.Max(Time.deltaTime, duration - elapsed);
+                Vector2 toTarget = target - Boss.Body.position;
+                Boss.SetMovementVelocity(toTarget / remaining);
                 elapsed += Time.deltaTime;
-                target.localPosition = Vector3.Lerp(from, to, Mathf.Clamp01(elapsed / duration));
                 yield return null;
             }
 
-            if (target != null)
+            if (Boss != null && Boss.Body != null)
             {
-                target.localPosition = to;
+                Boss.Body.position = target;
+                Boss.transform.position = new Vector3(target.x, target.y, Boss.transform.position.z);
             }
 
-            if (releaseBaseAfterMove)
+            if (stopWhenFinished)
             {
-                ResetBodyRootLocalOffset();
+                Stop();
             }
+        }
+
+        public IEnumerator MoveBodyRootLocalOffset(Vector3 targetLocalOffset, float seconds, bool releaseBaseAfterMove)
+        {
+            yield return MoveBodyRootToPosition(targetLocalOffset, seconds, true);
+        }
+
+        public void StopBodyRootMovement()
+        {
+            Stop();
         }
 
         public void ResetBodyRootLocalOffset()
         {
-            if (!hasBodyRootLocalBase)
-            {
-                return;
-            }
-
-            Transform target = Boss != null ? Boss.BodyRoot : null;
-            if (target != null)
-            {
-                target.localPosition = bodyRootLocalBase;
-            }
-
-            hasBodyRootLocalBase = false;
+            StopBodyRootMovement();
         }
 
         public Vector3 GetBossChildPosition(string childPath)

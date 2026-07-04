@@ -490,6 +490,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
         int index = stateNodes.arraySize - 1;
         Vector2 nodePosition = editorPosition ?? new Vector2(80f + index * 260f, 120f);
         SerializedProperty node = stateNodes.GetArrayElementAtIndex(index);
+        SerializedProperty action = node.FindPropertyRelative("action");
+        if (action != null)
+        {
+            action.managedReferenceValue = null;
+        }
+
         SetString(node, "nodeId", nodeId);
         SetString(node, "nodeGuid", Guid.NewGuid().ToString("N"));
         SetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);

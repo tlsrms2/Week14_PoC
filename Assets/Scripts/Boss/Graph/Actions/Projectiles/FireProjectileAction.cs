@@ -457,6 +457,8 @@ namespace Week14.Enemy
         [SerializeField, Range(-180f, 180f)] private float playerSideAngleDegrees = 90f;
         [SerializeField, Min(0f)] private float firstOffsetDistance = 1f;
         [SerializeField, Min(0f)] private float lineSpacing = 0.55f;
+        [SerializeField, Min(0.01f)] private float lineupSpeed = 8f;
+        [SerializeField, Min(0f)] private float lineupIntervalSeconds = 0.06f;
         [SerializeField, Range(0f, 180f)] private float fanAngleDegrees = 65f;
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, Min(0f)] private float waitBeforeSweepSeconds = 0.6f;
@@ -489,16 +491,41 @@ namespace Week14.Enemy
             }
 
             float baseAngle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
-            Vector2 sideDirection = BossActionContext.AngleToDirection(baseAngle + playerSideAngleDegrees);
+            float lineupAngle = baseAngle + playerSideAngleDegrees;
             int count = Mathf.Max(1, bulletCount);
+            Vector2 lineupDirection = BossActionContext.AngleToDirection(lineupAngle);
+            float firstStopDistance = Mathf.Max(0.1f, firstOffsetDistance);
+            float effectiveSpacing = Mathf.Max(0f, lineSpacing);
+            float lineupLength = firstStopDistance + effectiveSpacing * Mathf.Max(0, count - 1);
+            float sweepTargetAngle = GetRodSweepTargetAngle(lineupAngle, baseAngle);
+            float spawnInterval = Mathf.Max(0f, lineupIntervalSeconds);
+            float moveSpeed = Mathf.Max(0.01f, lineupSpeed);
+            Vector2[] stopPositions = new Vector2[count];
+            Vector2[][] sweepPaths = new Vector2[count][];
+            float[] travelDurations = new float[count];
+            float[] spawnDelays = new float[count];
+            float lineupEndSeconds = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                float distance = Mathf.Max(0.1f, lineupLength - effectiveSpacing * i);
+                Vector2 stopPosition = bossPosition + lineupDirection * distance;
+                stopPositions[i] = stopPosition;
+                sweepPaths[i] = BuildSweepPath(bossPosition, stopPosition, lineupAngle, sweepTargetAngle);
+                travelDurations[i] = Vector2.Distance(bossPosition, stopPosition) / moveSpeed;
+                spawnDelays[i] = spawnInterval * i;
+                lineupEndSeconds = Mathf.Max(lineupEndSeconds, spawnDelays[i] + travelDurations[i]);
+            }
+
             bool spawnedAny = false;
             for (int i = 0; i < count; i++)
             {
-                Vector2 spawnPosition = playerPosition + sideDirection * (firstOffsetDistance + lineSpacing * i);
-                float fanT = count <= 1 ? 0.5f : i / (count - 1f);
-                float targetAngle = baseAngle + Mathf.Lerp(-fanAngleDegrees * 0.5f, fanAngleDegrees * 0.5f, fanT);
-                Vector2[] path = BuildSweepPath(bossPosition, spawnPosition, targetAngle);
-                Vector2 launchDirection = path.Length > 1 ? path[1] - path[0] : toPlayer;
+                if (i > 0 && spawnInterval > 0f)
+                {
+                    yield return context.WaitSeconds(spawnInterval);
+                }
+
+                Vector2 stopPosition = stopPositions[i];
+                Vector2 launchDirection = lineupDirection;
                 if (launchDirection.sqrMagnitude <= 0.0001f)
                 {
                     launchDirection = toPlayer;
@@ -506,7 +533,7 @@ namespace Week14.Enemy
 
                 EnemyProjectile firedProjectile = context.FireProjectile(
                     projectile,
-                    spawnPosition,
+                    bossPosition,
                     launchDirection.normalized,
                     0f,
                     aimAtPlayerWhileChargingOverride: false,
@@ -520,15 +547,21 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                firedProjectile.ConfigurePathIndicatorSuppressed(true);
+                float sweepStartSeconds = Mathf.Max(
+                    travelDurations[i],
+                    lineupEndSeconds - spawnDelays[i] + waitBeforeSweepSeconds);
                 firedProjectile.gameObject.AddComponent<BossDelayedPathProjectileMotion>().Initialize(
-                    spawnPosition,
-                    path,
-                    waitBeforeSweepSeconds,
+                    bossPosition,
+                    stopPosition,
+                    sweepPaths[i],
+                    travelDurations[i],
+                    sweepStartSeconds,
                     sweepDurationSeconds,
                     destroyOnSweepEnd);
                 spawnedAny = true;
                 context.PlaySfx(setupSfxId);
-                context.PlayOriginBurst(effects, spawnPosition);
+                context.PlayOriginBurst(effects, bossPosition);
             }
 
             if (spawnedAny)
@@ -539,18 +572,35 @@ namespace Week14.Enemy
 
             if (waitForSweepEnd)
             {
-                yield return context.WaitSeconds(waitBeforeSweepSeconds + sweepDurationSeconds);
+                float elapsedSpawnSeconds = spawnInterval * Mathf.Max(0, count - 1);
+                float remainingSeconds = Mathf.Max(
+                    0f,
+                    lineupEndSeconds + waitBeforeSweepSeconds + sweepDurationSeconds - elapsedSpawnSeconds);
+                yield return context.WaitSeconds(remainingSeconds);
             }
         }
 
-        private Vector2[] BuildSweepPath(Vector2 bossPosition, Vector2 spawnPosition, float targetAngle)
+        private float GetRodSweepTargetAngle(float startAngle, float playerAngle)
+        {
+            float deltaToPlayer = Mathf.DeltaAngle(startAngle, playerAngle);
+            float sweepDirection = Mathf.Sign(deltaToPlayer);
+            if (Mathf.Approximately(sweepDirection, 0f))
+            {
+                sweepDirection = Mathf.Sign(-playerSideAngleDegrees);
+                if (Mathf.Approximately(sweepDirection, 0f))
+                {
+                    sweepDirection = 1f;
+                }
+            }
+
+            return startAngle + sweepDirection * Mathf.Max(0f, fanAngleDegrees);
+        }
+
+        private Vector2[] BuildSweepPath(Vector2 bossPosition, Vector2 spawnPosition, float startAngle, float targetAngle)
         {
             int segments = Mathf.Max(2, arcSegments);
             Vector2 fromBoss = spawnPosition - bossPosition;
             float radius = Mathf.Max(0.1f, fromBoss.magnitude);
-            float startAngle = fromBoss.sqrMagnitude > 0.0001f
-                ? Mathf.Atan2(fromBoss.y, fromBoss.x) * Mathf.Rad2Deg
-                : targetAngle;
             float deltaAngle = Mathf.DeltaAngle(startAngle, targetAngle);
             Vector2[] points = new Vector2[segments + 1];
             for (int i = 0; i <= segments; i++)

@@ -117,12 +117,16 @@ MonoBehaviour:
   parryLockOnRotatingRoot: {fileID: 0}
   parryLockOnRotationSpeedDegrees: 180
   owner: {fileID: 0}
-  explosionSecondsMin: 1.2
-  explosionSecondsMax: 3
+  explosionSecondsMin: 0.35
+  explosionSecondsMax: 2
   fireRadius: 2
   fireDuration: 1.35
+  fireSpreadSeconds: 0.35
   fireColor: {r: 1, g: 0.35, b: 0.05, a: 0.9}
-  parriedFireDamageDelay: 0.35
+  parriedFireDamageDelay: 0.1
+  lobHeight: 1.4
+  lobScaleBonus: 0.4
+  lobSpinDegrees: 360
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0

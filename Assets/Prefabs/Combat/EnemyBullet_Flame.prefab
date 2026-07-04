@@ -116,8 +116,8 @@ MonoBehaviour:
   parryLockOnRotatingRoot: {fileID: 0}
   parryLockOnRotationSpeedDegrees: 180
   owner: {fileID: 0}
-  patchRadius: 0.8
-  patchDuration: 4
+  patchRadius: 0.7
+  patchDuration: 5
   paintSpacing: 0.3
   destroyOnWall: 1
   fireColor: {r: 1, g: 0.35, b: 0.05, a: 0.9}

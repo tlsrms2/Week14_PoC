@@ -94,8 +94,8 @@ internal static class BossGraphActionEditorUtility
         new("Move/Start Move Toward Player", typeof(StartMoveTowardPlayerAction), () => new StartMoveTowardPlayerAction()),
         new("Move/Start Move Away From Player", typeof(StartMoveAwayFromPlayerAction), () => new StartMoveAwayFromPlayerAction()),
         new("Move/Stop Movement", typeof(StopMovementAction), () => new StopMovementAction()),
-        new("Move/Move Body Root Local", typeof(MoveBodyRootLocalAction), () => new MoveBodyRootLocalAction()),
-        new("Move/Reset Body Root Local", typeof(ResetBodyRootLocalAction), () => new ResetBodyRootLocalAction()),
+        new("Move/Move Body Root", typeof(MoveBodyRootLocalAction), () => new MoveBodyRootLocalAction()),
+        new("Move/Stop Body Root", typeof(ResetBodyRootLocalAction), () => new ResetBodyRootLocalAction()),
         new("Move/Boss Dash", typeof(BossDashAction), () => new BossDashAction()),
         new("Move/Wander Around Player Distance", typeof(WanderAroundPlayerDistanceAction), () => new WanderAroundPlayerDistanceAction()),
         new("Move/Move Between Map Points", typeof(MoveBetweenMapPointsAction), () => new MoveBetweenMapPointsAction()),
@@ -212,12 +212,12 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MoveBodyRootLocalAction))
         {
-            return "보스 BodyRoot의 로컬 오프셋을 목표값까지 이동시킵니다.";
+            return "보스 본체를 지정한 맵 좌표까지 이동시킵니다.";
         }
 
         if (actionType == typeof(ResetBodyRootLocalAction))
         {
-            return "보스 BodyRoot의 로컬 오프셋을 초기화합니다.";
+            return "보스 본체 이동을 정지합니다.";
         }
 
         if (actionType == typeof(FireProjectileAction))
@@ -267,7 +267,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(FirePlayerSideFanSweepAction))
         {
-            return "플레이어 왼쪽 방향에 투사체를 일렬로 배치한 뒤, 대기 후 보스 위치를 중심으로 플레이어 방향 부채꼴 원호를 동시에 휩쓸게 합니다. Player Side Angle Degrees를 음수로 두면 오른쪽 배치도 가능합니다.";
+            return "보스에서 플레이어 옆 각도 방향으로 투사체를 하나씩 보내 한 막대기처럼 일렬로 멈춘 뒤, 대기 후 보스를 축으로 그 막대기를 플레이어 방향으로 동시에 휩쓸게 합니다.";
         }
 
         if (actionType == typeof(FireRadialEmissionAction))

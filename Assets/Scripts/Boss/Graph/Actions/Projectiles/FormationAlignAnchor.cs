@@ -314,26 +314,32 @@ namespace Week14.Enemy
         private EnemyProjectile projectile;
         private Rigidbody2D body;
         private Vector2 startPosition;
+        private Vector2 holdPosition;
         private Vector2[] points;
         private float[] cumulativeLengths;
         private float totalLength;
-        private float waitSeconds;
+        private float lineupDurationSeconds;
+        private float sweepStartSeconds;
         private float durationSeconds;
         private float elapsed;
         private bool destroyOnComplete;
 
         public void Initialize(
             Vector2 nextStartPosition,
+            Vector2 nextHoldPosition,
             Vector2[] nextPoints,
-            float nextWaitSeconds,
+            float nextLineupDurationSeconds,
+            float nextSweepStartSeconds,
             float nextDurationSeconds,
             bool nextDestroyOnComplete)
         {
             projectile = GetComponent<EnemyProjectile>();
             body = GetComponent<Rigidbody2D>();
             startPosition = nextStartPosition;
+            holdPosition = nextHoldPosition;
             points = nextPoints;
-            waitSeconds = Mathf.Max(0f, nextWaitSeconds);
+            lineupDurationSeconds = Mathf.Max(0f, nextLineupDurationSeconds);
+            sweepStartSeconds = Mathf.Max(lineupDurationSeconds, nextSweepStartSeconds);
             durationSeconds = Mathf.Max(0.01f, nextDurationSeconds);
             destroyOnComplete = nextDestroyOnComplete;
             BuildLengths();
@@ -350,13 +356,20 @@ namespace Week14.Enemy
 
             float deltaTime = Time.deltaTime;
             elapsed += deltaTime;
-            if (elapsed < waitSeconds)
+            if (elapsed < lineupDurationSeconds)
             {
-                MoveTo(startPosition, deltaTime);
+                float lineupT = lineupDurationSeconds > 0.0001f ? elapsed / lineupDurationSeconds : 1f;
+                MoveTo(Vector2.Lerp(startPosition, holdPosition, lineupT), deltaTime);
                 return;
             }
 
-            float t = Mathf.Clamp01((elapsed - waitSeconds) / durationSeconds);
+            if (elapsed < sweepStartSeconds)
+            {
+                MoveTo(holdPosition, deltaTime);
+                return;
+            }
+
+            float t = Mathf.Clamp01((elapsed - sweepStartSeconds) / durationSeconds);
             MoveTo(Evaluate(t), deltaTime);
 
             if (destroyOnComplete && t >= 1f)

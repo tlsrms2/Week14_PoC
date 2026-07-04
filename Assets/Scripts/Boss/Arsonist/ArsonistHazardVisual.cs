@@ -57,6 +57,13 @@ namespace Week14.Enemy
         private Mesh mesh;
         private BlobLobe[] lobes;
         private float[] edgeScales;
+        private Vector3[] vertices;
+        private Color[] colors;
+        private Vector2[] uvs;
+        private int[] triangles;
+        private float lastRadius = -1f;
+        private Color lastColor;
+        private bool meshConfigured;
         private bool shapeConfigured;
         private bool shapeFireLike;
 
@@ -107,18 +114,20 @@ namespace Week14.Enemy
 
             shapeConfigured = true;
             shapeFireLike = fireLike;
+            meshConfigured = false;
+            lastRadius = -1f;
 
             int seed = Mathf.Abs(gameObject.GetInstanceID());
-            int lobeCount = fireLike ? 6 : 7;
+            int lobeCount = fireLike ? 1 : 7;
             lobes = new BlobLobe[lobeCount];
             edgeScales = new float[lobeCount * SegmentCount];
 
             lobes[MainLobeIndex] = new BlobLobe(
                 Vector2.zero,
-                fireLike ? 0.88f : 1f,
-                fireLike ? RandomRange(seed, 100, 0.95f, 1.22f) : RandomRange(seed, 100, 1.25f, 1.85f),
-                fireLike ? RandomRange(seed, 101, 0.88f, 1.35f) : RandomRange(seed, 101, 0.56f, 0.9f),
-                RandomRange(seed, 102, 0f, 180f),
+                1f,
+                fireLike ? 1f : RandomRange(seed, 100, 1.25f, 1.85f),
+                fireLike ? 1f : RandomRange(seed, 101, 0.56f, 0.9f),
+                fireLike ? 0f : RandomRange(seed, 102, 0f, 180f),
                 1f);
 
             for (int lobeIndex = 1; lobeIndex < lobeCount; lobeIndex++)
@@ -143,7 +152,9 @@ namespace Week14.Enemy
             {
                 for (int i = 0; i < SegmentCount; i++)
                 {
-                    rawScales[i] = Mathf.Lerp(EdgeScaleMin, EdgeScaleMax, Hash01(seed, lobeIndex * 101 + i));
+                    rawScales[i] = fireLike
+                        ? 1f
+                        : Mathf.Lerp(EdgeScaleMin, EdgeScaleMax, Hash01(seed, lobeIndex * 101 + i));
                 }
 
                 for (int i = 0; i < SegmentCount; i++)
@@ -161,10 +172,15 @@ namespace Week14.Enemy
             int lobeCount = lobes != null ? lobes.Length : 0;
             int verticesPerLobe = 1 + SegmentCount * 2;
             int vertexCount = verticesPerLobe * lobeCount;
-            Vector3[] vertices = new Vector3[vertexCount];
-            Color[] colors = new Color[vertexCount];
-            Vector2[] uvs = new Vector2[vertexCount];
-            int[] triangles = new int[SegmentCount * 9 * lobeCount];
+            int triangleCount = SegmentCount * 9 * lobeCount;
+            if (meshConfigured
+                && Mathf.Approximately(lastRadius, radius)
+                && ColorsApproximately(lastColor, color))
+            {
+                return;
+            }
+
+            EnsureMeshBuffers(vertexCount, triangleCount);
 
             Color centerColor = color;
             centerColor.a *= 0.82f;
@@ -234,6 +250,24 @@ namespace Week14.Enemy
             mesh.uv = uvs;
             mesh.triangles = triangles;
             mesh.bounds = new Bounds(Vector3.zero, Vector3.one * radius * 3.1f);
+            lastRadius = radius;
+            lastColor = color;
+            meshConfigured = true;
+        }
+
+        private void EnsureMeshBuffers(int vertexCount, int triangleCount)
+        {
+            if (vertices == null || vertices.Length != vertexCount)
+            {
+                vertices = new Vector3[vertexCount];
+                colors = new Color[vertexCount];
+                uvs = new Vector2[vertexCount];
+            }
+
+            if (triangles == null || triangles.Length != triangleCount)
+            {
+                triangles = new int[triangleCount];
+            }
         }
 
         private static Vector2 Scale(Vector2 value, float xScale, float yScale)
@@ -260,6 +294,14 @@ namespace Week14.Enemy
             value = (value ^ (value >> 13)) * 1274126177u;
             value ^= value >> 16;
             return (value & 0x00FFFFFF) / 16777215f;
+        }
+
+        private static bool ColorsApproximately(Color first, Color second)
+        {
+            return Mathf.Approximately(first.r, second.r)
+                && Mathf.Approximately(first.g, second.g)
+                && Mathf.Approximately(first.b, second.b)
+                && Mathf.Approximately(first.a, second.a);
         }
 
         private readonly struct BlobLobe

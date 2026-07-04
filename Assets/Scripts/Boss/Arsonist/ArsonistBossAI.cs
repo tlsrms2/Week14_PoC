@@ -30,6 +30,7 @@ namespace Week14.Enemy
 
         private readonly List<ArsonistOilPatch> oilPatches = new();
         private readonly List<ArsonistFireArea> fireAreas = new();
+        private readonly List<ArsonistFireAreaBatch> activeFireAreaBatches = new();
         private readonly Dictionary<PlayerCombatController, ArsonistOilSoakedStatus> oilSoakedStatuses = new();
         private readonly Dictionary<PlayerCombatController, float> nextFireDamageAtByPlayer = new();
         private readonly List<ArsonistOilSoakedStatus> statusBuffer = new();
@@ -79,7 +80,8 @@ namespace Week14.Enemy
             float radius,
             float duration,
             Color fireColor,
-            float playerDamageDelay = 0f)
+            float playerDamageDelay = 0f,
+            float spreadSeconds = 0f)
         {
             GameObject fireObject = new("ArsonistFireArea");
             fireObject.transform.position = FlattenPosition(position);
@@ -89,8 +91,27 @@ namespace Week14.Enemy
 
             ArsonistFireArea fireArea = fireObject.AddComponent<ArsonistFireArea>();
             fireAreas.Add(fireArea);
-            fireArea.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), fireColor, playerDamageDelay);
+            fireArea.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), fireColor, playerDamageDelay, spreadSeconds);
+            TrackFireAreaBatch(fireArea);
             return fireArea;
+        }
+
+        internal ArsonistFireAreaBatch BeginFireAreaBatch()
+        {
+            ArsonistFireAreaBatch batch = new();
+            activeFireAreaBatches.Add(batch);
+            return batch;
+        }
+
+        internal void ReleaseFireAreaBatch(ArsonistFireAreaBatch batch)
+        {
+            if (batch == null)
+            {
+                return;
+            }
+
+            activeFireAreaBatches.Remove(batch);
+            batch.FadeOutAll();
         }
 
         internal void ApplyOilSoaked(PlayerCombatController player, Color oilColor, float trailRadius, float trailSpacing)
@@ -261,6 +282,7 @@ namespace Week14.Enemy
             int ignitionVersion)
         {
             float spreadInterval = Mathf.Max(0.01f, oilIgnitionSpreadInterval);
+            float ignitionDuration = Mathf.Max(0.05f, ignitedOilDuration);
             for (int i = 0; i < ignitionLayers.Count; i++)
             {
                 if (ignitionVersion != oilIgnitionVersion)
@@ -277,7 +299,7 @@ namespace Week14.Enemy
                         continue;
                     }
 
-                    patch.IgniteLocal(ignitedOilDuration, fireColor);
+                    patch.IgniteLocal(ignitionDuration, fireColor);
                     NotifyOilPatchIgnited(patch);
                 }
 
@@ -322,6 +344,10 @@ namespace Week14.Enemy
         internal void UnregisterFireArea(ArsonistFireArea fireArea)
         {
             fireAreas.Remove(fireArea);
+            for (int i = activeFireAreaBatches.Count - 1; i >= 0; i--)
+            {
+                activeFireAreaBatches[i]?.Remove(fireArea);
+            }
         }
 
         internal void UnregisterOilSoakedStatus(PlayerCombatController player, ArsonistOilSoakedStatus status)
@@ -488,14 +514,62 @@ namespace Week14.Enemy
 
             oilPatches.Clear();
             fireAreas.Clear();
+            activeFireAreaBatches.Clear();
             oilSoakedStatuses.Clear();
             nextFireDamageAtByPlayer.Clear();
+        }
+
+        private void TrackFireAreaBatch(ArsonistFireArea fireArea)
+        {
+            if (fireArea == null || activeFireAreaBatches.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < activeFireAreaBatches.Count; i++)
+            {
+                activeFireAreaBatches[i]?.Add(fireArea);
+            }
         }
 
         private static Vector3 FlattenPosition(Vector3 position)
         {
             position.z = 0f;
             return position;
+        }
+    }
+
+    internal sealed class ArsonistFireAreaBatch
+    {
+        private readonly List<ArsonistFireArea> fireAreas = new();
+
+        public void Add(ArsonistFireArea fireArea)
+        {
+            if (fireArea == null || fireAreas.Contains(fireArea))
+            {
+                return;
+            }
+
+            fireArea.HoldUntilReleased();
+            fireAreas.Add(fireArea);
+        }
+
+        public void Remove(ArsonistFireArea fireArea)
+        {
+            fireAreas.Remove(fireArea);
+        }
+
+        public void FadeOutAll()
+        {
+            for (int i = fireAreas.Count - 1; i >= 0; i--)
+            {
+                if (fireAreas[i] != null)
+                {
+                    fireAreas[i].FadeOutNow();
+                }
+            }
+
+            fireAreas.Clear();
         }
     }
 
@@ -871,23 +945,62 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class ArsonistFireCharacterProjectileAction : BossAction
     {
+        private const float IndicatorLeadSeconds = 1f;
+
+        [Serializable]
+        private sealed class LeadingPlayerCircleSettings
+        {
+            [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+            [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
+            [SerializeField, Min(1)] private int bulletCount = 8;
+            [SerializeField, Min(0.1f)] private float circleRadius = 2.4f;
+            [SerializeField] private float angularSpeedDegrees = 180f;
+            [SerializeField] private float startAngleOffset;
+            [SerializeField] private bool randomizeStartAngle;
+            [SerializeField, Min(0f)] private float fireInterval;
+            [SerializeField, Min(0f)] private float motionDurationSeconds = 3f;
+            [SerializeField] private bool destroyOnMotionEnd = true;
+            [SerializeField] private bool waitForMotionEnd;
+            [SerializeField, Min(0f)] private float windupSeconds;
+            [SerializeField, BossGraphSfxId] private string fireSfxId;
+            [SerializeField, BossGraphSfxId] private string launchSfxId;
+            [SerializeField] private BossGraphEffectSettings effects = new();
+
+            public string ProjectileName => projectileName;
+            public BossProjectileSettings Projectile => projectile;
+            public int BulletCount => Mathf.Max(1, bulletCount);
+            public float CircleRadius => Mathf.Max(0.1f, circleRadius);
+            public float AngularSpeedDegrees => angularSpeedDegrees;
+            public float StartAngleOffset => startAngleOffset;
+            public bool RandomizeStartAngle => randomizeStartAngle;
+            public float FireInterval => Mathf.Max(0f, fireInterval);
+            public float MotionDurationSeconds => Mathf.Max(0f, motionDurationSeconds);
+            public bool DestroyOnMotionEnd => destroyOnMotionEnd;
+            public bool WaitForMotionEnd => waitForMotionEnd;
+            public float WindupSeconds => Mathf.Max(0f, windupSeconds);
+            public string FireSfxId => fireSfxId;
+            public string LaunchSfxId => launchSfxId;
+            public BossGraphEffectSettings Effects => effects;
+        }
+
         private static readonly Vector2[][] StrokePoints =
         {
-            new[] { new Vector2(-0.16f, 0.28f), new Vector2(-0.48f, -0.12f) },
+            new[] { new Vector2(-0.16f, 0.30f), new Vector2(-0.48f, -0.02f) },
             new[] { new Vector2(0.16f, 0.30f), new Vector2(0.48f, -0.02f) },
             new[] { new Vector2(0.02f, 0.50f), new Vector2(-0.12f, -0.05f), new Vector2(-0.54f, -0.54f) },
             new[] { new Vector2(0.02f, -0.02f), new Vector2(0.24f, -0.28f), new Vector2(0.56f, -0.56f) }
         };
 
+        [SerializeField, Min(0)] private int leadingCircleRepeatCount;
+        [SerializeField] private List<LeadingPlayerCircleSettings> leadingCircles = new();
+        [SerializeField, HideInInspector] private LeadingPlayerCircleSettings leadingCircle;
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField] private BossGraphProjectileOriginSpec origin = new();
-        [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField, Min(0.1f)] private float characterSize = 3f;
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, Min(0.05f)] private float strokeDuration = 0.45f;
         [SerializeField, Min(0f)] private float strokeInterval = 0.12f;
-        [SerializeField] private bool orientToAim = true;
         [SerializeField] private float rotationOffsetDegrees;
         [SerializeField] private bool destroyOnStrokeEnd = true;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
@@ -901,22 +1014,150 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (windupSeconds > 0f)
+            ArsonistBossAI arsonist = context.Boss as ArsonistBossAI;
+            ArsonistFireAreaBatch fireAreaBatch = arsonist?.BeginFireAreaBatch();
+            try
             {
-                yield return context.WaitSeconds(windupSeconds);
+                yield return ExecuteLeadingPlayerCirclePatterns(context);
+
+                BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+                Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
+                Vector3 center = context.Boss != null && context.Boss.Player != null
+                    ? context.Boss.Player.position
+                    : aimOrigin;
+                float rotation = rotationOffsetDegrees;
+                BossProjectileSettings projectileSettings = !string.IsNullOrWhiteSpace(projectileName)
+                    ? context.ResolveGraphProjectileSettings(projectileName)
+                    : context.ResolveGraphProjectileSettings(null) ?? projectile;
+                Vector2[][] strokeWorldPoints = BuildStrokes(center, rotation);
+
+                float safeWindup = Mathf.Max(0f, windupSeconds);
+                float waitBeforeIndicatorSeconds = Mathf.Max(0f, safeWindup - IndicatorLeadSeconds);
+                float waitAfterIndicatorSeconds = safeWindup - waitBeforeIndicatorSeconds;
+                if (waitBeforeIndicatorSeconds > 0f)
+                {
+                    yield return context.WaitSeconds(waitBeforeIndicatorSeconds);
+                }
+
+                if (projectileSettings?.Prefab != null)
+                {
+                    CreateEarlyPathIndicators(strokeWorldPoints, projectileSettings.Radius, waitAfterIndicatorSeconds);
+                }
+
+                if (waitAfterIndicatorSeconds > 0f)
+                {
+                    yield return context.WaitSeconds(waitAfterIndicatorSeconds);
+                }
+
+                for (int i = 0; i < StrokePoints.Length; i++)
+                {
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        i--;
+                        continue;
+                    }
+
+                    Vector2[] worldPoints = strokeWorldPoints[i];
+                    Vector2 direction = worldPoints.Length > 1
+                        ? (worldPoints[1] - worldPoints[0]).normalized
+                        : Vector2.left;
+                    EnemyProjectile firedProjectile = context.FireProjectile(
+                        projectile,
+                        worldPoints[0],
+                        direction,
+                        0f,
+                        aimAtPlayerWhileChargingOverride: false,
+                        aimAtPlayerOnLaunchOverride: false,
+                        chargeSecondsOverride: 0f,
+                        suppressHoming: true,
+                        projectileName: projectileName);
+
+                    if (firedProjectile != null)
+                    {
+                        firedProjectile.ConfigurePathIndicatorSuppressed(true);
+                        firedProjectile.gameObject.AddComponent<BossPathProjectileMotion>().Initialize(
+                            worldPoints,
+                            strokeDuration,
+                            destroyOnStrokeEnd);
+                        context.PlaySfx(fireSfxId);
+                        context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                        context.PlayOriginBurst(effects, worldPoints[0]);
+                        context.PlayMuzzleFlashIfEnabled(effects, worldPoints[0], direction);
+                        context.PlayCameraShakeIfEnabled(effects, direction);
+                    }
+
+                    if (strokeInterval > 0f && i < StrokePoints.Length - 1)
+                    {
+                        yield return context.WaitSeconds(strokeInterval);
+                    }
+                }
+
+                if (strokeDuration > 0f)
+                {
+                    yield return context.WaitSeconds(strokeDuration);
+                }
+            }
+            finally
+            {
+                arsonist?.ReleaseFireAreaBatch(fireAreaBatch);
+            }
+        }
+
+        private IEnumerator ExecuteLeadingPlayerCirclePatterns(BossActionContext context)
+        {
+            int repeatCount = Mathf.Max(0, leadingCircleRepeatCount);
+            IReadOnlyList<LeadingPlayerCircleSettings> settingsList = GetLeadingCircleSettings();
+            if (repeatCount <= 0 || settingsList.Count <= 0)
+            {
+                yield break;
             }
 
-            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
-            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
-            Vector3 center = originSpec.GetAimOrigin(context, 0);
-            Vector2 aimDirection = aimSpec.GetDirection(context, center);
-            float rotation = rotationOffsetDegrees;
-            if (orientToAim && aimDirection.sqrMagnitude > 0.0001f)
+            for (int repeatIndex = 0; repeatIndex < repeatCount; repeatIndex++)
             {
-                rotation += Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+                for (int settingsIndex = 0; settingsIndex < settingsList.Count; settingsIndex++)
+                {
+                    yield return ExecuteLeadingPlayerCirclePattern(context, settingsList[settingsIndex]);
+                }
+            }
+        }
+
+        private IReadOnlyList<LeadingPlayerCircleSettings> GetLeadingCircleSettings()
+        {
+            if (leadingCircles != null && leadingCircles.Count > 0)
+            {
+                return leadingCircles;
             }
 
-            for (int i = 0; i < StrokePoints.Length; i++)
+            if (leadingCircle != null)
+            {
+                return new[] { leadingCircle };
+            }
+
+            return Array.Empty<LeadingPlayerCircleSettings>();
+        }
+
+        private IEnumerator ExecuteLeadingPlayerCirclePattern(
+            BossActionContext context,
+            LeadingPlayerCircleSettings settings)
+        {
+            if (context == null || context.Boss == null || context.Boss.Player == null || settings == null)
+            {
+                yield break;
+            }
+
+            Vector2 lockedCenter = context.Boss.Player.position;
+            if (settings.WindupSeconds > 0f)
+            {
+                yield return context.WaitSeconds(settings.WindupSeconds);
+            }
+
+            int count = settings.BulletCount;
+            float firstAngle = settings.RandomizeStartAngle
+                ? UnityEngine.Random.Range(0f, 360f)
+                : settings.StartAngleOffset;
+            for (int i = 0; i < count; i++)
             {
                 if (context.IsExecutionPaused)
                 {
@@ -926,38 +1167,82 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Vector2[] worldPoints = BuildStroke(center, StrokePoints[i], rotation);
-                Vector2 direction = worldPoints.Length > 1
-                    ? (worldPoints[1] - worldPoints[0]).normalized
-                    : Vector2.left;
+                float angle = firstAngle + 360f / count * i;
+                Vector2 radialDirection = BossActionContext.AngleToDirection(angle);
+                Vector2 tangentDirection = BossActionContext.AngleToDirection(angle
+                    + Mathf.Sign(settings.AngularSpeedDegrees == 0f ? 1f : settings.AngularSpeedDegrees) * 90f);
+                Vector3 spawnPosition = (Vector3)(lockedCenter + radialDirection * settings.CircleRadius);
                 EnemyProjectile firedProjectile = context.FireProjectile(
-                    projectile,
-                    worldPoints[0],
-                    direction,
+                    settings.Projectile,
+                    spawnPosition,
+                    tangentDirection,
                     0f,
                     aimAtPlayerWhileChargingOverride: false,
                     aimAtPlayerOnLaunchOverride: false,
                     chargeSecondsOverride: 0f,
                     suppressHoming: true,
-                    projectileName: projectileName);
+                    projectileName: settings.ProjectileName);
 
                 if (firedProjectile != null)
                 {
-                    firedProjectile.gameObject.AddComponent<BossPathProjectileMotion>().Initialize(
-                        worldPoints,
-                        strokeDuration,
-                        destroyOnStrokeEnd);
-                    context.PlaySfx(fireSfxId);
-                    context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
-                    context.PlayOriginBurst(effects, worldPoints[0]);
-                    context.PlayMuzzleFlashIfEnabled(effects, worldPoints[0], direction);
-                    context.PlayCameraShakeIfEnabled(effects, direction);
+                    firedProjectile.gameObject.AddComponent<BossPointOrbitProjectileMotion>().Initialize(
+                        lockedCenter,
+                        settings.CircleRadius,
+                        angle,
+                        settings.AngularSpeedDegrees,
+                        settings.MotionDurationSeconds,
+                        settings.DestroyOnMotionEnd);
+                    context.PlaySfx(settings.FireSfxId);
+                    context.PlaySfxOnLaunch(firedProjectile, settings.LaunchSfxId);
+                    context.PlayOriginBurst(settings.Effects, spawnPosition);
+                    context.PlayMuzzleFlashIfEnabled(settings.Effects, spawnPosition, tangentDirection);
+                    context.PlayCameraShakeIfEnabled(settings.Effects, tangentDirection);
                 }
 
-                if (strokeInterval > 0f && i < StrokePoints.Length - 1)
+                if (settings.FireInterval > 0f && i < count - 1)
                 {
-                    yield return context.WaitSeconds(strokeInterval);
+                    yield return context.WaitSeconds(settings.FireInterval);
                 }
+            }
+
+            if (settings.WaitForMotionEnd && settings.MotionDurationSeconds > 0f)
+            {
+                yield return context.WaitSeconds(settings.MotionDurationSeconds);
+            }
+        }
+
+        private Vector2[][] BuildStrokes(Vector2 center, float rotationDegrees)
+        {
+            Vector2[][] worldStrokes = new Vector2[StrokePoints.Length][];
+            for (int i = 0; i < StrokePoints.Length; i++)
+            {
+                worldStrokes[i] = BuildStroke(center, StrokePoints[i], rotationDegrees);
+            }
+
+            return worldStrokes;
+        }
+
+        private void CreateEarlyPathIndicators(
+            Vector2[][] strokeWorldPoints,
+            float projectileRadius,
+            float firstStrokeDelaySeconds)
+        {
+            if (strokeWorldPoints == null)
+            {
+                return;
+            }
+
+            float safeFirstStrokeDelay = Mathf.Max(0f, firstStrokeDelaySeconds);
+            float safeInterval = Mathf.Max(0f, strokeInterval);
+            for (int i = 0; i < strokeWorldPoints.Length; i++)
+            {
+                GameObject indicatorObject = new("ArsonistFireCharacterPathIndicator");
+                indicatorObject.AddComponent<ArsonistFireCharacterPathIndicator>().Initialize(
+                    strokeWorldPoints[i],
+                    safeFirstStrokeDelay + safeInterval * i,
+                    strokeDuration,
+                    projectileRadius,
+                    true);
             }
         }
 
@@ -975,6 +1260,241 @@ namespace Week14.Enemy
             }
 
             return worldPoints;
+        }
+    }
+
+    [AddComponentMenu("")]
+    internal sealed class ArsonistFireCharacterPathIndicator : MonoBehaviour
+    {
+        private const string IndicatorRootName = "FireCharacterPathIndicator";
+        private const float DashLength = 0.2f;
+        private const float DashGap = 0.14f;
+        private const int MaxDashCount = 160;
+
+        private static Material indicatorMaterial;
+
+        private readonly List<LineRenderer> dashes = new();
+        private Transform indicatorRoot;
+        private Vector2[] points;
+        private float[] cumulativeLengths;
+        private float totalLength;
+        private float durationSeconds;
+        private float elapsedSeconds;
+        private float lineWidth;
+        private float startDelaySeconds;
+        private bool destroyGameObjectOnComplete;
+        private bool initialized;
+
+        public void Initialize(Vector2[] nextPoints, float nextDurationSeconds, float projectileRadius)
+        {
+            Initialize(nextPoints, 0f, nextDurationSeconds, projectileRadius, false);
+        }
+
+        public void Initialize(
+            Vector2[] nextPoints,
+            float nextStartDelaySeconds,
+            float nextDurationSeconds,
+            float projectileRadius,
+            bool nextDestroyGameObjectOnComplete)
+        {
+            if (nextPoints == null || nextPoints.Length < 2)
+            {
+                enabled = false;
+                return;
+            }
+
+            points = new Vector2[nextPoints.Length];
+            Array.Copy(nextPoints, points, nextPoints.Length);
+            startDelaySeconds = Mathf.Max(0f, nextStartDelaySeconds);
+            durationSeconds = Mathf.Max(0.01f, nextDurationSeconds);
+            lineWidth = Mathf.Max(0.013f, projectileRadius * 0.14f);
+            destroyGameObjectOnComplete = nextDestroyGameObjectOnComplete;
+            BuildLengths();
+            initialized = totalLength > 0.01f;
+            if (!initialized)
+            {
+                enabled = false;
+                return;
+            }
+
+            Draw(0f);
+        }
+
+        private void LateUpdate()
+        {
+            if (!initialized)
+            {
+                return;
+            }
+
+            if (PlayerCombatController.IsExecutionCinematicActive)
+            {
+                return;
+            }
+
+            elapsedSeconds += Time.deltaTime;
+            if (elapsedSeconds < startDelaySeconds)
+            {
+                Draw(0f);
+                return;
+            }
+
+            float activeElapsed = elapsedSeconds - startDelaySeconds;
+            float travelled = totalLength * Mathf.Clamp01(activeElapsed / durationSeconds);
+            Draw(travelled);
+
+            if (activeElapsed >= durationSeconds)
+            {
+                SetVisible(false);
+                if (destroyGameObjectOnComplete)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+
+                enabled = false;
+            }
+        }
+
+        private void BuildLengths()
+        {
+            cumulativeLengths = new float[points.Length];
+            totalLength = 0f;
+            for (int i = 1; i < points.Length; i++)
+            {
+                totalLength += Vector2.Distance(points[i - 1], points[i]);
+                cumulativeLengths[i] = totalLength;
+            }
+        }
+
+        private void Draw(float travelled)
+        {
+            int dashCount = Mathf.Min(MaxDashCount, Mathf.CeilToInt(totalLength / (DashLength + DashGap)));
+            Color color = new(1f, 0.22f, 0.03f, 0.62f);
+            for (int i = 0; i < dashCount; i++)
+            {
+                float segmentStart = i * (DashLength + DashGap);
+                float segmentEnd = Mathf.Min(segmentStart + DashLength, totalLength);
+                if (segmentEnd <= travelled)
+                {
+                    SetDashVisible(i, false);
+                    continue;
+                }
+
+                LineRenderer dash = EnsureDash(i);
+                if (dash == null)
+                {
+                    continue;
+                }
+
+                segmentStart = Mathf.Max(segmentStart, travelled);
+                dash.enabled = true;
+                dash.startColor = color;
+                dash.endColor = color;
+                dash.startWidth = lineWidth;
+                dash.endWidth = lineWidth;
+                dash.SetPosition(0, EvaluateDistance(segmentStart));
+                dash.SetPosition(1, EvaluateDistance(segmentEnd));
+            }
+
+            for (int i = dashCount; i < dashes.Count; i++)
+            {
+                SetDashVisible(i, false);
+            }
+        }
+
+        private Vector2 EvaluateDistance(float distance)
+        {
+            if (points == null || points.Length == 0)
+            {
+                return transform.position;
+            }
+
+            float clamped = Mathf.Clamp(distance, 0f, totalLength);
+            for (int i = 1; i < points.Length; i++)
+            {
+                if (clamped > cumulativeLengths[i])
+                {
+                    continue;
+                }
+
+                float segmentLength = cumulativeLengths[i] - cumulativeLengths[i - 1];
+                float t = segmentLength > 0.0001f
+                    ? (clamped - cumulativeLengths[i - 1]) / segmentLength
+                    : 1f;
+                return Vector2.Lerp(points[i - 1], points[i], t);
+            }
+
+            return points[^1];
+        }
+
+        private LineRenderer EnsureDash(int index)
+        {
+            EnsureRoot();
+            if (indicatorRoot == null)
+            {
+                return null;
+            }
+
+            while (dashes.Count <= index)
+            {
+                GameObject dashObject = new($"{IndicatorRootName}_{dashes.Count:00}");
+                dashObject.transform.SetParent(indicatorRoot, false);
+                LineRenderer dash = dashObject.AddComponent<LineRenderer>();
+                dash.useWorldSpace = true;
+                dash.loop = false;
+                dash.positionCount = 2;
+                dash.numCornerVertices = 0;
+                dash.numCapVertices = 1;
+                dash.sortingOrder = 17;
+                dash.material = GetIndicatorMaterial();
+                dashes.Add(dash);
+            }
+
+            return dashes[index];
+        }
+
+        private void EnsureRoot()
+        {
+            if (indicatorRoot != null)
+            {
+                return;
+            }
+
+            GameObject rootObject = new(IndicatorRootName);
+            rootObject.transform.SetParent(transform, false);
+            rootObject.transform.localPosition = Vector3.zero;
+            rootObject.transform.localRotation = Quaternion.identity;
+            rootObject.transform.localScale = Vector3.one;
+            indicatorRoot = rootObject.transform;
+        }
+
+        private static Material GetIndicatorMaterial()
+        {
+            if (indicatorMaterial != null)
+            {
+                return indicatorMaterial;
+            }
+
+            Shader shader = Shader.Find("Sprites/Default");
+            indicatorMaterial = shader != null ? new Material(shader) : null;
+            return indicatorMaterial;
+        }
+
+        private void SetDashVisible(int index, bool visible)
+        {
+            if (index >= 0 && index < dashes.Count && dashes[index] != null)
+            {
+                dashes[index].enabled = visible;
+            }
+        }
+
+        private void SetVisible(bool visible)
+        {
+            for (int i = 0; i < dashes.Count; i++)
+            {
+                SetDashVisible(i, visible);
+            }
         }
     }
 }
