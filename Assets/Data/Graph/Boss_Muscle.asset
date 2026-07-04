@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288590
     sequences: []
-    editorPosition: {x: 6, y: 580}
+    editorPosition: {x: 95, y: 580}
   - nodeId: Node6
     nodeGuid: dd2c409e76354ed08de7552b29dfee4e
     nodeKind: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288593
     sequences: []
-    editorPosition: {x: -142, y: 580}
+    editorPosition: {x: -170, y: 580}
   - nodeId: Node5_Copy1
     nodeGuid: 7868165e9ab04f82a2183ccf567263c9
     nodeKind: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288594
     sequences: []
-    editorPosition: {x: 530, y: 580}
+    editorPosition: {x: 632, y: 580}
   - nodeId: Node7
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
@@ -133,7 +133,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288596
     sequences: []
-    editorPosition: {x: 187, y: 580}
+    editorPosition: {x: 229, y: 580}
   - nodeId: Node6_Copy1
     nodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     nodeKind: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288602
     sequences: []
-    editorPosition: {x: 342, y: 580}
+    editorPosition: {x: 334, y: 580}
   - nodeId: Node3_Copy2
     nodeGuid: f9067e3ab9cd4c118f62347c84af469f
     nodeKind: 1
@@ -349,7 +349,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200281
     sequences: []
-    editorPosition: {x: 1351, y: 1428}
+    editorPosition: {x: 1772, y: 1277}
   - nodeId: Node6_Copy3
     nodeGuid: 9d360200b2194cc4830bccdd7e622e9d
     nodeKind: 1
@@ -457,7 +457,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200304
     sequences: []
-    editorPosition: {x: 281, y: 1992}
+    editorPosition: {x: 285, y: 1992}
   - nodeId: Pattern8_A3_2
     nodeGuid: 5bff9151eda945c296ae94176c48b58d
     nodeKind: 0
@@ -494,6 +494,51 @@ MonoBehaviour:
       rid: 4705777917832200313
     sequences: []
     editorPosition: {x: 602, y: 1992}
+  - nodeId: Pattern8_A3_2_Copy1
+    nodeGuid: 221617aecff84a7e966f781184805a0d
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777917832200317
+    sequences: []
+    editorPosition: {x: 146, y: 238}
+  - nodeId: Node7_Copy1
+    nodeGuid: e7d379c95d9c4859ad3179669179dfe2
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777917832200318
+    sequences: []
+    editorPosition: {x: -42, y: 580}
+  - nodeId: Node7_Copy1_Copy1
+    nodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777917832200319
+    sequences: []
+    editorPosition: {x: 458, y: 580}
+  - nodeId: Node7_Copy1_Copy1_Copy1
+    nodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777917832200320
+    sequences: []
+    editorPosition: {x: 1512, y: 1277}
+  - nodeId: Pattern8_A1_1
+    nodeGuid: 3ab2497c3b984870834e7e4e1012795a
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777917832200321
+    sequences: []
+    editorPosition: {x: -63, y: 2124}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -514,23 +559,29 @@ MonoBehaviour:
     nodeGuids:
     - 442b7f6c09ca4411a6b2017755639bda
     - 9fe71e8bed4d44ac9c8cf8b218947399
+    - 221617aecff84a7e966f781184805a0d
     - 9052884a28bd4972abf00ddf436b845b
     nodeIds:
     - Node3
     - Node1_Copy3
+    - Pattern8_A3_2_Copy1
     - Node4
   - patternId: Pattern3
     nodeGuids:
     - dd2c409e76354ed08de7552b29dfee4e
+    - e7d379c95d9c4859ad3179669179dfe2
     - b283cca93e0f4171b4ab5f011cda833e
     - 5c3c6d7e9fe745a0896819b92dd417da
     - 612a6b3ea4804a36891c2ee0a4256608
+    - e46ce352b4d0477fbaa77c6cb6ccb343
     - 7868165e9ab04f82a2183ccf567263c9
     nodeIds:
     - Node6
+    - Node7_Copy1
     - Node5
     - Node7
     - Node6_Copy1
+    - Node7_Copy1_Copy1
     - Node5_Copy1
   - patternId: Pattern4
     nodeGuids:
@@ -572,6 +623,7 @@ MonoBehaviour:
     - d79fb59e26364649a80c98c326ad044d
     - 32166bb39f414bbbad5793c88c365ad4
     - 9d360200b2194cc4830bccdd7e622e9d
+    - 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     - bd1d0c8d399740698d2d32680eafe6cd
     - 69cd2eab21304708aa6edc12de730d30
     - d43b737f69114464a386a87607407c56
@@ -584,6 +636,7 @@ MonoBehaviour:
     - Node1_Copy3_Copy2_Copy1_Copy2_Copy1
     - Node1_Copy3_Copy2_Copy1_Copy3_Copy1
     - Node6_Copy3
+    - Node7_Copy1_Copy1_Copy1
     - Node5_Copy2
     - Node2_Copy1_Copy3
     - Node2_Copy1_Copy3_Copy1
@@ -611,6 +664,7 @@ MonoBehaviour:
   - patternId: Pattern8
     nodeGuids:
     - c6a7a186d7d4496487c3e3dea28eefa7
+    - 3ab2497c3b984870834e7e4e1012795a
     - 1cbbe03462e74293bf24fab3970b7f76
     - 3db6a40223d4491a9b11b8038e761b42
     - 273309f2f610471b8717081b30d02179
@@ -619,6 +673,7 @@ MonoBehaviour:
     - 5bff9151eda945c296ae94176c48b58d
     nodeIds:
     - Pattern8_A1
+    - Pattern8_A1_1
     - Pattern8_A2
     - Node10
     - Pattern8_A3_1
@@ -636,23 +691,23 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-    - patternId: Pattern3
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
+    - patternId: Pattern3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 0
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 2
@@ -663,23 +718,23 @@ MonoBehaviour:
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
   transitions:
   - fromNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
@@ -702,13 +757,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: dd2c409e76354ed08de7552b29dfee4e
-    toNodeGuid: b283cca93e0f4171b4ab5f011cda833e
-    fromNodeId: Node6
-    toNodeId: Node5
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: b283cca93e0f4171b4ab5f011cda833e
     toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     fromNodeId: Node5
@@ -727,13 +775,6 @@ MonoBehaviour:
     toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     fromNodeId: Node7
     toNodeId: Node6_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
-    toNodeGuid: 7868165e9ab04f82a2183ccf567263c9
-    fromNodeId: Node6_Copy1
-    toNodeId: Node5_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -835,13 +876,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 9d360200b2194cc4830bccdd7e622e9d
-    toNodeGuid: bd1d0c8d399740698d2d32680eafe6cd
-    fromNodeId: Node6_Copy3
-    toNodeId: Node5_Copy2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: de96c4c233b94f6db624c65fe92ce58f
     toNodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
     fromNodeId: Node3_Copy2_Copy1
@@ -860,13 +894,6 @@ MonoBehaviour:
     toNodeGuid: b7708a519d25435795fc32fe065e3fef
     fromNodeId: Node1_Copy3_Copy2_Copy2
     toNodeId: Node3_Copy1_Copy3_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: c6a7a186d7d4496487c3e3dea28eefa7
-    toNodeGuid: 1cbbe03462e74293bf24fab3970b7f76
-    fromNodeId: Pattern8_A1
-    toNodeId: Pattern8_A2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -895,6 +922,69 @@ MonoBehaviour:
     toNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
     fromNodeId: Pattern8_A3_1
     toNodeId: Node8_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
+    toNodeGuid: 221617aecff84a7e966f781184805a0d
+    fromNodeId: Node1_Copy3
+    toNodeId: Pattern8_A3_2_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: dd2c409e76354ed08de7552b29dfee4e
+    toNodeGuid: e7d379c95d9c4859ad3179669179dfe2
+    fromNodeId: Node6
+    toNodeId: Node7_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e7d379c95d9c4859ad3179669179dfe2
+    toNodeGuid: b283cca93e0f4171b4ab5f011cda833e
+    fromNodeId: Node7_Copy1
+    toNodeId: Node5
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
+    toNodeGuid: 7868165e9ab04f82a2183ccf567263c9
+    fromNodeId: Node7_Copy1_Copy1
+    toNodeId: Node5_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
+    toNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
+    fromNodeId: Node6_Copy1
+    toNodeId: Node7_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9d360200b2194cc4830bccdd7e622e9d
+    toNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
+    fromNodeId: Node6_Copy3
+    toNodeId: Node7_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
+    toNodeGuid: bd1d0c8d399740698d2d32680eafe6cd
+    fromNodeId: Node7_Copy1_Copy1_Copy1
+    toNodeId: Node5_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c6a7a186d7d4496487c3e3dea28eefa7
+    toNodeGuid: 3ab2497c3b984870834e7e4e1012795a
+    fromNodeId: Pattern8_A1
+    toNodeId: Pattern8_A1_1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 3ab2497c3b984870834e7e4e1012795a
+    toNodeGuid: 1cbbe03462e74293bf24fab3970b7f76
+    fromNodeId: Pattern8_A1_1
+    toNodeId: Pattern8_A2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -983,8 +1073,8 @@ MonoBehaviour:
     toNodeId: Pattern8_A3_2
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern6
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern8
   references:
     version: 2
     RefIds:
@@ -1610,7 +1700,7 @@ MonoBehaviour:
       data:
         durationSeconds: 1
         distance: 6
-        tolerance: 0.2
+        tolerance: 0.15
         speedMultiplier: 3
         speedCurve:
           serializedVersion: 2
@@ -1779,7 +1869,7 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         pattern: 1
-        bulletCount: 20
+        bulletCount: 30
         spacing: 0.7
         centerOffset: 0.7
         dashAim:
@@ -1812,7 +1902,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         alignEaseInitialized: 1
-        holdSeconds: 0.9
+        holdSeconds: 0.5
         fireOrder: 0
         fireInterval: 0.05
         fireSfxId: 
@@ -1856,7 +1946,7 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         pattern: 1
-        bulletCount: 20
+        bulletCount: 30
         spacing: 0.7
         centerOffset: 0.7
         dashAim:
@@ -1889,7 +1979,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         alignEaseInitialized: 1
-        holdSeconds: 0.9
+        holdSeconds: 0.5
         fireOrder: 0
         fireInterval: 0.05
         fireSfxId: 
@@ -2200,7 +2290,7 @@ MonoBehaviour:
     - rid: 4705777899588288624
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1.5
+        seconds: 1
         stopMovement: 1
         effectOrigin:
           mode: 0
@@ -3114,7 +3204,7 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         pattern: 1
-        bulletCount: 20
+        bulletCount: 30
         spacing: 0.7
         centerOffset: 0.7
         dashAim:
@@ -3191,7 +3281,7 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         pattern: 1
-        bulletCount: 20
+        bulletCount: 30
         spacing: 0.7
         centerOffset: 0.7
         dashAim:
@@ -3432,7 +3522,7 @@ MonoBehaviour:
           mode: 1
           angleDegrees: 90
         spawnForwardOffset: 0.5
-        chargeSecondsOverride: 1.5
+        chargeSecondsOverride: 0.7
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -3612,11 +3702,11 @@ MonoBehaviour:
     - rid: 4705777917832200311
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1.5
+        seconds: 0.7
     - rid: 4705777917832200312
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1.5
+        seconds: 1
         stopMovement: 1
         effectOrigin:
           mode: 0
@@ -3703,3 +3793,75 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+    - rid: 4705777917832200317
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 90
+        bulletCount: 2
+        arcDegrees: 90
+        startAngleOffset: 0
+        randomizeStartAngle: 0
+        spawnRadius: 0
+        fireInterval: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705777917832200318
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.02
+    - rid: 4705777917832200319
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.02
+    - rid: 4705777917832200320
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.02
+    - rid: 4705777917832200321
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.02
