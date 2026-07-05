@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Week14.Audio;
 using Week14.Enemy;
@@ -13,6 +14,11 @@ namespace Week14.Skills
         [SerializeField, Min(0f)] private float durationSeconds = 5f;
         [Tooltip("스킬 발동 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [SerializeField] private string sfxId;
+
+        public override bool HasDelayedCooldownStart => true;
+
+        public override void SubscribeEffectEnd(Action onEffectEnd) => EnemyTimeScale.Expired += onEffectEnd;
+        public override void UnsubscribeEffectEnd(Action onEffectEnd) => EnemyTimeScale.Expired -= onEffectEnd;
 
         public override void Execute(GameObject user)
         {

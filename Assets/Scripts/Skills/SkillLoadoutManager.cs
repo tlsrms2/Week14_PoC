@@ -24,6 +24,11 @@ namespace Week14.Skills
         private readonly Dictionary<SkillSlot, BaseSkillSO> equippedSkills = new();
         private float cooldownRemaining;
 
+        // 지속시간이 있는 스킬(HasDelayedCooldownStart)을 사용한 뒤, 효과가 끝나는 콜백이 올 때까지
+        // true로 유지됩니다. 이 동안은 cooldownRemaining을 감소시키지 않아 게이지가 0%로 멈춰 있습니다.
+        private bool cooldownLocked;
+        private BaseSkillSO effectEndSubscribedSkill;
+
         public static SkillLoadoutManager Instance => instance;
 
         public event Action<float, float> CooldownChanged;
@@ -67,6 +72,7 @@ namespace Week14.Skills
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= HandleSceneLoaded;
+            UnsubscribeEffectEnd();
         }
 
         private void Update()
@@ -152,17 +158,44 @@ namespace Week14.Skills
                 return false;
             }
 
-            if (cooldownRemaining > 0f)
+            if (cooldownLocked || cooldownRemaining > 0f)
             {
                 return false;
             }
 
+            // 지속시간이 있는 스킬도 게이지는 즉시 "0% 채워짐(=CooldownSeconds 그대로 남음)" 상태로
+            // 표시하고, 효과가 끝날 때까지는 TickCooldown에서 감소시키지 않습니다.
             cooldownRemaining = skill.CooldownSeconds;
             GameObject user = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : gameObject;
             skill.Execute(user);
             SkillUsed?.Invoke(slot, skill);
             CooldownChanged?.Invoke(cooldownRemaining, skill.CooldownSeconds);
+
+            if (skill.HasDelayedCooldownStart)
+            {
+                cooldownLocked = true;
+                effectEndSubscribedSkill = skill;
+                skill.SubscribeEffectEnd(HandleEffectEnded);
+            }
+
             return true;
+        }
+
+        private void HandleEffectEnded()
+        {
+            UnsubscribeEffectEnd();
+            cooldownLocked = false;
+        }
+
+        private void UnsubscribeEffectEnd()
+        {
+            if (effectEndSubscribedSkill == null)
+            {
+                return;
+            }
+
+            effectEndSubscribedSkill.UnsubscribeEffectEnd(HandleEffectEnded);
+            effectEndSubscribedSkill = null;
         }
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -172,7 +205,7 @@ namespace Week14.Skills
 
         private void TickCooldown(float deltaTime)
         {
-            if (cooldownRemaining <= 0f)
+            if (cooldownLocked || cooldownRemaining <= 0f)
             {
                 return;
             }
@@ -184,6 +217,8 @@ namespace Week14.Skills
 
         private void ResetCooldown()
         {
+            UnsubscribeEffectEnd();
+            cooldownLocked = false;
             cooldownRemaining = 0f;
             BaseSkillSO skill = GetEquippedSkill(ActiveSlot);
             CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
