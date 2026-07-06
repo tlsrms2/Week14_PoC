@@ -15,6 +15,8 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int bulletCount = 12;
         [SerializeField, Min(0f)] private float fireInterval = 0.04f;
         [SerializeField, Min(0f)] private float startRadius;
+        [SerializeField, Min(1)] private int ringCount = 1;
+        [SerializeField, Min(0f)] private float ringSpacing;
         [SerializeField, Min(0f)] private float radialSpeedMultiplier = 1f;
         [SerializeField] private float angularSpeedDegrees = 540f;
         [SerializeField] private float startAngleOffset;
@@ -42,6 +44,7 @@ namespace Week14.Enemy
             BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
             BossProjectileSettings settings = context.ResolveGraphProjectileSettings(projectileName) ?? projectile;
             int count = Mathf.Max(1, bulletCount);
+            int rings = Mathf.Max(1, ringCount);
             float baseStartAngle = randomizeStartAngle ? UnityEngine.Random.Range(0f, 360f) : startAngleOffset;
 
             for (int i = 0; i < count; i++)
@@ -59,33 +62,38 @@ namespace Week14.Enemy
                 float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
                 float spiralAngle = aimAngle + baseStartAngle + 360f / count * i;
                 Vector2 spawnDirection = BossActionContext.AngleToDirection(spiralAngle);
-                EnemyProjectile firedProjectile = context.FireProjectile(
-                    projectile,
-                    center,
-                    spawnDirection,
-                    0f,
-                    aimAtPlayerWhileChargingOverride: false,
-                    aimAtPlayerOnLaunchOverride: false,
-                    chargeSecondsOverride: 0f,
-                    suppressHoming: true,
-                    projectileName: projectileName);
-
-                if (firedProjectile != null)
+                for (int ringIndex = 0; ringIndex < rings; ringIndex++)
                 {
-                    firedProjectile.ConfigurePathIndicatorSuppressed(true);
-                    firedProjectile.gameObject.AddComponent<BossSpiralProjectileMotion>().Initialize(
-                        center,
-                        spiralAngle,
-                        (settings?.Speed ?? 0f) * radialSpeedMultiplier,
-                        angularSpeedDegrees,
-                        startRadius,
-                        motionDurationSeconds,
-                        destroyOnMotionEnd);
-                    context.PlaySfx(fireSfxId);
-                    context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
-                    context.PlayOriginBurst(effects, center);
-                    context.PlayMuzzleFlashIfEnabled(effects, center, spawnDirection);
-                    context.PlayCameraShakeIfEnabled(effects, spawnDirection);
+                    float ringStartRadius = startRadius + Mathf.Max(0f, ringSpacing) * ringIndex;
+                    Vector3 spawnPosition = center + (Vector3)(spawnDirection * ringStartRadius);
+                    EnemyProjectile firedProjectile = context.FireProjectile(
+                        projectile,
+                        spawnPosition,
+                        spawnDirection,
+                        0f,
+                        aimAtPlayerWhileChargingOverride: false,
+                        aimAtPlayerOnLaunchOverride: false,
+                        chargeSecondsOverride: 0f,
+                        suppressHoming: true,
+                        projectileName: projectileName);
+
+                    if (firedProjectile != null)
+                    {
+                        firedProjectile.ConfigurePathIndicatorSuppressed(true);
+                        firedProjectile.gameObject.AddComponent<BossSpiralProjectileMotion>().Initialize(
+                            center,
+                            spiralAngle,
+                            (settings?.Speed ?? 0f) * radialSpeedMultiplier,
+                            angularSpeedDegrees,
+                            ringStartRadius,
+                            motionDurationSeconds,
+                            destroyOnMotionEnd);
+                        context.PlaySfx(fireSfxId);
+                        context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                        context.PlayOriginBurst(effects, spawnPosition);
+                        context.PlayMuzzleFlashIfEnabled(effects, spawnPosition, spawnDirection);
+                        context.PlayCameraShakeIfEnabled(effects, spawnDirection);
+                    }
                 }
 
                 if (fireInterval > 0f && i < count - 1)

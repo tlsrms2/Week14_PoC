@@ -226,7 +226,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(FireRotatingProjectilesAction))
         {
-            return "보스 위치를 시작점으로 투사체가 모기향처럼 회전하며 바깥으로 이동합니다.";
+            return "보스 위치를 시작점으로 투사체가 모기향처럼 회전하며 바깥으로 이동합니다. Ring Count와 Ring Spacing으로 같은 모기향 사이에 추가 고리를 만들 수 있습니다.";
         }
 
         if (actionType == typeof(FireAttachedProjectilesAction))

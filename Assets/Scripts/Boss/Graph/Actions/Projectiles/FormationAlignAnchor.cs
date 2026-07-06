@@ -35,7 +35,7 @@ namespace Week14.Enemy
             startRadius = Mathf.Max(0f, nextStartRadius);
             durationSeconds = Mathf.Max(0f, nextDurationSeconds);
             destroyOnComplete = nextDestroyOnComplete;
-            MoveTo(origin, 0f);
+            MoveTo(GetPosition(0f), 0f);
         }
 
         private void LateUpdate()
@@ -48,15 +48,19 @@ namespace Week14.Enemy
 
             float deltaTime = Time.deltaTime;
             elapsed += deltaTime;
-            float angle = startAngleDegrees + angularSpeedDegrees * elapsed;
-            float radius = startRadius + radialSpeed * elapsed;
-            Vector2 nextPosition = origin + BossActionContext.AngleToDirection(angle) * radius;
-            MoveTo(nextPosition, deltaTime);
+            MoveTo(GetPosition(elapsed), deltaTime);
 
             if (destroyOnComplete && durationSeconds > 0f && elapsed >= durationSeconds)
             {
                 projectile.DestroyFromOwner();
             }
+        }
+
+        private Vector2 GetPosition(float nextElapsed)
+        {
+            float angle = startAngleDegrees + angularSpeedDegrees * nextElapsed;
+            float radius = startRadius + radialSpeed * nextElapsed;
+            return origin + BossActionContext.AngleToDirection(angle) * radius;
         }
 
         private void MoveTo(Vector2 position, float deltaTime)

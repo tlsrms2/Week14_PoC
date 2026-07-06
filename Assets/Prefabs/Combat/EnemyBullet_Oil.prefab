@@ -117,7 +117,7 @@ MonoBehaviour:
   parryLockOnRotationSpeedDegrees: 180
   owner: {fileID: 0}
   patchRadius: 0.7
-  patchDuration: 10
+  patchDuration: 15
   paintSpacing: 0.3
   destroyOnWall: 1
   oilColor: {r: 0.12, g: 0.09, b: 0.04, a: 1}

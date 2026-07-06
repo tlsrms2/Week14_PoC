@@ -13,27 +13,17 @@ namespace Week14.Enemy
     {
         private const string BgmId = "ArsonistBgm";
 
-        [SerializeField, Min(0.05f)] private float oilTrailDuration = 3.5f;
         [SerializeField, Min(0.05f)] private float ignitedOilDuration = 3.5f;
         [SerializeField, Min(0.05f)] private float oilConnectionRadius = 0.95f;
         [SerializeField, Min(0.01f)] private float oilIgnitionSpreadInterval = 0.06f;
 
-        [SerializeField, Min(0.05f)] private float oilSoakedDuration = 4f;
-        [SerializeField, Min(0.01f)] private float oilTrailInterval = 0.18f;
-
         [SerializeField, Min(1)] private int fireDamage = 1;
         [SerializeField, Min(0.05f)] private float fireDamageInterval = 0.45f;
-
-        [SerializeField, Min(1)] private int burnTotalDamage = 3;
-        [SerializeField, Min(0.05f)] private float burnTickInterval = 0.75f;
-        [SerializeField, Min(0.05f)] private float burnDuration = 3f;
 
         private readonly List<ArsonistOilPatch> oilPatches = new();
         private readonly List<ArsonistFireArea> fireAreas = new();
         private readonly List<ArsonistFireAreaBatch> activeFireAreaBatches = new();
-        private readonly Dictionary<PlayerCombatController, ArsonistOilSoakedStatus> oilSoakedStatuses = new();
         private readonly Dictionary<PlayerCombatController, float> nextFireDamageAtByPlayer = new();
-        private readonly List<ArsonistOilSoakedStatus> statusBuffer = new();
         private int oilIgnitionVersion;
 
         protected override bool RotatesBodyToPlayer => false;
@@ -59,20 +49,20 @@ namespace Week14.Enemy
             Vector3 position,
             float radius,
             float duration,
-            Color oilColor,
-            float trailSpacing)
+            Color oilColor)
         {
-            return CreateOilPatch(position, radius, duration, oilColor, trailSpacing, null);
-        }
+            GameObject patchObject = new("ArsonistOilPatch");
+            patchObject.transform.position = FlattenPosition(position);
+            CircleCollider2D collider = patchObject.AddComponent<CircleCollider2D>();
+            collider.isTrigger = true;
+            collider.radius = Mathf.Max(0.05f, radius);
 
-        internal ArsonistOilPatch CreateOilTrailPatch(
-            Vector3 position,
-            PlayerCombatController sourcePlayer,
-            Color oilColor,
-            float radius,
-            float trailSpacing)
-        {
-            return CreateOilPatch(position, radius, oilTrailDuration, oilColor, trailSpacing, sourcePlayer);
+            ArsonistOilPatch patch = patchObject.AddComponent<ArsonistOilPatch>();
+            patch.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), oilColor);
+            oilPatches.Add(patch);
+
+            TryIgniteNewOilPatchFromActiveFire(patch);
+            return patch;
         }
 
         internal ArsonistFireArea CreateFireArea(
@@ -114,27 +104,6 @@ namespace Week14.Enemy
             batch.FadeOutAll();
         }
 
-        internal void ApplyOilSoaked(PlayerCombatController player, Color oilColor, float trailRadius, float trailSpacing)
-        {
-            if (player == null || player.Health == null || player.Health.IsDead)
-            {
-                return;
-            }
-
-            if (!oilSoakedStatuses.TryGetValue(player, out ArsonistOilSoakedStatus status) || status == null)
-            {
-                status = player.gameObject.GetComponent<ArsonistOilSoakedStatus>();
-                if (status == null)
-                {
-                    status = player.gameObject.AddComponent<ArsonistOilSoakedStatus>();
-                }
-
-                oilSoakedStatuses[player] = status;
-            }
-
-            status.Configure(this, player, oilColor, oilSoakedDuration, oilTrailInterval, trailRadius, trailSpacing);
-        }
-
         internal void ApplyFireContact(
             PlayerCombatController player,
             Vector3 sourcePosition,
@@ -165,10 +134,7 @@ namespace Week14.Enemy
                 direction = Vector2.up;
             }
 
-            if (player.ReceiveAttack(fireDamage, sourcePosition, direction.normalized))
-            {
-                ApplyBurn(player);
-            }
+            player.ReceiveAttack(fireDamage, sourcePosition, direction.normalized);
 
             if (nextDamageAtByPlayer != null)
             {
@@ -191,22 +157,6 @@ namespace Week14.Enemy
             {
                 nextFireDamageAtByPlayer[player] = nextDamageAt;
             }
-        }
-
-        internal void ApplyBurn(PlayerCombatController player)
-        {
-            if (player == null || player.Health == null || player.Health.IsDead)
-            {
-                return;
-            }
-
-            ArsonistBurnStatus burn = player.gameObject.GetComponent<ArsonistBurnStatus>();
-            if (burn == null)
-            {
-                burn = player.gameObject.AddComponent<ArsonistBurnStatus>();
-            }
-
-            burn.Configure(player, burnTotalDamage, burnTickInterval, burnDuration);
         }
 
         internal void IgniteOilNetwork(ArsonistOilPatch seed, Color fireColor)
@@ -300,7 +250,6 @@ namespace Week14.Enemy
                     }
 
                     patch.IgniteLocal(ignitionDuration, fireColor);
-                    NotifyOilPatchIgnited(patch);
                 }
 
                 if (i < ignitionLayers.Count - 1)
@@ -335,10 +284,6 @@ namespace Week14.Enemy
         internal void UnregisterOilPatch(ArsonistOilPatch patch)
         {
             oilPatches.Remove(patch);
-            foreach (ArsonistOilSoakedStatus status in oilSoakedStatuses.Values)
-            {
-                status?.RemoveTrailPatch(patch);
-            }
         }
 
         internal void UnregisterFireArea(ArsonistFireArea fireArea)
@@ -348,48 +293,6 @@ namespace Week14.Enemy
             {
                 activeFireAreaBatches[i]?.Remove(fireArea);
             }
-        }
-
-        internal void UnregisterOilSoakedStatus(PlayerCombatController player, ArsonistOilSoakedStatus status)
-        {
-            if (player == null)
-            {
-                return;
-            }
-
-            if (oilSoakedStatuses.TryGetValue(player, out ArsonistOilSoakedStatus current) && current == status)
-            {
-                oilSoakedStatuses.Remove(player);
-            }
-        }
-
-        private ArsonistOilPatch CreateOilPatch(
-            Vector3 position,
-            float radius,
-            float duration,
-            Color oilColor,
-            float trailSpacing,
-            PlayerCombatController sourcePlayer)
-        {
-            GameObject patchObject = new("ArsonistOilPatch");
-            patchObject.transform.position = FlattenPosition(position);
-            CircleCollider2D collider = patchObject.AddComponent<CircleCollider2D>();
-            collider.isTrigger = true;
-            collider.radius = Mathf.Max(0.05f, radius);
-
-            ArsonistOilPatch patch = patchObject.AddComponent<ArsonistOilPatch>();
-            patch.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), oilColor, trailSpacing);
-            oilPatches.Add(patch);
-
-            if (sourcePlayer != null
-                && oilSoakedStatuses.TryGetValue(sourcePlayer, out ArsonistOilSoakedStatus status)
-                && status != null)
-            {
-                status.AddTrailPatch(patch);
-            }
-
-            TryIgniteNewOilPatchFromActiveFire(patch);
-            return patch;
         }
 
         private void TryIgniteNewOilPatchFromActiveFire(ArsonistOilPatch patch)
@@ -418,29 +321,6 @@ namespace Week14.Enemy
                     return;
                 }
             }
-        }
-
-        private void NotifyOilPatchIgnited(ArsonistOilPatch patch)
-        {
-            statusBuffer.Clear();
-            foreach (ArsonistOilSoakedStatus status in oilSoakedStatuses.Values)
-            {
-                if (status != null)
-                {
-                    statusBuffer.Add(status);
-                }
-            }
-
-            for (int i = 0; i < statusBuffer.Count; i++)
-            {
-                ArsonistOilSoakedStatus status = statusBuffer[i];
-                if (status != null && status.ShouldIgniteFromOilPatch(patch, oilConnectionRadius))
-                {
-                    status.IgniteFromOilPatch();
-                }
-            }
-
-            statusBuffer.Clear();
         }
 
         private bool AreOilPatchesConnected(ArsonistOilPatch first, ArsonistOilPatch second)
@@ -504,18 +384,9 @@ namespace Week14.Enemy
                 }
             }
 
-            foreach (ArsonistOilSoakedStatus status in oilSoakedStatuses.Values)
-            {
-                if (status != null)
-                {
-                    Destroy(status);
-                }
-            }
-
             oilPatches.Clear();
             fireAreas.Clear();
             activeFireAreaBatches.Clear();
-            oilSoakedStatuses.Clear();
             nextFireDamageAtByPlayer.Clear();
         }
 
