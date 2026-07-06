@@ -9,6 +9,8 @@ namespace Week14.Combat
 {
     internal sealed class PlayerParryController
     {
+        private const int MouseParryMissesBeforePenalty = 3;
+
         internal static event Action ProjectileParried;
 
         private readonly PlayerCombatController.PlayerCombatContext context;
@@ -19,6 +21,7 @@ namespace Week14.Combat
         private Vector3 mouseParryReticleBaseLocalScale = Vector3.one;
         private float mouseParryCurrentRangeScale = 1f;
         private float mouseParryRangeRecoveryStartsAt;
+        private int consecutiveMouseParryMissCount;
         private bool hasMouseParryReticleBaseLocalScale;
 
         internal PlayerParryController(
@@ -246,12 +249,22 @@ namespace Week14.Combat
             rig.ResolveMouseParryReticleReference();
             CacheMouseParryReticleBaseScale();
 
-            float minimumScale = Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f);
-            float loss = Mathf.Clamp01(MouseParryMissRangeScaleLoss);
-            mouseParryCurrentRangeScale = Mathf.Max(minimumScale, mouseParryCurrentRangeScale - loss);
+            if (Time.time >= mouseParryRangeRecoveryStartsAt)
+            {
+                consecutiveMouseParryMissCount = 0;
+            }
+
+            consecutiveMouseParryMissCount++;
             mouseParryRangeRecoveryStartsAt = Time.time + Mathf.Max(0f, MouseParryRangeRecoveryDelay);
 
-            ApplyMouseParryRangeScale();
+            if (consecutiveMouseParryMissCount >= MouseParryMissesBeforePenalty)
+            {
+                float minimumScale = Mathf.Clamp(MouseParryMinimumRangeScale, 0.1f, 1f);
+                float loss = Mathf.Clamp01(MouseParryMissRangeScaleLoss);
+                mouseParryCurrentRangeScale = Mathf.Max(minimumScale, mouseParryCurrentRangeScale - loss);
+                ApplyMouseParryRangeScale();
+            }
+
             context.MouseParryReticle?.PlayMissFeedback(
                 MouseParryMissColorSeconds,
                 MouseParryMissShakeSeconds,
@@ -261,6 +274,11 @@ namespace Week14.Combat
 
         internal void UpdateMouseParryRangeRecovery()
         {
+            if (consecutiveMouseParryMissCount > 0 && Time.time >= mouseParryRangeRecoveryStartsAt)
+            {
+                consecutiveMouseParryMissCount = 0;
+            }
+
             if (mouseParryCurrentRangeScale >= 0.999f || Time.time < mouseParryRangeRecoveryStartsAt)
             {
                 return;
