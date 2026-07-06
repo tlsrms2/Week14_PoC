@@ -14,8 +14,10 @@ namespace Week14.Combat
         [SerializeField, Min(0)] private int leftAttackBulletCost = 1;
         [Tooltip("패링 성공 시 플레이어가 회복하는 탄환 수입니다.")]
         [SerializeField, Min(0)] private int parryBulletRecovery = 2;
-        [Tooltip("적 몸체와 접촉했을 때 플레이어가 잃는 탄환 수입니다.")]
-        [SerializeField, Min(1)] private int enemyBodyContactBulletDamage = 1;
+        [Tooltip("적 몸체와 접촉했을 때 플레이어가 잃는 탄환 수입니다. 0이면 접촉만으로는 데미지를 주지 않습니다.")]
+        [SerializeField, Min(0)] private int enemyBodyContactBulletDamage = 1;
+        [Tooltip("보스가 대쉬 중일 때 몸체 접촉으로 플레이어가 잃는 탄환 수입니다. 평소 접촉 데미지와 별도로 적용됩니다.")]
+        [SerializeField, Min(0)] private int bossDashContactBulletDamage = 1;
         [Tooltip("적 몸체와 계속 닿아 있을 때 피격을 다시 받을 때까지의 시간입니다.")]
         [SerializeField, Min(0f)] private float enemyBodyContactCooldownSeconds = 0.35f;
         [Tooltip("적 몸체와 부딪혔을 때 플레이어가 튕겨나는 속도입니다.")]
@@ -117,6 +119,7 @@ namespace Week14.Combat
         public Color AttackEffectColor => effectData != null ? effectData.AttackEffectColor : new Color(1f, 0.35f, 0.12f, 0.55f);
         public int ParryBulletRecovery => parryBulletRecovery;
         public int EnemyBodyContactBulletDamage => enemyBodyContactBulletDamage;
+        public int BossDashContactBulletDamage => bossDashContactBulletDamage;
         public float EnemyBodyContactCooldownSeconds => enemyBodyContactCooldownSeconds;
         public float EnemyBodyContactKnockbackSpeed => enemyBodyContactKnockbackSpeed;
         public float EnemyBodyContactStaggerSeconds => enemyBodyContactStaggerSeconds;

@@ -762,7 +762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8111680843466306869, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.792
+      value: -8.33
       objectReference: {fileID: 0}
     - target: {fileID: 8111680843466306869, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -876,6 +876,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635520241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8479954198917957644, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
+  m_PrefabInstance: {fileID: 602437830}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56bdd104f868e594386afd9cbb763d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.PlayerHP
 --- !u!1 &670637064
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +983,10 @@ PrefabInstance:
       propertyPath: image
       value: 
       objectReference: {fileID: 602437831}
+    - target: {fileID: 2328319091128216988, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: playerHpView
+      value: 
+      objectReference: {fileID: 635520241}
     - target: {fileID: 4309581587629039353, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2310,7 +2325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.WeaponLoadoutManager
   database: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
-  defaultWeapon: {fileID: 11400000, guid: 390dc9bd7ce1b204cacc8d2fbb4e4dc7, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: 78968c280a3232e478be7e46610c5bb4, type: 2}
   forceDefaultWeapon: 1
 --- !u!4 &1626476258
 Transform:
@@ -3615,8 +3630,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.0014384587}
-  m_Radius: 0.25165167
+  m_Offset: {x: 0, y: -0.018299708}
+  m_Radius: 0.27138984
 --- !u!1 &3492024333939183735
 GameObject:
   m_ObjectHideFlags: 0
@@ -3918,7 +3933,7 @@ Animator:
   m_GameObject: {fileID: 977982141355594650}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3f0d34f1337ac954ca289afa2a14d6e8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4618,7 +4633,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 4b40fc0f65c85f14fbc9c7c5f40ca686, type: 3}
+  m_Sprite: {fileID: 1270279067752250102, guid: a0e89f1d438ad7c46a4637681bb00c8d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4771,6 +4786,8 @@ MonoBehaviour:
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
+  walkAnimator: {fileID: 0}
+  walkVelocityThreshold: 0.01
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

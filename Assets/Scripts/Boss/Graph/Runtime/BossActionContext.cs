@@ -41,6 +41,12 @@ namespace Week14.Enemy
 
         public BossAI Boss { get; }
         public bool IsExecutionPaused => isExecutionPaused?.Invoke() == true;
+        public bool IsDashing { get; private set; }
+
+        public void SetDashing(bool dashing)
+        {
+            IsDashing = dashing;
+        }
         public Vector3 OriginPosition
         {
             get
