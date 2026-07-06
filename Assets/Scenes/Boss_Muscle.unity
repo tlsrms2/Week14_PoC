@@ -876,6 +876,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635520241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8479954198917957644, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
+  m_PrefabInstance: {fileID: 602437830}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56bdd104f868e594386afd9cbb763d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.PlayerHP
 --- !u!1 &670637064
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +983,10 @@ PrefabInstance:
       propertyPath: image
       value: 
       objectReference: {fileID: 602437831}
+    - target: {fileID: 2328319091128216988, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: playerHpView
+      value: 
+      objectReference: {fileID: 635520241}
     - target: {fileID: 4309581587629039353, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
