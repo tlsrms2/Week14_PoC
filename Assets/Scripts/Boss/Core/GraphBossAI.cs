@@ -22,6 +22,7 @@ namespace Week14.Enemy
         protected override BossGraphAsset GraphAsset => bossGraph;
         protected BossGraphAsset BossGraph => bossGraph;
         protected BossActionContext GraphContext => graphContext;
+        public override bool IsDashing => graphContext != null && graphContext.IsDashing;
         protected IReadOnlyList<BossGraphProjectileEntry> GraphProjectiles => graphProjectiles;
 
         protected override BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
