@@ -16,6 +16,11 @@ namespace Week14.Combat
         private SpriteRenderer rangeFill;
         private float rangeFullScale = 1f;
 
+        public float ExplosionRadius => explosionRadius;
+        public int ExplosionDamage => explosionDamage;
+        public Color ExplosionColor => explosionColor;
+        public Vector3 ExplosionCenter => ResolveExplosionCenter();
+
         protected override void OnProjectileAwake()
         {
             SetupRangeIndicator();
@@ -70,27 +75,8 @@ namespace Week14.Combat
 
         protected override void OnProjectileLaunched()
         {
-            Vector3 explosionCenter = ResolveExplosionCenter();
-
-            ProjectileVfx.PlayHogExplosion(explosionCenter, explosionColor, Mathf.Max(1f, explosionRadius));
-
-            if (explosionDamage > 0)
-            {
-                Collider2D[] hits = Physics2D.OverlapCircleAll(explosionCenter, explosionRadius);
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    PlayerCombatController player = hits[i].GetComponentInParent<PlayerCombatController>();
-                    if (player == null)
-                    {
-                        continue;
-                    }
-
-                    Vector2 hitDirection = (Vector2)(player.transform.position - explosionCenter);
-                    player.ReceiveAttack(explosionDamage, explosionCenter, hitDirection);
-                    break;
-                }
-            }
-
+            // 폭발 이펙트/데미지는 여기서 바로 재생하지 않고 SpawnParryableBombAction이
+            // Slam 애니메이션의 충돌 프레임(Animation Event)에 맞춰 대신 재생합니다.
             DestroyFromOwner();
         }
     }

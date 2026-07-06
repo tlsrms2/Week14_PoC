@@ -3272,6 +3272,7 @@ GameObject:
   - component: {fileID: 7195046700096665505}
   - component: {fileID: 7843611011389980381}
   - component: {fileID: 5291647841609170472}
+  - component: {fileID: 7843611011389980382}
   m_Layer: 6
   m_Name: Boss
   m_TagString: Untagged
@@ -4643,6 +4644,18 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7843611011389980382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977982141355594650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 193a63a803360054497463d6d8aa08e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossAnimationEventBridge
 --- !u!224 &8111027705455617867
 RectTransform:
   m_ObjectHideFlags: 0

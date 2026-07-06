@@ -100,6 +100,7 @@ internal static class BossGraphActionEditorUtility
         new("Move/Wander Around Player Distance", typeof(WanderAroundPlayerDistanceAction), () => new WanderAroundPlayerDistanceAction()),
         new("Move/Move Between Map Points", typeof(MoveBetweenMapPointsAction), () => new MoveBetweenMapPointsAction()),
         new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
+        new("Projectile/Spawn Parryable Bomb", typeof(SpawnParryableBombAction), () => new SpawnParryableBombAction()),
         new("Projectile/Charged/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
         new("Projectile/Charged/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
         new("Projectile/Charged/Configure Radial Split", typeof(ConfigureRadialSplitAction), () => new ConfigureRadialSplitAction()),
@@ -212,7 +213,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MoveBodyRootLocalAction))
         {
-            return "보스 본체를 지정한 맵 좌표까지 이동시킵니다.";
+            return "보스 본체를 패턴 시작 시점 위치 기준 상대 오프셋만큼 이동시킵니다(절대 맵 좌표 아님).";
         }
 
         if (actionType == typeof(ResetBodyRootLocalAction))
@@ -223,6 +224,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(FireProjectileAction))
         {
             return "단발 투사체를 발사합니다. 간단한 1발 발사용 액션입니다.";
+        }
+
+        if (actionType == typeof(SpawnParryableBombAction))
+        {
+            return "패링 가능한 폭탄을 스폰하고 결과를 기다립니다. 패링당하면 Slam Fail Bool을, 그대로 터지면 Slam Success Bool을 켜고 지정한 Impact Event Id(Animation Event)가 들어올 때까지 기다렸다가 폭발 이펙트/데미지를 재생합니다.";
         }
 
         if (actionType == typeof(FireRotatingProjectilesAction))

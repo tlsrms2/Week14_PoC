@@ -98,15 +98,6 @@ MonoBehaviour:
       rid: 4705777899588288588
     sequences: []
     editorPosition: {x: -91, y: -222}
-  - nodeId: Node5
-    nodeGuid: b283cca93e0f4171b4ab5f011cda833e
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705777899588288590
-    sequences: []
-    editorPosition: {x: 95, y: 580}
   - nodeId: Node6
     nodeGuid: dd2c409e76354ed08de7552b29dfee4e
     nodeKind: 1
@@ -116,15 +107,6 @@ MonoBehaviour:
       rid: 4705777899588288593
     sequences: []
     editorPosition: {x: -170, y: 580}
-  - nodeId: Node5_Copy1
-    nodeGuid: 7868165e9ab04f82a2183ccf567263c9
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705777899588288594
-    sequences: []
-    editorPosition: {x: 632, y: 580}
   - nodeId: Node7
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
@@ -133,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288596
     sequences: []
-    editorPosition: {x: 229, y: 580}
+    editorPosition: {x: 365, y: 580}
   - nodeId: Node6_Copy1
     nodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     nodeKind: 1
@@ -142,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288602
     sequences: []
-    editorPosition: {x: 334, y: 580}
+    editorPosition: {x: 616, y: 580}
   - nodeId: Node3_Copy2
     nodeGuid: f9067e3ab9cd4c118f62347c84af469f
     nodeKind: 1
@@ -241,16 +223,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288624
     sequences: []
-    editorPosition: {x: 1093, y: 1087}
-  - nodeId: Node9
-    nodeGuid: c517f9f56605491eb81eb6a799a8cd60
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705777899588288626
-    sequences: []
-    editorPosition: {x: 1255, y: 1087}
+    editorPosition: {x: 1293, y: 1087}
   - nodeId: Node6_Copy2
     nodeGuid: b4288a57c12f4d029fbdd02df164a32e
     nodeKind: 1
@@ -341,15 +314,6 @@ MonoBehaviour:
       rid: 4705777917832200280
     sequences: []
     editorPosition: {x: 1022, y: 1443}
-  - nodeId: Node5_Copy2
-    nodeGuid: bd1d0c8d399740698d2d32680eafe6cd
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705777917832200281
-    sequences: []
-    editorPosition: {x: 1772, y: 1277}
   - nodeId: Node6_Copy3
     nodeGuid: 9d360200b2194cc4830bccdd7e622e9d
     nodeKind: 1
@@ -431,15 +395,6 @@ MonoBehaviour:
       rid: 4705777917832200296
     sequences: []
     editorPosition: {x: 785, y: 1764}
-  - nodeId: Pattern8_A2
-    nodeGuid: 1cbbe03462e74293bf24fab3970b7f76
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705777917832200302
-    sequences: []
-    editorPosition: {x: -3, y: 1992}
   - nodeId: Pattern8_A1
     nodeGuid: c6a7a186d7d4496487c3e3dea28eefa7
     nodeKind: 1
@@ -448,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200303
     sequences: []
-    editorPosition: {x: -136, y: 1992}
+    editorPosition: {x: -437, y: 1992}
   - nodeId: Pattern8_A3_1
     nodeGuid: 273309f2f610471b8717081b30d02179
     nodeKind: 1
@@ -466,16 +421,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200309
     sequences: []
-    editorPosition: {x: 285, y: 2132}
-  - nodeId: Node10
-    nodeGuid: 3db6a40223d4491a9b11b8038e761b42
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705777917832200311
-    sequences: []
-    editorPosition: {x: 147, y: 1992}
+    editorPosition: {x: 285, y: 2124}
   - nodeId: Node8_Copy1
     nodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
     nodeKind: 3
@@ -484,7 +430,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200312
     sequences: []
-    editorPosition: {x: 451, y: 1992}
+    editorPosition: {x: 685, y: 1992}
   - nodeId: Node9_Copy1
     nodeGuid: c8b0c65c8ae045b8ba6964c186fe3954
     nodeKind: 0
@@ -493,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200313
     sequences: []
-    editorPosition: {x: 602, y: 1992}
+    editorPosition: {x: 1200, y: 1992}
   - nodeId: Pattern8_A3_2_Copy1
     nodeGuid: 221617aecff84a7e966f781184805a0d
     nodeKind: 0
@@ -520,7 +466,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200319
     sequences: []
-    editorPosition: {x: 458, y: 580}
+    editorPosition: {x: 740, y: 580}
   - nodeId: Node7_Copy1_Copy1_Copy1
     nodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     nodeKind: 3
@@ -538,7 +484,277 @@ MonoBehaviour:
     action:
       rid: 4705777917832200321
     sequences: []
-    editorPosition: {x: -63, y: 2124}
+    editorPosition: {x: -270, y: 1992}
+  - nodeId: Node11
+    nodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824404
+    sequences: []
+    editorPosition: {x: 119, y: 580}
+  - nodeId: Node12
+    nodeGuid: e72d87a6892c448482ba264c5e1b98e0
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824405
+    sequences: []
+    editorPosition: {x: 249, y: 580}
+  - nodeId: Node11_Copy1
+    nodeGuid: 1c806044cde744fda9762e94d5aae37e
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824406
+    sequences: []
+    editorPosition: {x: 958, y: 580}
+  - nodeId: Node12_Copy1
+    nodeGuid: a7bf4538a4cd492585324f85bd904841
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824407
+    sequences: []
+    editorPosition: {x: 1089, y: 580}
+  - nodeId: Node11_Copy2
+    nodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824408
+    sequences: []
+    editorPosition: {x: 444, y: 424}
+  - nodeId: Node11_Copy2_Copy1
+    nodeGuid: 28ca69fc380146dcbe570ed92ec959ad
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824409
+    sequences: []
+    editorPosition: {x: 574, y: 424}
+  - nodeId: Node7_Copy2
+    nodeGuid: d8e19f1aff984433b0efa0e801f90d96
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824412
+    sequences: []
+    editorPosition: {x: 1255, y: 580}
+  - nodeId: Node11_Copy2_Copy3
+    nodeGuid: 903239b3d04049078b59a10d20bb9f95
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824413
+    sequences: []
+    editorPosition: {x: 1404, y: 580}
+  - nodeId: Node11_Copy2_Copy1_Copy2
+    nodeGuid: 8905948f06494740b377b2174b303a59
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824414
+    sequences: []
+    editorPosition: {x: 1593, y: 580}
+  - nodeId: Node11_Copy1_Copy1
+    nodeGuid: 1d990f318ffe4ef48684d3f82217b553
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824415
+    sequences: []
+    editorPosition: {x: 1742, y: 1277}
+  - nodeId: Node12_Copy1_Copy1
+    nodeGuid: 31e716fee72c460ca7240785d602533d
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824416
+    sequences: []
+    editorPosition: {x: 1873, y: 1277}
+  - nodeId: Node7_Copy2_Copy1
+    nodeGuid: b76bfcf7ab09443c806ca013e896085a
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824417
+    sequences: []
+    editorPosition: {x: 2043, y: 1277}
+  - nodeId: Node11_Copy2_Copy3_Copy1
+    nodeGuid: cbedf38408d640349061049c2eb2c479
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824418
+    sequences: []
+    editorPosition: {x: 2188, y: 1277}
+  - nodeId: Node11_Copy2_Copy1_Copy2_Copy1
+    nodeGuid: 0a612e45c1df4d5688c76786dbe9478f
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824419
+    sequences: []
+    editorPosition: {x: 2318, y: 1277}
+  - nodeId: Node11_Copy1_Copy2
+    nodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824420
+    sequences: []
+    editorPosition: {x: -284, y: 2264}
+  - nodeId: Node12_Copy1_Copy2
+    nodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824421
+    sequences: []
+    editorPosition: {x: -159, y: 2264}
+  - nodeId: Node7_Copy2_Copy2
+    nodeGuid: 60258f26f6e8489eb9ffb1088c891f53
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824422
+    sequences: []
+    editorPosition: {x: 13, y: 2264}
+  - nodeId: Node11_Copy2_Copy3_Copy2
+    nodeGuid: ace94b83b12f458c9445a4719fe51ad6
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824423
+    sequences: []
+    editorPosition: {x: 162, y: 2264}
+  - nodeId: Node11_Copy2_Copy1_Copy2_Copy2
+    nodeGuid: e8b53d1da47047bcac12d1fc226e1d53
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824424
+    sequences: []
+    editorPosition: {x: 292, y: 2264}
+  - nodeId: Node11_Copy1_Copy1_Copy1
+    nodeGuid: 6506837df174493a91d75302e88a1ea3
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824429
+    sequences: []
+    editorPosition: {x: 462, y: 1992}
+  - nodeId: Node7_Copy2_Copy1_Copy1
+    nodeGuid: bd7ef666b55a43f2b50804bf1889da1e
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824431
+    sequences: []
+    editorPosition: {x: 1346, y: 1992}
+  - nodeId: Node11_Copy2_Copy3_Copy1_Copy1
+    nodeGuid: 85f8a72636a54a7b995878ccb89bd82e
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824432
+    sequences: []
+    editorPosition: {x: 1593, y: 1992}
+  - nodeId: Node11_Copy2_Copy3_Copy1_Copy1_Copy1
+    nodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824440
+    sequences: []
+    editorPosition: {x: 836, y: 1992}
+  - nodeId: Node7_Copy2_Copy1_Copy1_Copy1
+    nodeGuid: c44ba75fcf5e4b25a53eea0028b601ee
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824441
+    sequences: []
+    editorPosition: {x: 1129, y: 2110}
+  - nodeId: Node9_Copy1_Copy1
+    nodeGuid: bcf3d485c22c432180fac7eb914bbd0e
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824448
+    sequences: []
+    editorPosition: {x: 1911, y: 1087}
+  - nodeId: Node7_Copy2_Copy1_Copy1_Copy2
+    nodeGuid: d95883e37d63446a9415d90baa899a35
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824449
+    sequences: []
+    editorPosition: {x: 2079, y: 1087}
+  - nodeId: patter5_ani3
+    nodeGuid: 5028a5904c174d138dfd167230259553
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824450
+    sequences: []
+    editorPosition: {x: 2326, y: 1087}
+  - nodeId: patter5_ani2
+    nodeGuid: 25bc687a676346078ac5460530aedb72
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824451
+    sequences: []
+    editorPosition: {x: 1410, y: 1087}
+  - nodeId: Node7_Copy2_Copy1_Copy1_Copy1_Copy1
+    nodeGuid: a673207cec4143888ec2528e789b8663
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824452
+    sequences: []
+    editorPosition: {x: 1600, y: 1087}
+  - nodeId: patter5_ani1
+    nodeGuid: 13f9de00d17b47dbb79785b59d38eedf
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777966128824455
+    sequences: []
+    editorPosition: {x: 1115, y: 1087}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -570,19 +786,33 @@ MonoBehaviour:
     nodeGuids:
     - dd2c409e76354ed08de7552b29dfee4e
     - e7d379c95d9c4859ad3179669179dfe2
-    - b283cca93e0f4171b4ab5f011cda833e
+    - 9ebe6e5e7f2c46988b6d955c3fa74ffc
+    - e72d87a6892c448482ba264c5e1b98e0
     - 5c3c6d7e9fe745a0896819b92dd417da
+    - b65d982cdd8b4855b2e2a3dbff79e964
+    - 28ca69fc380146dcbe570ed92ec959ad
     - 612a6b3ea4804a36891c2ee0a4256608
     - e46ce352b4d0477fbaa77c6cb6ccb343
-    - 7868165e9ab04f82a2183ccf567263c9
+    - 1c806044cde744fda9762e94d5aae37e
+    - a7bf4538a4cd492585324f85bd904841
+    - d8e19f1aff984433b0efa0e801f90d96
+    - 903239b3d04049078b59a10d20bb9f95
+    - 8905948f06494740b377b2174b303a59
     nodeIds:
     - Node6
     - Node7_Copy1
-    - Node5
+    - Node11
+    - Node12
     - Node7
+    - Node11_Copy2
+    - Node11_Copy2_Copy1
     - Node6_Copy1
     - Node7_Copy1_Copy1
-    - Node5_Copy1
+    - Node11_Copy1
+    - Node12_Copy1
+    - Node7_Copy2
+    - Node11_Copy2_Copy3
+    - Node11_Copy2_Copy1_Copy2
   - patternId: Pattern4
     nodeGuids:
     - f9067e3ab9cd4c118f62347c84af469f
@@ -605,16 +835,26 @@ MonoBehaviour:
     - 835d47bd52614c36bf7343bfb5ca3255
     - 8f62d2ec9fdc4384b6871602c338b0e3
     - 51e3b342ebe84b4bbc872f2cb3e94947
+    - 13f9de00d17b47dbb79785b59d38eedf
     - 9aca0817834c4c7891e79f35869aba73
-    - c517f9f56605491eb81eb6a799a8cd60
+    - 25bc687a676346078ac5460530aedb72
+    - a673207cec4143888ec2528e789b8663
+    - bcf3d485c22c432180fac7eb914bbd0e
+    - d95883e37d63446a9415d90baa899a35
+    - 5028a5904c174d138dfd167230259553
     nodeIds:
     - Node6_Copy2
     - Node1_Copy3_Copy2_Copy1
     - Node1_Copy3_Copy2_Copy1_Copy1
     - Node1_Copy3_Copy2_Copy1_Copy2
     - Node1_Copy3_Copy2_Copy1_Copy3
+    - patter5_ani1
     - Node8
-    - Node9
+    - patter5_ani2
+    - Node7_Copy2_Copy1_Copy1_Copy1_Copy1
+    - Node9_Copy1_Copy1
+    - Node7_Copy2_Copy1_Copy1_Copy2
+    - patter5_ani3
   - patternId: Pattern6
     nodeGuids:
     - 45b3ee192e41440f9f4eb924fc903862
@@ -624,7 +864,11 @@ MonoBehaviour:
     - 32166bb39f414bbbad5793c88c365ad4
     - 9d360200b2194cc4830bccdd7e622e9d
     - 8d9cd9c0e7ad4b3fbd4136ca0a559f52
-    - bd1d0c8d399740698d2d32680eafe6cd
+    - 1d990f318ffe4ef48684d3f82217b553
+    - 31e716fee72c460ca7240785d602533d
+    - b76bfcf7ab09443c806ca013e896085a
+    - cbedf38408d640349061049c2eb2c479
+    - 0a612e45c1df4d5688c76786dbe9478f
     - 69cd2eab21304708aa6edc12de730d30
     - d43b737f69114464a386a87607407c56
     - 2e53978eb2b0423893235d651601d4a9
@@ -637,7 +881,11 @@ MonoBehaviour:
     - Node1_Copy3_Copy2_Copy1_Copy3_Copy1
     - Node6_Copy3
     - Node7_Copy1_Copy1_Copy1
-    - Node5_Copy2
+    - Node11_Copy1_Copy1
+    - Node12_Copy1_Copy1
+    - Node7_Copy2_Copy1
+    - Node11_Copy2_Copy3_Copy1
+    - Node11_Copy2_Copy1_Copy2_Copy1
     - Node2_Copy1_Copy3
     - Node2_Copy1_Copy3_Copy1
     - Node2_Copy1_Copy3_Copy2
@@ -665,20 +913,36 @@ MonoBehaviour:
     nodeGuids:
     - c6a7a186d7d4496487c3e3dea28eefa7
     - 3ab2497c3b984870834e7e4e1012795a
-    - 1cbbe03462e74293bf24fab3970b7f76
-    - 3db6a40223d4491a9b11b8038e761b42
+    - cf3ebd505db742a3b6a2ce846e4aa723
+    - 0f7c21815cf248acbd8e029b76b3ed5c
+    - 60258f26f6e8489eb9ffb1088c891f53
+    - ace94b83b12f458c9445a4719fe51ad6
+    - e8b53d1da47047bcac12d1fc226e1d53
     - 273309f2f610471b8717081b30d02179
+    - 6506837df174493a91d75302e88a1ea3
     - 5c7ff2ebf19a40f4b192c15ad5ea7d06
+    - 33375804fbdd44cf9c6e1f24ce5a30fa
+    - c44ba75fcf5e4b25a53eea0028b601ee
     - c8b0c65c8ae045b8ba6964c186fe3954
+    - bd7ef666b55a43f2b50804bf1889da1e
+    - 85f8a72636a54a7b995878ccb89bd82e
     - 5bff9151eda945c296ae94176c48b58d
     nodeIds:
     - Pattern8_A1
     - Pattern8_A1_1
-    - Pattern8_A2
-    - Node10
+    - Node11_Copy1_Copy2
+    - Node12_Copy1_Copy2
+    - Node7_Copy2_Copy2
+    - Node11_Copy2_Copy3_Copy2
+    - Node11_Copy2_Copy1_Copy2_Copy2
     - Pattern8_A3_1
+    - Node11_Copy1_Copy1_Copy1
     - Node8_Copy1
+    - Node11_Copy2_Copy3_Copy1_Copy1_Copy1
+    - Node7_Copy2_Copy1_Copy1_Copy1
     - Node9_Copy1
+    - Node7_Copy2_Copy1_Copy1
+    - Node11_Copy2_Copy3_Copy1_Copy1
     - Pattern8_A3_2
   phases:
   - phaseIndex: 0
@@ -691,23 +955,23 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 2
@@ -718,23 +982,23 @@ MonoBehaviour:
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
+      cooldownPatternCount: 0
   transitions:
   - fromNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
@@ -757,24 +1021,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: b283cca93e0f4171b4ab5f011cda833e
-    toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
-    fromNodeId: Node5
-    toNodeId: Node7
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 442b7f6c09ca4411a6b2017755639bda
     toNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     fromNodeId: Node3
     toNodeId: Node1_Copy3
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
-    toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
-    fromNodeId: Node7
-    toNodeId: Node6_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -817,20 +1067,6 @@ MonoBehaviour:
     toNodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
     fromNodeId: Node1_Copy3_Copy2_Copy1_Copy2
     toNodeId: Node1_Copy3_Copy2_Copy1_Copy3
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
-    toNodeGuid: 9aca0817834c4c7891e79f35869aba73
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy3
-    toNodeId: Node8
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 9aca0817834c4c7891e79f35869aba73
-    toNodeGuid: c517f9f56605491eb81eb6a799a8cd60
-    fromNodeId: Node8
-    toNodeId: Node9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -897,34 +1133,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 1cbbe03462e74293bf24fab3970b7f76
-    toNodeGuid: 3db6a40223d4491a9b11b8038e761b42
-    fromNodeId: Pattern8_A2
-    toNodeId: Node10
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 3db6a40223d4491a9b11b8038e761b42
-    toNodeGuid: 273309f2f610471b8717081b30d02179
-    fromNodeId: Node10
-    toNodeId: Pattern8_A3_1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
-    toNodeGuid: c8b0c65c8ae045b8ba6964c186fe3954
-    fromNodeId: Node8_Copy1
-    toNodeId: Node9_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 273309f2f610471b8717081b30d02179
-    toNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
-    fromNodeId: Pattern8_A3_1
-    toNodeId: Node8_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     toNodeGuid: 221617aecff84a7e966f781184805a0d
     fromNodeId: Node1_Copy3
@@ -936,20 +1144,6 @@ MonoBehaviour:
     toNodeGuid: e7d379c95d9c4859ad3179669179dfe2
     fromNodeId: Node6
     toNodeId: Node7_Copy1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e7d379c95d9c4859ad3179669179dfe2
-    toNodeGuid: b283cca93e0f4171b4ab5f011cda833e
-    fromNodeId: Node7_Copy1
-    toNodeId: Node5
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
-    toNodeGuid: 7868165e9ab04f82a2183ccf567263c9
-    fromNodeId: Node7_Copy1_Copy1
-    toNodeId: Node5_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -967,13 +1161,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
-    toNodeGuid: bd1d0c8d399740698d2d32680eafe6cd
-    fromNodeId: Node7_Copy1_Copy1_Copy1
-    toNodeId: Node5_Copy2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: c6a7a186d7d4496487c3e3dea28eefa7
     toNodeGuid: 3ab2497c3b984870834e7e4e1012795a
     fromNodeId: Pattern8_A1
@@ -981,10 +1168,255 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
+    toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
+    fromNodeId: Node11
+    toNodeId: Node12
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e7d379c95d9c4859ad3179669179dfe2
+    toNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
+    fromNodeId: Node7_Copy1
+    toNodeId: Node11
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e72d87a6892c448482ba264c5e1b98e0
+    toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
+    fromNodeId: Node12
+    toNodeId: Node7
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1c806044cde744fda9762e94d5aae37e
+    toNodeGuid: a7bf4538a4cd492585324f85bd904841
+    fromNodeId: Node11_Copy1
+    toNodeId: Node12_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
+    toNodeGuid: 1c806044cde744fda9762e94d5aae37e
+    fromNodeId: Node7_Copy1_Copy1
+    toNodeId: Node11_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
+    toNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
+    fromNodeId: Node11_Copy2
+    toNodeId: Node11_Copy2_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
+    toNodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
+    fromNodeId: Node7
+    toNodeId: Node11_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
+    toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
+    fromNodeId: Node11_Copy2_Copy1
+    toNodeId: Node6_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 903239b3d04049078b59a10d20bb9f95
+    toNodeGuid: 8905948f06494740b377b2174b303a59
+    fromNodeId: Node11_Copy2_Copy3
+    toNodeId: Node11_Copy2_Copy1_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d8e19f1aff984433b0efa0e801f90d96
+    toNodeGuid: 903239b3d04049078b59a10d20bb9f95
+    fromNodeId: Node7_Copy2
+    toNodeId: Node11_Copy2_Copy3
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a7bf4538a4cd492585324f85bd904841
+    toNodeGuid: d8e19f1aff984433b0efa0e801f90d96
+    fromNodeId: Node12_Copy1
+    toNodeId: Node7_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1d990f318ffe4ef48684d3f82217b553
+    toNodeGuid: 31e716fee72c460ca7240785d602533d
+    fromNodeId: Node11_Copy1_Copy1
+    toNodeId: Node12_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cbedf38408d640349061049c2eb2c479
+    toNodeGuid: 0a612e45c1df4d5688c76786dbe9478f
+    fromNodeId: Node11_Copy2_Copy3_Copy1
+    toNodeId: Node11_Copy2_Copy1_Copy2_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b76bfcf7ab09443c806ca013e896085a
+    toNodeGuid: cbedf38408d640349061049c2eb2c479
+    fromNodeId: Node7_Copy2_Copy1
+    toNodeId: Node11_Copy2_Copy3_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 31e716fee72c460ca7240785d602533d
+    toNodeGuid: b76bfcf7ab09443c806ca013e896085a
+    fromNodeId: Node12_Copy1_Copy1
+    toNodeId: Node7_Copy2_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
+    toNodeGuid: 1d990f318ffe4ef48684d3f82217b553
+    fromNodeId: Node7_Copy1_Copy1_Copy1
+    toNodeId: Node11_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
+    toNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
+    fromNodeId: Node11_Copy1_Copy2
+    toNodeId: Node12_Copy1_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ace94b83b12f458c9445a4719fe51ad6
+    toNodeGuid: e8b53d1da47047bcac12d1fc226e1d53
+    fromNodeId: Node11_Copy2_Copy3_Copy2
+    toNodeId: Node11_Copy2_Copy1_Copy2_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
+    toNodeGuid: ace94b83b12f458c9445a4719fe51ad6
+    fromNodeId: Node7_Copy2_Copy2
+    toNodeId: Node11_Copy2_Copy3_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
+    toNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
+    fromNodeId: Node12_Copy1_Copy2
+    toNodeId: Node7_Copy2_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   - fromNodeGuid: 3ab2497c3b984870834e7e4e1012795a
-    toNodeGuid: 1cbbe03462e74293bf24fab3970b7f76
+    toNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
     fromNodeId: Pattern8_A1_1
-    toNodeId: Pattern8_A2
+    toNodeId: Node11_Copy1_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e8b53d1da47047bcac12d1fc226e1d53
+    toNodeGuid: 273309f2f610471b8717081b30d02179
+    fromNodeId: Node11_Copy2_Copy1_Copy2_Copy2
+    toNodeId: Pattern8_A3_1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: bd7ef666b55a43f2b50804bf1889da1e
+    toNodeGuid: 85f8a72636a54a7b995878ccb89bd82e
+    fromNodeId: Node7_Copy2_Copy1_Copy1
+    toNodeId: Node11_Copy2_Copy3_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 273309f2f610471b8717081b30d02179
+    toNodeGuid: 6506837df174493a91d75302e88a1ea3
+    fromNodeId: Pattern8_A3_1
+    toNodeId: Node11_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6506837df174493a91d75302e88a1ea3
+    toNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
+    fromNodeId: Node11_Copy1_Copy1_Copy1
+    toNodeId: Node8_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
+    toNodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
+    fromNodeId: Node8_Copy1
+    toNodeId: Node11_Copy2_Copy3_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c8b0c65c8ae045b8ba6964c186fe3954
+    toNodeGuid: bd7ef666b55a43f2b50804bf1889da1e
+    fromNodeId: Node9_Copy1
+    toNodeId: Node7_Copy2_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
+    toNodeGuid: c44ba75fcf5e4b25a53eea0028b601ee
+    fromNodeId: Node11_Copy2_Copy3_Copy1_Copy1_Copy1
+    toNodeId: Node7_Copy2_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c44ba75fcf5e4b25a53eea0028b601ee
+    toNodeGuid: c8b0c65c8ae045b8ba6964c186fe3954
+    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy1
+    toNodeId: Node9_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d95883e37d63446a9415d90baa899a35
+    toNodeGuid: 5028a5904c174d138dfd167230259553
+    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy2
+    toNodeId: patter5_ani3
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: bcf3d485c22c432180fac7eb914bbd0e
+    toNodeGuid: d95883e37d63446a9415d90baa899a35
+    fromNodeId: Node9_Copy1_Copy1
+    toNodeId: Node7_Copy2_Copy1_Copy1_Copy2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 25bc687a676346078ac5460530aedb72
+    toNodeGuid: a673207cec4143888ec2528e789b8663
+    fromNodeId: patter5_ani2
+    toNodeId: Node7_Copy2_Copy1_Copy1_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a673207cec4143888ec2528e789b8663
+    toNodeGuid: bcf3d485c22c432180fac7eb914bbd0e
+    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy1_Copy1
+    toNodeId: Node9_Copy1_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9aca0817834c4c7891e79f35869aba73
+    toNodeGuid: 25bc687a676346078ac5460530aedb72
+    fromNodeId: Node8
+    toNodeId: patter5_ani2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
+    toNodeGuid: 13f9de00d17b47dbb79785b59d38eedf
+    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy3
+    toNodeId: patter5_ani1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 13f9de00d17b47dbb79785b59d38eedf
+    toNodeGuid: 9aca0817834c4c7891e79f35869aba73
+    fromNodeId: patter5_ani1
+    toNodeId: Node8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1073,8 +1505,8 @@ MonoBehaviour:
     toNodeId: Pattern8_A3_2
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern5
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern8
   references:
     version: 2
     RefIds:
@@ -1530,59 +1962,6 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.4
-    - rid: 4705777899588288590
-      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uD3ED\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 1
-          angleDegrees: 90
-        spawnForwardOffset: 0.5
-        windupSeconds: 0
-        chargeSecondsOverride: 0.7
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
     - rid: 4705777899588288593
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1615,59 +1994,6 @@ MonoBehaviour:
         speedCurveInitialized: 1
         timeoutSeconds: 0
         stopWhenFinished: 1
-    - rid: 4705777899588288594
-      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uD3ED\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 1
-          angleDegrees: 90
-        spawnForwardOffset: 0.5
-        windupSeconds: 0
-        chargeSecondsOverride: 0.7
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
     - rid: 4705777899588288596
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2344,71 +2670,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-    - rid: 4705777899588288626
-      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 0
-          angleDegrees: 0
-        windupSeconds: 0
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        legacyBulletCount: 0
-        legacyArcDegrees: -1
-        legacyStartAngleOffset: 0
-        legacyRandomizeStartAngle: 0
-        legacySpawnRadius: -1
-        legacyFireInterval: -1
-        volleys:
-        - bulletCount: 40
-          arcDegrees: 360
-          startAngleOffset: 0
-          randomizeStartAngle: 0
-          spawnRadius: 0.25
-          fireInterval: 0
-          restSeconds: 0
     - rid: 4705777899588288627
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2953,59 +3214,6 @@ MonoBehaviour:
         - bulletCount: 2
           fireInterval: 0.05
           restSeconds: 0
-    - rid: 4705777917832200281
-      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uD3ED\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 1
-          angleDegrees: 90
-        spawnForwardOffset: 0.5
-        windupSeconds: 0
-        chargeSecondsOverride: 0.9
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
     - rid: 4705777917832200282
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3544,59 +3752,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-    - rid: 4705777917832200302
-      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uD3ED\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 1
-          angleDegrees: 90
-        spawnForwardOffset: 0.5
-        windupSeconds: 0
-        chargeSecondsOverride: 0.7
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
     - rid: 4705777917832200303
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3751,10 +3906,6 @@ MonoBehaviour:
         - bulletCount: 2
           fireInterval: 0.12
           restSeconds: 0
-    - rid: 4705777917832200311
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.7
     - rid: 4705777917832200312
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3935,3 +4086,460 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.02
+    - rid: 4705777966128824404
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824405
+      type: {class: SpawnParryableBombAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD3ED\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 90
+        spawnForwardOffset: 0.8
+        chargeSeconds: 0.7
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        slamSuccessBoolName: isSlam
+        slamFailBoolName: isSlamFail
+        impactEventId: SlamImpact
+        impactEventTimeoutSeconds: 2
+    - rid: 4705777966128824406
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824407
+      type: {class: SpawnParryableBombAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD3ED\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 90
+        spawnForwardOffset: 0.8
+        chargeSeconds: 0.7
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        slamSuccessBoolName: isSlam
+        slamFailBoolName: isSlamFail
+        impactEventId: SlamImpact
+        impactEventTimeoutSeconds: 2
+    - rid: 4705777966128824408
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824409
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlamFail
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824412
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1.7
+    - rid: 4705777966128824413
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824414
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlamFail
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824415
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824416
+      type: {class: SpawnParryableBombAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD3ED\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 90
+        spawnForwardOffset: 0.8
+        chargeSeconds: 0.9
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        slamSuccessBoolName: isSlam
+        slamFailBoolName: isSlamFail
+        impactEventId: SlamImpact
+        impactEventTimeoutSeconds: 2
+    - rid: 4705777966128824417
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1.7
+    - rid: 4705777966128824418
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824419
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlamFail
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824420
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824421
+      type: {class: SpawnParryableBombAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD3ED\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 90
+        spawnForwardOffset: 0.8
+        chargeSeconds: 0.7
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        slamSuccessBoolName: isSlam
+        slamFailBoolName: isSlamFail
+        impactEventId: SlamImpact
+        impactEventTimeoutSeconds: 2
+    - rid: 4705777966128824422
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705777966128824423
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824424
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlamFail
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824429
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824431
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705777966128824432
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824440
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 1
+    - rid: 4705777966128824441
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705777966128824448
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 40
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 4705777966128824449
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705777966128824450
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705777966128824451
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 1
+    - rid: 4705777966128824452
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705777966128824455
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
