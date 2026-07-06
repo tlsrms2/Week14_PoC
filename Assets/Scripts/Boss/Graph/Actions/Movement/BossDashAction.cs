@@ -24,6 +24,12 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private bool speedCurveInitialized;
         [SerializeField, BossGraphSfxId] private string dashSfxId;
 
+        [Header("Animation")]
+        [Tooltip("Execute 시작 시 발동할 애니메이터 트리거 이름입니다. 비워두면 호출하지 않습니다.")]
+        [SerializeField] private string chargeTriggerName = "Charge";
+        [Tooltip("윈드업이 끝나고 실제 대쉬 이동이 시작될 때 true, 대쉬 이동이 끝나면 false로 설정할 애니메이터 Bool 파라미터 이름입니다. 비워두면 호출하지 않습니다.")]
+        [SerializeField] private string chargeBoolName = "isCharge";
+
         [Header("Trajectory VFX")]
         [Tooltip("궤적 표시에 사용할 스프라이트입니다. 비워두면 궤적 VFX를 표시하지 않습니다.")]
         [SerializeField] private Sprite trajectorySprite;
@@ -42,6 +48,7 @@ namespace Week14.Enemy
 
             EnsureSpeedCurve();
             context.PlaySfx(windupSfxId);
+            context.PlayAnimationTrigger(chargeTriggerName);
 
             float trackDuration = Mathf.Max(0f, windupSeconds - lockSeconds);
             float elapsed = 0f;
@@ -99,6 +106,8 @@ namespace Week14.Enemy
             }
 
             // 대쉬 페이즈
+            context.SetAnimationBool(chargeBoolName, true);
+            context.SetDashing(true);
             context.PlaySfx(dashSfxId);
             elapsed = 0f;
             while (elapsed < dashDuration)
@@ -116,6 +125,8 @@ namespace Week14.Enemy
                 yield return null;
             }
 
+            context.SetAnimationBool(chargeBoolName, false);
+            context.SetDashing(false);
             context.Stop();
         }
 
