@@ -1014,22 +1014,22 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+            Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
+            Vector2 lockedCenter = context.Boss != null && context.Boss.Player != null
+                ? context.Boss.Player.position
+                : aimOrigin;
             ArsonistBossAI arsonist = context.Boss as ArsonistBossAI;
             ArsonistFireAreaBatch fireAreaBatch = arsonist?.BeginFireAreaBatch();
             try
             {
-                yield return ExecuteLeadingPlayerCirclePatterns(context);
+                yield return ExecuteLeadingPlayerCirclePatterns(context, lockedCenter);
 
-                BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
-                Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
-                Vector3 center = context.Boss != null && context.Boss.Player != null
-                    ? context.Boss.Player.position
-                    : aimOrigin;
                 float rotation = rotationOffsetDegrees;
                 BossProjectileSettings projectileSettings = !string.IsNullOrWhiteSpace(projectileName)
                     ? context.ResolveGraphProjectileSettings(projectileName)
                     : context.ResolveGraphProjectileSettings(null) ?? projectile;
-                Vector2[][] strokeWorldPoints = BuildStrokes(center, rotation);
+                Vector2[][] strokeWorldPoints = BuildStrokes(lockedCenter, rotation);
 
                 float safeWindup = Mathf.Max(0f, windupSeconds);
                 float waitBeforeIndicatorSeconds = Mathf.Max(0f, safeWindup - IndicatorLeadSeconds);
@@ -1105,7 +1105,7 @@ namespace Week14.Enemy
             }
         }
 
-        private IEnumerator ExecuteLeadingPlayerCirclePatterns(BossActionContext context)
+        private IEnumerator ExecuteLeadingPlayerCirclePatterns(BossActionContext context, Vector2 lockedCenter)
         {
             int repeatCount = Mathf.Max(0, leadingCircleRepeatCount);
             IReadOnlyList<LeadingPlayerCircleSettings> settingsList = GetLeadingCircleSettings();
@@ -1114,11 +1114,16 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (context == null)
+            {
+                yield break;
+            }
+
             for (int repeatIndex = 0; repeatIndex < repeatCount; repeatIndex++)
             {
                 for (int settingsIndex = 0; settingsIndex < settingsList.Count; settingsIndex++)
                 {
-                    yield return ExecuteLeadingPlayerCirclePattern(context, settingsList[settingsIndex]);
+                    yield return ExecuteLeadingPlayerCirclePattern(context, settingsList[settingsIndex], lockedCenter);
                 }
             }
         }
@@ -1140,14 +1145,14 @@ namespace Week14.Enemy
 
         private IEnumerator ExecuteLeadingPlayerCirclePattern(
             BossActionContext context,
-            LeadingPlayerCircleSettings settings)
+            LeadingPlayerCircleSettings settings,
+            Vector2 lockedCenter)
         {
-            if (context == null || context.Boss == null || context.Boss.Player == null || settings == null)
+            if (context == null || settings == null)
             {
                 yield break;
             }
 
-            Vector2 lockedCenter = context.Boss.Player.position;
             if (settings.WindupSeconds > 0f)
             {
                 yield return context.WaitSeconds(settings.WindupSeconds);

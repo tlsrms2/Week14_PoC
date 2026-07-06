@@ -110,7 +110,6 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Radial Emission", typeof(FireRadialEmissionAction), () => new FireRadialEmissionAction()),
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
-        new("Projectile/Fire Dash Formation", typeof(FireDashFormationAction), () => new FireDashFormationAction()),
         new("Projectile/Fire Rotating Spiral", typeof(FireRotatingProjectilesAction), () => new FireRotatingProjectilesAction()),
         new("Projectile/Fire Attached Projectiles", typeof(FireAttachedProjectilesAction), () => new FireAttachedProjectilesAction()),
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
@@ -285,14 +284,9 @@ internal static class BossGraphActionEditorUtility
             return "부채꼴 발리를 여러 번 발사합니다. 준비 시간은 Windup과 분리해서 구성합니다.";
         }
 
-        if (actionType == typeof(FireDashFormationAction))
-        {
-            return "보스 대시 방향에 수직으로 투사체 벽을 정렬한 뒤 발사합니다. Center Offset은 총알벽 전체를 대시 방향으로 이동시키는 거리(음수면 후방)입니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
-        }
-
         if (actionType == typeof(WanderAroundPlayerDistanceAction))
         {
-            return "보스가 플레이어 주변의 최소-최대 거리 안에서 이전 목표와 가까운 새 목표를 고르며 이동합니다.";
+            return "보스가 플레이어 주변의 최소-최대 거리 안에서 최근 덜 지나간 각도와 이전 목표점에서 떨어진 위치를 우선해 배회합니다.";
         }
 
         if (actionType == typeof(MoveBetweenMapPointsAction))

@@ -435,6 +435,20 @@ namespace Week14.Combat
             RefreshPathIndicator();
         }
 
+        public void EnsureProjectileLifetime(float minimumLifetime)
+        {
+            float lifetimeStart = launched ? Time.time : chargeEndsAt;
+            float nextDestroyAt = lifetimeStart + Mathf.Max(0f, minimumLifetime);
+            if (nextDestroyAt <= destroyAt)
+            {
+                return;
+            }
+
+            projectileLifetime = nextDestroyAt - lifetimeStart;
+            destroyAt = nextDestroyAt;
+            RefreshPathIndicator();
+        }
+
         protected virtual float ResolveProjectileLifetime(float configuredLifetime)
         {
             return configuredLifetime;

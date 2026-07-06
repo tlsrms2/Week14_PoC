@@ -956,6 +956,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         bool changed = false;
         IReadOnlyList<BossGraphNodeView> nodeViews = graphView.NodeViews;
+        if (ShouldSkipCollapsedNodePositionWrite(stateNodes, nodeViews))
+        {
+            return false;
+        }
+
         for (int i = 0; i < nodeViews.Count; i++)
         {
             BossGraphNodeView nodeView = nodeViews[i];
@@ -983,6 +988,52 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         return changed;
+    }
+
+    private static bool ShouldSkipCollapsedNodePositionWrite(
+        SerializedProperty stateNodes,
+        IReadOnlyList<BossGraphNodeView> nodeViews)
+    {
+        if (stateNodes == null || nodeViews == null || nodeViews.Count <= 1)
+        {
+            return false;
+        }
+
+        bool hasSavedNonZeroPosition = false;
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            Vector2 savedPosition = GetVector2(node, "editorPosition", Vector2.zero);
+            if (savedPosition.sqrMagnitude > 0.01f)
+            {
+                hasSavedNonZeroPosition = true;
+                break;
+            }
+        }
+
+        if (!hasSavedNonZeroPosition)
+        {
+            return false;
+        }
+
+        int validNodeViewCount = 0;
+        for (int i = 0; i < nodeViews.Count; i++)
+        {
+            BossGraphNodeView nodeView = nodeViews[i];
+            if (nodeView == null || nodeView.NodeIndex < 0 || nodeView.NodeIndex >= stateNodes.arraySize)
+            {
+                continue;
+            }
+
+            validNodeViewCount++;
+            if (nodeView.GetPosition().position.sqrMagnitude > 0.01f)
+            {
+                return false;
+            }
+        }
+
+        // 그래프를 여는 중 GraphView가 아직 배치되기 전의 0,0 좌표가 에셋을 덮어쓰는 것을 막는다.
+        return validNodeViewCount > 1;
     }
 
     private bool SaveTransitions()
@@ -3513,7 +3564,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
         for (int i = 0; i < phases.arraySize; i++)
         {
             SerializedProperty phase = phases.GetArrayElementAtIndex(i);
-            changed |= DrawPhaseItem(phase, i, phases, patternIds);
+            changed |= DrawPhaseItem(phase, i, phases, patternIds, out bool stopDrawing);
+            if (stopDrawing)
+            {
+                break;
+            }
         }
 
         changed |= EditorGUI.EndChangeCheck();
@@ -3578,8 +3633,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty phase,
         int phaseArrayIndex,
         SerializedProperty phases,
-        IReadOnlyList<string> patternIds)
+        IReadOnlyList<string> patternIds,
+        out bool stopDrawing)
     {
+        stopDrawing = false;
         bool changed = false;
         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
@@ -3594,7 +3651,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
                     {
                         Undo.RecordObject(graphAsset, "Edit Boss Graph Phases");
                         phases.MoveArrayElement(phaseArrayIndex, phaseArrayIndex - 1);
-                        changed = true;
+                        stopDrawing = true;
+                        return true;
                     }
                 }
 
@@ -3604,7 +3662,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
                     {
                         Undo.RecordObject(graphAsset, "Edit Boss Graph Phases");
                         phases.MoveArrayElement(phaseArrayIndex, phaseArrayIndex + 1);
-                        changed = true;
+                        stopDrawing = true;
+                        return true;
                     }
                 }
 
@@ -3612,7 +3671,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 {
                     Undo.RecordObject(graphAsset, "Edit Boss Graph Phases");
                     phases.DeleteArrayElementAtIndex(phaseArrayIndex);
-                    changed = true;
+                    stopDrawing = true;
+                    return true;
                 }
             }
 

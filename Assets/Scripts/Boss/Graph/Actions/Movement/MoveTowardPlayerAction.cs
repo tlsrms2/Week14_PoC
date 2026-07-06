@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Week14.Enemy
@@ -329,12 +330,17 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class WanderAroundPlayerDistanceAction : BossAction
     {
+        private const int RetargetCandidateCount = 16;
+        private const int VisitedAngleLimit = 16;
+        private const float MinRetargetAngleFactor = 0.35f;
+
         [SerializeField, Min(0f)] private float durationSeconds = 2f;
         [SerializeField, Min(0.1f)] private float minDistance = 2.5f;
         [SerializeField, Min(0.1f)] private float maxDistance = 4.5f;
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
         [SerializeField, Min(0.05f)] private float retargetInterval = 0.6f;
         [SerializeField, Min(0.05f)] private float arriveDistance = 0.25f;
+        [SerializeField, Min(0f), Tooltip("새 목표점이 이전 목표점에서 최소 이 거리 이상 떨어진 후보를 우선 선택합니다. 0이면 비활성화됩니다.")] private float minTargetShiftDistance = 1f;
         [SerializeField, Range(1f, 180f)] private float maxRetargetAngleDegrees = 70f;
         [SerializeField] private bool stopWhenFinished = true;
 
@@ -355,6 +361,8 @@ namespace Week14.Enemy
             float targetAngle = DirectionToAngleOrFallback(startRadial, UnityEngine.Random.Range(0f, 360f));
             float targetDistance = Mathf.Clamp(startRadial.magnitude, safeMin, safeMax);
             Vector2 target = BuildPlayerRelativeTarget(playerStart, targetAngle, targetDistance);
+            List<float> visitedAngles = new();
+            RecordVisitedAngle(visitedAngles, targetAngle);
             bool hasTarget = false;
 
             while (elapsed < durationSeconds)
@@ -382,7 +390,7 @@ namespace Week14.Enemy
                 }
                 else if (!hasTarget || elapsed >= nextRetargetAt || Vector2.Distance(bossPosition, target) <= arriveDistance)
                 {
-                    RetargetAroundPlayer(ref targetAngle, ref targetDistance, safeMin, safeMax);
+                    RetargetAroundPlayer(ref targetAngle, ref targetDistance, safeMin, safeMax, playerPosition, target, visitedAngles);
                     target = BuildPlayerRelativeTarget(playerPosition, targetAngle, targetDistance);
                     nextRetargetAt = elapsed + retargetInterval;
                     hasTarget = true;
@@ -399,13 +407,107 @@ namespace Week14.Enemy
             }
         }
 
-        private void RetargetAroundPlayer(ref float targetAngle, ref float targetDistance, float safeMin, float safeMax)
+        private void RetargetAroundPlayer(
+            ref float targetAngle,
+            ref float targetDistance,
+            float safeMin,
+            float safeMax,
+            Vector2 playerPosition,
+            Vector2 previousTarget,
+            List<float> visitedAngles)
         {
-            float angleDelta = UnityEngine.Random.Range(-maxRetargetAngleDegrees, maxRetargetAngleDegrees);
+            float maxAngleDelta = Mathf.Max(1f, maxRetargetAngleDegrees);
+            float minAngleDelta = Mathf.Min(maxAngleDelta, maxAngleDelta * MinRetargetAngleFactor);
             float distanceRange = Mathf.Max(0f, safeMax - safeMin);
             float distanceStep = Mathf.Max(0.05f, distanceRange * 0.35f);
-            targetAngle += angleDelta;
-            targetDistance = Mathf.Clamp(targetDistance + UnityEngine.Random.Range(-distanceStep, distanceStep), safeMin, safeMax);
+            float requiredTargetShift = Mathf.Max(0f, minTargetShiftDistance);
+            float bestAngle = targetAngle;
+            float bestDistance = targetDistance;
+            float bestScore = float.NegativeInfinity;
+            bool foundEnoughShift = requiredTargetShift <= 0f;
+
+            for (int i = 0; i < RetargetCandidateCount; i++)
+            {
+                float angleDelta = UnityEngine.Random.Range(-maxAngleDelta, maxAngleDelta);
+                if (Mathf.Abs(angleDelta) < minAngleDelta)
+                {
+                    float direction = Mathf.Sign(angleDelta);
+                    if (Mathf.Approximately(direction, 0f))
+                    {
+                        direction = UnityEngine.Random.value < 0.5f ? -1f : 1f;
+                    }
+
+                    angleDelta = direction * minAngleDelta;
+                }
+
+                float candidateAngle = targetAngle + angleDelta;
+                float candidateDistance = Mathf.Clamp(
+                    targetDistance + UnityEngine.Random.Range(-distanceStep, distanceStep),
+                    safeMin,
+                    safeMax);
+                Vector2 candidateTarget = BuildPlayerRelativeTarget(playerPosition, candidateAngle, candidateDistance);
+                float targetShift = Vector2.Distance(candidateTarget, previousTarget);
+                bool hasEnoughShift = requiredTargetShift <= 0f || targetShift >= requiredTargetShift;
+                if (foundEnoughShift && !hasEnoughShift)
+                {
+                    continue;
+                }
+
+                float revisitScore = GetMinVisitedAngleDistance(candidateAngle, visitedAngles);
+                float movementScore = Mathf.Abs(angleDelta) * 0.25f;
+                float distanceScore = Mathf.Abs(candidateDistance - targetDistance) * 0.15f;
+                float targetShiftScore = targetShift * 0.35f;
+                float randomTieBreaker = UnityEngine.Random.Range(0f, 0.01f);
+                float score = revisitScore + movementScore + distanceScore + targetShiftScore + randomTieBreaker;
+                if (hasEnoughShift && !foundEnoughShift)
+                {
+                    foundEnoughShift = true;
+                    bestScore = float.NegativeInfinity;
+                }
+
+                if (score <= bestScore)
+                {
+                    continue;
+                }
+
+                bestScore = score;
+                bestAngle = candidateAngle;
+                bestDistance = candidateDistance;
+            }
+
+            targetAngle = bestAngle;
+            targetDistance = bestDistance;
+            RecordVisitedAngle(visitedAngles, targetAngle);
+        }
+
+        private static float GetMinVisitedAngleDistance(float angleDegrees, List<float> visitedAngles)
+        {
+            if (visitedAngles == null || visitedAngles.Count == 0)
+            {
+                return 180f;
+            }
+
+            float minDistance = 180f;
+            for (int i = 0; i < visitedAngles.Count; i++)
+            {
+                minDistance = Mathf.Min(minDistance, Mathf.Abs(Mathf.DeltaAngle(angleDegrees, visitedAngles[i])));
+            }
+
+            return minDistance;
+        }
+
+        private static void RecordVisitedAngle(List<float> visitedAngles, float angleDegrees)
+        {
+            if (visitedAngles == null)
+            {
+                return;
+            }
+
+            visitedAngles.Add(Mathf.Repeat(angleDegrees, 360f));
+            if (visitedAngles.Count > VisitedAngleLimit)
+            {
+                visitedAngles.RemoveAt(0);
+            }
         }
 
         private static Vector2 BuildPlayerRelativeTarget(Vector2 playerPosition, float angleDegrees, float distance)

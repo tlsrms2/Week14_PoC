@@ -7,10 +7,7 @@ namespace Week14.Enemy
     [AddComponentMenu("Week14/Boss/Arsonist/Molotov Projectile")]
     public sealed class ArsonistMolotovProjectile : EnemyProjectile
     {
-        private const int MaxIndicatorDashes = 160;
         private const int ImpactCircleSegments = 32;
-        private const float IndicatorDashLength = 0.2f;
-        private const float IndicatorDashGap = 0.14f;
 
         [SerializeField] private ArsonistBossAI owner;
         [SerializeField, Min(0f)] private float explosionSecondsMin = 1.2f;
@@ -19,12 +16,10 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float fireDuration = 1.35f;
         [SerializeField, Min(0f)] private float fireSpreadSeconds = 0.35f;
         [SerializeField] private Color fireColor = new(1f, 0.35f, 0.05f, 0.9f);
-        [SerializeField, Min(0f)] private float parriedFireDamageDelay = 0.35f;
         [SerializeField, Min(0f)] private float lobHeight = 1.15f;
         [SerializeField, Min(0f)] private float lobScaleBonus = 0.35f;
         [SerializeField] private float lobSpinDegrees = 360f;
 
-        private readonly System.Collections.Generic.List<LineRenderer> indicatorDashes = new();
         private Transform indicatorRoot;
         private LineRenderer impactIndicatorCircle;
         private Vector2 lockedLinearImpactPoint;
@@ -58,7 +53,7 @@ namespace Week14.Enemy
             lockedLinearImpactPoint = landingPosition;
             linearImpactPointLocked = true;
             ConfigurePathIndicatorSuppressed(true);
-            ConfigureImpactIndicator(startPosition, landingPosition, duration);
+            ConfigureImpactIndicator(landingPosition, duration);
             usesLobIndicator = true;
             OverrideProjectileLifetime(duration + 0.25f);
             if (ProjectileBody != null)
@@ -155,19 +150,16 @@ namespace Week14.Enemy
                 return;
             }
 
-            ResolveOwner();
-            float playerDamageDelay = reason == EnemyProjectileDestroyReason.Intercepted
-                ? parriedFireDamageDelay
-                : 0f;
             if (reason == EnemyProjectileDestroyReason.Intercepted)
             {
-                owner?.DelayFireDamageFor(PlayerCombatController.Active, playerDamageDelay);
+                return;
             }
 
+            ResolveOwner();
             Vector3 explosionPosition = reason == EnemyProjectileDestroyReason.Expired && linearImpactPointLocked
                 ? lockedLinearImpactPoint
                 : position;
-            owner?.CreateFireArea(explosionPosition, fireRadius, fireDuration, fireColor, playerDamageDelay, fireSpreadSeconds);
+            owner?.CreateFireArea(explosionPosition, fireRadius, fireDuration, fireColor, 0f, fireSpreadSeconds);
         }
 
         protected override void CopySpecialRuntimeStateTo(EnemyProjectile replacement)
@@ -196,14 +188,14 @@ namespace Week14.Enemy
             if (IsLaunched)
             {
                 LockLinearImpactPoint();
-                ConfigureImpactIndicator(transform.position, lockedLinearImpactPoint, Mathf.Max(0f, indicatorEndsAt - Time.time));
+                ConfigureImpactIndicator(lockedLinearImpactPoint, Mathf.Max(0f, indicatorEndsAt - Time.time));
                 return;
             }
 
             Vector2 start = transform.position;
             float duration = GetResolvedExplosionDuration();
             Vector2 impactPoint = GetLinearImpactPoint(start);
-            ConfigureImpactIndicator(start, impactPoint, duration);
+            ConfigureImpactIndicator(impactPoint, duration);
         }
 
         private void LockLinearImpactPoint()
@@ -232,59 +224,14 @@ namespace Week14.Enemy
             return Mathf.Max(0.05f, hasResolvedExplosionSeconds ? resolvedExplosionSeconds : ProjectileLifetime);
         }
 
-        private void ConfigureImpactIndicator(Vector2 start, Vector2 impactPoint, float duration)
+        private void ConfigureImpactIndicator(Vector2 impactPoint, float duration)
         {
-            float length = Vector2.Distance(start, impactPoint);
-            if (length <= 0.01f)
-            {
-                SetImpactIndicatorVisible(false);
-                return;
-            }
-
             if (duration > 0f)
             {
                 indicatorEndsAt = Time.time + duration;
             }
 
-            DrawIndicatorDashes(start, impactPoint, length);
             DrawImpactCircle(impactPoint);
-        }
-
-        private void DrawIndicatorDashes(Vector2 start, Vector2 impactPoint, float length)
-        {
-            Vector2 direction = (impactPoint - start).normalized;
-            int dashCount = Mathf.Min(MaxIndicatorDashes, Mathf.CeilToInt(length / (IndicatorDashLength + IndicatorDashGap)));
-            Color color = GetIndicatorColor(0.58f);
-            float width = Mathf.Max(0.013f, ProjectileRadius * 0.14f);
-
-            for (int i = 0; i < dashCount; i++)
-            {
-                float segmentStart = i * (IndicatorDashLength + IndicatorDashGap);
-                float segmentEnd = Mathf.Min(segmentStart + IndicatorDashLength, length);
-                LineRenderer dash = EnsureIndicatorDash(i);
-                if (dash == null)
-                {
-                    continue;
-                }
-
-                dash.enabled = true;
-                dash.loop = false;
-                dash.positionCount = 2;
-                dash.startColor = color;
-                dash.endColor = color;
-                dash.startWidth = width;
-                dash.endWidth = width;
-                dash.SetPosition(0, start + direction * segmentStart);
-                dash.SetPosition(1, start + direction * segmentEnd);
-            }
-
-            for (int i = dashCount; i < indicatorDashes.Count; i++)
-            {
-                if (indicatorDashes[i] != null)
-                {
-                    indicatorDashes[i].enabled = false;
-                }
-            }
         }
 
         private void DrawImpactCircle(Vector2 center)
@@ -322,26 +269,6 @@ namespace Week14.Enemy
 
             color.a = Mathf.Clamp01(alpha);
             return color;
-        }
-
-        private LineRenderer EnsureIndicatorDash(int index)
-        {
-            EnsureIndicatorRoot();
-            if (indicatorRoot == null || index < 0)
-            {
-                return null;
-            }
-
-            while (indicatorDashes.Count <= index)
-            {
-                GameObject dashObject = new($"MolotovIndicator_{indicatorDashes.Count:00}");
-                dashObject.transform.SetParent(indicatorRoot, false);
-                LineRenderer dash = dashObject.AddComponent<LineRenderer>();
-                ConfigureIndicatorLine(dash, 17);
-                indicatorDashes.Add(dash);
-            }
-
-            return indicatorDashes[index];
         }
 
         private LineRenderer EnsureImpactCircle()
@@ -407,14 +334,6 @@ namespace Week14.Enemy
 
         private void SetImpactIndicatorVisible(bool visible)
         {
-            for (int i = 0; i < indicatorDashes.Count; i++)
-            {
-                if (indicatorDashes[i] != null)
-                {
-                    indicatorDashes[i].enabled = visible;
-                }
-            }
-
             if (impactIndicatorCircle != null)
             {
                 impactIndicatorCircle.enabled = visible;
