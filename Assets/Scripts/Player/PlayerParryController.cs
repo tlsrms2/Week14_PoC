@@ -83,7 +83,41 @@ namespace Week14.Combat
                 return false;
             }
 
-            return ExecuteParry(target);
+            return ExecuteInstantParry(target);
+        }
+
+        private bool ExecuteInstantParry(EnemyProjectile target)
+        {
+            PlayerCombatConfig config = context.Config;
+            Transform fireOrigin = GetParryFireOrigin();
+            Vector2 firePosition = fireOrigin != null ? fireOrigin.position : context.PlayerTransform.position;
+            Vector3 impactPosition = target.transform.position;
+            Vector2 direction = (Vector2)impactPosition - firePosition;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = target.IncomingDirection.sqrMagnitude > 0.0001f
+                    ? -target.IncomingDirection
+                    : Vector2.right;
+            }
+
+            direction = direction.normalized;
+
+            if (!target.TryDestroyByInterceptShot(out bool parried) || !parried)
+            {
+                return false;
+            }
+
+            ProjectileVfx.PlayShotLine(firePosition, impactPosition, config.ParryEffectColor, 0.08f, 0.06f);
+            ProjectileVfx.PlayMuzzleFlash(firePosition, direction, config.ParryEffectColor, 1f);
+            context.Visual?.PlayIntercept();
+            PlayParryImpact(impactPosition, direction, true);
+
+            int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
+            int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
+            SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
+
+            ProjectileParried?.Invoke();
+            return true;
         }
 
         internal int AutoParryProjectilesNear(Vector2 center, float radius)

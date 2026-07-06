@@ -243,6 +243,8 @@ namespace Week14.UI
                 ? (player.BodyRoot != null ? player.BodyRoot : player.transform)
                 : null;
 
+            player?.PlayerHpView?.SetExecutionVisible(false);
+
             if (playerCamera != null && deathFocusTarget != null)
             {
                 playerCamera.BeginCinematicFocus(

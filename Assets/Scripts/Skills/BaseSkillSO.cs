@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Week14.Combat;
 
@@ -21,6 +22,15 @@ namespace Week14.Skills
         public Sprite Icon => icon;
         public string Description => description;
         public float CooldownSeconds => cooldownSeconds;
+
+        // true인 스킬은 사용 즉시 쿨타임이 시작되지 않고, 아래 SubscribeEffectEnd로 등록한 콜백이
+        // 호출되는 시점(효과가 실제로 끝나는 시점)부터 CooldownSeconds만큼 쿨타임이 시작됩니다.
+        public virtual bool HasDelayedCooldownStart => false;
+
+        // HasDelayedCooldownStart가 true인 스킬만 구현하면 됩니다. 효과가 끝나는 시점에
+        // onEffectEnd를 정확히 한 번 호출해야 합니다.
+        public virtual void SubscribeEffectEnd(Action onEffectEnd) { }
+        public virtual void UnsubscribeEffectEnd(Action onEffectEnd) { }
 
         public abstract void Execute(GameObject user);
 

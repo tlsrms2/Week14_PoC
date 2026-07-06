@@ -15,7 +15,8 @@ MonoBehaviour:
   maxBullets: 5
   leftAttackBulletCost: 1
   parryBulletRecovery: 1
-  enemyBodyContactBulletDamage: 1
+  enemyBodyContactBulletDamage: 0
+  bossDashContactBulletDamage: 1
   enemyBodyContactCooldownSeconds: 0.35
   enemyBodyContactKnockbackSpeed: 8
   enemyBodyContactStaggerSeconds: 0.22

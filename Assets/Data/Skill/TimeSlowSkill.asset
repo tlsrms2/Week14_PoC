@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: "\uBD88\uB9BF \uD0C0\uC784"
   icon: {fileID: 0}
   description: 
-  cooldownSeconds: 1
+  cooldownSeconds: 30
   slowMultiplier: 0.2
   durationSeconds: 5
   sfxId: 

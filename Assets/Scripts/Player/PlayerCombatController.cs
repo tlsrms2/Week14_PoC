@@ -84,6 +84,7 @@ namespace Week14.Combat
         public PlayerVisualRig Visual => Context.Visual;
         public CameraFollow2D CameraFollow => Context.CameraFollow;
         public Transform BodyRoot => Context.BodyRoot;
+        public PlayerHP PlayerHpView => Context.PlayerHpView;
         public Health LockOnTarget => Context.LockOnTarget;
         public ExecutionTarget HoveredExecutionTarget => ExecutionController.HoveredExecutionTarget;
         public bool IsExecuting => ExecutionController.IsExecuting;

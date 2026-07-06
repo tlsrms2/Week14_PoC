@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288620
     sequences: []
-    editorPosition: {x: 42, y: 1087}
+    editorPosition: {x: 43, y: 1087}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy1
     nodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     nodeKind: 1
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288623
     sequences: []
-    editorPosition: {x: 814, y: 1087}
+    editorPosition: {x: 810, y: 1087}
   - nodeId: Node8
     nodeGuid: 9aca0817834c4c7891e79f35869aba73
     nodeKind: 3
@@ -1073,8 +1073,8 @@ MonoBehaviour:
     toNodeId: Pattern8_A3_2
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern8
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern5
   references:
     version: 2
     RefIds:
@@ -1137,6 +1137,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1199,6 +1201,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1373,6 +1377,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1712,6 +1718,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1774,6 +1782,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1869,6 +1879,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1931,6 +1943,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -1993,6 +2007,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2055,6 +2071,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2248,6 +2266,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2310,6 +2330,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2372,6 +2394,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2434,6 +2458,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2870,6 +2896,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -2932,6 +2960,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
@@ -3112,6 +3142,8 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}

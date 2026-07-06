@@ -15,6 +15,8 @@ namespace Week14.Enemy
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public abstract partial class BossAI : MonoBehaviour, IMinionPatternHost
     {
+        private const float BodyContactImmovableMass = 1000f;
+
         [Header("Boss Lives")]
         [Tooltip("보스의 총 목숨(페이즈) 수입니다. 처형될 때마다 1씩 깎입니다.")]
         [SerializeField, Min(1)] private int maxLives = 3;
@@ -135,6 +137,7 @@ namespace Week14.Enemy
         public bool IsBulletEmpty => IsHpEmpty;
         public bool IsExecutionLocked => isExecutionLocked;
         public bool IsFinalDeathSequencePlaying => isFinalDeathSequencePlaying;
+        public virtual bool IsDashing => false;
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
@@ -191,6 +194,7 @@ namespace Week14.Enemy
             if (body != null)
             {
                 body.constraints = RigidbodyConstraints2D.FreezeRotation;
+                body.mass = Mathf.Max(body.mass, BodyContactImmovableMass);
             }
 
             bodyRoot ??= FindChild("Visual") ?? transform;

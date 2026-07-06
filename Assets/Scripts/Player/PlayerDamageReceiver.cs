@@ -33,7 +33,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (!IsEnemyBodyContact(other))
+            if (!TryGetEnemyBodyContactDamage(other, config, out int bulletDamage))
             {
                 return;
             }
@@ -50,7 +50,7 @@ namespace Week14.Combat
                 hitDirection = Vector2.right;
             }
 
-            if (ReceiveAttack(config.EnemyBodyContactBulletDamage, hitPosition, hitDirection.normalized))
+            if (ReceiveAttack(bulletDamage, hitPosition, hitDirection.normalized))
             {
                 ApplyEnemyBodyContactKnockback(hitDirection.normalized);
                 nextEnemyBodyContactDamageAt = Time.time + config.EnemyBodyContactCooldownSeconds;
@@ -169,8 +169,9 @@ namespace Week14.Combat
             body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, velocity);
         }
 
-        private bool IsEnemyBodyContact(Collider2D other)
+        private bool TryGetEnemyBodyContactDamage(Collider2D other, PlayerCombatConfig config, out int bulletDamage)
         {
+            bulletDamage = 0;
             if (other.GetComponentInParent<EnemyProjectile>() != null)
             {
                 return false;
@@ -179,11 +180,23 @@ namespace Week14.Combat
             Minion minion = other.GetComponentInParent<Minion>();
             if (minion != null)
             {
-                return !minion.SuppressesBodyContactDamage;
+                if (minion.SuppressesBodyContactDamage)
+                {
+                    return false;
+                }
+
+                bulletDamage = config.EnemyBodyContactBulletDamage;
+                return bulletDamage > 0;
             }
 
             BossAI boss = other.GetComponentInParent<BossAI>();
-            return boss != null && !boss.IsFinalDeathSequencePlaying && !context.IsWaitingForVictoryPanel;
+            if (boss == null || boss.IsFinalDeathSequencePlaying || context.IsWaitingForVictoryPanel)
+            {
+                return false;
+            }
+
+            bulletDamage = boss.IsDashing ? config.BossDashContactBulletDamage : config.EnemyBodyContactBulletDamage;
+            return bulletDamage > 0;
         }
 
         private void FlashBodyHitColor()
