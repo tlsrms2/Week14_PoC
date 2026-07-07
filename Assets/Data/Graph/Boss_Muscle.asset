@@ -2165,7 +2165,7 @@ MonoBehaviour:
     toNodeId: Node4_Copy3_Copy1
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
+  debugForceSinglePattern: 0
   debugForcedPatternId: Pattern9
   references:
     version: 2
