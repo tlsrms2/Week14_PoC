@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c9329ec497ba43648917d73ed015bb06
+guid: 69f9f8ec413bced46aed44e0a85700ad
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -109,7 +109,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Security-Charge-loop-pose_0
+      name: Security-Charge-Loop_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d5d64c94c39b654c9c43eeb11a29433
-      internalID: -1715778051
+      spriteID: 4d633b46bd699f041a3d60ff76525829
+      internalID: 1056632429
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Charge-loop-pose_1
+      name: Security-Charge-Loop_1
       rect:
         serializedVersion: 2
         x: 128
@@ -146,14 +146,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5ccc2eaf2a93d1a45b9daac1eafa7aa4
-      internalID: -672910876
+      spriteID: 3b0db396b0525b14e874ee36d7b4a87e
+      internalID: 1114250887
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Charge-loop-pose_2
+      name: Security-Charge-Loop_2
       rect:
         serializedVersion: 2
         x: 256
@@ -168,14 +168,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80e3ea8bbd681194cad791c96183bb69
-      internalID: -187631767
+      spriteID: bb88fb48849a3494eabe93d5b5ab683c
+      internalID: -654207238
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Charge-loop-pose_3
+      name: Security-Charge-Loop_3
       rect:
         serializedVersion: 2
         x: 0
@@ -190,8 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b402353e8a5fdde49880d641ed5041e9
-      internalID: -1113245996
+      spriteID: bc4bcb37e7c9a9548bc274c8a581e388
+      internalID: -1492063781
       vertices: []
       indices: 
       edges: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 3ab5636a9b35d7542b22c5e29c5ba271
+    spriteID: 81ed2fd4922bbda4484311748d670386
     internalID: 0
     vertices: []
     indices: 
@@ -212,10 +212,10 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Security-Charge-loop-pose_0: -1715778051
-      Security-Charge-loop-pose_1: -672910876
-      Security-Charge-loop-pose_2: -187631767
-      Security-Charge-loop-pose_3: -1113245996
+      Security-Charge-Loop_0: 1056632429
+      Security-Charge-Loop_1: 1114250887
+      Security-Charge-Loop_2: -654207238
+      Security-Charge-Loop_3: -1492063781
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
