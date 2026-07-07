@@ -5,7 +5,7 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    public sealed class DronePilot : GraphBossAI, IMinionPlayerHitHandler, IMinionMovementPathIndicatorOwner
+    public sealed class Conductor : GraphBossAI, IMinionPlayerHitHandler, IMinionMovementPathIndicatorOwner
     {
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
         private const string FacingSpriteRendererName = "Conductor-side-Idle-x64_0";

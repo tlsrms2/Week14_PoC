@@ -817,7 +817,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692548
     sequences: []
-    editorPosition: {x: 23, y: -1517}
+    editorPosition: {x: 15, y: -1397}
   - nodeId: P01_Summon_Copy1
     nodeGuid: a72ac519bd064ca9a260fcb39e49b836
     nodeKind: 4
@@ -826,7 +826,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692549
     sequences: []
-    editorPosition: {x: -268, y: -1561}
+    editorPosition: {x: -276, y: -1441}
   - nodeId: P01_Wander 2_Copy1
     nodeGuid: 631205d2ef87491f9bd6e91b47875965
     nodeKind: 4
@@ -835,7 +835,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692550
     sequences: []
-    editorPosition: {x: -273, y: -1708}
+    editorPosition: {x: -281, y: -1588}
   - nodeId: P01_Maintain Player Distance 2_Copy1
     nodeGuid: ec4ca827679f477a9a7618b2093d31d4
     nodeKind: 1
@@ -844,7 +844,7 @@ MonoBehaviour:
     action:
       rid: 2634812080860692551
     sequences: []
-    editorPosition: {x: -352, y: -1389}
+    editorPosition: {x: -360, y: -1269}
   - nodeId: P09_Move Toward Player 2_Copy5
     nodeGuid: c0a223d6adb74a3da9d4245ef6eb1677
     nodeKind: 1
@@ -916,7 +916,7 @@ MonoBehaviour:
     action:
       rid: 6489938902049095687
     sequences: []
-    editorPosition: {x: 17, y: -1351}
+    editorPosition: {x: 9, y: -1231}
   - nodeId: P09_Move Toward Player 2_Copy5_Copy2_Copy1
     nodeGuid: 697131b28f584fe6b49d9c1f8b9e0174
     nodeKind: 1
@@ -1337,7 +1337,7 @@ MonoBehaviour:
     openingPatternId: Summon
     patterns:
     - patternId: Pattern1
-      weight: 1
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
     - patternId: Pattern2
@@ -2090,7 +2090,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern6
+  debugForcedPatternId: Pattern1
   references:
     version: 2
     RefIds:

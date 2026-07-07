@@ -311,8 +311,8 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)
             {
-                int appliedDamage = boss is DronePilot dronePilot
-                    ? dronePilot.GetBodySharedDamage(bulletDamage)
+                int appliedDamage = boss is Conductor conductor
+                    ? conductor.GetBodySharedDamage(bulletDamage)
                     : bulletDamage;
 
                 if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
@@ -330,8 +330,8 @@ namespace Week14.Combat
             if (minion != null)
             {
                 int appliedDamage = bulletDamage;
-                if (minion.Owner is DronePilot dronePilot
-                    && dronePilot.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
+                if (minion.Owner is Conductor conductor
+                    && conductor.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
                 {
                     appliedDamage = sharedDamage;
                 }
