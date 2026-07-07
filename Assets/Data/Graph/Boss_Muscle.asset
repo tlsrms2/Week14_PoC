@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288602
     sequences: []
-    editorPosition: {x: 616, y: 580}
+    editorPosition: {x: 827, y: 580}
   - nodeId: Node3_Copy2
     nodeGuid: f9067e3ab9cd4c118f62347c84af469f
     nodeKind: 1
@@ -457,7 +457,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200319
     sequences: []
-    editorPosition: {x: 740, y: 580}
+    editorPosition: {x: 979, y: 580}
   - nodeId: Node7_Copy1_Copy1_Copy1
     nodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     nodeKind: 3
@@ -502,7 +502,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824406
     sequences: []
-    editorPosition: {x: 958, y: 580}
+    editorPosition: {x: 1151, y: 580}
   - nodeId: Node12_Copy1
     nodeGuid: a7bf4538a4cd492585324f85bd904841
     nodeKind: 0
@@ -511,7 +511,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824407
     sequences: []
-    editorPosition: {x: 1086, y: 580}
+    editorPosition: {x: 1279, y: 580}
   - nodeId: Node11_Copy2
     nodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     nodeKind: 2
@@ -520,7 +520,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824408
     sequences: []
-    editorPosition: {x: 444, y: 424}
+    editorPosition: {x: 511, y: 580}
   - nodeId: Node11_Copy2_Copy1
     nodeGuid: 28ca69fc380146dcbe570ed92ec959ad
     nodeKind: 2
@@ -529,7 +529,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824409
     sequences: []
-    editorPosition: {x: 574, y: 424}
+    editorPosition: {x: 641, y: 580}
   - nodeId: Node7_Copy2
     nodeGuid: d8e19f1aff984433b0efa0e801f90d96
     nodeKind: 3
@@ -538,7 +538,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824412
     sequences: []
-    editorPosition: {x: 1255, y: 580}
+    editorPosition: {x: 1448, y: 580}
   - nodeId: Node11_Copy2_Copy3
     nodeGuid: 903239b3d04049078b59a10d20bb9f95
     nodeKind: 2
@@ -547,7 +547,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824413
     sequences: []
-    editorPosition: {x: 1404, y: 580}
+    editorPosition: {x: 1597, y: 580}
   - nodeId: Node11_Copy2_Copy1_Copy2
     nodeGuid: 8905948f06494740b377b2174b303a59
     nodeKind: 2
@@ -556,7 +556,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824414
     sequences: []
-    editorPosition: {x: 1593, y: 580}
+    editorPosition: {x: 1786, y: 580}
   - nodeId: Node11_Copy1_Copy1
     nodeGuid: 1d990f318ffe4ef48684d3f82217b553
     nodeKind: 2
@@ -791,6 +791,42 @@ MonoBehaviour:
       rid: 4705777988380393641
     sequences: []
     editorPosition: {x: 1531, y: 2172}
+  - nodeId: Node9
+    nodeGuid: 570759c6faf54872948119b36ed2c511
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777988380393763
+    sequences: []
+    editorPosition: {x: -124, y: 2466}
+  - nodeId: Node10
+    nodeGuid: fbb911f743d242a19e31652137ec66d2
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777988380393764
+    sequences: []
+    editorPosition: {x: 17, y: 2466}
+  - nodeId: Node13
+    nodeGuid: 8c59aa587d6c444ea521fa8d1fff1548
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777988380393765
+    sequences: []
+    editorPosition: {x: 151, y: 2466}
+  - nodeId: Node14
+    nodeGuid: 89a2ceaa7dec47f4b9e3a102882a69c1
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705777988380393766
+    sequences: []
+    editorPosition: {x: 274, y: 2466}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -988,6 +1024,17 @@ MonoBehaviour:
     - Node7_Copy2_Copy1_Copy1
     - Node11_Copy2_Copy3_Copy1_Copy1
     - Pattern8_A3_2
+  - patternId: Pattern9
+    nodeGuids:
+    - 570759c6faf54872948119b36ed2c511
+    - fbb911f743d242a19e31652137ec66d2
+    - 8c59aa587d6c444ea521fa8d1fff1548
+    - 89a2ceaa7dec47f4b9e3a102882a69c1
+    nodeIds:
+    - Node9
+    - Node10
+    - Node13
+    - Node14
   phases:
   - phaseIndex: 0
     selectionMode: 3
@@ -1023,10 +1070,6 @@ MonoBehaviour:
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern6
     patterns:
-    - patternId: Pattern3
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
@@ -1251,13 +1294,6 @@ MonoBehaviour:
     toNodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     fromNodeId: Node7
     toNodeId: Node11_Copy2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
-    toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
-    fromNodeId: Node11_Copy2_Copy1
-    toNodeId: Node6_Copy1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1492,6 +1528,34 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
+    toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
+    fromNodeId: Node11_Copy2_Copy1
+    toNodeId: Node6_Copy1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 570759c6faf54872948119b36ed2c511
+    toNodeGuid: fbb911f743d242a19e31652137ec66d2
+    fromNodeId: Node9
+    toNodeId: Node10
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fbb911f743d242a19e31652137ec66d2
+    toNodeGuid: 8c59aa587d6c444ea521fa8d1fff1548
+    fromNodeId: Node10
+    toNodeId: Node13
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 8c59aa587d6c444ea521fa8d1fff1548
+    toNodeGuid: 89a2ceaa7dec47f4b9e3a102882a69c1
+    fromNodeId: Node13
+    toNodeId: Node14
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: 8be623fe70134e86a5718bfa00394cb7
     toNodeGuid: 1b40313f298d441c9ee0c7c00c91b3a6
@@ -1577,8 +1641,8 @@ MonoBehaviour:
     toNodeId: Node4
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern5
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern9
   references:
     version: 2
     RefIds:
@@ -3997,7 +4061,7 @@ MonoBehaviour:
             scale: 1
             count: 12
           smoke:
-            enabled: 1
+            enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
             scale: 1
             count: 12
@@ -4129,7 +4193,7 @@ MonoBehaviour:
           angleDegrees: 90
         spawnForwardOffset: 0.8
         chargeSeconds: 0.7
-        spawnSfxId: Execute
+        spawnSfxId: 
         effects:
           explosion:
             enabled: 0
@@ -4192,7 +4256,7 @@ MonoBehaviour:
           angleDegrees: 90
         spawnForwardOffset: 0.8
         chargeSeconds: 0.7
-        spawnSfxId: Execute
+        spawnSfxId: 
         effects:
           explosion:
             enabled: 0
@@ -4631,3 +4695,128 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.1
+    - rid: 4705777988380393763
+      type: {class: FireTrackedBombAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        handleKey: TrackedBomb
+        projectileName: "\uD3ED\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSeconds: 1.5
+        lockBeforeLaunchSeconds: 0.4
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705777988380393764
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705777988380393765
+      type: {class: DashToProjectileHandleAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        handleKey: TrackedBomb
+        windupSeconds: 0.5
+        lockSeconds: 0.2
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.4
+        dashSpeed: 15
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
+        trajectorySprite: {fileID: 0}
+        trajectoryWidth: 0.3
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: 5
+    - rid: 4705777988380393766
+      type: {class: DetonateBombHandleAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        handleKey: TrackedBomb
