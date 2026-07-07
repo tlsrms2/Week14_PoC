@@ -117,7 +117,7 @@ namespace Week14.Weapons
             SkillLoadoutManager.Instance?.SetWeaponSkill(currentWeapon?.ActiveSkill);
         }
 
-        private void UnlockDefaultWeapon()
+        public void UnlockDefaultWeapon()
         {
             if (defaultWeapon != null)
             {
