@@ -138,6 +138,11 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Movement/Formation Straight", typeof(MinionFormationStraightAction), () => new MinionFormationStraightAction()),
         new("Minion/Movement/Player Path", typeof(MinionPlayerPathAction), () => new MinionPlayerPathAction()),
         new("Minion/Movement/Angle Distance Move", typeof(MinionAngleDistanceMoveAction), () => new MinionAngleDistanceMoveAction()),
+        new("Minion/Conductor/Score Lane Rush", typeof(MinionConductorScoreLaneRushAction), () => new MinionConductorScoreLaneRushAction()),
+        new("Minion/Conductor/Score Lane Rush Special", typeof(MinionConductorScoreLaneRushSpecialAction), () => new MinionConductorScoreLaneRushSpecialAction()),
+        new("Minion/Conductor/Player Path Side Fire", typeof(MinionConductorPlayerPathSideFireAction), () => new MinionConductorPlayerPathSideFireAction()),
+        new("Minion/Conductor/Formation Line Volley", typeof(MinionConductorFormationLineVolleyAction), () => new MinionConductorFormationLineVolleyAction()),
+        new("Minion/Conductor/Fan Blade", typeof(MinionConductorFanBladeAction), () => new MinionConductorFanBladeAction()),
         new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction())
     };
 
@@ -420,6 +425,31 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(MinionPlayerPathAction))
         {
             return "액션 시작 시 플레이어 위치에 고정 정사각형을 만들고, 미니언을 시작점으로 보낸 뒤 수평, 수직, 좌우 대각선, 우좌 대각선 순서로 이동시킵니다.";
+        }
+
+        if (actionType == typeof(MinionConductorScoreLaneRushAction))
+        {
+            return "Conductor 전용 액션입니다. 악보 줄처럼 미니언을 배치해 돌진시키고 Side별 고정 각도로 순서 패링 투사체를 발사합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorScoreLaneRushSpecialAction))
+        {
+            return "Conductor 전용 특수 액션입니다. 설정 좌표 기준으로 Top, Right, Bottom, Left 순서의 러시를 실행하고, Volleys 풀에서 Rest/Fire 패턴을 중복 없이 랜덤 선택합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorPlayerPathSideFireAction))
+        {
+            return "Conductor 전용 액션입니다. Player Path와 Side Fire를 순서대로 실행하고, 예상 탄 경로를 격자 인디케이터로 미리 표시합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorFormationLineVolleyAction))
+        {
+            return "Conductor 전용 액션입니다. 미니언을 일렬 배치한 뒤 플레이어 방향 실선 인디케이터를 그리고, Volley 설정에 따라 해당 선 방향으로 투사체를 발사합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorFanBladeAction))
+        {
+            return "Conductor 전용 액션입니다. 최대 4개의 드론을 중심점 기준 십자로 배치해 회전시키고, Volley별 탄막 이름/발사 구간/간격을 설정해 선풍기형 탄막을 만듭니다.";
         }
 
         if (actionType == typeof(MinionPatternCleanupAction))
@@ -1244,6 +1274,74 @@ internal sealed class AimBossChildAtPlayerActionDrawer : PropertyDrawer
 
         int endNameIndex = Array.IndexOf(mode.enumNames, nameof(BossChildAimActionMode.End));
         return mode.intValue == (int)BossChildAimActionMode.End || mode.enumValueIndex == endNameIndex;
+    }
+}
+
+[CustomPropertyDrawer(typeof(MinionConductorScoreLaneRushSpecialAction))]
+internal sealed class MinionConductorScoreLaneRushSpecialActionDrawer : PropertyDrawer
+{
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        SerializedProperty iterator = property.Copy();
+        SerializedProperty end = iterator.GetEndProperty();
+        bool enterChildren = true;
+        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        {
+            enterChildren = false;
+            if (ShouldSkipProperty(iterator))
+            {
+                continue;
+            }
+
+            height += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+
+        if (property.isExpanded)
+        {
+            EditorGUI.indentLevel++;
+            float y = lineRect.yMax + EditorGUIUtility.standardVerticalSpacing;
+            SerializedProperty iterator = property.Copy();
+            SerializedProperty end = iterator.GetEndProperty();
+            bool enterChildren = true;
+            while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+            {
+                enterChildren = false;
+                if (ShouldSkipProperty(iterator))
+                {
+                    continue;
+                }
+
+                float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
+                Rect propertyRect = new(position.x, y, position.width, propertyHeight);
+                EditorGUI.PropertyField(propertyRect, iterator, true);
+                y += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
+            }
+
+            EditorGUI.indentLevel--;
+        }
+
+        EditorGUI.EndProperty();
+    }
+
+    private static bool ShouldSkipProperty(SerializedProperty property)
+    {
+        return property != null && property.name == "volleys";
     }
 }
 

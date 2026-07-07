@@ -174,6 +174,9 @@ namespace Week14.Enemy
         private static readonly MinionGraphProjectileOriginSpec DefaultOrigin = new();
         private static readonly BossGraphProjectileAimSpec DefaultAim = new();
         private readonly Func<Vector2> sharedMinionAimDirectionProvider;
+        private readonly bool useFixedDirection;
+        private readonly Vector2 fixedDirection;
+        private readonly bool suppressProjectilePathIndicator;
 
         public MinionGraphProjectileFireSpec(
             MinionGraphProjectileOriginSpec origin,
@@ -189,13 +192,19 @@ namespace Week14.Enemy
             BossGraphProjectileAimSpec aim,
             BossGraphEffectSettings effects,
             BossActionContext context,
-            Func<Vector2> sharedMinionAimDirectionProvider)
+            Func<Vector2> sharedMinionAimDirectionProvider,
+            bool useFixedDirection = false,
+            Vector2 fixedDirection = default,
+            bool suppressProjectilePathIndicator = false)
         {
             Origin = origin;
             Aim = aim;
             Effects = effects;
             Context = context;
             this.sharedMinionAimDirectionProvider = sharedMinionAimDirectionProvider;
+            this.useFixedDirection = useFixedDirection && fixedDirection.sqrMagnitude > 0.0001f;
+            this.fixedDirection = this.useFixedDirection ? fixedDirection.normalized : Vector2.zero;
+            this.suppressProjectilePathIndicator = suppressProjectilePathIndicator;
         }
 
         public MinionGraphProjectileOriginSpec Origin { get; }
@@ -203,6 +212,8 @@ namespace Week14.Enemy
         public BossGraphEffectSettings Effects { get; }
         public BossActionContext Context { get; }
         public bool HasEffects => Effects != null;
+        public bool KeepsFixedDirectionWhileCharging => useFixedDirection;
+        public bool SuppressesProjectilePathIndicator => suppressProjectilePathIndicator;
         public bool UsesClosestMinionAim => (Aim ?? DefaultAim).Mode == BossGraphProjectileAimMode.ClosestMinionToPlayer;
 
         public MinionGraphProjectileFireSpec WithSharedMinionAimDirectionProvider(Func<Vector2> directionProvider)
@@ -217,7 +228,41 @@ namespace Week14.Enemy
                 Aim,
                 Effects,
                 Context,
-                directionProvider);
+                directionProvider,
+                useFixedDirection,
+                fixedDirection,
+                suppressProjectilePathIndicator);
+        }
+
+        public MinionGraphProjectileFireSpec WithFixedDirection(Vector2 direction)
+        {
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                return this;
+            }
+
+            return new MinionGraphProjectileFireSpec(
+                Origin,
+                Aim,
+                Effects,
+                Context,
+                sharedMinionAimDirectionProvider,
+                useFixedDirection: true,
+                fixedDirection: direction,
+                suppressProjectilePathIndicator: suppressProjectilePathIndicator);
+        }
+
+        public MinionGraphProjectileFireSpec WithProjectilePathIndicatorSuppressed()
+        {
+            return new MinionGraphProjectileFireSpec(
+                Origin,
+                Aim,
+                Effects,
+                Context,
+                sharedMinionAimDirectionProvider,
+                useFixedDirection,
+                fixedDirection,
+                suppressProjectilePathIndicator: true);
         }
 
         public bool TryGetSharedMinionAimDirection(out Vector2 direction)
@@ -251,6 +296,11 @@ namespace Week14.Enemy
 
         public Vector2 GetDirection(Minion minion, Vector3 origin)
         {
+            if (useFixedDirection)
+            {
+                return fixedDirection;
+            }
+
             if (TryGetSharedMinionAimDirection(out Vector2 sharedDirection))
             {
                 return sharedDirection;
@@ -849,6 +899,7 @@ namespace Week14.Enemy
         IEnumerator SummonMinions(int summonCount, bool stopBossWhileSummoning);
         IEnumerator EnsureMinionCount(int targetCount);
         IEnumerator AutoSummonIfNeeded();
+        IReadOnlyList<Minion> GetControlledMinionsForGraph();
         IEnumerator FireMinionsSequentially(BossProjectileSettings projectile, int cycleCount, float fireInterval, MinionGraphProjectileFireSpec fireSpec);
         float CommandMinions(MinionGraphCommandRequest request);
         float CommandMinionGather(

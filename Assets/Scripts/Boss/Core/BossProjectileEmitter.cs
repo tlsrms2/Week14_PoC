@@ -73,7 +73,7 @@ namespace Week14.Enemy
             EnemyProjectile spawnPrefab = spawnPrefabOverride != null
                 ? spawnPrefabOverride
                 : settings.Prefab;
-            bool homingEnabled = spawnPrefab is HomingEnemyProjectile && !suppressHoming;
+            bool homingEnabled = spawnPrefab is IHomingEnemyProjectile && !suppressHoming;
             EnemyProjectile projectile = spawnProjectile(
                 spawnPrefab,
                 origin,

@@ -4,19 +4,35 @@ namespace Week14.Combat
 {
     public partial class EnemyProjectile
     {
-        public bool TryDestroyByInterceptShot(out bool parried)
+        public virtual bool TryDestroyByInterceptShot(out bool parried)
         {
-            if (resolved || isDestroying || !canBeIntercepted)
+            if (!CanReceiveInterceptShot())
             {
                 parried = false;
                 return false;
             }
 
             parried = true;
-            resolved = true;
-
-            DestroyProjectile(EnemyProjectileDestroyReason.Intercepted);
+            CompleteInterceptAndDestroy();
             return true;
+        }
+
+        protected bool CanReceiveInterceptShot()
+        {
+            return !resolved && !isDestroying && canBeIntercepted;
+        }
+
+        protected void CompletePartialIntercept()
+        {
+            interceptPending = false;
+            SetParryLockOnIndicatorVisible(false);
+        }
+
+        protected void CompleteInterceptAndDestroy()
+        {
+            resolved = true;
+            interceptPending = false;
+            DestroyProjectile(EnemyProjectileDestroyReason.Intercepted);
         }
 
         public bool TryReserveIntercept()

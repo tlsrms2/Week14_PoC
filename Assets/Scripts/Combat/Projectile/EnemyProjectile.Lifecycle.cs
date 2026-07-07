@@ -73,6 +73,7 @@ namespace Week14.Combat
             radialSplitDelaySeconds = 0f;
             radialSplitAt = 0f;
             suppressPathIndicator = nextSuppressPathIndicator;
+            delayPathIndicatorUntilLaunch = false;
             ResetClonedPathIndicators();
             launched = projectileChargeSeconds <= 0f;
             lastWallCheckPosition = transform.position;

@@ -96,6 +96,7 @@ namespace Week14.Combat
         private bool ownerSlotReleased;
         private bool pathIndicatorActive;
         private bool suppressPathIndicator;
+        private bool delayPathIndicatorUntilLaunch;
         private bool parryLockOnIndicatorVisible;
         private int interceptGroupId;
         private Vector2 pathIndicatorStart;
@@ -308,6 +309,12 @@ namespace Week14.Combat
             RefreshPathIndicator();
         }
 
+        public void ConfigurePathIndicatorDelayedUntilLaunch(bool delayed)
+        {
+            delayPathIndicatorUntilLaunch = delayed;
+            RefreshPathIndicator();
+        }
+
         private void AssignInterceptGroup(int existingGroupId)
         {
             interceptGroupId = existingGroupId > 0 ? existingGroupId : nextInterceptGroupId++;
@@ -516,9 +523,9 @@ namespace Week14.Combat
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
             EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
-            if (homingEnabled && projectile is not HomingEnemyProjectile)
+            if (homingEnabled && projectile is not IHomingEnemyProjectile)
             {
-                Debug.LogWarning($"{projectile.name} is configured as homing but does not inherit {nameof(HomingEnemyProjectile)}.", projectile);
+                Debug.LogWarning($"{projectile.name} is configured as homing but does not implement {nameof(IHomingEnemyProjectile)}.", projectile);
             }
 
             projectile.Initialize(

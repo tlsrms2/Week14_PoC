@@ -1,0 +1,346 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Week14.Combat;
+
+namespace Week14.Enemy
+{
+    public enum ConductorFanCenterMode
+    {
+        PlayerStart,
+        BossStart,
+        World
+    }
+
+    public enum ConductorFanProjectileDirection
+    {
+        RadialOut,
+        RadialIn,
+        TangentClockwise,
+        TangentCounterClockwise
+    }
+
+    [Serializable]
+    public sealed class MinionConductorFanBladeAction : BossAction
+    {
+        [Serializable]
+        public sealed class Volley
+        {
+            [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+            [SerializeField, Min(0f)] private float startSeconds;
+            [SerializeField, Min(0f)] private float durationSeconds = 1f;
+            [SerializeField, Min(0f)] private float fireInterval = 0.12f;
+            [SerializeField] private ConductorFanProjectileDirection direction = ConductorFanProjectileDirection.RadialOut;
+            [SerializeField] private float angleOffsetDegrees;
+            [SerializeField] private List<int> minionNumbers = new();
+
+            public string ProjectileName => projectileName?.Trim();
+            public float StartSeconds => Mathf.Max(0f, startSeconds);
+            public float DurationSeconds => Mathf.Max(0f, durationSeconds);
+            public float FireInterval => Mathf.Max(0f, fireInterval);
+            public ConductorFanProjectileDirection Direction => direction;
+            public float AngleOffsetDegrees => angleOffsetDegrees;
+            public IReadOnlyList<int> MinionNumbers => minionNumbers;
+        }
+
+        [SerializeField] private ConductorFanCenterMode centerMode = ConductorFanCenterMode.PlayerStart;
+        [SerializeField] private Vector2 worldCenter;
+        [SerializeField] private Vector2 centerOffset;
+        [SerializeField, Min(0.1f)] private float radius = 2.4f;
+        [SerializeField, Min(0f)] private float alignSeconds = 0.45f;
+        [SerializeField, Min(0f)] private float rotateSeconds = 5f;
+        [SerializeField] private float angularSpeedDegrees = 180f;
+        [SerializeField] private float startAngleOffsetDegrees;
+        [SerializeField, Range(1, 4)] private int maxMinionCount = 4;
+        [SerializeField, Min(0f)] private float windupSeconds;
+        [SerializeField] private BossGraphEffectSettings effects = new();
+        [SerializeField, InspectorName("Volleys")] private List<Volley> volleys = new() { new Volley() };
+        [SerializeField] private bool waitForDuration = true;
+
+        public override IEnumerator Execute(BossActionContext context)
+        {
+            if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
+                || context.Boss == null
+                || volleys == null
+                || volleys.Count == 0)
+            {
+                yield break;
+            }
+
+            Vector2 center = ResolveCenter(context);
+            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
+
+            List<Minion> minions = GetFanMinions(host.GetControlledMinionsForGraph());
+            if (minions.Count == 0)
+            {
+                yield break;
+            }
+
+            float movementDuration = CommandFanBlades(minions, center);
+            float totalMovementDuration = Mathf.Max(movementDuration, alignSeconds + rotateSeconds);
+            float totalFireDuration = alignSeconds + GetMaxVolleyEndSeconds();
+            float timelineDuration = waitForDuration
+                ? totalMovementDuration
+                : Mathf.Min(totalMovementDuration, totalFireDuration);
+
+            yield return RunVolleyTimeline(context, host, minions, center, timelineDuration);
+        }
+
+        private IEnumerator RunVolleyTimeline(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions,
+            Vector2 center,
+            float totalDuration)
+        {
+            float[] nextFireTimes = new float[volleys.Count];
+            bool[] completedSingleShots = new bool[volleys.Count];
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                nextFireTimes[i] = volleys[i] != null ? volleys[i].StartSeconds : float.PositiveInfinity;
+            }
+
+            float elapsed = 0f;
+            while (elapsed < totalDuration)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float rotateElapsed = Mathf.Max(0f, elapsed - alignSeconds);
+                TickVolleys(context, host, minions, center, rotateElapsed, nextFireTimes, completedSingleShots);
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            TickVolleys(context, host, minions, center, Mathf.Max(0f, totalDuration - alignSeconds), nextFireTimes, completedSingleShots);
+        }
+
+        private float GetMaxVolleyEndSeconds()
+        {
+            float maxSeconds = 0f;
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                Volley volley = volleys[i];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                maxSeconds = Mathf.Max(maxSeconds, volley.StartSeconds + volley.DurationSeconds);
+            }
+
+            return maxSeconds;
+        }
+
+        private void TickVolleys(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions,
+            Vector2 center,
+            float rotateElapsed,
+            float[] nextFireTimes,
+            bool[] completedSingleShots)
+        {
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                Volley volley = volleys[i];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                float endSeconds = volley.StartSeconds + volley.DurationSeconds;
+                if (volley.DurationSeconds <= 0f)
+                {
+                    if (!completedSingleShots[i] && rotateElapsed >= volley.StartSeconds)
+                    {
+                        FireVolley(context, host, minions, center, volley);
+                        completedSingleShots[i] = true;
+                    }
+
+                    continue;
+                }
+
+                if (volley.FireInterval <= 0f)
+                {
+                    if (!completedSingleShots[i] && rotateElapsed >= volley.StartSeconds)
+                    {
+                        FireVolley(context, host, minions, center, volley);
+                        completedSingleShots[i] = true;
+                    }
+
+                    continue;
+                }
+
+                while (rotateElapsed >= nextFireTimes[i] && nextFireTimes[i] <= endSeconds)
+                {
+                    FireVolley(context, host, minions, center, volley);
+                    nextFireTimes[i] += volley.FireInterval;
+                }
+            }
+        }
+
+        private void FireVolley(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions,
+            Vector2 center,
+            Volley volley)
+        {
+            BossProjectileSettings projectile = host.ResolveMinionProjectileSettings(volley.ProjectileName);
+            if (projectile == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null || !ShouldFireFromMinion(volley, minion, i))
+                {
+                    continue;
+                }
+
+                Vector3 origin = minion.GetGraphProjectileOrigin();
+                Vector2 direction = GetProjectileDirection(volley, center, origin);
+                EnemyProjectile firedProjectile = host.FireMinionProjectile(minion, projectile, origin, direction, true);
+                if (firedProjectile == null)
+                {
+                    continue;
+                }
+
+                firedProjectile.ConfigurePathIndicatorSuppressed(true);
+                context.PlayOriginBurst(effects, origin);
+                context.PlayMuzzleFlashIfEnabled(effects, origin, direction);
+                context.PlayCameraShakeIfEnabled(effects, direction);
+            }
+        }
+
+        private float CommandFanBlades(IReadOnlyList<Minion> minions, Vector2 center)
+        {
+            float maxDuration = 0f;
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                float angle = startAngleOffsetDegrees + 90f * i;
+                float duration = minion.CommandConductorFanBlade(
+                    center,
+                    angle,
+                    radius,
+                    alignSeconds,
+                    rotateSeconds,
+                    angularSpeedDegrees);
+                maxDuration = Mathf.Max(maxDuration, duration);
+            }
+
+            return maxDuration;
+        }
+
+        private Vector2 ResolveCenter(BossActionContext context)
+        {
+            Vector2 center = centerMode switch
+            {
+                ConductorFanCenterMode.World => worldCenter,
+                ConductorFanCenterMode.BossStart => (Vector2)context.OriginPosition,
+                _ => context.Boss != null && context.Boss.Player != null
+                    ? (Vector2)context.Boss.Player.position
+                    : (Vector2)context.OriginPosition
+            };
+
+            return center + centerOffset;
+        }
+
+        private List<Minion> GetFanMinions(IReadOnlyList<Minion> source)
+        {
+            List<Minion> results = new();
+            if (source == null)
+            {
+                return results;
+            }
+
+            for (int i = 0; i < source.Count; i++)
+            {
+                Minion minion = source[i];
+                if (minion != null && minion.Health != null && !minion.Health.IsDead)
+                {
+                    results.Add(minion);
+                }
+            }
+
+            results.Sort((a, b) => GetSortNumber(a).CompareTo(GetSortNumber(b)));
+            int count = Mathf.Clamp(maxMinionCount, 1, 4);
+            if (results.Count > count)
+            {
+                results.RemoveRange(count, results.Count - count);
+            }
+
+            return results;
+        }
+
+        private static int GetSortNumber(Minion minion)
+        {
+            return minion != null && minion.HasOwnerSlotNumber ? minion.OwnerSlotNumber : int.MaxValue;
+        }
+
+        private static bool ShouldFireFromMinion(Volley volley, Minion minion, int fallbackIndex)
+        {
+            IReadOnlyList<int> numbers = volley.MinionNumbers;
+            if (numbers == null || numbers.Count == 0)
+            {
+                return true;
+            }
+
+            int minionNumber = minion != null && minion.HasOwnerSlotNumber
+                ? minion.OwnerSlotNumber
+                : fallbackIndex + 1;
+            for (int i = 0; i < numbers.Count; i++)
+            {
+                if (numbers[i] == minionNumber)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static Vector2 GetProjectileDirection(Volley volley, Vector2 center, Vector2 origin)
+        {
+            Vector2 radial = origin - center;
+            if (radial.sqrMagnitude <= 0.0001f)
+            {
+                radial = Vector2.right;
+            }
+
+            radial.Normalize();
+            Vector2 direction = volley.Direction switch
+            {
+                ConductorFanProjectileDirection.RadialIn => -radial,
+                ConductorFanProjectileDirection.TangentClockwise => new Vector2(radial.y, -radial.x),
+                ConductorFanProjectileDirection.TangentCounterClockwise => new Vector2(-radial.y, radial.x),
+                _ => radial
+            };
+
+            if (!Mathf.Approximately(volley.AngleOffsetDegrees, 0f))
+            {
+                float radians = volley.AngleOffsetDegrees * Mathf.Deg2Rad;
+                float cos = Mathf.Cos(radians);
+                float sin = Mathf.Sin(radians);
+                direction = new Vector2(
+                    direction.x * cos - direction.y * sin,
+                    direction.x * sin + direction.y * cos);
+            }
+
+            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+        }
+    }
+}

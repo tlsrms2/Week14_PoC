@@ -5150,6 +5150,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return new Color(0.42f, 0.32f, 0.62f, 1f);
         }
 
+        if (label.StartsWith("Minion/Conductor/", StringComparison.Ordinal))
+        {
+            return new Color(0.56f, 0.42f, 0.18f, 1f);
+        }
+
         return GetNodeKindColor(nodeKind);
     }
 
