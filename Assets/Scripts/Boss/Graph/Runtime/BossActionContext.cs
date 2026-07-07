@@ -16,6 +16,8 @@ namespace Week14.Enemy
         private readonly Func<bool> isExecutionPaused;
         private Animator animator;
         private BossAnimationEventBridge animationEventBridge;
+        private bool hasBodyRootLocalBase;
+        private Vector3 bodyRootLocalBase;
         private bool hasPlayerRelativeMoveIntent;
         private float playerRelativeMoveDirectionSign = 1f;
         private float playerRelativeMoveSpeedMultiplier = 1f;
@@ -365,31 +367,27 @@ namespace Week14.Enemy
             return Mathf.Max(0f, speedCurve.Evaluate(normalizedTime));
         }
 
-        public IEnumerator MoveBodyRootToPosition(Vector3 targetPosition, float seconds, bool stopWhenFinished)
+        public IEnumerator MoveBodyRootToPosition(Vector3 targetLocalOffset, float seconds, bool stopWhenFinished)
         {
-            if (Boss == null || Boss.Body == null)
+            Transform target = Boss != null ? Boss.BodyRoot : null;
+            if (target == null || Boss == null || target == Boss.transform)
             {
                 yield break;
             }
 
-            Vector2 target = targetPosition;
-            if (seconds <= 0f)
+            if (!hasBodyRootLocalBase)
             {
-                Boss.Body.position = target;
-                Boss.transform.position = new Vector3(target.x, target.y, Boss.transform.position.z);
-                if (stopWhenFinished)
-                {
-                    Stop();
-                }
-
-                yield break;
+                bodyRootLocalBase = target.localPosition;
+                hasBodyRootLocalBase = true;
             }
 
+            Vector3 from = target.localPosition;
+            Vector3 to = bodyRootLocalBase + targetLocalOffset;
             float duration = Mathf.Max(0.01f, seconds);
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (Boss == null || Boss.Body == null)
+                if (target == null)
                 {
                     yield break;
                 }
@@ -401,28 +399,21 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                float remaining = Mathf.Max(Time.deltaTime, duration - elapsed);
-                Vector2 toTarget = target - Boss.Body.position;
-                Boss.SetMovementVelocity(toTarget / remaining);
+                Stop();
                 elapsed += Time.deltaTime;
+                target.localPosition = Vector3.Lerp(from, to, Mathf.Clamp01(elapsed / duration));
                 yield return null;
             }
 
-            if (Boss != null && Boss.Body != null)
+            if (target != null)
             {
-                Boss.Body.position = target;
-                Boss.transform.position = new Vector3(target.x, target.y, Boss.transform.position.z);
+                target.localPosition = to;
             }
 
             if (stopWhenFinished)
             {
-                Stop();
+                ResetBodyRootLocalOffset();
             }
-        }
-
-        public IEnumerator MoveBodyRootLocalOffset(Vector3 targetLocalOffset, float seconds, bool releaseBaseAfterMove)
-        {
-            yield return MoveBodyRootToPosition(targetLocalOffset, seconds, true);
         }
 
         public void StopBodyRootMovement()
@@ -432,7 +423,18 @@ namespace Week14.Enemy
 
         public void ResetBodyRootLocalOffset()
         {
-            StopBodyRootMovement();
+            if (!hasBodyRootLocalBase)
+            {
+                return;
+            }
+
+            Transform target = Boss != null ? Boss.BodyRoot : null;
+            if (target != null)
+            {
+                target.localPosition = bodyRootLocalBase;
+            }
+
+            hasBodyRootLocalBase = false;
         }
 
         public Vector3 GetBossChildPosition(string childPath)

@@ -22,8 +22,13 @@ namespace Week14.Combat
         private Sprite chargingSprite;
         [SerializeField, Tooltip("발사 후 표시할 스프라이트입니다. 비워두면 프리팹 기본 스프라이트를 사용합니다.")]
         private Sprite launchedSprite;
+        [SerializeField, Tooltip("남은 충전시간 비율을 표시할 원형 게이지 스프라이트 렌더러입니다. 비워두면 게이지를 표시하지 않습니다.")]
+        private SpriteRenderer chargeGaugeRenderer;
+
+        private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
 
         private bool homingActive;
+        private MaterialPropertyBlock chargeGaugePropertyBlock;
         private Color homingBlinkColor;
         private float homingBlinkPhase;
         private float homingTurnDegreesPerSecond;
@@ -41,11 +46,13 @@ namespace Week14.Combat
         protected override void OnProjectileInitialized()
         {
             ApplyHomingStateSprite();
+            SetChargeGaugeVisible(homingActive && IsCharging);
         }
 
         protected override void OnProjectileLaunched()
         {
             ApplyHomingLaunchedSprite();
+            SetChargeGaugeVisible(false);
         }
 
         protected override void ConfigureHoming(bool enabled, float seconds, float turnDegrees, float launchTime)
@@ -128,6 +135,7 @@ namespace Week14.Combat
             }
 
             float remainingRatio = Mathf.Clamp01((ChargeEndsAt - Time.time) / ProjectileChargeSeconds);
+            SetChargeGaugeFill(remainingRatio);
             if (remainingRatio <= chargeSolidColorRemainingRatio)
             {
                 ApplyProjectileColor(homingBlinkColor);
@@ -178,6 +186,27 @@ namespace Week14.Combat
         protected override void ExtendSpecialTimers(float pausedSeconds)
         {
             homingEndsAt += Mathf.Max(0f, pausedSeconds);
+        }
+
+        private void SetChargeGaugeVisible(bool visible)
+        {
+            if (chargeGaugeRenderer != null)
+            {
+                chargeGaugeRenderer.enabled = visible;
+            }
+        }
+
+        private void SetChargeGaugeFill(float remainingRatio)
+        {
+            if (chargeGaugeRenderer == null)
+            {
+                return;
+            }
+
+            chargeGaugePropertyBlock ??= new MaterialPropertyBlock();
+            chargeGaugeRenderer.GetPropertyBlock(chargeGaugePropertyBlock);
+            chargeGaugePropertyBlock.SetFloat(FillAmountId, remainingRatio);
+            chargeGaugeRenderer.SetPropertyBlock(chargeGaugePropertyBlock);
         }
     }
 }

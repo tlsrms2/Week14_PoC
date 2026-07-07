@@ -12,6 +12,7 @@ namespace Week14.Enemy
         [FormerlySerializedAs("targetOffset")]
         [SerializeField] private Vector3 targetPosition;
         [SerializeField, Min(0f)] private float duration = 0.1f;
+        [FormerlySerializedAs("releaseBaseAfterMove")]
         [SerializeField] private bool stopWhenFinished = true;
         [Tooltip("이동이 끝났을 때 재생할 사운드 ID입니다.")]
         [SerializeField, BossGraphSfxId] private string completeSfxId;
@@ -33,7 +34,7 @@ namespace Week14.Enemy
     {
         public override IEnumerator Execute(BossActionContext context)
         {
-            context?.StopBodyRootMovement();
+            context?.ResetBodyRootLocalOffset();
             yield break;
         }
     }

@@ -187,7 +187,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908219
     sequences: []
-    editorPosition: {x: 577, y: 290}
+    editorPosition: {x: 577, y: 288}
   - nodeId: HogPattern6_Action07
     nodeGuid: 7c4770aa65154af98e33055a559f6b7e
     nodeKind: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908221
     sequences: []
-    editorPosition: {x: 952, y: 298}
+    editorPosition: {x: 951, y: 296}
   - nodeId: HogPattern6_Action10
     nodeGuid: 8c27086e8f584597a5bc7125fced5d11
     nodeKind: 3
@@ -223,7 +223,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908223
     sequences: []
-    editorPosition: {x: 1332, y: 288}
+    editorPosition: {x: 1330, y: 288}
   - nodeId: HogPattern6_Action12
     nodeGuid: 67d9c894747a4aaebeda59d6935820c9
     nodeKind: 1
@@ -1304,14 +1304,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0.6, z: 0}
         duration: 0.38
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908203
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.25
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: Smash
     - rid: 2634811931892908204
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1387,14 +1387,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0.6, z: 0}
         duration: 0.38
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908207
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.25
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: Smash
     - rid: 2634811931892908208
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1470,14 +1470,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0.6, z: 0}
         duration: 0.38
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908211
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.25
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: Smash
     - rid: 2634811931892908212
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1639,14 +1639,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908216
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: Smash
     - rid: 2634811931892908217
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1722,14 +1722,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908220
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: Smash
     - rid: 2634811931892908221
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1805,14 +1805,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908224
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: Smash
     - rid: 2634811931892908225
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1888,14 +1888,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908228
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908229
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -1971,14 +1971,14 @@ MonoBehaviour:
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908232
       type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         targetPosition: {x: 0, y: 0, z: 0}
         duration: 0.01
-        stopWhenFinished: 1
+        stopWhenFinished: 0
         completeSfxId: 
     - rid: 2634811931892908233
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
