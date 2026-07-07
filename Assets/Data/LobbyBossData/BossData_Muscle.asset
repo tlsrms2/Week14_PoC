@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553461748deae774480ab8b1802f2123, type: 3}
   m_Name: BossData_Muscle
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossData
-  id: 2
+  id: Muscle
   bossName: "\uACBD\uD638\uC2E4\uC7A5"
   crime: "\uC704\uD5D8\uB3C4: 2"
   description: "\uACBD\uD638\uC2E4\uC7A5\uC785\uB2C8\uB2E4."
@@ -44,7 +44,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 065da6c7b90ca904dab9cbc6b415fd19, type: 3}
-  deathImage: {fileID: 0}
+  deathImage: {fileID: 1270279067752250102, guid: a0e89f1d438ad7c46a4637681bb00c8d, type: 3}
   sceneName: Boss_Muscle
   unlocksBossIds: []
   unlocksSkillIds: []

@@ -49,6 +49,7 @@ MonoBehaviour:
   sceneName: MainScene
   unlocksBossIds:
   - 2
+  - Muscle
   unlocksSkillIds: []
   unlocksWeaponIds:
   - shotgun
