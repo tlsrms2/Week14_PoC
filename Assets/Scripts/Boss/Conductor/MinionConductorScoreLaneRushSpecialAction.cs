@@ -9,28 +9,6 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class MinionConductorScoreLaneRushSpecialAction : MinionConductorScoreLaneRushAction
     {
-        [Serializable]
-        private sealed class SpecialVolley
-        {
-            [SerializeField, Min(0f)] private float restSeconds = 0.35f;
-            [SerializeField] private List<FireTiming> fireTimings = new() { new FireTiming() };
-
-            public float RestSeconds => Mathf.Max(0f, restSeconds);
-            public IReadOnlyList<FireTiming> FireTimings => fireTimings;
-        }
-
-        private readonly struct LaneStep
-        {
-            public LaneStep(ConductorScoreLaneSide side, bool rushPositiveDirection)
-            {
-                Side = side;
-                RushPositiveDirection = rushPositiveDirection;
-            }
-
-            public ConductorScoreLaneSide Side { get; }
-            public bool RushPositiveDirection { get; }
-        }
-
         private static readonly ConductorScoreLaneSide[] IndicatorSideOrder =
         {
             ConductorScoreLaneSide.Top,
@@ -41,22 +19,15 @@ namespace Week14.Enemy
 
         private static readonly LaneStep[] ExecutionOrder =
         {
-            new(ConductorScoreLaneSide.Top, true),
-            new(ConductorScoreLaneSide.Right, false),
-            new(ConductorScoreLaneSide.Bottom, false),
-            new(ConductorScoreLaneSide.Left, true)
+            TopStep,
+            RightStep,
+            BottomStep,
+            LeftStep
         };
 
         [SerializeField] private bool drawLaneIndicators = true;
         [SerializeField, InspectorName("Pattern Center")] private Vector2 patternCenter;
-        [Header("Common Rush Settings")]
-        [SerializeField, Min(0.1f)] private float lineDistanceFromPlayer = 3f;
-        [SerializeField, Min(0f)] private float lineSpacing = 0.7f;
-        [SerializeField, Min(0f)] private float moveToStartSeconds = 0.35f;
-        [SerializeField, Min(0f)] private float rushDistance = 8f;
-        [SerializeField, Min(0.01f)] private float rushSpeed = 10f;
-        [SerializeField] private List<StartTiming> startTimings = new();
-        [SerializeField, InspectorName("Volleys")] private List<SpecialVolley> specialVolleys = new() { new SpecialVolley() };
+        [SerializeField, InspectorName("Volleys")] private List<Volley> specialVolleys = new() { new Volley() };
         [Header("Lane Indicators")]
         [SerializeField] private Color laneIndicatorColor = new(0.62f, 0.92f, 1f, 0.66f);
         [SerializeField, Min(0.001f)] private float laneIndicatorWidth = 0.035f;
@@ -78,7 +49,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            List<Volley> executionVolleys = BuildExecutionVolleys();
+            List<ExecutionVolley> executionVolleys = BuildExecutionVolleys();
             if (executionVolleys.Count == 0)
             {
                 yield break;
@@ -122,7 +93,7 @@ namespace Week14.Enemy
 
         protected override void OnVolleyProjectileFired(
             BossActionContext context,
-            Volley volley,
+            ExecutionVolley volley,
             FireTiming timing,
             BossProjectileSettings projectile,
             EnemyProjectile spawned)
@@ -133,57 +104,15 @@ namespace Week14.Enemy
             }
         }
 
-        private List<Volley> BuildExecutionVolleys()
+        protected override List<ExecutionVolley> BuildExecutionVolleys()
         {
-            List<Volley> executionVolleys = new();
-            List<int> poolIndices = GetAvailablePoolIndices();
-            int stepCount = Mathf.Min(ExecutionOrder.Length, poolIndices.Count);
-            for (int stepIndex = 0; stepIndex < stepCount; stepIndex++)
-            {
-                int choiceIndex = UnityEngine.Random.Range(0, poolIndices.Count);
-                SpecialVolley selected = specialVolleys[poolIndices[choiceIndex]];
-                poolIndices.RemoveAt(choiceIndex);
-
-                LaneStep step = ExecutionOrder[stepIndex];
-                executionVolleys.Add(new Volley(
-                    step.Side,
-                    step.RushPositiveDirection,
-                    lineDistanceFromPlayer,
-                    lineSpacing,
-                    moveToStartSeconds,
-                    rushDistance,
-                    rushSpeed,
-                    selected.RestSeconds,
-                    startTimings,
-                    selected.FireTimings));
-            }
-
-            return executionVolleys;
-        }
-
-        private List<int> GetAvailablePoolIndices()
-        {
-            List<int> poolIndices = new();
-            if (specialVolleys == null)
-            {
-                return poolIndices;
-            }
-
-            for (int i = 0; i < specialVolleys.Count; i++)
-            {
-                if (specialVolleys[i] != null)
-                {
-                    poolIndices.Add(i);
-                }
-            }
-
-            return poolIndices;
+            return BuildExecutionVolleysFromPool(specialVolleys, ExecutionOrder);
         }
 
         private float CommandMinionsToFirstVolleyStart(
             IMinionPatternHost host,
             Vector2 center,
-            Volley firstVolley)
+            ExecutionVolley firstVolley)
         {
             if (host == null || firstVolley == null)
             {
@@ -214,7 +143,7 @@ namespace Week14.Enemy
                 float duration = minion.CommandScoreLaneRush(
                     startPosition,
                     rushDirection,
-                    moveToStartSeconds,
+                    MoveToStartSeconds,
                     0f,
                     0f,
                     firstVolley.RushSpeed);
@@ -452,11 +381,11 @@ namespace Week14.Enemy
             bool positiveDirection = GetFixedRushPositiveDirection(side);
             Vector2 rushDirection = GetRushDirection(side, positiveDirection);
             Vector2 lineAxis = IsHorizontalRush(side) ? Vector2.up : Vector2.right;
-            Vector2 lineCenter = center + GetSideOffset(side) * Mathf.Max(0.1f, lineDistanceFromPlayer);
+            Vector2 lineCenter = center + GetSideOffset(side) * LineDistanceFromPlayer;
             float centeredOffset = (Mathf.Max(1, laneCount) - 1) * 0.5f;
-            Vector2 laneCenter = lineCenter + lineAxis * ((laneIndex - centeredOffset) * Mathf.Max(0f, lineSpacing));
-            start = laneCenter - rushDirection * (Mathf.Max(0f, rushDistance) * 0.5f);
-            end = laneCenter + rushDirection * (Mathf.Max(0f, rushDistance) * 0.5f);
+            Vector2 laneCenter = lineCenter + lineAxis * ((laneIndex - centeredOffset) * LineSpacing);
+            start = laneCenter - rushDirection * (RushDistance * 0.5f);
+            end = laneCenter + rushDirection * (RushDistance * 0.5f);
         }
 
         private static bool GetFixedRushPositiveDirection(ConductorScoreLaneSide side)

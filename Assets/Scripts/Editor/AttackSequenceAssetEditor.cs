@@ -429,12 +429,12 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MinionConductorScoreLaneRushAction))
         {
-            return "Conductor 전용 액션입니다. 악보 줄처럼 미니언을 배치해 돌진시키고 Side별 고정 각도로 순서 패링 투사체를 발사합니다.";
+            return "Conductor 전용 액션입니다. 1개 또는 2개 Side를 랜덤 선택하고, Volleys 풀의 Fire Timings 패턴을 중복 없이 골라 실행합니다.";
         }
 
         if (actionType == typeof(MinionConductorScoreLaneRushSpecialAction))
         {
-            return "Conductor 전용 특수 액션입니다. 설정 좌표 기준으로 Top, Right, Bottom, Left 순서의 러시를 실행하고, Volleys 풀에서 Rest/Fire 패턴을 중복 없이 랜덤 선택합니다.";
+            return "Conductor 전용 특수 액션입니다. 설정 좌표 기준으로 Top, Right, Bottom, Left 순서의 러시를 실행하고, Volleys 풀에서 Fire Timings 패턴을 중복 없이 랜덤 선택합니다.";
         }
 
         if (actionType == typeof(MinionConductorPlayerPathSideFireAction))
@@ -1341,7 +1341,7 @@ internal sealed class MinionConductorScoreLaneRushSpecialActionDrawer : Property
 
     private static bool ShouldSkipProperty(SerializedProperty property)
     {
-        return property != null && property.name == "volleys";
+        return property != null && (property.name == "volleys" || property.name == "useTwoSides");
     }
 }
 

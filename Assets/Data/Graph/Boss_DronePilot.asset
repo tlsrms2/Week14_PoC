@@ -1106,33 +1106,6 @@ MonoBehaviour:
       rid: 6489939019529191507
     sequences: []
     editorPosition: {x: -106, y: 2120}
-  - nodeId: Gather_Copy3_Copy2
-    nodeGuid: e788441d35be417e94931cf3cfa6434e
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939025664671819
-    sequences: []
-    editorPosition: {x: 239, y: 1553}
-  - nodeId: P09_Wander 2_Copy5_Copy2
-    nodeGuid: 1c89bbdadd13452f8d563f148531ce22
-    nodeKind: 4
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939025664671820
-    sequences: []
-    editorPosition: {x: 440, y: 1552}
-  - nodeId: P09_Move Toward Player 2_Copy1_Copy2
-    nodeGuid: 221c8ce7aa29427c969dbbfaf717fa2d
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939025664671821
-    sequences: []
-    editorPosition: {x: 441, y: 1730}
   - nodeId: Node3
     nodeGuid: d8117b09f5484cae84ce7f800b2892f0
     nodeKind: 4
@@ -1436,15 +1409,6 @@ MonoBehaviour:
     - Gather_Copy3_Copy1
     - P09_Wander 2_Copy5_Copy1
     - P09_Move Toward Player 2_Copy1_Copy1
-  - patternId: Pattern9
-    nodeGuids:
-    - e788441d35be417e94931cf3cfa6434e
-    - 1c89bbdadd13452f8d563f148531ce22
-    - 221c8ce7aa29427c969dbbfaf717fa2d
-    nodeIds:
-    - Gather_Copy3_Copy2
-    - P09_Wander 2_Copy5_Copy2
-    - P09_Move Toward Player 2_Copy1_Copy2
   - patternId: Pattern10
     nodeGuids:
     - d8117b09f5484cae84ce7f800b2892f0
@@ -1922,13 +1886,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: e788441d35be417e94931cf3cfa6434e
-    toNodeGuid: 1c89bbdadd13452f8d563f148531ce22
-    fromNodeId: Gather_Copy3_Copy2
-    toNodeId: P09_Wander 2_Copy5_Copy2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: f9254dfe1f1b415ba4c10e85a0c44f8c
     toNodeGuid: 71e3398d27ad4926aa6ab542889090fd
@@ -2246,12 +2203,6 @@ MonoBehaviour:
     toNodeGuid: ccd4ee975d7249049c772ac79f78a71b
     fromNodeId: P09_Wander 2_Copy5_Copy1
     toNodeId: P09_Move Toward Player 2_Copy1_Copy1
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 1c89bbdadd13452f8d563f148531ce22
-    toNodeGuid: 221c8ce7aa29427c969dbbfaf717fa2d
-    fromNodeId: P09_Wander 2_Copy5_Copy2
-    toNodeId: P09_Move Toward Player 2_Copy1_Copy2
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -4260,7 +4211,7 @@ MonoBehaviour:
     - rid: 6489938902049095680
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -5111,25 +5062,24 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
+        useTwoSides: 0
+        lineDistanceFromPlayer: 7.5
+        lineSpacing: 0.7
+        moveToStartSeconds: 0.35
+        rushDistance: 20
+        rushSpeed: 9
+        restSeconds: 0
+        startTimings:
+        - minionNumber: 1
+          startSeconds: 0.4
+        - minionNumber: 2
+          startSeconds: 0.4
+        - minionNumber: 3
+          startSeconds: 0.4
+        - minionNumber: 4
+          startSeconds: 0.4
         volleys:
-        - side: 3
-          rushPositiveDirection: 0
-          lineDistanceFromPlayer: 5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 7
-          restSeconds: 0
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.2
             parryOrder: 1
@@ -5146,24 +5096,7 @@ MonoBehaviour:
             fireSeconds: 2.1
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - side: 2
-          rushPositiveDirection: 1
-          lineDistanceFromPlayer: 5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 7
-          restSeconds: 0
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.2
             parryOrder: 1
@@ -5259,25 +5192,24 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
+        useTwoSides: 0
+        lineDistanceFromPlayer: 7.5
+        lineSpacing: 0.7
+        moveToStartSeconds: 0.35
+        rushDistance: 20
+        rushSpeed: 9
+        restSeconds: 0.35
+        startTimings:
+        - minionNumber: 1
+          startSeconds: 0.4
+        - minionNumber: 2
+          startSeconds: 0.4
+        - minionNumber: 3
+          startSeconds: 0.4
+        - minionNumber: 4
+          startSeconds: 0.4
         volleys:
-        - side: 0
-          rushPositiveDirection: 1
-          lineDistanceFromPlayer: 6.5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 8
-          restSeconds: 1
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.3
             parryOrder: 1
@@ -5306,24 +5238,7 @@ MonoBehaviour:
             fireSeconds: 1.9
             parryOrder: 7
             projectileName: "\uC21C\uC11C\uD0C4"
-        - side: 3
-          rushPositiveDirection: 0
-          lineDistanceFromPlayer: 6.5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 8
-          restSeconds: 1
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.15
             parryOrder: 1
@@ -5340,24 +5255,7 @@ MonoBehaviour:
             fireSeconds: 2.05
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-        - side: 1
-          rushPositiveDirection: 0
-          lineDistanceFromPlayer: 6.5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 8
-          restSeconds: 1
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.15
             parryOrder: 1
@@ -5374,24 +5272,7 @@ MonoBehaviour:
             fireSeconds: 1.95
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-        - side: 2
-          rushPositiveDirection: 1
-          lineDistanceFromPlayer: 6.5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 8
-          restSeconds: 0
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.15
             parryOrder: 1
@@ -5433,41 +5314,8 @@ MonoBehaviour:
         waitForDuration: 1
         drawLaneIndicators: 1
         patternCenter: {x: 6.3, y: -6.2}
-        lineDistanceFromPlayer: 7.5
-        lineSpacing: 0.7
-        moveToStartSeconds: 0.35
-        rushDistance: 20
-        rushSpeed: 9
-        startTimings:
-        - minionNumber: 1
-          startSeconds: 0.4
-        - minionNumber: 2
-          startSeconds: 0.4
-        - minionNumber: 3
-          startSeconds: 0.4
-        - minionNumber: 4
-          startSeconds: 0.4
         specialVolleys:
-        - restSeconds: 1
-          fireTimings:
-          - minionNumber: 1
-            fireSeconds: 1.55
-            parryOrder: 1
-            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-          - minionNumber: 2
-            fireSeconds: 1.75
-            parryOrder: 2
-            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-          - minionNumber: 3
-            fireSeconds: 1.95
-            parryOrder: 3
-            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-          - minionNumber: 4
-            fireSeconds: 2.15
-            parryOrder: 4
-            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.3
             parryOrder: 1
@@ -5500,8 +5348,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.3
             parryOrder: 1
@@ -5534,8 +5381,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.55
             parryOrder: 1
@@ -5552,8 +5398,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 2
             fireSeconds: 1.55
             parryOrder: 1
@@ -5570,8 +5415,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.3
             parryOrder: 1
@@ -5604,8 +5448,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 2
             fireSeconds: 1.3
             parryOrder: 1
@@ -5638,8 +5481,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 4
             fireSeconds: 1.3
             parryOrder: 1
@@ -5672,8 +5514,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 4
             fireSeconds: 1.3
             parryOrder: 1
@@ -5706,8 +5547,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.55
             parryOrder: 1
@@ -5724,8 +5564,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 4
             fireSeconds: 1.55
             parryOrder: 1
@@ -5742,8 +5581,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.55
             parryOrder: 1
@@ -5760,8 +5598,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 2
             fireSeconds: 1.55
             parryOrder: 1
@@ -5778,8 +5615,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.3
             parryOrder: 1
@@ -5812,42 +5648,7 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
-          - minionNumber: 1
-            fireSeconds: 1.3
-            parryOrder: 1
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 1
-            fireSeconds: 1.45
-            parryOrder: 2
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 2
-            fireSeconds: 1.6
-            parryOrder: 3
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 2
-            fireSeconds: 1.75
-            parryOrder: 4
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 3
-            fireSeconds: 1.9
-            parryOrder: 5
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 3
-            fireSeconds: 2.05
-            parryOrder: 6
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 4
-            fireSeconds: 2.2
-            parryOrder: 7
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 4
-            fireSeconds: 2.35
-            parryOrder: 8
-            projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 4
             fireSeconds: 1.55
             parryOrder: 1
@@ -5864,8 +5665,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 1
             fireSeconds: 1.55
             parryOrder: 1
@@ -5882,8 +5682,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 2
             fireSeconds: 1.55
             parryOrder: 1
@@ -5900,8 +5699,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 2
             fireSeconds: 1.55
             parryOrder: 1
@@ -5918,8 +5716,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 4
             fireSeconds: 1.55
             parryOrder: 1
@@ -5936,8 +5733,7 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
-        - restSeconds: 1
-          fireTimings:
+        - fireTimings:
           - minionNumber: 4
             fireSeconds: 1.55
             parryOrder: 1
@@ -5954,6 +5750,222 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4"
+        - fireTimings:
+          - minionNumber: 1
+            fireSeconds: 1.3
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.3
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 1.6
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 1.6
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 1.9
+            parryOrder: 5
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.9
+            parryOrder: 6
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 2.2
+            parryOrder: 7
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 2.2
+            parryOrder: 8
+            projectileName: "\uC21C\uC11C\uD0C4"
+        - fireTimings:
+          - minionNumber: 4
+            fireSeconds: 1.3
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 1.3
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.6
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 1.6
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 1.9
+            parryOrder: 5
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 1.9
+            parryOrder: 6
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 2.2
+            parryOrder: 7
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 2.2
+            parryOrder: 8
+            projectileName: "\uC21C\uC11C\uD0C4"
+        - fireTimings:
+          - minionNumber: 1
+            fireSeconds: 1.45
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.45
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 1.45
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 1.45
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 2.2
+            parryOrder: 5
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 2.2
+            parryOrder: 6
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 2.2
+            parryOrder: 7
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 2.2
+            parryOrder: 8
+            projectileName: "\uC21C\uC11C\uD0C4"
+        - fireTimings:
+          - minionNumber: 4
+            fireSeconds: 1.45
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 1.45
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.45
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 1.45
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 2.2
+            parryOrder: 5
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 2.2
+            parryOrder: 6
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 2.2
+            parryOrder: 7
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 2.2
+            parryOrder: 8
+            projectileName: "\uC21C\uC11C\uD0C4"
+        - fireTimings:
+          - minionNumber: 1
+            fireSeconds: 1.3
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 1
+            fireSeconds: 1.45
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.6
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 2
+            fireSeconds: 1.75
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 1.9
+            parryOrder: 5
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 3
+            fireSeconds: 2.05
+            parryOrder: 6
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 2.2
+            parryOrder: 7
+            projectileName: "\uC21C\uC11C\uD0C4"
+          - minionNumber: 4
+            fireSeconds: 2.35
+            parryOrder: 8
+            projectileName: "\uC21C\uC11C\uD0C4"
+        - fireTimings:
+          - minionNumber: 1
+            fireSeconds: 1.55
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 2
+            fireSeconds: 1.75
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 3
+            fireSeconds: 1.95
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 4
+            fireSeconds: 2.15
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+        - fireTimings:
+          - minionNumber: 1
+            fireSeconds: 1.55
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 2
+            fireSeconds: 1.55
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 3
+            fireSeconds: 2.15
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 4
+            fireSeconds: 2.15
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+        - fireTimings:
+          - minionNumber: 4
+            fireSeconds: 1.55
+            parryOrder: 1
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 3
+            fireSeconds: 1.55
+            parryOrder: 2
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 2
+            fireSeconds: 2.15
+            parryOrder: 3
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+          - minionNumber: 1
+            fireSeconds: 2.15
+            parryOrder: 4
+            projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
         laneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         laneIndicatorWidth: 0.035
         laneIndicatorRevealSeconds: 0.18
@@ -5962,154 +5974,6 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
-    - rid: 6489939025664671819
-      type: {class: MinionConductorScoreLaneRushAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        minionOrigin:
-          mode: 0
-          minionChildPath: 
-          minionChildPaths: []
-          firstMinionChildPath: 
-          secondMinionChildPath: 
-          fallbackSpacing: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        windupSeconds: 0
-        volleys:
-        - side: 0
-          rushPositiveDirection: 0
-          lineDistanceFromPlayer: 5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 7
-          restSeconds: 0
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
-          - minionNumber: 1
-            fireSeconds: 1.2
-            parryOrder: 1
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 2
-            fireSeconds: 1.5
-            parryOrder: 2
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 3
-            fireSeconds: 1.8
-            parryOrder: 3
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 4
-            fireSeconds: 2.1
-            parryOrder: 4
-            projectileName: "\uC21C\uC11C\uD0C4"
-        - side: 1
-          rushPositiveDirection: 1
-          lineDistanceFromPlayer: 5
-          lineSpacing: 0.7
-          moveToStartSeconds: 0.35
-          rushDistance: 20
-          rushSpeed: 7
-          restSeconds: 0
-          startTimings:
-          - minionNumber: 1
-            startSeconds: 0.4
-          - minionNumber: 2
-            startSeconds: 0.4
-          - minionNumber: 3
-            startSeconds: 0.4
-          - minionNumber: 4
-            startSeconds: 0.4
-          fireTimings:
-          - minionNumber: 1
-            fireSeconds: 1.2
-            parryOrder: 1
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 2
-            fireSeconds: 1.5
-            parryOrder: 2
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 3
-            fireSeconds: 1.8
-            parryOrder: 3
-            projectileName: "\uC21C\uC11C\uD0C4"
-          - minionNumber: 4
-            fireSeconds: 2.1
-            parryOrder: 4
-            projectileName: "\uC21C\uC11C\uD0C4"
-        drawParryTieLinks: 1
-        parryTieLinkColor: {r: 0, g: 0, b: 0, a: 1}
-        parryTieLinkWidth: 0.03
-        parryTieArcHeight: 0.6
-        parryTieSegments: 16
-        parryTieSortingOrder: 68
-        waitForDuration: 1
-    - rid: 6489939025664671820
-      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        wanderSeconds: 0.5
-        speed: 3.2
-        radius: 2.8
-        retargetSeconds: 1.5
-        waitForDuration: 1
-    - rid: 6489939025664671821
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.5
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 6489939025664671825
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
