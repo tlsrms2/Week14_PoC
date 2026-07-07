@@ -136,6 +136,7 @@ namespace Week14.Enemy
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0f)] private float windupSeconds;
+        [SerializeField, InspectorName("Pattern Center")] private Vector2 patternCenter;
         [SerializeField, InspectorName("Use Two Sides")] private bool useTwoSides;
         [Header("Common Rush Settings")]
         [SerializeField, Min(0.1f)] private float lineDistanceFromPlayer = 3f;
@@ -219,12 +220,7 @@ namespace Week14.Enemy
 
         protected virtual Vector2 ResolvePatternCenter(BossActionContext context)
         {
-            if (context.Boss.Player != null)
-            {
-                return context.Boss.Player.position;
-            }
-
-            return context.Boss.transform.position;
+            return patternCenter;
         }
 
         protected virtual bool ShouldDrawParryTieLinks()

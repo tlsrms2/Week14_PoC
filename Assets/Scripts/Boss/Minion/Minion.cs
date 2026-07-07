@@ -82,6 +82,8 @@ namespace Week14.Enemy
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
         private bool ignoringPlayerCollision;
+        private bool hasGraphFacingOverride;
+        private Vector2 graphFacingOverrideDirection;
         [SerializeField, Min(0)] private int ownerSlotNumber;
         private IMinionOwner runtimeOwner;
 
@@ -531,6 +533,7 @@ namespace Week14.Enemy
             SetPlayerCollisionIgnored(false);
             isFormationCommand = false;
             suppressBodyContactDamage = false;
+            ClearGraphFacingDirectionOverride();
         }
 
         private void StopFireCommand()
@@ -562,6 +565,30 @@ namespace Week14.Enemy
             Vector2 finalDirection = fireSpec.GetDirection(this, spawnOrigin);
             FaceClosestMinionAim(fireSpec, finalDirection);
             return FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec);
+        }
+
+        public void FaceGraphDirection(Vector2 direction)
+        {
+            RotateToDirection(direction);
+        }
+
+        public void SetGraphFacingDirectionOverride(Vector2 direction)
+        {
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                ClearGraphFacingDirectionOverride();
+                return;
+            }
+
+            hasGraphFacingOverride = true;
+            graphFacingOverrideDirection = direction.normalized;
+            RotateToDirection(graphFacingOverrideDirection);
+        }
+
+        public void ClearGraphFacingDirectionOverride()
+        {
+            hasGraphFacingOverride = false;
+            graphFacingOverrideDirection = Vector2.zero;
         }
 
         public float CommandRepeatFire(BossProjectileSettings projectile, int volleys, float fireInterval)
@@ -726,6 +753,21 @@ namespace Week14.Enemy
             StopMovementCommand();
             isFormationCommand = true;
             movementRoutine = StartCoroutine(RunFormationStraight(lateralOffset, distanceFromPlayer, mode, moveSpeed));
+        }
+
+        public void CommandFormationStraightLockedToPlayerOffset(
+            float lateralOffset,
+            float distanceFromPlayer,
+            MinionGraphFormationStraightMode mode,
+            float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunFormationStraightLockedToPlayerOffset(
+                lateralOffset,
+                distanceFromPlayer,
+                mode,
+                moveSpeed));
         }
 
         public void CommandAngleDistance(float angleDegrees, float distanceFromPlayer, float moveSpeed)
@@ -1248,7 +1290,94 @@ namespace Week14.Enemy
                     mode,
                     trackedPlayerForward);
                 SetPatternPosition(target, ref lockedToPattern, moveSpeed);
-                FacePlayer();
+                FaceFormationDirection();
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunFormationStraightLockedToPlayerOffset(
+            float lateralOffset,
+            float distanceFromPlayer,
+            MinionGraphFormationStraightMode mode,
+            float moveSpeed)
+        {
+            bool lockedToPattern = false;
+            bool lockedToPlayerOffset = false;
+            bool hasLastPlayerPosition = false;
+            Vector2 lastPlayerPosition = Vector2.zero;
+            Vector2 trackedPlayerForward = Vector2.zero;
+            Vector2 lockedCenterDirection = Vector2.zero;
+            while (true)
+            {
+                IMinionOwner currentOwner = Owner;
+                Transform player = currentOwner?.MinionTarget;
+                if (currentOwner == null || player == null)
+                {
+                    break;
+                }
+
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 playerPosition = player.position;
+                if (lockedToPlayerOffset)
+                {
+                    SetPatternPosition(GetFormationStraightTarget(
+                        player,
+                        lateralOffset,
+                        distanceFromPlayer,
+                        lockedCenterDirection));
+                    FaceFormationDirection();
+                    yield return null;
+                    continue;
+                }
+
+                if (mode == MinionGraphFormationStraightMode.PlayerForward)
+                {
+                    if (hasLastPlayerPosition)
+                    {
+                        Vector2 delta = playerPosition - lastPlayerPosition;
+                        if (delta.sqrMagnitude > 0.0001f)
+                        {
+                            trackedPlayerForward = delta.normalized;
+                        }
+                    }
+
+                    if (trackedPlayerForward.sqrMagnitude <= 0.0001f)
+                    {
+                        trackedPlayerForward = GetBossToPlayerDirection(currentOwner, player);
+                    }
+
+                    lastPlayerPosition = playerPosition;
+                    hasLastPlayerPosition = true;
+                }
+
+                Vector2 currentCenterDirection = GetFormationStraightCenterDirection(
+                    currentOwner,
+                    player,
+                    mode,
+                    trackedPlayerForward);
+                Vector2 target = GetFormationStraightTarget(
+                    player,
+                    lateralOffset,
+                    distanceFromPlayer,
+                    currentCenterDirection);
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
+                if (lockedToPattern)
+                {
+                    lockedCenterDirection = currentCenterDirection;
+                    lockedToPlayerOffset = true;
+                    SetPlayerCollisionIgnored(false);
+                    EndMovementPathIndicator();
+                }
+
+                FaceFormationDirection();
                 yield return null;
             }
 
@@ -1621,6 +1750,42 @@ namespace Week14.Enemy
             MinionGraphFormationStraightMode mode,
             Vector2 trackedPlayerForward)
         {
+            Vector2 centerDirection = GetFormationStraightCenterDirection(
+                currentOwner,
+                player,
+                mode,
+                trackedPlayerForward);
+            return GetFormationStraightTarget(player, lateralOffset, distanceFromPlayer, centerDirection);
+        }
+
+        private Vector2 GetFormationStraightTarget(
+            Transform player,
+            float lateralOffset,
+            float distanceFromPlayer,
+            Vector2 centerDirection)
+        {
+            if (player == null)
+            {
+                return transform.position;
+            }
+
+            if (centerDirection.sqrMagnitude <= 0.0001f)
+            {
+                centerDirection = Vector2.right;
+            }
+
+            centerDirection.Normalize();
+            Vector2 lineAxis = new(-centerDirection.y, centerDirection.x);
+            Vector2 center = (Vector2)player.position + centerDirection * Mathf.Max(0.1f, distanceFromPlayer);
+            return center + lineAxis * lateralOffset;
+        }
+
+        private Vector2 GetFormationStraightCenterDirection(
+            IMinionOwner currentOwner,
+            Transform player,
+            MinionGraphFormationStraightMode mode,
+            Vector2 trackedPlayerForward)
+        {
             Vector2 centerDirection = mode == MinionGraphFormationStraightMode.BetweenBossAndPlayer
                 ? -GetBossToPlayerDirection(currentOwner, player)
                 : trackedPlayerForward;
@@ -1629,10 +1794,7 @@ namespace Week14.Enemy
                 centerDirection = GetBossToPlayerDirection(currentOwner, player);
             }
 
-            centerDirection.Normalize();
-            Vector2 lineAxis = new(-centerDirection.y, centerDirection.x);
-            Vector2 center = (Vector2)player.position + centerDirection * Mathf.Max(0.1f, distanceFromPlayer);
-            return center + lineAxis * lateralOffset;
+            return centerDirection.sqrMagnitude > 0.0001f ? centerDirection.normalized : Vector2.right;
         }
 
         private Vector2 GetBossToPlayerDirection(IMinionOwner currentOwner, Transform player)
@@ -2222,6 +2384,17 @@ namespace Week14.Enemy
         private void FacePlayer()
         {
             RotateToDirection(GetDirectionToPlayer(transform.position));
+        }
+
+        private void FaceFormationDirection()
+        {
+            if (hasGraphFacingOverride)
+            {
+                RotateToDirection(graphFacingOverrideDirection);
+                return;
+            }
+
+            FacePlayer();
         }
 
         private bool TryFaceSharedMinionAim()

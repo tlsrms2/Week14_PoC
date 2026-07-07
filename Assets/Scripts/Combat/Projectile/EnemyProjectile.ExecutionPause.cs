@@ -42,7 +42,7 @@ namespace Week14.Combat
 
             pausedByExecution = false;
             executionPauseStartedAt = 0f;
-            if (launched && body != null)
+            if (launched && !externalMotionDriven && body != null)
             {
                 body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
             }

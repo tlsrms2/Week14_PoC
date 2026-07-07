@@ -26,7 +26,6 @@ namespace Week14.Enemy
         };
 
         [SerializeField] private bool drawLaneIndicators = true;
-        [SerializeField, InspectorName("Pattern Center")] private Vector2 patternCenter;
         [SerializeField, InspectorName("Volleys")] private List<Volley> specialVolleys = new() { new Volley() };
         [Header("Lane Indicators")]
         [SerializeField] private Color laneIndicatorColor = new(0.62f, 0.92f, 1f, 0.66f);
@@ -75,11 +74,6 @@ namespace Week14.Enemy
             ClearActiveLaneIndicators();
             activeLaneIndicators = CreateLaneIndicators(patternStartPlayerPosition);
             yield return RevealLaneIndicators(context, activeLaneIndicators);
-        }
-
-        protected override Vector2 ResolvePatternCenter(BossActionContext context)
-        {
-            return patternCenter;
         }
 
         protected override IEnumerator AfterExecuteVolleys(BossActionContext context, Vector2 patternStartPlayerPosition)

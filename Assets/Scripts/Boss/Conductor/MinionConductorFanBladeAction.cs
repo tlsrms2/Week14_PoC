@@ -77,12 +77,14 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            float movementDuration = CommandFanBlades(minions, center);
-            float totalMovementDuration = Mathf.Max(movementDuration, alignSeconds + rotateSeconds);
-            float totalFireDuration = alignSeconds + GetMaxVolleyEndSeconds();
+            float fireDuration = GetMaxVolleyEndSeconds();
+            float bladeRotateSeconds = Mathf.Max(rotateSeconds, fireDuration);
+            float movementDuration = CommandFanBlades(minions, center, bladeRotateSeconds);
+            float totalMovementDuration = Mathf.Max(movementDuration, alignSeconds + bladeRotateSeconds);
+            float totalFireDuration = alignSeconds + fireDuration;
             float timelineDuration = waitForDuration
-                ? totalMovementDuration
-                : Mathf.Min(totalMovementDuration, totalFireDuration);
+                ? Mathf.Max(totalMovementDuration, totalFireDuration)
+                : totalFireDuration;
 
             yield return RunVolleyTimeline(context, host, minions, center, timelineDuration);
         }
@@ -110,13 +112,20 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                float rotateElapsed = Mathf.Max(0f, elapsed - alignSeconds);
-                TickVolleys(context, host, minions, center, rotateElapsed, nextFireTimes, completedSingleShots);
+                if (elapsed >= alignSeconds)
+                {
+                    float rotateElapsed = elapsed - alignSeconds;
+                    TickVolleys(context, host, minions, center, rotateElapsed, nextFireTimes, completedSingleShots);
+                }
+
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
-            TickVolleys(context, host, minions, center, Mathf.Max(0f, totalDuration - alignSeconds), nextFireTimes, completedSingleShots);
+            if (totalDuration >= alignSeconds)
+            {
+                TickVolleys(context, host, minions, center, totalDuration - alignSeconds, nextFireTimes, completedSingleShots);
+            }
         }
 
         private float GetMaxVolleyEndSeconds()
@@ -220,7 +229,7 @@ namespace Week14.Enemy
             }
         }
 
-        private float CommandFanBlades(IReadOnlyList<Minion> minions, Vector2 center)
+        private float CommandFanBlades(IReadOnlyList<Minion> minions, Vector2 center, float bladeRotateSeconds)
         {
             float maxDuration = 0f;
             for (int i = 0; i < minions.Count; i++)
@@ -237,7 +246,7 @@ namespace Week14.Enemy
                     angle,
                     radius,
                     alignSeconds,
-                    rotateSeconds,
+                    bladeRotateSeconds,
                     angularSpeedDegrees);
                 maxDuration = Mathf.Max(maxDuration, duration);
             }

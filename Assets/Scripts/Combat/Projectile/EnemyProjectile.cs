@@ -97,6 +97,9 @@ namespace Week14.Combat
         private bool pathIndicatorActive;
         private bool suppressPathIndicator;
         private bool delayPathIndicatorUntilLaunch;
+        private bool preserveLaunchDirectionOnLaunch;
+        private bool ignorePlayerCollision;
+        private bool externalMotionDriven;
         private bool parryLockOnIndicatorVisible;
         private int interceptGroupId;
         private Vector2 pathIndicatorStart;
@@ -363,6 +366,60 @@ namespace Week14.Combat
             aimAtPlayerOnLaunchSpreadDegrees = Mathf.Max(0f, launchSpreadDegrees);
         }
 
+        public void ConfigureSpeedMultiplier(float speedMultiplier)
+        {
+            projectileSpeed *= Mathf.Max(0.01f, speedMultiplier);
+            RefreshRuntimeVelocity();
+            RefreshPathIndicator();
+        }
+
+        public void ConfigurePreserveLaunchDirectionOnLaunch(bool preserve)
+        {
+            preserveLaunchDirectionOnLaunch = preserve;
+        }
+
+        public void ConfigurePlayerCollisionIgnored(bool ignored)
+        {
+            ignorePlayerCollision = ignored;
+        }
+
+        public void ConfigureExternalMotionDriven(bool driven)
+        {
+            externalMotionDriven = driven;
+            if (externalMotionDriven && body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+        }
+
+        public void ForceLaunchStateForExternalMotion()
+        {
+            if (resolved || isDestroying || launched)
+            {
+                return;
+            }
+
+            launched = true;
+            chargeAnchor = null;
+            chargeEndsAt = Time.time;
+            ApplyProjectileColor(launchedColor);
+            if (growScaleWhileCharging)
+            {
+                transform.localScale = chargeGrowthEndScale;
+                baseLocalScale = transform.localScale;
+            }
+
+            SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+            }
+
+            Launched?.Invoke(this);
+            OnProjectileLaunched();
+        }
+
         public void ConfigureChargeAnchor(Transform anchor)
         {
             chargeAnchor = anchor;
@@ -370,6 +427,21 @@ namespace Week14.Combat
             {
                 SnapToChargeAnchor();
             }
+        }
+
+        private bool ShouldTurnTowardPlayerOnLaunch()
+        {
+            return !preserveLaunchDirectionOnLaunch && ShouldAimAtPlayerOnLaunch();
+        }
+
+        private void RefreshRuntimeVelocity()
+        {
+            if (!launched || body == null || isDestroying)
+            {
+                return;
+            }
+
+            body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
         }
 
         public void ConfigureObstacleSplit(

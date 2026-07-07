@@ -74,6 +74,9 @@ namespace Week14.Combat
             radialSplitAt = 0f;
             suppressPathIndicator = nextSuppressPathIndicator;
             delayPathIndicatorUntilLaunch = false;
+            preserveLaunchDirectionOnLaunch = false;
+            ignorePlayerCollision = false;
+            externalMotionDriven = false;
             ResetClonedPathIndicators();
             launched = projectileChargeSeconds <= 0f;
             lastWallCheckPosition = transform.position;
@@ -145,8 +148,12 @@ namespace Week14.Combat
                     return;
                 }
 
-                TickHoming();
-                if (body != null)
+                if (!externalMotionDriven)
+                {
+                    TickHoming();
+                }
+
+                if (!externalMotionDriven && body != null)
                 {
                     body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
                 }
@@ -216,6 +223,9 @@ namespace Week14.Combat
             playSmokeOnLaunch = false;
             canBeIntercepted = true;
             interceptPending = false;
+            preserveLaunchDirectionOnLaunch = false;
+            ignorePlayerCollision = false;
+            externalMotionDriven = false;
             resolved = false;
             isDestroying = false;
             launched = true;

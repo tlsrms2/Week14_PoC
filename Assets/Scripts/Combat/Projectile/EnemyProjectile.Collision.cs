@@ -98,7 +98,7 @@ namespace Week14.Combat
 
         protected virtual bool CanHitPlayer(PlayerCombatController player)
         {
-            return player != null;
+            return player != null && !ignorePlayerCollision;
         }
 
         protected virtual bool TryApplyPlayerHit(PlayerCombatController player)
