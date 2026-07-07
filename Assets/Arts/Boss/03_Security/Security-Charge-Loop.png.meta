@@ -1,25 +1,19 @@
 fileFormatVersion: 2
-guid: 60b150003c6585342948f476fbff5e9d
+guid: 69f9f8ec413bced46aed44e0a85700ad
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2725317465189224945
-    second: Security-Walk-pose_0
+      213: 4854360136093208310
+    second: Security-Charge-loop_0
   - first:
-      213: -2142274530960950113
-    second: Security-Walk-pose_1
+      213: 7792071937841384858
+    second: Security-Charge-loop_1
   - first:
-      213: 2596611785256889647
-    second: Security-Walk-pose_2
+      213: -2143471183581948821
+    second: Security-Charge-loop_2
   - first:
-      213: -1698091577290759761
-    second: Security-Walk-pose_3
-  - first:
-      213: 86034057363903021
-    second: Security-Walk-pose_4
-  - first:
-      213: -8023853095058072782
-    second: Security-Walk-pose_5
+      213: 6830994090496482651
+    second: Security-Charge-loop_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,7 +109,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Security-Walk-pose_0
+      name: Security-Charge-Loop_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,16 +122,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f0e6a3b643abd2ad0800000000000000
-      internalID: -2725317465189224945
+      spriteID: 4d633b46bd699f041a3d60ff76525829
+      internalID: 1056632429
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Walk-pose_1
+      name: Security-Charge-Loop_1
       rect:
         serializedVersion: 2
         x: 128
@@ -150,16 +144,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f9cb4b21aac1542e0800000000000000
-      internalID: -2142274530960950113
+      spriteID: 3b0db396b0525b14e874ee36d7b4a87e
+      internalID: 1114250887
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Walk-pose_2
+      name: Security-Charge-Loop_2
       rect:
         serializedVersion: 2
         x: 256
@@ -172,16 +166,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f2d64d749a4090420800000000000000
-      internalID: 2596611785256889647
+      spriteID: bb88fb48849a3494eabe93d5b5ab683c
+      internalID: -654207238
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Walk-pose_3
+      name: Security-Charge-Loop_3
       rect:
         serializedVersion: 2
         x: 0
@@ -194,54 +188,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: fa1608315ba2f68e0800000000000000
-      internalID: -1698091577290759761
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Security-Walk-pose_4
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d22d2c3f487a13100800000000000000
-      internalID: 86034057363903021
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Security-Walk-pose_5
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 23b152b4f1c85a090800000000000000
-      internalID: -8023853095058072782
+      spriteID: bc4bcb37e7c9a9548bc274c8a581e388
+      internalID: -1492063781
       vertices: []
       indices: 
       edges: []
@@ -250,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 66b9b8d423e60e242bb47b02920573ca
+    spriteID: 81ed2fd4922bbda4484311748d670386
     internalID: 0
     vertices: []
     indices: 
@@ -262,12 +212,10 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Security-Walk-pose_0: -2725317465189224945
-      Security-Walk-pose_1: -2142274530960950113
-      Security-Walk-pose_2: 2596611785256889647
-      Security-Walk-pose_3: -1698091577290759761
-      Security-Walk-pose_4: 86034057363903021
-      Security-Walk-pose_5: -8023853095058072782
+      Security-Charge-Loop_0: 1056632429
+      Security-Charge-Loop_1: 1114250887
+      Security-Charge-Loop_2: -654207238
+      Security-Charge-Loop_3: -1492063781
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -3,14 +3,14 @@ guid: dc72902b063948a49ae43f099dc48e64
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -905824369200149671
-    second: Security-Charge-start-sheet_0
+      213: 7895001124677820455
+    second: Security-Charge-Start_0
   - first:
-      213: 4700667072817947828
-    second: Security-Charge-start-sheet_1
+      213: -4708640082551869970
+    second: Security-Charge-Start_1
   - first:
-      213: 4772523860300803078
-    second: Security-Charge-start-sheet_2
+      213: -8871864043375349343
+    second: Security-Charge-Start_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,7 +106,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Security-Charge-start-pose_0
+      name: Security-Charge-Start_0
       rect:
         serializedVersion: 2
         x: 0
@@ -119,16 +119,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1c1e4c964b5a2694ba657d323599d19e
-      internalID: 102128741
+      spriteID: 7202bb181bda09d60800000000000000
+      internalID: 7895001124677820455
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Charge-start-pose_1
+      name: Security-Charge-Start_1
       rect:
         serializedVersion: 2
         x: 128
@@ -141,16 +141,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3b6afddc489a4be4fb7eea14cba04376
-      internalID: -2140920684
+      spriteID: eed6458dacc87aeb0800000000000000
+      internalID: -4708640082551869970
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Charge-start-pose_2
+      name: Security-Charge-Start_2
       rect:
         serializedVersion: 2
         x: 256
@@ -163,10 +163,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 57017c3b61d5a664d931462864d8e6ee
-      internalID: 417817512
+      spriteID: 1a13d0f58aec0e480800000000000000
+      internalID: -8871864043375349343
       vertices: []
       indices: 
       edges: []
@@ -175,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e385e8ac36d2dd44dad7e33ea705d786
+    spriteID: 34b3c79a8fbfb8c42826177a91b1c06e
     internalID: 0
     vertices: []
     indices: 
@@ -187,9 +187,9 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Security-Charge-start-pose_0: 102128741
-      Security-Charge-start-pose_1: -2140920684
-      Security-Charge-start-pose_2: 417817512
+      Security-Charge-Start_0: 7895001124677820455
+      Security-Charge-Start_1: -4708640082551869970
+      Security-Charge-Start_2: -8871864043375349343
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
