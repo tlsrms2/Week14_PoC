@@ -23,6 +23,8 @@ namespace Week14.Enemy
         [Tooltip("폭발 전 대기할 Animation Event 이름입니다. Slam 애니메이션의 충돌 프레임에서 발생시켜야 폭발과 모션이 맞아떨어집니다. 비워두면 대기 없이 즉시 터집니다.")]
         [SerializeField] private string impactEventId = "SlamImpact";
         [SerializeField, Min(0f)] private float impactEventTimeoutSeconds = 2f;
+        [Tooltip("켜면 폭탄이 차징(대기)하는 동안 보스 몸에 붙어서 함께 이동합니다. 돌진(BossDashAction) 등 이동 패턴과 겹쳐서 실행하면 탄이 보스를 따라 날아갑니다.")]
+        [SerializeField] private bool attachToBossDuringCharge;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -53,6 +55,13 @@ namespace Week14.Enemy
             if (bomb == null)
             {
                 yield break;
+            }
+
+            if (attachToBossDuringCharge && context.Boss != null)
+            {
+                Transform bossAnchor = context.Boss.BodyRoot != null ? context.Boss.BodyRoot : context.Boss.transform;
+                bomb.ConfigureChargeAnchor(bossAnchor);
+                bomb.ConfigureChargeMotion(0f, false, false);
             }
 
             context.PlaySfx(spawnSfxId);
