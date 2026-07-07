@@ -1,16 +1,25 @@
 fileFormatVersion: 2
-guid: 704d78abfa189de4fbe7c134fd151d74
+guid: 09a434dadc662d54ab8f7249148e21e0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4051295431033988152
-    second: Security-Slam-Start_0
+      213: -6821676668696579585
+    second: Security-Walk_0
   - first:
-      213: -6382605132833075913
-    second: Security-Slam-Start_1
+      213: 3524612387193128102
+    second: Security-Walk_1
   - first:
-      213: 2687007644124956142
-    second: Security-Slam-Start_2
+      213: -6331329893372673978
+    second: Security-Walk_2
+  - first:
+      213: 2268321403097461173
+    second: Security-Walk_3
+  - first:
+      213: 5939917447362915511
+    second: Security-Walk_4
+  - first:
+      213: 754967824431165475
+    second: Security-Walk_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,7 +115,73 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Security-Slam-Start_0
+      name: Security-Walk_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff135cd66398451a0800000000000000
+      internalID: -6821676668696579585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Walk_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a4869dba40f9e030800000000000000
+      internalID: 3524612387193128102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Walk_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 640c5bdb1099228a0800000000000000
+      internalID: -6331329893372673978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Walk_3
       rect:
         serializedVersion: 2
         x: 0
@@ -121,14 +196,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8cb5e092548e6c7c0800000000000000
-      internalID: -4051295431033988152
+      spriteID: 5b13a0c4c42ba7f10800000000000000
+      internalID: 2268321403097461173
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Slam-Start_1
+      name: Security-Walk_4
       rect:
         serializedVersion: 2
         x: 128
@@ -143,14 +218,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 73d46ebb27e6c67a0800000000000000
-      internalID: -6382605132833075913
+      spriteID: 7bc26358273de6250800000000000000
+      internalID: 5939917447362915511
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Slam-Start_2
+      name: Security-Walk_5
       rect:
         serializedVersion: 2
         x: 256
@@ -165,8 +240,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ee5c3d8473b2a4520800000000000000
-      internalID: 2687007644124956142
+      spriteID: 320b1108c3f2a7a00800000000000000
+      internalID: 754967824431165475
       vertices: []
       indices: 
       edges: []
@@ -175,7 +250,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 28b2377d49328624d9a89d68fcb79694
+    spriteID: 93f1f9befbabd29469eb011d8d1c90d2
     internalID: 0
     vertices: []
     indices: 
@@ -187,9 +262,12 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Security-Slam-Start_0: -4051295431033988152
-      Security-Slam-Start_1: -6382605132833075913
-      Security-Slam-Start_2: 2687007644124956142
+      Security-Walk_0: -6821676668696579585
+      Security-Walk_1: 3524612387193128102
+      Security-Walk_2: -6331329893372673978
+      Security-Walk_3: 2268321403097461173
+      Security-Walk_4: 5939917447362915511
+      Security-Walk_5: 754967824431165475
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
