@@ -20,7 +20,8 @@ namespace Week14.Enemy
     public enum BossGraphDashFormationFireOrder
     {
         Simultaneous,
-        SequentialByIndex
+        SequentialByIndex,
+        SequentialOutsideIn
     }
 
     [Serializable]
@@ -51,6 +52,7 @@ namespace Week14.Enemy
         [Tooltip("탄이 자리를 잡은(또는 트레일에 스폰된) 뒤 발사까지 대기하는 시간입니다.")]
         [SerializeField, Min(0f)] private float holdSeconds = 0.3f;
 
+        [Tooltip("PerpendicularWall 전용. Simultaneous는 동시 발사, SequentialByIndex는 중심→바깥, SequentialOutsideIn은 바깥→중심 순서로 페어씩 발사합니다.")]
         [SerializeField] private BossGraphDashFormationFireOrder fireOrder = BossGraphDashFormationFireOrder.Simultaneous;
         [SerializeField, Min(0f)] private float fireInterval = 0.05f;
         [SerializeField, Min(0f)] private float windupSeconds;
@@ -82,54 +84,69 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            ExecutePerpendicularWall(context);
+            yield return ExecutePerpendicularWall(context);
         }
 
-        private void ExecutePerpendicularWall(BossActionContext context)
+        private IEnumerator ExecutePerpendicularWall(BossActionContext context)
         {
             Vector3 originPosition = context.OriginPosition;
             BossGraphProjectileAimSpec aimSpec = dashAim ?? new BossGraphProjectileAimSpec();
             Vector2 dashDirection = aimSpec.GetDirection(context, originPosition);
             Vector2 perpendicular = new(-dashDirection.y, dashDirection.x);
 
-            for (int i = 0; i < bulletCount; i++)
+            bool reverseOrder = fireOrder == BossGraphDashFormationFireOrder.SequentialOutsideIn;
+            bool sequential = reverseOrder || fireOrder == BossGraphDashFormationFireOrder.SequentialByIndex;
+
+            for (int step = 0; step < bulletCount; step++)
             {
-                Vector3 targetPosition = GetWallTargetPosition(originPosition, dashDirection, perpendicular, i);
-                float chargeSeconds = alignDuration + GetBulletHoldSeconds(i);
+                int i = reverseOrder ? bulletCount - 1 - step : step;
+                SpawnWallBullet(context, originPosition, dashDirection, perpendicular, i);
 
-                EnemyProjectile spawned = context.FireProjectile(
-                    projectile,
-                    originPosition,
-                    dashDirection,
-                    0f,
-                    false,
-                    false,
-                    chargeSeconds,
-                    -1f,
-                    false,
-                    projectileName);
-
-                if (spawned == null)
+                bool isLaneBoundary = step % 2 == 1 || step == bulletCount - 1;
+                if (sequential && isLaneBoundary && step < bulletCount - 1)
                 {
-                    continue;
+                    yield return context.WaitSeconds(fireInterval);
                 }
-
-                Transform anchor = FormationAlignAnchor.Create(
-                    originPosition,
-                    targetPosition,
-                    alignDuration,
-                    alignEase,
-                    chargeSeconds + 0.5f);
-                spawned.ConfigureChargeAnchor(anchor);
-                spawned.ConfigureChargeMotion(0f, false, false);
-
-                context.PlaySfx(fireSfxId);
-                context.PlaySfxOnLaunch(spawned, launchSfxId);
-                context.PlayOriginBurst(effects, originPosition);
-                context.PlayMuzzleFlashIfEnabled(effects, targetPosition, dashDirection);
             }
 
             context.PlayCameraShakeIfEnabled(effects, dashDirection);
+        }
+
+        private void SpawnWallBullet(BossActionContext context, Vector3 originPosition, Vector2 dashDirection, Vector2 perpendicular, int index)
+        {
+            Vector3 targetPosition = GetWallTargetPosition(originPosition, dashDirection, perpendicular, index);
+            float chargeSeconds = alignDuration + holdSeconds;
+
+            EnemyProjectile spawned = context.FireProjectile(
+                projectile,
+                originPosition,
+                dashDirection,
+                0f,
+                false,
+                false,
+                chargeSeconds,
+                -1f,
+                false,
+                projectileName);
+
+            if (spawned == null)
+            {
+                return;
+            }
+
+            Transform anchor = FormationAlignAnchor.Create(
+                originPosition,
+                targetPosition,
+                alignDuration,
+                alignEase,
+                chargeSeconds + 0.5f);
+            spawned.ConfigureChargeAnchor(anchor);
+            spawned.ConfigureChargeMotion(0f, false, false);
+
+            context.PlaySfx(fireSfxId);
+            context.PlaySfxOnLaunch(spawned, launchSfxId);
+            context.PlayOriginBurst(effects, originPosition);
+            context.PlayMuzzleFlashIfEnabled(effects, targetPosition, dashDirection);
         }
 
         private IEnumerator ExecuteParallelLaneTrail(BossActionContext context)

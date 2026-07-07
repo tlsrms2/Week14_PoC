@@ -100,7 +100,8 @@ namespace Week14.Enemy
                 || actionType == typeof(WindupAction)
                 || actionType == typeof(AimBossChildAtPlayerAction)
                 || actionType == typeof(CustomEventAction)
-                || actionType == typeof(SpawnPrefabAction))
+                || actionType == typeof(SpawnPrefabAction)
+                || actionType == typeof(PlaySfxAction))
             {
                 return BossGraphNodeKind.Utility;
             }
