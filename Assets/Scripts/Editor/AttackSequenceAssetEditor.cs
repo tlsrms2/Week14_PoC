@@ -110,12 +110,14 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Radial Emission", typeof(FireRadialEmissionAction), () => new FireRadialEmissionAction()),
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
+        new("Projectile/Fire Dash Formation", typeof(FireDashFormationAction), () => new FireDashFormationAction()),
         new("Projectile/Fire Rotating Spiral", typeof(FireRotatingProjectilesAction), () => new FireRotatingProjectilesAction()),
         new("Projectile/Fire Attached Projectiles", typeof(FireAttachedProjectilesAction), () => new FireAttachedProjectilesAction()),
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
         new("Projectile/Fire Player Circle", typeof(FirePlayerCircleProjectilesAction), () => new FirePlayerCircleProjectilesAction()),
         new("Projectile/Arsonist/Fire Circle Orbit Attack", typeof(ArsonistCircleOrbitAttackAction), () => new ArsonistCircleOrbitAttackAction()),
         new("Projectile/Arsonist/Fire Character", typeof(ArsonistFireCharacterProjectileAction), () => new ArsonistFireCharacterProjectileAction()),
+        new("Projectile/Arsonist/Set Sprinkler Active", typeof(ArsonistSetSprinklerActiveAction), () => new ArsonistSetSprinklerActiveAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
@@ -254,6 +256,11 @@ internal static class BossGraphActionEditorUtility
             return "Arsonist 전용 액션입니다. 火자의 네 획 시작점에서 투사체를 순서대로 생성해 획을 따라 이동시킵니다.";
         }
 
+        if (actionType == typeof(ArsonistSetSprinklerActiveAction))
+        {
+            return "Arsonist 보스 인스펙터의 Sprinklers 리스트에서 지정 인덱스의 스프링쿨러 기능 활성 상태를 바꿉니다. 사용된 스프링쿨러는 다시 활성화되지 않습니다.";
+        }
+
         if (actionType == typeof(FireProjectileBurstAction))
         {
             return "한 방향으로 여러 발을 연속 발사합니다. 머신건류 패턴의 발사 부분을 담당합니다.";
@@ -282,6 +289,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(FireFanEmissionAction))
         {
             return "부채꼴 발리를 여러 번 발사합니다. 준비 시간은 Windup과 분리해서 구성합니다.";
+        }
+
+        if (actionType == typeof(FireDashFormationAction))
+        {
+            return "보스 대시 방향에 맞춰 투사체 벽 또는 대시 경로 탄을 정렬한 뒤 발사합니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
         }
 
         if (actionType == typeof(WanderAroundPlayerDistanceAction))

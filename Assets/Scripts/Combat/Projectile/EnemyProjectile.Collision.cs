@@ -113,7 +113,8 @@ namespace Week14.Combat
         {
             return collider != null
                 && (collider.GetComponentInParent<ArsonistOilPatch>() != null
-                    || collider.GetComponentInParent<ArsonistFireArea>() != null);
+                    || collider.GetComponentInParent<ArsonistFireArea>() != null
+                    || collider.GetComponentInParent<ArsonistWaterArea>() != null);
         }
 
         private bool ShouldIgnoreBossCollision(BossAI hitBoss)

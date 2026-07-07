@@ -19,9 +19,11 @@ namespace Week14.Enemy
 
         [SerializeField, Min(1)] private int fireDamage = 1;
         [SerializeField, Min(0.05f)] private float fireDamageInterval = 0.45f;
+        [SerializeField] private List<ArsonistSprinklerProjectile> sprinklers = new();
 
         private readonly List<ArsonistOilPatch> oilPatches = new();
         private readonly List<ArsonistFireArea> fireAreas = new();
+        private readonly List<ArsonistWaterArea> waterAreas = new();
         private readonly List<ArsonistFireAreaBatch> activeFireAreaBatches = new();
         private readonly Dictionary<PlayerCombatController, float> nextFireDamageAtByPlayer = new();
         private int oilIgnitionVersion;
@@ -30,6 +32,7 @@ namespace Week14.Enemy
 
         protected override void OnCombatStarted()
         {
+            ResetSprinklersForCombat();
             SoundManager.PlayBgm(BgmId);
         }
 
@@ -61,6 +64,7 @@ namespace Week14.Enemy
             patch.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), oilColor);
             oilPatches.Add(patch);
 
+            TryRemoveWaterAt(position, radius);
             TryIgniteNewOilPatchFromActiveFire(patch);
             return patch;
         }
@@ -84,6 +88,29 @@ namespace Week14.Enemy
             fireArea.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), fireColor, playerDamageDelay, spreadSeconds);
             TrackFireAreaBatch(fireArea);
             return fireArea;
+        }
+
+        internal ArsonistWaterArea CreateWaterArea(
+            Vector3 position,
+            float radius,
+            float duration,
+            Color waterColor)
+        {
+            GameObject waterObject = new("ArsonistWaterArea");
+            waterObject.transform.position = FlattenPosition(position);
+            CircleCollider2D collider = waterObject.AddComponent<CircleCollider2D>();
+            collider.isTrigger = true;
+            collider.radius = Mathf.Max(0.05f, radius);
+
+            ArsonistWaterArea waterArea = waterObject.AddComponent<ArsonistWaterArea>();
+            waterAreas.Add(waterArea);
+            waterArea.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), waterColor);
+            if (HasOilOrFireAt(position, radius))
+            {
+                waterArea.FadeOutNow();
+            }
+
+            return waterArea;
         }
 
         internal ArsonistFireAreaBatch BeginFireAreaBatch()
@@ -295,6 +322,39 @@ namespace Week14.Enemy
             }
         }
 
+        internal void UnregisterWaterArea(ArsonistWaterArea waterArea)
+        {
+            waterAreas.Remove(waterArea);
+        }
+
+        internal void TryRemoveWaterAt(Vector3 position, float radius)
+        {
+            for (int i = waterAreas.Count - 1; i >= 0; i--)
+            {
+                ArsonistWaterArea waterArea = waterAreas[i];
+                if (waterArea == null)
+                {
+                    waterAreas.RemoveAt(i);
+                    continue;
+                }
+
+                if (waterArea.CanBeRemovedByHazardAt(position, radius))
+                {
+                    waterArea.FadeOutNow();
+                }
+            }
+        }
+
+        internal void SetSprinklerActive(int sprinklerIndex, bool active)
+        {
+            if (sprinklerIndex < 0 || sprinklerIndex >= sprinklers.Count)
+            {
+                return;
+            }
+
+            sprinklers[sprinklerIndex]?.SetFunctionalActive(this, active);
+        }
+
         private void TryIgniteNewOilPatchFromActiveFire(ArsonistOilPatch patch)
         {
             if (patch == null || !patch.CanIgnite)
@@ -321,6 +381,29 @@ namespace Week14.Enemy
                     return;
                 }
             }
+        }
+
+        private bool HasOilOrFireAt(Vector3 position, float radius)
+        {
+            for (int i = 0; i < oilPatches.Count; i++)
+            {
+                ArsonistOilPatch patch = oilPatches[i];
+                if (patch != null && patch.OverlapsCircle(position, radius))
+                {
+                    return true;
+                }
+            }
+
+            for (int i = 0; i < fireAreas.Count; i++)
+            {
+                ArsonistFireArea fireArea = fireAreas[i];
+                if (fireArea != null && fireArea.CanIgniteOilAt(position, radius))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool AreOilPatchesConnected(ArsonistOilPatch first, ArsonistOilPatch second)
@@ -367,6 +450,7 @@ namespace Week14.Enemy
         private void ClearArsonistHazards()
         {
             oilIgnitionVersion++;
+            DeactivateAllSprinklers();
 
             for (int i = oilPatches.Count - 1; i >= 0; i--)
             {
@@ -384,10 +468,35 @@ namespace Week14.Enemy
                 }
             }
 
+            for (int i = waterAreas.Count - 1; i >= 0; i--)
+            {
+                if (waterAreas[i] != null)
+                {
+                    Destroy(waterAreas[i].gameObject);
+                }
+            }
+
             oilPatches.Clear();
             fireAreas.Clear();
+            waterAreas.Clear();
             activeFireAreaBatches.Clear();
             nextFireDamageAtByPlayer.Clear();
+        }
+
+        private void ResetSprinklersForCombat()
+        {
+            for (int i = 0; i < sprinklers.Count; i++)
+            {
+                sprinklers[i]?.ResetForCombat(this);
+            }
+        }
+
+        private void DeactivateAllSprinklers()
+        {
+            for (int i = 0; i < sprinklers.Count; i++)
+            {
+                sprinklers[i]?.SetFunctionalActive(this, false);
+            }
         }
 
         private void TrackFireAreaBatch(ArsonistFireArea fireArea)

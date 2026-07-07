@@ -194,5 +194,64 @@ namespace Week14.Combat
         }
         protected virtual void ExtendSpecialTimers(float pausedSeconds) { }
 
+        protected void InitializeStationaryParryTarget(float radius, Color color)
+        {
+            projectileSpeed = 0f;
+            projectileLifetime = float.PositiveInfinity;
+            projectileRadius = Mathf.Max(0.01f, radius);
+            projectileColor = color != Color.clear ? color : Color.white;
+            chargingColor = projectileColor;
+            launchedColor = projectileColor;
+            ownerBullets = null;
+            ownerBoss = null;
+            ownerMinion = null;
+            bulletDamage = 0;
+            flightDirection = Vector2.up;
+            baseLocalScale = transform.localScale;
+            chargeGrowthStartScale = baseLocalScale;
+            chargeGrowthEndScale = baseLocalScale;
+            chargeAnchor = null;
+            growScaleWhileCharging = false;
+            playSmokeOnLaunch = false;
+            canBeIntercepted = true;
+            interceptPending = false;
+            resolved = false;
+            isDestroying = false;
+            launched = true;
+            suppressPathIndicator = true;
+            destroyAt = float.PositiveInfinity;
+            chargeEndsAt = Time.time;
+            lastWallCheckPosition = transform.position;
+
+            if (!activeProjectiles.Contains(this))
+            {
+                activeProjectiles.Add(this);
+            }
+
+            UnregisterInterceptGroup();
+            AssignInterceptGroup(0);
+
+            if (body == null)
+            {
+                body = GetComponent<Rigidbody2D>();
+            }
+
+            EnsureProjectileShape();
+            if (body != null)
+            {
+                body.bodyType = RigidbodyType2D.Kinematic;
+                body.gravityScale = 0f;
+                body.freezeRotation = true;
+                body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                body.interpolation = RigidbodyInterpolation2D.Interpolate;
+                body.linearVelocity = Vector2.zero;
+            }
+
+            SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
+            SetParryLockOnIndicatorVisible(false);
+            OnProjectileInitialized();
+        }
+
     }
 }

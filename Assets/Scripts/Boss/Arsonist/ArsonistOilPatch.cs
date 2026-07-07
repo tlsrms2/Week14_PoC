@@ -57,6 +57,18 @@ namespace Week14.Enemy
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             fireColor = nextFireColor;
             ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, true);
+            owner?.TryRemoveWaterAt(transform.position, radius);
+        }
+
+        public bool OverlapsCircle(Vector3 position, float otherRadius)
+        {
+            if (!initialized)
+            {
+                return false;
+            }
+
+            float maxDistance = radius + Mathf.Max(0f, otherRadius);
+            return Vector2.SqrMagnitude((Vector2)transform.position - (Vector2)position) <= maxDistance * maxDistance;
         }
 
         private void Update()

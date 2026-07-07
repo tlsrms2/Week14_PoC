@@ -146,6 +146,7 @@ namespace Week14.Enemy
 
             ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, true);
             owner?.TryIgniteOilAt(transform.position, radius, fireColor);
+            owner?.TryRemoveWaterAt(transform.position, radius);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

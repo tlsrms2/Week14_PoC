@@ -394,6 +394,9 @@ internal static class BossGraphValidationUtility
                 RequireString(action, "projectileName", label, messages);
                 ValidateOriginSpec(action.FindPropertyRelative("origin"), $"{label}/origin", messages);
                 break;
+            case FireDashFormationAction:
+                RequireString(action, "projectileName", label, messages);
+                break;
             case SpawnPrefabAction:
                 RequireObject(action, "prefab", label, messages);
                 break;

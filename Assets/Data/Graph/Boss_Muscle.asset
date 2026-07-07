@@ -77,7 +77,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777884965634125
     sequences: []
     editorPosition: {x: -7, y: 376}
   - nodeId: Node3_Copy1_Copy1
@@ -185,7 +185,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777899588288607
     sequences: []
     editorPosition: {x: 19, y: 920}
   - nodeId: Node4_Copy2_Copy1
@@ -194,9 +194,9 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777899588288609
     sequences: []
-    editorPosition: {x: 424, y: 920}
+    editorPosition: {x: 425, y: 920}
   - nodeId: Node1_Copy3_Copy2_Copy1
     nodeGuid: 25beafe770334374b83e7b18a4dee9ce
     nodeKind: 1
@@ -259,7 +259,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288627
     sequences: []
-    editorPosition: {x: -142, y: 1087}
+    editorPosition: {x: -142, y: 1086}
   - nodeId: Node1_Copy3_Copy2_Copy1_Copy4
     nodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     nodeKind: 1
@@ -401,7 +401,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777917832200293
     sequences: []
     editorPosition: {x: 58, y: 1764}
   - nodeId: Node4_Copy2_Copy1_Copy1
@@ -410,7 +410,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777917832200294
     sequences: []
     editorPosition: {x: 550, y: 1764}
   - nodeId: Node4_Copy3
@@ -419,7 +419,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777917832200295
     sequences: []
     editorPosition: {x: 264, y: 1764}
   - nodeId: Node4_Copy1_Copy1
@@ -428,7 +428,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 4705777917832200296
     sequences: []
     editorPosition: {x: 785, y: 1764}
   - nodeId: Pattern8_A2
@@ -1078,8 +1078,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 4705777849323225179
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1417,6 +1415,84 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
+    - rid: 4705777884965634125
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 0
+        bulletCount: 22
+        spacing: 0.7
+        centerOffset: 0
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 0
+        alignDuration: 1
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.7
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 4705777894816219217
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1789,6 +1865,162 @@ MonoBehaviour:
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
         trajectorySortingOrder: -1
+    - rid: 4705777899588288607
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 1
+        bulletCount: 30
+        spacing: 0.7
+        centerOffset: 0.7
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 1
+        alignDuration: 0.4
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.5
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705777899588288609
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 1
+        bulletCount: 30
+        spacing: 0.7
+        centerOffset: 0.7
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 1
+        alignDuration: 0.4
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.5
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 4705777899588288619
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3000,6 +3232,318 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
+    - rid: 4705777917832200293
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 1
+        bulletCount: 30
+        spacing: 0.7
+        centerOffset: 0.7
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 1
+        alignDuration: 0.4
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.9
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705777917832200294
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 1
+        bulletCount: 30
+        spacing: 0.7
+        centerOffset: 0.7
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 1
+        alignDuration: 0.4
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.9
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705777917832200295
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 0
+        bulletCount: 16
+        spacing: 1
+        centerOffset: 0
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 0
+        alignDuration: 1
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.7
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705777917832200296
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 0
+        bulletCount: 16
+        spacing: 1
+        centerOffset: 0
+        dashAim:
+          mode: 0
+          angleDegrees: 0
+        dashStartDelay: 0
+        alignDuration: 1
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 0.7
+        fireOrder: 0
+        fireInterval: 0.05
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 4705777917832200302
       type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
