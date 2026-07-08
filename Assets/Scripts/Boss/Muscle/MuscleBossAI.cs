@@ -6,6 +6,8 @@ namespace Week14.Enemy
     public sealed partial class MuscleBossAI : GraphBossAI
     {
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
+        private static readonly int StunParameter = Animator.StringToHash("Stun");
+        private static readonly int EndStunParameter = Animator.StringToHash("EndStun");
 
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
@@ -19,6 +21,28 @@ namespace Week14.Enemy
         protected override void OnCombatStarted()
         {
             SoundManager.PlayBgm("MuscleBgm");
+        }
+
+        protected override void OnHpEmptyBegan()
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            targetAnimator.SetTrigger(StunParameter);
+        }
+
+        protected override void OnHpEmptyRecovered()
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            targetAnimator.SetTrigger(EndStunParameter);
         }
 
         private void LateUpdate()
