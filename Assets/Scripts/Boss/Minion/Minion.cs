@@ -1691,6 +1691,7 @@ namespace Week14.Enemy
             out Vector2 endOffset)
         {
             float distance = Mathf.Max(0.1f, distanceFromPlayer);
+            float diagonalDistance = distance * 0.70710678f;
             switch (pathType)
             {
                 case MinionGraphPlayerPathType.VerticalTopToBottom:
@@ -1706,20 +1707,20 @@ namespace Week14.Enemy
                     endOffset = Vector2.up * distance;
                     break;
                 case MinionGraphPlayerPathType.DiagonalLeftTopToRightBottom:
-                    startOffset = new Vector2(-distance, distance);
-                    endOffset = new Vector2(distance, -distance);
+                    startOffset = new Vector2(-diagonalDistance, diagonalDistance);
+                    endOffset = new Vector2(diagonalDistance, -diagonalDistance);
                     break;
                 case MinionGraphPlayerPathType.DiagonalRightTopToLeftBottom:
-                    startOffset = new Vector2(distance, distance);
-                    endOffset = new Vector2(-distance, -distance);
+                    startOffset = new Vector2(diagonalDistance, diagonalDistance);
+                    endOffset = new Vector2(-diagonalDistance, -diagonalDistance);
                     break;
                 case MinionGraphPlayerPathType.DiagonalRightBottomToLeftTop:
-                    startOffset = new Vector2(distance, -distance);
-                    endOffset = new Vector2(-distance, distance);
+                    startOffset = new Vector2(diagonalDistance, -diagonalDistance);
+                    endOffset = new Vector2(-diagonalDistance, diagonalDistance);
                     break;
                 case MinionGraphPlayerPathType.DiagonalLeftBottomToRightTop:
-                    startOffset = new Vector2(-distance, -distance);
-                    endOffset = new Vector2(distance, distance);
+                    startOffset = new Vector2(-diagonalDistance, -diagonalDistance);
+                    endOffset = new Vector2(diagonalDistance, diagonalDistance);
                     break;
                 default:
                     startOffset = Vector2.left * distance;

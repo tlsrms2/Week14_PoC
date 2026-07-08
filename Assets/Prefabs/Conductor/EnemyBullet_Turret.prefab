@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
   - component: {fileID: 6470095641802324841}
-  - component: {fileID: 1889336207425389046}
+  - component: {fileID: 6081087140780133099}
   m_Layer: 7
-  m_Name: EnemyBullet_CantParrying
+  m_Name: EnemyBullet_Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.000000014901161, y: 0.0022179484}
   m_Radius: 0.15399449
---- !u!114 &1889336207425389046
+--- !u!114 &6081087140780133099
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,14 +108,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 744419277602116065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9f05c20ac7220c468ec38888f20d094, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f04199acea11024e8ca5e5190cb5051, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.UnparryableEnemyProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.ConductorTurretProjectile
   indicatorColor: {r: 0, g: 0, b: 0, a: 1}
-  parryLockOnIndicatorRoot: {fileID: 0}
-  parryLockOnReticle: {fileID: 0}
-  parryLockOnRotatingRoot: {fileID: 0}
+  parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
+  parryLockOnReticle: {fileID: 3563560499679751554}
+  parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
+  crossFireProjectile:
+    prefab: {fileID: 1889336207425389046, guid: 19155292cae503b4e93777e7a1cd936b, type: 3}
+    bulletDamage: 1
+    chargeSeconds: 0
+    chargeDriftSpeed: 0
+    aimAtPlayerWhileCharging: 0
+    aimAtPlayerOnLaunch: 0
+    speed: 12
+    lifetime: 3
+    radius: 0.12
+    trailSeconds: 0.01
+    trailWidthMultiplier: 0.1
+  firstFireDelay: 0.5
+  deploySeconds: 0.55
+  fireInterval: 0.3
+  fireCycles: 0
+  angleOffsetDegrees: 0
+  muzzleOffset: 0
+  muzzleFlashScale: 0.55
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,8 +252,8 @@ Transform:
   m_GameObject: {fileID: 3615603145030084618}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalPosition: {x: 0.025, y: 0.145, z: 0}
+  m_LocalScale: {x: 0.015553224, y: 0.015553224, z: 0.015553224}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2354031526117083692}
@@ -288,7 +307,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b8cf7d2177bbc8d488174517b26182ed, type: 3}
+  m_Sprite: {fileID: -8989389258293576448, guid: 61699827e680f9e4abf7ae93a76c8b37, type: 3}
   m_Color: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
   m_FlipX: 0
   m_FlipY: 0

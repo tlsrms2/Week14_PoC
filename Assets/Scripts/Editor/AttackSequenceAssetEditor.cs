@@ -100,7 +100,6 @@ internal static class BossGraphActionEditorUtility
         new("Move/Wander Around Player Distance", typeof(WanderAroundPlayerDistanceAction), () => new WanderAroundPlayerDistanceAction()),
         new("Move/Move Between Map Points", typeof(MoveBetweenMapPointsAction), () => new MoveBetweenMapPointsAction()),
         new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
-        new("Projectile/Spawn Parryable Bomb", typeof(SpawnParryableBombAction), () => new SpawnParryableBombAction()),
         new("Projectile/Charged/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
         new("Projectile/Charged/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
         new("Projectile/Charged/Configure Radial Split", typeof(ConfigureRadialSplitAction), () => new ConfigureRadialSplitAction()),
@@ -144,6 +143,7 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Conductor/Player Path Side Fire", typeof(MinionConductorPlayerPathSideFireAction), () => new MinionConductorPlayerPathSideFireAction()),
         new("Minion/Conductor/Formation Line Volley", typeof(MinionConductorFormationLineVolleyAction), () => new MinionConductorFormationLineVolleyAction()),
         new("Minion/Conductor/Fan Blade", typeof(MinionConductorFanBladeAction), () => new MinionConductorFanBladeAction()),
+        new("Minion/Conductor/Spawn Turrets", typeof(ConductorSpawnTurretsAction), () => new ConductorSpawnTurretsAction()),
         new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction())
     };
 
@@ -231,11 +231,6 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(FireProjectileAction))
         {
             return "단발 투사체를 발사합니다. 간단한 1발 발사용 액션입니다.";
-        }
-
-        if (actionType == typeof(SpawnParryableBombAction))
-        {
-            return "패링 가능한 폭탄을 스폰하고 결과를 기다립니다. 패링당하면 Slam Fail Bool을, 그대로 터지면 Slam Success Bool을 켜고 지정한 Impact Event Id(Animation Event)가 들어올 때까지 기다렸다가 폭발 이펙트/데미지를 재생합니다.";
         }
 
         if (actionType == typeof(FireRotatingProjectilesAction))
@@ -456,6 +451,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(MinionConductorFanBladeAction))
         {
             return "Conductor 전용 액션입니다. 최대 4개의 드론을 중심점 기준 십자로 배치해 회전시키고, Volley별 탄막 이름/발사 구간/간격을 설정해 선풍기형 탄막을 만듭니다.";
+        }
+
+        if (actionType == typeof(ConductorSpawnTurretsAction))
+        {
+            return "Conductor 전용 액션입니다. Ground 위 목표 지점들을 고르고, 보스 위치에서 터렛을 날려 보낸 뒤 정착한 터렛이 자체 설정한 십자 탄을 발사합니다.";
         }
 
         if (actionType == typeof(MinionPatternCleanupAction))

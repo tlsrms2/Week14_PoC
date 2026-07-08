@@ -1863,6 +1863,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SerializedProperty entry = patternEntries.GetArrayElementAtIndex(entryIndex);
                 string patternId = GetString(entry, "patternId", string.Empty);
                 int weight = GetInt(entry, "weight", 1);
+                int cooldownPatternCount = GetInt(entry, "cooldownPatternCount", 0);
                 if (replacementMap.TryGetValue(patternId, out List<string> replacementIds))
                 {
                     for (int replacementIndex = 0; replacementIndex < replacementIds.Count; replacementIndex++)
@@ -1873,7 +1874,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                             continue;
                         }
 
-                        nextEntries.Add(new PhasePatternEntrySnapshot(replacementId, weight));
+                        nextEntries.Add(new PhasePatternEntrySnapshot(replacementId, weight, cooldownPatternCount));
                     }
 
                     continue;
@@ -1884,7 +1885,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                     continue;
                 }
 
-                nextEntries.Add(new PhasePatternEntrySnapshot(patternId, weight));
+                nextEntries.Add(new PhasePatternEntrySnapshot(patternId, weight, cooldownPatternCount));
             }
 
             if (ArePhasePatternEntriesEqual(patternEntries, nextEntries))
@@ -1900,6 +1901,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SerializedProperty entry = patternEntries.GetArrayElementAtIndex(entryIndex);
                 SetString(entry, "patternId", snapshot.PatternId);
                 SetInt(entry, "weight", snapshot.Weight);
+                SetInt(entry, "cooldownPatternCount", snapshot.CooldownPatternCount);
             }
 
             changed = true;
@@ -1921,7 +1923,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             SerializedProperty entry = patternEntries.GetArrayElementAtIndex(i);
             if (GetString(entry, "patternId", string.Empty) != nextEntries[i].PatternId
-                || GetInt(entry, "weight", 1) != nextEntries[i].Weight)
+                || GetInt(entry, "weight", 1) != nextEntries[i].Weight
+                || GetInt(entry, "cooldownPatternCount", 0) != nextEntries[i].CooldownPatternCount)
             {
                 return false;
             }
@@ -5383,14 +5386,16 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private readonly struct PhasePatternEntrySnapshot
     {
-        public PhasePatternEntrySnapshot(string patternId, int weight)
+        public PhasePatternEntrySnapshot(string patternId, int weight, int cooldownPatternCount)
         {
             PatternId = patternId;
             Weight = weight;
+            CooldownPatternCount = cooldownPatternCount;
         }
 
         public string PatternId { get; }
         public int Weight { get; }
+        public int CooldownPatternCount { get; }
     }
 
     private readonly struct CopiedNodeSnapshot

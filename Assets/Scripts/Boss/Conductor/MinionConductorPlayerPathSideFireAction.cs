@@ -5,11 +5,18 @@ using UnityEngine;
 
 namespace Week14.Enemy
 {
+    public enum ConductorPlayerPathSideFireMode
+    {
+        HorizontalVertical,
+        Diagonal,
+        HorizontalVerticalThenDiagonal
+    }
+
     [Serializable]
     public sealed class MinionConductorPlayerPathSideFireAction : BossAction
     {
         [Header("Player Path")]
-        [SerializeField] private MinionGraphPlayerPathMode mode;
+        [SerializeField] private ConductorPlayerPathSideFireMode mode;
         [SerializeField, Min(0.1f)] private float distanceFromPlayer = 2.8f;
         [SerializeField, Min(0f)] private float moveToStartSeconds = 0.6f;
         [SerializeField, Min(0.05f)] private float moveSeconds = 2f;
@@ -32,6 +39,8 @@ namespace Week14.Enemy
         [SerializeField] private bool drawPrecastGridIndicator = true;
         [SerializeField] private Color gridIndicatorColor = new(0.62f, 0.92f, 1f, 0.66f);
         [SerializeField, Min(0.001f)] private float gridIndicatorWidth = 0.035f;
+        [SerializeField, Min(0.01f)] private float gridIndicatorDashLength = 0.22f;
+        [SerializeField, Min(0.001f)] private float gridIndicatorDashGap = 0.16f;
         [SerializeField] private int gridIndicatorSortingOrder = 66;
         [SerializeField, Min(1)] private int indicatorPathCount = 4;
         [SerializeField, Min(1)] private int maxIndicatorShotsPerPath = 64;
@@ -48,24 +57,47 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            yield return ExecutePathSideFireStep(
+                context,
+                host,
+                projectile,
+                ResolveFirstPathMode(mode),
+                mode == ConductorPlayerPathSideFireMode.HorizontalVerticalThenDiagonal);
+
+            if (mode == ConductorPlayerPathSideFireMode.HorizontalVerticalThenDiagonal)
+            {
+                yield return ExecutePathSideFireStep(
+                    context,
+                    host,
+                    projectile,
+                    MinionGraphPlayerPathMode.Diagonal,
+                    false);
+            }
+        }
+
+        private IEnumerator ExecutePathSideFireStep(
+            BossActionContext context,
+            IMinionPatternHost host,
+            BossProjectileSettings projectile,
+            MinionGraphPlayerPathMode pathMode,
+            bool forceWaitForStepCompletion)
+        {
             Vector2 pathCenter = ResolvePathCenter(context);
+            List<PrecastIndicatorTiming> indicatorTimings = new();
             ConductorScoreLaneRushIndicatorVisual gridIndicator =
-                CreatePrecastGridIndicator(context, host, projectile, pathCenter);
+                CreatePrecastGridIndicator(context, host, projectile, pathCenter, pathMode, indicatorTimings);
 
             MinionGraphCommandRequest pathRequest = MinionGraphCommandRequest.PlayerPath(
-                mode,
+                pathMode,
                 distanceFromPlayer,
                 moveToStartSeconds,
                 moveSeconds);
             float pathDuration = host.CommandMinions(pathRequest);
-            yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(
-                context,
-                pathDuration,
-                waitForPlayerPathDuration);
+            float fireStartDelay = GetFireStartDelaySeconds();
+            yield return WaitSecondsIfNeeded(context, fireStartDelay);
 
             MinionGraphProjectileFireSpec fireSpec = new MinionGraphProjectileFireSpec(minionOrigin, aim, effects, context)
                 .WithProjectilePathIndicatorSuppressed();
-            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
             MinionGraphCommandRequest fireRequest = MinionGraphCommandRequest.SideFire(
                 projectile,
                 fireSeconds,
@@ -75,17 +107,43 @@ namespace Week14.Enemy
                 originMode,
                 bodySideSpacing);
             float fireDuration = host.CommandMinions(fireRequest);
-
-            if (waitForSideFireDuration)
+            float indicatorDuration = GetIndicatorDurationAfterFire(indicatorTimings);
+            if (gridIndicator != null && indicatorTimings.Count > 0)
             {
-                yield return MinionGraphCommandRunner.WaitForDurationIfNeeded(context, fireDuration, true);
-                gridIndicator?.ClearAndDestroy();
+                gridIndicator.StartCoroutine(AdvancePrecastIndicators(gridIndicator, indicatorTimings));
             }
-            else if (gridIndicator != null)
+
+            bool shouldWaitForPath = waitForPlayerPathDuration || forceWaitForStepCompletion;
+            bool shouldWaitForFire = waitForSideFireDuration || forceWaitForStepCompletion;
+            float remainingPathSeconds = Mathf.Max(0f, pathDuration - fireStartDelay);
+            float remainingFireSeconds = Mathf.Max(0f, fireDuration);
+            float remainingIndicatorSeconds = Mathf.Max(0f, indicatorDuration);
+            float waitSeconds = Mathf.Max(
+                shouldWaitForPath ? remainingPathSeconds : 0f,
+                shouldWaitForFire ? remainingFireSeconds : 0f);
+            float visualRetainSeconds = Mathf.Max(
+                0f,
+                Mathf.Max(Mathf.Max(remainingPathSeconds, remainingFireSeconds), remainingIndicatorSeconds) - waitSeconds);
+
+            if (waitSeconds > 0f)
+            {
+                yield return WaitSecondsIfNeeded(context, waitSeconds);
+            }
+
+            if (gridIndicator == null)
+            {
+                yield break;
+            }
+
+            if (visualRetainSeconds <= 0f)
+            {
+                gridIndicator.ClearAndDestroy();
+            }
+            else
             {
                 UnityEngine.Object.Destroy(
                     gridIndicator.gameObject,
-                    Mathf.Max(0.01f, fireDuration + indicatorRetainSeconds));
+                    Mathf.Max(0.01f, visualRetainSeconds + indicatorRetainSeconds));
             }
         }
 
@@ -93,7 +151,9 @@ namespace Week14.Enemy
             BossActionContext context,
             IMinionPatternHost host,
             BossProjectileSettings projectile,
-            Vector2 pathCenter)
+            Vector2 pathCenter,
+            MinionGraphPlayerPathMode pathMode,
+            List<PrecastIndicatorTiming> indicatorTimings)
         {
             if (!drawPrecastGridIndicator || projectile == null)
             {
@@ -105,71 +165,107 @@ namespace Week14.Enemy
                 indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
             visual.Configure(gridIndicatorColor, gridIndicatorWidth, gridIndicatorSortingOrder);
 
-            int pathCount = ResolveIndicatorPathCount(host);
+            List<PlayerPathPrediction> pathPredictions = CreatePathPredictions(host, pathMode);
+            int pathCount = Mathf.Min(Mathf.Max(1, indicatorPathCount), pathPredictions.Count);
+            if (pathCount <= 0)
+            {
+                return visual;
+            }
+
             int shotCount = GetIndicatorShotCount();
             float indicatorLength = Mathf.Max(0.1f, projectile.Speed * projectile.Lifetime);
+            float indicatorTravelSeconds = Mathf.Max(0.05f, projectile.Lifetime);
             float safeSideAngle = Mathf.Clamp(sideFireAngleDegrees, 1f, 179f);
             int lineIndex = 0;
 
             for (int pathIndex = 0; pathIndex < pathCount; pathIndex++)
             {
-                MinionGraphPlayerPathType pathType = GetPlayerPathType(mode, pathIndex);
-                GetPlayerPathOffsets(pathType, distanceFromPlayer, out Vector2 startOffset, out Vector2 endOffset);
-                Vector2 pathDirection = (endOffset - startOffset).sqrMagnitude > 0.0001f
-                    ? (endOffset - startOffset).normalized
-                    : Vector2.right;
+                PlayerPathPrediction prediction = pathPredictions[pathIndex];
 
                 for (int shotIndex = 0; shotIndex < shotCount; shotIndex++)
                 {
                     float shotSeconds = Mathf.Max(0.01f, fireInterval) * shotIndex;
-                    float pathElapsed = waitForPlayerPathDuration
-                        ? moveToStartSeconds + moveSeconds
-                        : windupSeconds + shotSeconds;
-                    Vector2 origin = pathCenter + GetPathOffsetAtTime(startOffset, endOffset, pathElapsed);
-                    Vector2 aimDirection = ResolveAimDirection(context, origin);
-                    Vector2 forward = originMode == MinionGraphSideFireOriginMode.BodySides
-                        ? pathDirection
-                        : aimDirection;
+                    float pathElapsed = GetFireStartDelaySeconds() + shotSeconds;
+                    Vector2 root = pathCenter + GetPathOffsetAtTime(
+                        prediction.StartOffset,
+                        prediction.EndOffset,
+                        pathElapsed);
+                    Vector2 aimOrigin = GetPredictedAimOrigin(
+                        prediction.Minion,
+                        root,
+                        prediction.PathDirection,
+                        shotIndex);
+                    Vector2 aimDirection = ResolvePredictedAimDirection(
+                        context,
+                        pathPredictions,
+                        pathCenter,
+                        pathElapsed,
+                        aimOrigin);
+                    Vector2 spawnOrigin = GetPredictedSpawnOrigin(
+                        prediction.Minion,
+                        aimOrigin,
+                        aimDirection,
+                        shotIndex);
+                    Vector2 forward = ResolvePredictedSideFireForward(aimDirection, prediction.PathDirection);
 
                     GetSideFireOrigins(
-                        origin,
+                        spawnOrigin,
                         forward,
                         out Vector2 firstOrigin,
                         out Vector2 secondOrigin);
-                    AddIndicatorLine(
+                    int firstLineIndex = lineIndex++;
+                    AddDashedIndicatorLine(
                         visual,
-                        lineIndex++,
+                        firstLineIndex,
                         firstOrigin,
                         RotateDirection(forward, safeSideAngle),
                         indicatorLength);
-                    AddIndicatorLine(
+                    indicatorTimings?.Add(new PrecastIndicatorTiming(firstLineIndex, shotSeconds, indicatorTravelSeconds));
+
+                    int secondLineIndex = lineIndex++;
+                    AddDashedIndicatorLine(
                         visual,
-                        lineIndex++,
+                        secondLineIndex,
                         secondOrigin,
                         RotateDirection(forward, -safeSideAngle),
                         indicatorLength);
+                    indicatorTimings?.Add(new PrecastIndicatorTiming(secondLineIndex, shotSeconds, indicatorTravelSeconds));
                 }
             }
 
             return visual;
         }
 
-        private int ResolveIndicatorPathCount(IMinionPatternHost host)
+        private List<PlayerPathPrediction> CreatePathPredictions(
+            IMinionPatternHost host,
+            MinionGraphPlayerPathMode pathMode)
         {
+            List<PlayerPathPrediction> predictions = new();
             IReadOnlyList<Minion> minions = host?.GetControlledMinionsForGraph();
-            int activeCount = 0;
-            if (minions != null)
+            if (minions == null)
             {
-                for (int i = 0; i < minions.Count; i++)
-                {
-                    if (minions[i] != null && minions[i].Health != null && !minions[i].Health.IsDead)
-                    {
-                        activeCount++;
-                    }
-                }
+                return predictions;
             }
 
-            return Mathf.Max(1, Mathf.Min(Mathf.Max(1, indicatorPathCount), activeCount > 0 ? activeCount : 4));
+            int commandIndex = 0;
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                MinionGraphPlayerPathType pathType = GetPlayerPathType(pathMode, commandIndex);
+                GetPlayerPathOffsets(pathType, distanceFromPlayer, out Vector2 startOffset, out Vector2 endOffset);
+                Vector2 pathDirection = (endOffset - startOffset).sqrMagnitude > 0.0001f
+                    ? (endOffset - startOffset).normalized
+                    : Vector2.right;
+                predictions.Add(new PlayerPathPrediction(minion, startOffset, endOffset, pathDirection));
+                commandIndex++;
+            }
+
+            return predictions;
         }
 
         private int GetIndicatorShotCount()
@@ -187,6 +283,69 @@ namespace Week14.Enemy
             return Mathf.Max(1, count);
         }
 
+        private float GetFireStartDelaySeconds()
+        {
+            return Mathf.Max(0f, moveToStartSeconds) + Mathf.Max(0f, windupSeconds);
+        }
+
+        private static IEnumerator WaitSecondsIfNeeded(BossActionContext context, float seconds)
+        {
+            if (context == null || seconds <= 0f)
+            {
+                yield break;
+            }
+
+            yield return context.WaitSeconds(seconds);
+        }
+
+        private IEnumerator AdvancePrecastIndicators(
+            ConductorScoreLaneRushIndicatorVisual visual,
+            IReadOnlyList<PrecastIndicatorTiming> timings)
+        {
+            if (visual == null || timings == null || timings.Count <= 0)
+            {
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float endSeconds = GetIndicatorDurationAfterFire(timings);
+            while (elapsed < endSeconds)
+            {
+                for (int i = 0; i < timings.Count; i++)
+                {
+                    PrecastIndicatorTiming timing = timings[i];
+                    float progress = elapsed <= timing.FireSeconds
+                        ? 0f
+                        : Mathf.Clamp01((elapsed - timing.FireSeconds) / timing.TravelSeconds);
+                    visual.SetTravelProgress(timing.LineIndex, progress);
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            for (int i = 0; i < timings.Count; i++)
+            {
+                visual.SetTravelProgress(timings[i].LineIndex, 1f);
+            }
+        }
+
+        private static float GetIndicatorDurationAfterFire(IReadOnlyList<PrecastIndicatorTiming> timings)
+        {
+            float duration = 0f;
+            if (timings == null)
+            {
+                return duration;
+            }
+
+            for (int i = 0; i < timings.Count; i++)
+            {
+                duration = Mathf.Max(duration, timings[i].FireSeconds + timings[i].TravelSeconds);
+            }
+
+            return duration;
+        }
+
         private Vector2 ResolvePathCenter(BossActionContext context)
         {
             if (context != null && context.Boss != null && context.Boss.Player != null)
@@ -199,11 +358,155 @@ namespace Week14.Enemy
                 : Vector2.zero;
         }
 
+        private static MinionGraphPlayerPathMode ResolveFirstPathMode(ConductorPlayerPathSideFireMode actionMode)
+        {
+            return actionMode == ConductorPlayerPathSideFireMode.Diagonal
+                ? MinionGraphPlayerPathMode.Diagonal
+                : MinionGraphPlayerPathMode.HorizontalVertical;
+        }
+
         private Vector2 ResolveAimDirection(BossActionContext context, Vector2 origin)
         {
             BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
             Vector2 direction = aimSpec.GetDirection(context, origin);
             return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+        }
+
+        private Vector2 ResolvePredictedAimDirection(
+            BossActionContext context,
+            IReadOnlyList<PlayerPathPrediction> predictions,
+            Vector2 pathCenter,
+            float pathElapsed,
+            Vector2 origin)
+        {
+            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            if (aimSpec.Mode == BossGraphProjectileAimMode.ClosestMinionToPlayer &&
+                TryResolveClosestPredictedMinionAim(context, predictions, pathCenter, pathElapsed, out Vector2 closestDirection))
+            {
+                return closestDirection;
+            }
+
+            return ResolveAimDirection(context, origin);
+        }
+
+        private bool TryResolveClosestPredictedMinionAim(
+            BossActionContext context,
+            IReadOnlyList<PlayerPathPrediction> predictions,
+            Vector2 pathCenter,
+            float pathElapsed,
+            out Vector2 direction)
+        {
+            direction = Vector2.zero;
+            if (!TryGetPlayerPosition(context, out Vector2 playerPosition) || predictions == null || predictions.Count == 0)
+            {
+                return false;
+            }
+
+            PlayerPathPrediction closest = default;
+            Vector2 closestRoot = Vector2.zero;
+            float closestSqrDistance = float.PositiveInfinity;
+            bool found = false;
+            for (int i = 0; i < predictions.Count; i++)
+            {
+                PlayerPathPrediction prediction = predictions[i];
+                Vector2 root = pathCenter + GetPathOffsetAtTime(prediction.StartOffset, prediction.EndOffset, pathElapsed);
+                float sqrDistance = (root - playerPosition).sqrMagnitude;
+                if (sqrDistance >= closestSqrDistance)
+                {
+                    continue;
+                }
+
+                closest = prediction;
+                closestRoot = root;
+                closestSqrDistance = sqrDistance;
+                found = true;
+            }
+
+            if (!found)
+            {
+                return false;
+            }
+
+            Vector2 aimOrigin = GetPredictedAimOrigin(closest.Minion, closestRoot, closest.PathDirection, 0);
+            direction = playerPosition - aimOrigin;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = Vector2.left;
+            }
+            else
+            {
+                direction.Normalize();
+            }
+
+            return true;
+        }
+
+        private static bool TryGetPlayerPosition(BossActionContext context, out Vector2 playerPosition)
+        {
+            playerPosition = Vector2.zero;
+            if (context == null || context.Boss == null || context.Boss.Player == null)
+            {
+                return false;
+            }
+
+            playerPosition = context.Boss.Player.position;
+            return true;
+        }
+
+        private Vector2 GetPredictedAimOrigin(
+            Minion minion,
+            Vector2 root,
+            Vector2 facingDirection,
+            int shotIndex)
+        {
+            if (minion == null)
+            {
+                return root;
+            }
+
+            Vector2 currentRoot = minion.transform.position;
+            Vector2 currentAimOrigin = minionOrigin.GetAimOrigin(minion, shotIndex);
+            Vector2 localOffset = minion.transform.InverseTransformVector(currentAimOrigin - currentRoot);
+            return root + TransformLocalOffset(localOffset, facingDirection);
+        }
+
+        private Vector2 GetPredictedSpawnOrigin(
+            Minion minion,
+            Vector2 predictedAimOrigin,
+            Vector2 aimDirection,
+            int shotIndex)
+        {
+            if (minion == null)
+            {
+                return predictedAimOrigin;
+            }
+
+            Vector2 currentAimOrigin = minionOrigin.GetAimOrigin(minion, shotIndex);
+            Vector2 currentSpawnOrigin = minionOrigin.GetSpawnOrigin(minion, shotIndex, aimDirection);
+            return predictedAimOrigin + currentSpawnOrigin - currentAimOrigin;
+        }
+
+        private Vector2 ResolvePredictedSideFireForward(Vector2 aimDirection, Vector2 pathDirection)
+        {
+            if (originMode != MinionGraphSideFireOriginMode.BodySides)
+            {
+                return aimDirection.sqrMagnitude > 0.0001f ? aimDirection.normalized : Vector2.left;
+            }
+
+            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            if (aimSpec.Mode == BossGraphProjectileAimMode.ClosestMinionToPlayer)
+            {
+                return aimDirection.sqrMagnitude > 0.0001f ? aimDirection.normalized : Vector2.left;
+            }
+
+            return pathDirection.sqrMagnitude > 0.0001f ? pathDirection.normalized : Vector2.right;
+        }
+
+        private static Vector2 TransformLocalOffset(Vector2 localOffset, Vector2 facingDirection)
+        {
+            Vector2 right = facingDirection.sqrMagnitude > 0.0001f ? facingDirection.normalized : Vector2.right;
+            Vector2 up = new(-right.y, right.x);
+            return right * localOffset.x + up * localOffset.y;
         }
 
         private Vector2 GetPathOffsetAtTime(Vector2 startOffset, Vector2 endOffset, float pathElapsed)
@@ -238,7 +541,7 @@ namespace Week14.Enemy
             secondOrigin -= offset;
         }
 
-        private static void AddIndicatorLine(
+        private void AddDashedIndicatorLine(
             ConductorScoreLaneRushIndicatorVisual visual,
             int index,
             Vector2 origin,
@@ -251,7 +554,12 @@ namespace Week14.Enemy
             }
 
             Vector2 safeDirection = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            visual.SetLane(index, origin, origin + safeDirection * Mathf.Max(0.1f, length));
+            visual.SetDashedLane(
+                index,
+                origin,
+                origin + safeDirection * Mathf.Max(0.1f, length),
+                gridIndicatorDashLength,
+                gridIndicatorDashGap);
             visual.SetProgress(index, 1f);
         }
 
@@ -296,6 +604,7 @@ namespace Week14.Enemy
             out Vector2 endOffset)
         {
             float distance = Mathf.Max(0.1f, distanceFromPlayer);
+            float diagonalDistance = distance * 0.70710678f;
             switch (pathType)
             {
                 case MinionGraphPlayerPathType.VerticalTopToBottom:
@@ -311,26 +620,60 @@ namespace Week14.Enemy
                     endOffset = Vector2.up * distance;
                     break;
                 case MinionGraphPlayerPathType.DiagonalLeftTopToRightBottom:
-                    startOffset = new Vector2(-distance, distance);
-                    endOffset = new Vector2(distance, -distance);
+                    startOffset = new Vector2(-diagonalDistance, diagonalDistance);
+                    endOffset = new Vector2(diagonalDistance, -diagonalDistance);
                     break;
                 case MinionGraphPlayerPathType.DiagonalRightTopToLeftBottom:
-                    startOffset = new Vector2(distance, distance);
-                    endOffset = new Vector2(-distance, -distance);
+                    startOffset = new Vector2(diagonalDistance, diagonalDistance);
+                    endOffset = new Vector2(-diagonalDistance, -diagonalDistance);
                     break;
                 case MinionGraphPlayerPathType.DiagonalRightBottomToLeftTop:
-                    startOffset = new Vector2(distance, -distance);
-                    endOffset = new Vector2(-distance, distance);
+                    startOffset = new Vector2(diagonalDistance, -diagonalDistance);
+                    endOffset = new Vector2(-diagonalDistance, diagonalDistance);
                     break;
                 case MinionGraphPlayerPathType.DiagonalLeftBottomToRightTop:
-                    startOffset = new Vector2(-distance, -distance);
-                    endOffset = new Vector2(distance, distance);
+                    startOffset = new Vector2(-diagonalDistance, -diagonalDistance);
+                    endOffset = new Vector2(diagonalDistance, diagonalDistance);
                     break;
                 default:
                     startOffset = Vector2.left * distance;
                     endOffset = Vector2.right * distance;
                     break;
             }
+        }
+
+        private readonly struct PlayerPathPrediction
+        {
+            public PlayerPathPrediction(
+                Minion minion,
+                Vector2 startOffset,
+                Vector2 endOffset,
+                Vector2 pathDirection)
+            {
+                Minion = minion;
+                StartOffset = startOffset;
+                EndOffset = endOffset;
+                PathDirection = pathDirection.sqrMagnitude > 0.0001f ? pathDirection.normalized : Vector2.right;
+            }
+
+            public Minion Minion { get; }
+            public Vector2 StartOffset { get; }
+            public Vector2 EndOffset { get; }
+            public Vector2 PathDirection { get; }
+        }
+
+        private readonly struct PrecastIndicatorTiming
+        {
+            public PrecastIndicatorTiming(int lineIndex, float fireSeconds, float travelSeconds)
+            {
+                LineIndex = lineIndex;
+                FireSeconds = Mathf.Max(0f, fireSeconds);
+                TravelSeconds = Mathf.Max(0.05f, travelSeconds);
+            }
+
+            public int LineIndex { get; }
+            public float FireSeconds { get; }
+            public float TravelSeconds { get; }
         }
     }
 }

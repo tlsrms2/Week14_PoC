@@ -8,4 +8,9 @@ namespace Week14.Enemy
     {
         public abstract IEnumerator Execute(BossActionContext context);
     }
+
+    internal interface IBossGraphValidatedAction
+    {
+        void OnGraphValidated(BossGraphAsset graph, BossStateNode node);
+    }
 }

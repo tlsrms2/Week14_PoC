@@ -135,6 +135,14 @@ namespace Week14.Combat
 
         private bool IsValidLockOnTarget(Health targetHealth)
         {
+            ConductorTurretProjectile turret = targetHealth != null
+                ? targetHealth.GetComponent<ConductorTurretProjectile>() ?? targetHealth.GetComponentInParent<ConductorTurretProjectile>()
+                : null;
+            if (turret != null)
+            {
+                return turret.IsPlayerTargetable;
+            }
+
             return targetHealth != null
                 && targetHealth != context.Health
                 && !targetHealth.IsDead

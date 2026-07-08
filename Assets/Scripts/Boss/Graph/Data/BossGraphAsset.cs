@@ -114,6 +114,7 @@ namespace Week14.Enemy
         private void OnValidate()
         {
             EnsureNodeGuids();
+            ValidateGraphAwareActions();
         }
 
         private void EnsureNodeGuids()
@@ -155,7 +156,24 @@ namespace Week14.Enemy
             {
                 for (int i = 0; i < parallelEdges.Count; i++)
                 {
-                    parallelEdges[i]?.EnsureNodeGuids(nodeIdToGuid);
+                parallelEdges[i]?.EnsureNodeGuids(nodeIdToGuid);
+                }
+            }
+        }
+
+        private void ValidateGraphAwareActions()
+        {
+            if (stateNodes == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < stateNodes.Count; i++)
+            {
+                BossStateNode node = stateNodes[i];
+                if (node?.Action is IBossGraphValidatedAction action)
+                {
+                    action.OnGraphValidated(this, node);
                 }
             }
         }

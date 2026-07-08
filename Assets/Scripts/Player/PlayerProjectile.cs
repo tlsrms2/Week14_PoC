@@ -275,12 +275,18 @@ namespace Week14.Combat
             EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
             if (enemyProjectile != null)
             {
-                if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
+                if (enemyProjectile is ConductorTurretProjectile turretProjectile && turretProjectile.IsPlayerTargetable)
                 {
-                    return true;
                 }
+                else
+                {
+                    if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
+                    {
+                        return true;
+                    }
 
-                return false;
+                    return false;
+                }
             }
 
             Health targetHealth = other.GetComponentInParent<Health>();

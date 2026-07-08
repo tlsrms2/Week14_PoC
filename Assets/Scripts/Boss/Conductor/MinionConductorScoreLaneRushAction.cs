@@ -35,6 +35,23 @@ namespace Week14.Enemy
             [SerializeField, Min(1)] private int parryOrder = 1;
             [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
 
+            public FireTiming()
+            {
+            }
+
+            public FireTiming(FireTiming source)
+            {
+                if (source == null)
+                {
+                    return;
+                }
+
+                minionNumber = source.MinionNumber;
+                fireSeconds = source.FireSeconds;
+                parryOrder = source.ParryOrder;
+                projectileName = source.ProjectileName;
+            }
+
             public int MinionNumber => Mathf.Max(1, minionNumber);
             public float FireSeconds => Mathf.Max(0f, fireSeconds);
             public int ParryOrder => Mathf.Max(1, parryOrder);
@@ -52,7 +69,18 @@ namespace Week14.Enemy
 
             public Volley(IReadOnlyList<FireTiming> fireTimings)
             {
-                this.fireTimings = fireTimings != null ? new List<FireTiming>(fireTimings) : new List<FireTiming>();
+                this.fireTimings = new List<FireTiming>();
+                if (fireTimings == null)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < fireTimings.Count; i++)
+                {
+                    this.fireTimings.Add(fireTimings[i] != null
+                        ? new FireTiming(fireTimings[i])
+                        : new FireTiming());
+                }
             }
 
             public IReadOnlyList<FireTiming> FireTimings => fireTimings;
@@ -164,6 +192,7 @@ namespace Week14.Enemy
         protected float RushSpeed => Mathf.Max(0.01f, rushSpeed);
         protected float RestSeconds => Mathf.Max(0f, restSeconds);
         protected IReadOnlyList<StartTiming> StartTimings => startTimings;
+        internal IReadOnlyList<Volley> SerializedVolleysForGraphCopy => volleys;
 
         public override IEnumerator Execute(BossActionContext context)
         {

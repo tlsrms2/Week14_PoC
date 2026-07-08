@@ -111,9 +111,13 @@ namespace Week14.Enemy
 
         private static bool IsMinionAction(Type actionType)
         {
-            return actionType != null
-                && typeof(BossAction).IsAssignableFrom(actionType)
-                && actionType.Name.StartsWith("Minion", StringComparison.Ordinal);
+            if (actionType == null || !typeof(BossAction).IsAssignableFrom(actionType))
+            {
+                return false;
+            }
+
+            return actionType.Name.StartsWith("Minion", StringComparison.Ordinal)
+                || actionType == typeof(ConductorSpawnTurretsAction);
         }
 
         private bool TryGetConfiguredNodeKind(Type actionType, out BossGraphNodeKind nodeKind)
