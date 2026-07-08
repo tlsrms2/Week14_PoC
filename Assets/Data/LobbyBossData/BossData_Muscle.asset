@@ -44,7 +44,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   icon: {fileID: 1270279067752250102, guid: a0e89f1d438ad7c46a4637681bb00c8d, type: 3}
-  deathImage: {fileID: 1270279067752250102, guid: a0e89f1d438ad7c46a4637681bb00c8d, type: 3}
+  deathImage: {fileID: 4381083743528762289, guid: c7786867e4dfcc143b3e48c2d5d152ee, type: 3}
   sceneName: Boss_Muscle
   unlocksBossIds: []
   unlocksSkillIds: []

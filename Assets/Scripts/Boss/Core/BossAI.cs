@@ -31,6 +31,16 @@ namespace Week14.Enemy
         [SerializeField, Min(0.1f)] private float finalDeathExplosionScale = 1.25f;
         [SerializeField, Min(0)] private int finalDeathExplosionSparkCount = 24;
         [SerializeField] private Color finalDeathExplosionColor = new(1f, 0.55f, 0.12f, 1f);
+        [Tooltip("지정하면 절차적 스파크/연기 이펙트 대신 이 프리팹을 각 폭발 위치에 생성합니다.")]
+        [SerializeField] private GameObject finalDeathExplosionPrefab;
+        [Tooltip("프리팹으로 생성된 폭발 오브젝트가 파괴되기까지의 시간(초)입니다.")]
+        [SerializeField, Min(0.05f)] private float finalDeathExplosionPrefabLifetimeSeconds = 1.2f;
+        [Tooltip("비워두면 BodyRoot를 기준으로 사용합니다. 폭발 스폰 범위의 중심을 직접 지정하고 싶을 때 사용합니다.")]
+        [SerializeField] private Transform finalDeathExplosionAreaCenter;
+        [Tooltip("0보다 크면 스프라이트 바운드 대신 이 반경의 원형 범위 안에서 폭발 위치를 랜덤으로 고릅니다.")]
+        [SerializeField, Min(0f)] private float finalDeathExplosionAreaRadius = 0f;
+        [Tooltip("폭발 연출이 모두 끝난 뒤 사망 애니메이션(Die 트리거)을 걸기까지 대기하는 시간(초)입니다.")]
+        [SerializeField, Min(0f)] private float deathExplosionToAnimationDelaySeconds = 0f;
         [SerializeField, Min(0f)] private float deathAnimationFallbackSeconds = 1f;
 
         [Header("Meta")]
@@ -460,6 +470,12 @@ namespace Week14.Enemy
         internal float FinalDeathExplosionScaleForSequence => finalDeathExplosionScale;
         internal int FinalDeathExplosionSparkCountForSequence => finalDeathExplosionSparkCount;
         internal Color FinalDeathExplosionColorForSequence => finalDeathExplosionColor;
+        internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;
+        internal float FinalDeathExplosionPrefabLifetimeSecondsForSequence => finalDeathExplosionPrefabLifetimeSeconds;
+        internal Transform FinalDeathExplosionAreaCenterForSequence =>
+            finalDeathExplosionAreaCenter != null ? finalDeathExplosionAreaCenter : bodyRoot;
+        internal float FinalDeathExplosionAreaRadiusForSequence => finalDeathExplosionAreaRadius;
+        internal float DeathExplosionToAnimationDelaySecondsForSequence => deathExplosionToAnimationDelaySeconds;
         internal float DeathAnimationFallbackSecondsForSequence => deathAnimationFallbackSeconds;
         internal SpriteRenderer[] RenderersForSequence => renderers;
 

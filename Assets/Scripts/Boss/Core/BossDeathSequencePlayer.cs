@@ -10,6 +10,13 @@ namespace Week14.Enemy
         public static IEnumerator Play(BossAI boss)
         {
             yield return PlayFinalDeathExplosions(boss);
+
+            float delaySeconds = boss.DeathExplosionToAnimationDelaySecondsForSequence;
+            if (delaySeconds > 0f)
+            {
+                yield return new WaitForSeconds(delaySeconds);
+            }
+
             yield return PlayDeathAnimation(boss);
         }
 
@@ -23,16 +30,7 @@ namespace Week14.Enemy
             for (int i = 0; i < explosionCount; i++)
             {
                 Vector3 position = GetRandomDeathExplosionPosition(boss);
-                ProjectileVfx.PlayHogExplosion(
-                    position,
-                    boss.FinalDeathExplosionColorForSequence,
-                    boss.FinalDeathExplosionScaleForSequence,
-                    boss.FinalDeathExplosionSparkCountForSequence);
-                ProjectileVfx.PlayHogSmokeBurst(
-                    position,
-                    Color.Lerp(boss.FinalDeathExplosionColorForSequence, Color.gray, 0.55f),
-                    boss.FinalDeathExplosionScaleForSequence,
-                    Mathf.Max(8, boss.FinalDeathExplosionSparkCountForSequence / 2));
+                SpawnDeathExplosionVisual(boss, position);
 
                 Vector2 impactDirection = UnityEngine.Random.insideUnitCircle;
                 BossAI.PlayEnemyHitCameraImpactForSequence(
@@ -128,8 +126,39 @@ namespace Week14.Enemy
             }
         }
 
+        private static void SpawnDeathExplosionVisual(BossAI boss, Vector3 position)
+        {
+            GameObject prefab = boss.FinalDeathExplosionPrefabForSequence;
+            if (prefab != null)
+            {
+                GameObject instance = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
+                UnityEngine.Object.Destroy(instance, boss.FinalDeathExplosionPrefabLifetimeSecondsForSequence);
+                return;
+            }
+
+            ProjectileVfx.PlayHogExplosion(
+                position,
+                boss.FinalDeathExplosionColorForSequence,
+                boss.FinalDeathExplosionScaleForSequence,
+                boss.FinalDeathExplosionSparkCountForSequence);
+            ProjectileVfx.PlayHogSmokeBurst(
+                position,
+                Color.Lerp(boss.FinalDeathExplosionColorForSequence, Color.gray, 0.55f),
+                boss.FinalDeathExplosionScaleForSequence,
+                Mathf.Max(8, boss.FinalDeathExplosionSparkCountForSequence / 2));
+        }
+
         private static Vector3 GetRandomDeathExplosionPosition(BossAI boss)
         {
+            float areaRadius = boss.FinalDeathExplosionAreaRadiusForSequence;
+            if (areaRadius > 0f)
+            {
+                Transform areaCenter = boss.FinalDeathExplosionAreaCenterForSequence;
+                Vector3 areaCenterPos = areaCenter != null ? areaCenter.position : boss.transform.position;
+                areaCenterPos.z = 0f;
+                return areaCenterPos + (Vector3)(UnityEngine.Random.insideUnitCircle * areaRadius);
+            }
+
             SpriteRenderer renderer = GetRandomDeathExplosionRenderer(boss);
             if (renderer != null)
             {

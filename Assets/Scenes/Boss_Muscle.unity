@@ -294,6 +294,37 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &28455201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28455202}
+  m_Layer: 6
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &28455202
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28455201}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.284, y: 0.06800008, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7195046700096665505}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &44958183
 GameObject:
   m_ObjectHideFlags: 0
@@ -9056,6 +9087,7 @@ Transform:
   - {fileID: 7404990779619130886}
   - {fileID: 491281130391714307}
   - {fileID: 1441901669479319560}
+  - {fileID: 28455202}
   m_Father: {fileID: 577620902295864427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7205216274141004797
@@ -9557,19 +9589,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.MuscleBossAI
   maxLives: 2
   phaseTransitionWaitSeconds: 1.2
-  deathAnimator: {fileID: 0}
+  deathAnimator: {fileID: 5291647841609170472}
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
-  finalDeathExplosionCount: 10
-  finalDeathExplosionScale: 1.25
+  finalDeathExplosionCount: 5
+  finalDeathExplosionScale: 1.2
   finalDeathExplosionSparkCount: 24
   finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
+  finalDeathExplosionPrefab: {fileID: 507182190992537921, guid: 0bd30bab3f957254f8fc4b3ef1d43dfa, type: 3}
+  finalDeathExplosionPrefabLifetimeSeconds: 2
+  finalDeathExplosionAreaCenter: {fileID: 28455202}
+  finalDeathExplosionAreaRadius: 0.5
+  deathExplosionToAnimationDelaySeconds: 0.5
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
   displayName: "\uACBD\uD638\uC2E4\uC7A5"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
-  maxHp: 150
+  maxHp: 1
   hpEmptyExecutionSeconds: 5
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.08
