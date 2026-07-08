@@ -440,7 +440,7 @@ MonoBehaviour:
       rid: 4705777966128824404
     sequences: []
     editorPosition: {x: 119, y: 580}
-  - nodeId: Action1
+  - nodeId: Spawn Parryable Bomb1
     nodeGuid: e72d87a6892c448482ba264c5e1b98e0
     nodeKind: 0
     phaseIndex: 0
@@ -458,7 +458,7 @@ MonoBehaviour:
       rid: 4705777966128824406
     sequences: []
     editorPosition: {x: 1151, y: 580}
-  - nodeId: Action2
+  - nodeId: Spawn Parryable Bomb2
     nodeGuid: a7bf4538a4cd492585324f85bd904841
     nodeKind: 0
     phaseIndex: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
       rid: 4705777966128824415
     sequences: []
     editorPosition: {x: 1742, y: 1277}
-  - nodeId: Action3
+  - nodeId: Spawn Parryable Bomb3
     nodeGuid: 31e716fee72c460ca7240785d602533d
     nodeKind: 0
     phaseIndex: 0
@@ -566,7 +566,7 @@ MonoBehaviour:
       rid: 4705777966128824420
     sequences: []
     editorPosition: {x: 17, y: 2284}
-  - nodeId: Action4
+  - nodeId: Spawn Parryable Bomb4
     nodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     nodeKind: 0
     phaseIndex: 0
@@ -1205,7 +1205,7 @@ MonoBehaviour:
       rid: 4705777988380393965
     sequences: []
     editorPosition: {x: 2147, y: 2804}
-  - nodeId: Action5
+  - nodeId: Spawn Parryable Bomb5
     nodeGuid: d686967b9314491189ed041df7c40bc9
     nodeKind: 0
     phaseIndex: 0
@@ -1297,14 +1297,14 @@ MonoBehaviour:
     - Move Until Player Distance1
     - Wait3
     - Set Parameter1
-    - Action1
+    - Spawn Parryable Bomb1
     - Wait2
     - Set Parameter3
     - Set Parameter4
     - Move Until Player Distance2
     - Wait4
     - Set Parameter2
-    - Action2
+    - Spawn Parryable Bomb2
     - Wait7
     - Set Parameter5
     - Set Parameter6
@@ -1381,7 +1381,7 @@ MonoBehaviour:
     - Move Until Player Distance5
     - Wait5
     - Set Parameter7
-    - Action3
+    - Spawn Parryable Bomb3
     - Wait8
     - Set Parameter8
     - Set Parameter9
@@ -1432,7 +1432,7 @@ MonoBehaviour:
     - Move Until Player Distance6
     - Wait6
     - Set Parameter10
-    - Action4
+    - Spawn Parryable Bomb4
     - Wait9
     - Set Parameter11
     - Set Parameter12
@@ -1550,11 +1550,12 @@ MonoBehaviour:
     - Boss Dash19
     - Wait28
     - Set Parameter31
-    - Action5
+    - Spawn Parryable Bomb5
     - Wait29
     - Set Parameter32
     - Set Parameter33
     - Fire Dash Formation8
+  defaultPatternIds: []
   phases:
   - phaseIndex: 0
     selectionMode: 3
@@ -1761,7 +1762,7 @@ MonoBehaviour:
   - fromNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
     toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
     fromNodeId: Set Parameter1
-    toNodeId: Action1
+    toNodeId: Spawn Parryable Bomb1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1774,7 +1775,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: e72d87a6892c448482ba264c5e1b98e0
     toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
-    fromNodeId: Action1
+    fromNodeId: Spawn Parryable Bomb1
     toNodeId: Wait2
     conditionType: 0
     threshold: 0
@@ -1782,7 +1783,7 @@ MonoBehaviour:
   - fromNodeGuid: 1c806044cde744fda9762e94d5aae37e
     toNodeGuid: a7bf4538a4cd492585324f85bd904841
     fromNodeId: Set Parameter2
-    toNodeId: Action2
+    toNodeId: Spawn Parryable Bomb2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1823,7 +1824,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: a7bf4538a4cd492585324f85bd904841
     toNodeGuid: d8e19f1aff984433b0efa0e801f90d96
-    fromNodeId: Action2
+    fromNodeId: Spawn Parryable Bomb2
     toNodeId: Wait7
     conditionType: 0
     threshold: 0
@@ -1831,7 +1832,7 @@ MonoBehaviour:
   - fromNodeGuid: 1d990f318ffe4ef48684d3f82217b553
     toNodeGuid: 31e716fee72c460ca7240785d602533d
     fromNodeId: Set Parameter7
-    toNodeId: Action3
+    toNodeId: Spawn Parryable Bomb3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1851,7 +1852,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 31e716fee72c460ca7240785d602533d
     toNodeGuid: b76bfcf7ab09443c806ca013e896085a
-    fromNodeId: Action3
+    fromNodeId: Spawn Parryable Bomb3
     toNodeId: Wait8
     conditionType: 0
     threshold: 0
@@ -1866,7 +1867,7 @@ MonoBehaviour:
   - fromNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
     toNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     fromNodeId: Set Parameter10
-    toNodeId: Action4
+    toNodeId: Spawn Parryable Bomb4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1886,7 +1887,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     toNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
-    fromNodeId: Action4
+    fromNodeId: Spawn Parryable Bomb4
     toNodeId: Wait9
     conditionType: 0
     threshold: 0
@@ -2328,7 +2329,7 @@ MonoBehaviour:
   - fromNodeGuid: 16a1eacce1454a6b947374ef61ca1d82
     toNodeGuid: d686967b9314491189ed041df7c40bc9
     fromNodeId: Set Parameter31
-    toNodeId: Action5
+    toNodeId: Spawn Parryable Bomb5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2348,7 +2349,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: d686967b9314491189ed041df7c40bc9
     toNodeGuid: 6ecc19b2218f48959781d696e66880dd
-    fromNodeId: Action5
+    fromNodeId: Spawn Parryable Bomb5
     toNodeId: Wait29
     conditionType: 0
     threshold: 0
@@ -2489,8 +2490,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 4705777849323225179
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
