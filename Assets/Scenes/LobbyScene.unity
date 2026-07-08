@@ -7959,7 +7959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossSelectIcon
   panelController: {fileID: 862099631}
-  bossData: {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
+  bossData: {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
   detailPanel: {fileID: 1881657931}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   holdSecondsToStart: 1
@@ -21408,7 +21408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossSelectIcon
   panelController: {fileID: 862099631}
-  bossData: {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
+  bossData: {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
   detailPanel: {fileID: 1291317857}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   holdSecondsToStart: 1
