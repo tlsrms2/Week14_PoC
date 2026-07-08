@@ -18,7 +18,7 @@ MonoBehaviour:
   description: 
   cooldownSeconds: 1
   slowMultiplier: 0.2
-  durationSeconds: 5
+  durationSeconds: 3
   sfxId: 
   afterimageInterval: 0.08
   afterimageDuration: 5
@@ -27,3 +27,6 @@ MonoBehaviour:
   rainbowValue: 1
   rainbowAlpha: 0.45
   minSpeedForAfterimage: 0.01
+  screenTintColor: {r: 0, g: 1, b: 0.3, a: 0.35}
+  screenTintFadeIn: 0.15
+  screenTintFadeOut: 0.25
