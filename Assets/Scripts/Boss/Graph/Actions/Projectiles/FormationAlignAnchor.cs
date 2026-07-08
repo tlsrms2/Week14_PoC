@@ -3,9 +3,6 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
-    // Moving charge-anchor for FireDashFormationAction: EnemyProjectile snaps to this
-    // transform every frame while charging, so animating this position tweens the bullet
-    // from its spawn point to its formation slot without touching EnemyProjectile itself.
     public sealed class FormationAlignAnchor : MonoBehaviour
     {
         private Vector3 startPosition;
@@ -100,7 +97,7 @@ namespace Week14.Enemy
             startRadius = Mathf.Max(0f, nextStartRadius);
             durationSeconds = Mathf.Max(0f, nextDurationSeconds);
             destroyOnComplete = nextDestroyOnComplete;
-            MoveTo(origin, 0f);
+            MoveTo(GetPosition(0f), 0f);
         }
 
         private void LateUpdate()
@@ -113,15 +110,19 @@ namespace Week14.Enemy
 
             float deltaTime = Time.deltaTime;
             elapsed += deltaTime;
-            float angle = startAngleDegrees + angularSpeedDegrees * elapsed;
-            float radius = startRadius + radialSpeed * elapsed;
-            Vector2 nextPosition = origin + BossActionContext.AngleToDirection(angle) * radius;
-            MoveTo(nextPosition, deltaTime);
+            MoveTo(GetPosition(elapsed), deltaTime);
 
             if (destroyOnComplete && durationSeconds > 0f && elapsed >= durationSeconds)
             {
                 projectile.DestroyFromOwner();
             }
+        }
+
+        private Vector2 GetPosition(float nextElapsed)
+        {
+            float angle = startAngleDegrees + angularSpeedDegrees * nextElapsed;
+            float radius = startRadius + radialSpeed * nextElapsed;
+            return origin + BossActionContext.AngleToDirection(angle) * radius;
         }
 
         private void MoveTo(Vector2 position, float deltaTime)

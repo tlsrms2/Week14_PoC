@@ -17,7 +17,7 @@ MonoBehaviour:
     colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
     actionCategories: {fileID: 7712345678901234567, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
   stateNodes:
-  - nodeId: Node2_Copy1
+  - nodeId: Fire Projectile Burst1
     nodeGuid: 1b40313f298d441c9ee0c7c00c91b3a6
     nodeKind: 0
     phaseIndex: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
       rid: 4705777849323225195
     sequences: []
     editorPosition: {x: -142, y: 51}
-  - nodeId: Node1
+  - nodeId: Boss Dash1
     nodeGuid: 8be623fe70134e86a5718bfa00394cb7
     nodeKind: 1
     phaseIndex: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
       rid: 4705777849323225179
     sequences: []
     editorPosition: {x: -142, y: -104}
-  - nodeId: Node1_Copy1
+  - nodeId: Boss Dash2
     nodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     nodeKind: 1
     phaseIndex: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
       rid: 4705777849323225181
     sequences: []
     editorPosition: {x: 263, y: -104}
-  - nodeId: Node3
+  - nodeId: Maintain Player Distance1
     nodeGuid: 442b7f6c09ca4411a6b2017755639bda
     nodeKind: 1
     phaseIndex: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
       rid: 4705777881857917022
     sequences: []
     editorPosition: {x: -148, y: 238}
-  - nodeId: Node1_Copy3
+  - nodeId: Boss Dash3
     nodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     nodeKind: 1
     phaseIndex: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
       rid: 4705777881857917013
     sequences: []
     editorPosition: {x: 11, y: 238}
-  - nodeId: Node4
+  - nodeId: Fire Dash Formation1
     nodeGuid: 9052884a28bd4972abf00ddf436b845b
     nodeKind: 0
     phaseIndex: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
       rid: 4705777884965634125
     sequences: []
     editorPosition: {x: 19, y: 377}
-  - nodeId: Node3_Copy1_Copy1
+  - nodeId: Maintain Player Distance2
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
     phaseIndex: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
       rid: 4705777894816219217
     sequences: []
     editorPosition: {x: 85, y: -104}
-  - nodeId: Node2
+  - nodeId: Wait1
     nodeGuid: dbd1b9f57dc34140b36f7939ff09a3b0
     nodeKind: 3
     phaseIndex: 0
@@ -89,7 +89,7 @@ MonoBehaviour:
       rid: 4705777899588288588
     sequences: []
     editorPosition: {x: -32, y: -104}
-  - nodeId: Node6
+  - nodeId: Move Until Player Distance1
     nodeGuid: dd2c409e76354ed08de7552b29dfee4e
     nodeKind: 1
     phaseIndex: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
       rid: 4705777899588288593
     sequences: []
     editorPosition: {x: -170, y: 580}
-  - nodeId: Node7
+  - nodeId: Wait2
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
     phaseIndex: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
       rid: 4705777899588288596
     sequences: []
     editorPosition: {x: 365, y: 580}
-  - nodeId: Node6_Copy1
+  - nodeId: Move Until Player Distance2
     nodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     nodeKind: 1
     phaseIndex: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
       rid: 4705777899588288602
     sequences: []
     editorPosition: {x: 827, y: 580}
-  - nodeId: Node3_Copy2
+  - nodeId: Maintain Player Distance3
     nodeGuid: f9067e3ab9cd4c118f62347c84af469f
     nodeKind: 1
     phaseIndex: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
       rid: 4705777899588288603
     sequences: []
     editorPosition: {x: -142, y: 765}
-  - nodeId: Node1_Copy3_Copy2
+  - nodeId: Boss Dash4
     nodeGuid: febd09203906470486d228f80fc19c01
     nodeKind: 1
     phaseIndex: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
       rid: 4705777899588288604
     sequences: []
     editorPosition: {x: 19, y: 765}
-  - nodeId: Node1_Copy3_Copy1_Copy1
+  - nodeId: Boss Dash5
     nodeGuid: a6d837d55c884ba583edce60f2ae0e5f
     nodeKind: 1
     phaseIndex: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
       rid: 4705777899588288605
     sequences: []
     editorPosition: {x: 424, y: 765}
-  - nodeId: Node3_Copy1_Copy3
+  - nodeId: Maintain Player Distance4
     nodeGuid: 062ef5e90ce8471c9058edbc8d18e523
     nodeKind: 1
     phaseIndex: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
       rid: 4705777899588288619
     sequences: []
     editorPosition: {x: 229, y: 765}
-  - nodeId: Node4_Copy2
+  - nodeId: Fire Dash Formation2
     nodeGuid: a1f246c7ac574f8990fc4a0ca8fb83c8
     nodeKind: 0
     phaseIndex: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
       rid: 4705777899588288607
     sequences: []
     editorPosition: {x: 19, y: 920}
-  - nodeId: Node4_Copy2_Copy1
+  - nodeId: Fire Dash Formation3
     nodeGuid: f2e6bdaa9564427d8772f2ec8da7cc27
     nodeKind: 0
     phaseIndex: 0
@@ -169,8 +169,8 @@ MonoBehaviour:
     action:
       rid: 4705777899588288609
     sequences: []
-    editorPosition: {x: 424, y: 920}
-  - nodeId: Node1_Copy3_Copy2_Copy1
+    editorPosition: {x: 425, y: 920}
+  - nodeId: Boss Dash6
     nodeGuid: 25beafe770334374b83e7b18a4dee9ce
     nodeKind: 1
     phaseIndex: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
       rid: 4705777899588288620
     sequences: []
     editorPosition: {x: 43, y: 1087}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy1
+  - nodeId: Boss Dash7
     nodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     nodeKind: 1
     phaseIndex: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
       rid: 4705777899588288621
     sequences: []
     editorPosition: {x: 271, y: 1087}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy2
+  - nodeId: Boss Dash8
     nodeGuid: 8f62d2ec9fdc4384b6871602c338b0e3
     nodeKind: 1
     phaseIndex: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
       rid: 4705777899588288622
     sequences: []
     editorPosition: {x: 542, y: 1087}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy3
+  - nodeId: Boss Dash9
     nodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
     nodeKind: 1
     phaseIndex: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
       rid: 4705777899588288623
     sequences: []
     editorPosition: {x: 810, y: 1087}
-  - nodeId: Node8
+  - nodeId: Windup1
     nodeGuid: 9aca0817834c4c7891e79f35869aba73
     nodeKind: 3
     phaseIndex: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
       rid: 4705777899588288624
     sequences: []
     editorPosition: {x: 1293, y: 1087}
-  - nodeId: Node6_Copy2
+  - nodeId: Move Until Player Distance3
     nodeGuid: b4288a57c12f4d029fbdd02df164a32e
     nodeKind: 1
     phaseIndex: 0
@@ -223,8 +223,8 @@ MonoBehaviour:
     action:
       rid: 4705777899588288627
     sequences: []
-    editorPosition: {x: -142, y: 1087}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy4
+    editorPosition: {x: -142, y: 1086}
+  - nodeId: Boss Dash10
     nodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     nodeKind: 1
     phaseIndex: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
       rid: 4705777917832200267
     sequences: []
     editorPosition: {x: 95, y: 1277}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy1_Copy1
+  - nodeId: Boss Dash11
     nodeGuid: 30cd97d6b32c40778ee567e351bf4cc9
     nodeKind: 1
     phaseIndex: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
       rid: 4705777917832200268
     sequences: []
     editorPosition: {x: 387, y: 1277}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy2_Copy1
+  - nodeId: Boss Dash12
     nodeGuid: d79fb59e26364649a80c98c326ad044d
     nodeKind: 1
     phaseIndex: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
       rid: 4705777917832200269
     sequences: []
     editorPosition: {x: 694, y: 1277}
-  - nodeId: Node1_Copy3_Copy2_Copy1_Copy3_Copy1
+  - nodeId: Boss Dash13
     nodeGuid: 32166bb39f414bbbad5793c88c365ad4
     nodeKind: 1
     phaseIndex: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
       rid: 4705777917832200270
     sequences: []
     editorPosition: {x: 1022, y: 1277}
-  - nodeId: Node6_Copy2_Copy1
+  - nodeId: Move Until Player Distance4
     nodeGuid: 45b3ee192e41440f9f4eb924fc903862
     nodeKind: 1
     phaseIndex: 0
@@ -269,7 +269,7 @@ MonoBehaviour:
       rid: 4705777917832200273
     sequences: []
     editorPosition: {x: -136, y: 1288}
-  - nodeId: Node2_Copy1_Copy3
+  - nodeId: Fire Projectile Burst2
     nodeGuid: 69cd2eab21304708aa6edc12de730d30
     nodeKind: 0
     phaseIndex: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
       rid: 4705777917832200274
     sequences: []
     editorPosition: {x: 100, y: 1417}
-  - nodeId: Node2_Copy1_Copy3_Copy1
+  - nodeId: Fire Projectile Burst3
     nodeGuid: d43b737f69114464a386a87607407c56
     nodeKind: 0
     phaseIndex: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
       rid: 4705777917832200278
     sequences: []
     editorPosition: {x: 391, y: 1428}
-  - nodeId: Node2_Copy1_Copy3_Copy2
+  - nodeId: Fire Projectile Burst4
     nodeGuid: 2e53978eb2b0423893235d651601d4a9
     nodeKind: 0
     phaseIndex: 0
@@ -296,7 +296,7 @@ MonoBehaviour:
       rid: 4705777917832200279
     sequences: []
     editorPosition: {x: 698, y: 1443}
-  - nodeId: Node2_Copy1_Copy3_Copy3
+  - nodeId: Fire Projectile Burst5
     nodeGuid: 829650b15d2d48db996405b243c105a4
     nodeKind: 0
     phaseIndex: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
       rid: 4705777917832200280
     sequences: []
     editorPosition: {x: 1022, y: 1443}
-  - nodeId: Node6_Copy3
+  - nodeId: Move Until Player Distance5
     nodeGuid: 9d360200b2194cc4830bccdd7e622e9d
     nodeKind: 1
     phaseIndex: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
       rid: 4705777917832200282
     sequences: []
     editorPosition: {x: 1342, y: 1277}
-  - nodeId: Node3_Copy2_Copy1
+  - nodeId: Maintain Player Distance5
     nodeGuid: de96c4c233b94f6db624c65fe92ce58f
     nodeKind: 1
     phaseIndex: 0
@@ -323,7 +323,7 @@ MonoBehaviour:
       rid: 4705777917832200289
     sequences: []
     editorPosition: {x: -136, y: 1610}
-  - nodeId: Node1_Copy3_Copy2_Copy2
+  - nodeId: Boss Dash14
     nodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
     nodeKind: 1
     phaseIndex: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
       rid: 4705777917832200290
     sequences: []
     editorPosition: {x: 58, y: 1610}
-  - nodeId: Node4_Copy2_Copy2
+  - nodeId: Fire Dash Formation4
     nodeGuid: 2790ba62d4a04942b2e6089138b6d8e0
     nodeKind: 0
     phaseIndex: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
       rid: 4705777917832200293
     sequences: []
     editorPosition: {x: 58, y: 1764}
-  - nodeId: Node4_Copy3
+  - nodeId: Fire Dash Formation5
     nodeGuid: f1d7e09b75f34285b1abae2082197aa2
     nodeKind: 0
     phaseIndex: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
       rid: 4705777917832200295
     sequences: []
     editorPosition: {x: 264, y: 1764}
-  - nodeId: Pattern8_A1
+  - nodeId: Move Until Player Distance6
     nodeGuid: c6a7a186d7d4496487c3e3dea28eefa7
     nodeKind: 1
     phaseIndex: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
       rid: 4705777917832200303
     sequences: []
     editorPosition: {x: -136, y: 2012}
-  - nodeId: Pattern8_A3_1
+  - nodeId: Boss Dash15
     nodeGuid: 273309f2f610471b8717081b30d02179
     nodeKind: 1
     phaseIndex: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
       rid: 4705777917832200304
     sequences: []
     editorPosition: {x: 586, y: 2012}
-  - nodeId: Pattern8_A3_2
+  - nodeId: Fire Projectile Burst6
     nodeGuid: 5bff9151eda945c296ae94176c48b58d
     nodeKind: 0
     phaseIndex: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
       rid: 4705777917832200309
     sequences: []
     editorPosition: {x: 586, y: 2144}
-  - nodeId: Node8_Copy1
+  - nodeId: Windup2
     nodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
     nodeKind: 3
     phaseIndex: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
       rid: 4705777917832200312
     sequences: []
     editorPosition: {x: 986, y: 2012}
-  - nodeId: Pattern8_A3_2_Copy1
+  - nodeId: Fire Radial Emission1
     nodeGuid: 221617aecff84a7e966f781184805a0d
     nodeKind: 0
     phaseIndex: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
       rid: 4705777917832200317
     sequences: []
     editorPosition: {x: 196, y: 238}
-  - nodeId: Node7_Copy1
+  - nodeId: Wait3
     nodeGuid: e7d379c95d9c4859ad3179669179dfe2
     nodeKind: 3
     phaseIndex: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
       rid: 4705777917832200318
     sequences: []
     editorPosition: {x: -42, y: 580}
-  - nodeId: Node7_Copy1_Copy1
+  - nodeId: Wait4
     nodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
     nodeKind: 3
     phaseIndex: 0
@@ -413,7 +413,7 @@ MonoBehaviour:
       rid: 4705777917832200319
     sequences: []
     editorPosition: {x: 979, y: 580}
-  - nodeId: Node7_Copy1_Copy1_Copy1
+  - nodeId: Wait5
     nodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     nodeKind: 3
     phaseIndex: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
       rid: 4705777917832200320
     sequences: []
     editorPosition: {x: 1512, y: 1277}
-  - nodeId: Pattern8_A1_1
+  - nodeId: Wait6
     nodeGuid: 3ab2497c3b984870834e7e4e1012795a
     nodeKind: 3
     phaseIndex: 0
@@ -431,7 +431,7 @@ MonoBehaviour:
       rid: 4705777917832200321
     sequences: []
     editorPosition: {x: 31, y: 2012}
-  - nodeId: Node11
+  - nodeId: Set Parameter1
     nodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
     nodeKind: 2
     phaseIndex: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
       rid: 4705777966128824404
     sequences: []
     editorPosition: {x: 119, y: 580}
-  - nodeId: Node12
+  - nodeId: Action1
     nodeGuid: e72d87a6892c448482ba264c5e1b98e0
     nodeKind: 0
     phaseIndex: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
       rid: 4705777966128824405
     sequences: []
     editorPosition: {x: 250, y: 580}
-  - nodeId: Node11_Copy1
+  - nodeId: Set Parameter2
     nodeGuid: 1c806044cde744fda9762e94d5aae37e
     nodeKind: 2
     phaseIndex: 0
@@ -458,7 +458,7 @@ MonoBehaviour:
       rid: 4705777966128824406
     sequences: []
     editorPosition: {x: 1151, y: 580}
-  - nodeId: Node12_Copy1
+  - nodeId: Action2
     nodeGuid: a7bf4538a4cd492585324f85bd904841
     nodeKind: 0
     phaseIndex: 0
@@ -467,7 +467,7 @@ MonoBehaviour:
       rid: 4705777966128824407
     sequences: []
     editorPosition: {x: 1279, y: 580}
-  - nodeId: Node11_Copy2
+  - nodeId: Set Parameter3
     nodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     nodeKind: 2
     phaseIndex: 0
@@ -476,7 +476,7 @@ MonoBehaviour:
       rid: 4705777966128824408
     sequences: []
     editorPosition: {x: 511, y: 580}
-  - nodeId: Node11_Copy2_Copy1
+  - nodeId: Set Parameter4
     nodeGuid: 28ca69fc380146dcbe570ed92ec959ad
     nodeKind: 2
     phaseIndex: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
       rid: 4705777966128824409
     sequences: []
     editorPosition: {x: 641, y: 580}
-  - nodeId: Node7_Copy2
+  - nodeId: Wait7
     nodeGuid: d8e19f1aff984433b0efa0e801f90d96
     nodeKind: 3
     phaseIndex: 0
@@ -494,7 +494,7 @@ MonoBehaviour:
       rid: 4705777966128824412
     sequences: []
     editorPosition: {x: 1448, y: 580}
-  - nodeId: Node11_Copy2_Copy3
+  - nodeId: Set Parameter5
     nodeGuid: 903239b3d04049078b59a10d20bb9f95
     nodeKind: 2
     phaseIndex: 0
@@ -503,7 +503,7 @@ MonoBehaviour:
       rid: 4705777966128824413
     sequences: []
     editorPosition: {x: 1597, y: 580}
-  - nodeId: Node11_Copy2_Copy1_Copy2
+  - nodeId: Set Parameter6
     nodeGuid: 8905948f06494740b377b2174b303a59
     nodeKind: 2
     phaseIndex: 0
@@ -512,7 +512,7 @@ MonoBehaviour:
       rid: 4705777966128824414
     sequences: []
     editorPosition: {x: 1786, y: 580}
-  - nodeId: Node11_Copy1_Copy1
+  - nodeId: Set Parameter7
     nodeGuid: 1d990f318ffe4ef48684d3f82217b553
     nodeKind: 2
     phaseIndex: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
       rid: 4705777966128824415
     sequences: []
     editorPosition: {x: 1742, y: 1277}
-  - nodeId: Node12_Copy1_Copy1
+  - nodeId: Action3
     nodeGuid: 31e716fee72c460ca7240785d602533d
     nodeKind: 0
     phaseIndex: 0
@@ -530,7 +530,7 @@ MonoBehaviour:
       rid: 4705777966128824416
     sequences: []
     editorPosition: {x: 1873, y: 1277}
-  - nodeId: Node7_Copy2_Copy1
+  - nodeId: Wait8
     nodeGuid: b76bfcf7ab09443c806ca013e896085a
     nodeKind: 3
     phaseIndex: 0
@@ -539,7 +539,7 @@ MonoBehaviour:
       rid: 4705777966128824417
     sequences: []
     editorPosition: {x: 2043, y: 1277}
-  - nodeId: Node11_Copy2_Copy3_Copy1
+  - nodeId: Set Parameter8
     nodeGuid: cbedf38408d640349061049c2eb2c479
     nodeKind: 2
     phaseIndex: 0
@@ -548,7 +548,7 @@ MonoBehaviour:
       rid: 4705777966128824418
     sequences: []
     editorPosition: {x: 2188, y: 1277}
-  - nodeId: Node11_Copy2_Copy1_Copy2_Copy1
+  - nodeId: Set Parameter9
     nodeGuid: 0a612e45c1df4d5688c76786dbe9478f
     nodeKind: 2
     phaseIndex: 0
@@ -557,7 +557,7 @@ MonoBehaviour:
       rid: 4705777966128824419
     sequences: []
     editorPosition: {x: 2318, y: 1277}
-  - nodeId: Node11_Copy1_Copy2
+  - nodeId: Set Parameter10
     nodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
     nodeKind: 2
     phaseIndex: 0
@@ -566,7 +566,7 @@ MonoBehaviour:
       rid: 4705777966128824420
     sequences: []
     editorPosition: {x: 17, y: 2284}
-  - nodeId: Node12_Copy1_Copy2
+  - nodeId: Action4
     nodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     nodeKind: 0
     phaseIndex: 0
@@ -575,7 +575,7 @@ MonoBehaviour:
       rid: 4705777966128824421
     sequences: []
     editorPosition: {x: 142, y: 2284}
-  - nodeId: Node7_Copy2_Copy2
+  - nodeId: Wait9
     nodeGuid: 60258f26f6e8489eb9ffb1088c891f53
     nodeKind: 3
     phaseIndex: 0
@@ -584,7 +584,7 @@ MonoBehaviour:
       rid: 4705777966128824422
     sequences: []
     editorPosition: {x: 314, y: 2284}
-  - nodeId: Node11_Copy2_Copy3_Copy2
+  - nodeId: Set Parameter11
     nodeGuid: ace94b83b12f458c9445a4719fe51ad6
     nodeKind: 2
     phaseIndex: 0
@@ -593,7 +593,7 @@ MonoBehaviour:
       rid: 4705777966128824423
     sequences: []
     editorPosition: {x: 463, y: 2284}
-  - nodeId: Node11_Copy2_Copy1_Copy2_Copy2
+  - nodeId: Set Parameter12
     nodeGuid: e8b53d1da47047bcac12d1fc226e1d53
     nodeKind: 2
     phaseIndex: 0
@@ -602,7 +602,7 @@ MonoBehaviour:
       rid: 4705777966128824424
     sequences: []
     editorPosition: {x: 593, y: 2284}
-  - nodeId: Node11_Copy1_Copy1_Copy1
+  - nodeId: Set Parameter13
     nodeGuid: 6506837df174493a91d75302e88a1ea3
     nodeKind: 2
     phaseIndex: 0
@@ -611,7 +611,7 @@ MonoBehaviour:
       rid: 4705777966128824429
     sequences: []
     editorPosition: {x: 763, y: 2012}
-  - nodeId: Node7_Copy2_Copy1_Copy1
+  - nodeId: Wait10
     nodeGuid: bd7ef666b55a43f2b50804bf1889da1e
     nodeKind: 3
     phaseIndex: 0
@@ -620,7 +620,7 @@ MonoBehaviour:
       rid: 4705777966128824431
     sequences: []
     editorPosition: {x: 1647, y: 2012}
-  - nodeId: Node11_Copy2_Copy3_Copy1_Copy1
+  - nodeId: Set Parameter14
     nodeGuid: 85f8a72636a54a7b995878ccb89bd82e
     nodeKind: 2
     phaseIndex: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
       rid: 4705777966128824432
     sequences: []
     editorPosition: {x: 1894, y: 2012}
-  - nodeId: Node11_Copy2_Copy3_Copy1_Copy1_Copy1
+  - nodeId: Set Parameter15
     nodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
     nodeKind: 2
     phaseIndex: 0
@@ -638,7 +638,7 @@ MonoBehaviour:
       rid: 4705777966128824440
     sequences: []
     editorPosition: {x: 1137, y: 2012}
-  - nodeId: Node9_Copy1_Copy1
+  - nodeId: Fire Radial Emission2
     nodeGuid: bcf3d485c22c432180fac7eb914bbd0e
     nodeKind: 0
     phaseIndex: 0
@@ -647,7 +647,7 @@ MonoBehaviour:
       rid: 4705777966128824448
     sequences: []
     editorPosition: {x: 1994, y: 1087}
-  - nodeId: Node7_Copy2_Copy1_Copy1_Copy2
+  - nodeId: Wait11
     nodeGuid: d95883e37d63446a9415d90baa899a35
     nodeKind: 3
     phaseIndex: 0
@@ -656,7 +656,7 @@ MonoBehaviour:
       rid: 4705777966128824449
     sequences: []
     editorPosition: {x: 2158, y: 1087}
-  - nodeId: patter5_ani3
+  - nodeId: Set Parameter16
     nodeGuid: 5028a5904c174d138dfd167230259553
     nodeKind: 2
     phaseIndex: 0
@@ -665,7 +665,7 @@ MonoBehaviour:
       rid: 4705777966128824450
     sequences: []
     editorPosition: {x: 2405, y: 1087}
-  - nodeId: patter5_ani2
+  - nodeId: Set Parameter17
     nodeGuid: 25bc687a676346078ac5460530aedb72
     nodeKind: 2
     phaseIndex: 0
@@ -674,7 +674,7 @@ MonoBehaviour:
       rid: 4705777966128824451
     sequences: []
     editorPosition: {x: 1410, y: 1087}
-  - nodeId: Patter5_Wait1
+  - nodeId: Wait12
     nodeGuid: a673207cec4143888ec2528e789b8663
     nodeKind: 3
     phaseIndex: 0
@@ -683,7 +683,7 @@ MonoBehaviour:
       rid: 4705777966128824452
     sequences: []
     editorPosition: {x: 1562, y: 1087}
-  - nodeId: patter5_ani1
+  - nodeId: Set Parameter18
     nodeGuid: 13f9de00d17b47dbb79785b59d38eedf
     nodeKind: 2
     phaseIndex: 0
@@ -692,7 +692,7 @@ MonoBehaviour:
       rid: 4705777966128824455
     sequences: []
     editorPosition: {x: 1115, y: 1087}
-  - nodeId: Node5
+  - nodeId: Play Sfx1
     nodeGuid: 031ec70f30a14eeebf783a3157d6d19d
     nodeKind: 3
     phaseIndex: 0
@@ -701,7 +701,7 @@ MonoBehaviour:
       rid: 4705777988380393622
     sequences: []
     editorPosition: {x: 1715, y: 1087}
-  - nodeId: Patter5_Wait1_Copy1
+  - nodeId: Wait13
     nodeGuid: 7bf735e05cfa41169d9cf9f17a8d4300
     nodeKind: 3
     phaseIndex: 0
@@ -710,7 +710,7 @@ MonoBehaviour:
       rid: 4705777988380393626
     sequences: []
     editorPosition: {x: 1829, y: 1087}
-  - nodeId: Node9_Copy1_Copy1_Copy1
+  - nodeId: Fire Radial Emission3
     nodeGuid: 3d76238ee24443ec8318b2524078453e
     nodeKind: 0
     phaseIndex: 0
@@ -719,7 +719,7 @@ MonoBehaviour:
       rid: 4705777988380393638
     sequences: []
     editorPosition: {x: 1696, y: 2172}
-  - nodeId: Patter5_Wait1_Copy2
+  - nodeId: Wait14
     nodeGuid: a37245bd978242a789cc22e3686136e5
     nodeKind: 3
     phaseIndex: 0
@@ -728,7 +728,7 @@ MonoBehaviour:
       rid: 4705777988380393639
     sequences: []
     editorPosition: {x: 1264, y: 2172}
-  - nodeId: Node5_Copy1
+  - nodeId: Play Sfx2
     nodeGuid: bc3cc4bc0742418ab1db9da578c5f5d1
     nodeKind: 3
     phaseIndex: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
       rid: 4705777988380393640
     sequences: []
     editorPosition: {x: 1417, y: 2172}
-  - nodeId: Patter5_Wait1_Copy1_Copy1
+  - nodeId: Wait15
     nodeGuid: 97f7ec693db1499da121d19080dbca8a
     nodeKind: 3
     phaseIndex: 0
@@ -746,7 +746,7 @@ MonoBehaviour:
       rid: 4705777988380393641
     sequences: []
     editorPosition: {x: 1531, y: 2172}
-  - nodeId: Node2_Copy1_Copy2
+  - nodeId: Fire Projectile Burst7
     nodeGuid: b2df2bbc03a043a3ba39466025185ad0
     nodeKind: 0
     phaseIndex: 0
@@ -755,7 +755,7 @@ MonoBehaviour:
       rid: 4705777988380393777
     sequences: []
     editorPosition: {x: 17, y: 2592}
-  - nodeId: Patter9_A2
+  - nodeId: Boss Dash16
     nodeGuid: f8b8f5742b384e78a0d6d8a0dfbabba7
     nodeKind: 1
     phaseIndex: 0
@@ -764,7 +764,7 @@ MonoBehaviour:
       rid: 4705777988380393781
     sequences: []
     editorPosition: {x: 62, y: 2455}
-  - nodeId: Pattern9_A1
+  - nodeId: Move Until Player Distance7
     nodeGuid: 8019daadbc3c482298a6db0bb39513e0
     nodeKind: 1
     phaseIndex: 0
@@ -773,7 +773,7 @@ MonoBehaviour:
       rid: 4705777988380393782
     sequences: []
     editorPosition: {x: -123, y: 2455}
-  - nodeId: Node8_Copy2
+  - nodeId: Windup3
     nodeGuid: 874f33b2c9af4064ac58553679b3289c
     nodeKind: 3
     phaseIndex: 0
@@ -782,7 +782,7 @@ MonoBehaviour:
       rid: 4705777988380393799
     sequences: []
     editorPosition: {x: 404, y: 2455}
-  - nodeId: Node9_Copy1_Copy1_Copy2
+  - nodeId: Fire Radial Emission4
     nodeGuid: 28d59dba1e6549a99df166bea52a9b1b
     nodeKind: 0
     phaseIndex: 0
@@ -791,7 +791,7 @@ MonoBehaviour:
       rid: 4705777988380393800
     sequences: []
     editorPosition: {x: 1105, y: 2455}
-  - nodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1
+  - nodeId: Wait16
     nodeGuid: 56fc8b11fc02494c9c7e89652a7bbd85
     nodeKind: 3
     phaseIndex: 0
@@ -800,7 +800,7 @@ MonoBehaviour:
       rid: 4705777988380393801
     sequences: []
     editorPosition: {x: 1269, y: 2455}
-  - nodeId: patter5_ani3_Copy1
+  - nodeId: Set Parameter19
     nodeGuid: 236dbf127a2e45018eba433c7dbad0c8
     nodeKind: 2
     phaseIndex: 0
@@ -809,7 +809,7 @@ MonoBehaviour:
       rid: 4705777988380393802
     sequences: []
     editorPosition: {x: 1516, y: 2455}
-  - nodeId: patter5_ani2_Copy1
+  - nodeId: Set Parameter20
     nodeGuid: 81f75cd7b457464d9ca17dafbffde3bb
     nodeKind: 2
     phaseIndex: 0
@@ -818,7 +818,7 @@ MonoBehaviour:
       rid: 4705777988380393803
     sequences: []
     editorPosition: {x: 521, y: 2455}
-  - nodeId: Patter5_Wait1_Copy3
+  - nodeId: Wait17
     nodeGuid: c1f59dabf4dc4e88b0490c816c9bd2e2
     nodeKind: 3
     phaseIndex: 0
@@ -827,7 +827,7 @@ MonoBehaviour:
       rid: 4705777988380393804
     sequences: []
     editorPosition: {x: 673, y: 2455}
-  - nodeId: patter5_ani1_Copy1
+  - nodeId: Set Parameter21
     nodeGuid: 76eddb127f214a89bc6b549088eab609
     nodeKind: 2
     phaseIndex: 0
@@ -836,7 +836,7 @@ MonoBehaviour:
       rid: 4705777988380393805
     sequences: []
     editorPosition: {x: 226, y: 2455}
-  - nodeId: Node5_Copy2
+  - nodeId: Play Sfx3
     nodeGuid: 7e5ae3423c654bd0935dc83cb9a196d3
     nodeKind: 3
     phaseIndex: 0
@@ -845,7 +845,7 @@ MonoBehaviour:
       rid: 4705777988380393806
     sequences: []
     editorPosition: {x: 826, y: 2455}
-  - nodeId: Patter5_Wait1_Copy1_Copy2
+  - nodeId: Wait18
     nodeGuid: 87f9d2e245394373b754a53217ce636c
     nodeKind: 3
     phaseIndex: 0
@@ -854,7 +854,7 @@ MonoBehaviour:
       rid: 4705777988380393807
     sequences: []
     editorPosition: {x: 940, y: 2455}
-  - nodeId: Node2_Copy1_Copy2_Copy2
+  - nodeId: Fire Projectile Burst8
     nodeGuid: 194c63584bf54eb18d5d817d74beba9d
     nodeKind: 0
     phaseIndex: 0
@@ -863,7 +863,7 @@ MonoBehaviour:
       rid: 4705777988380393856
     sequences: []
     editorPosition: {x: 1873, y: 2590}
-  - nodeId: Patter9_A2_Copy1
+  - nodeId: Boss Dash17
     nodeGuid: 43f42c214782492a87d377021cdfccbf
     nodeKind: 1
     phaseIndex: 0
@@ -872,7 +872,7 @@ MonoBehaviour:
       rid: 4705777988380393857
     sequences: []
     editorPosition: {x: 1918, y: 2453}
-  - nodeId: Pattern9_A1_Copy1
+  - nodeId: Move Until Player Distance8
     nodeGuid: 1ae7b21ef27642269fdbc08268cbd4b4
     nodeKind: 1
     phaseIndex: 0
@@ -881,7 +881,7 @@ MonoBehaviour:
       rid: 4705777988380393858
     sequences: []
     editorPosition: {x: 1733, y: 2453}
-  - nodeId: Node8_Copy2_Copy1
+  - nodeId: Windup4
     nodeGuid: 306f89fcc1a04bbfba3a14a43d2c8f20
     nodeKind: 3
     phaseIndex: 0
@@ -890,7 +890,7 @@ MonoBehaviour:
       rid: 4705777988380393859
     sequences: []
     editorPosition: {x: 2260, y: 2453}
-  - nodeId: Node9_Copy1_Copy1_Copy2_Copy1
+  - nodeId: Fire Radial Emission5
     nodeGuid: 5f1b513d4eca4d418162596d469680dc
     nodeKind: 0
     phaseIndex: 0
@@ -899,7 +899,7 @@ MonoBehaviour:
       rid: 4705777988380393860
     sequences: []
     editorPosition: {x: 2961, y: 2453}
-  - nodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1
+  - nodeId: Wait19
     nodeGuid: ed1d12b1f4b0470391f9a093bccb0379
     nodeKind: 3
     phaseIndex: 0
@@ -908,7 +908,7 @@ MonoBehaviour:
       rid: 4705777988380393861
     sequences: []
     editorPosition: {x: 3125, y: 2453}
-  - nodeId: patter5_ani3_Copy1_Copy1
+  - nodeId: Set Parameter22
     nodeGuid: 3ec12c6321a84e67acfaf764ac970f11
     nodeKind: 2
     phaseIndex: 0
@@ -917,7 +917,7 @@ MonoBehaviour:
       rid: 4705777988380393862
     sequences: []
     editorPosition: {x: 3372, y: 2453}
-  - nodeId: patter5_ani2_Copy1_Copy1
+  - nodeId: Set Parameter23
     nodeGuid: 7579a8f77f144419b58944c0861f73a2
     nodeKind: 2
     phaseIndex: 0
@@ -926,7 +926,7 @@ MonoBehaviour:
       rid: 4705777988380393863
     sequences: []
     editorPosition: {x: 2377, y: 2453}
-  - nodeId: Patter5_Wait1_Copy3_Copy1
+  - nodeId: Wait20
     nodeGuid: e2c8187e70fd479e9db2d9c44d2c8937
     nodeKind: 3
     phaseIndex: 0
@@ -935,7 +935,7 @@ MonoBehaviour:
       rid: 4705777988380393864
     sequences: []
     editorPosition: {x: 2529, y: 2453}
-  - nodeId: patter5_ani1_Copy1_Copy1
+  - nodeId: Set Parameter24
     nodeGuid: ee22a8a22a15418287b290cddf178915
     nodeKind: 2
     phaseIndex: 0
@@ -944,7 +944,7 @@ MonoBehaviour:
       rid: 4705777988380393865
     sequences: []
     editorPosition: {x: 2082, y: 2453}
-  - nodeId: Node5_Copy2_Copy1
+  - nodeId: Play Sfx4
     nodeGuid: d00cd9d414694f2688db75c1cf705cfd
     nodeKind: 3
     phaseIndex: 0
@@ -953,7 +953,7 @@ MonoBehaviour:
       rid: 4705777988380393866
     sequences: []
     editorPosition: {x: 2682, y: 2453}
-  - nodeId: Patter5_Wait1_Copy1_Copy2_Copy1
+  - nodeId: Wait21
     nodeGuid: a0f4f853715c4597bd3a86828399aaa2
     nodeKind: 3
     phaseIndex: 0
@@ -962,7 +962,7 @@ MonoBehaviour:
       rid: 4705777988380393867
     sequences: []
     editorPosition: {x: 2796, y: 2453}
-  - nodeId: P8_A2
+  - nodeId: Windup5
     nodeGuid: 013309de455c4d429b8ba45a6cc43902
     nodeKind: 3
     phaseIndex: 0
@@ -971,7 +971,7 @@ MonoBehaviour:
       rid: 4705777988380393876
     sequences: []
     editorPosition: {x: -1508, y: 2455}
-  - nodeId: Node9_Copy1_Copy1_Copy2_Copy1_Copy1
+  - nodeId: Fire Radial Emission6
     nodeGuid: 56ec7cfe1f9b44e69bcd612efa8974a5
     nodeKind: 0
     phaseIndex: 0
@@ -980,7 +980,7 @@ MonoBehaviour:
       rid: 4705777988380393877
     sequences: []
     editorPosition: {x: -807, y: 2455}
-  - nodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1_Copy1
+  - nodeId: Wait22
     nodeGuid: 4bcf7375469b4367972ee9e3078fd1ca
     nodeKind: 3
     phaseIndex: 0
@@ -989,7 +989,7 @@ MonoBehaviour:
       rid: 4705777988380393878
     sequences: []
     editorPosition: {x: -643, y: 2455}
-  - nodeId: patter5_ani3_Copy1_Copy1_Copy1
+  - nodeId: Set Parameter25
     nodeGuid: 17a4a4fb5c794298bbbe36377648bdda
     nodeKind: 2
     phaseIndex: 0
@@ -998,7 +998,7 @@ MonoBehaviour:
       rid: 4705777988380393879
     sequences: []
     editorPosition: {x: -396, y: 2455}
-  - nodeId: P8_A3
+  - nodeId: Set Parameter26
     nodeGuid: eb76215f83974175a082f09df5a8341f
     nodeKind: 2
     phaseIndex: 0
@@ -1007,7 +1007,7 @@ MonoBehaviour:
       rid: 4705777988380393880
     sequences: []
     editorPosition: {x: -1391, y: 2455}
-  - nodeId: P8_A4
+  - nodeId: Wait23
     nodeGuid: 6c807fc0e9114ac2a8574b688f948d41
     nodeKind: 3
     phaseIndex: 0
@@ -1016,7 +1016,7 @@ MonoBehaviour:
       rid: 4705777988380393881
     sequences: []
     editorPosition: {x: -1239, y: 2455}
-  - nodeId: P8_A1
+  - nodeId: Set Parameter27
     nodeGuid: 31cbc544efcb4afc8417eb967620a081
     nodeKind: 2
     phaseIndex: 0
@@ -1025,7 +1025,7 @@ MonoBehaviour:
       rid: 4705777988380393882
     sequences: []
     editorPosition: {x: -1686, y: 2455}
-  - nodeId: Node5_Copy2_Copy1_Copy1
+  - nodeId: Play Sfx5
     nodeGuid: fa6e3181904c4b19a7c343765bed7f89
     nodeKind: 3
     phaseIndex: 0
@@ -1034,7 +1034,7 @@ MonoBehaviour:
       rid: 4705777988380393883
     sequences: []
     editorPosition: {x: -1086, y: 2455}
-  - nodeId: Patter5_Wait1_Copy1_Copy2_Copy1_Copy1
+  - nodeId: Wait24
     nodeGuid: c3dc39dfc5e3418ba14d2dbb7f9e216a
     nodeKind: 3
     phaseIndex: 0
@@ -1043,7 +1043,7 @@ MonoBehaviour:
       rid: 4705777988380393884
     sequences: []
     editorPosition: {x: -972, y: 2455}
-  - nodeId: Node2_Copy1_Copy1
+  - nodeId: Fire Projectile Burst9
     nodeGuid: 4fd243a203ca456d92b9148c49d26d87
     nodeKind: 0
     phaseIndex: 0
@@ -1052,7 +1052,7 @@ MonoBehaviour:
       rid: 4705777988380393889
     sequences: []
     editorPosition: {x: 250, y: 46}
-  - nodeId: Node3_Copy2_Copy1_Copy1
+  - nodeId: Maintain Player Distance6
     nodeGuid: 6f89b729f45f46e0ac0d1e5de2da26ed
     nodeKind: 1
     phaseIndex: 0
@@ -1061,7 +1061,7 @@ MonoBehaviour:
       rid: 4705777988380393894
     sequences: []
     editorPosition: {x: 379, y: 1610}
-  - nodeId: Node1_Copy3_Copy2_Copy2_Copy1
+  - nodeId: Boss Dash18
     nodeGuid: 4c342ed47e044a7ebeefd9b2e285e5a3
     nodeKind: 1
     phaseIndex: 0
@@ -1070,7 +1070,7 @@ MonoBehaviour:
       rid: 4705777988380393895
     sequences: []
     editorPosition: {x: 618, y: 1610}
-  - nodeId: Node4_Copy2_Copy2_Copy1
+  - nodeId: Fire Dash Formation6
     nodeGuid: a370a5cc6edb431098254212a787ce15
     nodeKind: 0
     phaseIndex: 0
@@ -1079,7 +1079,7 @@ MonoBehaviour:
       rid: 4705777988380393896
     sequences: []
     editorPosition: {x: 494, y: 1781}
-  - nodeId: Node4_Copy3_Copy1
+  - nodeId: Fire Dash Formation7
     nodeGuid: a857d7e7bfbb437d8a2803ccd66cf0d7
     nodeKind: 0
     phaseIndex: 0
@@ -1088,7 +1088,7 @@ MonoBehaviour:
       rid: 4705777988380393897
     sequences: []
     editorPosition: {x: 700, y: 1781}
-  - nodeId: Node8_Copy3
+  - nodeId: Windup6
     nodeGuid: 217c9078916e40b0baae155c973f98ce
     nodeKind: 3
     phaseIndex: 0
@@ -1097,7 +1097,7 @@ MonoBehaviour:
       rid: 4705777988380393923
     sequences: []
     editorPosition: {x: 64, y: 2804}
-  - nodeId: Node9_Copy1_Copy1_Copy3
+  - nodeId: Fire Radial Emission7
     nodeGuid: 1cb3fdd9733949d2a8c05b70a84636a1
     nodeKind: 0
     phaseIndex: 0
@@ -1106,7 +1106,7 @@ MonoBehaviour:
       rid: 4705777988380393924
     sequences: []
     editorPosition: {x: 765, y: 2804}
-  - nodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy2
+  - nodeId: Wait25
     nodeGuid: a1f6fe085fc74346a0b2d3b346aa26a2
     nodeKind: 3
     phaseIndex: 0
@@ -1115,7 +1115,7 @@ MonoBehaviour:
       rid: 4705777988380393925
     sequences: []
     editorPosition: {x: 929, y: 2804}
-  - nodeId: patter5_ani3_Copy2
+  - nodeId: Set Parameter28
     nodeGuid: d66610f5c8a74072accfd1ee4ba01bac
     nodeKind: 2
     phaseIndex: 0
@@ -1124,7 +1124,7 @@ MonoBehaviour:
       rid: 4705777988380393926
     sequences: []
     editorPosition: {x: 1226, y: 2804}
-  - nodeId: patter5_ani2_Copy2
+  - nodeId: Set Parameter29
     nodeGuid: cd22d2510b814e33a456f2d850da5cf0
     nodeKind: 2
     phaseIndex: 0
@@ -1133,7 +1133,7 @@ MonoBehaviour:
       rid: 4705777988380393927
     sequences: []
     editorPosition: {x: 181, y: 2804}
-  - nodeId: Patter5_Wait1_Copy4
+  - nodeId: Wait26
     nodeGuid: 092c067024104aec97d7df25872858af
     nodeKind: 3
     phaseIndex: 0
@@ -1142,7 +1142,7 @@ MonoBehaviour:
       rid: 4705777988380393928
     sequences: []
     editorPosition: {x: 333, y: 2804}
-  - nodeId: patter5_ani1_Copy2
+  - nodeId: Set Parameter30
     nodeGuid: d31aba8d12e54d74b0998800a36c5829
     nodeKind: 2
     phaseIndex: 0
@@ -1151,7 +1151,7 @@ MonoBehaviour:
       rid: 4705777988380393929
     sequences: []
     editorPosition: {x: -114, y: 2804}
-  - nodeId: Node5_Copy3
+  - nodeId: Play Sfx6
     nodeGuid: f1d2249d2e8648b5bb72526fa2f7fce7
     nodeKind: 3
     phaseIndex: 0
@@ -1160,7 +1160,7 @@ MonoBehaviour:
       rid: 4705777988380393930
     sequences: []
     editorPosition: {x: 486, y: 2804}
-  - nodeId: Patter5_Wait1_Copy1_Copy3
+  - nodeId: Wait27
     nodeGuid: 13676495a7b34079aff008fac084363b
     nodeKind: 3
     phaseIndex: 0
@@ -1169,7 +1169,7 @@ MonoBehaviour:
       rid: 4705777988380393931
     sequences: []
     editorPosition: {x: 600, y: 2804}
-  - nodeId: Node4_Copy3_Copy2
+  - nodeId: Fire Dash Formation8
     nodeGuid: 4955dd54d82f4b66ada39b4f8e6a106f
     nodeKind: 0
     phaseIndex: 0
@@ -1178,7 +1178,7 @@ MonoBehaviour:
       rid: 4705777988380393945
     sequences: []
     editorPosition: {x: 1644, y: 2948}
-  - nodeId: Node1_Copy3_Copy2_Copy2_Copy2
+  - nodeId: Boss Dash19
     nodeGuid: e68bcf36d1234ad09151f8e23ed5bb92
     nodeKind: 1
     phaseIndex: 0
@@ -1187,7 +1187,7 @@ MonoBehaviour:
       rid: 4705777988380393954
     sequences: []
     editorPosition: {x: 1613, y: 2804}
-  - nodeId: Node7_Copy1_Copy1_Copy1_Copy1
+  - nodeId: Wait28
     nodeGuid: 11fddda48e7b4f338461e50a6b84197c
     nodeKind: 3
     phaseIndex: 0
@@ -1196,7 +1196,7 @@ MonoBehaviour:
       rid: 4705777988380393964
     sequences: []
     editorPosition: {x: 1917, y: 2804}
-  - nodeId: Node11_Copy1_Copy1_Copy2
+  - nodeId: Set Parameter31
     nodeGuid: 16a1eacce1454a6b947374ef61ca1d82
     nodeKind: 2
     phaseIndex: 0
@@ -1205,7 +1205,7 @@ MonoBehaviour:
       rid: 4705777988380393965
     sequences: []
     editorPosition: {x: 2147, y: 2804}
-  - nodeId: Node12_Copy1_Copy1_Copy1
+  - nodeId: Action5
     nodeGuid: d686967b9314491189ed041df7c40bc9
     nodeKind: 0
     phaseIndex: 0
@@ -1214,7 +1214,7 @@ MonoBehaviour:
       rid: 4705777988380393966
     sequences: []
     editorPosition: {x: 2278, y: 2804}
-  - nodeId: Node7_Copy2_Copy1_Copy2
+  - nodeId: Wait29
     nodeGuid: 6ecc19b2218f48959781d696e66880dd
     nodeKind: 3
     phaseIndex: 0
@@ -1223,7 +1223,7 @@ MonoBehaviour:
       rid: 4705777988380393967
     sequences: []
     editorPosition: {x: 2448, y: 2804}
-  - nodeId: Node11_Copy2_Copy3_Copy1_Copy2
+  - nodeId: Set Parameter32
     nodeGuid: 7a4b94e02204486d898d59a24c217ac5
     nodeKind: 2
     phaseIndex: 0
@@ -1232,7 +1232,7 @@ MonoBehaviour:
       rid: 4705777988380393968
     sequences: []
     editorPosition: {x: 2593, y: 2804}
-  - nodeId: Node11_Copy2_Copy1_Copy2_Copy1_Copy1
+  - nodeId: Set Parameter33
     nodeGuid: 34e93466cddd4adfbedcfc5a1f11c116
     nodeKind: 2
     phaseIndex: 0
@@ -1241,7 +1241,7 @@ MonoBehaviour:
       rid: 4705777988380393969
     sequences: []
     editorPosition: {x: 2723, y: 2804}
-  - nodeId: Node6_Copy3_Copy1
+  - nodeId: Move Until Player Distance9
     nodeGuid: 81a6a7740fc144a886f8496ff7ee6ba3
     nodeKind: 1
     phaseIndex: 0
@@ -1260,12 +1260,12 @@ MonoBehaviour:
     - 185e2cafb37140f38c7e4ea79be5a1c9
     - 4fd243a203ca456d92b9148c49d26d87
     nodeIds:
-    - Node2_Copy1
-    - Node1
-    - Node2
-    - Node3_Copy1_Copy1
-    - Node1_Copy1
-    - Node2_Copy1_Copy1
+    - Fire Projectile Burst1
+    - Boss Dash1
+    - Wait1
+    - Maintain Player Distance2
+    - Boss Dash2
+    - Fire Projectile Burst9
   - patternId: Pattern2
     nodeGuids:
     - 442b7f6c09ca4411a6b2017755639bda
@@ -1273,10 +1273,10 @@ MonoBehaviour:
     - 221617aecff84a7e966f781184805a0d
     - 9052884a28bd4972abf00ddf436b845b
     nodeIds:
-    - Node3
-    - Node1_Copy3
-    - Pattern8_A3_2_Copy1
-    - Node4
+    - Maintain Player Distance1
+    - Boss Dash3
+    - Fire Radial Emission1
+    - Fire Dash Formation1
   - patternId: Pattern3
     nodeGuids:
     - dd2c409e76354ed08de7552b29dfee4e
@@ -1294,20 +1294,20 @@ MonoBehaviour:
     - 903239b3d04049078b59a10d20bb9f95
     - 8905948f06494740b377b2174b303a59
     nodeIds:
-    - Node6
-    - Node7_Copy1
-    - Node11
-    - Node12
-    - Node7
-    - Node11_Copy2
-    - Node11_Copy2_Copy1
-    - Node6_Copy1
-    - Node7_Copy1_Copy1
-    - Node11_Copy1
-    - Node12_Copy1
-    - Node7_Copy2
-    - Node11_Copy2_Copy3
-    - Node11_Copy2_Copy1_Copy2
+    - Move Until Player Distance1
+    - Wait3
+    - Set Parameter1
+    - Action1
+    - Wait2
+    - Set Parameter3
+    - Set Parameter4
+    - Move Until Player Distance2
+    - Wait4
+    - Set Parameter2
+    - Action2
+    - Wait7
+    - Set Parameter5
+    - Set Parameter6
   - patternId: Pattern4
     nodeGuids:
     - f9067e3ab9cd4c118f62347c84af469f
@@ -1317,12 +1317,12 @@ MonoBehaviour:
     - a1f246c7ac574f8990fc4a0ca8fb83c8
     - f2e6bdaa9564427d8772f2ec8da7cc27
     nodeIds:
-    - Node3_Copy2
-    - Node1_Copy3_Copy2
-    - Node3_Copy1_Copy3
-    - Node1_Copy3_Copy1_Copy1
-    - Node4_Copy2
-    - Node4_Copy2_Copy1
+    - Maintain Player Distance3
+    - Boss Dash4
+    - Maintain Player Distance4
+    - Boss Dash5
+    - Fire Dash Formation2
+    - Fire Dash Formation3
   - patternId: Pattern5
     nodeGuids:
     - b4288a57c12f4d029fbdd02df164a32e
@@ -1340,20 +1340,20 @@ MonoBehaviour:
     - d95883e37d63446a9415d90baa899a35
     - 5028a5904c174d138dfd167230259553
     nodeIds:
-    - Node6_Copy2
-    - Node1_Copy3_Copy2_Copy1
-    - Node1_Copy3_Copy2_Copy1_Copy1
-    - Node1_Copy3_Copy2_Copy1_Copy2
-    - Node1_Copy3_Copy2_Copy1_Copy3
-    - patter5_ani1
-    - Node8
-    - patter5_ani2
-    - Patter5_Wait1
-    - Node5
-    - Patter5_Wait1_Copy1
-    - Node9_Copy1_Copy1
-    - Node7_Copy2_Copy1_Copy1_Copy2
-    - patter5_ani3
+    - Move Until Player Distance3
+    - Boss Dash6
+    - Boss Dash7
+    - Boss Dash8
+    - Boss Dash9
+    - Set Parameter18
+    - Windup1
+    - Set Parameter17
+    - Wait12
+    - Play Sfx1
+    - Wait13
+    - Fire Radial Emission2
+    - Wait11
+    - Set Parameter16
   - patternId: Pattern6
     nodeGuids:
     - 45b3ee192e41440f9f4eb924fc903862
@@ -1373,22 +1373,22 @@ MonoBehaviour:
     - 2e53978eb2b0423893235d651601d4a9
     - 829650b15d2d48db996405b243c105a4
     nodeIds:
-    - Node6_Copy2_Copy1
-    - Node1_Copy3_Copy2_Copy1_Copy4
-    - Node1_Copy3_Copy2_Copy1_Copy1_Copy1
-    - Node1_Copy3_Copy2_Copy1_Copy2_Copy1
-    - Node1_Copy3_Copy2_Copy1_Copy3_Copy1
-    - Node6_Copy3
-    - Node7_Copy1_Copy1_Copy1
-    - Node11_Copy1_Copy1
-    - Node12_Copy1_Copy1
-    - Node7_Copy2_Copy1
-    - Node11_Copy2_Copy3_Copy1
-    - Node11_Copy2_Copy1_Copy2_Copy1
-    - Node2_Copy1_Copy3
-    - Node2_Copy1_Copy3_Copy1
-    - Node2_Copy1_Copy3_Copy2
-    - Node2_Copy1_Copy3_Copy3
+    - Move Until Player Distance4
+    - Boss Dash10
+    - Boss Dash11
+    - Boss Dash12
+    - Boss Dash13
+    - Move Until Player Distance5
+    - Wait5
+    - Set Parameter7
+    - Action3
+    - Wait8
+    - Set Parameter8
+    - Set Parameter9
+    - Fire Projectile Burst2
+    - Fire Projectile Burst3
+    - Fire Projectile Burst4
+    - Fire Projectile Burst5
   - patternId: Pattern7
     nodeGuids:
     - de96c4c233b94f6db624c65fe92ce58f
@@ -1400,14 +1400,14 @@ MonoBehaviour:
     - a370a5cc6edb431098254212a787ce15
     - a857d7e7bfbb437d8a2803ccd66cf0d7
     nodeIds:
-    - Node3_Copy2_Copy1
-    - Node1_Copy3_Copy2_Copy2
-    - Node3_Copy2_Copy1_Copy1
-    - Node1_Copy3_Copy2_Copy2_Copy1
-    - Node4_Copy2_Copy2
-    - Node4_Copy3
-    - Node4_Copy2_Copy2_Copy1
-    - Node4_Copy3_Copy1
+    - Maintain Player Distance5
+    - Boss Dash14
+    - Maintain Player Distance6
+    - Boss Dash18
+    - Fire Dash Formation4
+    - Fire Dash Formation5
+    - Fire Dash Formation6
+    - Fire Dash Formation7
   - patternId: Pattern8
     nodeGuids:
     - c6a7a186d7d4496487c3e3dea28eefa7
@@ -1429,24 +1429,24 @@ MonoBehaviour:
     - 85f8a72636a54a7b995878ccb89bd82e
     - 5bff9151eda945c296ae94176c48b58d
     nodeIds:
-    - Pattern8_A1
-    - Pattern8_A1_1
-    - Node11_Copy1_Copy2
-    - Node12_Copy1_Copy2
-    - Node7_Copy2_Copy2
-    - Node11_Copy2_Copy3_Copy2
-    - Node11_Copy2_Copy1_Copy2_Copy2
-    - Pattern8_A3_1
-    - Node11_Copy1_Copy1_Copy1
-    - Node8_Copy1
-    - Node11_Copy2_Copy3_Copy1_Copy1_Copy1
-    - Patter5_Wait1_Copy2
-    - Node5_Copy1
-    - Patter5_Wait1_Copy1_Copy1
-    - Node9_Copy1_Copy1_Copy1
-    - Node7_Copy2_Copy1_Copy1
-    - Node11_Copy2_Copy3_Copy1_Copy1
-    - Pattern8_A3_2
+    - Move Until Player Distance6
+    - Wait6
+    - Set Parameter10
+    - Action4
+    - Wait9
+    - Set Parameter11
+    - Set Parameter12
+    - Boss Dash15
+    - Set Parameter13
+    - Windup2
+    - Set Parameter15
+    - Wait14
+    - Play Sfx2
+    - Wait15
+    - Fire Radial Emission3
+    - Wait10
+    - Set Parameter14
+    - Fire Projectile Burst6
   - patternId: Pattern9
     nodeGuids:
     - b2df2bbc03a043a3ba39466025185ad0
@@ -1483,39 +1483,39 @@ MonoBehaviour:
     - ed1d12b1f4b0470391f9a093bccb0379
     - 3ec12c6321a84e67acfaf764ac970f11
     nodeIds:
-    - Node2_Copy1_Copy2
-    - Node2_Copy1_Copy2_Copy2
-    - P8_A1
-    - P8_A2
-    - P8_A3
-    - P8_A4
-    - Node5_Copy2_Copy1_Copy1
-    - Patter5_Wait1_Copy1_Copy2_Copy1_Copy1
-    - Node9_Copy1_Copy1_Copy2_Copy1_Copy1
-    - Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1_Copy1
-    - patter5_ani3_Copy1_Copy1_Copy1
-    - Pattern9_A1
-    - Patter9_A2
-    - patter5_ani1_Copy1
-    - Node8_Copy2
-    - patter5_ani2_Copy1
-    - Patter5_Wait1_Copy3
-    - Node5_Copy2
-    - Patter5_Wait1_Copy1_Copy2
-    - Node9_Copy1_Copy1_Copy2
-    - Node7_Copy2_Copy1_Copy1_Copy2_Copy1
-    - patter5_ani3_Copy1
-    - Pattern9_A1_Copy1
-    - Patter9_A2_Copy1
-    - patter5_ani1_Copy1_Copy1
-    - Node8_Copy2_Copy1
-    - patter5_ani2_Copy1_Copy1
-    - Patter5_Wait1_Copy3_Copy1
-    - Node5_Copy2_Copy1
-    - Patter5_Wait1_Copy1_Copy2_Copy1
-    - Node9_Copy1_Copy1_Copy2_Copy1
-    - Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1
-    - patter5_ani3_Copy1_Copy1
+    - Fire Projectile Burst7
+    - Fire Projectile Burst8
+    - Set Parameter27
+    - Windup5
+    - Set Parameter26
+    - Wait23
+    - Play Sfx5
+    - Wait24
+    - Fire Radial Emission6
+    - Wait22
+    - Set Parameter25
+    - Move Until Player Distance7
+    - Boss Dash16
+    - Set Parameter21
+    - Windup3
+    - Set Parameter20
+    - Wait17
+    - Play Sfx3
+    - Wait18
+    - Fire Radial Emission4
+    - Wait16
+    - Set Parameter19
+    - Move Until Player Distance8
+    - Boss Dash17
+    - Set Parameter24
+    - Windup4
+    - Set Parameter23
+    - Wait20
+    - Play Sfx4
+    - Wait21
+    - Fire Radial Emission5
+    - Wait19
+    - Set Parameter22
   - patternId: Pattern10
     nodeGuids:
     - d31aba8d12e54d74b0998800a36c5829
@@ -1537,24 +1537,24 @@ MonoBehaviour:
     - 34e93466cddd4adfbedcfc5a1f11c116
     - 4955dd54d82f4b66ada39b4f8e6a106f
     nodeIds:
-    - patter5_ani1_Copy2
-    - Node8_Copy3
-    - patter5_ani2_Copy2
-    - Patter5_Wait1_Copy4
-    - Node5_Copy3
-    - Patter5_Wait1_Copy1_Copy3
-    - Node9_Copy1_Copy1_Copy3
-    - Node7_Copy2_Copy1_Copy1_Copy2_Copy2
-    - patter5_ani3_Copy2
-    - Node6_Copy3_Copy1
-    - Node1_Copy3_Copy2_Copy2_Copy2
-    - Node7_Copy1_Copy1_Copy1_Copy1
-    - Node11_Copy1_Copy1_Copy2
-    - Node12_Copy1_Copy1_Copy1
-    - Node7_Copy2_Copy1_Copy2
-    - Node11_Copy2_Copy3_Copy1_Copy2
-    - Node11_Copy2_Copy1_Copy2_Copy1_Copy1
-    - Node4_Copy3_Copy2
+    - Set Parameter30
+    - Windup6
+    - Set Parameter29
+    - Wait26
+    - Play Sfx6
+    - Wait27
+    - Fire Radial Emission7
+    - Wait25
+    - Set Parameter28
+    - Move Until Player Distance9
+    - Boss Dash19
+    - Wait28
+    - Set Parameter31
+    - Action5
+    - Wait29
+    - Set Parameter32
+    - Set Parameter33
+    - Fire Dash Formation8
   phases:
   - phaseIndex: 0
     selectionMode: 3
@@ -1613,875 +1613,875 @@ MonoBehaviour:
   transitions:
   - fromNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
-    fromNodeId: Node3_Copy1_Copy1
-    toNodeId: Node1_Copy1
+    fromNodeId: Maintain Player Distance2
+    toNodeId: Boss Dash2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8be623fe70134e86a5718bfa00394cb7
     toNodeGuid: dbd1b9f57dc34140b36f7939ff09a3b0
-    fromNodeId: Node1
-    toNodeId: Node2
+    fromNodeId: Boss Dash1
+    toNodeId: Wait1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: dbd1b9f57dc34140b36f7939ff09a3b0
     toNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
-    fromNodeId: Node2
-    toNodeId: Node3_Copy1_Copy1
+    fromNodeId: Wait1
+    toNodeId: Maintain Player Distance2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f9067e3ab9cd4c118f62347c84af469f
     toNodeGuid: febd09203906470486d228f80fc19c01
-    fromNodeId: Node3_Copy2
-    toNodeId: Node1_Copy3_Copy2
+    fromNodeId: Maintain Player Distance3
+    toNodeId: Boss Dash4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 062ef5e90ce8471c9058edbc8d18e523
     toNodeGuid: a6d837d55c884ba583edce60f2ae0e5f
-    fromNodeId: Node3_Copy1_Copy3
-    toNodeId: Node1_Copy3_Copy1_Copy1
+    fromNodeId: Maintain Player Distance4
+    toNodeId: Boss Dash5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: febd09203906470486d228f80fc19c01
     toNodeGuid: 062ef5e90ce8471c9058edbc8d18e523
-    fromNodeId: Node1_Copy3_Copy2
-    toNodeId: Node3_Copy1_Copy3
+    fromNodeId: Boss Dash4
+    toNodeId: Maintain Player Distance4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 25beafe770334374b83e7b18a4dee9ce
     toNodeGuid: 835d47bd52614c36bf7343bfb5ca3255
-    fromNodeId: Node1_Copy3_Copy2_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy1
+    fromNodeId: Boss Dash6
+    toNodeId: Boss Dash7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     toNodeGuid: 8f62d2ec9fdc4384b6871602c338b0e3
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy2
+    fromNodeId: Boss Dash7
+    toNodeId: Boss Dash8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8f62d2ec9fdc4384b6871602c338b0e3
     toNodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy2
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy3
+    fromNodeId: Boss Dash8
+    toNodeId: Boss Dash9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: b4288a57c12f4d029fbdd02df164a32e
     toNodeGuid: 25beafe770334374b83e7b18a4dee9ce
-    fromNodeId: Node6_Copy2
-    toNodeId: Node1_Copy3_Copy2_Copy1
+    fromNodeId: Move Until Player Distance3
+    toNodeId: Boss Dash6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     toNodeGuid: 30cd97d6b32c40778ee567e351bf4cc9
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy4
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy1_Copy1
+    fromNodeId: Boss Dash10
+    toNodeId: Boss Dash11
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 30cd97d6b32c40778ee567e351bf4cc9
     toNodeGuid: d79fb59e26364649a80c98c326ad044d
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy1_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy2_Copy1
+    fromNodeId: Boss Dash11
+    toNodeId: Boss Dash12
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d79fb59e26364649a80c98c326ad044d
     toNodeGuid: 32166bb39f414bbbad5793c88c365ad4
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy2_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy3_Copy1
+    fromNodeId: Boss Dash12
+    toNodeId: Boss Dash13
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 45b3ee192e41440f9f4eb924fc903862
     toNodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
-    fromNodeId: Node6_Copy2_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy1_Copy4
+    fromNodeId: Move Until Player Distance4
+    toNodeId: Boss Dash10
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 32166bb39f414bbbad5793c88c365ad4
     toNodeGuid: 9d360200b2194cc4830bccdd7e622e9d
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy3_Copy1
-    toNodeId: Node6_Copy3
+    fromNodeId: Boss Dash13
+    toNodeId: Move Until Player Distance5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: de96c4c233b94f6db624c65fe92ce58f
     toNodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
-    fromNodeId: Node3_Copy2_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy2
+    fromNodeId: Maintain Player Distance5
+    toNodeId: Boss Dash14
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     toNodeGuid: 221617aecff84a7e966f781184805a0d
-    fromNodeId: Node1_Copy3
-    toNodeId: Pattern8_A3_2_Copy1
+    fromNodeId: Boss Dash3
+    toNodeId: Fire Radial Emission1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: dd2c409e76354ed08de7552b29dfee4e
     toNodeGuid: e7d379c95d9c4859ad3179669179dfe2
-    fromNodeId: Node6
-    toNodeId: Node7_Copy1
+    fromNodeId: Move Until Player Distance1
+    toNodeId: Wait3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     toNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
-    fromNodeId: Node6_Copy1
-    toNodeId: Node7_Copy1_Copy1
+    fromNodeId: Move Until Player Distance2
+    toNodeId: Wait4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9d360200b2194cc4830bccdd7e622e9d
     toNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
-    fromNodeId: Node6_Copy3
-    toNodeId: Node7_Copy1_Copy1_Copy1
+    fromNodeId: Move Until Player Distance5
+    toNodeId: Wait5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c6a7a186d7d4496487c3e3dea28eefa7
     toNodeGuid: 3ab2497c3b984870834e7e4e1012795a
-    fromNodeId: Pattern8_A1
-    toNodeId: Pattern8_A1_1
+    fromNodeId: Move Until Player Distance6
+    toNodeId: Wait6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
     toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
-    fromNodeId: Node11
-    toNodeId: Node12
+    fromNodeId: Set Parameter1
+    toNodeId: Action1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e7d379c95d9c4859ad3179669179dfe2
     toNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
-    fromNodeId: Node7_Copy1
-    toNodeId: Node11
+    fromNodeId: Wait3
+    toNodeId: Set Parameter1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e72d87a6892c448482ba264c5e1b98e0
     toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
-    fromNodeId: Node12
-    toNodeId: Node7
+    fromNodeId: Action1
+    toNodeId: Wait2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1c806044cde744fda9762e94d5aae37e
     toNodeGuid: a7bf4538a4cd492585324f85bd904841
-    fromNodeId: Node11_Copy1
-    toNodeId: Node12_Copy1
+    fromNodeId: Set Parameter2
+    toNodeId: Action2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
     toNodeGuid: 1c806044cde744fda9762e94d5aae37e
-    fromNodeId: Node7_Copy1_Copy1
-    toNodeId: Node11_Copy1
+    fromNodeId: Wait4
+    toNodeId: Set Parameter2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     toNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
-    fromNodeId: Node11_Copy2
-    toNodeId: Node11_Copy2_Copy1
+    fromNodeId: Set Parameter3
+    toNodeId: Set Parameter4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     toNodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
-    fromNodeId: Node7
-    toNodeId: Node11_Copy2
+    fromNodeId: Wait2
+    toNodeId: Set Parameter3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 903239b3d04049078b59a10d20bb9f95
     toNodeGuid: 8905948f06494740b377b2174b303a59
-    fromNodeId: Node11_Copy2_Copy3
-    toNodeId: Node11_Copy2_Copy1_Copy2
+    fromNodeId: Set Parameter5
+    toNodeId: Set Parameter6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d8e19f1aff984433b0efa0e801f90d96
     toNodeGuid: 903239b3d04049078b59a10d20bb9f95
-    fromNodeId: Node7_Copy2
-    toNodeId: Node11_Copy2_Copy3
+    fromNodeId: Wait7
+    toNodeId: Set Parameter5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: a7bf4538a4cd492585324f85bd904841
     toNodeGuid: d8e19f1aff984433b0efa0e801f90d96
-    fromNodeId: Node12_Copy1
-    toNodeId: Node7_Copy2
+    fromNodeId: Action2
+    toNodeId: Wait7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1d990f318ffe4ef48684d3f82217b553
     toNodeGuid: 31e716fee72c460ca7240785d602533d
-    fromNodeId: Node11_Copy1_Copy1
-    toNodeId: Node12_Copy1_Copy1
+    fromNodeId: Set Parameter7
+    toNodeId: Action3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: cbedf38408d640349061049c2eb2c479
     toNodeGuid: 0a612e45c1df4d5688c76786dbe9478f
-    fromNodeId: Node11_Copy2_Copy3_Copy1
-    toNodeId: Node11_Copy2_Copy1_Copy2_Copy1
+    fromNodeId: Set Parameter8
+    toNodeId: Set Parameter9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: b76bfcf7ab09443c806ca013e896085a
     toNodeGuid: cbedf38408d640349061049c2eb2c479
-    fromNodeId: Node7_Copy2_Copy1
-    toNodeId: Node11_Copy2_Copy3_Copy1
+    fromNodeId: Wait8
+    toNodeId: Set Parameter8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 31e716fee72c460ca7240785d602533d
     toNodeGuid: b76bfcf7ab09443c806ca013e896085a
-    fromNodeId: Node12_Copy1_Copy1
-    toNodeId: Node7_Copy2_Copy1
+    fromNodeId: Action3
+    toNodeId: Wait8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     toNodeGuid: 1d990f318ffe4ef48684d3f82217b553
-    fromNodeId: Node7_Copy1_Copy1_Copy1
-    toNodeId: Node11_Copy1_Copy1
+    fromNodeId: Wait5
+    toNodeId: Set Parameter7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
     toNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
-    fromNodeId: Node11_Copy1_Copy2
-    toNodeId: Node12_Copy1_Copy2
+    fromNodeId: Set Parameter10
+    toNodeId: Action4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ace94b83b12f458c9445a4719fe51ad6
     toNodeGuid: e8b53d1da47047bcac12d1fc226e1d53
-    fromNodeId: Node11_Copy2_Copy3_Copy2
-    toNodeId: Node11_Copy2_Copy1_Copy2_Copy2
+    fromNodeId: Set Parameter11
+    toNodeId: Set Parameter12
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
     toNodeGuid: ace94b83b12f458c9445a4719fe51ad6
-    fromNodeId: Node7_Copy2_Copy2
-    toNodeId: Node11_Copy2_Copy3_Copy2
+    fromNodeId: Wait9
+    toNodeId: Set Parameter11
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     toNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
-    fromNodeId: Node12_Copy1_Copy2
-    toNodeId: Node7_Copy2_Copy2
+    fromNodeId: Action4
+    toNodeId: Wait9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 3ab2497c3b984870834e7e4e1012795a
     toNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
-    fromNodeId: Pattern8_A1_1
-    toNodeId: Node11_Copy1_Copy2
+    fromNodeId: Wait6
+    toNodeId: Set Parameter10
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e8b53d1da47047bcac12d1fc226e1d53
     toNodeGuid: 273309f2f610471b8717081b30d02179
-    fromNodeId: Node11_Copy2_Copy1_Copy2_Copy2
-    toNodeId: Pattern8_A3_1
+    fromNodeId: Set Parameter12
+    toNodeId: Boss Dash15
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: bd7ef666b55a43f2b50804bf1889da1e
     toNodeGuid: 85f8a72636a54a7b995878ccb89bd82e
-    fromNodeId: Node7_Copy2_Copy1_Copy1
-    toNodeId: Node11_Copy2_Copy3_Copy1_Copy1
+    fromNodeId: Wait10
+    toNodeId: Set Parameter14
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 273309f2f610471b8717081b30d02179
     toNodeGuid: 6506837df174493a91d75302e88a1ea3
-    fromNodeId: Pattern8_A3_1
-    toNodeId: Node11_Copy1_Copy1_Copy1
+    fromNodeId: Boss Dash15
+    toNodeId: Set Parameter13
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6506837df174493a91d75302e88a1ea3
     toNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
-    fromNodeId: Node11_Copy1_Copy1_Copy1
-    toNodeId: Node8_Copy1
+    fromNodeId: Set Parameter13
+    toNodeId: Windup2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
     toNodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
-    fromNodeId: Node8_Copy1
-    toNodeId: Node11_Copy2_Copy3_Copy1_Copy1_Copy1
+    fromNodeId: Windup2
+    toNodeId: Set Parameter15
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d95883e37d63446a9415d90baa899a35
     toNodeGuid: 5028a5904c174d138dfd167230259553
-    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy2
-    toNodeId: patter5_ani3
+    fromNodeId: Wait11
+    toNodeId: Set Parameter16
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: bcf3d485c22c432180fac7eb914bbd0e
     toNodeGuid: d95883e37d63446a9415d90baa899a35
-    fromNodeId: Node9_Copy1_Copy1
-    toNodeId: Node7_Copy2_Copy1_Copy1_Copy2
+    fromNodeId: Fire Radial Emission2
+    toNodeId: Wait11
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 25bc687a676346078ac5460530aedb72
     toNodeGuid: a673207cec4143888ec2528e789b8663
-    fromNodeId: patter5_ani2
-    toNodeId: Patter5_Wait1
+    fromNodeId: Set Parameter17
+    toNodeId: Wait12
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9aca0817834c4c7891e79f35869aba73
     toNodeGuid: 25bc687a676346078ac5460530aedb72
-    fromNodeId: Node8
-    toNodeId: patter5_ani2
+    fromNodeId: Windup1
+    toNodeId: Set Parameter17
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
     toNodeGuid: 13f9de00d17b47dbb79785b59d38eedf
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy3
-    toNodeId: patter5_ani1
+    fromNodeId: Boss Dash9
+    toNodeId: Set Parameter18
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 13f9de00d17b47dbb79785b59d38eedf
     toNodeGuid: 9aca0817834c4c7891e79f35869aba73
-    fromNodeId: patter5_ani1
-    toNodeId: Node8
+    fromNodeId: Set Parameter18
+    toNodeId: Windup1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 442b7f6c09ca4411a6b2017755639bda
     toNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
-    fromNodeId: Node3
-    toNodeId: Node1_Copy3
+    fromNodeId: Maintain Player Distance1
+    toNodeId: Boss Dash3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: a673207cec4143888ec2528e789b8663
     toNodeGuid: 031ec70f30a14eeebf783a3157d6d19d
-    fromNodeId: Patter5_Wait1
-    toNodeId: Node5
+    fromNodeId: Wait12
+    toNodeId: Play Sfx1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 031ec70f30a14eeebf783a3157d6d19d
     toNodeGuid: 7bf735e05cfa41169d9cf9f17a8d4300
-    fromNodeId: Node5
-    toNodeId: Patter5_Wait1_Copy1
+    fromNodeId: Play Sfx1
+    toNodeId: Wait13
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 7bf735e05cfa41169d9cf9f17a8d4300
     toNodeGuid: bcf3d485c22c432180fac7eb914bbd0e
-    fromNodeId: Patter5_Wait1_Copy1
-    toNodeId: Node9_Copy1_Copy1
+    fromNodeId: Wait13
+    toNodeId: Fire Radial Emission2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: a37245bd978242a789cc22e3686136e5
     toNodeGuid: bc3cc4bc0742418ab1db9da578c5f5d1
-    fromNodeId: Patter5_Wait1_Copy2
-    toNodeId: Node5_Copy1
+    fromNodeId: Wait14
+    toNodeId: Play Sfx2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: bc3cc4bc0742418ab1db9da578c5f5d1
     toNodeGuid: 97f7ec693db1499da121d19080dbca8a
-    fromNodeId: Node5_Copy1
-    toNodeId: Patter5_Wait1_Copy1_Copy1
+    fromNodeId: Play Sfx2
+    toNodeId: Wait15
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 97f7ec693db1499da121d19080dbca8a
     toNodeGuid: 3d76238ee24443ec8318b2524078453e
-    fromNodeId: Patter5_Wait1_Copy1_Copy1
-    toNodeId: Node9_Copy1_Copy1_Copy1
+    fromNodeId: Wait15
+    toNodeId: Fire Radial Emission3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
     toNodeGuid: a37245bd978242a789cc22e3686136e5
-    fromNodeId: Node11_Copy2_Copy3_Copy1_Copy1_Copy1
-    toNodeId: Patter5_Wait1_Copy2
+    fromNodeId: Set Parameter15
+    toNodeId: Wait14
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 3d76238ee24443ec8318b2524078453e
     toNodeGuid: bd7ef666b55a43f2b50804bf1889da1e
-    fromNodeId: Node9_Copy1_Copy1_Copy1
-    toNodeId: Node7_Copy2_Copy1_Copy1
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Wait10
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
     toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
-    fromNodeId: Node11_Copy2_Copy1
-    toNodeId: Node6_Copy1
+    fromNodeId: Set Parameter4
+    toNodeId: Move Until Player Distance2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8019daadbc3c482298a6db0bb39513e0
     toNodeGuid: f8b8f5742b384e78a0d6d8a0dfbabba7
-    fromNodeId: Pattern9_A1
-    toNodeId: Patter9_A2
+    fromNodeId: Move Until Player Distance7
+    toNodeId: Boss Dash16
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 56fc8b11fc02494c9c7e89652a7bbd85
     toNodeGuid: 236dbf127a2e45018eba433c7dbad0c8
-    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1
-    toNodeId: patter5_ani3_Copy1
+    fromNodeId: Wait16
+    toNodeId: Set Parameter19
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 28d59dba1e6549a99df166bea52a9b1b
     toNodeGuid: 56fc8b11fc02494c9c7e89652a7bbd85
-    fromNodeId: Node9_Copy1_Copy1_Copy2
-    toNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1
+    fromNodeId: Fire Radial Emission4
+    toNodeId: Wait16
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 81f75cd7b457464d9ca17dafbffde3bb
     toNodeGuid: c1f59dabf4dc4e88b0490c816c9bd2e2
-    fromNodeId: patter5_ani2_Copy1
-    toNodeId: Patter5_Wait1_Copy3
+    fromNodeId: Set Parameter20
+    toNodeId: Wait17
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 874f33b2c9af4064ac58553679b3289c
     toNodeGuid: 81f75cd7b457464d9ca17dafbffde3bb
-    fromNodeId: Node8_Copy2
-    toNodeId: patter5_ani2_Copy1
+    fromNodeId: Windup3
+    toNodeId: Set Parameter20
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 76eddb127f214a89bc6b549088eab609
     toNodeGuid: 874f33b2c9af4064ac58553679b3289c
-    fromNodeId: patter5_ani1_Copy1
-    toNodeId: Node8_Copy2
+    fromNodeId: Set Parameter21
+    toNodeId: Windup3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c1f59dabf4dc4e88b0490c816c9bd2e2
     toNodeGuid: 7e5ae3423c654bd0935dc83cb9a196d3
-    fromNodeId: Patter5_Wait1_Copy3
-    toNodeId: Node5_Copy2
+    fromNodeId: Wait17
+    toNodeId: Play Sfx3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 7e5ae3423c654bd0935dc83cb9a196d3
     toNodeGuid: 87f9d2e245394373b754a53217ce636c
-    fromNodeId: Node5_Copy2
-    toNodeId: Patter5_Wait1_Copy1_Copy2
+    fromNodeId: Play Sfx3
+    toNodeId: Wait18
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 87f9d2e245394373b754a53217ce636c
     toNodeGuid: 28d59dba1e6549a99df166bea52a9b1b
-    fromNodeId: Patter5_Wait1_Copy1_Copy2
-    toNodeId: Node9_Copy1_Copy1_Copy2
+    fromNodeId: Wait18
+    toNodeId: Fire Radial Emission4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f8b8f5742b384e78a0d6d8a0dfbabba7
     toNodeGuid: 76eddb127f214a89bc6b549088eab609
-    fromNodeId: Patter9_A2
-    toNodeId: patter5_ani1_Copy1
+    fromNodeId: Boss Dash16
+    toNodeId: Set Parameter21
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1ae7b21ef27642269fdbc08268cbd4b4
     toNodeGuid: 43f42c214782492a87d377021cdfccbf
-    fromNodeId: Pattern9_A1_Copy1
-    toNodeId: Patter9_A2_Copy1
+    fromNodeId: Move Until Player Distance8
+    toNodeId: Boss Dash17
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ed1d12b1f4b0470391f9a093bccb0379
     toNodeGuid: 3ec12c6321a84e67acfaf764ac970f11
-    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1
-    toNodeId: patter5_ani3_Copy1_Copy1
+    fromNodeId: Wait19
+    toNodeId: Set Parameter22
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 5f1b513d4eca4d418162596d469680dc
     toNodeGuid: ed1d12b1f4b0470391f9a093bccb0379
-    fromNodeId: Node9_Copy1_Copy1_Copy2_Copy1
-    toNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1
+    fromNodeId: Fire Radial Emission5
+    toNodeId: Wait19
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 7579a8f77f144419b58944c0861f73a2
     toNodeGuid: e2c8187e70fd479e9db2d9c44d2c8937
-    fromNodeId: patter5_ani2_Copy1_Copy1
-    toNodeId: Patter5_Wait1_Copy3_Copy1
+    fromNodeId: Set Parameter23
+    toNodeId: Wait20
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 306f89fcc1a04bbfba3a14a43d2c8f20
     toNodeGuid: 7579a8f77f144419b58944c0861f73a2
-    fromNodeId: Node8_Copy2_Copy1
-    toNodeId: patter5_ani2_Copy1_Copy1
+    fromNodeId: Windup4
+    toNodeId: Set Parameter23
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ee22a8a22a15418287b290cddf178915
     toNodeGuid: 306f89fcc1a04bbfba3a14a43d2c8f20
-    fromNodeId: patter5_ani1_Copy1_Copy1
-    toNodeId: Node8_Copy2_Copy1
+    fromNodeId: Set Parameter24
+    toNodeId: Windup4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e2c8187e70fd479e9db2d9c44d2c8937
     toNodeGuid: d00cd9d414694f2688db75c1cf705cfd
-    fromNodeId: Patter5_Wait1_Copy3_Copy1
-    toNodeId: Node5_Copy2_Copy1
+    fromNodeId: Wait20
+    toNodeId: Play Sfx4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d00cd9d414694f2688db75c1cf705cfd
     toNodeGuid: a0f4f853715c4597bd3a86828399aaa2
-    fromNodeId: Node5_Copy2_Copy1
-    toNodeId: Patter5_Wait1_Copy1_Copy2_Copy1
+    fromNodeId: Play Sfx4
+    toNodeId: Wait21
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: a0f4f853715c4597bd3a86828399aaa2
     toNodeGuid: 5f1b513d4eca4d418162596d469680dc
-    fromNodeId: Patter5_Wait1_Copy1_Copy2_Copy1
-    toNodeId: Node9_Copy1_Copy1_Copy2_Copy1
+    fromNodeId: Wait21
+    toNodeId: Fire Radial Emission5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 43f42c214782492a87d377021cdfccbf
     toNodeGuid: ee22a8a22a15418287b290cddf178915
-    fromNodeId: Patter9_A2_Copy1
-    toNodeId: patter5_ani1_Copy1_Copy1
+    fromNodeId: Boss Dash17
+    toNodeId: Set Parameter24
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 236dbf127a2e45018eba433c7dbad0c8
     toNodeGuid: 1ae7b21ef27642269fdbc08268cbd4b4
-    fromNodeId: patter5_ani3_Copy1
-    toNodeId: Pattern9_A1_Copy1
+    fromNodeId: Set Parameter19
+    toNodeId: Move Until Player Distance8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 4bcf7375469b4367972ee9e3078fd1ca
     toNodeGuid: 17a4a4fb5c794298bbbe36377648bdda
-    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1_Copy1
-    toNodeId: patter5_ani3_Copy1_Copy1_Copy1
+    fromNodeId: Wait22
+    toNodeId: Set Parameter25
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 56ec7cfe1f9b44e69bcd612efa8974a5
     toNodeGuid: 4bcf7375469b4367972ee9e3078fd1ca
-    fromNodeId: Node9_Copy1_Copy1_Copy2_Copy1_Copy1
-    toNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy1_Copy1_Copy1
+    fromNodeId: Fire Radial Emission6
+    toNodeId: Wait22
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: eb76215f83974175a082f09df5a8341f
     toNodeGuid: 6c807fc0e9114ac2a8574b688f948d41
-    fromNodeId: P8_A3
-    toNodeId: P8_A4
+    fromNodeId: Set Parameter26
+    toNodeId: Wait23
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 013309de455c4d429b8ba45a6cc43902
     toNodeGuid: eb76215f83974175a082f09df5a8341f
-    fromNodeId: P8_A2
-    toNodeId: P8_A3
+    fromNodeId: Windup5
+    toNodeId: Set Parameter26
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 31cbc544efcb4afc8417eb967620a081
     toNodeGuid: 013309de455c4d429b8ba45a6cc43902
-    fromNodeId: P8_A1
-    toNodeId: P8_A2
+    fromNodeId: Set Parameter27
+    toNodeId: Windup5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6c807fc0e9114ac2a8574b688f948d41
     toNodeGuid: fa6e3181904c4b19a7c343765bed7f89
-    fromNodeId: P8_A4
-    toNodeId: Node5_Copy2_Copy1_Copy1
+    fromNodeId: Wait23
+    toNodeId: Play Sfx5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: fa6e3181904c4b19a7c343765bed7f89
     toNodeGuid: c3dc39dfc5e3418ba14d2dbb7f9e216a
-    fromNodeId: Node5_Copy2_Copy1_Copy1
-    toNodeId: Patter5_Wait1_Copy1_Copy2_Copy1_Copy1
+    fromNodeId: Play Sfx5
+    toNodeId: Wait24
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c3dc39dfc5e3418ba14d2dbb7f9e216a
     toNodeGuid: 56ec7cfe1f9b44e69bcd612efa8974a5
-    fromNodeId: Patter5_Wait1_Copy1_Copy2_Copy1_Copy1
-    toNodeId: Node9_Copy1_Copy1_Copy2_Copy1_Copy1
+    fromNodeId: Wait24
+    toNodeId: Fire Radial Emission6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 17a4a4fb5c794298bbbe36377648bdda
     toNodeGuid: 8019daadbc3c482298a6db0bb39513e0
-    fromNodeId: patter5_ani3_Copy1_Copy1_Copy1
-    toNodeId: Pattern9_A1
+    fromNodeId: Set Parameter25
+    toNodeId: Move Until Player Distance7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6f89b729f45f46e0ac0d1e5de2da26ed
     toNodeGuid: 4c342ed47e044a7ebeefd9b2e285e5a3
-    fromNodeId: Node3_Copy2_Copy1_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy2_Copy1
+    fromNodeId: Maintain Player Distance6
+    toNodeId: Boss Dash18
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
     toNodeGuid: 6f89b729f45f46e0ac0d1e5de2da26ed
-    fromNodeId: Node1_Copy3_Copy2_Copy2
-    toNodeId: Node3_Copy2_Copy1_Copy1
+    fromNodeId: Boss Dash14
+    toNodeId: Maintain Player Distance6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: a1f6fe085fc74346a0b2d3b346aa26a2
     toNodeGuid: d66610f5c8a74072accfd1ee4ba01bac
-    fromNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy2
-    toNodeId: patter5_ani3_Copy2
+    fromNodeId: Wait25
+    toNodeId: Set Parameter28
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1cb3fdd9733949d2a8c05b70a84636a1
     toNodeGuid: a1f6fe085fc74346a0b2d3b346aa26a2
-    fromNodeId: Node9_Copy1_Copy1_Copy3
-    toNodeId: Node7_Copy2_Copy1_Copy1_Copy2_Copy2
+    fromNodeId: Fire Radial Emission7
+    toNodeId: Wait25
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: cd22d2510b814e33a456f2d850da5cf0
     toNodeGuid: 092c067024104aec97d7df25872858af
-    fromNodeId: patter5_ani2_Copy2
-    toNodeId: Patter5_Wait1_Copy4
+    fromNodeId: Set Parameter29
+    toNodeId: Wait26
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 217c9078916e40b0baae155c973f98ce
     toNodeGuid: cd22d2510b814e33a456f2d850da5cf0
-    fromNodeId: Node8_Copy3
-    toNodeId: patter5_ani2_Copy2
+    fromNodeId: Windup6
+    toNodeId: Set Parameter29
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d31aba8d12e54d74b0998800a36c5829
     toNodeGuid: 217c9078916e40b0baae155c973f98ce
-    fromNodeId: patter5_ani1_Copy2
-    toNodeId: Node8_Copy3
+    fromNodeId: Set Parameter30
+    toNodeId: Windup6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 092c067024104aec97d7df25872858af
     toNodeGuid: f1d2249d2e8648b5bb72526fa2f7fce7
-    fromNodeId: Patter5_Wait1_Copy4
-    toNodeId: Node5_Copy3
+    fromNodeId: Wait26
+    toNodeId: Play Sfx6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f1d2249d2e8648b5bb72526fa2f7fce7
     toNodeGuid: 13676495a7b34079aff008fac084363b
-    fromNodeId: Node5_Copy3
-    toNodeId: Patter5_Wait1_Copy1_Copy3
+    fromNodeId: Play Sfx6
+    toNodeId: Wait27
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 13676495a7b34079aff008fac084363b
     toNodeGuid: 1cb3fdd9733949d2a8c05b70a84636a1
-    fromNodeId: Patter5_Wait1_Copy1_Copy3
-    toNodeId: Node9_Copy1_Copy1_Copy3
+    fromNodeId: Wait27
+    toNodeId: Fire Radial Emission7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 16a1eacce1454a6b947374ef61ca1d82
     toNodeGuid: d686967b9314491189ed041df7c40bc9
-    fromNodeId: Node11_Copy1_Copy1_Copy2
-    toNodeId: Node12_Copy1_Copy1_Copy1
+    fromNodeId: Set Parameter31
+    toNodeId: Action5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 7a4b94e02204486d898d59a24c217ac5
     toNodeGuid: 34e93466cddd4adfbedcfc5a1f11c116
-    fromNodeId: Node11_Copy2_Copy3_Copy1_Copy2
-    toNodeId: Node11_Copy2_Copy1_Copy2_Copy1_Copy1
+    fromNodeId: Set Parameter32
+    toNodeId: Set Parameter33
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6ecc19b2218f48959781d696e66880dd
     toNodeGuid: 7a4b94e02204486d898d59a24c217ac5
-    fromNodeId: Node7_Copy2_Copy1_Copy2
-    toNodeId: Node11_Copy2_Copy3_Copy1_Copy2
+    fromNodeId: Wait29
+    toNodeId: Set Parameter32
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d686967b9314491189ed041df7c40bc9
     toNodeGuid: 6ecc19b2218f48959781d696e66880dd
-    fromNodeId: Node12_Copy1_Copy1_Copy1
-    toNodeId: Node7_Copy2_Copy1_Copy2
+    fromNodeId: Action5
+    toNodeId: Wait29
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 11fddda48e7b4f338461e50a6b84197c
     toNodeGuid: 16a1eacce1454a6b947374ef61ca1d82
-    fromNodeId: Node7_Copy1_Copy1_Copy1_Copy1
-    toNodeId: Node11_Copy1_Copy1_Copy2
+    fromNodeId: Wait28
+    toNodeId: Set Parameter31
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e68bcf36d1234ad09151f8e23ed5bb92
     toNodeGuid: 11fddda48e7b4f338461e50a6b84197c
-    fromNodeId: Node1_Copy3_Copy2_Copy2_Copy2
-    toNodeId: Node7_Copy1_Copy1_Copy1_Copy1
+    fromNodeId: Boss Dash19
+    toNodeId: Wait28
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d66610f5c8a74072accfd1ee4ba01bac
     toNodeGuid: 81a6a7740fc144a886f8496ff7ee6ba3
-    fromNodeId: patter5_ani3_Copy2
-    toNodeId: Node6_Copy3_Copy1
+    fromNodeId: Set Parameter28
+    toNodeId: Move Until Player Distance9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 81a6a7740fc144a886f8496ff7ee6ba3
     toNodeGuid: e68bcf36d1234ad09151f8e23ed5bb92
-    fromNodeId: Node6_Copy3_Copy1
-    toNodeId: Node1_Copy3_Copy2_Copy2_Copy2
+    fromNodeId: Move Until Player Distance9
+    toNodeId: Boss Dash19
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: 8be623fe70134e86a5718bfa00394cb7
     toNodeGuid: 1b40313f298d441c9ee0c7c00c91b3a6
-    fromNodeId: Node1
-    toNodeId: Node2_Copy1
+    fromNodeId: Boss Dash1
+    toNodeId: Fire Projectile Burst1
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: a6d837d55c884ba583edce60f2ae0e5f
     toNodeGuid: f2e6bdaa9564427d8772f2ec8da7cc27
-    fromNodeId: Node1_Copy3_Copy1_Copy1
-    toNodeId: Node4_Copy2_Copy1
+    fromNodeId: Boss Dash5
+    toNodeId: Fire Dash Formation3
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: febd09203906470486d228f80fc19c01
     toNodeGuid: a1f246c7ac574f8990fc4a0ca8fb83c8
-    fromNodeId: Node1_Copy3_Copy2
-    toNodeId: Node4_Copy2
+    fromNodeId: Boss Dash4
+    toNodeId: Fire Dash Formation2
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     toNodeGuid: 69cd2eab21304708aa6edc12de730d30
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy4
-    toNodeId: Node2_Copy1_Copy3
+    fromNodeId: Boss Dash10
+    toNodeId: Fire Projectile Burst2
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 30cd97d6b32c40778ee567e351bf4cc9
     toNodeGuid: d43b737f69114464a386a87607407c56
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy1_Copy1
-    toNodeId: Node2_Copy1_Copy3_Copy1
+    fromNodeId: Boss Dash11
+    toNodeId: Fire Projectile Burst3
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: d79fb59e26364649a80c98c326ad044d
     toNodeGuid: 2e53978eb2b0423893235d651601d4a9
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy2_Copy1
-    toNodeId: Node2_Copy1_Copy3_Copy2
+    fromNodeId: Boss Dash12
+    toNodeId: Fire Projectile Burst4
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 32166bb39f414bbbad5793c88c365ad4
     toNodeGuid: 829650b15d2d48db996405b243c105a4
-    fromNodeId: Node1_Copy3_Copy2_Copy1_Copy3_Copy1
-    toNodeId: Node2_Copy1_Copy3_Copy3
+    fromNodeId: Boss Dash13
+    toNodeId: Fire Projectile Burst5
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
     toNodeGuid: 2790ba62d4a04942b2e6089138b6d8e0
-    fromNodeId: Node1_Copy3_Copy2_Copy2
-    toNodeId: Node4_Copy2_Copy2
+    fromNodeId: Boss Dash14
+    toNodeId: Fire Dash Formation4
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 2790ba62d4a04942b2e6089138b6d8e0
     toNodeGuid: f1d7e09b75f34285b1abae2082197aa2
-    fromNodeId: Node4_Copy2_Copy2
-    toNodeId: Node4_Copy3
+    fromNodeId: Fire Dash Formation4
+    toNodeId: Fire Dash Formation5
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 273309f2f610471b8717081b30d02179
     toNodeGuid: 5bff9151eda945c296ae94176c48b58d
-    fromNodeId: Pattern8_A3_1
-    toNodeId: Pattern8_A3_2
+    fromNodeId: Boss Dash15
+    toNodeId: Fire Projectile Burst6
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     toNodeGuid: 9052884a28bd4972abf00ddf436b845b
-    fromNodeId: Node1_Copy3
-    toNodeId: Node4
+    fromNodeId: Boss Dash3
+    toNodeId: Fire Dash Formation1
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: f8b8f5742b384e78a0d6d8a0dfbabba7
     toNodeGuid: b2df2bbc03a043a3ba39466025185ad0
-    fromNodeId: Patter9_A2
-    toNodeId: Node2_Copy1_Copy2
+    fromNodeId: Boss Dash16
+    toNodeId: Fire Projectile Burst7
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 43f42c214782492a87d377021cdfccbf
     toNodeGuid: 194c63584bf54eb18d5d817d74beba9d
-    fromNodeId: Patter9_A2_Copy1
-    toNodeId: Node2_Copy1_Copy2_Copy2
+    fromNodeId: Boss Dash17
+    toNodeId: Fire Projectile Burst8
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     toNodeGuid: 4fd243a203ca456d92b9148c49d26d87
-    fromNodeId: Node1_Copy1
-    toNodeId: Node2_Copy1_Copy1
+    fromNodeId: Boss Dash2
+    toNodeId: Fire Projectile Burst9
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 4c342ed47e044a7ebeefd9b2e285e5a3
     toNodeGuid: a370a5cc6edb431098254212a787ce15
-    fromNodeId: Node1_Copy3_Copy2_Copy2_Copy1
-    toNodeId: Node4_Copy2_Copy2_Copy1
+    fromNodeId: Boss Dash18
+    toNodeId: Fire Dash Formation6
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: a370a5cc6edb431098254212a787ce15
     toNodeGuid: a857d7e7bfbb437d8a2803ccd66cf0d7
-    fromNodeId: Node4_Copy2_Copy2_Copy1
-    toNodeId: Node4_Copy3_Copy1
+    fromNodeId: Fire Dash Formation6
+    toNodeId: Fire Dash Formation7
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: e68bcf36d1234ad09151f8e23ed5bb92
     toNodeGuid: 4955dd54d82f4b66ada39b4f8e6a106f
-    fromNodeId: Node1_Copy3_Copy2_Copy2_Copy2
-    toNodeId: Node4_Copy3_Copy2
+    fromNodeId: Boss Dash19
+    toNodeId: Fire Dash Formation8
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -2489,6 +2489,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4705777849323225179
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

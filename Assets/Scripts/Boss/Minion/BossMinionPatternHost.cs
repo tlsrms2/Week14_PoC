@@ -149,6 +149,11 @@ namespace Week14.Enemy
             ScheduleNextAutoSummon();
         }
 
+        public IReadOnlyList<Minion> GetControlledMinionsForGraph()
+        {
+            return MinionPatternContext.GetControlledMinions();
+        }
+
         public IEnumerator FireMinionsSequentially(
             BossProjectileSettings projectile,
             int cycleCount,

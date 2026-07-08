@@ -17,7 +17,7 @@ MonoBehaviour:
     colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
     actionCategories: {fileID: 7712345678901234567}
   stateNodes:
-  - nodeId: HogPattern1_Action01
+  - nodeId: Fire Radial Emission1
     nodeGuid: cce343bbf1764ac6b2e62cb3897940e1
     nodeKind: 0
     phaseIndex: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
       rid: 2634811931892908194
     sequences: []
     editorPosition: {x: -163, y: -505}
-  - nodeId: HogPattern2_Action01
+  - nodeId: Start Move Toward Player1
     nodeGuid: 5e140c96e71e49849399dd768f10b275
     nodeKind: 1
     phaseIndex: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
       rid: 2634811931892908195
     sequences: []
     editorPosition: {x: -169, y: -348}
-  - nodeId: HogPattern4_Action01
+  - nodeId: Move Body Root1
     nodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     nodeKind: 1
     phaseIndex: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
       rid: 2634811931892908202
     sequences: []
     editorPosition: {x: -184, y: -56}
-  - nodeId: HogPattern4_Action02
+  - nodeId: Move Body Root2
     nodeGuid: 266779658870470e92d2caaf9062946e
     nodeKind: 1
     phaseIndex: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
       rid: 2634811931892908203
     sequences: []
     editorPosition: {x: 8, y: -52}
-  - nodeId: HogPattern4_Action03
+  - nodeId: Fire Radial Emission2
     nodeGuid: 6b9cb46fa8ff45779719798b81e23367
     nodeKind: 0
     phaseIndex: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
       rid: 2634811931892908204
     sequences: []
     editorPosition: {x: 205, y: -52}
-  - nodeId: HogPattern4_Action05
+  - nodeId: Wait1
     nodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
     nodeKind: 3
     phaseIndex: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
       rid: 2634811931892908205
     sequences: []
     editorPosition: {x: 402, y: -56}
-  - nodeId: HogPattern4_Action06
+  - nodeId: Move Body Root3
     nodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
     nodeKind: 1
     phaseIndex: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
       rid: 2634811931892908206
     sequences: []
     editorPosition: {x: 589, y: -52}
-  - nodeId: HogPattern4_Action07
+  - nodeId: Move Body Root4
     nodeGuid: 05e87771345d40f38b36daeb46a72fe4
     nodeKind: 1
     phaseIndex: 0
@@ -89,7 +89,7 @@ MonoBehaviour:
       rid: 2634811931892908207
     sequences: []
     editorPosition: {x: 786, y: -52}
-  - nodeId: HogPattern4_Action08
+  - nodeId: Fire Radial Emission3
     nodeGuid: ec2d10c5f5b5423291d90c573763374a
     nodeKind: 0
     phaseIndex: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
       rid: 2634811931892908208
     sequences: []
     editorPosition: {x: 990, y: -50}
-  - nodeId: HogPattern4_Action10
+  - nodeId: Wait2
     nodeGuid: 52076fff63ad4879af076bea9518ac7e
     nodeKind: 3
     phaseIndex: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
       rid: 2634811931892908209
     sequences: []
     editorPosition: {x: 1191, y: -45}
-  - nodeId: HogPattern4_Action11
+  - nodeId: Move Body Root5
     nodeGuid: dc151c7ad02d420cbb25278e1af7d217
     nodeKind: 1
     phaseIndex: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
       rid: 2634811931892908210
     sequences: []
     editorPosition: {x: 1380, y: -44}
-  - nodeId: HogPattern4_Action12
+  - nodeId: Move Body Root6
     nodeGuid: dbb3c2a625b54e2194035fb6cd895f88
     nodeKind: 1
     phaseIndex: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
       rid: 2634811931892908211
     sequences: []
     editorPosition: {x: 1570, y: -39}
-  - nodeId: HogPattern4_Action13
+  - nodeId: Fire Radial Emission4
     nodeGuid: 55d7655e94ff40d797850d3ef53faf33
     nodeKind: 0
     phaseIndex: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
       rid: 2634811931892908212
     sequences: []
     editorPosition: {x: 1766, y: -39}
-  - nodeId: HogPattern5_Action01
+  - nodeId: Windup1
     nodeGuid: f64e87439a744250ada746965fef8941
     nodeKind: 3
     phaseIndex: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
       rid: 2634811931892908213
     sequences: []
     editorPosition: {x: -69, y: 111}
-  - nodeId: HogPattern6_Action01
+  - nodeId: Move Body Root7
     nodeGuid: ce4123afab7d4dd1a1006edc046127ae
     nodeKind: 1
     phaseIndex: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
       rid: 2634811931892908215
     sequences: []
     editorPosition: {x: -170, y: 296}
-  - nodeId: HogPattern6_Action02
+  - nodeId: Move Body Root8
     nodeGuid: 95e98c45d91f40ebaa39891809eb0608
     nodeKind: 1
     phaseIndex: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
       rid: 2634811931892908216
     sequences: []
     editorPosition: {x: 24, y: 296}
-  - nodeId: HogPattern6_Action03
+  - nodeId: Fire Radial Emission5
     nodeGuid: 9f8c1fc4eb744cd384a3643ef74d455a
     nodeKind: 0
     phaseIndex: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
       rid: 2634811931892908217
     sequences: []
     editorPosition: {x: 201, y: 296}
-  - nodeId: HogPattern6_Action05
+  - nodeId: Wait3
     nodeGuid: 8dfda553c39943a58e5177d1346527c2
     nodeKind: 3
     phaseIndex: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
       rid: 2634811931892908218
     sequences: []
     editorPosition: {x: 392, y: 290}
-  - nodeId: HogPattern6_Action06
+  - nodeId: Move Body Root9
     nodeGuid: 0acd709aa19344e79ad72ae80ed9fdcb
     nodeKind: 1
     phaseIndex: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
       rid: 2634811931892908219
     sequences: []
     editorPosition: {x: 577, y: 288}
-  - nodeId: HogPattern6_Action07
+  - nodeId: Move Body Root10
     nodeGuid: 7c4770aa65154af98e33055a559f6b7e
     nodeKind: 1
     phaseIndex: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
       rid: 2634811931892908220
     sequences: []
     editorPosition: {x: 768, y: 290}
-  - nodeId: HogPattern6_Action08
+  - nodeId: Fire Radial Emission6
     nodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
     nodeKind: 0
     phaseIndex: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
       rid: 2634811931892908221
     sequences: []
     editorPosition: {x: 951, y: 296}
-  - nodeId: HogPattern6_Action10
+  - nodeId: Wait4
     nodeGuid: 8c27086e8f584597a5bc7125fced5d11
     nodeKind: 3
     phaseIndex: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
       rid: 2634811931892908222
     sequences: []
     editorPosition: {x: 1143, y: 288}
-  - nodeId: HogPattern6_Action11
+  - nodeId: Move Body Root11
     nodeGuid: 7e0bd7072aab4922bcc429c8f2929853
     nodeKind: 1
     phaseIndex: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
       rid: 2634811931892908223
     sequences: []
     editorPosition: {x: 1330, y: 288}
-  - nodeId: HogPattern6_Action12
+  - nodeId: Move Body Root12
     nodeGuid: 67d9c894747a4aaebeda59d6935820c9
     nodeKind: 1
     phaseIndex: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
       rid: 2634811931892908224
     sequences: []
     editorPosition: {x: 1505, y: 288}
-  - nodeId: HogPattern6_Action13
+  - nodeId: Fire Radial Emission7
     nodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
     nodeKind: 0
     phaseIndex: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
       rid: 2634811931892908225
     sequences: []
     editorPosition: {x: 1689, y: 286}
-  - nodeId: HogPattern6_Action15
+  - nodeId: Wait5
     nodeGuid: 93f8a75329124d559a1799f7dda03cdb
     nodeKind: 3
     phaseIndex: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
       rid: 2634811931892908226
     sequences: []
     editorPosition: {x: 1881, y: 286}
-  - nodeId: HogPattern6_Action16
+  - nodeId: Move Body Root13
     nodeGuid: 1d6dbb80b83640088c83456b28f5d70a
     nodeKind: 1
     phaseIndex: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
       rid: 2634811931892908227
     sequences: []
     editorPosition: {x: 2062, y: 290}
-  - nodeId: HogPattern6_Action17
+  - nodeId: Move Body Root14
     nodeGuid: 43cb0c9274d249438ad006337ace37ef
     nodeKind: 1
     phaseIndex: 0
@@ -269,7 +269,7 @@ MonoBehaviour:
       rid: 2634811931892908228
     sequences: []
     editorPosition: {x: 2245, y: 296}
-  - nodeId: HogPattern6_Action18
+  - nodeId: Fire Radial Emission8
     nodeGuid: 2a97dae38643419da32275bdb5c96da2
     nodeKind: 0
     phaseIndex: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
       rid: 2634811931892908229
     sequences: []
     editorPosition: {x: 2432, y: 296}
-  - nodeId: HogPattern6_Action20
+  - nodeId: Wait6
     nodeGuid: e22393eb8224461d82b26890b75ed7a3
     nodeKind: 3
     phaseIndex: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
       rid: 2634811931892908230
     sequences: []
     editorPosition: {x: 2615, y: 296}
-  - nodeId: HogPattern6_Action21
+  - nodeId: Move Body Root15
     nodeGuid: 3600947d532846f994de2a6e69474b44
     nodeKind: 1
     phaseIndex: 0
@@ -296,7 +296,7 @@ MonoBehaviour:
       rid: 2634811931892908231
     sequences: []
     editorPosition: {x: 2804, y: 290}
-  - nodeId: HogPattern6_Action22
+  - nodeId: Move Body Root16
     nodeGuid: 35be3ef8c8d943e58a6387d109e9d4ea
     nodeKind: 1
     phaseIndex: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
       rid: 2634811931892908232
     sequences: []
     editorPosition: {x: 2987, y: 290}
-  - nodeId: HogPattern6_Action23
+  - nodeId: Fire Radial Emission9
     nodeGuid: 012e402336f44732aa1ece9020f26813
     nodeKind: 0
     phaseIndex: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
       rid: 2634811931892908233
     sequences: []
     editorPosition: {x: 3180, y: 294}
-  - nodeId: HogPattern7_Action01
+  - nodeId: Windup2
     nodeGuid: f0e7fffb17a84ecbb13e3a2b7c7b6c6e
     nodeKind: 3
     phaseIndex: 0
@@ -323,7 +323,7 @@ MonoBehaviour:
       rid: 2634811931892908234
     sequences: []
     editorPosition: {x: -170, y: 450}
-  - nodeId: Node2
+  - nodeId: Aim Boss Child At Player1
     nodeGuid: 9e1f9a114f0c49578bd202859577b908
     nodeKind: 3
     phaseIndex: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
       rid: 2634811931892908238
     sequences: []
     editorPosition: {x: -184, y: 107}
-  - nodeId: Node4
+  - nodeId: Aim Boss Child At Player2
     nodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeKind: 3
     phaseIndex: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
       rid: 2634811931892908239
     sequences: []
     editorPosition: {x: 1052, y: -215}
-  - nodeId: Node3
+  - nodeId: Aim Boss Child At Player3
     nodeGuid: 026997160ec14eecbdfa8d663852dc41
     nodeKind: 3
     phaseIndex: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
       rid: 2634811931892908240
     sequences: []
     editorPosition: {x: 378, y: 109}
-  - nodeId: HogPattern2_Action01_FireBurst
+  - nodeId: Fire Projectile Burst1
     nodeGuid: bc17b7c047f7467ea6384f77cc8be044
     nodeKind: 0
     phaseIndex: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
       rid: 2634811931892908196
     sequences: []
     editorPosition: {x: 16, y: -346}
-  - nodeId: HogPattern2_Action01_StopMove
+  - nodeId: Stop Movement1
     nodeGuid: 4f166750756041f1bd28bff0851d3141
     nodeKind: 1
     phaseIndex: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
       rid: 2634811931892908197
     sequences: []
     editorPosition: {x: 256, y: -346}
-  - nodeId: HogPattern3_Action01_Growth
+  - nodeId: Configure Projectile Growth1
     nodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
     nodeKind: 0
     phaseIndex: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
       rid: 2634811931892908199
     sequences: []
     editorPosition: {x: 292, y: -211}
-  - nodeId: HogPattern3_Action01_RadialSplit
+  - nodeId: Configure Radial Split1
     nodeGuid: 6ca8dbed633e4f95814d4d982619d858
     nodeKind: 0
     phaseIndex: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
       rid: 2634811931892908200
     sequences: []
     editorPosition: {x: 539, y: -211}
-  - nodeId: HogPattern3_Action01_WaitCharge
+  - nodeId: Wait Projectile Charge End1
     nodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
     nodeKind: 0
     phaseIndex: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
       rid: 2634811931892908201
     sequences: []
     editorPosition: {x: 788, y: -215}
-  - nodeId: HogPattern5_Action01_FireSweep
+  - nodeId: Fire Sweep Emission1
     nodeGuid: 6ecdb80d596a424b80eae1b965355f04
     nodeKind: 0
     phaseIndex: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
       rid: 2634811931892908214
     sequences: []
     editorPosition: {x: 118, y: 113}
-  - nodeId: HogPattern7_Action01_FireFan
+  - nodeId: Fire Fan Emission1
     nodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     nodeKind: 0
     phaseIndex: 0
@@ -413,7 +413,7 @@ MonoBehaviour:
       rid: 2634811931892908235
     sequences: []
     editorPosition: {x: 18, y: 456}
-  - nodeId: HogPattern7_Action01_FireSecondary
+  - nodeId: Fire Projectile Burst2
     nodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
     nodeKind: 0
     phaseIndex: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
       rid: 2634811931892908236
     sequences: []
     editorPosition: {x: 376, y: 454}
-  - nodeId: Node1
+  - nodeId: Aim Boss Child At Player4
     nodeGuid: 9f129c30acf04730b54c4a4a2916738d
     nodeKind: 3
     phaseIndex: 0
@@ -431,7 +431,7 @@ MonoBehaviour:
       rid: 2634811931892908243
     sequences: []
     editorPosition: {x: -171, y: -205}
-  - nodeId: HogPattern8_Action01
+  - nodeId: Fire Projectile1
     nodeGuid: bc948940258f474bbb864273b4c94147
     nodeKind: 0
     phaseIndex: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
       rid: 5830051031957897314
     sequences: []
     editorPosition: {x: -166, y: 592}
-  - nodeId: HogPattern8_Action02
+  - nodeId: Fire Projectile2
     nodeGuid: 4d4c777b10d748b4aef300dc52dae234
     nodeKind: 0
     phaseIndex: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
       rid: 5830051031957897315
     sequences: []
     editorPosition: {x: 206, y: 592}
-  - nodeId: HogPattern8_Wait01
+  - nodeId: Wait7
     nodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
     nodeKind: 3
     phaseIndex: 0
@@ -458,7 +458,7 @@ MonoBehaviour:
       rid: 5830051031957897316
     sequences: []
     editorPosition: {x: 23, y: 590}
-  - nodeId: HogPattern8_Action03
+  - nodeId: Fire Projectile3
     nodeGuid: d731207df0924bb985ae011d9a897f60
     nodeKind: 0
     phaseIndex: 0
@@ -467,7 +467,7 @@ MonoBehaviour:
       rid: 5830051031957897317
     sequences: []
     editorPosition: {x: 578, y: 588}
-  - nodeId: HogPattern8_Wait02
+  - nodeId: Wait8
     nodeGuid: 6073531e69744f6dad7877e5ff9f25b0
     nodeKind: 3
     phaseIndex: 0
@@ -476,7 +476,7 @@ MonoBehaviour:
       rid: 5830051031957897318
     sequences: []
     editorPosition: {x: 399, y: 590}
-  - nodeId: HogPattern8_Action04
+  - nodeId: Fire Projectile4
     nodeGuid: 657ce8a70222473485a7835f4bd97d00
     nodeKind: 0
     phaseIndex: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
       rid: 5830051031957897319
     sequences: []
     editorPosition: {x: 950, y: 592}
-  - nodeId: HogPattern8_Wait03
+  - nodeId: Wait9
     nodeGuid: e1459056c764436ba482e779533a7a6a
     nodeKind: 3
     phaseIndex: 0
@@ -494,7 +494,7 @@ MonoBehaviour:
       rid: 5830051031957897320
     sequences: []
     editorPosition: {x: 773, y: 590}
-  - nodeId: HogPattern8_Wait04
+  - nodeId: Wait10
     nodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
     nodeKind: 3
     phaseIndex: 0
@@ -503,7 +503,7 @@ MonoBehaviour:
       rid: 5830051031957897321
     sequences: []
     editorPosition: {x: 1145, y: 592}
-  - nodeId: HogPattern8_Action05
+  - nodeId: Fire Projectile5
     nodeGuid: faa2dc5f3f8f410893003ab68637810d
     nodeKind: 0
     phaseIndex: 0
@@ -512,7 +512,7 @@ MonoBehaviour:
       rid: 5830051031957897322
     sequences: []
     editorPosition: {x: 1330, y: 594}
-  - nodeId: Node5
+  - nodeId: Wait11
     nodeGuid: e330ece8d47f4556a7bed8e7095c0461
     nodeKind: 3
     phaseIndex: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
       rid: 5830051031957897355
     sequences: []
     editorPosition: {x: 253, y: 452}
-  - nodeId: HogPattern3_Action01_SpawnChargedProjectile
+  - nodeId: Spawn Charged Projectile1
     nodeGuid: c5e098adc418431c97fe263c92282899
     nodeKind: 0
     phaseIndex: 0
@@ -535,16 +535,16 @@ MonoBehaviour:
     nodeGuids:
     - cce343bbf1764ac6b2e62cb3897940e1
     nodeIds:
-    - HogPattern1_Action01
+    - Fire Radial Emission1
   - patternId: Pattern2
     nodeGuids:
     - 5e140c96e71e49849399dd768f10b275
     - bc17b7c047f7467ea6384f77cc8be044
     - 4f166750756041f1bd28bff0851d3141
     nodeIds:
-    - HogPattern2_Action01
-    - HogPattern2_Action01_FireBurst
-    - HogPattern2_Action01_StopMove
+    - Start Move Toward Player1
+    - Fire Projectile Burst1
+    - Stop Movement1
   - patternId: Pattern3
     nodeGuids:
     - 9f129c30acf04730b54c4a4a2916738d
@@ -554,12 +554,12 @@ MonoBehaviour:
     - 69c1183ac8c64355bc30c31a8e0359e9
     - 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeIds:
-    - Node1
-    - HogPattern3_Action01_SpawnChargedProjectile
-    - HogPattern3_Action01_Growth
-    - HogPattern3_Action01_RadialSplit
-    - HogPattern3_Action01_WaitCharge
-    - Node4
+    - Aim Boss Child At Player4
+    - Spawn Charged Projectile1
+    - Configure Projectile Growth1
+    - Configure Radial Split1
+    - Wait Projectile Charge End1
+    - Aim Boss Child At Player2
   - patternId: Pattern4
     nodeGuids:
     - a4ba62b19fcb47859e32d9982ee907cc
@@ -574,17 +574,17 @@ MonoBehaviour:
     - dbb3c2a625b54e2194035fb6cd895f88
     - 55d7655e94ff40d797850d3ef53faf33
     nodeIds:
-    - HogPattern4_Action01
-    - HogPattern4_Action02
-    - HogPattern4_Action03
-    - HogPattern4_Action05
-    - HogPattern4_Action06
-    - HogPattern4_Action07
-    - HogPattern4_Action08
-    - HogPattern4_Action10
-    - HogPattern4_Action11
-    - HogPattern4_Action12
-    - HogPattern4_Action13
+    - Move Body Root1
+    - Move Body Root2
+    - Fire Radial Emission2
+    - Wait1
+    - Move Body Root3
+    - Move Body Root4
+    - Fire Radial Emission3
+    - Wait2
+    - Move Body Root5
+    - Move Body Root6
+    - Fire Radial Emission4
   - patternId: Pattern5
     nodeGuids:
     - 9e1f9a114f0c49578bd202859577b908
@@ -592,10 +592,10 @@ MonoBehaviour:
     - 6ecdb80d596a424b80eae1b965355f04
     - 026997160ec14eecbdfa8d663852dc41
     nodeIds:
-    - Node2
-    - HogPattern5_Action01
-    - HogPattern5_Action01_FireSweep
-    - Node3
+    - Aim Boss Child At Player1
+    - Windup1
+    - Fire Sweep Emission1
+    - Aim Boss Child At Player3
   - patternId: Pattern6
     nodeGuids:
     - ce4123afab7d4dd1a1006edc046127ae
@@ -618,25 +618,25 @@ MonoBehaviour:
     - 35be3ef8c8d943e58a6387d109e9d4ea
     - 012e402336f44732aa1ece9020f26813
     nodeIds:
-    - HogPattern6_Action01
-    - HogPattern6_Action02
-    - HogPattern6_Action03
-    - HogPattern6_Action05
-    - HogPattern6_Action06
-    - HogPattern6_Action07
-    - HogPattern6_Action08
-    - HogPattern6_Action10
-    - HogPattern6_Action11
-    - HogPattern6_Action12
-    - HogPattern6_Action13
-    - HogPattern6_Action15
-    - HogPattern6_Action16
-    - HogPattern6_Action17
-    - HogPattern6_Action18
-    - HogPattern6_Action20
-    - HogPattern6_Action21
-    - HogPattern6_Action22
-    - HogPattern6_Action23
+    - Move Body Root7
+    - Move Body Root8
+    - Fire Radial Emission5
+    - Wait3
+    - Move Body Root9
+    - Move Body Root10
+    - Fire Radial Emission6
+    - Wait4
+    - Move Body Root11
+    - Move Body Root12
+    - Fire Radial Emission7
+    - Wait5
+    - Move Body Root13
+    - Move Body Root14
+    - Fire Radial Emission8
+    - Wait6
+    - Move Body Root15
+    - Move Body Root16
+    - Fire Radial Emission9
   - patternId: Pattern7
     nodeGuids:
     - f0e7fffb17a84ecbb13e3a2b7c7b6c6e
@@ -644,10 +644,10 @@ MonoBehaviour:
     - e330ece8d47f4556a7bed8e7095c0461
     - 429e7d5f9ff1419982a16a6cb5654f6a
     nodeIds:
-    - HogPattern7_Action01
-    - HogPattern7_Action01_FireFan
-    - Node5
-    - HogPattern7_Action01_FireSecondary
+    - Windup2
+    - Fire Fan Emission1
+    - Wait11
+    - Fire Projectile Burst2
   - patternId: Pattern8
     nodeGuids:
     - bc948940258f474bbb864273b4c94147
@@ -660,15 +660,15 @@ MonoBehaviour:
     - 96a3f6d17ed24aae9564b78df86d86e6
     - faa2dc5f3f8f410893003ab68637810d
     nodeIds:
-    - HogPattern8_Action01
-    - HogPattern8_Wait01
-    - HogPattern8_Action02
-    - HogPattern8_Wait02
-    - HogPattern8_Action03
-    - HogPattern8_Wait03
-    - HogPattern8_Action04
-    - HogPattern8_Wait04
-    - HogPattern8_Action05
+    - Fire Projectile1
+    - Wait7
+    - Fire Projectile2
+    - Wait8
+    - Fire Projectile3
+    - Wait9
+    - Fire Projectile4
+    - Wait10
+    - Fire Projectile5
   phases:
   - phaseIndex: 0
     selectionMode: 4
@@ -731,344 +731,344 @@ MonoBehaviour:
   transitions:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: 266779658870470e92d2caaf9062946e
-    fromNodeId: HogPattern4_Action01
-    toNodeId: HogPattern4_Action02
+    fromNodeId: Move Body Root1
+    toNodeId: Move Body Root2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 266779658870470e92d2caaf9062946e
     toNodeGuid: 6b9cb46fa8ff45779719798b81e23367
-    fromNodeId: HogPattern4_Action02
-    toNodeId: HogPattern4_Action03
+    fromNodeId: Move Body Root2
+    toNodeId: Fire Radial Emission2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
     toNodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
-    fromNodeId: HogPattern4_Action05
-    toNodeId: HogPattern4_Action06
+    fromNodeId: Wait1
+    toNodeId: Move Body Root3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
     toNodeGuid: 05e87771345d40f38b36daeb46a72fe4
-    fromNodeId: HogPattern4_Action06
-    toNodeId: HogPattern4_Action07
+    fromNodeId: Move Body Root3
+    toNodeId: Move Body Root4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 05e87771345d40f38b36daeb46a72fe4
     toNodeGuid: ec2d10c5f5b5423291d90c573763374a
-    fromNodeId: HogPattern4_Action07
-    toNodeId: HogPattern4_Action08
+    fromNodeId: Move Body Root4
+    toNodeId: Fire Radial Emission3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 52076fff63ad4879af076bea9518ac7e
     toNodeGuid: dc151c7ad02d420cbb25278e1af7d217
-    fromNodeId: HogPattern4_Action10
-    toNodeId: HogPattern4_Action11
+    fromNodeId: Wait2
+    toNodeId: Move Body Root5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: dc151c7ad02d420cbb25278e1af7d217
     toNodeGuid: dbb3c2a625b54e2194035fb6cd895f88
-    fromNodeId: HogPattern4_Action11
-    toNodeId: HogPattern4_Action12
+    fromNodeId: Move Body Root5
+    toNodeId: Move Body Root6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: dbb3c2a625b54e2194035fb6cd895f88
     toNodeGuid: 55d7655e94ff40d797850d3ef53faf33
-    fromNodeId: HogPattern4_Action12
-    toNodeId: HogPattern4_Action13
+    fromNodeId: Move Body Root6
+    toNodeId: Fire Radial Emission4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ce4123afab7d4dd1a1006edc046127ae
     toNodeGuid: 95e98c45d91f40ebaa39891809eb0608
-    fromNodeId: HogPattern6_Action01
-    toNodeId: HogPattern6_Action02
+    fromNodeId: Move Body Root7
+    toNodeId: Move Body Root8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 95e98c45d91f40ebaa39891809eb0608
     toNodeGuid: 9f8c1fc4eb744cd384a3643ef74d455a
-    fromNodeId: HogPattern6_Action02
-    toNodeId: HogPattern6_Action03
+    fromNodeId: Move Body Root8
+    toNodeId: Fire Radial Emission5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8dfda553c39943a58e5177d1346527c2
     toNodeGuid: 0acd709aa19344e79ad72ae80ed9fdcb
-    fromNodeId: HogPattern6_Action05
-    toNodeId: HogPattern6_Action06
+    fromNodeId: Wait3
+    toNodeId: Move Body Root9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 0acd709aa19344e79ad72ae80ed9fdcb
     toNodeGuid: 7c4770aa65154af98e33055a559f6b7e
-    fromNodeId: HogPattern6_Action06
-    toNodeId: HogPattern6_Action07
+    fromNodeId: Move Body Root9
+    toNodeId: Move Body Root10
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 7c4770aa65154af98e33055a559f6b7e
     toNodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
-    fromNodeId: HogPattern6_Action07
-    toNodeId: HogPattern6_Action08
+    fromNodeId: Move Body Root10
+    toNodeId: Fire Radial Emission6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 8c27086e8f584597a5bc7125fced5d11
     toNodeGuid: 7e0bd7072aab4922bcc429c8f2929853
-    fromNodeId: HogPattern6_Action10
-    toNodeId: HogPattern6_Action11
+    fromNodeId: Wait4
+    toNodeId: Move Body Root11
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 7e0bd7072aab4922bcc429c8f2929853
     toNodeGuid: 67d9c894747a4aaebeda59d6935820c9
-    fromNodeId: HogPattern6_Action11
-    toNodeId: HogPattern6_Action12
+    fromNodeId: Move Body Root11
+    toNodeId: Move Body Root12
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 67d9c894747a4aaebeda59d6935820c9
     toNodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
-    fromNodeId: HogPattern6_Action12
-    toNodeId: HogPattern6_Action13
+    fromNodeId: Move Body Root12
+    toNodeId: Fire Radial Emission7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 93f8a75329124d559a1799f7dda03cdb
     toNodeGuid: 1d6dbb80b83640088c83456b28f5d70a
-    fromNodeId: HogPattern6_Action15
-    toNodeId: HogPattern6_Action16
+    fromNodeId: Wait5
+    toNodeId: Move Body Root13
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1d6dbb80b83640088c83456b28f5d70a
     toNodeGuid: 43cb0c9274d249438ad006337ace37ef
-    fromNodeId: HogPattern6_Action16
-    toNodeId: HogPattern6_Action17
+    fromNodeId: Move Body Root13
+    toNodeId: Move Body Root14
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 43cb0c9274d249438ad006337ace37ef
     toNodeGuid: 2a97dae38643419da32275bdb5c96da2
-    fromNodeId: HogPattern6_Action17
-    toNodeId: HogPattern6_Action18
+    fromNodeId: Move Body Root14
+    toNodeId: Fire Radial Emission8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e22393eb8224461d82b26890b75ed7a3
     toNodeGuid: 3600947d532846f994de2a6e69474b44
-    fromNodeId: HogPattern6_Action20
-    toNodeId: HogPattern6_Action21
+    fromNodeId: Wait6
+    toNodeId: Move Body Root15
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 3600947d532846f994de2a6e69474b44
     toNodeGuid: 35be3ef8c8d943e58a6387d109e9d4ea
-    fromNodeId: HogPattern6_Action21
-    toNodeId: HogPattern6_Action22
+    fromNodeId: Move Body Root15
+    toNodeId: Move Body Root16
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 35be3ef8c8d943e58a6387d109e9d4ea
     toNodeGuid: 012e402336f44732aa1ece9020f26813
-    fromNodeId: HogPattern6_Action22
-    toNodeId: HogPattern6_Action23
+    fromNodeId: Move Body Root16
+    toNodeId: Fire Radial Emission9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6b9cb46fa8ff45779719798b81e23367
     toNodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
-    fromNodeId: HogPattern4_Action03
-    toNodeId: HogPattern4_Action05
+    fromNodeId: Fire Radial Emission2
+    toNodeId: Wait1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ec2d10c5f5b5423291d90c573763374a
     toNodeGuid: 52076fff63ad4879af076bea9518ac7e
-    fromNodeId: HogPattern4_Action08
-    toNodeId: HogPattern4_Action10
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Wait2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9f8c1fc4eb744cd384a3643ef74d455a
     toNodeGuid: 8dfda553c39943a58e5177d1346527c2
-    fromNodeId: HogPattern6_Action03
-    toNodeId: HogPattern6_Action05
+    fromNodeId: Fire Radial Emission5
+    toNodeId: Wait3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
     toNodeGuid: 8c27086e8f584597a5bc7125fced5d11
-    fromNodeId: HogPattern6_Action08
-    toNodeId: HogPattern6_Action10
+    fromNodeId: Fire Radial Emission6
+    toNodeId: Wait4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
     toNodeGuid: 93f8a75329124d559a1799f7dda03cdb
-    fromNodeId: HogPattern6_Action13
-    toNodeId: HogPattern6_Action15
+    fromNodeId: Fire Radial Emission7
+    toNodeId: Wait5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 2a97dae38643419da32275bdb5c96da2
     toNodeGuid: e22393eb8224461d82b26890b75ed7a3
-    fromNodeId: HogPattern6_Action18
-    toNodeId: HogPattern6_Action20
+    fromNodeId: Fire Radial Emission8
+    toNodeId: Wait6
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9e1f9a114f0c49578bd202859577b908
     toNodeGuid: f64e87439a744250ada746965fef8941
-    fromNodeId: Node2
-    toNodeId: HogPattern5_Action01
+    fromNodeId: Aim Boss Child At Player1
+    toNodeId: Windup1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6ecdb80d596a424b80eae1b965355f04
     toNodeGuid: 026997160ec14eecbdfa8d663852dc41
-    fromNodeId: HogPattern5_Action01_FireSweep
-    toNodeId: Node3
+    fromNodeId: Fire Sweep Emission1
+    toNodeId: Aim Boss Child At Player3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 5e140c96e71e49849399dd768f10b275
     toNodeGuid: bc17b7c047f7467ea6384f77cc8be044
-    fromNodeId: HogPattern2_Action01
-    toNodeId: HogPattern2_Action01_FireBurst
+    fromNodeId: Start Move Toward Player1
+    toNodeId: Fire Projectile Burst1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
     toNodeGuid: 6ca8dbed633e4f95814d4d982619d858
-    fromNodeId: HogPattern3_Action01_Growth
-    toNodeId: HogPattern3_Action01_RadialSplit
+    fromNodeId: Configure Projectile Growth1
+    toNodeId: Configure Radial Split1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6ca8dbed633e4f95814d4d982619d858
     toNodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
-    fromNodeId: HogPattern3_Action01_RadialSplit
-    toNodeId: HogPattern3_Action01_WaitCharge
+    fromNodeId: Configure Radial Split1
+    toNodeId: Wait Projectile Charge End1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f64e87439a744250ada746965fef8941
     toNodeGuid: 6ecdb80d596a424b80eae1b965355f04
-    fromNodeId: HogPattern5_Action01
-    toNodeId: HogPattern5_Action01_FireSweep
+    fromNodeId: Windup1
+    toNodeId: Fire Sweep Emission1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: bc17b7c047f7467ea6384f77cc8be044
     toNodeGuid: 4f166750756041f1bd28bff0851d3141
-    fromNodeId: HogPattern2_Action01_FireBurst
-    toNodeId: HogPattern2_Action01_StopMove
+    fromNodeId: Fire Projectile Burst1
+    toNodeId: Stop Movement1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: bc948940258f474bbb864273b4c94147
     toNodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
-    fromNodeId: HogPattern8_Action01
-    toNodeId: HogPattern8_Wait01
+    fromNodeId: Fire Projectile1
+    toNodeId: Wait7
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
     toNodeGuid: 4d4c777b10d748b4aef300dc52dae234
-    fromNodeId: HogPattern8_Wait01
-    toNodeId: HogPattern8_Action02
+    fromNodeId: Wait7
+    toNodeId: Fire Projectile2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6073531e69744f6dad7877e5ff9f25b0
     toNodeGuid: d731207df0924bb985ae011d9a897f60
-    fromNodeId: HogPattern8_Wait02
-    toNodeId: HogPattern8_Action03
+    fromNodeId: Wait8
+    toNodeId: Fire Projectile3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 4d4c777b10d748b4aef300dc52dae234
     toNodeGuid: 6073531e69744f6dad7877e5ff9f25b0
-    fromNodeId: HogPattern8_Action02
-    toNodeId: HogPattern8_Wait02
+    fromNodeId: Fire Projectile2
+    toNodeId: Wait8
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e1459056c764436ba482e779533a7a6a
     toNodeGuid: 657ce8a70222473485a7835f4bd97d00
-    fromNodeId: HogPattern8_Wait03
-    toNodeId: HogPattern8_Action04
+    fromNodeId: Wait9
+    toNodeId: Fire Projectile4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d731207df0924bb985ae011d9a897f60
     toNodeGuid: e1459056c764436ba482e779533a7a6a
-    fromNodeId: HogPattern8_Action03
-    toNodeId: HogPattern8_Wait03
+    fromNodeId: Fire Projectile3
+    toNodeId: Wait9
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 657ce8a70222473485a7835f4bd97d00
     toNodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
-    fromNodeId: HogPattern8_Action04
-    toNodeId: HogPattern8_Wait04
+    fromNodeId: Fire Projectile4
+    toNodeId: Wait10
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
     toNodeGuid: faa2dc5f3f8f410893003ab68637810d
-    fromNodeId: HogPattern8_Wait04
-    toNodeId: HogPattern8_Action05
+    fromNodeId: Wait10
+    toNodeId: Fire Projectile5
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f0e7fffb17a84ecbb13e3a2b7c7b6c6e
     toNodeGuid: 1a42c347f9284d4fac5955d3a99642fe
-    fromNodeId: HogPattern7_Action01
-    toNodeId: HogPattern7_Action01_FireFan
+    fromNodeId: Windup2
+    toNodeId: Fire Fan Emission1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     toNodeGuid: e330ece8d47f4556a7bed8e7095c0461
-    fromNodeId: HogPattern7_Action01_FireFan
-    toNodeId: Node5
+    fromNodeId: Fire Fan Emission1
+    toNodeId: Wait11
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e330ece8d47f4556a7bed8e7095c0461
     toNodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
-    fromNodeId: Node5
-    toNodeId: HogPattern7_Action01_FireSecondary
+    fromNodeId: Wait11
+    toNodeId: Fire Projectile Burst2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 9f129c30acf04730b54c4a4a2916738d
     toNodeGuid: c5e098adc418431c97fe263c92282899
-    fromNodeId: Node1
-    toNodeId: HogPattern3_Action01_SpawnChargedProjectile
+    fromNodeId: Aim Boss Child At Player4
+    toNodeId: Spawn Charged Projectile1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c5e098adc418431c97fe263c92282899
     toNodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
-    fromNodeId: HogPattern3_Action01_SpawnChargedProjectile
-    toNodeId: HogPattern3_Action01_Growth
+    fromNodeId: Spawn Charged Projectile1
+    toNodeId: Configure Projectile Growth1
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
     toNodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
-    fromNodeId: HogPattern3_Action01_WaitCharge
-    toNodeId: Node4
+    fromNodeId: Wait Projectile Charge End1
+    toNodeId: Aim Boss Child At Player2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2207,7 +2207,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 2
-        startNodeId: Node1
+        startNodeId: Aim Boss Child At Player4
         targetPath: 
         activateOnStart: 1
         flipYByFacing: 1
@@ -2217,7 +2217,7 @@ MonoBehaviour:
       type: {class: AimBossChildAtPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         mode: 2
-        startNodeId: Node2
+        startNodeId: Aim Boss Child At Player1
         targetPath: 
         activateOnStart: 1
         flipYByFacing: 1

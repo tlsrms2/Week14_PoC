@@ -12,7 +12,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            if (ShouldAimAtPlayerOnLaunch())
+            if (ShouldTurnTowardPlayerOnLaunch())
             {
                 AimAtPlayerWhileCharging();
             }
@@ -109,6 +109,7 @@ namespace Week14.Combat
             replacement.splitSpeedMultiplier = splitSpeedMultiplier;
             replacement.splitRadiusMultiplier = splitRadiusMultiplier;
             replacement.splitLifetimeMultiplier = splitLifetimeMultiplier;
+            replacement.preserveLaunchDirectionOnLaunch = preserveLaunchDirectionOnLaunch;
             replacement.Launched = Launched;
             replacement.RadialSplit = RadialSplit;
             replacement.RadialSplitImminent = RadialSplitImminent;
@@ -155,7 +156,15 @@ namespace Week14.Combat
                 destroyDelay = Mathf.Max(0.01f, projectileTrail.time);
             }
 
-            Destroy(gameObject, destroyDelay);
+            if (pooledByProjectilePool)
+            {
+                OnProjectileReturnedToPool();
+                ProjectilePool.Release(this, destroyDelay);
+            }
+            else
+            {
+                Destroy(gameObject, destroyDelay);
+            }
         }
 
     }

@@ -53,7 +53,7 @@ namespace Week14.Combat
 
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
-            PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            PlayerProjectile projectile = ProjectilePool.Get(prefab, position, Quaternion.Euler(0f, 0f, angle));
             if (!projectile.Initialize(
                     owner,
                     fireDirection,
@@ -67,7 +67,7 @@ namespace Week14.Combat
                     isSkillShot,
                     restoresBulletsOnParry))
             {
-                Destroy(projectile.gameObject);
+                ProjectilePool.Release(projectile);
                 return null;
             }
 
@@ -92,6 +92,12 @@ namespace Week14.Combat
             bool nextIsSkillShot,
             bool nextRestoresBulletsOnParry = true)
         {
+            RestorePooledComponents();
+            resolved = false;
+            isDestroying = false;
+            forcedParryTarget = null;
+            forcedParryTargetId = 0;
+            forcedParryResolveAt = 0f;
             owner = nextOwner;
             projectileSpeed = speed;
             bulletDamage = nextBulletDamage;
@@ -275,12 +281,18 @@ namespace Week14.Combat
             EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
             if (enemyProjectile != null)
             {
-                if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
+                if (enemyProjectile is ConductorTurretProjectile turretProjectile && turretProjectile.IsPlayerTargetable)
                 {
-                    return true;
                 }
+                else
+                {
+                    if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
+                    {
+                        return true;
+                    }
 
-                return false;
+                    return false;
+                }
             }
 
             Health targetHealth = other.GetComponentInParent<Health>();
@@ -311,8 +323,8 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)
             {
-                int appliedDamage = boss is DronePilot dronePilot
-                    ? dronePilot.GetBodySharedDamage(bulletDamage)
+                int appliedDamage = boss is Conductor conductor
+                    ? conductor.GetBodySharedDamage(bulletDamage)
                     : bulletDamage;
 
                 if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
@@ -330,8 +342,8 @@ namespace Week14.Combat
             if (minion != null)
             {
                 int appliedDamage = bulletDamage;
-                if (minion.Owner is DronePilot dronePilot
-                    && dronePilot.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
+                if (minion.Owner is Conductor conductor
+                    && conductor.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
                 {
                     appliedDamage = sharedDamage;
                 }
@@ -485,7 +497,22 @@ namespace Week14.Combat
                 renderers[i].enabled = false;
             }
 
-            Destroy(gameObject);
+            ProjectilePool.Release(this);
+        }
+
+        private void RestorePooledComponents()
+        {
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>(true);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = true;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = true;
+            }
         }
 
         private float ResolveCollisionRadius(float fallbackRadius)

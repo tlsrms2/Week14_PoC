@@ -34,14 +34,18 @@ namespace Week14.Enemy
         public BossActionContext(
             BossAI boss,
             Action stop,
-            Func<bool> isExecutionPaused)
+            Func<bool> isExecutionPaused,
+            BossGraphAsset graphAsset = null)
         {
             Boss = boss;
             this.stop = stop;
             this.isExecutionPaused = isExecutionPaused;
+            GraphAsset = graphAsset;
         }
 
         public BossAI Boss { get; }
+        public BossGraphAsset GraphAsset { get; }
+        public string CurrentNodeId => currentNodeId;
         public bool IsExecutionPaused => isExecutionPaused?.Invoke() == true;
         public bool IsDashing { get; private set; }
 

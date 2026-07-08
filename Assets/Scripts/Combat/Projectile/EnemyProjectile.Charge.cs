@@ -50,7 +50,7 @@ namespace Week14.Combat
                 baseLocalScale = transform.localScale;
             }
 
-            if (ShouldAimAtPlayerOnLaunch())
+            if (ShouldTurnTowardPlayerOnLaunch())
             {
                 AimAtPlayerWhileCharging();
             }

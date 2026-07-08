@@ -8,6 +8,15 @@ namespace Week14.Combat
         protected virtual void Awake()
         {
             body = GetComponent<Rigidbody2D>();
+            projectileTrail = GetComponent<TrailRenderer>();
+            if (projectileTrail != null)
+            {
+                prefabTrailStartColor = projectileTrail.startColor;
+                prefabTrailEndColor = projectileTrail.endColor;
+                prefabTrailColorGradient = CloneGradient(projectileTrail.colorGradient);
+                hasPrefabTrailColors = true;
+            }
+
             ResolveParryLockOnIndicator();
             SetParryLockOnIndicatorVisible(false);
             OnProjectileAwake();
@@ -25,6 +34,8 @@ namespace Week14.Combat
             bool nextSuppressPathIndicator,
             int existingInterceptGroupId)
         {
+            RestorePooledComponents();
+            ResetPooledRuntimeState();
             projectileSpeed = speed;
             projectileLifetime = Mathf.Max(0f, ResolveProjectileLifetime(lifetime));
             projectileRadius = radius;
@@ -73,6 +84,10 @@ namespace Week14.Combat
             radialSplitDelaySeconds = 0f;
             radialSplitAt = 0f;
             suppressPathIndicator = nextSuppressPathIndicator;
+            delayPathIndicatorUntilLaunch = false;
+            preserveLaunchDirectionOnLaunch = false;
+            ignorePlayerCollision = false;
+            externalMotionDriven = false;
             ResetClonedPathIndicators();
             launched = projectileChargeSeconds <= 0f;
             lastWallCheckPosition = transform.position;
@@ -110,6 +125,35 @@ namespace Week14.Combat
             OnProjectileInitialized();
         }
 
+        private void ResetPooledRuntimeState()
+        {
+            resolved = false;
+            isDestroying = false;
+            ownerSlotReleased = false;
+            pausedByExecution = false;
+            executionPauseStartedAt = 0f;
+            radialSplitImminentFired = false;
+            Launched = null;
+            RadialSplit = null;
+            RadialSplitImminent = null;
+            Destroyed = null;
+        }
+
+        private void RestorePooledComponents()
+        {
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>(true);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = true;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = true;
+            }
+        }
+
         protected virtual void Update()
         {
             if (isDestroying)
@@ -144,8 +188,12 @@ namespace Week14.Combat
                     return;
                 }
 
-                TickHoming();
-                if (body != null)
+                if (!externalMotionDriven)
+                {
+                    TickHoming();
+                }
+
+                if (!externalMotionDriven && body != null)
                 {
                     body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
                 }
@@ -193,6 +241,70 @@ namespace Week14.Combat
             return false;
         }
         protected virtual void ExtendSpecialTimers(float pausedSeconds) { }
+
+        protected void InitializeStationaryParryTarget(float radius, Color color)
+        {
+            RestorePooledComponents();
+            ResetPooledRuntimeState();
+            projectileSpeed = 0f;
+            projectileLifetime = float.PositiveInfinity;
+            projectileRadius = Mathf.Max(0.01f, radius);
+            projectileColor = color != Color.clear ? color : Color.white;
+            chargingColor = projectileColor;
+            launchedColor = projectileColor;
+            ownerBullets = null;
+            ownerBoss = null;
+            ownerMinion = null;
+            bulletDamage = 0;
+            flightDirection = Vector2.up;
+            baseLocalScale = transform.localScale;
+            chargeGrowthStartScale = baseLocalScale;
+            chargeGrowthEndScale = baseLocalScale;
+            chargeAnchor = null;
+            growScaleWhileCharging = false;
+            playSmokeOnLaunch = false;
+            canBeIntercepted = true;
+            interceptPending = false;
+            preserveLaunchDirectionOnLaunch = false;
+            ignorePlayerCollision = false;
+            externalMotionDriven = false;
+            resolved = false;
+            isDestroying = false;
+            launched = true;
+            suppressPathIndicator = true;
+            destroyAt = float.PositiveInfinity;
+            chargeEndsAt = Time.time;
+            lastWallCheckPosition = transform.position;
+
+            if (!activeProjectiles.Contains(this))
+            {
+                activeProjectiles.Add(this);
+            }
+
+            UnregisterInterceptGroup();
+            AssignInterceptGroup(0);
+
+            if (body == null)
+            {
+                body = GetComponent<Rigidbody2D>();
+            }
+
+            EnsureProjectileShape();
+            if (body != null)
+            {
+                body.bodyType = RigidbodyType2D.Kinematic;
+                body.gravityScale = 0f;
+                body.freezeRotation = true;
+                body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                body.interpolation = RigidbodyInterpolation2D.Interpolate;
+                body.linearVelocity = Vector2.zero;
+            }
+
+            SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
+            SetParryLockOnIndicatorVisible(false);
+            OnProjectileInitialized();
+        }
 
     }
 }

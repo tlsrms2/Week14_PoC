@@ -4,19 +4,35 @@ namespace Week14.Combat
 {
     public partial class EnemyProjectile
     {
-        public bool TryDestroyByInterceptShot(out bool parried)
+        public virtual bool TryDestroyByInterceptShot(out bool parried)
         {
-            if (resolved || isDestroying || !canBeIntercepted)
+            if (!CanReceiveInterceptShot())
             {
                 parried = false;
                 return false;
             }
 
             parried = true;
-            resolved = true;
-
-            DestroyProjectile(EnemyProjectileDestroyReason.Intercepted);
+            CompleteInterceptAndDestroy();
             return true;
+        }
+
+        protected bool CanReceiveInterceptShot()
+        {
+            return !resolved && !isDestroying && canBeIntercepted;
+        }
+
+        protected void CompletePartialIntercept()
+        {
+            interceptPending = false;
+            SetParryLockOnIndicatorVisible(false);
+        }
+
+        protected void CompleteInterceptAndDestroy()
+        {
+            resolved = true;
+            interceptPending = false;
+            DestroyProjectile(EnemyProjectileDestroyReason.Intercepted);
         }
 
         public bool TryReserveIntercept()
@@ -59,6 +75,7 @@ namespace Week14.Combat
             OnProjectileDestroying(reason, destroyPosition);
             Destroyed?.Invoke(this, reason, destroyPosition);
             UnregisterInterceptGroup();
+            activeProjectiles.Remove(this);
             ReleaseOwnerProjectileSlot();
             if (body != null)
             {
@@ -81,7 +98,15 @@ namespace Week14.Combat
                 renderers[i].enabled = false;
             }
 
-            Destroy(gameObject);
+            if (pooledByProjectilePool)
+            {
+                OnProjectileReturnedToPool();
+                ProjectilePool.Release(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         protected virtual void OnDestroy()
@@ -104,6 +129,14 @@ namespace Week14.Combat
         }
 
         protected virtual void OnProjectileDestroying(EnemyProjectileDestroyReason reason, Vector3 position) { }
+
+        protected virtual void OnProjectileReturnedToPool()
+        {
+            Launched = null;
+            RadialSplit = null;
+            RadialSplitImminent = null;
+            Destroyed = null;
+        }
 
     }
 }

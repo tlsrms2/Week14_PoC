@@ -81,6 +81,11 @@ namespace Week14.Enemy
                 }
                 else
                 {
+                    if (durationSeconds > 0f)
+                    {
+                        firedProjectile.EnsureProjectileLifetime(durationSeconds + Mathf.Max(Time.deltaTime, 0.02f));
+                    }
+
                     firedProjectile.gameObject.AddComponent<BossAttachedProjectileMotion>().Initialize(
                         anchor,
                         radius,

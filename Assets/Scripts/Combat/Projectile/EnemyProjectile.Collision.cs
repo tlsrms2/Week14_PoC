@@ -98,7 +98,7 @@ namespace Week14.Combat
 
         protected virtual bool CanHitPlayer(PlayerCombatController player)
         {
-            return player != null;
+            return player != null && !ignorePlayerCollision;
         }
 
         protected virtual bool TryApplyPlayerHit(PlayerCombatController player)
@@ -113,7 +113,8 @@ namespace Week14.Combat
         {
             return collider != null
                 && (collider.GetComponentInParent<ArsonistOilPatch>() != null
-                    || collider.GetComponentInParent<ArsonistFireArea>() != null);
+                    || collider.GetComponentInParent<ArsonistFireArea>() != null
+                    || collider.GetComponentInParent<ArsonistWaterArea>() != null);
         }
 
         private bool ShouldIgnoreBossCollision(BossAI hitBoss)

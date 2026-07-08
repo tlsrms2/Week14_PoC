@@ -13,33 +13,26 @@ namespace Week14.Enemy
     {
         private const string BgmId = "ArsonistBgm";
 
-        [SerializeField, Min(0.05f)] private float oilTrailDuration = 3.5f;
         [SerializeField, Min(0.05f)] private float ignitedOilDuration = 3.5f;
         [SerializeField, Min(0.05f)] private float oilConnectionRadius = 0.95f;
         [SerializeField, Min(0.01f)] private float oilIgnitionSpreadInterval = 0.06f;
 
-        [SerializeField, Min(0.05f)] private float oilSoakedDuration = 4f;
-        [SerializeField, Min(0.01f)] private float oilTrailInterval = 0.18f;
-
         [SerializeField, Min(1)] private int fireDamage = 1;
         [SerializeField, Min(0.05f)] private float fireDamageInterval = 0.45f;
-
-        [SerializeField, Min(1)] private int burnTotalDamage = 3;
-        [SerializeField, Min(0.05f)] private float burnTickInterval = 0.75f;
-        [SerializeField, Min(0.05f)] private float burnDuration = 3f;
+        [SerializeField] private List<ArsonistSprinklerProjectile> sprinklers = new();
 
         private readonly List<ArsonistOilPatch> oilPatches = new();
         private readonly List<ArsonistFireArea> fireAreas = new();
+        private readonly List<ArsonistWaterArea> waterAreas = new();
         private readonly List<ArsonistFireAreaBatch> activeFireAreaBatches = new();
-        private readonly Dictionary<PlayerCombatController, ArsonistOilSoakedStatus> oilSoakedStatuses = new();
         private readonly Dictionary<PlayerCombatController, float> nextFireDamageAtByPlayer = new();
-        private readonly List<ArsonistOilSoakedStatus> statusBuffer = new();
         private int oilIgnitionVersion;
 
         protected override bool RotatesBodyToPlayer => false;
 
         protected override void OnCombatStarted()
         {
+            ResetSprinklersForCombat();
             SoundManager.PlayBgm(BgmId);
         }
 
@@ -59,20 +52,21 @@ namespace Week14.Enemy
             Vector3 position,
             float radius,
             float duration,
-            Color oilColor,
-            float trailSpacing)
+            Color oilColor)
         {
-            return CreateOilPatch(position, radius, duration, oilColor, trailSpacing, null);
-        }
+            GameObject patchObject = new("ArsonistOilPatch");
+            patchObject.transform.position = FlattenPosition(position);
+            CircleCollider2D collider = patchObject.AddComponent<CircleCollider2D>();
+            collider.isTrigger = true;
+            collider.radius = Mathf.Max(0.05f, radius);
 
-        internal ArsonistOilPatch CreateOilTrailPatch(
-            Vector3 position,
-            PlayerCombatController sourcePlayer,
-            Color oilColor,
-            float radius,
-            float trailSpacing)
-        {
-            return CreateOilPatch(position, radius, oilTrailDuration, oilColor, trailSpacing, sourcePlayer);
+            ArsonistOilPatch patch = patchObject.AddComponent<ArsonistOilPatch>();
+            patch.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), oilColor);
+            oilPatches.Add(patch);
+
+            TryRemoveWaterAt(position, radius);
+            TryIgniteNewOilPatchFromActiveFire(patch);
+            return patch;
         }
 
         internal ArsonistFireArea CreateFireArea(
@@ -96,6 +90,29 @@ namespace Week14.Enemy
             return fireArea;
         }
 
+        internal ArsonistWaterArea CreateWaterArea(
+            Vector3 position,
+            float radius,
+            float duration,
+            Color waterColor)
+        {
+            GameObject waterObject = new("ArsonistWaterArea");
+            waterObject.transform.position = FlattenPosition(position);
+            CircleCollider2D collider = waterObject.AddComponent<CircleCollider2D>();
+            collider.isTrigger = true;
+            collider.radius = Mathf.Max(0.05f, radius);
+
+            ArsonistWaterArea waterArea = waterObject.AddComponent<ArsonistWaterArea>();
+            waterAreas.Add(waterArea);
+            waterArea.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), waterColor);
+            if (HasOilOrFireAt(position, radius))
+            {
+                waterArea.FadeOutNow();
+            }
+
+            return waterArea;
+        }
+
         internal ArsonistFireAreaBatch BeginFireAreaBatch()
         {
             ArsonistFireAreaBatch batch = new();
@@ -112,27 +129,6 @@ namespace Week14.Enemy
 
             activeFireAreaBatches.Remove(batch);
             batch.FadeOutAll();
-        }
-
-        internal void ApplyOilSoaked(PlayerCombatController player, Color oilColor, float trailRadius, float trailSpacing)
-        {
-            if (player == null || player.Health == null || player.Health.IsDead)
-            {
-                return;
-            }
-
-            if (!oilSoakedStatuses.TryGetValue(player, out ArsonistOilSoakedStatus status) || status == null)
-            {
-                status = player.gameObject.GetComponent<ArsonistOilSoakedStatus>();
-                if (status == null)
-                {
-                    status = player.gameObject.AddComponent<ArsonistOilSoakedStatus>();
-                }
-
-                oilSoakedStatuses[player] = status;
-            }
-
-            status.Configure(this, player, oilColor, oilSoakedDuration, oilTrailInterval, trailRadius, trailSpacing);
         }
 
         internal void ApplyFireContact(
@@ -165,10 +161,7 @@ namespace Week14.Enemy
                 direction = Vector2.up;
             }
 
-            if (player.ReceiveAttack(fireDamage, sourcePosition, direction.normalized))
-            {
-                ApplyBurn(player);
-            }
+            player.ReceiveAttack(fireDamage, sourcePosition, direction.normalized);
 
             if (nextDamageAtByPlayer != null)
             {
@@ -191,22 +184,6 @@ namespace Week14.Enemy
             {
                 nextFireDamageAtByPlayer[player] = nextDamageAt;
             }
-        }
-
-        internal void ApplyBurn(PlayerCombatController player)
-        {
-            if (player == null || player.Health == null || player.Health.IsDead)
-            {
-                return;
-            }
-
-            ArsonistBurnStatus burn = player.gameObject.GetComponent<ArsonistBurnStatus>();
-            if (burn == null)
-            {
-                burn = player.gameObject.AddComponent<ArsonistBurnStatus>();
-            }
-
-            burn.Configure(player, burnTotalDamage, burnTickInterval, burnDuration);
         }
 
         internal void IgniteOilNetwork(ArsonistOilPatch seed, Color fireColor)
@@ -300,7 +277,6 @@ namespace Week14.Enemy
                     }
 
                     patch.IgniteLocal(ignitionDuration, fireColor);
-                    NotifyOilPatchIgnited(patch);
                 }
 
                 if (i < ignitionLayers.Count - 1)
@@ -335,10 +311,6 @@ namespace Week14.Enemy
         internal void UnregisterOilPatch(ArsonistOilPatch patch)
         {
             oilPatches.Remove(patch);
-            foreach (ArsonistOilSoakedStatus status in oilSoakedStatuses.Values)
-            {
-                status?.RemoveTrailPatch(patch);
-            }
         }
 
         internal void UnregisterFireArea(ArsonistFireArea fireArea)
@@ -350,46 +322,37 @@ namespace Week14.Enemy
             }
         }
 
-        internal void UnregisterOilSoakedStatus(PlayerCombatController player, ArsonistOilSoakedStatus status)
+        internal void UnregisterWaterArea(ArsonistWaterArea waterArea)
         {
-            if (player == null)
+            waterAreas.Remove(waterArea);
+        }
+
+        internal void TryRemoveWaterAt(Vector3 position, float radius)
+        {
+            for (int i = waterAreas.Count - 1; i >= 0; i--)
+            {
+                ArsonistWaterArea waterArea = waterAreas[i];
+                if (waterArea == null)
+                {
+                    waterAreas.RemoveAt(i);
+                    continue;
+                }
+
+                if (waterArea.CanBeRemovedByHazardAt(position, radius))
+                {
+                    waterArea.FadeOutNow();
+                }
+            }
+        }
+
+        internal void SetSprinklerActive(int sprinklerIndex, bool active)
+        {
+            if (sprinklerIndex < 0 || sprinklerIndex >= sprinklers.Count)
             {
                 return;
             }
 
-            if (oilSoakedStatuses.TryGetValue(player, out ArsonistOilSoakedStatus current) && current == status)
-            {
-                oilSoakedStatuses.Remove(player);
-            }
-        }
-
-        private ArsonistOilPatch CreateOilPatch(
-            Vector3 position,
-            float radius,
-            float duration,
-            Color oilColor,
-            float trailSpacing,
-            PlayerCombatController sourcePlayer)
-        {
-            GameObject patchObject = new("ArsonistOilPatch");
-            patchObject.transform.position = FlattenPosition(position);
-            CircleCollider2D collider = patchObject.AddComponent<CircleCollider2D>();
-            collider.isTrigger = true;
-            collider.radius = Mathf.Max(0.05f, radius);
-
-            ArsonistOilPatch patch = patchObject.AddComponent<ArsonistOilPatch>();
-            patch.Initialize(this, Mathf.Max(0.05f, radius), Mathf.Max(0.05f, duration), oilColor, trailSpacing);
-            oilPatches.Add(patch);
-
-            if (sourcePlayer != null
-                && oilSoakedStatuses.TryGetValue(sourcePlayer, out ArsonistOilSoakedStatus status)
-                && status != null)
-            {
-                status.AddTrailPatch(patch);
-            }
-
-            TryIgniteNewOilPatchFromActiveFire(patch);
-            return patch;
+            sprinklers[sprinklerIndex]?.SetFunctionalActive(this, active);
         }
 
         private void TryIgniteNewOilPatchFromActiveFire(ArsonistOilPatch patch)
@@ -420,27 +383,27 @@ namespace Week14.Enemy
             }
         }
 
-        private void NotifyOilPatchIgnited(ArsonistOilPatch patch)
+        private bool HasOilOrFireAt(Vector3 position, float radius)
         {
-            statusBuffer.Clear();
-            foreach (ArsonistOilSoakedStatus status in oilSoakedStatuses.Values)
+            for (int i = 0; i < oilPatches.Count; i++)
             {
-                if (status != null)
+                ArsonistOilPatch patch = oilPatches[i];
+                if (patch != null && patch.OverlapsCircle(position, radius))
                 {
-                    statusBuffer.Add(status);
+                    return true;
                 }
             }
 
-            for (int i = 0; i < statusBuffer.Count; i++)
+            for (int i = 0; i < fireAreas.Count; i++)
             {
-                ArsonistOilSoakedStatus status = statusBuffer[i];
-                if (status != null && status.ShouldIgniteFromOilPatch(patch, oilConnectionRadius))
+                ArsonistFireArea fireArea = fireAreas[i];
+                if (fireArea != null && fireArea.CanIgniteOilAt(position, radius))
                 {
-                    status.IgniteFromOilPatch();
+                    return true;
                 }
             }
 
-            statusBuffer.Clear();
+            return false;
         }
 
         private bool AreOilPatchesConnected(ArsonistOilPatch first, ArsonistOilPatch second)
@@ -487,6 +450,7 @@ namespace Week14.Enemy
         private void ClearArsonistHazards()
         {
             oilIgnitionVersion++;
+            DeactivateAllSprinklers();
 
             for (int i = oilPatches.Count - 1; i >= 0; i--)
             {
@@ -504,19 +468,35 @@ namespace Week14.Enemy
                 }
             }
 
-            foreach (ArsonistOilSoakedStatus status in oilSoakedStatuses.Values)
+            for (int i = waterAreas.Count - 1; i >= 0; i--)
             {
-                if (status != null)
+                if (waterAreas[i] != null)
                 {
-                    Destroy(status);
+                    Destroy(waterAreas[i].gameObject);
                 }
             }
 
             oilPatches.Clear();
             fireAreas.Clear();
+            waterAreas.Clear();
             activeFireAreaBatches.Clear();
-            oilSoakedStatuses.Clear();
             nextFireDamageAtByPlayer.Clear();
+        }
+
+        private void ResetSprinklersForCombat()
+        {
+            for (int i = 0; i < sprinklers.Count; i++)
+            {
+                sprinklers[i]?.ResetForCombat(this);
+            }
+        }
+
+        private void DeactivateAllSprinklers()
+        {
+            for (int i = 0; i < sprinklers.Count; i++)
+            {
+                sprinklers[i]?.SetFunctionalActive(this, false);
+            }
         }
 
         private void TrackFireAreaBatch(ArsonistFireArea fireArea)
@@ -1014,22 +994,22 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
+            Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
+            Vector2 lockedCenter = context.Boss != null && context.Boss.Player != null
+                ? context.Boss.Player.position
+                : aimOrigin;
             ArsonistBossAI arsonist = context.Boss as ArsonistBossAI;
             ArsonistFireAreaBatch fireAreaBatch = arsonist?.BeginFireAreaBatch();
             try
             {
-                yield return ExecuteLeadingPlayerCirclePatterns(context);
+                yield return ExecuteLeadingPlayerCirclePatterns(context, lockedCenter);
 
-                BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
-                Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
-                Vector3 center = context.Boss != null && context.Boss.Player != null
-                    ? context.Boss.Player.position
-                    : aimOrigin;
                 float rotation = rotationOffsetDegrees;
                 BossProjectileSettings projectileSettings = !string.IsNullOrWhiteSpace(projectileName)
                     ? context.ResolveGraphProjectileSettings(projectileName)
                     : context.ResolveGraphProjectileSettings(null) ?? projectile;
-                Vector2[][] strokeWorldPoints = BuildStrokes(center, rotation);
+                Vector2[][] strokeWorldPoints = BuildStrokes(lockedCenter, rotation);
 
                 float safeWindup = Mathf.Max(0f, windupSeconds);
                 float waitBeforeIndicatorSeconds = Mathf.Max(0f, safeWindup - IndicatorLeadSeconds);
@@ -1105,7 +1085,7 @@ namespace Week14.Enemy
             }
         }
 
-        private IEnumerator ExecuteLeadingPlayerCirclePatterns(BossActionContext context)
+        private IEnumerator ExecuteLeadingPlayerCirclePatterns(BossActionContext context, Vector2 lockedCenter)
         {
             int repeatCount = Mathf.Max(0, leadingCircleRepeatCount);
             IReadOnlyList<LeadingPlayerCircleSettings> settingsList = GetLeadingCircleSettings();
@@ -1114,11 +1094,16 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (context == null)
+            {
+                yield break;
+            }
+
             for (int repeatIndex = 0; repeatIndex < repeatCount; repeatIndex++)
             {
                 for (int settingsIndex = 0; settingsIndex < settingsList.Count; settingsIndex++)
                 {
-                    yield return ExecuteLeadingPlayerCirclePattern(context, settingsList[settingsIndex]);
+                    yield return ExecuteLeadingPlayerCirclePattern(context, settingsList[settingsIndex], lockedCenter);
                 }
             }
         }
@@ -1140,14 +1125,14 @@ namespace Week14.Enemy
 
         private IEnumerator ExecuteLeadingPlayerCirclePattern(
             BossActionContext context,
-            LeadingPlayerCircleSettings settings)
+            LeadingPlayerCircleSettings settings,
+            Vector2 lockedCenter)
         {
-            if (context == null || context.Boss == null || context.Boss.Player == null || settings == null)
+            if (context == null || settings == null)
             {
                 yield break;
             }
 
-            Vector2 lockedCenter = context.Boss.Player.position;
             if (settings.WindupSeconds > 0f)
             {
                 yield return context.WaitSeconds(settings.WindupSeconds);

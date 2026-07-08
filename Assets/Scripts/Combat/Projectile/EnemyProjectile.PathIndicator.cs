@@ -8,6 +8,7 @@ namespace Week14.Combat
         {
             return ShowsPathIndicator
                 && !suppressPathIndicator
+                && (!delayPathIndicatorUntilLaunch || !IsCharging)
                 && projectileSpeed > 0f
                 && projectileLifetime > 0f;
         }

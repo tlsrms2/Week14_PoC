@@ -10,7 +10,6 @@ namespace Week14.Enemy
         private readonly Dictionary<PlayerCombatController, float> nextDamageAtByPlayer = new();
         private ArsonistBossAI owner;
         private float radius;
-        private float trailSpacing;
         private float expiresAt;
         private Color oilColor;
         private Color fireColor;
@@ -19,7 +18,6 @@ namespace Week14.Enemy
         private bool ignitionPending;
 
         public float Radius => radius;
-        public float TrailSpacing => trailSpacing;
         public bool IsIgnited => ignited;
         public bool CanIgnite => initialized && !ignited && !ignitionPending;
         public Color FireColor => fireColor;
@@ -28,12 +26,10 @@ namespace Week14.Enemy
             ArsonistBossAI nextOwner,
             float nextRadius,
             float duration,
-            Color nextOilColor,
-            float nextTrailSpacing)
+            Color nextOilColor)
         {
             owner = nextOwner;
             radius = Mathf.Max(0.05f, nextRadius);
-            trailSpacing = Mathf.Max(0.01f, nextTrailSpacing);
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             oilColor = nextOilColor;
             fireColor = Color.white;
@@ -61,6 +57,18 @@ namespace Week14.Enemy
             expiresAt = Time.time + Mathf.Max(0.05f, duration);
             fireColor = nextFireColor;
             ArsonistHazardVisual.ConfigureCircle(gameObject, radius, fireColor, true);
+            owner?.TryRemoveWaterAt(transform.position, radius);
+        }
+
+        public bool OverlapsCircle(Vector3 position, float otherRadius)
+        {
+            if (!initialized)
+            {
+                return false;
+            }
+
+            float maxDistance = radius + Mathf.Max(0f, otherRadius);
+            return Vector2.SqrMagnitude((Vector2)transform.position - (Vector2)position) <= maxDistance * maxDistance;
         }
 
         private void Update()
@@ -109,15 +117,7 @@ namespace Week14.Enemy
             if (ignited)
             {
                 owner.ApplyFireContact(player, transform.position, nextDamageAtByPlayer);
-                return;
             }
-
-            if (ignitionPending)
-            {
-                return;
-            }
-
-            owner.ApplyOilSoaked(player, oilColor, radius, trailSpacing);
         }
     }
 }

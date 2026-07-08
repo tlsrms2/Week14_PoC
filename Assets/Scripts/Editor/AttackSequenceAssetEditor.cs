@@ -100,7 +100,6 @@ internal static class BossGraphActionEditorUtility
         new("Move/Wander Around Player Distance", typeof(WanderAroundPlayerDistanceAction), () => new WanderAroundPlayerDistanceAction()),
         new("Move/Move Between Map Points", typeof(MoveBetweenMapPointsAction), () => new MoveBetweenMapPointsAction()),
         new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
-        new("Projectile/Spawn Parryable Bomb", typeof(SpawnParryableBombAction), () => new SpawnParryableBombAction()),
         new("Projectile/Charged/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
         new("Projectile/Charged/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
         new("Projectile/Charged/Configure Radial Split", typeof(ConfigureRadialSplitAction), () => new ConfigureRadialSplitAction()),
@@ -118,6 +117,7 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Player Circle", typeof(FirePlayerCircleProjectilesAction), () => new FirePlayerCircleProjectilesAction()),
         new("Projectile/Arsonist/Fire Circle Orbit Attack", typeof(ArsonistCircleOrbitAttackAction), () => new ArsonistCircleOrbitAttackAction()),
         new("Projectile/Arsonist/Fire Character", typeof(ArsonistFireCharacterProjectileAction), () => new ArsonistFireCharacterProjectileAction()),
+        new("Projectile/Arsonist/Set Sprinkler Active", typeof(ArsonistSetSprinklerActiveAction), () => new ArsonistSetSprinklerActiveAction()),
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
@@ -138,6 +138,12 @@ internal static class BossGraphActionEditorUtility
         new("Minion/Movement/Formation Straight", typeof(MinionFormationStraightAction), () => new MinionFormationStraightAction()),
         new("Minion/Movement/Player Path", typeof(MinionPlayerPathAction), () => new MinionPlayerPathAction()),
         new("Minion/Movement/Angle Distance Move", typeof(MinionAngleDistanceMoveAction), () => new MinionAngleDistanceMoveAction()),
+        new("Minion/Conductor/Score Lane Rush", typeof(MinionConductorScoreLaneRushAction), () => new MinionConductorScoreLaneRushAction()),
+        new("Minion/Conductor/Score Lane Rush Special", typeof(MinionConductorScoreLaneRushSpecialAction), () => new MinionConductorScoreLaneRushSpecialAction()),
+        new("Minion/Conductor/Player Path Side Fire", typeof(MinionConductorPlayerPathSideFireAction), () => new MinionConductorPlayerPathSideFireAction()),
+        new("Minion/Conductor/Formation Line Volley", typeof(MinionConductorFormationLineVolleyAction), () => new MinionConductorFormationLineVolleyAction()),
+        new("Minion/Conductor/Fan Blade", typeof(MinionConductorFanBladeAction), () => new MinionConductorFanBladeAction()),
+        new("Minion/Conductor/Spawn Turrets", typeof(ConductorSpawnTurretsAction), () => new ConductorSpawnTurretsAction()),
         new("Minion/Control/Pattern Cleanup", typeof(MinionPatternCleanupAction), () => new MinionPatternCleanupAction())
     };
 
@@ -227,14 +233,9 @@ internal static class BossGraphActionEditorUtility
             return "단발 투사체를 발사합니다. 간단한 1발 발사용 액션입니다.";
         }
 
-        if (actionType == typeof(SpawnParryableBombAction))
-        {
-            return "패링 가능한 폭탄을 스폰하고 결과를 기다립니다. 패링당하면 Slam Fail Bool을, 그대로 터지면 Slam Success Bool을 켜고 지정한 Impact Event Id(Animation Event)가 들어올 때까지 기다렸다가 폭발 이펙트/데미지를 재생합니다.";
-        }
-
         if (actionType == typeof(FireRotatingProjectilesAction))
         {
-            return "보스 위치를 시작점으로 투사체가 모기향처럼 회전하며 바깥으로 이동합니다.";
+            return "보스 위치를 시작점으로 투사체가 모기향처럼 회전하며 바깥으로 이동합니다. Ring Count와 Ring Spacing으로 같은 모기향 사이에 추가 고리를 만들 수 있습니다.";
         }
 
         if (actionType == typeof(FireAttachedProjectilesAction))
@@ -260,6 +261,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(ArsonistFireCharacterProjectileAction))
         {
             return "Arsonist 전용 액션입니다. 火자의 네 획 시작점에서 투사체를 순서대로 생성해 획을 따라 이동시킵니다.";
+        }
+
+        if (actionType == typeof(ArsonistSetSprinklerActiveAction))
+        {
+            return "Arsonist 보스 인스펙터의 Sprinklers 리스트에서 지정 인덱스의 스프링쿨러 기능 활성 상태를 바꿉니다. 사용된 스프링쿨러는 다시 활성화되지 않습니다.";
         }
 
         if (actionType == typeof(FireProjectileBurstAction))
@@ -294,12 +300,12 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(FireDashFormationAction))
         {
-            return "보스 대시 방향에 수직으로 투사체 벽을 정렬한 뒤 발사합니다. Center Offset은 총알벽 전체를 대시 방향으로 이동시키는 거리(음수면 후방)입니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
+            return "보스 대시 방향에 맞춰 투사체 벽 또는 대시 경로 탄을 정렬한 뒤 발사합니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
         }
 
         if (actionType == typeof(WanderAroundPlayerDistanceAction))
         {
-            return "보스가 플레이어 주변의 최소-최대 거리 안에서 이전 목표와 가까운 새 목표를 고르며 이동합니다.";
+            return "보스가 플레이어 주변의 최소-최대 거리 안에서 최근 덜 지나간 각도와 이전 목표점에서 떨어진 위치를 우선해 배회합니다.";
         }
 
         if (actionType == typeof(MoveBetweenMapPointsAction))
@@ -420,6 +426,36 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(MinionPlayerPathAction))
         {
             return "액션 시작 시 플레이어 위치에 고정 정사각형을 만들고, 미니언을 시작점으로 보낸 뒤 수평, 수직, 좌우 대각선, 우좌 대각선 순서로 이동시킵니다.";
+        }
+
+        if (actionType == typeof(MinionConductorScoreLaneRushAction))
+        {
+            return "Conductor 전용 액션입니다. 1개 또는 2개 Side를 랜덤 선택하고, Volleys 풀의 Fire Timings 패턴을 중복 없이 골라 실행합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorScoreLaneRushSpecialAction))
+        {
+            return "Conductor 전용 특수 액션입니다. 설정 좌표 기준으로 Top, Right, Bottom, Left 순서의 러시를 실행하고, Volleys 풀에서 Fire Timings 패턴을 중복 없이 랜덤 선택합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorPlayerPathSideFireAction))
+        {
+            return "Conductor 전용 액션입니다. Player Path와 Side Fire를 순서대로 실행하고, 예상 탄 경로를 격자 인디케이터로 미리 표시합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorFormationLineVolleyAction))
+        {
+            return "Conductor 전용 액션입니다. 미니언을 일렬 배치한 뒤 플레이어 방향 실선 인디케이터를 그리고, Volley 설정에 따라 해당 선 방향으로 투사체를 발사합니다.";
+        }
+
+        if (actionType == typeof(MinionConductorFanBladeAction))
+        {
+            return "Conductor 전용 액션입니다. 최대 4개의 드론을 중심점 기준 십자로 배치해 회전시키고, Volley별 탄막 이름/발사 구간/간격을 설정해 선풍기형 탄막을 만듭니다.";
+        }
+
+        if (actionType == typeof(ConductorSpawnTurretsAction))
+        {
+            return "Conductor 전용 액션입니다. Ground 위 목표 지점들을 고르고, 보스 위치에서 터렛을 날려 보낸 뒤 정착한 터렛이 자체 설정한 십자 탄을 발사합니다.";
         }
 
         if (actionType == typeof(MinionPatternCleanupAction))
@@ -1244,6 +1280,74 @@ internal sealed class AimBossChildAtPlayerActionDrawer : PropertyDrawer
 
         int endNameIndex = Array.IndexOf(mode.enumNames, nameof(BossChildAimActionMode.End));
         return mode.intValue == (int)BossChildAimActionMode.End || mode.enumValueIndex == endNameIndex;
+    }
+}
+
+[CustomPropertyDrawer(typeof(MinionConductorScoreLaneRushSpecialAction))]
+internal sealed class MinionConductorScoreLaneRushSpecialActionDrawer : PropertyDrawer
+{
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        float height = EditorGUIUtility.singleLineHeight;
+        if (!property.isExpanded)
+        {
+            return height;
+        }
+
+        SerializedProperty iterator = property.Copy();
+        SerializedProperty end = iterator.GetEndProperty();
+        bool enterChildren = true;
+        while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+        {
+            enterChildren = false;
+            if (ShouldSkipProperty(iterator))
+            {
+                continue;
+            }
+
+            height += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
+        }
+
+        return height;
+    }
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect lineRect = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        property.isExpanded = EditorGUI.Foldout(lineRect, property.isExpanded, label, true);
+
+        if (property.isExpanded)
+        {
+            EditorGUI.indentLevel++;
+            float y = lineRect.yMax + EditorGUIUtility.standardVerticalSpacing;
+            SerializedProperty iterator = property.Copy();
+            SerializedProperty end = iterator.GetEndProperty();
+            bool enterChildren = true;
+            while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, end))
+            {
+                enterChildren = false;
+                if (ShouldSkipProperty(iterator))
+                {
+                    continue;
+                }
+
+                float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
+                Rect propertyRect = new(position.x, y, position.width, propertyHeight);
+                EditorGUI.PropertyField(propertyRect, iterator, true);
+                y += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
+            }
+
+            EditorGUI.indentLevel--;
+        }
+
+        EditorGUI.EndProperty();
+    }
+
+    private static bool ShouldSkipProperty(SerializedProperty property)
+    {
+        return property != null && (property.name == "volleys" || property.name == "useTwoSides");
     }
 }
 

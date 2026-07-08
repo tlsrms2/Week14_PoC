@@ -193,6 +193,7 @@ namespace Week14.Enemy
 
         protected virtual void Awake()
         {
+            ProjectilePool.EnsureScenePool();
             health = GetComponent<Health>();
             hpGauge = GetComponent<BulletGauge>();
 

@@ -3,8 +3,10 @@ using Week14.Enemy;
 
 namespace Week14.Combat
 {
+    public interface IHomingEnemyProjectile { }
+
     [AddComponentMenu("Week14/Combat/Homing Enemy Projectile")]
-    public class HomingEnemyProjectile : EnemyProjectile
+    public class HomingEnemyProjectile : EnemyProjectile, IHomingEnemyProjectile
     {
         [SerializeField, Min(0.01f), Tooltip("호밍이 유지되는 기본 시간입니다.")]
         private float defaultHomingSeconds = 10f;

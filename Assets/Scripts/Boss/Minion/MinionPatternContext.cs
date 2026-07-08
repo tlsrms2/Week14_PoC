@@ -127,6 +127,7 @@ namespace Week14.Enemy
             }
 
             minion.SetOwner(owner);
+            minion.AssignOwnerSlotNumber(GetNextOwnerSlotNumber());
             minion.BeginSummonIntro(startPosition, position, summon.IntroSeconds, summon.IntroStartScale);
             if (!controlledMinions.Contains(minion))
             {
@@ -173,11 +174,32 @@ namespace Week14.Enemy
                 }
 
                 minion.SetOwner(owner);
+                if (!minion.HasOwnerSlotNumber)
+                {
+                    minion.AssignOwnerSlotNumber(GetNextOwnerSlotNumber());
+                }
+
                 if (!controlledMinions.Contains(minion))
                 {
                     controlledMinions.Add(minion);
                 }
             }
+        }
+
+        private int GetNextOwnerSlotNumber()
+        {
+            int maxSlotNumber = 0;
+            IReadOnlyList<Minion> allMinions = Minion.All;
+            for (int i = 0; i < allMinions.Count; i++)
+            {
+                Minion minion = allMinions[i];
+                if (minion != null && minion.Owner == owner)
+                {
+                    maxSlotNumber = Mathf.Max(maxSlotNumber, minion.OwnerSlotNumber);
+                }
+            }
+
+            return maxSlotNumber + 1;
         }
 
         internal bool EnsureAnyMinion(List<Minion> minions)

@@ -65,7 +65,8 @@ namespace Week14.Enemy
             return new BossActionContext(
                 this,
                 Stop,
-                () => IsExecutionPaused);
+                () => IsExecutionPaused,
+                bossGraph);
         }
 
         protected void StopGraphPattern()
