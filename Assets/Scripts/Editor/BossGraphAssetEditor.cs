@@ -83,6 +83,7 @@ public sealed class BossGraphAssetEditor : Editor
         EditorGUILayout.Space(6f);
         transitionList.DoLayoutList();
 
+        BossGraphEditorWindow.NormalizeNodeIdsForSerializedObject(serializedObject);
         serializedObject.ApplyModifiedProperties();
     }
 
@@ -118,7 +119,7 @@ public sealed class BossGraphAssetEditor : Editor
         stateNodes.arraySize++;
         int index = stateNodes.arraySize - 1;
         SerializedProperty element = stateNodes.GetArrayElementAtIndex(index);
-        SetChildString(element, "nodeId", $"Node{index + 1}");
+        SetChildString(element, "nodeId", $"Action{index + 1}");
         SetChildEnum(element, "nodeKind", (int)BossGraphNodeKind.Attack);
         SetChildInt(element, "phaseIndex", 0);
         SetChildEnum(element, "selectionMode", 0);

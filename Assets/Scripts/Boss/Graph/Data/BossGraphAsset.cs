@@ -16,6 +16,7 @@ namespace Week14.Enemy
             new BossStateNode()
         };
         [SerializeField] private List<BossGraphPattern> patterns = new();
+        [SerializeField] private List<string> defaultPatternIds = new();
         [SerializeField] private List<BossGraphPhase> phases = new();
         [SerializeField] private List<BossTransition> transitions = new();
         [SerializeField] private List<BossParallelEdge> parallelEdges = new();
@@ -28,6 +29,7 @@ namespace Week14.Enemy
         public BossGraphActionCategoryAsset ActionCategories => referenceSettings != null ? referenceSettings.ActionCategories : null;
         public IReadOnlyList<BossStateNode> StateNodes => stateNodes;
         public IReadOnlyList<BossGraphPattern> Patterns => patterns;
+        public IReadOnlyList<string> DefaultPatternIds => defaultPatternIds;
         public IReadOnlyList<BossGraphPhase> Phases => phases;
         public IReadOnlyList<BossTransition> Transitions => transitions;
         public IReadOnlyList<BossParallelEdge> ParallelEdges => parallelEdges;
