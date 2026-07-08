@@ -34,6 +34,8 @@ namespace Week14.Combat
             bool nextSuppressPathIndicator,
             int existingInterceptGroupId)
         {
+            RestorePooledComponents();
+            ResetPooledRuntimeState();
             projectileSpeed = speed;
             projectileLifetime = Mathf.Max(0f, ResolveProjectileLifetime(lifetime));
             projectileRadius = radius;
@@ -121,6 +123,35 @@ namespace Week14.Combat
             }
 
             OnProjectileInitialized();
+        }
+
+        private void ResetPooledRuntimeState()
+        {
+            resolved = false;
+            isDestroying = false;
+            ownerSlotReleased = false;
+            pausedByExecution = false;
+            executionPauseStartedAt = 0f;
+            radialSplitImminentFired = false;
+            Launched = null;
+            RadialSplit = null;
+            RadialSplitImminent = null;
+            Destroyed = null;
+        }
+
+        private void RestorePooledComponents()
+        {
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>(true);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = true;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = true;
+            }
         }
 
         protected virtual void Update()
@@ -213,6 +244,8 @@ namespace Week14.Combat
 
         protected void InitializeStationaryParryTarget(float radius, Color color)
         {
+            RestorePooledComponents();
+            ResetPooledRuntimeState();
             projectileSpeed = 0f;
             projectileLifetime = float.PositiveInfinity;
             projectileRadius = Mathf.Max(0.01f, radius);

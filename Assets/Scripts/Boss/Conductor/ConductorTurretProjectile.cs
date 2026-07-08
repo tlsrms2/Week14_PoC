@@ -49,6 +49,7 @@ namespace Week14.Enemy
 
         protected override void OnProjectileInitialized()
         {
+            health?.Revive();
             ConfigureInterceptable(false);
             ConfigurePathIndicatorSuppressed(true);
             ConfigureExternalMotionDriven(true);

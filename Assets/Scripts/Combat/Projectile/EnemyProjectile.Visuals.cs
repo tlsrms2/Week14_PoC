@@ -11,6 +11,14 @@ namespace Week14.Combat
                 return overrideColor;
             }
 
+            SpriteRenderer prefabVisualRenderer = poolPrefabSource != null && poolPrefabSource != this
+                ? poolPrefabSource.GetProjectileVisualRenderer()
+                : null;
+            if (prefabVisualRenderer != null && prefabVisualRenderer.color != Color.clear)
+            {
+                return prefabVisualRenderer.color;
+            }
+
             SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
             if (visualRenderer != null && visualRenderer.color != Color.clear)
             {

@@ -5566,7 +5566,7 @@ PrefabInstance:
       objectReference: {fileID: 261457479}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectileName
@@ -5581,6 +5581,10 @@ PrefabInstance:
       value: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectileName
+      value: "\uD130\uB81B"
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectile.speed
       value: 12
       objectReference: {fileID: 0}
@@ -5590,6 +5594,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[5].projectile.speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.speed
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
@@ -5617,6 +5625,14 @@ PrefabInstance:
       value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.prefab
+      value: 
+      objectReference: {fileID: 6081087140780133099, guid: 52a16c28763a74e4080de055a4949008, type: 3}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.radius
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectile.lifetime
       value: 5
       objectReference: {fileID: 0}
@@ -5627,6 +5643,10 @@ PrefabInstance:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[5].projectile.lifetime
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.lifetime
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectile.bulletDamage
@@ -5653,6 +5673,14 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.bulletDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.trailSeconds
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectile.chargeSeconds
       value: 2
       objectReference: {fileID: 0}
@@ -5677,6 +5705,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.aimAtPlayerOnLaunch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[3].projectile.trailWidthMultiplier
       value: 0.1
       objectReference: {fileID: 0}
@@ -5687,6 +5719,10 @@ PrefabInstance:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: graphProjectiles.Array.data[5].projectile.trailWidthMultiplier
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.trailWidthMultiplier
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalScale.x

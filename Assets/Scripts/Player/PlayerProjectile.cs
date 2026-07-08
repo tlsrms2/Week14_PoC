@@ -53,7 +53,7 @@ namespace Week14.Combat
 
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
-            PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            PlayerProjectile projectile = ProjectilePool.Get(prefab, position, Quaternion.Euler(0f, 0f, angle));
             if (!projectile.Initialize(
                     owner,
                     fireDirection,
@@ -67,7 +67,7 @@ namespace Week14.Combat
                     isSkillShot,
                     restoresBulletsOnParry))
             {
-                Destroy(projectile.gameObject);
+                ProjectilePool.Release(projectile);
                 return null;
             }
 
@@ -92,6 +92,12 @@ namespace Week14.Combat
             bool nextIsSkillShot,
             bool nextRestoresBulletsOnParry = true)
         {
+            RestorePooledComponents();
+            resolved = false;
+            isDestroying = false;
+            forcedParryTarget = null;
+            forcedParryTargetId = 0;
+            forcedParryResolveAt = 0f;
             owner = nextOwner;
             projectileSpeed = speed;
             bulletDamage = nextBulletDamage;
@@ -491,7 +497,22 @@ namespace Week14.Combat
                 renderers[i].enabled = false;
             }
 
-            Destroy(gameObject);
+            ProjectilePool.Release(this);
+        }
+
+        private void RestorePooledComponents()
+        {
+            Collider2D[] colliders = GetComponentsInChildren<Collider2D>(true);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = true;
+            }
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].enabled = true;
+            }
         }
 
         private float ResolveCollisionRadius(float fallbackRadius)

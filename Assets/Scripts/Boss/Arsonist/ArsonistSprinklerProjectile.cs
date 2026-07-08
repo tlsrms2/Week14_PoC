@@ -87,9 +87,23 @@ namespace Week14.Enemy
                 return;
             }
 
-            GameObject targetObject = new($"{name}_ParryTarget");
-            targetObject.transform.SetParent(transform, false);
-            targetObject.transform.position = transform.position;
+            activeTarget = ProjectilePool.GetGenerated(
+                nameof(ArsonistSprinklerParryTarget),
+                $"{nameof(ArsonistSprinklerParryTarget)} Pool",
+                CreateParryTarget,
+                transform.position,
+                Quaternion.identity);
+            if (activeTarget == null)
+            {
+                return;
+            }
+
+            activeTarget.Initialize(this, parryRadius, waterColor);
+        }
+
+        private static ArsonistSprinklerParryTarget CreateParryTarget()
+        {
+            GameObject targetObject = new(nameof(ArsonistSprinklerParryTarget));
 
             Rigidbody2D body = targetObject.AddComponent<Rigidbody2D>();
             body.bodyType = RigidbodyType2D.Kinematic;
@@ -98,10 +112,8 @@ namespace Week14.Enemy
 
             CircleCollider2D collider = targetObject.AddComponent<CircleCollider2D>();
             collider.isTrigger = true;
-            collider.radius = Mathf.Max(0.05f, parryRadius);
 
-            activeTarget = targetObject.AddComponent<ArsonistSprinklerParryTarget>();
-            activeTarget.Initialize(this, parryRadius, waterColor);
+            return targetObject.AddComponent<ArsonistSprinklerParryTarget>();
         }
 
         private void DestroyActiveTarget()

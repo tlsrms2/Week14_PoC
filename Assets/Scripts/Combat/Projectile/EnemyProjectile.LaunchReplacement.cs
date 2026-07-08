@@ -156,7 +156,15 @@ namespace Week14.Combat
                 destroyDelay = Mathf.Max(0.01f, projectileTrail.time);
             }
 
-            Destroy(gameObject, destroyDelay);
+            if (pooledByProjectilePool)
+            {
+                OnProjectileReturnedToPool();
+                ProjectilePool.Release(this, destroyDelay);
+            }
+            else
+            {
+                Destroy(gameObject, destroyDelay);
+            }
         }
 
     }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Enemy;
@@ -106,6 +108,8 @@ namespace Week14.Combat
         private bool externalMotionDriven;
         private bool parryLockOnIndicatorVisible;
         private int interceptGroupId;
+        private EnemyProjectile poolPrefabSource;
+        private bool pooledByProjectilePool;
         private Vector2 pathIndicatorStart;
         private Vector2 pathIndicatorDirection = Vector2.left;
         private Vector2 pathIndicatorRadialSplitPoint;
@@ -696,7 +700,9 @@ namespace Week14.Combat
         {
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
-            EnemyProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            EnemyProjectile projectile = ProjectilePool.Get(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            projectile.poolPrefabSource = prefab;
+            projectile.MarkPooledByProjectilePool();
             if (homingEnabled && projectile is not IHomingEnemyProjectile)
             {
                 Debug.LogWarning($"{projectile.name} is configured as homing but does not implement {nameof(IHomingEnemyProjectile)}.", projectile);
@@ -739,5 +745,255 @@ namespace Week14.Combat
 
         protected virtual void CopySpecialRuntimeStateTo(EnemyProjectile replacement) { }
 
+        internal void MarkPooledByProjectilePool()
+        {
+            pooledByProjectilePool = true;
+        }
+
+    }
+
+    internal sealed class ProjectilePool : MonoBehaviour
+    {
+        private const string PoolRootName = "Pool";
+
+        private static readonly Dictionary<int, PoolEntry> entriesByPrefabId = new();
+        private static readonly Dictionary<string, PoolEntry> generatedEntriesByKey = new(StringComparer.Ordinal);
+        private static readonly Dictionary<int, PoolEntry> activeEntriesByInstanceId = new();
+
+        private static ProjectilePool instance;
+        private static Transform root;
+
+        public static void EnsureScenePool()
+        {
+            EnsureInstance();
+        }
+
+        public static T Get<T>(T prefab, Vector3 position, Quaternion rotation) where T : Component
+        {
+            if (prefab == null)
+            {
+                return null;
+            }
+
+            PoolEntry entry = GetOrCreateEntry(prefab);
+            T instanceComponent = TakeInactive<T>(entry);
+            if (instanceComponent == null)
+            {
+                instanceComponent = Instantiate(prefab, entry.Root);
+                instanceComponent.name = prefab.name;
+                entry.CreatedCount++;
+            }
+
+            Transform instanceTransform = instanceComponent.transform;
+            instanceTransform.SetParent(entry.Root, false);
+            instanceTransform.SetPositionAndRotation(position, rotation);
+            instanceTransform.localScale = prefab.transform.localScale;
+
+            activeEntriesByInstanceId[instanceComponent.GetInstanceID()] = entry;
+            entry.ActiveCount++;
+            entry.PeakActiveCount = Mathf.Max(entry.PeakActiveCount, entry.ActiveCount);
+            instanceComponent.gameObject.SetActive(true);
+            return instanceComponent;
+        }
+
+        public static T GetGenerated<T>(
+            string key,
+            string poolName,
+            Func<T> create,
+            Vector3 position,
+            Quaternion rotation) where T : Component
+        {
+            if (string.IsNullOrWhiteSpace(key) || create == null)
+            {
+                return null;
+            }
+
+            PoolEntry entry = GetOrCreateGeneratedEntry(key, poolName);
+            T instanceComponent = TakeInactive<T>(entry);
+            if (instanceComponent == null)
+            {
+                instanceComponent = create();
+                if (instanceComponent == null)
+                {
+                    return null;
+                }
+
+                instanceComponent.name = string.IsNullOrWhiteSpace(poolName) ? typeof(T).Name : poolName.Replace(" Pool", string.Empty);
+                entry.CreatedCount++;
+            }
+
+            Transform instanceTransform = instanceComponent.transform;
+            instanceTransform.SetParent(entry.Root, false);
+            instanceTransform.SetPositionAndRotation(position, rotation);
+            instanceTransform.localScale = Vector3.one;
+
+            activeEntriesByInstanceId[instanceComponent.GetInstanceID()] = entry;
+            entry.ActiveCount++;
+            entry.PeakActiveCount = Mathf.Max(entry.PeakActiveCount, entry.ActiveCount);
+            instanceComponent.gameObject.SetActive(true);
+
+            if (instanceComponent is EnemyProjectile enemyProjectile)
+            {
+                enemyProjectile.MarkPooledByProjectilePool();
+            }
+
+            return instanceComponent;
+        }
+
+        public static void Release(Component instanceComponent, float delaySeconds = 0f)
+        {
+            if (instanceComponent == null)
+            {
+                return;
+            }
+
+            int instanceId = instanceComponent.GetInstanceID();
+            if (!activeEntriesByInstanceId.TryGetValue(instanceId, out PoolEntry entry))
+            {
+                return;
+            }
+
+            activeEntriesByInstanceId.Remove(instanceId);
+            entry.ActiveCount = Mathf.Max(0, entry.ActiveCount - 1);
+
+            if (delaySeconds > 0f && EnsureInstance() != null && instanceComponent.gameObject.activeInHierarchy)
+            {
+                instance.StartCoroutine(instance.ReleaseAfterDelay(entry, instanceComponent, delaySeconds));
+                return;
+            }
+
+            ReturnNow(entry, instanceComponent);
+        }
+
+        private static ProjectilePool EnsureInstance()
+        {
+            if (instance != null && root != null)
+            {
+                return instance;
+            }
+
+            entriesByPrefabId.Clear();
+            generatedEntriesByKey.Clear();
+            activeEntriesByInstanceId.Clear();
+
+            GameObject rootObject = GameObject.Find(PoolRootName);
+            if (rootObject == null)
+            {
+                rootObject = new GameObject(PoolRootName);
+            }
+
+            root = rootObject.transform;
+            instance = rootObject.GetComponent<ProjectilePool>();
+            if (instance == null)
+            {
+                instance = rootObject.AddComponent<ProjectilePool>();
+            }
+
+            return instance;
+        }
+
+        private static PoolEntry GetOrCreateEntry(Component prefab)
+        {
+            EnsureInstance();
+
+            int prefabId = prefab.GetInstanceID();
+            if (entriesByPrefabId.TryGetValue(prefabId, out PoolEntry entry) && entry.Root != null)
+            {
+                return entry;
+            }
+
+            GameObject entryObject = new($"{prefab.name} Pool");
+            entryObject.transform.SetParent(root, false);
+            entry = new PoolEntry(entryObject.transform);
+            entriesByPrefabId[prefabId] = entry;
+            return entry;
+        }
+
+        private static PoolEntry GetOrCreateGeneratedEntry(string key, string poolName)
+        {
+            EnsureInstance();
+
+            if (generatedEntriesByKey.TryGetValue(key, out PoolEntry entry) && entry.Root != null)
+            {
+                return entry;
+            }
+
+            string resolvedPoolName = string.IsNullOrWhiteSpace(poolName) ? $"{key} Pool" : poolName;
+            GameObject entryObject = new(resolvedPoolName);
+            entryObject.transform.SetParent(root, false);
+            entry = new PoolEntry(entryObject.transform);
+            generatedEntriesByKey[key] = entry;
+            return entry;
+        }
+
+        private static T TakeInactive<T>(PoolEntry entry) where T : Component
+        {
+            while (entry.Inactive.Count > 0)
+            {
+                Component candidate = entry.Inactive.Pop();
+                if (candidate != null)
+                {
+                    return candidate as T;
+                }
+            }
+
+            return null;
+        }
+
+        private static void ReturnNow(PoolEntry entry, Component instanceComponent)
+        {
+            if (entry == null || instanceComponent == null)
+            {
+                return;
+            }
+
+            instanceComponent.gameObject.SetActive(false);
+            if (entry.Root != null)
+            {
+                instanceComponent.transform.SetParent(entry.Root, false);
+            }
+
+            entry.Inactive.Push(instanceComponent);
+        }
+
+        private IEnumerator ReleaseAfterDelay(PoolEntry entry, Component instanceComponent, float delaySeconds)
+        {
+            yield return new WaitForSeconds(Mathf.Max(0f, delaySeconds));
+
+            if (instanceComponent == null)
+            {
+                yield break;
+            }
+
+            ReturnNow(entry, instanceComponent);
+        }
+
+        private void OnDestroy()
+        {
+            if (instance != this)
+            {
+                return;
+            }
+
+            instance = null;
+            root = null;
+            entriesByPrefabId.Clear();
+            generatedEntriesByKey.Clear();
+            activeEntriesByInstanceId.Clear();
+        }
+
+        private sealed class PoolEntry
+        {
+            public PoolEntry(Transform root)
+            {
+                Root = root;
+            }
+
+            public Transform Root { get; }
+            public Stack<Component> Inactive { get; } = new();
+            public int CreatedCount { get; set; }
+            public int ActiveCount { get; set; }
+            public int PeakActiveCount { get; set; }
+        }
     }
 }

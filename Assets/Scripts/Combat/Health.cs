@@ -9,6 +9,11 @@ namespace Week14.Combat
 
         public bool IsDead { get; private set; }
 
+        public void Revive()
+        {
+            IsDead = false;
+        }
+
         public bool TakeDamage(float amount)
         {
             if (IsDead || amount <= 0f)

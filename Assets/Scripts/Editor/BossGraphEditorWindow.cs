@@ -53,7 +53,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private float detailsResizeStartWidth;
     private readonly List<CopiedNodeSnapshot> copiedNodeClipboard = new();
     private readonly List<TransitionSnapshot> copiedTransitionClipboard = new();
+    private readonly List<ParallelEdgeSnapshot> copiedParallelEdgeClipboard = new();
     private int copiedNodePasteCount;
+    private int draggedPatternIndex = -1;
+    private int patternDragTargetIndex = -1;
 
     private static readonly string[] DetailTabLabels = { "패턴", "설정" };
     private static readonly Vector2 NodePasteOffset = new(40f, 40f);
@@ -77,6 +80,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private const float DetailsPanelResizeHandleWidth = 10f;
     private const float ActionSettingsMinHeight = 140f;
     private const float ActionSettingsBottomPadding = 16f;
+    private const float PatternDragHandleWidth = 36f;
     private const int SelectedElementDetailsIndex = -1;
 
     private void OnEnable()
@@ -700,6 +704,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         copiedNodeClipboard.Clear();
         copiedTransitionClipboard.Clear();
+        copiedParallelEdgeClipboard.Clear();
         copiedNodePasteCount = 0;
 
         HashSet<string> selectedNodeIds = new();
@@ -725,6 +730,17 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 copiedTransitionClipboard.Add(transition);
             }
         }
+
+        List<ParallelEdgeSnapshot> parallelEdges = ReadParallelEdgeSnapshots(graphObject.FindProperty("parallelEdges"));
+        for (int i = 0; i < parallelEdges.Count; i++)
+        {
+            ParallelEdgeSnapshot parallelEdge = parallelEdges[i];
+            if (selectedNodeIds.Contains(parallelEdge.FromNodeId)
+                && selectedNodeIds.Contains(parallelEdge.ToNodeId))
+            {
+                copiedParallelEdgeClipboard.Add(parallelEdge);
+            }
+        }
     }
 
     private void PasteCopiedNodes()
@@ -739,6 +755,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         SerializedProperty stateNodes = graphObject.FindProperty("stateNodes");
         SerializedProperty transitions = graphObject.FindProperty("transitions");
+        SerializedProperty parallelEdges = graphObject.FindProperty("parallelEdges");
         if (stateNodes == null)
         {
             return;
@@ -797,12 +814,34 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SetFloat(transition, "threshold", copiedTransition.Values.Threshold);
                 SetInt(transition, "phaseIndex", copiedTransition.Values.PhaseIndex);
             }
-
-            SyncPatternsFromTransitions(
-                ReadTransitionSnapshots(transitions),
-                ReadParallelEdgeSnapshots(graphObject.FindProperty("parallelEdges")));
-            SyncGuidReferences();
         }
+
+        if (parallelEdges != null)
+        {
+            for (int i = 0; i < copiedParallelEdgeClipboard.Count; i++)
+            {
+                ParallelEdgeSnapshot copiedParallelEdge = copiedParallelEdgeClipboard[i];
+                if (!pastedNodeIds.TryGetValue(copiedParallelEdge.FromNodeId, out string nextFromNodeId)
+                    || !pastedNodeIds.TryGetValue(copiedParallelEdge.ToNodeId, out string nextToNodeId))
+                {
+                    continue;
+                }
+
+                parallelEdges.InsertArrayElementAtIndex(parallelEdges.arraySize);
+                SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(parallelEdges.arraySize - 1);
+                SetString(parallelEdge, "fromNodeGuid", string.Empty);
+                SetString(parallelEdge, "toNodeGuid", string.Empty);
+                SetString(parallelEdge, "fromNodeId", nextFromNodeId);
+                SetString(parallelEdge, "toNodeId", nextToNodeId);
+                SetInt(parallelEdge, "laneIndex", 0);
+                SetInt(parallelEdge, "targetLaneIndex", 0);
+            }
+        }
+
+        SyncPatternsFromTransitions(
+            ReadTransitionSnapshots(transitions),
+            ReadParallelEdgeSnapshots(parallelEdges));
+        SyncGuidReferences();
 
         graphObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(graphAsset);
@@ -3146,6 +3185,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             }
         }
 
+        changed |= FinishPatternDrag(patterns);
         changed |= EditorGUI.EndChangeCheck();
         if (changed)
         {
@@ -3167,43 +3207,30 @@ public sealed class BossGraphEditorWindow : EditorWindow
         bool changed = false;
         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            using (new EditorGUILayout.HorizontalScope())
+            string fallbackLabel = $"Pattern {patternIndex + 1}";
+            string patternIdValue = GetString(pattern, "patternId", fallbackLabel);
+            Rect headerRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+            DrawPatternDragBackground(headerRect, patternIndex, patterns.arraySize);
+
+            Rect dragRect = new(headerRect.x, headerRect.y, PatternDragHandleWidth, headerRect.height);
+            Rect deleteRect = new(headerRect.xMax - 34f, headerRect.y, 34f, headerRect.height);
+            Rect foldoutRect = headerRect;
+            foldoutRect.xMin += PatternDragHandleWidth + 4f;
+            foldoutRect.xMax -= 38f;
+
+            GUI.Label(dragRect, "Drag", EditorStyles.miniButtonLeft);
+            pattern.isExpanded = EditorGUI.Foldout(
+                foldoutRect,
+                pattern.isExpanded,
+                patternIdValue,
+                true);
+            HandlePatternDrag(headerRect, dragRect, patternIndex, patterns.arraySize);
+
+            if (GUI.Button(deleteRect, "Del", EditorStyles.miniButtonRight))
             {
-                string fallbackLabel = $"Pattern {patternIndex + 1}";
-                string patternIdValue = GetString(pattern, "patternId", fallbackLabel);
-                pattern.isExpanded = EditorGUILayout.Foldout(
-                    pattern.isExpanded,
-                    patternIdValue,
-                    true);
-
-                using (new EditorGUI.DisabledScope(patternIndex == 0))
-                {
-                    if (GUILayout.Button("Up", EditorStyles.miniButtonMid, GUILayout.Width(34f)))
-                    {
-                        Undo.RecordObject(graphAsset, "Edit Boss Graph Pattern Order");
-                        patterns.MoveArrayElement(patternIndex, patternIndex - 1);
-                        stopDrawing = true;
-                        return true;
-                    }
-                }
-
-                using (new EditorGUI.DisabledScope(patternIndex >= patterns.arraySize - 1))
-                {
-                    if (GUILayout.Button("Down", EditorStyles.miniButtonMid, GUILayout.Width(48f)))
-                    {
-                        Undo.RecordObject(graphAsset, "Edit Boss Graph Pattern Order");
-                        patterns.MoveArrayElement(patternIndex, patternIndex + 1);
-                        stopDrawing = true;
-                        return true;
-                    }
-                }
-
-                if (GUILayout.Button("Del", EditorStyles.miniButton, GUILayout.Width(34f)))
-                {
-                    DeletePattern(patterns, patternIndex, patternIdValue);
-                    stopDrawing = true;
-                    return true;
-                }
+                DeletePattern(patterns, patternIndex, patternIdValue);
+                stopDrawing = true;
+                return true;
             }
 
             if (!pattern.isExpanded)
@@ -3215,7 +3242,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             SerializedProperty patternId = pattern.FindPropertyRelative("patternId");
             if (patternId != null)
             {
-                EditorGUILayout.PropertyField(patternId, new GUIContent("Pattern Id"));
+                changed |= DrawDelayedPatternIdField(patternId, patternIndex);
             }
 
             SerializedProperty nodeIds = pattern.FindPropertyRelative("nodeIds");
@@ -3228,6 +3255,213 @@ public sealed class BossGraphEditorWindow : EditorWindow
         }
 
         return changed;
+    }
+
+    private bool DrawDelayedPatternIdField(SerializedProperty patternId, int patternIndex)
+    {
+        string currentPatternId = patternId.stringValue;
+        EditorGUI.BeginChangeCheck();
+        string nextPatternId = EditorGUILayout.DelayedTextField("Pattern Id", currentPatternId).Trim();
+        if (!EditorGUI.EndChangeCheck() || nextPatternId == currentPatternId)
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(nextPatternId))
+        {
+            EditorGUILayout.HelpBox("Pattern Id는 비워둘 수 없습니다.", MessageType.Warning);
+            return false;
+        }
+
+        if (!IsPatternIdAvailable(nextPatternId, patternIndex))
+        {
+            EditorGUILayout.HelpBox($"이미 사용 중인 Pattern Id입니다: {nextPatternId}", MessageType.Warning);
+            return false;
+        }
+
+        Undo.RecordObject(graphAsset, "Edit Boss Graph Pattern Id");
+        patternId.stringValue = nextPatternId;
+        UpdatePatternIdReferences(currentPatternId, nextPatternId);
+        return true;
+    }
+
+    private bool IsPatternIdAvailable(string patternId, int currentPatternIndex)
+    {
+        if (graphObject == null || string.IsNullOrWhiteSpace(patternId))
+        {
+            return false;
+        }
+
+        SerializedProperty patterns = graphObject.FindProperty("patterns");
+        if (patterns == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < patterns.arraySize; i++)
+        {
+            if (i == currentPatternIndex)
+            {
+                continue;
+            }
+
+            string existingPatternId = GetString(patterns.GetArrayElementAtIndex(i), "patternId", string.Empty);
+            if (string.Equals(existingPatternId, patternId, StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void UpdatePatternIdReferences(string oldPatternId, string newPatternId)
+    {
+        if (string.IsNullOrWhiteSpace(oldPatternId)
+            || string.IsNullOrWhiteSpace(newPatternId)
+            || oldPatternId == newPatternId)
+        {
+            return;
+        }
+
+        SerializedProperty debugForcedPatternId = graphObject.FindProperty("debugForcedPatternId");
+        if (debugForcedPatternId != null && debugForcedPatternId.stringValue == oldPatternId)
+        {
+            debugForcedPatternId.stringValue = newPatternId;
+        }
+
+        SerializedProperty phases = graphObject.FindProperty("phases");
+        if (phases == null)
+        {
+            return;
+        }
+
+        for (int phaseIndex = 0; phaseIndex < phases.arraySize; phaseIndex++)
+        {
+            SerializedProperty phase = phases.GetArrayElementAtIndex(phaseIndex);
+            SerializedProperty openingPatternId = phase.FindPropertyRelative("openingPatternId");
+            if (openingPatternId != null && openingPatternId.stringValue == oldPatternId)
+            {
+                openingPatternId.stringValue = newPatternId;
+            }
+
+            SerializedProperty entries = phase.FindPropertyRelative("patterns");
+            if (entries == null)
+            {
+                continue;
+            }
+
+            for (int entryIndex = 0; entryIndex < entries.arraySize; entryIndex++)
+            {
+                SerializedProperty entryPatternId = entries.GetArrayElementAtIndex(entryIndex).FindPropertyRelative("patternId");
+                if (entryPatternId != null && entryPatternId.stringValue == oldPatternId)
+                {
+                    entryPatternId.stringValue = newPatternId;
+                }
+            }
+        }
+    }
+
+    private void HandlePatternDrag(Rect rowRect, Rect dragRect, int patternIndex, int patternCount)
+    {
+        Event currentEvent = Event.current;
+        if (currentEvent == null)
+        {
+            return;
+        }
+
+        if (draggedPatternIndex >= 0 && rowRect.Contains(currentEvent.mousePosition))
+        {
+            patternDragTargetIndex = currentEvent.mousePosition.y < rowRect.center.y
+                ? patternIndex
+                : patternIndex + 1;
+        }
+
+        if (currentEvent.type == EventType.MouseDown
+            && currentEvent.button == 0
+            && dragRect.Contains(currentEvent.mousePosition))
+        {
+            draggedPatternIndex = patternIndex;
+            patternDragTargetIndex = patternIndex;
+            GUIUtility.keyboardControl = 0;
+            currentEvent.Use();
+            return;
+        }
+
+        if (draggedPatternIndex >= 0 && currentEvent.type == EventType.MouseDrag)
+        {
+            patternDragTargetIndex = Mathf.Clamp(patternDragTargetIndex, 0, patternCount);
+            currentEvent.Use();
+            Repaint();
+        }
+    }
+
+    private bool FinishPatternDrag(SerializedProperty patterns)
+    {
+        if (draggedPatternIndex < 0)
+        {
+            return false;
+        }
+
+        Event currentEvent = Event.current;
+        if (currentEvent == null
+            || (currentEvent.type != EventType.MouseUp && currentEvent.type != EventType.Ignore))
+        {
+            return false;
+        }
+
+        int sourceIndex = draggedPatternIndex;
+        int targetIndex = Mathf.Clamp(patternDragTargetIndex, 0, patterns.arraySize);
+        draggedPatternIndex = -1;
+        patternDragTargetIndex = -1;
+
+        if (currentEvent.type == EventType.MouseUp)
+        {
+            currentEvent.Use();
+        }
+
+        if (sourceIndex < 0
+            || sourceIndex >= patterns.arraySize
+            || targetIndex == sourceIndex
+            || targetIndex == sourceIndex + 1)
+        {
+            return false;
+        }
+
+        int destinationIndex = targetIndex > sourceIndex ? targetIndex - 1 : targetIndex;
+        Undo.RecordObject(graphAsset, "Edit Boss Graph Pattern Order");
+        patterns.MoveArrayElement(sourceIndex, destinationIndex);
+        return true;
+    }
+
+    private void DrawPatternDragBackground(Rect rowRect, int patternIndex, int patternCount)
+    {
+        if (Event.current.type != EventType.Repaint || draggedPatternIndex < 0)
+        {
+            return;
+        }
+
+        if (draggedPatternIndex == patternIndex)
+        {
+            EditorGUI.DrawRect(rowRect, new Color(0.25f, 0.45f, 0.7f, 0.16f));
+        }
+
+        if (patternDragTargetIndex == patternIndex)
+        {
+            DrawPatternDropLine(rowRect, rowRect.yMin);
+        }
+        else if (patternDragTargetIndex == patternCount && patternIndex == patternCount - 1)
+        {
+            DrawPatternDropLine(rowRect, rowRect.yMax);
+        }
+    }
+
+    private static void DrawPatternDropLine(Rect rowRect, float y)
+    {
+        Rect lineRect = rowRect;
+        lineRect.y = y - 1f;
+        lineRect.height = 2f;
+        EditorGUI.DrawRect(lineRect, new Color(0.3f, 0.75f, 1f, 1f));
     }
 
     private bool DrawPatternNodeIds(SerializedProperty nodeIds)

@@ -130,6 +130,12 @@ namespace Week14.Enemy
             orderedDoubleReplacement.SetSequenceActive(sequenceActive);
         }
 
+        protected override void OnProjectileReturnedToPool()
+        {
+            base.OnProjectileReturnedToPool();
+            SequenceStepCompleted = null;
+        }
+
         public void SetSequenceActive(bool active)
         {
             sequenceActive = active;

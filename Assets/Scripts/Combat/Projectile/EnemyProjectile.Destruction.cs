@@ -75,6 +75,7 @@ namespace Week14.Combat
             OnProjectileDestroying(reason, destroyPosition);
             Destroyed?.Invoke(this, reason, destroyPosition);
             UnregisterInterceptGroup();
+            activeProjectiles.Remove(this);
             ReleaseOwnerProjectileSlot();
             if (body != null)
             {
@@ -97,7 +98,15 @@ namespace Week14.Combat
                 renderers[i].enabled = false;
             }
 
-            Destroy(gameObject);
+            if (pooledByProjectilePool)
+            {
+                OnProjectileReturnedToPool();
+                ProjectilePool.Release(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         protected virtual void OnDestroy()
@@ -120,6 +129,14 @@ namespace Week14.Combat
         }
 
         protected virtual void OnProjectileDestroying(EnemyProjectileDestroyReason reason, Vector3 position) { }
+
+        protected virtual void OnProjectileReturnedToPool()
+        {
+            Launched = null;
+            RadialSplit = null;
+            RadialSplitImminent = null;
+            Destroyed = null;
+        }
 
     }
 }
