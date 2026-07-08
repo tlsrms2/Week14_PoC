@@ -122,6 +122,7 @@ internal static class BossGraphActionEditorUtility
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
+        new("Utility/Play Sfx", typeof(PlaySfxAction), () => new PlaySfxAction()),
         new("Minion/Spawn/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
         new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
         new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
@@ -350,6 +351,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(SpawnPrefabAction))
         {
             return "프리팹을 보스 기준 위치에 생성합니다. 필요하면 보스 자식으로 붙이고 일정 시간 뒤 제거합니다.";
+        }
+
+        if (actionType == typeof(PlaySfxAction))
+        {
+            return "지정한 SFX를 즉시 재생합니다.";
         }
 
         if (actionType == typeof(MinionSummonAction))

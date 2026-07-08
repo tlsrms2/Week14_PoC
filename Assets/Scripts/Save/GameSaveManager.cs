@@ -37,6 +37,11 @@ namespace Week14.Save
             return !string.IsNullOrEmpty(bossId) && Data.clearedBossIds.Contains(bossId);
         }
 
+        public static void UnlockDefaultBoss()
+        {
+            UnlockBoss(FirstBossId);
+        }
+
         public static void UnlockBoss(string bossId)
         {
             if (string.IsNullOrEmpty(bossId) || Data.unlockedBossIds.Contains(bossId))

@@ -45,7 +45,7 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 065da6c7b90ca904dab9cbc6b415fd19, type: 3}
   deathImage: {fileID: 0}
-  sceneName: JSG
+  sceneName: Boss_Conductor
   unlocksBossIds: []
   unlocksSkillIds: []
   unlocksWeaponIds: []

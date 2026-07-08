@@ -140,6 +140,8 @@ namespace Week14.Save
                     GameSaveManager.UnclearBoss(boss.Id);
                 }
             }
+
+            GameSaveManager.UnlockDefaultBoss();
         }
 
         [ContextMenu("총기 전체 해금")]
@@ -175,6 +177,11 @@ namespace Week14.Save
                 {
                     GameSaveManager.LockWeapon(weapon.WeaponId);
                 }
+            }
+
+            if (WeaponLoadoutManager.Instance != null)
+            {
+                WeaponLoadoutManager.Instance.UnlockDefaultWeapon();
             }
         }
 
