@@ -268,6 +268,12 @@ namespace Week14.Combat
                 return false;
             }
 
+            ConductorTurretProjectile turretProjectile = other.GetComponentInParent<ConductorTurretProjectile>();
+            if (turretProjectile != null)
+            {
+                return TryResolveTurretHit(turretProjectile);
+            }
+
             if (IsGroundCollider(other))
             {
                 return false;
@@ -281,18 +287,12 @@ namespace Week14.Combat
             EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
             if (enemyProjectile != null)
             {
-                if (enemyProjectile is ConductorTurretProjectile turretProjectile && turretProjectile.IsPlayerTargetable)
+                if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
                 {
+                    return true;
                 }
-                else
-                {
-                    if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
-                    {
-                        return true;
-                    }
 
-                    return false;
-                }
+                return false;
             }
 
             Health targetHealth = other.GetComponentInParent<Health>();
@@ -387,6 +387,23 @@ namespace Week14.Combat
                 0,
                 0,
                 0.45f);
+
+            DestroyProjectile();
+            return true;
+        }
+
+        internal bool TryResolveTurretHit(ConductorTurretProjectile turret)
+        {
+            if (turret == null || !turret.IsAliveTurret || resolved)
+            {
+                return false;
+            }
+
+            resolved = true;
+            if (canDamageHealth && turret.ReceivePlayerHit(bulletDamage, transform.position, flightDirection, projectileColor))
+            {
+                NotifyNormalAttackDamage();
+            }
 
             DestroyProjectile();
             return true;
@@ -498,6 +515,10 @@ namespace Week14.Combat
             }
 
             ProjectilePool.Release(this);
+            if (gameObject.activeSelf)
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         private void RestorePooledComponents()

@@ -1347,7 +1347,11 @@ internal sealed class MinionConductorScoreLaneRushSpecialActionDrawer : Property
 
     private static bool ShouldSkipProperty(SerializedProperty property)
     {
-        return property != null && (property.name == "volleys" || property.name == "useTwoSides");
+        return property != null
+            && (property.name == "volleys"
+                || property.name == "useTwoSides"
+                || property.name == "standardDrawLaneIndicators"
+                || property.name.StartsWith("standardLaneIndicator", StringComparison.Ordinal));
     }
 }
 
