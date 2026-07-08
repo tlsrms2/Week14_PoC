@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634125
     sequences: []
-    editorPosition: {x: 19, y: 377}
+    editorPosition: {x: 20, y: 377}
   - nodeId: Maintain Player Distance2
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
@@ -1622,23 +1622,23 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 2
@@ -1649,23 +1649,23 @@ MonoBehaviour:
     - patternId: Pattern6
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern7
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern8
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern9
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern10
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
   transitions:
   - fromNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
