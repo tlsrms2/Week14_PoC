@@ -344,7 +344,7 @@ namespace Week14.Enemy
             float remainingSeconds = minionOutlineFlashSeconds;
             while (remainingSeconds > 0f)
             {
-                remainingSeconds -= Time.deltaTime;
+                remainingSeconds -= EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 

@@ -27,8 +27,8 @@ namespace Week14.Enemy
         private BossAI turretOwner;
         private Vector2 deployStartPosition;
         private Vector2 deployTargetPosition;
-        private float deployStartedAt;
-        private float nextFireAt = float.PositiveInfinity;
+        private float deployElapsed;
+        private float fireCooldown = float.PositiveInfinity;
         private int firedCycles;
         private bool turretConfigured;
         private bool deployed;
@@ -85,7 +85,7 @@ namespace Week14.Enemy
             turretOwner = owner != null ? owner : OwnerBoss;
             deployStartPosition = transform.position;
             deployTargetPosition = targetPosition;
-            deployStartedAt = Time.time;
+            deployElapsed = 0f;
             deploySeconds = Mathf.Max(0f, nextDeploySeconds);
             firstFireDelay = Mathf.Max(0f, nextFirstFireDelay);
             fireInterval = Mathf.Max(0.05f, nextFireInterval);
@@ -96,7 +96,7 @@ namespace Week14.Enemy
             firedCycles = 0;
             turretConfigured = turretOwner != null && crossFireProjectile != null && crossFireProjectile.Prefab != null;
             deployed = false;
-            nextFireAt = float.PositiveInfinity;
+            fireCooldown = float.PositiveInfinity;
             ForceZeroRotation();
             OverrideProjectileLifetime(lifetimeSeconds > 0f ? lifetimeSeconds : float.PositiveInfinity);
             EnsureStatusView();
@@ -162,14 +162,15 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (Time.time < nextFireAt)
+            fireCooldown -= EnemyTimeScale.DeltaTime;
+            if (fireCooldown > 0f)
             {
                 return;
             }
 
             FireCrossVolley();
             firedCycles++;
-            nextFireAt += fireInterval;
+            fireCooldown = Mathf.Max(0f, fireCooldown + fireInterval);
         }
 
         protected override void OnTriggerEnter2D(Collider2D other)
@@ -254,8 +255,9 @@ namespace Week14.Enemy
         private void TickDeploy()
         {
             ForceZeroRotation();
+            deployElapsed += EnemyTimeScale.DeltaTime;
             float t = deploySeconds > 0f
-                ? Mathf.Clamp01((Time.time - deployStartedAt) / deploySeconds)
+                ? Mathf.Clamp01(deployElapsed / deploySeconds)
                 : 1f;
             Vector2 nextPosition = Vector2.Lerp(deployStartPosition, deployTargetPosition, t);
             transform.position = new Vector3(nextPosition.x, nextPosition.y, transform.position.z);
@@ -285,7 +287,7 @@ namespace Week14.Enemy
                 body.angularVelocity = 0f;
             }
 
-            nextFireAt = turretConfigured ? Time.time + firstFireDelay : float.PositiveInfinity;
+            fireCooldown = turretConfigured ? firstFireDelay : float.PositiveInfinity;
         }
 
         private void ForceZeroRotation()

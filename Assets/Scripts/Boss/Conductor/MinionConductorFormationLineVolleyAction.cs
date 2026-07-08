@@ -1686,14 +1686,49 @@ namespace Week14.Enemy
             if (body != null)
             {
                 body.position = position;
-                body.linearVelocity = deltaTime > 0f ? (position - previous) / deltaTime : Vector2.zero;
+                body.linearVelocity = deltaTime > 0f
+                    ? (position - previous) / deltaTime * EnemyTimeScale.Current
+                    : Vector2.zero;
             }
 
-            Vector2 direction = visualDirection.sqrMagnitude > 0.0001f ? visualDirection.normalized : lineDirection;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Vector2 direction = ResolveVisualDirection(position, visualDirection);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + ResolveVisualRotationOffset();
             transform.SetPositionAndRotation(
                 new Vector3(position.x, position.y, transform.position.z),
                 Quaternion.Euler(0f, 0f, angle));
+        }
+
+        private Vector2 ResolveVisualDirection(Vector2 position, Vector2 fallbackDirection)
+        {
+            if (projectile is IConductorPlayerFacingProjectile facingProjectile
+                && facingProjectile.ShouldFacePlayer
+                && TryGetPlayerDirection(position, out Vector2 playerDirection))
+            {
+                return playerDirection;
+            }
+
+            return fallbackDirection.sqrMagnitude > 0.0001f ? fallbackDirection.normalized : lineDirection;
+        }
+
+        private float ResolveVisualRotationOffset()
+        {
+            return projectile is IConductorPlayerFacingProjectile facingProjectile
+                && facingProjectile.ShouldFacePlayer
+                    ? facingProjectile.PlayerFacingRotationOffsetDegrees
+                    : 0f;
+        }
+
+        private static bool TryGetPlayerDirection(Vector2 position, out Vector2 direction)
+        {
+            direction = Vector2.zero;
+            PlayerCombatController target = PlayerCombatController.Active;
+            if (target == null || target.Health == null || target.Health.IsDead)
+            {
+                return false;
+            }
+
+            direction = (Vector2)target.transform.position - position;
+            return direction.sqrMagnitude > 0.0001f;
         }
 
         private void StopBody()

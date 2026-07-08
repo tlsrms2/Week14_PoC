@@ -173,7 +173,7 @@ namespace Week14.Enemy
             }
 
             float blinkRate = Mathf.Lerp(chargeBlinkMaxRate, chargeBlinkMinRate, remainingRatio);
-            homingBlinkPhase += Time.deltaTime * blinkRate;
+            homingBlinkPhase += EnemyTimeScale.DeltaTime * blinkRate;
             Color nextColor = Mathf.Repeat(homingBlinkPhase, 1f) >= 0.5f
                 ? stageBlinkColor
                 : ChargingColor;
@@ -209,7 +209,7 @@ namespace Week14.Enemy
             ApplyFlightDirection(nextDirection);
             if (ProjectileBody != null)
             {
-                ProjectileBody.linearVelocity = FlightDirection * ProjectileSpeed;
+                ProjectileBody.linearVelocity = FlightDirection * ProjectileSpeed * EnemyTimeScale.Current;
             }
         }
 
@@ -260,7 +260,7 @@ namespace Week14.Enemy
         private void TickLaunchedBlink()
         {
             float blinkRate = Mathf.Max(0.01f, chargeBlinkMinRate);
-            homingBlinkPhase += Time.deltaTime * blinkRate;
+            homingBlinkPhase += EnemyTimeScale.DeltaTime * blinkRate;
             Color nextColor = Mathf.Repeat(homingBlinkPhase, 1f) >= 0.5f
                 ? stageBlinkColor
                 : LaunchedColor;

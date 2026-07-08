@@ -122,6 +122,8 @@ MonoBehaviour:
   chargeBlinkMinRate: 2
   chargeBlinkMaxRate: 8
   chargeSolidColorRemainingRatio: 0.25
+  chargeGaugeRenderer: {fileID: 1572023442519430515}
+  homingVisualRotationOffsetDegrees: 90
   firstCycle:
     activeSequence:
       chargingSprite: {fileID: 6217269208181974984, guid: 8f1d87e3ebca5734a8ce7f675ede59ff, type: 3}

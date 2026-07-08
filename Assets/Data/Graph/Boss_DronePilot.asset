@@ -1861,7 +1861,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012723
     sequences: []
-    editorPosition: {x: 6879, y: -574}
+    editorPosition: {x: 6881, y: -574}
   - nodeId: Move Toward Player11
     nodeGuid: 09d1387dc2964906a932ac9164a8eaf9
     nodeKind: 1
@@ -2203,7 +2203,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012824
     sequences: []
-    editorPosition: {x: 6549, y: 1505}
+    editorPosition: {x: 6549, y: 1503}
   - nodeId: Move Toward Player15
     nodeGuid: 52244285709a49e390cfcb2871f063ff
     nodeKind: 1
@@ -3483,7 +3483,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
     - patternId: P5 -> P8
-      weight: 1
+      weight: 999
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
   - phaseIndex: 1
@@ -8904,7 +8904,7 @@ MonoBehaviour:
     - rid: 6489939025664671845
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -8912,7 +8912,7 @@ MonoBehaviour:
     - rid: 6489939025664671846
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 4
+        seconds: 3
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -9821,7 +9821,7 @@ MonoBehaviour:
     - rid: 6489939025664671919
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 5
+        wanderSeconds: 4
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -9862,7 +9862,7 @@ MonoBehaviour:
     - rid: 6489939025664671921
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 5
+        seconds: 4
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -10012,7 +10012,7 @@ MonoBehaviour:
     - rid: 6489939025664671934
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -10020,7 +10020,7 @@ MonoBehaviour:
     - rid: 6489939025664671935
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 4
+        durationSeconds: 3
         speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
@@ -10050,7 +10050,7 @@ MonoBehaviour:
     - rid: 6489939025664671936
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -10058,7 +10058,7 @@ MonoBehaviour:
     - rid: 6489939025664671937
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 4
+        durationSeconds: 3
         speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
@@ -11760,7 +11760,7 @@ MonoBehaviour:
     - rid: 6489939025664671948
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -11768,7 +11768,7 @@ MonoBehaviour:
     - rid: 6489939025664671949
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -12394,7 +12394,7 @@ MonoBehaviour:
     - rid: 6489939025664671980
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12402,7 +12402,7 @@ MonoBehaviour:
     - rid: 6489939025664671981
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -13111,7 +13111,7 @@ MonoBehaviour:
     - rid: 6489939039041355789
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -13152,7 +13152,7 @@ MonoBehaviour:
     - rid: 6489939039041355791
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 4
+        seconds: 3
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -13830,7 +13830,7 @@ MonoBehaviour:
     - rid: 6489939039041355911
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -13871,7 +13871,7 @@ MonoBehaviour:
     - rid: 6489939039041355913
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 4
+        seconds: 3
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -14135,7 +14135,7 @@ MonoBehaviour:
     - rid: 6489939039041355928
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 5
+        wanderSeconds: 4
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -14143,7 +14143,7 @@ MonoBehaviour:
     - rid: 6489939039041355929
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 5
+        seconds: 4
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -14293,7 +14293,7 @@ MonoBehaviour:
     - rid: 6489939039041355940
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 5
+        wanderSeconds: 4
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -14301,7 +14301,7 @@ MonoBehaviour:
     - rid: 6489939039041355941
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 5
+        seconds: 4
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -14485,7 +14485,7 @@ MonoBehaviour:
     - rid: 6489939039041355958
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -14493,7 +14493,7 @@ MonoBehaviour:
     - rid: 6489939039041355959
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 4
+        durationSeconds: 3
         speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
@@ -14580,7 +14580,7 @@ MonoBehaviour:
     - rid: 6489939039041355961
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -14588,7 +14588,7 @@ MonoBehaviour:
     - rid: 6489939039041355962
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 4
+        durationSeconds: 3
         speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
@@ -15460,7 +15460,7 @@ MonoBehaviour:
     - rid: 6489939039041355967
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -15468,7 +15468,7 @@ MonoBehaviour:
     - rid: 6489939039041355968
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 4
+        durationSeconds: 3
         speedMultiplier: 0.3
         speedCurve:
           serializedVersion: 2
@@ -16041,7 +16041,7 @@ MonoBehaviour:
     - rid: 6489939042083012723
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -16049,7 +16049,7 @@ MonoBehaviour:
     - rid: 6489939042083012724
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 4
+        seconds: 3
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -16792,7 +16792,7 @@ MonoBehaviour:
     - rid: 6489939042083012766
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -16800,7 +16800,7 @@ MonoBehaviour:
     - rid: 6489939042083012767
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -17007,7 +17007,7 @@ MonoBehaviour:
     - rid: 6489939042083012815
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 4
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -17015,7 +17015,7 @@ MonoBehaviour:
     - rid: 6489939042083012816
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 4
+        seconds: 3
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -18504,7 +18504,7 @@ MonoBehaviour:
     - rid: 6489939042083012819
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -18512,7 +18512,7 @@ MonoBehaviour:
     - rid: 6489939042083012820
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -19359,7 +19359,7 @@ MonoBehaviour:
     - rid: 6489939042083012825
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -20607,7 +20607,7 @@ MonoBehaviour:
     - rid: 6489939042083012843
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -20615,7 +20615,7 @@ MonoBehaviour:
     - rid: 6489939042083012844
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -22065,7 +22065,7 @@ MonoBehaviour:
     - rid: 6489939042083012868
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -22073,7 +22073,7 @@ MonoBehaviour:
     - rid: 6489939042083012869
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
@@ -22138,7 +22138,7 @@ MonoBehaviour:
     - rid: 6489939042083012876
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -22146,7 +22146,7 @@ MonoBehaviour:
     - rid: 6489939042083012877
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 3
+        seconds: 2
         speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
