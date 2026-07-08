@@ -83,6 +83,7 @@ namespace Week14.Enemy
             }
 
             // 방향 잠금 페이즈
+            context.SetFacingLocked(true);
             while (elapsed < windupSeconds)
             {
                 if (context.IsExecutionPaused)
@@ -127,6 +128,7 @@ namespace Week14.Enemy
 
             context.SetAnimationBool(chargeBoolName, false);
             context.SetDashing(false);
+            context.SetFacingLocked(false);
             context.Stop();
         }
 

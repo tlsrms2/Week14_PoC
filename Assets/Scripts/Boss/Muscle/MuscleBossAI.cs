@@ -15,6 +15,9 @@ namespace Week14.Enemy
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
+        private Transform[] facingMirrorChildren;
+        private Vector3[] facingMirrorBaseLocalPositions;
+        private bool facingMirrorChildrenCached;
 
         protected override bool RotatesBodyToPlayer => false;
 
@@ -54,12 +57,49 @@ namespace Week14.Enemy
         private void UpdateFacingSprite()
         {
             SpriteRenderer spriteRenderer = ResolveFacingSpriteRenderer();
-            if (spriteRenderer == null || Player == null || GraphContext?.IsDashing == true)
+            if (spriteRenderer == null || Player == null || GraphContext?.IsFacingLocked == true)
             {
                 return;
             }
 
-            spriteRenderer.flipX = Player.position.x > transform.position.x;
+            bool flip = Player.position.x > transform.position.x;
+            spriteRenderer.flipX = flip;
+            ApplyFacingMirrorToChildren(spriteRenderer.transform, flip);
+        }
+
+        private void ApplyFacingMirrorToChildren(Transform facingRoot, bool flip)
+        {
+            CacheFacingMirrorChildren(facingRoot);
+            for (int i = 0; i < facingMirrorChildren.Length; i++)
+            {
+                Transform child = facingMirrorChildren[i];
+                if (child == null)
+                {
+                    continue;
+                }
+
+                Vector3 basePosition = facingMirrorBaseLocalPositions[i];
+                child.localPosition = new Vector3(flip ? -basePosition.x : basePosition.x, basePosition.y, basePosition.z);
+            }
+        }
+
+        private void CacheFacingMirrorChildren(Transform facingRoot)
+        {
+            if (facingMirrorChildrenCached)
+            {
+                return;
+            }
+
+            facingMirrorChildrenCached = true;
+            int childCount = facingRoot.childCount;
+            facingMirrorChildren = new Transform[childCount];
+            facingMirrorBaseLocalPositions = new Vector3[childCount];
+            for (int i = 0; i < childCount; i++)
+            {
+                Transform child = facingRoot.GetChild(i);
+                facingMirrorChildren[i] = child;
+                facingMirrorBaseLocalPositions[i] = child.localPosition;
+            }
         }
 
         private SpriteRenderer ResolveFacingSpriteRenderer()

@@ -11,10 +11,15 @@ namespace Week14.Combat
         [SerializeField, Tooltip("배경(전체 범위) 색상입니다.")] private Color rangeBackgroundColor = new(1f, 0.2f, 0.1f, 0.25f);
         [SerializeField, Tooltip("중앙에서 차오르는 채움 색상입니다.")] private Color rangeFillColor = new(1f, 0.4f, 0.15f, 0.55f);
         [SerializeField] private int rangeSortingOrder = 15;
+        [SerializeField, Tooltip("남은 충전시간 비율을 표시할 원형 게이지 스프라이트 렌더러입니다. 비워두면 게이지를 표시하지 않습니다.")]
+        private SpriteRenderer chargeGaugeRenderer;
+
+        private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
 
         private SpriteRenderer rangeBackground;
         private SpriteRenderer rangeFill;
         private float rangeFullScale = 1f;
+        private MaterialPropertyBlock chargeGaugePropertyBlock;
 
         public float ExplosionRadius => explosionRadius;
         public int ExplosionDamage => explosionDamage;
@@ -26,9 +31,21 @@ namespace Week14.Combat
             SetupRangeIndicator();
         }
 
+        protected override void OnProjectileInitialized()
+        {
+            SetChargeGaugeVisible(IsCharging);
+        }
+
         protected override void OnProjectileChargeTick()
         {
-            if (!IsCharging || rangeBackground == null || rangeFill == null)
+            if (!IsCharging)
+            {
+                return;
+            }
+
+            SetChargeGaugeFill(1f - ChargeProgress01);
+
+            if (rangeBackground == null || rangeFill == null)
             {
                 return;
             }
@@ -73,8 +90,31 @@ namespace Week14.Combat
                 : transform.position;
         }
 
+        private void SetChargeGaugeVisible(bool visible)
+        {
+            if (chargeGaugeRenderer != null)
+            {
+                chargeGaugeRenderer.enabled = visible;
+            }
+        }
+
+        private void SetChargeGaugeFill(float remainingRatio)
+        {
+            if (chargeGaugeRenderer == null)
+            {
+                return;
+            }
+
+            chargeGaugePropertyBlock ??= new MaterialPropertyBlock();
+            chargeGaugeRenderer.GetPropertyBlock(chargeGaugePropertyBlock);
+            chargeGaugePropertyBlock.SetFloat(FillAmountId, remainingRatio);
+            chargeGaugeRenderer.SetPropertyBlock(chargeGaugePropertyBlock);
+        }
+
         protected override void OnProjectileLaunched()
         {
+            SetChargeGaugeVisible(false);
+
             // 폭발 이펙트/데미지는 여기서 바로 재생하지 않고 SpawnParryableBombAction이
             // Slam 애니메이션의 충돌 프레임(Animation Event)에 맞춰 대신 재생합니다.
             DestroyFromOwner();

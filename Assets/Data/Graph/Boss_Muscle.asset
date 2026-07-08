@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634125
     sequences: []
-    editorPosition: {x: 19, y: 377}
+    editorPosition: {x: 20, y: 377}
   - nodeId: Maintain Player Distance2
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288593
     sequences: []
-    editorPosition: {x: -170, y: 580}
+    editorPosition: {x: -366, y: 563}
   - nodeId: Wait2
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288596
     sequences: []
-    editorPosition: {x: 365, y: 580}
+    editorPosition: {x: 360, y: 580}
   - nodeId: Move Until Player Distance2
     nodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     nodeKind: 1
@@ -403,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200318
     sequences: []
-    editorPosition: {x: -42, y: 580}
+    editorPosition: {x: -142, y: 563}
   - nodeId: Wait4
     nodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
     nodeKind: 3
@@ -439,8 +439,8 @@ MonoBehaviour:
     action:
       rid: 4705777966128824404
     sequences: []
-    editorPosition: {x: 119, y: 580}
-  - nodeId: Action1
+    editorPosition: {x: -36, y: 563}
+  - nodeId: Spawn Parryable Bomb1
     nodeGuid: e72d87a6892c448482ba264c5e1b98e0
     nodeKind: 0
     phaseIndex: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824405
     sequences: []
-    editorPosition: {x: 250, y: 580}
+    editorPosition: {x: 137, y: 563}
   - nodeId: Set Parameter2
     nodeGuid: 1c806044cde744fda9762e94d5aae37e
     nodeKind: 2
@@ -457,8 +457,8 @@ MonoBehaviour:
     action:
       rid: 4705777966128824406
     sequences: []
-    editorPosition: {x: 1151, y: 580}
-  - nodeId: Action2
+    editorPosition: {x: 1081, y: 580}
+  - nodeId: Spawn Parryable Bomb2
     nodeGuid: a7bf4538a4cd492585324f85bd904841
     nodeKind: 0
     phaseIndex: 0
@@ -466,7 +466,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824407
     sequences: []
-    editorPosition: {x: 1279, y: 580}
+    editorPosition: {x: 1376, y: 577}
   - nodeId: Set Parameter3
     nodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     nodeKind: 2
@@ -493,7 +493,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824412
     sequences: []
-    editorPosition: {x: 1448, y: 580}
+    editorPosition: {x: 1538, y: 577}
   - nodeId: Set Parameter5
     nodeGuid: 903239b3d04049078b59a10d20bb9f95
     nodeKind: 2
@@ -502,7 +502,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824413
     sequences: []
-    editorPosition: {x: 1597, y: 580}
+    editorPosition: {x: 1687, y: 577}
   - nodeId: Set Parameter6
     nodeGuid: 8905948f06494740b377b2174b303a59
     nodeKind: 2
@@ -511,7 +511,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824414
     sequences: []
-    editorPosition: {x: 1786, y: 580}
+    editorPosition: {x: 1876, y: 577}
   - nodeId: Set Parameter7
     nodeGuid: 1d990f318ffe4ef48684d3f82217b553
     nodeKind: 2
@@ -520,8 +520,8 @@ MonoBehaviour:
     action:
       rid: 4705777966128824415
     sequences: []
-    editorPosition: {x: 1742, y: 1277}
-  - nodeId: Action3
+    editorPosition: {x: 1694, y: 1277}
+  - nodeId: Spawn Parryable Bomb3
     nodeGuid: 31e716fee72c460ca7240785d602533d
     nodeKind: 0
     phaseIndex: 0
@@ -565,8 +565,8 @@ MonoBehaviour:
     action:
       rid: 4705777966128824420
     sequences: []
-    editorPosition: {x: 17, y: 2284}
-  - nodeId: Action4
+    editorPosition: {x: -183, y: 2284}
+  - nodeId: Spawn Parryable Bomb4
     nodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     nodeKind: 0
     phaseIndex: 0
@@ -574,7 +574,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824421
     sequences: []
-    editorPosition: {x: 142, y: 2284}
+    editorPosition: {x: 115, y: 2284}
   - nodeId: Wait9
     nodeGuid: 60258f26f6e8489eb9ffb1088c891f53
     nodeKind: 3
@@ -1204,8 +1204,8 @@ MonoBehaviour:
     action:
       rid: 4705777988380393965
     sequences: []
-    editorPosition: {x: 2147, y: 2804}
-  - nodeId: Action5
+    editorPosition: {x: 2036, y: 2804}
+  - nodeId: Spawn Parryable Bomb5
     nodeGuid: d686967b9314491189ed041df7c40bc9
     nodeKind: 0
     phaseIndex: 0
@@ -1222,7 +1222,7 @@ MonoBehaviour:
     action:
       rid: 4705777988380393967
     sequences: []
-    editorPosition: {x: 2448, y: 2804}
+    editorPosition: {x: 2478, y: 2804}
   - nodeId: Set Parameter32
     nodeGuid: 7a4b94e02204486d898d59a24c217ac5
     nodeKind: 2
@@ -1250,6 +1250,51 @@ MonoBehaviour:
       rid: 4705777988380393974
     sequences: []
     editorPosition: {x: 1409, y: 2804}
+  - nodeId: Wait30
+    nodeGuid: d66ca81144914574b54cfb544b48c503
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778016365314173
+    sequences: []
+    editorPosition: {x: 82, y: 639}
+  - nodeId: Wait31
+    nodeGuid: 85ef4446e38048819bb17e8dad886054
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778016365314174
+    sequences: []
+    editorPosition: {x: 1242, y: 577}
+  - nodeId: Wait32
+    nodeGuid: aa65c546ef7745f5bff7615a925e4bf3
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778016365314189
+    sequences: []
+    editorPosition: {x: 1817, y: 1395}
+  - nodeId: Wait33
+    nodeGuid: b50b4e8319e54a9fbb41e1fa571c1d4d
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778016365314190
+    sequences: []
+    editorPosition: {x: -20, y: 2284}
+  - nodeId: Wait34
+    nodeGuid: 6048a5cd1a5e48d790ea488bbeab54db
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778016365314191
+    sequences: []
+    editorPosition: {x: 2177, y: 2804}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1282,6 +1327,7 @@ MonoBehaviour:
     - dd2c409e76354ed08de7552b29dfee4e
     - e7d379c95d9c4859ad3179669179dfe2
     - 9ebe6e5e7f2c46988b6d955c3fa74ffc
+    - d66ca81144914574b54cfb544b48c503
     - e72d87a6892c448482ba264c5e1b98e0
     - 5c3c6d7e9fe745a0896819b92dd417da
     - b65d982cdd8b4855b2e2a3dbff79e964
@@ -1289,6 +1335,7 @@ MonoBehaviour:
     - 612a6b3ea4804a36891c2ee0a4256608
     - e46ce352b4d0477fbaa77c6cb6ccb343
     - 1c806044cde744fda9762e94d5aae37e
+    - 85ef4446e38048819bb17e8dad886054
     - a7bf4538a4cd492585324f85bd904841
     - d8e19f1aff984433b0efa0e801f90d96
     - 903239b3d04049078b59a10d20bb9f95
@@ -1297,14 +1344,16 @@ MonoBehaviour:
     - Move Until Player Distance1
     - Wait3
     - Set Parameter1
-    - Action1
+    - Wait30
+    - Spawn Parryable Bomb1
     - Wait2
     - Set Parameter3
     - Set Parameter4
     - Move Until Player Distance2
     - Wait4
     - Set Parameter2
-    - Action2
+    - Wait31
+    - Spawn Parryable Bomb2
     - Wait7
     - Set Parameter5
     - Set Parameter6
@@ -1364,6 +1413,7 @@ MonoBehaviour:
     - 9d360200b2194cc4830bccdd7e622e9d
     - 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     - 1d990f318ffe4ef48684d3f82217b553
+    - aa65c546ef7745f5bff7615a925e4bf3
     - 31e716fee72c460ca7240785d602533d
     - b76bfcf7ab09443c806ca013e896085a
     - cbedf38408d640349061049c2eb2c479
@@ -1381,7 +1431,8 @@ MonoBehaviour:
     - Move Until Player Distance5
     - Wait5
     - Set Parameter7
-    - Action3
+    - Wait32
+    - Spawn Parryable Bomb3
     - Wait8
     - Set Parameter8
     - Set Parameter9
@@ -1413,6 +1464,7 @@ MonoBehaviour:
     - c6a7a186d7d4496487c3e3dea28eefa7
     - 3ab2497c3b984870834e7e4e1012795a
     - cf3ebd505db742a3b6a2ce846e4aa723
+    - b50b4e8319e54a9fbb41e1fa571c1d4d
     - 0f7c21815cf248acbd8e029b76b3ed5c
     - 60258f26f6e8489eb9ffb1088c891f53
     - ace94b83b12f458c9445a4719fe51ad6
@@ -1432,7 +1484,8 @@ MonoBehaviour:
     - Move Until Player Distance6
     - Wait6
     - Set Parameter10
-    - Action4
+    - Wait33
+    - Spawn Parryable Bomb4
     - Wait9
     - Set Parameter11
     - Set Parameter12
@@ -1531,6 +1584,7 @@ MonoBehaviour:
     - e68bcf36d1234ad09151f8e23ed5bb92
     - 11fddda48e7b4f338461e50a6b84197c
     - 16a1eacce1454a6b947374ef61ca1d82
+    - 6048a5cd1a5e48d790ea488bbeab54db
     - d686967b9314491189ed041df7c40bc9
     - 6ecc19b2218f48959781d696e66880dd
     - 7a4b94e02204486d898d59a24c217ac5
@@ -1550,11 +1604,13 @@ MonoBehaviour:
     - Boss Dash19
     - Wait28
     - Set Parameter31
-    - Action5
+    - Wait34
+    - Spawn Parryable Bomb5
     - Wait29
     - Set Parameter32
     - Set Parameter33
     - Fire Dash Formation8
+  defaultPatternIds: []
   phases:
   - phaseIndex: 0
     selectionMode: 3
@@ -1566,23 +1622,23 @@ MonoBehaviour:
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
   - phaseIndex: 1
     selectionMode: 3
     patternIntervalSeconds: 2
@@ -1593,23 +1649,23 @@ MonoBehaviour:
     - patternId: Pattern6
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern7
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern8
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern9
       weight: 2
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: Pattern10
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
   transitions:
   - fromNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
@@ -1758,13 +1814,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
-    toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
-    fromNodeId: Set Parameter1
-    toNodeId: Action1
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: e7d379c95d9c4859ad3179669179dfe2
     toNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
     fromNodeId: Wait3
@@ -1774,15 +1823,8 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: e72d87a6892c448482ba264c5e1b98e0
     toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
-    fromNodeId: Action1
+    fromNodeId: Spawn Parryable Bomb1
     toNodeId: Wait2
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 1c806044cde744fda9762e94d5aae37e
-    toNodeGuid: a7bf4538a4cd492585324f85bd904841
-    fromNodeId: Set Parameter2
-    toNodeId: Action2
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1823,15 +1865,8 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: a7bf4538a4cd492585324f85bd904841
     toNodeGuid: d8e19f1aff984433b0efa0e801f90d96
-    fromNodeId: Action2
+    fromNodeId: Spawn Parryable Bomb2
     toNodeId: Wait7
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 1d990f318ffe4ef48684d3f82217b553
-    toNodeGuid: 31e716fee72c460ca7240785d602533d
-    fromNodeId: Set Parameter7
-    toNodeId: Action3
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1851,7 +1886,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 31e716fee72c460ca7240785d602533d
     toNodeGuid: b76bfcf7ab09443c806ca013e896085a
-    fromNodeId: Action3
+    fromNodeId: Spawn Parryable Bomb3
     toNodeId: Wait8
     conditionType: 0
     threshold: 0
@@ -1860,13 +1895,6 @@ MonoBehaviour:
     toNodeGuid: 1d990f318ffe4ef48684d3f82217b553
     fromNodeId: Wait5
     toNodeId: Set Parameter7
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
-    toNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
-    fromNodeId: Set Parameter10
-    toNodeId: Action4
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1886,7 +1914,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     toNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
-    fromNodeId: Action4
+    fromNodeId: Spawn Parryable Bomb4
     toNodeId: Wait9
     conditionType: 0
     threshold: 0
@@ -2325,13 +2353,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 16a1eacce1454a6b947374ef61ca1d82
-    toNodeGuid: d686967b9314491189ed041df7c40bc9
-    fromNodeId: Set Parameter31
-    toNodeId: Action5
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 7a4b94e02204486d898d59a24c217ac5
     toNodeGuid: 34e93466cddd4adfbedcfc5a1f11c116
     fromNodeId: Set Parameter32
@@ -2348,7 +2369,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: d686967b9314491189ed041df7c40bc9
     toNodeGuid: 6ecc19b2218f48959781d696e66880dd
-    fromNodeId: Action5
+    fromNodeId: Spawn Parryable Bomb5
     toNodeId: Wait29
     conditionType: 0
     threshold: 0
@@ -2378,6 +2399,76 @@ MonoBehaviour:
     toNodeGuid: e68bcf36d1234ad09151f8e23ed5bb92
     fromNodeId: Move Until Player Distance9
     toNodeId: Boss Dash19
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
+    toNodeGuid: d66ca81144914574b54cfb544b48c503
+    fromNodeId: Set Parameter1
+    toNodeId: Wait30
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d66ca81144914574b54cfb544b48c503
+    toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
+    fromNodeId: Wait30
+    toNodeId: Spawn Parryable Bomb1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 85ef4446e38048819bb17e8dad886054
+    toNodeGuid: a7bf4538a4cd492585324f85bd904841
+    fromNodeId: Wait31
+    toNodeId: Spawn Parryable Bomb2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1c806044cde744fda9762e94d5aae37e
+    toNodeGuid: 85ef4446e38048819bb17e8dad886054
+    fromNodeId: Set Parameter2
+    toNodeId: Wait31
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: aa65c546ef7745f5bff7615a925e4bf3
+    toNodeGuid: 31e716fee72c460ca7240785d602533d
+    fromNodeId: Wait32
+    toNodeId: Spawn Parryable Bomb3
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1d990f318ffe4ef48684d3f82217b553
+    toNodeGuid: aa65c546ef7745f5bff7615a925e4bf3
+    fromNodeId: Set Parameter7
+    toNodeId: Wait32
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b50b4e8319e54a9fbb41e1fa571c1d4d
+    toNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
+    fromNodeId: Wait33
+    toNodeId: Spawn Parryable Bomb4
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
+    toNodeGuid: b50b4e8319e54a9fbb41e1fa571c1d4d
+    fromNodeId: Set Parameter10
+    toNodeId: Wait33
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6048a5cd1a5e48d790ea488bbeab54db
+    toNodeGuid: d686967b9314491189ed041df7c40bc9
+    fromNodeId: Wait34
+    toNodeId: Spawn Parryable Bomb5
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 16a1eacce1454a6b947374ef61ca1d82
+    toNodeGuid: 6048a5cd1a5e48d790ea488bbeab54db
+    fromNodeId: Set Parameter31
+    toNodeId: Wait34
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2485,12 +2576,10 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern10
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 4705777849323225179
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4718,8 +4807,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         origin:
-          mode: 0
-          bossChildPath: 
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
@@ -4727,7 +4816,7 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 90
-        spawnForwardOffset: 0.8
+        spawnForwardOffset: 0
         chargeSeconds: 0.8
         spawnSfxId: 
         effects:
@@ -4782,8 +4871,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         origin:
-          mode: 0
-          bossChildPath: 
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
@@ -4791,7 +4880,7 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 90
-        spawnForwardOffset: 0.8
+        spawnForwardOffset: 0
         chargeSeconds: 0.8
         spawnSfxId: 
         effects:
@@ -4882,8 +4971,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         origin:
-          mode: 0
-          bossChildPath: 
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
@@ -4891,7 +4980,7 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 90
-        spawnForwardOffset: 0.8
+        spawnForwardOffset: 0
         chargeSeconds: 0.9
         spawnSfxId: 
         effects:
@@ -4966,8 +5055,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         origin:
-          mode: 0
-          bossChildPath: 
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
@@ -4975,7 +5064,7 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 90
-        spawnForwardOffset: 0.8
+        spawnForwardOffset: 0
         chargeSeconds: 0.7
         spawnSfxId: 
         effects:
@@ -6585,8 +6674,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         origin:
-          mode: 0
-          bossChildPath: 
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
@@ -6594,7 +6683,7 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 90
-        spawnForwardOffset: 0.8
+        spawnForwardOffset: 0
         chargeSeconds: 1.5
         spawnSfxId: 
         effects:
@@ -6676,3 +6765,23 @@ MonoBehaviour:
         speedCurveInitialized: 1
         timeoutSeconds: 0
         stopWhenFinished: 1
+    - rid: 4705778016365314173
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778016365314174
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778016365314189
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778016365314190
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778016365314191
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2

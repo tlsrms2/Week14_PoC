@@ -48,10 +48,16 @@ namespace Week14.Enemy
         public string CurrentNodeId => currentNodeId;
         public bool IsExecutionPaused => isExecutionPaused?.Invoke() == true;
         public bool IsDashing { get; private set; }
+        public bool IsFacingLocked { get; private set; }
 
         public void SetDashing(bool dashing)
         {
             IsDashing = dashing;
+        }
+
+        public void SetFacingLocked(bool locked)
+        {
+            IsFacingLocked = locked;
         }
         public Vector3 OriginPosition
         {

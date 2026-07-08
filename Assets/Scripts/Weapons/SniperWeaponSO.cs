@@ -12,18 +12,47 @@ namespace Week14.Weapons
             "즉 1발만 소모했을 때는 배율 보너스가 붙지 않고, 2발째부터 배율이 적용됩니다.")]
         [SerializeField, Min(0f)] private float damageMultiplierPerExtraBullet = 0.5f;
 
+        [Header("Charge Tick Visual")]
+        [Tooltip("탄환이 소모될 때마다 Firepoint에 스폰할 스프라이트입니다. 비워두면 이펙트가 생성되지 않습니다.")]
+        [SerializeField] private Sprite chargeTickSprite;
+        [Tooltip("스폰 시점의 시작 스케일입니다.")]
+        [SerializeField, Min(0.01f)] private float chargeTickStartScale = 1f;
+        [SerializeField] private int chargeTickSortingOrder = 20;
+        [Tooltip("차지를 시작한 뒤 이 시간(초) 이상 눌러야 첫 스프라이트가 스폰됩니다.")]
+        [SerializeField, Min(0f)] private float chargeTickFirstSpawnDelaySeconds = 0.15f;
+        [Tooltip("스프라이트가 스케일 0에 도달하는 시간 = 소모 주기(bulletConsumeInterval) * 이 비율. 1보다 작으면 실제 탄 소모 시점보다 먼저 사라지고, 1보다 크면 더 늦게(다음 탄 소모 이후까지) 남아있습니다. " +
+            "다음 틱의 스프라이트가 스폰될 때 아직 안 사라졌다면 그 즉시 교체됩니다.")]
+        [SerializeField, Range(0.05f, 3f)] private float chargeTickShrinkRatio = 0.7f;
+
+        private float ChargeTickLifetimeSeconds => bulletConsumeInterval * chargeTickShrinkRatio;
+
         public override void BeginAttack(PlayerShooter shooter)
         {
         }
 
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)
         {
+            if (!shooter.HasSpawnedInitialChargeTickEffect && chargeTime >= chargeTickFirstSpawnDelaySeconds)
+            {
+                shooter.SpawnSniperChargeTickEffect(
+                    chargeTickSprite,
+                    chargeTickStartScale,
+                    ChargeTickLifetimeSeconds,
+                    chargeTickSortingOrder);
+                shooter.MarkInitialChargeTickEffectSpawned();
+            }
+
             int ticksDue = Mathf.FloorToInt(chargeTime / bulletConsumeInterval);
             while (shooter.ChargeConsumedBulletCount < ticksDue && shooter.CurrentBullets > 0)
             {
                 if (shooter.TryConsumeChargeBullet())
                 {
                     shooter.PlaySniperChargeSfx();
+                    shooter.SpawnSniperChargeTickEffect(
+                        chargeTickSprite,
+                        chargeTickStartScale,
+                        ChargeTickLifetimeSeconds,
+                        chargeTickSortingOrder);
                 }
             }
         }
