@@ -770,6 +770,21 @@ namespace Week14.Enemy
                 moveSpeed));
         }
 
+        public void CommandFormationStraightLockedToPlayerOffset(
+            float lateralOffset,
+            float distanceFromPlayer,
+            Vector2 lockedCenterDirection,
+            float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunFormationStraightLockedToPlayerOffset(
+                lateralOffset,
+                distanceFromPlayer,
+                lockedCenterDirection,
+                moveSpeed));
+        }
+
         public void CommandAngleDistance(float angleDegrees, float distanceFromPlayer, float moveSpeed)
         {
             StopMovementCommand();
@@ -1377,6 +1392,45 @@ namespace Week14.Enemy
                     EndMovementPathIndicator();
                 }
 
+                FaceFormationDirection();
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunFormationStraightLockedToPlayerOffset(
+            float lateralOffset,
+            float distanceFromPlayer,
+            Vector2 lockedCenterDirection,
+            float moveSpeed)
+        {
+            bool lockedToPattern = false;
+            Vector2 safeCenterDirection = lockedCenterDirection.sqrMagnitude > 0.0001f
+                ? lockedCenterDirection.normalized
+                : Vector2.right;
+            while (true)
+            {
+                IMinionOwner currentOwner = Owner;
+                Transform player = currentOwner?.MinionTarget;
+                if (currentOwner == null || player == null)
+                {
+                    break;
+                }
+
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 target = GetFormationStraightTarget(
+                    player,
+                    lateralOffset,
+                    distanceFromPlayer,
+                    safeCenterDirection);
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
                 FaceFormationDirection();
                 yield return null;
             }

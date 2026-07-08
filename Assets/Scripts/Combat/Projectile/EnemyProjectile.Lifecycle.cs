@@ -8,6 +8,15 @@ namespace Week14.Combat
         protected virtual void Awake()
         {
             body = GetComponent<Rigidbody2D>();
+            projectileTrail = GetComponent<TrailRenderer>();
+            if (projectileTrail != null)
+            {
+                prefabTrailStartColor = projectileTrail.startColor;
+                prefabTrailEndColor = projectileTrail.endColor;
+                prefabTrailColorGradient = CloneGradient(projectileTrail.colorGradient);
+                hasPrefabTrailColors = true;
+            }
+
             ResolveParryLockOnIndicator();
             SetParryLockOnIndicatorVisible(false);
             OnProjectileAwake();
