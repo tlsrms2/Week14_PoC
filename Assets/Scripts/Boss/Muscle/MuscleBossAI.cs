@@ -57,7 +57,7 @@ namespace Week14.Enemy
         private void UpdateFacingSprite()
         {
             SpriteRenderer spriteRenderer = ResolveFacingSpriteRenderer();
-            if (spriteRenderer == null || Player == null || GraphContext?.IsDashing == true)
+            if (spriteRenderer == null || Player == null || GraphContext?.IsFacingLocked == true)
             {
                 return;
             }

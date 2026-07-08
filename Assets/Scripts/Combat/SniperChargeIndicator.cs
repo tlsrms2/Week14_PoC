@@ -53,6 +53,11 @@ namespace Week14.Combat
             }
         }
 
+        public Color GetChargeColor(bool fullyCharged)
+        {
+            return fullyCharged ? maxChargeColor : normalColor;
+        }
+
         public void EndCharge()
         {
             totalBulletCount = 0;

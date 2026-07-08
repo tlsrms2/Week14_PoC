@@ -13,6 +13,9 @@ namespace Week14.Combat
         private bool isCharging;
         private int chargeConsumedBulletCount;
         private int chargeAccumulatedDamage;
+        private int chargeStartBulletCount;
+        private bool hasSpawnedInitialChargeTickEffect;
+        private SniperChargeTickEffect activeChargeTickEffect;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -26,6 +29,7 @@ namespace Week14.Combat
         public bool IsCharging => isCharging;
         public int ChargeConsumedBulletCount => chargeConsumedBulletCount;
         public int ChargeAccumulatedDamage => chargeAccumulatedDamage;
+        public bool HasSpawnedInitialChargeTickEffect => hasSpawnedInitialChargeTickEffect;
 
         internal void BeginAttack()
         {
@@ -33,6 +37,8 @@ namespace Week14.Combat
             isCharging = true;
             chargeConsumedBulletCount = 0;
             chargeAccumulatedDamage = 0;
+            chargeStartBulletCount = CurrentBullets;
+            hasSpawnedInitialChargeTickEffect = false;
             context.SniperChargeIndicator?.BeginCharge(CurrentBullets);
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
@@ -52,10 +58,12 @@ namespace Week14.Combat
             context.PlayerHpView?.FreezeNewestBullet(false);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.ReleaseAttack(this, chargeTime);
             context.SniperChargeIndicator?.EndCharge();
+            CancelActiveChargeTickEffect();
             isCharging = false;
             chargeTime = 0f;
             chargeConsumedBulletCount = 0;
             chargeAccumulatedDamage = 0;
+            hasSpawnedInitialChargeTickEffect = false;
         }
 
         public bool TryConsumeChargeBullet()
@@ -77,14 +85,47 @@ namespace Week14.Combat
             SoundManager.PlaySfx("SniperCharge", PlayerBulletAudio.GetBulletCountPitch(chargeConsumedBulletCount, maxBullets));
         }
 
+        public void SpawnSniperChargeTickEffect(Sprite sprite, float startScale, float lifetimeSeconds, int sortingOrder)
+        {
+            if (sprite == null || CurrentBullets <= 0)
+            {
+                return;
+            }
+
+            bool fullyCharged = chargeStartBulletCount > 0 && chargeConsumedBulletCount >= chargeStartBulletCount - 1;
+            Color color = context.SniperChargeIndicator != null
+                ? context.SniperChargeIndicator.GetChargeColor(fullyCharged)
+                : Color.white;
+
+            CancelActiveChargeTickEffect();
+            activeChargeTickEffect = SniperChargeTickEffect.Spawn(sprite, GetLeftFireOrigin(), color, startScale, lifetimeSeconds, sortingOrder);
+        }
+
         public void EndCharge()
         {
             context.PlayerHpView?.FreezeNewestBullet(false);
             context.SniperChargeIndicator?.EndCharge();
+            CancelActiveChargeTickEffect();
             isCharging = false;
             chargeTime = 0f;
             chargeConsumedBulletCount = 0;
             chargeAccumulatedDamage = 0;
+            hasSpawnedInitialChargeTickEffect = false;
+        }
+
+        public void MarkInitialChargeTickEffectSpawned()
+        {
+            hasSpawnedInitialChargeTickEffect = true;
+        }
+
+        private void CancelActiveChargeTickEffect()
+        {
+            if (activeChargeTickEffect != null)
+            {
+                activeChargeTickEffect.Cancel();
+            }
+
+            activeChargeTickEffect = null;
         }
 
         public bool TrySpendAllBullets()

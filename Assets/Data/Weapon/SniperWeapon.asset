@@ -76,6 +76,11 @@ MonoBehaviour:
   passiveSkill: {fileID: 0}
   bulletConsumeInterval: 0.5
   damageMultiplierPerExtraBullet: 0.3
+  chargeTickSprite: {fileID: 21300000, guid: 6bba3578aaa949c468c09d783ae52377, type: 3}
+  chargeTickStartScale: 5
+  chargeTickSortingOrder: -2
+  chargeTickFirstSpawnDelaySeconds: 0.1
+  chargeTickShrinkRatio: 1.1
   references:
     version: 2
     RefIds: []
