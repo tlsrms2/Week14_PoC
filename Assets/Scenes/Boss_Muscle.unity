@@ -9600,7 +9600,7 @@ MonoBehaviour:
   finalDeathExplosionPrefabLifetimeSeconds: 2
   finalDeathExplosionAreaCenter: {fileID: 28455202}
   finalDeathExplosionAreaRadius: 0.5
-  deathExplosionToAnimationDelaySeconds: 0.5
+  deathExplosionToAnimationDelaySeconds: 0.2
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
   displayName: "\uACBD\uD638\uC2E4\uC7A5"
