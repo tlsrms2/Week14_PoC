@@ -1,19 +1,34 @@
 fileFormatVersion: 2
-guid: 5cbed1a12ac1ce74d819ab4ce5012edc
+guid: c7786867e4dfcc143b3e48c2d5d152ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7541817658644894296
-    second: Security-Stun_0
+      213: -7592615301507898110
+    second: Security-Die_0
   - first:
-      213: -4411598248412689096
-    second: Security-Stun_1
+      213: 1388443281483755608
+    second: Security-Die_1
   - first:
-      213: 815416538313875918
-    second: Security-Stun_2
+      213: 6865787101012408990
+    second: Security-Die_2
   - first:
-      213: 4156925667776411287
-    second: Security-Stun_3
+      213: 6226840372461137074
+    second: Security-Die_3
+  - first:
+      213: -9002140298747577265
+    second: Security-Die_4
+  - first:
+      213: 3338521357744420814
+    second: Security-Die_5
+  - first:
+      213: -1743119468902256260
+    second: Security-Die_6
+  - first:
+      213: -6976562241729134309
+    second: Security-Die_7
+  - first:
+      213: 4381083743528762289
+    second: Security-Die_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,7 +124,73 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Security-Stun_0
+      name: Security-Die_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2052d655c9c91a690800000000000000
+      internalID: -7592615301507898110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Die_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 850fd97eecdb44310800000000000000
+      internalID: 1388443281483755608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Die_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9abd4bedfc284f50800000000000000
+      internalID: 6865787101012408990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Die_3
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +205,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8521c48c33be9a860800000000000000
-      internalID: 7541817658644894296
+      spriteID: 2bc6b99d35e2a6650800000000000000
+      internalID: 6226840372461137074
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Stun_1
+      name: Security-Die_4
       rect:
         serializedVersion: 2
         x: 128
@@ -146,14 +227,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 83d40a744cad6c2c0800000000000000
-      internalID: -4411598248412689096
+      spriteID: f4cfbeaf719f11380800000000000000
+      internalID: -9002140298747577265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Stun_2
+      name: Security-Die_5
       rect:
         serializedVersion: 2
         x: 256
@@ -168,14 +249,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ec16d267501f05b00800000000000000
-      internalID: 815416538313875918
+      spriteID: ec739639c7fc45e20800000000000000
+      internalID: 3338521357744420814
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Security-Stun_3
+      name: Security-Die_6
       rect:
         serializedVersion: 2
         x: 0
@@ -190,8 +271,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7963489dedd50b930800000000000000
-      internalID: 4156925667776411287
+      spriteID: c71730714123fc7e0800000000000000
+      internalID: -1743119468902256260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Die_7
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b110554ca954e2f90800000000000000
+      internalID: -6976562241729134309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Security-Die_8
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb3548e37cbccc30800000000000000
+      internalID: 4381083743528762289
       vertices: []
       indices: 
       edges: []
@@ -200,7 +325,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a225de9692716a442a1f5a2727bad441
+    spriteID: 01e3d6988b28d724590177be39e58ef4
     internalID: 0
     vertices: []
     indices: 
@@ -212,10 +337,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Security-Stun_0: 7541817658644894296
-      Security-Stun_1: -4411598248412689096
-      Security-Stun_2: 815416538313875918
-      Security-Stun_3: 4156925667776411287
+      Security-Die_0: -7592615301507898110
+      Security-Die_1: 1388443281483755608
+      Security-Die_2: 6865787101012408990
+      Security-Die_3: 6226840372461137074
+      Security-Die_4: -9002140298747577265
+      Security-Die_5: 3338521357744420814
+      Security-Die_6: -1743119468902256260
+      Security-Die_7: -6976562241729134309
+      Security-Die_8: 4381083743528762289
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
