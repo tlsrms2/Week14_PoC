@@ -16,7 +16,14 @@ MonoBehaviour:
   displayName: "\uBD88\uB9BF \uD0C0\uC784"
   icon: {fileID: 0}
   description: 
-  cooldownSeconds: 30
+  cooldownSeconds: 1
   slowMultiplier: 0.2
   durationSeconds: 5
   sfxId: 
+  afterimageInterval: 0.08
+  afterimageDuration: 5
+  rainbowCycleSeconds: 5
+  rainbowSaturation: 0.85
+  rainbowValue: 1
+  rainbowAlpha: 0.45
+  minSpeedForAfterimage: 0.01

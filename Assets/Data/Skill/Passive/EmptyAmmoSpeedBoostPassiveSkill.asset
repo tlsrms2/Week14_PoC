@@ -18,3 +18,7 @@ MonoBehaviour:
   description: "\uBCF4\uC720\uD55C \uD0C4\uD658\uC774 \uC5C6\uC744 \uB54C \uC774\uB3D9
     \uC18D\uB3C4 25% \uC99D\uAC00"
   emptyAmmoMoveSpeedMultiplier: 1.25
+  afterimageInterval: 0.08
+  afterimageDuration: 0.2
+  afterimageColor: {r: 1, g: 1, b: 1, a: 0.35}
+  minSpeedForAfterimage: 0.1
