@@ -6,6 +6,7 @@ using UnityEngine.Localization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Enemy;
+using Week14.Skills;
 using Week14.Weapons;
 
 namespace Week14.UI
@@ -33,6 +34,10 @@ namespace Week14.UI
         [Tooltip("BulletDamageBG 오브젝트에 붙은 탄 개수/데미지 표시 컴포넌트입니다.")]
         [SerializeField] private BulletDamageDisplay bulletDamageDisplay;
         [SerializeField] private Image iconImage;
+        [SerializeField] private Image skillImage;
+        [SerializeField] private TMP_Text skillName;
+        [SerializeField] private TMP_Text skillDescription;
+        [SerializeField] private TMP_Text skillCooldown;
         [Tooltip("호버한 버튼 기준 이 패널이 나타날 오프셋입니다.")]
         [SerializeField] private Vector2 anchorOffset = new(0f, 16f);
         [Tooltip("패널이 화면 가장자리에서 벗어나지 않도록 둘 최소 여백입니다.")]
@@ -84,6 +89,7 @@ namespace Week14.UI
                 worldCamera = Camera.main;
             }
 
+            BindSkillInfoReferencesByName();
             HideImmediate();
         }
 
@@ -111,6 +117,7 @@ namespace Week14.UI
             SetMaxAmmoText(weapon.MaxAmmoTooltipText);
             SetParryingRangeText(weapon.ParryingRangeTooltipText);
             SetBulletDamageText(weapon.BulletDamageTooltipText);
+            SetSkillInfo(weapon);
             BindLocalizedWeaponText(weapon);
 
             if (bulletDamageDisplay != null)
@@ -166,6 +173,8 @@ namespace Week14.UI
             {
                 bulletDamageDisplay.Clear();
             }
+
+            SetSkillInfo(null);
         }
 
         public void HideImmediate()
@@ -188,6 +197,8 @@ namespace Week14.UI
             {
                 bulletDamageDisplay.Clear();
             }
+
+            SetSkillInfo(null);
         }
 
         private void BindLocalizedWeaponText(BaseWeaponSO weapon)
@@ -283,6 +294,82 @@ namespace Week14.UI
             if (bulletDamageText != null)
             {
                 bulletDamageText.text = value;
+            }
+        }
+
+        private void BindSkillInfoReferencesByName()
+        {
+            skillImage ??= FindComponentInChildrenByName<Image>("SkillImage");
+            skillName ??= FindComponentInChildrenByName<TMP_Text>("SkillName");
+            skillDescription ??= FindComponentInChildrenByName<TMP_Text>("SkillDescription");
+            skillDescription ??= FindComponentInChildrenByName<TMP_Text>("SkillEffect");
+            skillCooldown ??= FindComponentInChildrenByName<TMP_Text>("SkillCooldown");
+        }
+
+        private T FindComponentInChildrenByName<T>(string childName) where T : Component
+        {
+            if (string.IsNullOrEmpty(childName))
+            {
+                return null;
+            }
+
+            T[] components = GetComponentsInChildren<T>(includeInactive: true);
+            for (int i = 0; i < components.Length; i++)
+            {
+                if (components[i] != null && components[i].name == childName)
+                {
+                    return components[i];
+                }
+            }
+
+            return null;
+        }
+
+        private void SetSkillInfo(BaseWeaponSO weapon)
+        {
+            if (weapon == null)
+            {
+                SetSkillInfo(null, string.Empty, string.Empty, string.Empty);
+                return;
+            }
+
+            BaseSkillSO activeSkill = weapon.ActiveSkill;
+            if (activeSkill != null)
+            {
+                SetSkillInfo(
+                    activeSkill.Icon,
+                    activeSkill.DisplayName,
+                    activeSkill.Description,
+                    $"쿨타임: {activeSkill.CooldownSeconds:0.#}초");
+                return;
+            }
+
+            BasePassiveSkillSO passiveSkill = weapon.PassiveSkill;
+            SetSkillInfo(
+                passiveSkill != null ? passiveSkill.Icon : null,
+                passiveSkill != null ? passiveSkill.DisplayName : string.Empty,
+                passiveSkill != null ? passiveSkill.Description : string.Empty,
+                string.Empty);
+        }
+
+        private void SetSkillInfo(Sprite icon, string displayName, string description, string cooldown)
+        {
+            if (skillImage != null)
+            {
+                skillImage.sprite = icon;
+                skillImage.enabled = icon != null;
+            }
+
+            SetText(skillName, displayName);
+            SetText(skillDescription, description);
+            SetText(skillCooldown, cooldown);
+        }
+
+        private static void SetText(TMP_Text target, string value)
+        {
+            if (target != null)
+            {
+                target.text = value;
             }
         }
 
