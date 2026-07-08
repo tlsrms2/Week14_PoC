@@ -3,17 +3,17 @@ guid: 69f9f8ec413bced46aed44e0a85700ad
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4854360136093208310
-    second: Security-Charge-loop_0
+      213: 8719696862394951113
+    second: Security-Charge-Loop_0
   - first:
-      213: 7792071937841384858
-    second: Security-Charge-loop_1
+      213: -3236914351907546021
+    second: Security-Charge-Loop_1
   - first:
-      213: -2143471183581948821
-    second: Security-Charge-loop_2
+      213: 33920161802335330
+    second: Security-Charge-Loop_2
   - first:
-      213: 6830994090496482651
-    second: Security-Charge-loop_3
+      213: 6664931954350098822
+    second: Security-Charge-Loop_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,10 +122,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 4d633b46bd699f041a3d60ff76525829
-      internalID: 1056632429
+      spriteID: 9c5a320f816920970800000000000000
+      internalID: 8719696862394951113
       vertices: []
       indices: 
       edges: []
@@ -144,10 +144,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3b0db396b0525b14e874ee36d7b4a87e
-      internalID: 1114250887
+      spriteID: b5cdf2efb8b2413d0800000000000000
+      internalID: -3236914351907546021
       vertices: []
       indices: 
       edges: []
@@ -166,10 +166,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bb88fb48849a3494eabe93d5b5ab683c
-      internalID: -654207238
+      spriteID: 264b3fa1532887000800000000000000
+      internalID: 33920161802335330
       vertices: []
       indices: 
       edges: []
@@ -188,10 +188,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bc4bcb37e7c9a9548bc274c8a581e388
-      internalID: -1492063781
+      spriteID: 6890037dc489e7c50800000000000000
+      internalID: 6664931954350098822
       vertices: []
       indices: 
       edges: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 81ed2fd4922bbda4484311748d670386
+    spriteID: 1d698c9fc4936d44dafbd011b1633b57
     internalID: 0
     vertices: []
     indices: 
@@ -212,10 +212,10 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Security-Charge-Loop_0: 1056632429
-      Security-Charge-Loop_1: 1114250887
-      Security-Charge-Loop_2: -654207238
-      Security-Charge-Loop_3: -1492063781
+      Security-Charge-Loop_0: 8719696862394951113
+      Security-Charge-Loop_1: -3236914351907546021
+      Security-Charge-Loop_2: 33920161802335330
+      Security-Charge-Loop_3: 6664931954350098822
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
