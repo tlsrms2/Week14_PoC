@@ -1,40 +1,25 @@
 fileFormatVersion: 2
-guid: b9537ce96924abd46b4e97a42b3148c8
+guid: 24dadba3589e2bf46b6401dd44ce28da
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1972113948148484298
-    second: Dealer-Die_0
+      213: 4587365529499796012
+    second: Dealer-Stun_0
   - first:
-      213: -6151968326962008472
-    second: Dealer-Die_1
+      213: 7498348924258817405
+    second: Dealer-Stun_1
   - first:
-      213: -2322079871543276439
-    second: Dealer-Die_2
+      213: 917650679355072870
+    second: Dealer-Stun_2
   - first:
-      213: 4262301131765577539
-    second: Dealer-Die_3
+      213: 1347471799694489490
+    second: Dealer-Stun_3
   - first:
-      213: -9113549783607443799
-    second: Dealer-Die_4
+      213: 5363696148313137294
+    second: Dealer-Stun_4
   - first:
-      213: -6992495070728769848
-    second: Dealer-Die_5
-  - first:
-      213: -5947234785238598478
-    second: Dealer-Die_6
-  - first:
-      213: 3367299109014292650
-    second: Dealer-Die_7
-  - first:
-      213: -8006004376433253206
-    second: Dealer-Die_8
-  - first:
-      213: 3950486940024712446
-    second: Dealer-Die_9
-  - first:
-      213: 2813533332873578442
-    second: Dealer-Die_10
+      213: 7434085690832564174
+    second: Dealer-Stun_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -130,139 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dealer-Die_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ac8cbf7ef2b5e5b10800000000000000
-      internalID: 1972113948148484298
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dealer-Die_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 86ea9f1b661df9aa0800000000000000
-      internalID: -6151968326962008472
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dealer-Die_2
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 192
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 96c0494e8a056cfd0800000000000000
-      internalID: -2322079871543276439
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dealer-Die_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 347f1a4fb4cb62b30800000000000000
-      internalID: 4262301131765577539
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dealer-Die_4
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9ae7d39e1ca268180800000000000000
-      internalID: -9113549783607443799
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dealer-Die_5
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8ceaa8fe7caa5fe90800000000000000
-      internalID: -6992495070728769848
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dealer-Die_6
+      name: Dealer-Stun_0
       rect:
         serializedVersion: 2
         x: 0
@@ -277,14 +130,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2bcb10ef87d277da0800000000000000
-      internalID: -5947234785238598478
+      spriteID: c2205b8e4a899af30800000000000000
+      internalID: 4587365529499796012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dealer-Die_7
+      name: Dealer-Stun_1
       rect:
         serializedVersion: 2
         x: 64
@@ -299,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aa8494de2bc0bbe20800000000000000
-      internalID: 3367299109014292650
+      spriteID: d7511606e9c7f0860800000000000000
+      internalID: 7498348924258817405
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dealer-Die_8
+      name: Dealer-Stun_2
       rect:
         serializedVersion: 2
         x: 128
@@ -321,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aa42970ff65f4e090800000000000000
-      internalID: -8006004376433253206
+      spriteID: 661ead25e662cbc00800000000000000
+      internalID: 917650679355072870
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dealer-Die_9
+      name: Dealer-Stun_3
       rect:
         serializedVersion: 2
         x: 0
@@ -343,14 +196,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: efc2efdf0f2f2d630800000000000000
-      internalID: 3950486940024712446
+      spriteID: 29775ad667e23b210800000000000000
+      internalID: 1347471799694489490
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dealer-Die_10
+      name: Dealer-Stun_4
       rect:
         serializedVersion: 2
         x: 64
@@ -365,8 +218,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac786a5d8adab0720800000000000000
-      internalID: 2813533332873578442
+      spriteID: e80e5539a3daf6a40800000000000000
+      internalID: 5363696148313137294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dealer-Stun_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecfa3ef5c8d2b2760800000000000000
+      internalID: 7434085690832564174
       vertices: []
       indices: 
       edges: []
@@ -375,7 +250,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a500818326ac1934e853224aa11a0dce
+    spriteID: fb691b945c33a46418ecdd01828004ed
     internalID: 0
     vertices: []
     indices: 
@@ -387,17 +262,12 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Dealer-Die_0: 1972113948148484298
-      Dealer-Die_1: -6151968326962008472
-      Dealer-Die_10: 2813533332873578442
-      Dealer-Die_2: -2322079871543276439
-      Dealer-Die_3: 4262301131765577539
-      Dealer-Die_4: -9113549783607443799
-      Dealer-Die_5: -6992495070728769848
-      Dealer-Die_6: -5947234785238598478
-      Dealer-Die_7: 3367299109014292650
-      Dealer-Die_8: -8006004376433253206
-      Dealer-Die_9: 3950486940024712446
+      Dealer-Stun_0: 4587365529499796012
+      Dealer-Stun_1: 7498348924258817405
+      Dealer-Stun_2: 917650679355072870
+      Dealer-Stun_3: 1347471799694489490
+      Dealer-Stun_4: 5363696148313137294
+      Dealer-Stun_5: 7434085690832564174
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
