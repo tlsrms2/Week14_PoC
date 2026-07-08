@@ -8,11 +8,11 @@ namespace Week14.Combat
         private const int RollAfterimageSortingOffset = -1;
         private const int AbsorbSortingOrder = 74;
 
-        internal static void SpawnRollAfterimage(MonoBehaviour host, SpriteRenderer[] sourceRenderers, float seconds, Color tint)
+        internal static GameObject SpawnRollAfterimage(MonoBehaviour host, SpriteRenderer[] sourceRenderers, Color[] baseColors, float seconds, Color tint)
         {
             if (host == null || sourceRenderers == null || sourceRenderers.Length == 0 || seconds <= 0f)
             {
-                return;
+                return null;
             }
 
             GameObject root = new GameObject("RollAfterimageVfx");
@@ -28,7 +28,7 @@ namespace Week14.Combat
                     continue;
                 }
 
-                GameObject cloneObject = new GameObject(source.name);
+                GameObject cloneObject = new GameObject(source.name) { layer = source.gameObject.layer };
                 cloneObject.transform.SetParent(root.transform, true);
                 cloneObject.transform.SetPositionAndRotation(source.transform.position, source.transform.rotation);
                 cloneObject.transform.localScale = source.transform.lossyScale;
@@ -41,7 +41,9 @@ namespace Week14.Combat
                 clone.sortingLayerID = source.sortingLayerID;
                 clone.sortingOrder = source.sortingOrder + RollAfterimageSortingOffset;
                 clone.maskInteraction = source.maskInteraction;
-                clone.color = MultiplyColor(source.color, tint);
+                Color baseColor = baseColors != null && i < baseColors.Length ? baseColors[i] : source.color;
+                baseColor.a = source.color.a;
+                clone.color = MultiplyColor(baseColor, tint);
                 clones[i] = clone;
                 startColors[i] = clone.color;
                 hasRenderer = true;
@@ -50,10 +52,11 @@ namespace Week14.Combat
             if (!hasRenderer)
             {
                 Object.Destroy(root);
-                return;
+                return null;
             }
 
             host.StartCoroutine(FadeAndDestroyRoutine(root, clones, startColors, seconds));
+            return root;
         }
 
         internal static void PlayProjectileAbsorb(MonoBehaviour host, EnemyProjectile projectile, Vector3 targetPosition, float seconds, Color tint)

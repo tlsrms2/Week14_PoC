@@ -15,11 +15,11 @@ TagManager:
   - EnemyBullet
   - Wall
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Lighting
+  -
+  -
+  -
   - 
   - 
   - 

@@ -83,6 +83,7 @@ namespace Week14.Combat
                     PlayerDashVfx.SpawnRollAfterimage(
                         context.CoroutineHost,
                         context.BodyRenderers,
+                        context.BodyBaseColors,
                         VfxSettings.AfterimageSeconds,
                         VfxSettings.AfterimageColor);
                     nextAfterimageAt += VfxSettings.AfterimageInterval;
