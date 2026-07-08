@@ -102,22 +102,34 @@ namespace Week14.Enemy
                 formationCenterDirection,
                 context.Boss.Player);
 
-            if (waitForFormationDuration && formationDuration > 0f)
+            ConductorScoreLaneRushIndicatorVisual indicator = null;
+            try
             {
-                yield return WaitForFormationAlignment(context, lineSlots, formationDuration);
+                if (waitForFormationDuration && formationDuration > 0f)
+                {
+                    yield return WaitForFormationAlignment(context, lineSlots, formationDuration);
+                }
+
+                indicator = CreateLineIndicators(lineSlots);
+                trackedMotions.Clear();
+
+                yield return RunVolleys(context, host, lineSlots, indicator);
+                yield return WaitForLineProjectilesToRelease(context, lineSlots, indicator);
+                yield return RunMissLaunchPhase(context, host, lineSlots, indicator);
+                yield return FadeAndClearIndicator(context, lineSlots, indicator);
+                indicator = null;
             }
+            finally
+            {
+                if (indicator != null)
+                {
+                    indicator.ClearAndDestroy();
+                }
 
-            ConductorScoreLaneRushIndicatorVisual indicator = CreateLineIndicators(lineSlots);
-            trackedMotions.Clear();
-
-            yield return RunVolleys(context, host, lineSlots, indicator);
-            yield return WaitForLineProjectilesToRelease(context, lineSlots, indicator);
-            yield return RunMissLaunchPhase(context, host, lineSlots, indicator);
-            yield return FadeAndClearIndicator(context, lineSlots, indicator);
-
-            context.Boss?.Stop();
-            ClearFormationFacingOverride(minions);
-            trackedMotions.Clear();
+                context.Boss?.Stop();
+                ClearFormationFacingOverride(minions);
+                trackedMotions.Clear();
+            }
         }
 
         private void CopyPatternVolleysIfTargetNode(BossGraphAsset graph, BossStateNode node)
@@ -905,6 +917,8 @@ namespace Week14.Enemy
             IReadOnlyList<LineSlot> lineSlots,
             ConductorScoreLaneRushIndicatorVisual indicator)
         {
+            float timeoutSeconds = GetBoundLineProjectileTimeoutSeconds();
+            float elapsed = 0f;
             while (HasBoundLineProjectiles())
             {
                 if (context.IsExecutionPaused)
@@ -916,7 +930,47 @@ namespace Week14.Enemy
 
                 TickBossFormationAlignment(context, lineSlots);
                 UpdateLineIndicators(indicator, lineSlots);
+                elapsed += EnemyTimeScale.DeltaTime;
+                if (timeoutSeconds <= 0f || elapsed >= timeoutSeconds)
+                {
+                    ForceReadyBoundLineProjectiles();
+                    yield break;
+                }
+
                 yield return null;
+            }
+        }
+
+        private float GetBoundLineProjectileTimeoutSeconds()
+        {
+            float timeoutSeconds = 0f;
+            for (int i = trackedMotions.Count - 1; i >= 0; i--)
+            {
+                ConductorFormationLineProjectileMotion motion = trackedMotions[i];
+                if (motion == null || !motion.IsLive)
+                {
+                    trackedMotions.RemoveAt(i);
+                    continue;
+                }
+
+                if (motion.IsBoundToLine)
+                {
+                    timeoutSeconds = Mathf.Max(timeoutSeconds, motion.EstimatedRemainingSeconds);
+                }
+            }
+
+            return timeoutSeconds + 0.5f;
+        }
+
+        private void ForceReadyBoundLineProjectiles()
+        {
+            for (int i = 0; i < trackedMotions.Count; i++)
+            {
+                ConductorFormationLineProjectileMotion motion = trackedMotions[i];
+                if (motion != null && motion.IsBoundToLine)
+                {
+                    motion.ForceReadyForMissLaunch();
+                }
             }
         }
 
@@ -1572,6 +1626,14 @@ namespace Week14.Enemy
         public bool IsLive => projectile != null;
         public bool IsBoundToLine => projectile != null && !readyForMissLaunch;
         public bool IsReadyForMissLaunch => projectile != null && readyForMissLaunch;
+        public float EstimatedRemainingSeconds
+        {
+            get
+            {
+                float remainingDistance = Mathf.Max(0f, lineLength - distance);
+                return speed > 0f ? remainingDistance / speed : 0f;
+            }
+        }
 
         public void Initialize(
             Func<Vector2> nextOriginProvider,
@@ -1591,6 +1653,22 @@ namespace Week14.Enemy
             Vector2 currentOrigin = GetCurrentOrigin();
             distance = Mathf.Max(0f, Vector2.Dot((Vector2)transform.position - currentOrigin, lineDirection));
             MoveTo(currentOrigin + lineDirection * distance, 0f, lineDirection);
+            if (lineLength <= 0f || speed <= 0f)
+            {
+                ForceReadyForMissLaunch();
+            }
+        }
+
+        public void ForceReadyForMissLaunch()
+        {
+            if (readyForMissLaunch)
+            {
+                return;
+            }
+
+            distance = Mathf.Max(0f, lineLength);
+            MoveTo(GetCurrentOrigin() + lineDirection * distance, 0f, lineDirection);
+            MarkReadyForMissLaunch();
         }
 
         private void LateUpdate()

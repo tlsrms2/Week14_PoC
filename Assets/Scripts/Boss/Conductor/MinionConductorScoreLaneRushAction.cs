@@ -216,10 +216,17 @@ namespace Week14.Enemy
             }
 
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
-            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
-            yield return BeforeExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
-            yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
-            yield return AfterExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
+            try
+            {
+                yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
+                yield return BeforeExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
+                yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
+                yield return AfterExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
+            }
+            finally
+            {
+                ClearActiveStandardLaneIndicators();
+            }
         }
 
         protected IEnumerator ExecuteVolleySequence(
@@ -304,6 +311,7 @@ namespace Week14.Enemy
                 standardLaneIndicatorColor,
                 standardLaneIndicatorWidth,
                 standardLaneIndicatorSortingOrder);
+            visual.ConfigureClearOnExecutionCinematic(true);
 
             int lineIndex = 0;
             int lineCount = Mathf.Max(1, standardLaneIndicatorLineCount);

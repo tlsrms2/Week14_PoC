@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Week14.Enemy
     public sealed class Conductor : GraphBossAI, IMinionPlayerHitHandler, IMinionMovementPathIndicatorOwner
     {
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
+        private static readonly int StunParameter = Animator.StringToHash("Stun");
+        private static readonly int EndStunParameter = Animator.StringToHash("EndStun");
         private const string FacingSpriteRendererName = "Conductor-side-Idle-x64_0";
         private const string MovementPathIndicatorName = "MovementPathIndicator";
         private const float MovementPathIndicatorWidth = 0.025f;
@@ -18,6 +21,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float minionOutlineFlashSeconds = 0.12f;
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+        [SerializeField, HideInInspector] private List<ConductorConductingPattern> conductingPatterns = new();
 
         private readonly Dictionary<Health, Minion> spawnedMinionsByHealth = new();
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
@@ -29,6 +33,7 @@ namespace Week14.Enemy
         private static Material movementPathIndicatorMaterial;
 
         protected override bool RotatesBodyToPlayer => false;
+        public IReadOnlyList<ConductorConductingPattern> ConductingPatterns => conductingPatterns;
 
         public override bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
@@ -122,6 +127,90 @@ namespace Week14.Enemy
             SetMinionMovementPathIndicatorVisible(state, false);
         }
 
+        public bool TryGetConductingPattern(string patternId, out ConductorConductingPattern pattern)
+        {
+            pattern = null;
+            if (conductingPatterns == null || conductingPatterns.Count == 0)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(patternId))
+            {
+                pattern = conductingPatterns[0];
+                return pattern != null;
+            }
+
+            for (int i = 0; i < conductingPatterns.Count; i++)
+            {
+                ConductorConductingPattern candidate = conductingPatterns[i];
+                if (candidate != null
+                    && string.Equals(candidate.PatternId, patternId, StringComparison.OrdinalIgnoreCase))
+                {
+                    pattern = candidate;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public IEnumerator PlayConductingPattern(
+            string patternId,
+            BossActionContext context,
+            ConductorConductingCueSettings settings)
+        {
+            if (!TryGetConductingPattern(patternId, out ConductorConductingPattern pattern)
+                || pattern == null
+                || !pattern.HasDrawableStroke)
+            {
+                yield break;
+            }
+
+            Transform anchor = BodyRoot != null ? BodyRoot : transform;
+            GameObject visualObject = new($"ConductorConductingPattern_{pattern.PatternId}");
+            visualObject.transform.SetParent(anchor, false);
+            visualObject.transform.localPosition = settings.HeadOffset;
+            visualObject.transform.localRotation = Quaternion.identity;
+            visualObject.transform.localScale = Vector3.one;
+
+            ConductorConductingPatternVisual visual = visualObject.AddComponent<ConductorConductingPatternVisual>();
+            visual.Configure(pattern, settings);
+            context?.RegisterTransientVisual(visualObject);
+
+            IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
+            for (int i = 0; i < strokes.Count; i++)
+            {
+                ConductorConductingStroke stroke = strokes[i];
+                if (stroke == null || !stroke.HasDrawablePoints)
+                {
+                    continue;
+                }
+
+                yield return DrawConductingStroke(context, visual, i, stroke, settings);
+                if (settings.StrokeIntervalSeconds > 0f)
+                {
+                    yield return WaitConductingSeconds(context, settings.StrokeIntervalSeconds, settings.StopMovement);
+                }
+            }
+
+            if (settings.HoldSeconds > 0f)
+            {
+                yield return WaitConductingSeconds(context, settings.HoldSeconds, settings.StopMovement);
+            }
+
+            if (settings.FadeSeconds > 0f)
+            {
+                yield return FadeConductingVisual(context, visual, settings.FadeSeconds, settings.StopMovement);
+            }
+
+            context?.UnregisterTransientVisual(visualObject);
+            if (visual != null)
+            {
+                visual.ClearAndDestroy();
+            }
+        }
+
         public override EnemyProjectile FireMinionProjectile(
             Minion source,
             BossProjectileSettings settings,
@@ -150,6 +239,16 @@ namespace Week14.Enemy
             ApplyWalkState(false, true);
             UntrackAllSpawnedMinions();
             base.OnBossDied();
+        }
+
+        protected override void OnHpEmptyBegan()
+        {
+            SetAnimatorTrigger(StunParameter);
+        }
+
+        protected override void OnHpEmptyRecovered()
+        {
+            SetAnimatorTrigger(EndStunParameter);
         }
 
         protected override void OnDisable()
@@ -217,6 +316,17 @@ namespace Week14.Enemy
             targetAnimator.SetBool(IsWalkParameter, isWalking);
             lastIsWalking = isWalking;
             hasAppliedWalkState = true;
+        }
+
+        private void SetAnimatorTrigger(int parameter)
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            targetAnimator.SetTrigger(parameter);
         }
 
         private Animator ResolveWalkAnimator()
@@ -429,6 +539,119 @@ namespace Week14.Enemy
             }
 
             return null;
+        }
+
+        private static IEnumerator DrawConductingStroke(
+            BossActionContext context,
+            ConductorConductingPatternVisual visual,
+            int strokeIndex,
+            ConductorConductingStroke stroke,
+            ConductorConductingCueSettings settings)
+        {
+            if (visual == null || stroke == null)
+            {
+                yield break;
+            }
+
+            visual.SetStrokeProgress(strokeIndex, 0f);
+            float duration = settings.StrokeDrawSeconds;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                if (visual == null)
+                {
+                    yield break;
+                }
+
+                if (context != null && context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                if (settings.StopMovement)
+                {
+                    context?.Stop();
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                visual.SetStrokeProgress(strokeIndex, Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+
+            if (visual != null)
+            {
+                visual.SetStrokeProgress(strokeIndex, 1f);
+            }
+        }
+
+        private static IEnumerator WaitConductingSeconds(
+            BossActionContext context,
+            float seconds,
+            bool stopMovement)
+        {
+            float remainingSeconds = Mathf.Max(0f, seconds);
+            while (remainingSeconds > 0f)
+            {
+                if (context != null && context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                if (stopMovement)
+                {
+                    context?.Stop();
+                }
+
+                remainingSeconds -= EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+        }
+
+        private static IEnumerator FadeConductingVisual(
+            BossActionContext context,
+            ConductorConductingPatternVisual visual,
+            float seconds,
+            bool stopMovement)
+        {
+            if (visual == null)
+            {
+                yield break;
+            }
+
+            float duration = Mathf.Max(0.01f, seconds);
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                if (visual == null)
+                {
+                    yield break;
+                }
+
+                if (context != null && context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                if (stopMovement)
+                {
+                    context?.Stop();
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                visual.SetAlpha(1f - Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+
+            if (visual != null)
+            {
+                visual.SetAlpha(0f);
+            }
         }
 
         private MovementPathIndicatorState GetMovementPathIndicatorState(Minion minion)

@@ -67,7 +67,8 @@ namespace Week14.Enemy
         private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
 
         private bool homingActive;
-        private bool sequenceActive;
+        private bool sequenceActive = true;
+        private bool orderedSequenceControlled;
         private int completedSequenceSteps;
         private MaterialPropertyBlock chargeGaugePropertyBlock;
         private Color fallbackBlinkColor = Color.white;
@@ -91,15 +92,13 @@ namespace Week14.Enemy
         protected override void OnProjectileAwake()
         {
             CacheDefaultSprite();
-            completedSequenceSteps = 0;
-            SetSequenceActive(false);
+            ResetStandaloneDoubleParryState();
         }
 
         protected override void OnProjectileInitialized()
         {
             CacheDefaultSprite();
-            completedSequenceSteps = 0;
-            SetSequenceActive(sequenceActive);
+            ResetStandaloneDoubleParryState();
             SetChargeGaugeVisible(homingActive && IsCharging);
             FacePlayerIfHoming();
         }
@@ -130,6 +129,7 @@ namespace Week14.Enemy
 
             orderedDoubleReplacement.homingActive = homingActive;
             orderedDoubleReplacement.sequenceActive = sequenceActive;
+            orderedDoubleReplacement.orderedSequenceControlled = orderedSequenceControlled;
             orderedDoubleReplacement.completedSequenceSteps = completedSequenceSteps;
             orderedDoubleReplacement.fallbackBlinkColor = fallbackBlinkColor;
             orderedDoubleReplacement.sequenceBlinkColor = sequenceBlinkColor;
@@ -137,16 +137,25 @@ namespace Week14.Enemy
             orderedDoubleReplacement.homingTurnDegreesPerSecond = homingTurnDegreesPerSecond;
             orderedDoubleReplacement.homingSeconds = homingSeconds;
             orderedDoubleReplacement.homingEndsAt = homingEndsAt;
-            orderedDoubleReplacement.SetSequenceActive(sequenceActive);
+            orderedDoubleReplacement.ApplySequenceActive(sequenceActive);
         }
 
         protected override void OnProjectileReturnedToPool()
         {
             base.OnProjectileReturnedToPool();
             SequenceStepCompleted = null;
+            orderedSequenceControlled = false;
+            sequenceActive = true;
+            completedSequenceSteps = 0;
         }
 
         public void SetSequenceActive(bool active)
+        {
+            orderedSequenceControlled = true;
+            ApplySequenceActive(active);
+        }
+
+        private void ApplySequenceActive(bool active)
         {
             sequenceActive = active;
             ConfigureInterceptable(active);
@@ -166,12 +175,21 @@ namespace Week14.Enemy
             {
                 completedSequenceSteps = 1;
                 CompletePartialIntercept();
-                SetSequenceActive(false);
-                SequenceStepCompleted?.Invoke(this);
+                RefreshSequenceVisualState();
+                if (orderedSequenceControlled)
+                {
+                    SequenceStepCompleted?.Invoke(this);
+                }
+
                 return true;
             }
 
             completedSequenceSteps = RequiredParryCycles;
+            if (orderedSequenceControlled)
+            {
+                SequenceStepCompleted?.Invoke(this);
+            }
+
             CompleteInterceptAndDestroy();
             return true;
         }
@@ -279,6 +297,13 @@ namespace Week14.Enemy
                 ? color
                 : fallbackBlinkColor;
             homingBlinkPhase = 0f;
+        }
+
+        private void ResetStandaloneDoubleParryState()
+        {
+            orderedSequenceControlled = false;
+            completedSequenceSteps = 0;
+            ApplySequenceActive(true);
         }
 
         private void CacheDefaultSprite()

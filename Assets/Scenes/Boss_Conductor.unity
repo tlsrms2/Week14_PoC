@@ -3412,7 +3412,7 @@ SpriteRenderer:
   m_SortingOrder: -10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 199919353277719148, guid: 9027a7da320e0aa449a2a4a6d7555f1a, type: 3}
-  m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+  m_Color: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5574,180 +5574,92 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1521775367}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: deathAnimator
+      value: 
+      objectReference: {fileID: 1973736667}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectileName
-      value: "\uC21C\uC11C\uD0C4"
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectileName
-      value: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectileName
-      value: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectileName
-      value: "\uD130\uB81B"
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.speed
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.speed
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.speed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.speed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.prefab
-      value: 
-      objectReference: {fileID: 6302133993518822562, guid: ee930b0ed29e38741bcd8ac4ce9d4957, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.radius
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.prefab
-      value: 
-      objectReference: {fileID: 3310389949657122784, guid: ee153d6b4fc1bff4cbee6d78b4df4ff1, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.radius
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.prefab
-      value: 
-      objectReference: {fileID: 1889336207425389046, guid: 19155292cae503b4e93777e7a1cd936b, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.radius
-      value: 0.12
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.prefab
-      value: 
-      objectReference: {fileID: 6081087140780133099, guid: 52a16c28763a74e4080de055a4949008, type: 3}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.radius
-      value: 0.12
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.lifetime
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.lifetime
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.lifetime
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.lifetime
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.bulletDamage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.trailSeconds
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.bulletDamage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.trailSeconds
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.bulletDamage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.trailSeconds
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.bulletDamage
+      propertyPath: conductingPatterns.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.trailSeconds
-      value: 0.01
+      propertyPath: conductingPatterns.Array.data[0].scale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.chargeSeconds
+      propertyPath: conductingPatterns.Array.data[0].color.a
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].color.g
+      value: 0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].color.r
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].lineWidth
+      value: 0.045
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].patternId
+      value: Pattern1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].fadeSeconds
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].holdSeconds
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].headOffset.y
+      value: 1.45
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].sortingOrder
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].stopMovement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].strokes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].strokeIntervalSeconds
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].strokes.Array.data[0].drawSeconds
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].playAutomaticallyBeforeGraphPattern
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingPatterns.Array.data[0].strokes.Array.data[0].points.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.chargeSeconds
-      value: 4
+      propertyPath: conductingPatterns.Array.data[0].strokes.Array.data[0].points.Array.data[0].x
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.chargeSeconds
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.aimAtPlayerOnLaunch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.aimAtPlayerOnLaunch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.aimAtPlayerOnLaunch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.aimAtPlayerOnLaunch
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[3].projectile.trailWidthMultiplier
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[4].projectile.trailWidthMultiplier
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[5].projectile.trailWidthMultiplier
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[6].projectile.trailWidthMultiplier
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 4
+      propertyPath: conductingPatterns.Array.data[0].strokes.Array.data[0].points.Array.data[1].x
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6986,6 +6898,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 480, y: 99}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!95 &1973736667 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8606619460327554601, guid: 5683c565365137746b420562d5df4a97, type: 3}
+  m_PrefabInstance: {fileID: 1569043239}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1982748162
 GameObject:
   m_ObjectHideFlags: 0

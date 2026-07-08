@@ -333,7 +333,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 920c2f191a936b447a6f347e7ffe6acc, type: 2}
+  - {fileID: 2100000, guid: 0434bb791d7abe841a956a613faa87e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -530,6 +530,7 @@ MonoBehaviour:
   statusView: {fileID: 0}
   lockOnIndicator: {fileID: 2377328325086529979}
   executionIndicator: {fileID: 5724727393675789359}
+  ownerSlotNumber: 0
 --- !u!114 &4912170951151867422
 MonoBehaviour:
   m_ObjectHideFlags: 0
