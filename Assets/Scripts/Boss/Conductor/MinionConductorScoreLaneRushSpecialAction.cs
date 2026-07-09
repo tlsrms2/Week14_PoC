@@ -70,7 +70,7 @@ namespace Week14.Enemy
 
         protected override IEnumerator BeforeExecuteVolleys(BossActionContext context, Vector2 patternStartPlayerPosition)
         {
-            trackedProjectiles.Clear();
+            ClearTrackedProjectiles();
             ClearActiveLaneIndicators();
             activeLaneIndicators = CreateLaneIndicators(patternStartPlayerPosition);
             yield return RevealLaneIndicators(context, activeLaneIndicators);
@@ -82,7 +82,7 @@ namespace Week14.Enemy
             yield return context.WaitSeconds(postProjectileClearDelaySeconds);
             yield return HideLaneIndicators(context, activeLaneIndicators);
             activeLaneIndicators = null;
-            trackedProjectiles.Clear();
+            ClearTrackedProjectiles();
         }
 
         protected override void OnVolleyProjectileFired(
@@ -95,6 +95,7 @@ namespace Week14.Enemy
             if (spawned != null)
             {
                 trackedProjectiles.Add(spawned);
+                spawned.Destroyed += HandleTrackedProjectileDestroyed;
             }
         }
 
@@ -352,8 +353,14 @@ namespace Week14.Enemy
         {
             for (int i = trackedProjectiles.Count - 1; i >= 0; i--)
             {
-                if (trackedProjectiles[i] == null)
+                EnemyProjectile projectile = trackedProjectiles[i];
+                if (projectile == null || !projectile.gameObject.activeInHierarchy)
                 {
+                    if (projectile != null)
+                    {
+                        projectile.Destroyed -= HandleTrackedProjectileDestroyed;
+                    }
+
                     trackedProjectiles.RemoveAt(i);
                     continue;
                 }
@@ -362,6 +369,32 @@ namespace Week14.Enemy
             }
 
             return false;
+        }
+
+        private void HandleTrackedProjectileDestroyed(
+            EnemyProjectile projectile,
+            EnemyProjectileDestroyReason reason,
+            Vector3 position)
+        {
+            if (projectile != null)
+            {
+                projectile.Destroyed -= HandleTrackedProjectileDestroyed;
+            }
+
+            trackedProjectiles.Remove(projectile);
+        }
+
+        private void ClearTrackedProjectiles()
+        {
+            for (int i = 0; i < trackedProjectiles.Count; i++)
+            {
+                if (trackedProjectiles[i] != null)
+                {
+                    trackedProjectiles[i].Destroyed -= HandleTrackedProjectileDestroyed;
+                }
+            }
+
+            trackedProjectiles.Clear();
         }
 
         private void BuildLaneIndicatorLine(

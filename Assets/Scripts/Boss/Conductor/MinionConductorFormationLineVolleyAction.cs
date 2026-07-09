@@ -299,16 +299,28 @@ namespace Week14.Enemy
             IReadOnlyList<LineSlot> lineSlots,
             ConductorScoreLaneRushIndicatorVisual indicator)
         {
-            for (int volleyIndex = 0; volleyIndex < volleys.Count; volleyIndex++)
+            ScoreLaneVolley volley = SelectRandomVolley();
+            if (volley == null)
             {
-                ScoreLaneVolley volley = volleys[volleyIndex];
-                if (volley == null)
-                {
-                    continue;
-                }
-
-                yield return RunVolley(context, host, lineSlots, indicator, volley);
+                yield break;
             }
+
+            yield return RunVolley(context, host, lineSlots, indicator, volley);
+        }
+
+        private ScoreLaneVolley SelectRandomVolley()
+        {
+            List<ScoreLaneVolley> candidates = new();
+            for (int i = 0; i < volleys.Count; i++)
+            {
+                ScoreLaneVolley volley = volleys[i];
+                if (volley?.FireTimings != null && volley.FireTimings.Count > 0)
+                {
+                    candidates.Add(volley);
+                }
+            }
+
+            return candidates.Count > 0 ? candidates[UnityEngine.Random.Range(0, candidates.Count)] : null;
         }
 
         private IEnumerator RunVolley(

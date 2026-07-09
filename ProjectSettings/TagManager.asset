@@ -17,9 +17,9 @@ TagManager:
   - Ground
   - Player
   - Lighting
-  -
-  -
-  -
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -42,16 +42,13 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Background
-    uniqueID: 4264472257
+    uniqueID: 1667666805
     locked: 0
-  - name: Character
-    uniqueID: 1792368071
+  - name: Player
+    uniqueID: 256194737
     locked: 0
-  - name: Dust
-    uniqueID: 1008449415
-    locked: 0
-  - name: Panel
-    uniqueID: 1835429459
+  - name: Particles
+    uniqueID: 4280937275
     locked: 0
   m_RenderingLayers:
   - Default

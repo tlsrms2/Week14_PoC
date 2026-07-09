@@ -57,6 +57,16 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, InspectorName("Volleys")] private List<Volley> volleys = new() { new Volley() };
         [SerializeField] private bool waitForDuration = true;
+        [Header("Placement Indicators")]
+        [SerializeField] private bool drawPlacementIndicators = true;
+        [SerializeField] private Color placementIndicatorColor = new(1f, 0.78f, 0.24f, 0.78f);
+        [SerializeField, Min(0.001f)] private float placementIndicatorWidth = 0.035f;
+        [SerializeField, Min(0f)] private float placementIndicatorInnerRadius = 0.08f;
+        [SerializeField, Min(0.01f)] private float placementIndicatorOuterRadius = 0.42f;
+        [SerializeField, Range(4, 24)] private int placementIndicatorSpikeCount = 12;
+        [SerializeField] private int placementIndicatorSortingOrder = 67;
+
+        private ConductorScoreLaneRushIndicatorVisual activePlacementIndicators;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -77,6 +87,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            ClearPlacementIndicators();
+            activePlacementIndicators = CreatePlacementIndicators(center);
             float fireDuration = GetMaxVolleyEndSeconds();
             float bladeRotateSeconds = Mathf.Max(rotateSeconds, fireDuration);
             float movementDuration = CommandFanBlades(minions, center, bladeRotateSeconds);
@@ -87,6 +99,7 @@ namespace Week14.Enemy
                 : totalFireDuration;
 
             yield return RunVolleyTimeline(context, host, minions, center, timelineDuration);
+            ClearPlacementIndicators();
         }
 
         private IEnumerator RunVolleyTimeline(
@@ -104,6 +117,7 @@ namespace Week14.Enemy
             }
 
             float elapsed = 0f;
+            bool placementIndicatorsCleared = false;
             while (elapsed < totalDuration)
             {
                 if (context.IsExecutionPaused)
@@ -114,6 +128,12 @@ namespace Week14.Enemy
 
                 if (elapsed >= alignSeconds)
                 {
+                    if (!placementIndicatorsCleared)
+                    {
+                        ClearPlacementIndicators();
+                        placementIndicatorsCleared = true;
+                    }
+
                     float rotateElapsed = elapsed - alignSeconds;
                     TickVolleys(context, host, minions, center, rotateElapsed, nextFireTimes, completedSingleShots);
                 }
@@ -252,6 +272,46 @@ namespace Week14.Enemy
             }
 
             return maxDuration;
+        }
+
+        private ConductorScoreLaneRushIndicatorVisual CreatePlacementIndicators(Vector2 center)
+        {
+            if (!drawPlacementIndicators)
+            {
+                return null;
+            }
+
+            GameObject indicatorObject = new("ConductorFanBladePlacementIndicators");
+            ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
+            visual.Configure(placementIndicatorColor, placementIndicatorWidth, placementIndicatorSortingOrder);
+
+            int lineIndex = 0;
+            int spikeCount = Mathf.Max(4, placementIndicatorSpikeCount);
+            float innerRadius = Mathf.Max(0f, placementIndicatorInnerRadius);
+            float outerRadius = Mathf.Max(innerRadius + 0.01f, placementIndicatorOuterRadius);
+            for (int spikeIndex = 0; spikeIndex < spikeCount; spikeIndex++)
+            {
+                Vector2 direction = BossActionContext.AngleToDirection(360f * spikeIndex / spikeCount);
+                visual.SetLane(
+                    lineIndex,
+                    center + direction * innerRadius,
+                    center + direction * outerRadius);
+                visual.SetProgress(lineIndex, 1f);
+                lineIndex++;
+            }
+
+            return visual;
+        }
+
+        private void ClearPlacementIndicators()
+        {
+            if (activePlacementIndicators == null)
+            {
+                return;
+            }
+
+            activePlacementIndicators.ClearAndDestroy();
+            activePlacementIndicators = null;
         }
 
         private Vector2 ResolveCenter(BossActionContext context)

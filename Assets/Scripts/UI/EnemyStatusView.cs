@@ -18,6 +18,7 @@ namespace Week14.UI
         [SerializeField, HideInInspector] private BossAI bossAI;
         [FormerlySerializedAs("drone")]
         [SerializeField, HideInInspector] private Minion minion;
+        [SerializeField, HideInInspector] private ConductorTurretProjectile turret;
         [SerializeField, HideInInspector] private SpriteRenderer lockOnRenderer;
         [SerializeField, HideInInspector] private SpriteRenderer executionRenderer;
         [SerializeField] private TextMeshProUGUI executionText;
@@ -69,6 +70,20 @@ namespace Week14.UI
             ApplyColors();
         }
 
+        public void Configure(ConductorTurretProjectile nextTurret)
+        {
+            if (nextTurret == null)
+            {
+                return;
+            }
+
+            turret = nextTurret;
+            lockOnColor = nextTurret.LockOnIndicatorColor;
+
+            EnsureView();
+            ApplyColors();
+        }
+
         public void SetWorldTarget(Transform target)
         {
             worldTarget = target;
@@ -98,6 +113,7 @@ namespace Week14.UI
             executionTarget ??= GetComponentInParent<ExecutionTarget>();
             bossAI ??= GetComponentInParent<BossAI>();
             minion ??= GetComponentInParent<Minion>();
+            turret ??= GetComponentInParent<ConductorTurretProjectile>();
 
             EnsureView();
             SetTarget(health);
@@ -108,7 +124,8 @@ namespace Week14.UI
         {
             bool alive = health != null && !health.IsDead;
             bool canShowDuringEnemyState = (bossAI == null || !bossAI.IsExecutionLocked)
-                && (minion == null || !minion.IsExecutionLocked);
+                && (minion == null || !minion.IsExecutionLocked)
+                && (turret == null || turret.IsPlayerTargetable);
             bool indicatorsVisible = alive && canShowDuringEnemyState;
 
             Vector3 center = GetWorldCenter();
@@ -150,7 +167,14 @@ namespace Week14.UI
 
             Minion targetMinion = player.LockOnTarget.GetComponent<Minion>()
                 ?? player.LockOnTarget.GetComponentInParent<Minion>();
-            return minion != null && targetMinion == minion;
+            if (minion != null && targetMinion == minion)
+            {
+                return true;
+            }
+
+            ConductorTurretProjectile targetTurret = player.LockOnTarget.GetComponent<ConductorTurretProjectile>()
+                ?? player.LockOnTarget.GetComponentInParent<ConductorTurretProjectile>();
+            return turret != null && targetTurret == turret;
         }
 
         private bool IsHoveredExecutionTarget()
@@ -166,6 +190,7 @@ namespace Week14.UI
         {
             bossAI ??= GetComponentInParent<BossAI>();
             minion ??= GetComponentInParent<Minion>();
+            turret ??= GetComponentInParent<ConductorTurretProjectile>();
             EnsureIndicators();
         }
 

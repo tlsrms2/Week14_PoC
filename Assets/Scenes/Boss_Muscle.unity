@@ -9606,7 +9606,7 @@ MonoBehaviour:
   displayName: "\uACBD\uD638\uC2E4\uC7A5"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
-  maxHp: 1
+  maxHp: 175
   hpEmptyExecutionSeconds: 5
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.08

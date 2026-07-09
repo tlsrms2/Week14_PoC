@@ -1,5 +1,6 @@
 using UnityEngine;
 using Week14.Combat;
+using Week14.UI;
 
 namespace Week14.Enemy
 {
@@ -22,6 +23,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float muzzleFlashScale = 0.55f;
 
         private Health health;
+        private EnemyStatusView statusView;
         private BossAI turretOwner;
         private Vector2 deployStartPosition;
         private Vector2 deployTargetPosition;
@@ -33,6 +35,8 @@ namespace Week14.Enemy
 
         public bool IsAliveTurret => !IsDestroying && (health == null || !health.IsDead);
         public bool IsPlayerTargetable => deployed && IsAliveTurret;
+        public Color LockOnIndicatorColor => turretOwner != null ? turretOwner.LockOnIndicatorColor : Color.white;
+        public Health Health => health;
 
         protected override bool ShowsPathIndicator => false;
 
@@ -45,11 +49,13 @@ namespace Week14.Enemy
             }
 
             health.Died += OnHealthDied;
+            EnsureStatusView();
         }
 
         protected override void OnProjectileInitialized()
         {
             health?.Revive();
+            EnsureStatusView();
             ConfigureInterceptable(false);
             ConfigurePathIndicatorSuppressed(true);
             ConfigureExternalMotionDriven(true);
@@ -93,6 +99,7 @@ namespace Week14.Enemy
             nextFireAt = float.PositiveInfinity;
             ForceZeroRotation();
             OverrideProjectileLifetime(lifetimeSeconds > 0f ? lifetimeSeconds : float.PositiveInfinity);
+            EnsureStatusView();
 
             if (deploySeconds <= 0f || Vector2.Distance(deployStartPosition, deployTargetPosition) <= 0.01f)
             {
@@ -109,6 +116,24 @@ namespace Week14.Enemy
         protected override bool CanHitPlayer(PlayerCombatController player)
         {
             return false;
+        }
+
+        public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            if (health == null || health.IsDead || !IsAliveTurret || bulletDamage <= 0)
+            {
+                return false;
+            }
+
+            bool damaged = health.TakeDamage(bulletDamage);
+            if (!damaged)
+            {
+                return false;
+            }
+
+            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            BossAI.PlayEnemyHitCameraImpactForSequence(hitDirection, 0.08f, 0.12f, 0.05f);
+            return true;
         }
 
         protected override void OnProjectileTick()
@@ -147,6 +172,21 @@ namespace Week14.Enemy
             nextFireAt += fireInterval;
         }
 
+        protected override void OnTriggerEnter2D(Collider2D other)
+        {
+            if (TryResolvePlayerProjectile(other))
+            {
+                return;
+            }
+
+            base.OnTriggerEnter2D(other);
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            TryResolvePlayerProjectile(collision.collider);
+        }
+
         protected override void OnDestroy()
         {
             if (health != null)
@@ -155,6 +195,43 @@ namespace Week14.Enemy
             }
 
             base.OnDestroy();
+        }
+
+        private bool TryResolvePlayerProjectile(Collider2D other)
+        {
+            PlayerProjectile playerProjectile = other != null ? other.GetComponentInParent<PlayerProjectile>() : null;
+            return playerProjectile != null && playerProjectile.TryResolveTurretHit(this);
+        }
+
+        private void EnsureStatusView()
+        {
+            if (statusView == null)
+            {
+                statusView = GetComponent<EnemyStatusView>() ?? gameObject.AddComponent<EnemyStatusView>();
+            }
+
+            statusView.SetWorldTarget(transform);
+            statusView.SetSuppressed(false);
+            statusView.Configure(this);
+            statusView.SetTarget(health);
+        }
+
+        private static void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            Color sparkColor = Color.Lerp(hitColor, Color.white, 0.35f);
+            Color backSparkColor = Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
+            Color ringColor = Color.Lerp(hitColor, Color.white, 0.35f);
+            ProjectileVfx.PlayPlayerAttackImpact(
+                hitPosition,
+                hitDirection,
+                sparkColor,
+                backSparkColor,
+                backSparkColor,
+                ringColor,
+                14,
+                6,
+                8,
+                0.65f);
         }
 
         private void FireCrossVolley()
