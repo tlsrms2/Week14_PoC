@@ -214,7 +214,6 @@ namespace Week14.Combat
 
             if (parryLockOnReticle != null)
             {
-                parryLockOnReticle.SetForceOscillationWhileThreatened(nextVisible);
                 parryLockOnReticle.SetVisible(nextVisible);
                 parryLockOnReticle.SetThreatened(nextVisible);
             }

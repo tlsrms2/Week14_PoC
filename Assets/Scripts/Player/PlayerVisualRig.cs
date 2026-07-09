@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Week14.Input;
 using Week14.Weapons;
@@ -83,6 +84,7 @@ namespace Week14.Combat
         private bool frontRightArmWasHolstering;
         private bool sideRightArmWasHolstering;
         private bool backRightArmWasHolstering;
+        private Coroutine rollSpinRoutine;
 
         private void Awake()
         {
@@ -255,7 +257,7 @@ namespace Week14.Combat
             }
         }
 
-        public void PlayRoll()
+        public void PlayRoll(float duration)
         {
             if (frontBodyAnimator != null)
             {
@@ -271,6 +273,36 @@ namespace Week14.Combat
             {
                 backBodyAnimator.SetTrigger(DoRollParameter);
             }
+
+            if (visualRoot != null && duration > 0f)
+            {
+                if (rollSpinRoutine != null)
+                {
+                    StopCoroutine(rollSpinRoutine);
+                }
+
+                rollSpinRoutine = StartCoroutine(RollSpinRoutine(duration));
+            }
+        }
+
+        private IEnumerator RollSpinRoutine(float duration)
+        {
+            // visualRoot의 localScale.x 부호로 좌우 반전을 표현하므로, 그 부호에 맞춰 회전 방향을 정해야
+            // 구르는 방향과 반대로 도는 것처럼 보이지 않는다.
+            float spinDirection = visualRoot.localScale.x < 0f ? 1f : -1f;
+            Quaternion startRotation = visualRoot.localRotation;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float angle = spinDirection * 360f * Mathf.Clamp01(elapsed / duration);
+                visualRoot.localRotation = startRotation * Quaternion.Euler(0f, 0f, angle);
+                yield return null;
+            }
+
+            visualRoot.localRotation = startRotation;
+            rollSpinRoutine = null;
         }
 
         private void ResolveReferences()
