@@ -91,7 +91,8 @@ namespace Week14.UI
         }
 
         // BossChallengePanel의 연출 코루틴에서 yield return으로 직접 실행합니다 (슬롯이 완전히 끝나야 다음 슬롯이 시작되도록).
-        // 호출 전에 Prime()으로 설명 텍스트가 이미 표시되어 있어야 합니다. 판정 색은 스윕이 다 자란 뒤(가려진 상태에서) 적용됩니다.
+        // 호출 전에 Prime()으로 설명 텍스트가 이미 표시되어 있어야 합니다. 스윕 색은 자라나기 시작할 때 바로 판정 색으로 적용되고,
+        // 설명 텍스트/아이콘/진행도는 스윕이 다 자란 뒤(가려진 상태에서) 적용됩니다.
         public IEnumerator PlayRevealCoroutine(
             ChallengeDefinitionSO definition,
             string bossId,
@@ -103,13 +104,14 @@ namespace Week14.UI
             float growSeconds,
             float shrinkSeconds)
         {
-            yield return AnimateSweepWidth(0f, sweepWidth, growSeconds);
-
             string saveKey = GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId);
             bool completed = GameSaveManager.IsChallengeCompleted(saveKey);
             Color resultColor = completed ? clearedTextColor : notClearedTextColor;
-            SetDescriptionColor(resultColor);
             SetSweepColor(resultColor);
+
+            yield return AnimateSweepWidth(0f, sweepWidth, growSeconds);
+
+            SetDescriptionColor(resultColor);
             SetCompletionSprite(completed ? completedSprite : incompleteSprite);
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
 
