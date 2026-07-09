@@ -1,135 +1,22 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Week14.Combat
 {
     public sealed class MouseParryReticle : MonoBehaviour
     {
-        [Serializable]
-        private sealed class ReticlePiece
-        {
-            [SerializeField] private SpriteRenderer renderer;
-            [SerializeField] private Vector2 moveDirection = Vector2.up;
-
-            private Vector3 baseLocalPosition;
-            private bool hasBaseLocalPosition;
-            private float moveProgress;
-            private float oscillationTime;
-
-            public SpriteRenderer Renderer => renderer;
-
-            public void CacheBaseLocalPosition()
-            {
-                if (renderer == null)
-                {
-                    return;
-                }
-
-                baseLocalPosition = renderer.transform.localPosition;
-                hasBaseLocalPosition = true;
-            }
-
-            public void SetVisible(bool visible)
-            {
-                if (renderer != null)
-                {
-                    renderer.enabled = visible;
-                }
-            }
-
-            public void ResetMotion()
-            {
-                if (renderer == null)
-                {
-                    return;
-                }
-
-                if (!hasBaseLocalPosition)
-                {
-                    CacheBaseLocalPosition();
-                }
-
-                moveProgress = 0f;
-                oscillationTime = 0f;
-                renderer.transform.localPosition = baseLocalPosition;
-            }
-
-            public void Tick(
-                bool threatened,
-                float moveScale,
-                AnimationCurve moveCurve,
-                Color idleColor,
-                Color threatenedColor,
-                Color feedbackColor,
-                bool useFeedbackColor,
-                float moveSpeed,
-                bool oscillateWhileThreatened,
-                float oscillationSpeed,
-                Vector3 shakeOffset,
-                float colorSpeed,
-                float deltaTime)
-            {
-                if (renderer == null)
-                {
-                    return;
-                }
-
-                if (!hasBaseLocalPosition)
-                {
-                    CacheBaseLocalPosition();
-                }
-
-                Vector3 localOffset = moveDirection.sqrMagnitude > 0.0001f
-                    ? renderer.transform.localRotation * moveDirection
-                    : Vector3.zero;
-                if (threatened && oscillateWhileThreatened)
-                {
-                    oscillationTime += Mathf.Max(0f, oscillationSpeed) * deltaTime;
-                    moveProgress = Mathf.PingPong(oscillationTime, 1f);
-                }
-                else
-                {
-                    oscillationTime = 0f;
-                    float targetProgress = threatened ? 1f : 0f;
-                    moveProgress = Mathf.MoveTowards(moveProgress, targetProgress, Mathf.Max(0f, moveSpeed) * deltaTime);
-                }
-
-                float curvedProgress = moveCurve != null ? Mathf.Clamp01(moveCurve.Evaluate(moveProgress)) : moveProgress;
-                Vector3 targetPosition = baseLocalPosition + localOffset * moveScale * curvedProgress + shakeOffset;
-                Color targetColor = useFeedbackColor ? feedbackColor : (threatened ? threatenedColor : idleColor);
-
-                renderer.transform.localPosition = targetPosition;
-                renderer.color = MoveColor(renderer.color, targetColor, Mathf.Max(0f, colorSpeed) * deltaTime);
-            }
-        }
-
-        [SerializeField] private ReticlePiece[] pieces =
-        {
-            new ReticlePiece(),
-            new ReticlePiece(),
-            new ReticlePiece(),
-            new ReticlePiece()
-        };
         [SerializeField] private SpriteRenderer[] colorOnlyRenderers = Array.Empty<SpriteRenderer>();
-        [SerializeField, FormerlySerializedAs("idleColor")] private Color pieceIdleColor = Color.white;
-        [SerializeField, FormerlySerializedAs("threatenedColor")] private Color pieceThreatenedColor = new(1f, 0.45f, 0.05f, 1f);
+        [Tooltip("colorOnlyRenderers의 평상시(비위협) 색상입니다.")]
         [SerializeField] private Color colorOnlyIdleColor = Color.white;
+        [Tooltip("colorOnlyRenderers의 위협(threatened) 상태 색상입니다.")]
         [SerializeField] private Color colorOnlyThreatenedColor = new(1f, 0.45f, 0.05f, 1f);
-        [SerializeField] private Color missPieceColor = new(1f, 0.12f, 0.08f, 1f);
+        [Tooltip("PlayMissFeedback 호출 시 colorOnlyRenderers에 잠깐 적용되는 미스 피드백 색상입니다.")]
         [SerializeField] private Color missColorOnlyColor = new(1f, 0.12f, 0.08f, 1f);
-        [SerializeField, Min(0f)] private float moveScale = 1f;
-        [SerializeField] private AnimationCurve moveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        [SerializeField, Min(0f)] private float moveSpeed = 5f;
-        [SerializeField] private bool oscillatePiecesWhileThreatened;
-        [SerializeField, Min(0f)] private float pieceOscillationSpeed = 2f;
         [SerializeField, Min(0f)] private float colorSpeed = 8f;
         [SerializeField] private bool useUnscaledTime;
-        [SerializeField, HideInInspector] private bool colorOnlyColorsInitialized;
 
         private bool threatened;
         private bool visible = true;
-        private bool forceOscillationWhileThreatened;
         private Vector3[] colorOnlyBaseLocalPositions = Array.Empty<Vector3>();
         private bool[] colorOnlyHasBaseLocalPositions = Array.Empty<bool>();
         private float missFeedbackEndsAt;
@@ -143,11 +30,6 @@ namespace Week14.Combat
         public void SetThreatened(bool value)
         {
             threatened = value;
-        }
-
-        public void SetForceOscillationWhileThreatened(bool value)
-        {
-            forceOscillationWhileThreatened = value;
         }
 
         public void PlayMissFeedback(float colorSeconds, float shakeSeconds, float shakeAmplitude, float shakeFrequency)
@@ -166,15 +48,6 @@ namespace Week14.Combat
         public void SetVisible(bool value)
         {
             visible = value;
-            for (int i = 0; i < pieces.Length; i++)
-            {
-                pieces[i]?.SetVisible(value);
-                if (!value)
-                {
-                    pieces[i]?.ResetMotion();
-                }
-            }
-
             for (int i = 0; i < colorOnlyRenderers.Length; i++)
             {
                 SetRendererVisible(colorOnlyRenderers[i], value);
@@ -188,13 +61,7 @@ namespace Week14.Combat
 
         private void Awake()
         {
-            InitializeColorOnlyColors();
             CacheBaseLocalPositions();
-        }
-
-        private void OnValidate()
-        {
-            InitializeColorOnlyColors();
         }
 
         private void OnEnable()
@@ -214,23 +81,6 @@ namespace Week14.Combat
             float now = CurrentTime;
             bool useFeedbackColor = now < missFeedbackEndsAt;
             Vector3 shakeOffset = GetMissShakeOffset(now);
-            for (int i = 0; i < pieces.Length; i++)
-            {
-                pieces[i]?.Tick(
-                    threatened,
-                    moveScale,
-                    moveCurve,
-                    pieceIdleColor,
-                    pieceThreatenedColor,
-                    missPieceColor,
-                    useFeedbackColor,
-                    moveSpeed,
-                    oscillatePiecesWhileThreatened || forceOscillationWhileThreatened,
-                    pieceOscillationSpeed,
-                    shakeOffset,
-                    colorSpeed,
-                    deltaTime);
-            }
 
             Color targetColor = useFeedbackColor
                 ? missColorOnlyColor
@@ -248,11 +98,6 @@ namespace Week14.Combat
 
         private void CacheBaseLocalPositions()
         {
-            for (int i = 0; i < pieces.Length; i++)
-            {
-                pieces[i]?.CacheBaseLocalPosition();
-            }
-
             if (colorOnlyBaseLocalPositions.Length != colorOnlyRenderers.Length)
             {
                 colorOnlyBaseLocalPositions = new Vector3[colorOnlyRenderers.Length];
@@ -273,18 +118,6 @@ namespace Week14.Combat
                     colorOnlyHasBaseLocalPositions[i] = true;
                 }
             }
-        }
-
-        private void InitializeColorOnlyColors()
-        {
-            if (colorOnlyColorsInitialized)
-            {
-                return;
-            }
-
-            colorOnlyIdleColor = pieceIdleColor;
-            colorOnlyThreatenedColor = pieceThreatenedColor;
-            colorOnlyColorsInitialized = true;
         }
 
         private Vector3 GetMissShakeOffset(float now)

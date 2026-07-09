@@ -17,39 +17,35 @@ namespace Week14.UI
 
         [Tooltip("bossRoot에 마우스를 올리면 켜지는 오브젝트입니다.")]
         [SerializeField] private GameObject bossHoverHighlight;
+        [Tooltip("bossHoverHighlight와 함께 켜지고 꺼지는 추가 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] bossHoverExtraObjects;
         [Tooltip("loadoutRoot에 마우스를 올리면 켜지는 오브젝트입니다.")]
         [SerializeField] private GameObject loadoutHoverHighlight;
+        [Tooltip("loadoutHoverHighlight와 함께 켜지고 꺼지는 추가 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] loadoutHoverExtraObjects;
 
         public void OnBossRootPointerEnter()
         {
-            if (bossHoverHighlight != null)
-            {
-                bossHoverHighlight.SetActive(true);
-            }
+            SetActiveSafe(bossHoverHighlight, true);
+            SetActiveSafe(bossHoverExtraObjects, true);
         }
 
         public void OnBossRootPointerExit()
         {
-            if (bossHoverHighlight != null)
-            {
-                bossHoverHighlight.SetActive(false);
-            }
+            SetActiveSafe(bossHoverHighlight, false);
+            SetActiveSafe(bossHoverExtraObjects, false);
         }
 
         public void OnLoadoutRootPointerEnter()
         {
-            if (loadoutHoverHighlight != null)
-            {
-                loadoutHoverHighlight.SetActive(true);
-            }
+            SetActiveSafe(loadoutHoverHighlight, true);
+            SetActiveSafe(loadoutHoverExtraObjects, true);
         }
 
         public void OnLoadoutRootPointerExit()
         {
-            if (loadoutHoverHighlight != null)
-            {
-                loadoutHoverHighlight.SetActive(false);
-            }
+            SetActiveSafe(loadoutHoverHighlight, false);
+            SetActiveSafe(loadoutHoverExtraObjects, false);
         }
 
         private void Awake()
@@ -68,6 +64,27 @@ namespace Week14.UI
             if (!string.IsNullOrEmpty(lobbyBgmId))
             {
                 SoundManager.StopBgm();
+            }
+        }
+
+        private static void SetActiveSafe(GameObject target, bool active)
+        {
+            if (target != null)
+            {
+                target.SetActive(active);
+            }
+        }
+
+        private static void SetActiveSafe(GameObject[] targets, bool active)
+        {
+            if (targets == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                SetActiveSafe(targets[i], active);
             }
         }
 
