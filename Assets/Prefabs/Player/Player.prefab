@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9185737548225027311}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5187835753885913605}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FIrePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 3446453721691491960}
   - component: {fileID: 233888556278149961}
   - component: {fileID: 1458687320501734866}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5153928273128035090}
   - component: {fileID: 4042810355169074995}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 7963685764068534028}
   - component: {fileID: 3848179271964299574}
   - component: {fileID: 156428313104036470}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ShotgunRangeIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 7766547627996363878}
   - component: {fileID: 74735123794669808}
   - component: {fileID: 6046330243723813957}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DeathVisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +683,7 @@ GameObject:
   - component: {fileID: 69000197254271610}
   - component: {fileID: 9060883804229562612}
   - component: {fileID: 2303374336768699719}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MouseParryReticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,63 +779,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ed3d7a4ccc32145bae2a156dbbf246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.MouseParryReticle
-  pieces:
-  - renderer: {fileID: 0}
-    moveDirection: {x: 0.015, y: -0.015}
-  - renderer: {fileID: 0}
-    moveDirection: {x: -0.015, y: -0.015}
-  - renderer: {fileID: 0}
-    moveDirection: {x: 0.015, y: 0.015}
-  - renderer: {fileID: 0}
-    moveDirection: {x: -0.015, y: 0.015}
   colorOnlyRenderers:
   - {fileID: 9060883804229562612}
-  pieceIdleColor: {r: 1, g: 1, b: 1, a: 1}
-  pieceThreatenedColor: {r: 1, g: 1, b: 1, a: 1}
   colorOnlyIdleColor: {r: 0.19607845, g: 0.70980394, b: 0.76470596, a: 1}
   colorOnlyThreatenedColor: {r: 0.19607845, g: 0.70980394, b: 0.76470596, a: 1}
-  missPieceColor: {r: 0.99607843, g: 0.3949549, b: 0.10980393, a: 1}
   missColorOnlyColor: {r: 0.99607843, g: 0.39607844, b: 0.11372549, a: 1}
-  moveScale: 1
-  moveCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 4.3079123
-      outSlope: 4.3079123
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.20742899
-      value: 0.8935859
-      inSlope: 0.2674349
-      outSlope: 0.2674349
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.61436725
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.13426441
-      outSlope: 0.13426441
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  moveSpeed: 20
-  oscillatePiecesWhileThreatened: 0
-  pieceOscillationSpeed: 2
   colorSpeed: 20
   useUnscaledTime: 0
-  colorOnlyColorsInitialized: 1
 --- !u!1 &7921149361681626474
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,7 +796,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7119517174655575187}
   - component: {fileID: 5103855550194505473}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CrossHair-AimPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -938,7 +888,7 @@ GameObject:
   - component: {fileID: 8371428800163127988}
   - component: {fileID: 4519320888054714463}
   - component: {fileID: 2369801593849190484}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MouseCharge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1049,6 +999,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4309581587629039353}
     m_Modifications:
+    - target: {fileID: 297275752306678565, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 703400260667724959, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.033
@@ -1089,10 +1043,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1432112729674852633, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1588262131099691003, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217835486058803566, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2647152791380730544, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
+    - target: {fileID: 2828358751634331456, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3079455408925606049, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1101,22 +1071,50 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
+    - target: {fileID: 3980707336400015145, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4105692278019693102, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
+    - target: {fileID: 4384768281562532791, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4958753470749675896, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_Name
       value: VisualRoot
       objectReference: {fileID: 0}
     - target: {fileID: 4958753470749675896, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958753470749675896, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5440829007928337072, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6197907801477295841, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6577188295035236420, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7441093422945148273, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+    - target: {fileID: 8836182817175778148, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8987978879556732027, guid: 9daa9f2e2b6751b44842f5df758a5dc7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

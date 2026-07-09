@@ -1,6 +1,7 @@
 using UnityEngine;
 using Week14.Bootstrap;
 using Week14.Enemy;
+using Week14.Tutorial;
 
 namespace Week14.Combat
 {
@@ -149,7 +150,9 @@ namespace Week14.Combat
                 && (targetHealth.GetComponent<BossAI>() != null
                     || targetHealth.GetComponentInParent<BossAI>() != null
                     || targetHealth.GetComponent<Minion>() != null
-                    || targetHealth.GetComponentInParent<Minion>() != null);
+                    || targetHealth.GetComponentInParent<Minion>() != null
+                    || targetHealth.GetComponent<TutorialTrainingEnemy>() != null
+                    || targetHealth.GetComponentInParent<TutorialTrainingEnemy>() != null);
         }
 
         private bool IsValidLockOnTargetInCamera(Health targetHealth, Camera camera)

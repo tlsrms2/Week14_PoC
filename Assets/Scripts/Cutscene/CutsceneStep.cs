@@ -35,6 +35,7 @@ namespace Week14.Cutscene
         [FormerlySerializedAs("backgroundSprite")]
         [SerializeField] private Sprite backgroundImage;
         [SerializeField] private List<CutsceneDialogue> dialogues = new();
+        [SerializeField] private bool skippable;
 
         [Header("Audio")]
         [SerializeField] private string bgmId;
@@ -53,6 +54,7 @@ namespace Week14.Cutscene
 
         public Sprite BackgroundImage => backgroundImage;
         public IReadOnlyList<CutsceneDialogue> Dialogues => dialogues;
+        public bool Skippable => skippable;
         public string BgmId => bgmId;
         public float BgmFadeSeconds => bgmFadeSeconds;
         public CutsceneStepTransitionMode TransitionMode => transitionMode;

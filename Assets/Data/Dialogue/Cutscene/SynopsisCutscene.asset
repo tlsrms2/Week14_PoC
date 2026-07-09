@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
+  m_Name: SynopsisCutscene
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
+  cutsceneId: Synopsis
+  skippable: 0
+  steps:
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "시설 AI"
+      text: "킬러 시설 의료동 접속 확인. 이온, 귀환을 확인했습니다."
+    - name: "시설 AI"
+      text: "좌측 안면부와 절단부의 생체 신호가 불안정합니다. 부상이 심각합니다. 즉시 응급 치료를 권합니다."
+    - name: "이온"
+      text: "치료보다 먼저, 그 카페 기록을 틀어."
+    - name: "시설 AI"
+      text: "해당 기록은 외상 기억을 강하게 자극할 가능성이 높습니다. 재생 전 처치를 먼저 진행하는 편이 안전합니다."
+    - name: "이온"
+      text: "안전한 거 고르려고 여기까지 온 거 아니야. 재생해."
+    - name: "시설 AI"
+      text: "요청 확인. 카페 보안 기록을 복원합니다."
+    skippable: 0
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "시설 AI"
+      text: "기록 시각, 폭발 사고 당일 17시 42분. 장소는 도시 외곽의 소형 카페입니다."
+    - name: "기록"
+      text: "손상된 음성 구간을 보정합니다. 영상 재생을 시작합니다."
+    skippable: 0
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 1.5
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "아버지"
+      text: "수술은 잘 끝났습니다. 회복만 천천히 따라오면 됩니다."
+    - name: "환자"
+      text: "선생님 덕분에 살았습니다. 어렵게 구한 물건인데, 꼭 받아주십시오."
+    - name: "이온"
+      text: "아빠, 또 선물이야? 병원 규칙 같은 거 없어?"
+    - name: "아버지"
+      text: "고맙다는 마음까지 거절하면 의사 일도 너무 삭막해지지 않겠니."
+    - name: "아버지"
+      text: "나는 엄청 어렵게 사람들을 살리고 있는데, 뭐가 좋아서 사람이 사람을 죽이려 하는지 이해하기 어렵구나."
+    - name: "이온"
+      text: "...콜록. 그래도 엄청 나쁜 짓을 하는 사람이 죽는 거라면 괜찮지 않을까?"
+    - name: "아버지"
+      text: "그런 게 있다면 몸에 나쁜 요소를 제거하려고 위험한 칼을 들이미는 것과 별반 다르지 않겠지."
+    - name: "기록"
+      text: "치직. 이후 음성 데이터가 손상되었습니다."
+    - name: "아버지"
+      text: "다만, 이온. 그 칼을 드는 사람은..."
+    - name: "기록"
+      text: "지직. 지직. 기록 복구 실패."
+    - name: "이온"
+      text: "그럼 이제 열어보자. 안에 뭐가 들었을까?"
+    - name: "아버지"
+      text: "그래. 같이 보자."
+    - name: "기록"
+      text: "폭발음 감지. 영상 신호가 소실됩니다."
+    skippable: 1
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "시설 AI"
+      text: "기록 재생 종료. 폭발 직후 보호자는 현장에서 사망, 이온은 좌측 팔과 안면부에 치명적 손상을 입었습니다."
+    - name: "시설 AI"
+      text: "복수 수행을 위한 사이보그화 시술 요청 기록이 이어집니다. 비가역적 개조이며 통증 피드백은 완전히 차단되지 않습니다."
+    - name: "이온"
+      text: "상관없어. 움직일 수 있게 만들고, 싸울 수 있게 만들어."
+    - name: "시설 AI"
+      text: "시술 승인. 장비 동기화 후 적응 훈련으로 이동합니다."
+    - name: "이온"
+      text: "시작해."
+    skippable: 0
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0

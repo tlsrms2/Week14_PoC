@@ -67,6 +67,7 @@ namespace Week14.Combat
         private BulletGauge ownerBullets;
         private BossAI ownerBoss;
         private Minion ownerMinion;
+        private Transform ownerTransform;
         private int bulletDamage;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;

@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using Week14.Bootstrap;
 using Week14.GameFlow;
 
 namespace Week14.Cutscene
@@ -13,11 +15,16 @@ namespace Week14.Cutscene
             cutscenePlayer ??= FindFirstObjectByType<CutscenePlayer>(FindObjectsInactive.Include);
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            while (SceneTransition.IsTransitioning)
+            {
+                yield return null;
+            }
+
             if (GameFlowController.PlayPendingCutscene(cutscenePlayer))
             {
-                return;
+                yield break;
             }
 
             Debug.LogWarning($"{nameof(CutsceneSceneController)}: pending cutscene is missing.");

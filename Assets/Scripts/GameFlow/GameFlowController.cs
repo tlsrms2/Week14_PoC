@@ -22,6 +22,8 @@ namespace Week14.GameFlow
         [Header("Scene Defaults")]
         [SerializeField] private string titleSceneName = "TitleScene";
         [SerializeField] private string lobbySceneName = "LobbyScene";
+        [SerializeField] private string tutorialSceneName = "TutorialScene";
+        [SerializeField] private string endingSceneName = "EndingScene";
 
         [Header("Cutscene")]
         [SerializeField] private string cutsceneSceneName = "CutsceneScene";
@@ -31,6 +33,7 @@ namespace Week14.GameFlow
         private CutsceneDefinition pendingCutscene;
         private string pendingNextSceneName;
         private PendingCutsceneCompletion pendingCompletion;
+        private bool? pendingSkippableOverride;
 
         public static GameFlowController Instance => TryGetExistingInstance();
 
@@ -112,6 +115,14 @@ namespace Week14.GameFlow
             }
         }
 
+        public static void EnterEnding()
+        {
+            if (TryGetExistingInstance() is GameFlowController controller)
+            {
+                controller.LoadSceneInternal(controller.endingSceneName);
+            }
+        }
+
         public static bool PlayPendingCutscene(CutscenePlayer player)
         {
             return TryGetExistingInstance() is GameFlowController controller
@@ -158,9 +169,19 @@ namespace Week14.GameFlow
 
         private void StartGameInternal()
         {
-            if (synopsisCutscene != null && !GameSaveManager.HasSeenSynopsis)
+            if (!GameSaveManager.HasCompletedTutorial)
             {
-                PlayCutsceneThenLoadInternal(synopsisCutscene, lobbySceneName, PendingCutsceneCompletion.Synopsis);
+                if (synopsisCutscene != null)
+                {
+                    PlayCutsceneThenLoadInternal(
+                        synopsisCutscene,
+                        tutorialSceneName,
+                        PendingCutsceneCompletion.Synopsis,
+                        GameSaveManager.HasSeenSynopsis);
+                    return;
+                }
+
+                LoadSceneInternal(tutorialSceneName);
                 return;
             }
 
@@ -191,7 +212,8 @@ namespace Week14.GameFlow
         private void PlayCutsceneThenLoadInternal(
             CutsceneDefinition cutscene,
             string nextSceneName,
-            PendingCutsceneCompletion completion)
+            PendingCutsceneCompletion completion,
+            bool? skippableOverride = null)
         {
             if (cutscene == null)
             {
@@ -209,12 +231,7 @@ namespace Week14.GameFlow
             pendingCutscene = cutscene;
             pendingNextSceneName = nextSceneName;
             pendingCompletion = completion;
-
-            if (ShouldSuppressSceneTransition(completion))
-            {
-                LoadSceneDirectInternal(cutsceneSceneName);
-                return;
-            }
+            pendingSkippableOverride = skippableOverride;
 
             LoadSceneInternal(cutsceneSceneName);
         }
@@ -233,7 +250,11 @@ namespace Week14.GameFlow
                 return true;
             }
 
-            player.Play(pendingCutscene, CompletePendingCutscene);
+            player.Play(
+                pendingCutscene,
+                CompletePendingCutscene,
+                keepCoveredOnCompleted: true,
+                skippableOverride: pendingSkippableOverride);
             return true;
         }
 
@@ -245,6 +266,7 @@ namespace Week14.GameFlow
             pendingCutscene = null;
             pendingNextSceneName = null;
             pendingCompletion = PendingCutsceneCompletion.None;
+            pendingSkippableOverride = null;
 
             switch (completion)
             {
@@ -256,9 +278,9 @@ namespace Week14.GameFlow
                     break;
             }
 
-            if (ShouldSuppressSceneTransition(completion))
+            if (completion == PendingCutsceneCompletion.Synopsis)
             {
-                LoadSceneDirectInternal(nextSceneName);
+                LoadSceneFromCoveredInternal(nextSceneName);
                 return;
             }
 
@@ -277,7 +299,7 @@ namespace Week14.GameFlow
             SceneTransition.LoadScene(sceneName);
         }
 
-        private void LoadSceneDirectInternal(string sceneName)
+        private void LoadSceneFromCoveredInternal(string sceneName)
         {
             if (string.IsNullOrWhiteSpace(sceneName))
             {
@@ -286,18 +308,13 @@ namespace Week14.GameFlow
             }
 
             PrepareSceneChange();
-            SceneManager.LoadScene(sceneName);
+            SceneTransition.LoadSceneFromCovered(sceneName);
         }
 
         private void LoadSceneInternal(int buildIndex)
         {
             PrepareSceneChange();
             SceneTransition.LoadScene(buildIndex);
-        }
-
-        private static bool ShouldSuppressSceneTransition(PendingCutsceneCompletion completion)
-        {
-            return completion == PendingCutsceneCompletion.Synopsis;
         }
 
         private static string ResolveSceneName(string preferredSceneName, string fallbackSceneName)

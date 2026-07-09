@@ -101,13 +101,22 @@ namespace Week14.Save
 
         public static void MarkTutorialCompleted()
         {
-            if (Data.hasCompletedTutorial)
+            bool changed = !Data.hasCompletedTutorial;
+            if (!Data.hasCompletedTutorial)
             {
-                return;
+                Data.hasCompletedTutorial = true;
             }
 
-            Data.hasCompletedTutorial = true;
-            Save();
+            if (!Data.unlockedBossIds.Contains(FirstBossId))
+            {
+                Data.unlockedBossIds.Add(FirstBossId);
+                changed = true;
+            }
+
+            if (changed)
+            {
+                Save();
+            }
         }
 
         public static void MarkEndingSeen()

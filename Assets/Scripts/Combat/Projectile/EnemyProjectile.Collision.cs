@@ -29,6 +29,11 @@ namespace Week14.Combat
                 return;
             }
 
+            if (IsOwnerCollider(other))
+            {
+                return;
+            }
+
             PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
             if (IsCharging && player == null)
             {
@@ -158,6 +163,15 @@ namespace Week14.Combat
             }
 
             return ownerBoss != null && ownerBoss.transform == hitOwnerTransform;
+        }
+
+        private bool IsOwnerCollider(Collider2D other)
+        {
+            return ownerTransform != null
+                && other != null
+                && (other.transform == ownerTransform
+                    || other.transform.IsChildOf(ownerTransform)
+                    || ownerTransform.IsChildOf(other.transform));
         }
 
     }

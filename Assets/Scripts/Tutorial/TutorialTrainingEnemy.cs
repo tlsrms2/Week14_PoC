@@ -1,0 +1,676 @@
+using System;
+using UnityEngine;
+using UnityEngine.Serialization;
+using Week14.Combat;
+using Week14.Enemy;
+
+namespace Week14.Tutorial
+{
+    public enum TutorialTrainingEnemyMode
+    {
+        Passive,
+        AttackTarget,
+        ParryPractice,
+        DodgePractice,
+        Duel
+    }
+
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(Health), typeof(BulletGauge), typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Collider2D))]
+    public sealed class TutorialTrainingEnemy : MonoBehaviour
+    {
+        private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
+
+        [Header("Tutorial Enemy References")]
+        [SerializeField] private CombatEffectData effectData;
+        [SerializeField] private BossColorSettings colorSettings;
+
+        [Header("Training Settings")]
+        [SerializeField, Min(1)] private int maxBullets = 6;
+        [SerializeField, Min(0f)] private float moveSpeed = 1.6f;
+        [SerializeField, Min(0f)] private float stopDistance = 3f;
+        [SerializeField, Min(0f)] private float practiceFireIntervalSeconds = 1.8f;
+        [SerializeField, Min(0f)] private float duelFireIntervalSeconds = 1.3f;
+        [SerializeField, Min(0)] private int contactDamage = 1;
+        [SerializeField, Min(0f)] private float contactDamageCooldown = 1f;
+
+        [Header("Projectile Settings")]
+        [SerializeField] private BossProjectileSettings projectile = new();
+        [SerializeField] private BossProjectileSettings dodgeProjectile = new();
+        [SerializeField, Min(4)] private int dodgeProjectileCount = 12;
+        [SerializeField, Min(0f)] private float dodgeFireDelaySeconds = 0.65f;
+
+        [Header("Hit Feedback")]
+        [SerializeField] private Color hitFlashColor = Color.white;
+        [SerializeField, Min(0f)] private float hitFlashSeconds = 0.08f;
+
+        [Header("Scene References")]
+        [FormerlySerializedAs("statusTarget")]
+        [SerializeField] private Transform bodyRoot;
+        [SerializeField] private Rigidbody2D body;
+        [SerializeField] private Transform projectileOrigin;
+        [SerializeField] private SpriteRenderer lockOnIndicator;
+
+        [SerializeField, HideInInspector] private SpriteRenderer[] bodyRenderers;
+        [SerializeField, HideInInspector] private Color lockOnIndicatorColor = Color.white;
+        [SerializeField, HideInInspector] private Color bodyHitColor = new(1f, 0.35f, 0.25f, 1f);
+        [SerializeField, HideInInspector] private float bodyHitColorSeconds = 0.08f;
+
+        private Health health;
+        private BulletGauge bullets;
+        private SpriteRenderer configuredLockOnIndicator;
+        private Color[] bodyRendererBaseColors;
+        private MaterialPropertyBlock hitFlashPropertyBlock;
+        private Transform target;
+        private TutorialTrainingEnemyMode mode;
+        private bool isActive;
+        private float nextFireAt;
+        private float nextContactDamageAt;
+        private float bodyHitColorEndsAt;
+        private float hitFlashEndsAt;
+        private bool isBodyHitColorActive;
+        private bool isHitFlashActive;
+        private bool dodgeVolleyFired;
+
+        public Health Health => health;
+        public BulletGauge Bullets => bullets;
+        public Color LockOnIndicatorColor => colorSettings != null ? colorSettings.LockOnIndicatorColor : lockOnIndicatorColor;
+        public event Action<TutorialTrainingEnemy> Defeated;
+
+        private void Awake()
+        {
+            EnsureReferences();
+        }
+
+        private void OnEnable()
+        {
+            EnsureReferences();
+            health.Died += HandleDied;
+        }
+
+        private void OnDisable()
+        {
+            if (health != null)
+            {
+                health.Died -= HandleDied;
+            }
+
+            SetLockOnIndicatorVisible(false);
+            StopBody();
+        }
+
+        private void Start()
+        {
+            bullets.Configure(maxBullets, true, BulletChangeSource.CombatStart);
+        }
+
+        private void Update()
+        {
+            UpdateBodyHitColor();
+            UpdateHitFlash();
+
+            if (!CanAct())
+            {
+                StopBody();
+                return;
+            }
+
+            if (ShouldFire())
+            {
+                TryFire();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (!CanAct())
+            {
+                StopBody();
+                return;
+            }
+
+            if (!ShouldMove())
+            {
+                StopBody();
+                Face((Vector2)target.position - (Vector2)transform.position);
+                return;
+            }
+
+            MoveNearTarget();
+        }
+
+        private void LateUpdate()
+        {
+            UpdateLockOnIndicator();
+        }
+
+        public void Activate(Transform nextTarget, TutorialTrainingEnemyMode nextMode)
+        {
+            EnsureReferences();
+            target = nextTarget;
+            mode = nextMode;
+            gameObject.SetActive(true);
+            health.Revive();
+            bullets.Configure(maxBullets, true, BulletChangeSource.CombatStart);
+            isActive = true;
+            dodgeVolleyFired = false;
+            nextFireAt = Time.time + GetInitialFireDelaySeconds();
+            nextContactDamageAt = 0f;
+        }
+
+        public void Deactivate()
+        {
+            isActive = false;
+            SetLockOnIndicatorVisible(false);
+            StopBody();
+        }
+
+        public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            EnsureReferences();
+            if (health == null || health.IsDead)
+            {
+                return false;
+            }
+
+            if (bullets != null)
+            {
+                if (bullets.IsEmpty)
+                {
+                    health.Kill();
+                }
+                else
+                {
+                    bullets.TrySpend(bulletDamage, BulletChangeSource.Hit);
+                }
+            }
+            else
+            {
+                health.TakeDamage(bulletDamage);
+            }
+
+            FlashBodyHitColor();
+            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            BossAI.PlayEnemyHitCameraImpactForSequence(hitDirection, 0.08f, 0.12f, 0.05f);
+            return true;
+        }
+
+        private void EnsureReferences()
+        {
+            health ??= GetComponent<Health>();
+            bullets ??= GetComponent<BulletGauge>();
+            body ??= GetComponent<Rigidbody2D>();
+            bodyRoot ??= transform;
+            projectileOrigin ??= bodyRoot != null ? bodyRoot : transform;
+            lockOnIndicator ??= FindIndicator("LockOnIndicator");
+            CacheBodyRenderers();
+            ConfigureLockOnIndicator();
+
+            if (body != null)
+            {
+                body.gravityScale = 0f;
+                body.freezeRotation = true;
+                body.interpolation = RigidbodyInterpolation2D.Interpolate;
+            }
+        }
+
+        private SpriteRenderer FindIndicator(string indicatorName)
+        {
+            Transform directChild = transform.Find(indicatorName);
+            if (directChild != null && directChild.TryGetComponent(out SpriteRenderer directRenderer))
+            {
+                return directRenderer;
+            }
+
+            SpriteRenderer[] candidates = GetComponentsInChildren<SpriteRenderer>(true);
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                if (candidates[i] != null && candidates[i].name == indicatorName)
+                {
+                    return candidates[i];
+                }
+            }
+
+            return null;
+        }
+
+        private void CacheBodyRenderers()
+        {
+            if (bodyRenderers == null || bodyRenderers.Length == 0)
+            {
+                Transform rendererRoot = bodyRoot != null ? bodyRoot : transform;
+                bodyRenderers = rendererRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            }
+
+            if (bodyRenderers == null)
+            {
+                bodyRendererBaseColors = Array.Empty<Color>();
+                return;
+            }
+
+            if (bodyRendererBaseColors != null && bodyRendererBaseColors.Length == bodyRenderers.Length)
+            {
+                return;
+            }
+
+            bodyRendererBaseColors = new Color[bodyRenderers.Length];
+            for (int i = 0; i < bodyRenderers.Length; i++)
+            {
+                bodyRendererBaseColors[i] = bodyRenderers[i] != null ? bodyRenderers[i].color : Color.white;
+            }
+        }
+
+        private bool CanAct()
+        {
+            return isActive
+                && target != null
+                && health != null
+                && !health.IsDead;
+        }
+
+        private void MoveNearTarget()
+        {
+            Vector2 offset = (Vector2)target.position - (Vector2)transform.position;
+            float safeStopDistance = Mathf.Max(0.1f, stopDistance);
+            if (offset.sqrMagnitude <= safeStopDistance * safeStopDistance)
+            {
+                StopBody();
+                Face(offset);
+                return;
+            }
+
+            Vector2 direction = offset.normalized;
+            body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, direction * moveSpeed);
+            Face(direction);
+        }
+
+        private void TryFire()
+        {
+            BossProjectileSettings settings = ResolveProjectileSettings();
+            if (settings == null || settings.Prefab == null || Time.time < nextFireAt)
+            {
+                return;
+            }
+
+            if (mode == TutorialTrainingEnemyMode.DodgePractice)
+            {
+                FireRadialVolley(settings);
+                dodgeVolleyFired = true;
+                nextFireAt = float.PositiveInfinity;
+                return;
+            }
+
+            FireAtTarget(settings);
+            nextFireAt = Time.time + Mathf.Max(0.1f, GetFireIntervalSeconds());
+        }
+
+        private void FireAtTarget(BossProjectileSettings settings)
+        {
+            Vector3 origin = projectileOrigin != null ? projectileOrigin.position : transform.position;
+            Vector2 direction = (Vector2)target.position - (Vector2)origin;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = Vector2.left;
+            }
+
+            SpawnProjectile(settings, origin, direction.normalized, true);
+        }
+
+        private void FireRadialVolley(BossProjectileSettings settings)
+        {
+            int count = Mathf.Max(4, dodgeProjectileCount);
+            Vector3 origin = projectileOrigin != null ? projectileOrigin.position : transform.position;
+            float step = 360f / count;
+            float startAngle = GetAngleToTarget(origin);
+
+            for (int i = 0; i < count; i++)
+            {
+                float angle = startAngle + step * i;
+                Vector2 direction = Quaternion.Euler(0f, 0f, angle) * Vector2.right;
+                SpawnProjectile(settings, origin, direction, false);
+            }
+        }
+
+        private EnemyProjectile SpawnProjectile(
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            bool interceptable)
+        {
+            if (settings == null || settings.Prefab == null)
+            {
+                return null;
+            }
+
+            EnemyProjectile fired = EnemyProjectile.Spawn(
+                settings.Prefab,
+                bullets,
+                origin,
+                direction.normalized,
+                settings.BulletDamage,
+                settings.ChargeSeconds,
+                settings.Speed,
+                settings.Lifetime,
+                settings.Radius,
+                Color.clear,
+                settings.TrailSeconds,
+                settings.TrailWidthMultiplier,
+                false,
+                0f,
+                0f);
+
+            if (fired == null)
+            {
+                return null;
+            }
+
+            fired.ConfigureChargeMotion(
+                settings.ChargeDriftSpeed,
+                settings.AimAtPlayerWhileCharging,
+                settings.AimAtPlayerOnLaunch);
+            fired.ConfigureInterceptable(interceptable);
+            return fired;
+        }
+
+        private BossProjectileSettings ResolveProjectileSettings()
+        {
+            if (mode == TutorialTrainingEnemyMode.DodgePractice && dodgeProjectile != null && dodgeProjectile.Prefab != null)
+            {
+                return dodgeProjectile;
+            }
+
+            return projectile;
+        }
+
+        private float GetAngleToTarget(Vector3 origin)
+        {
+            Vector2 direction = target != null
+                ? (Vector2)target.position - (Vector2)origin
+                : Vector2.right;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = Vector2.right;
+            }
+
+            return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        }
+
+        private float GetInitialFireDelaySeconds()
+        {
+            if (mode == TutorialTrainingEnemyMode.DodgePractice)
+            {
+                return Mathf.Max(0f, dodgeFireDelaySeconds);
+            }
+
+            if (ShouldFire())
+            {
+                return Mathf.Max(0.35f, GetFireIntervalSeconds() * 0.5f);
+            }
+
+            return float.PositiveInfinity;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Vector2 hitPosition = collision.contactCount > 0
+                ? collision.GetContact(0).point
+                : transform.position;
+            TryDealContactDamage(collision.collider, hitPosition);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            Vector2 hitPosition = collision.contactCount > 0
+                ? collision.GetContact(0).point
+                : transform.position;
+            TryDealContactDamage(collision.collider, hitPosition);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            TryDealContactDamage(other, other != null ? other.ClosestPoint(transform.position) : transform.position);
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            TryDealContactDamage(other, other != null ? other.ClosestPoint(transform.position) : transform.position);
+        }
+
+        private void TryDealContactDamage(Collider2D other, Vector2 hitPosition)
+        {
+            if (!CanAct()
+                || mode != TutorialTrainingEnemyMode.Duel
+                || contactDamage <= 0
+                || Time.time < nextContactDamageAt
+                || other == null)
+            {
+                return;
+            }
+
+            PlayerCombatController player = other.GetComponentInParent<PlayerCombatController>();
+            if (player == null || player.Health == null || player.Health.IsDead)
+            {
+                return;
+            }
+
+            Vector2 hitDirection = (Vector2)player.transform.position - hitPosition;
+            if (hitDirection.sqrMagnitude <= 0.0001f)
+            {
+                hitDirection = Vector2.right;
+            }
+
+            if (player.ReceiveAttack(contactDamage, hitPosition, hitDirection.normalized))
+            {
+                nextContactDamageAt = Time.time + Mathf.Max(0f, contactDamageCooldown);
+            }
+        }
+
+        private void Face(Vector2 direction)
+        {
+            if (direction.sqrMagnitude > 0.0001f)
+            {
+                Transform faceRoot = bodyRoot != null ? bodyRoot : transform;
+                faceRoot.right = direction.normalized;
+            }
+        }
+
+        private void StopBody()
+        {
+            if (body != null)
+            {
+                body.linearVelocity = Vector2.zero;
+                body.angularVelocity = 0f;
+            }
+        }
+
+        private void ConfigureLockOnIndicator()
+        {
+            if (lockOnIndicator == null)
+            {
+                return;
+            }
+
+            if (configuredLockOnIndicator == lockOnIndicator)
+            {
+                return;
+            }
+
+            configuredLockOnIndicator = lockOnIndicator;
+            lockOnIndicator.enabled = false;
+        }
+
+        private void UpdateLockOnIndicator()
+        {
+            if (lockOnIndicator == null)
+            {
+                return;
+            }
+
+            bool visible = IsLockOnTarget();
+            SetLockOnIndicatorVisible(visible);
+            if (visible)
+            {
+                ApplyLockOnIndicatorTransform();
+            }
+        }
+
+        private void ApplyLockOnIndicatorTransform()
+        {
+            Transform indicatorTransform = lockOnIndicator.transform;
+            Transform center = bodyRoot != null ? bodyRoot : transform;
+            indicatorTransform.position = center.position;
+            indicatorTransform.rotation = Quaternion.identity;
+        }
+
+        private bool IsLockOnTarget()
+        {
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player == null || player.IsExecuting || health == null || health.IsDead || player.LockOnTarget == null)
+            {
+                return false;
+            }
+
+            if (player.LockOnTarget == health)
+            {
+                return true;
+            }
+
+            TutorialTrainingEnemy targetEnemy = player.LockOnTarget.GetComponent<TutorialTrainingEnemy>()
+                ?? player.LockOnTarget.GetComponentInParent<TutorialTrainingEnemy>();
+            return targetEnemy == this;
+        }
+
+        private void SetLockOnIndicatorVisible(bool visible)
+        {
+            if (lockOnIndicator == null)
+            {
+                return;
+            }
+
+            if (visible && !lockOnIndicator.gameObject.activeSelf)
+            {
+                lockOnIndicator.gameObject.SetActive(true);
+            }
+
+            lockOnIndicator.enabled = visible;
+        }
+
+        private void FlashBodyHitColor()
+        {
+            isBodyHitColorActive = true;
+            bodyHitColorEndsAt = Time.time + BodyHitColorSeconds;
+            isHitFlashActive = true;
+            hitFlashEndsAt = Time.time + Mathf.Max(0f, hitFlashSeconds);
+            ApplyBodyStateColor();
+        }
+
+        private void UpdateBodyHitColor()
+        {
+            if (!isBodyHitColorActive || Time.time < bodyHitColorEndsAt)
+            {
+                return;
+            }
+
+            isBodyHitColorActive = false;
+            ApplyBodyStateColor();
+        }
+
+        private void UpdateHitFlash()
+        {
+            if (!isHitFlashActive || Time.time < hitFlashEndsAt)
+            {
+                return;
+            }
+
+            isHitFlashActive = false;
+            ApplyBodyStateColor();
+        }
+
+        private void ApplyBodyStateColor()
+        {
+            if (bodyRenderers == null)
+            {
+                return;
+            }
+
+            hitFlashPropertyBlock ??= new MaterialPropertyBlock();
+            float flashAmount = isHitFlashActive ? 1f : 0f;
+
+            for (int i = 0; i < bodyRenderers.Length; i++)
+            {
+                SpriteRenderer renderer = bodyRenderers[i];
+                if (renderer == null || renderer == lockOnIndicator)
+                {
+                    continue;
+                }
+
+                Color baseColor = bodyRendererBaseColors != null && i < bodyRendererBaseColors.Length
+                    ? bodyRendererBaseColors[i]
+                    : Color.white;
+                renderer.color = isBodyHitColorActive ? BodyHitColor : baseColor;
+
+                renderer.GetPropertyBlock(hitFlashPropertyBlock);
+                hitFlashPropertyBlock.SetColor(FlashColorId, hitFlashColor);
+                hitFlashPropertyBlock.SetFloat(FlashAmountId, flashAmount);
+                renderer.SetPropertyBlock(hitFlashPropertyBlock);
+            }
+        }
+
+        private void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            Color sparkColor = effectData != null ? effectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);
+            Color backSparkColor = effectData != null ? effectData.AttackImpactBackSparkColor : Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
+            Color flameColor = effectData != null ? effectData.AttackImpactFlameColor : backSparkColor;
+            Color ringColor = effectData != null ? effectData.AttackImpactRingColor : Color.Lerp(hitColor, Color.white, 0.35f);
+            ProjectileVfx.PlayPlayerAttackImpact(
+                hitPosition,
+                hitDirection,
+                sparkColor,
+                backSparkColor,
+                flameColor,
+                ringColor,
+                effectData != null ? effectData.AttackImpactSparkCount : 14,
+                effectData != null ? effectData.AttackImpactBackSparkCount : 6,
+                effectData != null ? effectData.AttackImpactFlameCount : 8,
+                effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+        }
+
+        private Color BodyHitColor => effectData != null ? effectData.EnemyBodyHitColor : bodyHitColor;
+        private float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : Mathf.Max(0f, bodyHitColorSeconds);
+
+        private void HandleDied(Health _)
+        {
+            if (isActive && mode != TutorialTrainingEnemyMode.Duel)
+            {
+                health.Revive();
+                bullets.Configure(maxBullets, true, BulletChangeSource.CombatStart);
+                return;
+            }
+
+            isActive = false;
+            StopBody();
+            Defeated?.Invoke(this);
+        }
+
+        private bool ShouldFire()
+        {
+            return mode == TutorialTrainingEnemyMode.ParryPractice
+                || mode == TutorialTrainingEnemyMode.DodgePractice && !dodgeVolleyFired
+                || mode == TutorialTrainingEnemyMode.Duel;
+        }
+
+        private bool ShouldMove()
+        {
+            return mode == TutorialTrainingEnemyMode.Duel && moveSpeed > 0f;
+        }
+
+        private float GetFireIntervalSeconds()
+        {
+            return mode == TutorialTrainingEnemyMode.Duel
+                ? duelFireIntervalSeconds
+                : practiceFireIntervalSeconds;
+        }
+    }
+}

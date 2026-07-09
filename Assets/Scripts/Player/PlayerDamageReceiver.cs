@@ -94,6 +94,7 @@ namespace Week14.Combat
                 config.PlayerHitFlameCount,
                 config.PlayerHitEffectScale);
             context.CameraFollow?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
+            context.Owner.NotifyAttackReceived();
             return true;
         }
 

@@ -24,13 +24,8 @@ namespace Week14.Cutscene
         [SerializeField] private RectTransform backgroundMotionTarget;
         [SerializeField] private CanvasGroup fadeGroup;
 
-        [Header("Dialogue")]
-        [SerializeField] private GameObject speakerRoot;
-        [SerializeField] private TMP_Text speakerNameText;
-        [SerializeField] private TMP_Text dialogueText;
-
-        [Header("Typing")]
-        [SerializeField, Min(1f)] private float typewriterCharactersPerSecond = 45f;
+        [Header("Views")]
+        [SerializeField] private CutsceneDialoguePanelView dialoguePanelView;
 
         [Header("Skip Hold")]
         [SerializeField] private Image skipHoldFillImage;
@@ -47,12 +42,18 @@ namespace Week14.Cutscene
         private bool revealRequested;
         private bool skipRequested;
         private bool previousInputBlock;
+        private bool keepCoveredOnCompleted;
+        private bool canUseSkip;
+        private bool skipWholeCutscene;
+        private bool isCurrentStepSkippable;
         private float skipHoldElapsed;
+        private bool skipSectionRequested;
 
         public bool IsPlaying => isPlaying;
 
         private void Awake()
         {
+            ResolveDialoguePanelView();
             SetRootVisible(false);
             ClearDialogueView();
             HideTransitionImage();
@@ -81,7 +82,11 @@ namespace Week14.Cutscene
             UpdateSkipHold();
         }
 
-        public void Play(CutsceneDefinition definition, Action onCompleted = null)
+        public void Play(
+            CutsceneDefinition definition,
+            Action onCompleted = null,
+            bool keepCoveredOnCompleted = false,
+            bool? skippableOverride = null)
         {
             StopPlayback(invokeCompleted: false);
 
@@ -94,6 +99,9 @@ namespace Week14.Cutscene
 
             currentDefinition = definition;
             completed = onCompleted;
+            this.keepCoveredOnCompleted = keepCoveredOnCompleted;
+            canUseSkip = skippableOverride ?? definition.Skippable;
+            skipWholeCutscene = definition.Skippable && skippableOverride != false;
             playRoutine = StartCoroutine(PlayRoutine(definition));
         }
 
@@ -110,12 +118,20 @@ namespace Week14.Cutscene
 
         public void Skip()
         {
-            if (currentDefinition == null || !currentDefinition.Skippable)
+            if (!CanSkipCurrentCutscene())
             {
                 return;
             }
 
-            skipRequested = true;
+            if (skipWholeCutscene)
+            {
+                skipRequested = true;
+            }
+            else
+            {
+                skipSectionRequested = true;
+            }
+
             revealRequested = true;
             advanceRequested = true;
             SetSkipHoldProgress(1f);
@@ -145,8 +161,20 @@ namespace Week14.Cutscene
                     continue;
                 }
 
+                SetCurrentStep(step);
                 yield return ExecuteStep(step, i > 0);
                 lastPlayedStep = step;
+
+                if (skipSectionRequested)
+                {
+                    i = FindNextNonSkippableStepIndex(steps, i + 1) - 1;
+                    skipSectionRequested = false;
+                    revealRequested = false;
+                    advanceRequested = false;
+                    skipHoldElapsed = 0f;
+                    SetSkipHoldProgress(0f);
+                    ClearDialogueView();
+                }
             }
 
             yield return CoverScreenForCompletion(lastPlayedStep);
@@ -160,6 +188,7 @@ namespace Week14.Cutscene
             advanceRequested = false;
             revealRequested = false;
             skipRequested = false;
+            skipSectionRequested = false;
             skipHoldElapsed = 0f;
             previousInputBlock = GameModalState.BlocksGameplayInput;
             GameModalState.BlocksGameplayInput = true;
@@ -167,7 +196,8 @@ namespace Week14.Cutscene
             ClearDialogueView();
             HideTransitionImage();
             SetFadeAlpha(0f);
-            SetSkipHoldVisible(definition.Skippable);
+            isCurrentStepSkippable = false;
+            RefreshSkipHoldVisible();
             SetSkipHoldProgress(0f);
             SetRootVisible(true);
         }
@@ -179,7 +209,7 @@ namespace Week14.Cutscene
             ApplyAudio(step);
 
             IReadOnlyList<CutsceneDialogue> dialogues = step.Dialogues;
-            for (int i = 0; i < dialogues.Count && !skipRequested; i++)
+            for (int i = 0; i < dialogues.Count && !skipRequested && !skipSectionRequested; i++)
             {
                 CutsceneDialogue dialogue = dialogues[i];
                 if (dialogue == null)
@@ -274,7 +304,7 @@ namespace Week14.Cutscene
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < duration && !skipRequested && !skipSectionRequested; elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.Clamp01(elapsed / duration);
                 SetFadeAlpha(Mathf.Lerp(fromAlpha, toAlpha, progress));
@@ -312,75 +342,26 @@ namespace Week14.Cutscene
 
         private IEnumerator PlayDialogue(CutsceneDialogue dialogue)
         {
-            advanceRequested = false;
-            revealRequested = false;
-            ShowDialogue(dialogue);
-            yield return PlayTypewriter(dialogue.Text);
-
-            while (!advanceRequested && !skipRequested)
+            if (dialoguePanelView == null)
             {
-                yield return null;
-            }
-
-            advanceRequested = false;
-        }
-
-        private void ShowDialogue(CutsceneDialogue dialogue)
-        {
-            bool hasSpeaker = !string.IsNullOrWhiteSpace(dialogue.Name);
-            if (speakerRoot != null)
-            {
-                speakerRoot.SetActive(hasSpeaker);
-            }
-
-            if (speakerNameText != null)
-            {
-                speakerNameText.text = hasSpeaker ? dialogue.Name : string.Empty;
-            }
-
-            if (dialogueText != null)
-            {
-                dialogueText.text = dialogue.Text ?? string.Empty;
-                dialogueText.maxVisibleCharacters = 0;
-            }
-        }
-
-        private IEnumerator PlayTypewriter(string text)
-        {
-            if (dialogueText == null)
-            {
+                Debug.LogWarning($"{nameof(CutscenePlayer)} requires {nameof(CutsceneDialoguePanelView)}.", this);
                 yield break;
             }
 
+            advanceRequested = false;
+            revealRequested = false;
             isTyping = true;
-            revealRequested = false;
-            dialogueText.text = text ?? string.Empty;
-            dialogueText.maxVisibleCharacters = 0;
-            dialogueText.ForceMeshUpdate();
-
-            int totalCharacters = dialogueText.textInfo.characterCount;
-            if (totalCharacters <= 0)
-            {
-                dialogueText.maxVisibleCharacters = int.MaxValue;
-                isTyping = false;
-                yield break;
-            }
-
-            float visibleCharacters = 0f;
-            float charactersPerSecond = Mathf.Max(1f, typewriterCharactersPerSecond);
-            while (visibleCharacters < totalCharacters && !revealRequested && !skipRequested)
-            {
-                visibleCharacters += Time.unscaledDeltaTime * charactersPerSecond;
-                dialogueText.maxVisibleCharacters = Mathf.Clamp(
-                    Mathf.CeilToInt(visibleCharacters),
-                    0,
-                    totalCharacters);
-                yield return null;
-            }
-
-            dialogueText.maxVisibleCharacters = int.MaxValue;
+            dialoguePanelView?.ShowLine(dialogue.Name, dialogue.Text);
+            yield return dialoguePanelView?.PlayTypewriter(dialogue.Text, () => revealRequested || skipRequested || skipSectionRequested, () => skipRequested || skipSectionRequested);
             isTyping = false;
             revealRequested = false;
+            advanceRequested = false;
+
+            while (!advanceRequested && !skipRequested && !skipSectionRequested)
+            {
+                yield return null;
+            }
+
             advanceRequested = false;
         }
 
@@ -398,7 +379,7 @@ namespace Week14.Cutscene
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < duration && !skipRequested && !skipSectionRequested; elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.Clamp01(elapsed / duration);
                 SetImageAlpha(image, Mathf.Lerp(fromAlpha, toAlpha, progress));
@@ -434,7 +415,7 @@ namespace Week14.Cutscene
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < duration && !skipRequested && !skipSectionRequested; elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
                 Vector2 offset = Vector2.LerpUnclamped(step.StartOffset, step.EndOffset, progress);
@@ -476,10 +457,11 @@ namespace Week14.Cutscene
 
         private void UpdateSkipHold()
         {
-            if (currentDefinition == null || !currentDefinition.Skippable)
+            if (!CanSkipCurrentCutscene())
             {
                 skipHoldElapsed = 0f;
                 SetSkipHoldProgress(0f);
+                RefreshSkipHoldVisible();
                 return;
             }
 
@@ -497,6 +479,7 @@ namespace Week14.Cutscene
             }
 
             SetSkipHoldProgress(skipHoldElapsed / skipHoldSeconds);
+            RefreshSkipHoldVisible();
         }
 
         private void StopPlayback(bool invokeCompleted)
@@ -515,9 +498,43 @@ namespace Week14.Cutscene
             }
         }
 
+        private bool CanSkipCurrentCutscene()
+        {
+            return currentDefinition != null
+                && canUseSkip
+                && (skipWholeCutscene || isCurrentStepSkippable);
+        }
+
+        private void SetCurrentStep(CutsceneStep step)
+        {
+            isCurrentStepSkippable = step != null && step.Skippable;
+            skipHoldElapsed = 0f;
+            SetSkipHoldProgress(0f);
+            RefreshSkipHoldVisible();
+        }
+
+        private void RefreshSkipHoldVisible()
+        {
+            SetSkipHoldVisible(CanSkipCurrentCutscene());
+        }
+
+        private static int FindNextNonSkippableStepIndex(IReadOnlyList<CutsceneStep> steps, int startIndex)
+        {
+            for (int i = Mathf.Max(0, startIndex); i < steps.Count; i++)
+            {
+                if (steps[i] != null && !steps[i].Skippable)
+                {
+                    return i;
+                }
+            }
+
+            return steps.Count;
+        }
+
         private void CompletePlayback(bool invokeCompleted)
         {
             Action callback = completed;
+            bool keepCovered = keepCoveredOnCompleted;
             playRoutine = null;
             currentDefinition = null;
             completed = null;
@@ -526,6 +543,7 @@ namespace Week14.Cutscene
             advanceRequested = false;
             revealRequested = false;
             skipRequested = false;
+            skipSectionRequested = false;
             skipHoldElapsed = 0f;
 
             UIBackStack.Remove(this);
@@ -534,7 +552,7 @@ namespace Week14.Cutscene
             if (invokeCompleted)
             {
                 callback?.Invoke();
-                if (callback != null)
+                if (callback != null && keepCovered)
                 {
                     return;
                 }
@@ -592,20 +610,14 @@ namespace Week14.Cutscene
 
         private void ClearDialogueView()
         {
-            if (speakerRoot != null)
-            {
-                speakerRoot.SetActive(false);
-            }
+            dialoguePanelView?.Hide();
+        }
 
-            if (speakerNameText != null)
+        private void ResolveDialoguePanelView()
+        {
+            if (dialoguePanelView == null)
             {
-                speakerNameText.text = string.Empty;
-            }
-
-            if (dialogueText != null)
-            {
-                dialogueText.text = string.Empty;
-                dialogueText.maxVisibleCharacters = 0;
+                dialoguePanelView = GetComponentInChildren<CutsceneDialoguePanelView>(true);
             }
         }
 

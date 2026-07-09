@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Week14.Combat;
 using Week14.Input;
 using Week14.Save;
+using Week14.UI;
 
 namespace Week14.Skills
 {
@@ -79,7 +80,7 @@ namespace Week14.Skills
         {
             TickCooldown(Time.deltaTime);
 
-            if (GameInput.UseSkillDown)
+            if (!GameModalState.BlocksGameplayInput && GameInput.UseSkillDown)
             {
                 TryUseSkill(ActiveSlot);
             }
@@ -179,6 +180,11 @@ namespace Week14.Skills
             }
 
             return true;
+        }
+
+        public void ResetActiveCooldown()
+        {
+            ResetCooldown();
         }
 
         private void HandleEffectEnded()

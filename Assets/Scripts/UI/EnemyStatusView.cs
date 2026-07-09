@@ -174,7 +174,12 @@ namespace Week14.UI
 
             ConductorTurretProjectile targetTurret = player.LockOnTarget.GetComponent<ConductorTurretProjectile>()
                 ?? player.LockOnTarget.GetComponentInParent<ConductorTurretProjectile>();
-            return turret != null && targetTurret == turret;
+            if (turret != null && targetTurret == turret)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool IsHoveredExecutionTarget()
