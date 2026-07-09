@@ -16,7 +16,12 @@ namespace Week14.Challenge
 
         public static ChallengeManager Instance => instance;
 
+        // 가장 최근 전투 종료(EvaluateAndSave) 시 새로 지급된 포인트 총합입니다. 이미 완료했던 챌린지는 포함하지 않습니다.
+        public int LastRunEarnedPoints { get; private set; }
+
         private readonly List<(ChallengeDefinitionSO Definition, ChallengeRunState Run)> activeRuns = new();
+        private readonly HashSet<string> alreadyCompletedBeforeRun = new();
+        private readonly Dictionary<string, int> progressBeforeRun = new();
         private BossAI currentBoss;
         private Health subscribedPlayerHealth;
         private string currentBossId;
@@ -138,16 +143,33 @@ namespace Week14.Challenge
             combatActive = true;
 
             activeRuns.Clear();
+            alreadyCompletedBeforeRun.Clear();
+            progressBeforeRun.Clear();
             currentBossId = boss.BossData != null ? boss.BossData.Id : null;
             foreach (ChallengeDefinitionSO definition in database.ForBoss(currentBossId))
             {
-                if (GameSaveManager.IsChallengeCompleted(GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId)))
+                string saveKey = GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId);
+                if (GameSaveManager.IsChallengeCompleted(saveKey))
                 {
+                    alreadyCompletedBeforeRun.Add(saveKey);
                     continue;
                 }
 
+                progressBeforeRun[saveKey] = definition.GetCurrentProgress(currentBossId);
                 activeRuns.Add((definition, definition.CreateRunState()));
             }
+        }
+
+        // 이번 전투가 시작되기 전에 이미 클리어되어 있던 챌린지인지 여부입니다. 결과 화면 공개 연출에서 스윕 애니메이션을 건너뛸지 판단하는 데 씁니다.
+        public bool WasAlreadyCompletedBeforeRun(string saveKey)
+        {
+            return alreadyCompletedBeforeRun.Contains(saveKey);
+        }
+
+        // 이번 전투가 시작되기 전의 진행도 값입니다. 결과 화면 공개 연출에서 스윕 전에는 이 값을, 스윕 후에는 최신 값을 보여주는 데 씁니다.
+        public int GetProgressBeforeRun(string saveKey, int fallback)
+        {
+            return progressBeforeRun.TryGetValue(saveKey, out int value) ? value : fallback;
         }
 
         private void HandlePlayerHit(int _)
@@ -214,6 +236,7 @@ namespace Week14.Challenge
                 return;
             }
 
+            LastRunEarnedPoints = 0;
             for (int i = 0; i < activeRuns.Count; i++)
             {
                 ChallengeDefinitionSO definition = activeRuns[i].Definition;
@@ -222,6 +245,7 @@ namespace Week14.Challenge
                 if (run.TryFinalize(victory, saveKey))
                 {
                     GameSaveManager.CompleteChallenge(saveKey, definition.RewardPoint);
+                    LastRunEarnedPoints += definition.RewardPoint;
                 }
             }
 

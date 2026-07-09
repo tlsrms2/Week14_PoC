@@ -8185,6 +8185,7 @@ MonoBehaviour:
   executionTarget: {fileID: 0}
   bossAI: {fileID: 0}
   minion: {fileID: 0}
+  turret: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
   executionText: {fileID: 2104472610112323686}
@@ -9296,7 +9297,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5351797262317333366, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+    - {fileID: 7278329924981756233, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+    - {fileID: 3459445456882823415, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2723632015128479934, guid: 218813ba59c83c74190ce20f103782d5, type: 3}

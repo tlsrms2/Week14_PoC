@@ -43,10 +43,39 @@ namespace Week14.UI
             BindLocalizedDescription(definition);
 
             bool completed = GameSaveManager.IsChallengeCompleted(GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId));
-            SetDescriptionColor(completed ? clearedTextColor : originalDescriptionColor);
+            Color descriptionColor = completed ? clearedTextColor : originalDescriptionColor;
+            SetDescriptionColor(descriptionColor);
+            SetSweepColor(descriptionColor);
             SetCompletionSprite(completed ? completedSprite : incompleteSprite);
 
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
+        }
+
+        // 연출 시작 전, 이번 전투에서 판정될 슬롯을 기본 색상으로 미리 표시해둡니다(설명 텍스트와 아이콘이 곧바로 보이도록). 진행도는 전투 시작 전 값을 보여주고,
+        // 판정 색·아이콘·최신 진행도는 PlayRevealCoroutine에서 스윕이 다 지나간 뒤 적용됩니다.
+        public void Prime(ChallengeDefinitionSO definition, string bossId, Sprite incompleteSprite, Color defaultColor)
+        {
+            Unbind();
+            CacheOriginalDescriptionColor();
+            SetDescriptionText(definition.Description);
+            BindLocalizedDescription(definition);
+            SetDescriptionColor(defaultColor);
+            SetSweepColor(defaultColor);
+            SetCompletionSprite(incompleteSprite);
+            SetSweepWidth(0f);
+
+            if (definition.ShowProgress)
+            {
+                string saveKey = GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId);
+                int progressBeforeRun = ChallengeManager.Instance != null
+                    ? ChallengeManager.Instance.GetProgressBeforeRun(saveKey, definition.GetCurrentProgress(bossId))
+                    : definition.GetCurrentProgress(bossId);
+                SetProgressText($"({progressBeforeRun}/{definition.MaxProgress})");
+            }
+            else
+            {
+                SetProgressText(string.Empty);
+            }
         }
 
         public void Clear()
@@ -54,6 +83,7 @@ namespace Week14.UI
             Unbind();
             CacheOriginalDescriptionColor();
             SetDescriptionColor(originalDescriptionColor);
+            SetSweepColor(originalDescriptionColor);
             SetDescriptionText(string.Empty);
             SetCompletionSprite(null);
             SetProgressText(string.Empty);
@@ -61,29 +91,25 @@ namespace Week14.UI
         }
 
         // BossChallengePanel의 연출 코루틴에서 yield return으로 직접 실행합니다 (슬롯이 완전히 끝나야 다음 슬롯이 시작되도록).
+        // 호출 전에 Prime()으로 설명 텍스트가 이미 표시되어 있어야 합니다. 판정 색은 스윕이 다 자란 뒤(가려진 상태에서) 적용됩니다.
         public IEnumerator PlayRevealCoroutine(
             ChallengeDefinitionSO definition,
             string bossId,
             Sprite completedSprite,
             Sprite incompleteSprite,
-            Color defaultTextColor,
             Color clearedTextColor,
             Color notClearedTextColor,
             float sweepWidth,
             float growSeconds,
             float shrinkSeconds)
         {
-            SetDescriptionText(definition.Description);
-            BindLocalizedDescription(definition);
-            SetDescriptionColor(defaultTextColor);
-            SetCompletionSprite(null);
-            SetProgressText(string.Empty);
-            SetSweepWidth(0f);
-
             yield return AnimateSweepWidth(0f, sweepWidth, growSeconds);
 
-            bool completed = GameSaveManager.IsChallengeCompleted(GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId));
-            SetDescriptionColor(completed ? clearedTextColor : notClearedTextColor);
+            string saveKey = GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId);
+            bool completed = GameSaveManager.IsChallengeCompleted(saveKey);
+            Color resultColor = completed ? clearedTextColor : notClearedTextColor;
+            SetDescriptionColor(resultColor);
+            SetSweepColor(resultColor);
             SetCompletionSprite(completed ? completedSprite : incompleteSprite);
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
 
@@ -158,6 +184,14 @@ namespace Week14.UI
             if (descriptionText != null)
             {
                 descriptionText.color = color;
+            }
+        }
+
+        private void SetSweepColor(Color color)
+        {
+            if (sweepImage != null)
+            {
+                sweepImage.color = color;
             }
         }
 

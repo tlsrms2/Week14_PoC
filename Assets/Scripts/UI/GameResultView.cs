@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Bootstrap;
+using Week14.Challenge;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -30,6 +31,10 @@ namespace Week14.UI
         [FormerlySerializedAs("titleSceneName")]
         [SerializeField] private string lobbySceneName = "LobbyScene";
 
+        [Header("Challenge Reward")]
+        [Tooltip("챌린지 공개 연출이 끝난 뒤 이번 전투에서 획득한 포인트를 보여줄 팝업입니다.")]
+        [SerializeField] private ChallengeRewardPopupView rewardPopupView;
+
         private Health subscribedPlayerHealth;
         private float previousTimeScale = 1f;
         private bool resultOpen;
@@ -45,12 +50,32 @@ namespace Week14.UI
         {
             TrySubscribePlayer();
             BossAI.Defeated += HandleBossDefeated;
+
+            if (gameOverChallengePanel != null)
+            {
+                gameOverChallengePanel.RevealCompleted += HandleChallengeRevealCompleted;
+            }
+
+            if (victoryChallengePanel != null)
+            {
+                victoryChallengePanel.RevealCompleted += HandleChallengeRevealCompleted;
+            }
         }
 
         private void OnDisable()
         {
             BossAI.Defeated -= HandleBossDefeated;
             UnsubscribePlayer();
+
+            if (gameOverChallengePanel != null)
+            {
+                gameOverChallengePanel.RevealCompleted -= HandleChallengeRevealCompleted;
+            }
+
+            if (victoryChallengePanel != null)
+            {
+                victoryChallengePanel.RevealCompleted -= HandleChallengeRevealCompleted;
+            }
 
             if (resultOpen)
             {
@@ -234,6 +259,16 @@ namespace Week14.UI
         private void HandleBossDefeated(BossAI boss)
         {
             ShowVictory(boss);
+        }
+
+        private void HandleChallengeRevealCompleted()
+        {
+            if (rewardPopupView == null || ChallengeManager.Instance == null)
+            {
+                return;
+            }
+
+            rewardPopupView.Show(ChallengeManager.Instance.LastRunEarnedPoints);
         }
 
         private void ShowGameOver()
