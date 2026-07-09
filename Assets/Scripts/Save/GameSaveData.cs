@@ -11,6 +11,13 @@ namespace Week14.Save
     }
 
     [Serializable]
+    public sealed class ChallengeCounterEntry
+    {
+        public string challengeId;
+        public int count;
+    }
+
+    [Serializable]
     public sealed class GameSaveData
     {
         public List<string> unlockedBossIds = new();
@@ -22,5 +29,8 @@ namespace Week14.Save
         public bool hasSeenSynopsis;
         public bool hasCompletedTutorial;
         public bool hasSeenEnding;
+        public List<string> completedChallengeIds = new();
+        public List<ChallengeCounterEntry> challengeCounters = new();
+        public int challengePoints;
     }
 }

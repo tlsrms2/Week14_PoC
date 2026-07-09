@@ -11,6 +11,8 @@ namespace Week14.UI
         [SerializeField] private BossData bossData;
         [Tooltip("이 아이콘에 마우스를 올렸을 때 보여줄, 이 아이콘 전용 디테일 패널입니다.")]
         [SerializeField] private BossDetailPanel detailPanel;
+        [Tooltip("이 아이콘에 마우스를 올렸을 때 이 보스의 챌린지 목록을 보여줄 패널입니다. 비워두면 표시하지 않습니다.")]
+        [SerializeField] private BossChallengePanel challengePanel;
         [Tooltip("누르고 있는 동안 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
         [SerializeField] private Color selectedColor = new(1f, 0.85f, 0.3f);
         [Tooltip("이 아이콘과 같이 숨겨질 아웃라인 SpriteRenderer입니다. 잠겨있으면 아이콘과 함께 꺼집니다.")]
@@ -57,11 +59,13 @@ namespace Week14.UI
             }
 
             detailPanel?.Show(bossData);
+            challengePanel?.Show(bossData);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             detailPanel?.Hide();
+            challengePanel?.Hide();
         }
 
         public void OnPointerClick(PointerEventData eventData)

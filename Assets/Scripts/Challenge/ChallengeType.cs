@@ -1,0 +1,9 @@
+namespace Week14.Challenge
+{
+    public enum ChallengeType
+    {
+        PhaseReach,
+        TimeAttack,
+        HitLimit
+    }
+}

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a1a409f0895c443924e93003f84a92, type: 3}
+  m_Name: PhaseReachChallenge3
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.PhaseReachChallengeSO
+  challengeId: Phase2Reach_3
+  description: "\uD398\uC774\uC988 2\uC5D0 3\uBC88 \uC9C4\uC785\uD558\uC138\uC694."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  rewardPoint: 1
+  showProgress: 1
+  targetPhaseNumber: 2
+  requiredReachCount: 3
+  references:
+    version: 2
+    RefIds: []
