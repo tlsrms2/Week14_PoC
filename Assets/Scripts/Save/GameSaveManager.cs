@@ -182,6 +182,67 @@ namespace Week14.Save
             Save();
         }
 
+        public static bool IsChallengeCompleted(string challengeId)
+        {
+            return !string.IsNullOrEmpty(challengeId) && Data.completedChallengeIds.Contains(challengeId);
+        }
+
+        public static void CompleteChallenge(string challengeId, int rewardPoint)
+        {
+            if (string.IsNullOrEmpty(challengeId) || Data.completedChallengeIds.Contains(challengeId))
+            {
+                return;
+            }
+
+            Data.completedChallengeIds.Add(challengeId);
+            Data.challengePoints += rewardPoint;
+            Save();
+        }
+
+        public static int GetChallengeCounter(string challengeId)
+        {
+            if (string.IsNullOrEmpty(challengeId))
+            {
+                return 0;
+            }
+
+            List<ChallengeCounterEntry> counters = Data.challengeCounters;
+            for (int i = 0; i < counters.Count; i++)
+            {
+                if (counters[i].challengeId == challengeId)
+                {
+                    return counters[i].count;
+                }
+            }
+
+            return 0;
+        }
+
+        public static int IncrementChallengeCounter(string challengeId)
+        {
+            if (string.IsNullOrEmpty(challengeId))
+            {
+                return 0;
+            }
+
+            List<ChallengeCounterEntry> counters = Data.challengeCounters;
+            for (int i = 0; i < counters.Count; i++)
+            {
+                if (counters[i].challengeId == challengeId)
+                {
+                    counters[i].count++;
+                    Save();
+                    return counters[i].count;
+                }
+            }
+
+            counters.Add(new ChallengeCounterEntry { challengeId = challengeId, count = 1 });
+            Save();
+            return 1;
+        }
+
+        public static int ChallengePoints => Data.challengePoints;
+
         public static void Load()
         {
             try
@@ -198,7 +259,15 @@ namespace Week14.Save
 
         public static void Save()
         {
-            File.WriteAllText(SavePath, JsonUtility.ToJson(Data));
+            string tempPath = SavePath + ".tmp";
+            File.WriteAllText(tempPath, JsonUtility.ToJson(Data, true));
+
+            if (File.Exists(SavePath))
+            {
+                File.Delete(SavePath);
+            }
+
+            File.Move(tempPath, SavePath);
         }
     }
 }

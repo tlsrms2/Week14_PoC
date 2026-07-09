@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Week14.Audio;
@@ -7,6 +8,8 @@ namespace Week14.Combat
 {
     internal sealed class PlayerDamageReceiver
     {
+        internal static event Action<int> PlayerHitByEnemy;
+
         private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
 
@@ -94,6 +97,7 @@ namespace Week14.Combat
                 config.PlayerHitFlameCount,
                 config.PlayerHitEffectScale);
             context.CameraFollow?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
+            PlayerHitByEnemy?.Invoke(bulletDamage);
             return true;
         }
 
