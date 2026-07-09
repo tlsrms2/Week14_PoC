@@ -143,6 +143,129 @@ namespace Week14.Save
             Save();
         }
 
+        public static IReadOnlyList<string> UnlockedPassiveSkillIds => Data.unlockedPassiveSkillIds;
+
+        public static bool IsPassiveSkillUnlocked(string skillId)
+        {
+            return !string.IsNullOrEmpty(skillId) && Data.unlockedPassiveSkillIds.Contains(skillId);
+        }
+
+        public static void UnlockPassiveSkill(string skillId)
+        {
+            if (string.IsNullOrEmpty(skillId) || Data.unlockedPassiveSkillIds.Contains(skillId))
+            {
+                return;
+            }
+
+            Data.unlockedPassiveSkillIds.Add(skillId);
+            Save();
+        }
+
+        public static void LockPassiveSkill(string skillId)
+        {
+            if (string.IsNullOrEmpty(skillId) || !Data.unlockedPassiveSkillIds.Remove(skillId))
+            {
+                return;
+            }
+
+            Save();
+        }
+
+        public static string GetEquippedPassiveSkillId(int slot)
+        {
+            List<SkillSlotData> equippedPassiveSkills = Data.equippedPassiveSkills;
+            for (int i = 0; i < equippedPassiveSkills.Count; i++)
+            {
+                if (equippedPassiveSkills[i].slot == slot)
+                {
+                    return equippedPassiveSkills[i].skillId;
+                }
+            }
+
+            return null;
+        }
+
+        public static void SetEquippedPassiveSkillId(int slot, string skillId)
+        {
+            List<SkillSlotData> equippedPassiveSkills = Data.equippedPassiveSkills;
+            for (int i = 0; i < equippedPassiveSkills.Count; i++)
+            {
+                if (equippedPassiveSkills[i].slot == slot)
+                {
+                    equippedPassiveSkills[i].skillId = skillId;
+                    Save();
+                    return;
+                }
+            }
+
+            equippedPassiveSkills.Add(new SkillSlotData { slot = slot, skillId = skillId });
+            Save();
+        }
+
+        public static bool IsSkillPurchased(string skillId)
+        {
+            return !string.IsNullOrEmpty(skillId) && Data.purchasedSkillIds.Contains(skillId);
+        }
+
+        public static bool PurchaseSkill(string skillId, int price)
+        {
+            if (string.IsNullOrEmpty(skillId) || Data.purchasedSkillIds.Contains(skillId)
+                || !IsSkillUnlocked(skillId) || Data.challengePoints < price)
+            {
+                return false;
+            }
+
+            Data.challengePoints -= price;
+            Data.purchasedSkillIds.Add(skillId);
+            Save();
+            return true;
+        }
+
+        public static bool RefundSkill(string skillId, int price)
+        {
+            if (string.IsNullOrEmpty(skillId) || !Data.purchasedSkillIds.Remove(skillId))
+            {
+                return false;
+            }
+
+            Data.challengePoints += price;
+            Save();
+            return true;
+        }
+
+        public static bool IsPassiveSkillPurchased(string skillId)
+        {
+            return !string.IsNullOrEmpty(skillId) && Data.purchasedPassiveSkillIds.Contains(skillId);
+        }
+
+        public static bool PurchasePassiveSkill(string skillId, int price)
+        {
+            if (string.IsNullOrEmpty(skillId) || Data.purchasedPassiveSkillIds.Contains(skillId)
+                || !IsPassiveSkillUnlocked(skillId) || Data.challengePoints < price)
+            {
+                return false;
+            }
+
+            Data.challengePoints -= price;
+            Data.purchasedPassiveSkillIds.Add(skillId);
+            Save();
+            return true;
+        }
+
+        public static bool RefundPassiveSkill(string skillId, int price)
+        {
+            if (string.IsNullOrEmpty(skillId) || !Data.purchasedPassiveSkillIds.Remove(skillId))
+            {
+                return false;
+            }
+
+            Data.challengePoints += price;
+            Save();
+            return true;
+        }
+
+        public static int ClearedBossCount => Data.clearedBossIds.Count;
+
         public static IReadOnlyList<string> UnlockedWeaponIds => Data.unlockedWeaponIds;
 
         public static bool IsWeaponUnlocked(string weaponId)
@@ -247,6 +370,13 @@ namespace Week14.Save
         }
 
         public static int ChallengePoints => Data.challengePoints;
+
+        // 테스트/디버그용: 챌린지 완료 없이 포인트만 지급합니다.
+        public static void AddDebugChallengePoints(int amount)
+        {
+            Data.challengePoints += amount;
+            Save();
+        }
 
         public static void Load()
         {

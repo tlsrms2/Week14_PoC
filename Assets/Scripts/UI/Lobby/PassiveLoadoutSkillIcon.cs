@@ -7,10 +7,10 @@ using Week14.Skills;
 namespace Week14.UI
 {
     [RequireComponent(typeof(Image))]
-    public sealed class LoadoutSkillIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public sealed class PassiveLoadoutSkillIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private LoadoutPanelController panelController;
-        [SerializeField] private BaseSkillSO skill;
+        [SerializeField] private PassiveLoadoutPanelController panelController;
+        [SerializeField] private BasePassiveSkillSO skill;
         [Tooltip("클릭으로 장착됐을 때 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
         [SerializeField] private Color selectedColor = new(1f, 0.85f, 0.3f);
 
@@ -18,7 +18,7 @@ namespace Week14.UI
         private RectTransform rectTransform;
         private Color baseColor;
 
-        public BaseSkillSO Skill => skill;
+        public BasePassiveSkillSO Skill => skill;
 
         private void Awake()
         {
@@ -111,15 +111,15 @@ namespace Week14.UI
             }
         }
 
-        // 로드아웃 패널에서는 "구매까지 완료해 장착 가능한 상태"를 잠금 해제로 취급합니다.
-        // (해금만 되고 구매하지 않은 스킬은 상점에서 구매해야 여기서 장착 가능해집니다.)
+        // 해금 + 구매 + (이 아이콘이 속한 패널의) 슬롯 해금까지 모두 충족해야 장착 가능합니다.
         private bool IsUnlocked()
         {
             return skill != null
-                && GameSaveManager.IsSkillUnlocked(skill.SkillId)
-                && GameSaveManager.IsSkillPurchased(skill.SkillId)
-                && SkillLoadoutManager.Instance != null
-                && SkillLoadoutManager.Instance.IsActiveSlotUnlocked();
+                && GameSaveManager.IsPassiveSkillUnlocked(skill.SkillId)
+                && GameSaveManager.IsPassiveSkillPurchased(skill.SkillId)
+                && PassiveSkillLoadoutManager.Instance != null
+                && panelController != null
+                && PassiveSkillLoadoutManager.Instance.IsSlotUnlocked(panelController.Slot);
         }
     }
 }

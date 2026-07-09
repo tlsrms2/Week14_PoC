@@ -6,7 +6,6 @@ using UnityEngine.Localization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Enemy;
-using Week14.Skills;
 using Week14.Weapons;
 
 namespace Week14.UI
@@ -325,31 +324,11 @@ namespace Week14.UI
             return null;
         }
 
+        // 무기는 더 이상 액티브/패시브 스킬을 소유하지 않으므로(로드아웃 시스템으로 완전히 분리됨)
+        // 무기 툴팁의 스킬 섹션은 항상 비워둡니다. 스킬 정보는 LoadoutTooltipPanel에서 표시합니다.
         private void SetSkillInfo(BaseWeaponSO weapon)
         {
-            if (weapon == null)
-            {
-                SetSkillInfo(null, string.Empty, string.Empty, string.Empty);
-                return;
-            }
-
-            BaseSkillSO activeSkill = weapon.ActiveSkill;
-            if (activeSkill != null)
-            {
-                SetSkillInfo(
-                    activeSkill.Icon,
-                    activeSkill.DisplayName,
-                    activeSkill.Description,
-                    $"쿨타임: {activeSkill.CooldownSeconds:0.#}초");
-                return;
-            }
-
-            BasePassiveSkillSO passiveSkill = weapon.PassiveSkill;
-            SetSkillInfo(
-                passiveSkill != null ? passiveSkill.Icon : null,
-                passiveSkill != null ? passiveSkill.DisplayName : string.Empty,
-                passiveSkill != null ? passiveSkill.Description : string.Empty,
-                string.Empty);
+            SetSkillInfo(null, string.Empty, string.Empty, string.Empty);
         }
 
         private void SetSkillInfo(Sprite icon, string displayName, string description, string cooldown)

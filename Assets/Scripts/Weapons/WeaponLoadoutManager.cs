@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Week14.Combat;
 using Week14.Save;
-using Week14.Skills;
 
 namespace Week14.Weapons
 {
@@ -64,14 +63,11 @@ namespace Week14.Weapons
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
 
             currentWeapon?.RemoveWeaponTrait(playerObject);
-            currentWeapon?.PassiveSkill?.RemovePassive(playerObject);
             currentWeapon = weapon;
             currentWeapon.ApplyWeaponTrait(playerObject);
-            currentWeapon.PassiveSkill?.ApplyPassive(playerObject);
 
             GameSaveManager.SetEquippedWeaponId(weaponId);
             ApplyAmmoConfig(currentWeapon);
-            SkillLoadoutManager.Instance?.SetWeaponSkill(currentWeapon.ActiveSkill);
             WeaponChanged?.Invoke(currentWeapon);
             return true;
         }
@@ -85,7 +81,6 @@ namespace Week14.Weapons
 
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
             currentWeapon.RemoveWeaponTrait(playerObject);
-            currentWeapon.PassiveSkill?.RemovePassive(playerObject);
             currentWeapon = null;
 
             GameSaveManager.SetEquippedWeaponId(null);
@@ -112,9 +107,7 @@ namespace Week14.Weapons
         {
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
             currentWeapon?.ApplyWeaponTrait(playerObject);
-            currentWeapon?.PassiveSkill?.ApplyPassive(playerObject);
             ApplyAmmoConfig(currentWeapon);
-            SkillLoadoutManager.Instance?.SetWeaponSkill(currentWeapon?.ActiveSkill);
         }
 
         public void UnlockDefaultWeapon()

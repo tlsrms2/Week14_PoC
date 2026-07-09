@@ -14,6 +14,8 @@ namespace Week14.Save
     {
         [Tooltip("전체 해금 대상 스킬을 가져올 데이터베이스입니다.")]
         [SerializeField] private SkillDatabase skillDatabase;
+        [Tooltip("전체 해금 대상 패시브 스킬을 가져올 데이터베이스입니다.")]
+        [SerializeField] private PassiveSkillDatabase passiveSkillDatabase;
         [Tooltip("전체 해금 대상 보스 목록입니다. 테스트하려는 보스 데이터를 등록하세요.")]
         [SerializeField] private List<BossData> bosses = new();
         [Tooltip("전체 해금 대상 총기를 가져올 데이터베이스입니다.")]
@@ -33,10 +35,14 @@ namespace Week14.Save
         [Header("개별 해금/되돌리기 대상")]
         [Tooltip("아래 '선택 스킬 해금/되돌리기'가 대상으로 삼을 스킬입니다.")]
         [SerializeField] private BaseSkillSO targetSkill;
+        [Tooltip("아래 '선택 패시브 스킬 해금/되돌리기'가 대상으로 삼을 패시브 스킬입니다.")]
+        [SerializeField] private BasePassiveSkillSO targetPassiveSkill;
         [Tooltip("아래 '선택 보스 해금/되돌리기'가 대상으로 삼을 보스입니다.")]
         [SerializeField] private BossData targetBoss;
         [Tooltip("아래 '선택 총기 해금/되돌리기'가 대상으로 삼을 총기입니다.")]
         [SerializeField] private BaseWeaponSO targetWeapon;
+        [Tooltip("'테스트 포인트 지급'이 지급할 챌린지 포인트 양입니다.")]
+        [SerializeField] private int debugPointsToGrant = 100;
 
         private void Update()
         {
@@ -63,22 +69,24 @@ namespace Week14.Save
         }
 #endif
 
-        [ContextMenu("전체 해금 (스킬 + 보스 + 총기)")]
+        [ContextMenu("전체 해금 (스킬 + 패시브 + 보스 + 총기)")]
         public void UnlockAll()
         {
             UnlockAllSkills();
+            UnlockAllPassiveSkills();
             UnlockAllBosses();
             UnlockAllWeapons();
-            Debug.Log("[DevUnlockTools] 모든 스킬/보스/총기를 해금했습니다.");
+            Debug.Log("[DevUnlockTools] 모든 스킬/패시브/보스/총기를 해금했습니다.");
         }
 
-        [ContextMenu("전체 해금 되돌리기 (스킬 + 보스 + 총기)")]
+        [ContextMenu("전체 해금 되돌리기 (스킬 + 패시브 + 보스 + 총기)")]
         public void LockAll()
         {
             LockAllSkills();
+            LockAllPassiveSkills();
             LockAllBosses();
             LockAllWeapons();
-            Debug.Log("[DevUnlockTools] 모든 스킬/보스/총기 해금을 되돌렸습니다.");
+            Debug.Log("[DevUnlockTools] 모든 스킬/패시브/보스/총기 해금을 되돌렸습니다.");
         }
 
         [ContextMenu("스킬 전체 해금")]
@@ -113,6 +121,42 @@ namespace Week14.Save
                 if (skill != null)
                 {
                     GameSaveManager.LockSkill(skill.SkillId);
+                }
+            }
+        }
+
+        [ContextMenu("패시브 스킬 전체 해금")]
+        public void UnlockAllPassiveSkills()
+        {
+            if (passiveSkillDatabase == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] passiveSkillDatabase가 비어있어 패시브 스킬을 해금할 수 없습니다.");
+                return;
+            }
+
+            foreach (BasePassiveSkillSO skill in passiveSkillDatabase.AllSkills)
+            {
+                if (skill != null)
+                {
+                    GameSaveManager.UnlockPassiveSkill(skill.SkillId);
+                }
+            }
+        }
+
+        [ContextMenu("패시브 스킬 전체 해금 되돌리기")]
+        public void LockAllPassiveSkills()
+        {
+            if (passiveSkillDatabase == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] passiveSkillDatabase가 비어있어 패시브 스킬을 잠글 수 없습니다.");
+                return;
+            }
+
+            foreach (BasePassiveSkillSO skill in passiveSkillDatabase.AllSkills)
+            {
+                if (skill != null)
+                {
+                    GameSaveManager.LockPassiveSkill(skill.SkillId);
                 }
             }
         }
@@ -207,6 +251,37 @@ namespace Week14.Save
             }
 
             GameSaveManager.LockSkill(targetSkill.SkillId);
+        }
+
+        [ContextMenu("선택 패시브 스킬 해금")]
+        public void UnlockTargetPassiveSkill()
+        {
+            if (targetPassiveSkill == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetPassiveSkill이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.UnlockPassiveSkill(targetPassiveSkill.SkillId);
+        }
+
+        [ContextMenu("선택 패시브 스킬 해금 되돌리기")]
+        public void LockTargetPassiveSkill()
+        {
+            if (targetPassiveSkill == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetPassiveSkill이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.LockPassiveSkill(targetPassiveSkill.SkillId);
+        }
+
+        [ContextMenu("테스트 포인트 지급")]
+        public void GrantDebugChallengePoints()
+        {
+            GameSaveManager.AddDebugChallengePoints(debugPointsToGrant);
+            Debug.Log($"[DevUnlockTools] 챌린지 포인트 {debugPointsToGrant} 지급. 현재 보유: {GameSaveManager.ChallengePoints}");
         }
 
         [ContextMenu("선택 보스 해금")]

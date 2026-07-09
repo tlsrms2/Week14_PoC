@@ -60,25 +60,40 @@ namespace Week14.UI
                 return;
             }
 
+            ShowInternal(skill.DisplayName, skill.Description, $"쿨타임: {skill.CooldownSeconds}초", skill.Icon, anchor);
+        }
+
+        public void Show(BasePassiveSkillSO skill, RectTransform anchor)
+        {
+            if (skill == null)
+            {
+                return;
+            }
+
+            ShowInternal(skill.DisplayName, skill.Description, string.Empty, skill.Icon, anchor);
+        }
+
+        private void ShowInternal(string displayName, string description, string requiredStack, Sprite icon, RectTransform anchor)
+        {
             if (nameText != null)
             {
-                nameText.text = skill.DisplayName;
+                nameText.text = displayName;
             }
 
             if (descriptionText != null)
             {
-                descriptionText.text = skill.Description;
+                descriptionText.text = description;
             }
 
             if (requiredStackText != null)
             {
-                requiredStackText.text = $"쿨타임: {skill.CooldownSeconds}초";
+                requiredStackText.text = requiredStack;
             }
 
             if (iconImage != null)
             {
-                iconImage.sprite = skill.Icon;
-                iconImage.enabled = skill.Icon != null;
+                iconImage.sprite = icon;
+                iconImage.enabled = icon != null;
             }
 
             PositionAt(anchor);
