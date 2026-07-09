@@ -13,4 +13,9 @@ namespace Week14.Enemy
     {
         void OnGraphValidated(BossGraphAsset graph, BossStateNode node);
     }
+
+    internal interface IBossActionDurationProvider
+    {
+        bool TryGetDurationSeconds(out float seconds);
+    }
 }

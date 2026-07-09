@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class WaitAction : BossAction
+    public sealed class WaitAction : BossAction, IBossActionDurationProvider
     {
         [SerializeField, Min(0f)] private float seconds = 1f;
 
@@ -18,10 +18,16 @@ namespace Week14.Enemy
 
             yield return context.WaitSeconds(seconds);
         }
+
+        public bool TryGetDurationSeconds(out float durationSeconds)
+        {
+            durationSeconds = Mathf.Max(0f, seconds);
+            return durationSeconds > 0f;
+        }
     }
 
     [Serializable]
-    public sealed class WindupAction : BossAction
+    public sealed class WindupAction : BossAction, IBossActionDurationProvider
     {
         [SerializeField, Min(0f)] private float seconds = 1f;
         [SerializeField] private bool stopMovement = true;
@@ -57,6 +63,12 @@ namespace Week14.Enemy
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
+        }
+
+        public bool TryGetDurationSeconds(out float durationSeconds)
+        {
+            durationSeconds = Mathf.Max(0f, seconds);
+            return durationSeconds > 0f;
         }
     }
 }

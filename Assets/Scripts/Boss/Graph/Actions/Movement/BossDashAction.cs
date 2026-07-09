@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class BossDashAction : BossAction, ISerializationCallbackReceiver
+    public sealed class BossDashAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
         [Header("Windup")]
         [Tooltip("차징 총 시간(초)입니다.")]
@@ -134,6 +134,12 @@ namespace Week14.Enemy
 
         public void OnBeforeSerialize() => EnsureSpeedCurve();
         public void OnAfterDeserialize() => EnsureSpeedCurve();
+
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, windupSeconds) + Mathf.Max(0.05f, dashDuration);
+            return seconds > 0f;
+        }
 
         private BossDashTrajectoryVfx SpawnTrajectoryVfx()
         {

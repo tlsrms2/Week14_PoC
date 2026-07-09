@@ -1,5 +1,8 @@
 using UnityEditor;
+using Week14.Enemy;
 
-public sealed class ConductorEditor : Editor
+[CustomEditor(typeof(Conductor))]
+[CanEditMultipleObjects]
+public sealed class ConductorEditor : GraphBossAIEditor
 {
 }

@@ -15,7 +15,7 @@ namespace Week14.Enemy
     }
 
     [AddComponentMenu("Week14/Boss/Conductor Ordered Double Parry Projectile")]
-    public sealed class ConductorOrderedDoubleParryProjectile : EnemyProjectile, IHomingEnemyProjectile, IConductorMultiStepOrderedProjectile
+    public sealed class ConductorOrderedDoubleParryProjectile : EnemyProjectile, IHomingEnemyProjectile, IConductorMultiStepOrderedProjectile, IConductorPlayerFacingProjectile
     {
         [Serializable]
         private sealed class SequenceVisualSettings
@@ -54,6 +54,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float chargeBlinkMinRate = 2f;
         [SerializeField, Min(0.01f)] private float chargeBlinkMaxRate = 8f;
         [SerializeField, Range(0f, 1f)] private float chargeSolidColorRemainingRatio = 0.25f;
+        [SerializeField] private SpriteRenderer chargeGaugeRenderer;
+        [SerializeField] private float homingVisualRotationOffsetDegrees;
 
         [Header("First Cycle")]
         [SerializeField] private CycleVisualSettings firstCycle = new();
@@ -62,10 +64,13 @@ namespace Week14.Enemy
         [SerializeField] private CycleVisualSettings secondCycle = new();
 
         private const int RequiredParryCycles = 2;
+        private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
 
         private bool homingActive;
-        private bool sequenceActive;
+        private bool sequenceActive = true;
+        private bool orderedSequenceControlled;
         private int completedSequenceSteps;
+        private MaterialPropertyBlock chargeGaugePropertyBlock;
         private Color fallbackBlinkColor = Color.white;
         private Color sequenceBlinkColor = Color.white;
         private float homingBlinkPhase;
@@ -79,27 +84,31 @@ namespace Week14.Enemy
 
         public int RequiredSequenceSteps => RequiredParryCycles;
         public int CompletedSequenceSteps => Mathf.Clamp(completedSequenceSteps, 0, RequiredParryCycles);
+        bool IConductorPlayerFacingProjectile.ShouldFacePlayer => homingActive;
+        float IConductorPlayerFacingProjectile.PlayerFacingRotationOffsetDegrees => homingVisualRotationOffsetDegrees;
 
         protected override bool IsHomingProjectile => homingActive;
 
         protected override void OnProjectileAwake()
         {
             CacheDefaultSprite();
-            completedSequenceSteps = 0;
-            SetSequenceActive(false);
+            ResetStandaloneDoubleParryState();
         }
 
         protected override void OnProjectileInitialized()
         {
             CacheDefaultSprite();
-            completedSequenceSteps = 0;
-            SetSequenceActive(sequenceActive);
+            ResetStandaloneDoubleParryState();
+            SetChargeGaugeVisible(homingActive && IsCharging);
+            FacePlayerIfHoming();
         }
 
         protected override void OnProjectileLaunched()
         {
             CacheDefaultSprite();
             RefreshSequenceVisualState();
+            SetChargeGaugeVisible(false);
+            FacePlayerIfHoming();
         }
 
         protected override void OnProjectileTick()
@@ -120,6 +129,7 @@ namespace Week14.Enemy
 
             orderedDoubleReplacement.homingActive = homingActive;
             orderedDoubleReplacement.sequenceActive = sequenceActive;
+            orderedDoubleReplacement.orderedSequenceControlled = orderedSequenceControlled;
             orderedDoubleReplacement.completedSequenceSteps = completedSequenceSteps;
             orderedDoubleReplacement.fallbackBlinkColor = fallbackBlinkColor;
             orderedDoubleReplacement.sequenceBlinkColor = sequenceBlinkColor;
@@ -127,16 +137,25 @@ namespace Week14.Enemy
             orderedDoubleReplacement.homingTurnDegreesPerSecond = homingTurnDegreesPerSecond;
             orderedDoubleReplacement.homingSeconds = homingSeconds;
             orderedDoubleReplacement.homingEndsAt = homingEndsAt;
-            orderedDoubleReplacement.SetSequenceActive(sequenceActive);
+            orderedDoubleReplacement.ApplySequenceActive(sequenceActive);
         }
 
         protected override void OnProjectileReturnedToPool()
         {
             base.OnProjectileReturnedToPool();
             SequenceStepCompleted = null;
+            orderedSequenceControlled = false;
+            sequenceActive = true;
+            completedSequenceSteps = 0;
         }
 
         public void SetSequenceActive(bool active)
+        {
+            orderedSequenceControlled = true;
+            ApplySequenceActive(active);
+        }
+
+        private void ApplySequenceActive(bool active)
         {
             sequenceActive = active;
             ConfigureInterceptable(active);
@@ -156,12 +175,21 @@ namespace Week14.Enemy
             {
                 completedSequenceSteps = 1;
                 CompletePartialIntercept();
-                SetSequenceActive(false);
-                SequenceStepCompleted?.Invoke(this);
+                RefreshSequenceVisualState();
+                if (orderedSequenceControlled)
+                {
+                    SequenceStepCompleted?.Invoke(this);
+                }
+
                 return true;
             }
 
             completedSequenceSteps = RequiredParryCycles;
+            if (orderedSequenceControlled)
+            {
+                SequenceStepCompleted?.Invoke(this);
+            }
+
             CompleteInterceptAndDestroy();
             return true;
         }
@@ -208,6 +236,8 @@ namespace Week14.Enemy
             }
 
             float remainingRatio = Mathf.Clamp01((ChargeEndsAt - Time.time) / ProjectileChargeSeconds);
+            SetChargeGaugeFill(remainingRatio);
+            FacePlayerIfHoming();
             if (remainingRatio <= chargeSolidColorRemainingRatio)
             {
                 ApplyProjectileColor(sequenceBlinkColor);
@@ -215,7 +245,7 @@ namespace Week14.Enemy
             }
 
             float blinkRate = Mathf.Lerp(chargeBlinkMaxRate, chargeBlinkMinRate, remainingRatio);
-            homingBlinkPhase += Time.deltaTime * blinkRate;
+            homingBlinkPhase += EnemyTimeScale.DeltaTime * blinkRate;
             Color nextColor = Mathf.Repeat(homingBlinkPhase, 1f) >= 0.5f
                 ? sequenceBlinkColor
                 : ChargingColor;
@@ -248,10 +278,10 @@ namespace Week14.Enemy
 
             float maxRadians = homingTurnDegreesPerSecond * Mathf.Deg2Rad * EnemyTimeScale.DeltaTime;
             Vector3 nextDirection = Vector3.RotateTowards(FlightDirection, toTarget.normalized, maxRadians, 0f);
-            ApplyFlightDirection(nextDirection);
+            ApplyHomingFlightDirection(nextDirection);
             if (ProjectileBody != null)
             {
-                ProjectileBody.linearVelocity = FlightDirection * ProjectileSpeed;
+                ProjectileBody.linearVelocity = FlightDirection * ProjectileSpeed * EnemyTimeScale.Current;
             }
         }
 
@@ -267,6 +297,13 @@ namespace Week14.Enemy
                 ? color
                 : fallbackBlinkColor;
             homingBlinkPhase = 0f;
+        }
+
+        private void ResetStandaloneDoubleParryState()
+        {
+            orderedSequenceControlled = false;
+            completedSequenceSteps = 0;
+            ApplySequenceActive(true);
         }
 
         private void CacheDefaultSprite()
@@ -309,7 +346,7 @@ namespace Week14.Enemy
         private void TickInactiveLaunchedBlink()
         {
             float blinkRate = Mathf.Max(0.01f, chargeBlinkMinRate);
-            homingBlinkPhase += Time.deltaTime * blinkRate;
+            homingBlinkPhase += EnemyTimeScale.DeltaTime * blinkRate;
             Color nextColor = Mathf.Repeat(homingBlinkPhase, 1f) >= 0.5f
                 ? sequenceBlinkColor
                 : LaunchedColor;
@@ -320,6 +357,79 @@ namespace Week14.Enemy
         {
             CycleVisualSettings cycleVisuals = completedSequenceSteps <= 0 ? firstCycle : secondCycle;
             return cycleVisuals?.Resolve(sequenceActive);
+        }
+
+        private void SetChargeGaugeVisible(bool visible)
+        {
+            if (chargeGaugeRenderer != null)
+            {
+                chargeGaugeRenderer.enabled = visible;
+            }
+        }
+
+        private void SetChargeGaugeFill(float remainingRatio)
+        {
+            if (chargeGaugeRenderer == null)
+            {
+                return;
+            }
+
+            chargeGaugePropertyBlock ??= new MaterialPropertyBlock();
+            chargeGaugeRenderer.GetPropertyBlock(chargeGaugePropertyBlock);
+            chargeGaugePropertyBlock.SetFloat(FillAmountId, remainingRatio);
+            chargeGaugeRenderer.SetPropertyBlock(chargeGaugePropertyBlock);
+        }
+
+        private void FacePlayerIfHoming()
+        {
+            if (!homingActive)
+            {
+                return;
+            }
+
+            if (TryGetPlayerDirection(out Vector2 direction))
+            {
+                ApplyHomingFlightDirection(direction);
+                return;
+            }
+
+            ApplyHomingVisualRotation();
+        }
+
+        private bool TryGetPlayerDirection(out Vector2 direction)
+        {
+            direction = Vector2.zero;
+            PlayerCombatController target = PlayerCombatController.Active;
+            if (target == null || target.Health == null || target.Health.IsDead)
+            {
+                return false;
+            }
+
+            direction = (Vector2)target.transform.position - (Vector2)transform.position;
+            return direction.sqrMagnitude > 0.0001f;
+        }
+
+        private void ApplyHomingFlightDirection(Vector2 direction)
+        {
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            ApplyFlightDirection(direction, false);
+            ApplyHomingVisualRotation();
+        }
+
+        private void ApplyHomingVisualRotation()
+        {
+            Vector2 direction = FlightDirection;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle + homingVisualRotationOffsetDegrees);
         }
     }
 }

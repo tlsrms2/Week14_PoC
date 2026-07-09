@@ -29,7 +29,7 @@ namespace Week14.Enemy
 
         [Header("Projectile")]
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
-        [SerializeField, Min(0.01f)] private float projectileSpeedMultiplier = 1f;
+        [SerializeField, InspectorName("Projectile Speed Multiplier"), Min(0.01f)] private float projectileSpeedMultiplier = 1f;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, InspectorName("Volleys")] private List<ScoreLaneVolley> volleys = new() { new ScoreLaneVolley() };
 
@@ -61,6 +61,9 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphEffectSettings finalProjectileEffects = new();
 
         private readonly List<ConductorFormationLineProjectileMotion> trackedMotions = new();
+        private PlayerCombatController lockedPlayerMovement;
+        private bool hasBossFormationTargetSample;
+        private Vector2 previousBossFormationTarget;
 
         void IBossGraphValidatedAction.OnGraphValidated(BossGraphAsset graph, BossStateNode node)
         {
@@ -94,30 +97,49 @@ namespace Week14.Enemy
                 formationCenterDirection = -lineDirection;
             }
 
-            float formationDuration = CommandLockedFormation(minions, formationCenterDirection);
-            SetFormationFacingOverride(minions, lineDirection);
+            ResetBossFormationTargetSample();
             List<LineSlot> lineSlots = BuildLineSlots(
                 minions,
                 lineDirection,
                 formationCenterDirection,
                 context.Boss.Player);
+            float formationDuration = CommandLockedFormation(minions, formationCenterDirection);
+            SetFormationFacingOverride(minions, lineDirection);
 
-            if (waitForFormationDuration && formationDuration > 0f)
+            ConductorScoreLaneRushIndicatorVisual indicator = null;
+            try
             {
-                yield return WaitForFormationAlignment(context, lineSlots, formationDuration);
+                LockPlayerMovement(context);
+
+                if (waitForFormationDuration && formationDuration > 0f)
+                {
+                    yield return WaitForFormationAlignment(context, lineSlots, formationDuration);
+                }
+
+                indicator = CreateLineIndicators(lineSlots);
+                trackedMotions.Clear();
+
+                yield return RunVolleys(context, host, lineSlots, indicator);
+                yield return WaitForLineProjectilesToRelease(context, lineSlots, indicator);
+                UnlockPlayerMovement();
+                yield return RunMissLaunchPhase(context, host, lineSlots, indicator);
+                yield return FadeAndClearIndicator(context, lineSlots, indicator);
+                indicator = null;
             }
+            finally
+            {
+                UnlockPlayerMovement();
 
-            ConductorScoreLaneRushIndicatorVisual indicator = CreateLineIndicators(lineSlots);
-            trackedMotions.Clear();
+                if (indicator != null)
+                {
+                    indicator.ClearAndDestroy();
+                }
 
-            yield return RunVolleys(context, host, lineSlots, indicator);
-            yield return WaitForLineProjectilesToRelease(context, lineSlots, indicator);
-            yield return RunMissLaunchPhase(context, host, lineSlots, indicator);
-            yield return FadeAndClearIndicator(context, lineSlots, indicator);
-
-            context.Boss?.Stop();
-            ClearFormationFacingOverride(minions);
-            trackedMotions.Clear();
+                context.Boss?.Stop();
+                ClearFormationFacingOverride(minions);
+                trackedMotions.Clear();
+                ResetBossFormationTargetSample();
+            }
         }
 
         private void CopyPatternVolleysIfTargetNode(BossGraphAsset graph, BossStateNode node)
@@ -441,13 +463,23 @@ namespace Week14.Enemy
             IReadOnlyList<LineSlot> lineSlots,
             ConductorScoreLaneRushIndicatorVisual indicator)
         {
+            if (!HasReadyMissMotion())
+            {
+                yield break;
+            }
+
+            yield return RunFinalReleaseFormation(context, lineSlots, indicator);
+            if (indicator != null)
+            {
+                indicator.ClearAndDestroy();
+            }
+
             List<ConductorFormationLineProjectileMotion> missedMotions = GetReadyMissMotions();
             if (missedMotions.Count == 0)
             {
                 yield break;
             }
 
-            yield return RunFinalReleaseFormation(context, lineSlots, indicator);
             for (int i = 0; i < missedMotions.Count; i++)
             {
                 while (context.IsExecutionPaused)
@@ -498,6 +530,7 @@ namespace Week14.Enemy
             context.Boss.Stop();
             float elapsed = 0f;
             float settleSeconds = Mathf.Max(0f, launchFormationSettleSeconds);
+            float fadeSeconds = Mathf.Max(0f, lineIndicatorFadeSeconds);
             float maxWaitSeconds = settleSeconds
                 + GetFinalReleaseMoveSeconds(finalSlots, context.Boss.Player, moveSpeed)
                 + 0.25f;
@@ -512,9 +545,28 @@ namespace Week14.Enemy
                 }
 
                 UpdateLineIndicators(indicator, lineSlots);
+                ApplyReleaseFormationIndicatorFade(indicator, elapsed, fadeSeconds);
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
+
+            if (indicator != null)
+            {
+                indicator.ClearAndDestroy();
+            }
+        }
+
+        private static void ApplyReleaseFormationIndicatorFade(
+            ConductorScoreLaneRushIndicatorVisual indicator,
+            float elapsed,
+            float fadeSeconds)
+        {
+            if (indicator == null)
+            {
+                return;
+            }
+
+            indicator.SetAlpha(fadeSeconds > 0f ? 1f - Mathf.Clamp01(elapsed / fadeSeconds) : 0f);
         }
 
         private List<FinalReleaseSlot> BuildFinalReleaseSlots(
@@ -661,6 +713,7 @@ namespace Week14.Enemy
             SetSequenceActive(replacement, true);
             replacement.ConfigurePlayerCollisionIgnored(false);
             replacement.ConfigurePathIndicatorSuppressed(false);
+            replacement.ConfigureSpeedMultiplier(0.5f);
             replacement.RestorePrefabTrailColor();
             return replacement;
         }
@@ -729,10 +782,7 @@ namespace Week14.Enemy
 
             float moveSpeed = DefaultFormationMoveSpeed * Mathf.Max(0f, speedMultiplier);
             bool hasSharedCenterDirection = formationCenterDirection.sqrMagnitude > 0.0001f;
-            Vector2 safeCenterDirection = hasSharedCenterDirection
-                ? formationCenterDirection.normalized
-                : Vector2.zero;
-
+            Vector2 safeCenterDirection = hasSharedCenterDirection ? formationCenterDirection.normalized : Vector2.zero;
             for (int i = 0; i < minions.Count; i++)
             {
                 Minion minion = minions[i];
@@ -825,16 +875,78 @@ namespace Week14.Enemy
 
             Vector2 target = GetBossFormationTarget(lineSlots);
             Vector2 current = context.Boss.Body.position;
+            Vector2 targetVelocity = GetBossFormationTargetVelocity(target);
             Vector2 toTarget = target - current;
             float toleranceSqr = FormationAlignmentTolerance * FormationAlignmentTolerance;
             if (toTarget.sqrMagnitude <= toleranceSqr)
             {
-                context.Boss.Stop();
+                if (targetVelocity.sqrMagnitude > 0.0001f)
+                {
+                    context.Boss.SetMovementVelocity(targetVelocity);
+                }
+                else
+                {
+                    context.Boss.Stop();
+                }
+
                 return;
             }
 
             float speed = context.Boss.MoveSpeed * Mathf.Max(0f, bossMoveSpeedMultiplier);
-            context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+            context.Boss.SetMovementVelocity(toTarget.normalized * speed + targetVelocity);
+        }
+
+        private Vector2 GetBossFormationTargetVelocity(Vector2 target)
+        {
+            float deltaTime = EnemyTimeScale.DeltaTime;
+            Vector2 targetVelocity = Vector2.zero;
+            if (hasBossFormationTargetSample && deltaTime > 0f)
+            {
+                targetVelocity = (target - previousBossFormationTarget) / deltaTime;
+            }
+
+            previousBossFormationTarget = target;
+            hasBossFormationTargetSample = true;
+            return targetVelocity;
+        }
+
+        private void ResetBossFormationTargetSample()
+        {
+            hasBossFormationTargetSample = false;
+            previousBossFormationTarget = Vector2.zero;
+        }
+
+        private void LockPlayerMovement(BossActionContext context)
+        {
+            if (lockedPlayerMovement != null)
+            {
+                return;
+            }
+
+            PlayerCombatController player = PlayerCombatController.Active;
+            if (player == null && context?.Boss?.Player != null)
+            {
+                player = context.Boss.Player.GetComponentInParent<PlayerCombatController>();
+            }
+
+            if (player == null)
+            {
+                return;
+            }
+
+            player.PushExternalMovementLock();
+            lockedPlayerMovement = player;
+        }
+
+        private void UnlockPlayerMovement()
+        {
+            if (lockedPlayerMovement == null)
+            {
+                return;
+            }
+
+            lockedPlayerMovement.PopExternalMovementLock();
+            lockedPlayerMovement = null;
         }
 
         private bool IsBossFormationAligned(BossActionContext context, IReadOnlyList<LineSlot> lineSlots)
@@ -905,6 +1017,8 @@ namespace Week14.Enemy
             IReadOnlyList<LineSlot> lineSlots,
             ConductorScoreLaneRushIndicatorVisual indicator)
         {
+            float timeoutSeconds = GetBoundLineProjectileTimeoutSeconds();
+            float elapsed = 0f;
             while (HasBoundLineProjectiles())
             {
                 if (context.IsExecutionPaused)
@@ -916,7 +1030,47 @@ namespace Week14.Enemy
 
                 TickBossFormationAlignment(context, lineSlots);
                 UpdateLineIndicators(indicator, lineSlots);
+                elapsed += EnemyTimeScale.DeltaTime;
+                if (timeoutSeconds <= 0f || elapsed >= timeoutSeconds)
+                {
+                    ForceReadyBoundLineProjectiles();
+                    yield break;
+                }
+
                 yield return null;
+            }
+        }
+
+        private float GetBoundLineProjectileTimeoutSeconds()
+        {
+            float timeoutSeconds = 0f;
+            for (int i = trackedMotions.Count - 1; i >= 0; i--)
+            {
+                ConductorFormationLineProjectileMotion motion = trackedMotions[i];
+                if (motion == null || !motion.IsLive)
+                {
+                    trackedMotions.RemoveAt(i);
+                    continue;
+                }
+
+                if (motion.IsBoundToLine)
+                {
+                    timeoutSeconds = Mathf.Max(timeoutSeconds, motion.EstimatedRemainingSeconds);
+                }
+            }
+
+            return timeoutSeconds + 0.5f;
+        }
+
+        private void ForceReadyBoundLineProjectiles()
+        {
+            for (int i = 0; i < trackedMotions.Count; i++)
+            {
+                ConductorFormationLineProjectileMotion motion = trackedMotions[i];
+                if (motion != null && motion.IsBoundToLine)
+                {
+                    motion.ForceReadyForMissLaunch();
+                }
             }
         }
 
@@ -960,6 +1114,26 @@ namespace Week14.Enemy
 
             readyMotions.Reverse();
             return readyMotions;
+        }
+
+        private bool HasReadyMissMotion()
+        {
+            for (int i = trackedMotions.Count - 1; i >= 0; i--)
+            {
+                ConductorFormationLineProjectileMotion motion = trackedMotions[i];
+                if (motion == null || !motion.IsLive)
+                {
+                    trackedMotions.RemoveAt(i);
+                    continue;
+                }
+
+                if (motion.IsReadyForMissLaunch)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private IEnumerator FadeAndClearIndicator(
@@ -1246,7 +1420,8 @@ namespace Week14.Enemy
             if (referenceSlot.Player != null && referenceSlot.FormationCenterDirection.sqrMagnitude > 0.0001f)
             {
                 return (Vector2)referenceSlot.Player.position
-                    + referenceSlot.FormationCenterDirection.normalized * Mathf.Max(0.1f, referenceSlot.DistanceFromPlayer);
+                    + referenceSlot.FormationCenterDirection.normalized
+                    * Mathf.Max(0.1f, referenceSlot.DistanceFromPlayer);
             }
 
             Vector2 sum = Vector2.zero;
@@ -1296,6 +1471,22 @@ namespace Week14.Enemy
         private sealed class OrderedParrySequence
         {
             private readonly List<Entry> entries = new();
+
+            public bool IsComplete
+            {
+                get
+                {
+                    for (int i = 0; i < entries.Count; i++)
+                    {
+                        if (!entries[i].Completed)
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
 
             public OrderedParrySequence(IReadOnlyList<ScoreLaneFireTiming> timings)
             {
@@ -1415,43 +1606,30 @@ namespace Week14.Enemy
                     }
                 }
 
-                int targetStep = GetCurrentTargetStep();
-                if (targetStep < 0)
+                Entry targetEntry = GetCurrentTargetEntry();
+                if (targetEntry == null)
                 {
                     return;
                 }
 
-                for (int i = 0; i < entries.Count; i++)
+                if (targetEntry.Projectile != null)
                 {
-                    Entry entry = entries[i];
-                    if (entry.Completed || entry.CompletedStepCount != targetStep)
-                    {
-                        continue;
-                    }
-
-                    if (entry.Projectile == null)
-                    {
-                        return;
-                    }
-
-                    SetInterceptable(entry.Projectile, true);
-                    return;
+                    SetInterceptable(targetEntry.Projectile, true);
                 }
             }
 
-            private int GetCurrentTargetStep()
+            private Entry GetCurrentTargetEntry()
             {
-                int targetStep = int.MaxValue;
                 for (int i = 0; i < entries.Count; i++)
                 {
                     Entry entry = entries[i];
                     if (!entry.Completed)
                     {
-                        targetStep = Mathf.Min(targetStep, entry.CompletedStepCount);
+                        return entry;
                     }
                 }
 
-                return targetStep == int.MaxValue ? -1 : targetStep;
+                return null;
             }
 
             private static void SetInterceptable(EnemyProjectile projectile, bool interceptable)
@@ -1559,19 +1737,28 @@ namespace Week14.Enemy
         private EnemyProjectile projectile;
         private Rigidbody2D body;
         private Func<Vector2> originProvider;
-        private Vector2 lineDirection = Vector2.left;
         private Vector2 lastOrigin;
+        private Vector2 lineDirection = Vector2.left;
         private float speed;
         private float distance;
         private float lineLength;
+        private Quaternion lockedRotation = Quaternion.identity;
         private bool hasOrigin;
         private bool readyForMissLaunch;
 
         public EnemyProjectile Projectile => projectile;
         public Vector2 LineDirection => lineDirection;
-        public bool IsLive => projectile != null;
-        public bool IsBoundToLine => projectile != null && !readyForMissLaunch;
-        public bool IsReadyForMissLaunch => projectile != null && readyForMissLaunch;
+        public bool IsLive => projectile != null && projectile.gameObject.activeInHierarchy;
+        public bool IsBoundToLine => IsLive && !readyForMissLaunch;
+        public bool IsReadyForMissLaunch => IsLive && readyForMissLaunch && !HasParryProgressed;
+        public float EstimatedRemainingSeconds
+        {
+            get
+            {
+                float remainingDistance = Mathf.Max(0f, lineLength - distance);
+                return speed > 0f ? remainingDistance / speed : 0f;
+            }
+        }
 
         public void Initialize(
             Func<Vector2> nextOriginProvider,
@@ -1587,10 +1774,35 @@ namespace Week14.Enemy
                 : Vector2.left;
             speed = Mathf.Max(0f, nextSpeed);
             lineLength = Mathf.Max(0f, nextLineLength);
+            lockedRotation = transform.rotation;
 
-            Vector2 currentOrigin = GetCurrentOrigin();
-            distance = Mathf.Max(0f, Vector2.Dot((Vector2)transform.position - currentOrigin, lineDirection));
-            MoveTo(currentOrigin + lineDirection * distance, 0f, lineDirection);
+            Vector2 currentOrigin = SampleOrigin();
+            lastOrigin = currentOrigin;
+            hasOrigin = true;
+            distance = Mathf.Clamp(
+                Vector2.Dot((Vector2)transform.position - currentOrigin, lineDirection),
+                0f,
+                lineLength);
+            MoveTo(currentOrigin + lineDirection * distance);
+            if (lineLength <= 0f || speed <= 0f)
+            {
+                ForceReadyForMissLaunch();
+            }
+        }
+
+        public void ForceReadyForMissLaunch()
+        {
+            if (readyForMissLaunch)
+            {
+                return;
+            }
+
+            distance = Mathf.Max(0f, lineLength);
+            Vector2 currentOrigin = SampleOrigin();
+            lastOrigin = currentOrigin;
+            hasOrigin = true;
+            MoveTo(currentOrigin + lineDirection * distance);
+            MarkReadyForMissLaunch();
         }
 
         private void LateUpdate()
@@ -1613,8 +1825,15 @@ namespace Week14.Enemy
 
         private void TickLineMotion(float deltaTime)
         {
+            Vector2 currentOrigin = SampleOrigin();
+            Vector2 originDelta = hasOrigin ? currentOrigin - lastOrigin : Vector2.zero;
+            Vector2 lateralDelta = originDelta - lineDirection * Vector2.Dot(originDelta, lineDirection);
+            Vector2 currentPosition = body != null ? body.position : (Vector2)transform.position;
+
             distance = Mathf.Min(Mathf.Max(0f, lineLength), distance + speed * deltaTime);
-            MoveTo(GetCurrentOrigin() + lineDirection * distance, deltaTime, lineDirection);
+            lastOrigin = currentOrigin;
+            hasOrigin = true;
+            MoveTo(currentPosition + lateralDelta + lineDirection * (speed * deltaTime));
 
             if (distance >= Mathf.Max(0f, lineLength) - 0.001f)
             {
@@ -1637,6 +1856,15 @@ namespace Week14.Enemy
                 projectile.ForceLaunchStateForExternalMotion();
                 projectile.ConfigureExternalMotionDriven(true);
                 StopBody();
+            }
+        }
+
+        private bool HasParryProgressed
+        {
+            get
+            {
+                return projectile is IConductorMultiStepOrderedProjectile multiStepProjectile
+                    && multiStepProjectile.CompletedSequenceSteps > 0;
             }
         }
 
@@ -1668,32 +1896,27 @@ namespace Week14.Enemy
             Destroy(this);
         }
 
-        private Vector2 GetCurrentOrigin()
+        private Vector2 SampleOrigin()
         {
             if (originProvider == null)
             {
                 return lastOrigin;
             }
 
-            lastOrigin = originProvider.Invoke();
-            hasOrigin = true;
-            return lastOrigin;
+            return originProvider.Invoke();
         }
 
-        private void MoveTo(Vector2 position, float deltaTime, Vector2 visualDirection)
+        private void MoveTo(Vector2 position)
         {
-            Vector2 previous = hasOrigin && body != null ? body.position : (Vector2)transform.position;
             if (body != null)
             {
                 body.position = position;
-                body.linearVelocity = deltaTime > 0f ? (position - previous) / deltaTime : Vector2.zero;
+                body.linearVelocity = Vector2.zero;
             }
 
-            Vector2 direction = visualDirection.sqrMagnitude > 0.0001f ? visualDirection.normalized : lineDirection;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.SetPositionAndRotation(
                 new Vector3(position.x, position.y, transform.position.z),
-                Quaternion.Euler(0f, 0f, angle));
+                lockedRotation);
         }
 
         private void StopBody()

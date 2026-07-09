@@ -62,6 +62,11 @@ MonoBehaviour:
   finalDeathExplosionScale: 1.25
   finalDeathExplosionSparkCount: 24
   finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
+  finalDeathExplosionPrefab: {fileID: 0}
+  finalDeathExplosionPrefabLifetimeSeconds: 1.2
+  finalDeathExplosionAreaCenter: {fileID: 0}
+  finalDeathExplosionAreaRadius: 0
+  deathExplosionToAnimationDelaySeconds: 0
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
   displayName: "\uC9C0\uD718\uC790"
@@ -153,9 +158,61 @@ MonoBehaviour:
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
+  - projectileName: "\uC21C\uC11C\uD0C4"
+    projectile:
+      prefab: {fileID: 6302133993518822562, guid: ee930b0ed29e38741bcd8ac4ce9d4957, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 2
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 1
+      speed: 12
+      lifetime: 5
+      radius: 0.1
+      trailSeconds: 0.01
+      trailWidthMultiplier: 0.1
+  - projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+    projectile:
+      prefab: {fileID: 3310389949657122784, guid: ee153d6b4fc1bff4cbee6d78b4df4ff1, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 4
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 1
+      speed: 12
+      lifetime: 7
+      radius: 0.1
+      trailSeconds: 0.01
+      trailWidthMultiplier: 0.1
+  - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+    projectile:
+      prefab: {fileID: 1889336207425389046, guid: 19155292cae503b4e93777e7a1cd936b, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 1
+      speed: 7
+      lifetime: 3
+      radius: 0.12
+      trailSeconds: 0.1
+      trailWidthMultiplier: 3
+  - projectileName: "\uD130\uB81B"
+    projectile:
+      prefab: {fileID: 6081087140780133099, guid: 52a16c28763a74e4080de055a4949008, type: 3}
+      bulletDamage: 0
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 7
+      lifetime: 20
+      radius: 0.12
+      trailSeconds: 0.01
+      trailWidthMultiplier: 0.1
   bodyHitDamageMultiplier: 1
   minionHitDamageMultiplier: 0.7
-  minionOutlineIdleAlpha: 0.2
+  minionOutlineIdleAlpha: 1
   minionOutlineFlashSeconds: 0.12
   walkAnimator: {fileID: 8606619460327554601}
   walkVelocityThreshold: 0.01
@@ -250,6 +307,7 @@ MonoBehaviour:
   executionTarget: {fileID: 0}
   bossAI: {fileID: 0}
   minion: {fileID: 0}
+  turret: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
   executionText: {fileID: 3115390524455400833}

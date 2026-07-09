@@ -149,6 +149,8 @@ public class GraphBossAIEditor : Editor
     private void DrawSettingsTab()
     {
         DrawBossSpecificSection();
+        DrawConductorConductingPatternSection();
+        DrawAdditionalSettingsSections();
         DrawMinionSettingsSection();
 
         EditorGUILayout.Space(6f);
@@ -157,6 +159,35 @@ public class GraphBossAIEditor : Editor
         {
             DrawBaseProperties();
         }
+    }
+
+    protected virtual void DrawAdditionalSettingsSections()
+    {
+    }
+
+    private void DrawConductorConductingPatternSection()
+    {
+        SerializedProperty patterns = FindSerializedProperty("conductingPatterns");
+        if (patterns == null)
+        {
+            return;
+        }
+
+        EditorGUILayout.Space(6f);
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Conductor 지휘 모양 데이터", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("여기에는 획 순서와 모양만 저장합니다. Graph Action에서 Pattern ID를 선택하고 색/크기/속도 같은 연출 설정을 정하세요.", MessageType.Info);
+
+        if (patterns.hasMultipleDifferentValues)
+        {
+            EditorGUILayout.HelpBox("여러 Conductor를 동시에 선택한 상태에서는 지휘 패턴을 편집하지 않습니다.", MessageType.Info);
+            EditorGUILayout.PropertyField(patterns, true);
+            EditorGUILayout.EndVertical();
+            return;
+        }
+
+        DrawConductingPatternList(patterns);
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawReferencesTab()
@@ -405,6 +436,119 @@ public class GraphBossAIEditor : Editor
         }
     }
 
+    private static void DrawConductingPatternList(SerializedProperty patterns)
+    {
+        for (int i = 0; i < patterns.arraySize; i++)
+        {
+            SerializedProperty pattern = patterns.GetArrayElementAtIndex(i);
+            SerializedProperty patternId = pattern.FindPropertyRelative("patternId");
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField($"Shape {i + 1}", GUILayout.Width(64f));
+                if (patternId != null)
+                {
+                    EditorGUILayout.PropertyField(patternId, GUIContent.none);
+                }
+
+                if (GUILayout.Button("Draw", GUILayout.Width(48f)))
+                {
+                    ConductorConductingPatternEditorWindow.Open(patterns.serializedObject.targetObject, i);
+                }
+
+                DrawConductingMoveButtons(patterns, i);
+                if (GUILayout.Button("-", GUILayout.Width(24f)))
+                {
+                    patterns.DeleteArrayElementAtIndex(i);
+                    EditorGUILayout.EndVertical();
+                    break;
+                }
+            }
+
+            EditorGUILayout.EndVertical();
+        }
+
+        if (GUILayout.Button("지휘 모양 추가"))
+        {
+            AddConductingPattern(patterns);
+        }
+
+        DrawConductingPatternWarnings(patterns);
+    }
+
+    private static void DrawConductingMoveButtons(SerializedProperty array, int index)
+    {
+        using (new EditorGUI.DisabledScope(index <= 0))
+        {
+            if (GUILayout.Button("Up", GUILayout.Width(32f)))
+            {
+                array.MoveArrayElement(index, index - 1);
+            }
+        }
+
+        using (new EditorGUI.DisabledScope(index >= array.arraySize - 1))
+        {
+            if (GUILayout.Button("Dn", GUILayout.Width(32f)))
+            {
+                array.MoveArrayElement(index, index + 1);
+            }
+        }
+    }
+
+    private static void DrawConductingPatternWarnings(SerializedProperty patterns)
+    {
+        HashSet<string> ids = new(System.StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < patterns.arraySize; i++)
+        {
+            string id = patterns.GetArrayElementAtIndex(i)
+                .FindPropertyRelative("patternId")?.stringValue?.Trim();
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                EditorGUILayout.HelpBox($"Pattern {i + 1}: Pattern ID가 비어 있습니다.", MessageType.Warning);
+            }
+            else if (!ids.Add(id))
+            {
+                EditorGUILayout.HelpBox($"Pattern ID '{id}'가 중복됩니다.", MessageType.Warning);
+            }
+        }
+    }
+
+    private static void AddConductingPattern(SerializedProperty patterns)
+    {
+        int index = patterns.arraySize;
+        patterns.InsertArrayElementAtIndex(index);
+        SerializedProperty pattern = patterns.GetArrayElementAtIndex(index);
+        pattern.isExpanded = true;
+
+        SetChildString(pattern, "patternId", GetUniqueConductingPatternId(patterns, index));
+
+        SerializedProperty strokes = pattern.FindPropertyRelative("strokes");
+        if (strokes != null)
+        {
+            strokes.ClearArray();
+            AddConductingStroke(strokes);
+        }
+    }
+
+    private static void AddConductingStroke(SerializedProperty strokes)
+    {
+        int index = strokes.arraySize;
+        strokes.InsertArrayElementAtIndex(index);
+        SerializedProperty stroke = strokes.GetArrayElementAtIndex(index);
+        stroke.isExpanded = true;
+        SetChildVector2(stroke, "start", new Vector2(-0.25f, 0f));
+        SetChildVector2(stroke, "end", new Vector2(0.25f, 0f));
+        SetChildBool(stroke, "hasControlPoint", false);
+        SetChildVector2(stroke, "controlPoint", Vector2.zero);
+
+        SerializedProperty points = stroke.FindPropertyRelative("points");
+        if (points != null)
+        {
+            points.ClearArray();
+        }
+    }
+
     private void DrawBaseProperties()
     {
         SerializedProperty iterator = serializedObject.GetIterator();
@@ -649,4 +793,66 @@ public class GraphBossAIEditor : Editor
 
         return false;
     }
+
+    private static string GetUniqueConductingPatternId(SerializedProperty patterns, int currentIndex)
+    {
+        string baseId = $"Pattern{currentIndex + 1}";
+        string nextId = baseId;
+        int suffix = 2;
+        while (HasConductingPatternId(patterns, nextId, currentIndex))
+        {
+            nextId = $"{baseId}_{suffix}";
+            suffix++;
+        }
+
+        return nextId;
+    }
+
+    private static bool HasConductingPatternId(SerializedProperty patterns, string patternId, int exceptIndex)
+    {
+        for (int i = 0; i < patterns.arraySize; i++)
+        {
+            if (i == exceptIndex)
+            {
+                continue;
+            }
+
+            string value = patterns.GetArrayElementAtIndex(i)
+                .FindPropertyRelative("patternId")?.stringValue?.Trim();
+            if (string.Equals(value, patternId, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static void SetChildString(SerializedProperty root, string childName, string value)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            child.stringValue = value;
+        }
+    }
+
+    private static void SetChildVector2(SerializedProperty root, string childName, Vector2 value)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            child.vector2Value = value;
+        }
+    }
+
+    private static void SetChildBool(SerializedProperty root, string childName, bool value)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            child.boolValue = value;
+        }
+    }
+
 }

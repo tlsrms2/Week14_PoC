@@ -55,17 +55,25 @@ namespace Week14.Enemy
             }
 
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
-            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
-            float prepositionSeconds = CommandMinionsToFirstVolleyStart(host, patternStartPlayerPosition, executionVolleys[0]);
-            yield return BeforeExecuteVolleys(context, patternStartPlayerPosition);
-            float remainingPrepositionSeconds = prepositionSeconds - GetLaneIndicatorRevealDuration();
-            if (remainingPrepositionSeconds > 0f)
+            try
             {
-                yield return context.WaitSeconds(remainingPrepositionSeconds);
-            }
+                yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
+                float prepositionSeconds = CommandMinionsToFirstVolleyStart(host, patternStartPlayerPosition, executionVolleys[0]);
+                yield return BeforeExecuteVolleys(context, patternStartPlayerPosition);
+                float remainingPrepositionSeconds = prepositionSeconds - GetLaneIndicatorRevealDuration();
+                if (remainingPrepositionSeconds > 0f)
+                {
+                    yield return context.WaitSeconds(remainingPrepositionSeconds);
+                }
 
-            yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
-            yield return AfterExecuteVolleys(context, patternStartPlayerPosition);
+                yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
+                yield return AfterExecuteVolleys(context, patternStartPlayerPosition);
+            }
+            finally
+            {
+                ClearActiveLaneIndicators();
+                ClearTrackedProjectiles();
+            }
         }
 
         protected override IEnumerator BeforeExecuteVolleys(BossActionContext context, Vector2 patternStartPlayerPosition)
@@ -195,6 +203,7 @@ namespace Week14.Enemy
             GameObject indicatorObject = new("ConductorScoreLaneRushSpecialIndicators");
             ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
             visual.Configure(laneIndicatorColor, laneIndicatorWidth, laneIndicatorSortingOrder);
+            visual.ConfigureClearOnExecutionCinematic(true);
 
             int lineIndex = 0;
             for (int i = 0; i < IndicatorSideOrder.Length; i++)

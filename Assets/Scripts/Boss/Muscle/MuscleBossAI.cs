@@ -28,24 +28,24 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
-            Animator targetAnimator = ResolveWalkAnimator();
-            if (targetAnimator == null)
-            {
-                return;
-            }
-
-            targetAnimator.SetTrigger(StunParameter);
+            SetAnimatorTrigger(StunParameter);
         }
 
         protected override void OnHpEmptyRecovered()
         {
-            Animator targetAnimator = ResolveWalkAnimator();
-            if (targetAnimator == null)
-            {
-                return;
-            }
+            SetAnimatorTrigger(EndStunParameter);
+        }
 
-            targetAnimator.SetTrigger(EndStunParameter);
+        protected override void OnBossDied()
+        {
+            ApplyWalkState(false, true);
+            base.OnBossDied();
+        }
+
+        protected override void OnDisable()
+        {
+            ApplyWalkState(false, true);
+            base.OnDisable();
         }
 
         private void LateUpdate()
@@ -143,6 +143,17 @@ namespace Week14.Enemy
             targetAnimator.SetBool(IsWalkParameter, isWalking);
             lastIsWalking = isWalking;
             hasAppliedWalkState = true;
+        }
+
+        private void SetAnimatorTrigger(int parameter)
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            targetAnimator.SetTrigger(parameter);
         }
 
         private Animator ResolveWalkAnimator()

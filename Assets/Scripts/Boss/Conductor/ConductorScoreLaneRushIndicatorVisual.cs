@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -18,6 +19,8 @@ namespace Week14.Enemy
         private float laneWidth = 0.035f;
         private int sortingOrder = 66;
         private float alphaMultiplier = 1f;
+        private bool clearOnExecutionCinematic;
+        private bool isClearing;
 
         public int LaneCount => lines.Count;
 
@@ -26,6 +29,19 @@ namespace Week14.Enemy
             laneColor = color;
             laneWidth = Mathf.Max(0.001f, width);
             sortingOrder = order;
+        }
+
+        public void ConfigureClearOnExecutionCinematic(bool enabled)
+        {
+            clearOnExecutionCinematic = enabled;
+        }
+
+        private void LateUpdate()
+        {
+            if (clearOnExecutionCinematic && PlayerCombatController.IsExecutionCinematicActive)
+            {
+                ClearAndDestroy();
+            }
         }
 
         public void SetAlpha(float alpha)
@@ -163,6 +179,12 @@ namespace Week14.Enemy
 
         public void ClearAndDestroy()
         {
+            if (isClearing)
+            {
+                return;
+            }
+
+            isClearing = true;
             for (int i = 0; i < lines.Count; i++)
             {
                 if (lines[i].Renderer != null)

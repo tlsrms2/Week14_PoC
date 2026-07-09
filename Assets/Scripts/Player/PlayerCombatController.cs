@@ -56,6 +56,7 @@ namespace Week14.Combat
         private PlayerExecutionController executionController;
         private PlayerDashController dashController;
         private bool lockOnSuppressed;
+        private int externalMovementLockCount;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
         private PlayerCombatRig Rig => playerCombatRig ??= new PlayerCombatRig(Context);
@@ -90,11 +91,13 @@ namespace Week14.Combat
         public bool IsExecuting => ExecutionController.IsExecuting;
         public PlayerCombatConfig Config => Context.Config;
         public float MoveSpeedMultiplier { get; private set; } = 1f;
-        public bool CanMove => CanAct && !IsBodyContactStaggered && !IsDashing;
+        public bool CanMove => CanAct && !IsExternallyMovementLocked && !IsBodyContactStaggered && !IsDashing;
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
         public bool IsDashing => DashController.IsDashing;
+        public bool IsExternallyMovementLocked => externalMovementLockCount > 0;
         public bool ShouldStopMovementWhenBlocked => (!IsBodyContactStaggered && !IsDashing)
-            || IsPlayerControlLocked;
+            || IsPlayerControlLocked
+            || IsExternallyMovementLocked;
         private bool CanAct => !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
             && !health.IsDead;
@@ -103,6 +106,16 @@ namespace Week14.Combat
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
         private bool IsWaitingForVictoryPanel => ExecutionController.IsWaitingForVictoryPanel;
+
+        public void PushExternalMovementLock()
+        {
+            externalMovementLockCount++;
+        }
+
+        public void PopExternalMovementLock()
+        {
+            externalMovementLockCount = Mathf.Max(0, externalMovementLockCount - 1);
+        }
 
         internal sealed class PlayerCombatContext
         {
@@ -246,6 +259,7 @@ namespace Week14.Combat
 #if ENABLE_INPUT_SYSTEM
             GameInput.Unbind(playerInput);
 #endif
+            externalMovementLockCount = 0;
 
             if (Active == this)
             {
