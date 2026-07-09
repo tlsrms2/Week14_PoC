@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Enemy;
+using Week14.GameFlow;
 using Week14.Weapons;
 
 namespace Week14.UI
@@ -111,18 +111,12 @@ namespace Week14.UI
 
         public void RestartScene()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameFlowController.RestartCurrentScene();
         }
 
         public void ReturnToLobby()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(lobbySceneName);
+            GameFlowController.ReturnToLobby(lobbySceneName);
         }
 
         private void CacheSceneReferences()

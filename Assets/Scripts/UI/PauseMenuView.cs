@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Week14.Bootstrap;
+using Week14.GameFlow;
 
 namespace Week14.UI
 {
@@ -85,26 +84,17 @@ namespace Week14.UI
 
         public void RestartStage()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameFlowController.RestartCurrentScene();
         }
 
         public void ReturnToLobby()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(lobbySceneName);
+            GameFlowController.ReturnToLobby(lobbySceneName);
         }
 
         public void ReturnToTitle()
         {
-            Time.timeScale = 1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            SceneTransition.LoadScene(titleSceneName);
+            GameFlowController.ReturnToTitle(titleSceneName);
         }
 
         public void QuitGame()

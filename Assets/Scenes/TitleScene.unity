@@ -562,7 +562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76510e5699d0a64a95e5d1ccd8e00dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.TitleMenuView
-  mainSceneName: LobbyScene
   titleBgmId: TitleBgm
   startGameSfxId: Title_Button
 --- !u!4 &105794526
@@ -2018,6 +2017,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932857128}
   m_CullTransparentMesh: 1
+--- !u!1 &939629766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 939629768}
+  - component: {fileID: 939629767}
+  m_Layer: 0
+  m_Name: GameFlowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &939629767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939629766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77eb5f411bf47664a90ccfbcca4b5388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.GameFlow.GameFlowController
+  titleSceneName: TitleScene
+  lobbySceneName: LobbyScene
+--- !u!4 &939629768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939629766}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.95769, y: -13.74597, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &945970719 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4812343872089215942, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
@@ -5438,3 +5483,4 @@ SceneRoots:
   - {fileID: 1287134423}
   - {fileID: 915026303}
   - {fileID: 1626727314}
+  - {fileID: 939629768}

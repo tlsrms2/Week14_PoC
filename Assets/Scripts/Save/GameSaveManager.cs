@@ -84,6 +84,43 @@ namespace Week14.Save
             Save();
         }
 
+        public static bool HasSeenSynopsis => Data.hasSeenSynopsis;
+        public static bool HasCompletedTutorial => Data.hasCompletedTutorial;
+        public static bool HasSeenEnding => Data.hasSeenEnding;
+
+        public static void MarkSynopsisSeen()
+        {
+            if (Data.hasSeenSynopsis)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = true;
+            Save();
+        }
+
+        public static void MarkTutorialCompleted()
+        {
+            if (Data.hasCompletedTutorial)
+            {
+                return;
+            }
+
+            Data.hasCompletedTutorial = true;
+            Save();
+        }
+
+        public static void MarkEndingSeen()
+        {
+            if (Data.hasSeenEnding)
+            {
+                return;
+            }
+
+            Data.hasSeenEnding = true;
+            Save();
+        }
+
         public static IReadOnlyList<string> UnlockedSkillIds => Data.unlockedSkillIds;
 
         public static bool IsSkillUnlocked(string skillId)
