@@ -81,6 +81,34 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] 모든 스킬/보스/총기 해금을 되돌렸습니다.");
         }
 
+        [ContextMenu("스토리 진행 전체 리셋")]
+        public void ResetStoryProgress()
+        {
+            GameSaveManager.ResetStoryProgress();
+            Debug.Log("[DevUnlockTools] 스토리 진행 상태를 리셋했습니다.");
+        }
+
+        [ContextMenu("시놉시스 본 상태 리셋")]
+        public void ResetSynopsisSeen()
+        {
+            GameSaveManager.ResetSynopsisSeen();
+            Debug.Log("[DevUnlockTools] 시놉시스 본 상태를 리셋했습니다.");
+        }
+
+        [ContextMenu("튜토리얼 완료 상태 리셋")]
+        public void ResetTutorialCompleted()
+        {
+            GameSaveManager.ResetTutorialCompleted();
+            Debug.Log("[DevUnlockTools] 튜토리얼 완료 상태를 리셋했습니다.");
+        }
+
+        [ContextMenu("엔딩 본 상태 리셋")]
+        public void ResetEndingSeen()
+        {
+            GameSaveManager.ResetEndingSeen();
+            Debug.Log("[DevUnlockTools] 엔딩 본 상태를 리셋했습니다.");
+        }
+
         [ContextMenu("스킬 전체 해금")]
         public void UnlockAllSkills()
         {

@@ -121,6 +121,56 @@ namespace Week14.Save
             Save();
         }
 
+        public static void ResetStoryProgress()
+        {
+            bool changed = Data.hasSeenSynopsis
+                || Data.hasCompletedTutorial
+                || Data.hasSeenEnding;
+
+            if (!changed)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = false;
+            Data.hasCompletedTutorial = false;
+            Data.hasSeenEnding = false;
+            Save();
+        }
+
+        public static void ResetSynopsisSeen()
+        {
+            if (!Data.hasSeenSynopsis)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = false;
+            Save();
+        }
+
+        public static void ResetTutorialCompleted()
+        {
+            if (!Data.hasCompletedTutorial)
+            {
+                return;
+            }
+
+            Data.hasCompletedTutorial = false;
+            Save();
+        }
+
+        public static void ResetEndingSeen()
+        {
+            if (!Data.hasSeenEnding)
+            {
+                return;
+            }
+
+            Data.hasSeenEnding = false;
+            Save();
+        }
+
         public static IReadOnlyList<string> UnlockedSkillIds => Data.unlockedSkillIds;
 
         public static bool IsSkillUnlocked(string skillId)
