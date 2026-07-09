@@ -164,6 +164,7 @@ namespace Week14.Enemy
             ConductorScoreLaneRushIndicatorVisual visual =
                 indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
             visual.Configure(gridIndicatorColor, gridIndicatorWidth, gridIndicatorSortingOrder);
+            visual.ConfigureClearOnExecutionCinematic(true);
 
             List<PlayerPathPrediction> pathPredictions = CreatePathPredictions(host, pathMode);
             int pathCount = Mathf.Min(Mathf.Max(1, indicatorPathCount), pathPredictions.Count);

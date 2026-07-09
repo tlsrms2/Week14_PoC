@@ -39,16 +39,73 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class ConductorConductingStroke
+    public sealed class ConductorConductingStroke : ISerializationCallbackReceiver
     {
-        [SerializeField] private List<Vector2> points = new()
-        {
-            new Vector2(-0.25f, 0f),
-            new Vector2(0.25f, 0f)
-        };
+        private const int DefaultCurveSegments = 18;
 
-        public IReadOnlyList<Vector2> Points => points;
-        public bool HasDrawablePoints => points != null && points.Count >= 2;
+        [SerializeField] private Vector2 start = new(-0.25f, 0f);
+        [SerializeField] private Vector2 end = new(0.25f, 0f);
+        [SerializeField] private bool hasControlPoint;
+        [SerializeField] private Vector2 controlPoint;
+        [SerializeField, HideInInspector] private List<Vector2> points = new();
+        [SerializeField, HideInInspector] private bool migratedLegacyPoints;
+
+        public Vector2 Start => start;
+        public Vector2 End => end;
+        public bool HasControlPoint => hasControlPoint;
+        public Vector2 ControlPoint => controlPoint;
+        public bool HasDrawablePoints => Vector2.Distance(start, end) > 0.0001f;
+
+        public void BuildRenderPoints(List<Vector2> results)
+        {
+            results.Clear();
+            if (!HasDrawablePoints)
+            {
+                return;
+            }
+
+            if (!hasControlPoint)
+            {
+                results.Add(start);
+                results.Add(end);
+                return;
+            }
+
+            int segments = Mathf.Max(2, DefaultCurveSegments);
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = (float)i / segments;
+                results.Add(EvaluateQuadratic(start, controlPoint, end, t));
+            }
+        }
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            if (migratedLegacyPoints || points == null || points.Count < 2)
+            {
+                return;
+            }
+
+            start = points[0];
+            end = points[^1];
+            if (points.Count > 2)
+            {
+                hasControlPoint = true;
+                controlPoint = points[points.Count / 2];
+            }
+
+            migratedLegacyPoints = true;
+        }
+
+        private static Vector2 EvaluateQuadratic(Vector2 a, Vector2 b, Vector2 c, float t)
+        {
+            float inverse = 1f - t;
+            return inverse * inverse * a + 2f * inverse * t * b + t * t * c;
+        }
     }
 
     public sealed class ConductorConductingPatternIdAttribute : PropertyAttribute

@@ -1064,47 +1064,33 @@ namespace Week14.Enemy
                     }
                 }
 
-                int targetStep = GetCurrentTargetStep();
-                if (targetStep < 0)
+                Entry targetEntry = GetCurrentTargetEntry();
+                if (targetEntry == null)
                 {
                     RefreshTieLinks();
                     return;
                 }
 
-                for (int i = 0; i < entries.Count; i++)
+                if (targetEntry.Projectile != null)
                 {
-                    Entry entry = entries[i];
-                    if (entry.Completed || entry.CompletedStepCount != targetStep)
-                    {
-                        continue;
-                    }
-
-                    if (entry.Projectile == null)
-                    {
-                        RefreshTieLinks();
-                        return;
-                    }
-
-                    SetInterceptable(entry.Projectile, true);
-                    break;
+                    SetInterceptable(targetEntry.Projectile, true);
                 }
 
                 RefreshTieLinks();
             }
 
-            private int GetCurrentTargetStep()
+            private Entry GetCurrentTargetEntry()
             {
-                int targetStep = int.MaxValue;
                 for (int i = 0; i < entries.Count; i++)
                 {
                     Entry entry = entries[i];
                     if (!entry.Completed)
                     {
-                        targetStep = Mathf.Min(targetStep, entry.CompletedStepCount);
+                        return entry;
                     }
                 }
 
-                return targetStep == int.MaxValue ? -1 : targetStep;
+                return null;
             }
 
             private static void SetInterceptable(EnemyProjectile projectile, bool interceptable)

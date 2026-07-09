@@ -22,6 +22,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938943853723648
     sequences: []
@@ -31,6 +41,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938943853723649
     sequences: []
@@ -40,6 +60,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938943853723651
     sequences: []
@@ -49,6 +79,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938943853723652
     sequences: []
@@ -58,6 +98,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938943853723653
     sequences: []
@@ -67,6 +117,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938943853723654
     sequences: []
@@ -76,6 +136,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825370
     sequences: []
@@ -85,6 +155,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181184
     sequences: []
@@ -94,6 +174,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825374
     sequences: []
@@ -103,6 +193,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825379
     sequences: []
@@ -112,6 +212,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825416
     sequences: []
@@ -121,6 +231,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825402
     sequences: []
@@ -130,6 +250,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825403
     sequences: []
@@ -139,6 +269,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825404
     sequences: []
@@ -148,6 +288,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825405
     sequences: []
@@ -157,6 +307,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938946521825406
     sequences: []
@@ -166,6 +326,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938948834459722
     sequences: []
@@ -175,6 +345,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938948834459728
     sequences: []
@@ -184,6 +364,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479940
     sequences: []
@@ -193,6 +383,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479938
     sequences: []
@@ -202,6 +402,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537767937
     sequences: []
@@ -211,6 +421,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768014
     sequences: []
@@ -220,6 +440,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768016
     sequences: []
@@ -229,6 +459,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768017
     sequences: []
@@ -238,6 +478,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768023
     sequences: []
@@ -247,6 +497,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768024
     sequences: []
@@ -256,6 +516,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768025
     sequences: []
@@ -265,6 +535,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768030
     sequences: []
@@ -274,6 +554,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768031
     sequences: []
@@ -283,6 +573,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938952537768032
     sequences: []
@@ -292,6 +592,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181171
     sequences: []
@@ -301,6 +611,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181172
     sequences: []
@@ -310,6 +630,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181174
     sequences: []
@@ -319,6 +649,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181175
     sequences: []
@@ -328,6 +668,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181176
     sequences: []
@@ -337,6 +687,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181178
     sequences: []
@@ -346,6 +706,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181179
     sequences: []
@@ -355,6 +725,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181180
     sequences: []
@@ -364,6 +744,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181182
     sequences: []
@@ -373,6 +763,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181183
     sequences: []
@@ -382,6 +782,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181185
     sequences: []
@@ -391,6 +801,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181186
     sequences: []
@@ -400,6 +820,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181187
     sequences: []
@@ -409,6 +839,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181188
     sequences: []
@@ -418,6 +858,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181189
     sequences: []
@@ -427,6 +877,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181191
     sequences: []
@@ -436,6 +896,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181192
     sequences: []
@@ -445,6 +915,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181199
     sequences: []
@@ -454,6 +934,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181200
     sequences: []
@@ -463,6 +953,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181201
     sequences: []
@@ -472,6 +972,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181202
     sequences: []
@@ -481,6 +991,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181203
     sequences: []
@@ -490,6 +1010,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181204
     sequences: []
@@ -499,6 +1029,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181205
     sequences: []
@@ -508,6 +1048,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181206
     sequences: []
@@ -517,6 +1067,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181207
     sequences: []
@@ -526,6 +1086,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181208
     sequences: []
@@ -535,6 +1105,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938988315181210
     sequences: []
@@ -544,6 +1124,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938991944826880
     sequences: []
@@ -553,6 +1143,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938994985173067
     sequences: []
@@ -562,6 +1162,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479884
     sequences: []
@@ -571,6 +1181,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479889
     sequences: []
@@ -580,6 +1200,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479890
     sequences: []
@@ -589,6 +1219,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479892
     sequences: []
@@ -598,6 +1238,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479893
     sequences: []
@@ -607,6 +1257,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479894
     sequences: []
@@ -616,6 +1276,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479895
     sequences: []
@@ -625,6 +1295,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479896
     sequences: []
@@ -634,6 +1314,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479897
     sequences: []
@@ -643,6 +1333,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479899
     sequences: []
@@ -652,6 +1352,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479904
     sequences: []
@@ -661,6 +1371,16 @@ MonoBehaviour:
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479905
     sequences: []
@@ -670,6 +1390,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479906
     sequences: []
@@ -679,6 +1409,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479907
     sequences: []
@@ -688,6 +1428,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479913
     sequences: []
@@ -697,6 +1447,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479923
     sequences: []
@@ -706,6 +1466,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479924
     sequences: []
@@ -715,6 +1485,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479925
     sequences: []
@@ -724,6 +1504,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479926
     sequences: []
@@ -733,6 +1523,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479927
     sequences: []
@@ -742,6 +1542,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479928
     sequences: []
@@ -751,6 +1561,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479929
     sequences: []
@@ -760,6 +1580,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479930
     sequences: []
@@ -769,6 +1599,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479931
     sequences: []
@@ -778,6 +1618,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479932
     sequences: []
@@ -787,6 +1637,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479933
     sequences: []
@@ -796,6 +1656,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479934
     sequences: []
@@ -805,6 +1675,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479935
     sequences: []
@@ -814,6 +1694,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479936
     sequences: []
@@ -823,6 +1713,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479937
     sequences: []
@@ -832,6 +1732,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479947
     sequences: []
@@ -841,6 +1751,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479953
     sequences: []
@@ -850,6 +1770,16 @@ MonoBehaviour:
     nodeKind: 1
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479954
     sequences: []
@@ -859,6 +1789,16 @@ MonoBehaviour:
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
+    conductorCue:
+      enabled: 0
+      patternId: Pattern
+      totalSeconds: 0.6
+      stopMovement: 1
+      headOffset: {x: 0, y: 1.45}
+      scale: 1
+      color: {r: 0.62, g: 0.92, b: 1, a: 0.9}
+      lineWidth: 0.045
+      sortingOrder: 90
     action:
       rid: 6489938997695479957
     sequences: []
@@ -1089,6 +2029,7 @@ MonoBehaviour:
     - Fire Random Cone Burst4
     - Fire Radial Emission9
     - Fire Radial Emission10
+  defaultPatternIds: []
   phases: []
   transitions:
   - fromNodeGuid: 5f1b92446e09448f8ec39fb737e8d4d0

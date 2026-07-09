@@ -469,7 +469,7 @@ public class GraphBossAIEditor : Editor
             EditorGUILayout.EndVertical();
         }
 
-        if (GUILayout.Button("지휘 패턴 추가"))
+        if (GUILayout.Button("지휘 모양 추가"))
         {
             AddConductingPattern(patterns);
         }
@@ -537,21 +537,16 @@ public class GraphBossAIEditor : Editor
         strokes.InsertArrayElementAtIndex(index);
         SerializedProperty stroke = strokes.GetArrayElementAtIndex(index);
         stroke.isExpanded = true;
+        SetChildVector2(stroke, "start", new Vector2(-0.25f, 0f));
+        SetChildVector2(stroke, "end", new Vector2(0.25f, 0f));
+        SetChildBool(stroke, "hasControlPoint", false);
+        SetChildVector2(stroke, "controlPoint", Vector2.zero);
 
         SerializedProperty points = stroke.FindPropertyRelative("points");
         if (points != null)
         {
             points.ClearArray();
-            AddConductingPoint(points, new Vector2(-0.25f, 0f));
-            AddConductingPoint(points, new Vector2(0.25f, 0f));
         }
-    }
-
-    private static void AddConductingPoint(SerializedProperty points, Vector2 value)
-    {
-        int index = points.arraySize;
-        points.InsertArrayElementAtIndex(index);
-        points.GetArrayElementAtIndex(index).vector2Value = value;
     }
 
     private void DrawBaseProperties()
@@ -839,6 +834,24 @@ public class GraphBossAIEditor : Editor
         if (child != null)
         {
             child.stringValue = value;
+        }
+    }
+
+    private static void SetChildVector2(SerializedProperty root, string childName, Vector2 value)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            child.vector2Value = value;
+        }
+    }
+
+    private static void SetChildBool(SerializedProperty root, string childName, bool value)
+    {
+        SerializedProperty child = root.FindPropertyRelative(childName);
+        if (child != null)
+        {
+            child.boolValue = value;
         }
     }
 

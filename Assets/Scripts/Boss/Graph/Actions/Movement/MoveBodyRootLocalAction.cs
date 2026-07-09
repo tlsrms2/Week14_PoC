@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MoveBodyRootLocalAction : BossAction
+    public sealed class MoveBodyRootLocalAction : BossAction, IBossActionDurationProvider
     {
         [FormerlySerializedAs("targetLocalOffset")]
         [FormerlySerializedAs("targetOffset")]
@@ -26,6 +26,12 @@ namespace Week14.Enemy
 
             yield return context.MoveBodyRootToPosition(targetPosition, duration, stopWhenFinished);
             context.PlaySfx(completeSfxId);
+        }
+
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, duration);
+            return seconds > 0f;
         }
     }
 

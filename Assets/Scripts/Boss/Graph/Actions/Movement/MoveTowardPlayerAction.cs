@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MoveTowardPlayerAction : BossAction, ISerializationCallbackReceiver
+    public sealed class MoveTowardPlayerAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
         [SerializeField, Min(0f)] private float seconds = 1f;
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
@@ -54,6 +54,12 @@ namespace Week14.Enemy
             EnsureSpeedCurve();
         }
 
+        public bool TryGetDurationSeconds(out float durationSeconds)
+        {
+            durationSeconds = Mathf.Max(0f, seconds);
+            return durationSeconds > 0f;
+        }
+
         private AnimationCurve GetSpeedCurve()
         {
             EnsureSpeedCurve();
@@ -73,7 +79,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class MaintainPlayerDistanceAction : BossAction, ISerializationCallbackReceiver
+    public sealed class MaintainPlayerDistanceAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
         [SerializeField, Min(0f)] private float durationSeconds = 1f;
         [SerializeField, Min(0.1f)] private float distance = 4f;
@@ -122,6 +128,12 @@ namespace Week14.Enemy
             EnsureSpeedCurve();
         }
 
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, durationSeconds);
+            return seconds > 0f;
+        }
+
         private AnimationCurve GetSpeedCurve()
         {
             EnsureSpeedCurve();
@@ -141,7 +153,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class MoveUntilPlayerDistanceAction : BossAction, ISerializationCallbackReceiver
+    public sealed class MoveUntilPlayerDistanceAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
         [SerializeField, Min(0f), Tooltip("플레이어와의 거리가 이 값 이하가 되면 이동을 멈추고 다음으로 넘어갑니다.")] private float targetDistance = 3f;
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
@@ -193,6 +205,12 @@ namespace Week14.Enemy
             EnsureSpeedCurve();
         }
 
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, timeoutSeconds);
+            return seconds > 0f;
+        }
+
         private AnimationCurve GetSpeedCurve()
         {
             EnsureSpeedCurve();
@@ -212,7 +230,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class StartMoveTowardPlayerAction : BossAction, ISerializationCallbackReceiver
+    public sealed class StartMoveTowardPlayerAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
         [SerializeField, Min(0f)] private float durationSeconds;
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
@@ -246,6 +264,12 @@ namespace Week14.Enemy
             EnsureSpeedCurve();
         }
 
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, durationSeconds);
+            return seconds > 0f;
+        }
+
         private AnimationCurve GetSpeedCurve()
         {
             EnsureSpeedCurve();
@@ -265,7 +289,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class StartMoveAwayFromPlayerAction : BossAction, ISerializationCallbackReceiver
+    public sealed class StartMoveAwayFromPlayerAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
         [SerializeField, Min(0f)] private float durationSeconds;
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
@@ -299,6 +323,12 @@ namespace Week14.Enemy
             EnsureSpeedCurve();
         }
 
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, durationSeconds);
+            return seconds > 0f;
+        }
+
         private AnimationCurve GetSpeedCurve()
         {
             EnsureSpeedCurve();
@@ -328,7 +358,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class WanderAroundPlayerDistanceAction : BossAction
+    public sealed class WanderAroundPlayerDistanceAction : BossAction, IBossActionDurationProvider
     {
         private const int RetargetCandidateCount = 16;
         private const int VisitedAngleLimit = 16;
@@ -480,6 +510,12 @@ namespace Week14.Enemy
             RecordVisitedAngle(visitedAngles, targetAngle);
         }
 
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            seconds = Mathf.Max(0f, durationSeconds);
+            return seconds > 0f;
+        }
+
         private static float GetMinVisitedAngleDistance(float angleDegrees, List<float> visitedAngles)
         {
             if (visitedAngles == null || visitedAngles.Count == 0)
@@ -540,7 +576,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class MoveBetweenMapPointsAction : BossAction
+    public sealed class MoveBetweenMapPointsAction : BossAction, IBossActionDurationProvider
     {
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 endPosition;
@@ -598,6 +634,18 @@ namespace Week14.Enemy
                 elapsed += Time.deltaTime;
                 yield return null;
             }
+        }
+
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            if (timeoutSeconds <= 0f)
+            {
+                seconds = 0f;
+                return false;
+            }
+
+            seconds = snapToStart || !moveToStartFirst ? timeoutSeconds : timeoutSeconds * 2f;
+            return true;
         }
     }
 

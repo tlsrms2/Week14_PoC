@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Week14.Enemy
@@ -19,6 +20,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float fadeSeconds = 0.12f;
         [SerializeField] private int sortingOrder = 90;
 
+        public string PatternId => patternId;
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss is not Conductor conductor)
@@ -29,7 +32,7 @@ namespace Week14.Enemy
             yield return conductor.PlayConductingPattern(patternId, context, CreateSettings());
         }
 
-        private ConductorConductingCueSettings CreateSettings()
+        public ConductorConductingCueSettings CreateSettings()
         {
             return new ConductorConductingCueSettings(
                 stopMovement,
@@ -42,6 +45,45 @@ namespace Week14.Enemy
                 holdSeconds,
                 fadeSeconds,
                 sortingOrder);
+        }
+
+        public bool TryGetTotalSeconds(Conductor conductor, out float seconds)
+        {
+            seconds = 0f;
+            if (conductor == null
+                || !conductor.TryGetConductingPattern(patternId, out ConductorConductingPattern pattern)
+                || pattern == null
+                || !pattern.HasDrawableStroke)
+            {
+                return false;
+            }
+
+            ConductorConductingCueSettings settings = CreateSettings();
+            int strokeCount = CountDrawableStrokes(pattern);
+            seconds = strokeCount * (settings.StrokeDrawSeconds + settings.StrokeIntervalSeconds)
+                + settings.HoldSeconds
+                + settings.FadeSeconds;
+            return seconds > 0f;
+        }
+
+        private static int CountDrawableStrokes(ConductorConductingPattern pattern)
+        {
+            IReadOnlyList<ConductorConductingStroke> strokes = pattern?.Strokes;
+            if (strokes == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+            for (int i = 0; i < strokes.Count; i++)
+            {
+                if (strokes[i] != null && strokes[i].HasDrawablePoints)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
     }
 

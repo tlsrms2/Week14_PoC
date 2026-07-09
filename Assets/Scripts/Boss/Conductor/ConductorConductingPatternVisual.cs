@@ -11,6 +11,7 @@ namespace Week14.Enemy
         private static Material lineMaterial;
 
         private readonly List<LineRenderer> renderers = new();
+        private readonly List<Vector2> strokePoints = new();
         private readonly List<Vector3> renderPoints = new();
         private ConductorConductingPattern pattern;
         private ConductorConductingCueSettings settings;
@@ -67,7 +68,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            BuildStrokePoints(stroke.Points, settings.Scale, Mathf.Clamp01(progress), renderPoints);
+            stroke.BuildRenderPoints(strokePoints);
+            BuildStrokePoints(strokePoints, settings.Scale, Mathf.Clamp01(progress), renderPoints);
             line.enabled = renderPoints.Count >= 2;
             if (!line.enabled)
             {

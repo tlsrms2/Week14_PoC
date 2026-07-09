@@ -122,7 +122,7 @@ internal static class BossGraphActionEditorUtility
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
         new("Utility/Play Sfx", typeof(PlaySfxAction), () => new PlaySfxAction()),
-        new("Utility/Conductor/Draw Conducting Pattern", typeof(ConductorConductingCueAction), () => new ConductorConductingCueAction()),
+        new("Utility/Conductor/Conducting Cue", typeof(ConductorConductingCueAction), () => new ConductorConductingCueAction()),
         new("Minion/Spawn/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
         new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
         new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
@@ -356,7 +356,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(ConductorConductingCueAction))
         {
-            return "Conductor 전용 전조 액션입니다. Conductor에 저장된 모양 ID를 선택하고, 이 액션에서 색/크기/위치/속도 같은 연출 설정을 정합니다.";
+            return "Conductor 전용 전조 액션입니다. 단독 실행 시 전조만 그리고, 보스 본체 액션과 P로 병렬 연결되면 보스 액션의 마지막 구간을 덮어씁니다.";
         }
 
         if (actionType == typeof(MinionSummonAction))
