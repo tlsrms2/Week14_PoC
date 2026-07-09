@@ -12,6 +12,13 @@ namespace Week14.Challenge
         [SerializeField, Min(1)] private int requiredReachCount = 1;
 
         public override ChallengeType Kind => ChallengeType.PhaseReach;
+        public override int MaxProgress => requiredReachCount;
+
+        public override int GetCurrentProgress(string bossId)
+        {
+            string saveKey = GameSaveManager.BuildChallengeSaveKey(bossId, ChallengeId);
+            return GameSaveManager.GetChallengeCounter(saveKey);
+        }
 
         public override ChallengeRunState CreateRunState()
         {

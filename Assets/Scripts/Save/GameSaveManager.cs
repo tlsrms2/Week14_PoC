@@ -182,6 +182,11 @@ namespace Week14.Save
             Save();
         }
 
+        public static string BuildChallengeSaveKey(string bossId, string challengeId)
+        {
+            return $"{bossId}:{challengeId}";
+        }
+
         public static bool IsChallengeCompleted(string challengeId)
         {
             return !string.IsNullOrEmpty(challengeId) && Data.completedChallengeIds.Contains(challengeId);

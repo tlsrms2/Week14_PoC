@@ -12,7 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b938ea77a21ccd1439697b08d9abf143, type: 3}
   m_Name: HitLimitChallenge0
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.HitLimitChallengeSO
-  challengeId: Hog_HitLimit_0
-  boss: {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
+  challengeId: HitLimit_0
+  description: "\uC804\uD22C\uC5D0\uC11C 1\uBC88\uC774\uC0C1 \uD53C\uD574\uB97C \uBC1B\uC9C0
+    \uC54A\uACE0 \uC2B9\uB9AC\uD558\uC138\uC694."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   rewardPoint: 1
   maxHits: 0
+  references:
+    version: 2
+    RefIds: []

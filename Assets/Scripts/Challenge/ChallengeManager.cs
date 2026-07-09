@@ -19,6 +19,7 @@ namespace Week14.Challenge
         private readonly List<(ChallengeDefinitionSO Definition, ChallengeRunState Run)> activeRuns = new();
         private BossAI currentBoss;
         private Health subscribedPlayerHealth;
+        private string currentBossId;
         private float combatStartTime;
         private int hitCountThisRun;
         private int parryCountThisRun;
@@ -137,10 +138,10 @@ namespace Week14.Challenge
             combatActive = true;
 
             activeRuns.Clear();
-            string bossId = boss.BossData != null ? boss.BossData.Id : null;
-            foreach (ChallengeDefinitionSO definition in database.ForBoss(bossId))
+            currentBossId = boss.BossData != null ? boss.BossData.Id : null;
+            foreach (ChallengeDefinitionSO definition in database.ForBoss(currentBossId))
             {
-                if (GameSaveManager.IsChallengeCompleted(definition.ChallengeId))
+                if (GameSaveManager.IsChallengeCompleted(GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId)))
                 {
                     continue;
                 }
@@ -217,9 +218,10 @@ namespace Week14.Challenge
             {
                 ChallengeDefinitionSO definition = activeRuns[i].Definition;
                 ChallengeRunState run = activeRuns[i].Run;
-                if (run.TryFinalize(victory, definition.ChallengeId))
+                string saveKey = GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId);
+                if (run.TryFinalize(victory, saveKey))
                 {
-                    GameSaveManager.CompleteChallenge(definition.ChallengeId, definition.RewardPoint);
+                    GameSaveManager.CompleteChallenge(saveKey, definition.RewardPoint);
                 }
             }
 

@@ -12,7 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633bd6d689286ab4da38df9566a8f4a2, type: 3}
   m_Name: TimeAttackChallenge120
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.TimeAttackChallengeSO
-  challengeId: Hog_TimeAttack_120
-  boss: {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
+  challengeId: TimeAttack_120
+  description: "\uC804\uD22C\uC5D0\uC11C 2:00 \uB0B4\uC5D0 \uC2B9\uB9AC\uD558\uC138\uC694."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   rewardPoint: 1
   targetSeconds: 120
+  references:
+    version: 2
+    RefIds: []
