@@ -34,6 +34,7 @@ namespace Week14.GameFlow
         private string pendingNextSceneName;
         private PendingCutsceneCompletion pendingCompletion;
         private bool? pendingSkippableOverride;
+        private bool pendingStartsCovered;
 
         public static GameFlowController Instance => TryGetExistingInstance();
 
@@ -80,7 +81,10 @@ namespace Week14.GameFlow
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(SceneManager.GetActiveScene().buildIndex);
+                return;
             }
+
+            SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public static void ReturnToLobby(string fallbackLobbySceneName)
@@ -88,7 +92,10 @@ namespace Week14.GameFlow
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(ResolveSceneName(fallbackLobbySceneName, controller.lobbySceneName));
+                return;
             }
+
+            SceneTransition.LoadScene(fallbackLobbySceneName);
         }
 
         public static void ReturnToTitle(string fallbackTitleSceneName)
@@ -96,7 +103,10 @@ namespace Week14.GameFlow
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(ResolveSceneName(fallbackTitleSceneName, controller.titleSceneName));
+                return;
             }
+
+            SceneTransition.LoadScene(fallbackTitleSceneName);
         }
 
         public static void LoadScene(string sceneName)
@@ -104,7 +114,10 @@ namespace Week14.GameFlow
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(sceneName);
+                return;
             }
+
+            SceneTransition.LoadScene(sceneName);
         }
 
         public static void LoadScene(int buildIndex)
@@ -112,7 +125,10 @@ namespace Week14.GameFlow
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(buildIndex);
+                return;
             }
+
+            SceneTransition.LoadScene(buildIndex);
         }
 
         public static void EnterEnding()
@@ -232,6 +248,13 @@ namespace Week14.GameFlow
             pendingNextSceneName = nextSceneName;
             pendingCompletion = completion;
             pendingSkippableOverride = skippableOverride;
+            pendingStartsCovered = completion == PendingCutsceneCompletion.Synopsis;
+
+            if (pendingStartsCovered)
+            {
+                LoadSceneKeepingCoveredInternal(cutsceneSceneName);
+                return;
+            }
 
             LoadSceneInternal(cutsceneSceneName);
         }
@@ -254,7 +277,8 @@ namespace Week14.GameFlow
                 pendingCutscene,
                 CompletePendingCutscene,
                 keepCoveredOnCompleted: true,
-                skippableOverride: pendingSkippableOverride);
+                skippableOverride: pendingSkippableOverride,
+                startCovered: pendingStartsCovered);
             return true;
         }
 
@@ -267,6 +291,7 @@ namespace Week14.GameFlow
             pendingNextSceneName = null;
             pendingCompletion = PendingCutsceneCompletion.None;
             pendingSkippableOverride = null;
+            pendingStartsCovered = false;
 
             switch (completion)
             {
@@ -309,6 +334,18 @@ namespace Week14.GameFlow
 
             PrepareSceneChange();
             SceneTransition.LoadSceneFromCovered(sceneName);
+        }
+
+        private void LoadSceneKeepingCoveredInternal(string sceneName)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName))
+            {
+                Debug.LogWarning($"{nameof(GameFlowController)}: sceneName is empty.");
+                return;
+            }
+
+            PrepareSceneChange();
+            SceneTransition.LoadSceneAndKeepCovered(sceneName);
         }
 
         private void LoadSceneInternal(int buildIndex)

@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Week14.Audio;
+using Week14.Bootstrap;
 using Week14.UI;
 
 #if ENABLE_INPUT_SYSTEM
@@ -43,6 +44,7 @@ namespace Week14.Cutscene
         private bool skipRequested;
         private bool previousInputBlock;
         private bool keepCoveredOnCompleted;
+        private bool startCovered;
         private bool canUseSkip;
         private bool skipWholeCutscene;
         private bool isCurrentStepSkippable;
@@ -86,7 +88,8 @@ namespace Week14.Cutscene
             CutsceneDefinition definition,
             Action onCompleted = null,
             bool keepCoveredOnCompleted = false,
-            bool? skippableOverride = null)
+            bool? skippableOverride = null,
+            bool startCovered = false)
         {
             StopPlayback(invokeCompleted: false);
 
@@ -100,6 +103,7 @@ namespace Week14.Cutscene
             currentDefinition = definition;
             completed = onCompleted;
             this.keepCoveredOnCompleted = keepCoveredOnCompleted;
+            this.startCovered = startCovered;
             canUseSkip = skippableOverride ?? definition.Skippable;
             skipWholeCutscene = definition.Skippable && skippableOverride != false;
             playRoutine = StartCoroutine(PlayRoutine(definition));
@@ -150,6 +154,10 @@ namespace Week14.Cutscene
         private IEnumerator PlayRoutine(CutsceneDefinition definition)
         {
             BeginPlayback(definition);
+            if (startCovered)
+            {
+                SceneTransition.ReleaseCoveredScreen();
+            }
 
             IReadOnlyList<CutsceneStep> steps = definition.Steps;
             CutsceneStep lastPlayedStep = null;
@@ -195,7 +203,7 @@ namespace Week14.Cutscene
             UIBackStack.Push(this);
             ClearDialogueView();
             HideTransitionImage();
-            SetFadeAlpha(0f);
+            SetFadeAlpha(startCovered ? 1f : 0f);
             isCurrentStepSkippable = false;
             RefreshSkipHoldVisible();
             SetSkipHoldProgress(0f);
@@ -545,6 +553,7 @@ namespace Week14.Cutscene
             skipRequested = false;
             skipSectionRequested = false;
             skipHoldElapsed = 0f;
+            startCovered = false;
 
             UIBackStack.Remove(this);
             GameModalState.BlocksGameplayInput = previousInputBlock;

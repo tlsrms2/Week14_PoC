@@ -29,6 +29,7 @@ namespace Week14.Save
         public bool hasSeenSynopsis;
         public bool hasCompletedTutorial;
         public bool hasSeenEnding;
+        public List<string> seenStoryEpisodeIds = new();
         public List<string> completedChallengeIds = new();
         public List<ChallengeCounterEntry> challengeCounters = new();
         public int challengePoints;

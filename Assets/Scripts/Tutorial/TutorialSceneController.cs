@@ -46,14 +46,11 @@ namespace Week14.Tutorial
         [SerializeField, Min(1)] private int skillGoal = 1;
         [SerializeField, Min(0.1f)] private float skillAttemptResolveSeconds = 2.5f;
 
-        [Header("Recovery")]
-        [SerializeField] private string attackRefillSpeaker = "AI";
-        [SerializeField, TextArea] private string attackRefillText = "탄환형 에너지 코어가 모두 소모되었습니다. 코어를 다시 채웁니다. 침착하게 조준하세요.";
-
         private TutorialTrainingEnemy activeEnemy;
         private TutorialTrainingEnemy spawnedEnemy;
         private SkillLoadoutManager subscribedSkillManager;
         private BulletGauge subscribedPlayerBullets;
+        private Health subscribedPlayerHealth;
         private TutorialStepId activeStep;
         private int moveCount;
         private int shootCount;
@@ -75,6 +72,7 @@ namespace Week14.Tutorial
         private bool initialMovementLockReleased;
         private PlayerCombatController initialMovementLockedPlayer;
         private Coroutine tutorialRoutine;
+        private Coroutine deathRoutine;
 
         private void OnEnable()
         {
@@ -87,6 +85,7 @@ namespace Week14.Tutorial
             bulletTimeoutLockPushed = true;
             TrySubscribeSkillManager();
             TrySubscribePlayerBullets();
+            TrySubscribePlayerHealth();
         }
 
         private void OnDisable()
@@ -96,6 +95,7 @@ namespace Week14.Tutorial
             PlayerCombatController.AttackReceived -= HandlePlayerAttackReceived;
             UnsubscribeSkillManager();
             UnsubscribePlayerBullets();
+            UnsubscribePlayerHealth();
             ClearEnemySubscription();
             SetBossUiVisible(false);
             PopDialogueAdvanceInput();
@@ -113,6 +113,13 @@ namespace Week14.Tutorial
             {
                 StopCoroutine(tutorialRoutine);
                 tutorialRoutine = null;
+            }
+
+            if (deathRoutine != null)
+            {
+                StopCoroutine(deathRoutine);
+                deathRoutine = null;
+                Time.timeScale = 1f;
             }
 
             if (spawnedEnemy != null)
@@ -140,6 +147,7 @@ namespace Week14.Tutorial
             TryPushInitialMovementLock();
             TrySubscribeSkillManager();
             TrySubscribePlayerBullets();
+            TrySubscribePlayerHealth();
         }
 
         private IEnumerator RunTutorial()
@@ -264,11 +272,10 @@ namespace Week14.Tutorial
 
         private IEnumerator PlayDialogue(TutorialStepId step)
         {
-            TutorialStepContent content = dialogueSet != null
-                ? dialogueSet.GetStepOrDefault(step)
-                : TutorialDialogueSetSO.GetDefaultStep(step);
+            TutorialStepContent content = dialogueSet != null ? dialogueSet.GetStep(step) : null;
             if (content == null || dialoguePanel == null)
             {
+                Debug.LogWarning($"{nameof(TutorialSceneController)}: {step} dialogue is missing in TutorialDialogueSet.");
                 yield break;
             }
 
@@ -320,13 +327,7 @@ namespace Week14.Tutorial
         {
             attackRefillRequested = false;
             RestorePlayerBullets();
-
-            if (dialoguePanel != null && !string.IsNullOrWhiteSpace(attackRefillText))
-            {
-                PushDialogueAdvanceInput();
-                yield return PlayDialogueLine(attackRefillSpeaker, attackRefillText);
-                PopDialogueAdvanceInput();
-            }
+            yield return PlayDialogue(TutorialStepId.AttackRefill);
         }
 
         private void ActivateTrainingEnemy(TutorialTrainingEnemyMode mode)
@@ -529,12 +530,13 @@ namespace Week14.Tutorial
                 GameSaveManager.MarkTutorialCompleted();
             }
 
-            completed?.Invoke();
-
             if (returnToLobbyOnComplete)
             {
                 GameFlowController.ReturnToLobby(lobbySceneName);
+                return;
             }
+
+            completed?.Invoke();
         }
 
         private void TrySubscribeSkillManager()
@@ -593,6 +595,34 @@ namespace Week14.Tutorial
             subscribedPlayerBullets.Emptied -= HandlePlayerBulletsEmptied;
             subscribedPlayerBullets.Changed -= HandlePlayerBulletsChanged;
             subscribedPlayerBullets = null;
+        }
+
+        private void TrySubscribePlayerHealth()
+        {
+            PlayerCombatController activePlayer = PlayerCombatController.Active;
+            Health nextHealth = activePlayer != null ? activePlayer.Health : null;
+            if (subscribedPlayerHealth == nextHealth)
+            {
+                return;
+            }
+
+            UnsubscribePlayerHealth();
+            subscribedPlayerHealth = nextHealth;
+            if (subscribedPlayerHealth != null)
+            {
+                subscribedPlayerHealth.Died += HandlePlayerDied;
+            }
+        }
+
+        private void UnsubscribePlayerHealth()
+        {
+            if (subscribedPlayerHealth == null)
+            {
+                return;
+            }
+
+            subscribedPlayerHealth.Died -= HandlePlayerDied;
+            subscribedPlayerHealth = null;
         }
 
         private void RestorePlayerBullets()
@@ -704,6 +734,36 @@ namespace Week14.Tutorial
                 skillHitThisAttempt = true;
                 EnemyProjectile.DestroyAllActive();
             }
+        }
+
+        private void HandlePlayerDied(Health _)
+        {
+            if (deathRoutine != null)
+            {
+                return;
+            }
+
+            deathRoutine = StartCoroutine(RestartTutorialAfterDeath());
+        }
+
+        private IEnumerator RestartTutorialAfterDeath()
+        {
+            if (tutorialRoutine != null)
+            {
+                StopCoroutine(tutorialRoutine);
+                tutorialRoutine = null;
+            }
+
+            PopDialogueAdvanceInput();
+            ReleaseInitialMovementLock();
+            dialoguePanel?.Hide();
+
+            yield return PlayerDeathSequence.Play(PlayerCombatController.Active);
+
+            SetBossUiVisible(false);
+            activeEnemy?.Deactivate();
+            EnemyProjectile.DestroyAllActive();
+            GameFlowController.RestartCurrentScene();
         }
 
         private void TryPushInitialMovementLock()

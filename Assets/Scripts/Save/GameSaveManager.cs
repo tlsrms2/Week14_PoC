@@ -88,6 +88,24 @@ namespace Week14.Save
         public static bool HasCompletedTutorial => Data.hasCompletedTutorial;
         public static bool HasSeenEnding => Data.hasSeenEnding;
 
+        public static bool HasSeenStoryEpisode(string episodeId)
+        {
+            return !string.IsNullOrEmpty(episodeId)
+                && Data.seenStoryEpisodeIds.Contains(episodeId);
+        }
+
+        public static void MarkStoryEpisodeSeen(string episodeId)
+        {
+            if (string.IsNullOrEmpty(episodeId)
+                || Data.seenStoryEpisodeIds.Contains(episodeId))
+            {
+                return;
+            }
+
+            Data.seenStoryEpisodeIds.Add(episodeId);
+            Save();
+        }
+
         public static void MarkSynopsisSeen()
         {
             if (Data.hasSeenSynopsis)
@@ -134,7 +152,8 @@ namespace Week14.Save
         {
             bool changed = Data.hasSeenSynopsis
                 || Data.hasCompletedTutorial
-                || Data.hasSeenEnding;
+                || Data.hasSeenEnding
+                || Data.seenStoryEpisodeIds.Count > 0;
 
             if (!changed)
             {
@@ -144,6 +163,7 @@ namespace Week14.Save
             Data.hasSeenSynopsis = false;
             Data.hasCompletedTutorial = false;
             Data.hasSeenEnding = false;
+            Data.seenStoryEpisodeIds.Clear();
             Save();
         }
 
@@ -355,7 +375,21 @@ namespace Week14.Save
                 data = new GameSaveData();
             }
 
+            NormalizeLoadedData();
             UnlockBoss(FirstBossId);
+        }
+
+        private static void NormalizeLoadedData()
+        {
+            data ??= new GameSaveData();
+            data.unlockedBossIds ??= new List<string>();
+            data.clearedBossIds ??= new List<string>();
+            data.unlockedSkillIds ??= new List<string>();
+            data.unlockedWeaponIds ??= new List<string>();
+            data.equippedSkills ??= new List<SkillSlotData>();
+            data.seenStoryEpisodeIds ??= new List<string>();
+            data.completedChallengeIds ??= new List<string>();
+            data.challengeCounters ??= new List<ChallengeCounterEntry>();
         }
 
         public static void Save()
