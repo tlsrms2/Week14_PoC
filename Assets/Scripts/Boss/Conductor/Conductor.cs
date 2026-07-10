@@ -17,7 +17,6 @@ namespace Week14.Enemy
 
         [SerializeField, Min(0f)] private float bodyHitDamageMultiplier = 1f;
         [SerializeField, Min(0f)] private float minionHitDamageMultiplier = 0.5f;
-        [SerializeField, Range(0f, 1f)] private float minionOutlineIdleAlpha = 0.3f;
         [SerializeField, Min(0f)] private float minionOutlineFlashSeconds = 0.12f;
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
@@ -27,12 +26,14 @@ namespace Week14.Enemy
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
         private readonly Dictionary<Minion, Coroutine> outlineFlashRoutines = new();
         private readonly Dictionary<Minion, MovementPathIndicatorState> movementPathIndicators = new();
+        private int minionOutlineVisibleLocks;
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
         private static Material movementPathIndicatorMaterial;
 
         protected override bool RotatesBodyToPlayer => false;
+        protected override bool ShouldUseExecutionAvailableBodyColor => false;
         public IReadOnlyList<ConductorConductingPattern> ConductingPatterns => conductingPatterns;
 
         public override bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
@@ -158,7 +159,9 @@ namespace Week14.Enemy
         public IEnumerator PlayConductingPattern(
             string patternId,
             BossActionContext context,
-            ConductorConductingCueSettings settings)
+            ConductorConductingCueSettings settings,
+            System.Func<bool> shouldCancel = null,
+            bool holdMinionOutlineAfterCue = false)
         {
             if (!TryGetConductingPattern(patternId, out ConductorConductingPattern pattern)
                 || pattern == null
@@ -176,38 +179,83 @@ namespace Week14.Enemy
 
             ConductorConductingPatternVisual visual = visualObject.AddComponent<ConductorConductingPatternVisual>();
             visual.Configure(pattern, settings);
+
             context?.RegisterTransientVisual(visualObject);
 
-            IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
-            for (int i = 0; i < strokes.Count; i++)
+            bool releaseMinionOutlineOnCueEnd = false;
+            try
             {
-                ConductorConductingStroke stroke = strokes[i];
-                if (stroke == null || !stroke.HasDrawablePoints)
+                IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
+                for (int i = 0; i < strokes.Count; i++)
                 {
-                    continue;
+                    if (ShouldCancelConductingPattern(shouldCancel))
+                    {
+                        yield break;
+                    }
+
+                    ConductorConductingStroke stroke = strokes[i];
+                    if (stroke == null || !stroke.HasDrawablePoints)
+                    {
+                        continue;
+                    }
+
+                    yield return DrawConductingStroke(context, visual, i, stroke, settings, shouldCancel);
+                    if (ShouldCancelConductingPattern(shouldCancel))
+                    {
+                        yield break;
+                    }
+
+                    if (settings.StrokeIntervalSeconds > 0f)
+                    {
+                        yield return WaitConductingSeconds(context, settings.StrokeIntervalSeconds, settings.StopMovement, shouldCancel);
+                    }
                 }
 
-                yield return DrawConductingStroke(context, visual, i, stroke, settings);
-                if (settings.StrokeIntervalSeconds > 0f)
+                if (settings.CompletedFlashSeconds > 0f)
                 {
-                    yield return WaitConductingSeconds(context, settings.StrokeIntervalSeconds, settings.StopMovement);
+                    visual.ApplyFlashStyle();
+                    BeginMinionOutlinePatternVisibility();
+                    if (holdMinionOutlineAfterCue && context != null)
+                    {
+                        context.RegisterConductorMinionOutlineHold();
+                    }
+                    else
+                    {
+                        releaseMinionOutlineOnCueEnd = true;
+                    }
+
+                    yield return WaitConductingSeconds(
+                        context,
+                        settings.CompletedFlashSeconds,
+                        settings.StopMovement,
+                        shouldCancel);
+                }
+
+                visual.ApplyCompletedStyle();
+
+                if (settings.HoldSeconds > 0f)
+                {
+                    yield return WaitConductingSeconds(context, settings.HoldSeconds, settings.StopMovement, shouldCancel);
+                }
+
+                if (settings.FadeSeconds > 0f)
+                {
+                    yield return FadeConductingVisual(context, visual, settings.FadeSeconds, settings.StopMovement, shouldCancel);
                 }
             }
-
-            if (settings.HoldSeconds > 0f)
+            finally
             {
-                yield return WaitConductingSeconds(context, settings.HoldSeconds, settings.StopMovement);
-            }
+                if (releaseMinionOutlineOnCueEnd)
+                {
+                    EndMinionOutlinePatternVisibility();
+                }
 
-            if (settings.FadeSeconds > 0f)
-            {
-                yield return FadeConductingVisual(context, visual, settings.FadeSeconds, settings.StopMovement);
-            }
+                context?.UnregisterTransientVisual(visualObject);
 
-            context?.UnregisterTransientVisual(visualObject);
-            if (visual != null)
-            {
-                visual.ClearAndDestroy();
+                if (visual != null)
+                {
+                    visual.ClearAndDestroy();
+                }
             }
         }
 
@@ -417,6 +465,7 @@ namespace Week14.Enemy
             spawnedMinionOutlines.Clear();
             outlineFlashRoutines.Clear();
             movementPathIndicators.Clear();
+            minionOutlineVisibleLocks = 0;
         }
 
         private void TrackMinionOutline(Minion minion)
@@ -433,6 +482,11 @@ namespace Week14.Enemy
 
         private void FlashMinionOutline(Minion minion)
         {
+            if (minionOutlineVisibleLocks <= 0)
+            {
+                return;
+            }
+
             if (minion == null || !spawnedMinionOutlines.TryGetValue(minion, out Transform outline) || outline == null)
             {
                 return;
@@ -464,6 +518,62 @@ namespace Week14.Enemy
             }
 
             outlineFlashRoutines.Remove(minion);
+        }
+
+        public void ReleaseMinionOutlinePatternVisibilityHold()
+        {
+            EndMinionOutlinePatternVisibility();
+        }
+
+        public void ClearMinionOutlinePatternVisibility()
+        {
+            minionOutlineVisibleLocks = 0;
+            StopAllMinionOutlineFlashRoutines();
+            ApplyAllMinionOutlineIdle();
+        }
+
+        private void BeginMinionOutlinePatternVisibility()
+        {
+            minionOutlineVisibleLocks++;
+            ApplyAllMinionOutlineIdle();
+        }
+
+        private void EndMinionOutlinePatternVisibility()
+        {
+            if (minionOutlineVisibleLocks <= 0)
+            {
+                return;
+            }
+
+            minionOutlineVisibleLocks--;
+            if (minionOutlineVisibleLocks > 0)
+            {
+                return;
+            }
+
+            StopAllMinionOutlineFlashRoutines();
+            ApplyAllMinionOutlineIdle();
+        }
+
+        private void StopAllMinionOutlineFlashRoutines()
+        {
+            foreach (Coroutine routine in outlineFlashRoutines.Values)
+            {
+                if (routine != null)
+                {
+                    StopCoroutine(routine);
+                }
+            }
+
+            outlineFlashRoutines.Clear();
+        }
+
+        private void ApplyAllMinionOutlineIdle()
+        {
+            foreach (Transform outline in spawnedMinionOutlines.Values)
+            {
+                ApplyMinionOutlineIdle(outline);
+            }
         }
 
         private void UntrackMinionOutline(Minion minion)
@@ -498,7 +608,7 @@ namespace Week14.Enemy
             }
 
             outline.gameObject.SetActive(true);
-            SetMinionOutlineAlpha(outline, minionOutlineIdleAlpha);
+            SetMinionOutlineAlpha(outline, minionOutlineVisibleLocks > 0 ? 1f : 0f);
         }
 
         private static void SetMinionOutlineAlpha(Transform outline, float alpha)
@@ -546,7 +656,8 @@ namespace Week14.Enemy
             ConductorConductingPatternVisual visual,
             int strokeIndex,
             ConductorConductingStroke stroke,
-            ConductorConductingCueSettings settings)
+            ConductorConductingCueSettings settings,
+            System.Func<bool> shouldCancel)
         {
             if (visual == null || stroke == null)
             {
@@ -558,7 +669,7 @@ namespace Week14.Enemy
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (visual == null)
+                if (visual == null || ShouldCancelConductingPattern(shouldCancel))
                 {
                     yield break;
                 }
@@ -575,8 +686,11 @@ namespace Week14.Enemy
                     context?.Stop();
                 }
 
-                elapsed += EnemyTimeScale.DeltaTime;
-                visual.SetStrokeProgress(strokeIndex, Mathf.Clamp01(elapsed / duration));
+                float deltaTime = EnemyTimeScale.DeltaTime;
+                elapsed += deltaTime;
+                float progress = EaseConductingStrokeProgress(elapsed / duration);
+                visual.SetStrokeProgress(strokeIndex, progress);
+
                 yield return null;
             }
 
@@ -586,14 +700,26 @@ namespace Week14.Enemy
             }
         }
 
+        private static float EaseConductingStrokeProgress(float progress)
+        {
+            float t = Mathf.Clamp01(progress);
+            return t * t * t;
+        }
+
         private static IEnumerator WaitConductingSeconds(
             BossActionContext context,
             float seconds,
-            bool stopMovement)
+            bool stopMovement,
+            System.Func<bool> shouldCancel)
         {
             float remainingSeconds = Mathf.Max(0f, seconds);
             while (remainingSeconds > 0f)
             {
+                if (ShouldCancelConductingPattern(shouldCancel))
+                {
+                    yield break;
+                }
+
                 if (context != null && context.IsExecutionPaused)
                 {
                     context.Stop();
@@ -615,18 +741,20 @@ namespace Week14.Enemy
             BossActionContext context,
             ConductorConductingPatternVisual visual,
             float seconds,
-            bool stopMovement)
+            bool stopMovement,
+            System.Func<bool> shouldCancel)
         {
             if (visual == null)
             {
                 yield break;
             }
 
+            visual.ApplyCompletedStyle();
             float duration = Mathf.Max(0.01f, seconds);
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (visual == null)
+                if (visual == null || ShouldCancelConductingPattern(shouldCancel))
                 {
                     yield break;
                 }
@@ -644,14 +772,21 @@ namespace Week14.Enemy
                 }
 
                 elapsed += EnemyTimeScale.DeltaTime;
+                visual.ApplyCompletedStyle();
                 visual.SetAlpha(1f - Mathf.Clamp01(elapsed / duration));
                 yield return null;
             }
 
             if (visual != null)
             {
+                visual.ApplyCompletedStyle();
                 visual.SetAlpha(0f);
             }
+        }
+
+        private static bool ShouldCancelConductingPattern(System.Func<bool> shouldCancel)
+        {
+            return shouldCancel?.Invoke() == true;
         }
 
         private MovementPathIndicatorState GetMovementPathIndicatorState(Minion minion)

@@ -71,7 +71,12 @@ namespace Week14.Combat
             Health health = context.Health;
             BulletGauge bullets = context.Bullets;
 
-            if (context.IsExecuting || context.IsDashing || health == null || health.IsDead || config == null)
+            if (PlayerCombatController.IsExternallyInvulnerable
+                || context.IsExecuting
+                || context.IsDashing
+                || health == null
+                || health.IsDead
+                || config == null)
             {
                 return false;
             }
@@ -97,6 +102,7 @@ namespace Week14.Combat
                 config.PlayerHitFlameCount,
                 config.PlayerHitEffectScale);
             context.CameraFollow?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
+            context.Owner.NotifyAttackReceived();
             PlayerHitByEnemy?.Invoke(bulletDamage);
             return true;
         }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Skills;
+using Week14.Story;
 using Week14.UI;
 using Week14.Weapons;
 #if ENABLE_INPUT_SYSTEM
@@ -43,6 +44,16 @@ namespace Week14.Save
         [SerializeField] private BaseWeaponSO targetWeapon;
         [Tooltip("'테스트 포인트 지급'이 지급할 챌린지 포인트 양입니다.")]
         [SerializeField] private int debugPointsToGrant = 100;
+
+        [Header("스토리 토글")]
+        [SerializeField] private bool synopsisSeen;
+        [SerializeField] private bool tutorialCompleted;
+        [SerializeField] private bool act1Seen;
+        [SerializeField] private bool act2Seen;
+        [SerializeField] private bool act3Seen;
+        [SerializeField] private bool finalBossAftermathSeen;
+        [SerializeField] private bool epilogueSeen;
+        [SerializeField] private bool endingSeen;
 
         private void Update()
         {
@@ -87,6 +98,134 @@ namespace Week14.Save
             LockAllBosses();
             LockAllWeapons();
             Debug.Log("[DevUnlockTools] 모든 스킬/패시브/보스/총기 해금을 되돌렸습니다.");
+        }
+
+        [ContextMenu("스토리 토글/1. 전체 초기화")]
+        public void ClearStoryToggles()
+        {
+            GameSaveManager.ResetStoryProgress();
+            PullStoryTogglesFromSave();
+            Debug.Log("[DevUnlockTools] 스토리 진행 상태를 리셋했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/2. 시눕시스 완료")]
+        public void CompleteSynopsis()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: false,
+                act1: false,
+                act2: false,
+                act3: false,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            Debug.Log("[DevUnlockTools] 시눕시스 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/3. 튜토리얼 완료")]
+        public void CompleteTutorial()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: false,
+                act2: false,
+                act3: false,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            Debug.Log("[DevUnlockTools] 튜토리얼 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/4. Act1 완료")]
+        public void CompleteAct1()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: false,
+                act3: false,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            Debug.Log("[DevUnlockTools] Act1 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/5. Act2 완료")]
+        public void CompleteAct2()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: true,
+                act3: false,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            Debug.Log("[DevUnlockTools] Act2 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/6. Act3 완료")]
+        public void CompleteAct3()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: true,
+                act3: true,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            Debug.Log("[DevUnlockTools] Act3 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/7. 최종 보스 완료")]
+        public void CompleteFinalBoss()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: true,
+                act3: true,
+                finalBossAftermath: true,
+                epilogue: false,
+                ending: false);
+            Debug.Log("[DevUnlockTools] 최종 보스 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/8. 에필로그 완료")]
+        public void CompleteEpilogue()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: true,
+                act3: true,
+                finalBossAftermath: true,
+                epilogue: true,
+                ending: false);
+            Debug.Log("[DevUnlockTools] 에필로그 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/9. 엔딩 완료")]
+        public void CompleteEnding()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: true,
+                act3: true,
+                finalBossAftermath: true,
+                epilogue: true,
+                ending: true);
+            Debug.Log("[DevUnlockTools] 엔딩 완료 상태로 변경했습니다.");
         }
 
         [ContextMenu("스킬 전체 해금")]
@@ -331,6 +470,54 @@ namespace Week14.Save
             }
 
             GameSaveManager.LockWeapon(targetWeapon.WeaponId);
+        }
+
+        private static bool IsStorySeen(StoryEpisodeId episodeId)
+        {
+            return GameSaveManager.HasSeenStoryEpisode(GetStorySaveId(episodeId));
+        }
+
+        private static void SetStorySeen(StoryEpisodeId episodeId, bool seen)
+        {
+            GameSaveManager.SetStoryEpisodeSeen(GetStorySaveId(episodeId), seen);
+        }
+
+        private void PullStoryTogglesFromSave()
+        {
+            synopsisSeen = GameSaveManager.HasSeenSynopsis;
+            tutorialCompleted = GameSaveManager.HasCompletedTutorial;
+            endingSeen = GameSaveManager.HasSeenEnding;
+            act1Seen = IsStorySeen(StoryEpisodeId.Act1);
+            act2Seen = IsStorySeen(StoryEpisodeId.Act2);
+            act3Seen = IsStorySeen(StoryEpisodeId.Act3);
+            finalBossAftermathSeen = IsStorySeen(StoryEpisodeId.FinalBossAftermath);
+            epilogueSeen = IsStorySeen(StoryEpisodeId.Epilogue);
+        }
+
+        private void SetStoryProgress(
+            bool synopsis,
+            bool tutorial,
+            bool act1,
+            bool act2,
+            bool act3,
+            bool finalBossAftermath,
+            bool epilogue,
+            bool ending)
+        {
+            GameSaveManager.SetSynopsisSeen(synopsis);
+            GameSaveManager.SetTutorialCompleted(tutorial);
+            GameSaveManager.SetEndingSeen(ending);
+            SetStorySeen(StoryEpisodeId.Act1, act1);
+            SetStorySeen(StoryEpisodeId.Act2, act2);
+            SetStorySeen(StoryEpisodeId.Act3, act3);
+            SetStorySeen(StoryEpisodeId.FinalBossAftermath, finalBossAftermath);
+            SetStorySeen(StoryEpisodeId.Epilogue, epilogue);
+            PullStoryTogglesFromSave();
+        }
+
+        private static string GetStorySaveId(StoryEpisodeId episodeId)
+        {
+            return episodeId.ToString();
         }
     }
 }

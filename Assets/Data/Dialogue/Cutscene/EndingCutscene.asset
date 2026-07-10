@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
+  m_Name: EndingCutscene
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
+  cutsceneId: Ending
+  skippable: 1
+  steps:
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "\uC8FC\uC778\uACF5"
+      text: "\uC5D4\uB529"
+    - name: "\uC8FC\uC778\uACF5"
+      text: "\uCD95\uD558\uD569\uB2C8\uB2E4"
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 3
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0

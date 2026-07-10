@@ -56,6 +56,7 @@ namespace Week14.Combat
             ownerBullets = nextOwnerBullets;
             ownerBoss = ownerBullets != null ? ownerBullets.GetComponentInParent<BossAI>() : null;
             ownerMinion = ownerBullets != null ? ownerBullets.GetComponentInParent<Minion>() : null;
+            ownerTransform = ownerBullets != null ? ownerBullets.transform : null;
             if (!activeProjectiles.Contains(this))
             {
                 activeProjectiles.Add(this);
@@ -255,6 +256,7 @@ namespace Week14.Combat
             ownerBullets = null;
             ownerBoss = null;
             ownerMinion = null;
+            ownerTransform = null;
             bulletDamage = 0;
             flightDirection = Vector2.up;
             baseLocalScale = transform.localScale;

@@ -684,14 +684,19 @@ namespace Week14.UI
         private float hitShakeStartedAt;
         private float hitShakeEndsAt;
         private readonly List<float> bulletLoadedTimes = new(VisibleSlotCount);
+        private static readonly List<PlayerHP> instances = new();
+        private static int bulletTimeoutLockCount;
         private int pendingExpiredBulletIndex = -1;
         private int lastExpiredBulletIndex = -1;
         private bool isNewestBulletFrozen;
         private float frozenNewestBulletAge;
         private bool preserveBulletTimersOnNextEnable;
 
+        public static bool AreBulletTimeoutsLocked => bulletTimeoutLockCount > 0;
+
         private void OnEnable()
         {
+            RegisterInstance();
             bool preserveBulletTimers = preserveBulletTimersOnNextEnable;
             preserveBulletTimersOnNextEnable = false;
             if (!preserveBulletTimers)
@@ -718,6 +723,7 @@ namespace Week14.UI
         private void OnDisable()
         {
             Unsubscribe();
+            instances.Remove(this);
         }
 
         private void Update()
@@ -753,6 +759,71 @@ namespace Week14.UI
             }
 
             isNewestBulletFrozen = freeze;
+        }
+
+        public static void PushBulletTimeoutLock()
+        {
+            bulletTimeoutLockCount++;
+            RefreshTimeoutVisualsForAll();
+        }
+
+        public static void PopBulletTimeoutLock(bool startCurrentBulletTimers)
+        {
+            if (bulletTimeoutLockCount <= 0)
+            {
+                return;
+            }
+
+            bulletTimeoutLockCount--;
+            if (!AreBulletTimeoutsLocked && startCurrentBulletTimers)
+            {
+                StartCurrentBulletTimersForAll();
+                return;
+            }
+
+            RefreshTimeoutVisualsForAll();
+        }
+
+        public static void ResetCurrentBulletTimeouts()
+        {
+            if (AreBulletTimeoutsLocked)
+            {
+                RefreshTimeoutVisualsForAll();
+                return;
+            }
+
+            StartCurrentBulletTimersForAll();
+        }
+
+        private void RegisterInstance()
+        {
+            if (!instances.Contains(this))
+            {
+                instances.Add(this);
+            }
+        }
+
+        private static void StartCurrentBulletTimersForAll()
+        {
+            for (int i = 0; i < instances.Count; i++)
+            {
+                instances[i]?.StartCurrentBulletTimers();
+            }
+        }
+
+        private static void RefreshTimeoutVisualsForAll()
+        {
+            for (int i = 0; i < instances.Count; i++)
+            {
+                instances[i]?.UpdateTimeoutVisuals();
+            }
+        }
+
+        private void StartCurrentBulletTimers()
+        {
+            int current = target != null ? Mathf.Max(0, target.CurrentBullets) : 0;
+            ResetBulletTimers(current, true, Time.time);
+            UpdateTimeoutVisuals();
         }
 
         private float ComputeNewestBulletAge()
@@ -1027,6 +1098,12 @@ namespace Week14.UI
             float now = Time.time;
             lastExpiredBulletIndex = -1;
 
+            if (AreBulletTimeoutsLocked)
+            {
+                ResetBulletTimers(targetCount, false, now);
+                return;
+            }
+
             if (source == BulletChangeSource.CombatStart)
             {
                 ResetBulletTimers(targetCount, true, now);
@@ -1093,6 +1170,11 @@ namespace Week14.UI
         private void TickBulletTimeouts()
         {
             if (target == null || bulletLifetimeSeconds <= 0f || bulletLoadedTimes.Count <= 0)
+            {
+                return;
+            }
+
+            if (AreBulletTimeoutsLocked)
             {
                 return;
             }
@@ -1171,7 +1253,8 @@ namespace Week14.UI
 
         private bool IsTimedBullet(int index)
         {
-            return index >= 0
+            return !AreBulletTimeoutsLocked
+                && index >= 0
                 && index < bulletLoadedTimes.Count
                 && bulletLoadedTimes[index] >= 0f;
         }

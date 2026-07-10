@@ -1,5 +1,5 @@
 using UnityEngine;
-using Week14.Bootstrap;
+using Week14.GameFlow;
 
 namespace Week14.UI
 {
@@ -42,7 +42,7 @@ namespace Week14.UI
                 return;
             }
 
-            SceneTransition.LoadScene(selectedBossData.SceneName);
+            GameFlowController.EnterBoss(selectedBossData);
         }
 
         private void ClearSelection()

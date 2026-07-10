@@ -173,10 +173,7 @@ namespace Week14.Combat
 
         public void PlayShot()
         {
-            if (leftArmAnimator != null)
-            {
-                leftArmAnimator.SetTrigger(DoShotParameter);
-            }
+            SetTriggerIfExists(leftArmAnimator, DoShotParameter);
         }
 
         public void PlayDeath()
@@ -223,56 +220,23 @@ namespace Week14.Combat
 
         public void PlayIntercept()
         {
-            if (frontRightArmAnimator != null)
-            {
-                frontRightArmAnimator.SetTrigger(DoInterceptParameter);
-            }
-
-            if (sideRightArmAnimator != null)
-            {
-                sideRightArmAnimator.SetTrigger(DoInterceptParameter);
-            }
-
-            if (backRightArmAnimator != null)
-            {
-                backRightArmAnimator.SetTrigger(DoInterceptParameter);
-            }
+            SetTriggerIfExists(frontRightArmAnimator, DoInterceptParameter);
+            SetTriggerIfExists(sideRightArmAnimator, DoInterceptParameter);
+            SetTriggerIfExists(backRightArmAnimator, DoInterceptParameter);
         }
 
         public void PlayReload()
         {
-            if (frontRightArmAnimator != null)
-            {
-                frontRightArmAnimator.SetTrigger(DoReloadParameter);
-            }
-
-            if (sideRightArmAnimator != null)
-            {
-                sideRightArmAnimator.SetTrigger(DoReloadParameter);
-            }
-
-            if (backRightArmAnimator != null)
-            {
-                backRightArmAnimator.SetTrigger(DoReloadParameter);
-            }
+            SetTriggerIfExists(frontRightArmAnimator, DoReloadParameter);
+            SetTriggerIfExists(sideRightArmAnimator, DoReloadParameter);
+            SetTriggerIfExists(backRightArmAnimator, DoReloadParameter);
         }
 
         public void PlayRoll(float duration)
         {
-            if (frontBodyAnimator != null)
-            {
-                frontBodyAnimator.SetTrigger(DoRollParameter);
-            }
-
-            if (sideBodyAnimator != null)
-            {
-                sideBodyAnimator.SetTrigger(DoRollParameter);
-            }
-
-            if (backBodyAnimator != null)
-            {
-                backBodyAnimator.SetTrigger(DoRollParameter);
-            }
+            SetTriggerIfExists(frontBodyAnimator, DoRollParameter);
+            SetTriggerIfExists(sideBodyAnimator, DoRollParameter);
+            SetTriggerIfExists(backBodyAnimator, DoRollParameter);
 
             if (visualRoot != null && duration > 0f)
             {
@@ -303,6 +267,34 @@ namespace Week14.Combat
 
             visualRoot.localRotation = startRotation;
             rollSpinRoutine = null;
+        }
+
+        private static void SetTriggerIfExists(Animator animator, int parameterHash)
+        {
+            if (animator == null || !HasParameter(animator, parameterHash, AnimatorControllerParameterType.Trigger))
+            {
+                return;
+            }
+
+            animator.SetTrigger(parameterHash);
+        }
+
+        private static bool HasParameter(
+            Animator animator,
+            int parameterHash,
+            AnimatorControllerParameterType parameterType)
+        {
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                AnimatorControllerParameter parameter = parameters[i];
+                if (parameter.nameHash == parameterHash && parameter.type == parameterType)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void ResolveReferences()

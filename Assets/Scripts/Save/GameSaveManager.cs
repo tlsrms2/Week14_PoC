@@ -84,6 +84,178 @@ namespace Week14.Save
             Save();
         }
 
+        public static bool HasSeenSynopsis => Data.hasSeenSynopsis;
+        public static bool HasCompletedTutorial => Data.hasCompletedTutorial;
+        public static bool HasSeenEnding => Data.hasSeenEnding;
+
+        public static bool HasSeenStoryEpisode(string episodeId)
+        {
+            return !string.IsNullOrEmpty(episodeId)
+                && Data.seenStoryEpisodeIds.Contains(episodeId);
+        }
+
+        public static void MarkStoryEpisodeSeen(string episodeId)
+        {
+            if (string.IsNullOrEmpty(episodeId)
+                || Data.seenStoryEpisodeIds.Contains(episodeId))
+            {
+                return;
+            }
+
+            Data.seenStoryEpisodeIds.Add(episodeId);
+            Save();
+        }
+
+        public static void SetStoryEpisodeSeen(string episodeId, bool seen)
+        {
+            if (string.IsNullOrEmpty(episodeId))
+            {
+                return;
+            }
+
+            bool changed = seen
+                ? AddIfMissing(Data.seenStoryEpisodeIds, episodeId)
+                : Data.seenStoryEpisodeIds.Remove(episodeId);
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
+        public static void MarkSynopsisSeen()
+        {
+            if (Data.hasSeenSynopsis)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = true;
+            Save();
+        }
+
+        public static void SetSynopsisSeen(bool seen)
+        {
+            if (Data.hasSeenSynopsis == seen)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = seen;
+            Save();
+        }
+
+        public static void MarkTutorialCompleted()
+        {
+            bool changed = !Data.hasCompletedTutorial;
+            if (!Data.hasCompletedTutorial)
+            {
+                Data.hasCompletedTutorial = true;
+            }
+
+            if (!Data.unlockedBossIds.Contains(FirstBossId))
+            {
+                Data.unlockedBossIds.Add(FirstBossId);
+                changed = true;
+            }
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
+        public static void SetTutorialCompleted(bool completed)
+        {
+            if (completed)
+            {
+                MarkTutorialCompleted();
+                return;
+            }
+
+            if (!Data.hasCompletedTutorial)
+            {
+                return;
+            }
+
+            Data.hasCompletedTutorial = false;
+            Save();
+        }
+
+        public static void MarkEndingSeen()
+        {
+            if (Data.hasSeenEnding)
+            {
+                return;
+            }
+
+            Data.hasSeenEnding = true;
+            Save();
+        }
+
+        public static void SetEndingSeen(bool seen)
+        {
+            if (Data.hasSeenEnding == seen)
+            {
+                return;
+            }
+
+            Data.hasSeenEnding = seen;
+            Save();
+        }
+
+        public static void ResetStoryProgress()
+        {
+            bool changed = Data.hasSeenSynopsis
+                || Data.hasCompletedTutorial
+                || Data.hasSeenEnding
+                || Data.seenStoryEpisodeIds.Count > 0;
+
+            if (!changed)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = false;
+            Data.hasCompletedTutorial = false;
+            Data.hasSeenEnding = false;
+            Data.seenStoryEpisodeIds.Clear();
+            Save();
+        }
+
+        public static void ResetSynopsisSeen()
+        {
+            if (!Data.hasSeenSynopsis)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = false;
+            Save();
+        }
+
+        public static void ResetTutorialCompleted()
+        {
+            if (!Data.hasCompletedTutorial)
+            {
+                return;
+            }
+
+            Data.hasCompletedTutorial = false;
+            Save();
+        }
+
+        public static void ResetEndingSeen()
+        {
+            if (!Data.hasSeenEnding)
+            {
+                return;
+            }
+
+            Data.hasSeenEnding = false;
+            Save();
+        }
+
         public static IReadOnlyList<string> UnlockedSkillIds => Data.unlockedSkillIds;
 
         public static bool IsSkillUnlocked(string skillId)
@@ -426,7 +598,32 @@ namespace Week14.Save
                 data = new GameSaveData();
             }
 
+            NormalizeLoadedData();
             UnlockBoss(FirstBossId);
+        }
+
+        private static void NormalizeLoadedData()
+        {
+            data ??= new GameSaveData();
+            data.unlockedBossIds ??= new List<string>();
+            data.clearedBossIds ??= new List<string>();
+            data.unlockedSkillIds ??= new List<string>();
+            data.unlockedWeaponIds ??= new List<string>();
+            data.equippedSkills ??= new List<SkillSlotData>();
+            data.seenStoryEpisodeIds ??= new List<string>();
+            data.completedChallengeIds ??= new List<string>();
+            data.challengeCounters ??= new List<ChallengeCounterEntry>();
+        }
+
+        private static bool AddIfMissing(List<string> list, string value)
+        {
+            if (list == null || string.IsNullOrEmpty(value) || list.Contains(value))
+            {
+                return false;
+            }
+
+            list.Add(value);
+            return true;
         }
 
         public static void Save()

@@ -28,6 +28,10 @@ namespace Week14.Save
         public List<SkillSlotData> equippedSkills = new();
         public List<SkillSlotData> equippedPassiveSkills = new();
         public string equippedWeaponId;
+        public bool hasSeenSynopsis;
+        public bool hasCompletedTutorial;
+        public bool hasSeenEnding;
+        public List<string> seenStoryEpisodeIds = new();
         public List<string> completedChallengeIds = new();
         public List<ChallengeCounterEntry> challengeCounters = new();
         public int challengePoints;

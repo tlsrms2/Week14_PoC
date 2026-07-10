@@ -15,7 +15,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public class MinionConductorScoreLaneRushAction : BossAction
+    public class MinionConductorScoreLaneRushAction : BossAction, IBossActionContextDurationProvider
     {
         [Serializable]
         public sealed class StartTiming
@@ -204,6 +204,22 @@ namespace Week14.Enemy
         protected float RestSeconds => Mathf.Max(0f, restSeconds);
         protected IReadOnlyList<StartTiming> StartTimings => startTimings;
         internal IReadOnlyList<Volley> SerializedVolleysForGraphCopy => volleys;
+
+        public virtual bool TryGetDurationSeconds(BossActionContext context, out float seconds)
+        {
+            int volleyCount = GetStandardEstimatedVolleyCount();
+            if (volleyCount <= 0)
+            {
+                seconds = 0f;
+                return false;
+            }
+
+            seconds = WindupSeconds
+                + GetStandardLaneIndicatorRevealDuration(volleyCount)
+                + EstimateVolleySequenceDuration(Volleys, volleyCount)
+                + GetStandardLaneIndicatorHideDuration();
+            return seconds > 0f;
+        }
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -507,6 +523,116 @@ namespace Week14.Enemy
 
             activeStandardLaneIndicators.ClearAndDestroy();
             activeStandardLaneIndicators = null;
+        }
+
+        protected float EstimateVolleySequenceDuration(IReadOnlyList<Volley> pool, int volleyCount)
+        {
+            int count = Mathf.Max(0, volleyCount);
+            float totalSeconds = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                bool hasNextVolley = i < count - 1;
+                totalSeconds += EstimateLongestVolleyWaitSeconds(pool, hasNextVolley);
+                if (hasNextVolley)
+                {
+                    totalSeconds += RestSeconds;
+                }
+            }
+
+            return totalSeconds;
+        }
+
+        protected static int CountAvailableVolleys(IReadOnlyList<Volley> pool)
+        {
+            int count = 0;
+            if (pool == null)
+            {
+                return count;
+            }
+
+            for (int i = 0; i < pool.Count; i++)
+            {
+                if (pool[i] != null)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private int GetStandardEstimatedVolleyCount()
+        {
+            int laneStepCount = useTwoSides ? 2 : 1;
+            return Mathf.Min(laneStepCount, CountAvailableVolleys(Volleys));
+        }
+
+        private float GetStandardLaneIndicatorRevealDuration(int volleyCount)
+        {
+            if (!standardDrawLaneIndicators)
+            {
+                return 0f;
+            }
+
+            int laneCount = Mathf.Max(0, volleyCount) * Mathf.Max(1, standardLaneIndicatorLineCount);
+            return laneCount * (Mathf.Max(0f, standardLaneIndicatorRevealSeconds)
+                + Mathf.Max(0f, standardLaneIndicatorRevealInterval));
+        }
+
+        private float GetStandardLaneIndicatorHideDuration()
+        {
+            return standardDrawLaneIndicators ? Mathf.Max(0f, standardLaneIndicatorHideSeconds) : 0f;
+        }
+
+        protected float EstimateLongestVolleyWaitSeconds(IReadOnlyList<Volley> pool, bool hasNextVolley)
+        {
+            float movementDuration = EstimateMovementDurationSeconds();
+            float longestSeconds = 0f;
+            if (pool == null)
+            {
+                return longestSeconds;
+            }
+
+            for (int i = 0; i < pool.Count; i++)
+            {
+                Volley volley = pool[i];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                float waitForMovementSeconds = (waitForDuration || hasNextVolley) ? movementDuration : 0f;
+                float waitSeconds = Mathf.Max(GetMaxFireSeconds(volley.FireTimings), waitForMovementSeconds);
+                longestSeconds = Mathf.Max(longestSeconds, waitSeconds);
+            }
+
+            return longestSeconds;
+        }
+
+        private float EstimateMovementDurationSeconds()
+        {
+            return MoveToStartSeconds
+                + GetMaxStartDelaySeconds(StartTimings)
+                + (RushDistance / RushSpeed);
+        }
+
+        private static float GetMaxStartDelaySeconds(IReadOnlyList<StartTiming> timings)
+        {
+            float maxSeconds = 0f;
+            if (timings == null)
+            {
+                return maxSeconds;
+            }
+
+            for (int i = 0; i < timings.Count; i++)
+            {
+                if (timings[i] != null)
+                {
+                    maxSeconds = Mathf.Max(maxSeconds, timings[i].StartSeconds);
+                }
+            }
+
+            return maxSeconds;
         }
 
         protected virtual List<ExecutionVolley> BuildExecutionVolleys()
@@ -825,7 +951,11 @@ namespace Week14.Enemy
 
         private static float GetMaxFireSeconds(ExecutionVolley volley)
         {
-            IReadOnlyList<FireTiming> timings = volley.FireTimings;
+            return GetMaxFireSeconds(volley.FireTimings);
+        }
+
+        protected static float GetMaxFireSeconds(IReadOnlyList<FireTiming> timings)
+        {
             float maxSeconds = 0f;
             if (timings == null)
             {
@@ -1084,7 +1214,7 @@ namespace Week14.Enemy
                 for (int i = 0; i < entries.Count; i++)
                 {
                     Entry entry = entries[i];
-                    if (!entry.Completed)
+                    if (!entry.Completed && entry.Projectile != null)
                     {
                         return entry;
                     }

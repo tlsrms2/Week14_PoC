@@ -32,6 +32,7 @@ namespace Week14.Bootstrap
         private Vector2 builtScreenSize;
 
         public static SceneTransition Instance => instance;
+        public static bool IsTransitioning => instance != null && instance.loadRoutine != null;
 
         private void Awake()
         {
@@ -73,6 +74,55 @@ namespace Week14.Bootstrap
             transition.BeginLoad(() => SceneManager.LoadSceneAsync(sceneName));
         }
 
+        public static void LoadSceneFromCovered(string sceneName)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName))
+            {
+                Debug.LogWarning("SceneTransition.LoadSceneFromCovered: sceneName is empty.");
+                return;
+            }
+
+            SceneTransition transition = GetExistingInstance();
+            if (transition == null)
+            {
+                Debug.LogWarning("SceneTransition instance is missing. Place SceneTransition in the first loaded scene.");
+                SceneManager.LoadScene(sceneName);
+                return;
+            }
+
+            transition.BeginLoad(() => SceneManager.LoadSceneAsync(sceneName), startCovered: true);
+        }
+
+        public static void LoadSceneAndKeepCovered(string sceneName)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName))
+            {
+                Debug.LogWarning("SceneTransition.LoadSceneAndKeepCovered: sceneName is empty.");
+                return;
+            }
+
+            SceneTransition transition = GetExistingInstance();
+            if (transition == null)
+            {
+                Debug.LogWarning("SceneTransition instance is missing. Place SceneTransition in the first loaded scene.");
+                SceneManager.LoadScene(sceneName);
+                return;
+            }
+
+            transition.BeginLoad(() => SceneManager.LoadSceneAsync(sceneName), leaveCovered: true);
+        }
+
+        public static void ReleaseCoveredScreen()
+        {
+            SceneTransition transition = GetExistingInstance();
+            if (transition == null || transition.loadRoutine != null)
+            {
+                return;
+            }
+
+            transition.SetOverlayVisible(false);
+        }
+
         public static void LoadScene(int buildIndex)
         {
             SceneTransition transition = GetExistingInstance();
@@ -97,23 +147,30 @@ namespace Week14.Bootstrap
             return instance;
         }
 
-        private void BeginLoad(Func<AsyncOperation> loadOperationFactory)
+        private void BeginLoad(Func<AsyncOperation> loadOperationFactory, bool startCovered = false, bool leaveCovered = false)
         {
             if (loadRoutine != null)
             {
                 return;
             }
 
-            loadRoutine = StartCoroutine(LoadSceneRoutine(loadOperationFactory));
+            loadRoutine = StartCoroutine(LoadSceneRoutine(loadOperationFactory, startCovered, leaveCovered));
         }
 
-        private IEnumerator LoadSceneRoutine(Func<AsyncOperation> loadOperationFactory)
+        private IEnumerator LoadSceneRoutine(Func<AsyncOperation> loadOperationFactory, bool startCovered, bool leaveCovered)
         {
             EnsureOverlay();
             SetOverlayVisible(true);
 
-            yield return AnimateBlocks(true, coverDuration);
-            yield return WaitUnscaled(holdDuration);
+            if (startCovered)
+            {
+                SetBlocksToState(true);
+            }
+            else
+            {
+                yield return AnimateBlocks(true, coverDuration);
+                yield return WaitUnscaled(holdDuration);
+            }
 
             AsyncOperation loadOperation;
             try
@@ -136,6 +193,13 @@ namespace Week14.Bootstrap
             EnsureOverlay();
             SetBlocksToState(true);
             yield return WaitUnscaled(holdDuration);
+
+            if (leaveCovered)
+            {
+                loadRoutine = null;
+                yield break;
+            }
+
             yield return AnimateBlocks(false, revealDuration);
 
             SetOverlayVisible(false);

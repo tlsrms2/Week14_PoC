@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Week14.Enemy;
+using Week14.Tutorial;
 using Week14.UI;
 
 namespace Week14.Combat
@@ -298,6 +299,11 @@ namespace Week14.Combat
             Health targetHealth = other.GetComponentInParent<Health>();
             if (targetHealth == null)
             {
+                if (other.isTrigger)
+                {
+                    return false;
+                }
+
                 if (forcedParryTarget != null)
                 {
                     return false;
@@ -351,6 +357,20 @@ namespace Week14.Combat
                 if (minion.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
                 {
                     ShowFloatingDamage(targetHealth, appliedDamage);
+                    NotifyNormalAttackDamage();
+                }
+
+                DestroyProjectile();
+                return true;
+            }
+
+            TutorialTrainingEnemy tutorialEnemy = targetHealth.GetComponent<TutorialTrainingEnemy>()
+                ?? targetHealth.GetComponentInParent<TutorialTrainingEnemy>();
+            if (tutorialEnemy != null)
+            {
+                if (tutorialEnemy.ReceivePlayerHit(bulletDamage, transform.position, flightDirection, projectileColor))
+                {
+                    ShowFloatingDamage(targetHealth, bulletDamage);
                     NotifyNormalAttackDamage();
                 }
 

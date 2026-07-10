@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Week14.Bootstrap;
 using Week14.Enemy;
@@ -16,6 +17,11 @@ namespace Week14.Combat
     {
         public static PlayerCombatController Active { get; private set; }
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
+        private static int externalCombatPermissionCount;
+        private static int leftAttackSuppressionCount;
+        private static int externalInvulnerabilityCount;
+
+        public static event Action<PlayerCombatController> AttackReceived;
 
         [SerializeField] private PlayerCombatConfig config;
         [SerializeField] private PlayerVisualRig visual;
@@ -101,10 +107,12 @@ namespace Week14.Combat
         private bool CanAct => !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
             && !health.IsDead;
-        private bool CanShoot => CanAct && BossAI.IsAnyCombatStarted;
+        private bool CanShoot => CanAct && (BossAI.IsAnyCombatStarted || externalCombatPermissionCount > 0);
+        private static bool IsLeftAttackSuppressed => leftAttackSuppressionCount > 0;
         private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
+        internal static bool IsExternallyInvulnerable => externalInvulnerabilityCount > 0;
         private bool IsWaitingForVictoryPanel => ExecutionController.IsWaitingForVictoryPanel;
 
         public void PushExternalMovementLock()
@@ -115,6 +123,36 @@ namespace Week14.Combat
         public void PopExternalMovementLock()
         {
             externalMovementLockCount = Mathf.Max(0, externalMovementLockCount - 1);
+        }
+
+        public static void PushExternalCombatPermission()
+        {
+            externalCombatPermissionCount++;
+        }
+
+        public static void PopExternalCombatPermission()
+        {
+            externalCombatPermissionCount = Mathf.Max(0, externalCombatPermissionCount - 1);
+        }
+
+        public static void PushLeftAttackSuppression()
+        {
+            leftAttackSuppressionCount++;
+        }
+
+        public static void PopLeftAttackSuppression()
+        {
+            leftAttackSuppressionCount = Mathf.Max(0, leftAttackSuppressionCount - 1);
+        }
+
+        public static void PushExternalInvulnerability()
+        {
+            externalInvulnerabilityCount++;
+        }
+
+        public static void PopExternalInvulnerability()
+        {
+            externalInvulnerabilityCount = Mathf.Max(0, externalInvulnerabilityCount - 1);
         }
 
         internal sealed class PlayerCombatContext
@@ -356,7 +394,13 @@ namespace Week14.Combat
             UpdateBodyColor();
             UpdateDashAutoParry();
 
-            if (GameInput.LeftAttackDown && CanAct)
+            bool isLeftAttackSuppressed = IsLeftAttackSuppressed;
+            if (isLeftAttackSuppressed && Shooter.IsCharging)
+            {
+                Shooter.EndCharge();
+            }
+
+            if (!isLeftAttackSuppressed && GameInput.LeftAttackDown && CanAct)
             {
                 if (!TryBeginExecution() && CanShoot)
                 {
@@ -364,12 +408,12 @@ namespace Week14.Combat
                 }
             }
 
-            if (GameInput.LeftAttackHeld && CanShoot)
+            if (!isLeftAttackSuppressed && GameInput.LeftAttackHeld && CanShoot)
             {
                 Shooter.HoldAttack(Time.deltaTime);
             }
 
-            if (GameInput.LeftAttackUp)
+            if (!isLeftAttackSuppressed && GameInput.LeftAttackUp)
             {
                 Shooter.ReleaseAttack();
             }
@@ -435,6 +479,11 @@ namespace Week14.Combat
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
         {
             return DamageReceiver.ReceiveAttack(bulletDamage, hitPosition, hitDirection);
+        }
+
+        internal void NotifyAttackReceived()
+        {
+            AttackReceived?.Invoke(this);
         }
 
         private void UpdateBodyColor(bool force = false)
