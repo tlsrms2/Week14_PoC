@@ -71,7 +71,12 @@ namespace Week14.Combat
             Health health = context.Health;
             BulletGauge bullets = context.Bullets;
 
-            if (context.IsExecuting || context.IsDashing || health == null || health.IsDead || config == null)
+            if (PlayerCombatController.IsExternallyInvulnerable
+                || context.IsExecuting
+                || context.IsDashing
+                || health == null
+                || health.IsDead
+                || config == null)
             {
                 return false;
             }

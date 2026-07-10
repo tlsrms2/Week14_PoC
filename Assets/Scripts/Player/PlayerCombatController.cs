@@ -19,6 +19,7 @@ namespace Week14.Combat
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
         private static int externalCombatPermissionCount;
         private static int leftAttackSuppressionCount;
+        private static int externalInvulnerabilityCount;
 
         public static event Action<PlayerCombatController> AttackReceived;
 
@@ -111,6 +112,7 @@ namespace Week14.Combat
         private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
+        internal static bool IsExternallyInvulnerable => externalInvulnerabilityCount > 0;
         private bool IsWaitingForVictoryPanel => ExecutionController.IsWaitingForVictoryPanel;
 
         public void PushExternalMovementLock()
@@ -141,6 +143,16 @@ namespace Week14.Combat
         public static void PopLeftAttackSuppression()
         {
             leftAttackSuppressionCount = Mathf.Max(0, leftAttackSuppressionCount - 1);
+        }
+
+        public static void PushExternalInvulnerability()
+        {
+            externalInvulnerabilityCount++;
+        }
+
+        public static void PopExternalInvulnerability()
+        {
+            externalInvulnerabilityCount = Mathf.Max(0, externalInvulnerabilityCount - 1);
         }
 
         internal sealed class PlayerCombatContext

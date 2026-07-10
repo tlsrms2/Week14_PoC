@@ -70,6 +70,7 @@ namespace Week14.Tutorial
         private bool skillUsedThisAttempt;
         private bool skillHitThisAttempt;
         private bool initialMovementLockReleased;
+        private bool completionInvulnerabilityPushed;
         private PlayerCombatController initialMovementLockedPlayer;
         private Coroutine tutorialRoutine;
         private Coroutine deathRoutine;
@@ -100,6 +101,7 @@ namespace Week14.Tutorial
             SetBossUiVisible(false);
             PopDialogueAdvanceInput();
             ReleaseInitialMovementLock();
+            PopCompletionInvulnerability();
 
             if (combatPermissionPushed)
             {
@@ -524,6 +526,7 @@ namespace Week14.Tutorial
             activeStep = TutorialStepId.Complete;
             SetBossUiVisible(false);
             activeEnemy?.Deactivate();
+            EnemyProjectile.DestroyAllActive();
 
             if (markSaveOnComplete)
             {
@@ -721,6 +724,10 @@ namespace Week14.Tutorial
         {
             if (activeStep == TutorialStepId.Duel)
             {
+                PushCompletionInvulnerability();
+                SetBossUiVisible(false);
+                activeEnemy?.Deactivate();
+                EnemyProjectile.DestroyAllActive();
                 duelDefeatCount = 1;
             }
         }
@@ -764,6 +771,28 @@ namespace Week14.Tutorial
             activeEnemy?.Deactivate();
             EnemyProjectile.DestroyAllActive();
             GameFlowController.RestartCurrentScene();
+        }
+
+        private void PushCompletionInvulnerability()
+        {
+            if (completionInvulnerabilityPushed)
+            {
+                return;
+            }
+
+            PlayerCombatController.PushExternalInvulnerability();
+            completionInvulnerabilityPushed = true;
+        }
+
+        private void PopCompletionInvulnerability()
+        {
+            if (!completionInvulnerabilityPushed)
+            {
+                return;
+            }
+
+            PlayerCombatController.PopExternalInvulnerability();
+            completionInvulnerabilityPushed = false;
         }
 
         private void TryPushInitialMovementLock()

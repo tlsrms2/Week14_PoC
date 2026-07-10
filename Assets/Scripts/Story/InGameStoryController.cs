@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Bootstrap;
 using Week14.Input;
 using Week14.Save;
 using Week14.UI;
@@ -67,7 +68,17 @@ namespace Week14.Story
 
         private IEnumerator PlayFirstAvailableStoryRoutine()
         {
-            yield return WaitUnscaled(firstStoryDelaySeconds);
+            bool waitedForTransition = false;
+            while (SceneTransition.IsTransitioning)
+            {
+                waitedForTransition = true;
+                yield return null;
+            }
+
+            if (!waitedForTransition)
+            {
+                yield return WaitUnscaled(firstStoryDelaySeconds);
+            }
 
             if (TryGetNextStory(out StoryEpisodeId episodeId, out bool skippable, out IReadOnlyList<InGameDialogueLine> dialogues))
             {
