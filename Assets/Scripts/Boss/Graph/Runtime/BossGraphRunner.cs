@@ -203,7 +203,7 @@ namespace Week14.Enemy
             string previousNodeId,
             BossActionContext context)
         {
-            List<ConductorCueOverlayPlan> overlayPlans = BuildConductorCueOverlayPlans(graph, nodes, context);
+            List<ConductorCueOverlayPlan> overlayPlans = BuildConductorCueOverlayPlans(nodes, context);
             HashSet<BossStateNode> overlayCueNodes = new(overlayPlans.Select(plan => plan.CueNode));
             List<IEnumerator> routines = new();
             for (int i = 0; i < overlayPlans.Count; i++)
@@ -247,24 +247,22 @@ namespace Week14.Enemy
         }
 
         private static List<ConductorCueOverlayPlan> BuildConductorCueOverlayPlans(
-            BossGraphAsset graph,
             IReadOnlyList<BossStateNode> nodes,
             BossActionContext context)
         {
             List<ConductorCueOverlayPlan> plans = new();
-            if (context?.Boss is not Conductor conductor)
+            if (nodes == null || context?.Boss is not Conductor conductor)
             {
                 return plans;
             }
 
-            HashSet<string> groupNodeKeys = BuildNodeKeySet(nodes);
             for (int i = 0; i < nodes.Count; i++)
             {
                 BossStateNode cueNode = nodes[i];
                 ConductorConductingCueAction cue = GetConductorCueAction(cueNode);
                 if (cue == null
                     || !cue.TryGetTotalSeconds(conductor, out float cueSeconds)
-                    || !TryGetParallelBossBodyDuration(graph, cueNode, groupNodeKeys, out float bossBodySeconds))
+                    || !TryGetParallelGroupBossBodyDuration(nodes, cueNode, out float bossBodySeconds))
                 {
                     continue;
                 }
@@ -276,63 +274,29 @@ namespace Week14.Enemy
             return plans;
         }
 
-        private static HashSet<string> BuildNodeKeySet(IReadOnlyList<BossStateNode> nodes)
-        {
-            HashSet<string> nodeKeys = new(StringComparer.Ordinal);
-            if (nodes == null)
-            {
-                return nodeKeys;
-            }
-
-            for (int i = 0; i < nodes.Count; i++)
-            {
-                string nodeKey = GetRuntimeNodeKey(nodes[i]);
-                if (!string.IsNullOrWhiteSpace(nodeKey))
-                {
-                    nodeKeys.Add(nodeKey);
-                }
-            }
-
-            return nodeKeys;
-        }
-
-        private static bool TryGetParallelBossBodyDuration(
-            BossGraphAsset graph,
+        private static bool TryGetParallelGroupBossBodyDuration(
+            IReadOnlyList<BossStateNode> nodes,
             BossStateNode cueNode,
-            HashSet<string> groupNodeKeys,
             out float durationSeconds)
         {
             durationSeconds = 0f;
-            if (graph?.ParallelEdges == null || cueNode == null || groupNodeKeys == null)
+            if (nodes == null || cueNode == null)
             {
                 return false;
             }
 
             bool found = false;
-            string cueNodeKey = GetRuntimeNodeKey(cueNode);
-            for (int i = 0; i < graph.ParallelEdges.Count; i++)
+            for (int i = 0; i < nodes.Count; i++)
             {
-                BossParallelEdge edge = graph.ParallelEdges[i];
-                BossStateNode otherNode = null;
-                if (IsNodeEndpoint(graph, edge?.FromNodeKey, cueNodeKey))
-                {
-                    otherNode = graph.GetNode(edge?.ToNodeKey);
-                }
-                else if (IsNodeEndpoint(graph, edge?.ToNodeKey, cueNodeKey))
-                {
-                    otherNode = graph.GetNode(edge?.FromNodeKey);
-                }
-
-                string otherNodeKey = GetRuntimeNodeKey(otherNode);
-                if (otherNode == null
-                    || !groupNodeKeys.Contains(otherNodeKey)
-                    || !IsBossBodyActionNode(otherNode)
-                    || !TryGetActionDurationSeconds(otherNode.Action, out float otherDurationSeconds))
+                BossStateNode node = nodes[i];
+                if (node == cueNode
+                    || !IsBossBodyActionNode(node)
+                    || !TryGetActionDurationSeconds(node.Action, out float nodeDurationSeconds))
                 {
                     continue;
                 }
 
-                durationSeconds = Mathf.Max(durationSeconds, otherDurationSeconds);
+                durationSeconds = Mathf.Max(durationSeconds, nodeDurationSeconds);
                 found = true;
             }
 
@@ -382,18 +346,6 @@ namespace Week14.Enemy
         private static ConductorConductingCueAction GetConductorCueAction(BossStateNode node)
         {
             return node?.Action as ConductorConductingCueAction;
-        }
-
-        private static bool IsNodeEndpoint(BossGraphAsset graph, string endpointKey, string nodeKey)
-        {
-            if (string.IsNullOrWhiteSpace(endpointKey))
-            {
-                return false;
-            }
-
-            BossStateNode endpointNode = graph.GetNode(endpointKey);
-            string endpointRuntimeKey = GetRuntimeNodeKey(endpointNode);
-            return endpointKey == nodeKey || endpointRuntimeKey == nodeKey;
         }
 
         private readonly struct ConductorCueOverlayPlan

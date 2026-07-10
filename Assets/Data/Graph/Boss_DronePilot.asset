@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671845
     sequences: []
-    editorPosition: {x: 4232, y: -1010}
+    editorPosition: {x: 4060, y: -1002}
   - nodeId: Stop Movement2
     nodeGuid: 1f70c680dc9b4cda98cbb1a74ceeee65
     nodeKind: 1
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012892
     sequences: []
-    editorPosition: {x: 4194, y: -851}
+    editorPosition: {x: 4022, y: -843}
   - nodeId: Repeat Fire8
     nodeGuid: 729378de01d543b5bab439237b387ba7
     nodeKind: 4
@@ -3203,6 +3203,33 @@ MonoBehaviour:
       rid: 6489939056948412491
     sequences: []
     editorPosition: {x: 734, y: 506}
+  - nodeId: Conducting Cue1
+    nodeGuid: a818309a69c640b281a310c5c85d8b0a
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939082469703754
+    sequences: []
+    editorPosition: {x: 2059, y: -1201}
+  - nodeId: Conducting Cue2
+    nodeGuid: 595bfe7a1ddc4f30810fcf552697bbbe
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939082469703755
+    sequences: []
+    editorPosition: {x: 3138, y: -1166}
+  - nodeId: Conducting Cue3
+    nodeGuid: 360ede39bbb949ca8a8066dc227756b5
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939082469703756
+    sequences: []
+    editorPosition: {x: 2950, y: -1179}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -3362,6 +3389,9 @@ MonoBehaviour:
     - 8f1a3445b52c4d999a2090b8041466c0
     - f720ed5172e14bb99b3095a9aa36936a
     - abce4aafa61946379d890b0795d14f70
+    - a818309a69c640b281a310c5c85d8b0a
+    - 595bfe7a1ddc4f30810fcf552697bbbe
+    - 360ede39bbb949ca8a8066dc227756b5
     nodeIds:
     - Formation Circle5
     - Maintain Player Distance14
@@ -3382,6 +3412,9 @@ MonoBehaviour:
     - Wander4
     - Repeat Fire10
     - Maintain Player Distance21
+    - Conducting Cue1
+    - Conducting Cue2
+    - Conducting Cue3
   - patternId: P2-1 -> P1 -> P2-2
     nodeGuids:
     - ac185bb2637849de976771a630588f26
@@ -6223,6 +6256,24 @@ MonoBehaviour:
     toNodeGuid: db9c513b27e94c9989199bdc6ada922b
     fromNodeId: Radial Burst17
     toNodeId: Maintain Player Distance117
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: a818309a69c640b281a310c5c85d8b0a
+    toNodeGuid: 5b7413243391417390345961b2fa8c7c
+    fromNodeId: Conducting Cue1
+    toNodeId: Maintain Player Distance15
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 360ede39bbb949ca8a8066dc227756b5
+    toNodeGuid: 8337f7373dc743e0ac3d6f4d8af1706f
+    fromNodeId: Conducting Cue3
+    toNodeId: Maintain Player Distance16
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 595bfe7a1ddc4f30810fcf552697bbbe
+    toNodeGuid: dea480b6c4164ede9c78e22e25af1662
+    fromNodeId: Conducting Cue2
+    toNodeId: Orbit2
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -24807,3 +24858,45 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+    - rid: 6489939082469703754
+      type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        patternId: P1
+        stopMovement: 1
+        headOffset: {x: 0, y: 0.7}
+        scale: 0.2
+        color: {r: 1, g: 0, b: 0, a: 0.9}
+        lineWidth: 0.1
+        strokeDrawSeconds: 0.3
+        strokeIntervalSeconds: 0.05
+        holdSeconds: 0.7
+        fadeSeconds: 0.1
+        sortingOrder: 90
+    - rid: 6489939082469703755
+      type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        patternId: P1
+        stopMovement: 1
+        headOffset: {x: 0, y: 0.7}
+        scale: 0.2
+        color: {r: 1, g: 0, b: 0, a: 0.9}
+        lineWidth: 0.1
+        strokeDrawSeconds: 0.3
+        strokeIntervalSeconds: 0.05
+        holdSeconds: 0.7
+        fadeSeconds: 0.1
+        sortingOrder: 90
+    - rid: 6489939082469703756
+      type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        patternId: P3
+        stopMovement: 1
+        headOffset: {x: 0, y: 0.7}
+        scale: 0.2
+        color: {r: 1, g: 0, b: 0, a: 0.9}
+        lineWidth: 0.1
+        strokeDrawSeconds: 0.3
+        strokeIntervalSeconds: 0.05
+        holdSeconds: 0.7
+        fadeSeconds: 0.1
+        sortingOrder: 90
