@@ -33,5 +33,6 @@ namespace Week14.Save
         public int challengePoints;
         public List<string> purchasedSkillIds = new();
         public List<string> purchasedPassiveSkillIds = new();
+        public List<string> purchasedWeaponIds = new();
     }
 }

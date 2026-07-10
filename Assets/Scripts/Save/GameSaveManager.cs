@@ -215,7 +215,7 @@ namespace Week14.Save
                 return false;
             }
 
-            Data.challengePoints -= price;
+            SetChallengePoints(Data.challengePoints - price);
             Data.purchasedSkillIds.Add(skillId);
             Save();
             return true;
@@ -228,7 +228,7 @@ namespace Week14.Save
                 return false;
             }
 
-            Data.challengePoints += price;
+            SetChallengePoints(Data.challengePoints + price);
             Save();
             return true;
         }
@@ -246,7 +246,7 @@ namespace Week14.Save
                 return false;
             }
 
-            Data.challengePoints -= price;
+            SetChallengePoints(Data.challengePoints - price);
             Data.purchasedPassiveSkillIds.Add(skillId);
             Save();
             return true;
@@ -259,12 +259,10 @@ namespace Week14.Save
                 return false;
             }
 
-            Data.challengePoints += price;
+            SetChallengePoints(Data.challengePoints + price);
             Save();
             return true;
         }
-
-        public static int ClearedBossCount => Data.clearedBossIds.Count;
 
         public static IReadOnlyList<string> UnlockedWeaponIds => Data.unlockedWeaponIds;
 
@@ -305,6 +303,37 @@ namespace Week14.Save
             Save();
         }
 
+        public static bool IsWeaponPurchased(string weaponId)
+        {
+            return !string.IsNullOrEmpty(weaponId) && Data.purchasedWeaponIds.Contains(weaponId);
+        }
+
+        public static bool PurchaseWeapon(string weaponId, int price)
+        {
+            if (string.IsNullOrEmpty(weaponId) || Data.purchasedWeaponIds.Contains(weaponId)
+                || !IsWeaponUnlocked(weaponId) || Data.challengePoints < price)
+            {
+                return false;
+            }
+
+            SetChallengePoints(Data.challengePoints - price);
+            Data.purchasedWeaponIds.Add(weaponId);
+            Save();
+            return true;
+        }
+
+        public static bool RefundWeapon(string weaponId, int price)
+        {
+            if (string.IsNullOrEmpty(weaponId) || !Data.purchasedWeaponIds.Remove(weaponId))
+            {
+                return false;
+            }
+
+            SetChallengePoints(Data.challengePoints + price);
+            Save();
+            return true;
+        }
+
         public static string BuildChallengeSaveKey(string bossId, string challengeId)
         {
             return $"{bossId}:{challengeId}";
@@ -323,7 +352,7 @@ namespace Week14.Save
             }
 
             Data.completedChallengeIds.Add(challengeId);
-            Data.challengePoints += rewardPoint;
+            SetChallengePoints(Data.challengePoints + rewardPoint);
             Save();
         }
 
@@ -371,10 +400,18 @@ namespace Week14.Save
 
         public static int ChallengePoints => Data.challengePoints;
 
+        public static event Action<int> ChallengePointsChanged;
+
+        private static void SetChallengePoints(int value)
+        {
+            Data.challengePoints = value;
+            ChallengePointsChanged?.Invoke(value);
+        }
+
         // 테스트/디버그용: 챌린지 완료 없이 포인트만 지급합니다.
         public static void AddDebugChallengePoints(int amount)
         {
-            Data.challengePoints += amount;
+            SetChallengePoints(Data.challengePoints + amount);
             Save();
         }
 

@@ -11,10 +11,6 @@ namespace Week14.Skills
     {
         [Tooltip("Skill ID와 실제 패시브 스킬 에셋을 연결하는 데이터베이스입니다.")]
         [SerializeField] private PassiveSkillDatabase database;
-        [Tooltip("패시브 슬롯1을 해금하는 데 필요한 고유 보스 처치 종류 수입니다.")]
-        [SerializeField, Min(0)] private int passive1RequiredBossCount;
-        [Tooltip("패시브 슬롯2를 해금하는 데 필요한 고유 보스 처치 종류 수입니다.")]
-        [SerializeField, Min(0)] private int passive2RequiredBossCount;
 
         private static PassiveSkillLoadoutManager instance;
 
@@ -50,16 +46,6 @@ namespace Week14.Skills
             SceneManager.sceneLoaded -= HandleSceneLoaded;
         }
 
-        public int RequiredBossCount(PassiveSkillSlot slot)
-        {
-            return slot == PassiveSkillSlot.Passive1 ? passive1RequiredBossCount : passive2RequiredBossCount;
-        }
-
-        public bool IsSlotUnlocked(PassiveSkillSlot slot)
-        {
-            return GameSaveManager.ClearedBossCount >= RequiredBossCount(slot);
-        }
-
         public BasePassiveSkillSO GetEquippedSkill(PassiveSkillSlot slot)
         {
             return equippedSkills.TryGetValue(slot, out BasePassiveSkillSO skill) ? skill : null;
@@ -82,7 +68,6 @@ namespace Week14.Skills
         {
             BasePassiveSkillSO skill = database != null ? database.FindById(skillId) : null;
             if (skill == null
-                || !IsSlotUnlocked(slot)
                 || !GameSaveManager.IsPassiveSkillUnlocked(skillId)
                 || !GameSaveManager.IsPassiveSkillPurchased(skillId)
                 || IsSkillEquippedInAnySlot(skillId))

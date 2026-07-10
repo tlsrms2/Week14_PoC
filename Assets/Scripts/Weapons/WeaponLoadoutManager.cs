@@ -55,7 +55,9 @@ namespace Week14.Weapons
         public bool EquipWeapon(string weaponId)
         {
             BaseWeaponSO weapon = database != null ? database.FindById(weaponId) : null;
-            if (weapon == null)
+            if (weapon == null
+                || !GameSaveManager.IsWeaponUnlocked(weaponId)
+                || !GameSaveManager.IsWeaponPurchased(weaponId))
             {
                 return false;
             }
@@ -70,6 +72,27 @@ namespace Week14.Weapons
             ApplyAmmoConfig(currentWeapon);
             WeaponChanged?.Invoke(currentWeapon);
             return true;
+        }
+
+        public bool IsDefaultWeapon(string weaponId)
+        {
+            return defaultWeapon != null && defaultWeapon.WeaponId == weaponId;
+        }
+
+        public bool RefundWeapon(string weaponId)
+        {
+            BaseWeaponSO weapon = database != null ? database.FindById(weaponId) : null;
+            if (weapon == null || weapon == defaultWeapon)
+            {
+                return false;
+            }
+
+            if (currentWeapon == weapon)
+            {
+                UnequipWeapon();
+            }
+
+            return GameSaveManager.RefundWeapon(weaponId, weapon.Price);
         }
 
         public void UnequipWeapon()
@@ -115,6 +138,7 @@ namespace Week14.Weapons
             if (defaultWeapon != null)
             {
                 GameSaveManager.UnlockWeapon(defaultWeapon.WeaponId);
+                GameSaveManager.PurchaseWeapon(defaultWeapon.WeaponId, 0);
             }
         }
 

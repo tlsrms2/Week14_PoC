@@ -20,6 +20,8 @@ namespace Week14.Weapons
         [Tooltip("UI에 표시할 총기 설명입니다.")]
         [SerializeField, TextArea] private string description;
         [SerializeField] private LocalizedString localizedDescription;
+        [Tooltip("이 총기를 구매하는 데 필요한 챌린지 포인트입니다.")]
+        [SerializeField, Min(0)] private int price;
         [Tooltip("인게임에서 보여줄 총기 비주얼입니다. (선택, 이번 패스에는 아무 코드도 읽지 않는 자리만 잡아둔 필드)")]
         [SerializeField] private Sprite inGameSprite;
         [Tooltip("이 총기로 발사할 투사체 프리팹입니다. 비워두면 PlayerCombatConfig의 기본 투사체를 사용합니다.")]
@@ -47,6 +49,7 @@ namespace Week14.Weapons
         public Sprite OutlineIcon => outlineIcon;
         public string Description => description;
         public LocalizedString LocalizedDescription => localizedDescription;
+        public int Price => price;
         public bool HasLocalizedDisplayName => HasLocalizedString(localizedDisplayName);
         public bool HasLocalizedDescription => HasLocalizedString(localizedDescription);
         public Sprite InGameSprite => inGameSprite;

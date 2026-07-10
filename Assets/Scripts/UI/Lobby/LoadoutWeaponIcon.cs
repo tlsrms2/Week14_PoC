@@ -1,30 +1,31 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering.Universal;
-using Week14.Audio;
-using Week14.Enemy;
+using UnityEngine.UI;
 using Week14.Save;
 using Week14.Weapons;
 
 namespace Week14.UI
 {
-    [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-    public sealed class LoadoutWeaponIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPanelGatedInteractable
+    // 무기 로스터의 무기칸 하나입니다. 액티브/패시브 스킬칸(LoadoutSkillIcon/PassiveLoadoutSkillIcon)과
+    // 완전히 동일한 미해금/잠김/구매 로직 및 좌우클릭 규칙을 따릅니다.
+    [RequireComponent(typeof(Image))]
+    public sealed class LoadoutWeaponIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private BaseWeaponSO weapon;
-        [Tooltip("총기의 OutlineIcon을 표시할 SpriteRenderer입니다. 선택됐을 때만 보이고, 비워두면 아웃라인을 갱신하지 않습니다.")]
-        [SerializeField] private SpriteRenderer outlineRenderer;
-        [Tooltip("총기의 OutlineIcon을 라이트 쿠키로 사용할 Light2D입니다(Light Type이 Sprite일 때). 선택됐을 때만 보이고, 비워두면 아웃라인을 갱신하지 않습니다.")]
-        [SerializeField] private Light2D outlineLight;
-        [Tooltip("이 무기를 클릭해서 장착했을 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string equipSfxId;
+        [Tooltip("잠김(해금O 구매X) 상태일 때 무기 이미지 위에 표시할 잠금 마크입니다.")]
+        [SerializeField] private GameObject lockMarkOverlay;
+        [Tooltip("미해금 상태일 때 무기 이미지 대신 표시할 스프라이트입니다. 비워두면 그냥 아이콘을 숨깁니다.")]
+        [SerializeField] private Sprite lockedPlaceholderSprite;
+        [Tooltip("지금 장착되어 있는 무기일 때 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
+        [SerializeField] private Color equippedTintColor = new(1f, 0.85f, 0.3f);
+        [Tooltip("이 무기가 마지막으로 호버되었을 때 켤 테두리 오브젝트입니다. 장착 강조와는 별개로 동작합니다.")]
+        [SerializeField] private GameObject hoverOutline;
+        [Tooltip("잠김 또는 구매 상태일 때만(=미해금이 아닐 때만) 표시할 이미지 패널입니다.")]
+        [SerializeField] private GameObject unlockedInfoPanel;
 
-        private SpriteRenderer iconRenderer;
-        private Collider2D iconCollider;
+        private Image iconImage;
+        private Color baseColor;
         private bool subscribedToWeaponChanged;
-        private bool panelOpen;
-        private bool isSelected;
 
         public BaseWeaponSO Weapon => weapon;
 
@@ -35,18 +36,18 @@ namespace Week14.UI
 
         private void OnEnable()
         {
-            RefreshLockState();
-            RefreshSelected();
+            RefreshVisualState();
+            RefreshEquippedTint();
+            SetActiveSafe(hoverOutline, false);
             TrySubscribe();
+            LoadoutHoverHighlight.HoveredSkillIdChanged += HandleHoveredSkillChanged;
         }
 
         private void Start()
         {
-            // WeaponLoadoutManager가 씬에 늦게 추가된 오브젝트라 OnEnable 시점엔
-            // Instance가 아직 null일 수 있다. Start는 모든 Awake 이후에 실행되니 여기서 재시도한다.
-            // (UnlockDefaultWeapon도 WeaponLoadoutManager.Awake에서 처리되므로 잠금 상태도 같이 재확인해야 한다.)
-            RefreshLockState();
-            RefreshSelected();
+            // WeaponLoadoutManager는 씬에 늦게 생기는 DontDestroyOnLoad 싱글턴이라
+            // OnEnable 시점엔 Instance가 아직 null일 수 있다. Start에서 한 번 더 시도한다.
+            RefreshEquippedTint();
             TrySubscribe();
         }
 
@@ -58,6 +59,21 @@ namespace Week14.UI
             }
 
             subscribedToWeaponChanged = false;
+            LoadoutHoverHighlight.HoveredSkillIdChanged -= HandleHoveredSkillChanged;
+        }
+
+        private void OnValidate()
+        {
+            if (weapon == null)
+            {
+                return;
+            }
+
+            Image image = GetComponent<Image>();
+            if (image != null)
+            {
+                image.sprite = weapon.Icon;
+            }
         }
 
         private void TrySubscribe()
@@ -71,148 +87,169 @@ namespace Week14.UI
             subscribedToWeaponChanged = true;
         }
 
-        private void OnValidate()
-        {
-            if (weapon == null)
-            {
-                return;
-            }
-
-            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-            if (renderer != null)
-            {
-                renderer.sprite = weapon.Icon;
-            }
-
-            SetOutlineSprite(weapon.OutlineIcon);
-        }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!IsUnlocked())
+            if (GetState() == LoadoutSkillLockState.NotUnlocked)
             {
                 return;
             }
 
-            WeaponTooltipPanel.Instance?.Show(weapon, transform);
+            LoadoutSelectedSkillPanel.Instance?.Show(weapon);
+            LoadoutHoverHighlight.SetHovered(weapon.WeaponId);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            WeaponTooltipPanel.Instance?.Hide();
+            LoadoutSelectedSkillPanel.Instance?.Hide();
+            LoadoutHoverHighlight.ClearHovered();
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (weapon == null || WeaponLoadoutManager.Instance == null || !IsUnlocked())
+            if (weapon == null || WeaponLoadoutManager.Instance == null)
             {
                 return;
             }
 
-            if (WeaponLoadoutManager.Instance.CurrentWeapon == weapon)
+            LoadoutSkillLockState state = GetState();
+            bool isEquipped = WeaponLoadoutManager.Instance.CurrentWeapon == weapon;
+
+            if (eventData.button == PointerEventData.InputButton.Left)
             {
-                return;
+                if (state == LoadoutSkillLockState.Locked)
+                {
+                    if (GameSaveManager.PurchaseWeapon(weapon.WeaponId, weapon.Price))
+                    {
+                        RefreshVisualState();
+                        LoadoutSelectedSkillPanel.Instance?.Show(weapon);
+                    }
+                }
+                else if (state == LoadoutSkillLockState.Purchased && !isEquipped)
+                {
+                    WeaponLoadoutManager.Instance.EquipWeapon(weapon.WeaponId);
+                    LoadoutSelectedSkillPanel.Instance?.Show(weapon);
+                }
             }
-
-            WeaponLoadoutManager.Instance.EquipWeapon(weapon.WeaponId);
-
-            if (!string.IsNullOrEmpty(equipSfxId))
+            else if (eventData.button == PointerEventData.InputButton.Right)
             {
-                SoundManager.PlaySfx(equipSfxId);
+                if (state == LoadoutSkillLockState.Purchased)
+                {
+                    // 무기는 항상 하나는 장착돼 있어야 하므로, 장착 중인 무기는 우클릭으로 장착 해제할 수 없습니다.
+                    // (다른 무기를 좌클릭해서 교체하는 것만 가능합니다.)
+                    if (!isEquipped && WeaponLoadoutManager.Instance.RefundWeapon(weapon.WeaponId))
+                    {
+                        RefreshVisualState();
+                        LoadoutSelectedSkillPanel.Instance?.Show(weapon);
+                    }
+                }
             }
         }
 
         private void HandleWeaponChanged(BaseWeaponSO _)
         {
-            RefreshSelected();
+            RefreshEquippedTint();
         }
 
-        private void RefreshSelected()
+        private void HandleHoveredSkillChanged(string hoveredSkillId)
         {
-            bool selected = weapon != null
-                && WeaponLoadoutManager.Instance != null
-                && WeaponLoadoutManager.Instance.CurrentWeapon == weapon;
-            SetSelected(selected);
+            if (hoverOutline != null)
+            {
+                hoverOutline.SetActive(weapon != null && hoveredSkillId == weapon.WeaponId);
+            }
         }
 
-        private void SetSelected(bool selected)
+        private void RefreshEquippedTint()
         {
             EnsureInitialized();
-            isSelected = selected;
-            UpdateOutlineVisible();
-        }
 
-        private void EnsureInitialized()
-        {
-            if (iconRenderer != null)
+            if (iconImage == null)
             {
                 return;
             }
 
-            iconRenderer = GetComponent<SpriteRenderer>();
-            iconCollider = GetComponent<Collider2D>();
-
-            if (weapon != null)
-            {
-                iconRenderer.sprite = weapon.Icon;
-                SetOutlineSprite(weapon.OutlineIcon);
-            }
+            bool isEquipped = weapon != null && WeaponLoadoutManager.Instance != null && WeaponLoadoutManager.Instance.CurrentWeapon == weapon;
+            iconImage.color = isEquipped ? equippedTintColor : baseColor;
         }
 
-        private void SetOutlineSprite(Sprite sprite)
+        private void EnsureInitialized()
         {
-            if (outlineRenderer != null)
+            if (iconImage != null)
             {
-                outlineRenderer.sprite = sprite;
+                return;
             }
 
-            if (outlineLight != null)
+            iconImage = GetComponent<Image>();
+
+            if (iconImage != null)
             {
-                outlineLight.lightCookieSprite = sprite;
+                baseColor = iconImage.color;
             }
         }
 
-        public void SetPanelOpen(bool open)
+        private LoadoutSkillLockState GetState()
+        {
+            if (weapon == null || !GameSaveManager.IsWeaponUnlocked(weapon.WeaponId))
+            {
+                return LoadoutSkillLockState.NotUnlocked;
+            }
+
+            return GameSaveManager.IsWeaponPurchased(weapon.WeaponId)
+                ? LoadoutSkillLockState.Purchased
+                : LoadoutSkillLockState.Locked;
+        }
+
+        private void RefreshVisualState()
         {
             EnsureInitialized();
-            panelOpen = open;
-            UpdateColliderEnabled();
-        }
 
-        private void RefreshLockState()
-        {
-            EnsureInitialized();
-            iconRenderer.enabled = IsUnlocked();
-            UpdateOutlineVisible();
-            UpdateColliderEnabled();
-        }
-
-        private void UpdateOutlineVisible()
-        {
-            bool visible = isSelected && IsUnlocked();
-
-            if (outlineRenderer != null)
+            if (iconImage == null)
             {
-                outlineRenderer.enabled = visible;
+                return;
             }
 
-            if (outlineLight != null)
+            if (weapon == null)
             {
-                outlineLight.enabled = visible;
+                iconImage.enabled = false;
+                iconImage.raycastTarget = false;
+                SetActiveSafe(lockMarkOverlay, false);
+                SetActiveSafe(unlockedInfoPanel, false);
+                return;
+            }
+
+            LoadoutSkillLockState state = GetState();
+
+            switch (state)
+            {
+                case LoadoutSkillLockState.NotUnlocked:
+                    iconImage.sprite = lockedPlaceholderSprite;
+                    iconImage.enabled = lockedPlaceholderSprite != null;
+                    iconImage.raycastTarget = false;
+                    SetActiveSafe(lockMarkOverlay, false);
+                    SetActiveSafe(unlockedInfoPanel, false);
+                    break;
+                case LoadoutSkillLockState.Locked:
+                    iconImage.sprite = weapon.Icon;
+                    iconImage.enabled = true;
+                    iconImage.raycastTarget = true;
+                    SetActiveSafe(lockMarkOverlay, true);
+                    SetActiveSafe(unlockedInfoPanel, true);
+                    break;
+                case LoadoutSkillLockState.Purchased:
+                    iconImage.sprite = weapon.Icon;
+                    iconImage.enabled = true;
+                    iconImage.raycastTarget = true;
+                    SetActiveSafe(lockMarkOverlay, false);
+                    SetActiveSafe(unlockedInfoPanel, true);
+                    break;
             }
         }
 
-        private void UpdateColliderEnabled()
+        private static void SetActiveSafe(GameObject target, bool active)
         {
-            // LobbyMenuController(Awake)와 이 컴포넌트(OnEnable/Start)는 어느 쪽이 먼저 실행될지 보장되지 않아서,
-            // 한쪽이 Collider2D.enabled를 직접 덮어쓰면 다른 쪽이 나중에 실행되며 그 값을 다시 뒤집어버린다.
-            // 두 조건(잠금 해제 여부 / 패널이 열려 있는지)을 항상 같이 계산해서 순서와 무관하게 일치시킨다.
-            iconCollider.enabled = IsUnlocked() && panelOpen;
-        }
-
-        private bool IsUnlocked()
-        {
-            return weapon != null && GameSaveManager.IsWeaponUnlocked(weapon.WeaponId);
+            if (target != null)
+            {
+                target.SetActive(active);
+            }
         }
     }
 }

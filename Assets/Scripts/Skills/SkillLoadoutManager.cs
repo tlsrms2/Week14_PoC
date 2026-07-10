@@ -14,8 +14,8 @@ namespace Week14.Skills
 
         [Tooltip("Skill ID와 실제 스킬 에셋을 연결하는 데이터베이스입니다.")]
         [SerializeField] private SkillDatabase database;
-        [Tooltip("액티브 슬롯을 해금하는 데 필요한 고유 보스 처치 종류 수입니다.")]
-        [SerializeField, Min(0)] private int activeSlotRequiredBossCount;
+        [Tooltip("게임 시작 시 자동으로 해금+무료 구매되고, 장착된 스킬이 하나도 없으면 자동 장착되는 기본 스킬입니다. 환불(반환)이 불가능합니다. 비워두면 아무 스킬도 자동 지급하지 않습니다.")]
+        [SerializeField] private BaseSkillSO defaultSkill;
         [Tooltip("테스트용: 활성 슬롯에 아무 스킬도 장착되어 있지 않을 때 시작 시 자동으로 해금하고 장착할 스킬입니다. 비워두면 자동 장착하지 않습니다.")]
         [SerializeField] private BaseSkillSO defaultTestSkill;
         [Tooltip("테스트용: 체크하면 세이브 파일의 장착 스킬을 불러오지 않고, 시작 시 항상 defaultTestSkill을 장착합니다. (세이브 파일은 읽지도 쓰지도 않습니다.)")]
@@ -62,7 +62,9 @@ namespace Week14.Skills
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
 
+            UnlockDefaultSkill();
             LoadEquippedSkills();
+            EquipDefaultSkillIfNeeded();
             EquipDefaultTestSkillIfNeeded();
         }
 
@@ -102,16 +104,10 @@ namespace Week14.Skills
             return equippedSkills.TryGetValue(slot, out BaseSkillSO skill) ? skill : null;
         }
 
-        public bool IsActiveSlotUnlocked()
-        {
-            return GameSaveManager.ClearedBossCount >= activeSlotRequiredBossCount;
-        }
-
         public bool EquipSkill(SkillSlot slot, string skillId)
         {
             BaseSkillSO skill = database != null ? database.FindById(skillId) : null;
             if (skill == null
-                || !IsActiveSlotUnlocked()
                 || !GameSaveManager.IsSkillUnlocked(skillId)
                 || !GameSaveManager.IsSkillPurchased(skillId))
             {
@@ -129,10 +125,15 @@ namespace Week14.Skills
             return true;
         }
 
+        public bool IsDefaultSkill(string skillId)
+        {
+            return defaultSkill != null && defaultSkill.SkillId == skillId;
+        }
+
         public bool RefundSkill(string skillId)
         {
             BaseSkillSO skill = database != null ? database.FindById(skillId) : null;
-            if (skill == null)
+            if (skill == null || skill == defaultSkill)
             {
                 return false;
             }
@@ -233,6 +234,25 @@ namespace Week14.Skills
             cooldownRemaining = 0f;
             BaseSkillSO skill = GetEquippedSkill(ActiveSlot);
             CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
+        }
+
+        public void UnlockDefaultSkill()
+        {
+            if (defaultSkill != null)
+            {
+                GameSaveManager.UnlockSkill(defaultSkill.SkillId);
+                GameSaveManager.PurchaseSkill(defaultSkill.SkillId, 0);
+            }
+        }
+
+        private void EquipDefaultSkillIfNeeded()
+        {
+            if (defaultSkill == null || GetEquippedSkill(ActiveSlot) != null)
+            {
+                return;
+            }
+
+            EquipSkill(ActiveSlot, defaultSkill.SkillId);
         }
 
         private void EquipDefaultTestSkillIfNeeded()

@@ -325,7 +325,7 @@ namespace Week14.UI
         }
 
         // 무기는 더 이상 액티브/패시브 스킬을 소유하지 않으므로(로드아웃 시스템으로 완전히 분리됨)
-        // 무기 툴팁의 스킬 섹션은 항상 비워둡니다. 스킬 정보는 LoadoutTooltipPanel에서 표시합니다.
+        // 무기 툴팁의 스킬 섹션은 항상 비워둡니다. 스킬 정보는 LoadoutSelectedSkillPanel에서 표시합니다.
         private void SetSkillInfo(BaseWeaponSO weapon)
         {
             SetSkillInfo(null, string.Empty, string.Empty, string.Empty);

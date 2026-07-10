@@ -35,6 +35,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  price: 0
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 4a7491b219f6bc5469d444267d523369, type: 2}
@@ -71,8 +72,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  activeSkill: {fileID: 11400000, guid: e8432b37857b2e044a5ceb8b5b9c918d, type: 2}
-  passiveSkill: {fileID: 0}
   references:
     version: 2
     RefIds: []

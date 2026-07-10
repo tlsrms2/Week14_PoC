@@ -71,6 +71,72 @@ MonoBehaviour:
     m_Key: ui.SFX
     m_Metadata:
       m_Items: []
+  - m_Id: 3316185476464640
+    m_Key: ui.Loadout.Main
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316405463515136
+    m_Key: ui.Loadout.Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316497654317056
+    m_Key: ui.Loadout.Active
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316549172953088
+    m_Key: ui.Loadout.Passive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324277605892096
+    m_Key: ui.Loadout.Category.Active
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324359885553664
+    m_Key: ui.Loadout.Category.Passive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324365581418496
+    m_Key: 'ui.Loadout.Category.Weapon
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3325868144689152
+    m_Key: ui.Loadout.hint.puchase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326043365933056
+    m_Key: ui.Loadout.hint.Refund
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326175926910976
+    m_Key: ui.Loadout.hint.Unequip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326292574699520
+    m_Key: ui.Loadout.hint.equip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326345653616640
+    m_Key: ui.Loadout.hint.NonRefund
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326669890093056
+    m_Key: ui.Loadout.Cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326766715600896
+    m_Key: ui.Loadout.Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326817575731200
+    m_Key: ui.Loadout.Price
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326845836951552
+    m_Key: ui.Loadout.RefundFormat
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
