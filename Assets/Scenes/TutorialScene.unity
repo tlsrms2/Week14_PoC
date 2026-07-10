@@ -4504,10 +4504,6 @@ MonoBehaviour:
   parryGoal: 3
   skillGoal: 1
   skillAttemptResolveSeconds: 2.5
-  attackRefillSpeaker: AI
-  attackRefillText: "\uD0C4\uD658\uD615 \uC5D0\uB108\uC9C0 \uCF54\uC5B4\uAC00 \uBAA8\uB450
-    \uC18C\uBAA8\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uCF54\uC5B4\uB97C \uB2E4\uC2DC \uCC44\uC6C1\uB2C8\uB2E4.
-    \uCE68\uCC29\uD558\uAC8C \uC870\uC900\uD558\uC138\uC694."
 --- !u!4 &1340976401
 Transform:
   m_ObjectHideFlags: 0
@@ -6698,7 +6694,7 @@ MonoBehaviour:
   moveSpeed: 0
   stopDistance: 3
   practiceFireIntervalSeconds: 1.8
-  duelFireIntervalSeconds: 0.8
+  duelFireIntervalSeconds: 1.2
   contactDamage: 0
   contactDamageCooldown: 0
   projectile:
@@ -6708,7 +6704,7 @@ MonoBehaviour:
     chargeDriftSpeed: 0
     aimAtPlayerWhileCharging: 0
     aimAtPlayerOnLaunch: 0
-    speed: 7
+    speed: 5
     lifetime: 3
     radius: 0.12
     trailSeconds: 0.1
@@ -6720,7 +6716,7 @@ MonoBehaviour:
     chargeDriftSpeed: 0
     aimAtPlayerWhileCharging: 0
     aimAtPlayerOnLaunch: 0
-    speed: 7
+    speed: 5
     lifetime: 3
     radius: 0.12
     trailSeconds: 0.1

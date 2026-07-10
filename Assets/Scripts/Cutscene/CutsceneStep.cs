@@ -16,9 +16,11 @@ namespace Week14.Cutscene
     {
         [SerializeField] private string name;
         [SerializeField, TextArea(2, 6)] private string text;
+        [SerializeField] private string sfxId;
 
         public string Name => name;
         public string Text => text;
+        public string SfxId => sfxId;
 
         public CutsceneDialogue() { }
 

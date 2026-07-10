@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using Week14.Audio;
 using Week14.Combat;
 using Week14.Input;
 using Week14.Save;
@@ -295,16 +296,17 @@ namespace Week14.Tutorial
                     continue;
                 }
 
-                yield return PlayDialogueLine(line.Speaker, line.Text);
+                yield return PlayDialogueLine(line.Speaker, line.Text, line.SfxId);
             }
 
             PopDialogueAdvanceInput();
         }
 
-        private IEnumerator PlayDialogueLine(string speaker, string text)
+        private IEnumerator PlayDialogueLine(string speaker, string text, string sfxId)
         {
             bool revealRequested = false;
             bool canAcceptAdvance = false;
+            PlayDialogueSfx(sfxId);
             dialoguePanel.ShowLine(speaker, text);
             IEnumerator typing = dialoguePanel.PlayTypewriter(text, () => revealRequested);
             while (typing.MoveNext())
@@ -322,6 +324,14 @@ namespace Week14.Tutorial
             while (!AdvancePressed())
             {
                 yield return null;
+            }
+        }
+
+        private static void PlayDialogueSfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
             }
         }
 

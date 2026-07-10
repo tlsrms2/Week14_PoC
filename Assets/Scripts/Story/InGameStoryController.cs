@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Input;
 using Week14.Save;
@@ -47,7 +48,7 @@ namespace Week14.Story
         private void Awake()
         {
             dialoguePanel ??= GetComponentInChildren<InGameDialoguePanelView>(true);
-            dialoguePanel?.Hide();
+            HideDialoguePanel();
         }
 
         private void OnEnable()
@@ -172,6 +173,7 @@ namespace Week14.Story
         {
             bool revealRequested = false;
             bool canAcceptAdvance = false;
+            PlayDialogueSfx(line.SfxId);
             dialoguePanel.ShowLine(line.Speaker, line.Text);
 
             IEnumerator typing = dialoguePanel.PlayTypewriter(
@@ -204,6 +206,14 @@ namespace Week14.Story
             }
         }
 
+        private static void PlayDialogueSfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
+        }
+
         private void BeginPlaybackState()
         {
             previousInputBlock = GameModalState.BlocksGameplayInput;
@@ -211,7 +221,7 @@ namespace Week14.Story
             skipRequested = false;
             isPlaying = true;
             skipHoldElapsed = 0f;
-            dialoguePanel?.SetSkipProgress(false, 0f);
+            SetSkipProgress(false, 0f);
         }
 
         private void FinishPlaybackState()
@@ -224,8 +234,8 @@ namespace Week14.Story
             isPlaying = false;
             skipRequested = false;
             skipHoldElapsed = 0f;
-            dialoguePanel?.SetSkipProgress(false, 0f);
-            dialoguePanel?.Hide();
+            SetSkipProgress(false, 0f);
+            HideDialoguePanel();
         }
 
         private void TickSkip(bool skippable)
@@ -233,7 +243,7 @@ namespace Week14.Story
             if (!skippable)
             {
                 skipHoldElapsed = 0f;
-                dialoguePanel?.SetSkipProgress(false, 0f);
+                SetSkipProgress(false, 0f);
                 return;
             }
 
@@ -250,7 +260,23 @@ namespace Week14.Story
                 skipHoldElapsed = 0f;
             }
 
-            dialoguePanel?.SetSkipProgress(true, skipHoldElapsed / skipHoldSeconds);
+            SetSkipProgress(true, skipHoldElapsed / skipHoldSeconds);
+        }
+
+        private void HideDialoguePanel()
+        {
+            if (dialoguePanel != null)
+            {
+                dialoguePanel.Hide();
+            }
+        }
+
+        private void SetSkipProgress(bool visible, float progress)
+        {
+            if (dialoguePanel != null)
+            {
+                dialoguePanel.SetSkipProgress(visible, progress);
+            }
         }
 
         private static string GetEpisodeSaveId(StoryEpisodeId episodeId)

@@ -212,6 +212,11 @@ namespace Week14.Cutscene
 
         private IEnumerator ExecuteStep(CutsceneStep step, bool hasPreviousStep)
         {
+            if (hasPreviousStep)
+            {
+                ClearDialogueView();
+            }
+
             yield return ApplyStepTransition(step, hasPreviousStep);
             StartBackgroundMotion(step);
             ApplyAudio(step);
@@ -324,6 +329,8 @@ namespace Week14.Cutscene
 
         private IEnumerator CoverScreenForCompletion(CutsceneStep lastPlayedStep)
         {
+            ClearDialogueView();
+
             if (skipRequested)
             {
                 SetFadeAlpha(1f);
@@ -359,6 +366,7 @@ namespace Week14.Cutscene
             advanceRequested = false;
             revealRequested = false;
             isTyping = true;
+            PlayDialogueSfx(dialogue.SfxId);
             dialoguePanelView?.ShowLine(dialogue.Name, dialogue.Text);
             yield return dialoguePanelView?.PlayTypewriter(dialogue.Text, () => revealRequested || skipRequested || skipSectionRequested, () => skipRequested || skipSectionRequested);
             isTyping = false;
@@ -371,6 +379,14 @@ namespace Week14.Cutscene
             }
 
             advanceRequested = false;
+        }
+
+        private static void PlayDialogueSfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
         }
 
         private IEnumerator PlayImageAlpha(Image image, float fromAlpha, float toAlpha, float seconds)
