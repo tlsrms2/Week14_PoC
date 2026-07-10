@@ -28,6 +28,9 @@ namespace Week14.Cutscene
         [Header("Views")]
         [SerializeField] private CutsceneDialoguePanelView dialoguePanelView;
 
+        [Header("Dialogue")]
+        [SerializeField, Min(0f)] private float dialogueStartDelaySeconds = 0.25f;
+
         [Header("Skip Hold")]
         [SerializeField] private Image skipHoldFillImage;
         [SerializeField] private TMP_Text skipHoldPromptText;
@@ -212,16 +215,18 @@ namespace Week14.Cutscene
 
         private IEnumerator ExecuteStep(CutsceneStep step, bool hasPreviousStep)
         {
-            if (hasPreviousStep)
-            {
-                ClearDialogueView();
-            }
+            ClearDialogueView();
 
             yield return ApplyStepTransition(step, hasPreviousStep);
             StartBackgroundMotion(step);
             ApplyAudio(step);
 
             IReadOnlyList<CutsceneDialogue> dialogues = step.Dialogues;
+            if (dialogues.Count > 0)
+            {
+                yield return WaitDialogueStartDelay();
+            }
+
             for (int i = 0; i < dialogues.Count && !skipRequested && !skipSectionRequested; i++)
             {
                 CutsceneDialogue dialogue = dialogues[i];
@@ -386,6 +391,16 @@ namespace Week14.Cutscene
             if (!string.IsNullOrWhiteSpace(sfxId))
             {
                 SoundManager.PlaySfx(sfxId);
+            }
+        }
+
+        private IEnumerator WaitDialogueStartDelay()
+        {
+            for (float elapsed = 0f;
+                 elapsed < dialogueStartDelaySeconds && !skipRequested && !skipSectionRequested;
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
             }
         }
 
