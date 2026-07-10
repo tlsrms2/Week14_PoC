@@ -38,9 +38,11 @@ namespace Week14.UI
         {
             RefreshVisualState();
             RefreshEquippedTint();
-            SetActiveSafe(hoverOutline, false);
             TrySubscribe();
             LoadoutHoverHighlight.HoveredSkillIdChanged += HandleHoveredSkillChanged;
+
+            // 구독이 SetHovered 호출보다 늦게 시작됐을 수도 있으니, 지금 시점의 값으로 한 번 더 맞춘다.
+            HandleHoveredSkillChanged(LoadoutHoverHighlight.CurrentHoveredSkillId);
         }
 
         private void Start()
@@ -94,14 +96,15 @@ namespace Week14.UI
                 return;
             }
 
+            // LoadoutSelectedSkillPanel.Show가 호출되면서 LoadoutHoverHighlight도 같이 갱신된다
+            // (아웃라인은 "지금 SelectedSkillPanel에 표시 중인 항목"을 그대로 따라간다).
             LoadoutSelectedSkillPanel.Instance?.Show(weapon);
-            LoadoutHoverHighlight.SetHovered(weapon.WeaponId);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            LoadoutSelectedSkillPanel.Instance?.Hide();
-            LoadoutHoverHighlight.ClearHovered();
+            // 여기서 아무것도 비우지 않는다. SelectedSkillPanel과 아웃라인 모두 마지막으로
+            // 호버한 항목을 그대로 유지한다.
         }
 
         public void OnPointerClick(PointerEventData eventData)

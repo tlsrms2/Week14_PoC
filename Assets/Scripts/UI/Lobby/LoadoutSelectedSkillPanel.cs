@@ -37,6 +37,11 @@ namespace Week14.UI
         [SerializeField] private Sprite purchasedActionSprite;
         [SerializeField] private TMP_Text actionHintText;
 
+        [Header("기본으로 보여줄 항목 (아직 아무것도 호버하지 않은 최초 상태일 때 표시. 셋 중 하나만 채우세요)")]
+        [SerializeField] private BaseSkillSO defaultDisplaySkill;
+        [SerializeField] private BasePassiveSkillSO defaultDisplayPassiveSkill;
+        [SerializeField] private BaseWeaponSO defaultDisplayWeapon;
+
         private Sprite defaultActionSprite;
         private BaseWeaponSO localizedWeapon;
 
@@ -60,8 +65,33 @@ namespace Week14.UI
                 defaultActionSprite = actionHintImage.sprite;
             }
 
-            Hide();
+            ShowDefault();
             RefreshPoints(GameSaveManager.ChallengePoints);
+        }
+
+        // 아무것도 호버하지 않은 최초 상태(패널을 처음 열었을 때)에 보여줄 항목입니다.
+        // 셋 중 먼저 채워진 걸 우선순위대로 하나만 보여주고, 아무것도 안 채웠으면 비워둡니다.
+        private void ShowDefault()
+        {
+            if (defaultDisplayWeapon != null)
+            {
+                Show(defaultDisplayWeapon);
+                return;
+            }
+
+            if (defaultDisplaySkill != null)
+            {
+                Show(defaultDisplaySkill);
+                return;
+            }
+
+            if (defaultDisplayPassiveSkill != null)
+            {
+                Show(defaultDisplayPassiveSkill);
+                return;
+            }
+
+            Hide();
         }
 
         private void OnEnable()
@@ -101,6 +131,7 @@ namespace Week14.UI
 
             UnbindLocalizedWeaponText();
             SetCategoryText(ActiveSkillCategoryText);
+            LoadoutHoverHighlight.SetHovered(skill.SkillId);
 
             bool refundable = SkillLoadoutManager.Instance == null || !SkillLoadoutManager.Instance.IsDefaultSkill(skill.SkillId);
             bool equipped = SkillLoadoutManager.Instance != null && SkillLoadoutManager.Instance.GetEquippedSkill(SkillSlot.Skill1) == skill;
@@ -117,6 +148,7 @@ namespace Week14.UI
 
             UnbindLocalizedWeaponText();
             SetCategoryText(PassiveSkillCategoryText);
+            LoadoutHoverHighlight.SetHovered(skill.SkillId);
 
             bool equipped = PassiveSkillLoadoutManager.Instance != null && PassiveSkillLoadoutManager.Instance.GetEquippedSkill(PassiveSkillSlot.Passive1) == skill;
             ShowInternal(skill.DisplayName, skill.Description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), true, equipped, true);
@@ -131,6 +163,7 @@ namespace Week14.UI
 
             UnbindLocalizedWeaponText();
             SetCategoryText(WeaponCategoryText);
+            LoadoutHoverHighlight.SetHovered(weapon.WeaponId);
 
             bool refundable = WeaponLoadoutManager.Instance == null || !WeaponLoadoutManager.Instance.IsDefaultWeapon(weapon.WeaponId);
             bool equipped = WeaponLoadoutManager.Instance != null && WeaponLoadoutManager.Instance.CurrentWeapon == weapon;
@@ -156,6 +189,7 @@ namespace Week14.UI
         {
             UnbindLocalizedWeaponText();
             SetCategoryText(string.Empty);
+            LoadoutHoverHighlight.ClearHovered();
             ShowInternal(string.Empty, string.Empty, string.Empty, null, null, false, true, false, true);
         }
 
