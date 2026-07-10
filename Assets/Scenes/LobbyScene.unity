@@ -7835,7 +7835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Save.DevUnlockTools
   skillDatabase: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
-  passiveSkillDatabase: {fileID: 0}
+  passiveSkillDatabase: {fileID: 11400000, guid: 5214144e9b21f6a41b46f965c3ba362f, type: 2}
   bosses:
   - {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
   - {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
@@ -17968,6 +17968,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6144680373667844601, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: defaultDisplayWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 2bf6afb4ebac7f945a335649b3c70755, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
