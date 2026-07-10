@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
+  m_Name: Prologue
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
+  cutsceneId: Synopsis
+  skippable: 0
+  steps:
+  - backgroundImage: {fileID: 21300000, guid: ca9c35ca7a0670347ab1fdc20a8bd4b1, type: 3}
+    dialogues:
+    - name: ERIS
+      text: "\uC2E0\uC6D0\uC744 \uD655\uC778\uD569\uB2C8\uB2E4."
+    - name: ERIS
+      text: "\uCF54\uB4DC\uBA85 \uC774\uC628, \uB4F1\uAE09 K26, \uC218\uD589 \uC911\uC778
+        \uC784\uBB34 \uC5C6\uC74C. \uD2B9\uC774\uC0AC\uD56D."
+    skippable: 0
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 21300000, guid: 079e51a4c783f264e96d81a0f0e9712b, type: 3}
+    dialogues:
+    - name: ERIS
+      text: "...\uC6B0\uCE21 \uC0C1\uC9C0 \uACB0\uC190, \uC6B0\uCE21 \uC548\uBA74\uBD80\uC5D0\uC11C
+        \uACAC\uBD80\uAE4C\uC9C0 \uC774\uC5B4\uC9C0\uB294 \uAD11\uBC94\uC704\uD55C
+        \uD654\uC0C1 \uBC0F \uC2E0\uACBD\uACC4 \uC190\uC0C1\uC774 \uAC10\uC9C0\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+    - name: ERIS
+      text: "\uCD9C\uC785 \uD5C8\uAC00. \uC989\uC2DC \uC751\uAE09\uCC98\uCE58 \uBC1B\uC744
+        \uAC83\uC744 \uAD8C\uC7A5\uD569\uB2C8\uB2E4."
+    - name: ERIS
+      text: "\uCD94\uAC00\uB85C \uC694\uCCAD\uC0AC\uD56D\uC774 \uC788\uC73C\uC2E0\uAC00\uC694?"
+    - name: "\uC774\uC628"
+      text: "...R-2 \uBE14\uB85D, \uCE74\uD398 \uBCA0\uC2A4\uD37C. \uC624\uB298 17\uC2DC
+        33\uBD84 \uC804\uD6C4 \uC601\uC0C1 \uAE30\uB85D \uC804\uBD80."
+    skippable: 0
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "\uC544\uBC84\uC9C0"
+      text: "\uC218\uC220\uC740 \uC798 \uB05D\uB0AC\uC2B5\uB2C8\uB2E4. \uD68C\uBCF5\uB9CC
+        \uCC9C\uCC9C\uD788 \uB530\uB77C\uC624\uBA74 \uB429\uB2C8\uB2E4."
+    - name: "\uD658\uC790"
+      text: "\uC120\uC0DD\uB2D8 \uB355\uBD84\uC5D0 \uC0B4\uC558\uC2B5\uB2C8\uB2E4.
+        \uC5B4\uB835\uAC8C \uAD6C\uD55C \uBB3C\uAC74\uC778\uB370, \uAF2D \uBC1B\uC544\uC8FC\uC2ED\uC2DC\uC624."
+    - name: "\uC774\uC628"
+      text: "\uC544\uBE60, \uB610 \uC120\uBB3C\uC774\uC57C? \uBCD1\uC6D0 \uADDC\uCE59
+        \uAC19\uC740 \uAC70 \uC5C6\uC5B4?"
+    - name: "\uC544\uBC84\uC9C0"
+      text: "\uACE0\uB9D9\uB2E4\uB294 \uB9C8\uC74C\uAE4C\uC9C0 \uAC70\uC808\uD558\uBA74
+        \uC758\uC0AC \uC77C\uB3C4 \uB108\uBB34 \uC0AD\uB9C9\uD574\uC9C0\uC9C0 \uC54A\uACA0\uB2C8."
+    - name: "\uC544\uBC84\uC9C0"
+      text: "\uB098\uB294 \uC5C4\uCCAD \uC5B4\uB835\uAC8C \uC0AC\uB78C\uB4E4\uC744
+        \uC0B4\uB9AC\uACE0 \uC788\uB294\uB370, \uBB50\uAC00 \uC88B\uC544\uC11C \uC0AC\uB78C\uC774
+        \uC0AC\uB78C\uC744 \uC8FD\uC774\uB824 \uD558\uB294\uC9C0 \uC774\uD574\uD558\uAE30
+        \uC5B4\uB835\uAD6C\uB098."
+    - name: "\uC774\uC628"
+      text: "...\uCF5C\uB85D. \uADF8\uB798\uB3C4 \uC5C4\uCCAD \uB098\uC05C \uC9D3\uC744
+        \uD558\uB294 \uC0AC\uB78C\uC774 \uC8FD\uB294 \uAC70\uB77C\uBA74 \uAD1C\uCC2E\uC9C0
+        \uC54A\uC744\uAE4C?"
+    - name: "\uC544\uBC84\uC9C0"
+      text: "\uADF8\uB7F0 \uAC8C \uC788\uB2E4\uBA74 \uBAB8\uC5D0 \uB098\uC05C \uC694\uC18C\uB97C
+        \uC81C\uAC70\uD558\uB824\uACE0 \uC704\uD5D8\uD55C \uCE7C\uC744 \uB4E4\uC774\uBBF8\uB294
+        \uAC83\uACFC \uBCC4\uBC18 \uB2E4\uB974\uC9C0 \uC54A\uACA0\uC9C0."
+    - name: "\uAE30\uB85D"
+      text: "\uCE58\uC9C1. \uC774\uD6C4 \uC74C\uC131 \uB370\uC774\uD130\uAC00 \uC190\uC0C1\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+    - name: "\uC544\uBC84\uC9C0"
+      text: "\uB2E4\uB9CC, \uC774\uC628. \uADF8 \uCE7C\uC744 \uB4DC\uB294 \uC0AC\uB78C\uC740..."
+    - name: "\uAE30\uB85D"
+      text: "\uC9C0\uC9C1. \uC9C0\uC9C1. \uAE30\uB85D \uBCF5\uAD6C \uC2E4\uD328."
+    - name: "\uC774\uC628"
+      text: "\uADF8\uB7FC \uC774\uC81C \uC5F4\uC5B4\uBCF4\uC790. \uC548\uC5D0 \uBB50\uAC00
+        \uB4E4\uC5C8\uC744\uAE4C?"
+    - name: "\uC544\uBC84\uC9C0"
+      text: "\uADF8\uB798. \uAC19\uC774 \uBCF4\uC790."
+    - name: "\uAE30\uB85D"
+      text: "\uD3ED\uBC1C\uC74C \uAC10\uC9C0. \uC601\uC0C1 \uC2E0\uD638\uAC00 \uC18C\uC2E4\uB429\uB2C8\uB2E4."
+    skippable: 1
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
+    dialogues:
+    - name: "\uC2DC\uC124 AI"
+      text: "\uAE30\uB85D \uC7AC\uC0DD \uC885\uB8CC. \uD3ED\uBC1C \uC9C1\uD6C4 \uBCF4\uD638\uC790\uB294
+        \uD604\uC7A5\uC5D0\uC11C \uC0AC\uB9DD, \uC774\uC628\uC740 \uC88C\uCE21 \uD314\uACFC
+        \uC548\uBA74\uBD80\uC5D0 \uCE58\uBA85\uC801 \uC190\uC0C1\uC744 \uC785\uC5C8\uC2B5\uB2C8\uB2E4."
+    - name: "\uC2DC\uC124 AI"
+      text: "\uBCF5\uC218 \uC218\uD589\uC744 \uC704\uD55C \uC0AC\uC774\uBCF4\uADF8\uD654
+        \uC2DC\uC220 \uC694\uCCAD \uAE30\uB85D\uC774 \uC774\uC5B4\uC9D1\uB2C8\uB2E4.
+        \uBE44\uAC00\uC5ED\uC801 \uAC1C\uC870\uC774\uBA70 \uD1B5\uC99D \uD53C\uB4DC\uBC31\uC740
+        \uC644\uC804\uD788 \uCC28\uB2E8\uB418\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."
+    - name: "\uC774\uC628"
+      text: "\uC0C1\uAD00\uC5C6\uC5B4. \uC6C0\uC9C1\uC77C \uC218 \uC788\uAC8C \uB9CC\uB4E4\uACE0,
+        \uC2F8\uC6B8 \uC218 \uC788\uAC8C \uB9CC\uB4E4\uC5B4."
+    - name: "\uC2DC\uC124 AI"
+      text: "\uC2DC\uC220 \uC2B9\uC778. \uC7A5\uBE44 \uB3D9\uAE30\uD654 \uD6C4 \uC801\uC751
+        \uD6C8\uB828\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4."
+    - name: "\uC774\uC628"
+      text: "\uC2DC\uC791\uD574."
+    skippable: 0
+    bgmId: 
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeSeconds: 2
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0

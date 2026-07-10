@@ -4726,6 +4726,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1402120136838885973, guid: 82124fba4d5abd44ba3702267c2e8f3b, type: 3}
+      propertyPath: synopsisCutscene
+      value: 
+      objectReference: {fileID: 11400000, guid: 56b712c7308cdd341ac99fad251121ed, type: 2}
     - target: {fileID: 6883015585195824696, guid: 82124fba4d5abd44ba3702267c2e8f3b, type: 3}
       propertyPath: m_Name
       value: GameFlowController
