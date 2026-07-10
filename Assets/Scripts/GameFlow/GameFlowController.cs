@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Week14.Bootstrap;
 using Week14.Cutscene;
 using Week14.Save;
@@ -12,7 +13,8 @@ namespace Week14.GameFlow
         private enum PendingCutsceneCompletion
         {
             None,
-            Synopsis,
+            Prologue,
+            Past,
             Ending
         }
 
@@ -27,7 +29,9 @@ namespace Week14.GameFlow
 
         [Header("Cutscene")]
         [SerializeField] private string cutsceneSceneName = "CutsceneScene";
-        [SerializeField] private CutsceneDefinition synopsisCutscene;
+        [FormerlySerializedAs("synopsisCutscene")]
+        [SerializeField] private CutsceneDefinition prologueCutscene;
+        [SerializeField] private CutsceneDefinition pastCutscene;
         [SerializeField] private CutsceneDefinition endingCutscene;
 
         private CutsceneDefinition pendingCutscene;
@@ -92,6 +96,17 @@ namespace Week14.GameFlow
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(ResolveSceneName(fallbackLobbySceneName, controller.lobbySceneName));
+                return;
+            }
+
+            SceneTransition.LoadScene(fallbackLobbySceneName);
+        }
+
+        public static void ContinueAfterTutorial(string fallbackLobbySceneName)
+        {
+            if (TryGetExistingInstance() is GameFlowController controller)
+            {
+                controller.ContinueAfterTutorialInternal(ResolveSceneName(fallbackLobbySceneName, controller.lobbySceneName));
                 return;
             }
 
@@ -187,13 +202,13 @@ namespace Week14.GameFlow
         {
             if (!GameSaveManager.HasCompletedTutorial)
             {
-                if (synopsisCutscene != null)
+                if (prologueCutscene != null)
                 {
                     PlayCutsceneThenLoadInternal(
-                        synopsisCutscene,
+                        prologueCutscene,
                         tutorialSceneName,
-                        PendingCutsceneCompletion.Synopsis,
-                        GameSaveManager.HasSeenSynopsis);
+                        PendingCutsceneCompletion.Prologue,
+                        GameSaveManager.HasSeenPrologue);
                     return;
                 }
 
@@ -201,7 +216,24 @@ namespace Week14.GameFlow
                 return;
             }
 
+            if (!GameSaveManager.HasSeenPast && pastCutscene != null)
+            {
+                PlayCutsceneThenLoadInternal(pastCutscene, lobbySceneName, PendingCutsceneCompletion.Past);
+                return;
+            }
+
             LoadSceneInternal(lobbySceneName);
+        }
+
+        private void ContinueAfterTutorialInternal(string nextLobbySceneName)
+        {
+            if (!GameSaveManager.HasSeenPast && pastCutscene != null)
+            {
+                PlayCutsceneThenLoadInternal(pastCutscene, nextLobbySceneName, PendingCutsceneCompletion.Past);
+                return;
+            }
+
+            LoadSceneInternal(nextLobbySceneName);
         }
 
         private void EnterBossInternal(BossData bossData)
@@ -248,7 +280,8 @@ namespace Week14.GameFlow
             pendingNextSceneName = nextSceneName;
             pendingCompletion = completion;
             pendingSkippableOverride = skippableOverride;
-            pendingStartsCovered = completion == PendingCutsceneCompletion.Synopsis;
+            pendingStartsCovered = completion == PendingCutsceneCompletion.Prologue
+                || completion == PendingCutsceneCompletion.Past;
 
             if (pendingStartsCovered)
             {
@@ -295,21 +328,18 @@ namespace Week14.GameFlow
 
             switch (completion)
             {
-                case PendingCutsceneCompletion.Synopsis:
-                    GameSaveManager.MarkSynopsisSeen();
+                case PendingCutsceneCompletion.Prologue:
+                    GameSaveManager.MarkPrologueSeen();
+                    break;
+                case PendingCutsceneCompletion.Past:
+                    GameSaveManager.MarkPastSeen();
                     break;
                 case PendingCutsceneCompletion.Ending:
                     GameSaveManager.MarkEndingSeen();
                     break;
             }
 
-            if (completion == PendingCutsceneCompletion.Synopsis)
-            {
-                LoadSceneFromCoveredInternal(nextSceneName);
-                return;
-            }
-
-            LoadSceneInternal(nextSceneName);
+            LoadSceneFromCoveredInternal(nextSceneName);
         }
 
         private void LoadSceneInternal(string sceneName)

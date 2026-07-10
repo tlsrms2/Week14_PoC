@@ -46,7 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.GameFlow.GameFlowController
   titleSceneName: TitleScene
   lobbySceneName: LobbyScene
+  tutorialSceneName: TutorialScene
   endingSceneName: EndingScene
   cutsceneSceneName: CutsceneScene
-  synopsisCutscene: {fileID: 11400000, guid: 2c55d31e72a4a8947ba9a0b99ece59f8, type: 2}
+  prologueCutscene: {fileID: 11400000, guid: 2c55d31e72a4a8947ba9a0b99ece59f8, type: 2}
+  pastCutscene: {fileID: 11400000, guid: 6cf13779acdfbb44080aeaa253dc445a, type: 2}
   endingCutscene: {fileID: 11400000, guid: 2b0c1a38a6dcb4b498b6cc72d13c8029, type: 2}

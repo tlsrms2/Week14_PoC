@@ -24,6 +24,9 @@ namespace Week14.Environment
         private bool initialized;
         private bool closed;
 
+        public bool IsMoving => closeRoutine != null;
+        public bool IsClosed => closed;
+
         private void Awake()
         {
             InitializePositions();
@@ -90,6 +93,59 @@ namespace Week14.Environment
             closeRoutine = StartCoroutine(CloseRoutine());
         }
 
+        public IEnumerator CloseAndWait()
+        {
+            Close();
+            while (IsMoving)
+            {
+                yield return null;
+            }
+        }
+
+        public void CloseInstant()
+        {
+            InitializePositions();
+            if (!initialized)
+            {
+                return;
+            }
+
+            if (closeRoutine != null)
+            {
+                StopCoroutine(closeRoutine);
+                closeRoutine = null;
+            }
+
+            leftDoor.localPosition = leftClosedLocalPosition;
+            rightDoor.localPosition = rightClosedLocalPosition;
+            closed = true;
+        }
+
+        public void Open()
+        {
+            InitializePositions();
+            if (!initialized)
+            {
+                return;
+            }
+
+            if (closeRoutine != null)
+            {
+                StopCoroutine(closeRoutine);
+            }
+
+            closeRoutine = StartCoroutine(OpenRoutine());
+        }
+
+        public IEnumerator OpenAndWait()
+        {
+            Open();
+            while (IsMoving)
+            {
+                yield return null;
+            }
+        }
+
         public void OpenInstant()
         {
             InitializePositions();
@@ -118,6 +174,32 @@ namespace Week14.Environment
 
             targetBoss ??= boss;
             Close();
+        }
+
+        private IEnumerator OpenRoutine()
+        {
+            Vector3 leftStart = leftDoor.localPosition;
+            Vector3 rightStart = rightDoor.localPosition;
+            Vector3 leftTarget = leftClosedLocalPosition + Vector3.left * openDistance;
+            Vector3 rightTarget = rightClosedLocalPosition + Vector3.right * openDistance;
+            float elapsed = 0f;
+
+            while (elapsed < closeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float progress = Mathf.Clamp01(elapsed / closeDuration);
+                float t = closeCurve != null ? closeCurve.Evaluate(progress) : progress;
+
+                leftDoor.localPosition = Vector3.LerpUnclamped(leftStart, leftTarget, t);
+                rightDoor.localPosition = Vector3.LerpUnclamped(rightStart, rightTarget, t);
+
+                yield return null;
+            }
+
+            leftDoor.localPosition = leftTarget;
+            rightDoor.localPosition = rightTarget;
+            closeRoutine = null;
+            closed = false;
         }
 
         private IEnumerator CloseRoutine()

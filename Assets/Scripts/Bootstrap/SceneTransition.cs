@@ -27,12 +27,14 @@ namespace Week14.Bootstrap
         private CanvasGroup canvasGroup;
         private RectTransform blockRoot;
         private Coroutine loadRoutine;
+        private Coroutine coverRevealRoutine;
         private int builtColumns;
         private int builtRows;
         private Vector2 builtScreenSize;
 
         public static SceneTransition Instance => instance;
-        public static bool IsTransitioning => instance != null && instance.loadRoutine != null;
+        public static bool IsTransitioning => instance != null
+            && (instance.loadRoutine != null || instance.coverRevealRoutine != null);
 
         private void Awake()
         {
@@ -115,12 +117,35 @@ namespace Week14.Bootstrap
         public static void ReleaseCoveredScreen()
         {
             SceneTransition transition = GetExistingInstance();
-            if (transition == null || transition.loadRoutine != null)
+            if (transition == null || transition.loadRoutine != null || transition.coverRevealRoutine != null)
             {
                 return;
             }
 
             transition.SetOverlayVisible(false);
+        }
+
+        public static IEnumerator PlayCoverReveal(Action onCovered = null)
+        {
+            SceneTransition transition = GetExistingInstance();
+            if (transition == null)
+            {
+                Debug.LogWarning("SceneTransition instance is missing. Place SceneTransition in the first loaded scene.");
+                onCovered?.Invoke();
+                yield break;
+            }
+
+            while (transition.loadRoutine != null || transition.coverRevealRoutine != null)
+            {
+                yield return null;
+            }
+
+            bool completed = false;
+            transition.coverRevealRoutine = transition.StartCoroutine(transition.CoverRevealRoutine(onCovered, () => completed = true));
+            while (!completed)
+            {
+                yield return null;
+            }
         }
 
         public static void LoadScene(int buildIndex)
@@ -204,6 +229,32 @@ namespace Week14.Bootstrap
 
             SetOverlayVisible(false);
             loadRoutine = null;
+        }
+
+        private IEnumerator CoverRevealRoutine(Action onCovered, Action onCompleted)
+        {
+            EnsureOverlay();
+            SetOverlayVisible(true);
+            yield return AnimateBlocks(true, coverDuration);
+            yield return WaitUnscaled(holdDuration);
+
+            try
+            {
+                onCovered?.Invoke();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
+
+            EnsureOverlay();
+            SetBlocksToState(true);
+            yield return WaitUnscaled(holdDuration);
+            yield return AnimateBlocks(false, revealDuration);
+
+            SetOverlayVisible(false);
+            coverRevealRoutine = null;
+            onCompleted?.Invoke();
         }
 
         private void EnsureOverlay()

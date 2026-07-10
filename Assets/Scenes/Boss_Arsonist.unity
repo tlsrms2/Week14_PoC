@@ -2170,6 +2170,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
+      propertyPath: hpEmptyExecutionSeconds
+      value: 50000
+      objectReference: {fileID: 0}
+    - target: {fileID: 797863168539758250, guid: d58412bbf8ce1b843a38777c312aa088, type: 3}
       propertyPath: graphProjectiles.Array.size
       value: 6
       objectReference: {fileID: 0}

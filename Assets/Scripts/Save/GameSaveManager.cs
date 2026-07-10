@@ -84,9 +84,11 @@ namespace Week14.Save
             Save();
         }
 
-        public static bool HasSeenSynopsis => Data.hasSeenSynopsis;
+        public static bool HasSeenPrologue => Data.hasSeenPrologue || Data.hasSeenSynopsis;
+        public static bool HasSeenPast => Data.hasSeenPast;
         public static bool HasCompletedTutorial => Data.hasCompletedTutorial;
         public static bool HasSeenEnding => Data.hasSeenEnding;
+        public static bool HasSeenSynopsis => HasSeenPrologue;
 
         public static bool HasSeenStoryEpisode(string episodeId)
         {
@@ -123,26 +125,60 @@ namespace Week14.Save
             }
         }
 
-        public static void MarkSynopsisSeen()
+        public static void MarkPrologueSeen()
         {
-            if (Data.hasSeenSynopsis)
+            if (Data.hasSeenPrologue && Data.hasSeenSynopsis)
             {
                 return;
             }
 
+            Data.hasSeenPrologue = true;
             Data.hasSeenSynopsis = true;
             Save();
         }
 
-        public static void SetSynopsisSeen(bool seen)
+        public static void SetPrologueSeen(bool seen)
         {
-            if (Data.hasSeenSynopsis == seen)
+            if (Data.hasSeenPrologue == seen && Data.hasSeenSynopsis == seen)
             {
                 return;
             }
 
+            Data.hasSeenPrologue = seen;
             Data.hasSeenSynopsis = seen;
             Save();
+        }
+
+        public static void MarkPastSeen()
+        {
+            if (Data.hasSeenPast)
+            {
+                return;
+            }
+
+            Data.hasSeenPast = true;
+            Save();
+        }
+
+        public static void SetPastSeen(bool seen)
+        {
+            if (Data.hasSeenPast == seen)
+            {
+                return;
+            }
+
+            Data.hasSeenPast = seen;
+            Save();
+        }
+
+        public static void MarkSynopsisSeen()
+        {
+            MarkPrologueSeen();
+        }
+
+        public static void SetSynopsisSeen(bool seen)
+        {
+            SetPrologueSeen(seen);
         }
 
         public static void MarkTutorialCompleted()
@@ -206,7 +242,9 @@ namespace Week14.Save
 
         public static void ResetStoryProgress()
         {
-            bool changed = Data.hasSeenSynopsis
+            bool changed = Data.hasSeenPrologue
+                || Data.hasSeenPast
+                || Data.hasSeenSynopsis
                 || Data.hasCompletedTutorial
                 || Data.hasSeenEnding
                 || Data.seenStoryEpisodeIds.Count > 0;
@@ -216,6 +254,8 @@ namespace Week14.Save
                 return;
             }
 
+            Data.hasSeenPrologue = false;
+            Data.hasSeenPast = false;
             Data.hasSeenSynopsis = false;
             Data.hasCompletedTutorial = false;
             Data.hasSeenEnding = false;
@@ -223,15 +263,32 @@ namespace Week14.Save
             Save();
         }
 
-        public static void ResetSynopsisSeen()
+        public static void ResetPrologueSeen()
         {
-            if (!Data.hasSeenSynopsis)
+            if (!Data.hasSeenPrologue && !Data.hasSeenSynopsis)
             {
                 return;
             }
 
+            Data.hasSeenPrologue = false;
             Data.hasSeenSynopsis = false;
             Save();
+        }
+
+        public static void ResetPastSeen()
+        {
+            if (!Data.hasSeenPast)
+            {
+                return;
+            }
+
+            Data.hasSeenPast = false;
+            Save();
+        }
+
+        public static void ResetSynopsisSeen()
+        {
+            ResetPrologueSeen();
         }
 
         public static void ResetTutorialCompleted()

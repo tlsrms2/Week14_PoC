@@ -15,7 +15,7 @@ namespace Week14.Cutscene
     public sealed class CutsceneDialogue
     {
         [SerializeField] private string name;
-        [SerializeField, TextArea(2, 6)] private string text;
+        [SerializeField, TextArea(4, 14)] private string text;
         [SerializeField] private string sfxId;
 
         public string Name => name;
@@ -45,7 +45,10 @@ namespace Week14.Cutscene
 
         [Header("Transition")]
         [SerializeField] private CutsceneStepTransitionMode transitionMode = CutsceneStepTransitionMode.BlackFade;
-        [SerializeField, Min(0f)] private float fadeSeconds = 0.5f;
+        [FormerlySerializedAs("fadeSeconds")]
+        [SerializeField, Min(0f)] private float fadeInSeconds = 0.5f;
+        [SerializeField, Min(0f)] private float fadeOutSeconds = 0.25f;
+        [SerializeField, Min(0f)] private float darkHoldSeconds;
 
         [Header("Background Motion")]
         [SerializeField, Min(0f)] private float motionSeconds;
@@ -60,7 +63,9 @@ namespace Week14.Cutscene
         public string BgmId => bgmId;
         public float BgmFadeSeconds => bgmFadeSeconds;
         public CutsceneStepTransitionMode TransitionMode => transitionMode;
-        public float FadeSeconds => fadeSeconds;
+        public float FadeInSeconds => Mathf.Max(0f, fadeInSeconds);
+        public float FadeOutSeconds => Mathf.Max(0f, fadeOutSeconds);
+        public float DarkHoldSeconds => Mathf.Max(0f, darkHoldSeconds);
         public float MotionSeconds => motionSeconds;
         public Vector2 StartOffset => startOffset;
         public Vector2 EndOffset => endOffset;

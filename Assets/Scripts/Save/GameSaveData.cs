@@ -26,6 +26,8 @@ namespace Week14.Save
         public List<string> unlockedWeaponIds = new();
         public List<SkillSlotData> equippedSkills = new();
         public string equippedWeaponId;
+        public bool hasSeenPrologue;
+        public bool hasSeenPast;
         public bool hasSeenSynopsis;
         public bool hasCompletedTutorial;
         public bool hasSeenEnding;

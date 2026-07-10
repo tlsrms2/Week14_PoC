@@ -19,6 +19,7 @@ namespace Week14.Combat
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
         private static int externalCombatPermissionCount;
         private static int leftAttackSuppressionCount;
+        private static int parrySuppressionCount;
         private static int externalInvulnerabilityCount;
 
         public static event Action<PlayerCombatController> AttackReceived;
@@ -109,6 +110,7 @@ namespace Week14.Combat
             && !health.IsDead;
         private bool CanShoot => CanAct && (BossAI.IsAnyCombatStarted || externalCombatPermissionCount > 0);
         private static bool IsLeftAttackSuppressed => leftAttackSuppressionCount > 0;
+        private static bool IsParrySuppressed => parrySuppressionCount > 0;
         private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
@@ -143,6 +145,16 @@ namespace Week14.Combat
         public static void PopLeftAttackSuppression()
         {
             leftAttackSuppressionCount = Mathf.Max(0, leftAttackSuppressionCount - 1);
+        }
+
+        public static void PushParrySuppression()
+        {
+            parrySuppressionCount++;
+        }
+
+        public static void PopParrySuppression()
+        {
+            parrySuppressionCount = Mathf.Max(0, parrySuppressionCount - 1);
         }
 
         public static void PushExternalInvulnerability()
@@ -387,10 +399,20 @@ namespace Week14.Combat
             UpdateHoveredExecutionTarget();
             RotateToAim();
             UpdateMouseParryRangeRecovery();
-            UpdateMouseParryReticle();
-            UpdateProjectileLockOnTarget();
-            UpdateMouseParryReticleThreat();
-            UpdateProjectileLockOnIndicator();
+            bool isParrySuppressed = IsParrySuppressed;
+            if (isParrySuppressed)
+            {
+                SetMouseParryReticleVisible(false);
+                SetProjectileLockOnIndicatorVisible(false);
+            }
+            else
+            {
+                UpdateMouseParryReticle();
+                UpdateProjectileLockOnTarget();
+                UpdateMouseParryReticleThreat();
+                UpdateProjectileLockOnIndicator();
+            }
+
             UpdateBodyColor();
             UpdateDashAutoParry();
 
@@ -418,7 +440,7 @@ namespace Week14.Combat
                 Shooter.ReleaseAttack();
             }
 
-            if (GameInput.RightAttackDown)
+            if (!isParrySuppressed && GameInput.RightAttackDown)
             {
                 if (!CanAct)
                 {

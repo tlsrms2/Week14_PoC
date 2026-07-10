@@ -196,6 +196,22 @@ namespace Week14.Combat
             }
         }
 
+        public void RestoreAfterDeath()
+        {
+            if (deathVisualRoot != null)
+            {
+                deathVisualRoot.SetActive(false);
+            }
+
+            if (visualRoot != null)
+            {
+                visualRoot.gameObject.SetActive(true);
+            }
+
+            ApplyFacing(currentFacing);
+            UpdateWalkAnimation(true);
+        }
+
         private void HandleWeaponChanged(BaseWeaponSO weapon)
         {
             ApplyLeftArmController(weapon);

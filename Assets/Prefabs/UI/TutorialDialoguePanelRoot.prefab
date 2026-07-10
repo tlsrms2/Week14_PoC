@@ -70,7 +70,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.1967, y: -71.83899}
+  m_AnchoredPosition: {x: 19, y: -71.83899}
   m_SizeDelta: {x: 641.5554, y: 384.593}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5709695041889939770
@@ -128,8 +128,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 44
+  m_fontSizeBase: 44
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -248,6 +248,81 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4428876279806462366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 116074098790306506}
+  - component: {fileID: 3154432474580184832}
+  - component: {fileID: 663754238227112024}
+  m_Layer: 5
+  m_Name: MouseClick_Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &116074098790306506
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428876279806462366}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5.493497, y: 5.493497, z: 5.493497}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7976993687638011015}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 276, y: -233}
+  m_SizeDelta: {x: 9, y: 13}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3154432474580184832
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428876279806462366}
+  m_CullTransparentMesh: 1
+--- !u!114 &663754238227112024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428876279806462366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: a056b1188ef73234fbaf3e85b1b09ebe, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4585011159574505255
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,8 +415,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
-  m_fontSizeBase: 52
+  m_fontSize: 58
+  m_fontSizeBase: 58
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -440,15 +515,15 @@ MonoBehaviour:
   speakerText: {fileID: 7545014092051020505}
   dialogueText: {fileID: 2810196217502535848}
   charactersPerSecond: 25
-  profileImage: {fileID: 1359436828187271199}
+  profileImage: {fileID: 74220503104708152}
   fallbackProfileSprite: {fileID: 0}
   speakerProfiles:
   - speaker: "\uC774\uC628"
     profileSprite: {fileID: -4565277893826926653, guid: 87c76420dcbb7c04b89c55ee640b3fee, type: 3}
   - speaker: AI
     profileSprite: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
-  hiddenOffset: {x: -520, y: 0}
-  showSeconds: 0.25
+  hiddenOffset: {x: -1000, y: 0}
+  showSeconds: 0.5
   showCurve:
     serializedVersion: 2
     m_Curve:
@@ -474,6 +549,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   objectiveCompleteColor: {r: 0.3, g: 1, b: 0.45, a: 1}
+  objectiveStrikeLineHeight: 2
   objectiveCompleteHoldSeconds: 0.45
   objectiveCompleteFadeSeconds: 0.2
 --- !u!1 &6898539272180958346
@@ -507,6 +583,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 643683530784204497}
+  - {fileID: 116074098790306506}
   - {fileID: 1302141889880180259}
   - {fileID: 6952894757641312405}
   m_Father: {fileID: 504320676503317020}
