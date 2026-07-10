@@ -81,7 +81,10 @@ namespace Week14.Enemy
             normalSequenceSprite = GetProjectileSprite();
             SetSequenceActive(sequenceActive);
             SetChargeGaugeVisible(homingActive && IsCharging);
-            FacePlayerIfHoming();
+            if (IsLaunched)
+            {
+                FacePlayerIfHoming();
+            }
         }
 
         protected override void OnProjectileLaunched()
@@ -173,7 +176,6 @@ namespace Week14.Enemy
 
             float remainingRatio = Mathf.Clamp01((ChargeEndsAt - Time.time) / ProjectileChargeSeconds);
             SetChargeGaugeFill(remainingRatio);
-            FacePlayerIfHoming();
             if (remainingRatio <= chargeSolidColorRemainingRatio)
             {
                 ApplyProjectileColor(sequenceBlinkColor);

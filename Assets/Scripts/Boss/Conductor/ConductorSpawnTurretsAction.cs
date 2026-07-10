@@ -16,7 +16,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class ConductorSpawnTurretsAction : BossAction
+    public sealed class ConductorSpawnTurretsAction : BossAction, IBossActionContextDurationProvider
     {
         private const string GroundLayerName = "Ground";
 
@@ -46,6 +46,31 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float muzzleFlashScale = 0.55f;
         [SerializeField, Min(0f)] private float turretLifetimeSeconds;
 
+        public bool TryGetDurationSeconds(BossActionContext context, out float seconds)
+        {
+            seconds = 0f;
+            if (context?.Boss == null)
+            {
+                return false;
+            }
+
+            BossProjectileSettings resolvedTurret = context.ResolveGraphProjectileSettings(turretProjectileName)
+                ?? turretProjectile;
+            if (resolvedTurret == null || resolvedTurret.Prefab == null)
+            {
+                return false;
+            }
+
+            int spawnCount = Mathf.Min(Mathf.Max(1, turretCount), GetAvailableTurretSlots());
+            if (spawnCount <= 0)
+            {
+                return false;
+            }
+
+            seconds = GetTurretSpawnSequenceSeconds(spawnCount);
+            return true;
+        }
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context == null || context.Boss == null)
@@ -69,15 +94,16 @@ namespace Week14.Enemy
             List<Vector2> positions = ResolveSpawnPositions(context, spawnCount);
             for (int i = 0; i < positions.Count; i++)
             {
-                SpawnTurret(context, resolvedTurret, positions[i]);
-                if (spawnInterval > 0f && i + 1 < positions.Count)
+                bool spawned = SpawnTurret(context, resolvedTurret, positions[i]);
+
+                if (spawned && spawnInterval > 0f && i + 1 < positions.Count)
                 {
                     yield return context.WaitSeconds(spawnInterval);
                 }
             }
         }
 
-        private void SpawnTurret(
+        private bool SpawnTurret(
             BossActionContext context,
             BossProjectileSettings resolvedTurret,
             Vector2 position)
@@ -99,7 +125,7 @@ namespace Week14.Enemy
                     spawned.DestroyFromOwner();
                 }
 
-                return;
+                return false;
             }
 
             turret.ConfigureTurret(
@@ -113,6 +139,12 @@ namespace Week14.Enemy
                 muzzleOffset,
                 muzzleFlashScale,
                 turretLifetimeSeconds);
+            return true;
+        }
+
+        private float GetTurretSpawnSequenceSeconds(int spawnCount)
+        {
+            return Mathf.Max(0f, spawnInterval) * Mathf.Max(0, spawnCount - 1);
         }
 
         private List<Vector2> ResolveSpawnPositions(BossActionContext context, int count)

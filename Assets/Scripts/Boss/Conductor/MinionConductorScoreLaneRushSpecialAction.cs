@@ -40,6 +40,26 @@ namespace Week14.Enemy
         private readonly List<EnemyProjectile> trackedProjectiles = new();
         private ConductorScoreLaneRushIndicatorVisual activeLaneIndicators;
 
+        public override bool TryGetDurationSeconds(BossActionContext context, out float seconds)
+        {
+            int volleyCount = Mathf.Min(ExecutionOrder.Length, CountAvailableVolleys(specialVolleys));
+            if (volleyCount <= 0)
+            {
+                seconds = 0f;
+                return false;
+            }
+
+            float laneIndicatorRevealSeconds = GetLaneIndicatorRevealDuration();
+            float volleySequenceSeconds = EstimateVolleySequenceDuration(specialVolleys, volleyCount);
+            seconds = WindupSeconds
+                + Mathf.Max(MoveToStartSeconds, laneIndicatorRevealSeconds)
+                + volleySequenceSeconds
+                + EstimateTrackedProjectileRemainingSeconds(context, specialVolleys, volleyCount, volleySequenceSeconds)
+                + Mathf.Max(0f, postProjectileClearDelaySeconds)
+                + GetLaneIndicatorHideDuration();
+            return seconds > 0f;
+        }
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
@@ -165,6 +185,81 @@ namespace Week14.Enemy
 
             int laneCount = IndicatorSideOrder.Length * Mathf.Max(1, laneIndicatorLineCount);
             return laneCount * (Mathf.Max(0f, laneIndicatorRevealSeconds) + Mathf.Max(0f, laneIndicatorRevealInterval));
+        }
+
+        private float GetLaneIndicatorHideDuration()
+        {
+            return drawLaneIndicators ? Mathf.Max(0f, laneIndicatorHideSeconds) : 0f;
+        }
+
+        private float EstimateTrackedProjectileRemainingSeconds(
+            BossActionContext context,
+            IReadOnlyList<Volley> pool,
+            int volleyCount,
+            float sequenceSeconds)
+        {
+            if (pool == null || !MinionGraphActionHost.TryGet(context, out IMinionPatternHost host))
+            {
+                return 0f;
+            }
+
+            float sequenceElapsed = 0f;
+            float maxRemainingSeconds = 0f;
+            int count = Mathf.Max(0, volleyCount);
+            for (int volleyIndex = 0; volleyIndex < count; volleyIndex++)
+            {
+                bool hasNextVolley = volleyIndex < count - 1;
+                float volleyWaitSeconds = EstimateLongestVolleyWaitSeconds(pool, hasNextVolley);
+                maxRemainingSeconds = Mathf.Max(
+                    maxRemainingSeconds,
+                    EstimatePoolProjectileRemainingSeconds(host, pool, sequenceElapsed, sequenceSeconds));
+                sequenceElapsed += volleyWaitSeconds;
+                if (hasNextVolley)
+                {
+                    sequenceElapsed += RestSeconds;
+                }
+            }
+
+            return maxRemainingSeconds;
+        }
+
+        private static float EstimatePoolProjectileRemainingSeconds(
+            IMinionPatternHost host,
+            IReadOnlyList<Volley> pool,
+            float sequenceElapsed,
+            float sequenceSeconds)
+        {
+            float maxRemainingSeconds = 0f;
+            for (int volleyIndex = 0; volleyIndex < pool.Count; volleyIndex++)
+            {
+                IReadOnlyList<FireTiming> timings = pool[volleyIndex]?.FireTimings;
+                if (timings == null)
+                {
+                    continue;
+                }
+
+                for (int timingIndex = 0; timingIndex < timings.Count; timingIndex++)
+                {
+                    FireTiming timing = timings[timingIndex];
+                    if (timing == null)
+                    {
+                        continue;
+                    }
+
+                    BossProjectileSettings projectile = host.ResolveMinionProjectileSettings(timing.ProjectileName);
+                    if (projectile == null)
+                    {
+                        continue;
+                    }
+
+                    float activeSeconds = Mathf.Max(0f, projectile.ChargeSeconds)
+                        + Mathf.Max(0f, projectile.Lifetime);
+                    float remainingSeconds = sequenceElapsed + timing.FireSeconds + activeSeconds - sequenceSeconds;
+                    maxRemainingSeconds = Mathf.Max(maxRemainingSeconds, remainingSeconds);
+                }
+            }
+
+            return Mathf.Max(0f, maxRemainingSeconds);
         }
 
         private static List<Minion> GetOrderedMinions(IReadOnlyList<Minion> source)

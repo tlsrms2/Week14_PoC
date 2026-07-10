@@ -986,7 +986,7 @@ namespace Week14.Enemy
             {
                 color = BodyHitColor;
             }
-            else if (isExecutionLocked || IsHpEmpty)
+            else if ((isExecutionLocked || IsHpEmpty) && ShouldUseExecutionAvailableBodyColor)
             {
                 color = HpEmptyColor;
             }
@@ -1016,6 +1016,7 @@ namespace Week14.Enemy
         }
 
         protected virtual bool ShouldIgnoreBodyStateRenderer(SpriteRenderer renderer) => false;
+        protected virtual bool ShouldUseExecutionAvailableBodyColor => true;
 
         private void HandleDied(Health _)
         {

@@ -99,7 +99,9 @@ namespace Week14.UI
         {
             return renderer != null
                 && (renderer == lockOnRenderer
-                    || renderer == executionRenderer);
+                    || renderer == executionRenderer
+                    || IsRendererUnder(renderer, executionBlinkFirstObject)
+                    || IsRendererUnder(renderer, executionBlinkSecondObject));
         }
 
         public void SetSuppressed(bool value)
@@ -316,6 +318,13 @@ namespace Week14.UI
         private bool IsOwnedIndicator(SpriteRenderer renderer)
         {
             return renderer != null && renderer.transform.IsChildOf(transform);
+        }
+
+        private static bool IsRendererUnder(SpriteRenderer renderer, GameObject owner)
+        {
+            return renderer != null
+                && owner != null
+                && renderer.transform.IsChildOf(owner.transform);
         }
 
         private void RotateExecutionIndicator(bool visible)

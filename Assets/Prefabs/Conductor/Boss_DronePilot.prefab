@@ -53,9 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b749bb43f86660a40a962c97858932dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.DronePilot
-  maxLives: 3
+  maxLives: 2
   phaseTransitionWaitSeconds: 1.2
-  deathAnimator: {fileID: 0}
+  deathAnimator: {fileID: 8606619460327554601}
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
   finalDeathExplosionCount: 10
@@ -210,12 +210,340 @@ MonoBehaviour:
       radius: 0.12
       trailSeconds: 0.01
       trailWidthMultiplier: 0.1
+  - projectileName: "\uC77C\uBC18\uD0C4_\uC74C\uD45C"
+    projectile:
+      prefab: {fileID: 7659187073946303392, guid: 98dca5f62eb05064492ac939f364cc7c, type: 3}
+      bulletDamage: 0
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 7
+      lifetime: 20
+      radius: 0.12
+      trailSeconds: 0.01
+      trailWidthMultiplier: 0.1
   bodyHitDamageMultiplier: 1
   minionHitDamageMultiplier: 0.7
   minionOutlineIdleAlpha: 1
   minionOutlineFlashSeconds: 0.12
   walkAnimator: {fileID: 8606619460327554601}
   walkVelocityThreshold: 0.01
+  conductingPatterns:
+  - patternId: P1
+    strokes:
+    - start: {x: -1.5333333, y: 3.725}
+      end: {x: 4.5, y: -0.06666667}
+      hasControlPoint: 1
+      controlPoint: {x: -3.2, y: -4.5333333}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 1.05, y: -3.6}
+      end: {x: -3.6666667, y: 0.59166664}
+      hasControlPoint: 1
+      controlPoint: {x: 4.891667, y: 4.4666667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -3.2166667, y: 1.4416667}
+      end: {x: 3.6833334, y: -1.375}
+      hasControlPoint: 0
+      controlPoint: {x: -2.6666667, y: 1.675}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P2-1
+    strokes:
+    - start: {x: 3.2166667, y: 2.25}
+      end: {x: -4.275, y: -0.083333336}
+      hasControlPoint: 1
+      controlPoint: {x: -1.6583333, y: 2.3416667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -4.2, y: -0.19166666}
+      end: {x: 3.1083333, y: -1.8416667}
+      hasControlPoint: 1
+      controlPoint: {x: 2.1583333, y: -4.5416665}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 0.06666667, y: 3.2083333}
+      end: {x: 0.058333334, y: -3.6583333}
+      hasControlPoint: 1
+      controlPoint: {x: -0.46666667, y: -2.2}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P2-2
+    strokes:
+    - start: {x: 0.033333335, y: 3.3}
+      end: {x: 3.8416667, y: -2.9833333}
+      hasControlPoint: 1
+      controlPoint: {x: 3.15, y: 0.84166664}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.05, y: 3.275}
+      end: {x: 0.29166666, y: -3.9916666}
+      hasControlPoint: 1
+      controlPoint: {x: -3.7333333, y: -3.9}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -3.0666666, y: -1.7583333}
+      end: {x: 5.1833334, y: 0.14166667}
+      hasControlPoint: 1
+      controlPoint: {x: -0.93333334, y: -0.108333334}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: UP2
+    strokes:
+    - start: {x: -2.975, y: 0.016666668}
+      end: {x: 3.6333334, y: 2.25}
+      hasControlPoint: 1
+      controlPoint: {x: -0.75, y: 2.6583333}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -2.9416666, y: -0.06666667}
+      end: {x: 4.275, y: -2.8083334}
+      hasControlPoint: 1
+      controlPoint: {x: 2.3166666, y: -4.108333}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 4.3333335, y: -2.7166667}
+      end: {x: -0.033333335, y: 3.6916666}
+      hasControlPoint: 1
+      controlPoint: {x: 3.65, y: 0.84166664}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.1, y: 3.6083333}
+      end: {x: 0.25833333, y: -3.825}
+      hasControlPoint: 1
+      controlPoint: {x: -3.7083333, y: -3}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -1.1916667, y: -4}
+      end: {x: 3.725, y: 3.4666667}
+      hasControlPoint: 1
+      controlPoint: {x: 0.4, y: 0.06666667}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P3
+    strokes:
+    - start: {x: -4.5666666, y: 0.025}
+      end: {x: -0.05, y: -0.008333334}
+      hasControlPoint: 1
+      controlPoint: {x: -0.9166667, y: -3.825}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.058333334, y: -0.008333334}
+      end: {x: 4.05, y: -0.016666668}
+      hasControlPoint: 1
+      controlPoint: {x: 1, y: 4.5666666}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -1.775, y: 2.9}
+      end: {x: 4.0583334, y: -0.016666668}
+      hasControlPoint: 1
+      controlPoint: {x: -1.4333333, y: -1.45}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P4-1
+    strokes:
+    - start: {x: -3.1666667, y: 0.016666668}
+      end: {x: -0.033333335, y: 3.2}
+      hasControlPoint: 1
+      controlPoint: {x: -0.3, y: 0.05}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 0.058333334, y: 3.1666667}
+      end: {x: -0.041666668, y: -3.575}
+      hasControlPoint: 0
+      controlPoint: {x: 0.058333334, y: 3.1666667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 0.075, y: -3.5416667}
+      end: {x: 2.9666667, y: -0.041666668}
+      hasControlPoint: 1
+      controlPoint: {x: -0.325, y: 0.29166666}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P4-2
+    strokes:
+    - start: {x: -3.5, y: -0}
+      end: {x: -0.016666668, y: -3.05}
+      hasControlPoint: 1
+      controlPoint: {x: -0.225, y: -0.083333336}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -3.5, y: 0.09166667}
+      end: {x: 2.95, y: 0.05}
+      hasControlPoint: 0
+      controlPoint: {x: -3.5, y: 0.09166667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 2.925, y: 0.15}
+      end: {x: -0.008333334, y: 3.275}
+      hasControlPoint: 1
+      controlPoint: {x: -0.2, y: -0.025}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: UP4
+    strokes:
+    - start: {x: 3.475, y: -0.016666668}
+      end: {x: 0.016666668, y: 3.175}
+      hasControlPoint: 1
+      controlPoint: {x: 0.20833333, y: 0.058333334}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.058333334, y: 3.2}
+      end: {x: 0.016666668, y: -3.1333334}
+      hasControlPoint: 0
+      controlPoint: {x: -0.058333334, y: 3.2}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.06666667, y: -3.0916667}
+      end: {x: -3.425, y: -0.033333335}
+      hasControlPoint: 1
+      controlPoint: {x: -0.475, y: -0.09166667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -3.4083333, y: 0.058333334}
+      end: {x: 3.425, y: -0.058333334}
+      hasControlPoint: 0
+      controlPoint: {x: -3.4083333, y: 0.058333334}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 3.4166667, y: -0.18333334}
+      end: {x: 0.11666667, y: -3.1416667}
+      hasControlPoint: 1
+      controlPoint: {x: -0.23333333, y: 0.083333336}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -3.4, y: 0.14166667}
+      end: {x: -0.16666667, y: 3.2083333}
+      hasControlPoint: 1
+      controlPoint: {x: -0.425, y: 0.15833333}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P5
+    strokes:
+    - start: {x: -0.033333335, y: 3.075}
+      end: {x: -0.041666668, y: -3.1083333}
+      hasControlPoint: 0
+      controlPoint: {x: -0.033333335, y: 3.075}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.033333335, y: -3.15}
+      end: {x: 3.575, y: 0.033333335}
+      hasControlPoint: 1
+      controlPoint: {x: -1.0666667, y: -0.64166665}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 3.5416667, y: 0.033333335}
+      end: {x: 0.725, y: 2.575}
+      hasControlPoint: 1
+      controlPoint: {x: 1.7416667, y: 0.05}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: UP5
+    strokes:
+    - start: {x: -0.075, y: 3.7083333}
+      end: {x: -0.058333334, y: -2.975}
+      hasControlPoint: 0
+      controlPoint: {x: -0.075, y: 3.7083333}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -0.13333334, y: -2.95}
+      end: {x: -1.2083334, y: 0.925}
+      hasControlPoint: 1
+      controlPoint: {x: 0.075, y: 0.175}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -1.2083334, y: 0.95}
+      end: {x: -4.025, y: -0.6166667}
+      hasControlPoint: 1
+      controlPoint: {x: -1.7166667, y: -0.94166666}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -4.008333, y: -0.65833336}
+      end: {x: -3.2916667, y: 0.6333333}
+      hasControlPoint: 1
+      controlPoint: {x: -4.2833333, y: 0.8833333}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -3.275, y: 0.64166665}
+      end: {x: 1.0333333, y: -1.3}
+      hasControlPoint: 1
+      controlPoint: {x: -1.6166667, y: -1.1583333}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 1.0333333, y: -1.3}
+      end: {x: 2.5, y: 2.1083333}
+      hasControlPoint: 1
+      controlPoint: {x: 3.65, y: -1.375}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 2.5, y: 2.1083333}
+      end: {x: -0.05, y: 3.6833334}
+      hasControlPoint: 1
+      controlPoint: {x: 1.4, y: -1.9666667}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P6
+    strokes:
+    - start: {x: 1.325, y: 4.0916667}
+      end: {x: 3.975, y: 1.1083333}
+      hasControlPoint: 1
+      controlPoint: {x: -8.158334, y: -4.1}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -2.7333333, y: -4.3}
+      end: {x: -4.608333, y: -1.2583333}
+      hasControlPoint: 1
+      controlPoint: {x: 6.9083333, y: 3.2333333}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P7
+    strokes:
+    - start: {x: -0.48333332, y: 3.6916666}
+      end: {x: 3.7583334, y: -1.1333333}
+      hasControlPoint: 1
+      controlPoint: {x: 0.81666666, y: 0.64166665}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 3.65, y: -1.2666667}
+      end: {x: -4.6833334, y: -2.2416666}
+      hasControlPoint: 0
+      controlPoint: {x: 3.65, y: -1.2666667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -4.7166667, y: -2.275}
+      end: {x: 3.225, y: 2.45}
+      hasControlPoint: 1
+      controlPoint: {x: 0.6166667, y: -0.44166666}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 3.2333333, y: 2.4666667}
+      end: {x: -5.65, y: -0.89166665}
+      hasControlPoint: 1
+      controlPoint: {x: -1.3416667, y: 0.033333335}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: -5.608333, y: -0.85833335}
+      end: {x: 1.8333334, y: 4.0583334}
+      hasControlPoint: 0
+      controlPoint: {x: -5.4666667, y: -0.6666667}
+      points: []
+      migratedLegacyPoints: 0
+  - patternId: P8
+    strokes:
+    - start: {x: -3.375, y: 0.55}
+      end: {x: 3.9166667, y: 1.2583333}
+      hasControlPoint: 1
+      controlPoint: {x: -0.075, y: -1.6416667}
+      points: []
+      migratedLegacyPoints: 0
+    - start: {x: 1.025, y: 2.9666667}
+      end: {x: 0.05, y: -3.1416667}
+      hasControlPoint: 1
+      controlPoint: {x: -1.925, y: 2.3916667}
+      points: []
+      migratedLegacyPoints: 0
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5

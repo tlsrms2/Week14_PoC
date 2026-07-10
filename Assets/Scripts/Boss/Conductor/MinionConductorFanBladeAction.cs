@@ -22,7 +22,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class MinionConductorFanBladeAction : BossAction
+    public sealed class MinionConductorFanBladeAction : BossAction, IBossActionContextDurationProvider
     {
         [Serializable]
         public sealed class Volley
@@ -68,6 +68,32 @@ namespace Week14.Enemy
 
         private ConductorScoreLaneRushIndicatorVisual activePlacementIndicators;
 
+        public bool TryGetDurationSeconds(BossActionContext context, out float seconds)
+        {
+            seconds = 0f;
+            if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
+                || context?.Boss == null
+                || volleys == null
+                || volleys.Count == 0)
+            {
+                return false;
+            }
+
+            List<Minion> minions = GetFanMinions(host.GetControlledMinionsForGraph());
+            if (minions.Count == 0)
+            {
+                return false;
+            }
+
+            float fireDuration = GetMaxVolleyEndSeconds();
+            float bladeRotateSeconds = Mathf.Max(rotateSeconds, fireDuration);
+            float totalMovementDuration = Mathf.Max(0f, alignSeconds) + bladeRotateSeconds;
+            float totalFireDuration = Mathf.Max(0f, alignSeconds) + fireDuration;
+            seconds = Mathf.Max(0f, windupSeconds)
+                + GetCompletionTimelineSeconds(totalMovementDuration, totalFireDuration);
+            return seconds > 0f;
+        }
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
@@ -94,12 +120,18 @@ namespace Week14.Enemy
             float movementDuration = CommandFanBlades(minions, center, bladeRotateSeconds);
             float totalMovementDuration = Mathf.Max(movementDuration, alignSeconds + bladeRotateSeconds);
             float totalFireDuration = alignSeconds + fireDuration;
-            float timelineDuration = waitForDuration
-                ? Mathf.Max(totalMovementDuration, totalFireDuration)
-                : totalFireDuration;
+            float timelineDuration = GetCompletionTimelineSeconds(totalMovementDuration, totalFireDuration);
 
             yield return RunVolleyTimeline(context, host, minions, center, timelineDuration);
             ClearPlacementIndicators();
+        }
+
+        private float GetCompletionTimelineSeconds(float totalMovementDuration, float totalFireDuration)
+        {
+            float configuredTimeline = waitForDuration
+                ? Mathf.Max(totalMovementDuration, totalFireDuration)
+                : totalFireDuration;
+            return Mathf.Max(configuredTimeline, totalMovementDuration, totalFireDuration);
         }
 
         private IEnumerator RunVolleyTimeline(

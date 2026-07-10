@@ -10,7 +10,7 @@ namespace Week14.Enemy
     using ScoreLaneVolley = MinionConductorScoreLaneRushAction.Volley;
 
     [Serializable]
-    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossGraphValidatedAction
+    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossGraphValidatedAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource
     {
         private const float DefaultFormationMoveSpeed = 24f;
         private const float FormationAlignmentTolerance = 0.08f;
@@ -60,10 +60,67 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileAimSpec finalProjectileAim = new();
         [SerializeField] private BossGraphEffectSettings finalProjectileEffects = new();
 
+        [Header("Early Clear Wander")]
+        [SerializeField, Min(0f)] private float earlyClearWanderSeconds = 3f;
+        [SerializeField, Min(0f)] private float earlyClearWanderSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float earlyClearWanderRadius = 2.8f;
+        [SerializeField, Min(0.1f)] private float earlyClearWanderRetargetSeconds = 1.5f;
+
         private readonly List<ConductorFormationLineProjectileMotion> trackedMotions = new();
         private PlayerCombatController lockedPlayerMovement;
+        private bool completedByAllProjectilesCleared;
         private bool hasBossFormationTargetSample;
         private Vector2 previousBossFormationTarget;
+
+        public bool ShouldStartConductorCueOverlayEarly => completedByAllProjectilesCleared;
+
+        public void ClearConductorCueOverlayEarlyStart()
+        {
+            completedByAllProjectilesCleared = false;
+        }
+
+        public bool TryGetDurationSeconds(BossActionContext context, out float seconds)
+        {
+            seconds = 0f;
+            if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
+                || context?.Boss == null
+                || context.Boss.Player == null
+                || volleys == null
+                || volleys.Count == 0)
+            {
+                return false;
+            }
+
+            List<Minion> minions = GetLineMinions(host.GetControlledMinionsForGraph());
+            if (minions.Count == 0)
+            {
+                return false;
+            }
+
+            Vector2 formationCenterDirection = ResolveFormationCenterDirection(context, minions);
+            Vector2 lineDirection = -formationCenterDirection;
+            if (lineDirection.sqrMagnitude <= 0.0001f)
+            {
+                lineDirection = ResolveSharedLineDirection(minions, context.Boss.Player.position);
+                formationCenterDirection = -lineDirection;
+            }
+
+            List<LineSlot> lineSlots = BuildLineSlots(
+                minions,
+                lineDirection,
+                formationCenterDirection,
+                context.Boss.Player);
+
+            float formationSeconds = waitForFormationDuration ? Mathf.Max(0f, settleSeconds) : 0f;
+            float lineVolleySeconds = EstimateLongestLineVolleySeconds(host);
+            int missCount = EstimateMaxMissLaunchCount(host);
+            float finishSeconds = missCount > 0
+                ? EstimateMissLaunchPhaseSeconds(context, lineSlots, missCount)
+                : GetLineIndicatorFadeSeconds();
+
+            seconds = formationSeconds + lineVolleySeconds + finishSeconds;
+            return seconds > 0f;
+        }
 
         void IBossGraphValidatedAction.OnGraphValidated(BossGraphAsset graph, BossStateNode node)
         {
@@ -109,6 +166,7 @@ namespace Week14.Enemy
             ConductorScoreLaneRushIndicatorVisual indicator = null;
             try
             {
+                completedByAllProjectilesCleared = false;
                 LockPlayerMovement(context);
 
                 if (waitForFormationDuration && formationDuration > 0f)
@@ -120,7 +178,21 @@ namespace Week14.Enemy
                 trackedMotions.Clear();
 
                 yield return RunVolleys(context, host, lineSlots, indicator);
+                if (completedByAllProjectilesCleared)
+                {
+                    CompleteEarlyAfterClearedProjectiles(minions, indicator);
+                    indicator = null;
+                    yield break;
+                }
+
                 yield return WaitForLineProjectilesToRelease(context, lineSlots, indicator);
+                if (completedByAllProjectilesCleared)
+                {
+                    CompleteEarlyAfterClearedProjectiles(minions, indicator);
+                    indicator = null;
+                    yield break;
+                }
+
                 UnlockPlayerMovement();
                 yield return RunMissLaunchPhase(context, host, lineSlots, indicator);
                 yield return FadeAndClearIndicator(context, lineSlots, indicator);
@@ -140,6 +212,15 @@ namespace Week14.Enemy
                 trackedMotions.Clear();
                 ResetBossFormationTargetSample();
             }
+        }
+
+        private void CompleteEarlyAfterClearedProjectiles(
+            IReadOnlyList<Minion> minions,
+            ConductorScoreLaneRushIndicatorVisual indicator)
+        {
+            UnlockPlayerMovement();
+            indicator?.ClearAndDestroy();
+            CommandLineMinionsEarlyClearWander(minions);
         }
 
         private void CopyPatternVolleysIfTargetNode(BossGraphAsset graph, BossStateNode node)
@@ -223,7 +304,6 @@ namespace Week14.Enemy
 
                     if (source.MinionNumber != current.MinionNumber
                         || !Mathf.Approximately(source.FireSeconds, current.FireSeconds)
-                        || source.ParryOrder != current.ParryOrder
                         || source.ProjectileName != current.ProjectileName)
                     {
                         return false;
@@ -358,7 +438,6 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            OrderedParrySequence parrySequence = new(fireTimings);
             bool[] fired = new bool[fireTimings.Count];
             float waitSeconds = GetMaxFireSeconds(fireTimings);
             float elapsed = 0f;
@@ -374,14 +453,49 @@ namespace Week14.Enemy
 
                 TickBossFormationAlignment(context, lineSlots);
                 UpdateLineIndicators(indicator, lineSlots);
-                FireDueProjectiles(context, host, lineSlots, fireTimings, parrySequence, fired, elapsed);
+                FireDueProjectiles(context, host, lineSlots, fireTimings, fired, elapsed);
+                if (TryCompleteByClearedLineProjectiles(AreAllFireTimingsProcessed(fireTimings, fired)))
+                {
+                    yield break;
+                }
+
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
             TickBossFormationAlignment(context, lineSlots);
             UpdateLineIndicators(indicator, lineSlots);
-            FireDueProjectiles(context, host, lineSlots, fireTimings, parrySequence, fired, float.PositiveInfinity);
+            FireDueProjectiles(context, host, lineSlots, fireTimings, fired, float.PositiveInfinity);
+            TryCompleteByClearedLineProjectiles(true);
+        }
+
+        private bool TryCompleteByClearedLineProjectiles(bool allFireTimingsProcessed)
+        {
+            if (!allFireTimingsProcessed || HasLiveLineProjectiles())
+            {
+                return false;
+            }
+
+            completedByAllProjectilesCleared = true;
+            return true;
+        }
+
+        private static bool AreAllFireTimingsProcessed(IReadOnlyList<ScoreLaneFireTiming> fireTimings, bool[] fired)
+        {
+            if (fireTimings == null)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < fireTimings.Count; i++)
+            {
+                if (fireTimings[i] != null && (i >= fired.Length || !fired[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void FireDueProjectiles(
@@ -389,7 +503,6 @@ namespace Week14.Enemy
             IMinionPatternHost host,
             IReadOnlyList<LineSlot> lineSlots,
             IReadOnlyList<ScoreLaneFireTiming> fireTimings,
-            OrderedParrySequence parrySequence,
             bool[] fired,
             float elapsed)
         {
@@ -406,7 +519,6 @@ namespace Week14.Enemy
                 BossProjectileSettings projectile = host.ResolveMinionProjectileSettings(timing.ProjectileName);
                 if (slot.Minion == null || projectile == null)
                 {
-                    parrySequence.Skip(timing);
                     continue;
                 }
 
@@ -415,7 +527,6 @@ namespace Week14.Enemy
                 EnemyProjectile spawned = slot.Minion.FireOnce(projectile, fireSpec, i);
                 if (spawned == null)
                 {
-                    parrySequence.Skip(timing);
                     continue;
                 }
 
@@ -425,6 +536,7 @@ namespace Week14.Enemy
                 spawned.ConfigurePathIndicatorDelayedUntilLaunch(true);
                 spawned.ConfigureExternalMotionDriven(true);
                 spawned.ConfigurePlayerCollisionIgnored(true);
+                SetSequenceActive(spawned, true);
                 spawned.HoldChargeUntilForcedLaunch();
 
                 ConductorFormationLineProjectileMotion motion = spawned.gameObject.AddComponent<ConductorFormationLineProjectileMotion>();
@@ -434,7 +546,6 @@ namespace Week14.Enemy
                     projectileSpeed,
                     lineIndicatorLength);
 
-                parrySequence.Register(timing, spawned);
                 trackedMotions.Add(motion);
             }
         }
@@ -1030,6 +1141,11 @@ namespace Week14.Enemy
 
                 TickBossFormationAlignment(context, lineSlots);
                 UpdateLineIndicators(indicator, lineSlots);
+                if (TryCompleteByClearedLineProjectiles(true))
+                {
+                    yield break;
+                }
+
                 elapsed += EnemyTimeScale.DeltaTime;
                 if (timeoutSeconds <= 0f || elapsed >= timeoutSeconds)
                 {
@@ -1039,6 +1155,8 @@ namespace Week14.Enemy
 
                 yield return null;
             }
+
+            TryCompleteByClearedLineProjectiles(true);
         }
 
         private float GetBoundLineProjectileTimeoutSeconds()
@@ -1089,6 +1207,23 @@ namespace Week14.Enemy
                 {
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        private bool HasLiveLineProjectiles()
+        {
+            for (int i = trackedMotions.Count - 1; i >= 0; i--)
+            {
+                ConductorFormationLineProjectileMotion motion = trackedMotions[i];
+                if (motion == null || !motion.IsLive)
+                {
+                    trackedMotions.RemoveAt(i);
+                    continue;
+                }
+
+                return true;
             }
 
             return false;
@@ -1190,6 +1325,139 @@ namespace Week14.Enemy
             }
 
             return maxSeconds;
+        }
+
+        private float EstimateLongestLineVolleySeconds(IMinionPatternHost host)
+        {
+            float maxSeconds = 0f;
+            if (host == null || volleys == null)
+            {
+                return maxSeconds;
+            }
+
+            for (int volleyIndex = 0; volleyIndex < volleys.Count; volleyIndex++)
+            {
+                IReadOnlyList<ScoreLaneFireTiming> timings = volleys[volleyIndex]?.FireTimings;
+                if (timings == null || timings.Count == 0)
+                {
+                    continue;
+                }
+
+                maxSeconds = Mathf.Max(maxSeconds, EstimateLineVolleySeconds(host, timings));
+            }
+
+            return maxSeconds;
+        }
+
+        private float EstimateLineVolleySeconds(
+            IMinionPatternHost host,
+            IReadOnlyList<ScoreLaneFireTiming> timings)
+        {
+            float maxSeconds = GetMaxFireSeconds(timings);
+            for (int i = 0; i < timings.Count; i++)
+            {
+                ScoreLaneFireTiming timing = timings[i];
+                if (timing == null)
+                {
+                    continue;
+                }
+
+                BossProjectileSettings projectile = host.ResolveMinionProjectileSettings(timing.ProjectileName);
+                if (projectile == null)
+                {
+                    continue;
+                }
+
+                maxSeconds = Mathf.Max(
+                    maxSeconds,
+                    timing.FireSeconds + EstimateLineProjectileTravelSeconds(projectile));
+            }
+
+            return maxSeconds;
+        }
+
+        private float EstimateLineProjectileTravelSeconds(BossProjectileSettings projectile)
+        {
+            if (projectile == null)
+            {
+                return 0f;
+            }
+
+            float speed = projectile.Speed * Mathf.Max(0.01f, projectileSpeedMultiplier);
+            return speed > 0f ? Mathf.Max(0f, lineIndicatorLength) / speed : 0f;
+        }
+
+        private int EstimateMaxMissLaunchCount(IMinionPatternHost host)
+        {
+            int maxCount = 0;
+            if (host == null || volleys == null)
+            {
+                return maxCount;
+            }
+
+            for (int volleyIndex = 0; volleyIndex < volleys.Count; volleyIndex++)
+            {
+                IReadOnlyList<ScoreLaneFireTiming> timings = volleys[volleyIndex]?.FireTimings;
+                if (timings == null)
+                {
+                    continue;
+                }
+
+                int count = 0;
+                for (int timingIndex = 0; timingIndex < timings.Count; timingIndex++)
+                {
+                    ScoreLaneFireTiming timing = timings[timingIndex];
+                    if (timing != null && host.ResolveMinionProjectileSettings(timing.ProjectileName) != null)
+                    {
+                        count++;
+                    }
+                }
+
+                maxCount = Mathf.Max(maxCount, count);
+            }
+
+            return maxCount;
+        }
+
+        private float EstimateMissLaunchPhaseSeconds(
+            BossActionContext context,
+            IReadOnlyList<LineSlot> lineSlots,
+            int missCount)
+        {
+            if (missCount <= 0)
+            {
+                return 0f;
+            }
+
+            float seconds = EstimateFinalReleaseFormationSeconds(context, lineSlots);
+            seconds += Mathf.Max(0f, missedLaunchIntervalSeconds) * Mathf.Max(0, missCount - 1);
+            return seconds;
+        }
+
+        private float EstimateFinalReleaseFormationSeconds(
+            BossActionContext context,
+            IReadOnlyList<LineSlot> lineSlots)
+        {
+            if (!commandFinalReleaseFormation || context?.Boss == null || context.Boss.Player == null)
+            {
+                return 0f;
+            }
+
+            List<FinalReleaseSlot> finalSlots = BuildFinalReleaseSlots(context, lineSlots);
+            if (finalSlots.Count == 0)
+            {
+                return 0f;
+            }
+
+            float moveSpeed = DefaultFormationMoveSpeed * Mathf.Max(0f, launchFormationSpeedMultiplier);
+            return Mathf.Max(0f, launchFormationSettleSeconds)
+                + GetFinalReleaseMoveSeconds(finalSlots, context.Boss.Player, moveSpeed)
+                + 0.25f;
+        }
+
+        private float GetLineIndicatorFadeSeconds()
+        {
+            return drawLineIndicators ? Mathf.Max(0f, lineIndicatorFadeSeconds) : 0f;
         }
 
         private static List<Minion> GetLineMinions(IReadOnlyList<Minion> source)
@@ -1322,6 +1590,23 @@ namespace Week14.Enemy
             for (int i = 0; i < minions.Count; i++)
             {
                 minions[i]?.ClearGraphFacingDirectionOverride();
+            }
+        }
+
+        private void CommandLineMinionsEarlyClearWander(IReadOnlyList<Minion> minions)
+        {
+            if (minions == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.CommandWander(
+                    earlyClearWanderSeconds,
+                    earlyClearWanderSpeed,
+                    earlyClearWanderRadius,
+                    earlyClearWanderRetargetSeconds);
             }
         }
 
@@ -1465,225 +1750,6 @@ namespace Week14.Enemy
             else
             {
                 projectile.ConfigureInterceptable(active);
-            }
-        }
-
-        private sealed class OrderedParrySequence
-        {
-            private readonly List<Entry> entries = new();
-
-            public bool IsComplete
-            {
-                get
-                {
-                    for (int i = 0; i < entries.Count; i++)
-                    {
-                        if (!entries[i].Completed)
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-            }
-
-            public OrderedParrySequence(IReadOnlyList<ScoreLaneFireTiming> timings)
-            {
-                if (timings == null)
-                {
-                    return;
-                }
-
-                for (int i = 0; i < timings.Count; i++)
-                {
-                    if (timings[i] != null)
-                    {
-                        entries.Add(new Entry(timings[i], i));
-                    }
-                }
-
-                entries.Sort((a, b) =>
-                {
-                    int orderCompare = a.Timing.ParryOrder.CompareTo(b.Timing.ParryOrder);
-                    return orderCompare != 0 ? orderCompare : a.SourceIndex.CompareTo(b.SourceIndex);
-                });
-            }
-
-            public void Register(ScoreLaneFireTiming timing, EnemyProjectile projectile)
-            {
-                Entry entry = FindEntry(timing);
-                if (entry == null)
-                {
-                    return;
-                }
-
-                if (projectile == null)
-                {
-                    entry.Completed = true;
-                    Refresh();
-                    return;
-                }
-
-                entry.Projectile = projectile;
-                entry.RequiredStepCount = 1;
-                entry.CompletedStepCount = 0;
-                if (projectile is IConductorMultiStepOrderedProjectile multiStepProjectile)
-                {
-                    entry.RequiredStepCount = Mathf.Max(1, multiStepProjectile.RequiredSequenceSteps);
-                    entry.CompletedStepCount = Mathf.Clamp(
-                        multiStepProjectile.CompletedSequenceSteps,
-                        0,
-                        entry.RequiredStepCount);
-                    entry.SequenceStepHandler = completedProjectile => HandleSequenceStepCompleted(entry, completedProjectile);
-                    multiStepProjectile.SequenceStepCompleted += entry.SequenceStepHandler;
-                }
-
-                SetInterceptable(projectile, false);
-                entry.DestroyedHandler = (destroyed, reason, _) => HandleDestroyed(entry, destroyed, reason);
-                projectile.Destroyed += entry.DestroyedHandler;
-                Refresh();
-            }
-
-            public void Skip(ScoreLaneFireTiming timing)
-            {
-                Entry entry = FindEntry(timing);
-                if (entry == null)
-                {
-                    return;
-                }
-
-                ReleaseEntryHandlers(entry, entry.Projectile);
-                entry.Completed = true;
-                Refresh();
-            }
-
-            private Entry FindEntry(ScoreLaneFireTiming timing)
-            {
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    if (entries[i].Timing == timing)
-                    {
-                        return entries[i];
-                    }
-                }
-
-                return null;
-            }
-
-            private void HandleDestroyed(Entry entry, EnemyProjectile projectile, EnemyProjectileDestroyReason _)
-            {
-                ReleaseEntryHandlers(entry, projectile);
-                entry.Completed = true;
-                Refresh();
-            }
-
-            private void HandleSequenceStepCompleted(Entry entry, EnemyProjectile projectile)
-            {
-                if (entry == null || projectile == null || entry.Projectile != projectile)
-                {
-                    return;
-                }
-
-                int nextCompletedSteps = entry.CompletedStepCount + 1;
-                if (projectile is IConductorMultiStepOrderedProjectile multiStepProjectile)
-                {
-                    entry.RequiredStepCount = Mathf.Max(1, multiStepProjectile.RequiredSequenceSteps);
-                    nextCompletedSteps = Mathf.Max(nextCompletedSteps, multiStepProjectile.CompletedSequenceSteps);
-                }
-
-                entry.CompletedStepCount = Mathf.Clamp(nextCompletedSteps, 0, entry.RequiredStepCount);
-                Refresh();
-            }
-
-            private void Refresh()
-            {
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    if (entries[i].Projectile != null)
-                    {
-                        SetInterceptable(entries[i].Projectile, false);
-                    }
-                }
-
-                Entry targetEntry = GetCurrentTargetEntry();
-                if (targetEntry == null)
-                {
-                    return;
-                }
-
-                if (targetEntry.Projectile != null)
-                {
-                    SetInterceptable(targetEntry.Projectile, true);
-                }
-            }
-
-            private Entry GetCurrentTargetEntry()
-            {
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    Entry entry = entries[i];
-                    if (!entry.Completed)
-                    {
-                        return entry;
-                    }
-                }
-
-                return null;
-            }
-
-            private static void SetInterceptable(EnemyProjectile projectile, bool interceptable)
-            {
-                SetSequenceActive(projectile, interceptable);
-                if (!interceptable)
-                {
-                    projectile?.SetParryLockOnIndicatorVisible(false);
-                }
-            }
-
-            private static void ReleaseEntryHandlers(Entry entry, EnemyProjectile projectile)
-            {
-                if (entry == null)
-                {
-                    return;
-                }
-
-                if (projectile != null && entry.DestroyedHandler != null)
-                {
-                    projectile.Destroyed -= entry.DestroyedHandler;
-                }
-
-                if (projectile is IConductorMultiStepOrderedProjectile multiStepProjectile
-                    && entry.SequenceStepHandler != null)
-                {
-                    multiStepProjectile.SequenceStepCompleted -= entry.SequenceStepHandler;
-                }
-
-                entry.DestroyedHandler = null;
-                entry.SequenceStepHandler = null;
-            }
-
-            private sealed class Entry
-            {
-                public Entry(ScoreLaneFireTiming timing, int sourceIndex)
-                {
-                    Timing = timing;
-                    SourceIndex = sourceIndex;
-                    RequiredStepCount = 1;
-                }
-
-                public ScoreLaneFireTiming Timing { get; }
-                public int SourceIndex { get; }
-                public EnemyProjectile Projectile { get; set; }
-                public int RequiredStepCount { get; set; }
-                public int CompletedStepCount { get; set; }
-                public bool Completed
-                {
-                    get => CompletedStepCount >= RequiredStepCount;
-                    set => CompletedStepCount = value ? RequiredStepCount : 0;
-                }
-                public Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> DestroyedHandler { get; set; }
-                public Action<EnemyProjectile> SequenceStepHandler { get; set; }
             }
         }
 

@@ -33,6 +33,7 @@ namespace Week14.Enemy
         private static Material movementPathIndicatorMaterial;
 
         protected override bool RotatesBodyToPlayer => false;
+        protected override bool ShouldUseExecutionAvailableBodyColor => false;
         public IReadOnlyList<ConductorConductingPattern> ConductingPatterns => conductingPatterns;
 
         public override bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
@@ -158,7 +159,8 @@ namespace Week14.Enemy
         public IEnumerator PlayConductingPattern(
             string patternId,
             BossActionContext context,
-            ConductorConductingCueSettings settings)
+            ConductorConductingCueSettings settings,
+            System.Func<bool> shouldCancel = null)
         {
             if (!TryGetConductingPattern(patternId, out ConductorConductingPattern pattern)
                 || pattern == null
@@ -178,36 +180,52 @@ namespace Week14.Enemy
             visual.Configure(pattern, settings);
             context?.RegisterTransientVisual(visualObject);
 
-            IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
-            for (int i = 0; i < strokes.Count; i++)
+            try
             {
-                ConductorConductingStroke stroke = strokes[i];
-                if (stroke == null || !stroke.HasDrawablePoints)
+                IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
+                for (int i = 0; i < strokes.Count; i++)
                 {
-                    continue;
+                    if (ShouldCancelConductingPattern(shouldCancel))
+                    {
+                        yield break;
+                    }
+
+                    ConductorConductingStroke stroke = strokes[i];
+                    if (stroke == null || !stroke.HasDrawablePoints)
+                    {
+                        continue;
+                    }
+
+                    yield return DrawConductingStroke(context, visual, i, stroke, settings, shouldCancel);
+                    if (ShouldCancelConductingPattern(shouldCancel))
+                    {
+                        yield break;
+                    }
+
+                    if (settings.StrokeIntervalSeconds > 0f)
+                    {
+                        yield return WaitConductingSeconds(context, settings.StrokeIntervalSeconds, settings.StopMovement, shouldCancel);
+                    }
                 }
 
-                yield return DrawConductingStroke(context, visual, i, stroke, settings);
-                if (settings.StrokeIntervalSeconds > 0f)
+                if (settings.HoldSeconds > 0f)
                 {
-                    yield return WaitConductingSeconds(context, settings.StrokeIntervalSeconds, settings.StopMovement);
+                    yield return WaitConductingSeconds(context, settings.HoldSeconds, settings.StopMovement, shouldCancel);
+                }
+
+                if (settings.FadeSeconds > 0f)
+                {
+                    yield return FadeConductingVisual(context, visual, settings.FadeSeconds, settings.StopMovement, shouldCancel);
                 }
             }
-
-            if (settings.HoldSeconds > 0f)
+            finally
             {
-                yield return WaitConductingSeconds(context, settings.HoldSeconds, settings.StopMovement);
-            }
+                context?.UnregisterTransientVisual(visualObject);
 
-            if (settings.FadeSeconds > 0f)
-            {
-                yield return FadeConductingVisual(context, visual, settings.FadeSeconds, settings.StopMovement);
-            }
-
-            context?.UnregisterTransientVisual(visualObject);
-            if (visual != null)
-            {
-                visual.ClearAndDestroy();
+                if (visual != null)
+                {
+                    visual.ClearAndDestroy();
+                }
             }
         }
 
@@ -546,7 +564,8 @@ namespace Week14.Enemy
             ConductorConductingPatternVisual visual,
             int strokeIndex,
             ConductorConductingStroke stroke,
-            ConductorConductingCueSettings settings)
+            ConductorConductingCueSettings settings,
+            System.Func<bool> shouldCancel)
         {
             if (visual == null || stroke == null)
             {
@@ -558,7 +577,7 @@ namespace Week14.Enemy
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (visual == null)
+                if (visual == null || ShouldCancelConductingPattern(shouldCancel))
                 {
                     yield break;
                 }
@@ -589,11 +608,17 @@ namespace Week14.Enemy
         private static IEnumerator WaitConductingSeconds(
             BossActionContext context,
             float seconds,
-            bool stopMovement)
+            bool stopMovement,
+            System.Func<bool> shouldCancel)
         {
             float remainingSeconds = Mathf.Max(0f, seconds);
             while (remainingSeconds > 0f)
             {
+                if (ShouldCancelConductingPattern(shouldCancel))
+                {
+                    yield break;
+                }
+
                 if (context != null && context.IsExecutionPaused)
                 {
                     context.Stop();
@@ -615,7 +640,8 @@ namespace Week14.Enemy
             BossActionContext context,
             ConductorConductingPatternVisual visual,
             float seconds,
-            bool stopMovement)
+            bool stopMovement,
+            System.Func<bool> shouldCancel)
         {
             if (visual == null)
             {
@@ -626,7 +652,7 @@ namespace Week14.Enemy
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (visual == null)
+                if (visual == null || ShouldCancelConductingPattern(shouldCancel))
                 {
                     yield break;
                 }
@@ -652,6 +678,11 @@ namespace Week14.Enemy
             {
                 visual.SetAlpha(0f);
             }
+        }
+
+        private static bool ShouldCancelConductingPattern(System.Func<bool> shouldCancel)
+        {
+            return shouldCancel?.Invoke() == true;
         }
 
         private MovementPathIndicatorState GetMovementPathIndicatorState(Minion minion)
