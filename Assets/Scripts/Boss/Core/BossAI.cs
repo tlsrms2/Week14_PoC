@@ -44,7 +44,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float deathAnimationFallbackSeconds = 1f;
 
         [Header("Meta")]
-        [Tooltip("로비의 BossData 에셋입니다. 클리어 시 이 데이터의 ID로 ClearBoss를 기록하고, UnlocksBossIds/UnlocksSkillIds/UnlocksWeaponIds에 등록된 ID들을 자동으로 해금합니다.")]
+        [Tooltip("로비의 BossData 에셋입니다. 클리어 시 이 데이터의 ID로 ClearBoss를 기록하고, UnlocksBossIds/UnlocksSkillIds/UnlocksPassiveSkillIds/UnlocksWeaponIds에 등록된 ID들을 자동으로 해금합니다.")]
         [SerializeField] private BossData bossData;
         [Tooltip("상태 UI 등에 표시할 보스 이름입니다. 비워두면 오브젝트 이름을 사용합니다.")]
         [SerializeField] private string displayName;
@@ -1053,6 +1053,12 @@ namespace Week14.Enemy
             for (int i = 0; i < unlocksSkillIds.Count; i++)
             {
                 GameSaveManager.UnlockSkill(unlocksSkillIds[i]);
+            }
+
+            IReadOnlyList<string> unlocksPassiveSkillIds = bossData.UnlocksPassiveSkillIds;
+            for (int i = 0; i < unlocksPassiveSkillIds.Count; i++)
+            {
+                GameSaveManager.UnlockPassiveSkill(unlocksPassiveSkillIds[i]);
             }
 
             IReadOnlyList<string> unlocksWeaponIds = bossData.UnlocksWeaponIds;

@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using Week14.Audio;
 using Week14.Enemy;
 
@@ -48,6 +50,16 @@ namespace Week14.UI
             SetActiveSafe(loadoutHoverExtraObjects, false);
         }
 
+        public void OpenLoadoutPanel()
+        {
+            SetActiveSafe(loadoutPanelContent != null ? loadoutPanelContent.gameObject : null, true);
+        }
+
+        public void CloseLoadoutPanel()
+        {
+            SetActiveSafe(loadoutPanelContent != null ? loadoutPanelContent.gameObject : null, false);
+        }
+
         private void Awake()
         {
             if (!string.IsNullOrEmpty(lobbyBgmId))
@@ -57,6 +69,25 @@ namespace Week14.UI
 
             SetContentInteractable(bossPanelContent, true);
             SetContentInteractable(loadoutPanelContent, true);
+
+            StartCoroutine(WarmUpLocalization());
+        }
+
+        private void Start()
+        {
+            // 로드아웃 패널 밑에 있는 LoadoutSelectedSkillPanelLocalization 등은 자기 Awake에서
+            // 예열(무기 로컬라이징 미리 로드 등)을 하는데, 그게 여기서 CloseLoadoutPanel()로
+            // 패널을 꺼버리기 전에 한 번은 활성 상태로 실행돼야 한다. Start는 씬의 모든 Awake가
+            // 끝난 뒤에 실행되는 게 보장되므로, 여기서 닫아야 그 순서가 항상 지켜진다.
+            CloseLoadoutPanel();
+        }
+
+        // 로컬라이제이션 시스템(로케일 선택 + Preload로 지정된 테이블)을 미리 초기화해둔다.
+        // 이걸 안 해두면 로드아웃 패널에서 처음으로 로컬라이징 텍스트를 호버할 때 테이블이
+        // 그제서야 로드되면서 첫 표시가 살짝 늦게 뜬다.
+        private static IEnumerator WarmUpLocalization()
+        {
+            yield return LocalizationSettings.InitializationOperation;
         }
 
         private void OnDestroy()

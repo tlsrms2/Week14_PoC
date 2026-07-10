@@ -23,8 +23,10 @@ namespace Week14.Save
         public List<string> unlockedBossIds = new();
         public List<string> clearedBossIds = new();
         public List<string> unlockedSkillIds = new();
+        public List<string> unlockedPassiveSkillIds = new();
         public List<string> unlockedWeaponIds = new();
         public List<SkillSlotData> equippedSkills = new();
+        public List<SkillSlotData> equippedPassiveSkills = new();
         public string equippedWeaponId;
         public bool hasSeenPrologue;
         public bool hasSeenPast;
@@ -35,5 +37,8 @@ namespace Week14.Save
         public List<string> completedChallengeIds = new();
         public List<ChallengeCounterEntry> challengeCounters = new();
         public int challengePoints;
+        public List<string> purchasedSkillIds = new();
+        public List<string> purchasedPassiveSkillIds = new();
+        public List<string> purchasedWeaponIds = new();
     }
 }

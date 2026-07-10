@@ -16,12 +16,15 @@ namespace Week14.Skills
         [SerializeField, TextArea] private string description;
         [Tooltip("스킬을 다시 사용할 수 있을 때까지 걸리는 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float cooldownSeconds = 1f;
+        [Tooltip("이 스킬을 구매하는 데 필요한 챌린지 포인트입니다.")]
+        [SerializeField, Min(0)] private int price;
 
         public string SkillId => skillId;
         public string DisplayName => displayName;
         public Sprite Icon => icon;
         public string Description => description;
         public float CooldownSeconds => cooldownSeconds;
+        public int Price => price;
 
         // true인 스킬은 사용 즉시 쿨타임이 시작되지 않고, 아래 SubscribeEffectEnd로 등록한 콜백이
         // 호출되는 시점(효과가 실제로 끝나는 시점)부터 CooldownSeconds만큼 쿨타임이 시작됩니다.

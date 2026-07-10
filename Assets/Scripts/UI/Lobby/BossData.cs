@@ -22,8 +22,10 @@ namespace Week14.UI
         [Header("클리어 보상")]
         [Tooltip("이 보스를 클리어하면 추가로 해금되는 보스 ID 목록입니다.")]
         [SerializeField] private List<string> unlocksBossIds = new();
-        [Tooltip("이 보스를 클리어하면 해금되는 스킬 ID 목록입니다.")]
+        [Tooltip("이 보스를 클리어하면 해금되는 액티브 스킬 ID 목록입니다.")]
         [SerializeField] private List<string> unlocksSkillIds = new();
+        [Tooltip("이 보스를 클리어하면 해금되는 패시브 스킬 ID 목록입니다.")]
+        [SerializeField] private List<string> unlocksPassiveSkillIds = new();
         [Tooltip("이 보스를 클리어하면 해금되는 총기 ID 목록입니다.")]
         [SerializeField] private List<string> unlocksWeaponIds = new();
 
@@ -43,6 +45,7 @@ namespace Week14.UI
         public string SceneName => sceneName;
         public IReadOnlyList<string> UnlocksBossIds => unlocksBossIds;
         public IReadOnlyList<string> UnlocksSkillIds => unlocksSkillIds;
+        public IReadOnlyList<string> UnlocksPassiveSkillIds => unlocksPassiveSkillIds;
         public IReadOnlyList<string> UnlocksWeaponIds => unlocksWeaponIds;
 
         private static bool HasLocalizedString(LocalizedString value)

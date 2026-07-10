@@ -74,6 +74,72 @@ MonoBehaviour:
     m_Localized: SFX
     m_Metadata:
       m_Items: []
+  - m_Id: 3316185476464640
+    m_Localized: 'Physical Enhancement
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316405463515136
+    m_Localized: Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316497654317056
+    m_Localized: Active
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316549172953088
+    m_Localized: Passive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324277605892096
+    m_Localized: '[Active]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324359885553664
+    m_Localized: '[Passive]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324365581418496
+    m_Localized: '[Weapon]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3325868144689152
+    m_Localized: Buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326043365933056
+    m_Localized: Refund
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326175926910976
+    m_Localized: Unequip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326292574699520
+    m_Localized: Equipping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326345653616640
+    m_Localized: Non refundable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326669890093056
+    m_Localized: 'Cooldown: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326766715600896
+    m_Localized: 'Point: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326817575731200
+    m_Localized: 'Price: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326845836951552
+    m_Localized: 'Return upon refund: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

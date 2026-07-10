@@ -15,9 +15,10 @@ MonoBehaviour:
   skillId: TimeSlowSkill
   displayName: "\uBD88\uB9BF \uD0C0\uC784"
   icon: {fileID: 21300000, guid: ae1a269acbb08d843ad83bd48e8de271, type: 3}
-  description: "3\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uC2DC\uAC04\uC774\n\uB290\uB9AC\uAC8C
+  description: "3\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uC2DC\uAC04\uC774 \uB290\uB9AC\uAC8C
     \uD750\uB974\uAC8C \uB9CC\uB4E0\uB2E4."
   cooldownSeconds: 30
+  price: 0
   slowMultiplier: 0.2
   durationSeconds: 3
   sfxId: 

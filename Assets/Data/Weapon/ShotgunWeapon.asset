@@ -36,6 +36,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  price: 0
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: b4e9d4969d58fbd46a6aedebda815ccd, type: 2}
@@ -72,8 +73,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  activeSkill: {fileID: 0}
-  passiveSkill: {fileID: 11400000, guid: 528f643d25714f24a8456d3a39a9ddf2, type: 2}
   pelletStep: 7.5
   maxRange: 4
   references:
