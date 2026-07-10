@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbffedc663fce70418e4f4766a9296aa, type: 3}
+  m_Name: ParryRangePassiveSkill
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.ParryRangePassiveSkillSO
+  skillId: ParryRange
+  displayName: "\uACE0\uC131\uB2A5 \uC694\uACA9 \uBAA8\uB4C8"
+  icon: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
+  description: "\uD328\uB9C1\uBC94\uC704 25\uD37C\uC99D\uAC00"
+  price: 0
+  parryRangeBonus: 0.25

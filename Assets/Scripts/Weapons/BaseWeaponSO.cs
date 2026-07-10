@@ -28,8 +28,9 @@ namespace Week14.Weapons
         [SerializeField] private PlayerProjectile projectilePrefab;
         [Tooltip("이 총기를 장착했을 때 플레이어 왼팔 애니메이터에 적용할 컨트롤러입니다. 비워두면 기본 컨트롤러를 유지합니다.")]
         [SerializeField] private RuntimeAnimatorController leftArmController;
-        [Tooltip("이 총기가 보유할 수 있는 최대 탄환 수입니다. 장착 시 BulletGauge가 이 값으로 재설정됩니다.")]
-        [SerializeField, Min(1)] private int maxAmmo = 5;
+        [Tooltip("이 총기가 보유할 수 있는 최대 탄환 수입니다. 장착 시 BulletGauge가 이 값으로 재설정됩니다. 0이면 탄환을 아예 안 씁니다 " +
+            "(주의: 탄환 게이지 = 체력이라 0으로 두면 아무 공격에나 즉사하는 상태가 됩니다 — 총검처럼 의도적인 글래스캐넌 근접무기용).")]
+        [SerializeField, Min(0)] private int maxAmmo = 5;
         [Tooltip("패링 판정 범위 배수입니다. 1 = 기본값과 동일. 마우스 패링 리티클 스케일에 곱해지는 멀티플라이어로 적용됩니다(절대 거리 값이 아님).")]
         [SerializeField, Min(0.01f)] private float parryingRange = 1f;
         [Tooltip("남은 탄환 수에 따른 공격 데미지입니다. 인덱스 0은 탄환 1개 남았을 때, 마지막 인덱스는 탄환이 가장 많을 때입니다. " +
@@ -58,14 +59,15 @@ namespace Week14.Weapons
         public int MaxAmmo => maxAmmo;
         public float ParryingRange => parryingRange;
         public int[] DamagePerAmmoStep => damagePerAmmoStep;
+        public float EffectiveParryingRange => Mathf.Max(0.01f, parryingRange + ParryRangeBonus.Additive);
         public string MaxAmmoTooltipText => FormatTooltipText(maxAmmoTooltipTextFormat, maxAmmo);
         public LocalizedString LocalizedMaxAmmoTooltipText => localizedMaxAmmoTooltipText;
         public bool HasLocalizedMaxAmmoTooltipText => HasLocalizedString(localizedMaxAmmoTooltipText);
         public object[] MaxAmmoTooltipArguments => new object[] { maxAmmo };
-        public string ParryingRangeTooltipText => FormatTooltipText(parryingRangeTooltipTextFormat, parryingRange);
+        public string ParryingRangeTooltipText => FormatTooltipText(parryingRangeTooltipTextFormat, EffectiveParryingRange);
         public LocalizedString LocalizedParryingRangeTooltipText => localizedParryingRangeTooltipText;
         public bool HasLocalizedParryingRangeTooltipText => HasLocalizedString(localizedParryingRangeTooltipText);
-        public object[] ParryingRangeTooltipArguments => new object[] { parryingRange };
+        public object[] ParryingRangeTooltipArguments => new object[] { EffectiveParryingRange };
         public string BulletDamageSequenceText => BuildDamageSequenceText();
         public string BulletDamageTooltipText => FormatTooltipText(bulletDamageTooltipTextFormat, BulletDamageSequenceText);
         public LocalizedString LocalizedBulletDamageTooltipText => localizedBulletDamageTooltipText;
@@ -143,7 +145,7 @@ namespace Week14.Weapons
 
         protected virtual void OnValidate()
         {
-            maxAmmo = Mathf.Max(1, maxAmmo);
+            maxAmmo = Mathf.Max(0, maxAmmo);
             ResizeDamagePerAmmoStep();
         }
 

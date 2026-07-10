@@ -40,9 +40,9 @@ MonoBehaviour:
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: b4e9d4969d58fbd46a6aedebda815ccd, type: 2}
-  maxAmmo: 5
+  maxAmmo: 3
   parryingRange: 1
-  damagePerAmmoStep: 0200000002000000040000000400000005000000
+  damagePerAmmoStep: 030000000200000001000000
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
@@ -73,8 +73,8 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  pelletStep: 7.5
-  maxRange: 4
+  pelletCount: 3
+  spreadAngle: 30
   references:
     version: 2
     RefIds: []

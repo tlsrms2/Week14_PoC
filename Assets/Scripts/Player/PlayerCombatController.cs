@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Week14.Bootstrap;
 using Week14.Enemy;
@@ -40,7 +41,7 @@ namespace Week14.Combat
         [SerializeField, Tooltip("마우스 위치를 따라다닐 패링 조준선 SpriteRenderer입니다. 씬/프리팹에 직접 만든 오브젝트를 연결합니다.")]
         private SpriteRenderer mouseParryReticleRenderer;
         [SerializeField] private MouseParryReticle mouseParryReticle;
-        [SerializeField] private SniperChargeIndicator sniperChargeIndicator;
+        [SerializeField] private SniperChargeLaserEffect sniperChargeLaserEffect;
 
         private Health health;
         private BulletGauge bullets;
@@ -61,8 +62,15 @@ namespace Week14.Combat
         private PlayerExecutionPresentation executionPresentation;
         private PlayerExecutionController executionController;
         private PlayerDashController dashController;
-        private bool lockOnSuppressed;
+        private bool lockOnSuppressed = true;
         private int externalMovementLockCount;
+        private int deathPreventionChargesRemaining;
+        private float deathPreventionClearRadius;
+        private float deathPreventionInvulnerabilitySeconds;
+        private bool nextAttackDamageMultiplierArmed;
+        private float nextAttackDamageMultiplier = 1f;
+        private bool invulnerableAmmoRefillActive;
+        private Coroutine invulnerableAmmoRefillRoutine;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
         private PlayerCombatRig Rig => playerCombatRig ??= new PlayerCombatRig(Context);
@@ -220,7 +228,7 @@ namespace Week14.Combat
                 get => controller.mouseParryReticle;
                 internal set => controller.mouseParryReticle = value;
             }
-            public SniperChargeIndicator SniperChargeIndicator => controller.sniperChargeIndicator;
+            public SniperChargeLaserEffect SniperChargeLaserEffect => controller.sniperChargeLaserEffect;
             public SpriteRenderer[] BodyRenderers
             {
                 get => controller.bodyRenderers;
@@ -530,9 +538,127 @@ namespace Week14.Combat
             return TryDash(distance, duration, 0f);
         }
 
+        // charges는 씬(재도전)마다 ApplyPassive로 다시 채워집니다(누적되지 않고 항상 이 값으로 수렴).
+        public void ConfigureDeathPrevention(int charges, float clearRadius, float invulnerabilitySeconds)
+        {
+            deathPreventionChargesRemaining = Mathf.Max(0, charges);
+            deathPreventionClearRadius = Mathf.Max(0f, clearRadius);
+            deathPreventionInvulnerabilitySeconds = Mathf.Max(0f, invulnerabilitySeconds);
+        }
+
+        public void ClearDeathPrevention()
+        {
+            deathPreventionChargesRemaining = 0;
+        }
+
+        // 사망 판정을 대체할 수 있으면 소모하고 true를 반환합니다. PlayerDamageReceiver가
+        // health.Kill()을 부르기 직전에 호출해서, Died 이벤트(게임오버 UI 등)가 아예 뜨지 않게 막습니다.
+        internal bool TryConsumeDeathPrevention(Vector2 position)
+        {
+            if (deathPreventionChargesRemaining <= 0)
+            {
+                return false;
+            }
+
+            deathPreventionChargesRemaining--;
+
+            if (deathPreventionClearRadius > 0f)
+            {
+                ParryController.AutoParryProjectilesNear(position, deathPreventionClearRadius);
+            }
+
+            if (deathPreventionInvulnerabilitySeconds > 0f)
+            {
+                StartCoroutine(TemporaryInvulnerabilityRoutine(deathPreventionInvulnerabilitySeconds));
+            }
+
+            return true;
+        }
+
+        private static IEnumerator TemporaryInvulnerabilityRoutine(float seconds)
+        {
+            PushExternalInvulnerability();
+            yield return new WaitForSeconds(seconds);
+            PopExternalInvulnerability();
+        }
+
+        // 대시(구르기)의 자동 패링과 동일한 통로입니다. center 반경 안의 요격 가능한 적 투사체를
+        // 흡수(파괴)하고, 실제로 흡수한 개수를 반환합니다.
+        public int AutoParryProjectilesNear(Vector2 center, float radius, RollSkillVfxSettings vfxSettings)
+        {
+            return ParryController.AutoParryProjectilesNear(center, radius, vfxSettings);
+        }
+
+        // 다음으로 성공하는 공격 1회(무기 종류 무관: 권총 한 발, 샷건 한 발의 전체 펠릿, 스나이퍼 차지샷 1회)에만
+        // 배율을 적용하고 자동으로 해제됩니다. PlayerShooter의 각 발사 지점(TryShootEnemy/FireSpread/FireSingle)이
+        // 공격이 실제로 나가는 걸 확정한 시점에 ConsumeNextAttackDamageMultiplier를 호출해서 소모합니다.
+        public void ArmNextAttackDamageMultiplier(float multiplier)
+        {
+            nextAttackDamageMultiplierArmed = multiplier > 1f;
+            nextAttackDamageMultiplier = Mathf.Max(1f, multiplier);
+        }
+
+        internal float ConsumeNextAttackDamageMultiplier()
+        {
+            if (!nextAttackDamageMultiplierArmed)
+            {
+                return 1f;
+            }
+
+            nextAttackDamageMultiplierArmed = false;
+            return nextAttackDamageMultiplier;
+        }
+
         public bool FireSkillProjectile(int damage, float sizeMultiplier, Color color)
         {
             return Shooter.TryFireSkillProjectile(damage, sizeMultiplier, color);
+        }
+
+        // seconds 동안 외부 무적(PushExternalInvulnerability)을 유지하면서, 그동안 무적 때문에 막힌 피격이
+        // 있을 때마다(NotifyInvulnerableHit) 탄환을 최대치로 채웁니다. onComplete는 지속시간이 끝난 뒤
+        // (쿨타임 지연 시작용 콜백 등으로) 정확히 한 번 호출됩니다.
+        public void BeginInvulnerableAmmoRefill(float seconds, Action onComplete)
+        {
+            if (invulnerableAmmoRefillRoutine != null)
+            {
+                StopCoroutine(invulnerableAmmoRefillRoutine);
+                FinishInvulnerableAmmoRefill();
+            }
+
+            invulnerableAmmoRefillRoutine = StartCoroutine(InvulnerableAmmoRefillRoutine(Mathf.Max(0f, seconds), onComplete));
+        }
+
+        internal void NotifyInvulnerableHit()
+        {
+            if (!invulnerableAmmoRefillActive || Bullets == null)
+            {
+                return;
+            }
+
+            Bullets.Restore(Bullets.MaxBullets, BulletChangeSource.Generic);
+        }
+
+        private IEnumerator InvulnerableAmmoRefillRoutine(float seconds, Action onComplete)
+        {
+            invulnerableAmmoRefillActive = true;
+            PushExternalInvulnerability();
+
+            yield return new WaitForSeconds(seconds);
+
+            FinishInvulnerableAmmoRefill();
+            onComplete?.Invoke();
+        }
+
+        private void FinishInvulnerableAmmoRefill()
+        {
+            if (!invulnerableAmmoRefillActive)
+            {
+                return;
+            }
+
+            invulnerableAmmoRefillActive = false;
+            invulnerableAmmoRefillRoutine = null;
+            PopExternalInvulnerability();
         }
 
         private bool TryBeginExecution()

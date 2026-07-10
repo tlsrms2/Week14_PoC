@@ -17968,10 +17968,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2443787970522611735, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: 4c3c44f749bf67640bfb3527cd917886, type: 2}
+    - target: {fileID: 2461108022586399697, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a977b76249f223459327e9b6490e582, type: 2}
+    - target: {fileID: 2601612291296063692, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: 3fc4ecd7650148b4f8b2aa61c0727c19, type: 2}
+    - target: {fileID: 4299073769341662050, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: bd2bc82a7651f5d45afa0d7a75a1b056, type: 2}
+    - target: {fileID: 4498000212327959290, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 704499b5a114482419cd64112ba99e47, type: 2}
+    - target: {fileID: 5242437321410677469, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 283322a59bb47804ab028c04e80be6cf, type: 2}
+    - target: {fileID: 5700343887325298870, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: dd9e567a5e2399948882bedf979bf4fb, type: 2}
     - target: {fileID: 6144680373667844601, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: defaultDisplayWeapon
       value: 
       objectReference: {fileID: 11400000, guid: 2bf6afb4ebac7f945a335649b3c70755, type: 2}
+    - target: {fileID: 7415087836464037355, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: 934397907f779ae49813912a94c9ad77, type: 2}
+    - target: {fileID: 8137024385890174431, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 11400000, guid: ef6e8ddae4935c4438363450d824ce90, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

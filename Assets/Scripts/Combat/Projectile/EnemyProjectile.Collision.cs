@@ -108,8 +108,19 @@ namespace Week14.Combat
 
         protected virtual bool TryApplyPlayerHit(PlayerCombatController player)
         {
-            return player != null
-                && player.ReceiveAttack(bulletDamage, transform.position, flightDirection);
+            if (player == null)
+            {
+                return false;
+            }
+
+            if (player.ReceiveAttack(bulletDamage, transform.position, flightDirection))
+            {
+                return true;
+            }
+
+            // 무적 때문에 데미지가 안 들어간 경우에도 탄환 자체는 파괴합니다(플레이어를 그냥 통과하지 않도록).
+            // 그 외 사유(실행 연출 중, 대시 중, 이미 사망 등)로 막힌 경우는 기존처럼 그대로 통과시킵니다.
+            return PlayerCombatController.IsExternallyInvulnerable;
         }
 
         protected virtual void OnPlayerHit(PlayerCombatController player) { }

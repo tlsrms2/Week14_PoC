@@ -325,6 +325,27 @@ namespace Week14.Combat
             }
 
             resolved = true;
+            TryApplyDamageToHealth(targetHealth, bulletDamage, isSkillShot, transform.position, flightDirection, projectileColor);
+            DestroyProjectile();
+            return true;
+        }
+
+        // 보스/미니언(+컨덕터 공유 데미지)/튜토리얼 훈련 적/일반 Health 순으로 타입별 피해 적용 + 플로팅 데미지 숫자를
+        // 담당하는 공용 로직입니다. PlayerProjectile 인스턴스 상태에 의존하지 않아서 총검(근접) 같은 비-투사체
+        // 공격도 동일하게 재사용할 수 있습니다.
+        internal static bool TryApplyDamageToHealth(
+            Health targetHealth,
+            int bulletDamage,
+            bool isSkillShot,
+            Vector3 hitPosition,
+            Vector2 hitDirection,
+            Color hitColor)
+        {
+            if (targetHealth == null)
+            {
+                return false;
+            }
+
             BossAI boss = targetHealth.GetComponent<BossAI>()
                 ?? targetHealth.GetComponentInParent<BossAI>();
             if (boss != null)
@@ -333,13 +354,13 @@ namespace Week14.Combat
                     ? conductor.GetBodySharedDamage(bulletDamage)
                     : bulletDamage;
 
-                if (boss.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
+                if (!boss.ReceivePlayerHit(bulletDamage, true, hitPosition, hitDirection, hitColor))
                 {
-                    ShowFloatingDamage(targetHealth, appliedDamage);
-                    NotifyNormalAttackDamage();
+                    return false;
                 }
 
-                DestroyProjectile();
+                ShowFloatingDamage(targetHealth, appliedDamage);
+                NotifyNormalAttackDamageStatic(bulletDamage, isSkillShot);
                 return true;
             }
 
@@ -348,19 +369,19 @@ namespace Week14.Combat
             if (minion != null)
             {
                 int appliedDamage = bulletDamage;
-                if (minion.Owner is Conductor conductor
-                    && conductor.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
+                if (minion.Owner is Conductor minionConductor
+                    && minionConductor.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))
                 {
                     appliedDamage = sharedDamage;
                 }
 
-                if (minion.ReceivePlayerHit(bulletDamage, true, transform.position, flightDirection, projectileColor))
+                if (!minion.ReceivePlayerHit(bulletDamage, true, hitPosition, hitDirection, hitColor))
                 {
-                    ShowFloatingDamage(targetHealth, appliedDamage);
-                    NotifyNormalAttackDamage();
+                    return false;
                 }
 
-                DestroyProjectile();
+                ShowFloatingDamage(targetHealth, appliedDamage);
+                NotifyNormalAttackDamageStatic(bulletDamage, isSkillShot);
                 return true;
             }
 
@@ -368,13 +389,13 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<TutorialTrainingEnemy>();
             if (tutorialEnemy != null)
             {
-                if (tutorialEnemy.ReceivePlayerHit(bulletDamage, transform.position, flightDirection, projectileColor))
+                if (!tutorialEnemy.ReceivePlayerHit(bulletDamage, hitPosition, hitDirection, hitColor))
                 {
-                    ShowFloatingDamage(targetHealth, bulletDamage);
-                    NotifyNormalAttackDamage();
+                    return false;
                 }
 
-                DestroyProjectile();
+                ShowFloatingDamage(targetHealth, bulletDamage);
+                NotifyNormalAttackDamageStatic(bulletDamage, isSkillShot);
                 return true;
             }
 
@@ -396,19 +417,8 @@ namespace Week14.Combat
             }
 
             ShowFloatingDamage(targetHealth, bulletDamage);
-            NotifyNormalAttackDamage();
-            Color impactColor = projectileColor;
-
-            ProjectileVfx.PlayPlayerAttackImpact(
-                transform.position,
-                flightDirection,
-                impactColor,
-                10,
-                0,
-                0,
-                0.45f);
-
-            DestroyProjectile();
+            NotifyNormalAttackDamageStatic(bulletDamage, isSkillShot);
+            ProjectileVfx.PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor, 10, 0, 0, 0.45f);
             return true;
         }
 
@@ -438,6 +448,11 @@ namespace Week14.Combat
         }
 
         private void NotifyNormalAttackDamage()
+        {
+            NotifyNormalAttackDamageStatic(bulletDamage, isSkillShot);
+        }
+
+        private static void NotifyNormalAttackDamageStatic(int bulletDamage, bool isSkillShot)
         {
             if (isSkillShot || bulletDamage <= 0)
             {

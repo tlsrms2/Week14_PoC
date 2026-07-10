@@ -75,6 +75,30 @@ MonoBehaviour:
     m_Key: sniper.Damage
     m_Metadata:
       m_Items: []
+  - m_Id: 3331155001966592
+    m_Key: Railgun.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331352159420416
+    m_Key: Railgun.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331357406494720
+    m_Key: Railgun.parryRange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331698302746624
+    m_Key: Bayonet.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331701683355648
+    m_Key: Bayonet.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331702840983552
+    m_Key: Bayonet.parryRange
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

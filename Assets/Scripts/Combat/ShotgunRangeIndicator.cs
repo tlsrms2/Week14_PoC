@@ -14,7 +14,6 @@ namespace Week14.Combat
         [SerializeField, Min(1f)] private float dashTiling = 6f;
 
         private float spreadAngle;
-        private float maxRange;
         private Material lineMaterial;
 
         private void Awake()
@@ -62,10 +61,17 @@ namespace Week14.Combat
             if (aimDir.sqrMagnitude < 0.0001f) aimDir = Vector2.right;
             aimDir.Normalize();
 
-            DrawFan(origin, aimDir);
+            DrawFan(origin, aimDir, ComputeEffectiveRange(player.Config));
         }
 
-        private void DrawFan(Vector3 origin, Vector2 aimDir)
+        // 무기에서 사거리(maxRange) 개념이 빠졌기 때문에, 탄이 실제로 얼마나 날아가는지(속도*수명)를
+        // 근사치로 계산해서 시각화용 부채꼴 반지름으로 씁니다.
+        private static float ComputeEffectiveRange(PlayerCombatConfig config)
+        {
+            return config != null ? Mathf.Max(0.1f, config.ProjectileSpeed * config.ProjectileLifetime) : 5f;
+        }
+
+        private void DrawFan(Vector3 origin, Vector2 aimDir, float range)
         {
             if (lineRenderer == null) return;
 
@@ -85,7 +91,7 @@ namespace Week14.Combat
             {
                 float angleDeg = aimAngleDeg + halfSpread - i * spreadAngle / arcSegments;
                 float angleRad = angleDeg * Mathf.Deg2Rad;
-                Vector3 point = origin + new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0f) * maxRange;
+                Vector3 point = origin + new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0f) * range;
                 lineRenderer.SetPosition(i, point);
             }
         }
@@ -94,8 +100,7 @@ namespace Week14.Combat
         {
             if (weapon is ShotgunWeaponSO shotgun)
             {
-                spreadAngle = (shotgun.MaxAmmo - 1) * shotgun.PelletStep;
-                maxRange = shotgun.MaxRange;
+                spreadAngle = shotgun.SpreadAngle;
                 gameObject.SetActive(true);
             }
             else

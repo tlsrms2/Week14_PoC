@@ -65,8 +65,16 @@ namespace Week14.UI
                 defaultActionSprite = actionHintImage.sprite;
             }
 
-            ShowDefault();
             RefreshPoints(GameSaveManager.ChallengePoints);
+        }
+
+        private void Start()
+        {
+            // PassiveSkillLoadoutManager가 장착된 패시브를 재적용(ApplyAllEquippedPassives)하는 시점은
+            // 씬의 모든 Awake가 끝난 뒤(SceneManager.sceneLoaded)라서, ShowDefault를 Awake에서 바로 부르면
+            // 아직 갱신되지 않은 보너스 값(예: ParryRangeBonus)으로 초기 설명 텍스트가 만들어질 수 있다.
+            // 모든 Awake가 끝난 뒤 호출되는 Start로 미뤄서 최신 값을 반영한다.
+            ShowDefault();
         }
 
         // 아무것도 호버하지 않은 최초 상태(패널을 처음 열었을 때)에 보여줄 항목입니다.

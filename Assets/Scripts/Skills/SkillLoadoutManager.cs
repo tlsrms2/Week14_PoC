@@ -199,6 +199,20 @@ namespace Week14.Skills
             ResetCooldown();
         }
 
+        // 쿨타임이 실제로 카운트다운되고 있을 때만(0 초과) 줄여준다. 스킬이 이미 준비된 상태(0)거나
+        // 장착된 액티브 스킬이 없으면 아무 효과가 없다.
+        public void ReduceCooldown(float seconds)
+        {
+            if (seconds <= 0f || cooldownRemaining <= 0f)
+            {
+                return;
+            }
+
+            cooldownRemaining = Mathf.Max(0f, cooldownRemaining - seconds);
+            BaseSkillSO skill = GetEquippedSkill(ActiveSlot);
+            CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
+        }
+
         private void HandleEffectEnded()
         {
             UnsubscribeEffectEnd();

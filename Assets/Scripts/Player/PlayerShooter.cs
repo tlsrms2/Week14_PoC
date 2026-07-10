@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
+using Week14.Enemy;
 using Week14.Weapons;
 
 namespace Week14.Combat
@@ -11,11 +13,9 @@ namespace Week14.Combat
 
         private float chargeTime;
         private bool isCharging;
-        private int chargeConsumedBulletCount;
-        private int chargeAccumulatedDamage;
-        private int chargeStartBulletCount;
-        private bool hasSpawnedInitialChargeTickEffect;
-        private SniperChargeTickEffect activeChargeTickEffect;
+        private bool hasPlayedChargeCompleteCue;
+        private bool hasShownChargeLaser;
+        private float nextBayonetAttackTime;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -27,19 +27,15 @@ namespace Week14.Combat
 
         public int CurrentBullets => context.Bullets != null ? context.Bullets.CurrentBullets : 0;
         public bool IsCharging => isCharging;
-        public int ChargeConsumedBulletCount => chargeConsumedBulletCount;
-        public int ChargeAccumulatedDamage => chargeAccumulatedDamage;
-        public bool HasSpawnedInitialChargeTickEffect => hasSpawnedInitialChargeTickEffect;
+        public bool HasPlayedChargeCompleteCue => hasPlayedChargeCompleteCue;
+        public bool HasShownChargeLaser => hasShownChargeLaser;
 
         internal void BeginAttack()
         {
             chargeTime = 0f;
             isCharging = true;
-            chargeConsumedBulletCount = 0;
-            chargeAccumulatedDamage = 0;
-            chargeStartBulletCount = CurrentBullets;
-            hasSpawnedInitialChargeTickEffect = false;
-            context.SniperChargeIndicator?.BeginCharge(CurrentBullets);
+            hasPlayedChargeCompleteCue = false;
+            hasShownChargeLaser = false;
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
         }
@@ -57,82 +53,40 @@ namespace Week14.Combat
             if (!isCharging) return;
             context.PlayerHpView?.FreezeNewestBullet(false);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.ReleaseAttack(this, chargeTime);
-            context.SniperChargeIndicator?.EndCharge();
-            CancelActiveChargeTickEffect();
+            context.SniperChargeLaserEffect?.EndCharge();
             isCharging = false;
             chargeTime = 0f;
-            chargeConsumedBulletCount = 0;
-            chargeAccumulatedDamage = 0;
-            hasSpawnedInitialChargeTickEffect = false;
+            hasPlayedChargeCompleteCue = false;
+            hasShownChargeLaser = false;
         }
 
-        public bool TryConsumeChargeBullet()
+        // 홀드가 일정 시간(첫 등장 딜레이) 이상 지속됐을 때 딱 한 번만 레이저 연출을 켭니다.
+        public void ShowSniperChargeLaser(float laserLength, float spreadAngleDegrees)
         {
-            if (CurrentBullets <= 0) return false;
-
-            int damage = CalculateAttackBulletDamage();
-            if (!TrySpendOneBullet()) return false;
-
-            chargeAccumulatedDamage += damage;
-            chargeConsumedBulletCount++;
-            return true;
+            hasShownChargeLaser = true;
+            context.SniperChargeLaserEffect?.BeginCharge(laserLength, spreadAngleDegrees);
         }
 
-        public void PlaySniperChargeSfx()
+        // 차지가 threshold(초)에 도달하는 진행도(0~1)를 레이저 연출에 매 홀드 프레임마다 밀어 넣습니다.
+        public void UpdateSniperChargeProgress(float chargeTime, float thresholdSeconds)
         {
-            BulletGauge bullets = context.Bullets;
-            int maxBullets = bullets != null ? bullets.MaxBullets : chargeConsumedBulletCount;
-            SoundManager.PlaySfx("SniperCharge", PlayerBulletAudio.GetBulletCountPitch(chargeConsumedBulletCount, maxBullets));
+            float progress = thresholdSeconds > 0f ? Mathf.Clamp01(chargeTime / thresholdSeconds) : 1f;
+            context.SniperChargeLaserEffect?.SetProgress(progress);
         }
 
-        public void SpawnSniperChargeTickEffect(Sprite sprite, float startScale, float lifetimeSeconds, int sortingOrder)
+        public void MarkChargeCompleteCuePlayed()
         {
-            if (sprite == null || CurrentBullets <= 0)
-            {
-                return;
-            }
-
-            bool fullyCharged = chargeStartBulletCount > 0 && chargeConsumedBulletCount >= chargeStartBulletCount - 1;
-            Color color = context.SniperChargeIndicator != null
-                ? context.SniperChargeIndicator.GetChargeColor(fullyCharged)
-                : Color.white;
-
-            CancelActiveChargeTickEffect();
-            activeChargeTickEffect = SniperChargeTickEffect.Spawn(sprite, GetLeftFireOrigin(), color, startScale, lifetimeSeconds, sortingOrder);
+            hasPlayedChargeCompleteCue = true;
         }
 
         public void EndCharge()
         {
             context.PlayerHpView?.FreezeNewestBullet(false);
-            context.SniperChargeIndicator?.EndCharge();
-            CancelActiveChargeTickEffect();
+            context.SniperChargeLaserEffect?.EndCharge();
             isCharging = false;
             chargeTime = 0f;
-            chargeConsumedBulletCount = 0;
-            chargeAccumulatedDamage = 0;
-            hasSpawnedInitialChargeTickEffect = false;
-        }
-
-        public void MarkInitialChargeTickEffectSpawned()
-        {
-            hasSpawnedInitialChargeTickEffect = true;
-        }
-
-        private void CancelActiveChargeTickEffect()
-        {
-            if (activeChargeTickEffect != null)
-            {
-                activeChargeTickEffect.Cancel();
-            }
-
-            activeChargeTickEffect = null;
-        }
-
-        public bool TrySpendAllBullets()
-        {
-            BulletGauge bullets = context.Bullets;
-            if (bullets == null || bullets.CurrentBullets <= 0) return false;
-            return bullets.TrySpend(bullets.CurrentBullets, BulletChangeSource.Attack);
+            hasPlayedChargeCompleteCue = false;
+            hasShownChargeLaser = false;
         }
 
         public bool TrySpendOneBullet()
@@ -143,6 +97,244 @@ namespace Week14.Combat
             return bullets.TrySpend(config.LeftAttackBulletCost, BulletChangeSource.Attack);
         }
 
+        public bool TrySpendAllBullets()
+        {
+            BulletGauge bullets = context.Bullets;
+            if (bullets == null || bullets.CurrentBullets <= 0) return false;
+            return bullets.TrySpend(bullets.CurrentBullets, BulletChangeSource.Attack);
+        }
+
+        // 관통(레일건) 전용 발사. 물리 투사체를 날리는 게 아니라, 화면에 그려지는 빔 그 자체를 즉시
+        // CircleCastAll로 스윕해서 일직선상의 모든 대상에게 damage를 그대로(분할 없이) 적용합니다.
+        // ShotLine 연출이 곧 판정 범위와 일치합니다(연출과 판정이 분리돼 있지 않음).
+        public void FireLaser(int damage, float speed, float lifetime, float beamVisualSeconds, float beamWidth, Color beamColor)
+        {
+            PlayerCombatConfig config = context.Config;
+            if (config == null) return;
+
+            Transform fireOrigin = GetLeftFireOrigin();
+            Vector2 direction = aimController.AimGunAndGetDirection(
+                context.LeftGunOrigin,
+                aimController.GetAimDirection(context.LeftGunOrigin));
+            aimController.LockLeftGunAim(direction);
+
+            int finalDamage = ApplyNextAttackDamageMultiplier(damage);
+            float beamLength = Mathf.Max(0.1f, speed * lifetime);
+            Vector2 origin = fireOrigin.position;
+
+            DamageEnemiesAlongLine(origin, direction, beamLength, config.ProjectileRadius, finalDamage);
+
+            Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
+            ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
+            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, beamColor, 1.2f);
+            context.Visual?.PlayShot();
+            SoundManager.PlaySfx("RailgunFire");
+            SoundManager.PlaySfx("BulletLoss");
+        }
+
+        private void DamageEnemiesAlongLine(Vector2 origin, Vector2 direction, float length, float beamRadius, int damage)
+        {
+            if (damage <= 0 || length <= 0f)
+            {
+                return;
+            }
+
+            RaycastHit2D[] hits = Physics2D.CircleCastAll(origin, Mathf.Max(0.01f, beamRadius), direction, length);
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            HashSet<Health> hitTargets = new HashSet<Health>();
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Collider2D collider = hits[i].collider;
+                if (collider == null)
+                {
+                    continue;
+                }
+
+                Health targetHealth = collider.GetComponentInParent<Health>();
+                if (!IsValidAreaDamageTarget(targetHealth) || !hitTargets.Add(targetHealth))
+                {
+                    continue;
+                }
+
+                PlayerProjectile.TryApplyDamageToHealth(targetHealth, damage, false, targetHealth.transform.position, direction, Color.white);
+            }
+        }
+
+        // 총검 쿨타임을 소모 시도합니다. 이 상태를 PlayerShooter(씬마다 새로 만들어지는 플레이어 런타임 객체)에
+        // 두는 이유: BayonetWeaponSO에 두면 씬 재로드/Time.time 리셋과 무관하게 게임 전체에서 공유되는
+        // ScriptableObject 인스턴스에 타임스탬프가 남아서, 에디터에서 Play를 반복하면(도메인 리로드 꺼짐 등)
+        // 이전 세션의 큰 Time.time 값이 그대로 남아 새 세션에서 한동안 공격이 전혀 안 나가는 버그가 생깁니다.
+        public bool TryConsumeBayonetCooldown(float cooldownSeconds)
+        {
+            if (Time.time < nextBayonetAttackTime)
+            {
+                return false;
+            }
+
+            nextBayonetAttackTime = Time.time + Mathf.Max(0f, cooldownSeconds);
+            return true;
+        }
+
+        // 근접 반원 공격(총검): 조준 방향(락온 중이면 GetAimDirection이 알아서 보스 방향을 반환) 기준
+        // 앞쪽 반원(반지름 range) 안의 적탄을 즉시 제거하고, 같은 범위 안의 보스/미니언에게 damage를 적용합니다.
+        // 탄환은 전혀 소모하지 않습니다.
+        public void SwingBayonet(int damage, float range, Color rangeFlashColor, float rangeFlashSeconds)
+        {
+            if (range <= 0f)
+            {
+                return;
+            }
+
+            Vector2 origin = context.CombatCenterOrigin.position;
+            Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
+
+            ClearProjectilesInSemicircle(origin, direction, range);
+            DamageEnemiesInSemicircle(origin, direction, range, damage);
+            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
+        }
+
+        private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+
+            // 뒤에서부터 순회합니다: TryDestroyByInterceptShot이 이 리스트에서 즉시 self-remove하는데,
+            // 앞에서부터 돌면 삭제된 자리로 뒤 원소들이 한 칸씩 당겨지면서 다음 인덱스를 건너뛰어
+            // 범위 안에 있는데도 안 지워지는 총알이 생깁니다. 뒤에서부터 지우면 이미 지나온 인덱스만
+            // 밀리므로 안전합니다.
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile == null || !projectile.CanBeIntercepted)
+                {
+                    continue;
+                }
+
+                if (!OverlapsSemicircle(projectile, origin, direction, range))
+                {
+                    continue;
+                }
+
+                // 흡수 VFX는 스프라이트를 복제하는 방식이라, 파괴(비활성화)되기 전에 먼저 재생해야 합니다.
+                PlayerDashVfx.PlayProjectileAbsorb(
+                    context.CoroutineHost,
+                    projectile,
+                    origin,
+                    0.16f,
+                    new Color(0.9f, 0.9f, 1f, 0.85f));
+                projectile.TryDestroyByInterceptShot(out _);
+            }
+        }
+
+        private void DamageEnemiesInSemicircle(Vector2 origin, Vector2 direction, float range, int damage)
+        {
+            if (damage <= 0)
+            {
+                return;
+            }
+
+            Health[] allHealth = Object.FindObjectsByType<Health>(FindObjectsSortMode.None);
+
+            for (int i = 0; i < allHealth.Length; i++)
+            {
+                Health targetHealth = allHealth[i];
+                if (!IsValidAreaDamageTarget(targetHealth))
+                {
+                    continue;
+                }
+
+                if (!OverlapsSemicircle(targetHealth, origin, direction, range))
+                {
+                    continue;
+                }
+
+                PlayerProjectile.TryApplyDamageToHealth(targetHealth, damage, false, targetHealth.transform.position, direction, Color.white);
+            }
+        }
+
+        // target(투사체/보스/미니언)의 콜라이더 바운드가 반원(원점 기준 반지름 range, 조준 방향 앞쪽 180도)에
+        // 조금이라도 겹치면 true입니다. 예전엔 transform.position 한 점만 봐서 피벗이 반원 밖이면 몸체 대부분이
+        // 걸쳐 있어도 판정이 안 되는 문제가 있었습니다. 콜라이더가 없으면 점 판정으로 폴백합니다.
+        private static bool OverlapsSemicircle(Component target, Vector2 origin, Vector2 direction, float range)
+        {
+            float sqrRange = range * range;
+            if (TryGetColliderBounds(target.gameObject, out Bounds bounds))
+            {
+                return BoundsOverlapsSemicircle(bounds, origin, direction, sqrRange);
+            }
+
+            return IsPointInSemicircle(target.transform.position, origin, direction, sqrRange);
+        }
+
+        private static bool TryGetColliderBounds(GameObject target, out Bounds bounds)
+        {
+            Collider2D[] colliders = target.GetComponentsInChildren<Collider2D>();
+            bounds = default;
+            bool hasBounds = false;
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null || !collider.enabled)
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    bounds = collider.bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(collider.bounds);
+                }
+            }
+
+            return hasBounds;
+        }
+
+        // 바운드 안에 원점이 있거나, 바운드에서 원점과 가장 가까운 점이 반원 안이거나,
+        // 네 모서리 중 하나라도 반원 안이면 겹치는 것으로 판정합니다(관대한 근사치).
+        private static bool BoundsOverlapsSemicircle(Bounds bounds, Vector2 origin, Vector2 direction, float sqrRange)
+        {
+            Vector3 origin3 = new Vector3(origin.x, origin.y, bounds.center.z);
+            if (bounds.Contains(origin3))
+            {
+                return true;
+            }
+
+            if (IsPointInSemicircle(bounds.ClosestPoint(origin3), origin, direction, sqrRange))
+            {
+                return true;
+            }
+
+            Vector2 min = bounds.min;
+            Vector2 max = bounds.max;
+            return IsPointInSemicircle(new Vector2(min.x, min.y), origin, direction, sqrRange)
+                || IsPointInSemicircle(new Vector2(min.x, max.y), origin, direction, sqrRange)
+                || IsPointInSemicircle(new Vector2(max.x, min.y), origin, direction, sqrRange)
+                || IsPointInSemicircle(new Vector2(max.x, max.y), origin, direction, sqrRange);
+        }
+
+        private static bool IsPointInSemicircle(Vector2 point, Vector2 origin, Vector2 direction, float sqrRange)
+        {
+            Vector2 toPoint = point - origin;
+            return toPoint.sqrMagnitude <= sqrRange && Vector2.Dot(direction, toPoint) >= 0f;
+        }
+
+        // 총검(반원)/레일건(빔) 둘 다 즉시 판정되는 범위 공격이라 유효 타겟 조건을 공유합니다.
+        private bool IsValidAreaDamageTarget(Health targetHealth)
+        {
+            return targetHealth != null
+                && targetHealth != context.Health
+                && !targetHealth.IsDead
+                && (targetHealth.GetComponent<BossAI>() != null
+                    || targetHealth.GetComponentInParent<BossAI>() != null
+                    || targetHealth.GetComponent<Minion>() != null
+                    || targetHealth.GetComponentInParent<Minion>() != null);
+        }
+
         public void FireSingle(int damage)
         {
             PlayerCombatConfig config = context.Config;
@@ -150,6 +342,8 @@ namespace Week14.Combat
 
             PlayerProjectile projectilePrefab = ResolveProjectilePrefab(config);
             if (projectilePrefab == null) return;
+
+            damage = ApplyNextAttackDamageMultiplier(damage);
 
             Transform fireOrigin = GetLeftFireOrigin();
             Vector2 direction = aimController.AimGunAndGetDirection(
@@ -177,9 +371,11 @@ namespace Week14.Combat
             SoundManager.PlaySfx("BulletLoss");
         }
 
-        public void FireSpread(int[] damagesPerPellet, float pelletStep, float maxRange)
+        // damage는 펠릿 하나하나가 각각 그대로 받는 값입니다(무기 기본 데미지 그대로, 펠릿 수로 나누지 않음).
+        // spreadAngle은 전체 퍼짐 각도(콘 너비)이고, 펠릿들은 그 안에 고르게 분포합니다.
+        public void FireSpread(int damage, int pelletCount, float spreadAngle)
         {
-            if (damagesPerPellet == null || damagesPerPellet.Length == 0) return;
+            if (pelletCount <= 0) return;
 
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -187,29 +383,20 @@ namespace Week14.Combat
             PlayerProjectile projectilePrefab = ResolveProjectilePrefab(config);
             if (projectilePrefab == null) return;
 
-            int pelletCount = damagesPerPellet.Length;
             Transform fireOrigin = GetLeftFireOrigin();
             Vector2 baseDirection = aimController.AimGunAndGetDirection(
                 context.LeftGunOrigin,
                 aimController.GetAimDirection(context.LeftGunOrigin));
             aimController.LockLeftGunAim(baseDirection);
 
-            float lifetime = config.ProjectileSpeed > 0f
-                ? maxRange / config.ProjectileSpeed
-                : config.ProjectileLifetime;
+            int pelletDamage = ApplyNextAttackDamageMultiplier(damage);
 
-            float startAngle = -(pelletCount - 1) * pelletStep * 0.5f;
-            float angleStep = pelletStep;
+            float startAngle = -spreadAngle * 0.5f;
+            float angleStep = pelletCount > 1 ? spreadAngle / (pelletCount - 1) : 0f;
 
-            int[] sorted = (int[])damagesPerPellet.Clone();
-            System.Array.Sort(sorted);
-            System.Array.Reverse(sorted);
-
-            int[] posOrder = BuildCenterHighDamageOrder(pelletCount);
             for (int i = 0; i < pelletCount; i++)
             {
-                int spatialIdx = posOrder[i];
-                float angle = startAngle + angleStep * spatialIdx;
+                float angle = startAngle + angleStep * i;
                 Vector2 pelletDir = Quaternion.Euler(0f, 0f, angle) * baseDirection;
                 PlayerProjectile.Spawn(
                     projectilePrefab,
@@ -217,9 +404,9 @@ namespace Week14.Combat
                     pelletDir,
                     context.Owner,
                     config.ProjectileSpeed,
-                    lifetime,
+                    config.ProjectileLifetime,
                     config.ProjectileRadius,
-                    sorted[i],
+                    pelletDamage,
                     config.AttackEffectColor,
                     true);
             }
@@ -228,35 +415,6 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(pelletCount >= 2 ? "ShotgunFire" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
-        }
-
-        private static int[] BuildCenterHighDamageOrder(int count)
-        {
-            int[] order = new int[count];
-            int idx = 0;
-            if (count % 2 == 1)
-            {
-                int center = count / 2;
-                order[idx++] = center;
-                for (int step = 1; idx < count; step++)
-                {
-                    order[idx++] = center - step;
-                    if (idx < count) order[idx++] = center + step;
-                }
-            }
-            else
-            {
-                int innerLeft = count / 2 - 1;
-                int innerRight = count / 2;
-                order[idx++] = innerLeft;
-                order[idx++] = innerRight;
-                for (int step = 1; idx < count; step++)
-                {
-                    order[idx++] = innerLeft - step;
-                    if (idx < count) order[idx++] = innerRight + step;
-                }
-            }
-            return order;
         }
 
         private PlayerProjectile ResolveProjectilePrefab(PlayerCombatConfig config)
@@ -288,6 +446,8 @@ namespace Week14.Combat
             {
                 return false;
             }
+
+            dynamicDamage = ApplyNextAttackDamageMultiplier(dynamicDamage);
 
             Transform fireOrigin = GetLeftFireOrigin();
             Vector2 direction = aimController.AimGunAndGetDirection(
@@ -364,6 +524,12 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx("PlayerPowerShot");
             return true;
+        }
+
+        private int ApplyNextAttackDamageMultiplier(int damage)
+        {
+            float multiplier = context.Owner.ConsumeNextAttackDamageMultiplier();
+            return multiplier > 1f ? Mathf.Max(1, Mathf.RoundToInt(damage * multiplier)) : damage;
         }
 
         public int CalculateAttackBulletDamage()

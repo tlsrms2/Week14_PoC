@@ -5,7 +5,7 @@ using Week14.Enemy;
 
 namespace Week14.Skills
 {
-    [CreateAssetMenu(menuName = "Week14/Skills/Roll Skill", fileName = "RollSkill")]
+    [CreateAssetMenu(menuName = "Week14/Skills/Active/Roll Skill", fileName = "RollSkill")]
     public sealed class RollSkillSO : BaseSkillSO
     {
         [Tooltip("구를 거리(미터)입니다.")]

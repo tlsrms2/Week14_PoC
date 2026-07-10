@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.PassiveSkillDatabase
   skills:
   - {fileID: 11400000, guid: 528f643d25714f24a8456d3a39a9ddf2, type: 2}
+  - {fileID: 11400000, guid: 4c3c44f749bf67640bfb3527cd917886, type: 2}
+  - {fileID: 11400000, guid: 3fc4ecd7650148b4f8b2aa61c0727c19, type: 2}
+  - {fileID: 11400000, guid: ef6e8ddae4935c4438363450d824ce90, type: 2}
+  - {fileID: 11400000, guid: 7a977b76249f223459327e9b6490e582, type: 2}

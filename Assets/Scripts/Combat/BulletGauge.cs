@@ -36,7 +36,7 @@ namespace Week14.Combat
 
         public void Configure(int maxValue, bool refill, BulletChangeSource source)
         {
-            maxBullets = Mathf.Max(1, maxValue);
+            maxBullets = Mathf.Max(0, maxValue);
             currentBullets = refill ? maxBullets : Mathf.Clamp(currentBullets, 0, maxBullets);
             LastChangeSource = source;
             Changed?.Invoke(currentBullets, maxBullets);

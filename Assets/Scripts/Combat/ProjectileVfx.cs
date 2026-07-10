@@ -102,6 +102,55 @@ namespace Week14.Combat
             Object.Destroy(lineObject, Mathf.Max(0.04f, seconds));
         }
 
+        // 총검 등 반원 범위 판정을 순간적으로 보여주는 꽉 찬(면이 채워진) 플래시입니다.
+        // duration 동안 알파가 빠지며 사라집니다. 삼각팬(중심 + 호) 메쉬로 내부를 채웁니다.
+        public static void PlaySemicircleFlash(Vector3 origin, Vector2 direction, float radius, Color color, float duration)
+        {
+            if (radius <= 0f)
+            {
+                return;
+            }
+
+            origin.z = 0f;
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float baseAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+
+            const int arcSegments = 20;
+            GameObject flashObject = new GameObject("SemicircleFlashVfx");
+            flashObject.transform.position = origin;
+
+            MeshFilter meshFilter = flashObject.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = flashObject.AddComponent<MeshRenderer>();
+            meshRenderer.sharedMaterial = GetSpriteMaterial();
+            meshRenderer.sortingOrder = 69;
+
+            Vector3[] vertices = new Vector3[arcSegments + 2];
+            vertices[0] = Vector3.zero;
+            for (int i = 0; i <= arcSegments; i++)
+            {
+                float t = (float)i / arcSegments;
+                float angleRad = (baseAngle - 90f + t * 180f) * Mathf.Deg2Rad;
+                vertices[i + 1] = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0f) * radius;
+            }
+
+            int[] triangles = new int[arcSegments * 3];
+            for (int i = 0; i < arcSegments; i++)
+            {
+                triangles[i * 3] = 0;
+                triangles[i * 3 + 1] = i + 1;
+                triangles[i * 3 + 2] = i + 2;
+            }
+
+            Mesh mesh = new Mesh { name = "SemicircleFlashMesh" };
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateBounds();
+            meshFilter.mesh = mesh;
+
+            SemicircleFlashVfx flash = flashObject.AddComponent<SemicircleFlashVfx>();
+            flash.Play(mesh, duration, color);
+        }
+
         public static void PlayBulletImpact(Vector3 position, Vector2 direction, Color color)
         {
             PlayDirectionalSpark(position, direction, color, 10, 0.16f, 36f, 2.5f, 6f);

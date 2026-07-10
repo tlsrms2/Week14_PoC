@@ -8,7 +8,7 @@ using Week14.Enemy;
 
 namespace Week14.Skills
 {
-    [CreateAssetMenu(menuName = "Week14/Skills/Time Slow Skill", fileName = "TimeSlowSkill")]
+    [CreateAssetMenu(menuName = "Week14/Skills/Active/Time Slow Skill", fileName = "TimeSlowSkill")]
     public sealed class TimeSlowSkillSO : BaseSkillSO
     {
         [Tooltip("적/적탄에게 적용할 속도 배율입니다. 0.2 = 80% 감소.")]

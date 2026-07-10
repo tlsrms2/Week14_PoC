@@ -549,7 +549,7 @@ namespace Week14.Combat
             get
             {
                 BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
-                return weapon != null ? Mathf.Max(0.01f, weapon.ParryingRange) : 1f;
+                return weapon != null ? weapon.EffectiveParryingRange : 1f;
             }
         }
     }

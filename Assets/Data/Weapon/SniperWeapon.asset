@@ -42,7 +42,7 @@ MonoBehaviour:
   leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
   maxAmmo: 3
   parryingRange: 1
-  damagePerAmmoStep: 050000000500000005000000
+  damagePerAmmoStep: 030000000200000001000000
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
@@ -73,13 +73,12 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  bulletConsumeInterval: 0.5
-  damageMultiplierPerExtraBullet: 0.3
-  chargeTickSprite: {fileID: 21300000, guid: 6bba3578aaa949c468c09d783ae52377, type: 3}
-  chargeTickStartScale: 5
-  chargeTickSortingOrder: -2
-  chargeTickFirstSpawnDelaySeconds: 0.1
-  chargeTickShrinkRatio: 1.1
+  chargeThresholdSeconds: 1
+  chargeDamageMultiplier: 2
+  chargeCompleteSfxId: 
+  laserFirstAppearDelaySeconds: 0.15
+  laserLength: 15
+  laserSpreadAngle: 60
   references:
     version: 2
     RefIds: []

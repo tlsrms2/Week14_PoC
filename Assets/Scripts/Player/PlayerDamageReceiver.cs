@@ -71,19 +71,28 @@ namespace Week14.Combat
             Health health = context.Health;
             BulletGauge bullets = context.Bullets;
 
-            if (PlayerCombatController.IsExternallyInvulnerable
-                || context.IsExecuting
-                || context.IsDashing
-                || health == null
-                || health.IsDead
-                || config == null)
+            if (health == null || config == null)
+            {
+                return false;
+            }
+
+            if (PlayerCombatController.IsExternallyInvulnerable)
+            {
+                context.Owner.NotifyInvulnerableHit();
+                return false;
+            }
+
+            if (context.IsExecuting || context.IsDashing || health.IsDead)
             {
                 return false;
             }
 
             if (bullets == null || bullets.IsEmpty)
             {
-                health.Kill();
+                if (!context.Owner.TryConsumeDeathPrevention(context.PlayerTransform.position))
+                {
+                    health.Kill();
+                }
             }
             else
             {

@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 201567862784
-    m_Localized: Auto-Aiming function included
+    m_Localized: The most basic firearm
     m_Metadata:
       m_Items: []
   - m_Id: 465628659712
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 753810898944
-    m_Localized: Fire all bullets at once
+    m_Localized: Fires bullets that split into three directions
     m_Metadata:
       m_Items: []
   - m_Id: 860581101568
@@ -39,11 +39,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 913773264896
-    m_Localized: Damage increases when charged
+    m_Localized: 'Hold the attack button to charge the attack
+
+      Increased damage
+      upon charge attack'
     m_Metadata:
       m_Items: []
   - m_Id: 5028800724992
-    m_Localized: 'Parry Range: x1'
+    m_Localized: 'Parry Range: x{0}'
     m_Metadata:
       m_Items: []
   - m_Id: 5101211189248
@@ -55,7 +58,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5361870405632
-    m_Localized: 'Parry Range: x1'
+    m_Localized: 'Parry Range: x{0}'
     m_Metadata:
       m_Items: []
   - m_Id: 5374021304320
@@ -75,7 +78,36 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5808177905664
-    m_Localized: 'Parry Range: x1'
+    m_Localized: 'Parry Range: x{0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331155001966592
+    m_Localized: Railgun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331352159420416
+    m_Localized: Consumes all ammo and fires at once
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331357406494720
+    m_Localized: 'Parry Range: x{0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331698302746624
+    m_Localized: Bayonet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331701683355648
+    m_Localized: 'Swing the sword to attack
+
+      Ammo is fixed at 0
+
+      Clears
+      barrages within the attack range'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331702840983552
+    m_Localized: 'Parry Range: x{0}'
     m_Metadata:
       m_Items: []
   references:
