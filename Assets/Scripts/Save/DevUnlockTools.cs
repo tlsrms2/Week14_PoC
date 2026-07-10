@@ -46,9 +46,11 @@ namespace Week14.Save
         [SerializeField] private int debugPointsToGrant = 100;
 
         [Header("스토리 토글")]
-        [SerializeField] private bool synopsisSeen;
+        [SerializeField] private bool prologueSeen;
         [SerializeField] private bool tutorialCompleted;
+        [SerializeField] private bool pastSeen;
         [SerializeField] private bool act1Seen;
+        [SerializeField] private bool lobbyIntroSeen;
         [SerializeField] private bool act2Seen;
         [SerializeField] private bool act3Seen;
         [SerializeField] private bool finalBossAftermathSeen;
@@ -108,8 +110,8 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] 스토리 진행 상태를 리셋했습니다.");
         }
 
-        [ContextMenu("스토리 토글/2. 시눕시스 완료")]
-        public void CompleteSynopsis()
+        [ContextMenu("스토리 토글/2. 프롤로그 완료")]
+        public void CompletePrologue()
         {
             SetStoryProgress(
                 synopsis: true,
@@ -138,7 +140,24 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] 튜토리얼 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/4. Act1 완료")]
+        [ContextMenu("스토리 토글/4. 과거 완료")]
+        public void CompletePast()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: false,
+                act2: false,
+                act3: false,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            GameSaveManager.SetPastSeen(true);
+            PullStoryTogglesFromSave();
+            Debug.Log("[DevUnlockTools] 과거 컷신 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/5. Act1 완료")]
         public void CompleteAct1()
         {
             SetStoryProgress(
@@ -153,7 +172,24 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] Act1 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/5. Act2 완료")]
+        [ContextMenu("스토리 토글/6. 로비씬 설명 완료")]
+        public void CompleteLobbyIntro()
+        {
+            SetStoryProgress(
+                synopsis: true,
+                tutorial: true,
+                act1: true,
+                act2: false,
+                act3: false,
+                finalBossAftermath: false,
+                epilogue: false,
+                ending: false);
+            SetStorySeen(StoryEpisodeId.LobbyIntro, true);
+            PullStoryTogglesFromSave();
+            Debug.Log("[DevUnlockTools] 로비씬 설명 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/7. Act2 완료")]
         public void CompleteAct2()
         {
             SetStoryProgress(
@@ -168,7 +204,7 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] Act2 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/6. Act3 완료")]
+        [ContextMenu("스토리 토글/8. Act3 완료")]
         public void CompleteAct3()
         {
             SetStoryProgress(
@@ -183,7 +219,7 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] Act3 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/7. 최종 보스 완료")]
+        [ContextMenu("스토리 토글/9. 최종 보스 완료")]
         public void CompleteFinalBoss()
         {
             SetStoryProgress(
@@ -198,7 +234,7 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] 최종 보스 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/8. 에필로그 완료")]
+        [ContextMenu("스토리 토글/10. 에필로그 완료")]
         public void CompleteEpilogue()
         {
             SetStoryProgress(
@@ -213,7 +249,7 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] 에필로그 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/9. 엔딩 완료")]
+        [ContextMenu("스토리 토글/11. 엔딩 완료")]
         public void CompleteEnding()
         {
             SetStoryProgress(
@@ -484,10 +520,12 @@ namespace Week14.Save
 
         private void PullStoryTogglesFromSave()
         {
-            synopsisSeen = GameSaveManager.HasSeenSynopsis;
+            prologueSeen = GameSaveManager.HasSeenPrologue;
             tutorialCompleted = GameSaveManager.HasCompletedTutorial;
+            pastSeen = GameSaveManager.HasSeenPast;
             endingSeen = GameSaveManager.HasSeenEnding;
             act1Seen = IsStorySeen(StoryEpisodeId.Act1);
+            lobbyIntroSeen = IsStorySeen(StoryEpisodeId.LobbyIntro);
             act2Seen = IsStorySeen(StoryEpisodeId.Act2);
             act3Seen = IsStorySeen(StoryEpisodeId.Act3);
             finalBossAftermathSeen = IsStorySeen(StoryEpisodeId.FinalBossAftermath);
@@ -504,10 +542,12 @@ namespace Week14.Save
             bool epilogue,
             bool ending)
         {
-            GameSaveManager.SetSynopsisSeen(synopsis);
+            GameSaveManager.SetPrologueSeen(synopsis);
             GameSaveManager.SetTutorialCompleted(tutorial);
             GameSaveManager.SetEndingSeen(ending);
+            GameSaveManager.SetPastSeen(act1 || act2 || act3 || finalBossAftermath || epilogue || ending);
             SetStorySeen(StoryEpisodeId.Act1, act1);
+            SetStorySeen(StoryEpisodeId.LobbyIntro, act2 || act3 || finalBossAftermath || epilogue || ending);
             SetStorySeen(StoryEpisodeId.Act2, act2);
             SetStorySeen(StoryEpisodeId.Act3, act3);
             SetStorySeen(StoryEpisodeId.FinalBossAftermath, finalBossAftermath);

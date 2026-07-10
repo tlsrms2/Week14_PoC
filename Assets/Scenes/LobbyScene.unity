@@ -7850,9 +7850,11 @@ MonoBehaviour:
   targetBoss: {fileID: 0}
   targetWeapon: {fileID: 0}
   debugPointsToGrant: 100
-  synopsisSeen: 0
+  prologueSeen: 0
   tutorialCompleted: 0
+  pastSeen: 0
   act1Seen: 0
+  lobbyIntroSeen: 0
   act2Seen: 0
   act3Seen: 0
   finalBossAftermathSeen: 0
@@ -9053,8 +9055,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameStoryController
   dialoguePanel: {fileID: 7094148038695635875}
-  firstStoryDelaySeconds: 0.5
+  firstStoryDelaySeconds: 0.1
   playbackRules:
+  - sequence: {fileID: 11400000, guid: 5400ed70730d78041a3ccd67c24d9d5e, type: 2}
+    requiredClearedBossIds: []
   - sequence: {fileID: 11400000, guid: 247b2b204e87a4c488c5f30030a873af, type: 2}
     requiredClearedBossIds: []
   skipHoldSeconds: 2
@@ -18925,8 +18929,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 44
+  m_fontSizeBase: 44
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19952,8 +19956,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
-  m_fontSizeBase: 52
+  m_fontSize: 58
+  m_fontSizeBase: 58
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -20008,7 +20012,7 @@ GameObject:
   - component: {fileID: 3493791941530652632}
   - component: {fileID: 7094148038695635875}
   m_Layer: 5
-  m_Name: InGameDialoguePanelRoot
+  m_Name: InGameDialogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20026,7 +20030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19835085543594e44b5c75307a7c98ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameDialoguePanelView
-  root: {fileID: 7094148038695635874}
+  root: {fileID: 7583865313150525774}
   speakerRoot: {fileID: 2182568689590045403}
   speakerText: {fileID: 6788758547939696413}
   dialogueText: {fileID: 1187849875718501740}

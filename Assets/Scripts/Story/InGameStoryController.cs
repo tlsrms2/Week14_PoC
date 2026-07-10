@@ -81,9 +81,10 @@ namespace Week14.Story
                 yield return WaitUnscaled(firstStoryDelaySeconds);
             }
 
-            if (TryGetNextStory(out StoryEpisodeId episodeId, out bool skippable, out IReadOnlyList<InGameDialogueLine> dialogues))
+            while (TryGetNextStory(out StoryEpisodeId episodeId, out bool skippable, out IReadOnlyList<InGameDialogueLine> dialogues))
             {
                 yield return PlayStory(episodeId, skippable, dialogues);
+                yield return null;
             }
 
             playRoutine = null;

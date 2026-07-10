@@ -10,14 +10,15 @@ namespace Week14.Story
         Act2,
         Act3,
         FinalBossAftermath,
-        Epilogue
+        Epilogue,
+        LobbyIntro
     }
 
     [Serializable]
     public sealed class InGameDialogueLine
     {
         [SerializeField] private string speaker;
-        [SerializeField, TextArea] private string text;
+        [SerializeField, TextArea(4, 14)] private string text;
         [SerializeField] private string sfxId;
 
         public InGameDialogueLine(string speaker, string text)

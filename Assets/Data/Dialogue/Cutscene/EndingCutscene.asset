@@ -12,19 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
   m_Name: EndingCutscene
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
-  cutsceneId: Ending
   skippable: 1
   steps:
   - backgroundImage: {fileID: 7194722723881946144, guid: a9169ea32cda39f4cb811307d32fe165, type: 3}
     dialogues:
     - name: "\uC8FC\uC778\uACF5"
       text: "\uC5D4\uB529"
+      sfxId: 
     - name: "\uC8FC\uC778\uACF5"
       text: "\uCD95\uD558\uD569\uB2C8\uB2E4"
+      sfxId: 
+    skippable: 0
     bgmId: 
     bgmFadeSeconds: 0
     transitionMode: 0
-    fadeSeconds: 3
+    fadeInSeconds: 1
+    fadeOutSeconds: 0.5
+    darkHoldSeconds: 0.5
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}

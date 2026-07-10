@@ -23,6 +23,7 @@ namespace Week14.Skills
         [SerializeField] private bool forceDefaultTestSkill;
 
         private static SkillLoadoutManager instance;
+        private static int skillUseSuppressionCount;
 
         private readonly Dictionary<SkillSlot, BaseSkillSO> equippedSkills = new();
         private float cooldownRemaining;
@@ -33,12 +34,23 @@ namespace Week14.Skills
         private BaseSkillSO effectEndSubscribedSkill;
 
         public static SkillLoadoutManager Instance => instance;
+        private static bool IsSkillUseSuppressed => skillUseSuppressionCount > 0;
 
         public event Action<float, float> CooldownChanged;
         public event Action<SkillSlot, BaseSkillSO> SkillEquipped;
         public event Action<SkillSlot, BaseSkillSO> SkillUsed;
 
         public float CooldownRemaining => cooldownRemaining;
+
+        public static void PushSkillUseSuppression()
+        {
+            skillUseSuppressionCount++;
+        }
+
+        public static void PopSkillUseSuppression()
+        {
+            skillUseSuppressionCount = Mathf.Max(0, skillUseSuppressionCount - 1);
+        }
 
         // 액티브 스킬이 장착되어 있지 않을 때는 -1을 반환합니다.
         // (0을 쓰면 "쿨타임 0초짜리 스킬이 준비됨"과 "장착된 스킬이 없음"을 구분할 수 없기 때문)
@@ -84,7 +96,7 @@ namespace Week14.Skills
         {
             TickCooldown(Time.deltaTime);
 
-            if (!GameModalState.BlocksGameplayInput && GameInput.UseSkillDown)
+            if (!GameModalState.BlocksGameplayInput && !IsSkillUseSuppressed && GameInput.UseSkillDown)
             {
                 TryUseSkill(ActiveSlot);
             }
@@ -166,6 +178,11 @@ namespace Week14.Skills
 
         public bool TryUseSkill(SkillSlot slot)
         {
+            if (IsSkillUseSuppressed)
+            {
+                return false;
+            }
+
             if (!equippedSkills.TryGetValue(slot, out BaseSkillSO skill) || skill == null)
             {
                 return false;

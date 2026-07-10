@@ -248,8 +248,10 @@ namespace Week14.Cutscene
 
         private IEnumerator ApplyBlackFadeTransition(CutsceneStep step, bool hasPreviousStep)
         {
-            float fadeSeconds = Mathf.Max(0f, step.FadeSeconds);
-            if (fadeSeconds <= 0f)
+            float fadeInSeconds = step.FadeInSeconds;
+            float fadeOutSeconds = step.FadeOutSeconds;
+            float darkHoldSeconds = step.DarkHoldSeconds;
+            if (fadeInSeconds <= 0f && fadeOutSeconds <= 0f && darkHoldSeconds <= 0f)
             {
                 if (step.BackgroundImage != null)
                 {
@@ -263,7 +265,11 @@ namespace Week14.Cutscene
 
             if (hasPreviousStep)
             {
-                yield return PlayFade(0f, 1f, fadeSeconds * 0.5f);
+                yield return PlayFade(0f, 1f, fadeOutSeconds);
+            }
+            else if (fadeInSeconds > 0f || darkHoldSeconds > 0f)
+            {
+                SetFadeAlpha(1f);
             }
 
             if (step.BackgroundImage != null)
@@ -272,14 +278,24 @@ namespace Week14.Cutscene
             }
             HideTransitionImage();
 
-            SetFadeAlpha(1f);
-            yield return PlayFade(1f, 0f, hasPreviousStep ? fadeSeconds * 0.5f : fadeSeconds);
+            if (darkHoldSeconds > 0f)
+            {
+                yield return WaitDarkHold(darkHoldSeconds);
+            }
+
+            if (fadeInSeconds > 0f)
+            {
+                yield return PlayFade(1f, 0f, fadeInSeconds);
+                yield break;
+            }
+
+            SetFadeAlpha(0f);
         }
 
         private IEnumerator ApplyImageFadeTransition(CutsceneStep step)
         {
             SetFadeAlpha(0f);
-            float fadeSeconds = Mathf.Max(0f, step.FadeSeconds);
+            float fadeSeconds = step.FadeInSeconds;
             Sprite nextSprite = step.BackgroundImage;
 
             if (nextSprite == null)
@@ -332,6 +348,17 @@ namespace Week14.Cutscene
             SetFadeAlpha(toAlpha);
         }
 
+        private IEnumerator WaitDarkHold(float seconds)
+        {
+            for (float elapsed = 0f;
+                 elapsed < seconds && !skipRequested && !skipSectionRequested;
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                SetFadeAlpha(1f);
+                yield return null;
+            }
+        }
+
         private IEnumerator CoverScreenForCompletion(CutsceneStep lastPlayedStep)
         {
             ClearDialogueView();
@@ -342,7 +369,7 @@ namespace Week14.Cutscene
                 yield break;
             }
 
-            float fadeSeconds = lastPlayedStep != null ? lastPlayedStep.FadeSeconds * 0.5f : 0f;
+            float fadeSeconds = lastPlayedStep != null ? lastPlayedStep.FadeOutSeconds : 0f;
             if (fadeSeconds <= 0f)
             {
                 SetFadeAlpha(1f);

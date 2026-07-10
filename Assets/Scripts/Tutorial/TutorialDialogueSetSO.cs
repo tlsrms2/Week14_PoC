@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace Week14.Tutorial
 {
@@ -17,15 +18,35 @@ namespace Week14.Tutorial
         SkillGauge,
         SkillRetry,
         Shoot,
-        AttackRefill
+        AttackRefill,
+        Hit,
+        RoomTransition
+    }
+
+    [Serializable]
+    public sealed class TutorialExplanationContent
+    {
+        [SerializeField] private bool enabled;
+        [SerializeField] private Sprite image;
+        [SerializeField] private VideoClip video;
+        [SerializeField] private bool loopVideo = true;
+        [SerializeField, TextArea(8, 24)] private string text;
+
+        public bool Enabled => enabled;
+        public Sprite Image => image;
+        public VideoClip Video => video;
+        public bool LoopVideo => loopVideo;
+        public string Text => text;
+        public bool HasContent => enabled && (image != null || video != null || !string.IsNullOrWhiteSpace(text));
     }
 
     [Serializable]
     public sealed class TutorialDialogueLine
     {
         [SerializeField] private string speaker;
-        [SerializeField, TextArea] private string text;
+        [SerializeField, TextArea(4, 14)] private string text;
         [SerializeField] private string sfxId;
+        [SerializeField] private TutorialExplanationContent explanation;
 
         public TutorialDialogueLine(string speaker, string text)
         {
@@ -36,6 +57,7 @@ namespace Week14.Tutorial
         public string Speaker => speaker;
         public string Text => text;
         public string SfxId => sfxId;
+        public TutorialExplanationContent Explanation => explanation;
     }
 
     [Serializable]
