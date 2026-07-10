@@ -30,6 +30,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private readonly List<GameObject> transientVisuals = new();
         private string currentNodeId;
+        private int conductorMinionOutlineHoldRequests;
 
         public BossActionContext(
             BossAI boss,
@@ -81,6 +82,23 @@ namespace Week14.Enemy
         public void SetCurrentNodeId(string nodeId)
         {
             currentNodeId = nodeId;
+        }
+
+        public void RegisterConductorMinionOutlineHold()
+        {
+            conductorMinionOutlineHoldRequests++;
+        }
+
+        public int ConsumeConductorMinionOutlineHoldRequests()
+        {
+            int count = conductorMinionOutlineHoldRequests;
+            conductorMinionOutlineHoldRequests = 0;
+            return count;
+        }
+
+        public void ClearConductorMinionOutlineHoldRequests()
+        {
+            conductorMinionOutlineHoldRequests = 0;
         }
 
         public void PlayAnimationTrigger(string triggerName)

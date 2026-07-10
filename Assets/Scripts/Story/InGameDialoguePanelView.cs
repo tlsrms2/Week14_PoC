@@ -44,6 +44,8 @@ namespace Week14.Story
 
         public bool IsTyping { get; private set; }
 
+        private CanvasGroup fallbackCanvasGroup;
+
         private void Awake()
         {
             Hide();
@@ -176,7 +178,11 @@ namespace Week14.Story
                 return;
             }
 
-            gameObject.SetActive(visible);
+            fallbackCanvasGroup ??= GetComponent<CanvasGroup>();
+            fallbackCanvasGroup ??= gameObject.AddComponent<CanvasGroup>();
+            fallbackCanvasGroup.alpha = visible ? 1f : 0f;
+            fallbackCanvasGroup.interactable = visible;
+            fallbackCanvasGroup.blocksRaycasts = visible;
         }
 
         private static void SetText(TMP_Text target, string value)

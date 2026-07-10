@@ -28,6 +28,9 @@ namespace Week14.Cutscene
         [Header("Views")]
         [SerializeField] private CutsceneDialoguePanelView dialoguePanelView;
 
+        [Header("Dialogue")]
+        [SerializeField, Min(0f)] private float dialogueStartDelaySeconds = 0.25f;
+
         [Header("Skip Hold")]
         [SerializeField] private Image skipHoldFillImage;
         [SerializeField] private TMP_Text skipHoldPromptText;
@@ -212,11 +215,18 @@ namespace Week14.Cutscene
 
         private IEnumerator ExecuteStep(CutsceneStep step, bool hasPreviousStep)
         {
+            ClearDialogueView();
+
             yield return ApplyStepTransition(step, hasPreviousStep);
             StartBackgroundMotion(step);
             ApplyAudio(step);
 
             IReadOnlyList<CutsceneDialogue> dialogues = step.Dialogues;
+            if (dialogues.Count > 0)
+            {
+                yield return WaitDialogueStartDelay();
+            }
+
             for (int i = 0; i < dialogues.Count && !skipRequested && !skipSectionRequested; i++)
             {
                 CutsceneDialogue dialogue = dialogues[i];
@@ -324,6 +334,8 @@ namespace Week14.Cutscene
 
         private IEnumerator CoverScreenForCompletion(CutsceneStep lastPlayedStep)
         {
+            ClearDialogueView();
+
             if (skipRequested)
             {
                 SetFadeAlpha(1f);
@@ -359,6 +371,7 @@ namespace Week14.Cutscene
             advanceRequested = false;
             revealRequested = false;
             isTyping = true;
+            PlayDialogueSfx(dialogue.SfxId);
             dialoguePanelView?.ShowLine(dialogue.Name, dialogue.Text);
             yield return dialoguePanelView?.PlayTypewriter(dialogue.Text, () => revealRequested || skipRequested || skipSectionRequested, () => skipRequested || skipSectionRequested);
             isTyping = false;
@@ -371,6 +384,24 @@ namespace Week14.Cutscene
             }
 
             advanceRequested = false;
+        }
+
+        private static void PlayDialogueSfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
+        }
+
+        private IEnumerator WaitDialogueStartDelay()
+        {
+            for (float elapsed = 0f;
+                 elapsed < dialogueStartDelaySeconds && !skipRequested && !skipSectionRequested;
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
+            }
         }
 
         private IEnumerator PlayImageAlpha(Image image, float fromAlpha, float toAlpha, float seconds)

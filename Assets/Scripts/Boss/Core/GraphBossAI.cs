@@ -80,6 +80,12 @@ namespace Week14.Enemy
             ResetGraphRuntime();
             graphContext?.ClearPatternScopedBossChildAims();
             graphContext?.ResetBodyRootLocalOffset();
+            graphContext?.ClearConductorMinionOutlineHoldRequests();
+            if (graphContext?.Boss is Conductor conductor)
+            {
+                conductor.ClearMinionOutlinePatternVisibility();
+            }
+
             graphContext = null;
         }
 

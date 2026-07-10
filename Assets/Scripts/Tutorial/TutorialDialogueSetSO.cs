@@ -25,6 +25,7 @@ namespace Week14.Tutorial
     {
         [SerializeField] private string speaker;
         [SerializeField, TextArea] private string text;
+        [SerializeField] private string sfxId;
 
         public TutorialDialogueLine(string speaker, string text)
         {
@@ -34,6 +35,7 @@ namespace Week14.Tutorial
 
         public string Speaker => speaker;
         public string Text => text;
+        public string SfxId => sfxId;
     }
 
     [Serializable]

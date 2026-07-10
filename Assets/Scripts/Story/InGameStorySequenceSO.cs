@@ -18,6 +18,7 @@ namespace Week14.Story
     {
         [SerializeField] private string speaker;
         [SerializeField, TextArea] private string text;
+        [SerializeField] private string sfxId;
 
         public InGameDialogueLine(string speaker, string text)
         {
@@ -27,6 +28,7 @@ namespace Week14.Story
 
         public string Speaker => speaker;
         public string Text => text;
+        public string SfxId => sfxId;
     }
 
     [CreateAssetMenu(menuName = "Week14/Story/In-Game Story Sequence", fileName = "InGameStorySequence")]

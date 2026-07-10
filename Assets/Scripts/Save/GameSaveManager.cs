@@ -106,6 +106,23 @@ namespace Week14.Save
             Save();
         }
 
+        public static void SetStoryEpisodeSeen(string episodeId, bool seen)
+        {
+            if (string.IsNullOrEmpty(episodeId))
+            {
+                return;
+            }
+
+            bool changed = seen
+                ? AddIfMissing(Data.seenStoryEpisodeIds, episodeId)
+                : Data.seenStoryEpisodeIds.Remove(episodeId);
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
         public static void MarkSynopsisSeen()
         {
             if (Data.hasSeenSynopsis)
@@ -114,6 +131,17 @@ namespace Week14.Save
             }
 
             Data.hasSeenSynopsis = true;
+            Save();
+        }
+
+        public static void SetSynopsisSeen(bool seen)
+        {
+            if (Data.hasSeenSynopsis == seen)
+            {
+                return;
+            }
+
+            Data.hasSeenSynopsis = seen;
             Save();
         }
 
@@ -137,6 +165,23 @@ namespace Week14.Save
             }
         }
 
+        public static void SetTutorialCompleted(bool completed)
+        {
+            if (completed)
+            {
+                MarkTutorialCompleted();
+                return;
+            }
+
+            if (!Data.hasCompletedTutorial)
+            {
+                return;
+            }
+
+            Data.hasCompletedTutorial = false;
+            Save();
+        }
+
         public static void MarkEndingSeen()
         {
             if (Data.hasSeenEnding)
@@ -145,6 +190,17 @@ namespace Week14.Save
             }
 
             Data.hasSeenEnding = true;
+            Save();
+        }
+
+        public static void SetEndingSeen(bool seen)
+        {
+            if (Data.hasSeenEnding == seen)
+            {
+                return;
+            }
+
+            Data.hasSeenEnding = seen;
             Save();
         }
 
@@ -390,6 +446,17 @@ namespace Week14.Save
             data.seenStoryEpisodeIds ??= new List<string>();
             data.completedChallengeIds ??= new List<string>();
             data.challengeCounters ??= new List<ChallengeCounterEntry>();
+        }
+
+        private static bool AddIfMissing(List<string> list, string value)
+        {
+            if (list == null || string.IsNullOrEmpty(value) || list.Contains(value))
+            {
+                return false;
+            }
+
+            list.Add(value);
+            return true;
         }
 
         public static void Save()
