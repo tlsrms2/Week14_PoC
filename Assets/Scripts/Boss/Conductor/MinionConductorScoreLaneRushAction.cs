@@ -1214,7 +1214,7 @@ namespace Week14.Enemy
                 for (int i = 0; i < entries.Count; i++)
                 {
                     Entry entry = entries[i];
-                    if (!entry.Completed)
+                    if (!entry.Completed && entry.Projectile != null)
                     {
                         return entry;
                     }

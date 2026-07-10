@@ -26326,10 +26326,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26340,10 +26340,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26354,10 +26354,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26368,10 +26368,10 @@ MonoBehaviour:
       data:
         patternId: P2-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26382,10 +26382,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26396,10 +26396,10 @@ MonoBehaviour:
       data:
         patternId: P2-2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26410,10 +26410,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26424,10 +26424,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26438,10 +26438,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26452,10 +26452,10 @@ MonoBehaviour:
       data:
         patternId: P2-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26466,10 +26466,10 @@ MonoBehaviour:
       data:
         patternId: P2-2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26480,10 +26480,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26494,10 +26494,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26508,10 +26508,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26522,10 +26522,10 @@ MonoBehaviour:
       data:
         patternId: P2-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26536,10 +26536,10 @@ MonoBehaviour:
       data:
         patternId: P4-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26550,10 +26550,10 @@ MonoBehaviour:
       data:
         patternId: P5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26564,10 +26564,10 @@ MonoBehaviour:
       data:
         patternId: P2-2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26578,10 +26578,10 @@ MonoBehaviour:
       data:
         patternId: P4-2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26592,10 +26592,10 @@ MonoBehaviour:
       data:
         patternId: P5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26606,10 +26606,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26620,10 +26620,10 @@ MonoBehaviour:
       data:
         patternId: UP2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26634,10 +26634,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26648,10 +26648,10 @@ MonoBehaviour:
       data:
         patternId: P4-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26662,10 +26662,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26676,10 +26676,10 @@ MonoBehaviour:
       data:
         patternId: P4-2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26690,10 +26690,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26704,10 +26704,10 @@ MonoBehaviour:
       data:
         patternId: P8
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26718,10 +26718,10 @@ MonoBehaviour:
       data:
         patternId: P4-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26732,10 +26732,10 @@ MonoBehaviour:
       data:
         patternId: P4-2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26746,10 +26746,10 @@ MonoBehaviour:
       data:
         patternId: P8
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26760,10 +26760,10 @@ MonoBehaviour:
       data:
         patternId: P5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26774,10 +26774,10 @@ MonoBehaviour:
       data:
         patternId: P8
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26788,10 +26788,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26802,10 +26802,10 @@ MonoBehaviour:
       data:
         patternId: P6
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26816,10 +26816,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26830,10 +26830,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26844,10 +26844,10 @@ MonoBehaviour:
       data:
         patternId: UP2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26858,10 +26858,10 @@ MonoBehaviour:
       data:
         patternId: P6
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26872,10 +26872,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26886,10 +26886,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26900,10 +26900,10 @@ MonoBehaviour:
       data:
         patternId: P6
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26914,10 +26914,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26928,10 +26928,10 @@ MonoBehaviour:
       data:
         patternId: P2-1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26942,10 +26942,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26956,10 +26956,10 @@ MonoBehaviour:
       data:
         patternId: P6
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26970,10 +26970,10 @@ MonoBehaviour:
       data:
         patternId: UP4
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26984,10 +26984,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -26998,10 +26998,10 @@ MonoBehaviour:
       data:
         patternId: P5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27012,10 +27012,10 @@ MonoBehaviour:
       data:
         patternId: P7
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27026,10 +27026,10 @@ MonoBehaviour:
       data:
         patternId: P5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27040,10 +27040,10 @@ MonoBehaviour:
       data:
         patternId: P8
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27054,10 +27054,10 @@ MonoBehaviour:
       data:
         patternId: UP4
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27068,10 +27068,10 @@ MonoBehaviour:
       data:
         patternId: P7
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27082,10 +27082,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27096,10 +27096,10 @@ MonoBehaviour:
       data:
         patternId: P7
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27110,10 +27110,10 @@ MonoBehaviour:
       data:
         patternId: UP2
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27124,10 +27124,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27138,10 +27138,10 @@ MonoBehaviour:
       data:
         patternId: P8
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27152,10 +27152,10 @@ MonoBehaviour:
       data:
         patternId: UP5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27166,10 +27166,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27180,10 +27180,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27194,10 +27194,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27208,10 +27208,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27222,10 +27222,10 @@ MonoBehaviour:
       data:
         patternId: P3
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27236,10 +27236,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27322,10 +27322,10 @@ MonoBehaviour:
       data:
         patternId: P1
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
@@ -27344,10 +27344,10 @@ MonoBehaviour:
       data:
         patternId: UP5
         stopMovement: 1
-        headOffset: {x: 0, y: 0.7}
-        scale: 0.2
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
         color: {r: 1, g: 0, b: 0, a: 0.9}
-        lineWidth: 0.1
+        lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7

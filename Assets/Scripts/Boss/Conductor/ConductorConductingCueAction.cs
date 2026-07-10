@@ -10,10 +10,10 @@ namespace Week14.Enemy
     {
         [SerializeField, ConductorConductingPatternId] private string patternId = "Pattern";
         [SerializeField] private bool stopMovement = true;
-        [SerializeField] private Vector2 headOffset = new(0f, 1.45f);
-        [SerializeField, Min(0.01f)] private float scale = 1f;
+        [SerializeField] private Vector2 headOffset = new(0f, 0.5f);
+        [SerializeField, Min(0.01f)] private float scale = 0.225f;
         [SerializeField] private Color color = new(0.62f, 0.92f, 1f, 0.9f);
-        [SerializeField, Min(0.001f)] private float lineWidth = 0.045f;
+        [SerializeField, Min(0.001f)] private float lineWidth = 0.125f;
         [SerializeField, Min(0.01f)] private float strokeDrawSeconds = 0.18f;
         [SerializeField, Min(0f)] private float strokeIntervalSeconds = 0.04f;
         [SerializeField, Min(0f)] private float holdSeconds = 0.2f;
