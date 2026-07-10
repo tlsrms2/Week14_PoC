@@ -6,21 +6,56 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class ConductorConductingCueAction : BossAction
+    public sealed class ConductorConductingCueAction : BossAction, ISerializationCallbackReceiver
     {
         [SerializeField, ConductorConductingPatternId] private string patternId = "Pattern";
         [SerializeField] private bool stopMovement = true;
         [SerializeField] private Vector2 headOffset = new(0f, 0.5f);
         [SerializeField, Min(0.01f)] private float scale = 0.225f;
-        [SerializeField] private Color color = new(0.62f, 0.92f, 1f, 0.9f);
+        [SerializeField] private Color color = new(0.55f, 0f, 0f, 0.9f);
         [SerializeField, Min(0.001f)] private float lineWidth = 0.125f;
         [SerializeField, Min(0.01f)] private float strokeDrawSeconds = 0.18f;
         [SerializeField, Min(0f)] private float strokeIntervalSeconds = 0.04f;
         [SerializeField, Min(0f)] private float holdSeconds = 0.2f;
         [SerializeField, Min(0f)] private float fadeSeconds = 0.12f;
         [SerializeField] private int sortingOrder = 90;
+        [Header("Completed Stroke")]
+        [SerializeField] private Color completedFlashColor = Color.white;
+        [SerializeField, Min(0f)] private float completedFlashSeconds = 0.08f;
+        [SerializeField] private Color completedColor = Color.red;
+        [SerializeField] private bool drawCompletedOutline = true;
+        [SerializeField] private Color completedOutlineColor = Color.black;
+        [SerializeField, Min(0f)] private float completedOutlineWidth = 0.025f;
+        [SerializeField, HideInInspector] private bool migratedCompletedStrokeSettings;
 
         public string PatternId => patternId;
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            if (!migratedCompletedStrokeSettings)
+            {
+                color = new Color(0.55f, 0f, 0f, 0.9f);
+                completedFlashColor = Color.white;
+                if (completedFlashSeconds <= 0f)
+                {
+                    completedFlashSeconds = 0.08f;
+                }
+
+                completedColor = Color.red;
+                drawCompletedOutline = true;
+                completedOutlineColor = Color.black;
+                if (completedOutlineWidth <= 0f)
+                {
+                    completedOutlineWidth = 0.025f;
+                }
+
+                migratedCompletedStrokeSettings = true;
+            }
+        }
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -44,7 +79,13 @@ namespace Week14.Enemy
                 strokeIntervalSeconds,
                 holdSeconds,
                 fadeSeconds,
-                sortingOrder);
+                sortingOrder,
+                completedFlashColor,
+                completedFlashSeconds,
+                completedColor,
+                drawCompletedOutline,
+                completedOutlineColor,
+                completedOutlineWidth);
         }
 
         public bool TryGetTotalSeconds(Conductor conductor, out float seconds)
@@ -61,6 +102,7 @@ namespace Week14.Enemy
             ConductorConductingCueSettings settings = CreateSettings();
             int strokeCount = CountDrawableStrokes(pattern);
             seconds = strokeCount * (settings.StrokeDrawSeconds + settings.StrokeIntervalSeconds)
+                + settings.CompletedFlashSeconds
                 + settings.HoldSeconds
                 + settings.FadeSeconds;
             return seconds > 0f;
@@ -99,7 +141,13 @@ namespace Week14.Enemy
             float strokeIntervalSeconds,
             float holdSeconds,
             float fadeSeconds,
-            int sortingOrder)
+            int sortingOrder,
+            Color completedFlashColor,
+            float completedFlashSeconds,
+            Color completedColor,
+            bool drawCompletedOutline,
+            Color completedOutlineColor,
+            float completedOutlineWidth)
         {
             StopMovement = stopMovement;
             HeadOffset = headOffset;
@@ -111,6 +159,12 @@ namespace Week14.Enemy
             HoldSeconds = Mathf.Max(0f, holdSeconds);
             FadeSeconds = Mathf.Max(0f, fadeSeconds);
             SortingOrder = sortingOrder;
+            CompletedFlashColor = completedFlashColor;
+            CompletedFlashSeconds = Mathf.Max(0f, completedFlashSeconds);
+            CompletedColor = completedColor;
+            DrawCompletedOutline = drawCompletedOutline;
+            CompletedOutlineColor = completedOutlineColor;
+            CompletedOutlineWidth = Mathf.Max(0f, completedOutlineWidth);
         }
 
         public bool StopMovement { get; }
@@ -123,5 +177,11 @@ namespace Week14.Enemy
         public float HoldSeconds { get; }
         public float FadeSeconds { get; }
         public int SortingOrder { get; }
+        public Color CompletedFlashColor { get; }
+        public float CompletedFlashSeconds { get; }
+        public Color CompletedColor { get; }
+        public bool DrawCompletedOutline { get; }
+        public Color CompletedOutlineColor { get; }
+        public float CompletedOutlineWidth { get; }
     }
 }

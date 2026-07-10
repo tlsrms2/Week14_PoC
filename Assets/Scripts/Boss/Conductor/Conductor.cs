@@ -17,7 +17,6 @@ namespace Week14.Enemy
 
         [SerializeField, Min(0f)] private float bodyHitDamageMultiplier = 1f;
         [SerializeField, Min(0f)] private float minionHitDamageMultiplier = 0.5f;
-        [SerializeField, Range(0f, 1f)] private float minionOutlineIdleAlpha = 0.3f;
         [SerializeField, Min(0f)] private float minionOutlineFlashSeconds = 0.12f;
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
@@ -27,6 +26,7 @@ namespace Week14.Enemy
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
         private readonly Dictionary<Minion, Coroutine> outlineFlashRoutines = new();
         private readonly Dictionary<Minion, MovementPathIndicatorState> movementPathIndicators = new();
+        private int minionOutlineVisibleLocks;
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
@@ -160,7 +160,8 @@ namespace Week14.Enemy
             string patternId,
             BossActionContext context,
             ConductorConductingCueSettings settings,
-            System.Func<bool> shouldCancel = null)
+            System.Func<bool> shouldCancel = null,
+            bool holdMinionOutlineAfterCue = false)
         {
             if (!TryGetConductingPattern(patternId, out ConductorConductingPattern pattern)
                 || pattern == null
@@ -178,8 +179,10 @@ namespace Week14.Enemy
 
             ConductorConductingPatternVisual visual = visualObject.AddComponent<ConductorConductingPatternVisual>();
             visual.Configure(pattern, settings);
+
             context?.RegisterTransientVisual(visualObject);
 
+            bool releaseMinionOutlineOnCueEnd = false;
             try
             {
                 IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
@@ -208,6 +211,28 @@ namespace Week14.Enemy
                     }
                 }
 
+                if (settings.CompletedFlashSeconds > 0f)
+                {
+                    visual.ApplyFlashStyle();
+                    BeginMinionOutlinePatternVisibility();
+                    if (holdMinionOutlineAfterCue && context != null)
+                    {
+                        context.RegisterConductorMinionOutlineHold();
+                    }
+                    else
+                    {
+                        releaseMinionOutlineOnCueEnd = true;
+                    }
+
+                    yield return WaitConductingSeconds(
+                        context,
+                        settings.CompletedFlashSeconds,
+                        settings.StopMovement,
+                        shouldCancel);
+                }
+
+                visual.ApplyCompletedStyle();
+
                 if (settings.HoldSeconds > 0f)
                 {
                     yield return WaitConductingSeconds(context, settings.HoldSeconds, settings.StopMovement, shouldCancel);
@@ -220,6 +245,11 @@ namespace Week14.Enemy
             }
             finally
             {
+                if (releaseMinionOutlineOnCueEnd)
+                {
+                    EndMinionOutlinePatternVisibility();
+                }
+
                 context?.UnregisterTransientVisual(visualObject);
 
                 if (visual != null)
@@ -435,6 +465,7 @@ namespace Week14.Enemy
             spawnedMinionOutlines.Clear();
             outlineFlashRoutines.Clear();
             movementPathIndicators.Clear();
+            minionOutlineVisibleLocks = 0;
         }
 
         private void TrackMinionOutline(Minion minion)
@@ -451,6 +482,11 @@ namespace Week14.Enemy
 
         private void FlashMinionOutline(Minion minion)
         {
+            if (minionOutlineVisibleLocks <= 0)
+            {
+                return;
+            }
+
             if (minion == null || !spawnedMinionOutlines.TryGetValue(minion, out Transform outline) || outline == null)
             {
                 return;
@@ -482,6 +518,62 @@ namespace Week14.Enemy
             }
 
             outlineFlashRoutines.Remove(minion);
+        }
+
+        public void ReleaseMinionOutlinePatternVisibilityHold()
+        {
+            EndMinionOutlinePatternVisibility();
+        }
+
+        public void ClearMinionOutlinePatternVisibility()
+        {
+            minionOutlineVisibleLocks = 0;
+            StopAllMinionOutlineFlashRoutines();
+            ApplyAllMinionOutlineIdle();
+        }
+
+        private void BeginMinionOutlinePatternVisibility()
+        {
+            minionOutlineVisibleLocks++;
+            ApplyAllMinionOutlineIdle();
+        }
+
+        private void EndMinionOutlinePatternVisibility()
+        {
+            if (minionOutlineVisibleLocks <= 0)
+            {
+                return;
+            }
+
+            minionOutlineVisibleLocks--;
+            if (minionOutlineVisibleLocks > 0)
+            {
+                return;
+            }
+
+            StopAllMinionOutlineFlashRoutines();
+            ApplyAllMinionOutlineIdle();
+        }
+
+        private void StopAllMinionOutlineFlashRoutines()
+        {
+            foreach (Coroutine routine in outlineFlashRoutines.Values)
+            {
+                if (routine != null)
+                {
+                    StopCoroutine(routine);
+                }
+            }
+
+            outlineFlashRoutines.Clear();
+        }
+
+        private void ApplyAllMinionOutlineIdle()
+        {
+            foreach (Transform outline in spawnedMinionOutlines.Values)
+            {
+                ApplyMinionOutlineIdle(outline);
+            }
         }
 
         private void UntrackMinionOutline(Minion minion)
@@ -516,7 +608,7 @@ namespace Week14.Enemy
             }
 
             outline.gameObject.SetActive(true);
-            SetMinionOutlineAlpha(outline, minionOutlineIdleAlpha);
+            SetMinionOutlineAlpha(outline, minionOutlineVisibleLocks > 0 ? 1f : 0f);
         }
 
         private static void SetMinionOutlineAlpha(Transform outline, float alpha)
@@ -594,8 +686,11 @@ namespace Week14.Enemy
                     context?.Stop();
                 }
 
-                elapsed += EnemyTimeScale.DeltaTime;
-                visual.SetStrokeProgress(strokeIndex, Mathf.Clamp01(elapsed / duration));
+                float deltaTime = EnemyTimeScale.DeltaTime;
+                elapsed += deltaTime;
+                float progress = EaseConductingStrokeProgress(elapsed / duration);
+                visual.SetStrokeProgress(strokeIndex, progress);
+
                 yield return null;
             }
 
@@ -603,6 +698,12 @@ namespace Week14.Enemy
             {
                 visual.SetStrokeProgress(strokeIndex, 1f);
             }
+        }
+
+        private static float EaseConductingStrokeProgress(float progress)
+        {
+            float t = Mathf.Clamp01(progress);
+            return t * t * t;
         }
 
         private static IEnumerator WaitConductingSeconds(
@@ -648,6 +749,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            visual.ApplyCompletedStyle();
             float duration = Mathf.Max(0.01f, seconds);
             float elapsed = 0f;
             while (elapsed < duration)
@@ -670,12 +772,14 @@ namespace Week14.Enemy
                 }
 
                 elapsed += EnemyTimeScale.DeltaTime;
+                visual.ApplyCompletedStyle();
                 visual.SetAlpha(1f - Mathf.Clamp01(elapsed / duration));
                 yield return null;
             }
 
             if (visual != null)
             {
+                visual.ApplyCompletedStyle();
                 visual.SetAlpha(0f);
             }
         }

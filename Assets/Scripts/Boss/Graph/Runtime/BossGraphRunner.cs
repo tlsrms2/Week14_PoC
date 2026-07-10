@@ -181,18 +181,28 @@ namespace Week14.Enemy
                 IReadOnlyList<string> nodeKeys = pattern.NodeKeys;
                 Dictionary<string, List<BossStateNode>> parallelGroups = BuildPatternParallelGroups(graph, nodeKeys);
                 List<List<BossStateNode>> executionGroups = BuildPatternExecutionGroups(graph, nodeKeys, parallelGroups);
+                int[] conductorOutlineReleaseCounts = new int[executionGroups.Count];
                 string previousNodeId = null;
                 for (int i = 0; i < executionGroups.Count; i++)
                 {
                     List<BossStateNode> group = executionGroups[i];
                     yield return ExecutePatternNodeGroup(graph, group, previousNodeId, context);
 
+                    int newOutlineHoldCount = context.ConsumeConductorMinionOutlineHoldRequests();
+                    if (newOutlineHoldCount > 0 && conductorOutlineReleaseCounts.Length > 0)
+                    {
+                        int releaseGroupIndex = Mathf.Min(i + 1, conductorOutlineReleaseCounts.Length - 1);
+                        conductorOutlineReleaseCounts[releaseGroupIndex] += newOutlineHoldCount;
+                    }
+
+                    ReleaseConductorMinionOutlineHolds(context, conductorOutlineReleaseCounts[i]);
                     previousNodeId = group.Count > 0 ? group[group.Count - 1]?.NodeId : previousNodeId;
                     context.Stop();
                 }
             }
             finally
             {
+                ClearConductorMinionOutlineHolds(context);
                 context.ClearPatternScopedBossChildAims();
             }
         }
@@ -248,7 +258,19 @@ namespace Week14.Enemy
             {
                 BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
                 context.SetCurrentNodeId(node.NodeId);
-                yield return node.Action.Execute(context);
+                if (node.Action is ConductorConductingCueAction cue
+                    && context.Boss is Conductor conductor)
+                {
+                    yield return conductor.PlayConductingPattern(
+                        cue.PatternId,
+                        context,
+                        cue.CreateSettings(),
+                        holdMinionOutlineAfterCue: true);
+                }
+                else
+                {
+                    yield return node.Action.Execute(context);
+                }
             }
             finally
             {
@@ -378,7 +400,33 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            yield return conductor.PlayConductingPattern(plan.Cue.PatternId, context, plan.Cue.CreateSettings());
+            yield return conductor.PlayConductingPattern(
+                plan.Cue.PatternId,
+                context,
+                plan.Cue.CreateSettings(),
+                holdMinionOutlineAfterCue: true);
+        }
+
+        private static void ReleaseConductorMinionOutlineHolds(BossActionContext context, int count)
+        {
+            if (count <= 0 || context?.Boss is not Conductor conductor)
+            {
+                return;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                conductor.ReleaseMinionOutlinePatternVisibilityHold();
+            }
+        }
+
+        private static void ClearConductorMinionOutlineHolds(BossActionContext context)
+        {
+            context?.ClearConductorMinionOutlineHoldRequests();
+            if (context?.Boss is Conductor conductor)
+            {
+                conductor.ClearMinionOutlinePatternVisibility();
+            }
         }
 
         private static bool ShouldStartConductorCueOverlayEarly(IReadOnlyList<BossStateNode> nodes)

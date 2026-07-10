@@ -10227,6 +10227,8 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
     - rid: 6489939025664671825
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -23655,6 +23657,8 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
     - rid: 6489939042083012884
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26328,13 +26332,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703755
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26342,13 +26353,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703756
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26356,13 +26374,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703757
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26370,13 +26395,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703758
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26384,13 +26416,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703759
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26398,13 +26437,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703760
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26412,13 +26458,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703761
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26426,13 +26479,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703762
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26440,13 +26500,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703763
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26454,13 +26521,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703764
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26468,13 +26542,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703765
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26482,13 +26563,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703766
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26496,13 +26584,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703767
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26510,13 +26605,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703768
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26524,13 +26626,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703769
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26538,13 +26647,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703770
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26552,13 +26668,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703771
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26566,13 +26689,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703772
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26580,13 +26710,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703773
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26594,13 +26731,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703774
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26608,13 +26752,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703775
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26622,13 +26773,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703776
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26636,13 +26794,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703777
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26650,13 +26815,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703778
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26664,13 +26836,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703779
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26678,13 +26857,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703780
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26692,13 +26878,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703781
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26706,13 +26899,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703782
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26720,13 +26920,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703783
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26734,13 +26941,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703784
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26748,13 +26962,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703785
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26762,13 +26983,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703786
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26776,13 +27004,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703787
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26790,13 +27025,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703788
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26804,13 +27046,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703789
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26818,13 +27067,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703790
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26832,13 +27088,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703791
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26846,13 +27109,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703792
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26860,13 +27130,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703793
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26874,13 +27151,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703794
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26888,13 +27172,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703795
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26902,13 +27193,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703796
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26916,13 +27214,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703797
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26930,13 +27235,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703798
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26944,13 +27256,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703799
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26958,13 +27277,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703800
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26972,13 +27298,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703801
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -26986,13 +27319,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703802
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27000,13 +27340,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703803
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27014,13 +27361,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703804
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27028,13 +27382,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703805
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27042,13 +27403,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703806
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27056,13 +27424,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703807
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27070,13 +27445,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703808
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27084,13 +27466,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703809
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27098,13 +27487,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703810
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27112,13 +27508,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703811
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27126,13 +27529,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703812
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27140,13 +27550,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703813
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27154,13 +27571,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703814
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27168,13 +27592,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703815
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27182,13 +27613,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703816
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27196,13 +27634,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703817
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27210,13 +27655,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703818
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27224,13 +27676,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703819
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27238,13 +27697,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703820
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27324,13 +27790,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703830
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -27346,13 +27819,20 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 1, g: 0, b: 0, a: 0.9}
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703832
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

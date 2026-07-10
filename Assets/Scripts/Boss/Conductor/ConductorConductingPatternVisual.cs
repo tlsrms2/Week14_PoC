@@ -7,26 +7,33 @@ namespace Week14.Enemy
     public sealed class ConductorConductingPatternVisual : MonoBehaviour
     {
         private const string StrokeLineName = "ConductorConductingStroke";
+        private const string StrokeOutlineName = "ConductorConductingStrokeOutline";
 
         private static Material lineMaterial;
 
         private readonly List<LineRenderer> renderers = new();
+        private readonly List<LineRenderer> outlineRenderers = new();
         private readonly List<Vector2> strokePoints = new();
         private readonly List<Vector3> renderPoints = new();
         private ConductorConductingPattern pattern;
         private ConductorConductingCueSettings settings;
         private float alphaMultiplier = 1f;
+        private bool completedStyle;
+        private bool flashStyle;
 
         public void Configure(ConductorConductingPattern nextPattern, ConductorConductingCueSettings nextSettings)
         {
             pattern = nextPattern;
             settings = nextSettings;
             alphaMultiplier = 1f;
+            completedStyle = false;
+            flashStyle = false;
 
             int strokeCount = pattern?.Strokes?.Count ?? 0;
             for (int i = 0; i < strokeCount; i++)
             {
                 EnsureRenderer(i).enabled = false;
+                EnsureOutlineRenderer(i).enabled = false;
             }
 
             for (int i = strokeCount; i < renderers.Count; i++)
@@ -34,6 +41,14 @@ namespace Week14.Enemy
                 if (renderers[i] != null)
                 {
                     renderers[i].enabled = false;
+                }
+            }
+
+            for (int i = strokeCount; i < outlineRenderers.Count; i++)
+            {
+                if (outlineRenderers[i] != null)
+                {
+                    outlineRenderers[i].enabled = false;
                 }
             }
         }
@@ -46,6 +61,14 @@ namespace Week14.Enemy
                 if (renderers[i] != null)
                 {
                     ApplyRendererStyle(renderers[i]);
+                }
+            }
+
+            for (int i = 0; i < outlineRenderers.Count; i++)
+            {
+                if (outlineRenderers[i] != null)
+                {
+                    ApplyOutlineRendererStyle(outlineRenderers[i]);
                 }
             }
         }
@@ -62,9 +85,11 @@ namespace Week14.Enemy
 
             ConductorConductingStroke stroke = pattern.Strokes[strokeIndex];
             LineRenderer line = EnsureRenderer(strokeIndex);
+            LineRenderer outline = EnsureOutlineRenderer(strokeIndex);
             if (stroke == null || !stroke.HasDrawablePoints || alphaMultiplier <= 0f)
             {
                 line.enabled = false;
+                outline.enabled = false;
                 return;
             }
 
@@ -73,14 +98,51 @@ namespace Week14.Enemy
             line.enabled = renderPoints.Count >= 2;
             if (!line.enabled)
             {
+                outline.enabled = false;
                 return;
             }
 
             line.positionCount = renderPoints.Count;
             ApplyRendererStyle(line);
+            outline.enabled = (completedStyle || flashStyle)
+                && settings.DrawCompletedOutline
+                && settings.CompletedOutlineWidth > 0f;
+            if (outline.enabled)
+            {
+                outline.positionCount = renderPoints.Count;
+                ApplyOutlineRendererStyle(outline);
+            }
+
             for (int i = 0; i < renderPoints.Count; i++)
             {
-                line.SetPosition(i, renderPoints[i]);
+                Vector3 point = renderPoints[i];
+                line.SetPosition(i, point);
+                if (outline.enabled)
+                {
+                    outline.SetPosition(i, point);
+                }
+            }
+        }
+
+        public void ApplyCompletedStyle()
+        {
+            flashStyle = false;
+            completedStyle = true;
+            int strokeCount = pattern?.Strokes?.Count ?? 0;
+            for (int i = 0; i < strokeCount; i++)
+            {
+                SetStrokeProgress(i, 1f);
+            }
+        }
+
+        public void ApplyFlashStyle()
+        {
+            completedStyle = false;
+            flashStyle = true;
+            int strokeCount = pattern?.Strokes?.Count ?? 0;
+            for (int i = 0; i < strokeCount; i++)
+            {
+                SetStrokeProgress(i, 1f);
             }
         }
 
@@ -91,6 +153,14 @@ namespace Week14.Enemy
                 if (renderers[i] != null)
                 {
                     renderers[i].enabled = false;
+                }
+            }
+
+            for (int i = 0; i < outlineRenderers.Count; i++)
+            {
+                if (outlineRenderers[i] != null)
+                {
+                    outlineRenderers[i].enabled = false;
                 }
             }
 
@@ -116,6 +186,26 @@ namespace Week14.Enemy
             return renderers[index];
         }
 
+        private LineRenderer EnsureOutlineRenderer(int index)
+        {
+            while (outlineRenderers.Count <= index)
+            {
+                GameObject lineObject = new($"{StrokeOutlineName}_{outlineRenderers.Count:00}");
+                lineObject.transform.SetParent(transform, false);
+                LineRenderer line = lineObject.AddComponent<LineRenderer>();
+                line.useWorldSpace = false;
+                line.loop = false;
+                line.positionCount = 2;
+                line.numCapVertices = 3;
+                line.numCornerVertices = 3;
+                line.material = GetLineMaterial();
+                line.enabled = false;
+                outlineRenderers.Add(line);
+            }
+
+            return outlineRenderers[index];
+        }
+
         private void ApplyRendererStyle(LineRenderer line)
         {
             if (line == null || pattern == null)
@@ -123,13 +213,33 @@ namespace Week14.Enemy
                 return;
             }
 
-            Color color = settings.Color;
+            Color color = flashStyle
+                ? settings.CompletedFlashColor
+                : completedStyle
+                    ? settings.CompletedColor
+                    : settings.Color;
             color.a *= alphaMultiplier;
             line.startColor = color;
             line.endColor = color;
             line.startWidth = settings.LineWidth;
             line.endWidth = settings.LineWidth;
             line.sortingOrder = settings.SortingOrder;
+        }
+
+        private void ApplyOutlineRendererStyle(LineRenderer line)
+        {
+            if (line == null || pattern == null)
+            {
+                return;
+            }
+
+            Color color = flashStyle ? settings.CompletedFlashColor : settings.CompletedOutlineColor;
+            color.a *= alphaMultiplier;
+            line.startColor = color;
+            line.endColor = color;
+            line.startWidth = settings.LineWidth + settings.CompletedOutlineWidth;
+            line.endWidth = settings.LineWidth + settings.CompletedOutlineWidth;
+            line.sortingOrder = settings.SortingOrder - 1;
         }
 
         private static void BuildStrokePoints(

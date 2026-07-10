@@ -36,6 +36,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float postProjectileClearDelaySeconds = 0.5f;
         [SerializeField] private int laneIndicatorSortingOrder = 66;
         [SerializeField, Min(1)] private int laneIndicatorLineCount = 4;
+        [Header("Boss Reposition")]
+        [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
+        [SerializeField, Min(0.001f)] private float bossOriginArriveDistance = 0.04f;
 
         private readonly List<EnemyProjectile> trackedProjectiles = new();
         private ConductorScoreLaneRushIndicatorVisual activeLaneIndicators;
@@ -51,7 +54,8 @@ namespace Week14.Enemy
 
             float laneIndicatorRevealSeconds = GetLaneIndicatorRevealDuration();
             float volleySequenceSeconds = EstimateVolleySequenceDuration(specialVolleys, volleyCount);
-            seconds = WindupSeconds
+            seconds = EstimateBossOriginMoveSeconds(context)
+                + WindupSeconds
                 + Mathf.Max(MoveToStartSeconds, laneIndicatorRevealSeconds)
                 + volleySequenceSeconds
                 + EstimateTrackedProjectileRemainingSeconds(context, specialVolleys, volleyCount, volleySequenceSeconds)
@@ -74,6 +78,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            yield return MoveBossToWorldOrigin(context);
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
             try
             {
@@ -130,6 +135,50 @@ namespace Week14.Enemy
         protected override List<ExecutionVolley> BuildExecutionVolleys()
         {
             return BuildExecutionVolleysFromPool(specialVolleys, ExecutionOrder);
+        }
+
+        private IEnumerator MoveBossToWorldOrigin(BossActionContext context)
+        {
+            if (context?.Boss == null || context.Boss.Body == null)
+            {
+                yield break;
+            }
+
+            Vector2 target = Vector2.zero;
+            float arriveDistance = Mathf.Max(0.001f, bossOriginArriveDistance);
+            float arriveDistanceSqr = arriveDistance * arriveDistance;
+            while (((Vector2)context.Boss.Body.position - target).sqrMagnitude > arriveDistanceSqr)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 current = context.Boss.Body.position;
+                Vector2 toTarget = target - current;
+                float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
+                context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+                yield return null;
+            }
+
+            context.Boss.Stop();
+        }
+
+        private float EstimateBossOriginMoveSeconds(BossActionContext context)
+        {
+            if (context?.Boss == null)
+            {
+                return 0f;
+            }
+
+            Vector2 current = context.Boss.Body != null
+                ? context.Boss.Body.position
+                : context.Boss.transform.position;
+            float distance = Mathf.Max(0f, current.magnitude - Mathf.Max(0.001f, bossOriginArriveDistance));
+            float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
+            return speed > 0f ? distance / speed : 0f;
         }
 
         private float CommandMinionsToFirstVolleyStart(
