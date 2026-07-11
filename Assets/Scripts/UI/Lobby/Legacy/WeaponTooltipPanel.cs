@@ -10,6 +10,7 @@ using Week14.Weapons;
 
 namespace Week14.UI
 {
+    // 무기 호버 정보 표시가 LoadoutSelectedSkillPanel로 대체되어 더 이상 사용하지 않음(참조하는 코드 없음). 참고용으로 보관.
     public sealed class WeaponTooltipPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;

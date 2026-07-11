@@ -9,6 +9,7 @@ using Week14.Enemy;
 
 namespace Week14.UI
 {
+    // 호버 시에만 뜨고 나가면 사라지는 방식에서 BossDescriptionPanel(마지막 호버 유지)로 대체되어 더 이상 사용하지 않음. 참고용으로 보관.
     public sealed class BossDetailPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;

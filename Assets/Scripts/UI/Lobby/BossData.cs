@@ -17,6 +17,8 @@ namespace Week14.UI
         [SerializeField] private LocalizedString localizedDescription;
         [SerializeField] private Sprite icon;
         [SerializeField] private Sprite deathImage;
+        [Tooltip("로비 보스 패널의 보스슬롯에 표시할 이미지입니다. 비워두면 icon을 대신 사용합니다.")]
+        [SerializeField] private Sprite panelIcon;
         [SerializeField] private string sceneName;
 
         [Header("클리어 보상")]
@@ -42,6 +44,7 @@ namespace Week14.UI
         public Sprite Icon => icon;
         public Sprite DeathImage => deathImage;
         public Sprite ResultPortrait => deathImage != null ? deathImage : icon;
+        public Sprite PanelIcon => panelIcon != null ? panelIcon : icon;
         public string SceneName => sceneName;
         public IReadOnlyList<string> UnlocksBossIds => unlocksBossIds;
         public IReadOnlyList<string> UnlocksSkillIds => unlocksSkillIds;

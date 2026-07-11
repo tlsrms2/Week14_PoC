@@ -3,6 +3,7 @@ using Week14.GameFlow;
 
 namespace Week14.UI
 {
+    // "선택 후 진입" 2단계 방식에서 BossSlot의 클릭 즉시 진입 방식으로 대체되어 더 이상 사용하지 않음. 참고용으로 보관.
     public sealed class BossPanelController : MonoBehaviour
     {
         private BossData selectedBossData;

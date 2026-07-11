@@ -84,6 +84,62 @@ namespace Week14.Save
             Save();
         }
 
+        public static bool HasBestClearTime(string bossId)
+        {
+            return FindBossClearTimeEntry(bossId) != null;
+        }
+
+        public static float GetBestClearTime(string bossId)
+        {
+            BossClearTimeEntry entry = FindBossClearTimeEntry(bossId);
+            return entry != null ? entry.seconds : -1f;
+        }
+
+        // 기록이 없거나 기존 값보다 짧을 때만 갱신합니다. 갱신했다면 true를 반환합니다.
+        public static bool TrySetBestClearTime(string bossId, float seconds)
+        {
+            if (string.IsNullOrEmpty(bossId))
+            {
+                return false;
+            }
+
+            BossClearTimeEntry entry = FindBossClearTimeEntry(bossId);
+            if (entry == null)
+            {
+                Data.bossClearTimes.Add(new BossClearTimeEntry { bossId = bossId, seconds = seconds });
+                Save();
+                return true;
+            }
+
+            if (seconds < entry.seconds)
+            {
+                entry.seconds = seconds;
+                Save();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static BossClearTimeEntry FindBossClearTimeEntry(string bossId)
+        {
+            if (string.IsNullOrEmpty(bossId))
+            {
+                return null;
+            }
+
+            List<BossClearTimeEntry> entries = Data.bossClearTimes;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].bossId == bossId)
+                {
+                    return entries[i];
+                }
+            }
+
+            return null;
+        }
+
         public static bool HasSeenPrologue => Data.hasSeenPrologue || Data.hasSeenSynopsis;
         public static bool HasSeenPast => Data.hasSeenPast;
         public static bool HasCompletedTutorial => Data.hasCompletedTutorial;

@@ -12,7 +12,7 @@ namespace Week14.UI
         [BossGraphBgmId]
         [SerializeField] private string lobbyBgmId;
 
-        [Tooltip("보스 패널 콘텐츠 루트입니다. 이 아래에 있는 모든 IPanelGatedInteractable이 항상 활성화됩니다.")]
+        [Tooltip("보스 패널 콘텐츠 루트입니다. OpenBossPanel/CloseBossPanel로 켜고 끕니다.")]
         [SerializeField] private Transform bossPanelContent;
         [Tooltip("로드아웃 패널 콘텐츠 루트입니다. 이 아래에 있는 모든 IPanelGatedInteractable이 항상 활성화됩니다.")]
         [SerializeField] private Transform loadoutPanelContent;
@@ -60,6 +60,16 @@ namespace Week14.UI
             SetActiveSafe(loadoutPanelContent != null ? loadoutPanelContent.gameObject : null, false);
         }
 
+        public void OpenBossPanel()
+        {
+            SetActiveSafe(bossPanelContent != null ? bossPanelContent.gameObject : null, true);
+        }
+
+        public void CloseBossPanel()
+        {
+            SetActiveSafe(bossPanelContent != null ? bossPanelContent.gameObject : null, false);
+        }
+
         private void Awake()
         {
             if (!string.IsNullOrEmpty(lobbyBgmId))
@@ -67,7 +77,6 @@ namespace Week14.UI
                 SoundManager.PlayBgm(lobbyBgmId);
             }
 
-            SetContentInteractable(bossPanelContent, true);
             SetContentInteractable(loadoutPanelContent, true);
 
             StartCoroutine(WarmUpLocalization());
@@ -75,11 +84,12 @@ namespace Week14.UI
 
         private void Start()
         {
-            // 로드아웃 패널 밑에 있는 LoadoutSelectedSkillPanelLocalization 등은 자기 Awake에서
-            // 예열(무기 로컬라이징 미리 로드 등)을 하는데, 그게 여기서 CloseLoadoutPanel()로
-            // 패널을 꺼버리기 전에 한 번은 활성 상태로 실행돼야 한다. Start는 씬의 모든 Awake가
-            // 끝난 뒤에 실행되는 게 보장되므로, 여기서 닫아야 그 순서가 항상 지켜진다.
+            // 로드아웃/보스 패널 밑에 있는 컴포넌트들은 자기 Awake에서 예열(로컬라이징 미리 로드,
+            // 기본 표시 항목 세팅 등)을 하는데, 그게 여기서 패널을 꺼버리기 전에 한 번은 활성 상태로
+            // 실행돼야 한다. Start는 씬의 모든 Awake가 끝난 뒤에 실행되는 게 보장되므로, 여기서
+            // 닫아야 그 순서가 항상 지켜진다.
             CloseLoadoutPanel();
+            CloseBossPanel();
         }
 
         // 로컬라이제이션 시스템(로케일 선택 + Preload로 지정된 테이블)을 미리 초기화해둔다.

@@ -133,6 +133,7 @@ namespace Week14.Enemy
         private static int finalDeathSequencePlayCount;
         private bool combatStartedCounted;
         private static int combatStartedCount;
+        private float combatStartedAt;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -502,6 +503,7 @@ namespace Week14.Enemy
                 combatStartedCount++;
             }
 
+            combatStartedAt = Time.time;
             OnCombatStarted();
             CombatStarted?.Invoke(this);
         }
@@ -1042,6 +1044,7 @@ namespace Week14.Enemy
             }
 
             GameSaveManager.ClearBoss(bossData.Id);
+            GameSaveManager.TrySetBestClearTime(bossData.Id, Time.time - combatStartedAt);
 
             IReadOnlyList<string> unlocksBossIds = bossData.UnlocksBossIds;
             for (int i = 0; i < unlocksBossIds.Count; i++)

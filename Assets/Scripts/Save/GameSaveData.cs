@@ -18,10 +18,18 @@ namespace Week14.Save
     }
 
     [Serializable]
+    public sealed class BossClearTimeEntry
+    {
+        public string bossId;
+        public float seconds;
+    }
+
+    [Serializable]
     public sealed class GameSaveData
     {
         public List<string> unlockedBossIds = new();
         public List<string> clearedBossIds = new();
+        public List<BossClearTimeEntry> bossClearTimes = new();
         public List<string> unlockedSkillIds = new();
         public List<string> unlockedPassiveSkillIds = new();
         public List<string> unlockedWeaponIds = new();

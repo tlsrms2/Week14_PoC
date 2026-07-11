@@ -4,6 +4,7 @@ using Week14.Save;
 
 namespace Week14.UI
 {
+    // 로비 보스 패널이 여닫는 UI 패널(BossSlot/BossDescriptionPanel)로 대체되어 더 이상 사용하지 않음. 참고용으로 보관.
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
     public sealed class BossSelectIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPanelGatedInteractable
     {
