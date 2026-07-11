@@ -373,10 +373,7 @@ namespace Week14.Save
                 }
             }
 
-            if (WeaponLoadoutManager.Instance != null)
-            {
-                WeaponLoadoutManager.Instance.UnlockDefaultWeapon();
-            }
+            GameSaveManager.UnlockDefaultWeapons();
         }
 
         [ContextMenu("선택 스킬 해금")]

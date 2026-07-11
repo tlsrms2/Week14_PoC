@@ -10,7 +10,9 @@ namespace Week14.Weapons
     {
         [Tooltip("Weapon ID와 실제 총기 에셋을 연결하는 데이터베이스입니다.")]
         [SerializeField] private WeaponDatabase database;
-        [Tooltip("세이브 파일에 장착 기록이 없을 때(첫 실행) 자동으로 장착할 기본 총기입니다. 비워두면 자동 장착하지 않습니다.")]
+        [Tooltip("세이브 파일에 장착 기록이 없을 때(첫 실행) 자동으로 장착할 기본 총기입니다. " +
+            "해금+무료 구매는 GameSaveConfig(Resources/GameSaveConfig.asset)의 기본 해금 총기 목록에서 처리되므로, " +
+            "실제로 장착되게 하려면 그 목록에도 같은 총기를 등록해야 합니다. 비워두면 자동 장착하지 않습니다.")]
         [SerializeField] private BaseWeaponSO defaultWeapon;
         [Tooltip("디버그용: 체크하면 세이브 파일의 장착 총기를 무시하고 시작 시 항상 defaultWeapon을 장착합니다.")]
         [SerializeField] private bool forceDefaultWeapon;
@@ -37,7 +39,6 @@ namespace Week14.Weapons
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
 
-            UnlockDefaultWeapon();
             LoadEquippedWeapon();
             EquipDefaultWeaponIfNeeded();
         }
@@ -131,15 +132,6 @@ namespace Week14.Weapons
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
             currentWeapon?.ApplyWeaponTrait(playerObject);
             ApplyAmmoConfig(currentWeapon);
-        }
-
-        public void UnlockDefaultWeapon()
-        {
-            if (defaultWeapon != null)
-            {
-                GameSaveManager.UnlockWeapon(defaultWeapon.WeaponId);
-                GameSaveManager.PurchaseWeapon(defaultWeapon.WeaponId, 0);
-            }
         }
 
         private void LoadEquippedWeapon()

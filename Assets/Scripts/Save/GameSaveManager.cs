@@ -2,15 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Week14.Skills;
+using Week14.UI;
+using Week14.Weapons;
 
 namespace Week14.Save
 {
     public static class GameSaveManager
     {
         private const string SaveFileName = "game_data.json";
-        private const string FirstBossId = "1";
+        private const string ConfigResourcePath = "GameSaveConfig";
+        private const string FallbackFirstBossId = "1";
 
         private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+
+        private static GameSaveConfigSO cachedConfig;
+        private static bool configLoadAttempted;
+
+        // Assets/Resources/GameSaveConfig.asset(GameSaveConfigSO)을 읽습니다. 없으면 null.
+        private static GameSaveConfigSO Config
+        {
+            get
+            {
+                if (!configLoadAttempted)
+                {
+                    configLoadAttempted = true;
+                    cachedConfig = Resources.Load<GameSaveConfigSO>(ConfigResourcePath);
+                }
+
+                return cachedConfig;
+            }
+        }
 
         private static GameSaveData data;
 
@@ -37,9 +59,88 @@ namespace Week14.Save
             return !string.IsNullOrEmpty(bossId) && Data.clearedBossIds.Contains(bossId);
         }
 
+        // 처치한 보스 "종류" 수입니다(같은 보스를 여러 번 잡아도 1로 집계).
+        public static int ClearedBossCount => Data.clearedBossIds.Count;
+
         public static void UnlockDefaultBoss()
         {
-            UnlockBoss(FirstBossId);
+            IReadOnlyList<BossData> bosses = Config != null ? Config.DefaultUnlockedBosses : null;
+            if (bosses == null || bosses.Count == 0)
+            {
+                UnlockBoss(FallbackFirstBossId);
+                return;
+            }
+
+            for (int i = 0; i < bosses.Count; i++)
+            {
+                if (bosses[i] != null)
+                {
+                    UnlockBoss(bosses[i].Id);
+                }
+            }
+        }
+
+        public static void UnlockDefaultWeapons()
+        {
+            IReadOnlyList<BaseWeaponSO> weapons = Config != null ? Config.DefaultUnlockedWeapons : null;
+            if (weapons == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < weapons.Count; i++)
+            {
+                BaseWeaponSO weapon = weapons[i];
+                if (weapon == null)
+                {
+                    continue;
+                }
+
+                UnlockWeapon(weapon.WeaponId);
+                PurchaseWeapon(weapon.WeaponId, 0);
+            }
+        }
+
+        public static void UnlockDefaultSkills()
+        {
+            IReadOnlyList<BaseSkillSO> skills = Config != null ? Config.DefaultUnlockedSkills : null;
+            if (skills == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < skills.Count; i++)
+            {
+                BaseSkillSO skill = skills[i];
+                if (skill == null)
+                {
+                    continue;
+                }
+
+                UnlockSkill(skill.SkillId);
+                PurchaseSkill(skill.SkillId, 0);
+            }
+        }
+
+        public static void UnlockDefaultPassiveSkills()
+        {
+            IReadOnlyList<BasePassiveSkillSO> skills = Config != null ? Config.DefaultUnlockedPassiveSkills : null;
+            if (skills == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < skills.Count; i++)
+            {
+                BasePassiveSkillSO skill = skills[i];
+                if (skill == null)
+                {
+                    continue;
+                }
+
+                UnlockPassiveSkill(skill.SkillId);
+                PurchasePassiveSkill(skill.SkillId, 0);
+            }
         }
 
         public static void UnlockBoss(string bossId)
@@ -240,22 +341,13 @@ namespace Week14.Save
 
         public static void MarkTutorialCompleted()
         {
-            bool changed = !Data.hasCompletedTutorial;
             if (!Data.hasCompletedTutorial)
             {
                 Data.hasCompletedTutorial = true;
-            }
-
-            if (!Data.unlockedBossIds.Contains(FirstBossId))
-            {
-                Data.unlockedBossIds.Add(FirstBossId);
-                changed = true;
-            }
-
-            if (changed)
-            {
                 Save();
             }
+
+            UnlockDefaultBoss();
         }
 
         public static void SetTutorialCompleted(bool completed)
@@ -425,6 +517,22 @@ namespace Week14.Save
             }
 
             return null;
+        }
+
+        // 해당 슬롯에 대한 저장 기록이 존재하는지(장착이든 명시적 해제든 한 번이라도 SetEquippedSkillId가 호출됐는지) 반환합니다.
+        // GetEquippedSkillId는 "한 번도 기록된 적 없음"과 "명시적으로 해제됨(null 저장)"을 둘 다 null로 반환해 구분할 수 없기 때문에 별도로 둡니다.
+        public static bool HasEquippedSkillEntry(int slot)
+        {
+            List<SkillSlotData> equippedSkills = Data.equippedSkills;
+            for (int i = 0; i < equippedSkills.Count; i++)
+            {
+                if (equippedSkills[i].slot == slot)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static void SetEquippedSkillId(int slot, string skillId)
@@ -728,7 +836,10 @@ namespace Week14.Save
             }
 
             NormalizeLoadedData();
-            UnlockBoss(FirstBossId);
+            UnlockDefaultBoss();
+            UnlockDefaultWeapons();
+            UnlockDefaultSkills();
+            UnlockDefaultPassiveSkills();
         }
 
         private static void NormalizeLoadedData()
@@ -736,12 +847,18 @@ namespace Week14.Save
             data ??= new GameSaveData();
             data.unlockedBossIds ??= new List<string>();
             data.clearedBossIds ??= new List<string>();
+            data.bossClearTimes ??= new List<BossClearTimeEntry>();
             data.unlockedSkillIds ??= new List<string>();
+            data.unlockedPassiveSkillIds ??= new List<string>();
             data.unlockedWeaponIds ??= new List<string>();
             data.equippedSkills ??= new List<SkillSlotData>();
+            data.equippedPassiveSkills ??= new List<SkillSlotData>();
             data.seenStoryEpisodeIds ??= new List<string>();
             data.completedChallengeIds ??= new List<string>();
             data.challengeCounters ??= new List<ChallengeCounterEntry>();
+            data.purchasedSkillIds ??= new List<string>();
+            data.purchasedPassiveSkillIds ??= new List<string>();
+            data.purchasedWeaponIds ??= new List<string>();
         }
 
         private static bool AddIfMissing(List<string> list, string value)

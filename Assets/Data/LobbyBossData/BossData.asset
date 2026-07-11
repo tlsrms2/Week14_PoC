@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553461748deae774480ab8b1802f2123, type: 3}
   m_Name: BossData
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossData
-  id: 1
+  id: Hog
   bossName: "\uCD1D\uAE30 \uC0C1\uC778"
   crime: "\uC704\uD5D8\uB3C4: 1"
   description: "\uC9C0\uD558\uCCA0\uC5ED\uC744 \uBD88\uBC95 \uC810\uAC70\uD55C \uCD1D\uAE30
@@ -48,14 +48,14 @@ MonoBehaviour:
   deathImage: {fileID: 2813533332873578442, guid: b9537ce96924abd46b4e97a42b3148c8, type: 3}
   panelIcon: {fileID: 21300000, guid: 7d853a614b7ede74ab6644c5c22bf33e, type: 3}
   sceneName: MainScene
-  unlocksBossIds:
-  - 2
-  - Muscle
-  unlocksSkillIds: []
-  unlocksPassiveSkillIds: []
+  unlocksBossIds: []
+  unlocksSkillIds:
+  - ACT_002
+  unlocksPassiveSkillIds:
+  - PAS_002
   unlocksWeaponIds:
-  - shotgun
-  - sniper
+  - GUN_002
+  requiredDistinctBossKills: 0
   references:
     version: 2
     RefIds: []

@@ -51,7 +51,7 @@ namespace Week14.UI
 
         private void OnEnable()
         {
-            if (bossData == null || !GameSaveManager.IsUnlocked(bossData.Id))
+            if (bossData == null || !bossData.IsUnlocked())
             {
                 gameObject.SetActive(false);
                 return;
@@ -84,7 +84,7 @@ namespace Week14.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (bossData == null || !GameSaveManager.IsUnlocked(bossData.Id) || string.IsNullOrEmpty(bossData.SceneName))
+            if (bossData == null || !bossData.IsUnlocked() || string.IsNullOrEmpty(bossData.SceneName))
             {
                 return;
             }

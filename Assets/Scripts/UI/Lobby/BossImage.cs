@@ -35,7 +35,7 @@ namespace Week14.UI
 
         public void Refresh()
         {
-            if (bossData == null || !GameSaveManager.IsUnlocked(bossData.Id))
+            if (bossData == null || !bossData.IsUnlocked())
             {
                 gameObject.SetActive(false);
                 return;

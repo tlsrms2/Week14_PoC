@@ -15,7 +15,9 @@ namespace Week14.Skills
 
         [Tooltip("Skill ID와 실제 스킬 에셋을 연결하는 데이터베이스입니다.")]
         [SerializeField] private SkillDatabase database;
-        [Tooltip("게임 시작 시 자동으로 해금+무료 구매되고, 장착된 스킬이 하나도 없으면 자동 장착되는 기본 스킬입니다. 환불(반환)이 불가능합니다. 비워두면 아무 스킬도 자동 지급하지 않습니다.")]
+        [Tooltip("장착된 스킬이 하나도 없으면 자동 장착되는 기본 스킬입니다. 환불(반환)이 불가능합니다. " +
+            "해금+무료 구매는 GameSaveConfig(Resources/GameSaveConfig.asset)의 기본 해금 액티브 스킬 목록에서 처리되므로, " +
+            "실제로 장착되게 하려면 그 목록에도 같은 스킬을 등록해야 합니다. 비워두면 아무 스킬도 자동 장착하지 않습니다.")]
         [SerializeField] private BaseSkillSO defaultSkill;
         [Tooltip("테스트용: 활성 슬롯에 아무 스킬도 장착되어 있지 않을 때 시작 시 자동으로 해금하고 장착할 스킬입니다. 비워두면 자동 장착하지 않습니다.")]
         [SerializeField] private BaseSkillSO defaultTestSkill;
@@ -75,7 +77,6 @@ namespace Week14.Skills
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
 
-            UnlockDefaultSkill();
             LoadEquippedSkills();
             EquipDefaultSkillIfNeeded();
             EquipDefaultTestSkillIfNeeded();
@@ -273,18 +274,11 @@ namespace Week14.Skills
             CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
         }
 
-        public void UnlockDefaultSkill()
-        {
-            if (defaultSkill != null)
-            {
-                GameSaveManager.UnlockSkill(defaultSkill.SkillId);
-                GameSaveManager.PurchaseSkill(defaultSkill.SkillId, 0);
-            }
-        }
-
+        // 저장 기록이 아예 없을 때(진짜 최초 실행)만 기본 스킬을 장착합니다. 플레이어가 명시적으로 해제한 뒤라면
+        // (저장된 skillId가 null이어도) 기록 자체는 존재하므로, 껐다 켜도 해제 상태가 유지됩니다.
         private void EquipDefaultSkillIfNeeded()
         {
-            if (defaultSkill == null || GetEquippedSkill(ActiveSlot) != null)
+            if (defaultSkill == null || GameSaveManager.HasEquippedSkillEntry((int)ActiveSlot))
             {
                 return;
             }
