@@ -28386,6 +28386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Save.DevUnlockTools
   skillDatabase: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
+  passiveSkillDatabase: {fileID: 0}
   bosses:
   - {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
   - {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
@@ -28396,11 +28397,15 @@ MonoBehaviour:
   unlockAllHotkey: 102
   lockAllHotkey: 103
   targetSkill: {fileID: 0}
+  targetPassiveSkill: {fileID: 0}
   targetBoss: {fileID: 0}
   targetWeapon: {fileID: 0}
-  synopsisSeen: 1
+  debugPointsToGrant: 100
+  prologueSeen: 0
   tutorialCompleted: 1
+  pastSeen: 0
   act1Seen: 0
+  lobbyIntroSeen: 0
   act2Seen: 0
   act3Seen: 0
   finalBossAftermathSeen: 0
@@ -32972,6 +32977,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1402120136838885973, guid: 82124fba4d5abd44ba3702267c2e8f3b, type: 3}
+      propertyPath: prologueCutscene
+      value: 
+      objectReference: {fileID: 11400000, guid: 56b712c7308cdd341ac99fad251121ed, type: 2}
     - target: {fileID: 6883015585195824696, guid: 82124fba4d5abd44ba3702267c2e8f3b, type: 3}
       propertyPath: m_Name
       value: GameFlowController

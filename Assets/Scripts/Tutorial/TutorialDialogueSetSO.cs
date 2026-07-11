@@ -30,14 +30,20 @@ namespace Week14.Tutorial
         [SerializeField] private Sprite image;
         [SerializeField] private VideoClip video;
         [SerializeField] private bool loopVideo = true;
+        [SerializeField] private string title;
         [SerializeField, TextArea(8, 24)] private string text;
 
         public bool Enabled => enabled;
         public Sprite Image => image;
         public VideoClip Video => video;
         public bool LoopVideo => loopVideo;
+        public string Title => title;
         public string Text => text;
-        public bool HasContent => enabled && (image != null || video != null || !string.IsNullOrWhiteSpace(text));
+        public bool HasContent => enabled
+            && (image != null
+                || video != null
+                || !string.IsNullOrWhiteSpace(title)
+                || !string.IsNullOrWhiteSpace(text));
     }
 
     [Serializable]
