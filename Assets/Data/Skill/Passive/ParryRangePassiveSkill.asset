@@ -34,7 +34,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 0
+  price: 2
   parryRangeBonus: 0.25
   references:
     version: 2

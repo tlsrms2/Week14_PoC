@@ -36,7 +36,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 8
-  price: 0
+  price: 2
   damageMultiplier: 2
   activateSfxId: 
   references:

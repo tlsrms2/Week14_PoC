@@ -11,6 +11,10 @@ namespace Week14.Skills
     {
         [Tooltip("Skill ID와 실제 패시브 스킬 에셋을 연결하는 데이터베이스입니다.")]
         [SerializeField] private PassiveSkillDatabase database;
+        [Tooltip("Passive1 슬롯에 장착된 패시브 스킬이 하나도 없으면 자동 장착되는 기본 패시브 스킬입니다. 환불(반환)이 불가능합니다. " +
+            "해금+무료 구매는 GameSaveConfig(Resources/GameSaveConfig.asset)의 기본 해금 패시브 스킬 목록에서 처리되므로, " +
+            "실제로 장착되게 하려면 그 목록에도 같은 패시브 스킬을 등록해야 합니다. 비워두면 아무 패시브 스킬도 자동 장착하지 않습니다.")]
+        [SerializeField] private BasePassiveSkillSO defaultPassiveSkill;
 
         private static PassiveSkillLoadoutManager instance;
 
@@ -33,6 +37,7 @@ namespace Week14.Skills
             DontDestroyOnLoad(gameObject);
 
             LoadEquippedSkills();
+            EquipDefaultPassiveSkillIfNeeded();
             ApplyAllEquippedPassives();
         }
 
@@ -49,6 +54,11 @@ namespace Week14.Skills
         public BasePassiveSkillSO GetEquippedSkill(PassiveSkillSlot slot)
         {
             return equippedSkills.TryGetValue(slot, out BasePassiveSkillSO skill) ? skill : null;
+        }
+
+        public bool IsDefaultPassiveSkill(string skillId)
+        {
+            return defaultPassiveSkill != null && defaultPassiveSkill.SkillId == skillId;
         }
 
         public bool IsSkillEquippedInAnySlot(string skillId)
@@ -109,7 +119,7 @@ namespace Week14.Skills
         public bool RefundSkill(string skillId)
         {
             BasePassiveSkillSO skill = database != null ? database.FindById(skillId) : null;
-            if (skill == null)
+            if (skill == null || skill == defaultPassiveSkill)
             {
                 return false;
             }
@@ -138,6 +148,18 @@ namespace Week14.Skills
             {
                 skill?.ApplyPassive(playerObject);
             }
+        }
+
+        // 저장 기록이 아예 없을 때(진짜 최초 실행)만 기본 패시브 스킬을 장착합니다. 플레이어가 명시적으로 해제한 뒤라면
+        // (저장된 skillId가 null이어도) 기록 자체는 존재하므로, 껐다 켜도 해제 상태가 유지됩니다.
+        private void EquipDefaultPassiveSkillIfNeeded()
+        {
+            if (defaultPassiveSkill == null || GameSaveManager.HasEquippedPassiveSkillEntry((int)PassiveSkillSlot.Passive1))
+            {
+                return;
+            }
+
+            EquipSkill(PassiveSkillSlot.Passive1, defaultPassiveSkill.SkillId);
         }
 
         private void LoadEquippedSkills()

@@ -594,6 +594,21 @@ namespace Week14.Save
             return null;
         }
 
+        // HasEquippedSkillEntry와 동일한 이유로 존재합니다: "기록 없음"과 "명시적으로 해제됨(null 저장)"을 구분합니다.
+        public static bool HasEquippedPassiveSkillEntry(int slot)
+        {
+            List<SkillSlotData> equippedPassiveSkills = Data.equippedPassiveSkills;
+            for (int i = 0; i < equippedPassiveSkills.Count; i++)
+            {
+                if (equippedPassiveSkills[i].slot == slot)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void SetEquippedPassiveSkillId(int slot, string skillId)
         {
             List<SkillSlotData> equippedPassiveSkills = Data.equippedPassiveSkills;

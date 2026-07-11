@@ -34,7 +34,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 0
+  price: 4
   charges: 1
   clearRadius: 7
   invulnerabilitySeconds: 1

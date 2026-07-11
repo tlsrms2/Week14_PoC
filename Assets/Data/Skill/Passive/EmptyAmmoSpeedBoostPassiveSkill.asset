@@ -35,7 +35,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 0
+  price: 2
   emptyAmmoMoveSpeedMultiplier: 1.25
   afterimageInterval: 0.08
   afterimageDuration: 0.2

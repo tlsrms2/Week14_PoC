@@ -165,11 +165,12 @@ namespace Week14.UI
             SetCategoryText(PassiveSkillCategoryText);
             LoadoutHoverHighlight.SetHovered(skill.SkillId);
 
+            bool refundable = PassiveSkillLoadoutManager.Instance == null || !PassiveSkillLoadoutManager.Instance.IsDefaultPassiveSkill(skill.SkillId);
             bool equipped = PassiveSkillLoadoutManager.Instance != null && PassiveSkillLoadoutManager.Instance.GetEquippedSkill(PassiveSkillSlot.Passive1) == skill;
 
             string displayName = skill.HasLocalizedDisplayName ? string.Empty : skill.DisplayName;
             string description = skill.HasLocalizedDescription ? string.Empty : skill.Description;
-            ShowInternal(displayName, description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), true, equipped, true);
+            ShowInternal(displayName, description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), refundable, equipped, true);
             BindLocalizedPassiveSkillText(skill);
         }
 

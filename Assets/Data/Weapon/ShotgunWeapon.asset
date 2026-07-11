@@ -36,7 +36,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 0
+  price: 2
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: b4e9d4969d58fbd46a6aedebda815ccd, type: 2}

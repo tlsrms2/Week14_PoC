@@ -37,7 +37,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 10
-  price: 0
+  price: 2
   durationSeconds: 1
   parryClearRadius: 3
   activateSfxId: 

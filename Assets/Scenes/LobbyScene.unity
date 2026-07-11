@@ -7903,6 +7903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.PassiveSkillLoadoutManager
   database: {fileID: 11400000, guid: 5214144e9b21f6a41b46f965c3ba362f, type: 2}
+  defaultPassiveSkill: {fileID: 11400000, guid: 4c3c44f749bf67640bfb3527cd917886, type: 2}
 --- !u!1001 &783537229
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -286,6 +286,9 @@ namespace Week14.Skills
             EquipSkill(ActiveSlot, defaultSkill.SkillId);
         }
 
+        // forceDefaultTestSkill이 꺼져 있으면, 저장 기록이 아예 없을 때(진짜 최초 실행)만 채워야 한다.
+        // GetEquippedSkill(ActiveSlot) != null로 판단하면 "명시적으로 해제됨(저장 기록은 있지만 null)"과
+        // "한 번도 기록된 적 없음"을 구분하지 못해, 해제한 뒤 재시작할 때마다 다시 채워지는 버그가 있었다.
         private void EquipDefaultTestSkillIfNeeded()
         {
             if (defaultTestSkill == null)
@@ -293,7 +296,7 @@ namespace Week14.Skills
                 return;
             }
 
-            if (!forceDefaultTestSkill && GetEquippedSkill(ActiveSlot) != null)
+            if (!forceDefaultTestSkill && GameSaveManager.HasEquippedSkillEntry((int)ActiveSlot))
             {
                 return;
             }

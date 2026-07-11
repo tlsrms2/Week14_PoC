@@ -49,11 +49,11 @@ MonoBehaviour:
   sceneName: Boss_Muscle
   unlocksBossIds: []
   unlocksSkillIds:
-  - GUN_003
+  - ACT_003
   unlocksPassiveSkillIds:
   - PAS_003
   unlocksWeaponIds:
-  - ACT_003
+  - GUN_003
   requiredDistinctBossKills: 0
   references:
     version: 2
