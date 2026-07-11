@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Skill_ko-KR
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: ko-KR
+  m_SharedData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 63427674112
+    m_Localized: "순간 추진 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 238342733824
+    m_Localized: "짧은 거리를 돌진하며 주변의
+      탄막을 제거합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300527484928
+    m_Localized: "공격 강화 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 303861956608
+    m_Localized: "다음 공격의 피해량이 2배가
+      됩니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347285585920
+    m_Localized: "시간 조작 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349898637312
+    m_Localized: "3초 동안 주변의 시간을 느리게
+      만듭니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 352498637312
+    m_Localized: "자성 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 355098637312
+    m_Localized: "2초 동안 주변의 탄막을 흡수해
+      탄환을 회복합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357698637312
+    m_Localized: "패링 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360298637312
+    m_Localized: "아주 짧은 시간 동안 무적 상태가
+      되며, 이때 피해를 받으면 탄환을
+      모두 회복합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362898637312
+    m_Localized: "자동 추적 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365498637312
+    m_Localized: "탄환이 항상 적을 향해
+      발사됩니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368098637312
+    m_Localized: "고성능 요격 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370698637312
+    m_Localized: "요격 범위가 25% 증가합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373298637312
+    m_Localized: "가속 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 375898637312
+    m_Localized: "보유한 탄환이 없을 때 이동
+      속도가 25% 증가합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378498637312
+    m_Localized: "에너지 전환 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 381098637312
+    m_Localized: "요격 성공 시 액티브 스킬의
+      쿨타임이 0.5초 감소합니다."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383698637312
+    m_Localized: "비상 프로토콜 모듈"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 386298637312
+    m_Localized: "치명적인 피해를 입었을 때
+      1회에 한해 위기를 모면합니다."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

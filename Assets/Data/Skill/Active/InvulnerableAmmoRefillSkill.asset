@@ -14,11 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.InvulnerableAmmoRefillSkillSO
   skillId: ACT_005
   displayName: "\uD328\uB9C1 \uBAA8\uB4C8"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 357698637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
   description: "\uC544\uC8FC \uC9E7\uC740 \uC2DC\uAC04 \uB3D9\uC548 \uBB34\uC801
     \uC0C1\uD0DC\uAC00 \uB418\uBA70, \uC774\uB54C \uD53C\uD574\uB97C \uBC1B\uC73C\uBA74
     \uD0C4\uD658\uC744 \uBAA8\uB450 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 360298637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   cooldownSeconds: 10
   price: 0
   durationSeconds: 1
   activateSfxId: 
+  references:
+    version: 2
+    RefIds: []

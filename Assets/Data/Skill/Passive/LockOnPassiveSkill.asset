@@ -12,8 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b21aade31c96224a9a1cf0fdbc5d9e5, type: 3}
   m_Name: LockOnPassiveSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.LockOnPassiveSkillSO
-  skillId: LockOn
+  skillId: PAS_001
   displayName: "\uB77D\uC628"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 362898637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 21300000, guid: 6c48d221d96abe347aae832c99e9fa08, type: 3}
   description: "\uB77D\uC628"
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 365498637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   price: 0
+  references:
+    version: 2
+    RefIds: []

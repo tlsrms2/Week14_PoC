@@ -14,9 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.BulletAbsorbSkillSO
   skillId: ACT_004
   displayName: "\uC790\uC131 \uBAA8\uB4C8"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 352498637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
   description: "2\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uD0C4\uB9C9\uC744 \uD761\uC218\uD574
     \uD0C4\uD658\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 355098637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   cooldownSeconds: 30
   price: 0
   durationSeconds: 2
@@ -25,3 +43,6 @@ MonoBehaviour:
   activateSfxId: 
   absorbVfxDuration: 0.18
   absorbVfxColor: {r: 0.45, g: 0.95, b: 1, a: 0.85}
+  references:
+    version: 2
+    RefIds: []

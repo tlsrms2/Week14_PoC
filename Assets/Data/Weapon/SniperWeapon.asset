@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f71f2e843b1ad5449dcc8e21c991b2b, type: 3}
   m_Name: SniperWeapon
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.SniperWeaponSO
-  weaponId: sniper
+  weaponId: GUN_003
   displayName: "\uC800\uACA9\uCD1D"
   localizedDisplayName:
     m_TableReference:

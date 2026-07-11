@@ -12,11 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebdb00356172ba4c9b49ffe209fd392, type: 3}
   m_Name: TimeSlowSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.TimeSlowSkillSO
-  skillId: TimeSlowSkill
+  skillId: ACT_003
   displayName: "\uBD88\uB9BF \uD0C0\uC784"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 347285585920
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 21300000, guid: ae1a269acbb08d843ad83bd48e8de271, type: 3}
   description: "3\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uC2DC\uAC04\uC774 \uB290\uB9AC\uAC8C
     \uD750\uB974\uAC8C \uB9CC\uB4E0\uB2E4."
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 349898637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   cooldownSeconds: 30
   price: 0
   slowMultiplier: 0.2
@@ -32,3 +50,6 @@ MonoBehaviour:
   screenTintColor: {r: 0, g: 1, b: 0.3, a: 0.35}
   screenTintFadeIn: 0.15
   screenTintFadeOut: 0.25
+  references:
+    version: 2
+    RefIds: []

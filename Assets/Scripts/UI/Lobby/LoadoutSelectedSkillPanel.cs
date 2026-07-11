@@ -44,6 +44,8 @@ namespace Week14.UI
 
         private Sprite defaultActionSprite;
         private BaseWeaponSO localizedWeapon;
+        private BaseSkillSO localizedSkill;
+        private BasePassiveSkillSO localizedPassiveSkill;
 
         public static LoadoutSelectedSkillPanel Instance { get; private set; }
 
@@ -114,7 +116,7 @@ namespace Week14.UI
 
         private void OnDestroy()
         {
-            UnbindLocalizedWeaponText();
+            UnbindAllLocalizedText();
 
             if (Instance == this)
             {
@@ -137,14 +139,19 @@ namespace Week14.UI
                 return;
             }
 
-            UnbindLocalizedWeaponText();
+            UnbindAllLocalizedText();
             SetCategoryText(ActiveSkillCategoryText);
             LoadoutHoverHighlight.SetHovered(skill.SkillId);
 
             bool refundable = SkillLoadoutManager.Instance == null || !SkillLoadoutManager.Instance.IsDefaultSkill(skill.SkillId);
             bool equipped = SkillLoadoutManager.Instance != null && SkillLoadoutManager.Instance.GetEquippedSkill(SkillSlot.Skill1) == skill;
             string cooldownText = localization != null ? localization.FormatCooldown(skill.CooldownSeconds) : $"쿨타임: {skill.CooldownSeconds}초";
-            ShowInternal(skill.DisplayName, skill.Description, cooldownText, skill.Icon, skill.Price, GameSaveManager.IsSkillPurchased(skill.SkillId), refundable, equipped, true);
+
+            // 로컬라이징이 연결된 필드는 일반 텍스트를 먼저 넣지 않는다(무기와 동일한 이유 — 깜빡임 방지).
+            string displayName = skill.HasLocalizedDisplayName ? string.Empty : skill.DisplayName;
+            string description = skill.HasLocalizedDescription ? string.Empty : skill.Description;
+            ShowInternal(displayName, description, cooldownText, skill.Icon, skill.Price, GameSaveManager.IsSkillPurchased(skill.SkillId), refundable, equipped, true);
+            BindLocalizedSkillText(skill);
         }
 
         public void Show(BasePassiveSkillSO skill)
@@ -154,12 +161,16 @@ namespace Week14.UI
                 return;
             }
 
-            UnbindLocalizedWeaponText();
+            UnbindAllLocalizedText();
             SetCategoryText(PassiveSkillCategoryText);
             LoadoutHoverHighlight.SetHovered(skill.SkillId);
 
             bool equipped = PassiveSkillLoadoutManager.Instance != null && PassiveSkillLoadoutManager.Instance.GetEquippedSkill(PassiveSkillSlot.Passive1) == skill;
-            ShowInternal(skill.DisplayName, skill.Description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), true, equipped, true);
+
+            string displayName = skill.HasLocalizedDisplayName ? string.Empty : skill.DisplayName;
+            string description = skill.HasLocalizedDescription ? string.Empty : skill.Description;
+            ShowInternal(displayName, description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), true, equipped, true);
+            BindLocalizedPassiveSkillText(skill);
         }
 
         public void Show(BaseWeaponSO weapon)
@@ -169,7 +180,7 @@ namespace Week14.UI
                 return;
             }
 
-            UnbindLocalizedWeaponText();
+            UnbindAllLocalizedText();
             SetCategoryText(WeaponCategoryText);
             LoadoutHoverHighlight.SetHovered(weapon.WeaponId);
 
@@ -195,7 +206,7 @@ namespace Week14.UI
 
         public void Hide()
         {
-            UnbindLocalizedWeaponText();
+            UnbindAllLocalizedText();
             SetCategoryText(string.Empty);
             LoadoutHoverHighlight.ClearHovered();
             ShowInternal(string.Empty, string.Empty, string.Empty, null, null, false, true, false, true);
@@ -233,6 +244,61 @@ namespace Week14.UI
             LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(localizedWeapon.LocalizedDescription, localizedWeapon.HasLocalizedDescription, SetDescriptionText);
             LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(localizedWeapon.LocalizedParryingRangeTooltipText, localizedWeapon.HasLocalizedParryingRangeTooltipText, SetParryingRangeText);
             localizedWeapon = null;
+        }
+
+        private void BindLocalizedSkillText(BaseSkillSO skill)
+        {
+            if (skill == null)
+            {
+                return;
+            }
+
+            localizedSkill = skill;
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(skill.LocalizedDisplayName, skill.HasLocalizedDisplayName, SetNameText);
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(skill.LocalizedDescription, skill.HasLocalizedDescription, SetDescriptionText);
+        }
+
+        private void UnbindLocalizedSkillText()
+        {
+            if (localizedSkill == null)
+            {
+                return;
+            }
+
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(localizedSkill.LocalizedDisplayName, localizedSkill.HasLocalizedDisplayName, SetNameText);
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(localizedSkill.LocalizedDescription, localizedSkill.HasLocalizedDescription, SetDescriptionText);
+            localizedSkill = null;
+        }
+
+        private void BindLocalizedPassiveSkillText(BasePassiveSkillSO skill)
+        {
+            if (skill == null)
+            {
+                return;
+            }
+
+            localizedPassiveSkill = skill;
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(skill.LocalizedDisplayName, skill.HasLocalizedDisplayName, SetNameText);
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(skill.LocalizedDescription, skill.HasLocalizedDescription, SetDescriptionText);
+        }
+
+        private void UnbindLocalizedPassiveSkillText()
+        {
+            if (localizedPassiveSkill == null)
+            {
+                return;
+            }
+
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(localizedPassiveSkill.LocalizedDisplayName, localizedPassiveSkill.HasLocalizedDisplayName, SetNameText);
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(localizedPassiveSkill.LocalizedDescription, localizedPassiveSkill.HasLocalizedDescription, SetDescriptionText);
+            localizedPassiveSkill = null;
+        }
+
+        private void UnbindAllLocalizedText()
+        {
+            UnbindLocalizedWeaponText();
+            UnbindLocalizedSkillText();
+            UnbindLocalizedPassiveSkillText();
         }
 
         private void SetNameText(string value)

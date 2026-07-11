@@ -12,13 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18db45cf9670ad54fbaaf35774ebeeca, type: 3}
   m_Name: EmptyAmmoSpeedBoostPassiveSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.EmptyAmmoSpeedBoostPassiveSkillSO
-  skillId: SpeedBoost
+  skillId: PAS_003
   displayName: "\uAC00\uC18D"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 373298637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 21300000, guid: 16a8d337283d5c244b5abe9fabf63694, type: 3}
   description: "\uBCF4\uC720\uD55C \uD0C4\uD658\uC774 \uC5C6\uC744 \uB54C \uC774\uB3D9
     \uC18D\uB3C4 25% \uC99D\uAC00"
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 375898637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  price: 0
   emptyAmmoMoveSpeedMultiplier: 1.25
   afterimageInterval: 0.08
   afterimageDuration: 0.2
   afterimageColor: {r: 1, g: 1, b: 1, a: 0.35}
   minSpeedForAfterimage: 0.1
+  references:
+    version: 2
+    RefIds: []

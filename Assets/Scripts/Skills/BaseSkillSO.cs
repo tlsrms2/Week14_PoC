@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 using Week14.Combat;
 
 namespace Week14.Skills
@@ -10,10 +12,12 @@ namespace Week14.Skills
         [SerializeField] private string skillId;
         [Tooltip("UI에 표시할 스킬 이름입니다.")]
         [SerializeField] private string displayName;
+        [SerializeField] private LocalizedString localizedDisplayName;
         [Tooltip("UI에 표시할 스킬 아이콘입니다.")]
         [SerializeField] private Sprite icon;
         [Tooltip("UI에 표시할 스킬 설명입니다.")]
         [SerializeField, TextArea] private string description;
+        [SerializeField] private LocalizedString localizedDescription;
         [Tooltip("스킬을 다시 사용할 수 있을 때까지 걸리는 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float cooldownSeconds = 1f;
         [Tooltip("이 스킬을 구매하는 데 필요한 챌린지 포인트입니다.")]
@@ -21,8 +25,12 @@ namespace Week14.Skills
 
         public string SkillId => skillId;
         public string DisplayName => displayName;
+        public LocalizedString LocalizedDisplayName => localizedDisplayName;
+        public bool HasLocalizedDisplayName => HasLocalizedString(localizedDisplayName);
         public Sprite Icon => icon;
         public string Description => description;
+        public LocalizedString LocalizedDescription => localizedDescription;
+        public bool HasLocalizedDescription => HasLocalizedString(localizedDescription);
         public float CooldownSeconds => cooldownSeconds;
         public int Price => price;
 
@@ -41,6 +49,13 @@ namespace Week14.Skills
         {
             PlayerCombatController controller = user != null ? user.GetComponent<PlayerCombatController>() : null;
             return controller != null ? controller : PlayerCombatController.Active;
+        }
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
         }
     }
 }

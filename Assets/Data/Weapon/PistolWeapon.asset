@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b351ea4d6be01ce4dbb1f222d0c89678, type: 3}
   m_Name: PistolWeapon
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.PistolWeaponSO
-  weaponId: pistol
+  weaponId: GUN_001
   displayName: "\uAD8C\uCD1D"
   localizedDisplayName:
     m_TableReference:

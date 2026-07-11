@@ -12,9 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15af0116eb3fa6d45883725c12b4aaac, type: 3}
   m_Name: ParryCooldownReductionPassiveSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.ParryCooldownReductionPassiveSkillSO
-  skillId: ParryCooldownReduction
+  skillId: PAS_004
   displayName: "\uD328\uB9C1\uCFE8\uAC10"
+  localizedDisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 378498637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
   description: "\uD328\uB9C1\uCFE8\uAC10"
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+    m_TableEntryReference:
+      m_KeyId: 381098637312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   price: 0
   cooldownReductionSeconds: 0.5
+  references:
+    version: 2
+    RefIds: []

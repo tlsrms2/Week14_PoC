@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
+using Week14.Skills;
 using Week14.Weapons;
 
 namespace Week14.UI
@@ -10,12 +11,16 @@ namespace Week14.UI
     // LoadoutSelectedSkillPanel이 쓰는 로컬라이징 문구를 전담하는 컴포넌트입니다.
     // 카테고리명/좌우클릭 힌트 같은 고정 문구는 한 번만 구독해서 캐시해두고,
     // 쿨타임/포인트/가격/환불액처럼 숫자가 들어가는 문구는 표시할 때마다 새로 계산합니다.
-    // 또한 무기 에셋들의 LocalizedString(이름/설명/패링범위 등)을 미리 로드해둬서,
-    // 처음 그 무기를 호버하거나 언어를 바꾼 직후에도 텍스트가 딜레이 없이 뜨게 합니다.
+    // 또한 무기/스킬/패시브 스킬 에셋들의 LocalizedString(이름/설명 등)을 미리 로드해둬서,
+    // 처음 그 항목을 호버하거나 언어를 바꾼 직후에도 텍스트가 딜레이 없이 뜨게 합니다.
     public sealed class LoadoutSelectedSkillPanelLocalization : MonoBehaviour
     {
         [Tooltip("여기 등록된 무기들의 이름/설명/패링범위 등 로컬라이징 문구를 미리 로드해둡니다. 비워두면 무기 쪽 예열은 건너뜁니다.")]
         [SerializeField] private WeaponDatabase weaponDatabase;
+        [Tooltip("여기 등록된 액티브 스킬들의 이름/설명 로컬라이징 문구를 미리 로드해둡니다. 비워두면 스킬 쪽 예열은 건너뜁니다.")]
+        [SerializeField] private SkillDatabase skillDatabase;
+        [Tooltip("여기 등록된 패시브 스킬들의 이름/설명 로컬라이징 문구를 미리 로드해둡니다. 비워두면 패시브 스킬 쪽 예열은 건너뜁니다.")]
+        [SerializeField] private PassiveSkillDatabase passiveSkillDatabase;
 
         [Header("고정 문구 (인자 없음, 한 번만 바인드되어 언어 변경 시 실시간 갱신)")]
         [SerializeField] private LocalizedString localizedActiveSkillCategoryText;
@@ -64,6 +69,8 @@ namespace Week14.UI
             BindLocalizedString(localizedNonRefundableText, HasLocalizedString(localizedNonRefundableText), SetNonRefundableCache);
 
             WarmUpWeaponAssets();
+            WarmUpSkillAssets();
+            WarmUpPassiveSkillAssets();
         }
 
         private void OnEnable()
@@ -89,11 +96,13 @@ namespace Week14.UI
         }
 
         // 언어가 바뀌면 고정 문구 8개는 이미 구독 중이라 자동으로 갱신되지만,
-        // 무기 에셋들의 로컬라이징 문구는 실제로 그 무기를 호버하기 전까진 아무도 구독하지 않으므로
-        // 여기서 미리 한 번 로드해둬야 새 언어로 처음 호버할 때도 딜레이가 없다.
+        // 무기/스킬/패시브 스킬 에셋들의 로컬라이징 문구는 실제로 그 항목을 호버하기 전까진
+        // 아무도 구독하지 않으므로 여기서 미리 한 번 로드해둬야 새 언어로 처음 호버할 때도 딜레이가 없다.
         private void HandleLocaleChanged(Locale locale)
         {
             WarmUpWeaponAssets();
+            WarmUpSkillAssets();
+            WarmUpPassiveSkillAssets();
         }
 
         private void WarmUpWeaponAssets()
@@ -117,6 +126,48 @@ namespace Week14.UI
                 RefreshIfLocalized(weapon.LocalizedParryingRangeTooltipText, weapon.HasLocalizedParryingRangeTooltipText);
                 RefreshIfLocalized(weapon.LocalizedMaxAmmoTooltipText, weapon.HasLocalizedMaxAmmoTooltipText);
                 RefreshIfLocalized(weapon.LocalizedBulletDamageTooltipText, weapon.HasLocalizedBulletDamageTooltipText);
+            }
+        }
+
+        private void WarmUpSkillAssets()
+        {
+            if (skillDatabase == null)
+            {
+                return;
+            }
+
+            IReadOnlyList<BaseSkillSO> skills = skillDatabase.AllSkills;
+            for (int i = 0; i < skills.Count; i++)
+            {
+                BaseSkillSO skill = skills[i];
+                if (skill == null)
+                {
+                    continue;
+                }
+
+                RefreshIfLocalized(skill.LocalizedDisplayName, skill.HasLocalizedDisplayName);
+                RefreshIfLocalized(skill.LocalizedDescription, skill.HasLocalizedDescription);
+            }
+        }
+
+        private void WarmUpPassiveSkillAssets()
+        {
+            if (passiveSkillDatabase == null)
+            {
+                return;
+            }
+
+            IReadOnlyList<BasePassiveSkillSO> skills = passiveSkillDatabase.AllSkills;
+            for (int i = 0; i < skills.Count; i++)
+            {
+                BasePassiveSkillSO skill = skills[i];
+                if (skill == null)
+                {
+                    continue;
+                }
+
+                RefreshIfLocalized(skill.LocalizedDisplayName, skill.HasLocalizedDisplayName);
+                RefreshIfLocalized(skill.LocalizedDescription, skill.HasLocalizedDescription);
             }
         }
 
