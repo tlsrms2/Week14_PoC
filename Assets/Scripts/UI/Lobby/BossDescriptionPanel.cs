@@ -13,6 +13,7 @@ namespace Week14.UI
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text bestClearTimeText;
         [SerializeField] private BossChallengePanel challengePanel;
+        [SerializeField] private LoadoutSelectedSkillPanelLocalization localization;
 
         [Tooltip("패널을 처음 열었을 때(아직 아무것도 호버하지 않은 최초 상태) 보여줄 보스입니다.")]
         [SerializeField] private BossData defaultBoss;
@@ -86,15 +87,18 @@ namespace Week14.UI
                 return;
             }
 
+            string formattedTime;
             if (GameSaveManager.HasBestClearTime(bossId))
             {
                 TimeSpan time = TimeSpan.FromSeconds(GameSaveManager.GetBestClearTime(bossId));
-                bestClearTimeText.text = time.ToString(@"mm\:ss\.ff");
+                formattedTime = time.ToString(@"mm\:ss\:ff");
             }
             else
             {
-                bestClearTimeText.text = string.Empty;
+                formattedTime = "--:--:--";
             }
+
+            bestClearTimeText.text = localization != null ? localization.FormatBestClearTime(formattedTime) : $"최단 기록: {formattedTime}";
         }
 
         private void UnbindLocalizedBossName()

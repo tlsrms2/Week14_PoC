@@ -152,6 +152,10 @@ MonoBehaviour:
     m_Localized: Challenge
     m_Metadata:
       m_Items: []
+  - m_Id: 3737487026782208
+    m_Localized: 'Best Time: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

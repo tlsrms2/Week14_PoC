@@ -37,6 +37,7 @@ namespace Week14.UI
         [SerializeField] private LocalizedString localizedPointsFormatText;
         [SerializeField] private LocalizedString localizedPriceFormatText;
         [SerializeField] private LocalizedString localizedRefundFormatText;
+        [SerializeField] private LocalizedString localizedBestClearTimeFormatText;
 
         // 로컬라이징 필드가 비어있으면 여기 적힌 기존 한국어 문구가 기본값으로 쓰인다.
         private string activeSkillCategoryCache = "액티브 스킬";
@@ -201,6 +202,7 @@ namespace Week14.UI
         public string FormatPoints(int points) => ResolveLocalizedFormat(localizedPointsFormatText, "포인트: {0}", points);
         public string FormatPrice(int price) => ResolveLocalizedFormat(localizedPriceFormatText, "가격: {0}", price);
         public string FormatRefund(int amount) => ResolveLocalizedFormat(localizedRefundFormatText, "환불 시 반환: {0}", amount);
+        public string FormatBestClearTime(string time) => ResolveLocalizedFormat(localizedBestClearTimeFormatText, "최단 기록: {0}", time);
 
         // 숫자가 매번 바뀌는 문구는 미리 캐시해둘 수 없어서, 표시할 때마다 그 자리에서
         // 인자를 넣어 한 번만 새로 계산한다. GetLocalizedString은 테이블 로드가 아직 안

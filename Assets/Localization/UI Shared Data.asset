@@ -149,6 +149,10 @@ MonoBehaviour:
     m_Key: ui.bossselec.Challenge
     m_Metadata:
       m_Items: []
+  - m_Id: 3737487026782208
+    m_Key: ui.Bossselec.Time
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
