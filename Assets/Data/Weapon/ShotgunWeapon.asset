@@ -74,7 +74,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   pelletCount: 3
-  spreadAngle: 30
+  spreadAngle: 25
   references:
     version: 2
     RefIds: []

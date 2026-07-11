@@ -17,10 +17,8 @@ namespace Week14.Combat
                 return;
             }
 
-            PlayerProjectile playerProjectile = other.GetComponentInParent<PlayerProjectile>();
-            if (playerProjectile != null)
+            if (other.GetComponentInParent<PlayerProjectile>() != null)
             {
-                playerProjectile.TryDestroyByEnemyProjectileClash(this);
                 return;
             }
 

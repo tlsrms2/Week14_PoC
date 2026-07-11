@@ -72,6 +72,8 @@ namespace Week14.Combat
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
         private Coroutine invulnerableAmmoRefillRoutine;
+        private float invulnerableAmmoRefillParryClearRadius;
+        private Action invulnerableAmmoRefillOnComplete;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
         private PlayerCombatRig Rig => playerCombatRig ??= new PlayerCombatRig(Context);
@@ -637,9 +639,11 @@ namespace Week14.Combat
         }
 
         // seconds 동안 외부 무적(PushExternalInvulnerability)을 유지하면서, 그동안 무적 때문에 막힌 피격이
-        // 있을 때마다(NotifyInvulnerableHit) 탄환을 최대치로 채웁니다. onComplete는 지속시간이 끝난 뒤
-        // (쿨타임 지연 시작용 콜백 등으로) 정확히 한 번 호출됩니다.
-        public void BeginInvulnerableAmmoRefill(float seconds, Action onComplete)
+        // 처음 한 번 발생하면(NotifyInvulnerableHit) 탄환을 최대치로 채우고, parryClearRadius 안의 적 투사체를
+        // 제거하며, 히트스탑 + 카메라 임팩트를 재생한 뒤 — 남은 무적 시간을 기다리지 않고 그 즉시 종료합니다.
+        // onComplete는 그렇게 조기 종료되는 시점이나, 한 번도 안 맞고 지속시간이 다 지난 시점에 정확히 한 번 호출됩니다
+        // (쿨타임 지연 시작용 콜백 등으로 쓰임).
+        public void BeginInvulnerableAmmoRefill(float seconds, float parryClearRadius, Action onComplete)
         {
             if (invulnerableAmmoRefillRoutine != null)
             {
@@ -647,27 +651,55 @@ namespace Week14.Combat
                 FinishInvulnerableAmmoRefill();
             }
 
-            invulnerableAmmoRefillRoutine = StartCoroutine(InvulnerableAmmoRefillRoutine(Mathf.Max(0f, seconds), onComplete));
+            invulnerableAmmoRefillParryClearRadius = Mathf.Max(0f, parryClearRadius);
+            invulnerableAmmoRefillOnComplete = onComplete;
+            invulnerableAmmoRefillRoutine = StartCoroutine(InvulnerableAmmoRefillRoutine(Mathf.Max(0f, seconds)));
         }
 
-        internal void NotifyInvulnerableHit()
+        internal void NotifyInvulnerableHit(Vector3 hitPosition, Vector2 hitDirection)
         {
-            if (!invulnerableAmmoRefillActive || Bullets == null)
+            if (!invulnerableAmmoRefillActive)
             {
                 return;
             }
 
-            Bullets.Restore(Bullets.MaxBullets, BulletChangeSource.Generic);
+            if (Bullets != null)
+            {
+                Bullets.Restore(Bullets.MaxBullets, BulletChangeSource.Generic);
+            }
+
+            if (invulnerableAmmoRefillParryClearRadius > 0f)
+            {
+                ParryController.AutoParryProjectilesNear(Context.CombatCenterOrigin.position, invulnerableAmmoRefillParryClearRadius);
+            }
+
+            DamageReceiver.PlayHitStop();
+            CameraFollow?.PlayImpact(hitDirection, 0.32f, 0.24f, 0.22f);
+
+            // 패링은 한 번 성공하면 그걸로 끝 — 남은 무적 시간을 기다리지 않고 즉시 종료한다.
+            if (invulnerableAmmoRefillRoutine != null)
+            {
+                StopCoroutine(invulnerableAmmoRefillRoutine);
+            }
+
+            CompleteInvulnerableAmmoRefill();
         }
 
-        private IEnumerator InvulnerableAmmoRefillRoutine(float seconds, Action onComplete)
+        private IEnumerator InvulnerableAmmoRefillRoutine(float seconds)
         {
             invulnerableAmmoRefillActive = true;
             PushExternalInvulnerability();
 
             yield return new WaitForSeconds(seconds);
 
+            CompleteInvulnerableAmmoRefill();
+        }
+
+        private void CompleteInvulnerableAmmoRefill()
+        {
             FinishInvulnerableAmmoRefill();
+            Action onComplete = invulnerableAmmoRefillOnComplete;
+            invulnerableAmmoRefillOnComplete = null;
             onComplete?.Invoke();
         }
 

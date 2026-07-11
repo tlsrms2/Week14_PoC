@@ -1,5 +1,6 @@
 using UnityEngine;
 using Week14.Combat;
+using Week14.Enemy;
 
 namespace Week14.Weapons
 {
@@ -16,6 +17,9 @@ namespace Week14.Weapons
         [SerializeField, Min(0f)] private float beamWidth = 0.08f;
         [Tooltip("레이저 색상입니다.")]
         [SerializeField] private Color beamColor = new Color(0.5f, 0.9f, 1f, 1f);
+        [Tooltip("발사 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string fireSfxId = string.Empty;
 
         public override void BeginAttack(PlayerShooter shooter)
         {
@@ -30,7 +34,7 @@ namespace Week14.Weapons
 
                 if (shooter.TrySpendAllBullets())
                 {
-                    shooter.FireLaser(totalDamage, laserSpeed, laserLifetimeSeconds, beamVisualSeconds, beamWidth, beamColor);
+                    shooter.FireLaser(totalDamage, laserSpeed, laserLifetimeSeconds, beamVisualSeconds, beamWidth, beamColor, fireSfxId);
                 }
             }
 

@@ -78,7 +78,7 @@ namespace Week14.Combat
 
             if (PlayerCombatController.IsExternallyInvulnerable)
             {
-                context.Owner.NotifyInvulnerableHit();
+                context.Owner.NotifyInvulnerableHit(hitPosition, hitDirection);
                 return false;
             }
 
@@ -230,7 +230,7 @@ namespace Week14.Combat
             UpdateBodyColor(true);
         }
 
-        private void PlayHitStop()
+        internal void PlayHitStop()
         {
             PlayerCombatConfig config = context.Config;
             if (config == null || config.HitStopSeconds <= 0f)
