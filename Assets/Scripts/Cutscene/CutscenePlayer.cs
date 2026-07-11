@@ -316,10 +316,16 @@ namespace Week14.Cutscene
 
         private IEnumerator PlayImageFadeIn(Sprite nextSprite, float fadeSeconds)
         {
-            if (backgroundTransitionImage != null && backgroundTransitionImage != backgroundImage)
+            Image transitionImage = EnsureBackgroundTransitionImage();
+            if (transitionImage != null && transitionImage != backgroundImage)
             {
-                SetImage(backgroundTransitionImage, nextSprite, 0f);
-                yield return PlayImageAlpha(backgroundTransitionImage, 0f, 1f, fadeSeconds);
+                if (backgroundImage != null && backgroundImage.sprite != null)
+                {
+                    SetImageAlpha(backgroundImage, 1f);
+                }
+
+                SetImage(transitionImage, nextSprite, 0f);
+                yield return PlayImageAlpha(transitionImage, 0f, 1f, fadeSeconds);
                 SetImage(backgroundImage, nextSprite, 1f);
                 HideTransitionImage();
                 yield break;
@@ -673,6 +679,71 @@ namespace Week14.Cutscene
         private void HideTransitionImage()
         {
             SetImage(backgroundTransitionImage, null, 0f);
+        }
+
+        private Image EnsureBackgroundTransitionImage()
+        {
+            if (backgroundTransitionImage != null && backgroundTransitionImage != backgroundImage)
+            {
+                return backgroundTransitionImage;
+            }
+
+            if (backgroundImage == null || backgroundImage.transform.parent == null)
+            {
+                return backgroundTransitionImage;
+            }
+
+            GameObject transitionObject = new("Background_TransitionImage", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            transitionObject.layer = backgroundImage.gameObject.layer;
+
+            RectTransform sourceRect = backgroundImage.rectTransform;
+            RectTransform transitionRect = transitionObject.GetComponent<RectTransform>();
+            transitionRect.SetParent(sourceRect.parent, false);
+            CopyRectTransform(sourceRect, transitionRect);
+            transitionRect.SetSiblingIndex(sourceRect.GetSiblingIndex() + 1);
+
+            Image transitionImage = transitionObject.GetComponent<Image>();
+            CopyImageSettings(backgroundImage, transitionImage);
+            transitionImage.raycastTarget = false;
+            backgroundTransitionImage = transitionImage;
+            HideTransitionImage();
+            return backgroundTransitionImage;
+        }
+
+        private static void CopyRectTransform(RectTransform source, RectTransform target)
+        {
+            if (source == null || target == null)
+            {
+                return;
+            }
+
+            target.anchorMin = source.anchorMin;
+            target.anchorMax = source.anchorMax;
+            target.anchoredPosition = source.anchoredPosition;
+            target.sizeDelta = source.sizeDelta;
+            target.pivot = source.pivot;
+            target.localRotation = source.localRotation;
+            target.localScale = source.localScale;
+        }
+
+        private static void CopyImageSettings(Image source, Image target)
+        {
+            if (source == null || target == null)
+            {
+                return;
+            }
+
+            target.material = source.material;
+            target.type = source.type;
+            target.preserveAspect = source.preserveAspect;
+            target.fillCenter = source.fillCenter;
+            target.fillMethod = source.fillMethod;
+            target.fillAmount = source.fillAmount;
+            target.fillClockwise = source.fillClockwise;
+            target.fillOrigin = source.fillOrigin;
+            target.useSpriteMesh = source.useSpriteMesh;
+            target.pixelsPerUnitMultiplier = source.pixelsPerUnitMultiplier;
+            target.maskable = source.maskable;
         }
 
         private void ClearDialogueView()

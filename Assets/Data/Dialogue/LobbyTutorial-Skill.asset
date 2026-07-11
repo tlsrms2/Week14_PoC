@@ -15,8 +15,8 @@ MonoBehaviour:
   episodeId: 6
   skippable: 0
   dialogues:
-  - speaker: AI
-    text: "\uB85C\uBE44\uC52C \uC124\uBA85 \uC911 1"
+  - speaker: ERIS
+    text: "\uBAA8\uB4C8 \uD655\uC7A5 \uAE30\uB2A5\uC5D0 \uB300\uD574 \uC124\uBA85\uB4DC\uB9AC\uACA0\uC2B5\uB2C8\uB2E4."
     sfxId: 
   - speaker: AI
     text: "\uB85C\uBE44\uC52C \uC124\uBA85 \uC911 2"
