@@ -49,8 +49,6 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float gunAimHoldSeconds = 0.5f;
 
         [Header("Projectile Parry")]
-        [Tooltip("패링 탄환에 사용할 투사체 프리팹입니다. 비워두면 일반 공격 투사체 프리팹을 사용합니다.")]
-        [SerializeField] private PlayerProjectile parryProjectilePrefab;
         [Tooltip("유도탄 조준선이 플레이어에게 닿는 지점을 계산할 때 사용하는 플레이어 몸체 반경입니다.")]
         [FormerlySerializedAs("parryBodyRadius")]
         [SerializeField, Min(0f)] private float playerBodyAimRadius = 0.3f;
@@ -107,7 +105,6 @@ namespace Week14.Combat
         public float HitStopSeconds => hitStopSeconds;
         public float HitStopTimeScale => hitStopTimeScale;
         public PlayerProjectile ProjectilePrefab => normalAttackProjectilePrefab;
-        public PlayerProjectile ParryProjectilePrefab => parryProjectilePrefab != null ? parryProjectilePrefab : normalAttackProjectilePrefab;
         public int LeftAttackBulletCost => leftAttackBulletCost;
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;

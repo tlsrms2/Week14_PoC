@@ -29,7 +29,6 @@ MonoBehaviour:
   projectileLifetime: 2
   projectileRadius: 0.08
   gunAimHoldSeconds: 0.15
-  parryProjectilePrefab: {fileID: -4256479927641206161, guid: 4e1d25a823fd08246ad083e78111d0f8, type: 3}
   playerBodyAimRadius: 0.3
   mouseParryMinimumRangeScale: 0.5
   mouseParryMissRangeScaleLoss: 0.1

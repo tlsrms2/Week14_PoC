@@ -39,6 +39,7 @@ MonoBehaviour:
   cooldownSeconds: 10
   price: 0
   durationSeconds: 1
+  parryClearRadius: 3
   activateSfxId: 
   references:
     version: 2

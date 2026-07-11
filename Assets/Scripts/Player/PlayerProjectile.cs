@@ -20,15 +20,10 @@ namespace Week14.Combat
         private float collisionRadius;
         private float destroyAt;
         private Vector2 previousPosition;
-        private EnemyProjectile forcedParryTarget;
-        private int forcedParryTargetId;
-        private float forcedParryResolveAt;
         private Vector2 flightDirection = Vector2.right;
         private Color projectileColor = Color.white;
         private bool canDamageHealth;
-        private bool canClashWithEnemyProjectile;
         private bool isSkillShot;
-        private bool restoresBulletsOnParry = true;
         private bool resolved;
         private bool isDestroying;
 
@@ -43,9 +38,7 @@ namespace Week14.Combat
             int bulletDamage,
             Color color,
             bool canDamageHealth,
-            bool canClashWithEnemyProjectile = false,
-            bool isSkillShot = false,
-            bool restoresBulletsOnParry = true)
+            bool isSkillShot = false)
         {
             if (prefab == null)
             {
@@ -64,9 +57,7 @@ namespace Week14.Combat
                     bulletDamage,
                     color,
                     canDamageHealth,
-                    canClashWithEnemyProjectile,
-                    isSkillShot,
-                    restoresBulletsOnParry))
+                    isSkillShot))
             {
                 ProjectilePool.Release(projectile);
                 return null;
@@ -89,24 +80,17 @@ namespace Week14.Combat
             int nextBulletDamage,
             Color color,
             bool nextCanDamageHealth,
-            bool nextCanClashWithEnemyProjectile,
-            bool nextIsSkillShot,
-            bool nextRestoresBulletsOnParry = true)
+            bool nextIsSkillShot)
         {
             RestorePooledComponents();
             resolved = false;
             isDestroying = false;
-            forcedParryTarget = null;
-            forcedParryTargetId = 0;
-            forcedParryResolveAt = 0f;
             owner = nextOwner;
             projectileSpeed = speed;
             bulletDamage = nextBulletDamage;
             collisionRadius = ResolveCollisionRadius(radius);
             canDamageHealth = nextCanDamageHealth;
-            canClashWithEnemyProjectile = nextCanClashWithEnemyProjectile;
             isSkillShot = nextIsSkillShot;
-            restoresBulletsOnParry = nextRestoresBulletsOnParry;
             destroyAt = Time.time + lifetime;
             previousPosition = transform.position;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
@@ -134,12 +118,6 @@ namespace Week14.Combat
             }
 
             SweepForMissedCollisions();
-            if (isDestroying)
-            {
-                return;
-            }
-
-            TryResolveForcedParryTarget();
             if (isDestroying)
             {
                 return;
@@ -200,68 +178,6 @@ namespace Week14.Combat
             }
         }
 
-        public void SetForcedParryTarget(EnemyProjectile enemyProjectile)
-        {
-            forcedParryTarget = enemyProjectile != null ? enemyProjectile.ResolveInterceptTarget() : null;
-            forcedParryTargetId = forcedParryTarget != null ? forcedParryTarget.InterceptGroupId : 0;
-            if (forcedParryTarget == null || projectileSpeed <= 0f)
-            {
-                forcedParryResolveAt = 0f;
-                return;
-            }
-
-            float distance = Vector2.Distance(transform.position, forcedParryTarget.transform.position);
-            forcedParryResolveAt = Time.time + Mathf.Max(0.02f, distance / projectileSpeed);
-            destroyAt = Mathf.Max(destroyAt, forcedParryResolveAt + 0.1f);
-        }
-
-        private bool TryResolveForcedParryTarget()
-        {
-            if (!canClashWithEnemyProjectile || resolved || isDestroying)
-            {
-                return false;
-            }
-
-            EnemyProjectile target = ResolveForcedParryTarget();
-            if (target == null)
-            {
-                DestroyProjectile();
-                return true;
-            }
-
-            Vector2 targetPosition = target.transform.position;
-            float hitRadius = Mathf.Max(0.12f, collisionRadius * 2.5f);
-            bool closeEnough = Vector2.Distance(transform.position, targetPosition) <= hitRadius;
-            bool reachedExpectedTime = forcedParryResolveAt > 0f && Time.time >= forcedParryResolveAt;
-            bool crossedTarget = Vector2.Dot(flightDirection, targetPosition - (Vector2)transform.position) <= 0f;
-            if (!closeEnough && !reachedExpectedTime && !crossedTarget)
-            {
-                return false;
-            }
-
-            transform.position = target.transform.position;
-            return TryDestroyByEnemyProjectileClash(target);
-        }
-
-        private EnemyProjectile ResolveForcedParryTarget()
-        {
-            if (forcedParryTargetId > 0
-                && EnemyProjectile.TryGetActiveInterceptTarget(forcedParryTargetId, out EnemyProjectile target))
-            {
-                forcedParryTarget = target;
-                return target;
-            }
-
-            if (forcedParryTarget == null)
-            {
-                return null;
-            }
-
-            forcedParryTarget = forcedParryTarget.ResolveInterceptTarget();
-            forcedParryTargetId = forcedParryTarget != null ? forcedParryTarget.InterceptGroupId : forcedParryTargetId;
-            return forcedParryTarget;
-        }
-
         private bool TryResolveCollision(Collider2D other)
         {
             if (other == null || isDestroying || other.transform.IsChildOf(transform))
@@ -285,14 +201,8 @@ namespace Week14.Combat
                 return false;
             }
 
-            EnemyProjectile enemyProjectile = other.GetComponentInParent<EnemyProjectile>();
-            if (enemyProjectile != null)
+            if (other.GetComponentInParent<EnemyProjectile>() != null)
             {
-                if (canClashWithEnemyProjectile && TryDestroyByEnemyProjectileClash(enemyProjectile))
-                {
-                    return true;
-                }
-
                 return false;
             }
 
@@ -300,11 +210,6 @@ namespace Week14.Combat
             if (targetHealth == null)
             {
                 if (other.isTrigger)
-                {
-                    return false;
-                }
-
-                if (forcedParryTarget != null)
                 {
                     return false;
                 }
@@ -478,57 +383,11 @@ namespace Week14.Combat
             view.Show(damage);
         }
 
-        public bool TryDestroyByEnemyProjectileClash(EnemyProjectile enemyProjectile)
-        {
-            if (!canClashWithEnemyProjectile || resolved || isDestroying)
-            {
-                return false;
-            }
-
-            enemyProjectile = enemyProjectile != null ? enemyProjectile.ResolveInterceptTarget() : null;
-            EnemyProjectile expectedTarget = ResolveForcedParryTarget();
-            if (forcedParryTargetId > 0 && expectedTarget == null)
-            {
-                return false;
-            }
-
-            if (enemyProjectile == null || (expectedTarget != null && enemyProjectile != expectedTarget))
-            {
-                return false;
-            }
-
-            Vector3 impactPosition = enemyProjectile.transform.position;
-            Vector2 incomingDirection = enemyProjectile.IncomingDirection;
-            if (!enemyProjectile.TryDestroyByInterceptShot(out bool parried))
-            {
-                return false;
-            }
-
-            if (parried)
-            {
-                owner?.PlayParryImpact(impactPosition, incomingDirection, restoresBulletsOnParry);
-            }
-
-            DestroyByClash();
-            return true;
-        }
-
-        private void DestroyByClash()
-        {
-            resolved = true;
-            DestroyProjectile();
-        }
-
         private void DestroyProjectile()
         {
             if (isDestroying)
             {
                 return;
-            }
-
-            if (!resolved && ResolveForcedParryTarget() != null)
-            {
-                forcedParryTarget.CancelInterceptReservation();
             }
 
             isDestroying = true;

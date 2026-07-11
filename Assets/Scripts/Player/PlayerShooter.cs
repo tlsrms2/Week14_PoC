@@ -13,7 +13,6 @@ namespace Week14.Combat
 
         private float chargeTime;
         private bool isCharging;
-        private bool hasPlayedChargeCompleteCue;
         private bool hasShownChargeLaser;
         private float nextBayonetAttackTime;
 
@@ -27,14 +26,12 @@ namespace Week14.Combat
 
         public int CurrentBullets => context.Bullets != null ? context.Bullets.CurrentBullets : 0;
         public bool IsCharging => isCharging;
-        public bool HasPlayedChargeCompleteCue => hasPlayedChargeCompleteCue;
         public bool HasShownChargeLaser => hasShownChargeLaser;
 
         internal void BeginAttack()
         {
             chargeTime = 0f;
             isCharging = true;
-            hasPlayedChargeCompleteCue = false;
             hasShownChargeLaser = false;
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
@@ -56,7 +53,6 @@ namespace Week14.Combat
             context.SniperChargeLaserEffect?.EndCharge();
             isCharging = false;
             chargeTime = 0f;
-            hasPlayedChargeCompleteCue = false;
             hasShownChargeLaser = false;
         }
 
@@ -74,18 +70,12 @@ namespace Week14.Combat
             context.SniperChargeLaserEffect?.SetProgress(progress);
         }
 
-        public void MarkChargeCompleteCuePlayed()
-        {
-            hasPlayedChargeCompleteCue = true;
-        }
-
         public void EndCharge()
         {
             context.PlayerHpView?.FreezeNewestBullet(false);
             context.SniperChargeLaserEffect?.EndCharge();
             isCharging = false;
             chargeTime = 0f;
-            hasPlayedChargeCompleteCue = false;
             hasShownChargeLaser = false;
         }
 
@@ -107,7 +97,7 @@ namespace Week14.Combat
         // 관통(레일건) 전용 발사. 물리 투사체를 날리는 게 아니라, 화면에 그려지는 빔 그 자체를 즉시
         // CircleCastAll로 스윕해서 일직선상의 모든 대상에게 damage를 그대로(분할 없이) 적용합니다.
         // ShotLine 연출이 곧 판정 범위와 일치합니다(연출과 판정이 분리돼 있지 않음).
-        public void FireLaser(int damage, float speed, float lifetime, float beamVisualSeconds, float beamWidth, Color beamColor)
+        public void FireLaser(int damage, float speed, float lifetime, float beamVisualSeconds, float beamWidth, Color beamColor, string fireSfxId)
         {
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -128,7 +118,10 @@ namespace Week14.Combat
             ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
             ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, beamColor, 1.2f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx("RailgunFire");
+            if (!string.IsNullOrEmpty(fireSfxId))
+            {
+                SoundManager.PlaySfx(fireSfxId);
+            }
             SoundManager.PlaySfx("BulletLoss");
         }
 
@@ -179,7 +172,7 @@ namespace Week14.Combat
         // 근접 반원 공격(총검): 조준 방향(락온 중이면 GetAimDirection이 알아서 보스 방향을 반환) 기준
         // 앞쪽 반원(반지름 range) 안의 적탄을 즉시 제거하고, 같은 범위 안의 보스/미니언에게 damage를 적용합니다.
         // 탄환은 전혀 소모하지 않습니다.
-        public void SwingBayonet(int damage, float range, Color rangeFlashColor, float rangeFlashSeconds)
+        public void SwingBayonet(int damage, float range, Color rangeFlashColor, float rangeFlashSeconds, string slashSfxId)
         {
             if (range <= 0f)
             {
@@ -192,6 +185,11 @@ namespace Week14.Combat
             ClearProjectilesInSemicircle(origin, direction, range);
             DamageEnemiesInSemicircle(origin, direction, range, damage);
             ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
+
+            if (!string.IsNullOrEmpty(slashSfxId))
+            {
+                SoundManager.PlaySfx(slashSfxId);
+            }
         }
 
         private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)

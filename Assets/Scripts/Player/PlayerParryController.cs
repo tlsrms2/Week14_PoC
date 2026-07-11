@@ -91,11 +91,30 @@ namespace Week14.Combat
 
         private bool ExecuteInstantParry(EnemyProjectile target)
         {
+            if (!TryInstantParry(target, out Vector3 impactPosition, out Vector2 direction))
+            {
+                return false;
+            }
+
+            PlayParryImpact(impactPosition, direction, true);
+
+            int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
+            int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
+            SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
+
+            ProjectileParried?.Invoke();
+            return true;
+        }
+
+        // 조준 방향으로 짧은 레이저 라인을 그으며 대상을 즉시 파괴하는 공용 패링 처리입니다.
+        // 마우스 즉시 패링과 자동 패링(구르기 등)이 이 로직을 공유해서, 발사 방식이 하나로 통일됩니다.
+        private bool TryInstantParry(EnemyProjectile target, out Vector3 impactPosition, out Vector2 direction)
+        {
             PlayerCombatConfig config = context.Config;
             Transform fireOrigin = GetParryFireOrigin();
             Vector2 firePosition = fireOrigin != null ? fireOrigin.position : context.PlayerTransform.position;
-            Vector3 impactPosition = target.transform.position;
-            Vector2 direction = (Vector2)impactPosition - firePosition;
+            impactPosition = target.transform.position;
+            direction = (Vector2)impactPosition - firePosition;
             if (direction.sqrMagnitude <= 0.0001f)
             {
                 direction = target.IncomingDirection.sqrMagnitude > 0.0001f
@@ -113,13 +132,6 @@ namespace Week14.Combat
             ProjectileVfx.PlayShotLine(firePosition, impactPosition, config.ParryEffectColor, 0.08f, 0.06f);
             ProjectileVfx.PlayMuzzleFlash(firePosition, direction, config.ParryEffectColor, 1f);
             context.Visual?.PlayIntercept();
-            PlayParryImpact(impactPosition, direction, true);
-
-            int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
-            int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
-            SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
-
-            ProjectileParried?.Invoke();
             return true;
         }
 
@@ -140,7 +152,11 @@ namespace Week14.Combat
             float sqrRadius = radius * radius;
             int parriedCount = 0;
 
-            for (int i = 0; i < activeProjectiles.Count; i++)
+            // 뒤에서부터 순회합니다: TryInstantParry가 성공하면 이 리스트에서 즉시 self-remove하는데,
+            // 앞에서부터 돌면 삭제된 자리로 뒤 원소들이 한 칸씩 당겨지면서 다음 인덱스를 건너뛰어
+            // 범위 안에 있는데도 안 지워지는 총알이 생깁니다. 뒤에서부터 지우면 이미 지나온 인덱스만
+            // 밀리므로 안전합니다.
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
                 EnemyProjectile target = activeProjectiles[i];
                 if (target == null || !target.CanBeIntercepted)
@@ -154,16 +170,22 @@ namespace Week14.Combat
                     continue;
                 }
 
-                if (ExecuteParry(target, playSfx: false, restoreBulletsOnParry: false))
+                // 흡수 연출은 투사체 스프라이트를 복제해야 하므로, 아래에서 실제로 파괴되기 전에(아직 살아있을 때) 먼저 재생한다.
+                PlayerDashVfx.PlayProjectileAbsorb(
+                    context.CoroutineHost,
+                    target,
+                    context.CombatCenterOrigin.position,
+                    sanitizedVfxSettings.AutoParryAbsorbSeconds,
+                    sanitizedVfxSettings.AutoParryAbsorbColor);
+
+                if (!TryInstantParry(target, out Vector3 impactPosition, out Vector2 direction))
                 {
-                    PlayerDashVfx.PlayProjectileAbsorb(
-                        context.CoroutineHost,
-                        target,
-                        context.CombatCenterOrigin.position,
-                        sanitizedVfxSettings.AutoParryAbsorbSeconds,
-                        sanitizedVfxSettings.AutoParryAbsorbColor);
-                    parriedCount++;
+                    continue;
                 }
+
+                PlayParryImpact(impactPosition, direction, false);
+                ProjectileParried?.Invoke();
+                parriedCount++;
             }
 
             return parriedCount;
@@ -171,72 +193,7 @@ namespace Week14.Combat
 
         private bool HasValidParryConfig()
         {
-            PlayerCombatConfig config = context.Config;
-            if (config == null)
-            {
-                return false;
-            }
-
-            if (config.ParryProjectilePrefab == null)
-            {
-                Debug.LogWarning($"{nameof(PlayerCombatConfig)} requires {nameof(PlayerCombatConfig.ParryProjectilePrefab)}.", context.Owner);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool ExecuteParry(EnemyProjectile target, bool playSfx = true, bool restoreBulletsOnParry = true)
-        {
-            PlayerCombatConfig config = context.Config;
-            Transform fireOrigin = GetParryFireOrigin();
-            Vector2 firePosition = fireOrigin != null ? fireOrigin.position : context.PlayerTransform.position;
-            Vector2 direction = (Vector2)target.transform.position - firePosition;
-            if (direction.sqrMagnitude <= 0.0001f)
-            {
-                direction = target.IncomingDirection.sqrMagnitude > 0.0001f
-                    ? -target.IncomingDirection
-                    : Vector2.right;
-            }
-
-            if (!target.TryReserveIntercept())
-            {
-                return false;
-            }
-
-            PlayerProjectile parryShot = PlayerProjectile.Spawn(
-                config.ParryProjectilePrefab,
-                firePosition,
-                direction.normalized,
-                context.Owner,
-                config.ProjectileSpeed,
-                config.ProjectileLifetime,
-                config.ProjectileRadius,
-                0,
-                config.ParryEffectColor,
-                false,
-                true,
-                isSkillShot: false,
-                restoresBulletsOnParry: restoreBulletsOnParry);
-            if (parryShot == null)
-            {
-                target.CancelInterceptReservation();
-                return false;
-            }
-
-            parryShot.SetForcedParryTarget(target);
-            ProjectileVfx.PlayMuzzleFlash(firePosition, direction.normalized, config.ParryEffectColor, 1f);
-            context.Visual?.PlayIntercept();
-
-            if (playSfx)
-            {
-                int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
-                int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
-                SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
-            }
-
-            ProjectileParried?.Invoke();
-            return true;
+            return context.Config != null;
         }
 
         internal void UpdateProjectileLockOnTarget()

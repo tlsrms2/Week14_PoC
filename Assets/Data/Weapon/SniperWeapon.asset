@@ -75,7 +75,7 @@ MonoBehaviour:
     m_LocalVariables: []
   chargeThresholdSeconds: 1
   chargeDamageMultiplier: 2
-  chargeCompleteSfxId: 
+  chargeStartSfxId: SniperCharge
   laserFirstAppearDelaySeconds: 0.15
   laserLength: 15
   laserSpreadAngle: 60
