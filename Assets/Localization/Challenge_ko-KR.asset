@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Challenge_ko-KR
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: ko-KR
+  m_SharedData: {fileID: 11400000, guid: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 500000000000
+    m_Localized: "전투에서 1번이상 피해를
+      받지 않고 승리하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 502600000000
+    m_Localized: "페이즈 2에 3번 진입하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 505200000000
+    m_Localized: "페이즈 2에 6번 진입하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 507800000000
+    m_Localized: "전투에서 1:30 내에
+      승리하세요."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 510400000000
+    m_Localized: "전투에서 2:00 내에
+      승리하세요."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

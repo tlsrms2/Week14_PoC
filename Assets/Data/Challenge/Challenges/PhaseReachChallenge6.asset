@@ -16,9 +16,9 @@ MonoBehaviour:
   description: "\uD398\uC774\uC988 2\uC5D0 6\uBC88 \uC9C4\uC785\uD558\uC138\uC694."
   localizedDescription:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 505200000000
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
