@@ -203,7 +203,10 @@ namespace Week14.UI
         public string FormatRefund(int amount) => ResolveLocalizedFormat(localizedRefundFormatText, "환불 시 반환: {0}", amount);
 
         // 숫자가 매번 바뀌는 문구는 미리 캐시해둘 수 없어서, 표시할 때마다 그 자리에서
-        // 인자를 넣어 한 번만 새로 계산한다(구독 즉시 해제하는 1회성 조회).
+        // 인자를 넣어 한 번만 새로 계산한다. GetLocalizedString은 테이블 로드가 아직 안
+        // 끝났으면 내부적으로 WaitForCompletion으로 동기 대기하므로, StringChanged를
+        // 구독했다가 즉시 해제하는 방식(비동기 로드 도중 해제하면 결과를 영영 못 받음)과
+        // 달리 항상 실제 로컬라이징 값을 받는다.
         private static string ResolveLocalizedFormat(LocalizedString localizedString, string fallbackFormat, object arg)
         {
             if (!HasLocalizedString(localizedString))
@@ -211,15 +214,7 @@ namespace Week14.UI
                 return string.Format(fallbackFormat, arg);
             }
 
-            string result = string.Format(fallbackFormat, arg);
-            LocalizedString.ChangeHandler handler = value => result = value;
-
-            localizedString.Arguments = new object[] { arg };
-            localizedString.StringChanged += handler;
-            localizedString.RefreshString();
-            localizedString.StringChanged -= handler;
-
-            return result;
+            return localizedString.GetLocalizedString(arg);
         }
 
         public static bool HasLocalizedString(LocalizedString value)

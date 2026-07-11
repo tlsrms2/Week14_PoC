@@ -137,6 +137,18 @@ MonoBehaviour:
     m_Key: ui.Loadout.RefundFormat
     m_Metadata:
       m_Items: []
+  - m_Id: 3663321485377536
+    m_Key: ui.Loadout.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666520502009856
+    m_Key: ui.bossselec.Main
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666672696524800
+    m_Key: ui.bossselec.Challenge
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

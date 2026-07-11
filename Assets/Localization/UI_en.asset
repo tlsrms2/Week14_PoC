@@ -140,6 +140,18 @@ MonoBehaviour:
     m_Localized: 'Return upon refund: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 3663321485377536
+    m_Localized: close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666520502009856
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666672696524800
+    m_Localized: Challenge
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
