@@ -10,7 +10,6 @@ namespace Week14.Story
         Act2 = 1,
         Act3 = 2,
         FinalBossAftermath = 3,
-        Epilogue = 4,
         LobbyTutorialBoss = 5,
         LobbyTutorialSkill = 6
     }
