@@ -50,7 +50,7 @@ namespace Week14.Save
         [SerializeField] private bool tutorialCompleted;
         [SerializeField] private bool pastSeen;
         [SerializeField] private bool act1Seen;
-        [SerializeField] private bool lobbyIntroSeen;
+        [SerializeField] private bool lobbyTutorialBossSeen;
         [SerializeField] private bool act2Seen;
         [SerializeField] private bool act3Seen;
         [SerializeField] private bool finalBossAftermathSeen;
@@ -172,8 +172,8 @@ namespace Week14.Save
             Debug.Log("[DevUnlockTools] Act1 완료 상태로 변경했습니다.");
         }
 
-        [ContextMenu("스토리 토글/6. 로비씬 설명 완료")]
-        public void CompleteLobbyIntro()
+        [ContextMenu("스토리 토글/6. 로비 보스 튜토리얼 완료")]
+        public void CompleteLobbyTutorialBoss()
         {
             SetStoryProgress(
                 synopsis: true,
@@ -184,9 +184,9 @@ namespace Week14.Save
                 finalBossAftermath: false,
                 epilogue: false,
                 ending: false);
-            SetStorySeen(StoryEpisodeId.LobbyIntro, true);
+            SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, true);
             PullStoryTogglesFromSave();
-            Debug.Log("[DevUnlockTools] 로비씬 설명 완료 상태로 변경했습니다.");
+            Debug.Log("[DevUnlockTools] 로비 보스 튜토리얼 완료 상태로 변경했습니다.");
         }
 
         [ContextMenu("스토리 토글/7. Act2 완료")]
@@ -525,7 +525,7 @@ namespace Week14.Save
             pastSeen = GameSaveManager.HasSeenPast;
             endingSeen = GameSaveManager.HasSeenEnding;
             act1Seen = IsStorySeen(StoryEpisodeId.Act1);
-            lobbyIntroSeen = IsStorySeen(StoryEpisodeId.LobbyIntro);
+            lobbyTutorialBossSeen = IsStorySeen(StoryEpisodeId.LobbyTutorialBoss);
             act2Seen = IsStorySeen(StoryEpisodeId.Act2);
             act3Seen = IsStorySeen(StoryEpisodeId.Act3);
             finalBossAftermathSeen = IsStorySeen(StoryEpisodeId.FinalBossAftermath);
@@ -547,7 +547,7 @@ namespace Week14.Save
             GameSaveManager.SetEndingSeen(ending);
             GameSaveManager.SetPastSeen(act1 || act2 || act3 || finalBossAftermath || epilogue || ending);
             SetStorySeen(StoryEpisodeId.Act1, act1);
-            SetStorySeen(StoryEpisodeId.LobbyIntro, act2 || act3 || finalBossAftermath || epilogue || ending);
+            SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, act2 || act3 || finalBossAftermath || epilogue || ending);
             SetStorySeen(StoryEpisodeId.Act2, act2);
             SetStorySeen(StoryEpisodeId.Act3, act3);
             SetStorySeen(StoryEpisodeId.FinalBossAftermath, finalBossAftermath);

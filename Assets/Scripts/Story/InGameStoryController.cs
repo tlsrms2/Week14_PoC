@@ -21,12 +21,14 @@ namespace Week14.Story
         {
             [SerializeField] private InGameStorySequenceSO sequence;
             [SerializeField] private string[] requiredClearedBossIds = Array.Empty<string>();
+            [SerializeField] private StoryEpisodeId[] requiredSeenStoryEpisodes = Array.Empty<StoryEpisodeId>();
 
             public bool HasSequence => sequence != null;
             public StoryEpisodeId EpisodeId => sequence.EpisodeId;
             public bool Skippable => sequence.Skippable;
             public InGameStorySequenceSO Sequence => sequence;
             public IReadOnlyList<string> RequiredClearedBossIds => requiredClearedBossIds ?? Array.Empty<string>();
+            public IReadOnlyList<StoryEpisodeId> RequiredSeenStoryEpisodes => requiredSeenStoryEpisodes ?? Array.Empty<StoryEpisodeId>();
         }
 
         [Header("View")]
@@ -128,6 +130,15 @@ namespace Week14.Story
             if (GameSaveManager.HasSeenStoryEpisode(GetEpisodeSaveId(episodeId)))
             {
                 return false;
+            }
+
+            IReadOnlyList<StoryEpisodeId> requiredSeenEpisodes = rule.RequiredSeenStoryEpisodes;
+            for (int i = 0; i < requiredSeenEpisodes.Count; i++)
+            {
+                if (!GameSaveManager.HasSeenStoryEpisode(GetEpisodeSaveId(requiredSeenEpisodes[i])))
+                {
+                    return false;
+                }
             }
 
             IReadOnlyList<string> bossIds = rule.RequiredClearedBossIds;

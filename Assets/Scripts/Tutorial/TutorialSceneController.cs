@@ -32,6 +32,7 @@ namespace Week14.Tutorial
         [SerializeField] private Image explanationImage;
         [SerializeField] private RawImage explanationVideoImage;
         [SerializeField] private VideoPlayer explanationVideoPlayer;
+        [SerializeField] private TMP_Text explanationTitle;
         [SerializeField] private TMP_Text explanationText;
         [SerializeField, Min(0f)] private float firstDialogueDelaySeconds = 1f;
         [SerializeField] private GameObject bossCombatUiRoot;
@@ -510,6 +511,7 @@ namespace Week14.Tutorial
                 return;
             }
 
+            SetText(explanationTitle, explanation.Title);
             SetText(explanationText, explanation.Text);
             PushExplanationInputLock();
             SetExplanationVisible(true);
@@ -524,6 +526,7 @@ namespace Week14.Tutorial
             PopExplanationInputLock();
             StopExplanationVideo();
             SetExplanationImage(null);
+            SetText(explanationTitle, string.Empty);
             SetText(explanationText, string.Empty);
             SetExplanationVisible(false);
         }

@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
-  m_Name: Prologue
+  m_Name: 01-Prologue
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
-  cutsceneId: Prologue
-  skippable: 0
+  skippable: 1
   steps:
   - backgroundImage: {fileID: 21300000, guid: ca9c35ca7a0670347ab1fdc20a8bd4b1, type: 3}
     dialogues:
@@ -27,11 +26,13 @@ MonoBehaviour:
     - name: ERIS
       text: "\uD2B9\uC774\uC0AC\uD56D."
       sfxId: 
-    skippable: 0
+    skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
     transitionMode: 0
-    fadeSeconds: 2
+    fadeInSeconds: 2
+    fadeOutSeconds: 0.25
+    darkHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -43,7 +44,7 @@ MonoBehaviour:
   - backgroundImage: {fileID: 21300000, guid: 079e51a4c783f264e96d81a0f0e9712b, type: 3}
     dialogues:
     - name: ERIS
-      text: "...\uC6B0\uCE21 \uC0C1\uC9C0 \uACB0\uC190, \uC6B0\uCE21 \uC548\uBA74\uBD80\uC5D0\uC11C
+      text: "\uC6B0\uCE21 \uC0C1\uC9C0 \uACB0\uC190, \uC548\uBA74\uBD80\uC5D0\uC11C
         \uACAC\uBD80\uAE4C\uC9C0 \uC774\uC5B4\uC9C0\uB294 \uAD11\uBC94\uC704\uD55C
         \uD654\uC0C1 \uBC0F \uC2E0\uACBD\uACC4 \uC190\uC0C1\uC774 \uAC10\uC9C0\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
       sfxId: 
@@ -58,11 +59,13 @@ MonoBehaviour:
       text: "...R-2 \uBE14\uB85D, \uCE74\uD398 \uBCA0\uC2A4\uD37C. \uC624\uB298 17\uC2DC
         33\uBD84 \uC804\uD6C4 \uC601\uC0C1 \uAE30\uB85D \uC804\uBD80."
       sfxId: 
-    skippable: 0
+    skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
     transitionMode: 0
-    fadeSeconds: 2
+    fadeInSeconds: 2
+    fadeOutSeconds: 0.25
+    darkHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -105,11 +108,13 @@ MonoBehaviour:
     - name: "\uC774\uC628"
       text: "\uC2DC\uC791\uD574."
       sfxId: 
-    skippable: 0
+    skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
     transitionMode: 0
-    fadeSeconds: 2
+    fadeInSeconds: 2
+    fadeOutSeconds: 0.25
+    darkHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}

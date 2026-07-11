@@ -6,12 +6,13 @@ namespace Week14.Story
 {
     public enum StoryEpisodeId
     {
-        Act1,
-        Act2,
-        Act3,
-        FinalBossAftermath,
-        Epilogue,
-        LobbyIntro
+        Act1 = 0,
+        Act2 = 1,
+        Act3 = 2,
+        FinalBossAftermath = 3,
+        Epilogue = 4,
+        LobbyTutorialBoss = 5,
+        LobbyTutorialSkill = 6
     }
 
     [Serializable]

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2e1d52387b43224a9e8fed941adda42, type: 3}
-  m_Name: LobbyIntro
+  m_Name: LobbyTutorial-Skill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameStorySequenceSO
-  episodeId: 5
+  episodeId: 6
   skippable: 0
   dialogues:
   - speaker: AI

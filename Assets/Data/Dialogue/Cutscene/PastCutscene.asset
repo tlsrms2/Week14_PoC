@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
   m_Name: PastCutscene
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
-  skippable: 0
+  skippable: 1
   steps:
   - backgroundImage: {fileID: 198098048580944718, guid: b540e22887b782c4fbd48b9ee6021175, type: 3}
     dialogues:
