@@ -55,7 +55,6 @@ namespace Week14.Save
         [SerializeField] private bool act3Seen;
         [SerializeField] private bool finalBossAftermathSeen;
         [SerializeField] private bool epilogueSeen;
-        [SerializeField] private bool endingSeen;
 
         private void Update()
         {
@@ -120,8 +119,7 @@ namespace Week14.Save
                 act2: false,
                 act3: false,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             Debug.Log("[DevUnlockTools] 시눕시스 완료 상태로 변경했습니다.");
         }
 
@@ -135,8 +133,7 @@ namespace Week14.Save
                 act2: false,
                 act3: false,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             Debug.Log("[DevUnlockTools] 튜토리얼 완료 상태로 변경했습니다.");
         }
 
@@ -150,8 +147,7 @@ namespace Week14.Save
                 act2: false,
                 act3: false,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             GameSaveManager.SetPastSeen(true);
             PullStoryTogglesFromSave();
             Debug.Log("[DevUnlockTools] 과거 컷신 완료 상태로 변경했습니다.");
@@ -167,8 +163,7 @@ namespace Week14.Save
                 act2: false,
                 act3: false,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             Debug.Log("[DevUnlockTools] Act1 완료 상태로 변경했습니다.");
         }
 
@@ -182,8 +177,7 @@ namespace Week14.Save
                 act2: false,
                 act3: false,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, true);
             PullStoryTogglesFromSave();
             Debug.Log("[DevUnlockTools] 로비 보스 튜토리얼 완료 상태로 변경했습니다.");
@@ -199,8 +193,7 @@ namespace Week14.Save
                 act2: true,
                 act3: false,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             Debug.Log("[DevUnlockTools] Act2 완료 상태로 변경했습니다.");
         }
 
@@ -214,8 +207,7 @@ namespace Week14.Save
                 act2: true,
                 act3: true,
                 finalBossAftermath: false,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             Debug.Log("[DevUnlockTools] Act3 완료 상태로 변경했습니다.");
         }
 
@@ -229,8 +221,7 @@ namespace Week14.Save
                 act2: true,
                 act3: true,
                 finalBossAftermath: true,
-                epilogue: false,
-                ending: false);
+                epilogue: false);
             Debug.Log("[DevUnlockTools] 최종 보스 완료 상태로 변경했습니다.");
         }
 
@@ -244,24 +235,8 @@ namespace Week14.Save
                 act2: true,
                 act3: true,
                 finalBossAftermath: true,
-                epilogue: true,
-                ending: false);
+                epilogue: true);
             Debug.Log("[DevUnlockTools] 에필로그 완료 상태로 변경했습니다.");
-        }
-
-        [ContextMenu("스토리 토글/11. 엔딩 완료")]
-        public void CompleteEnding()
-        {
-            SetStoryProgress(
-                synopsis: true,
-                tutorial: true,
-                act1: true,
-                act2: true,
-                act3: true,
-                finalBossAftermath: true,
-                epilogue: true,
-                ending: true);
-            Debug.Log("[DevUnlockTools] 엔딩 완료 상태로 변경했습니다.");
         }
 
         [ContextMenu("스킬 전체 해금")]
@@ -523,13 +498,12 @@ namespace Week14.Save
             prologueSeen = GameSaveManager.HasSeenPrologue;
             tutorialCompleted = GameSaveManager.HasCompletedTutorial;
             pastSeen = GameSaveManager.HasSeenPast;
-            endingSeen = GameSaveManager.HasSeenEnding;
+            epilogueSeen = GameSaveManager.HasSeenEpilogue;
             act1Seen = IsStorySeen(StoryEpisodeId.Act1);
             lobbyTutorialBossSeen = IsStorySeen(StoryEpisodeId.LobbyTutorialBoss);
             act2Seen = IsStorySeen(StoryEpisodeId.Act2);
             act3Seen = IsStorySeen(StoryEpisodeId.Act3);
             finalBossAftermathSeen = IsStorySeen(StoryEpisodeId.FinalBossAftermath);
-            epilogueSeen = IsStorySeen(StoryEpisodeId.Epilogue);
         }
 
         private void SetStoryProgress(
@@ -539,19 +513,17 @@ namespace Week14.Save
             bool act2,
             bool act3,
             bool finalBossAftermath,
-            bool epilogue,
-            bool ending)
+            bool epilogue)
         {
             GameSaveManager.SetPrologueSeen(synopsis);
             GameSaveManager.SetTutorialCompleted(tutorial);
-            GameSaveManager.SetEndingSeen(ending);
-            GameSaveManager.SetPastSeen(act1 || act2 || act3 || finalBossAftermath || epilogue || ending);
+            GameSaveManager.SetEpilogueSeen(epilogue);
+            GameSaveManager.SetPastSeen(act1 || act2 || act3 || finalBossAftermath || epilogue);
             SetStorySeen(StoryEpisodeId.Act1, act1);
-            SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, act2 || act3 || finalBossAftermath || epilogue || ending);
+            SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, act2 || act3 || finalBossAftermath || epilogue);
             SetStorySeen(StoryEpisodeId.Act2, act2);
             SetStorySeen(StoryEpisodeId.Act3, act3);
             SetStorySeen(StoryEpisodeId.FinalBossAftermath, finalBossAftermath);
-            SetStorySeen(StoryEpisodeId.Epilogue, epilogue);
             PullStoryTogglesFromSave();
         }
 

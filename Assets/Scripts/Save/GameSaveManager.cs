@@ -88,6 +88,7 @@ namespace Week14.Save
         public static bool HasSeenPast => Data.hasSeenPast;
         public static bool HasCompletedTutorial => Data.hasCompletedTutorial;
         public static bool HasSeenEnding => Data.hasSeenEnding;
+        public static bool HasSeenEpilogue => HasSeenEnding;
         public static bool HasSeenSynopsis => HasSeenPrologue;
 
         public static bool HasSeenStoryEpisode(string episodeId)
@@ -229,6 +230,11 @@ namespace Week14.Save
             Save();
         }
 
+        public static void MarkEpilogueSeen()
+        {
+            MarkEndingSeen();
+        }
+
         public static void SetEndingSeen(bool seen)
         {
             if (Data.hasSeenEnding == seen)
@@ -238,6 +244,11 @@ namespace Week14.Save
 
             Data.hasSeenEnding = seen;
             Save();
+        }
+
+        public static void SetEpilogueSeen(bool seen)
+        {
+            SetEndingSeen(seen);
         }
 
         public static void ResetStoryProgress()
@@ -311,6 +322,11 @@ namespace Week14.Save
 
             Data.hasSeenEnding = false;
             Save();
+        }
+
+        public static void ResetEpilogueSeen()
+        {
+            ResetEndingSeen();
         }
 
         public static IReadOnlyList<string> UnlockedSkillIds => Data.unlockedSkillIds;
