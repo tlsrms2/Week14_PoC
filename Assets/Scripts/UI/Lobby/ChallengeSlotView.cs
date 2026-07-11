@@ -24,6 +24,14 @@ namespace Week14.UI
         private Color originalDescriptionColor;
         private bool originalDescriptionColorCached;
 
+        // PixelBlockRevealView가 자기 연출 도중에 이 Graphic들의 실제 color(알파 포함)를 직접 건드리기
+        // 때문에, SyncColorsTo 시점에 descriptionText.color 등을 "그대로 읽어서" 넘기면 이미 연출이
+        // 알파 0으로 꺼놓은 값을 캐치해버릴 수 있다. 그래서 우리가 마지막으로 "의도한" 색을 별도로
+        // 기억해뒀다가 그 값을 넘긴다.
+        private Color lastIntendedDescriptionColor;
+        private Color lastIntendedProgressColor;
+        private Color lastIntendedSweepColor;
+
         private void Awake()
         {
             changeHandler = SetDescriptionText;
@@ -46,6 +54,7 @@ namespace Week14.UI
             Color descriptionColor = completed ? clearedTextColor : originalDescriptionColor;
             SetDescriptionColor(descriptionColor);
             SetSweepColor(descriptionColor);
+            SetProgressColor(descriptionColor);
             SetCompletionSprite(completed ? completedSprite : incompleteSprite);
 
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
@@ -61,6 +70,7 @@ namespace Week14.UI
             BindLocalizedDescription(definition);
             SetDescriptionColor(defaultColor);
             SetSweepColor(defaultColor);
+            SetProgressColor(defaultColor);
             SetCompletionSprite(incompleteSprite);
             SetSweepWidth(0f);
 
@@ -78,12 +88,46 @@ namespace Week14.UI
             }
         }
 
+        // PixelBlockRevealView처럼 활성화 시점의 자식 Graphic 색을 스냅샷해서 페이드인하는 연출이 결과창에
+        // 붙어있으면, 우리가 방금 세팅한 색(예: 이미 클리어된 챌린지의 초록색)이 그 스냅샷엔 반영되지 않아
+        // 페이드인 후 낡은(기본) 색으로 되돌아갈 수 있다. Show()/Prime() 직후 이 메서드로 현재 색을 그
+        // 연출 쪽 캐시에도 명시적으로 밀어넣어준다. PixelBlockRevealView는 위치 기반으로 각 Graphic이
+        // 드러나는 타이밍을 따로 계산하는데, 슬롯 안 요소들은 위치가 달라도 descriptionText와 같은
+        // 타이밍에 같이 나타나야 하므로 타이밍도 descriptionText 기준으로 맞춰준다.
+        public void SyncColorsTo(PixelBlockRevealView revealView)
+        {
+            if (revealView == null || descriptionText == null)
+            {
+                return;
+            }
+
+            revealView.SetOriginalColor(descriptionText, lastIntendedDescriptionColor);
+
+            if (progressText != null)
+            {
+                revealView.SetOriginalColor(progressText, lastIntendedProgressColor);
+                revealView.SyncRevealTiming(descriptionText, progressText);
+            }
+
+            if (sweepImage != null)
+            {
+                revealView.SetOriginalColor(sweepImage, lastIntendedSweepColor);
+                revealView.SyncRevealTiming(descriptionText, sweepImage);
+            }
+
+            if (completionImage != null)
+            {
+                revealView.SyncRevealTiming(descriptionText, completionImage);
+            }
+        }
+
         public void Clear()
         {
             Unbind();
             CacheOriginalDescriptionColor();
             SetDescriptionColor(originalDescriptionColor);
             SetSweepColor(originalDescriptionColor);
+            SetProgressColor(originalDescriptionColor);
             SetDescriptionText(string.Empty);
             SetCompletionSprite(null);
             SetProgressText(string.Empty);
@@ -112,6 +156,7 @@ namespace Week14.UI
             yield return AnimateSweepWidth(0f, sweepWidth, growSeconds);
 
             SetDescriptionColor(resultColor);
+            SetProgressColor(resultColor);
             SetCompletionSprite(completed ? completedSprite : incompleteSprite);
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
 
@@ -183,6 +228,7 @@ namespace Week14.UI
 
         private void SetDescriptionColor(Color color)
         {
+            lastIntendedDescriptionColor = color;
             if (descriptionText != null)
             {
                 descriptionText.color = color;
@@ -191,9 +237,19 @@ namespace Week14.UI
 
         private void SetSweepColor(Color color)
         {
+            lastIntendedSweepColor = color;
             if (sweepImage != null)
             {
                 sweepImage.color = color;
+            }
+        }
+
+        private void SetProgressColor(Color color)
+        {
+            lastIntendedProgressColor = color;
+            if (progressText != null)
+            {
+                progressText.color = color;
             }
         }
 

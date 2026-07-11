@@ -218,11 +218,15 @@ namespace Week14.UI
 
         private void ShowGameOver()
         {
+            BossData bossData = FindCurrentBossData();
+            gameOverChallengePanel?.PrepareReveal(bossData);
+
             ShowResult(gameOverRoot, restartButton);
+            SyncChallengeReveal(gameOverChallengePanel, gameOverRoot);
 
             if (gameOverChallengePanel != null)
             {
-                gameOverChallengePanel.PlayReveal(FindCurrentBossData());
+                gameOverChallengePanel.PlayReveal(bossData);
             }
         }
 
@@ -234,11 +238,33 @@ namespace Week14.UI
 
         private void ShowVictory(BossAI boss)
         {
+            BossData bossData = boss != null ? boss.BossData : null;
             GameObject targetRoot = victoryRoot != null ? victoryRoot : gameOverRoot;
+            victoryChallengePanel?.PrepareReveal(bossData);
+
             Selectable focusTarget = victoryLobbyButton != null ? victoryLobbyButton : gameOverLobbyButton;
             ShowResult(targetRoot, focusTarget);
+            SyncChallengeReveal(victoryChallengePanel, targetRoot);
 
             RefreshVictorySummary(boss);
+        }
+
+        // PixelBlockRevealView.CacheContent()는 패널이 SetActive(true)될 때(OnEnable→Play())마다
+        // contentGraphics 리스트를 통째로 비우고 위치 기반 타이밍을 새로 계산한다. 그래서 색 동기화는
+        // ShowResult() 전에 해도 되지만(색 캐시는 Dictionary라 안 지워짐), 타이밍 동기화는 반드시
+        // ShowResult()로 CacheContent()가 다시 실행된 뒤에 해야 한다 — 안 그러면 곧바로 덮어써진다.
+        private static void SyncChallengeReveal(BossChallengePanel panel, GameObject root)
+        {
+            if (panel == null || root == null)
+            {
+                return;
+            }
+
+            PixelBlockRevealView[] revealViews = root.GetComponentsInChildren<PixelBlockRevealView>(true);
+            for (int i = 0; i < revealViews.Length; i++)
+            {
+                panel.SyncColorsTo(revealViews[i]);
+            }
         }
 
         private void RefreshVictorySummary(BossAI boss)

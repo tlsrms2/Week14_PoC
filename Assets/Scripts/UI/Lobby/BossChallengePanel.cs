@@ -76,7 +76,10 @@ namespace Week14.UI
             }
         }
 
-        public void PlayReveal(BossData bossData)
+        // 패널 오브젝트가 SetActive(true)되기 전에 미리 호출해서 슬롯 색을 채워둡니다.
+        // 이 호출 뒤에는 반드시 PlayReveal(bossData)을 이어서 호출해야 합니다(PlayReveal은 PrimeAll을
+        // 다시 부르지 않으므로, 이 호출 없이 PlayReveal만 부르면 슬롯이 비어있는 채로 연출이 시작됩니다).
+        public void PrepareReveal(BossData bossData)
         {
             StopRevealRoutine();
 
@@ -87,6 +90,40 @@ namespace Week14.UI
             }
 
             PrimeAll(bossData);
+        }
+
+        // PixelBlockRevealView처럼 활성화 시점의 자식 Graphic 색을 스냅샷해서 페이드인하는 연출이 결과창에
+        // 붙어있으면, PrepareReveal()로 세팅해둔 색을 그 연출의 캐시에도 밀어넣어야 페이드인 후 낡은
+        // 색으로 되돌아가지 않는다. PrepareReveal() 호출 직후, 패널이 활성화되기 전에 호출한다.
+        public void SyncColorsTo(PixelBlockRevealView revealView)
+        {
+            if (revealView == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i] != null)
+                {
+                    slots[i].SyncColorsTo(revealView);
+                }
+            }
+        }
+
+        // 호출 전에 PrepareReveal(bossData)이 이미 호출되어 슬롯이 채워져 있어야 합니다(GameResultView가
+        // 그렇게 호출함). 여기서 PrimeAll을 다시 부르면 로컬라이징 문구 구독이 같은 프레임에 두 번
+        // 걸렸다 풀렸다 하면서 비동기 로드가 취소·재시작돼 텍스트 표시가 지연되는 문제가 있어 제거했다.
+        public void PlayReveal(BossData bossData)
+        {
+            StopRevealRoutine();
+
+            if (database == null || bossData == null)
+            {
+                ClearAll();
+                return;
+            }
+
             revealRoutine = StartCoroutine(PlayRevealRoutine(bossData));
         }
 

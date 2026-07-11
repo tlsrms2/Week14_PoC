@@ -332,6 +332,66 @@ namespace Week14.UI
             }
         }
 
+        // CacheContent()는 각 Graphic의 색을 처음 본 순간에 딱 한 번만 캐시해두고 이후로는 재사용한다.
+        // 외부 스크립트가 이 오브젝트가 활성화되기 전/도중에 자식 Graphic의 색을 직접 바꿔놓는 경우(예:
+        // 결과창의 챌린지 텍스트), 그 최신 색을 이 캐시에도 반영해야 페이드인이 낡은 색으로 되돌아가지
+        // 않는다. 캐시 딕셔너리뿐 아니라 이미 CacheContent()가 만들어둔 contentGraphics 항목도 같이
+        // 갱신해야 지금 진행 중인 리빌 애니메이션에도 즉시 반영된다.
+        public void SetOriginalColor(Graphic graphic, Color color)
+        {
+            if (graphic == null)
+            {
+                return;
+            }
+
+            originalGraphicColors[graphic] = color;
+
+            for (int i = 0; i < contentGraphics.Count; i++)
+            {
+                if (contentGraphics[i].Graphic == graphic)
+                {
+                    contentGraphics[i] = new GraphicState(graphic, color, contentGraphics[i].RevealEnd);
+                    break;
+                }
+            }
+        }
+
+        // GetGraphicRevealEnd()는 각 Graphic의 화면상 위치를 기준으로 드러나는 시점을 계산하기 때문에,
+        // 같은 UI 그룹(예: 챌린지 슬롯 하나) 안에서도 요소 위치가 다르면 서로 다른 타이밍에 나타난다.
+        // 한 그룹의 요소들을 같이 나타나게 하고 싶으면, 대표 Graphic(source)의 타이밍을 target에 그대로
+        // 복사해서 맞춘다. target의 캐시된 색은 그대로 두고 타이밍만 바꾼다.
+        public void SyncRevealTiming(Graphic source, Graphic target)
+        {
+            if (source == null || target == null)
+            {
+                return;
+            }
+
+            float? sourceRevealEnd = null;
+            for (int i = 0; i < contentGraphics.Count; i++)
+            {
+                if (contentGraphics[i].Graphic == source)
+                {
+                    sourceRevealEnd = contentGraphics[i].RevealEnd;
+                    break;
+                }
+            }
+
+            if (!sourceRevealEnd.HasValue)
+            {
+                return;
+            }
+
+            for (int i = 0; i < contentGraphics.Count; i++)
+            {
+                if (contentGraphics[i].Graphic == target)
+                {
+                    contentGraphics[i] = new GraphicState(target, contentGraphics[i].OriginalColor, sourceRevealEnd.Value);
+                    break;
+                }
+            }
+        }
+
         private bool IsRuntimeRevealGraphic(Graphic graphic)
         {
             return cellRoot != null && graphic.transform.IsChildOf(cellRoot);
