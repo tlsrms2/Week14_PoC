@@ -28405,7 +28405,7 @@ MonoBehaviour:
   tutorialCompleted: 1
   pastSeen: 0
   act1Seen: 0
-  lobbyIntroSeen: 0
+  lobbyTutorialBossSeen: 0
   act2Seen: 0
   act3Seen: 0
   finalBossAftermathSeen: 0

@@ -176,7 +176,7 @@ MonoBehaviour:
           \uD53C\uD574\uB97C \uD761\uC218\uD569\uB2C8\uB2E4.\n\n \uCF54\uC5B4\uAC00
           \uD558\uB098\uB3C4 \uC5C6\uB294 \uC0C1\uD0DC\uC5D0\uC11C \uD53C\uACA9\uB418\uBA74
           \uC0AC\uB9DD\uD569\uB2C8\uB2E4."
-    objectiveFormat: "\uC801 \uD0C4\uD658 \uD53C\uACA9 {0}/{3}"
+    objectiveFormat: "\uC801 \uD0C4\uD658 \uD53C\uACA9 {0}/{1}"
   - step: 3
     dialogues:
     - speaker: ERIS
@@ -366,12 +366,24 @@ MonoBehaviour:
         loopVideo: 1
         title: 
         text: 
-    objectiveFormat: "\uD6C8\uB828 \uBAB9 \uACA9\uD30C {0}/{1}"
+    objectiveFormat: "\uB354\uBBF8 \uD30C\uAD34 {0}/{1}"
   - step: 6
     dialogues:
     - speaker: ERIS
-      text: "\uC815\uBCF4 \uAC31\uC2E0. \uCF54\uB4DC\uBA85 \uC774\uC628. \uC2E0\uCCB4
-        \uB2A5\uB825 \uC815\uBCF4\uB97C \uC0C1\uD5A5 \uC870\uC815\uD569\uB2C8\uB2E4."
+      text: "\uC801\uC751 \uD6C8\uB828 \uC885\uB8CC. \uC815\uBCF4 \uAC31\uC2E0. \uCF54\uB4DC\uBA85
+        \uC774\uC628\uC758 \uC2E0\uCCB4 \uB2A5\uB825 \uC815\uBCF4\uB97C \uC0C1\uD5A5
+        \uC870\uC815\uD569\uB2C8\uB2E4."
+      sfxId: 
+      explanation:
+        enabled: 0
+        image: {fileID: 0}
+        video: {fileID: 0}
+        loopVideo: 1
+        title: 
+        text: 
+    - speaker: ERIS
+      text: "\uCE74\uD398 \uBCA0\uC2A4\uD37C \uAD00\uB828 \uB370\uC774\uD130 \uBD84\uC11D\uC774
+        \uB9C8\uBB34\uB9AC\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uB85C\uBE44\uB85C \uBCF5\uADC0\uD574\uC8FC\uC138\uC694."
       sfxId: 
       explanation:
         enabled: 0
