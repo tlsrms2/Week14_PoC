@@ -1,6 +1,8 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using Week14.Save;
 
 namespace Week14.UI
@@ -35,6 +37,20 @@ namespace Week14.UI
             }
         }
 
+        private void OnEnable()
+        {
+            LocalizationSettings.SelectedLocaleChanged += HandleLocaleChanged;
+
+            // 패널이 꺼져있던 동안(구독 해제 상태) 언어가 바뀌었을 수도 있으므로,
+            // 다시 켜질 때(패널을 열 때) 한 번 최신 언어로 강제 갱신해준다.
+            HandleLocaleChanged(LocalizationSettings.SelectedLocale);
+        }
+
+        private void OnDisable()
+        {
+            LocalizationSettings.SelectedLocaleChanged -= HandleLocaleChanged;
+        }
+
         private void OnDestroy()
         {
             UnbindLocalizedBossName();
@@ -42,6 +58,17 @@ namespace Week14.UI
             if (Instance == this)
             {
                 Instance = null;
+            }
+        }
+
+        // bestClearTimeText는 Show()가 호출되는 시점에 한 번 계산해서 대입하는 스냅샷 값이라
+        // 언어 변경 자체로는 안 바뀐다(nameText는 LocalizedString에 직접 바인딩돼있어 자동 갱신됨).
+        // 언어가 바뀌면 현재 표시 중이던 보스를 다시 Show()해서 새 문구로 재계산한다.
+        private void HandleLocaleChanged(Locale locale)
+        {
+            if (localizedBossData != null)
+            {
+                Show(localizedBossData);
             }
         }
 

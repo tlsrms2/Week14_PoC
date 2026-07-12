@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 using Week14.Save;
 using Week14.Skills;
@@ -107,11 +109,38 @@ namespace Week14.UI
         private void OnEnable()
         {
             GameSaveManager.ChallengePointsChanged += RefreshPoints;
+            LocalizationSettings.SelectedLocaleChanged += HandleLocaleChanged;
+
+            // 패널이 꺼져있던 동안(구독 해제 상태) 언어가 바뀌었을 수도 있으므로,
+            // 다시 켜질 때(패널을 열 때) 한 번 최신 언어로 강제 갱신해준다.
+            HandleLocaleChanged(LocalizationSettings.SelectedLocale);
         }
 
         private void OnDisable()
         {
             GameSaveManager.ChallengePointsChanged -= RefreshPoints;
+            LocalizationSettings.SelectedLocaleChanged -= HandleLocaleChanged;
+        }
+
+        // pointsText는 ChallengePointsChanged 이벤트가 와야, categoryText/costText/actionHintText/
+        // requiredStackText는 다시 Show()가 불려야 새 문구로 갱신되는 "스냅샷" 값들이라 언어 변경
+        // 자체로는 안 바뀐다. 언어가 바뀌는 순간 직접 다시 계산해준다.
+        private void HandleLocaleChanged(Locale locale)
+        {
+            RefreshPoints(GameSaveManager.ChallengePoints);
+
+            if (localizedWeapon != null)
+            {
+                Show(localizedWeapon);
+            }
+            else if (localizedSkill != null)
+            {
+                Show(localizedSkill);
+            }
+            else if (localizedPassiveSkill != null)
+            {
+                Show(localizedPassiveSkill);
+            }
         }
 
         private void OnDestroy()
