@@ -16,6 +16,9 @@ namespace Week14.Skills
         [Tooltip("스킬 발동 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [SerializeField] private string activateSfxId;
+        [Header("VFX")]
+        [Tooltip("무적 패링으로 주변 탄막을 제거했을 때 재생할 이펙트 프리팹입니다. 비워두면 표시하지 않습니다.")]
+        [SerializeField] private GameObject blankVfxPrefab;
 
         private event Action effectEnd;
 
@@ -38,7 +41,7 @@ namespace Week14.Skills
                 SoundManager.PlaySfx(activateSfxId);
             }
 
-            controller.BeginInvulnerableAmmoRefill(durationSeconds, parryClearRadius, () => effectEnd?.Invoke());
+            controller.BeginInvulnerableAmmoRefill(durationSeconds, parryClearRadius, blankVfxPrefab, () => effectEnd?.Invoke());
         }
     }
 }

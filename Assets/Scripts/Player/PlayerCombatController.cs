@@ -16,6 +16,9 @@ namespace Week14.Combat
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class PlayerCombatController : MonoBehaviour
     {
+        private static readonly Color InvulnerableAmmoRefillTint = new Color(1f, 0.72f, 0.04f, 1f);
+        private const float InvulnerableAmmoRefillTintAmount = 0.45f;
+
         public static PlayerCombatController Active { get; private set; }
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
         private static int externalCombatPermissionCount;
@@ -73,6 +76,7 @@ namespace Week14.Combat
         private bool invulnerableAmmoRefillActive;
         private Coroutine invulnerableAmmoRefillRoutine;
         private float invulnerableAmmoRefillParryClearRadius;
+        private GameObject invulnerableAmmoRefillBlankVfxPrefab;
         private Action invulnerableAmmoRefillOnComplete;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
@@ -521,6 +525,7 @@ namespace Week14.Combat
         private void UpdateBodyColor(bool force = false)
         {
             DamageReceiver.UpdateBodyColor(force);
+            ApplyInvulnerableAmmoRefillTint(force);
         }
 
         public void PlayParryImpact(Vector3 position)
@@ -643,7 +648,11 @@ namespace Week14.Combat
         // 제거하며, 히트스탑 + 카메라 임팩트를 재생한 뒤 — 남은 무적 시간을 기다리지 않고 그 즉시 종료합니다.
         // onComplete는 그렇게 조기 종료되는 시점이나, 한 번도 안 맞고 지속시간이 다 지난 시점에 정확히 한 번 호출됩니다
         // (쿨타임 지연 시작용 콜백 등으로 쓰임).
-        public void BeginInvulnerableAmmoRefill(float seconds, float parryClearRadius, Action onComplete)
+        public void BeginInvulnerableAmmoRefill(
+            float seconds,
+            float parryClearRadius,
+            GameObject blankVfxPrefab,
+            Action onComplete)
         {
             if (invulnerableAmmoRefillRoutine != null)
             {
@@ -652,6 +661,7 @@ namespace Week14.Combat
             }
 
             invulnerableAmmoRefillParryClearRadius = Mathf.Max(0f, parryClearRadius);
+            invulnerableAmmoRefillBlankVfxPrefab = blankVfxPrefab;
             invulnerableAmmoRefillOnComplete = onComplete;
             invulnerableAmmoRefillRoutine = StartCoroutine(InvulnerableAmmoRefillRoutine(Mathf.Max(0f, seconds)));
         }
@@ -668,9 +678,12 @@ namespace Week14.Combat
                 Bullets.Restore(Bullets.MaxBullets, BulletChangeSource.Generic);
             }
 
+            Vector3 clearCenter = Context.CombatCenterOrigin.position;
+            PlayInvulnerableAmmoRefillBlankVfx(clearCenter);
+
             if (invulnerableAmmoRefillParryClearRadius > 0f)
             {
-                ParryController.AutoParryProjectilesNear(Context.CombatCenterOrigin.position, invulnerableAmmoRefillParryClearRadius);
+                ParryController.AutoParryProjectilesNear(clearCenter, invulnerableAmmoRefillParryClearRadius);
             }
 
             DamageReceiver.PlayHitStop();
@@ -689,6 +702,7 @@ namespace Week14.Combat
         {
             invulnerableAmmoRefillActive = true;
             PushExternalInvulnerability();
+            UpdateBodyColor(true);
 
             yield return new WaitForSeconds(seconds);
 
@@ -712,7 +726,74 @@ namespace Week14.Combat
 
             invulnerableAmmoRefillActive = false;
             invulnerableAmmoRefillRoutine = null;
+            invulnerableAmmoRefillBlankVfxPrefab = null;
             PopExternalInvulnerability();
+            UpdateBodyColor(true);
+        }
+
+        private void ApplyInvulnerableAmmoRefillTint(bool force = false)
+        {
+            if (!invulnerableAmmoRefillActive)
+            {
+                return;
+            }
+
+            SpriteRenderer[] renderers = Context.BodyRenderers;
+            if (renderers == null || renderers.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                SpriteRenderer renderer = renderers[i];
+                if (renderer == null)
+                {
+                    continue;
+                }
+
+                Color targetColor = Color.Lerp(renderer.color, InvulnerableAmmoRefillTint, InvulnerableAmmoRefillTintAmount);
+                targetColor.a = renderer.color.a;
+                if (force || renderer.color != targetColor)
+                {
+                    renderer.color = targetColor;
+                }
+            }
+        }
+
+        private void PlayInvulnerableAmmoRefillBlankVfx(Vector3 position)
+        {
+            if (invulnerableAmmoRefillBlankVfxPrefab == null)
+            {
+                return;
+            }
+
+            GameObject instance = Instantiate(invulnerableAmmoRefillBlankVfxPrefab, position, Quaternion.identity);
+            ParticleSystemRenderer[] renderers = instance.GetComponentsInChildren<ParticleSystemRenderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null)
+                {
+                    renderers[i].sortingOrder = Mathf.Max(renderers[i].sortingOrder, 74);
+                }
+            }
+
+            float lifetimeSeconds = 0.1f;
+            ParticleSystem[] particles = instance.GetComponentsInChildren<ParticleSystem>(true);
+            for (int i = 0; i < particles.Length; i++)
+            {
+                ParticleSystem particle = particles[i];
+                if (particle == null)
+                {
+                    continue;
+                }
+
+                ParticleSystem.MainModule main = particle.main;
+                lifetimeSeconds = Mathf.Max(lifetimeSeconds, main.duration + main.startLifetime.constantMax);
+                particle.Play(true);
+            }
+
+            Destroy(instance, lifetimeSeconds);
         }
 
         private bool TryBeginExecution()
