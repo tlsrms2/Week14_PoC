@@ -174,7 +174,12 @@ MonoBehaviour:
         \uC54C\uACA0\uC5B4."
       sfxId: 
     - name: "\uC774\uC628"
-      text: " \uB098\uB3C4 \uC774\uC81C \uB0B4\uB824\uB193\uC744\uAC8C."
+      text: " \uB098\uC05C \uAC78 \uB3C4\uB824\uB0B4\uB294 \uAC8C \uB05D\uC774 \uC544\uB2C8\uB77C,
+        \uB0A8\uC740 \uC0C1\uCC98\uB3C4 \uB3CC\uBD10\uC57C \uD55C\uB2E4\uB294 \uAC78."
+      sfxId: 
+    - name: "\uC774\uC628"
+      text: " \uB098\uB3C4 \uC774\uC81C \uADF8 \uBC29\uBC95\uC744 \uCC3E\uC544\uBCF4\uB824\uACE0
+        \uD574."
       sfxId: 
     - name: "\uC774\uC628"
       text: " ...\uC774\uC81C \uAC08\uAC8C."
