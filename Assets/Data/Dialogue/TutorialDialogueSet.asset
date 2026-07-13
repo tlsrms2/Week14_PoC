@@ -71,8 +71,8 @@ MonoBehaviour:
       sfxId: 
       explanation:
         enabled: 1
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: c4864a748d05596468b073b8f30f11b8, type: 3}
         loopVideo: 1
         title: "\uC774\uB3D9"
         text: " WASD \uD0A4\uB97C \uB20C\uB7EC \uC774\uB3D9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
@@ -120,8 +120,8 @@ MonoBehaviour:
       sfxId: 
       explanation:
         enabled: 0
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: 1c21faef0d45f3e4eb9e12b1dbebcafb, type: 3}
         loopVideo: 1
         title: "\uAE30\uBCF8 \uACF5\uACA9"
         text: " \uB9C8\uC6B0\uC2A4 \uC67C\uD074\uB9AD\uC744 \uD1B5\uD574, \uD0C4\uD658\uD615
@@ -170,7 +170,7 @@ MonoBehaviour:
       explanation:
         enabled: 1
         image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
+        video: {fileID: 32900000, guid: 1c21faef0d45f3e4eb9e12b1dbebcafb, type: 3}
         loopVideo: 1
         title: "\uAE30\uBCF8 \uACF5\uACA9"
         text: " \uB9C8\uC6B0\uC2A4 \uC88C\uD074\uB9AD\uC744 \uD1B5\uD574 \uCEE4\uC11C
@@ -418,11 +418,47 @@ MonoBehaviour:
       sfxId: 
       explanation:
         enabled: 0
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
+        image: {fileID: 0}
         video: {fileID: 0}
         loopVideo: 1
         title: 
         text: 
+        localizedTitle:
+          m_TableReference:
+            m_TableCollectionName: 
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: 
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+      localizedSpeaker:
+        m_TableReference:
+          m_TableCollectionName: 
+        m_TableEntryReference:
+          m_KeyId: 0
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: 
+        m_TableEntryReference:
+          m_KeyId: 0
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - speaker: ERIS
       text: "\uB610\uD55C \uC0AC\uACA9 \uC2DC\uC5D0\uB294 HUD\uC5D0 \uD45C\uC2DC\uB418\uB294
         \uD0C4\uD658\uD615 \uC5D0\uB108\uC9C0 \uCF54\uC5B4\uAC00 \uC18C\uBAA8\uB429\uB2C8\uB2E4."
@@ -579,8 +615,8 @@ MonoBehaviour:
       sfxId: 
       explanation:
         enabled: 1
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: ee6b2576b729a4140a15050a2ab16d1b, type: 3}
         loopVideo: 1
         title: "\uD53C\uACA9"
         text: " \uC801\uC758 \uACF5\uACA9\uC5D0 \uB9DE\uC73C\uBA74 \uD0C4\uD658\uD615
@@ -794,8 +830,8 @@ MonoBehaviour:
       sfxId: 
       explanation:
         enabled: 1
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: d4786d59a98a388469a31cd923fea752, type: 3}
         loopVideo: 1
         title: "\uC694\uACA9"
         text: " \uB9C8\uC6B0\uC2A4 \uC6B0\uD074\uB9AD\uC744 \uD1B5\uD574 ARGUS \uC548\uAD6C\uB85C
@@ -963,8 +999,8 @@ MonoBehaviour:
       sfxId: 
       explanation:
         enabled: 1
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
+        image: {fileID: 0}
+        video: {fileID: 32900000, guid: 9330132c544731f44830ab032d80a17e, type: 3}
         loopVideo: 1
         title: "\uACFC\uBD80\uD558"
         text: " \uD0C4\uD658\uD615 \uC5D0\uB108\uC9C0 \uCF54\uC5B4\uB294 \uC77C\uC815
@@ -1020,7 +1056,7 @@ MonoBehaviour:
       explanation:
         enabled: 1
         image: {fileID: 0}
-        video: {fileID: 0}
+        video: {fileID: 32900000, guid: 38a52d6a550cbe647ad53da9be558915, type: 3}
         loopVideo: 1
         title: "\uC2A4\uD0AC"
         text: " \uC2A4\uD398\uC774\uC2A4\uBC14\uB97C \uB20C\uB7EC \uC2A4\uD0AC\uC744
