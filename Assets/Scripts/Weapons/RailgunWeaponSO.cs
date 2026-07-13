@@ -21,6 +21,12 @@ namespace Week14.Weapons
         [BossGraphSfxId]
         [SerializeField] private string fireSfxId = string.Empty;
 
+        public float LaserSpeed => laserSpeed;
+        public float LaserLifetimeSeconds => laserLifetimeSeconds;
+        public float BeamVisualSeconds => beamVisualSeconds;
+        public float BeamWidth => beamWidth;
+        public Color BeamColor => beamColor;
+
         public override void BeginAttack(PlayerShooter shooter)
         {
             int bulletCount = shooter.CurrentBullets;

@@ -89,6 +89,9 @@ namespace Week14.Combat
             preserveLaunchDirectionOnLaunch = false;
             ignorePlayerCollision = false;
             externalMotionDriven = false;
+            reflectedByPlayer = false;
+            reflectedDamage = 0;
+            reflectedTarget = null;
             ResetClonedPathIndicators();
             launched = projectileChargeSeconds <= 0f;
             lastWallCheckPosition = transform.position;
@@ -192,10 +195,22 @@ namespace Week14.Combat
                     return;
                 }
 
+                if (reflectedByPlayer && TryResolveReflectedEnemyCollisionSweep())
+                {
+                    return;
+                }
+
                 if (!externalMotionDriven)
                 {
-                    TickHoming();
-                    TickRuntimeHoming();
+                    if (reflectedByPlayer)
+                    {
+                        RefreshReflectedDirection();
+                    }
+                    else
+                    {
+                        TickHoming();
+                        TickRuntimeHoming();
+                    }
                 }
 
                 if (!externalMotionDriven && body != null)
@@ -275,6 +290,9 @@ namespace Week14.Combat
             preserveLaunchDirectionOnLaunch = false;
             ignorePlayerCollision = false;
             externalMotionDriven = false;
+            reflectedByPlayer = false;
+            reflectedDamage = 0;
+            reflectedTarget = null;
             resolved = false;
             isDestroying = false;
             launched = true;

@@ -53,6 +53,12 @@ namespace Week14.Combat
         private Health lockOnTarget;
         private SpriteRenderer[] bodyRenderers;
         private Color[] bodyBaseColors;
+        private Sprite[] bodyBaseSprites;
+        private Vector3[] bodyBaseLocalPositions;
+        private Quaternion[] bodyBaseLocalRotations;
+        private Vector3[] bodyBaseLocalScales;
+        private bool[] bodyBaseFlipX;
+        private bool[] bodyBaseFlipY;
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 #endif
@@ -76,6 +82,24 @@ namespace Week14.Combat
         private bool nextAttackDamageMultiplierArmed;
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
+
+        public readonly struct PlayerAttackEchoInfo
+        {
+            public PlayerAttackEchoInfo(BaseWeaponSO weapon, int damage, float range, float reflectedProjectileSpeed)
+            {
+                Weapon = weapon;
+                Damage = damage;
+                Range = range;
+                ReflectedProjectileSpeed = reflectedProjectileSpeed;
+            }
+
+            public BaseWeaponSO Weapon { get; }
+            public int Damage { get; }
+            public float Range { get; }
+            public float ReflectedProjectileSpeed { get; }
+        }
+
+        public event Action<PlayerAttackEchoInfo> PlayerAttackPerformed;
         private Coroutine invulnerableAmmoRefillRoutine;
         private float invulnerableAmmoRefillParryClearRadius;
         private GameObject invulnerableAmmoRefillBlankVfxPrefab;
@@ -258,6 +282,36 @@ namespace Week14.Combat
             {
                 get => controller.bodyBaseColors;
                 internal set => controller.bodyBaseColors = value;
+            }
+            public Sprite[] BodyBaseSprites
+            {
+                get => controller.bodyBaseSprites;
+                internal set => controller.bodyBaseSprites = value;
+            }
+            public Vector3[] BodyBaseLocalPositions
+            {
+                get => controller.bodyBaseLocalPositions;
+                internal set => controller.bodyBaseLocalPositions = value;
+            }
+            public Quaternion[] BodyBaseLocalRotations
+            {
+                get => controller.bodyBaseLocalRotations;
+                internal set => controller.bodyBaseLocalRotations = value;
+            }
+            public Vector3[] BodyBaseLocalScales
+            {
+                get => controller.bodyBaseLocalScales;
+                internal set => controller.bodyBaseLocalScales = value;
+            }
+            public bool[] BodyBaseFlipX
+            {
+                get => controller.bodyBaseFlipX;
+                internal set => controller.bodyBaseFlipX = value;
+            }
+            public bool[] BodyBaseFlipY
+            {
+                get => controller.bodyBaseFlipY;
+                internal set => controller.bodyBaseFlipY = value;
             }
             public float FinalDeathCameraReturnSeconds => controller.finalDeathCameraReturnSeconds;
             public float VictoryPanelDelaySeconds => controller.victoryPanelDelaySeconds;
@@ -645,6 +699,15 @@ namespace Week14.Combat
         {
             nextAttackDamageMultiplierArmed = multiplier > 1f;
             nextAttackDamageMultiplier = Mathf.Max(1f, multiplier);
+        }
+
+        internal void NotifyPlayerAttackPerformed(int damage, float range = 0f, float reflectedProjectileSpeed = 0f)
+        {
+            if (damage > 0)
+            {
+                BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
+                PlayerAttackPerformed?.Invoke(new PlayerAttackEchoInfo(weapon, damage, range, reflectedProjectileSpeed));
+            }
         }
 
         internal float ConsumeNextAttackDamageMultiplier()
