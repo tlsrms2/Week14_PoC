@@ -34,7 +34,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  cooldownSeconds: 20
+  cooldownSeconds: 1
   price: 2
   durationSeconds: 10
   damageMultiplier: 0.5

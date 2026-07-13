@@ -27,6 +27,11 @@ namespace Week14.Weapons
         [BossGraphSfxId]
         [SerializeField] private string swingSfxId = string.Empty;
 
+        public float MaxAttackRange => maxAttackRange;
+        public Color RangeFlashColor => rangeFlashColor;
+        public float RangeFlashSeconds => rangeFlashSeconds;
+        public float ReflectedProjectileSpeed => reflectedProjectileSpeed;
+
         public override void BeginAttack(PlayerShooter shooter)
         {
         }

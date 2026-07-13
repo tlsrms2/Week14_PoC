@@ -185,7 +185,7 @@ namespace Week14.Combat
 
             ClearProjectilesInSemicircle(origin, direction, range);
             DamageEnemiesInSemicircle(origin, direction, range, damage);
-            context.Owner.NotifyPlayerAttackPerformed(damage);
+            context.Owner.NotifyPlayerAttackPerformed(damage, range);
             ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
 
             if (!string.IsNullOrEmpty(slashSfxId))
@@ -211,6 +211,7 @@ namespace Week14.Combat
             Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
 
             ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
+            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
             ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
 
             if (!string.IsNullOrEmpty(swingSfxId))
@@ -475,7 +476,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(pelletCount >= 2 ? "ShotgunFire" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
-            context.Owner.NotifyPlayerAttackPerformed(pelletDamage * pelletCount);
+            context.Owner.NotifyPlayerAttackPerformed(pelletDamage);
         }
 
         private PlayerProjectile ResolveProjectilePrefab(PlayerCombatConfig config)
