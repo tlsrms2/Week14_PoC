@@ -192,6 +192,31 @@ namespace Week14.Combat
             }
         }
 
+        public void SwingBaseballBat(
+            int reflectedDamage,
+            float range,
+            float reflectedSpeed,
+            Color rangeFlashColor,
+            float rangeFlashSeconds,
+            string swingSfxId)
+        {
+            if (range <= 0f)
+            {
+                return;
+            }
+
+            Vector2 origin = context.CombatCenterOrigin.position;
+            Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
+
+            ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
+            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
+
+            if (!string.IsNullOrEmpty(swingSfxId))
+            {
+                SoundManager.PlaySfx(swingSfxId);
+            }
+        }
+
         private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
         {
             IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
@@ -221,6 +246,40 @@ namespace Week14.Combat
                     0.16f,
                     new Color(0.9f, 0.9f, 1f, 0.85f));
                 projectile.TryDestroyByInterceptShot(out _);
+            }
+        }
+
+        private void ReflectProjectilesInSemicircle(
+            Vector2 origin,
+            Vector2 direction,
+            float range,
+            int reflectedDamage,
+            float reflectedSpeed)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile == null || !projectile.CanBeIntercepted)
+                {
+                    continue;
+                }
+
+                if (!OverlapsSemicircle(projectile, origin, direction, range))
+                {
+                    continue;
+                }
+
+                if (projectile.TryReflectTowardOwnerBoss(reflectedSpeed, reflectedDamage, out _))
+                {
+                    PlayerDashVfx.PlayProjectileAbsorb(
+                        context.CoroutineHost,
+                        projectile,
+                        origin,
+                        0.12f,
+                        new Color(1f, 0.65f, 0.25f, 0.85f));
+                }
             }
         }
 
