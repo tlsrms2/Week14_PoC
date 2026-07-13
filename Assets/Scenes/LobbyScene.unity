@@ -5369,6 +5369,81 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &97801260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 97801261}
+  - component: {fileID: 97801263}
+  - component: {fileID: 97801262}
+  m_Layer: 5
+  m_Name: UIBlocker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &97801261
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97801260}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 633254205}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &97801262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97801260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &97801263
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97801260}
+  m_CullTransparentMesh: 1
 --- !u!1 &106040038
 GameObject:
   m_ObjectHideFlags: 0
@@ -7323,7 +7398,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: -5
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &633254205
 RectTransform:
@@ -7337,6 +7412,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 97801261}
   - {fileID: 3493791941530652632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8831,24 +8907,70 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameStoryController
   dialoguePanel: {fileID: 7094148038695635875}
+  uiBlocker: {fileID: 97801260}
+  mapObjectsRoot: {fileID: 135393372}
+  lobbyMenuController: {fileID: 424779773}
+  blockMapObjectsDuringStory: 1
+  lobbyTutorialCues:
+  - episodeId: 5
+    lineNumber: 2
+    activeObjects:
+    - {fileID: 2083016464}
+    hideWhenLineEnds: 1
+    onEnter:
+      m_PersistentCalls:
+        m_Calls: []
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
+  - episodeId: 5
+    lineNumber: 3
+    activeObjects: []
+    hideWhenLineEnds: 0
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OpenBossPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument:
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
   firstStoryDelaySeconds: 0.1
   playbackRules:
   - sequence: {fileID: 11400000, guid: 247b2b204e87a4c488c5f30030a873af, type: 2}
     requiredClearedBossIds: []
-    requiredSeenStoryEpisodes: 
+    requiredClearedBossCount: 0
+    requiredSeenStoryEpisodes: []
   - sequence: {fileID: 11400000, guid: 8833d761889fc8a45adbe5aa6bc38a2d, type: 2}
     requiredClearedBossIds: []
-    requiredSeenStoryEpisodes: 
+    requiredClearedBossCount: 0
+    requiredSeenStoryEpisodes: []
+  - sequence: {fileID: 11400000, guid: 5400ed70730d78041a3ccd67c24d9d5e, type: 2}
+    requiredClearedBossIds: []
+    requiredClearedBossCount: 1
+    requiredSeenStoryEpisodes: []
   - sequence: {fileID: 11400000, guid: 46e5e5751d8dc0049975e62c45ed8632, type: 2}
     requiredClearedBossIds:
     - Hog
     - Muscle
-    requiredSeenStoryEpisodes: 
+    requiredClearedBossCount: 0
+    requiredSeenStoryEpisodes: []
   - sequence: {fileID: 11400000, guid: 950a67ae5433a2745bd505b00dc8e28d, type: 2}
     requiredClearedBossIds:
     - Assassin
     - Conductor
-    requiredSeenStoryEpisodes: 
+    requiredClearedBossCount: 0
+    requiredSeenStoryEpisodes: []
   skipHoldSeconds: 1.5
 --- !u!4 &1089529234
 Transform:
@@ -16584,7 +16706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 338107754997006502, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 750012131253796950, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_IsActive
