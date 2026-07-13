@@ -9,8 +9,12 @@ namespace Week14.Weapons
     {
         [Tooltip("공격속도: 한 번 휘두른 뒤 다음 공격이 가능해지기까지의 대기시간(초)입니다.")]
         [SerializeField, Min(0f)] private float attackCooldownSeconds = 0.5f;
-        [Tooltip("공격범위: 반원 판정의 반지름입니다. 조준 방향 기준 앞쪽 반원 안의 적탄을 보스 본체 쪽으로 반사합니다.")]
-        [SerializeField, Min(0f)] private float attackRange = 2f;
+        [Tooltip("차징하지 않았을 때의 최소 반사 범위입니다.")]
+        [SerializeField, Min(0f)] private float minAttackRange = 1.2f;
+        [Tooltip("최대 차징했을 때의 최대 반사 범위입니다.")]
+        [SerializeField, Min(0f)] private float maxAttackRange = 3f;
+        [Tooltip("최소 범위에서 최대 범위까지 커지는 데 걸리는 차징 시간(초)입니다.")]
+        [SerializeField, Min(0.01f)] private float maxChargeSeconds = 2f;
         [Tooltip("반사된 적탄이 적에게 줄 피해량입니다.")]
         [SerializeField, Min(0)] private int reflectedDamage = 3;
         [Tooltip("반사된 적탄의 고정 이동 속도입니다. 반사 전 탄막 속도와 무관하게 이 값으로 덮어씁니다.")]
@@ -25,8 +29,14 @@ namespace Week14.Weapons
 
         public override void BeginAttack(PlayerShooter shooter)
         {
+        }
+
+        public override void ReleaseAttack(PlayerShooter shooter, float chargeTime)
+        {
             if (shooter.TryConsumeBayonetCooldown(attackCooldownSeconds))
             {
+                float charge01 = maxChargeSeconds > 0f ? Mathf.Clamp01(chargeTime / maxChargeSeconds) : 1f;
+                float attackRange = Mathf.Lerp(minAttackRange, maxAttackRange, charge01);
                 shooter.SwingBaseballBat(
                     reflectedDamage,
                     attackRange,
@@ -35,8 +45,13 @@ namespace Week14.Weapons
                     rangeFlashSeconds,
                     swingSfxId);
             }
+        }
 
-            shooter.EndCharge();
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            maxAttackRange = Mathf.Max(minAttackRange, maxAttackRange);
+            maxChargeSeconds = Mathf.Max(0.01f, maxChargeSeconds);
         }
     }
 }

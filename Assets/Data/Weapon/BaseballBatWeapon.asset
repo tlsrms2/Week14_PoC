@@ -73,7 +73,9 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   attackCooldownSeconds: 0.5
-  attackRange: 2
+  minAttackRange: 1.2
+  maxAttackRange: 3
+  maxChargeSeconds: 2
   reflectedDamage: 3
   reflectedProjectileSpeed: 8
   rangeFlashColor: {r: 1, g: 0.55, b: 0.1, a: 0.6}
