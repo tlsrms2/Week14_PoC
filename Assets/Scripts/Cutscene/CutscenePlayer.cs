@@ -39,7 +39,9 @@ namespace Week14.Cutscene
         private CutsceneDefinition currentDefinition;
         private Coroutine playRoutine;
         private Coroutine motionRoutine;
+        private Coroutine backgroundGlitchRoutine;
         private Action completed;
+        private Sprite backgroundGlitchBaseSprite;
         private bool isPlaying;
         private bool isTyping;
         private bool advanceRequested;
@@ -188,6 +190,7 @@ namespace Week14.Cutscene
                 }
             }
 
+            StopBackgroundGlitch();
             yield return CoverScreenForCompletion(lastPlayedStep);
             CompletePlayback(invokeCompleted: true);
         }
@@ -215,10 +218,12 @@ namespace Week14.Cutscene
 
         private IEnumerator ExecuteStep(CutsceneStep step, bool hasPreviousStep)
         {
+            StopBackgroundGlitch();
             ClearDialogueView();
 
             yield return ApplyStepTransition(step, hasPreviousStep);
             StartBackgroundMotion(step);
+            StartBackgroundGlitch(step);
             ApplyAudio(step);
 
             IReadOnlyList<CutsceneDialogue> dialogues = step.Dialogues;
@@ -514,6 +519,112 @@ namespace Week14.Cutscene
             motionRoutine = null;
         }
 
+        private void StartBackgroundGlitch(CutsceneStep step)
+        {
+            StopBackgroundGlitch();
+            if (step == null || !step.HasBackgroundGlitch || backgroundImage == null)
+            {
+                return;
+            }
+
+            backgroundGlitchBaseSprite = backgroundImage.sprite;
+            if (backgroundGlitchBaseSprite == null)
+            {
+                return;
+            }
+
+            backgroundGlitchRoutine = StartCoroutine(PlayBackgroundGlitch(step));
+        }
+
+        private IEnumerator PlayBackgroundGlitch(CutsceneStep step)
+        {
+            IReadOnlyList<Sprite> glitchFrames = step.GlitchFrames;
+            int previousFrameIndex = -1;
+
+            while (!skipRequested && !skipSectionRequested)
+            {
+                SetImage(backgroundImage, backgroundGlitchBaseSprite, 1f);
+                yield return WaitForBackgroundGlitchSeconds(
+                    UnityEngine.Random.Range(step.GlitchHoldMinSeconds, step.GlitchHoldMaxSeconds));
+
+                if (skipRequested || skipSectionRequested)
+                {
+                    break;
+                }
+
+                int frameCount = UnityEngine.Random.Range(step.GlitchBurstMinFrames, step.GlitchBurstMaxFrames + 1);
+                for (int i = 0; i < frameCount && !skipRequested && !skipSectionRequested; i++)
+                {
+                    Sprite frame = GetNextGlitchFrame(glitchFrames, ref previousFrameIndex);
+                    if (frame != null)
+                    {
+                        SetImage(backgroundImage, frame, 1f);
+                    }
+
+                    yield return WaitForBackgroundGlitchSeconds(
+                        UnityEngine.Random.Range(step.GlitchFrameMinSeconds, step.GlitchFrameMaxSeconds));
+                }
+            }
+
+            SetImage(backgroundImage, backgroundGlitchBaseSprite, 1f);
+            backgroundGlitchRoutine = null;
+        }
+
+        private IEnumerator WaitForBackgroundGlitchSeconds(float seconds)
+        {
+            for (float elapsed = 0f;
+                 elapsed < seconds && !skipRequested && !skipSectionRequested;
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
+            }
+        }
+
+        private static Sprite GetNextGlitchFrame(IReadOnlyList<Sprite> frames, ref int previousFrameIndex)
+        {
+            if (frames == null || frames.Count == 0)
+            {
+                return null;
+            }
+
+            int startIndex = UnityEngine.Random.Range(0, frames.Count);
+            for (int i = 0; i < frames.Count; i++)
+            {
+                int index = (startIndex + i) % frames.Count;
+                if (index != previousFrameIndex && frames[index] != null)
+                {
+                    previousFrameIndex = index;
+                    return frames[index];
+                }
+            }
+
+            for (int i = 0; i < frames.Count; i++)
+            {
+                if (frames[i] != null)
+                {
+                    previousFrameIndex = i;
+                    return frames[i];
+                }
+            }
+
+            return null;
+        }
+
+        private void StopBackgroundGlitch()
+        {
+            if (backgroundGlitchRoutine != null)
+            {
+                StopCoroutine(backgroundGlitchRoutine);
+                backgroundGlitchRoutine = null;
+            }
+
+            if (backgroundGlitchBaseSprite != null)
+            {
+                SetImage(backgroundImage, backgroundGlitchBaseSprite, 1f);
+                backgroundGlitchBaseSprite = null;
+            }
+        }
+
         private RectTransform GetBackgroundMotionTarget()
         {
             if (backgroundMotionTarget != null)
@@ -566,6 +677,7 @@ namespace Week14.Cutscene
             }
 
             StopBackgroundMotion();
+            StopBackgroundGlitch();
 
             if (isPlaying)
             {
@@ -608,6 +720,7 @@ namespace Week14.Cutscene
 
         private void CompletePlayback(bool invokeCompleted)
         {
+            StopBackgroundGlitch();
             Action callback = completed;
             bool keepCovered = keepCoveredOnCompleted;
             playRoutine = null;

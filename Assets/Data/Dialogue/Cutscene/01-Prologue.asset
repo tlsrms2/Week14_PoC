@@ -92,6 +92,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -190,17 +197,24 @@ MonoBehaviour:
     bgmFadeSeconds: 0
     transitionMode: 0
     fadeInSeconds: 2
-    fadeOutSeconds: 0.25
+    fadeOutSeconds: 2
     darkHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 55f8c33457421c44c89d290135147a36, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 5fb6679a4b06d2f4b875b598d9005053, type: 3}
     dialogues:
     - name: ERIS
       text: "\uC2E0\uCCB4 \uAE30\uB2A5 \uC218\uBCF5\uB960 79%. \uC6B0\uCE21 \uC758\uC218
@@ -365,13 +379,20 @@ MonoBehaviour:
     bgmFadeSeconds: 0
     transitionMode: 0
     fadeInSeconds: 2
-    fadeOutSeconds: 0.25
-    darkHoldSeconds: 0
+    fadeOutSeconds: 2
+    darkHoldSeconds: 2
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
