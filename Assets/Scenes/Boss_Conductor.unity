@@ -3612,10 +3612,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 816328986559272461, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1023516959}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
 --- !u!224 &1023516956 stripped
 RectTransform:
@@ -3627,57 +3624,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4723938107988986639, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
   m_PrefabInstance: {fileID: 1023516955}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023516958}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!1 &1023516958 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 816328986559272461, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
-  m_PrefabInstance: {fileID: 1023516955}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1023516959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023516958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
-  m_StringReference:
-    m_TableReference:
-      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
-    m_TableEntryReference:
-      m_KeyId: 2169673711616
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  m_FormatArguments: []
-  m_UpdateString:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1023516957}
-        m_TargetAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &1083349257
 GameObject:
   m_ObjectHideFlags: 0
