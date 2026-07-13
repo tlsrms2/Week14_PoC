@@ -28,6 +28,12 @@ namespace Week14.UI
 
         public void OnBossRootPointerEnter()
         {
+            if (GameModalState.BlocksGameplayInput)
+            {
+                ClearHoverHighlights();
+                return;
+            }
+
             SetActiveSafe(bossHoverHighlight, true);
             SetActiveSafe(bossHoverExtraObjects, true);
         }
@@ -40,6 +46,12 @@ namespace Week14.UI
 
         public void OnLoadoutRootPointerEnter()
         {
+            if (GameModalState.BlocksGameplayInput)
+            {
+                ClearHoverHighlights();
+                return;
+            }
+
             SetActiveSafe(loadoutHoverHighlight, true);
             SetActiveSafe(loadoutHoverExtraObjects, true);
         }
@@ -68,6 +80,14 @@ namespace Week14.UI
         public void CloseBossPanel()
         {
             SetActiveSafe(bossPanelContent != null ? bossPanelContent.gameObject : null, false);
+        }
+
+        public void ClearHoverHighlights()
+        {
+            SetActiveSafe(bossHoverHighlight, false);
+            SetActiveSafe(bossHoverExtraObjects, false);
+            SetActiveSafe(loadoutHoverHighlight, false);
+            SetActiveSafe(loadoutHoverExtraObjects, false);
         }
 
         private void Awake()
