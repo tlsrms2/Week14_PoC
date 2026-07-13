@@ -2905,6 +2905,14 @@ PrefabInstance:
       propertyPath: image
       value: 
       objectReference: {fileID: 34756400}
+    - target: {fileID: 2303374336768699719, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: colorOnlyRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303374336768699719, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: 'colorOnlyRenderers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 741641527}
     - target: {fileID: 2328319091128216988, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: playerHpView
       value: 
@@ -2958,6 +2966,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+--- !u!212 &741641527 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5103855550194505473, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+  m_PrefabInstance: {fileID: 741641526}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &802202052
 GameObject:
   m_ObjectHideFlags: 0
@@ -5526,6 +5539,10 @@ PrefabInstance:
       propertyPath: hpEmptyExecutionSeconds
       value: 50000
       objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: finalDeathExplosionPrefab
+      value: 
+      objectReference: {fileID: 507182190992537921, guid: 0bd30bab3f957254f8fc4b3ef1d43dfa, type: 3}
     - target: {fileID: 457855907784511599, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: m_Sprite
       value: 

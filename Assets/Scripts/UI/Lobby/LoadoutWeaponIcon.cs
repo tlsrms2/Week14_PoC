@@ -16,15 +16,14 @@ namespace Week14.UI
         [SerializeField] private GameObject lockMarkOverlay;
         [Tooltip("미해금 상태일 때 무기 이미지 대신 표시할 스프라이트입니다. 비워두면 그냥 아이콘을 숨깁니다.")]
         [SerializeField] private Sprite lockedPlaceholderSprite;
-        [Tooltip("지금 장착되어 있는 무기일 때 적용할 색상입니다. 기본 이미지 색과 구분되는 색으로 설정하세요.")]
-        [SerializeField] private Color equippedTintColor = new(1f, 0.85f, 0.3f);
+        [Tooltip("지금 장착되어 있는 무기일 때 SetActive(true)로 표시할 이미지 오브젝트입니다.")]
+        [SerializeField] private GameObject equippedIndicator;
         [Tooltip("이 무기가 마지막으로 호버되었을 때 켤 테두리 오브젝트입니다. 장착 강조와는 별개로 동작합니다.")]
         [SerializeField] private GameObject hoverOutline;
         [Tooltip("잠김 또는 구매 상태일 때만(=미해금이 아닐 때만) 표시할 이미지 패널입니다.")]
         [SerializeField] private GameObject unlockedInfoPanel;
 
         private Image iconImage;
-        private Color baseColor;
         private bool subscribedToWeaponChanged;
 
         public BaseWeaponSO Weapon => weapon;
@@ -37,7 +36,7 @@ namespace Week14.UI
         private void OnEnable()
         {
             RefreshVisualState();
-            RefreshEquippedTint();
+            RefreshEquippedIndicator();
             TrySubscribe();
             LoadoutHoverHighlight.HoveredSkillIdChanged += HandleHoveredSkillChanged;
 
@@ -49,7 +48,7 @@ namespace Week14.UI
         {
             // WeaponLoadoutManager는 씬에 늦게 생기는 DontDestroyOnLoad 싱글턴이라
             // OnEnable 시점엔 Instance가 아직 null일 수 있다. Start에서 한 번 더 시도한다.
-            RefreshEquippedTint();
+            RefreshEquippedIndicator();
             TrySubscribe();
         }
 
@@ -150,7 +149,7 @@ namespace Week14.UI
 
         private void HandleWeaponChanged(BaseWeaponSO _)
         {
-            RefreshEquippedTint();
+            RefreshEquippedIndicator();
         }
 
         private void HandleHoveredSkillChanged(string hoveredSkillId)
@@ -161,17 +160,12 @@ namespace Week14.UI
             }
         }
 
-        private void RefreshEquippedTint()
+        private void RefreshEquippedIndicator()
         {
             EnsureInitialized();
 
-            if (iconImage == null)
-            {
-                return;
-            }
-
             bool isEquipped = weapon != null && WeaponLoadoutManager.Instance != null && WeaponLoadoutManager.Instance.CurrentWeapon == weapon;
-            iconImage.color = isEquipped ? equippedTintColor : baseColor;
+            SetActiveSafe(equippedIndicator, isEquipped);
         }
 
         private void EnsureInitialized()
@@ -182,11 +176,6 @@ namespace Week14.UI
             }
 
             iconImage = GetComponent<Image>();
-
-            if (iconImage != null)
-            {
-                baseColor = iconImage.color;
-            }
         }
 
         private LoadoutSkillLockState GetState()

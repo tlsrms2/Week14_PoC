@@ -55,6 +55,18 @@ MonoBehaviour:
     m_Key: muscle.description
     m_Metadata:
       m_Items: []
+  - m_Id: 4200008682668032
+    m_Key: assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200012361072640
+    m_Key: assassin.crime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200013929742336
+    m_Key: assassin.description
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
