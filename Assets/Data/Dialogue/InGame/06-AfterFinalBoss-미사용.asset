@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2e1d52387b43224a9e8fed941adda42, type: 3}
-  m_Name: 06-AfterFinalBoss
+  m_Name: "06-AfterFinalBoss-\uBBF8\uC0AC\uC6A9"
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameStorySequenceSO
   episodeId: 2
   skippable: 1
