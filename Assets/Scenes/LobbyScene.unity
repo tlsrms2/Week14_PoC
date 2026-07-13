@@ -7718,6 +7718,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f1a36b78306f49f4d8ed682a59847e47, type: 2}
   - {fileID: 11400000, guid: cff2e484394f3804f8bdf8ffd818c612, type: 2}
   weaponDatabase: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
+  challengeDatabase: {fileID: 11400000, guid: 7a82053fefc42cd49941756c8089c426, type: 2}
   enableUnlockAllHotkey: 1
   enableLockAllHotkey: 1
   unlockAllHotkey: 102
@@ -7726,7 +7727,9 @@ MonoBehaviour:
   targetPassiveSkill: {fileID: 0}
   targetBoss: {fileID: 0}
   targetWeapon: {fileID: 0}
+  targetChallenge: {fileID: 0}
   debugPointsToGrant: 100
+  debugPointsToSet: 0
   prologueSeen: 0
   tutorialCompleted: 0
   pastSeen: 0

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Challenge;
 using Week14.Skills;
 using Week14.Story;
 using Week14.UI;
@@ -10,20 +11,25 @@ using UnityEngine.InputSystem;
 
 namespace Week14.Save
 {
-    [Tooltip("테스트용 개발자 기능입니다. 스킬/보스를 즉시 해금합니다.")]
+    [Tooltip("테스트용 개발자 기능입니다. GameSaveData가 저장하는 모든 항목을 즉시 조작/초기화합니다.")]
     public sealed class DevUnlockTools : MonoBehaviour
     {
+        [Header("데이터베이스 참조")]
         [Tooltip("전체 해금 대상 스킬을 가져올 데이터베이스입니다.")]
         [SerializeField] private SkillDatabase skillDatabase;
         [Tooltip("전체 해금 대상 패시브 스킬을 가져올 데이터베이스입니다.")]
         [SerializeField] private PassiveSkillDatabase passiveSkillDatabase;
-        [Tooltip("전체 해금 대상 보스 목록입니다. 테스트하려는 보스 데이터를 등록하세요.")]
+        [Tooltip("전체 해금/클리어 처리 대상 보스 목록입니다. 테스트하려는 보스 데이터를 등록하세요.")]
         [SerializeField] private List<BossData> bosses = new();
         [Tooltip("전체 해금 대상 총기를 가져올 데이터베이스입니다.")]
         [SerializeField] private WeaponDatabase weaponDatabase;
-        [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스를 즉시 해금합니다.")]
+        [Tooltip("챌린지 전체 완료 처리/초기화 대상 챌린지를 가져올 데이터베이스입니다.")]
+        [SerializeField] private ChallengeDatabaseSO challengeDatabase;
+
+        [Header("핫키")]
+        [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스/패시브/총기를 즉시 해금합니다.")]
         [SerializeField] private bool enableUnlockAllHotkey = true;
-        [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스 해금을 되돌립니다.")]
+        [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스/패시브/총기 해금을 되돌립니다.")]
         [SerializeField] private bool enableLockAllHotkey = true;
 #if ENABLE_INPUT_SYSTEM
         [SerializeField] private Key unlockAllHotkey = Key.F9;
@@ -33,19 +39,25 @@ namespace Week14.Save
         [SerializeField] private KeyCode lockAllHotkey = KeyCode.F10;
 #endif
 
-        [Header("개별 해금/되돌리기 대상")]
-        [Tooltip("아래 '선택 스킬 해금/되돌리기'가 대상으로 삼을 스킬입니다.")]
+        [Header("개별 대상 (선택 스킬/보스/총기/챌린지 기능이 사용)")]
+        [Tooltip("아래 '선택 스킬' 관련 기능이 대상으로 삼을 스킬입니다.")]
         [SerializeField] private BaseSkillSO targetSkill;
-        [Tooltip("아래 '선택 패시브 스킬 해금/되돌리기'가 대상으로 삼을 패시브 스킬입니다.")]
+        [Tooltip("아래 '선택 패시브 스킬' 관련 기능이 대상으로 삼을 패시브 스킬입니다.")]
         [SerializeField] private BasePassiveSkillSO targetPassiveSkill;
-        [Tooltip("아래 '선택 보스 해금/되돌리기'가 대상으로 삼을 보스입니다.")]
+        [Tooltip("아래 '선택 보스' 관련 기능이 대상으로 삼을 보스입니다. '선택 챌린지' 기능도 이 보스 소속으로 취급합니다.")]
         [SerializeField] private BossData targetBoss;
-        [Tooltip("아래 '선택 총기 해금/되돌리기'가 대상으로 삼을 총기입니다.")]
+        [Tooltip("아래 '선택 총기' 관련 기능이 대상으로 삼을 총기입니다.")]
         [SerializeField] private BaseWeaponSO targetWeapon;
-        [Tooltip("'테스트 포인트 지급'이 지급할 챌린지 포인트 양입니다.")]
-        [SerializeField] private int debugPointsToGrant = 100;
+        [Tooltip("아래 '선택 챌린지' 관련 기능이 대상으로 삼을 챌린지입니다. targetBoss에 속한 챌린지를 넣으세요.")]
+        [SerializeField] private ChallengeDefinitionSO targetChallenge;
 
-        [Header("스토리 토글")]
+        [Header("챌린지 포인트")]
+        [Tooltip("'테스트 포인트 지급'이 현재 포인트에 더할 양입니다.")]
+        [SerializeField] private int debugPointsToGrant = 100;
+        [Tooltip("'포인트 값으로 설정'이 정확히 맞출 포인트 값입니다.")]
+        [SerializeField] private int debugPointsToSet;
+
+        [Header("스토리 토글 (읽기 전용 표시값 - 버튼을 눌러야 갱신됨)")]
         [SerializeField] private bool prologueSeen;
         [SerializeField] private bool tutorialCompleted;
         [SerializeField] private bool pastSeen;
@@ -82,6 +94,22 @@ namespace Week14.Save
         }
 #endif
 
+        // ---------------------------------------------------------------
+        // 0. 전체 세이브 초기화
+        // ---------------------------------------------------------------
+
+        [ContextMenu("0. 전체 세이브 초기화 (완전 리셋)")]
+        public void ResetEverything()
+        {
+            GameSaveManager.ResetEverything();
+            PullStoryTogglesFromSave();
+            Debug.Log("[DevUnlockTools] 세이브 데이터를 전부 초기화했습니다(기본 해금 상태로 복귀).");
+        }
+
+        // ---------------------------------------------------------------
+        // 해금 전체 (스킬 + 패시브 + 보스 + 총기)
+        // ---------------------------------------------------------------
+
         [ContextMenu("전체 해금 (스킬 + 패시브 + 보스 + 총기)")]
         public void UnlockAll()
         {
@@ -101,6 +129,10 @@ namespace Week14.Save
             LockAllWeapons();
             Debug.Log("[DevUnlockTools] 모든 스킬/패시브/보스/총기 해금을 되돌렸습니다.");
         }
+
+        // ---------------------------------------------------------------
+        // 스토리 토글
+        // ---------------------------------------------------------------
 
         [ContextMenu("스토리 토글/1. 전체 초기화")]
         public void ClearStoryToggles()
@@ -180,8 +212,9 @@ namespace Week14.Save
                 finalBossAftermath: false,
                 epilogue: false);
             SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, true);
+            SetStorySeen(StoryEpisodeId.LobbyTutorialSkill, true);
             PullStoryTogglesFromSave();
-            Debug.Log("[DevUnlockTools] 로비 보스 튜토리얼 완료 상태로 변경했습니다.");
+            Debug.Log("[DevUnlockTools] 로비 보스/스킬 튜토리얼 완료 상태로 변경했습니다.");
         }
 
         [ContextMenu("스토리 토글/6-1. 로비 스킬 튜토리얼 시청 초기화")]
@@ -247,6 +280,10 @@ namespace Week14.Save
                 epilogue: true);
             Debug.Log("[DevUnlockTools] 에필로그 완료 상태로 변경했습니다.");
         }
+
+        // ---------------------------------------------------------------
+        // 스킬 / 패시브 스킬 / 보스 / 총기 해금
+        // ---------------------------------------------------------------
 
         [ContextMenu("스킬 전체 해금")]
         public void UnlockAllSkills()
@@ -433,13 +470,6 @@ namespace Week14.Save
             GameSaveManager.LockPassiveSkill(targetPassiveSkill.SkillId);
         }
 
-        [ContextMenu("테스트 포인트 지급")]
-        public void GrantDebugChallengePoints()
-        {
-            GameSaveManager.AddDebugChallengePoints(debugPointsToGrant);
-            Debug.Log($"[DevUnlockTools] 챌린지 포인트 {debugPointsToGrant} 지급. 현재 보유: {GameSaveManager.ChallengePoints}");
-        }
-
         [ContextMenu("선택 보스 해금")]
         public void UnlockTargetBoss()
         {
@@ -489,6 +519,306 @@ namespace Week14.Save
             GameSaveManager.LockWeapon(targetWeapon.WeaponId);
         }
 
+        // ---------------------------------------------------------------
+        // 보스 클리어 여부 / 최고 클리어 기록
+        // ---------------------------------------------------------------
+
+        [ContextMenu("보스 클리어/전체 클리어 처리")]
+        public void ClearAllBosses()
+        {
+            foreach (BossData boss in bosses)
+            {
+                if (boss != null)
+                {
+                    GameSaveManager.ClearBoss(boss.Id);
+                }
+            }
+        }
+
+        [ContextMenu("보스 클리어/전체 클리어 되돌리기")]
+        public void UnclearAllBosses()
+        {
+            foreach (BossData boss in bosses)
+            {
+                if (boss != null)
+                {
+                    GameSaveManager.UnclearBoss(boss.Id);
+                }
+            }
+        }
+
+        [ContextMenu("보스 클리어/전체 최고기록 초기화")]
+        public void ResetAllBossClearTimes()
+        {
+            GameSaveManager.ResetAllBossClearTimes();
+        }
+
+        [ContextMenu("보스 클리어/선택 보스 클리어 처리")]
+        public void ClearTargetBoss()
+        {
+            if (targetBoss == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetBoss가 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.ClearBoss(targetBoss.Id);
+        }
+
+        [ContextMenu("보스 클리어/선택 보스 클리어 되돌리기")]
+        public void UnclearTargetBoss()
+        {
+            if (targetBoss == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetBoss가 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.UnclearBoss(targetBoss.Id);
+        }
+
+        [ContextMenu("보스 클리어/선택 보스 최고기록 초기화")]
+        public void ResetTargetBossClearTime()
+        {
+            if (targetBoss == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetBoss가 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.ResetBossClearTime(targetBoss.Id);
+        }
+
+        // ---------------------------------------------------------------
+        // 구매 상태 (챌린지 포인트로 구매한 스킬/패시브/총기)
+        // ---------------------------------------------------------------
+
+        [ContextMenu("구매 상태/스킬 구매 기록 초기화")]
+        public void ResetPurchasedSkills()
+        {
+            GameSaveManager.ResetPurchasedSkills();
+        }
+
+        [ContextMenu("구매 상태/패시브 스킬 구매 기록 초기화")]
+        public void ResetPurchasedPassiveSkills()
+        {
+            GameSaveManager.ResetPurchasedPassiveSkills();
+        }
+
+        [ContextMenu("구매 상태/총기 구매 기록 초기화")]
+        public void ResetPurchasedWeapons()
+        {
+            GameSaveManager.ResetPurchasedWeapons();
+        }
+
+        [ContextMenu("구매 상태/선택 스킬 무료 구매 처리")]
+        public void PurchaseTargetSkillFree()
+        {
+            if (targetSkill == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetSkill이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.UnlockSkill(targetSkill.SkillId);
+            GameSaveManager.PurchaseSkill(targetSkill.SkillId, 0);
+        }
+
+        [ContextMenu("구매 상태/선택 패시브 스킬 무료 구매 처리")]
+        public void PurchaseTargetPassiveSkillFree()
+        {
+            if (targetPassiveSkill == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetPassiveSkill이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.UnlockPassiveSkill(targetPassiveSkill.SkillId);
+            GameSaveManager.PurchasePassiveSkill(targetPassiveSkill.SkillId, 0);
+        }
+
+        [ContextMenu("구매 상태/선택 총기 무료 구매 처리")]
+        public void PurchaseTargetWeaponFree()
+        {
+            if (targetWeapon == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetWeapon이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.UnlockWeapon(targetWeapon.WeaponId);
+            GameSaveManager.PurchaseWeapon(targetWeapon.WeaponId, 0);
+        }
+
+        // ---------------------------------------------------------------
+        // 장착 상태 (로비 장착 슬롯)
+        // ---------------------------------------------------------------
+
+        [ContextMenu("장착 상태/장착 스킬 초기화")]
+        public void ResetEquippedSkills()
+        {
+            GameSaveManager.ResetEquippedSkills();
+        }
+
+        [ContextMenu("장착 상태/장착 패시브 스킬 초기화")]
+        public void ResetEquippedPassiveSkills()
+        {
+            GameSaveManager.ResetEquippedPassiveSkills();
+        }
+
+        [ContextMenu("장착 상태/장착 총기 초기화")]
+        public void ResetEquippedWeapon()
+        {
+            GameSaveManager.ResetEquippedWeapon();
+        }
+
+        [ContextMenu("장착 상태/선택 스킬 장착")]
+        public void EquipTargetSkill()
+        {
+            if (targetSkill == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetSkill이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.SetEquippedSkillId((int)SkillSlot.Skill1, targetSkill.SkillId);
+        }
+
+        [ContextMenu("장착 상태/선택 패시브 스킬 장착")]
+        public void EquipTargetPassiveSkill()
+        {
+            if (targetPassiveSkill == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetPassiveSkill이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.SetEquippedPassiveSkillId((int)PassiveSkillSlot.Passive1, targetPassiveSkill.SkillId);
+        }
+
+        [ContextMenu("장착 상태/선택 총기 장착")]
+        public void EquipTargetWeapon()
+        {
+            if (targetWeapon == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetWeapon이 비어있습니다.");
+                return;
+            }
+
+            GameSaveManager.SetEquippedWeaponId(targetWeapon.WeaponId);
+        }
+
+        // ---------------------------------------------------------------
+        // 챌린지 완료 / 진행 상태
+        // ---------------------------------------------------------------
+
+        [ContextMenu("챌린지/전체 완료 처리")]
+        public void CompleteAllChallenges()
+        {
+            if (challengeDatabase == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] challengeDatabase가 비어있어 챌린지를 완료 처리할 수 없습니다.");
+                return;
+            }
+
+            IReadOnlyList<BossChallengeGroup> groups = challengeDatabase.BossGroups;
+            for (int i = 0; i < groups.Count; i++)
+            {
+                BossChallengeGroup group = groups[i];
+                if (group.Boss == null)
+                {
+                    continue;
+                }
+
+                IReadOnlyList<ChallengeDefinitionSO> challenges = group.Challenges;
+                for (int j = 0; j < challenges.Count; j++)
+                {
+                    ChallengeDefinitionSO challenge = challenges[j];
+                    if (challenge == null)
+                    {
+                        continue;
+                    }
+
+                    string saveKey = GameSaveManager.BuildChallengeSaveKey(group.Boss.Id, challenge.ChallengeId);
+                    GameSaveManager.CompleteChallenge(saveKey, challenge.RewardPoint);
+                }
+            }
+
+            Debug.Log("[DevUnlockTools] 모든 챌린지를 완료 처리했습니다.");
+        }
+
+        [ContextMenu("챌린지/전체 진행 초기화 (완료 + 카운터)")]
+        public void ResetAllChallengeProgress()
+        {
+            GameSaveManager.ResetCompletedChallenges();
+            GameSaveManager.ResetChallengeCounters();
+            Debug.Log("[DevUnlockTools] 모든 챌린지 진행 상태를 초기화했습니다.");
+        }
+
+        [ContextMenu("챌린지/선택 챌린지 완료 처리")]
+        public void CompleteTargetChallenge()
+        {
+            if (!TryGetTargetChallengeSaveKey(out string saveKey))
+            {
+                return;
+            }
+
+            GameSaveManager.CompleteChallenge(saveKey, targetChallenge.RewardPoint);
+        }
+
+        [ContextMenu("챌린지/선택 챌린지 초기화")]
+        public void ResetTargetChallenge()
+        {
+            if (!TryGetTargetChallengeSaveKey(out string saveKey))
+            {
+                return;
+            }
+
+            GameSaveManager.ResetChallenge(saveKey);
+        }
+
+        private bool TryGetTargetChallengeSaveKey(out string saveKey)
+        {
+            saveKey = null;
+            if (targetBoss == null || targetChallenge == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] targetBoss/targetChallenge가 비어있습니다.");
+                return false;
+            }
+
+            saveKey = GameSaveManager.BuildChallengeSaveKey(targetBoss.Id, targetChallenge.ChallengeId);
+            return true;
+        }
+
+        // ---------------------------------------------------------------
+        // 챌린지 포인트
+        // ---------------------------------------------------------------
+
+        [ContextMenu("챌린지 포인트/포인트 지급")]
+        public void GrantDebugChallengePoints()
+        {
+            GameSaveManager.AddDebugChallengePoints(debugPointsToGrant);
+            Debug.Log($"[DevUnlockTools] 챌린지 포인트 {debugPointsToGrant} 지급. 현재 보유: {GameSaveManager.ChallengePoints}");
+        }
+
+        [ContextMenu("챌린지 포인트/포인트 값으로 설정")]
+        public void SetDebugChallengePoints()
+        {
+            GameSaveManager.SetDebugChallengePoints(debugPointsToSet);
+            Debug.Log($"[DevUnlockTools] 챌린지 포인트를 {debugPointsToSet}(으)로 설정했습니다.");
+        }
+
+        [ContextMenu("챌린지 포인트/포인트 초기화 (0)")]
+        public void ResetDebugChallengePoints()
+        {
+            GameSaveManager.SetDebugChallengePoints(0);
+            Debug.Log("[DevUnlockTools] 챌린지 포인트를 0으로 초기화했습니다.");
+        }
+
+        // ---------------------------------------------------------------
+        // 내부 헬퍼
+        // ---------------------------------------------------------------
+
         private static bool IsStorySeen(StoryEpisodeId episodeId)
         {
             return GameSaveManager.HasSeenStoryEpisode(GetStorySaveId(episodeId));
@@ -513,6 +843,8 @@ namespace Week14.Save
             finalBossAftermathSeen = IsStorySeen(StoryEpisodeId.FinalBossAftermath);
         }
 
+        // act2/act3/finalBossAftermath/epilogue 중 하나라도 true면, 그 이전 단계인 로비 보스/스킬
+        // 튜토리얼은 이미 봤다고 간주합니다(정상적인 플레이라면 그 시점 전에 로비를 거쳐야 하므로).
         private void SetStoryProgress(
             bool synopsis,
             bool tutorial,
@@ -522,12 +854,15 @@ namespace Week14.Save
             bool finalBossAftermath,
             bool epilogue)
         {
+            bool lobbyTutorialsSeen = act2 || act3 || finalBossAftermath || epilogue;
+
             GameSaveManager.SetPrologueSeen(synopsis);
             GameSaveManager.SetTutorialCompleted(tutorial);
             GameSaveManager.SetEpilogueSeen(epilogue);
             GameSaveManager.SetPastSeen(act1 || act2 || act3 || finalBossAftermath || epilogue);
             SetStorySeen(StoryEpisodeId.Act1, act1);
-            SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, act2 || act3 || finalBossAftermath || epilogue);
+            SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, lobbyTutorialsSeen);
+            SetStorySeen(StoryEpisodeId.LobbyTutorialSkill, lobbyTutorialsSeen);
             SetStorySeen(StoryEpisodeId.Act2, act2);
             SetStorySeen(StoryEpisodeId.Act3, act3);
             SetStorySeen(StoryEpisodeId.FinalBossAftermath, finalBossAftermath);
