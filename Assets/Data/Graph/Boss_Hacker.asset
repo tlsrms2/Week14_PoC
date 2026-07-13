@@ -1,0 +1,4251 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
+  m_Name: Boss_Hacker
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
+  referenceSettings:
+    effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+    colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
+    actionCategories: {fileID: 7712345678901234567, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
+  stateNodes:
+  - nodeId: Melee Attack1
+    nodeGuid: c3917df5425047cf8c4553c0afc8ee62
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939132983541835
+    sequences: []
+    editorPosition: {x: -358, y: -278}
+  - nodeId: Thrust1
+    nodeGuid: f6c6427ae6a045ef95a7913d38a62735
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035211
+    sequences: []
+    editorPosition: {x: 33, y: -280}
+  - nodeId: Dash1
+    nodeGuid: 0661885ecf6e42c3b509693aac80f262
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035214
+    sequences: []
+    editorPosition: {x: -170, y: -111}
+  - nodeId: Throw Weapon1
+    nodeGuid: 851a5e4771bf4950acec53b652c5465f
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035215
+    sequences: []
+    editorPosition: {x: -1486, y: 506}
+  - nodeId: Dash Sweep1
+    nodeGuid: 1dcead8ea2fc47568a7a6bfafb18c2e8
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035217
+    sequences: []
+    editorPosition: {x: -2, y: 1629}
+  - nodeId: Fire Wire1
+    nodeGuid: cfa4b9179eb94095a4f4c7b8cfd805d9
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035218
+    sequences: []
+    editorPosition: {x: -132, y: 1626}
+  - nodeId: Fire Twin Wire1
+    nodeGuid: d48febb0f3bb4b28bc61cb9bb914c5b5
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035219
+    sequences: []
+    editorPosition: {x: -1503, y: 684}
+  - nodeId: Ground Gun Turret1
+    nodeGuid: a74af557a3344ab9adff680cdd5674ea
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035220
+    sequences: []
+    editorPosition: {x: -990, y: 508}
+  - nodeId: Recall Weapon1
+    nodeGuid: 9d3bc47a4a364e21bc9b9082b2e24181
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035221
+    sequences: []
+    editorPosition: {x: -716, y: 505}
+  - nodeId: Walk Fire Counter Grab1
+    nodeGuid: ee00f76111a843be8a68558c7a1e6cf8
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035222
+    sequences: []
+    editorPosition: {x: -1476, y: 334}
+  - nodeId: Maintain Player Distance1
+    nodeGuid: b92c092216d649e3975ab02de8f7f1fc
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035223
+    sequences: []
+    editorPosition: {x: -1288, y: 502}
+  - nodeId: Scatter Wire Node1
+    nodeGuid: e063fecb6a3543838e5e6525bfafb5db
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035224
+    sequences: []
+    editorPosition: {x: -1502, y: 853}
+  - nodeId: Spider Web1
+    nodeGuid: 65c254d226814b58a1cd78342290dbf0
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035225
+    sequences: []
+    editorPosition: {x: -1293, y: 682}
+  - nodeId: Melee Attack2
+    nodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035227
+    sequences: []
+    editorPosition: {x: -159, y: -275}
+  - nodeId: Melee Attack3
+    nodeGuid: 202a06c2df26450fa6dcd13f7a36ed51
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035228
+    sequences: []
+    editorPosition: {x: -359, y: -116}
+  - nodeId: Fire Sniping Projectile1
+    nodeGuid: e825bf8bf15745ffa401c20db4520be3
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035237
+    sequences: []
+    editorPosition: {x: -6, y: -111}
+  - nodeId: Melee Attack4
+    nodeGuid: 0a1ddc51308d46f29f305ead640a889c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035230
+    sequences: []
+    editorPosition: {x: -344, y: 46}
+  - nodeId: Melee Attack5
+    nodeGuid: 871ad8ed7c054f7bb5e676fcf232a611
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035231
+    sequences: []
+    editorPosition: {x: -145, y: 49}
+  - nodeId: Melee Attack6
+    nodeGuid: 2ef027b3bd094043aa084ef09e96cd53
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035232
+    sequences: []
+    editorPosition: {x: 37, y: 51}
+  - nodeId: Melee Attack7
+    nodeGuid: ab691d9065c04693b6c70678bb986647
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035233
+    sequences: []
+    editorPosition: {x: 236, y: 54}
+  - nodeId: Melee Attack8
+    nodeGuid: f8be7f34a85147f09e02274aabc26188
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035236
+    sequences: []
+    editorPosition: {x: 407, y: 53}
+  - nodeId: Fire Sequential Sweep1
+    nodeGuid: e1bf27c670194054b048b5aba390fc35
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035249
+    sequences: []
+    editorPosition: {x: -327, y: 235}
+  - nodeId: Fire Sniping Projectile2
+    nodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035251
+    sequences: []
+    editorPosition: {x: -43, y: 239}
+  - nodeId: Fire Sniping Projectile3
+    nodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035252
+    sequences: []
+    editorPosition: {x: -42, y: 370}
+  - nodeId: Fire Sniping Projectile4
+    nodeGuid: d41bf5af1c2b4c358818685ad9869039
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035253
+    sequences: []
+    editorPosition: {x: -41, y: 522}
+  - nodeId: Dash2
+    nodeGuid: f72fba6386b94fe4afb8e70b0e52b070
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035254
+    sequences: []
+    editorPosition: {x: -102, y: 673}
+  - nodeId: Fire Sequential Sweep2
+    nodeGuid: 29b957bf33ac423fa0d3dfbd10f26c0d
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035255
+    sequences: []
+    editorPosition: {x: -327, y: 675}
+  - nodeId: Melee Attack9
+    nodeGuid: 362e689cf36c42fb8bd1b470a74ae52a
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035256
+    sequences: []
+    editorPosition: {x: 34, y: 677}
+  - nodeId: Thrust2
+    nodeGuid: 4e6fad489bc0433094955959c9ec2999
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939136707035257
+    sequences: []
+    editorPosition: {x: 196, y: 679}
+  - nodeId: Charge Dash1
+    nodeGuid: d44e1880b4ef468b82b1c13edf601487
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468747
+    sequences: []
+    editorPosition: {x: -335, y: 840}
+  - nodeId: Charge Dash2
+    nodeGuid: a6ab8a0148c44a0e8c4305f9651a9dbb
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468749
+    sequences: []
+    editorPosition: {x: -179, y: 838}
+  - nodeId: Throw Weapon2
+    nodeGuid: 948cbf9b04b848d7b4c61a7a283fbd94
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468750
+    sequences: []
+    editorPosition: {x: -7, y: 836}
+  - nodeId: Charge Dash3
+    nodeGuid: 1ca7b96ca4084b1e92962084b773d07c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468751
+    sequences: []
+    editorPosition: {x: -328, y: 1014}
+  - nodeId: Charge Dash4
+    nodeGuid: 4e3d535d597d4ca0a6711f65899b8e60
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468752
+    sequences: []
+    editorPosition: {x: 38, y: 1013}
+  - nodeId: Fire Sniping Projectile5
+    nodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468753
+    sequences: []
+    editorPosition: {x: -156, y: 1012}
+  - nodeId: Charge Dash5
+    nodeGuid: 0f54198a01fe491b842a69e9001d6aa1
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468754
+    sequences: []
+    editorPosition: {x: 392, y: 1013}
+  - nodeId: Fire Sniping Projectile6
+    nodeGuid: e64b85ffc433432ab9f5517d4c3d8839
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468755
+    sequences: []
+    editorPosition: {x: 197, y: 1012}
+  - nodeId: Fire Sniping Projectile7
+    nodeGuid: 49b16033471c4f81961df300bcc3bb47
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468756
+    sequences: []
+    editorPosition: {x: 545, y: 1009}
+  - nodeId: Weapon Wire Orbit1
+    nodeGuid: 3c65959ff0c34ba7b84ecf250dd848b9
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468758
+    sequences: []
+    editorPosition: {x: 171, y: 838}
+  - nodeId: Melee Attack10
+    nodeGuid: c99fa1ecede24a15863d6cd9ab029444
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468759
+    sequences: []
+    editorPosition: {x: 371, y: 836}
+  - nodeId: Dash3
+    nodeGuid: d1e44589d407450caac45172e4869600
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468761
+    sequences: []
+    editorPosition: {x: -333, y: 1183}
+  - nodeId: Fire Sniping Projectile8
+    nodeGuid: 6bd8d91c8ca5493ab0fed34047c34e61
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468762
+    sequences: []
+    editorPosition: {x: -187, y: 1182}
+  - nodeId: Fire Sniping Projectile9
+    nodeGuid: 6dfea309199043e990433f34a19ee0e2
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468763
+    sequences: []
+    editorPosition: {x: -186, y: 1313}
+  - nodeId: Fire Sniping Projectile10
+    nodeGuid: 5e86bdb55f7d4dc38454f19d61b66fab
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468764
+    sequences: []
+    editorPosition: {x: -185, y: 1465}
+  - nodeId: Fire Sniping Projectile11
+    nodeGuid: 782771a1cf4940d68dd3cb55de9d6e65
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468765
+    sequences: []
+    editorPosition: {x: 27, y: 1180}
+  - nodeId: Fire Glitch Projectile1
+    nodeGuid: 8975fdd4b31343128f5a3f6c7d635d61
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468766
+    sequences: []
+    editorPosition: {x: -330, y: 1628}
+  - nodeId: Fire Glitch Projectile2
+    nodeGuid: f5840cc475d542e782bd2da1b00a12db
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468767
+    sequences: []
+    editorPosition: {x: -335, y: 1776}
+  - nodeId: Dash4
+    nodeGuid: 7e4a139f61534733bcfb669958d59851
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468768
+    sequences: []
+    editorPosition: {x: -144, y: 1780}
+  - nodeId: Fire Sniping Projectile12
+    nodeGuid: f65afb54cb4b4ec2a27e228aeb64f074
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939146365468769
+    sequences: []
+    editorPosition: {x: -25, y: 1780}
+  patterns:
+  - patternId: Pattern1
+    nodeGuids:
+    - c3917df5425047cf8c4553c0afc8ee62
+    - a4bb741acbc241fd8dbe46986e3fdc9c
+    - f6c6427ae6a045ef95a7913d38a62735
+    nodeIds:
+    - Melee Attack1
+    - Melee Attack2
+    - Thrust1
+  - patternId: Pattern5
+    nodeGuids:
+    - 202a06c2df26450fa6dcd13f7a36ed51
+    - 0661885ecf6e42c3b509693aac80f262
+    - e825bf8bf15745ffa401c20db4520be3
+    nodeIds:
+    - Melee Attack3
+    - Dash1
+    - Fire Sniping Projectile1
+  - patternId: Pattern6
+    nodeGuids:
+    - 851a5e4771bf4950acec53b652c5465f
+    - b92c092216d649e3975ab02de8f7f1fc
+    - a74af557a3344ab9adff680cdd5674ea
+    - 9d3bc47a4a364e21bc9b9082b2e24181
+    nodeIds:
+    - Throw Weapon1
+    - Maintain Player Distance1
+    - Ground Gun Turret1
+    - Recall Weapon1
+  - patternId: Pattern2
+    nodeGuids:
+    - 8975fdd4b31343128f5a3f6c7d635d61
+    - cfa4b9179eb94095a4f4c7b8cfd805d9
+    - 1dcead8ea2fc47568a7a6bfafb18c2e8
+    nodeIds:
+    - Fire Glitch Projectile1
+    - Fire Wire1
+    - Dash Sweep1
+  - patternId: Pattern7
+    nodeGuids:
+    - d48febb0f3bb4b28bc61cb9bb914c5b5
+    nodeIds:
+    - Fire Twin Wire1
+  - patternId: Pattern10
+    nodeGuids:
+    - ee00f76111a843be8a68558c7a1e6cf8
+    nodeIds:
+    - Walk Fire Counter Grab1
+  - patternId: Pattern9
+    nodeGuids:
+    - e063fecb6a3543838e5e6525bfafb5db
+    nodeIds:
+    - Scatter Wire Node1
+  - patternId: Pattern11
+    nodeGuids:
+    - 65c254d226814b58a1cd78342290dbf0
+    nodeIds:
+    - Spider Web1
+  - patternId: Pattern4
+    nodeGuids:
+    - 0a1ddc51308d46f29f305ead640a889c
+    - 871ad8ed7c054f7bb5e676fcf232a611
+    - 2ef027b3bd094043aa084ef09e96cd53
+    - ab691d9065c04693b6c70678bb986647
+    - f8be7f34a85147f09e02274aabc26188
+    nodeIds:
+    - Melee Attack4
+    - Melee Attack5
+    - Melee Attack6
+    - Melee Attack7
+    - Melee Attack8
+  - patternId: Pattern8
+    nodeGuids:
+    - e1bf27c670194054b048b5aba390fc35
+    - d73f6a1c02f64577b7c67c2f5553bad2
+    - 3b9a161932f74a81b50a8e80ca5a07c2
+    - d41bf5af1c2b4c358818685ad9869039
+    nodeIds:
+    - Fire Sequential Sweep1
+    - Fire Sniping Projectile2
+    - Fire Sniping Projectile3
+    - Fire Sniping Projectile4
+  - patternId: Pattern12
+    nodeGuids:
+    - 29b957bf33ac423fa0d3dfbd10f26c0d
+    - f72fba6386b94fe4afb8e70b0e52b070
+    - 362e689cf36c42fb8bd1b470a74ae52a
+    - 4e6fad489bc0433094955959c9ec2999
+    nodeIds:
+    - Fire Sequential Sweep2
+    - Dash2
+    - Melee Attack9
+    - Thrust2
+  - patternId: Pattern13
+    nodeGuids:
+    - d44e1880b4ef468b82b1c13edf601487
+    - a6ab8a0148c44a0e8c4305f9651a9dbb
+    - 948cbf9b04b848d7b4c61a7a283fbd94
+    - 3c65959ff0c34ba7b84ecf250dd848b9
+    - c99fa1ecede24a15863d6cd9ab029444
+    nodeIds:
+    - Charge Dash1
+    - Charge Dash2
+    - Throw Weapon2
+    - Weapon Wire Orbit1
+    - Melee Attack10
+  - patternId: Pattern14
+    nodeGuids:
+    - 1ca7b96ca4084b1e92962084b773d07c
+    - 47af3cd50ff44bc29dc151e3b09eadb1
+    - 4e3d535d597d4ca0a6711f65899b8e60
+    - e64b85ffc433432ab9f5517d4c3d8839
+    - 0f54198a01fe491b842a69e9001d6aa1
+    - 49b16033471c4f81961df300bcc3bb47
+    nodeIds:
+    - Charge Dash3
+    - Fire Sniping Projectile5
+    - Charge Dash4
+    - Fire Sniping Projectile6
+    - Charge Dash5
+    - Fire Sniping Projectile7
+  - patternId: Pattern16
+    nodeGuids:
+    - d1e44589d407450caac45172e4869600
+    - 6bd8d91c8ca5493ab0fed34047c34e61
+    - 782771a1cf4940d68dd3cb55de9d6e65
+    - 6dfea309199043e990433f34a19ee0e2
+    - 5e86bdb55f7d4dc38454f19d61b66fab
+    nodeIds:
+    - Dash3
+    - Fire Sniping Projectile8
+    - Fire Sniping Projectile11
+    - Fire Sniping Projectile9
+    - Fire Sniping Projectile10
+  - patternId: Pattern15
+    nodeGuids:
+    - f5840cc475d542e782bd2da1b00a12db
+    - 7e4a139f61534733bcfb669958d59851
+    - f65afb54cb4b4ec2a27e228aeb64f074
+    nodeIds:
+    - Fire Glitch Projectile2
+    - Dash4
+    - Fire Sniping Projectile12
+  defaultPatternIds: []
+  phases:
+  - phaseIndex: 0
+    selectionMode: 3
+    patternIntervalSeconds: 2
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 0
+    openingPatternId: 
+    patterns:
+    - patternId: Pattern2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 0
+  transitions:
+  - fromNodeGuid: 851a5e4771bf4950acec53b652c5465f
+    toNodeGuid: b92c092216d649e3975ab02de8f7f1fc
+    fromNodeId: Throw Weapon1
+    toNodeId: Maintain Player Distance1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b92c092216d649e3975ab02de8f7f1fc
+    toNodeGuid: a74af557a3344ab9adff680cdd5674ea
+    fromNodeId: Maintain Player Distance1
+    toNodeId: Ground Gun Turret1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a74af557a3344ab9adff680cdd5674ea
+    toNodeGuid: 9d3bc47a4a364e21bc9b9082b2e24181
+    fromNodeId: Ground Gun Turret1
+    toNodeId: Recall Weapon1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c3917df5425047cf8c4553c0afc8ee62
+    toNodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
+    fromNodeId: Melee Attack1
+    toNodeId: Melee Attack2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
+    toNodeGuid: f6c6427ae6a045ef95a7913d38a62735
+    fromNodeId: Melee Attack2
+    toNodeId: Thrust1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 202a06c2df26450fa6dcd13f7a36ed51
+    toNodeGuid: 0661885ecf6e42c3b509693aac80f262
+    fromNodeId: Melee Attack3
+    toNodeId: Dash1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0661885ecf6e42c3b509693aac80f262
+    toNodeGuid: e825bf8bf15745ffa401c20db4520be3
+    fromNodeId: Dash1
+    toNodeId: Fire Sniping Projectile1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0a1ddc51308d46f29f305ead640a889c
+    toNodeGuid: 871ad8ed7c054f7bb5e676fcf232a611
+    fromNodeId: Melee Attack4
+    toNodeId: Melee Attack5
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 2ef027b3bd094043aa084ef09e96cd53
+    toNodeGuid: ab691d9065c04693b6c70678bb986647
+    fromNodeId: Melee Attack6
+    toNodeId: Melee Attack7
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 871ad8ed7c054f7bb5e676fcf232a611
+    toNodeGuid: 2ef027b3bd094043aa084ef09e96cd53
+    fromNodeId: Melee Attack5
+    toNodeId: Melee Attack6
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ab691d9065c04693b6c70678bb986647
+    toNodeGuid: f8be7f34a85147f09e02274aabc26188
+    fromNodeId: Melee Attack7
+    toNodeId: Melee Attack8
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e1bf27c670194054b048b5aba390fc35
+    toNodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
+    fromNodeId: Fire Sequential Sweep1
+    toNodeId: Fire Sniping Projectile2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 29b957bf33ac423fa0d3dfbd10f26c0d
+    toNodeGuid: f72fba6386b94fe4afb8e70b0e52b070
+    fromNodeId: Fire Sequential Sweep2
+    toNodeId: Dash2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 362e689cf36c42fb8bd1b470a74ae52a
+    toNodeGuid: 4e6fad489bc0433094955959c9ec2999
+    fromNodeId: Melee Attack9
+    toNodeId: Thrust2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f72fba6386b94fe4afb8e70b0e52b070
+    toNodeGuid: 362e689cf36c42fb8bd1b470a74ae52a
+    fromNodeId: Dash2
+    toNodeId: Melee Attack9
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d44e1880b4ef468b82b1c13edf601487
+    toNodeGuid: a6ab8a0148c44a0e8c4305f9651a9dbb
+    fromNodeId: Charge Dash1
+    toNodeId: Charge Dash2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a6ab8a0148c44a0e8c4305f9651a9dbb
+    toNodeGuid: 948cbf9b04b848d7b4c61a7a283fbd94
+    fromNodeId: Charge Dash2
+    toNodeId: Throw Weapon2
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1ca7b96ca4084b1e92962084b773d07c
+    toNodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
+    fromNodeId: Charge Dash3
+    toNodeId: Fire Sniping Projectile5
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
+    toNodeGuid: 4e3d535d597d4ca0a6711f65899b8e60
+    fromNodeId: Fire Sniping Projectile5
+    toNodeId: Charge Dash4
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e64b85ffc433432ab9f5517d4c3d8839
+    toNodeGuid: 0f54198a01fe491b842a69e9001d6aa1
+    fromNodeId: Fire Sniping Projectile6
+    toNodeId: Charge Dash5
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4e3d535d597d4ca0a6711f65899b8e60
+    toNodeGuid: e64b85ffc433432ab9f5517d4c3d8839
+    fromNodeId: Charge Dash4
+    toNodeId: Fire Sniping Projectile6
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0f54198a01fe491b842a69e9001d6aa1
+    toNodeGuid: 49b16033471c4f81961df300bcc3bb47
+    fromNodeId: Charge Dash5
+    toNodeId: Fire Sniping Projectile7
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 948cbf9b04b848d7b4c61a7a283fbd94
+    toNodeGuid: 3c65959ff0c34ba7b84ecf250dd848b9
+    fromNodeId: Throw Weapon2
+    toNodeId: Weapon Wire Orbit1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 3c65959ff0c34ba7b84ecf250dd848b9
+    toNodeGuid: c99fa1ecede24a15863d6cd9ab029444
+    fromNodeId: Weapon Wire Orbit1
+    toNodeId: Melee Attack10
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d1e44589d407450caac45172e4869600
+    toNodeGuid: 6bd8d91c8ca5493ab0fed34047c34e61
+    fromNodeId: Dash3
+    toNodeId: Fire Sniping Projectile8
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6bd8d91c8ca5493ab0fed34047c34e61
+    toNodeGuid: 782771a1cf4940d68dd3cb55de9d6e65
+    fromNodeId: Fire Sniping Projectile8
+    toNodeId: Fire Sniping Projectile11
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 8975fdd4b31343128f5a3f6c7d635d61
+    toNodeGuid: cfa4b9179eb94095a4f4c7b8cfd805d9
+    fromNodeId: Fire Glitch Projectile1
+    toNodeId: Fire Wire1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f5840cc475d542e782bd2da1b00a12db
+    toNodeGuid: 7e4a139f61534733bcfb669958d59851
+    fromNodeId: Fire Glitch Projectile2
+    toNodeId: Dash4
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 7e4a139f61534733bcfb669958d59851
+    toNodeGuid: f65afb54cb4b4ec2a27e228aeb64f074
+    fromNodeId: Dash4
+    toNodeId: Fire Sniping Projectile12
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cfa4b9179eb94095a4f4c7b8cfd805d9
+    toNodeGuid: 1dcead8ea2fc47568a7a6bfafb18c2e8
+    fromNodeId: Fire Wire1
+    toNodeId: Dash Sweep1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  parallelEdges:
+  - fromNodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
+    toNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
+    fromNodeId: Fire Sniping Projectile2
+    toNodeId: Fire Sniping Projectile3
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
+    toNodeGuid: d41bf5af1c2b4c358818685ad9869039
+    fromNodeId: Fire Sniping Projectile3
+    toNodeId: Fire Sniping Projectile4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 6bd8d91c8ca5493ab0fed34047c34e61
+    toNodeGuid: 6dfea309199043e990433f34a19ee0e2
+    fromNodeId: Fire Sniping Projectile8
+    toNodeId: Fire Sniping Projectile9
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 6dfea309199043e990433f34a19ee0e2
+    toNodeGuid: 5e86bdb55f7d4dc38454f19d61b66fab
+    fromNodeId: Fire Sniping Projectile9
+    toNodeId: Fire Sniping Projectile10
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6489939132983541835
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 0
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.2659797
+            value: 0.8240077
+            inSlope: -0.56098723
+            outSlope: -0.56098723
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.120405644
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035211
+      type: {class: HackerThrustAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        animationTriggerName: Thrust
+        windupSeconds: 0.6
+        recoverySeconds: 0.3
+        length: 6
+        width: 4
+        damage: 1
+        approachStartDistance: 2
+        approachStopDistance: 1
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        thrustAdvanceSeconds: 0.2
+        thrustAdvanceSpeed: 18
+        thrustAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.32031465
+            value: 0.8879508
+            inSlope: -1.2414455
+            outSlope: -1.2414455
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.09207561
+          - serializedVersion: 3
+            time: 0.37598354
+            value: 0.7516985
+            inSlope: -0.30872184
+            outSlope: -0.30872184
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.18538754
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        thrustAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
+        parryWindowSeconds: 0.6
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+    - rid: 6489939136707035214
+      type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        direction: 1
+        animationTriggerName: Dash
+        windupSeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 20
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3561869
+            value: 0.96606046
+            inSlope: -0.4042748
+            outSlope: -0.4042748
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.12613872
+          - serializedVersion: 3
+            time: 0.44182485
+            value: 0.84103626
+            inSlope: -1.2562096
+            outSlope: -1.2562096
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.48208982
+            outWeight: 0.08926641
+          - serializedVersion: 3
+            time: 0.59415245
+            value: 0.72159326
+            inSlope: -0.07911112
+            outSlope: -0.07911112
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        recoverySeconds: 0.1
+    - rid: 6489939136707035215
+      type: {class: HackerWeaponThrowAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
+        gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
+        swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
+        bayonetEquippedWeaponPath: Visual/RightHand
+        gunEquippedWeaponPath: Visual/LeftHand
+        swordEquippedWeaponPath: Visual/RightHand
+        throwOriginPath: Visual/RightHand
+        animationTriggerName: Throw
+        windupSeconds: 0
+        flightSpeed: 6
+        recoverySeconds: 0
+        landingDistance: 5
+        landingSideOffset: 0
+        flightSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.99540544
+            value: -0.0004503727
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+    - rid: 6489939136707035217
+      type: {class: HackerDashSweepAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        chargeTriggerName: DashSweepCharge
+        parryAnchorPath: 
+        chargeSeconds: 1
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        sweepTriggerName: DashSweep
+        dashSeconds: 0.2
+        dashSpeed: 18
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        sweepRadius: 5.5
+        sweepForwardOffset: 0
+        damage: 1
+        recoverySeconds: 0
+    - rid: 6489939136707035218
+      type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        launchOriginPath: 
+        animationTriggerName: FireWire
+        windupSeconds: 0.25
+        maxFlightSeconds: 2
+        targetMode: 1
+        grabSeconds: 0.65
+        hackingPerHit: 1
+        playerWallSearchRadius: 5
+        recoverySeconds: 0.2
+        bossFlightSpeed: 25
+        maxBossFlightSeconds: 1.5
+        wallArrivalDistance: 0.45
+        bossFlightSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        flightProjectileName: "\uC720\uB3C4\uD0C4"
+        flightProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        flightProjectileInterval: 0.2
+        maxFlightProjectileCount: 3
+    - rid: 6489939136707035219
+      type: {class: HackerFireTwinWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        launchOriginPath: 
+        animationTriggerName: FireTwinWire
+        windupSeconds: 0.25
+        wireAngleDegrees: 120
+        maxFlightSeconds: 1
+        wallAttachedSeconds: 10
+        recoverySeconds: 0.2
+    - rid: 6489939136707035220
+      type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        muzzleChildPath: Muzzle
+        muzzleLocalOffset: {x: 0, y: 0}
+        rotateGunTowardPlayer: 1
+        windupSeconds: 0.2
+        activeSeconds: 3
+        fireInterval: 0.3
+        maxShotCount: 8
+        fireSfxId: 
+        recoverySeconds: 0.2
+    - rid: 6489939136707035221
+      type: {class: HackerRecallWeaponAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        weaponSelection: 3
+        returnAnchorPath: Visual/RightHand
+        animationTriggerName: RecallWeapon
+        windupSeconds: 0.2
+        recallSeconds: 0.5
+        weaponWireAnchorPath: WireAnchor
+        recallRotationDegrees: 0
+        recoverySeconds: 0.2
+    - rid: 6489939136707035222
+      type: {class: HackerWalkFireCounterGrabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        fireOriginPath: 
+        walkFireTriggerName: WalkFire
+        windupSeconds: 0.25
+        activeSeconds: 3
+        walkSpeed: 2.5
+        wanderRadius: 3.5
+        wanderChangeSeconds: 0.8
+        fireInterval: 0.35
+        maxShotCount: 8
+        swordParryTriggerName: SwordParry
+        wireOriginPath: 
+        wireTravelSeconds: 0.12
+        grabSeconds: 0.65
+        hackingPerHit: 1
+        recoverySeconds: 0.25
+    - rid: 6489939136707035223
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 1
+        distance: 8
+        tolerance: 0.15
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489939136707035224
+      type: {class: HackerScatterWireNodeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        nodeProjectileName: "\uC640\uC774\uC5B4 \uB178\uB4DC"
+        nodeProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        launchOriginPath: 
+        animationTriggerName: ScatterWireNode
+        windupSeconds: 0.35
+        nodeCount: 6
+        startAngleOffset: 0
+        randomizeStartAngle: 0
+        fireInterval: 0.08
+        hackingPerHit: 1
+        attachedNodeLifetimeSeconds: 10
+        recoverySeconds: 0.25
+    - rid: 6489939136707035225
+      type: {class: HackerSpiderWebAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        webCenterPath: 
+        animationTriggerName: SpiderWeb
+        windupSeconds: 0.4
+        spokeCount: 8
+        webRadius: 12
+        centerSafeRadius: 0.75
+        ringCount: 4
+        ringTelegraphSeconds: 0.4
+        cellExplosionSeconds: 0.22
+        ringBuildInterval: 0.55
+        explosionDamage: 1
+        activeSeconds: 10
+        periodicExplosionInterval: 1
+        periodicTelegraphSeconds: 0.35
+        periodicExplosionCount: 2
+        wireColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0.8}
+        indicatorColor: {r: 1, g: 0.3, b: 0.08, a: 0.32}
+        explosionColor: {r: 1, g: 0.04843266, b: 0, a: 0.95}
+        wireSortingOrder: -9
+        indicatorSortingOrder: -9
+        recoverySeconds: 0.25
+    - rid: 6489939136707035227
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 3
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.22516246
+            value: 0.8056819
+            inSlope: -1.059515
+            outSlope: -1.059515
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 1
+          - serializedVersion: 3
+            time: 0.2671337
+            value: 0.775465
+            inSlope: -0.30722776
+            outSlope: -0.30722776
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 1
+            outWeight: 0.11648905
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Down->Up Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035228
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 0
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.2659797
+            value: 0.8240077
+            inSlope: -0.56098723
+            outSlope: -0.56098723
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.120405644
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035230
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 0
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.2659797
+            value: 0.8240077
+            inSlope: -0.56098723
+            outSlope: -0.56098723
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.120405644
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035231
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 3
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.22516246
+            value: 0.8056819
+            inSlope: -1.059515
+            outSlope: -1.059515
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 1
+          - serializedVersion: 3
+            time: 0.2671337
+            value: 0.775465
+            inSlope: -0.30722776
+            outSlope: -0.30722776
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 1
+            outWeight: 0.11648905
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Down->Up Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035232
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 0
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.2659797
+            value: 0.8240077
+            inSlope: -0.56098723
+            outSlope: -0.56098723
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.120405644
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035233
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 2
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 1
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.22516246
+            value: 0.8056819
+            inSlope: -1.059515
+            outSlope: -1.059515
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 1
+          - serializedVersion: 3
+            time: 0.2671337
+            value: 0.775465
+            inSlope: -0.30722776
+            outSlope: -0.30722776
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 1
+            outWeight: 0.11648905
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Down->Up Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035236
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 1
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 1
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.22516246
+            value: 0.8056819
+            inSlope: -1.059515
+            outSlope: -1.059515
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 1
+          - serializedVersion: 3
+            time: 0.2671337
+            value: 0.775465
+            inSlope: -0.30722776
+            outSlope: -0.30722776
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 1
+            outWeight: 0.11648905
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035237
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uCD08\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 3
+        chargeStartRadius: 0.75
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.075
+        chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 20
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: -9
+    - rid: 6489939136707035249
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        animationTriggerName: FireSweep
+        windupSeconds: 0.35
+        bulletCount: 8
+        spawnCircleRadius: 1.5
+        spawnArcDegrees: 80
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.1
+        recoverySeconds: 0
+    - rid: 6489939136707035251
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 1.8
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939136707035252
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 2.1
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939136707035253
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 2.4
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939136707035254
+      type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        direction: 0
+        animationTriggerName: Dash
+        windupSeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 20
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3561869
+            value: 0.96606046
+            inSlope: -0.4042748
+            outSlope: -0.4042748
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.12613872
+          - serializedVersion: 3
+            time: 0.44182485
+            value: 0.84103626
+            inSlope: -1.2562096
+            outSlope: -1.2562096
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.48208982
+            outWeight: 0.08926641
+          - serializedVersion: 3
+            time: 0.59415245
+            value: 0.72159326
+            inSlope: -0.07911112
+            outSlope: -0.07911112
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        recoverySeconds: 0.1
+    - rid: 6489939136707035255
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        animationTriggerName: FireSweep
+        windupSeconds: 0.35
+        bulletCount: 8
+        spawnCircleRadius: 1.5
+        spawnArcDegrees: 80
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.1
+        recoverySeconds: 0
+    - rid: 6489939136707035256
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 0
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 0.5
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.2659797
+            value: 0.8240077
+            inSlope: -0.56098723
+            outSlope: -0.56098723
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.120405644
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939136707035257
+      type: {class: HackerThrustAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        animationTriggerName: Thrust
+        windupSeconds: 0.6
+        recoverySeconds: 0.3
+        length: 6
+        width: 4
+        damage: 1
+        approachStartDistance: 2
+        approachStopDistance: 1
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        thrustAdvanceSeconds: 0.2
+        thrustAdvanceSpeed: 18
+        thrustAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.32031465
+            value: 0.8879508
+            inSlope: -1.2414455
+            outSlope: -1.2414455
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.09207561
+          - serializedVersion: 3
+            time: 0.37598354
+            value: 0.7516985
+            inSlope: -0.30872184
+            outSlope: -0.30872184
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.18538754
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        thrustAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
+        parryWindowSeconds: 0.6
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+    - rid: 6489939146365468747
+      type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupTriggerName: ChargeDashWindup
+        dashTriggerName: ChargeDash
+        windupSeconds: 0.6
+        directionLockLeadSeconds: 0.15
+        recoverySeconds: 0.3
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.5
+        dashSpeed: 25
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.007419586
+            value: 1.0011475
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.71473217
+            value: 0.9203345
+            inSlope: -0.45382655
+            outSlope: -0.45382655
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.99816895
+            value: 0.69885635
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        damageRadius: 1
+        damage: 1
+    - rid: 6489939146365468749
+      type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupTriggerName: ChargeDashWindup
+        dashTriggerName: ChargeDash
+        windupSeconds: 0.6
+        directionLockLeadSeconds: 0.15
+        recoverySeconds: 0.3
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.5
+        dashSpeed: 25
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.007419586
+            value: 1.0011475
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.71473217
+            value: 0.9203345
+            inSlope: -0.45382655
+            outSlope: -0.45382655
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.99816895
+            value: 0.69885635
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        damageRadius: 1
+        damage: 1
+    - rid: 6489939146365468750
+      type: {class: HackerWeaponThrowAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
+        gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
+        swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
+        bayonetEquippedWeaponPath: Visual/RightHand
+        gunEquippedWeaponPath: Visual/LeftHand
+        swordEquippedWeaponPath: Visual/RightHand
+        throwOriginPath: Visual/RightHand
+        animationTriggerName: Throw
+        windupSeconds: 0
+        flightSpeed: 6
+        recoverySeconds: 0
+        landingDistance: 5
+        landingSideOffset: 0
+        flightSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.99540544
+            value: -0.0004503727
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+    - rid: 6489939146365468751
+      type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupTriggerName: ChargeDashWindup
+        dashTriggerName: ChargeDash
+        windupSeconds: 0.6
+        directionLockLeadSeconds: 0.15
+        recoverySeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 25
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.007419586
+            value: 1.0011475
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.71473217
+            value: 0.9203345
+            inSlope: -0.45382655
+            outSlope: -0.45382655
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.99816895
+            value: 0.69885635
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        damageRadius: 1
+        damage: 1
+    - rid: 6489939146365468752
+      type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupTriggerName: ChargeDashWindup
+        dashTriggerName: ChargeDash
+        windupSeconds: 0.6
+        directionLockLeadSeconds: 0.15
+        recoverySeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 25
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.007419586
+            value: 1.0011475
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.71473217
+            value: 0.9203345
+            inSlope: -0.45382655
+            outSlope: -0.45382655
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.99816895
+            value: 0.69885635
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        damageRadius: 1
+        damage: 1
+    - rid: 6489939146365468753
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 1.3
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939146365468754
+      type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupTriggerName: ChargeDashWindup
+        dashTriggerName: ChargeDash
+        windupSeconds: 0.6
+        directionLockLeadSeconds: 0.15
+        recoverySeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 25
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.007419586
+            value: 1.0011475
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.71473217
+            value: 0.9203345
+            inSlope: -0.45382655
+            outSlope: -0.45382655
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.99816895
+            value: 0.69885635
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        damageRadius: 1
+        damage: 1
+    - rid: 6489939146365468755
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 1.3
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939146365468756
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uCD08\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 3
+        chargeStartRadius: 0.75
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.075
+        chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 20
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: -9
+    - rid: 6489939146365468758
+      type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        weaponSelection: 3
+        bossWireAnchorPath: Visual/RightHand
+        weaponWireAnchorPath: WireAnchor
+        returnAnchorPath: Visual/RightHand
+        windupTriggerName: WeaponWireOrbitWindup
+        orbitTriggerName: WeaponWireOrbit
+        recallTriggerName: RecallWeapon
+        windupSeconds: 0
+        recoverySeconds: 0
+        orbitSeconds: 0.5
+        startWireLength: 9
+        endWireLength: 9
+        wireLengthCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        rotationDegrees: 360
+        rotationDirection: 0
+        rotationSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        weaponRotationOffsetDegrees: 0
+        advanceSpeed: 9
+        advanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.020076752
+            value: 0.99776614
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.9688721
+            value: 0.31077498
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        safeInnerRadius: 4.5
+        hitRadius: 0.2
+        damage: 1
+        recallSeconds: 0.55
+        recallRotationDegrees: 0
+    - rid: 6489939146365468759
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 1
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 1
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.2
+        attackAdvanceSpeed: 18
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.22516246
+            value: 0.8056819
+            inSlope: -1.059515
+            outSlope: -1.059515
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 1
+          - serializedVersion: 3
+            time: 0.2671337
+            value: 0.775465
+            inSlope: -0.30722776
+            outSlope: -0.30722776
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 1
+            outWeight: 0.11648905
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parryIndicatorRadius: 0.38
+        hackingPerHit: 1
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939146365468761
+      type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        direction: 1
+        animationTriggerName: Dash
+        windupSeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 20
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3561869
+            value: 0.96606046
+            inSlope: -0.4042748
+            outSlope: -0.4042748
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.12613872
+          - serializedVersion: 3
+            time: 0.44182485
+            value: 0.84103626
+            inSlope: -1.2562096
+            outSlope: -1.2562096
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.48208982
+            outWeight: 0.08926641
+          - serializedVersion: 3
+            time: 0.59415245
+            value: 0.72159326
+            inSlope: -0.07911112
+            outSlope: -0.07911112
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        recoverySeconds: 0.1
+    - rid: 6489939146365468762
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 1.8
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939146365468763
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 2.1
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939146365468764
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 2.4
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 12
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939146365468765
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uCD08\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 3
+        chargeStartRadius: 0.75
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.075
+        chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 20
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: -9
+    - rid: 6489939146365468766
+      type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uAE00\uB9AC\uCE58\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        spawnForwardOffset: 0
+        animationTriggerName: FireGlitch
+        windupSeconds: 0.3
+        upwardAngleDegrees: 90
+        upwardRandomHalfAngleDegrees: 65
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        recoverySeconds: 0.2
+    - rid: 6489939146365468767
+      type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uAE00\uB9AC\uCE58\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        spawnForwardOffset: 0
+        animationTriggerName: FireGlitch
+        windupSeconds: 0.3
+        upwardAngleDegrees: 90
+        upwardRandomHalfAngleDegrees: 65
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        recoverySeconds: 0.2
+    - rid: 6489939146365468768
+      type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        direction: 1
+        animationTriggerName: Dash
+        windupSeconds: 0
+        approachStartDistance: 99
+        approachStopDistance: 1.75
+        approachSpeed: 10
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        dashSeconds: 0.35
+        dashSpeed: 20
+        dashSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3561869
+            value: 0.96606046
+            inSlope: -0.4042748
+            outSlope: -0.4042748
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.12613872
+          - serializedVersion: 3
+            time: 0.44182485
+            value: 0.84103626
+            inSlope: -1.2562096
+            outSlope: -1.2562096
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.48208982
+            outWeight: 0.08926641
+          - serializedVersion: 3
+            time: 0.59415245
+            value: 0.72159326
+            inSlope: -0.07911112
+            outSlope: -0.07911112
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        recoverySeconds: 0.1
+    - rid: 6489939146365468769
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uCD08\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Visual/RightHand/Weapon/Muzzle
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 0
+          angleDegrees: 0
+        spawnForwardOffset: 0
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        enableSlightHoming: 1
+        homingSeconds: 0.6
+        homingTurnDegreesPerSecond: 40
+        windupSeconds: 3
+        chargeStartRadius: 0.75
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.075
+        chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeSortingOrder: 20
+        aimIndicatorLength: 20
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: -9

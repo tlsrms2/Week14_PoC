@@ -11,7 +11,7 @@ namespace Week14.Combat
                 : length;
         }
 
-        private bool TryDestroyIfCrossedWall()
+        protected virtual bool TryDestroyIfCrossedWall()
         {
             Vector2 currentPosition = transform.position;
             Vector2 delta = currentPosition - lastWallCheckPosition;

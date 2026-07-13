@@ -16,6 +16,7 @@ namespace Week14.Combat
         [SerializeField] private bool useUnscaledTime;
 
         private bool threatened;
+        private bool hacked;
         private bool visible = true;
         private Vector3[] colorOnlyBaseLocalPositions = Array.Empty<Vector3>();
         private bool[] colorOnlyHasBaseLocalPositions = Array.Empty<bool>();
@@ -30,6 +31,11 @@ namespace Week14.Combat
         public void SetThreatened(bool value)
         {
             threatened = value;
+        }
+
+        public void SetHacked(bool value)
+        {
+            hacked = value;
         }
 
         public void PlayMissFeedback(float colorSeconds, float shakeSeconds, float shakeAmplitude, float shakeFrequency)
@@ -82,7 +88,9 @@ namespace Week14.Combat
             bool useFeedbackColor = now < missFeedbackEndsAt;
             Vector3 shakeOffset = GetMissShakeOffset(now);
 
-            Color targetColor = useFeedbackColor
+            Color targetColor = hacked
+                ? new Color(1f, 0.12f, 0.08f, 1f)
+                : useFeedbackColor
                 ? missColorOnlyColor
                 : (threatened ? colorOnlyThreatenedColor : colorOnlyIdleColor);
             for (int i = 0; i < colorOnlyRenderers.Length; i++)

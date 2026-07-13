@@ -149,6 +149,7 @@ namespace Week14.Enemy
         public bool IsExecutionLocked => isExecutionLocked;
         public bool IsFinalDeathSequencePlaying => isFinalDeathSequencePlaying;
         public virtual bool IsDashing => false;
+        public virtual bool SuppressesBodyContactDamage => false;
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
