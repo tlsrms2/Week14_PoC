@@ -355,6 +355,7 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private string toNodeGuid;
         [SerializeField] private string fromNodeId;
         [SerializeField] private string toNodeId;
+        [SerializeField, HideInInspector, Min(0)] private int fromOutputPortIndex;
         [SerializeField] private BossTransitionConditionType conditionType;
         [SerializeField] private float threshold;
         [SerializeField] private int phaseIndex;
@@ -365,6 +366,7 @@ namespace Week14.Enemy
         public string ToNodeGuid => toNodeGuid;
         public string FromNodeId => fromNodeId;
         public string ToNodeId => toNodeId;
+        public int FromOutputPortIndex => Mathf.Clamp(fromOutputPortIndex, 0, 1);
         public BossTransitionConditionType ConditionType => conditionType;
         public float Threshold => threshold;
         public int PhaseIndex => phaseIndex;

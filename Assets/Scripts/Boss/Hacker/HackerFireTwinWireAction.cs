@@ -13,6 +13,7 @@ namespace Week14.Enemy
         [SerializeField, Range(1f, 359f)] private float wireAngleDegrees = 120f;
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 1f;
         [SerializeField, Min(0.05f)] private float wallAttachedSeconds = 4f;
+        [SerializeField, Min(1)] private int hackingPerHit = 1;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -52,7 +53,8 @@ namespace Week14.Enemy
                 wallAttachedSeconds,
                 wireSettings.Width,
                 wireSettings.HitRadius,
-                wireSettings.Color);
+                wireSettings.Color,
+                hackingPerHit);
         }
 
         private static Vector2 Rotate(Vector2 direction, float degrees)

@@ -5021,10 +5021,6 @@ MonoBehaviour:
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
-    - patternId: "P1 -> P3 -> P1(\uC720\uB3C4) 1\uD68C"
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
     - patternId: P1 -> P3 -> P1 -> P2-2
       weight: 1
       legacyCooldownSeconds: -1

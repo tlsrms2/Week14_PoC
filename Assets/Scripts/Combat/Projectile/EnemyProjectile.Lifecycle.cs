@@ -66,6 +66,8 @@ namespace Week14.Combat
             ownerBoss?.RegisterActiveProjectile(this);
             ownerMinion?.RegisterActiveProjectile(this);
             bulletDamage = nextBulletDamage;
+            playerHitKnockbackSpeed = 0f;
+            playerHitKnockbackStaggerSeconds = 0f;
             flightDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             baseLocalScale = transform.localScale;
             chargeGrowthStartScale = baseLocalScale;
@@ -136,6 +138,11 @@ namespace Week14.Combat
             runtimeHomingActive = false;
             runtimeHomingEndsAt = 0f;
             runtimeHomingTurnDegreesPerSecond = 0f;
+            runtimeFlightSpeedCurveActive = false;
+            runtimeFlightSpeedCurve = null;
+            runtimeFlightSpeedCurveBaseSpeed = 0f;
+            runtimeFlightSpeedCurveSeconds = 0f;
+            runtimeFlightSpeedCurveElapsed = 0f;
             radialSplitImminentFired = false;
             Launched = null;
             RadialSplit = null;
@@ -194,6 +201,7 @@ namespace Week14.Combat
 
                 if (!externalMotionDriven)
                 {
+                    TickRuntimeFlightSpeedCurve();
                     TickHoming();
                     TickRuntimeHoming();
                 }

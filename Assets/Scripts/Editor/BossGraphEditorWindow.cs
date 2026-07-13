@@ -502,12 +502,14 @@ public sealed class BossGraphEditorWindow : EditorWindow
         nodeView.SetInlineActionFieldsDrawer(() => DrawInlineNodeActionFields(nodeId, index));
         nodeView.SetPosition(new Rect(position, new Vector2(GraphNodeWidth, GraphNodeHeight)));
         nodeView.SetNodeKind(nodeKind, GetNodeColor(nodeKind, GetNodeActionType(node)));
+        nodeView.SetHackerFireWireBranchPorts(GetNodeActionType(node) == typeof(HackerFireWireBranchAction));
         nodeView.AddToClassList("boss-graph-node");
         return nodeView;
     }
 
     private void AddTransitionViews()
     {
+        MigrateLegacyHackerFireWireBranchParallelEdges();
         SerializedProperty transitions = graphObject.FindProperty("transitions");
         if (transitions != null)
         {
@@ -523,7 +525,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
                     continue;
                 }
 
-                graphView.AddTransitionEdge(fromNode, toNode, GetTransitionLabel(transition));
+                graphView.AddTransitionEdge(
+                    fromNode,
+                    toNode,
+                    GetTransitionLabel(transition),
+                    GetInt(transition, "fromOutputPortIndex", 0));
             }
         }
 
@@ -545,8 +551,77 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 continue;
             }
 
+            if (IsHackerFireWireBranchNode(fromNodeId))
+            {
+                graphView.AddTransitionEdge(fromNode, toNode, string.Empty, 1);
+                continue;
+            }
+
             graphView.AddParallelEdge(fromNode, toNode);
         }
+    }
+
+    private void MigrateLegacyHackerFireWireBranchParallelEdges()
+    {
+        SerializedProperty transitions = graphObject?.FindProperty("transitions");
+        SerializedProperty parallelEdges = graphObject?.FindProperty("parallelEdges");
+        if (transitions == null || parallelEdges == null)
+        {
+            return;
+        }
+
+        bool changed = false;
+        for (int edgeIndex = parallelEdges.arraySize - 1; edgeIndex >= 0; edgeIndex--)
+        {
+            SerializedProperty parallelEdge = parallelEdges.GetArrayElementAtIndex(edgeIndex);
+            string fromNodeId = GetString(parallelEdge, "fromNodeId", string.Empty);
+            string toNodeId = GetString(parallelEdge, "toNodeId", string.Empty);
+            if (string.IsNullOrWhiteSpace(fromNodeId)
+                || string.IsNullOrWhiteSpace(toNodeId)
+                || !IsHackerFireWireBranchNode(fromNodeId))
+            {
+                continue;
+            }
+
+            bool hasOut2Transition = false;
+            for (int transitionIndex = 0; transitionIndex < transitions.arraySize; transitionIndex++)
+            {
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(transitionIndex);
+                if (GetString(transition, "fromNodeId", string.Empty) == fromNodeId
+                    && GetString(transition, "toNodeId", string.Empty) == toNodeId
+                    && GetInt(transition, "fromOutputPortIndex", 0) == 1)
+                {
+                    hasOut2Transition = true;
+                    break;
+                }
+            }
+
+            if (!hasOut2Transition)
+            {
+                transitions.InsertArrayElementAtIndex(transitions.arraySize);
+                SerializedProperty transition = transitions.GetArrayElementAtIndex(transitions.arraySize - 1);
+                SetString(transition, "fromNodeGuid", string.Empty);
+                SetString(transition, "toNodeGuid", string.Empty);
+                SetString(transition, "fromNodeId", fromNodeId);
+                SetString(transition, "toNodeId", toNodeId);
+                SetInt(transition, "fromOutputPortIndex", 1);
+                SetEnum(transition, "conditionType", (int)BossTransitionConditionType.SequenceEnded);
+                SetFloat(transition, "threshold", 0f);
+                SetInt(transition, "phaseIndex", 0);
+            }
+
+            parallelEdges.DeleteArrayElementAtIndex(edgeIndex);
+            changed = true;
+        }
+
+        if (!changed)
+        {
+            return;
+        }
+
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
+        graphObject.Update();
     }
 
     private void AddStateNode(Vector2? editorPosition)
@@ -836,6 +911,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             SetString(transition, "toNodeGuid", string.Empty);
             SetString(transition, "fromNodeId", nextFromNodeId);
             SetString(transition, "toNodeId", nextToNodeId);
+            SetInt(transition, "fromOutputPortIndex", sourceTransition.Endpoint.FromOutputPortIndex);
             SetEnum(transition, "conditionType", sourceTransition.Values.ConditionType);
             SetFloat(transition, "threshold", sourceTransition.Values.Threshold);
             SetInt(transition, "phaseIndex", sourceTransition.Values.PhaseIndex);
@@ -1176,6 +1252,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SetString(transition, "toNodeGuid", string.Empty);
                 SetString(transition, "fromNodeId", nextFromNodeId);
                 SetString(transition, "toNodeId", nextToNodeId);
+                SetInt(transition, "fromOutputPortIndex", copiedTransition.Endpoint.FromOutputPortIndex);
                 SetEnum(transition, "conditionType", copiedTransition.Values.ConditionType);
                 SetFloat(transition, "threshold", copiedTransition.Values.Threshold);
                 SetInt(transition, "phaseIndex", copiedTransition.Values.PhaseIndex);
@@ -1462,7 +1539,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 continue;
             }
 
-            string key = GetTransitionKey(fromNodeId, toNodeId);
+            int fromOutputPortIndex = GetInt(transition, "fromOutputPortIndex", 0);
+            string key = GetTransitionKey(fromNodeId, toNodeId, fromOutputPortIndex);
             if (existingValues.ContainsKey(key))
             {
                 continue;
@@ -1489,10 +1567,16 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 continue;
             }
 
-            string key = GetTransitionKey(fromNode.NodeId, toNode.NodeId);
+            int fromOutputPortIndex = fromNode.GetNormalOutputPortIndex(edge.output);
+            if (fromOutputPortIndex < 0)
+            {
+                continue;
+            }
+
+            string key = GetTransitionKey(fromNode.NodeId, toNode.NodeId, fromOutputPortIndex);
             if (!currentEdges.ContainsKey(key))
             {
-                currentEdges[key] = new TransitionEndpoint(fromNode.NodeId, toNode.NodeId);
+                currentEdges[key] = new TransitionEndpoint(fromNode.NodeId, toNode.NodeId, fromOutputPortIndex);
             }
         }
 
@@ -1531,6 +1615,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
                 SetString(transition, "fromNodeId", snapshot.Endpoint.FromNodeId);
                 SetString(transition, "toNodeId", snapshot.Endpoint.ToNodeId);
+                SetInt(transition, "fromOutputPortIndex", snapshot.Endpoint.FromOutputPortIndex);
                 SetEnum(transition, "conditionType", snapshot.Values.ConditionType);
                 SetFloat(transition, "threshold", snapshot.Values.Threshold);
                 SetInt(transition, "phaseIndex", snapshot.Values.PhaseIndex);
@@ -2090,6 +2175,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
             TransitionSnapshot snapshot = nextTransitions[i];
             if (GetString(transition, "fromNodeId", string.Empty) != snapshot.Endpoint.FromNodeId
                 || GetString(transition, "toNodeId", string.Empty) != snapshot.Endpoint.ToNodeId
+                || GetInt(transition, "fromOutputPortIndex", 0) != snapshot.Endpoint.FromOutputPortIndex
                 || GetEnum(transition, "conditionType", (int)BossTransitionConditionType.SequenceEnded) != snapshot.Values.ConditionType
                 || !Mathf.Approximately(GetFloat(transition, "threshold", 0f), snapshot.Values.Threshold)
                 || GetInt(transition, "phaseIndex", 0) != snapshot.Values.PhaseIndex)
@@ -2143,7 +2229,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
             }
 
             snapshots.Add(new TransitionSnapshot(
-                new TransitionEndpoint(fromNodeId, toNodeId),
+                new TransitionEndpoint(
+                    fromNodeId,
+                    toNodeId,
+                    GetInt(transition, "fromOutputPortIndex", 0)),
                 new TransitionValues(
                     GetEnum(transition, "conditionType", (int)BossTransitionConditionType.SequenceEnded),
                     GetFloat(transition, "threshold", 0f),
@@ -2726,9 +2815,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return true;
     }
 
-    private static string GetTransitionKey(string fromNodeId, string toNodeId)
+    private static string GetTransitionKey(string fromNodeId, string toNodeId, int fromOutputPortIndex)
     {
-        return $"{fromNodeId}->{toNodeId}";
+        return $"{fromNodeId}:{fromOutputPortIndex}->{toNodeId}";
     }
 
     private static string GetParallelEdgeKey(string fromNodeId, string toNodeId)
@@ -5730,7 +5819,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
             EditorGUILayout.LabelField(
                 $"P: {parallelFromNodeId} -> {parallelToNodeId}",
                 EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("이 연결의 대상 Action은 출발 노드 Action과 동시에 실행됩니다.", MessageType.Info);
+            EditorGUILayout.HelpBox(
+                "이 연결의 대상 Action은 출발 노드 Action과 동시에 실행됩니다.",
+                MessageType.Info);
             return;
         }
 
@@ -5740,7 +5831,10 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        SerializedProperty transition = FindTransitionProperty(fromNodeId, toNodeId);
+        int fromOutputPortIndex = edge?.output?.node is BossGraphNodeView fromNode
+            ? fromNode.GetNormalOutputPortIndex(edge.output)
+            : 0;
+        SerializedProperty transition = FindTransitionProperty(fromNodeId, toNodeId, fromOutputPortIndex);
         if (transition == null)
         {
             if (SaveTransitions())
@@ -5750,7 +5844,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 graphObject.Update();
             }
 
-            transition = FindTransitionProperty(fromNodeId, toNodeId);
+            transition = FindTransitionProperty(fromNodeId, toNodeId, fromOutputPortIndex);
         }
 
         if (transition == null)
@@ -5759,7 +5853,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
             return;
         }
 
-        EditorGUILayout.LabelField($"{fromNodeId} -> {toNodeId}", EditorStyles.boldLabel);
+        bool isFireWireBranch = IsHackerFireWireBranchNode(fromNodeId);
+        string branchLabel = fromOutputPortIndex == 1
+            ? "On Wire Missed Action"
+            : "On Player Grabbed Action";
+        EditorGUILayout.LabelField(
+            isFireWireBranch
+                ? $"{branchLabel}: {fromNodeId} -> {toNodeId}"
+                : $"{fromNodeId} -> {toNodeId}",
+            EditorStyles.boldLabel);
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(transition.FindPropertyRelative("conditionType"));
         EditorGUILayout.PropertyField(transition.FindPropertyRelative("threshold"));
@@ -5818,7 +5920,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return true;
     }
 
-    private SerializedProperty FindTransitionProperty(string fromNodeId, string toNodeId)
+    private SerializedProperty FindTransitionProperty(string fromNodeId, string toNodeId, int fromOutputPortIndex)
     {
         SerializedProperty transitions = graphObject.FindProperty("transitions");
         if (transitions == null)
@@ -5830,7 +5932,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         {
             SerializedProperty transition = transitions.GetArrayElementAtIndex(i);
             if (GetString(transition, "fromNodeId", string.Empty) == fromNodeId
-                && GetString(transition, "toNodeId", string.Empty) == toNodeId)
+                && GetString(transition, "toNodeId", string.Empty) == toNodeId
+                && GetInt(transition, "fromOutputPortIndex", 0) == fromOutputPortIndex)
             {
                 return transition;
             }
@@ -6192,6 +6295,16 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private static Type GetNodeActionType(BossGraphActionAsset actionAsset)
     {
         return actionAsset?.Action?.GetType();
+    }
+
+    private bool IsHackerFireWireBranchNode(string nodeId)
+    {
+        int nodeIndex = FindStateNodeIndex(nodeId);
+        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
+        return nodeIndex >= 0
+            && stateNodes != null
+            && nodeIndex < stateNodes.arraySize
+            && GetNodeActionType(stateNodes.GetArrayElementAtIndex(nodeIndex)) == typeof(HackerFireWireBranchAction);
     }
 
     private void SetNodeAction(SerializedProperty node, BossGraphActionMenuItem actionItem)
@@ -7037,14 +7150,16 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private readonly struct TransitionEndpoint
     {
-        public TransitionEndpoint(string fromNodeId, string toNodeId)
+        public TransitionEndpoint(string fromNodeId, string toNodeId, int fromOutputPortIndex)
         {
             FromNodeId = fromNodeId;
             ToNodeId = toNodeId;
+            FromOutputPortIndex = Mathf.Max(0, fromOutputPortIndex);
         }
 
         public string FromNodeId { get; }
         public string ToNodeId { get; }
+        public int FromOutputPortIndex { get; }
     }
 
     private readonly struct TransitionValues
@@ -7192,16 +7307,17 @@ internal sealed class BossGraphView : GraphView
         AddElement(nodeView);
     }
 
-    public void AddTransitionEdge(BossGraphNodeView fromNode, BossGraphNodeView toNode, string label)
+    public void AddTransitionEdge(BossGraphNodeView fromNode, BossGraphNodeView toNode, string label, int fromOutputPortIndex = 0)
     {
-        if (fromNode == null || toNode == null || fromNode.OutputPort == null || toNode.InputPort == null)
+        Port outputPort = fromNode?.GetNormalOutputPort(fromOutputPortIndex);
+        if (fromNode == null || toNode == null || outputPort == null || toNode.InputPort == null)
         {
             return;
         }
 
         BossGraphEdgeView edge = new(label)
         {
-            output = fromNode.OutputPort,
+            output = outputPort,
             input = toNode.InputPort
         };
         edge.output.Connect(edge);
@@ -7693,6 +7809,11 @@ internal sealed class BossGraphNodeView : Node
         OutputPort.portName = "Out";
         outputContainer.Add(OutputPort);
 
+        SecondaryOutputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+        SecondaryOutputPort.portName = "Out2";
+        SecondaryOutputPort.style.display = DisplayStyle.None;
+        outputContainer.Add(SecondaryOutputPort);
+
         ParallelInputPorts = new Port[ParallelPortCount];
         for (int i = 0; i < ParallelInputPorts.Length; i++)
         {
@@ -7774,8 +7895,29 @@ internal sealed class BossGraphNodeView : Node
     public string NodeGuid { get; }
     public Port InputPort { get; }
     public Port OutputPort { get; }
+    public Port SecondaryOutputPort { get; }
     public Port[] ParallelInputPorts { get; }
     public Port[] ParallelOutputPorts { get; }
+
+    public Port GetNormalOutputPort(int outputPortIndex = 0)
+    {
+        return outputPortIndex switch
+        {
+            0 => OutputPort,
+            1 => SecondaryOutputPort,
+            _ => null
+        };
+    }
+
+    public int GetNormalOutputPortIndex(Port port)
+    {
+        if (port == OutputPort)
+        {
+            return 0;
+        }
+
+        return port == SecondaryOutputPort ? 1 : -1;
+    }
 
     public Port GetParallelInputPort(int laneIndex = 0)
     {
@@ -7815,7 +7957,7 @@ internal sealed class BossGraphNodeView : Node
 
     public bool IsNormalOutputPort(Port port)
     {
-        return port == OutputPort;
+        return port == OutputPort || port == SecondaryOutputPort;
     }
 
     public bool IsNormalInputPort(Port port)
@@ -7857,6 +7999,24 @@ internal sealed class BossGraphNodeView : Node
         mainContainer.style.borderBottomColor = color;
         mainContainer.style.borderLeftColor = color;
         mainContainer.style.borderRightColor = color;
+    }
+
+    public void SetHackerFireWireBranchPorts(bool isBranch)
+    {
+        OutputPort.portName = isBranch ? "Out1" : "Out";
+        OutputPort.tooltip = isBranch ? "플레이어 그랩 성공 시 실행" : string.Empty;
+        SecondaryOutputPort.style.display = isBranch ? DisplayStyle.Flex : DisplayStyle.None;
+        SecondaryOutputPort.tooltip = isBranch ? "와이어 그랩 실패 시 실행" : string.Empty;
+        for (int i = 0; i < ParallelInputPorts.Length; i++)
+        {
+            ParallelInputPorts[i].style.display = isBranch ? DisplayStyle.None : DisplayStyle.Flex;
+        }
+
+        for (int i = 0; i < ParallelOutputPorts.Length; i++)
+        {
+            ParallelOutputPorts[i].style.display = isBranch ? DisplayStyle.None : DisplayStyle.Flex;
+            ParallelOutputPorts[i].tooltip = "동시 실행";
+        }
     }
 
     public void SetRuntimeActive(bool active)

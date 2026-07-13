@@ -148,7 +148,7 @@ namespace Week14.Enemy
             {
                 if (wire != null)
                 {
-                    UnityEngine.Object.Destroy(wire.gameObject);
+                    wire.BeginDissolve();
                 }
             }
         }

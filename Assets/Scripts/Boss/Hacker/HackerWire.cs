@@ -13,11 +13,14 @@ namespace Week14.Enemy
 
     internal sealed class HackerWire : MonoBehaviour
     {
+        private const float DissolveSeconds = 0.2f;
+
         private enum WireState
         {
             Flying,
             AttachedToWall,
-            AttachedToPlayer
+            AttachedToPlayer,
+            Dissolving
         }
 
         private HackerBossAI owner;
@@ -37,11 +40,14 @@ namespace Week14.Enemy
         private bool canGrabPlayer;
         private bool persistsAfterPlayerHit;
         private bool persistsAfterWallHit;
+        private bool appliesHackingOnTouch;
+        private bool wasTouchingPlayer;
         private PlayerCombatController forcedGrabTarget;
         private bool hasResolved;
         private WireState state;
         private LineRenderer line;
         private Material lineMaterial;
+        private float dissolveStartedAt;
 
         private int wallLayer = -1;
 
@@ -136,9 +142,24 @@ namespace Week14.Enemy
             float wallAttachedSeconds,
             float width,
             float hitRadius,
-            Color color)
+            Color color,
+            int hackingPerTouch = 0)
         {
-            return Create(owner, anchor, direction, flightSpeed, flightSeconds, wallAttachedSeconds, false, true, width, hitRadius, color);
+            HackerWire wire = Create(
+                owner,
+                anchor,
+                direction,
+                flightSpeed,
+                flightSeconds,
+                wallAttachedSeconds,
+                false,
+                true,
+                width,
+                hitRadius,
+                color);
+            wire.hackingPerHit = Mathf.Max(0, hackingPerTouch);
+            wire.appliesHackingOnTouch = wire.hackingPerHit > 0;
+            return wire;
         }
 
         private static HackerWire Create(
@@ -187,11 +208,19 @@ namespace Week14.Enemy
                 case WireState.AttachedToPlayer:
                     if (Time.time >= attachedExpiresAt)
                     {
+                        BeginDissolve();
+                    }
+                    break;
+                case WireState.Dissolving:
+                    if (Time.time >= dissolveStartedAt + DissolveSeconds)
+                    {
                         Destroy(gameObject);
+                        return;
                     }
                     break;
             }
 
+            TickPlayerWireContact();
             UpdateLine();
         }
 
@@ -346,7 +375,7 @@ namespace Week14.Enemy
             Resolve(HackerWireResolution.PlayerGrabbed);
             if (!persistsAfterPlayerHit)
             {
-                Destroy(gameObject);
+                BeginDissolve();
                 return;
             }
 
@@ -354,12 +383,69 @@ namespace Week14.Enemy
             attachedExpiresAt = Time.time + grabSeconds;
         }
 
+        private void TickPlayerWireContact()
+        {
+            if (state == WireState.Dissolving || !appliesHackingOnTouch || hackingPerHit <= 0 || owner == null)
+            {
+                wasTouchingPlayer = false;
+                return;
+            }
+
+            PlayerCombatController player = PlayerCombatController.Active;
+            bool isTouchingPlayer = player != null && IsTouchingWire(player);
+            if (isTouchingPlayer && !wasTouchingPlayer)
+            {
+                owner.ApplyHacking(player, hackingPerHit);
+            }
+
+            wasTouchingPlayer = isTouchingPlayer;
+        }
+
+        private bool IsTouchingWire(PlayerCombatController player)
+        {
+            if (player == null)
+            {
+                return false;
+            }
+
+            Vector2 start = anchor != null ? anchor.position : transform.position;
+            Vector2 end = Position;
+            Vector2 segment = end - start;
+            float segmentLengthSqr = segment.sqrMagnitude;
+            if (segmentLengthSqr <= 0.0001f)
+            {
+                return false;
+            }
+
+            Collider2D[] playerColliders = player.GetComponentsInChildren<Collider2D>(true);
+            for (int i = 0; i < playerColliders.Length; i++)
+            {
+                Collider2D collider = playerColliders[i];
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                Bounds bounds = collider.bounds;
+                Vector2 center = bounds.center;
+                float progress = Mathf.Clamp01(Vector2.Dot(center - start, segment) / segmentLengthSqr);
+                Vector2 closestPoint = start + segment * progress;
+                float contactRadius = hitRadius + Mathf.Max(0.01f, bounds.extents.magnitude);
+                if ((center - closestPoint).sqrMagnitude <= contactRadius * contactRadius)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void AttachToWall()
         {
             Resolve(HackerWireResolution.WallAttached);
             if (!persistsAfterWallHit)
             {
-                Destroy(gameObject);
+                BeginDissolve();
                 return;
             }
 
@@ -370,18 +456,39 @@ namespace Week14.Enemy
         private void Expire()
         {
             Resolve(HackerWireResolution.Expired);
-            Destroy(gameObject);
+            BeginDissolve();
         }
 
-        private void UpdateLine()
+        internal void BeginDissolve()
         {
-            if (line == null || anchor == null)
+            if (state == WireState.Dissolving)
             {
                 return;
             }
 
-            line.SetPosition(0, anchor.position);
-            line.SetPosition(1, Position);
+            state = WireState.Dissolving;
+            dissolveStartedAt = Time.time;
+        }
+
+        private void UpdateLine()
+        {
+            if (line == null)
+            {
+                return;
+            }
+
+            Vector3 start = anchor != null ? anchor.position : transform.position;
+            Vector3 end = Position;
+            if (state == WireState.Dissolving)
+            {
+                float progress = Mathf.Clamp01((Time.time - dissolveStartedAt) / DissolveSeconds);
+                line.SetPosition(0, Vector3.Lerp(start, end, progress));
+                line.SetPosition(1, end);
+                return;
+            }
+
+            line.SetPosition(0, start);
+            line.SetPosition(1, end);
         }
 
         private void CreateLine(Color color, float width)

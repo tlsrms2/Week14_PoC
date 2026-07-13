@@ -10,6 +10,8 @@ namespace Week14.Enemy
         private static readonly List<HackerMeleeParryWindow> ActiveWindows = new();
 
         private Transform followTarget;
+        private Vector3 followWorldOffset;
+        private bool useFollowWorldOffset;
         private float endsAt;
         private Action parried;
         private LineRenderer indicator;
@@ -17,7 +19,25 @@ namespace Week14.Enemy
         internal void Initialize(Transform nextFollowTarget, float radius, float durationSeconds, Action onParried)
         {
             followTarget = nextFollowTarget;
-            transform.position = followTarget != null ? followTarget.position : transform.position;
+            useFollowWorldOffset = false;
+            transform.position = GetFollowPosition();
+            endsAt = Time.time + Mathf.Max(0f, durationSeconds);
+            parried = onParried;
+            CreateIndicator(Mathf.Max(0.05f, radius));
+            ActiveWindows.Add(this);
+        }
+
+        internal void Initialize(
+            Transform nextFollowTarget,
+            Vector3 worldOffset,
+            float radius,
+            float durationSeconds,
+            Action onParried)
+        {
+            followTarget = nextFollowTarget;
+            followWorldOffset = worldOffset;
+            useFollowWorldOffset = true;
+            transform.position = GetFollowPosition();
             endsAt = Time.time + Mathf.Max(0f, durationSeconds);
             parried = onParried;
             CreateIndicator(Mathf.Max(0.05f, radius));
@@ -71,7 +91,7 @@ namespace Week14.Enemy
         {
             if (followTarget != null)
             {
-                transform.position = followTarget.position;
+                transform.position = GetFollowPosition();
             }
 
             if (!IsAvailable)
@@ -86,6 +106,18 @@ namespace Week14.Enemy
                 indicator.startColor = color;
                 indicator.endColor = color;
             }
+        }
+
+        private Vector3 GetFollowPosition()
+        {
+            if (followTarget == null)
+            {
+                return transform.position;
+            }
+
+            return useFollowWorldOffset
+                ? followTarget.position + followWorldOffset
+                : followTarget.position;
         }
 
         private void OnDestroy()

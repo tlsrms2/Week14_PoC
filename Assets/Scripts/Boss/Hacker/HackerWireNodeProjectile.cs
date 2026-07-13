@@ -139,6 +139,8 @@ namespace Week14.Enemy
 
     internal sealed class HackerWireNodeLinkVisual : MonoBehaviour
     {
+        private const float DissolveSeconds = 0.2f;
+
         private HackerWireNodeProjectile first;
         private HackerWireNodeProjectile second;
         private HackerBossAI hackingOwner;
@@ -146,6 +148,9 @@ namespace Week14.Enemy
         private float hitRadius;
         private bool playerWasTouching;
         private LineRenderer line;
+        private Vector3 firstPosition;
+        private Vector3 secondPosition;
+        private float dissolveStartedAt = -1f;
 
         internal static void Create(HackerWireNodeProjectile first, HackerWireNodeProjectile second)
         {
@@ -163,16 +168,30 @@ namespace Week14.Enemy
             link.hitRadius = link.hackingOwner != null
                 ? Mathf.Max(0.01f, link.hackingOwner.WireSettings.HitRadius)
                 : 0.08f;
+            link.firstPosition = first.transform.position;
+            link.secondPosition = second.transform.position;
             link.CreateLine();
         }
 
         private void Update()
         {
-            if (first == null || second == null)
+            if (dissolveStartedAt >= 0f)
             {
-                Destroy(gameObject);
+                if (Time.time >= dissolveStartedAt + DissolveSeconds)
+                {
+                    Destroy(gameObject);
+                }
                 return;
             }
+
+            if (first == null || second == null)
+            {
+                dissolveStartedAt = Time.time;
+                return;
+            }
+
+            firstPosition = first.transform.position;
+            secondPosition = second.transform.position;
 
             PlayerCombatController player = PlayerCombatController.Active;
             bool isTouching = IsPlayerTouchingWire(player);
@@ -186,14 +205,21 @@ namespace Week14.Enemy
 
         private void LateUpdate()
         {
-            if (first == null || second == null)
+            if (line == null)
             {
-                Destroy(gameObject);
                 return;
             }
 
-            line.SetPosition(0, first.transform.position);
-            line.SetPosition(1, second.transform.position);
+            if (dissolveStartedAt >= 0f)
+            {
+                float progress = Mathf.Clamp01((Time.time - dissolveStartedAt) / DissolveSeconds);
+                line.SetPosition(0, Vector3.Lerp(firstPosition, secondPosition, progress));
+                line.SetPosition(1, secondPosition);
+                return;
+            }
+
+            line.SetPosition(0, firstPosition);
+            line.SetPosition(1, secondPosition);
         }
 
         private bool IsPlayerTouchingWire(PlayerCombatController player)

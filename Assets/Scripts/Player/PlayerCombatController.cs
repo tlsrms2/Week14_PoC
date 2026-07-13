@@ -515,6 +515,11 @@ namespace Week14.Combat
             return DamageReceiver.ReceiveAttack(bulletDamage, hitPosition, hitDirection);
         }
 
+        public void ApplyExternalKnockback(Vector2 direction, float speed, float staggerSeconds)
+        {
+            DamageReceiver.ApplyExternalKnockback(direction, speed, staggerSeconds);
+        }
+
         public void SetHackerParryVisual(bool hacked)
         {
             Rig.ResolveMouseParryReticleReference();

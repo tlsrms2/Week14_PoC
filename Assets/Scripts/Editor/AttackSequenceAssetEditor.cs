@@ -128,6 +128,7 @@ internal static class BossGraphActionEditorUtility
         new("Hacker/Throw Weapon", typeof(HackerWeaponThrowAction), () => new HackerWeaponThrowAction()),
         new("Hacker/Dash Sweep", typeof(HackerDashSweepAction), () => new HackerDashSweepAction()),
         new("Hacker/Fire Wire", typeof(HackerFireWireAction), () => new HackerFireWireAction()),
+        new("Hacker/Fire Wire Branch", typeof(HackerFireWireBranchAction), () => new HackerFireWireBranchAction()),
         new("Hacker/Fire Twin Wire", typeof(HackerFireTwinWireAction), () => new HackerFireTwinWireAction()),
         new("Hacker/Ground Gun Turret", typeof(HackerGroundGunTurretAction), () => new HackerGroundGunTurretAction()),
         new("Hacker/Recall Weapon", typeof(HackerRecallWeaponAction), () => new HackerRecallWeaponAction()),
@@ -284,6 +285,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(ArsonistSetSprinklerActiveAction))
         {
             return "Arsonist 보스 인스펙터의 Sprinklers 리스트에서 지정 인덱스의 스프링쿨러 기능 활성 상태를 바꿉니다. 사용된 스프링쿨러는 다시 활성화되지 않습니다.";
+        }
+
+        if (actionType == typeof(HackerFireWireBranchAction))
+        {
+            return "바로 앞 Fire Wire Action의 결과를 분기합니다. Out1 연결은 플레이어 그랩 성공, Out2 연결은 그랩 실패 시에만 실행됩니다.";
         }
 
         if (actionType == typeof(FireProjectileBurstAction))

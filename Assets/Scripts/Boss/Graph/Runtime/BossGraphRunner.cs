@@ -182,11 +182,19 @@ namespace Week14.Enemy
                 Dictionary<string, List<BossStateNode>> parallelGroups = BuildPatternParallelGroups(graph, nodeKeys);
                 List<List<BossStateNode>> executionGroups = BuildPatternExecutionGroups(graph, nodeKeys, parallelGroups);
                 int[] conductorOutlineReleaseCounts = new int[executionGroups.Count];
+                HashSet<string> skippedNodeKeys = new(StringComparer.Ordinal);
                 string previousNodeId = null;
                 for (int i = 0; i < executionGroups.Count; i++)
                 {
                     List<BossStateNode> group = executionGroups[i];
-                    yield return ExecutePatternNodeGroup(graph, group, previousNodeId, context);
+                    List<BossStateNode> activeGroup = group
+                        .Where(node => node != null && !skippedNodeKeys.Contains(GetRuntimeNodeKey(node)))
+                        .ToList();
+                    if (activeGroup.Count > 0)
+                    {
+                        yield return ExecutePatternNodeGroup(graph, activeGroup, previousNodeId, context);
+                        ApplyHackerFireWireBranchSelection(graph, activeGroup, context, skippedNodeKeys);
+                    }
 
                     int newOutlineHoldCount = context.ConsumeConductorMinionOutlineHoldRequests();
                     if (newOutlineHoldCount > 0 && conductorOutlineReleaseCounts.Length > 0)
@@ -196,7 +204,7 @@ namespace Week14.Enemy
                     }
 
                     ReleaseConductorMinionOutlineHolds(context, conductorOutlineReleaseCounts[i]);
-                    previousNodeId = group.Count > 0 ? group[group.Count - 1]?.NodeId : previousNodeId;
+                    previousNodeId = activeGroup.Count > 0 ? activeGroup[activeGroup.Count - 1].NodeId : previousNodeId;
                     context.Stop();
                 }
             }
@@ -205,6 +213,223 @@ namespace Week14.Enemy
                 ClearConductorMinionOutlineHolds(context);
                 context.ClearPatternScopedBossChildAims();
             }
+        }
+
+        private static void ApplyHackerFireWireBranchSelection(
+            BossGraphAsset graph,
+            IReadOnlyList<BossStateNode> executedNodes,
+            BossActionContext context,
+            ISet<string> skippedNodeKeys)
+        {
+            if (graph == null || executedNodes == null || skippedNodeKeys == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < executedNodes.Count; i++)
+            {
+                BossStateNode branchNode = executedNodes[i];
+                if (branchNode?.Action is not HackerFireWireBranchAction
+                    || !TryGetHackerFireWireBranchTargets(graph, branchNode, out string grabbedTargetKey, out string missedTargetKey))
+                {
+                    continue;
+                }
+
+                string skippedTargetKey = HackerFireWireBranchAction.IsPlayerGrabbed(context)
+                    ? missedTargetKey
+                    : grabbedTargetKey;
+                if (!string.IsNullOrWhiteSpace(skippedTargetKey))
+                {
+                    SkipHackerFireWireBranchPath(graph, skippedTargetKey, skippedNodeKeys);
+                }
+            }
+        }
+
+        private static void SkipHackerFireWireBranchPath(
+            BossGraphAsset graph,
+            string rootNodeKey,
+            ISet<string> skippedNodeKeys)
+        {
+            if (graph == null || string.IsNullOrWhiteSpace(rootNodeKey) || skippedNodeKeys == null || !skippedNodeKeys.Add(rootNodeKey))
+            {
+                return;
+            }
+
+            Queue<string> pendingNodeKeys = new();
+            pendingNodeKeys.Enqueue(rootNodeKey);
+            while (pendingNodeKeys.Count > 0)
+            {
+                string sourceNodeKey = pendingNodeKeys.Dequeue();
+                foreach (string targetNodeKey in GetBranchTraversalTargets(graph, sourceNodeKey))
+                {
+                    if (IsReachedOnlyFromSkippedNodes(graph, targetNodeKey, skippedNodeKeys)
+                        && skippedNodeKeys.Add(targetNodeKey))
+                    {
+                        pendingNodeKeys.Enqueue(targetNodeKey);
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<string> GetBranchTraversalTargets(BossGraphAsset graph, string sourceNodeKey)
+        {
+            BossStateNode sourceNode = graph?.GetNode(sourceNodeKey);
+            if (sourceNode == null)
+            {
+                yield break;
+            }
+
+            if (graph.Transitions != null)
+            {
+                for (int i = 0; i < graph.Transitions.Count; i++)
+                {
+                    BossTransition transition = graph.Transitions[i];
+                    if (transition != null && transition.IsFromNode(sourceNode))
+                    {
+                        string targetNodeKey = GetRuntimeNodeKey(graph.GetNode(transition.ToNodeKey));
+                        if (!string.IsNullOrWhiteSpace(targetNodeKey))
+                        {
+                            yield return targetNodeKey;
+                        }
+                    }
+                }
+            }
+
+            if (sourceNode.Action is not HackerFireWireBranchAction || graph.ParallelEdges == null)
+            {
+                yield break;
+            }
+
+            for (int i = 0; i < graph.ParallelEdges.Count; i++)
+            {
+                BossParallelEdge edge = graph.ParallelEdges[i];
+                if (edge != null && edge.IsFromNode(sourceNode))
+                {
+                    string targetNodeKey = GetRuntimeNodeKey(graph.GetNode(edge.ToNodeKey));
+                    if (!string.IsNullOrWhiteSpace(targetNodeKey))
+                    {
+                        yield return targetNodeKey;
+                    }
+                }
+            }
+        }
+
+        private static bool IsReachedOnlyFromSkippedNodes(
+            BossGraphAsset graph,
+            string targetNodeKey,
+            ISet<string> skippedNodeKeys)
+        {
+            BossStateNode targetNode = graph?.GetNode(targetNodeKey);
+            if (targetNode == null)
+            {
+                return false;
+            }
+
+            bool hasIncomingConnection = false;
+            if (graph.Transitions != null)
+            {
+                for (int i = 0; i < graph.Transitions.Count; i++)
+                {
+                    BossTransition transition = graph.Transitions[i];
+                    BossStateNode transitionTarget = graph.GetNode(transition?.ToNodeKey);
+                    if (transition == null || transitionTarget != targetNode)
+                    {
+                        continue;
+                    }
+
+                    hasIncomingConnection = true;
+                    if (!skippedNodeKeys.Contains(GetRuntimeNodeKey(graph.GetNode(transition.FromNodeKey))))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (graph.ParallelEdges != null)
+            {
+                for (int i = 0; i < graph.ParallelEdges.Count; i++)
+                {
+                    BossParallelEdge edge = graph.ParallelEdges[i];
+                    BossStateNode edgeSource = graph.GetNode(edge?.FromNodeKey);
+                    BossStateNode edgeTarget = graph.GetNode(edge?.ToNodeKey);
+                    if (edge == null || edgeSource?.Action is not HackerFireWireBranchAction || edgeTarget != targetNode)
+                    {
+                        continue;
+                    }
+
+                    hasIncomingConnection = true;
+                    if (!skippedNodeKeys.Contains(GetRuntimeNodeKey(edgeSource)))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return hasIncomingConnection;
+        }
+
+        private static bool TryGetHackerFireWireBranchTargets(
+            BossGraphAsset graph,
+            BossStateNode branchNode,
+            out string grabbedTargetKey,
+            out string missedTargetKey)
+        {
+            grabbedTargetKey = GetTransitionTargetKey(graph, branchNode, 0);
+            missedTargetKey = GetTransitionTargetKey(graph, branchNode, 1);
+            if (string.IsNullOrWhiteSpace(missedTargetKey))
+            {
+                missedTargetKey = GetFirstParallelTargetKey(graph, branchNode);
+            }
+
+            return !string.IsNullOrWhiteSpace(grabbedTargetKey)
+                && !string.IsNullOrWhiteSpace(missedTargetKey);
+        }
+
+        private static string GetTransitionTargetKey(
+            BossGraphAsset graph,
+            BossStateNode sourceNode,
+            int outputPortIndex)
+        {
+            if (graph?.Transitions == null || sourceNode == null)
+            {
+                return string.Empty;
+            }
+
+            for (int i = 0; i < graph.Transitions.Count; i++)
+            {
+                BossTransition transition = graph.Transitions[i];
+                if (transition == null
+                    || !transition.IsFromNode(sourceNode)
+                    || transition.FromOutputPortIndex != outputPortIndex)
+                {
+                    continue;
+                }
+
+                return GetRuntimeNodeKey(graph.GetNode(transition.ToNodeKey));
+            }
+
+            return string.Empty;
+        }
+
+        private static string GetFirstParallelTargetKey(BossGraphAsset graph, BossStateNode sourceNode)
+        {
+            if (graph?.ParallelEdges == null || sourceNode == null)
+            {
+                return string.Empty;
+            }
+
+            for (int i = 0; i < graph.ParallelEdges.Count; i++)
+            {
+                BossParallelEdge edge = graph.ParallelEdges[i];
+                if (edge == null || !edge.IsFromNode(sourceNode))
+                {
+                    continue;
+                }
+
+                return GetRuntimeNodeKey(graph.GetNode(edge.ToNodeKey));
+            }
+
+            return string.Empty;
         }
 
         private static IEnumerator ExecutePatternNodeGroup(
@@ -558,6 +783,11 @@ namespace Week14.Enemy
                 BossStateNode targetNode = graph.GetNode(edge?.ToNodeKey);
                 string sourceKey = GetRuntimeNodeKey(sourceNode);
                 string targetKey = GetRuntimeNodeKey(targetNode);
+                if (sourceNode?.Action is HackerFireWireBranchAction)
+                {
+                    continue;
+                }
+
                 if (!string.IsNullOrWhiteSpace(sourceKey)
                     && !string.IsNullOrWhiteSpace(targetKey)
                     && sourceKey != targetKey
@@ -653,6 +883,32 @@ namespace Week14.Enemy
                     BossTransition transition = graph.Transitions[i];
                     BossStateNode fromNode = graph.GetNode(transition?.FromNodeKey);
                     BossStateNode toNode = graph.GetNode(transition?.ToNodeKey);
+                    string fromNodeKey = GetRuntimeNodeKey(fromNode);
+                    string toNodeKey = GetRuntimeNodeKey(toNode);
+                    if (!nodeGroupKeys.TryGetValue(fromNodeKey, out string fromGroupKey)
+                        || !nodeGroupKeys.TryGetValue(toNodeKey, out string toGroupKey)
+                        || fromGroupKey == toGroupKey)
+                    {
+                        continue;
+                    }
+
+                    AddUnique(outgoingGroups[fromGroupKey], toGroupKey);
+                    AddUnique(incomingGroups[toGroupKey], fromGroupKey);
+                }
+            }
+
+            if (graph?.ParallelEdges != null)
+            {
+                for (int i = 0; i < graph.ParallelEdges.Count; i++)
+                {
+                    BossParallelEdge edge = graph.ParallelEdges[i];
+                    BossStateNode fromNode = graph.GetNode(edge?.FromNodeKey);
+                    BossStateNode toNode = graph.GetNode(edge?.ToNodeKey);
+                    if (fromNode?.Action is not HackerFireWireBranchAction)
+                    {
+                        continue;
+                    }
+
                     string fromNodeKey = GetRuntimeNodeKey(fromNode);
                     string toNodeKey = GetRuntimeNodeKey(toNode);
                     if (!nodeGroupKeys.TryGetValue(fromNodeKey, out string fromGroupKey)
@@ -827,10 +1083,18 @@ namespace Week14.Enemy
                 return false;
             }
 
+            int requiredOutputPortIndex = -1;
+            if (currentNode.Action is HackerFireWireBranchAction)
+            {
+                requiredOutputPortIndex = HackerFireWireBranchAction.IsPlayerGrabbed(context) ? 0 : 1;
+            }
+
             for (int i = 0; i < graph.Transitions.Count; i++)
             {
                 BossTransition transition = graph.Transitions[i];
-                if (transition == null || !transition.IsFromNode(currentNode))
+                if (transition == null
+                    || !transition.IsFromNode(currentNode)
+                    || (requiredOutputPortIndex >= 0 && transition.FromOutputPortIndex != requiredOutputPortIndex))
                 {
                     continue;
                 }

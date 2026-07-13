@@ -18,7 +18,8 @@ namespace Week14.Enemy
     public enum HackerDashDirection
     {
         Approach,
-        Retreat
+        Retreat,
+        DiagonalPlayer
     }
 
     [Serializable]
@@ -125,9 +126,16 @@ namespace Week14.Enemy
             {
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 context.Stop();
-                float cancelledAttackSeconds = Mathf.Max(0f, remainingWindup - elapsed)
-                    + Mathf.Max(0f, attackAdvanceSeconds);
-                yield return Wait(context, cancelledAttackSeconds);
+                yield return Wait(context, Mathf.Max(0f, remainingWindup - elapsed));
+                yield return AdvanceDuringAttack(
+                    context,
+                    attackDirection,
+                    attackAdvanceSeconds,
+                    attackAdvanceSpeed,
+                    attackAdvanceSpeedCurve,
+                    null,
+                    null,
+                    false);
                 yield return Wait(context, recoverySeconds);
                 yield break;
             }
@@ -143,7 +151,8 @@ namespace Week14.Enemy
                 attackAdvanceSpeed,
                 attackAdvanceSpeedCurve,
                 rangeIndicator,
-                hitPlayers);
+                hitPlayers,
+                true);
             HackerAttackRangeIndicator.Destroy(rangeIndicator);
             TrySpawnConsecutiveSlamDust(context);
             yield return Wait(context, recoverySeconds);
@@ -334,9 +343,10 @@ namespace Week14.Enemy
             float speed,
             AnimationCurve speedCurve,
             HackerAttackRangeIndicator rangeIndicator,
-            HashSet<PlayerCombatController> hitPlayers)
+            HashSet<PlayerCombatController> hitPlayers,
+            bool applyDamage)
         {
-            if (context?.Boss == null || seconds <= 0f || speed <= 0f)
+            if (context?.Boss == null || seconds <= 0f)
             {
                 yield break;
             }
@@ -358,10 +368,18 @@ namespace Week14.Enemy
                     }
 
                     float progress = Mathf.Clamp01(elapsed / seconds);
-                    context.Boss.SetMovementVelocity(movementDirection * (speed * EvaluateSpeedCurve(speedCurve, progress)));
+                    if (speed > 0f)
+                    {
+                        context.Boss.SetMovementVelocity(movementDirection * (speed * EvaluateSpeedCurve(speedCurve, progress)));
+                    }
+
                     GetMeleeEllipse(context, direction, out Vector2 ellipseCenter, out float ellipseAngleDegrees);
                     rangeIndicator?.SetEllipse(ellipseCenter, range, ellipseMinorRadius, ellipseAngleDegrees);
-                    ApplyEllipseDamage(context, ellipseCenter, ellipseAngleDegrees, hitPlayers);
+                    if (applyDamage)
+                    {
+                        ApplyEllipseDamage(context, ellipseCenter, ellipseAngleDegrees, hitPlayers);
+                    }
+
                     elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
                 }
@@ -413,7 +431,8 @@ namespace Week14.Enemy
             out float angleDegrees)
         {
             bool attackingLeft = attackDirection.x < 0f;
-            bool bottomToTop = style == HackerMeleeAttackStyle.CutBottomToTop;
+            bool bottomToTop = style == HackerMeleeAttackStyle.CutBottomToTop
+                || style == HackerMeleeAttackStyle.Lift;
             center = (Vector2)context.Boss.transform.position + attackDirection * ellipseForwardOffset;
 
             float vertical = bottomToTop ? 1f : -1f;
@@ -445,6 +464,10 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float length = 3f;
         [SerializeField, Min(0.05f)] private float width = 0.7f;
         [SerializeField, Min(1)] private int damage = 1;
+
+        [Header("Knockback")]
+        [SerializeField, Min(0f)] private float knockbackSpeed = 8f;
+        [SerializeField, Min(0f)] private float knockbackStaggerSeconds = 0.12f;
 
         [Header("Approach")]
         [SerializeField, Min(0f)] private float approachStartDistance = 7f;
@@ -491,10 +514,14 @@ namespace Week14.Enemy
             bool wasParried = false;
             GameObject parryObject = new("HackerThrustParryWindow");
             Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
-            parryObject.transform.position = parryAnchor.position;
+            Transform bossTransform = context.Boss.transform;
+            Vector3 parryWorldOffset = parryAnchor.position - bossTransform.position;
+            parryWorldOffset.x = Mathf.Abs(parryWorldOffset.x) * Mathf.Sign(direction.x);
+            parryObject.transform.position = bossTransform.position + parryWorldOffset;
             HackerMeleeParryWindow parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
             parryWindow.Initialize(
-                parryAnchor,
+                bossTransform,
+                parryWorldOffset,
                 parryIndicatorRadius,
                 parryWindowSeconds,
                 () => wasParried = true);
@@ -571,6 +598,7 @@ namespace Week14.Enemy
                     hitPlayers.Add(player);
                     if (player.ReceiveAttack(damage, origin, direction))
                     {
+                        player.ApplyExternalKnockback(direction, knockbackSpeed, knockbackStaggerSeconds);
                         if (context.Boss is HackerBossAI hacker)
                         {
                             hacker.ApplyHacking(player, hackingPerHit);
@@ -713,6 +741,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float dashSeconds = 0.35f;
         [SerializeField, Min(0f)] private float dashSpeed = 12f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.7f);
+        [SerializeField, Range(1f, 89f)] private float playerDiagonalAngleDegrees = 45f;
+        [SerializeField, Min(0f)] private float diagonalIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
@@ -727,15 +757,58 @@ namespace Week14.Enemy
 
             yield return ApproachToDashDistance(context);
             context.PlayAnimationTrigger(animationTriggerName);
-            Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
-            if (direction == HackerDashDirection.Retreat)
-            {
-                dashDirection = -dashDirection;
-            }
-
             context.SetFacingLocked(true);
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
-            context.SetDashing(true);
+            try
+            {
+                Vector2 playerDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
+                if (direction == HackerDashDirection.DiagonalPlayer)
+                {
+                    context.SetDashing(true);
+                    yield return DashInDirection(context, Rotate(playerDirection, playerDiagonalAngleDegrees));
+                    context.SetDashing(false);
+                    context.Stop();
+                    yield return HackerMeleeAttackAction.Wait(context, diagonalIntervalSeconds);
+                    context.SetDashing(true);
+                    yield return DashInDirection(context, Rotate(playerDirection, -playerDiagonalAngleDegrees));
+                }
+                else
+                {
+                    Vector2 dashDirection = direction == HackerDashDirection.Retreat
+                        ? -playerDirection
+                        : playerDirection;
+                    context.SetDashing(true);
+                    yield return DashInDirection(context, dashDirection);
+                }
+            }
+            finally
+            {
+                context.SetDashing(false);
+                context.SetFacingLocked(false);
+                context.Stop();
+            }
+
+            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+        }
+
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            float dashCount = direction == HackerDashDirection.DiagonalPlayer ? 2f : 1f;
+            seconds = Mathf.Max(0f, windupSeconds)
+                + Mathf.Max(0.05f, dashSeconds) * dashCount
+                + (direction == HackerDashDirection.DiagonalPlayer ? Mathf.Max(0f, diagonalIntervalSeconds) : 0f)
+                + Mathf.Max(0f, recoverySeconds);
+            return true;
+        }
+
+        private IEnumerator DashInDirection(BossActionContext context, Vector2 dashDirection)
+        {
+            if (context?.Boss == null)
+            {
+                yield break;
+            }
+
+            dashDirection = dashDirection.sqrMagnitude > 0.0001f ? dashDirection.normalized : Vector2.right;
             float elapsed = 0f;
             while (elapsed < dashSeconds)
             {
@@ -752,22 +825,11 @@ namespace Week14.Enemy
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
-
-            context.SetDashing(false);
-            context.SetFacingLocked(false);
-            context.Stop();
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-        }
-
-        public bool TryGetDurationSeconds(out float seconds)
-        {
-            seconds = Mathf.Max(0f, windupSeconds) + Mathf.Max(0.05f, dashSeconds) + Mathf.Max(0f, recoverySeconds);
-            return true;
         }
 
         private IEnumerator ApproachToDashDistance(BossActionContext context)
         {
-            if (direction != HackerDashDirection.Approach
+            if ((direction != HackerDashDirection.Approach && direction != HackerDashDirection.DiagonalPlayer)
                 || context?.Boss == null
                 || approachSpeed <= 0f
                 || maxApproachSeconds <= 0f
@@ -808,6 +870,16 @@ namespace Week14.Enemy
             return curve != null && curve.length > 0
                 ? Mathf.Max(0f, curve.Evaluate(progress))
                 : 1f;
+        }
+
+        private static Vector2 Rotate(Vector2 direction, float degrees)
+        {
+            float radians = degrees * Mathf.Deg2Rad;
+            float cosine = Mathf.Cos(radians);
+            float sine = Mathf.Sin(radians);
+            return new Vector2(
+                direction.x * cosine - direction.y * sine,
+                direction.x * sine + direction.y * cosine);
         }
     }
 }

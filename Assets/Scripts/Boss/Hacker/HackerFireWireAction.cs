@@ -23,6 +23,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
         [SerializeField, Min(1)] private int hackingPerHit = 1;
         [SerializeField, Min(0.05f)] private float playerWallSearchRadius = 5f;
+        [SerializeField, Min(1)] private int fireCount = 1;
+        [SerializeField, Min(0f)] private float repeatIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
         [Header("Wall Flight")]
@@ -44,13 +46,109 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            hacker.SetLastFireWireResult(HackerFireWireResult.Missed);
+            bool playerGrabbed = false;
             context.PlayAnimationTrigger(animationTriggerName);
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
+            int count = Mathf.Max(1, fireCount);
+            for (int shotIndex = 0; shotIndex < count; shotIndex++)
+            {
+                if (shotIndex > 0)
+                {
+                    context.PlayAnimationTrigger(animationTriggerName);
+                }
+
+                if (!TryCreateWire(context, hacker, out HackerWire wire))
+                {
+                    break;
+                }
+
+                HackerWireResolution? resolution = null;
+                Vector3 wallPosition = default;
+                Action<HackerWireResolution> handleResolution = result =>
+                {
+                    resolution = result;
+                    if (result == HackerWireResolution.WallAttached)
+                    {
+                        wallPosition = wire.Position;
+                    }
+                };
+                wire.Resolved += handleResolution;
+
+                try
+                {
+                    float elapsed = 0f;
+                    while (elapsed < maxFlightSeconds && !resolution.HasValue)
+                    {
+                        if (context.IsExecutionPaused)
+                        {
+                            context.Stop();
+                            yield return null;
+                            continue;
+                        }
+
+                        elapsed += EnemyTimeScale.DeltaTime;
+                        yield return null;
+                    }
+
+                    if (resolution == HackerWireResolution.WallAttached)
+                    {
+                        yield return FlyBossToWall(
+                            context,
+                            wallPosition,
+                            targetMode == HackerFireWireTargetMode.Player);
+                    }
+                    else if (resolution == HackerWireResolution.PlayerGrabbed)
+                    {
+                        playerGrabbed = true;
+                        yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
+                    }
+                }
+                finally
+                {
+                    if (wire != null)
+                    {
+                        wire.Resolved -= handleResolution;
+                        wire.BeginDissolve();
+                    }
+                }
+
+                if (playerGrabbed)
+                {
+                    break;
+                }
+
+                if (shotIndex < count - 1)
+                {
+                    yield return HackerMeleeAttackAction.Wait(context, repeatIntervalSeconds);
+                }
+            }
+
+            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+            hacker.SetLastFireWireResult(playerGrabbed
+                ? HackerFireWireResult.PlayerGrabbed
+                : HackerFireWireResult.Missed);
+        }
+
+        public bool TryGetDurationSeconds(out float seconds)
+        {
+            int count = Mathf.Max(1, fireCount);
+            float shotSeconds = Mathf.Max(0.05f, maxFlightSeconds)
+                + Mathf.Max(Mathf.Max(0.05f, maxBossFlightSeconds), Mathf.Max(0.05f, grabSeconds));
+            seconds = Mathf.Max(0f, windupSeconds)
+                + shotSeconds * count
+                + Mathf.Max(0f, repeatIntervalSeconds) * Mathf.Max(0, count - 1)
+                + Mathf.Max(0f, recoverySeconds);
+            return true;
+        }
+
+        private bool TryCreateWire(BossActionContext context, HackerBossAI hacker, out HackerWire wire)
+        {
+            wire = null;
             Transform launchOrigin = context.GetBossChildTransform(launchOriginPath) ?? hacker.transform;
             Vector3 origin = launchOrigin.position;
             HackerWireSettings wireSettings = hacker.WireSettings;
-            HackerWire wire;
             if (targetMode == HackerFireWireTargetMode.Player)
             {
                 wire = HackerWire.CreateGrab(
@@ -69,86 +167,25 @@ namespace Week14.Enemy
                     wireSettings.Width,
                     wireSettings.HitRadius,
                     wireSettings.Color);
-            }
-            else
-            {
-                if (!TryGetPlayerNearbyWallAimPoint(origin, out Vector2 wallAimPoint))
-                {
-                    yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-                    yield break;
-                }
-
-                wire = HackerWire.CreatePersistentWallWire(
-                    hacker,
-                    launchOrigin,
-                    wallAimPoint - (Vector2)origin,
-                    wireSettings.FlightSpeed,
-                    maxFlightSeconds,
-                    float.PositiveInfinity,
-                    wireSettings.Width,
-                    wireSettings.HitRadius,
-                    wireSettings.Color);
+                return wire != null;
             }
 
-            HackerWireResolution? resolution = null;
-            Vector3 wallPosition = default;
-            Action<HackerWireResolution> handleResolution = result =>
+            if (!TryGetPlayerNearbyWallAimPoint(origin, out Vector2 wallAimPoint))
             {
-                resolution = result;
-                if (result == HackerWireResolution.WallAttached)
-                {
-                    wallPosition = wire.Position;
-                }
-            };
-            wire.Resolved += handleResolution;
-
-            try
-            {
-                float elapsed = 0f;
-                while (elapsed < maxFlightSeconds && !resolution.HasValue)
-                {
-                    if (context.IsExecutionPaused)
-                    {
-                        context.Stop();
-                        yield return null;
-                        continue;
-                    }
-
-                    elapsed += EnemyTimeScale.DeltaTime;
-                    yield return null;
-                }
-
-                if (resolution == HackerWireResolution.WallAttached)
-                {
-                    yield return FlyBossToWall(
-                        context,
-                        wallPosition,
-                        targetMode == HackerFireWireTargetMode.Player);
-                }
-                else if (resolution == HackerWireResolution.PlayerGrabbed)
-                {
-                    yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
-                }
-            }
-            finally
-            {
-                if (wire != null)
-                {
-                    wire.Resolved -= handleResolution;
-                    UnityEngine.Object.Destroy(wire.gameObject);
-                }
+                return false;
             }
 
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-        }
-
-        public bool TryGetDurationSeconds(out float seconds)
-        {
-            seconds = Mathf.Max(0f, windupSeconds)
-                + Mathf.Max(0.05f, maxFlightSeconds)
-                + Mathf.Max(Mathf.Max(0.05f, maxBossFlightSeconds), Mathf.Max(0.05f, grabSeconds))
-                + Mathf.Max(0f, recoverySeconds);
-            return true;
+            wire = HackerWire.CreatePersistentWallWire(
+                hacker,
+                launchOrigin,
+                wallAimPoint - (Vector2)origin,
+                wireSettings.FlightSpeed,
+                maxFlightSeconds,
+                float.PositiveInfinity,
+                wireSettings.Width,
+                wireSettings.HitRadius,
+                wireSettings.Color);
+            return wire != null;
         }
 
         private bool TryGetPlayerNearbyWallAimPoint(Vector2 origin, out Vector2 wallAimPoint)
@@ -170,7 +207,7 @@ namespace Week14.Enemy
             for (int i = 0; i < wallColliders.Length; i++)
             {
                 Collider2D wallCollider = wallColliders[i];
-                if (wallCollider == null)
+                if (wallCollider == null || !wallCollider.enabled || !wallCollider.gameObject.activeInHierarchy)
                 {
                     continue;
                 }
@@ -188,7 +225,7 @@ namespace Week14.Enemy
                     toCandidate / candidateDistance,
                     candidateDistance + 0.05f,
                     1 << wallLayer);
-                if (hit.collider != wallCollider)
+                if (hit.collider == null || hit.collider.gameObject.layer != wallLayer)
                 {
                     continue;
                 }

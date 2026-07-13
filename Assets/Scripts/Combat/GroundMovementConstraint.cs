@@ -8,7 +8,9 @@ namespace Week14.Combat
         private const string GroundLayerName = "Ground";
         private const float DefaultProbeRadius = 0.12f;
         private const float MinProbeRadius = 0.01f;
+        private const float WallCastSkin = 0.01f;
         private static Tilemap[] groundTilemaps;
+        private static readonly RaycastHit2D[] wallCastHits = new RaycastHit2D[8];
         private static int cachedGroundLayer = -1;
 
         public static Vector2 ClampVelocity(Rigidbody2D body, Vector2 velocity)
@@ -32,6 +34,45 @@ namespace Week14.Combat
             Vector2 current = body.position;
             Vector2 next = ClampStep(current, current + velocity * stepSeconds, DefaultProbeRadius, probeColliders);
             return (next - current) / stepSeconds;
+        }
+
+        public static Vector2 ClampVelocityAgainstLayer(Rigidbody2D body, Vector2 velocity, int layerMask)
+        {
+            if (body == null || velocity.sqrMagnitude <= 0.0001f || layerMask == 0)
+            {
+                return velocity;
+            }
+
+            float stepSeconds = Mathf.Max(Time.fixedDeltaTime, Time.deltaTime);
+            float castDistance = velocity.magnitude * Mathf.Max(0f, stepSeconds);
+            if (castDistance <= 0f)
+            {
+                return velocity;
+            }
+
+            ContactFilter2D filter = new();
+            filter.useLayerMask = true;
+            filter.layerMask = layerMask;
+            filter.useTriggers = false;
+
+            int hitCount = body.Cast(velocity.normalized, filter, wallCastHits, castDistance + WallCastSkin);
+            Vector2 constrainedVelocity = velocity;
+            for (int i = 0; i < hitCount; i++)
+            {
+                RaycastHit2D hit = wallCastHits[i];
+                if (hit.collider == null)
+                {
+                    continue;
+                }
+
+                float intoWallSpeed = Vector2.Dot(constrainedVelocity, hit.normal);
+                if (intoWallSpeed < 0f)
+                {
+                    constrainedVelocity -= hit.normal * intoWallSpeed;
+                }
+            }
+
+            return constrainedVelocity;
         }
 
         public static Vector2 ClampStep(Vector2 current, Vector2 target)

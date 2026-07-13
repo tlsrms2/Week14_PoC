@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -14,6 +15,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerWeaponWireOrbitAction : BossAction, IBossActionDurationProvider
     {
+        private const float DefaultWeaponPositioningSeconds = 0.35f;
+
         [Header("Weapon")]
         [SerializeField] private HackerRecallWeaponSelection weaponSelection = HackerRecallWeaponSelection.RandomAvailable;
         [SerializeField, BossGraphBossChildPath] private string bossWireAnchorPath;
@@ -27,11 +30,15 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float windupSeconds = 0.45f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
+        [Header("Weapon Positioning")]
+        [SerializeField, Min(0.01f)] private float weaponPositioningSeconds = DefaultWeaponPositioningSeconds;
+
         [Header("Orbit")]
         [SerializeField, Min(0.05f)] private float orbitSeconds = 2f;
-        [SerializeField, Min(0.05f)] private float startWireLength = 3f;
-        [SerializeField, Min(0.05f)] private float endWireLength = 4.5f;
-        [SerializeField] private AnimationCurve wireLengthCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+        [FormerlySerializedAs("endWireLength")]
+        [SerializeField, Min(0.05f)] private float orbitRadius = 4.5f;
+        [FormerlySerializedAs("wireLengthCurve")]
+        [SerializeField] private AnimationCurve weaponPositioningSpeedCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         [SerializeField, Min(1f)] private float rotationDegrees = 360f;
         [SerializeField] private HackerWeaponOrbitDirection rotationDirection;
         [SerializeField] private AnimationCurve rotationSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
@@ -71,17 +78,28 @@ namespace Week14.Enemy
             HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateRing(
                 bossWireAnchor.position,
                 safeInnerRadius,
-                startWireLength);
+                orbitRadius);
+            rangeIndicator.SetFillVisible(true);
+            Vector3 initialWeaponPosition = weapon.transform.position;
+            Quaternion initialWeaponRotation = weapon.transform.rotation;
+            Vector2 initialDirection = context.GetDirectionToPlayer(bossWireAnchor.position);
+            float initialAngle = Mathf.Atan2(initialDirection.y, initialDirection.x) * Mathf.Rad2Deg;
+            float preparationSeconds = GetPreparationSeconds();
 
             try
             {
                 context.PlayAnimationTrigger(windupTriggerName);
-                yield return WaitWithRingIndicator(
+                rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
+                yield return null;
+                yield return MoveWeaponIntoOrbitPosition(
                     context,
                     bossWireAnchor,
                     rangeIndicator,
-                    startWireLength,
-                    windupSeconds);
+                    weapon,
+                    initialWeaponPosition,
+                    initialWeaponRotation,
+                    initialAngle,
+                    preparationSeconds);
 
                 if (weapon == null)
                 {
@@ -89,14 +107,9 @@ namespace Week14.Enemy
                 }
 
                 context.PlayAnimationTrigger(orbitTriggerName);
-                rangeIndicator.SetFillVisible(true);
 
-                Vector2 initialDirection = context.GetDirectionToPlayer(bossWireAnchor.position);
-                float initialAngle = Mathf.Atan2(initialDirection.y, initialDirection.x) * Mathf.Rad2Deg;
                 Vector2 advanceDirection = context.GetDirectionToPlayer(hacker.transform.position);
                 float directionMultiplier = rotationDirection == HackerWeaponOrbitDirection.Clockwise ? -1f : 1f;
-                float previousAngle = initialAngle;
-                float previousLength = startWireLength;
                 bool playerHit = false;
                 float elapsed = 0f;
                 while (elapsed < orbitSeconds && weapon != null)
@@ -109,48 +122,38 @@ namespace Week14.Enemy
                     }
 
                     float progress = Mathf.Clamp01(elapsed / orbitSeconds);
-                    float wireLength = GetWireLength(progress);
                     float angle = initialAngle + directionMultiplier * rotationDegrees * GetCurveProgress(rotationSpeedCurve, progress);
                     float advanceMultiplier = EvaluateSpeedCurve(advanceSpeedCurve, progress);
                     hacker.SetMovementVelocity(advanceDirection * (advanceSpeed * advanceMultiplier));
                     SetWeaponOrbitPose(
                         weapon,
                         bossWireAnchor.position,
-                        wireLength,
+                        orbitRadius,
                         angle,
                         safeInnerRadius);
-                    rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, wireLength);
-                    TryApplySweepDamage(
+                    rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
+                    TryApplyRingDamage(
                         bossWireAnchor.position,
-                        previousLength,
-                        wireLength,
-                        previousAngle,
-                        angle,
+                        orbitRadius,
                         ref playerHit);
 
-                    previousLength = wireLength;
-                    previousAngle = angle;
                     elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
                 }
 
                 if (weapon != null)
                 {
-                    float finalLength = GetWireLength(1f);
                     float finalAngle = initialAngle + directionMultiplier * rotationDegrees;
                     SetWeaponOrbitPose(
                         weapon,
                         bossWireAnchor.position,
-                        finalLength,
+                        orbitRadius,
                         finalAngle,
                         safeInnerRadius);
-                    rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, finalLength);
-                    TryApplySweepDamage(
+                    rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
+                    TryApplyRingDamage(
                         bossWireAnchor.position,
-                        previousLength,
-                        finalLength,
-                        previousAngle,
-                        finalAngle,
+                        orbitRadius,
                         ref playerHit);
                 }
             }
@@ -185,20 +188,36 @@ namespace Week14.Enemy
 
         public bool TryGetDurationSeconds(out float seconds)
         {
-            seconds = Mathf.Max(0f, windupSeconds)
+            seconds = GetPreparationSeconds()
                 + Mathf.Max(0.05f, orbitSeconds)
                 + Mathf.Max(0.05f, recallSeconds)
                 + Mathf.Max(0f, recoverySeconds);
             return true;
         }
 
-        private IEnumerator WaitWithRingIndicator(
+        private float GetPreparationSeconds()
+        {
+            float positioningSeconds = weaponPositioningSeconds > 0f
+                ? weaponPositioningSeconds
+                : DefaultWeaponPositioningSeconds;
+            return Mathf.Max(windupSeconds, positioningSeconds);
+        }
+
+        private IEnumerator MoveWeaponIntoOrbitPosition(
             BossActionContext context,
             Transform orbitPivot,
             HackerAttackRangeIndicator indicator,
-            float outerRadius,
+            HackerThrownWeapon weapon,
+            Vector3 initialPosition,
+            Quaternion initialRotation,
+            float initialAngle,
             float seconds)
         {
+            if (weapon == null)
+            {
+                yield break;
+            }
+
             float elapsed = 0f;
             while (elapsed < seconds)
             {
@@ -209,12 +228,35 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                float progress = seconds > 0f ? Mathf.Clamp01(elapsed / seconds) : 1f;
+                GetWeaponOrbitPose(
+                    weapon,
+                    orbitPivot != null ? orbitPivot.position : Vector3.zero,
+                    orbitRadius,
+                    initialAngle,
+                    safeInnerRadius,
+                    out Vector3 targetPosition,
+                    out Quaternion targetRotation);
+                float moveProgress = GetCurveProgress(weaponPositioningSpeedCurve, progress);
+                weapon.SetOrbitPose(
+                    Vector3.Lerp(initialPosition, targetPosition, moveProgress),
+                    Quaternion.Slerp(initialRotation, targetRotation, moveProgress));
                 indicator?.SetRing(
                     orbitPivot != null ? orbitPivot.position : Vector3.zero,
                     safeInnerRadius,
-                    outerRadius);
+                    orbitRadius);
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
+            }
+
+            if (weapon != null)
+            {
+                SetWeaponOrbitPose(
+                    weapon,
+                    orbitPivot != null ? orbitPivot.position : Vector3.zero,
+                    orbitRadius,
+                    initialAngle,
+                    safeInnerRadius);
             }
         }
 
@@ -247,11 +289,6 @@ namespace Week14.Enemy
             return false;
         }
 
-        private float GetWireLength(float progress)
-        {
-            return Mathf.Max(0.05f, Mathf.Lerp(startWireLength, endWireLength, GetCurveProgress(wireLengthCurve, progress)));
-        }
-
         private void SetWeaponOrbitPose(
             HackerThrownWeapon weapon,
             Vector3 center,
@@ -259,22 +296,39 @@ namespace Week14.Enemy
             float angleDegrees,
             float innerRadius)
         {
+            GetWeaponOrbitPose(
+                weapon,
+                center,
+                orbitRadius,
+                angleDegrees,
+                innerRadius,
+                out Vector3 weaponPosition,
+                out Quaternion weaponRotation);
+            weapon.SetOrbitPose(weaponPosition, weaponRotation);
+        }
+
+        private void GetWeaponOrbitPose(
+            HackerThrownWeapon weapon,
+            Vector3 center,
+            float outerRadius,
+            float angleDegrees,
+            float innerRadius,
+            out Vector3 weaponPosition,
+            out Quaternion weaponRotation)
+        {
             float radians = angleDegrees * Mathf.Deg2Rad;
             Vector2 radialDirection = new(Mathf.Cos(radians), Mathf.Sin(radians));
             float weaponAngle = Mathf.Atan2(radialDirection.y, radialDirection.x) * Mathf.Rad2Deg
                 + weaponRotationOffsetDegrees;
-            float weaponRadius = Mathf.Lerp(Mathf.Max(0f, innerRadius), Mathf.Max(0.05f, orbitRadius), 0.5f);
-            Vector3 weaponPosition = center + (Vector3)(radialDirection * weaponRadius);
+            float weaponRadius = Mathf.Lerp(Mathf.Max(0f, innerRadius), Mathf.Max(0.05f, outerRadius), 0.5f);
+            weaponPosition = center + (Vector3)(radialDirection * weaponRadius);
             weaponPosition.z = weapon.transform.position.z;
-            weapon.SetOrbitPose(weaponPosition, Quaternion.Euler(0f, 0f, weaponAngle));
+            weaponRotation = Quaternion.Euler(0f, 0f, weaponAngle);
         }
 
-        private void TryApplySweepDamage(
+        private void TryApplyRingDamage(
             Vector2 center,
-            float previousLength,
-            float currentLength,
-            float previousAngle,
-            float currentAngle,
+            float outerRadius,
             ref bool playerHit)
         {
             if (playerHit)
@@ -291,25 +345,7 @@ namespace Week14.Enemy
             Vector2 toPlayer = (Vector2)player.transform.position - center;
             float playerRadius = toPlayer.magnitude;
             float innerRadius = Mathf.Max(0f, safeInnerRadius);
-            float outerRadius = Mathf.Max(previousLength, currentLength);
-            if (playerRadius <= innerRadius || playerRadius > outerRadius + hitRadius)
-            {
-                return;
-            }
-
-            float sweepDegrees = currentAngle - previousAngle;
-            float absoluteSweep = Mathf.Abs(sweepDegrees);
-            if (absoluteSweep <= 0.001f)
-            {
-                return;
-            }
-
-            float playerAngle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
-            float travelledDegrees = sweepDegrees > 0f
-                ? Mathf.Repeat(playerAngle - previousAngle, 360f)
-                : Mathf.Repeat(previousAngle - playerAngle, 360f);
-            float anglePadding = Mathf.Atan2(hitRadius, Mathf.Max(0.01f, playerRadius)) * Mathf.Rad2Deg;
-            if (absoluteSweep < 360f && travelledDegrees > absoluteSweep + anglePadding)
+            if (playerRadius <= innerRadius || playerRadius > Mathf.Max(0.05f, outerRadius) + hitRadius)
             {
                 return;
             }

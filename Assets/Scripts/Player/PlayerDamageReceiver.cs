@@ -55,7 +55,10 @@ namespace Week14.Combat
 
             if (ReceiveAttack(bulletDamage, hitPosition, hitDirection.normalized))
             {
-                ApplyEnemyBodyContactKnockback(hitDirection.normalized);
+                ApplyExternalKnockback(
+                    hitDirection,
+                    config.EnemyBodyContactKnockbackSpeed,
+                    config.EnemyBodyContactStaggerSeconds);
                 nextEnemyBodyContactDamageAt = Time.time + config.EnemyBodyContactCooldownSeconds;
             }
         }
@@ -173,18 +176,19 @@ namespace Week14.Combat
             hitStopRoutine = null;
         }
 
-        private void ApplyEnemyBodyContactKnockback(Vector2 direction)
+        internal void ApplyExternalKnockback(Vector2 direction, float speed, float staggerSeconds)
         {
-            PlayerCombatConfig config = context.Config;
             Rigidbody2D body = context.Body;
-            if (body == null || config == null)
+            if (body == null || direction.sqrMagnitude <= 0.0001f)
             {
                 return;
             }
 
-            float staggerSeconds = Mathf.Max(0f, config.EnemyBodyContactStaggerSeconds);
-            enemyBodyContactStaggerEndsAt = Mathf.Max(enemyBodyContactStaggerEndsAt, Time.time + staggerSeconds);
-            Vector2 velocity = direction * Mathf.Max(0f, config.EnemyBodyContactKnockbackSpeed);
+            float resolvedStaggerSeconds = Mathf.Max(0f, staggerSeconds);
+            enemyBodyContactStaggerEndsAt = Mathf.Max(
+                enemyBodyContactStaggerEndsAt,
+                Time.time + resolvedStaggerSeconds);
+            Vector2 velocity = direction.normalized * Mathf.Max(0f, speed);
             body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, velocity);
         }
 

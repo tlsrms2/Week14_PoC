@@ -4,6 +4,13 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
+    internal enum HackerFireWireResult
+    {
+        None,
+        PlayerGrabbed,
+        Missed
+    }
+
     [System.Serializable]
     public sealed class HackerWireSettings
     {
@@ -44,14 +51,20 @@ namespace Week14.Enemy
         private Quaternion facingVisualBaseLocalRotation;
         private bool hasFacingVisualBaseLocalRotation;
         private bool isFacingLeft = true;
-        private int facingLockedNodeExecutionVersion = -1;
         private float lastSlamAt = float.NegativeInfinity;
         private bool gunWalkCounterParryArmed;
         private bool gunWalkCounterParryTriggered;
+        private HackerFireWireResult lastFireWireResult;
         public override bool SuppressesBodyContactDamage => true;
         internal HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
 
         internal bool IsFacingLeft => isFacingLeft;
+        internal HackerFireWireResult LastFireWireResult => lastFireWireResult;
+
+        internal void SetLastFireWireResult(HackerFireWireResult result)
+        {
+            lastFireWireResult = result;
+        }
 
         internal bool IsConsecutiveSlam(float chainSeconds)
         {
@@ -132,16 +145,9 @@ namespace Week14.Enemy
         {
             if (GraphContext?.IsNodeActionExecuting == true)
             {
-                if (facingLockedNodeExecutionVersion != GraphContext.NodeExecutionVersion)
-                {
-                    UpdateFacingFromPlayer();
-                    facingLockedNodeExecutionVersion = GraphContext.NodeExecutionVersion;
-                }
-
                 return;
             }
 
-            facingLockedNodeExecutionVersion = -1;
             UpdateFacingFromPlayer();
         }
 

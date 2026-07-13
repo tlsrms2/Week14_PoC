@@ -25,6 +25,14 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float homingSeconds = 0.7f;
         [SerializeField, Min(0.01f)] private float homingTurnDegreesPerSecond = 24f;
 
+        [Header("Knockback")]
+        [SerializeField, Min(0f)] private float knockbackSpeed = 9f;
+        [SerializeField, Min(0f)] private float knockbackStaggerSeconds = 0.16f;
+
+        [Header("Flight Speed")]
+        [SerializeField, Min(0.01f)] private float flightSpeedCurveSeconds = 1f;
+        [SerializeField] private AnimationCurve flightSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
         [Header("Charge")]
         [SerializeField, Min(0f)] private float windupSeconds = 0.8f;
         [SerializeField, Min(0.01f)] private float chargeStartRadius = 1.1f;
@@ -124,6 +132,8 @@ namespace Week14.Enemy
             }
 
             firedProjectile.ConfigurePathIndicatorSuppressed(true);
+            firedProjectile.ConfigurePlayerHitKnockback(knockbackSpeed, knockbackStaggerSeconds);
+            firedProjectile.ConfigureFlightSpeedCurve(flightSpeedCurve, flightSpeedCurveSeconds);
             if (enableSlightHoming)
             {
                 firedProjectile.ConfigureHomingOverride(

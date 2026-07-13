@@ -113,6 +113,14 @@ namespace Week14.Combat
 
             if (player.ReceiveAttack(bulletDamage, transform.position, flightDirection))
             {
+                if (playerHitKnockbackSpeed > 0f)
+                {
+                    player.ApplyExternalKnockback(
+                        flightDirection,
+                        playerHitKnockbackSpeed,
+                        playerHitKnockbackStaggerSeconds);
+                }
+
                 return true;
             }
 

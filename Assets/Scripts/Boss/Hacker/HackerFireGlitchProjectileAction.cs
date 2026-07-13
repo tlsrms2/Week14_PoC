@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -14,11 +15,20 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileOriginSpec origin = new();
         [SerializeField, Min(0f)] private float spawnForwardOffset;
 
+        [Header("Glitch Timing")]
+        [FormerlySerializedAs("useChargeStartAfterLaunchTime")]
+        [SerializeField] private bool useTimedChargeApproach;
+        [FormerlySerializedAs("chargeStartAfterLaunchSeconds")]
+        [SerializeField, Min(0f)] private float chargeApproachArrivalSeconds = 1.5f;
+
         [Header("Launch")]
         [SerializeField] private string animationTriggerName = "FireGlitch";
         [SerializeField, Min(0f)] private float windupSeconds = 0.3f;
-        [SerializeField, Range(-180f, 180f)] private float upwardAngleDegrees = 90f;
-        [SerializeField, Range(0f, 180f)] private float upwardRandomHalfAngleDegrees = 65f;
+        [FormerlySerializedAs("upwardRandomHalfAngleDegrees")]
+        [SerializeField, Range(0f, 180f)] private float oppositePlayerRandomHalfAngleDegrees = 65f;
+        [Header("Wall Avoidance")]
+        [SerializeField, Min(0f)] private float initialWallClearance = 3f;
+        [SerializeField, Min(1)] private int launchDirectionSamples = 8;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -42,11 +52,14 @@ namespace Week14.Enemy
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
-            float angleDegrees = upwardAngleDegrees + UnityEngine.Random.Range(
-                -upwardRandomHalfAngleDegrees,
-                upwardRandomHalfAngleDegrees);
-            float radians = angleDegrees * Mathf.Deg2Rad;
-            Vector2 direction = new(Mathf.Cos(radians), Mathf.Sin(radians));
+            Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
+            Vector2 oppositePlayerDirection = -context.GetDirectionToPlayer(aimOrigin);
+            if (oppositePlayerDirection.sqrMagnitude <= 0.0001f)
+            {
+                oppositePlayerDirection = Vector2.up;
+            }
+
+            Vector2 direction = SelectLaunchDirection(context, originSpec, oppositePlayerDirection);
             Vector3 spawnOrigin = originSpec.GetSpawnOrigin(context, 0, direction);
             if (spawnForwardOffset > 0f)
             {
@@ -67,6 +80,11 @@ namespace Week14.Enemy
 
             firedProjectile.ConfigureInterceptable(false);
             firedProjectile.ConfigurePathIndicatorSuppressed(true);
+            if (firedProjectile is HackerGlitchProjectile glitchProjectile)
+            {
+                glitchProjectile.ConfigureTimedChargeApproach(
+                    useTimedChargeApproach ? chargeApproachArrivalSeconds : -1f);
+            }
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
@@ -79,6 +97,91 @@ namespace Week14.Enemy
         {
             seconds = Mathf.Max(0f, windupSeconds) + Mathf.Max(0f, recoverySeconds);
             return true;
+        }
+
+        private Vector2 SelectLaunchDirection(
+            BossActionContext context,
+            BossGraphProjectileOriginSpec originSpec,
+            Vector2 oppositePlayerDirection)
+        {
+            float baseAngleDegrees = Mathf.Atan2(oppositePlayerDirection.y, oppositePlayerDirection.x) * Mathf.Rad2Deg;
+            int wallLayer = LayerMask.NameToLayer("Wall");
+            int sampleCount = Mathf.Max(1, launchDirectionSamples);
+            Vector2 safestDirection = GetRandomDirection(baseAngleDegrees, oppositePlayerRandomHalfAngleDegrees);
+            float greatestClearance = float.NegativeInfinity;
+
+            for (int i = 0; i < sampleCount; i++)
+            {
+                Vector2 candidateDirection = GetRandomDirection(baseAngleDegrees, oppositePlayerRandomHalfAngleDegrees);
+                if (IsDirectionClear(context, originSpec, candidateDirection, wallLayer, out float clearance))
+                {
+                    return candidateDirection;
+                }
+
+                if (clearance > greatestClearance)
+                {
+                    greatestClearance = clearance;
+                    safestDirection = candidateDirection;
+                }
+            }
+
+            // 반대편 부채꼴이 모두 막힌 경우에만 벽이 없는 방향을 넓게 다시 찾는다.
+            for (int i = 0; i < sampleCount; i++)
+            {
+                Vector2 candidateDirection = GetRandomDirection(UnityEngine.Random.Range(0f, 360f), 0f);
+                if (IsDirectionClear(context, originSpec, candidateDirection, wallLayer, out float clearance))
+                {
+                    return candidateDirection;
+                }
+
+                if (clearance > greatestClearance)
+                {
+                    greatestClearance = clearance;
+                    safestDirection = candidateDirection;
+                }
+            }
+
+            return safestDirection;
+        }
+
+        private bool IsDirectionClear(
+            BossActionContext context,
+            BossGraphProjectileOriginSpec originSpec,
+            Vector2 direction,
+            int wallLayer,
+            out float clearance)
+        {
+            clearance = float.PositiveInfinity;
+            if (initialWallClearance <= 0f || wallLayer < 0)
+            {
+                return true;
+            }
+
+            Vector3 spawnOrigin = originSpec.GetSpawnOrigin(context, 0, direction);
+            if (spawnForwardOffset > 0f)
+            {
+                spawnOrigin += (Vector3)(direction * spawnForwardOffset);
+            }
+
+            RaycastHit2D hit = Physics2D.Raycast(
+                spawnOrigin,
+                direction,
+                initialWallClearance,
+                1 << wallLayer);
+            if (hit.collider == null)
+            {
+                return true;
+            }
+
+            clearance = hit.distance;
+            return false;
+        }
+
+        private static Vector2 GetRandomDirection(float centerAngleDegrees, float halfAngleDegrees)
+        {
+            float angleDegrees = centerAngleDegrees + UnityEngine.Random.Range(-halfAngleDegrees, halfAngleDegrees);
+            float radians = angleDegrees * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         }
     }
 }

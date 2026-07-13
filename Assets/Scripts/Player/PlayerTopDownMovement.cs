@@ -7,10 +7,13 @@ namespace Week14.Combat
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class PlayerTopDownMovement : MonoBehaviour
     {
+        private const string WallLayerName = "Wall";
+
         [SerializeField] private PlayerCombatController combat;
 
         private Rigidbody2D body;
         private Vector2 moveInput;
+        private int wallLayerMask;
 
         private void Awake()
         {
@@ -18,6 +21,9 @@ namespace Week14.Combat
             body.interpolation = RigidbodyInterpolation2D.Interpolate;
             body.gravityScale = 0f;
             body.freezeRotation = true;
+            body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            wallLayerMask = wallLayer >= 0 ? 1 << wallLayer : 0;
 
             if (combat == null)
             {
@@ -46,6 +52,10 @@ namespace Week14.Combat
                 {
                     body.linearVelocity = Vector2.zero;
                 }
+                else
+                {
+                    body.linearVelocity = ClampWallVelocity(body.linearVelocity);
+                }
 
                 return;
             }
@@ -59,7 +69,12 @@ namespace Week14.Combat
             }
 
             Vector2 velocity = moveInput * config.MoveSpeed * combat.MoveSpeedMultiplier;
-            body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, velocity);
+            body.linearVelocity = ClampWallVelocity(GroundMovementConstraint.ClampVelocity(body, velocity));
+        }
+
+        private Vector2 ClampWallVelocity(Vector2 velocity)
+        {
+            return GroundMovementConstraint.ClampVelocityAgainstLayer(body, velocity, wallLayerMask);
         }
     }
 }

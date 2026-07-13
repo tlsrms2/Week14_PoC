@@ -69,6 +69,8 @@ namespace Week14.Combat
         private Minion ownerMinion;
         private Transform ownerTransform;
         private int bulletDamage;
+        private float playerHitKnockbackSpeed;
+        private float playerHitKnockbackStaggerSeconds;
         private float destroyAt;
         private Vector2 flightDirection = Vector2.left;
         private Vector3 baseLocalScale = Vector3.one;
@@ -110,6 +112,11 @@ namespace Week14.Combat
         private bool runtimeHomingActive;
         private float runtimeHomingEndsAt;
         private float runtimeHomingTurnDegreesPerSecond;
+        private bool runtimeFlightSpeedCurveActive;
+        private AnimationCurve runtimeFlightSpeedCurve;
+        private float runtimeFlightSpeedCurveBaseSpeed;
+        private float runtimeFlightSpeedCurveSeconds;
+        private float runtimeFlightSpeedCurveElapsed;
         private bool parryLockOnIndicatorVisible;
         private int interceptGroupId;
         private EnemyProjectile poolPrefabSource;
@@ -422,6 +429,50 @@ namespace Week14.Combat
             projectileSpeed *= Mathf.Max(0.01f, speedMultiplier);
             RefreshRuntimeVelocity();
             RefreshPathIndicator();
+        }
+
+        public void ConfigureFlightSpeedCurve(AnimationCurve speedCurve, float seconds)
+        {
+            if (speedCurve == null || speedCurve.length == 0 || seconds <= 0f)
+            {
+                return;
+            }
+
+            runtimeFlightSpeedCurveActive = true;
+            runtimeFlightSpeedCurve = speedCurve;
+            runtimeFlightSpeedCurveBaseSpeed = projectileSpeed;
+            runtimeFlightSpeedCurveSeconds = Mathf.Max(0.01f, seconds);
+            runtimeFlightSpeedCurveElapsed = 0f;
+            ApplyRuntimeFlightSpeedCurve();
+            RefreshRuntimeVelocity();
+        }
+
+        private void TickRuntimeFlightSpeedCurve()
+        {
+            if (!runtimeFlightSpeedCurveActive)
+            {
+                return;
+            }
+
+            runtimeFlightSpeedCurveElapsed += EnemyTimeScale.DeltaTime;
+            ApplyRuntimeFlightSpeedCurve();
+            if (runtimeFlightSpeedCurveElapsed >= runtimeFlightSpeedCurveSeconds)
+            {
+                runtimeFlightSpeedCurveActive = false;
+            }
+        }
+
+        private void ApplyRuntimeFlightSpeedCurve()
+        {
+            if (runtimeFlightSpeedCurve == null || runtimeFlightSpeedCurve.length == 0)
+            {
+                runtimeFlightSpeedCurveActive = false;
+                return;
+            }
+
+            float progress = Mathf.Clamp01(runtimeFlightSpeedCurveElapsed / runtimeFlightSpeedCurveSeconds);
+            float multiplier = Mathf.Max(0f, runtimeFlightSpeedCurve.Evaluate(progress));
+            projectileSpeed = runtimeFlightSpeedCurveBaseSpeed * multiplier;
         }
 
         public void ConfigureHomingOverride(float seconds, float turnDegreesPerSecond)
@@ -750,6 +801,12 @@ namespace Week14.Combat
             {
                 SetParryLockOnIndicatorVisible(false);
             }
+        }
+
+        public void ConfigurePlayerHitKnockback(float speed, float staggerSeconds)
+        {
+            playerHitKnockbackSpeed = Mathf.Max(0f, speed);
+            playerHitKnockbackStaggerSeconds = Mathf.Max(0f, staggerSeconds);
         }
 
         private static EnemyProjectile SpawnInternal(

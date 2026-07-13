@@ -123,12 +123,16 @@ MonoBehaviour:
   revealDistance: 4
   driftSpeed: 1.2
   driftAmplitude: 0.5
-  chargeSeconds: 0.65
+  chargeSeconds: 2
   rushSpeed: 11
   glitchAlpha: 0.3
-  chargeBlinkSprite: {fileID: 21300000, guid: 7db5abe7383848b4c9abd5dfbf11cdba, type: 3}
-  chargeBlinkMinRate: 3
-  chargeBlinkMaxRate: 10
+  initialFlightSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
+  glitchApproachSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
+  chargingSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
+  rushSprite: {fileID: -401367599159864876, guid: c101bbe2b06a30d40ba800449bbb6987, type: 3}
+  chargeBlinkColor: {r: 0, g: 0, b: 1, a: 1}
+  chargeBlinkMinRate: 2
+  chargeBlinkMaxRate: 8
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,8 +305,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b8cf7d2177bbc8d488174517b26182ed, type: 3}
-  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Sprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

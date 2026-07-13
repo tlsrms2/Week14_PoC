@@ -23,7 +23,15 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float chargeSeconds = 0.65f;
         [SerializeField, Min(0f)] private float rushSpeed = 11f;
         [SerializeField, Range(0f, 1f)] private float glitchAlpha = 0.3f;
-        [SerializeField] private Sprite chargeBlinkSprite;
+
+        [Header("Stage Sprites")]
+        [SerializeField] private Sprite initialFlightSprite;
+        [SerializeField] private Sprite glitchApproachSprite;
+        [SerializeField] private Sprite chargingSprite;
+        [SerializeField] private Sprite rushSprite;
+
+        [Header("Charge Blink")]
+        [SerializeField] private Color chargeBlinkColor = new(0.3f, 0.85f, 1f, 1f);
         [SerializeField, Min(0.01f)] private float chargeBlinkMinRate = 3f;
         [SerializeField, Min(0.01f)] private float chargeBlinkMaxRate = 10f;
 
@@ -31,6 +39,8 @@ namespace Week14.Enemy
         private Color[] baseColors;
         private GlitchState state;
         private float stateStartedAt;
+        private float launchedAt;
+        private float chargeApproachArrivalSeconds = -1f;
         private float driftPhase;
         private Vector2 initialDirection;
         private Sprite defaultSprite;
@@ -38,6 +48,7 @@ namespace Week14.Enemy
         protected override void OnProjectileAwake()
         {
             spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+            defaultSprite = GetProjectileSprite();
             ConfigureInterceptable(false);
         }
 
@@ -47,15 +58,24 @@ namespace Week14.Enemy
             CaptureVisualState();
             state = GlitchState.InitialFlight;
             stateStartedAt = Time.time;
+            launchedAt = Time.time;
+            chargeApproachArrivalSeconds = -1f;
             driftPhase = Random.value * Mathf.PI * 2f;
             initialDirection = IncomingDirection.sqrMagnitude > 0.0001f ? IncomingDirection.normalized : Vector2.up;
+            ApplyStageSprite(initialFlightSprite);
             SetVisualAlpha(1f);
             ConfigureExternalMotionDriven(true);
         }
 
         protected override void OnProjectileLaunched()
         {
+            launchedAt = Time.time;
             ConfigureInterceptable(false);
+        }
+
+        internal void ConfigureTimedChargeApproach(float arrivalSeconds)
+        {
+            chargeApproachArrivalSeconds = arrivalSeconds >= 0f ? arrivalSeconds : -1f;
         }
 
         protected override void OnProjectileTick()
@@ -74,18 +94,20 @@ namespace Week14.Enemy
                     {
                         state = GlitchState.GlitchApproach;
                         stateStartedAt = Time.time;
+                        ApplyStageSprite(glitchApproachSprite);
                         SetVisualAlpha(glitchAlpha);
+                        if (ShouldStartCharging(player))
+                        {
+                            BeginCharging();
+                        }
                     }
                     break;
 
                 case GlitchState.GlitchApproach:
                     FloatToward(player.transform.position);
-                    if (Vector2.Distance(transform.position, player.transform.position) <= revealDistance)
+                    if (ShouldStartCharging(player))
                     {
-                        state = GlitchState.Charging;
-                        stateStartedAt = Time.time;
-                        SetVisualAlpha(1f);
-                        ConfigureInterceptable(true);
+                        BeginCharging();
                     }
                     break;
 
@@ -94,7 +116,7 @@ namespace Week14.Enemy
                     if (Time.time - stateStartedAt >= chargeSeconds)
                     {
                         state = GlitchState.Rush;
-                        ApplyProjectileSprite(defaultSprite);
+                        ApplyStageSprite(rushSprite);
                         SetVisualAlpha(1f);
                     }
                     break;
@@ -119,12 +141,60 @@ namespace Week14.Enemy
             }
         }
 
+        private bool ShouldStartCharging(PlayerCombatController player)
+        {
+            return player != null
+                && !IsChargeApproachPending()
+                && Vector2.Distance(transform.position, player.transform.position) <= revealDistance;
+        }
+
+        private void BeginCharging()
+        {
+            state = GlitchState.Charging;
+            stateStartedAt = Time.time;
+            ApplyStageSprite(chargingSprite);
+            SetVisualAlpha(1f);
+            ConfigureInterceptable(true);
+        }
+
         private void FloatToward(Vector3 targetPosition)
         {
-            Vector2 direction = ((Vector2)targetPosition - (Vector2)transform.position).normalized;
-            Vector2 perpendicular = new Vector2(-direction.y, direction.x);
+            Vector2 toTarget = (Vector2)targetPosition - (Vector2)transform.position;
+            float distanceToTarget = toTarget.magnitude;
+            Vector2 directionToPlayer = distanceToTarget > 0.0001f
+                ? toTarget / distanceToTarget
+                : -initialDirection;
+            bool avoidPlayer = IsChargeApproachPending() && distanceToTarget <= revealDistance;
+            Vector2 movementDirection = avoidPlayer ? -directionToPlayer : directionToPlayer;
+            Vector2 perpendicular = new Vector2(-directionToPlayer.y, directionToPlayer.x);
             float wave = Mathf.Sin(Time.time * 4f + driftPhase) * driftAmplitude;
-            transform.position += (Vector3)((direction * driftSpeed + perpendicular * wave) * EnemyTimeScale.DeltaTime);
+            float approachSpeed = avoidPlayer
+                ? Mathf.Max(driftSpeed, (revealDistance - distanceToTarget) * 4f)
+                : GetApproachSpeed(distanceToTarget);
+            transform.position += (Vector3)((movementDirection * approachSpeed + perpendicular * wave) * EnemyTimeScale.DeltaTime);
+        }
+
+        private bool IsChargeApproachPending()
+        {
+            return chargeApproachArrivalSeconds >= 0f
+                && Time.time - launchedAt < chargeApproachArrivalSeconds;
+        }
+
+        private float GetApproachSpeed(float distanceToTarget)
+        {
+            if (chargeApproachArrivalSeconds < 0f)
+            {
+                return driftSpeed;
+            }
+
+            float remainingDistance = Mathf.Max(0f, distanceToTarget - revealDistance);
+            float remainingSeconds = chargeApproachArrivalSeconds - (Time.time - launchedAt);
+            if (remainingSeconds > 0.001f)
+            {
+                return remainingDistance / remainingSeconds;
+            }
+
+            return Mathf.Max(driftSpeed, remainingDistance * 4f);
         }
 
         private void RushToward(Vector3 targetPosition)
@@ -137,14 +207,17 @@ namespace Week14.Enemy
         {
             float progress = Mathf.Clamp01((Time.time - stateStartedAt) / chargeSeconds);
             float blinkRate = Mathf.Lerp(chargeBlinkMinRate, chargeBlinkMaxRate, progress);
-            bool showBlinkSprite = chargeBlinkSprite != null
-                && Mathf.Repeat((Time.time - stateStartedAt) * blinkRate, 1f) >= 0.5f;
-            ApplyProjectileSprite(showBlinkSprite ? chargeBlinkSprite : defaultSprite);
+            bool showBlinkColor = Mathf.Repeat((Time.time - stateStartedAt) * blinkRate, 1f) >= 0.5f;
+            SetChargeBlinkColor(showBlinkColor);
         }
 
         private void CaptureVisualState()
         {
-            defaultSprite = GetProjectileSprite();
+            if (defaultSprite == null)
+            {
+                defaultSprite = GetProjectileSprite();
+            }
+
             if (spriteRenderers == null)
             {
                 return;
@@ -157,6 +230,44 @@ namespace Week14.Enemy
                 {
                     baseColors[i] = spriteRenderers[i].color;
                 }
+            }
+        }
+
+        private void ApplyStageSprite(Sprite stageSprite)
+        {
+            ApplyProjectileSprite(ResolveStageSprite(stageSprite));
+        }
+
+        private Sprite ResolveStageSprite(Sprite stageSprite)
+        {
+            return stageSprite != null ? stageSprite : defaultSprite;
+        }
+
+        private void SetChargeBlinkColor(bool useBlinkColor)
+        {
+            if (spriteRenderers == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < spriteRenderers.Length; i++)
+            {
+                SpriteRenderer renderer = spriteRenderers[i];
+                if (renderer == null)
+                {
+                    continue;
+                }
+
+                Color baseColor = baseColors != null && i < baseColors.Length
+                    ? baseColors[i]
+                    : renderer.color;
+                Color color = useBlinkColor ? chargeBlinkColor : baseColor;
+                if (useBlinkColor)
+                {
+                    color.a *= baseColor.a;
+                }
+
+                renderer.color = color;
             }
         }
 
