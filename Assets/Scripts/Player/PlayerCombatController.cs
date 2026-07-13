@@ -82,6 +82,7 @@ namespace Week14.Combat
         private bool nextAttackDamageMultiplierArmed;
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
+        private float invulnerableAmmoRefillDurationSeconds;
 
         public readonly struct PlayerAttackEchoInfo
         {
@@ -727,10 +728,8 @@ namespace Week14.Combat
         }
 
         // seconds 동안 외부 무적(PushExternalInvulnerability)을 유지하면서, 그동안 무적 때문에 막힌 피격이
-        // 처음 한 번 발생하면(NotifyInvulnerableHit) 탄환을 최대치로 채우고, parryClearRadius 안의 적 투사체를
-        // 제거하며, 히트스탑 + 카메라 임팩트를 재생한 뒤 — 남은 무적 시간을 기다리지 않고 그 즉시 종료합니다.
-        // onComplete는 그렇게 조기 종료되는 시점이나, 한 번도 안 맞고 지속시간이 다 지난 시점에 정확히 한 번 호출됩니다
-        // (쿨타임 지연 시작용 콜백 등으로 쓰임).
+        // 발생하면(NotifyInvulnerableHit) 탄환을 최대치로 채우고, parryClearRadius 안의 적 투사체를 제거합니다.
+        // 패링 효과가 발동하면 무적 타이머를 다시 seconds로 갱신하고, 타이머가 끝났을 때 onComplete를 호출합니다.
         public void BeginInvulnerableAmmoRefill(
             float seconds,
             float parryClearRadius,
@@ -746,7 +745,11 @@ namespace Week14.Combat
             invulnerableAmmoRefillParryClearRadius = Mathf.Max(0f, parryClearRadius);
             invulnerableAmmoRefillBlankVfxPrefab = blankVfxPrefab;
             invulnerableAmmoRefillOnComplete = onComplete;
-            invulnerableAmmoRefillRoutine = StartCoroutine(InvulnerableAmmoRefillRoutine(Mathf.Max(0f, seconds)));
+            invulnerableAmmoRefillDurationSeconds = Mathf.Max(0f, seconds);
+            invulnerableAmmoRefillActive = true;
+            PushExternalInvulnerability();
+            UpdateBodyColor(true);
+            RestartInvulnerableAmmoRefillTimer();
         }
 
         internal void NotifyInvulnerableHit(Vector3 hitPosition, Vector2 hitDirection)
@@ -772,21 +775,23 @@ namespace Week14.Combat
             DamageReceiver.PlayHitStop();
             CameraFollow?.PlayImpact(hitDirection, 0.32f, 0.24f, 0.22f);
 
-            // 패링은 한 번 성공하면 그걸로 끝 — 남은 무적 시간을 기다리지 않고 즉시 종료한다.
+            RestartInvulnerableAmmoRefillTimer();
+            UpdateBodyColor(true);
+        }
+
+        private void RestartInvulnerableAmmoRefillTimer()
+        {
             if (invulnerableAmmoRefillRoutine != null)
             {
                 StopCoroutine(invulnerableAmmoRefillRoutine);
+                invulnerableAmmoRefillRoutine = null;
             }
 
-            CompleteInvulnerableAmmoRefill();
+            invulnerableAmmoRefillRoutine = StartCoroutine(InvulnerableAmmoRefillRoutine(invulnerableAmmoRefillDurationSeconds));
         }
 
         private IEnumerator InvulnerableAmmoRefillRoutine(float seconds)
         {
-            invulnerableAmmoRefillActive = true;
-            PushExternalInvulnerability();
-            UpdateBodyColor(true);
-
             yield return new WaitForSeconds(seconds);
 
             CompleteInvulnerableAmmoRefill();
@@ -810,6 +815,7 @@ namespace Week14.Combat
             invulnerableAmmoRefillActive = false;
             invulnerableAmmoRefillRoutine = null;
             invulnerableAmmoRefillBlankVfxPrefab = null;
+            invulnerableAmmoRefillDurationSeconds = 0f;
             PopExternalInvulnerability();
             UpdateBodyColor(true);
         }
