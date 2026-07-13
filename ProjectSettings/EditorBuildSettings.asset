@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/Scenes/StoryScene-Prologue.unity
     guid: ba28d513a9ad1424db79c6356df3eaac
   - enabled: 1
+    path: Assets/Scenes/EndingScene.unity
+    guid: 6814b0e89e8221842a32ca567c906822
+  - enabled: 1
     path: Assets/Scenes/StoryScene-Epilogue.unity
     guid: 6e234b1c7f6e0ea479fbf5d958fe5910
   m_configObjects:

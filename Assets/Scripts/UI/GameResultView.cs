@@ -7,6 +7,7 @@ using Week14.Challenge;
 using Week14.Combat;
 using Week14.Enemy;
 using Week14.GameFlow;
+using Week14.Save;
 
 namespace Week14.UI
 {
@@ -37,6 +38,7 @@ namespace Week14.UI
         private float previousTimeScale = 1f;
         private bool resultOpen;
         private Selectable pendingFocusTarget;
+        private bool victoryIsFinalBoss;
 
         private void Awake()
         {
@@ -115,10 +117,20 @@ namespace Week14.UI
         {
             restartButton?.onClick.AddListener(RestartScene);
             gameOverLobbyButton?.onClick.AddListener(ReturnToLobby);
-            if (victoryLobbyButton != gameOverLobbyButton)
+            victoryLobbyButton?.onClick.AddListener(HandleVictoryLobbyButtonClicked);
+        }
+
+        // 최종보스를 처치한 승리 화면에서는, 엔딩을 아직 안 봤을 때만 로비 대신 엔딩(EndingScene)으로 진입합니다.
+        // 이미 본 적 있으면(예: 재플레이) 평소처럼 로비로 보냅니다.
+        private void HandleVictoryLobbyButtonClicked()
+        {
+            if (victoryIsFinalBoss && !GameSaveManager.HasSeenEnding)
             {
-                victoryLobbyButton?.onClick.AddListener(ReturnToLobby);
+                GameFlowController.EnterEnding();
+                return;
             }
+
+            ReturnToLobby();
         }
 
         private GameObject FindGameObject(string childName)
@@ -245,6 +257,7 @@ namespace Week14.UI
         private void ShowVictory(BossAI boss)
         {
             BossData bossData = boss != null ? boss.BossData : null;
+            victoryIsFinalBoss = bossData != null && bossData.IsFinalBoss;
             GameObject targetRoot = victoryRoot != null ? victoryRoot : gameOverRoot;
             victoryChallengePanel?.PrepareReveal(bossData);
 

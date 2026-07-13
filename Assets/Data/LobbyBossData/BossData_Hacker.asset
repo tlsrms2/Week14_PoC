@@ -52,6 +52,7 @@ MonoBehaviour:
   unlocksPassiveSkillIds: []
   unlocksWeaponIds: []
   requiredDistinctBossKills: 4
+  isFinalBoss: 1
   references:
     version: 2
     RefIds: []
