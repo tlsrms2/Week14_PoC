@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 238342733824
-    m_Localized: Dashes a short distance and clears surrounding barrages.
+    m_Localized: '- Dashes a short distance and clears surrounding barrages.'
     m_Metadata:
       m_Items: []
   - m_Id: 300527484928
@@ -31,10 +31,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 303861956608
-    m_Localized: 'Deploys a hologram at your current position for 10 seconds.
+    m_Localized: '- Deploys a hologram at your current position for 10 seconds.
 
-      The
-      hologram mirrors your attacks, dealing 50% of your normal damage.'
+      -
+      The hologram mirrors your attacks, dealing 50% of your normal damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 347285585920
@@ -42,7 +42,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 349898637312
-    m_Localized: Slows down time around you for 3 seconds.
+    m_Localized: '- Slows down time around you for 3 seconds.'
     m_Metadata:
       m_Items: []
   - m_Id: 352498637312
@@ -50,7 +50,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 355098637312
-    m_Localized: Absorbs surrounding barrages for 2 seconds to recover ammo.
+    m_Localized: '- Absorbs surrounding barrages for 2 seconds to recover ammo.'
     m_Metadata:
       m_Items: []
   - m_Id: 357698637312
@@ -58,8 +58,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 360298637312
-    m_Localized: Grants invincibility for a very short time, and taking damage during
-      this state fully recovers ammo.
+    m_Localized: '- Grants invincibility for a very short time, and taking damage
+      during this state fully recovers ammo.'
     m_Metadata:
       m_Items: []
   - m_Id: 362898637312
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 365498637312
-    m_Localized: Bullets are always fired toward enemies.
+    m_Localized: '- Bullets are always fired toward enemies.'
     m_Metadata:
       m_Items: []
   - m_Id: 368098637312
@@ -75,7 +75,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 370698637312
-    m_Localized: Intercept range is increased by 25%.
+    m_Localized: '- Intercept range is increased by 25%.'
     m_Metadata:
       m_Items: []
   - m_Id: 373298637312
@@ -83,7 +83,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 375898637312
-    m_Localized: Movement speed is increased by 25% when you have no ammo.
+    m_Localized: '- Movement speed is increased by 25% when you have no ammo.'
     m_Metadata:
       m_Items: []
   - m_Id: 378498637312
@@ -91,8 +91,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 381098637312
-    m_Localized: Active skill cooldown is reduced by 0.5 seconds upon a successful
-      intercept.
+    m_Localized: '- Active skill cooldown is reduced by 0.5 seconds upon a successful
+      intercept.'
     m_Metadata:
       m_Items: []
   - m_Id: 383698637312
@@ -100,7 +100,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 386298637312
-    m_Localized: Survives fatal damage once.
+    m_Localized: '- Survives fatal damage once.'
     m_Metadata:
       m_Items: []
   references:

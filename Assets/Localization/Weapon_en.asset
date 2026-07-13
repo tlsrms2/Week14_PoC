@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 201567862784
-    m_Localized: The most basic firearm
+    m_Localized: '- The most basic firearm'
     m_Metadata:
       m_Items: []
   - m_Id: 465628659712
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 753810898944
-    m_Localized: Fires bullets that split into three directions
+    m_Localized: '- Fires bullets that split into three directions'
     m_Metadata:
       m_Items: []
   - m_Id: 860581101568
@@ -39,10 +39,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 913773264896
-    m_Localized: 'Hold the attack button to charge the attack
+    m_Localized: '- Hold the attack button to charge the attack
 
-      Increased damage
-      upon charge attack'
+      - Increased
+      damage upon charge attack'
     m_Metadata:
       m_Items: []
   - m_Id: 5028800724992
@@ -86,7 +86,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3331352159420416
-    m_Localized: Consumes all ammo and fires at once
+    m_Localized: '- Consumes all ammo and fires at once'
     m_Metadata:
       m_Items: []
   - m_Id: 3331357406494720
@@ -98,12 +98,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3331701683355648
-    m_Localized: 'Swing the sword to attack
+    m_Localized: '- Swing the sword to attack
 
-      Ammo is fixed at 0
+      - Ammo is fixed at 0
 
-      Clears
-      barrages within the attack range'
+      -
+      Clears barrages within the attack range'
     m_Metadata:
       m_Items: []
   - m_Id: 3331702840983552
@@ -115,12 +115,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4219302263316480
-    m_Localized: 'Swing the bat to reflect enemy barrages within range
+    m_Localized: '- Swing the bat to reflect enemy barrages within range
 
-      Hold
-      the attack button to expand the reflection radius
+      -
+      Hold the attack button to expand the reflection radius
 
-      Movement speed +50%'
+      - Movement speed
+      +50%'
     m_Metadata:
       m_Items: []
   references:
