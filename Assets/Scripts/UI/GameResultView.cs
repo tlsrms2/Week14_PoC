@@ -36,6 +36,7 @@ namespace Week14.UI
         private Health subscribedPlayerHealth;
         private float previousTimeScale = 1f;
         private bool resultOpen;
+        private Selectable pendingFocusTarget;
 
         private void Awake()
         {
@@ -208,12 +209,12 @@ namespace Week14.UI
 
         private void HandleChallengeRevealCompleted()
         {
-            if (rewardPopupView == null || ChallengeManager.Instance == null)
+            if (rewardPopupView != null && ChallengeManager.Instance != null)
             {
-                return;
+                rewardPopupView.Show(ChallengeManager.Instance.LastRunEarnedPoints);
             }
 
-            rewardPopupView.Show(ChallengeManager.Instance.LastRunEarnedPoints);
+            RevealResultButtons();
         }
 
         private void ShowGameOver()
@@ -221,12 +222,17 @@ namespace Week14.UI
             BossData bossData = FindCurrentBossData();
             gameOverChallengePanel?.PrepareReveal(bossData);
 
+            HideResultButtonsFor(gameOverRoot);
             ShowResult(gameOverRoot, restartButton);
             SyncChallengeReveal(gameOverChallengePanel, gameOverRoot);
 
             if (gameOverChallengePanel != null)
             {
                 gameOverChallengePanel.PlayReveal(bossData);
+            }
+            else
+            {
+                RevealResultButtons();
             }
         }
 
@@ -243,6 +249,7 @@ namespace Week14.UI
             victoryChallengePanel?.PrepareReveal(bossData);
 
             Selectable focusTarget = victoryLobbyButton != null ? victoryLobbyButton : gameOverLobbyButton;
+            HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget);
             SyncChallengeReveal(victoryChallengePanel, targetRoot);
 
@@ -274,11 +281,57 @@ namespace Week14.UI
             {
                 victoryChallengePanel.PlayReveal(bossData);
             }
+            else
+            {
+                RevealResultButtons();
+            }
         }
 
         private void ShowResult(GameObject targetRoot, Selectable focusTarget)
         {
-            SetResultVisible(true, targetRoot, focusTarget);
+            pendingFocusTarget = focusTarget;
+            SetResultVisible(true, targetRoot);
+        }
+
+        private void HideResultButtonsFor(GameObject targetRoot)
+        {
+            if (targetRoot == gameOverRoot)
+            {
+                SetButtonsActive(false, restartButton, gameOverLobbyButton);
+            }
+
+            if (targetRoot == victoryRoot)
+            {
+                SetButtonsActive(false, victoryLobbyButton);
+            }
+        }
+
+        // 챌린지 공개 연출이 끝난 뒤(연출 패널이 없으면 결과 화면이 뜨자마자) 재시작/로비 버튼을 등장시킵니다.
+        private void RevealResultButtons()
+        {
+            if (gameOverRoot != null && gameOverRoot.activeSelf)
+            {
+                SetButtonsActive(true, restartButton, gameOverLobbyButton);
+            }
+
+            if (victoryRoot != null && victoryRoot.activeSelf)
+            {
+                SetButtonsActive(true, victoryLobbyButton);
+            }
+
+            FocusSelectable(pendingFocusTarget);
+            pendingFocusTarget = null;
+        }
+
+        private static void SetButtonsActive(bool active, params Button[] buttons)
+        {
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    buttons[i].gameObject.SetActive(active);
+                }
+            }
         }
 
         private static void FocusSelectable(Selectable target)
@@ -293,10 +346,10 @@ namespace Week14.UI
 
         private void SetResultVisible(bool visible)
         {
-            SetResultVisible(visible, null, null);
+            SetResultVisible(visible, null);
         }
 
-        private void SetResultVisible(bool visible, GameObject activeRoot, Selectable focusTarget)
+        private void SetResultVisible(bool visible, GameObject activeRoot)
         {
             resultOpen = visible;
             if (visible && activeRoot == null)
@@ -309,11 +362,11 @@ namespace Week14.UI
 
             if (visible)
             {
-                FocusSelectable(focusTarget);
                 FreezeGame();
             }
             else
             {
+                pendingFocusTarget = null;
                 UnfreezeGame();
             }
 
