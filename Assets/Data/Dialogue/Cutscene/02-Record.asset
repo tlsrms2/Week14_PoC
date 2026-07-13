@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
   skippable: 1
   steps:
-  - backgroundImage: {fileID: 21300000, guid: 080b3e9daf8a81745a863488d6deae65, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 15573f1930a37b540a2b111587c19f7d, type: 3}
     dialogues:
     - name: ERIS
       text: " [R-2 \uBE14\uB85D \uCE74\uD398 \uBCA0\uC2A4\uD37C. 7\uC6D4 21\uC77C
@@ -274,10 +274,17 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: f1576b6b7c1560049b16f165d8d64f3d, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: e9e140490be781f49aa7559ac8fdc39c, type: 3}
     dialogues:
     - name: ERIS
       text: "[ 17\uC2DC 32\uBD84 26\uCD08\uBD80\uD130 41\uCD08 \uC0AC\uC774\uC758
@@ -313,10 +320,25 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames:
+    - {fileID: 21300000, guid: 58ad79ffb76c12b45af466f38b04fe06, type: 3}
+    - {fileID: 21300000, guid: ac13425e0fe62284fa732e0010f3c669, type: 3}
+    - {fileID: 21300000, guid: ea02cfe1e116eff4899c7d889fffd244, type: 3}
+    - {fileID: 21300000, guid: 873f847547bf0304cbd1b6f11ba97f5a, type: 3}
+    - {fileID: 21300000, guid: b50fe172da9b12444a99f92f0b6ab0f0, type: 3}
+    - {fileID: 21300000, guid: 8f32e230182378b41967ab75f215da27, type: 3}
+    - {fileID: 21300000, guid: e9e140490be781f49aa7559ac8fdc39c, type: 3}
+    - {fileID: 21300000, guid: b9fbd307aa53d694e9ce84f32d266a65, type: 3}
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 080b3e9daf8a81745a863488d6deae65, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 15573f1930a37b540a2b111587c19f7d, type: 3}
     dialogues:
     - name: "\uC544\uBC84\uC9C0"
       text: " ...\uB824\uB193...\uC57C \uD574. \uC54C\uACA0\uB2C8?"
@@ -416,6 +438,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -433,6 +462,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -473,6 +509,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0

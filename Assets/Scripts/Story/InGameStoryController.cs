@@ -221,14 +221,27 @@ namespace Week14.Story
 
             RefreshPendingStoryBlock();
 
+            bool hasStartedPlayback = false;
             while (TryGetNextStory(out StoryEpisodeId episodeId, out bool skippable, out IReadOnlyList<InGameDialogueLine> dialogues))
             {
+                if (!hasStartedPlayback)
+                {
+                    BeginPlaybackState();
+                    hasStartedPlayback = true;
+                }
+
                 yield return PlayStory(episodeId, skippable, dialogues);
-                RefreshPendingStoryBlock();
-                yield return null;
             }
 
-            RefreshPendingStoryBlock();
+            if (hasStartedPlayback)
+            {
+                yield return FinishPlaybackStateAnimated();
+            }
+            else
+            {
+                RefreshPendingStoryBlock();
+            }
+
             playRoutine = null;
         }
 
@@ -334,7 +347,7 @@ namespace Week14.Story
                 yield break;
             }
 
-            BeginPlaybackState();
+            BeginStorySegment();
 
             for (int i = 0; i < dialogues.Count && !skipRequested; i++)
             {
@@ -350,7 +363,6 @@ namespace Week14.Story
             }
 
             GameSaveManager.MarkStoryEpisodeSeen(GetEpisodeSaveId(episodeId));
-            FinishPlaybackState();
         }
 
         private IEnumerator PlayLine(InGameDialogueLine line, bool skippable)
@@ -418,7 +430,35 @@ namespace Week14.Story
             BlockMapObjectsInteraction();
         }
 
+        private void BeginStorySegment()
+        {
+            skipRequested = false;
+            skipHoldElapsed = 0f;
+            SetSkipProgress(false, 0f);
+        }
+
         private void FinishPlaybackState()
+        {
+            CompletePlaybackState();
+            HideDialoguePanel();
+        }
+
+        private IEnumerator FinishPlaybackStateAnimated()
+        {
+            ClearActiveLobbyTutorialCue();
+            skipRequested = false;
+            skipHoldElapsed = 0f;
+            SetSkipProgress(false, 0f);
+
+            if (dialoguePanel != null)
+            {
+                yield return dialoguePanel.HideAnimated();
+            }
+
+            CompletePlaybackState();
+        }
+
+        private void CompletePlaybackState()
         {
             bool shouldRestoreInputBlock = isPlaying || pendingStoryBlockActive;
 
@@ -436,7 +476,6 @@ namespace Week14.Story
             skipRequested = false;
             skipHoldElapsed = 0f;
             SetSkipProgress(false, 0f);
-            HideDialoguePanel();
         }
 
         private void RefreshPendingStoryBlock()
