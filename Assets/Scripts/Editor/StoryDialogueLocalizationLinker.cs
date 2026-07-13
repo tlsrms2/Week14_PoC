@@ -176,6 +176,8 @@ namespace Week14.EditorTools
                     continue;
                 }
 
+                LinkUnique($"{keyPrefix}_{step.Step}_ObjectiveFormat", step.ObjectiveFormat, step.LocalizedObjectiveFormat, collection, sharedData, koreanTable, ref linkedCount);
+
                 foreach (TutorialDialogueLine line in step.Dialogues)
                 {
                     if (line == null)

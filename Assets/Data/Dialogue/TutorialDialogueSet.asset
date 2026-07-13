@@ -62,6 +62,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 1
     dialogues:
     - speaker: ERIS
@@ -113,6 +122,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uC774\uB3D9 \uD6C8\uB828 {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828160
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 10
     dialogues:
     - speaker: ERIS
@@ -213,6 +231,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uAE30\uBCF8 \uC0AC\uACA9 {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828161
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 13
     dialogues:
     - speaker: ERIS
@@ -309,6 +336,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 2
     dialogues:
     - speaker: ERIS
@@ -409,6 +445,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uAE30\uBCF8 \uACF5\uACA9 \uC801\uC911 {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828162
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 12
     dialogues:
     - speaker: ERIS
@@ -423,6 +468,42 @@ MonoBehaviour:
         loopVideo: 1
         title: 
         text: 
+        localizedTitle:
+          m_TableReference:
+            m_TableCollectionName: 
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: 
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+      localizedSpeaker:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333461598208
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333532901388
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - speaker: ERIS
       text: "\uB610\uD55C \uC0AC\uACA9 \uC2DC\uC5D0\uB294 HUD\uC5D0 \uD45C\uC2DC\uB418\uB294
         \uD0C4\uD658\uD615 \uC5D0\uB108\uC9C0 \uCF54\uC5B4\uAC00 \uC18C\uBAA8\uB429\uB2C8\uB2E4."
@@ -625,6 +706,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uC801 \uD0C4\uD658 \uD53C\uACA9 {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828163
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 3
     dialogues:
     - speaker: ERIS
@@ -845,6 +935,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uD0C4\uD658 \uC694\uACA9 {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828164
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 7
     dialogues:
     - speaker: ERIS
@@ -1009,6 +1108,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 8
     dialogues:
     - speaker: ERIS
@@ -1065,6 +1173,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 4
     dialogues:
     - speaker: ERIS
@@ -1115,6 +1232,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uC2A4\uD0AC \uD68C\uD53C {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828165
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 5
     dialogues:
     - speaker: ERIS
@@ -1213,6 +1339,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: "\uB354\uBBF8 \uD30C\uAD34 {0}/{1}"
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+      m_TableEntryReference:
+        m_KeyId: 43636948828166
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 6
     dialogues:
     - speaker: ERIS
@@ -1312,6 +1447,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 9
     dialogues:
     - speaker: ERIS
@@ -1408,6 +1552,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 11
     dialogues:
     - speaker: ERIS
@@ -1458,6 +1611,15 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     objectiveFormat: 
+    localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   references:
     version: 2
     RefIds: []

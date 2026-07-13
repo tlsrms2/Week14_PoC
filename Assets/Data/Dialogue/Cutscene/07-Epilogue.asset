@@ -223,6 +223,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -350,6 +357,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -430,6 +444,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -447,6 +468,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -464,6 +492,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -610,6 +645,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0

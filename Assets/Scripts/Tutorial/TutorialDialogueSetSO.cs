@@ -100,6 +100,7 @@ namespace Week14.Tutorial
         [SerializeField] private TutorialStepId step;
         [SerializeField] private List<TutorialDialogueLine> dialogues = new();
         [SerializeField] private string objectiveFormat;
+        [SerializeField] private LocalizedString localizedObjectiveFormat;
 
         public TutorialStepContent(TutorialStepId step, string objectiveFormat, params TutorialDialogueLine[] dialogues)
         {
@@ -111,6 +112,15 @@ namespace Week14.Tutorial
         public TutorialStepId Step => step;
         public IReadOnlyList<TutorialDialogueLine> Dialogues => dialogues;
         public string ObjectiveFormat => objectiveFormat;
+        public LocalizedString LocalizedObjectiveFormat => localizedObjectiveFormat;
+        public bool HasLocalizedObjectiveFormat => HasLocalizedString(localizedObjectiveFormat);
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
+        }
     }
 
     [CreateAssetMenu(menuName = "Week14/Tutorial/Dialogue Set", fileName = "TutorialDialogueSet")]

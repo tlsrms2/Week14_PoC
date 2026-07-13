@@ -956,7 +956,9 @@ namespace Week14.Tutorial
         private string FormatObjective(TutorialStepId step, int current, int goal)
         {
             TutorialStepContent content = dialogueSet != null ? dialogueSet.GetStep(step) : null;
-            string format = content != null ? content.ObjectiveFormat : string.Empty;
+            string format = content != null && content.HasLocalizedObjectiveFormat
+                ? content.LocalizedObjectiveFormat.GetLocalizedString()
+                : content != null ? content.ObjectiveFormat : string.Empty;
             if (string.IsNullOrWhiteSpace(format))
             {
                 format = "{0}/{1}";
