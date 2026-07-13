@@ -34,3 +34,17 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 879c8383eea32f14c8e8654e9f6fea7c, type: 2}
     - {fileID: 11400000, guid: 94a03043cc2d49c4a9fb4aee3f26fa5d, type: 2}
     - {fileID: 11400000, guid: dd12c881275048a4cb1b85ffcc920e0b, type: 2}
+  - boss: {fileID: 11400000, guid: f1a36b78306f49f4d8ed682a59847e47, type: 2}
+    challenges:
+    - {fileID: 11400000, guid: e6996707079055f429f8858d8451405d, type: 2}
+    - {fileID: 11400000, guid: 8602f4a5d1864034d9db6a616c2fec7a, type: 2}
+    - {fileID: 11400000, guid: 879c8383eea32f14c8e8654e9f6fea7c, type: 2}
+    - {fileID: 11400000, guid: 94a03043cc2d49c4a9fb4aee3f26fa5d, type: 2}
+    - {fileID: 11400000, guid: dd12c881275048a4cb1b85ffcc920e0b, type: 2}
+  - boss: {fileID: 11400000, guid: cff2e484394f3804f8bdf8ffd818c612, type: 2}
+    challenges:
+    - {fileID: 11400000, guid: e6996707079055f429f8858d8451405d, type: 2}
+    - {fileID: 11400000, guid: 8602f4a5d1864034d9db6a616c2fec7a, type: 2}
+    - {fileID: 11400000, guid: 879c8383eea32f14c8e8654e9f6fea7c, type: 2}
+    - {fileID: 11400000, guid: 94a03043cc2d49c4a9fb4aee3f26fa5d, type: 2}
+    - {fileID: 11400000, guid: dd12c881275048a4cb1b85ffcc920e0b, type: 2}

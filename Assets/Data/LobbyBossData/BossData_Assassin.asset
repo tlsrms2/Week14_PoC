@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553461748deae774480ab8b1802f2123, type: 3}
+  m_Name: BossData_Assassin
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.BossData
+  id: Assassin
+  bossName: "\uC554\uC0B4\uC790"
+  crime: "\uC704\uD5D8\uB3C4: 2"
+  description: "\uC554\uC0B4\uC790\uC785\uB2C8\uB2E4."
+  localizedBossName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 4200008682668032
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedCrime:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 4200012361072640
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 4200013929742336
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 1270279067752250102, guid: a0e89f1d438ad7c46a4637681bb00c8d, type: 3}
+  deathImage: {fileID: -9002140298747577265, guid: c7786867e4dfcc143b3e48c2d5d152ee, type: 3}
+  panelIcon: {fileID: 21300000, guid: 97bfeec2fd29c144cb6baefd29866d15, type: 3}
+  sceneName: Boss_Assassin_Test
+  unlocksBossIds: []
+  unlocksSkillIds:
+  - ACT_005
+  unlocksPassiveSkillIds:
+  - PAS_005
+  unlocksWeaponIds:
+  - GUN_005
+  requiredDistinctBossKills: 2
+  references:
+    version: 2
+    RefIds: []

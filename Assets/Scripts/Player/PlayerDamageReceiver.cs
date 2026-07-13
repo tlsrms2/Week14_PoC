@@ -209,7 +209,10 @@ namespace Week14.Combat
             }
 
             BossAI boss = other.GetComponentInParent<BossAI>();
-            if (boss == null || boss.IsFinalDeathSequencePlaying || context.IsWaitingForVictoryPanel)
+            if (boss == null
+                || boss.IsFinalDeathSequencePlaying
+                || boss.SuppressesBodyContactDamage
+                || context.IsWaitingForVictoryPanel)
             {
                 return false;
             }

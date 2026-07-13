@@ -133,6 +133,9 @@ namespace Week14.Combat
             ownerSlotReleased = false;
             pausedByExecution = false;
             executionPauseStartedAt = 0f;
+            runtimeHomingActive = false;
+            runtimeHomingEndsAt = 0f;
+            runtimeHomingTurnDegreesPerSecond = 0f;
             radialSplitImminentFired = false;
             Launched = null;
             RadialSplit = null;
@@ -192,6 +195,7 @@ namespace Week14.Combat
                 if (!externalMotionDriven)
                 {
                     TickHoming();
+                    TickRuntimeHoming();
                 }
 
                 if (!externalMotionDriven && body != null)
@@ -229,6 +233,7 @@ namespace Week14.Combat
             }
 
             ExtendSpecialTimers(timeDebt);
+            ExtendRuntimeHomingTimer(timeDebt);
         }
         protected virtual void OnProjectileAwake() { }
         protected virtual void OnProjectileInitialized() { }

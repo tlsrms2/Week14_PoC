@@ -6840,6 +6840,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private static Color GetNodeColor(BossGraphNodeKind nodeKind, Type actionType)
     {
+        if (actionType == typeof(HackerDashAction))
+        {
+            return GetNodeKindColor(BossGraphNodeKind.Move);
+        }
+
         if (nodeKind != BossGraphNodeKind.Minion || actionType == null)
         {
             return GetNodeKindColor(nodeKind);

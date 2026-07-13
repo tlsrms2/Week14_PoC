@@ -209,7 +209,7 @@ namespace Week14.UI
         // 끝났으면 내부적으로 WaitForCompletion으로 동기 대기하므로, StringChanged를
         // 구독했다가 즉시 해제하는 방식(비동기 로드 도중 해제하면 결과를 영영 못 받음)과
         // 달리 항상 실제 로컬라이징 값을 받는다.
-        private static string ResolveLocalizedFormat(LocalizedString localizedString, string fallbackFormat, object arg)
+        public static string ResolveLocalizedFormat(LocalizedString localizedString, string fallbackFormat, object arg)
         {
             if (!HasLocalizedString(localizedString))
             {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 using Week14.Input;
 
 namespace Week14.Combat
@@ -31,6 +32,13 @@ namespace Week14.Combat
 
         private void FixedUpdate()
         {
+            HackerWireGrab wireGrab = GetComponent<HackerWireGrab>();
+            if (wireGrab != null && wireGrab.TryPull(body))
+            {
+                moveInput = Vector2.zero;
+                return;
+            }
+
             if (combat != null && !combat.CanMove)
             {
                 moveInput = Vector2.zero;

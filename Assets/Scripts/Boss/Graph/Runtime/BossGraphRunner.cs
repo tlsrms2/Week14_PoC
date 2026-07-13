@@ -99,7 +99,7 @@ namespace Week14.Enemy
                 {
                     BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousRuntimeNodeId);
                     previousRuntimeNodeId = node.NodeId;
-                    context.SetCurrentNodeId(node.NodeId);
+                    context.BeginNodeExecution(node.NodeId);
                     if (directAction != null)
                     {
                         yield return directAction.Execute(context);
@@ -113,7 +113,7 @@ namespace Week14.Enemy
                 }
                 finally
                 {
-                    context.SetCurrentNodeId(null);
+                    context.EndNodeExecution();
                     context.ClearPatternScopedBossChildAims();
                 }
 
@@ -257,7 +257,7 @@ namespace Week14.Enemy
             try
             {
                 BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
-                context.SetCurrentNodeId(node.NodeId);
+                context.BeginNodeExecution(node.NodeId);
                 if (node.Action is ConductorConductingCueAction cue
                     && context.Boss is Conductor conductor)
                 {
@@ -274,7 +274,7 @@ namespace Week14.Enemy
             }
             finally
             {
-                context.SetCurrentNodeId(null);
+                context.EndNodeExecution();
             }
         }
 

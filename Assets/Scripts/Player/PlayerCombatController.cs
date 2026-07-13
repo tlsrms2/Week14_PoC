@@ -58,6 +58,8 @@ namespace Week14.Combat
         private PlayerDamageReceiver damageReceiver;
         private PlayerAimController aimController;
         private PlayerLockOnController lockOnController;
+        private bool hasMouseParryReticleBaseColor;
+        private Color mouseParryReticleBaseColor;
         private PlayerShooter shooter;
         private PlayerParryController parryController;
         private PlayerExecutionPresentation executionPresentation;
@@ -511,6 +513,24 @@ namespace Week14.Combat
         public bool ReceiveAttack(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
         {
             return DamageReceiver.ReceiveAttack(bulletDamage, hitPosition, hitDirection);
+        }
+
+        public void SetHackerParryVisual(bool hacked)
+        {
+            Rig.ResolveMouseParryReticleReference();
+            SpriteRenderer renderer = Context.MouseParryReticleRenderer;
+            if (renderer != null)
+            {
+                if (!hasMouseParryReticleBaseColor)
+                {
+                    mouseParryReticleBaseColor = renderer.color;
+                    hasMouseParryReticleBaseColor = true;
+                }
+
+                renderer.color = hacked ? new Color(1f, 0.12f, 0.08f, 1f) : mouseParryReticleBaseColor;
+            }
+
+            Context.MouseParryReticle?.SetHacked(hacked);
         }
 
         internal void NotifyAttackReceived()

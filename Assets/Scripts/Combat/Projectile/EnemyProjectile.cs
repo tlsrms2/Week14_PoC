@@ -107,6 +107,9 @@ namespace Week14.Combat
         private bool preserveLaunchDirectionOnLaunch;
         private bool ignorePlayerCollision;
         private bool externalMotionDriven;
+        private bool runtimeHomingActive;
+        private float runtimeHomingEndsAt;
+        private float runtimeHomingTurnDegreesPerSecond;
         private bool parryLockOnIndicatorVisible;
         private int interceptGroupId;
         private EnemyProjectile poolPrefabSource;
@@ -421,6 +424,64 @@ namespace Week14.Combat
             RefreshPathIndicator();
         }
 
+        public void ConfigureHomingOverride(float seconds, float turnDegreesPerSecond)
+        {
+            float launchTime = launched ? Time.time : chargeEndsAt;
+            if (this is IHomingEnemyProjectile)
+            {
+                ConfigureHoming(true, seconds, turnDegreesPerSecond, launchTime);
+                RefreshPathIndicator();
+                return;
+            }
+
+            runtimeHomingActive = true;
+            runtimeHomingEndsAt = launchTime + Mathf.Max(0.01f, seconds);
+            runtimeHomingTurnDegreesPerSecond = Mathf.Max(0.01f, turnDegreesPerSecond);
+        }
+
+        private void TickRuntimeHoming()
+        {
+            if (!runtimeHomingActive || IsResolved || IsDestroying)
+            {
+                return;
+            }
+
+            if (Time.time >= runtimeHomingEndsAt)
+            {
+                runtimeHomingActive = false;
+                return;
+            }
+
+            if (runtimeHomingTurnDegreesPerSecond <= 0f || ProjectileSpeed <= 0f)
+            {
+                return;
+            }
+
+            PlayerCombatController target = PlayerCombatController.Active;
+            if (target == null || target.Health == null || target.Health.IsDead)
+            {
+                return;
+            }
+
+            Vector2 toTarget = (Vector2)target.transform.position - (Vector2)transform.position;
+            if (toTarget.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            float maxRadians = runtimeHomingTurnDegreesPerSecond * Mathf.Deg2Rad * EnemyTimeScale.DeltaTime;
+            Vector3 nextDirection = Vector3.RotateTowards(FlightDirection, toTarget.normalized, maxRadians, 0f);
+            ApplyFlightDirection(nextDirection);
+        }
+
+        private void ExtendRuntimeHomingTimer(float seconds)
+        {
+            if (runtimeHomingActive)
+            {
+                runtimeHomingEndsAt += Mathf.Max(0f, seconds);
+            }
+        }
+
         public void ConfigurePreserveLaunchDirectionOnLaunch(bool preserve)
         {
             preserveLaunchDirectionOnLaunch = preserve;
@@ -437,6 +498,14 @@ namespace Week14.Combat
             if (externalMotionDriven && body != null)
             {
                 body.linearVelocity = Vector2.zero;
+            }
+        }
+
+        public void ConfigurePersistentLifetime()
+        {
+            if (!resolved && !isDestroying)
+            {
+                destroyAt = float.PositiveInfinity;
             }
         }
 

@@ -149,6 +149,7 @@ namespace Week14.Enemy
         public bool IsExecutionLocked => isExecutionLocked;
         public bool IsFinalDeathSequencePlaying => isFinalDeathSequencePlaying;
         public virtual bool IsDashing => false;
+        public virtual bool SuppressesBodyContactDamage => false;
         public bool IsStaggered => isStaggered;
         public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
@@ -230,6 +231,11 @@ namespace Week14.Enemy
             {
                 health.Died += HandleDied;
             }
+
+            if (bossData != null)
+            {
+                LoadoutSelectedSkillPanelLocalization.BindLocalizedString(bossData.LocalizedBossName, bossData.HasLocalizedBossName, SetBossNameText);
+            }
         }
 
         protected virtual void OnDisable()
@@ -237,6 +243,11 @@ namespace Week14.Enemy
             if (health != null)
             {
                 health.Died -= HandleDied;
+            }
+
+            if (bossData != null)
+            {
+                LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(bossData.LocalizedBossName, bossData.HasLocalizedBossName, SetBossNameText);
             }
 
             DisableMinionPatternHost();
@@ -796,9 +807,30 @@ namespace Week14.Enemy
 
             bossLivesView?.SetTarget(this);
 
+            // 로컬라이징된 이름은 OnEnable에서 건 StringChanged 구독이 채워주므로 여기서는 건드리지 않는다
+            // (언어 로드가 끝나기 전에 여기서 덮어쓰면 빈 텍스트로 되돌아가버린다).
+            bool usesLocalizedBossName = bossData != null && bossData.HasLocalizedBossName;
+            if (bossNameText != null && !usesLocalizedBossName)
+            {
+                bossNameText.text = ResolveBossNameFallback();
+            }
+        }
+
+        private string ResolveBossNameFallback()
+        {
+            if (bossData != null && !string.IsNullOrWhiteSpace(bossData.BossName))
+            {
+                return bossData.BossName;
+            }
+
+            return DisplayName;
+        }
+
+        private void SetBossNameText(string value)
+        {
             if (bossNameText != null)
             {
-                bossNameText.text = DisplayName;
+                bossNameText.text = value;
             }
         }
 
