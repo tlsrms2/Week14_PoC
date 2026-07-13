@@ -51,6 +51,7 @@ namespace Week14.Save
         [SerializeField] private bool pastSeen;
         [SerializeField] private bool act1Seen;
         [SerializeField] private bool lobbyTutorialBossSeen;
+        [SerializeField] private bool lobbyTutorialSkillSeen;
         [SerializeField] private bool act2Seen;
         [SerializeField] private bool act3Seen;
         [SerializeField] private bool finalBossAftermathSeen;
@@ -181,6 +182,14 @@ namespace Week14.Save
             SetStorySeen(StoryEpisodeId.LobbyTutorialBoss, true);
             PullStoryTogglesFromSave();
             Debug.Log("[DevUnlockTools] 로비 보스 튜토리얼 완료 상태로 변경했습니다.");
+        }
+
+        [ContextMenu("스토리 토글/6-1. 로비 스킬 튜토리얼 시청 초기화")]
+        public void ResetLobbyTutorialSkillSeen()
+        {
+            SetStorySeen(StoryEpisodeId.LobbyTutorialSkill, false);
+            PullStoryTogglesFromSave();
+            Debug.Log("[DevUnlockTools] 로비 스킬 튜토리얼 시청 상태를 초기화했습니다.");
         }
 
         [ContextMenu("스토리 토글/7. Act2 완료")]
@@ -498,6 +507,7 @@ namespace Week14.Save
             epilogueSeen = GameSaveManager.HasSeenEpilogue;
             act1Seen = IsStorySeen(StoryEpisodeId.Act1);
             lobbyTutorialBossSeen = IsStorySeen(StoryEpisodeId.LobbyTutorialBoss);
+            lobbyTutorialSkillSeen = IsStorySeen(StoryEpisodeId.LobbyTutorialSkill);
             act2Seen = IsStorySeen(StoryEpisodeId.Act2);
             act3Seen = IsStorySeen(StoryEpisodeId.Act3);
             finalBossAftermathSeen = IsStorySeen(StoryEpisodeId.FinalBossAftermath);

@@ -6276,7 +6276,7 @@ MonoBehaviour:
   m_Intensity: 3.5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000c1ae2efec75dd56a87b71b3c536e666db138450f759366633beb29ff
+  m_ApplyToSortingLayers: 0000000075936663b138450f3beb29ff
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -8944,7 +8944,64 @@ MonoBehaviour:
           m_CallState: 2
     onExit:
       m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: CloseBossPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument:
+            m_BoolArgument: 0
+          m_CallState: 2
+  - episodeId: 6
+    lineNumber: 2
+    activeObjects:
+    - {fileID: 918100254}
+    hideWhenLineEnds: 1
+    onEnter:
+      m_PersistentCalls:
         m_Calls: []
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
+  - episodeId: 6
+    lineNumber: 3
+    activeObjects: []
+    hideWhenLineEnds: 0
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OpenLoadoutPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument:
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: CloseLoadoutPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument:
+            m_BoolArgument: 0
+          m_CallState: 2
   firstStoryDelaySeconds: 0.1
   playbackRules:
   - sequence: {fileID: 11400000, guid: 247b2b204e87a4c488c5f30030a873af, type: 2}
