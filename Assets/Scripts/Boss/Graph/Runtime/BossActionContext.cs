@@ -30,6 +30,8 @@ namespace Week14.Enemy
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private readonly List<GameObject> transientVisuals = new();
         private string currentNodeId;
+        private int activeNodeExecutionCount;
+        private int nodeExecutionVersion;
         private int conductorMinionOutlineHoldRequests;
 
         public BossActionContext(
@@ -47,6 +49,8 @@ namespace Week14.Enemy
         public BossAI Boss { get; }
         public BossGraphAsset GraphAsset { get; }
         public string CurrentNodeId => currentNodeId;
+        public bool IsNodeActionExecuting => activeNodeExecutionCount > 0;
+        public int NodeExecutionVersion => nodeExecutionVersion;
         public bool IsExecutionPaused => isExecutionPaused?.Invoke() == true;
         public bool IsDashing { get; private set; }
         public bool IsFacingLocked { get; private set; }
@@ -82,6 +86,22 @@ namespace Week14.Enemy
         public void SetCurrentNodeId(string nodeId)
         {
             currentNodeId = nodeId;
+        }
+
+        public void BeginNodeExecution(string nodeId)
+        {
+            activeNodeExecutionCount++;
+            nodeExecutionVersion++;
+            currentNodeId = nodeId;
+        }
+
+        public void EndNodeExecution()
+        {
+            activeNodeExecutionCount = Mathf.Max(0, activeNodeExecutionCount - 1);
+            if (activeNodeExecutionCount == 0)
+            {
+                currentNodeId = null;
+            }
         }
 
         public void RegisterConductorMinionOutlineHold()

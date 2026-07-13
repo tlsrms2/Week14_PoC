@@ -30,6 +30,7 @@ namespace Week14.Combat
             chargeEndsAt += pausedSeconds;
             destroyAt += pausedSeconds;
             ExtendSpecialTimers(pausedSeconds);
+            ExtendRuntimeHomingTimer(pausedSeconds);
             if (radialSplitAt > 0f)
             {
                 radialSplitAt += pausedSeconds;
