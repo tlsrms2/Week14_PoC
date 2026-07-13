@@ -26,6 +26,12 @@ namespace Week14.Story
 
         [Header("Root")]
         [SerializeField] private GameObject root;
+        [SerializeField] private RectTransform slideRoot;
+
+        [Header("Slide")]
+        [SerializeField] private Vector2 hiddenOffset = new(0f, -800f);
+        [SerializeField, Min(0f)] private float showSeconds = 0.5f;
+        [SerializeField] private AnimationCurve showCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         [Header("Text")]
         [SerializeField] private GameObject speakerRoot;
@@ -45,16 +51,21 @@ namespace Week14.Story
         public bool IsTyping { get; private set; }
 
         private CanvasGroup fallbackCanvasGroup;
+        private Coroutine showRoutine;
+        private Vector2 shownAnchoredPosition;
+        private bool hasShownAnchoredPosition;
+        private bool isVisible;
 
         private void Awake()
         {
+            CacheShownPosition();
             Hide();
             SetSkipProgress(false, 0f);
         }
 
         public void ShowLine(string speaker, string text)
         {
-            SetRootVisible(true);
+            ShowPanel();
             SetSpeaker(speaker);
             SetText(dialogueText, text);
 
@@ -111,6 +122,12 @@ namespace Week14.Story
 
         public void Hide()
         {
+            if (showRoutine != null)
+            {
+                StopCoroutine(showRoutine);
+                showRoutine = null;
+            }
+
             SetRootVisible(false);
             SetSpeaker(null);
             SetText(dialogueText, string.Empty);
@@ -122,6 +139,42 @@ namespace Week14.Story
 
             IsTyping = false;
             SetSkipProgress(false, 0f);
+            SetSlideHidden();
+            isVisible = false;
+        }
+
+        public IEnumerator HideAnimated()
+        {
+            if (showRoutine != null)
+            {
+                StopCoroutine(showRoutine);
+                showRoutine = null;
+            }
+
+            if (!isVisible)
+            {
+                Hide();
+                yield break;
+            }
+
+            CacheShownPosition();
+            if (showSeconds <= 0f || slideRoot == null)
+            {
+                Hide();
+                yield break;
+            }
+
+            Vector2 from = slideRoot.anchoredPosition;
+            Vector2 to = shownAnchoredPosition + hiddenOffset;
+            for (float elapsed = 0f; elapsed < showSeconds; elapsed += Time.unscaledDeltaTime)
+            {
+                float t = Mathf.Clamp01(elapsed / showSeconds);
+                float eased = showCurve != null ? showCurve.Evaluate(t) : t;
+                slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
+                yield return null;
+            }
+
+            Hide();
         }
 
         public void SetSkipProgress(bool visible, float progress)
@@ -168,6 +221,84 @@ namespace Week14.Story
             }
 
             return fallbackProfileSprite;
+        }
+
+        private void ShowPanel()
+        {
+            CacheShownPosition();
+            bool shouldAnimate = !isVisible;
+            SetRootVisible(true);
+            isVisible = true;
+
+            if (shouldAnimate)
+            {
+                PlayShowAnimation();
+            }
+        }
+
+        private void PlayShowAnimation()
+        {
+            if (showRoutine != null)
+            {
+                StopCoroutine(showRoutine);
+            }
+
+            if (showSeconds <= 0f || slideRoot == null)
+            {
+                SetSlideShown();
+                showRoutine = null;
+                return;
+            }
+
+            showRoutine = StartCoroutine(ShowRoutine());
+        }
+
+        private IEnumerator ShowRoutine()
+        {
+            Vector2 from = shownAnchoredPosition + hiddenOffset;
+            Vector2 to = shownAnchoredPosition;
+            slideRoot.anchoredPosition = from;
+
+            for (float elapsed = 0f; elapsed < showSeconds; elapsed += Time.unscaledDeltaTime)
+            {
+                float t = Mathf.Clamp01(elapsed / showSeconds);
+                float eased = showCurve != null ? showCurve.Evaluate(t) : t;
+                slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
+                yield return null;
+            }
+
+            SetSlideShown();
+            showRoutine = null;
+        }
+
+        private void CacheShownPosition()
+        {
+            if (slideRoot == null)
+            {
+                slideRoot = root != null ? root.GetComponent<RectTransform>() : GetComponent<RectTransform>();
+            }
+
+            if (slideRoot != null && !hasShownAnchoredPosition)
+            {
+                shownAnchoredPosition = slideRoot.anchoredPosition;
+                hasShownAnchoredPosition = true;
+            }
+        }
+
+        private void SetSlideHidden()
+        {
+            if (slideRoot != null && hasShownAnchoredPosition)
+            {
+                slideRoot.anchoredPosition = shownAnchoredPosition + hiddenOffset;
+            }
+        }
+
+        private void SetSlideShown()
+        {
+            if (slideRoot != null && hasShownAnchoredPosition)
+            {
+                slideRoot.anchoredPosition = shownAnchoredPosition;
+            }
         }
 
         private void SetRootVisible(bool visible)

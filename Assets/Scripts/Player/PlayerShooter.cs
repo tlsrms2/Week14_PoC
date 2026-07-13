@@ -113,6 +113,7 @@ namespace Week14.Combat
             Vector2 origin = fireOrigin.position;
 
             DamageEnemiesAlongLine(origin, direction, beamLength, config.ProjectileRadius, finalDamage);
+            context.Owner.NotifyPlayerAttackPerformed(finalDamage);
 
             Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
             ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
@@ -184,11 +185,38 @@ namespace Week14.Combat
 
             ClearProjectilesInSemicircle(origin, direction, range);
             DamageEnemiesInSemicircle(origin, direction, range, damage);
+            context.Owner.NotifyPlayerAttackPerformed(damage, range);
             ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
 
             if (!string.IsNullOrEmpty(slashSfxId))
             {
                 SoundManager.PlaySfx(slashSfxId);
+            }
+        }
+
+        public void SwingBaseballBat(
+            int reflectedDamage,
+            float range,
+            float reflectedSpeed,
+            Color rangeFlashColor,
+            float rangeFlashSeconds,
+            string swingSfxId)
+        {
+            if (range <= 0f)
+            {
+                return;
+            }
+
+            Vector2 origin = context.CombatCenterOrigin.position;
+            Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
+
+            ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
+            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
+            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
+
+            if (!string.IsNullOrEmpty(swingSfxId))
+            {
+                SoundManager.PlaySfx(swingSfxId);
             }
         }
 
@@ -221,6 +249,40 @@ namespace Week14.Combat
                     0.16f,
                     new Color(0.9f, 0.9f, 1f, 0.85f));
                 projectile.TryDestroyByInterceptShot(out _);
+            }
+        }
+
+        private void ReflectProjectilesInSemicircle(
+            Vector2 origin,
+            Vector2 direction,
+            float range,
+            int reflectedDamage,
+            float reflectedSpeed)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile == null || !projectile.CanBeIntercepted)
+                {
+                    continue;
+                }
+
+                if (!OverlapsSemicircle(projectile, origin, direction, range))
+                {
+                    continue;
+                }
+
+                if (projectile.TryReflectTowardOwnerBoss(reflectedSpeed, reflectedDamage, out _))
+                {
+                    PlayerDashVfx.PlayProjectileAbsorb(
+                        context.CoroutineHost,
+                        projectile,
+                        origin,
+                        0.12f,
+                        new Color(1f, 0.65f, 0.25f, 0.85f));
+                }
             }
         }
 
@@ -367,6 +429,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx("SniperFire");
             SoundManager.PlaySfx("BulletLoss");
+            context.Owner.NotifyPlayerAttackPerformed(damage);
         }
 
         // damage는 펠릿 하나하나가 각각 그대로 받는 값입니다(무기 기본 데미지 그대로, 펠릿 수로 나누지 않음).
@@ -413,6 +476,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(pelletCount >= 2 ? "ShotgunFire" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
+            context.Owner.NotifyPlayerAttackPerformed(pelletDamage);
         }
 
         private PlayerProjectile ResolveProjectilePrefab(PlayerCombatConfig config)
@@ -475,6 +539,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
             SoundManager.PlaySfx("BulletLoss");
+            context.Owner.NotifyPlayerAttackPerformed(dynamicDamage);
             return true;
         }
 

@@ -58,6 +58,7 @@ namespace Week14.Enemy
         public void SetDashing(bool dashing)
         {
             IsDashing = dashing;
+            Boss?.SetIgnorePlayerCollision(dashing);
         }
 
         public void SetFacingLocked(bool locked)

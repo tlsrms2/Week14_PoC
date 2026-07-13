@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e025b743d72bf144a29007fe07603a0, type: 3}
   m_Name: DamageBoostSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.DamageBoostSkillSO
-  skillId: ACT_002
+  skillId: ACT_006
   displayName: "\uACF5\uACA9 \uAC15\uD654 \uBAA8\uB4C8"
   localizedDisplayName:
     m_TableReference:
-      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 300527484928
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -28,9 +28,9 @@ MonoBehaviour:
     \uB429\uB2C8\uB2E4."
   localizedDescription:
     m_TableReference:
-      m_TableCollectionName: GUID:c2940797846812f4881a7a287f9eb620
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 303861956608
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

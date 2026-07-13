@@ -20,6 +20,14 @@ namespace Week14.Tutorial
     [RequireComponent(typeof(Collider2D))]
     public sealed class TutorialTrainingEnemy : MonoBehaviour
     {
+        private enum DuelPattern
+        {
+            InterceptableBurst3,
+            InterceptableRadial,
+            InterceptableBurst4,
+            DodgeRadial
+        }
+
         private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
 
@@ -35,6 +43,11 @@ namespace Week14.Tutorial
         [SerializeField, Min(0f)] private float duelFireIntervalSeconds = 1.3f;
         [SerializeField, Min(0)] private int contactDamage = 1;
         [SerializeField, Min(0f)] private float contactDamageCooldown = 1f;
+
+        [Header("Duel Pattern")]
+        [SerializeField, Min(1)] private int duelOpeningBurstShotCount = 3;
+        [SerializeField, Min(1)] private int duelMainBurstShotCount = 4;
+        [SerializeField, Min(0.01f)] private float duelSingleShotSpeedMultiplier = 1.5f;
 
         [Header("Projectile Settings")]
         [SerializeField] private BossProjectileSettings projectile = new();
@@ -73,6 +86,9 @@ namespace Week14.Tutorial
         private bool isBodyHitColorActive;
         private bool isHitFlashActive;
         private bool dodgeVolleyFired;
+        private bool duelOpeningPatternCompleted;
+        private int duelPatternIndex;
+        private int duelBurstShotsRemaining;
 
         public Health Health => health;
         public BulletGauge Bullets => bullets;
@@ -156,6 +172,7 @@ namespace Week14.Tutorial
             bullets.Configure(maxBullets, true, BulletChangeSource.CombatStart);
             isActive = true;
             dodgeVolleyFired = false;
+            ResetDuelPattern();
             nextFireAt = Time.time + GetInitialFireDelaySeconds();
             nextContactDamageAt = 0f;
         }
@@ -288,15 +305,26 @@ namespace Week14.Tutorial
 
         private void TryFire()
         {
+            if (Time.time < nextFireAt)
+            {
+                return;
+            }
+
+            if (mode == TutorialTrainingEnemyMode.Duel)
+            {
+                TryFireDuelPattern();
+                return;
+            }
+
             BossProjectileSettings settings = ResolveProjectileSettings();
-            if (settings == null || settings.Prefab == null || Time.time < nextFireAt)
+            if (settings == null || settings.Prefab == null)
             {
                 return;
             }
 
             if (mode == TutorialTrainingEnemyMode.DodgePractice)
             {
-                FireRadialVolley(settings);
+                FireRadialVolley(settings, false);
                 dodgeVolleyFired = true;
                 nextFireAt = float.PositiveInfinity;
                 return;
@@ -304,6 +332,44 @@ namespace Week14.Tutorial
 
             FireAtTarget(settings);
             nextFireAt = Time.time + Mathf.Max(0.1f, GetFireIntervalSeconds());
+        }
+
+        private void TryFireDuelPattern()
+        {
+            DuelPattern pattern = GetCurrentDuelPattern();
+            BossProjectileSettings settings = ResolveDuelPatternProjectileSettings(pattern);
+            if (settings == null || settings.Prefab == null)
+            {
+                return;
+            }
+
+            if (pattern == DuelPattern.InterceptableBurst3 || pattern == DuelPattern.InterceptableBurst4)
+            {
+                FireDuelBurstShot(settings, GetDuelBurstShotCount(pattern));
+            }
+            else
+            {
+                FireRadialVolley(settings, pattern == DuelPattern.InterceptableRadial);
+                AdvanceDuelPattern();
+            }
+
+            nextFireAt = Time.time + GetDuelPatternIntervalSeconds();
+        }
+
+        private void FireDuelBurstShot(BossProjectileSettings settings, int shotCount)
+        {
+            if (duelBurstShotsRemaining <= 0)
+            {
+                duelBurstShotsRemaining = Mathf.Max(1, shotCount);
+            }
+
+            FireAtTarget(settings);
+            duelBurstShotsRemaining--;
+
+            if (duelBurstShotsRemaining <= 0)
+            {
+                AdvanceDuelPattern();
+            }
         }
 
         private void FireAtTarget(BossProjectileSettings settings)
@@ -318,7 +384,7 @@ namespace Week14.Tutorial
             SpawnProjectile(settings, origin, direction.normalized, true);
         }
 
-        private void FireRadialVolley(BossProjectileSettings settings)
+        private void FireRadialVolley(BossProjectileSettings settings, bool interceptable)
         {
             int count = Mathf.Max(4, dodgeProjectileCount);
             Vector3 origin = projectileOrigin != null ? projectileOrigin.position : transform.position;
@@ -329,7 +395,7 @@ namespace Week14.Tutorial
             {
                 float angle = startAngle + step * i;
                 Vector2 direction = Quaternion.Euler(0f, 0f, angle) * Vector2.right;
-                SpawnProjectile(settings, origin, direction, false);
+                SpawnProjectile(settings, origin, direction, interceptable);
             }
         }
 
@@ -384,6 +450,72 @@ namespace Week14.Tutorial
             return projectile;
         }
 
+        private BossProjectileSettings ResolveDuelPatternProjectileSettings(DuelPattern pattern)
+        {
+            if (pattern == DuelPattern.DodgeRadial && dodgeProjectile != null && dodgeProjectile.Prefab != null)
+            {
+                return dodgeProjectile;
+            }
+
+            return projectile;
+        }
+
+        private void ResetDuelPattern()
+        {
+            duelOpeningPatternCompleted = false;
+            duelPatternIndex = 0;
+            duelBurstShotsRemaining = 0;
+        }
+
+        private DuelPattern GetCurrentDuelPattern()
+        {
+            if (!duelOpeningPatternCompleted)
+            {
+                return duelPatternIndex switch
+                {
+                    0 => DuelPattern.InterceptableBurst3,
+                    1 => DuelPattern.InterceptableRadial,
+                    2 => DuelPattern.InterceptableBurst4,
+                    3 => DuelPattern.DodgeRadial,
+                    _ => DuelPattern.InterceptableBurst3
+                };
+            }
+
+            return duelPatternIndex switch
+            {
+                0 => DuelPattern.InterceptableBurst3,
+                1 => DuelPattern.InterceptableRadial,
+                2 => DuelPattern.InterceptableBurst4,
+                3 => DuelPattern.InterceptableRadial,
+                _ => DuelPattern.InterceptableBurst3
+            };
+        }
+
+        private int GetDuelBurstShotCount(DuelPattern pattern)
+        {
+            return pattern == DuelPattern.InterceptableBurst4
+                ? Mathf.Max(1, duelMainBurstShotCount)
+                : Mathf.Max(1, duelOpeningBurstShotCount);
+        }
+
+        private void AdvanceDuelPattern()
+        {
+            duelBurstShotsRemaining = 0;
+            duelPatternIndex++;
+
+            if (!duelOpeningPatternCompleted && duelPatternIndex >= 4)
+            {
+                duelOpeningPatternCompleted = true;
+                duelPatternIndex = 0;
+                return;
+            }
+
+            if (duelOpeningPatternCompleted && duelPatternIndex >= 4)
+            {
+                duelPatternIndex = 0;
+            }
+        }
+
         private float GetAngleToTarget(Vector3 origin)
         {
             Vector2 direction = target != null
@@ -402,6 +534,11 @@ namespace Week14.Tutorial
             if (mode == TutorialTrainingEnemyMode.DodgePractice)
             {
                 return Mathf.Max(0f, dodgeFireDelaySeconds);
+            }
+
+            if (mode == TutorialTrainingEnemyMode.Duel)
+            {
+                return Mathf.Max(0.35f, GetDuelPatternIntervalSeconds() * 0.5f);
             }
 
             if (ShouldFire())
@@ -671,6 +808,12 @@ namespace Week14.Tutorial
             return mode == TutorialTrainingEnemyMode.Duel
                 ? duelFireIntervalSeconds
                 : practiceFireIntervalSeconds;
+        }
+
+        private float GetDuelPatternIntervalSeconds()
+        {
+            float speedMultiplier = Mathf.Max(0.01f, duelSingleShotSpeedMultiplier);
+            return Mathf.Max(0.1f, duelFireIntervalSeconds / speedMultiplier);
         }
     }
 }

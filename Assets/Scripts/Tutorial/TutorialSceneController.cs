@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using Week14.Audio;
@@ -22,11 +23,15 @@ namespace Week14.Tutorial
 {
     public sealed class TutorialSceneController : MonoBehaviour
     {
+        private const string TextPanelRootName = "TextPanelRoot";
+        private const string ObjectivePanelRootName = "ObjectivePanelRoot";
+
         [Header("Data")]
         [SerializeField] private TutorialDialogueSetSO dialogueSet;
 
         [Header("UI")]
-        [SerializeField] private TutorialDialoguePanelView dialoguePanel;
+        [SerializeField, FormerlySerializedAs("dialoguePanel")] private TutorialDialoguePanelView textDialoguePanel;
+        [SerializeField] private TutorialDialoguePanelView objectiveDialoguePanel;
         [SerializeField] private GameObject explanationPanelRoot;
         [SerializeField] private CanvasGroup explanationPanelCanvasGroup;
         [SerializeField] private Image explanationImage;
@@ -35,6 +40,7 @@ namespace Week14.Tutorial
         [SerializeField] private TMP_Text explanationTitle;
         [SerializeField] private TMP_Text explanationText;
         [SerializeField, Min(0f)] private float firstDialogueDelaySeconds = 1f;
+        [SerializeField, Min(0f)] private float objectiveCompleteResumeDelaySeconds = 0.25f;
         [SerializeField] private GameObject bossCombatUiRoot;
         [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private TMP_Text bossNameText;
@@ -89,6 +95,7 @@ namespace Week14.Tutorial
         private bool combatPermissionPushed;
         private bool bulletTimeoutLockPushed;
         private bool dialogueAdvanceInputPushed;
+        private bool dialogueSkillSuppressionPushed;
         private bool preLeftAttackSuppressionPushed;
         private bool preSkillSuppressionPushed;
         private bool explanationLeftAttackSuppressionPushed;
@@ -104,6 +111,11 @@ namespace Week14.Tutorial
         private Coroutine tutorialRoutine;
         private Coroutine deathRoutine;
         private Coroutine explanationVideoRoutine;
+
+        private void Awake()
+        {
+            ResolveDialoguePanels();
+        }
 
         private void OnEnable()
         {
@@ -171,12 +183,14 @@ namespace Week14.Tutorial
 
         private void Start()
         {
+            ResolveDialoguePanels();
+
             if (sceneTrainingEnemy != null && hideSceneEnemyUntilTraining)
             {
                 sceneTrainingEnemy.gameObject.SetActive(false);
             }
 
-            dialoguePanel?.Hide();
+            HideDialoguePanels();
             HideExplanation();
             SetBossUiVisible(false);
             ApplyDoorStateForStep(TutorialStepId.Intro);
@@ -190,6 +204,124 @@ namespace Week14.Tutorial
             TrySubscribeSkillManager();
             TrySubscribePlayerBullets();
             TrySubscribePlayerHealth();
+        }
+
+        private void ResolveDialoguePanels()
+        {
+            TutorialDialoguePanelView[] panels = FindObjectsByType<TutorialDialoguePanelView>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None);
+            TutorialDialoguePanelView namedTextPanel = FindDialoguePanelByName(panels, TextPanelRootName);
+            TutorialDialoguePanelView namedObjectivePanel = FindDialoguePanelByName(panels, ObjectivePanelRootName);
+
+            if (textDialoguePanel == null || IsDialoguePanelNamed(textDialoguePanel, ObjectivePanelRootName))
+            {
+                textDialoguePanel = namedTextPanel != null ? namedTextPanel : textDialoguePanel;
+            }
+
+            if (objectiveDialoguePanel == null || objectiveDialoguePanel == textDialoguePanel)
+            {
+                objectiveDialoguePanel = namedObjectivePanel;
+            }
+
+            if (textDialoguePanel == null)
+            {
+                textDialoguePanel = FindFirstDialoguePanelExcept(panels, objectiveDialoguePanel);
+            }
+
+            if (objectiveDialoguePanel == null)
+            {
+                objectiveDialoguePanel = FindFirstDialoguePanelExcept(panels, textDialoguePanel);
+            }
+
+            objectiveDialoguePanel ??= textDialoguePanel;
+        }
+
+        private TutorialDialoguePanelView FindDialoguePanelByName(
+            TutorialDialoguePanelView[] panels,
+            string nameToken)
+        {
+            if (panels == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < panels.Length; i++)
+            {
+                TutorialDialoguePanelView panel = panels[i];
+                if (IsDialoguePanelInScene(panel) && IsDialoguePanelNamed(panel, nameToken))
+                {
+                    return panel;
+                }
+            }
+
+            return null;
+        }
+
+        private TutorialDialoguePanelView FindFirstDialoguePanelExcept(
+            TutorialDialoguePanelView[] panels,
+            TutorialDialoguePanelView excluded)
+        {
+            if (panels == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < panels.Length; i++)
+            {
+                TutorialDialoguePanelView panel = panels[i];
+                if (panel != excluded && IsDialoguePanelInScene(panel))
+                {
+                    return panel;
+                }
+            }
+
+            return null;
+        }
+
+        private bool IsDialoguePanelInScene(TutorialDialoguePanelView panel)
+        {
+            return panel != null && panel.gameObject.scene == gameObject.scene;
+        }
+
+        private static bool IsDialoguePanelNamed(TutorialDialoguePanelView panel, string nameToken)
+        {
+            return panel != null
+                && !string.IsNullOrWhiteSpace(nameToken)
+                && panel.name.IndexOf(nameToken, System.StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private void HideDialoguePanels()
+        {
+            textDialoguePanel?.Hide();
+
+            if (objectiveDialoguePanel != null && objectiveDialoguePanel != textDialoguePanel)
+            {
+                objectiveDialoguePanel.Hide();
+            }
+        }
+
+        private IEnumerator HideTextDialoguePanelAnimated()
+        {
+            if (textDialoguePanel == null)
+            {
+                yield break;
+            }
+
+            yield return textDialoguePanel.HideAnimated();
+        }
+
+        private IEnumerator HideAllDialoguePanelsAnimated()
+        {
+            if (textDialoguePanel != null)
+            {
+                yield return textDialoguePanel.HideAnimated();
+            }
+
+            if (objectiveDialoguePanel != null && objectiveDialoguePanel != textDialoguePanel)
+            {
+                yield return objectiveDialoguePanel.HideAnimated();
+            }
         }
 
         private IEnumerator RunTutorial()
@@ -275,10 +407,7 @@ namespace Week14.Tutorial
                 yield return PlayDialogue(TutorialStepId.Complete);
             }
 
-            if (dialoguePanel != null)
-            {
-                yield return dialoguePanel.HideAnimated();
-            }
+            yield return HideAllDialoguePanelsAnimated();
 
             CompleteTutorial();
             tutorialRoutine = null;
@@ -299,10 +428,7 @@ namespace Week14.Tutorial
                 yield return roomTransitionDoor.OpenAndWait();
             }
 
-            if (dialoguePanel != null)
-            {
-                yield return dialoguePanel.HideAnimated();
-            }
+            yield return HideTextDialoguePanelAnimated();
 
             while (roomTransitionCount < 1)
             {
@@ -360,7 +486,7 @@ namespace Week14.Tutorial
                 RestorePlayerBullets();
             }
 
-            ShowObjective(step, safeGoal);
+            yield return ShowObjectivePanel(step, safeGoal);
             while (GetStepProgress(step) < safeGoal)
             {
                 if (step == TutorialStepId.Attack && attackRefillRequested)
@@ -373,17 +499,14 @@ namespace Week14.Tutorial
                 yield return null;
             }
 
-            if (dialoguePanel != null)
-            {
-                yield return dialoguePanel.PlayObjectiveCompleted(FormatObjective(step, safeGoal, safeGoal));
-            }
+            yield return CompleteObjectivePanel(step, safeGoal);
         }
 
         private IEnumerator RunSkillObjectiveStage(TutorialTrainingEnemyMode enemyMode, int goal)
         {
             SetBossUiVisible(false);
             RestorePlayerResources(true);
-            ShowObjective(TutorialStepId.Skill, goal);
+            yield return ShowObjectivePanel(TutorialStepId.Skill, goal);
 
             while (skillCount < goal)
             {
@@ -413,26 +536,60 @@ namespace Week14.Tutorial
                 ShowObjective(TutorialStepId.Skill, goal);
                 EnemyProjectile.DestroyAllActive();
                 RestorePlayerResources(true);
-                yield return PlayDialogue(TutorialStepId.SkillRetry);
+                yield return PlaySupplementalDialogue(TutorialStepId.SkillRetry);
                 ShowObjective(TutorialStepId.Skill, goal);
             }
 
-            if (dialoguePanel != null)
-            {
-                yield return dialoguePanel.PlayObjectiveCompleted(FormatObjective(TutorialStepId.Skill, goal, goal));
-            }
+            yield return CompleteObjectivePanel(TutorialStepId.Skill, goal);
         }
 
         private IEnumerator PlayDialogue(TutorialStepId step)
         {
             TutorialStepContent content = dialogueSet != null ? dialogueSet.GetStep(step) : null;
-            if (content == null || dialoguePanel == null)
+            if (content == null || textDialoguePanel == null)
             {
                 Debug.LogWarning($"{nameof(TutorialSceneController)}: {step} dialogue is missing in TutorialDialogueSet.");
                 yield break;
             }
 
             yield return PlayDialogueLines(content);
+        }
+
+        private IEnumerator PlaySupplementalDialogue(TutorialStepId step)
+        {
+            yield return PlayDialogue(step);
+
+            if (textDialoguePanel != null && textDialoguePanel != objectiveDialoguePanel)
+            {
+                yield return textDialoguePanel.HideAnimated();
+            }
+        }
+
+        private IEnumerator ShowObjectivePanel(TutorialStepId step, int goal)
+        {
+            if (textDialoguePanel != null && textDialoguePanel != objectiveDialoguePanel)
+            {
+                yield return textDialoguePanel.HideAnimated();
+            }
+
+            ShowObjective(step, goal);
+        }
+
+        private IEnumerator CompleteObjectivePanel(TutorialStepId step, int goal)
+        {
+            if (objectiveDialoguePanel != null)
+            {
+                yield return objectiveDialoguePanel.PlayObjectiveCompleted(
+                    FormatObjective(step, goal, goal),
+                    fadeOut: false,
+                    clearText: false);
+                yield return objectiveDialoguePanel.HideAnimated();
+            }
+
+            if (objectiveCompleteResumeDelaySeconds > 0f)
+            {
+                yield return WaitUnscaled(objectiveCompleteResumeDelaySeconds);
+            }
         }
 
         private IEnumerator PlayDialogueLines(TutorialStepContent content)
@@ -446,7 +603,9 @@ namespace Week14.Tutorial
                     continue;
                 }
 
-                yield return PlayDialogueLine(line.Speaker, line.Text, line.SfxId, line.Explanation);
+                string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
+                string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
+                yield return PlayDialogueLine(speaker, text, line.SfxId, line.Explanation);
             }
 
             PopDialogueAdvanceInput();
@@ -461,8 +620,8 @@ namespace Week14.Tutorial
             bool revealRequested = false;
             bool canAcceptAdvance = false;
             PlayDialogueSfx(sfxId);
-            dialoguePanel.ShowLine(speaker, text);
-            IEnumerator typing = dialoguePanel.PlayTypewriter(text, () => revealRequested);
+            textDialoguePanel.ShowLine(speaker, text);
+            IEnumerator typing = textDialoguePanel.PlayTypewriter(text, () => revealRequested);
             while (typing.MoveNext())
             {
                 if (canAcceptAdvance && AdvancePressed())
@@ -511,8 +670,8 @@ namespace Week14.Tutorial
                 return;
             }
 
-            SetText(explanationTitle, explanation.Title);
-            SetText(explanationText, explanation.Text);
+            SetText(explanationTitle, explanation.HasLocalizedTitle ? explanation.LocalizedTitle.GetLocalizedString() : explanation.Title);
+            SetText(explanationText, explanation.HasLocalizedText ? explanation.LocalizedText.GetLocalizedString() : explanation.Text);
             PushExplanationInputLock();
             SetExplanationVisible(true);
 
@@ -666,7 +825,7 @@ namespace Week14.Tutorial
         {
             attackRefillRequested = false;
             RestorePlayerBullets();
-            yield return PlayDialogue(TutorialStepId.AttackRefill);
+            yield return PlaySupplementalDialogue(TutorialStepId.AttackRefill);
         }
 
         private void ActivateTrainingEnemy(TutorialTrainingEnemyMode mode)
@@ -810,7 +969,7 @@ namespace Week14.Tutorial
 
         private void ShowObjective(TutorialStepId step, int goal)
         {
-            dialoguePanel?.ShowObjective(FormatObjective(step, GetStepProgress(step), goal));
+            objectiveDialoguePanel?.ShowObjective(FormatObjective(step, GetStepProgress(step), goal));
         }
 
         private void TickMoveDistance()
@@ -1146,7 +1305,7 @@ namespace Week14.Tutorial
 
             PopDialogueAdvanceInput();
             HideExplanation();
-            dialoguePanel?.Hide();
+            HideDialoguePanels();
             SetBossUiVisible(false);
             activeEnemy?.Deactivate();
             EnemyProjectile.DestroyAllActive();
@@ -1224,6 +1383,9 @@ namespace Week14.Tutorial
 
             PlayerCombatController.PushLeftAttackSuppression();
             dialogueAdvanceInputPushed = true;
+
+            SkillLoadoutManager.PushSkillUseSuppression();
+            dialogueSkillSuppressionPushed = true;
         }
 
         private void PopDialogueAdvanceInput()
@@ -1235,6 +1397,12 @@ namespace Week14.Tutorial
 
             PlayerCombatController.PopLeftAttackSuppression();
             dialogueAdvanceInputPushed = false;
+
+            if (dialogueSkillSuppressionPushed)
+            {
+                SkillLoadoutManager.PopSkillUseSuppression();
+                dialogueSkillSuppressionPushed = false;
+            }
         }
 
         private void PushPreLeftAttackSuppression()
@@ -1383,6 +1551,14 @@ namespace Week14.Tutorial
 
             RestorePlayerResources(true);
             activePlayer?.Visual?.RestoreAfterDeath();
+            RestorePlayerHpView(activePlayer);
+        }
+
+        private static void RestorePlayerHpView(PlayerCombatController activePlayer)
+        {
+            PlayerHP hpView = activePlayer != null ? activePlayer.PlayerHpView : null;
+            hpView ??= UnityEngine.Object.FindFirstObjectByType<PlayerHP>(FindObjectsInactive.Include);
+            hpView?.SetExecutionVisible(true);
         }
 
         private Transform ResolveRespawnPoint(TutorialStepId step)
@@ -1468,23 +1644,40 @@ namespace Week14.Tutorial
 
         private static bool AdvancePressed()
         {
+            if (TutorialInputBlocked())
+            {
+                return false;
+            }
+
 #if ENABLE_INPUT_SYSTEM
+            Keyboard keyboard = Keyboard.current;
             Mouse mouse = Mouse.current;
             return GameInput.LeftAttackDown
-                || (mouse != null && mouse.leftButton.wasPressedThisFrame);
+                || (mouse != null && mouse.leftButton.wasPressedThisFrame)
+                || (keyboard != null && keyboard.spaceKey.wasPressedThisFrame);
 #else
-            return Input.GetMouseButtonDown(0);
+            return Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space);
 #endif
         }
 
         private static bool ExplanationClosePressed()
         {
+            if (TutorialInputBlocked())
+            {
+                return false;
+            }
+
 #if ENABLE_INPUT_SYSTEM
             Keyboard keyboard = Keyboard.current;
             return keyboard != null && keyboard.eKey.wasPressedThisFrame;
 #else
             return Input.GetKeyDown(KeyCode.E);
 #endif
+        }
+
+        private static bool TutorialInputBlocked()
+        {
+            return GameModalState.BlocksGameplayInput || Mathf.Approximately(Time.timeScale, 0f);
         }
 
         private static void SetText(TMP_Text target, string value)

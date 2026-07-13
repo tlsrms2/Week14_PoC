@@ -110,6 +110,17 @@ MonoBehaviour:
     m_Localized: 'Parry Range: x{0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 4219156515446784
+    m_Localized: Baseball Bat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4219302263316480
+    m_Localized: 'Swing the bat to reflect enemy barrages within range
+
+      Hold
+      the attack button to expand the reflection radius'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

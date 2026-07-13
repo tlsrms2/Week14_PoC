@@ -197,10 +197,6 @@ namespace Week14.Skills
             // 지속시간이 있는 스킬도 게이지는 즉시 "0% 채워짐(=CooldownSeconds 그대로 남음)" 상태로
             // 표시하고, 효과가 끝날 때까지는 TickCooldown에서 감소시키지 않습니다.
             cooldownRemaining = skill.CooldownSeconds;
-            GameObject user = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : gameObject;
-            skill.Execute(user);
-            SkillUsed?.Invoke(slot, skill);
-            CooldownChanged?.Invoke(cooldownRemaining, skill.CooldownSeconds);
 
             if (skill.HasDelayedCooldownStart)
             {
@@ -208,6 +204,11 @@ namespace Week14.Skills
                 effectEndSubscribedSkill = skill;
                 skill.SubscribeEffectEnd(HandleEffectEnded);
             }
+
+            GameObject user = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : gameObject;
+            skill.Execute(user);
+            SkillUsed?.Invoke(slot, skill);
+            CooldownChanged?.Invoke(cooldownRemaining, skill.CooldownSeconds);
 
             return true;
         }

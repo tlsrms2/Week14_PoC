@@ -42,7 +42,7 @@ MonoBehaviour:
   leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
   maxAmmo: 3
   parryingRange: 1
-  damagePerAmmoStep: 030000000200000001000000
+  damagePerAmmoStep: 040000000300000002000000
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
@@ -73,7 +73,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  chargeThresholdSeconds: 1
+  chargeThresholdSeconds: 0.7
   chargeDamageMultiplier: 2
   chargeStartSfxId: SniperCharge
   laserFirstAppearDelaySeconds: 0.15

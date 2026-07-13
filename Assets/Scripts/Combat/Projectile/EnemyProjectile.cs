@@ -109,6 +109,9 @@ namespace Week14.Combat
         private bool preserveLaunchDirectionOnLaunch;
         private bool ignorePlayerCollision;
         private bool externalMotionDriven;
+        private bool reflectedByPlayer;
+        private int reflectedDamage;
+        private Transform reflectedTarget;
         private bool runtimeHomingActive;
         private float runtimeHomingEndsAt;
         private float runtimeHomingTurnDegreesPerSecond;
@@ -549,6 +552,72 @@ namespace Week14.Combat
             if (externalMotionDriven && body != null)
             {
                 body.linearVelocity = Vector2.zero;
+            }
+        }
+
+        public bool TryReflectTowardOwnerBoss(float speed, int damage, out BossAI targetBoss)
+        {
+            targetBoss = ResolveReflectionTargetBoss();
+            if (!CanReceiveInterceptShot() || targetBoss == null)
+            {
+                return false;
+            }
+
+            reflectedByPlayer = true;
+            reflectedDamage = Mathf.Max(0, damage);
+            reflectedTarget = targetBoss.transform;
+            projectileSpeed = Mathf.Max(0.01f, speed);
+            launched = true;
+            resolved = false;
+            interceptPending = false;
+            canBeIntercepted = false;
+            ignorePlayerCollision = true;
+            runtimeHomingActive = false;
+            chargeAnchor = null;
+            chargeEndsAt = Time.time;
+            destroyAt = Time.time + projectileLifetime;
+            suppressPathIndicator = true;
+
+            SetChargeVfxVisible(false);
+            SetPathIndicatorVisible(false);
+            SetParryLockOnIndicatorVisible(false);
+            RefreshReflectedDirection();
+            RefreshRuntimeVelocity();
+            return true;
+        }
+
+        private BossAI ResolveReflectionTargetBoss()
+        {
+            if (ownerBoss != null)
+            {
+                return ownerBoss;
+            }
+
+            Transform minionOwnerTransform = ownerMinion?.Owner?.MinionOwnerTransform;
+            if (minionOwnerTransform != null)
+            {
+                BossAI minionOwnerBoss = minionOwnerTransform.GetComponent<BossAI>()
+                    ?? minionOwnerTransform.GetComponentInParent<BossAI>();
+                if (minionOwnerBoss != null)
+                {
+                    return minionOwnerBoss;
+                }
+            }
+
+            return UnityEngine.Object.FindFirstObjectByType<BossAI>();
+        }
+
+        private void RefreshReflectedDirection()
+        {
+            if (!reflectedByPlayer || reflectedTarget == null)
+            {
+                return;
+            }
+
+            Vector2 toTarget = reflectedTarget.position - transform.position;
+            if (toTarget.sqrMagnitude > 0.0001f)
+            {
+                ApplyFlightDirection(toTarget);
             }
         }
 

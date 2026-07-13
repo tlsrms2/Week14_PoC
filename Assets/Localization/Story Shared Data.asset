@@ -1,0 +1,704 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Story Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Story
+  m_TableCollectionNameGuidString: 8a8e32e629c410a4c97867fa550435ab
+  m_Entries:
+  - m_Id: 5333461598208
+    m_Key: Speaker_ERIS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318464
+    m_Key: Cutscene_01-Prologue_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318465
+    m_Key: Cutscene_01-Prologue_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318466
+    m_Key: Cutscene_01-Prologue_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512768
+    m_Key: Cutscene_01-Prologue_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512769
+    m_Key: Cutscene_01-Prologue_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512770
+    m_Key: Cutscene_01-Prologue_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512771
+    m_Key: "Speaker_\uC774\uC628"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512772
+    m_Key: Cutscene_01-Prologue_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512773
+    m_Key: Cutscene_01-Prologue_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512774
+    m_Key: Cutscene_01-Prologue_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512775
+    m_Key: Cutscene_01-Prologue_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512776
+    m_Key: Cutscene_01-Prologue_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512777
+    m_Key: Cutscene_01-Prologue_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512778
+    m_Key: Cutscene_01-Prologue_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512779
+    m_Key: Cutscene_01-Prologue_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512780
+    m_Key: Cutscene_02-Record_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512781
+    m_Key: Cutscene_02-Record_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512782
+    m_Key: Cutscene_02-Record_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512783
+    m_Key: "Speaker_\uC544\uBC84\uC9C0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512784
+    m_Key: Cutscene_02-Record_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512785
+    m_Key: Cutscene_02-Record_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512786
+    m_Key: Cutscene_02-Record_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512787
+    m_Key: Cutscene_02-Record_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512788
+    m_Key: Cutscene_02-Record_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512789
+    m_Key: Cutscene_02-Record_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512790
+    m_Key: Cutscene_02-Record_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512791
+    m_Key: Cutscene_02-Record_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512792
+    m_Key: Cutscene_02-Record_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512793
+    m_Key: Cutscene_02-Record_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512794
+    m_Key: Cutscene_02-Record_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512795
+    m_Key: Cutscene_02-Record_15_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512796
+    m_Key: Cutscene_02-Record_16_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512797
+    m_Key: Cutscene_02-Record_17_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512798
+    m_Key: Cutscene_07-Epilogue_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512799
+    m_Key: Cutscene_07-Epilogue_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512800
+    m_Key: Cutscene_07-Epilogue_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512801
+    m_Key: Cutscene_07-Epilogue_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512802
+    m_Key: Cutscene_07-Epilogue_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512803
+    m_Key: Cutscene_07-Epilogue_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512804
+    m_Key: Cutscene_07-Epilogue_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512805
+    m_Key: Cutscene_07-Epilogue_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512806
+    m_Key: Cutscene_07-Epilogue_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512807
+    m_Key: Cutscene_07-Epilogue_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512808
+    m_Key: Cutscene_07-Epilogue_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512809
+    m_Key: Cutscene_07-Epilogue_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512810
+    m_Key: Cutscene_07-Epilogue_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512811
+    m_Key: Cutscene_07-Epilogue_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512812
+    m_Key: Cutscene_07-Epilogue_15_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512813
+    m_Key: Cutscene_07-Epilogue_16_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512814
+    m_Key: Cutscene_07-Epilogue_17_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512815
+    m_Key: Cutscene_07-Epilogue_18_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512816
+    m_Key: Cutscene_07-Epilogue_19_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512817
+    m_Key: Cutscene_07-Epilogue_20_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512818
+    m_Key: Cutscene_07-Epilogue_21_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512819
+    m_Key: Cutscene_07-Epilogue_22_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512820
+    m_Key: Cutscene_07-Epilogue_23_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512821
+    m_Key: InGame_03-Act1_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512822
+    m_Key: InGame_03-Act1_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512823
+    m_Key: InGame_03-Act1_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512824
+    m_Key: InGame_03-Act1_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512825
+    m_Key: InGame_03-Act1_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512826
+    m_Key: InGame_03-Act1_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512827
+    m_Key: InGame_03-Act1_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512828
+    m_Key: InGame_03-Act1_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512829
+    m_Key: InGame_03-Act1_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512830
+    m_Key: InGame_03-Act1_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512831
+    m_Key: InGame_03-Act1_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512832
+    m_Key: InGame_03-Act1_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512833
+    m_Key: InGame_03-Act1_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512834
+    m_Key: InGame_03-Act1_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512835
+    m_Key: InGame_03-Act1_15_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512836
+    m_Key: InGame_03-Act1_16_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512837
+    m_Key: InGame_03-Act1_17_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512838
+    m_Key: InGame_03-Act1_18_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512839
+    m_Key: InGame_04-Act2_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512840
+    m_Key: InGame_04-Act2_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512841
+    m_Key: InGame_04-Act2_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512842
+    m_Key: InGame_04-Act2_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512843
+    m_Key: InGame_04-Act2_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512844
+    m_Key: InGame_04-Act2_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512845
+    m_Key: InGame_04-Act2_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512846
+    m_Key: InGame_04-Act2_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512847
+    m_Key: InGame_04-Act2_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512848
+    m_Key: InGame_04-Act2_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512849
+    m_Key: InGame_04-Act2_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512850
+    m_Key: InGame_04-Act2_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512851
+    m_Key: InGame_04-Act2_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512852
+    m_Key: InGame_04-Act2_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512853
+    m_Key: InGame_04-Act2_15_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512854
+    m_Key: InGame_04-Act2_16_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512855
+    m_Key: InGame_04-Act2_17_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512856
+    m_Key: InGame_04-Act2_18_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512857
+    m_Key: InGame_04-Act2_19_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512858
+    m_Key: InGame_04-Act2_20_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512859
+    m_Key: InGame_04-Act2_21_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512860
+    m_Key: InGame_04-Act2_22_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512861
+    m_Key: InGame_04-Act2_23_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512862
+    m_Key: InGame_04-Act2_24_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512863
+    m_Key: InGame_05-Act3_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512864
+    m_Key: InGame_05-Act3_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512865
+    m_Key: InGame_05-Act3_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512866
+    m_Key: InGame_05-Act3_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512867
+    m_Key: InGame_05-Act3_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512868
+    m_Key: InGame_05-Act3_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512869
+    m_Key: InGame_05-Act3_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512870
+    m_Key: InGame_05-Act3_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512871
+    m_Key: InGame_05-Act3_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512872
+    m_Key: InGame_05-Act3_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512873
+    m_Key: InGame_05-Act3_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512874
+    m_Key: InGame_05-Act3_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512875
+    m_Key: InGame_05-Act3_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512876
+    m_Key: InGame_05-Act3_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512877
+    m_Key: InGame_05-Act3_15_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512878
+    m_Key: InGame_05-Act3_16_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512879
+    m_Key: InGame_05-Act3_17_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512880
+    m_Key: 03-1-LobbyTutorial-Boss_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512881
+    m_Key: 03-1-LobbyTutorial-Boss_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512882
+    m_Key: 03-1-LobbyTutorial-Boss_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512883
+    m_Key: 03-1-LobbyTutorial-Boss_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512884
+    m_Key: 03-1-LobbyTutorial-Boss_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512885
+    m_Key: 03-1-LobbyTutorial-Boss_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512886
+    m_Key: 03-1-LobbyTutorial-Boss_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512887
+    m_Key: 03-2-LobbyTutorial-Skill_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512888
+    m_Key: 03-2-LobbyTutorial-Skill_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512889
+    m_Key: 03-2-LobbyTutorial-Skill_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512890
+    m_Key: 03-2-LobbyTutorial-Skill_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512891
+    m_Key: 03-2-LobbyTutorial-Skill_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333528707072
+    m_Key: 03-2-LobbyTutorial-Skill_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901376
+    m_Key: TutorialDialogueSet_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901377
+    m_Key: TutorialDialogueSet_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901378
+    m_Key: TutorialDialogueSet_02_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901379
+    m_Key: TutorialDialogueSet_02_ExplanationText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901380
+    m_Key: TutorialDialogueSet_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901381
+    m_Key: TutorialDialogueSet_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901382
+    m_Key: TutorialDialogueSet_04_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901383
+    m_Key: TutorialDialogueSet_04_ExplanationText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901384
+    m_Key: TutorialDialogueSet_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901385
+    m_Key: TutorialDialogueSet_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901386
+    m_Key: TutorialDialogueSet_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901387
+    m_Key: TutorialDialogueSet_08_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901388
+    m_Key: TutorialDialogueSet_09_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901389
+    m_Key: TutorialDialogueSet_10_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901390
+    m_Key: TutorialDialogueSet_11_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901391
+    m_Key: TutorialDialogueSet_12_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901392
+    m_Key: TutorialDialogueSet_12_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901393
+    m_Key: TutorialDialogueSet_12_ExplanationText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901394
+    m_Key: TutorialDialogueSet_13_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901395
+    m_Key: TutorialDialogueSet_14_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901396
+    m_Key: TutorialDialogueSet_15_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901397
+    m_Key: TutorialDialogueSet_16_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901398
+    m_Key: TutorialDialogueSet_16_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901399
+    m_Key: TutorialDialogueSet_16_ExplanationText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901400
+    m_Key: TutorialDialogueSet_17_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901401
+    m_Key: TutorialDialogueSet_18_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901402
+    m_Key: TutorialDialogueSet_19_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901403
+    m_Key: TutorialDialogueSet_19_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901404
+    m_Key: TutorialDialogueSet_19_ExplanationText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901405
+    m_Key: TutorialDialogueSet_20_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901406
+    m_Key: TutorialDialogueSet_20_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901407
+    m_Key: TutorialDialogueSet_20_ExplanationText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901408
+    m_Key: TutorialDialogueSet_21_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901409
+    m_Key: TutorialDialogueSet_22_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901410
+    m_Key: TutorialDialogueSet_23_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901411
+    m_Key: TutorialDialogueSet_24_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901412
+    m_Key: TutorialDialogueSet_25_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901413
+    m_Key: TutorialDialogueSet_26_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901414
+    m_Key: TutorialDialogueSet_27_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901415
+    m_Key: TutorialDialogueSet_28_Text
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4705778121151086853
+  references:
+    version: 2
+    RefIds:
+    - rid: 4705778121151086853
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1783946643134

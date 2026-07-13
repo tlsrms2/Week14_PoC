@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Week14.Enemy;
 
@@ -27,7 +28,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (IsOwnerCollider(other))
+            if (!reflectedByPlayer && IsOwnerCollider(other))
             {
                 return;
             }
@@ -49,6 +50,11 @@ namespace Week14.Combat
                 BossAI hitBoss = other.GetComponentInParent<BossAI>();
                 if (hitBoss != null)
                 {
+                    if (TryResolveReflectedEnemyHit(other.GetComponentInParent<Health>()))
+                    {
+                        return;
+                    }
+
                     if (ShouldIgnoreBossCollision(hitBoss))
                     {
                         return;
@@ -61,6 +67,11 @@ namespace Week14.Combat
                 Minion hitMinion = other.GetComponentInParent<Minion>();
                 if (hitMinion != null)
                 {
+                    if (TryResolveReflectedEnemyHit(other.GetComponentInParent<Health>()))
+                    {
+                        return;
+                    }
+
                     if (ShouldIgnoreMinionCollision(hitMinion))
                     {
                         return;
@@ -101,6 +112,11 @@ namespace Week14.Combat
 
         protected virtual bool CanHitPlayer(PlayerCombatController player)
         {
+            if (reflectedByPlayer)
+            {
+                return false;
+            }
+
             return player != null && !ignorePlayerCollision;
         }
 
@@ -131,6 +147,73 @@ namespace Week14.Combat
 
         protected virtual void OnPlayerHit(PlayerCombatController player) { }
 
+        private bool TryResolveReflectedEnemyCollisionSweep()
+        {
+            if (!reflectedByPlayer || resolved || isDestroying)
+            {
+                return false;
+            }
+
+            Vector2 currentPosition = transform.position;
+            Vector2 delta = currentPosition - lastWallCheckPosition;
+            float radius = Mathf.Max(0.001f, projectileRadius);
+            if (delta.sqrMagnitude > 0.000001f)
+            {
+                float distance = delta.magnitude;
+                RaycastHit2D[] hits = Physics2D.CircleCastAll(
+                    lastWallCheckPosition,
+                    radius,
+                    delta / distance,
+                    distance);
+                Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    if (TryResolveReflectedEnemyCollider(hits[i].collider))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            Collider2D[] overlaps = Physics2D.OverlapCircleAll(currentPosition, radius);
+            for (int i = 0; i < overlaps.Length; i++)
+            {
+                if (TryResolveReflectedEnemyCollider(overlaps[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool TryResolveReflectedEnemyCollider(Collider2D other)
+        {
+            if (other == null || other.transform.IsChildOf(transform))
+            {
+                return false;
+            }
+
+            if (IsGroundCollider(other)
+                || IsWallCollider(other)
+                || IsArsonistGroundHazardCollider(other)
+                || other.GetComponentInParent<PlayerCombatController>() != null
+                || other.GetComponentInParent<PlayerProjectile>() != null
+                || other.GetComponentInParent<EnemyProjectile>() != null)
+            {
+                return false;
+            }
+
+            if (other.GetComponentInParent<BossAI>() == null
+                && other.GetComponentInParent<Minion>() == null)
+            {
+                return false;
+            }
+
+            return TryResolveReflectedEnemyHit(other.GetComponentInParent<Health>());
+        }
+
         private static bool IsArsonistGroundHazardCollider(Collider2D collider)
         {
             return collider != null
@@ -142,6 +225,11 @@ namespace Week14.Combat
         private bool ShouldIgnoreBossCollision(BossAI hitBoss)
         {
             if (hitBoss == null)
+            {
+                return false;
+            }
+
+            if (reflectedByPlayer)
             {
                 return false;
             }
@@ -158,6 +246,11 @@ namespace Week14.Combat
         private bool ShouldIgnoreMinionCollision(Minion hitMinion)
         {
             if (hitMinion == null)
+            {
+                return false;
+            }
+
+            if (reflectedByPlayer)
             {
                 return false;
             }
@@ -189,6 +282,28 @@ namespace Week14.Combat
                 && (other.transform == ownerTransform
                     || other.transform.IsChildOf(ownerTransform)
                     || ownerTransform.IsChildOf(other.transform));
+        }
+
+        private bool TryResolveReflectedEnemyHit(Health targetHealth)
+        {
+            if (!reflectedByPlayer || resolved || targetHealth == null)
+            {
+                return false;
+            }
+
+            Vector2 hitDirection = flightDirection.sqrMagnitude > 0.0001f
+                ? flightDirection
+                : Vector2.right;
+            resolved = true;
+            PlayerProjectile.TryApplyDamageToHealth(
+                targetHealth,
+                reflectedDamage,
+                true,
+                transform.position,
+                hitDirection,
+                projectileColor);
+            DestroyProjectile();
+            return true;
         }
 
     }

@@ -47,7 +47,7 @@ namespace Week14.Combat
 
             Vector2 fireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
-            PlayerProjectile projectile = ProjectilePool.Get(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            PlayerProjectile projectile = Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
             if (!projectile.Initialize(
                     owner,
                     fireDirection,
@@ -59,7 +59,7 @@ namespace Week14.Combat
                     canDamageHealth,
                     isSkillShot))
             {
-                ProjectilePool.Release(projectile);
+                Destroy(projectile.gameObject);
                 return null;
             }
 
@@ -408,11 +408,7 @@ namespace Week14.Combat
                 renderers[i].enabled = false;
             }
 
-            ProjectilePool.Release(this);
-            if (gameObject.activeSelf)
-            {
-                gameObject.SetActive(false);
-            }
+            Destroy(gameObject);
         }
 
         private void RestorePooledComponents()

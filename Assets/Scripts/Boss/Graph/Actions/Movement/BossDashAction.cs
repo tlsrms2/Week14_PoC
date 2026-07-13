@@ -14,6 +14,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float lockSeconds = 0.5f;
         [Tooltip("켜져 있으면 방향 잠금 전까지 플레이어를 계속 추적합니다. 끄면 차징 시작 시점의 방향으로 즉시 고정됩니다.")]
         [SerializeField] private bool trackPlayerDuringWindup = true;
+        [Tooltip("추적 중 방향을 초당 최대 몇 도까지 회전시킬지 제한합니다. 0이면 제한 없이 즉시 플레이어 방향으로 스냅합니다. " +
+            "EnemyTimeScale이 적용되어, 시간 슬로우 스킬로 보스 이동/투사체가 느려질 때 이 회전 속도도 똑같이 느려집니다.")]
+        [SerializeField, Min(0f)] private float maxTrackTurnDegreesPerSecond = 0f;
         [SerializeField, BossGraphSfxId] private string windupSfxId;
         [SerializeField] private BossGraphEffectSettings windupEffects = new();
 
@@ -74,7 +77,10 @@ namespace Week14.Enemy
                 context.Stop();
                 if (trackPlayerDuringWindup)
                 {
-                    dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
+                    Vector2 targetDirection = context.GetDirectionToPlayer(context.OriginPosition);
+                    dashDirection = maxTrackTurnDegreesPerSecond > 0f
+                        ? RotateTowards(dashDirection, targetDirection, maxTrackTurnDegreesPerSecond * EnemyTimeScale.DeltaTime)
+                        : targetDirection;
                 }
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
                 trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
@@ -155,6 +161,14 @@ namespace Week14.Enemy
                 trajectoryBackgroundColor,
                 trajectoryFillColor,
                 trajectorySortingOrder);
+        }
+
+        private static Vector2 RotateTowards(Vector2 current, Vector2 target, float maxDegreesDelta)
+        {
+            float currentAngle = Mathf.Atan2(current.y, current.x) * Mathf.Rad2Deg;
+            float targetAngle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
+            float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, maxDegreesDelta) * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(newAngle), Mathf.Sin(newAngle));
         }
 
         private void EnsureSpeedCurve()

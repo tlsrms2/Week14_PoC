@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 using UnityEngine.Video;
 
 namespace Week14.Tutorial
@@ -32,6 +34,8 @@ namespace Week14.Tutorial
         [SerializeField] private bool loopVideo = true;
         [SerializeField] private string title;
         [SerializeField, TextArea(8, 24)] private string text;
+        [SerializeField] private LocalizedString localizedTitle;
+        [SerializeField] private LocalizedString localizedText;
 
         public bool Enabled => enabled;
         public Sprite Image => image;
@@ -39,11 +43,22 @@ namespace Week14.Tutorial
         public bool LoopVideo => loopVideo;
         public string Title => title;
         public string Text => text;
+        public LocalizedString LocalizedTitle => localizedTitle;
+        public LocalizedString LocalizedText => localizedText;
+        public bool HasLocalizedTitle => HasLocalizedString(localizedTitle);
+        public bool HasLocalizedText => HasLocalizedString(localizedText);
         public bool HasContent => enabled
             && (image != null
                 || video != null
                 || !string.IsNullOrWhiteSpace(title)
                 || !string.IsNullOrWhiteSpace(text));
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
+        }
     }
 
     [Serializable]
@@ -53,6 +68,8 @@ namespace Week14.Tutorial
         [SerializeField, TextArea(4, 14)] private string text;
         [SerializeField] private string sfxId;
         [SerializeField] private TutorialExplanationContent explanation;
+        [SerializeField] private LocalizedString localizedSpeaker;
+        [SerializeField] private LocalizedString localizedText;
 
         public TutorialDialogueLine(string speaker, string text)
         {
@@ -64,6 +81,17 @@ namespace Week14.Tutorial
         public string Text => text;
         public string SfxId => sfxId;
         public TutorialExplanationContent Explanation => explanation;
+        public LocalizedString LocalizedSpeaker => localizedSpeaker;
+        public LocalizedString LocalizedText => localizedText;
+        public bool HasLocalizedSpeaker => HasLocalizedString(localizedSpeaker);
+        public bool HasLocalizedText => HasLocalizedString(localizedText);
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
+        }
     }
 
     [Serializable]
@@ -89,6 +117,8 @@ namespace Week14.Tutorial
     public sealed class TutorialDialogueSetSO : ScriptableObject
     {
         [SerializeField] private List<TutorialStepContent> steps = new();
+
+        public IReadOnlyList<TutorialStepContent> Steps => steps;
 
         public TutorialStepContent GetStep(TutorialStepId step)
         {

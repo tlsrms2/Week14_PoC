@@ -21,6 +21,10 @@ namespace Week14.Weapons
         [BossGraphSfxId]
         [SerializeField] private string slashSfxId = string.Empty;
 
+        public float AttackRange => attackRange;
+        public Color RangeFlashColor => rangeFlashColor;
+        public float RangeFlashSeconds => rangeFlashSeconds;
+
         public override void BeginAttack(PlayerShooter shooter)
         {
             if (shooter.TryConsumeBayonetCooldown(attackCooldownSeconds))

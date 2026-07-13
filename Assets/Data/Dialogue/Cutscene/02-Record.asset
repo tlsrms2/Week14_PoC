@@ -14,55 +14,254 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
   skippable: 1
   steps:
-  - backgroundImage: {fileID: 198098048580944718, guid: b540e22887b782c4fbd48b9ee6021175, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 15573f1930a37b540a2b111587c19f7d, type: 3}
     dialogues:
     - name: ERIS
       text: " [R-2 \uBE14\uB85D \uCE74\uD398 \uBCA0\uC2A4\uD37C. 7\uC6D4 21\uC77C
         17\uC2DC 29\uBD84 20\uCD08 ]"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333461598208
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512780
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: ERIS
       text: " [ \uC7AC\uAD6C\uC131\uB41C \uAE30\uB85D \uB9E4\uCCB4\uB97C \uC7AC\uC0DD\uD569\uB2C8\uB2E4.
         ]"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333461598208
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512781
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC774\uC628"
       text: " \uC544\uBE60, \uC774 \uC0C1\uC790\uB294?"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512771
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512782
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
-      text: " \uC774\uBC88\uC5D0 \uC218\uC220\uD55C \uD658\uC790\uBD84\uC11C \uAC10\uC0AC\uC758
-        \uC120\uBB3C\uB85C \uC8FC\uC2E0 \uACE0\uAE09 \uCC28 \uC138\uD2B8\uB77C\uB294\uB370,
+      text: " \uC774\uBC88\uC5D0 \uC218\uC220\uD55C \uD658\uC790\uBD84\uAED8\uC11C
+        \uAC10\uC0AC\uC758 \uC120\uBB3C\uB85C \uC8FC\uC2E0 \uACE0\uAE09 \uCC28 \uC138\uD2B8\uB77C\uB294\uB370,
         \uC624\uB79C\uB9CC\uC5D0 \uC6B0\uB9AC \uB538 \uBCF4\uB294 \uAE40\uC5D0 \uAC00\uC838\uC654\uC9C0."
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512784
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC774\uC628"
-      text: " \uC120\uBB3C\uAC19\uC740 \uAC78 \uB9C9 \uBC1B\uC544\uB3C4 \uB3FC?"
+      text: " \uD658\uC790\uD55C\uD14C \uADF8\uB7F0 \uAC78 \uB9C9 \uBC1B\uC544\uB3C4
+        \uB3FC?"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512771
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512785
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uACE0\uB9D9\uB2E4\uB294 \uB9C8\uC74C\uAE4C\uC9C0 \uAC70\uC808\uD558\uBA74
         \uC758\uC0AC \uC77C\uB3C4 \uB108\uBB34 \uC0AD\uB9C9\uD574\uC9C0\uC9C0 \uC54A\uACA0\uB2C8."
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512786
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uC544\uBE60\uB294 \uBA87 \uC2DC\uAC04\uC774\uB098 \uD53C\uB97C \uB4A4\uC9D1\uC5B4
         \uC368\uAC00\uBA70 \uC0AC\uB78C\uB4E4\uC744 \uC0B4\uB9AC\uACE0 \uC788\uB294\uB370..
         \uBB50\uAC00 \uC88B\uC544\uC11C \uC0AC\uB78C\uC774 \uC0AC\uB78C\uC744 \uC8FD\uC774\uB824
         \uD558\uB294\uC9C0 \uC774\uD574\uD558\uAE30 \uC5B4\uB835\uAD6C\uB098."
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512787
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC774\uC628"
-      text: " ...\uCF5C\uB85D. \uADF8\uB798\uB3C4 \uC5C4\uCCAD \uB098\uC05C \uC9D3\uC744
+      text: " ...\uD06C\uD760. \uADF8\uB798\uB3C4 \uC5C4\uCCAD \uB098\uC05C \uC9D3\uC744
         \uD558\uB294 \uC0AC\uB78C\uC774 \uC8FD\uB294 \uAC70\uB77C\uBA74 \uAD1C\uCC2E\uC9C0
         \uC54A\uC744\uAE4C? \uB098\uC05C \uC870\uC9C1\uC744 \uC798\uB77C\uB0B4\uB294
         \uC218\uC220\uCC98\uB7FC \uB9D0\uC774\uC57C."
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512771
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512788
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uC758\uC0AC \uC55E\uC5D0\uC11C \uBABB\uD558\uB294 \uB9D0\uC774 \uC5C6\uAD6C\uB098
         \uC6B0\uB9AC \uB538."
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512789
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uD558\uC9C0\uB9CC.. \uADF8\uB798. \uB54C\uB85C\uB294 \uC218\uC220\uC774
         \uD544\uC694\uD55C \uACBD\uC6B0\uAC00 \uC788\uACA0\uC9C0. "
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512790
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uADF8\uB7F0\uB370 \uB9D0\uC774\uB2E4. \uC0AC\uB78C\uC744 \uC0B4\uB9B4
         \uB54C \uC911\uC694\uD55C \uAC74-"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512791
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
@@ -75,15 +274,40 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: f1576b6b7c1560049b16f165d8d64f3d, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: e9e140490be781f49aa7559ac8fdc39c, type: 3}
     dialogues:
     - name: ERIS
       text: "[ 17\uC2DC 32\uBD84 26\uCD08\uBD80\uD130 41\uCD08 \uC0AC\uC774\uC758
         \uAE30\uB85D\uC774 \uC190\uC0C1\uB418\uC5C8\uC2B5\uB2C8\uB2E4. ]"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333461598208
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512792
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
@@ -96,25 +320,112 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames:
+    - {fileID: 21300000, guid: 58ad79ffb76c12b45af466f38b04fe06, type: 3}
+    - {fileID: 21300000, guid: ac13425e0fe62284fa732e0010f3c669, type: 3}
+    - {fileID: 21300000, guid: ea02cfe1e116eff4899c7d889fffd244, type: 3}
+    - {fileID: 21300000, guid: 873f847547bf0304cbd1b6f11ba97f5a, type: 3}
+    - {fileID: 21300000, guid: b50fe172da9b12444a99f92f0b6ab0f0, type: 3}
+    - {fileID: 21300000, guid: 8f32e230182378b41967ab75f215da27, type: 3}
+    - {fileID: 21300000, guid: e9e140490be781f49aa7559ac8fdc39c, type: 3}
+    - {fileID: 21300000, guid: b9fbd307aa53d694e9ce84f32d266a65, type: 3}
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 3af9cceafe4e9e642adcd0cf0ec43971, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 15573f1930a37b540a2b111587c19f7d, type: 3}
     dialogues:
     - name: "\uC544\uBC84\uC9C0"
       text: " ...\uB824\uB193...\uC57C \uD574. \uC54C\uACA0\uB2C8?"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512793
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC774\uC628"
       text: " \uC798 \uBAA8\uB974\uACA0\uC5B4..."
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512771
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512794
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uC6B0\uB9AC \uB538\uC740 \uB611\uB611\uD558\uB2C8\uAE4C \uC5B8\uC820\uAC00
         \uC774\uD574\uD560 \uAC70\uB77C \uC0DD\uAC01\uD55C\uB2E4. "
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512795
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     - name: "\uC544\uBC84\uC9C0"
       text: " \uCC38, \uC120\uBB3C \uBC1B\uC740 \uCC28\uB098 \uB9C8\uC154 \uBD10\uC57C\uACA0\uAD6C\uB098.
         \uB108\uAC00 \uBD84\uBA85 \uB179\uCC28\uB97C \uC88B\uC544\uD588-"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512783
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512796
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
@@ -127,6 +438,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -144,6 +462,13 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
@@ -154,6 +479,24 @@ MonoBehaviour:
         \uB9E4\uCCB4\uB4E4\uC774 \uD30C\uAD34\uB418\uC5B4 \uB370\uC774\uD130\uAC00
         \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. ]"
       sfxId: 
+      localizedName:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333461598208
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      localizedText:
+        m_TableReference:
+          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+        m_TableEntryReference:
+          m_KeyId: 5333524512797
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
     skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
@@ -166,6 +509,16 @@ MonoBehaviour:
     endOffset: {x: 0, y: 0}
     startZoom: 1
     endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
+  references:
+    version: 2
+    RefIds: []
