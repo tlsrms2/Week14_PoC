@@ -2586,6 +2586,7 @@ MonoBehaviour:
         windupSeconds: 1.5
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -2650,6 +2651,7 @@ MonoBehaviour:
         windupSeconds: 1.5
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -2770,6 +2772,7 @@ MonoBehaviour:
         windupSeconds: 1.1
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3083,6 +3086,7 @@ MonoBehaviour:
         windupSeconds: 1
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3147,6 +3151,7 @@ MonoBehaviour:
         windupSeconds: 1
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3400,6 +3405,7 @@ MonoBehaviour:
         windupSeconds: 0.8
         lockSeconds: 0.7
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3464,6 +3470,7 @@ MonoBehaviour:
         windupSeconds: 0.7
         lockSeconds: 0.6
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3528,6 +3535,7 @@ MonoBehaviour:
         windupSeconds: 0.6
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3592,6 +3600,7 @@ MonoBehaviour:
         windupSeconds: 0.5
         lockSeconds: 0.4
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3722,6 +3731,7 @@ MonoBehaviour:
         windupSeconds: 0.8
         lockSeconds: 0.7
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3786,6 +3796,7 @@ MonoBehaviour:
         windupSeconds: 0.7
         lockSeconds: 0.6
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3850,6 +3861,7 @@ MonoBehaviour:
         windupSeconds: 0.6
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -3914,6 +3926,7 @@ MonoBehaviour:
         windupSeconds: 0.5
         lockSeconds: 0.4
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -4299,6 +4312,7 @@ MonoBehaviour:
         windupSeconds: 1
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -4551,6 +4565,7 @@ MonoBehaviour:
         windupSeconds: 0.8
         lockSeconds: 0.7
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -5391,6 +5406,7 @@ MonoBehaviour:
         windupSeconds: 0.7
         lockSeconds: 0.7
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -5687,6 +5703,7 @@ MonoBehaviour:
         windupSeconds: 0.7
         lockSeconds: 0.7
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -6150,6 +6167,7 @@ MonoBehaviour:
         windupSeconds: 1
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
@@ -6587,6 +6605,7 @@ MonoBehaviour:
         windupSeconds: 1
         lockSeconds: 0.5
         trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
         windupEffects:
           explosion:
