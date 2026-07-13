@@ -99,6 +99,14 @@ MonoBehaviour:
     m_Key: Bayonet.parryRange
     m_Metadata:
       m_Items: []
+  - m_Id: 4219156515446784
+    m_Key: bat.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4219302263316480
+    m_Key: bat.Desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
