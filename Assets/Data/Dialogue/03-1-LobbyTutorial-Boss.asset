@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2e1d52387b43224a9e8fed941adda42, type: 3}
-  m_Name: LobbyTutorial-Boss
+  m_Name: 03-1-LobbyTutorial-Boss
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameStorySequenceSO
   episodeId: 5
   skippable: 0

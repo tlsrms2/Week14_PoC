@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36dd03c7b37aab4184bb98d7cf7c128, type: 3}
   m_Name: 01-Prologue
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
-  skippable: 1
+  skippable: 0
   steps:
   - backgroundImage: {fileID: 21300000, guid: ca9c35ca7a0670347ab1fdc20a8bd4b1, type: 3}
     dialogues:
@@ -41,7 +41,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 079e51a4c783f264e96d81a0f0e9712b, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: f2cd7a1e3b307814c9f08adab97cbe29, type: 3}
     dialogues:
     - name: ERIS
       text: "\uC6B0\uCE21 \uC0C1\uC9C0 \uACB0\uC190, \uC548\uBA74\uBD80\uC5D0\uC11C
@@ -74,7 +74,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: a756fa2679354cc4583b66048b9fc0a6, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 55f8c33457421c44c89d290135147a36, type: 3}
     dialogues:
     - name: ERIS
       text: "\uC2E0\uCCB4 \uAE30\uB2A5 \uC218\uBCF5\uB960 79%. \uC6B0\uCE21 \uC758\uC218

@@ -25,6 +25,7 @@ namespace Week14.Tutorial
         }
 
         private const string DialoguePrefix = ">> ";
+        private const string AdvancePromptObjectName = "MouseClick_Image";
         private const string ObjectivePrefix = "[목표] ";
 
         [Header("Root")]
@@ -36,6 +37,11 @@ namespace Week14.Tutorial
         [SerializeField] private TMP_Text speakerText;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField, Min(1f)] private float charactersPerSecond = 45f;
+
+        [Header("Advance Prompt")]
+        [SerializeField] private Image advancePromptImage;
+        [SerializeField, Min(0.05f)] private float advancePromptBlinkSeconds = 0.65f;
+        [SerializeField, Range(0f, 1f)] private float advancePromptMinAlpha = 0.15f;
 
         [Header("Profile")]
         [SerializeField] private Image profileImage;
@@ -54,11 +60,14 @@ namespace Week14.Tutorial
         [SerializeField, Min(0f)] private float objectiveCompleteFadeSeconds = 0.2f;
 
         private Coroutine showRoutine;
+        private Coroutine advancePromptRoutine;
         private Image objectiveStrikeLine;
         private Vector2 shownAnchoredPosition;
         private Color defaultDialogueColor = Color.white;
+        private Color advancePromptBaseColor = Color.white;
         private bool hasShownAnchoredPosition;
         private bool hasDefaultDialogueColor;
+        private bool hasAdvancePromptBaseColor;
         private bool isVisible;
 
         public bool IsTyping { get; private set; }
@@ -67,12 +76,14 @@ namespace Week14.Tutorial
         {
             CacheShownPosition();
             CacheDefaultDialogueColor();
+            CacheAdvancePromptImage();
             Hide();
         }
 
         public void ShowLine(string speaker, string text)
         {
             ShowPanel();
+            SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
             SetSpeaker(speaker);
             SetDialogueColor(defaultDialogueColor);
@@ -87,6 +98,7 @@ namespace Week14.Tutorial
             }
 
             IsTyping = true;
+            SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
             SetDialogueColor(defaultDialogueColor);
             dialogueText.text = FormatDialogue(text);
@@ -96,9 +108,16 @@ namespace Week14.Tutorial
             int totalCharacters = dialogueText.textInfo.characterCount;
             float visibleCharacters = 0f;
             float speed = Mathf.Max(1f, charactersPerSecond);
+            bool canceled = false;
             while (visibleCharacters < totalCharacters)
             {
-                if (cancelRequested?.Invoke() == true || revealRequested?.Invoke() == true)
+                if (cancelRequested?.Invoke() == true)
+                {
+                    canceled = true;
+                    break;
+                }
+
+                if (revealRequested?.Invoke() == true)
                 {
                     break;
                 }
@@ -113,20 +132,23 @@ namespace Week14.Tutorial
 
             RevealAll();
             IsTyping = false;
+            SetAdvancePromptBlinking(!canceled);
         }
 
         public void ShowObjective(string text)
         {
             ShowPanel();
+            SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
             SetSpeaker(null);
             SetDialogueColor(defaultDialogueColor);
             SetDialogueText(FormatObjective(text), int.MaxValue);
         }
 
-        public IEnumerator PlayObjectiveCompleted(string text)
+        public IEnumerator PlayObjectiveCompleted(string text, bool fadeOut = true, bool clearText = true)
         {
             ShowPanel();
+            SetAdvancePromptBlinking(false);
             SetSpeaker(null);
             SetDialogueColor(objectiveCompleteColor);
             SetDialogueText(FormatObjective(text), int.MaxValue);
@@ -134,7 +156,7 @@ namespace Week14.Tutorial
 
             yield return WaitUnscaled(objectiveCompleteHoldSeconds);
 
-            if (dialogueText != null && objectiveCompleteFadeSeconds > 0f)
+            if (fadeOut && dialogueText != null && objectiveCompleteFadeSeconds > 0f)
             {
                 Color from = dialogueText.color;
                 for (float elapsed = 0f; elapsed < objectiveCompleteFadeSeconds; elapsed += Time.unscaledDeltaTime)
@@ -148,9 +170,12 @@ namespace Week14.Tutorial
                 }
             }
 
-            SetObjectiveStrikeLineVisible(false);
-            SetDialogueColor(defaultDialogueColor);
-            SetDialogueText(string.Empty, 0);
+            if (clearText)
+            {
+                SetObjectiveStrikeLineVisible(false);
+                SetDialogueColor(defaultDialogueColor);
+                SetDialogueText(string.Empty, 0);
+            }
         }
 
         public void RevealAll()
@@ -169,6 +194,7 @@ namespace Week14.Tutorial
                 showRoutine = null;
             }
 
+            SetAdvancePromptBlinking(false);
             SetRootVisible(false);
             SetSpeaker(null);
             SetObjectiveStrikeLineVisible(false);
@@ -193,6 +219,7 @@ namespace Week14.Tutorial
                 showRoutine = null;
             }
 
+            SetAdvancePromptBlinking(false);
             if (!isVisible)
             {
                 Hide();
@@ -306,6 +333,86 @@ namespace Week14.Tutorial
             {
                 dialogueText.maxVisibleCharacters = maxVisibleCharacters;
             }
+        }
+
+        private void CacheAdvancePromptImage()
+        {
+            if (advancePromptImage == null)
+            {
+                Image[] images = GetComponentsInChildren<Image>(true);
+                for (int i = 0; i < images.Length; i++)
+                {
+                    Image image = images[i];
+                    if (image != null && image.name == AdvancePromptObjectName)
+                    {
+                        advancePromptImage = image;
+                        break;
+                    }
+                }
+            }
+
+            if (advancePromptImage == null || hasAdvancePromptBaseColor)
+            {
+                return;
+            }
+
+            advancePromptBaseColor = advancePromptImage.color;
+            hasAdvancePromptBaseColor = true;
+        }
+
+        private void SetAdvancePromptBlinking(bool blinking)
+        {
+            CacheAdvancePromptImage();
+            if (advancePromptRoutine != null)
+            {
+                StopCoroutine(advancePromptRoutine);
+                advancePromptRoutine = null;
+            }
+
+            if (advancePromptImage == null)
+            {
+                return;
+            }
+
+            advancePromptImage.gameObject.SetActive(blinking);
+            if (!blinking)
+            {
+                SetAdvancePromptAlpha(0f);
+                return;
+            }
+
+            SetAdvancePromptAlpha(advancePromptBaseColor.a);
+            advancePromptRoutine = StartCoroutine(AdvancePromptBlinkRoutine());
+        }
+
+        private IEnumerator AdvancePromptBlinkRoutine()
+        {
+            float elapsed = 0f;
+            float duration = Mathf.Max(0.05f, advancePromptBlinkSeconds);
+            float maxAlpha = hasAdvancePromptBaseColor ? advancePromptBaseColor.a : 1f;
+            float minAlpha = Mathf.Clamp01(advancePromptMinAlpha) * maxAlpha;
+
+            while (advancePromptImage != null)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float wave = (Mathf.Sin(elapsed / duration * Mathf.PI * 2f) + 1f) * 0.5f;
+                SetAdvancePromptAlpha(Mathf.Lerp(minAlpha, maxAlpha, wave));
+                yield return null;
+            }
+
+            advancePromptRoutine = null;
+        }
+
+        private void SetAdvancePromptAlpha(float alpha)
+        {
+            if (advancePromptImage == null)
+            {
+                return;
+            }
+
+            Color color = hasAdvancePromptBaseColor ? advancePromptBaseColor : advancePromptImage.color;
+            color.a = Mathf.Clamp01(alpha);
+            advancePromptImage.color = color;
         }
 
         private void ShowObjectiveStrikeLine()
