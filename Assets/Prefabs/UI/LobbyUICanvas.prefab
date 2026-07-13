@@ -2559,7 +2559,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -12866,6 +12866,10 @@ PrefabInstance:
       propertyPath: bossData
       value: 
       objectReference: {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
+    - target: {fileID: 8350704683593139881, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4020607094126543082, guid: bd0eaa36f181c724da0c1c7071855021, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13298,6 +13302,10 @@ PrefabInstance:
       propertyPath: bossData
       value: 
       objectReference: {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
+    - target: {fileID: 8350704683593139881, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 35b2acb266d1a1048bbf850ebf7fe5d1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
