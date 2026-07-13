@@ -112,6 +112,9 @@ namespace Week14.Enemy
         private BulletGauge hpGauge;
         private SpriteRenderer[] renderers;
         private Collider2D[] groundProbeColliders;
+        private Collider2D[] physicsColliders;
+        private Collider2D[] playerPhysicsColliders;
+        private bool isIgnoringPlayerCollision;
         private MaterialPropertyBlock hitFlashPropertyBlock;
         private Transform player;
         private bool isExecutionLocked;
@@ -252,6 +255,7 @@ namespace Week14.Enemy
 
             DisableMinionPatternHost();
             SetFinalDeathSequencePlaying(false);
+            SetIgnorePlayerCollision(false);
 
             if (combatStartedCounted)
             {
@@ -278,6 +282,7 @@ namespace Week14.Enemy
         {
             stateMachine ??= new BossStateMachine(this);
             stateMachine.Tick();
+            TickDashContactForState();
         }
 
         public void PlayExecutionBarDrain()
@@ -394,6 +399,101 @@ namespace Week14.Enemy
 
             body.linearVelocity = Vector2.zero;
             body.angularVelocity = 0f;
+        }
+
+        // 대쉬 중에는 벽 충돌은 유지한 채 플레이어와의 물리 충돌(밀림)만 끈다.
+        // 이미 항상 플레이어와의 충돌을 무시하는 보스(SuppressesBodyContactDamage)는 건드리지 않는다.
+        internal void SetIgnorePlayerCollision(bool ignore)
+        {
+            if (SuppressesBodyContactDamage || isIgnoringPlayerCollision == ignore)
+            {
+                return;
+            }
+
+            Collider2D[] bossColliders = GetPhysicsColliders();
+            Collider2D[] targetPlayerColliders = GetPlayerPhysicsColliders();
+            if (bossColliders.Length == 0 || targetPlayerColliders.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < bossColliders.Length; i++)
+            {
+                for (int j = 0; j < targetPlayerColliders.Length; j++)
+                {
+                    Physics2D.IgnoreCollision(bossColliders[i], targetPlayerColliders[j], ignore);
+                }
+            }
+
+            isIgnoringPlayerCollision = ignore;
+        }
+
+        // 물리 충돌을 꺼둔 상태에서는 OnCollisionEnter2D가 발생하지 않으므로,
+        // 대쉬 중에는 겹침 여부를 직접 검사해 기존 접촉 피해 로직을 그대로 호출해준다.
+        private void TickDashContactForState()
+        {
+            if (!IsDashing || player == null || health == null || health.IsDead)
+            {
+                return;
+            }
+
+            Collider2D[] bossColliders = GetPhysicsColliders();
+            Collider2D[] targetPlayerColliders = GetPlayerPhysicsColliders();
+            if (bossColliders.Length == 0 || targetPlayerColliders.Length == 0)
+            {
+                return;
+            }
+
+            PlayerCombatController playerController = player.GetComponent<PlayerCombatController>();
+            if (playerController == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < bossColliders.Length; i++)
+            {
+                Collider2D bossCollider = bossColliders[i];
+                for (int j = 0; j < targetPlayerColliders.Length; j++)
+                {
+                    if (!Physics2D.Distance(bossCollider, targetPlayerColliders[j]).isOverlapped)
+                    {
+                        continue;
+                    }
+
+                    playerController.TryReceiveEnemyBodyContact(bossCollider, bossCollider.ClosestPoint(player.position));
+                    return;
+                }
+            }
+        }
+
+        private Collider2D[] GetPhysicsColliders()
+        {
+            physicsColliders ??= FilterNonTriggerColliders(GetComponentsInChildren<Collider2D>(true));
+            return physicsColliders;
+        }
+
+        private Collider2D[] GetPlayerPhysicsColliders()
+        {
+            if (playerPhysicsColliders == null && player != null)
+            {
+                playerPhysicsColliders = FilterNonTriggerColliders(player.GetComponentsInChildren<Collider2D>(true));
+            }
+
+            return playerPhysicsColliders ?? Array.Empty<Collider2D>();
+        }
+
+        private static Collider2D[] FilterNonTriggerColliders(Collider2D[] source)
+        {
+            List<Collider2D> result = new();
+            for (int i = 0; i < source.Length; i++)
+            {
+                if (source[i] != null && !source[i].isTrigger)
+                {
+                    result.Add(source[i]);
+                }
+            }
+
+            return result.ToArray();
         }
 
         internal bool IsDeadForState => health != null && health.IsDead;

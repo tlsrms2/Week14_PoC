@@ -105,6 +105,7 @@ namespace Week14.Combat
         private float invulnerableAmmoRefillParryClearRadius;
         private GameObject invulnerableAmmoRefillBlankVfxPrefab;
         private Action invulnerableAmmoRefillOnComplete;
+        private float invulnerableAmmoRefillPostParryInvulnerabilitySeconds;
 
         internal PlayerCombatContext Context => playerCombatContext ??= new PlayerCombatContext(this);
         private PlayerCombatRig Rig => playerCombatRig ??= new PlayerCombatRig(Context);
@@ -564,7 +565,7 @@ namespace Week14.Combat
             return DamageReceiver.ReceiveAttack(bulletDamage);
         }
 
-        private void TryReceiveEnemyBodyContact(Collider2D other, Vector2 hitPosition)
+        internal void TryReceiveEnemyBodyContact(Collider2D other, Vector2 hitPosition)
         {
             DamageReceiver.TryReceiveEnemyBodyContact(other, hitPosition);
         }
@@ -728,11 +729,16 @@ namespace Week14.Combat
         }
 
         // seconds 동안 외부 무적(PushExternalInvulnerability)을 유지하면서, 그동안 무적 때문에 막힌 피격이
-        // 발생하면(NotifyInvulnerableHit) 탄환을 최대치로 채우고, parryClearRadius 안의 적 투사체를 제거합니다.
-        // 패링 효과가 발동하면 무적 타이머를 다시 seconds로 갱신하고, 타이머가 끝났을 때 onComplete를 호출합니다.
+        // 처음 한 번 발생하면(NotifyInvulnerableHit) 탄환을 최대치로 채우고, parryClearRadius 안의 적 투사체를
+        // 제거하며, 히트스탑 + 카메라 임팩트를 재생한 뒤 — 남은 무적 시간을 기다리지 않고 그 즉시 종료합니다.
+        // 종료 직후에는 원래의 긴 무적 대신 postParryInvulnerabilitySeconds만큼 짧은 일반 무적을 잠깐 부여해서,
+        // 무적이 꺼지는 그 순간 같은 프레임에 몰린 다른 공격에 바로 맞아버리는 걸 막아줍니다.
+        // onComplete는 그렇게 조기 종료되는 시점이나, 한 번도 안 맞고 지속시간이 다 지난 시점에 정확히 한 번 호출됩니다
+        // (쿨타임 지연 시작용 콜백 등으로 쓰임).
         public void BeginInvulnerableAmmoRefill(
             float seconds,
             float parryClearRadius,
+            float postParryInvulnerabilitySeconds,
             GameObject blankVfxPrefab,
             Action onComplete)
         {
@@ -743,6 +749,7 @@ namespace Week14.Combat
             }
 
             invulnerableAmmoRefillParryClearRadius = Mathf.Max(0f, parryClearRadius);
+            invulnerableAmmoRefillPostParryInvulnerabilitySeconds = Mathf.Max(0f, postParryInvulnerabilitySeconds);
             invulnerableAmmoRefillBlankVfxPrefab = blankVfxPrefab;
             invulnerableAmmoRefillOnComplete = onComplete;
             invulnerableAmmoRefillDurationSeconds = Mathf.Max(0f, seconds);
@@ -775,8 +782,20 @@ namespace Week14.Combat
             DamageReceiver.PlayHitStop();
             CameraFollow?.PlayImpact(hitDirection, 0.32f, 0.24f, 0.22f);
 
-            RestartInvulnerableAmmoRefillTimer();
-            UpdateBodyColor(true);
+            // 패링은 한 번 성공하면 그걸로 끝 — 남은 무적 시간을 기다리지 않고 즉시 종료한다.
+            if (invulnerableAmmoRefillRoutine != null)
+            {
+                StopCoroutine(invulnerableAmmoRefillRoutine);
+            }
+
+            float postParryInvulnerabilitySeconds = invulnerableAmmoRefillPostParryInvulnerabilitySeconds;
+            CompleteInvulnerableAmmoRefill();
+
+            // 스킬의 긴 무적 대신, 무적이 꺼지는 순간 몰린 다른 공격에 바로 맞지 않도록 짧은 무적을 이어서 부여한다.
+            if (postParryInvulnerabilitySeconds > 0f)
+            {
+                StartCoroutine(TemporaryInvulnerabilityRoutine(postParryInvulnerabilitySeconds));
+            }
         }
 
         private void RestartInvulnerableAmmoRefillTimer()
@@ -816,6 +835,7 @@ namespace Week14.Combat
             invulnerableAmmoRefillRoutine = null;
             invulnerableAmmoRefillBlankVfxPrefab = null;
             invulnerableAmmoRefillDurationSeconds = 0f;
+            invulnerableAmmoRefillPostParryInvulnerabilitySeconds = 0f;
             PopExternalInvulnerability();
             UpdateBodyColor(true);
         }
