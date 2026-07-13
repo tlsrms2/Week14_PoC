@@ -73,7 +73,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   attackCooldownSeconds: 0.5
-  minAttackRange: 1.2
+  minAttackRange: 1.5
   maxAttackRange: 3
   maxChargeSeconds: 2
   reflectedDamage: 3
