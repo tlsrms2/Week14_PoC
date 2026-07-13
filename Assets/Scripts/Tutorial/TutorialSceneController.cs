@@ -603,7 +603,9 @@ namespace Week14.Tutorial
                     continue;
                 }
 
-                yield return PlayDialogueLine(line.Speaker, line.Text, line.SfxId, line.Explanation);
+                string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
+                string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
+                yield return PlayDialogueLine(speaker, text, line.SfxId, line.Explanation);
             }
 
             PopDialogueAdvanceInput();
@@ -668,8 +670,8 @@ namespace Week14.Tutorial
                 return;
             }
 
-            SetText(explanationTitle, explanation.Title);
-            SetText(explanationText, explanation.Text);
+            SetText(explanationTitle, explanation.HasLocalizedTitle ? explanation.LocalizedTitle.GetLocalizedString() : explanation.Title);
+            SetText(explanationText, explanation.HasLocalizedText ? explanation.LocalizedText.GetLocalizedString() : explanation.Text);
             PushExplanationInputLock();
             SetExplanationVisible(true);
 

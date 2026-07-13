@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 using UnityEngine.Serialization;
 
 namespace Week14.Cutscene
@@ -17,10 +19,16 @@ namespace Week14.Cutscene
         [SerializeField] private string name;
         [SerializeField, TextArea(4, 14)] private string text;
         [SerializeField] private string sfxId;
+        [SerializeField] private LocalizedString localizedName;
+        [SerializeField] private LocalizedString localizedText;
 
         public string Name => name;
         public string Text => text;
         public string SfxId => sfxId;
+        public LocalizedString LocalizedName => localizedName;
+        public LocalizedString LocalizedText => localizedText;
+        public bool HasLocalizedName => HasLocalizedString(localizedName);
+        public bool HasLocalizedText => HasLocalizedString(localizedText);
 
         public CutsceneDialogue() { }
 
@@ -28,6 +36,13 @@ namespace Week14.Cutscene
         {
             this.name = name;
             this.text = text;
+        }
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
         }
     }
 

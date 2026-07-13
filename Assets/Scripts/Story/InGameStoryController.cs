@@ -358,10 +358,13 @@ namespace Week14.Story
             bool revealRequested = false;
             bool canAcceptAdvance = false;
             PlayDialogueSfx(line.SfxId);
-            dialoguePanel.ShowLine(line.Speaker, line.Text);
+
+            string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
+            string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
+            dialoguePanel.ShowLine(speaker, text);
 
             IEnumerator typing = dialoguePanel.PlayTypewriter(
-                line.Text,
+                text,
                 () => revealRequested || skipRequested,
                 () => skipRequested);
 
