@@ -16,21 +16,21 @@ MonoBehaviour:
   displayName: Baseball Bat
   localizedDisplayName:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 4219156515446784
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 14706f9efe08f3745b1665556b4948ea, type: 3}
   outlineIcon: {fileID: 0}
-  description: Reflects enemy bullets toward the boss instead of dealing direct melee damage.
+  description: 
   localizedDescription:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 4219302263316480
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
