@@ -7639,6 +7639,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
   - {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
   - {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
+  - {fileID: 11400000, guid: f1a36b78306f49f4d8ed682a59847e47, type: 2}
+  - {fileID: 11400000, guid: cff2e484394f3804f8bdf8ffd818c612, type: 2}
   weaponDatabase: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
   enableUnlockAllHotkey: 1
   enableLockAllHotkey: 1
@@ -16758,6 +16760,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2150412300319488430, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: bossData
+      value: 
+      objectReference: {fileID: 11400000, guid: cff2e484394f3804f8bdf8ffd818c612, type: 2}
     - target: {fileID: 2397524863740944699, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

@@ -67,6 +67,18 @@ MonoBehaviour:
     m_Key: assassin.description
     m_Metadata:
       m_Items: []
+  - m_Id: 4212237473775616
+    m_Key: hacker.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4212276363362304
+    m_Key: hacker.crime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4212323251486720
+    m_Key: hacker.description
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
