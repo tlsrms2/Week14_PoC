@@ -118,7 +118,9 @@ MonoBehaviour:
     m_Localized: 'Swing the bat to reflect enemy barrages within range
 
       Hold
-      the attack button to expand the reflection radius'
+      the attack button to expand the reflection radius
+
+      Movement speed +50%'
     m_Metadata:
       m_Items: []
   references:

@@ -79,8 +79,10 @@ MonoBehaviour:
   reflectedDamage: 3
   reflectedProjectileSpeed: 8
   rangeFlashColor: {r: 1, g: 0.55, b: 0.1, a: 0.6}
+  previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0.35}
   rangeFlashSeconds: 0.1
   swingSfxId: 
+  moveSpeedMultiplier: 1.5
   references:
     version: 2
     RefIds: []
