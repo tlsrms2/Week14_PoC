@@ -83,6 +83,8 @@ namespace Week14.Combat
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
         private float invulnerableAmmoRefillDurationSeconds;
+        private float moveSpeedMultiplier = 1f;
+        private float weaponMoveSpeedMultiplier = 1f;
 
         public readonly struct PlayerAttackEchoInfo
         {
@@ -139,7 +141,7 @@ namespace Week14.Combat
         public ExecutionTarget HoveredExecutionTarget => ExecutionController.HoveredExecutionTarget;
         public bool IsExecuting => ExecutionController.IsExecuting;
         public PlayerCombatConfig Config => Context.Config;
-        public float MoveSpeedMultiplier { get; private set; } = 1f;
+        public float MoveSpeedMultiplier => moveSpeedMultiplier * weaponMoveSpeedMultiplier;
         public bool CanMove => CanAct && !IsExternallyMovementLocked && !IsBodyContactStaggered && !IsDashing;
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
         public bool IsDashing => DashController.IsDashing;
@@ -422,7 +424,12 @@ namespace Week14.Combat
 
         public void SetMoveSpeedMultiplier(float multiplier)
         {
-            MoveSpeedMultiplier = Mathf.Max(0f, multiplier);
+            moveSpeedMultiplier = Mathf.Max(0f, multiplier);
+        }
+
+        public void SetWeaponMoveSpeedMultiplier(float multiplier)
+        {
+            weaponMoveSpeedMultiplier = Mathf.Max(0f, multiplier);
         }
 
         private void Update()

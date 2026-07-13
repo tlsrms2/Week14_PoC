@@ -222,6 +222,31 @@ namespace Week14.Save
             return false;
         }
 
+        // 테스트/디버그용: 특정 보스의 최고 클리어 기록만 지웁니다.
+        public static void ResetBossClearTime(string bossId)
+        {
+            BossClearTimeEntry entry = FindBossClearTimeEntry(bossId);
+            if (entry == null)
+            {
+                return;
+            }
+
+            Data.bossClearTimes.Remove(entry);
+            Save();
+        }
+
+        // 테스트/디버그용: 모든 보스의 최고 클리어 기록을 지웁니다.
+        public static void ResetAllBossClearTimes()
+        {
+            if (Data.bossClearTimes.Count == 0)
+            {
+                return;
+            }
+
+            Data.bossClearTimes.Clear();
+            Save();
+        }
+
         private static BossClearTimeEntry FindBossClearTimeEntry(string bossId)
         {
             if (string.IsNullOrEmpty(bossId))
@@ -552,6 +577,18 @@ namespace Week14.Save
             Save();
         }
 
+        // 테스트/디버그용: 장착된 액티브 스킬 슬롯 기록을 전부 지웁니다(장착 안 한 최초 상태로 되돌림).
+        public static void ResetEquippedSkills()
+        {
+            if (Data.equippedSkills.Count == 0)
+            {
+                return;
+            }
+
+            Data.equippedSkills.Clear();
+            Save();
+        }
+
         public static IReadOnlyList<string> UnlockedPassiveSkillIds => Data.unlockedPassiveSkillIds;
 
         public static bool IsPassiveSkillUnlocked(string skillId)
@@ -626,6 +663,18 @@ namespace Week14.Save
             Save();
         }
 
+        // 테스트/디버그용: 장착된 패시브 스킬 슬롯 기록을 전부 지웁니다(장착 안 한 최초 상태로 되돌림).
+        public static void ResetEquippedPassiveSkills()
+        {
+            if (Data.equippedPassiveSkills.Count == 0)
+            {
+                return;
+            }
+
+            Data.equippedPassiveSkills.Clear();
+            Save();
+        }
+
         public static bool IsSkillPurchased(string skillId)
         {
             return !string.IsNullOrEmpty(skillId) && Data.purchasedSkillIds.Contains(skillId);
@@ -657,6 +706,18 @@ namespace Week14.Save
             return true;
         }
 
+        // 테스트/디버그용: 포인트 환불 없이 액티브 스킬 구매 기록만 전부 지웁니다.
+        public static void ResetPurchasedSkills()
+        {
+            if (Data.purchasedSkillIds.Count == 0)
+            {
+                return;
+            }
+
+            Data.purchasedSkillIds.Clear();
+            Save();
+        }
+
         public static bool IsPassiveSkillPurchased(string skillId)
         {
             return !string.IsNullOrEmpty(skillId) && Data.purchasedPassiveSkillIds.Contains(skillId);
@@ -686,6 +747,18 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints + price);
             Save();
             return true;
+        }
+
+        // 테스트/디버그용: 포인트 환불 없이 패시브 스킬 구매 기록만 전부 지웁니다.
+        public static void ResetPurchasedPassiveSkills()
+        {
+            if (Data.purchasedPassiveSkillIds.Count == 0)
+            {
+                return;
+            }
+
+            Data.purchasedPassiveSkillIds.Clear();
+            Save();
         }
 
         public static IReadOnlyList<string> UnlockedWeaponIds => Data.unlockedWeaponIds;
@@ -727,6 +800,18 @@ namespace Week14.Save
             Save();
         }
 
+        // 테스트/디버그용: 장착 총기 기록을 지웁니다(장착 안 한 최초 상태로 되돌림).
+        public static void ResetEquippedWeapon()
+        {
+            if (Data.equippedWeaponId == null)
+            {
+                return;
+            }
+
+            Data.equippedWeaponId = null;
+            Save();
+        }
+
         public static bool IsWeaponPurchased(string weaponId)
         {
             return !string.IsNullOrEmpty(weaponId) && Data.purchasedWeaponIds.Contains(weaponId);
@@ -758,6 +843,18 @@ namespace Week14.Save
             return true;
         }
 
+        // 테스트/디버그용: 포인트 환불 없이 총기 구매 기록만 전부 지웁니다.
+        public static void ResetPurchasedWeapons()
+        {
+            if (Data.purchasedWeaponIds.Count == 0)
+            {
+                return;
+            }
+
+            Data.purchasedWeaponIds.Clear();
+            Save();
+        }
+
         public static string BuildChallengeSaveKey(string bossId, string challengeId)
         {
             return $"{bossId}:{challengeId}";
@@ -777,6 +874,44 @@ namespace Week14.Save
 
             Data.completedChallengeIds.Add(challengeId);
             SetChallengePoints(Data.challengePoints + rewardPoint);
+            Save();
+        }
+
+        // 테스트/디버그용: 포인트 회수 없이 특정 챌린지 하나의 완료 기록과 누적 카운터를 지웁니다.
+        public static void ResetChallenge(string challengeId)
+        {
+            if (string.IsNullOrEmpty(challengeId))
+            {
+                return;
+            }
+
+            bool changed = Data.completedChallengeIds.Remove(challengeId);
+            List<ChallengeCounterEntry> counters = Data.challengeCounters;
+            for (int i = 0; i < counters.Count; i++)
+            {
+                if (counters[i].challengeId == challengeId)
+                {
+                    counters.RemoveAt(i);
+                    changed = true;
+                    break;
+                }
+            }
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
+        // 테스트/디버그용: 모든 챌린지 완료 기록을 지웁니다(포인트는 회수하지 않음).
+        public static void ResetCompletedChallenges()
+        {
+            if (Data.completedChallengeIds.Count == 0)
+            {
+                return;
+            }
+
+            Data.completedChallengeIds.Clear();
             Save();
         }
 
@@ -822,6 +957,18 @@ namespace Week14.Save
             return 1;
         }
 
+        // 테스트/디버그용: 모든 챌린지 누적 카운터를 지웁니다.
+        public static void ResetChallengeCounters()
+        {
+            if (Data.challengeCounters.Count == 0)
+            {
+                return;
+            }
+
+            Data.challengeCounters.Clear();
+            Save();
+        }
+
         public static int ChallengePoints => Data.challengePoints;
 
         public static event Action<int> ChallengePointsChanged;
@@ -836,6 +983,13 @@ namespace Week14.Save
         public static void AddDebugChallengePoints(int amount)
         {
             SetChallengePoints(Data.challengePoints + amount);
+            Save();
+        }
+
+        // 테스트/디버그용: 포인트를 정확히 이 값으로 맞춥니다(음수는 0으로 고정).
+        public static void SetDebugChallengePoints(int amount)
+        {
+            SetChallengePoints(Mathf.Max(0, amount));
             Save();
         }
 
@@ -855,6 +1009,18 @@ namespace Week14.Save
             UnlockDefaultWeapons();
             UnlockDefaultSkills();
             UnlockDefaultPassiveSkills();
+        }
+
+        // 테스트/디버그용: 세이브 데이터를 전부 지우고 기본 해금 상태(기본 보스/무기/스킬/패시브)로 되돌립니다.
+        public static void ResetEverything()
+        {
+            data = new GameSaveData();
+            NormalizeLoadedData();
+            UnlockDefaultBoss();
+            UnlockDefaultWeapons();
+            UnlockDefaultSkills();
+            UnlockDefaultPassiveSkills();
+            Save();
         }
 
         private static void NormalizeLoadedData()
