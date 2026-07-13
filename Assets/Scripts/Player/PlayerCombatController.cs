@@ -789,13 +789,34 @@ namespace Week14.Combat
             }
 
             float postParryInvulnerabilitySeconds = invulnerableAmmoRefillPostParryInvulnerabilitySeconds;
+            float postParryClearRadius = invulnerableAmmoRefillParryClearRadius;
             CompleteInvulnerableAmmoRefill();
 
             // 스킬의 긴 무적 대신, 무적이 꺼지는 순간 몰린 다른 공격에 바로 맞지 않도록 짧은 무적을 이어서 부여한다.
+            // 대쉬처럼 몸이 계속 겹쳐 있는 공격은 이 구간에도 매 프레임 다시 부딪히므로, 그동안 새로 들어온
+            // 탄도 계속 쓸어주지 않으면 첫 히트 때만 지워지고 그 이후로 겹쳐 있는 동안 들어온 탄은 안 지워진다.
             if (postParryInvulnerabilitySeconds > 0f)
             {
-                StartCoroutine(TemporaryInvulnerabilityRoutine(postParryInvulnerabilitySeconds));
+                StartCoroutine(PostParryInvulnerabilityRoutine(postParryInvulnerabilitySeconds, postParryClearRadius));
             }
+        }
+
+        private IEnumerator PostParryInvulnerabilityRoutine(float seconds, float clearRadius)
+        {
+            PushExternalInvulnerability();
+            float remaining = Mathf.Max(0f, seconds);
+            while (remaining > 0f)
+            {
+                if (clearRadius > 0f)
+                {
+                    ParryController.AutoParryProjectilesNear(Context.CombatCenterOrigin.position, clearRadius);
+                }
+
+                yield return null;
+                remaining -= Time.deltaTime;
+            }
+
+            PopExternalInvulnerability();
         }
 
         private void RestartInvulnerableAmmoRefillTimer()
