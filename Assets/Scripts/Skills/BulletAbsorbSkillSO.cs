@@ -10,6 +10,8 @@ namespace Week14.Skills
     [CreateAssetMenu(menuName = "Week14/Skills/Active/Bullet Absorb Skill", fileName = "BulletAbsorbSkill")]
     public sealed class BulletAbsorbSkillSO : BaseSkillSO
     {
+        private const int BulletAbsorbVfxSortingOrder = 74;
+
         [Tooltip("탄막을 흡수하는 지속시간(초)입니다.")]
         [SerializeField, Min(0.1f)] private float durationSeconds = 3f;
         [Tooltip("플레이어 주변 이 반경(미터) 안의 적 투사체를 흡수합니다. 이 범위 밖의 공격이나 근접공격은 평소처럼 그대로 맞습니다.")]
@@ -21,6 +23,8 @@ namespace Week14.Skills
         [SerializeField] private string activateSfxId;
 
         [Header("VFX")]
+        [Tooltip("스킬 지속시간 동안 플레이어 중심에 표시할 흡수 이펙트 프리팹입니다. 비워두면 표시하지 않습니다.")]
+        [SerializeField] private GameObject bulletAbsorbVfxPrefab;
         [Tooltip("흡수된 투사체가 플레이어에게 빨려들어가는 연출 시간입니다. 0이면 흡수 연출을 끕니다.")]
         [SerializeField, Min(0f)] private float absorbVfxDuration = 0.18f;
         [Tooltip("흡수 연출 색상입니다. 알파로 투명도를 조절합니다.")]
@@ -28,6 +32,7 @@ namespace Week14.Skills
 
         private event Action effectEnd;
         private Coroutine activeRoutine;
+        private GameObject activeBulletAbsorbVfx;
 
         public override bool HasDelayedCooldownStart => true;
 
@@ -46,6 +51,8 @@ namespace Week14.Skills
             if (activeRoutine != null)
             {
                 controller.StopCoroutine(activeRoutine);
+                activeRoutine = null;
+                ClearActiveBulletAbsorbVfx();
             }
 
             if (!string.IsNullOrEmpty(activateSfxId))
@@ -59,6 +66,7 @@ namespace Week14.Skills
         private IEnumerator AbsorbRoutine(PlayerCombatController controller)
         {
             RollSkillVfxSettings vfxSettings = CreateVfxSettings();
+            SpawnBulletAbsorbVfx(controller);
             float startTime = Time.time;
 
             while (Time.time - startTime < durationSeconds)
@@ -74,8 +82,65 @@ namespace Week14.Skills
                 yield return null;
             }
 
+            ClearActiveBulletAbsorbVfx();
             activeRoutine = null;
             effectEnd?.Invoke();
+        }
+
+        private void SpawnBulletAbsorbVfx(PlayerCombatController controller)
+        {
+            ClearActiveBulletAbsorbVfx();
+            if (bulletAbsorbVfxPrefab == null || controller == null)
+            {
+                return;
+            }
+
+            Transform followTarget = controller.Context.CombatCenterOrigin;
+            activeBulletAbsorbVfx = Instantiate(
+                bulletAbsorbVfxPrefab,
+                followTarget.position,
+                Quaternion.identity,
+                followTarget);
+            activeBulletAbsorbVfx.transform.localPosition = Vector3.zero;
+            activeBulletAbsorbVfx.transform.localRotation = Quaternion.identity;
+            PlayBulletAbsorbParticles(activeBulletAbsorbVfx);
+        }
+
+        private void ClearActiveBulletAbsorbVfx()
+        {
+            if (activeBulletAbsorbVfx == null)
+            {
+                return;
+            }
+
+            Destroy(activeBulletAbsorbVfx);
+            activeBulletAbsorbVfx = null;
+        }
+
+        private static void PlayBulletAbsorbParticles(GameObject vfxRoot)
+        {
+            if (vfxRoot == null)
+            {
+                return;
+            }
+
+            ParticleSystemRenderer[] renderers = vfxRoot.GetComponentsInChildren<ParticleSystemRenderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null)
+                {
+                    renderers[i].sortingOrder = Mathf.Max(renderers[i].sortingOrder, BulletAbsorbVfxSortingOrder);
+                }
+            }
+
+            ParticleSystem[] particles = vfxRoot.GetComponentsInChildren<ParticleSystem>(true);
+            for (int i = 0; i < particles.Length; i++)
+            {
+                if (particles[i] != null)
+                {
+                    particles[i].Play(true);
+                }
+            }
         }
 
         private RollSkillVfxSettings CreateVfxSettings()
