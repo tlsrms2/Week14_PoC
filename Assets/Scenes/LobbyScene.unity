@@ -8839,6 +8839,16 @@ MonoBehaviour:
   - sequence: {fileID: 11400000, guid: 8833d761889fc8a45adbe5aa6bc38a2d, type: 2}
     requiredClearedBossIds: []
     requiredSeenStoryEpisodes: 
+  - sequence: {fileID: 11400000, guid: 46e5e5751d8dc0049975e62c45ed8632, type: 2}
+    requiredClearedBossIds:
+    - Hog
+    - Muscle
+    requiredSeenStoryEpisodes: 
+  - sequence: {fileID: 11400000, guid: 950a67ae5433a2745bd505b00dc8e28d, type: 2}
+    requiredClearedBossIds:
+    - Assassin
+    - Conductor
+    requiredSeenStoryEpisodes: 
   skipHoldSeconds: 1.5
 --- !u!4 &1089529234
 Transform:

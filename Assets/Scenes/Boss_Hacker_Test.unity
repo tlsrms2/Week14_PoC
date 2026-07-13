@@ -9996,7 +9996,7 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
   bgmId: 
-  rotateBodyToPlayer: 1
+  rotateBodyToPlayer: 0
 --- !u!222 &8937255414088847800
 CanvasRenderer:
   m_ObjectHideFlags: 0
