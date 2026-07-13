@@ -58,6 +58,18 @@ MonoBehaviour:
     m_Localized: Security Director
     m_Metadata:
       m_Items: []
+  - m_Id: 4200008682668032
+    m_Localized: Assassin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200012361072640
+    m_Localized: 'Danger: 2'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200013929742336
+    m_Localized: Assassin
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
