@@ -41,6 +41,7 @@ MonoBehaviour:
   durationSeconds: 1
   parryClearRadius: 3
   activateSfxId: 
+  blankVfxPrefab: {fileID: 6502374957185654834, guid: 7850d2e7d2f21044ca25b3fb6b63398d, type: 3}
   references:
     version: 2
     RefIds: []

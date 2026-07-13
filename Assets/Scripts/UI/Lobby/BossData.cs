@@ -37,6 +37,10 @@ namespace Week14.UI
             "다른 보스의 unlocksBossIds 체이닝 해금과는 별개로 추가 적용됩니다(둘 중 하나만 만족해도 해금).")]
         [SerializeField] private int requiredDistinctBossKills = 0;
 
+        [Header("엔딩")]
+        [Tooltip("이 보스가 최종보스인지 표시합니다.")]
+        [SerializeField] private bool isFinalBoss;
+
         public string Id => id;
         public string BossName => bossName;
         public string Crime => crime;
@@ -57,6 +61,7 @@ namespace Week14.UI
         public IReadOnlyList<string> UnlocksPassiveSkillIds => unlocksPassiveSkillIds;
         public IReadOnlyList<string> UnlocksWeaponIds => unlocksWeaponIds;
         public int RequiredDistinctBossKills => requiredDistinctBossKills;
+        public bool IsFinalBoss => isFinalBoss;
 
         // 명시적으로 해금(unlocksBossIds 체이닝 등)되었거나, 처치한 보스 종류 수가 조건을 만족하면 해금된 것으로 취급합니다.
         public bool IsUnlocked()

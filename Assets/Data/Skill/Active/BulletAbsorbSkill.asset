@@ -41,6 +41,7 @@ MonoBehaviour:
   absorbRadius: 5
   ammoPerAbsorbedProjectile: 1
   activateSfxId: 
+  bulletAbsorbVfxPrefab: {fileID: 1680673952160322087, guid: 15304e74f226b3c4fbeb35733bf5512c, type: 3}
   absorbVfxDuration: 0.18
   absorbVfxColor: {r: 0.45, g: 0.95, b: 1, a: 0.85}
   references:
