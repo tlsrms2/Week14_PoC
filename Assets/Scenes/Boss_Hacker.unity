@@ -5671,6 +5671,10 @@ PrefabInstance:
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[6].projectile.lifetime
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

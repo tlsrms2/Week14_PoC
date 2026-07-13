@@ -459,7 +459,7 @@ MonoBehaviour:
     sequences: []
     editorPosition: {x: -25, y: 1780}
   patterns:
-  - patternId: Pattern1
+  - patternId: P1-1
     nodeGuids:
     - c3917df5425047cf8c4553c0afc8ee62
     - a4bb741acbc241fd8dbe46986e3fdc9c
@@ -468,7 +468,7 @@ MonoBehaviour:
     - Melee Attack1
     - Melee Attack2
     - Thrust1
-  - patternId: Pattern5
+  - patternId: P1-2
     nodeGuids:
     - 202a06c2df26450fa6dcd13f7a36ed51
     - 0661885ecf6e42c3b509693aac80f262
@@ -477,7 +477,20 @@ MonoBehaviour:
     - Melee Attack3
     - Dash1
     - Fire Sniping Projectile1
-  - patternId: Pattern6
+  - patternId: P1-3
+    nodeGuids:
+    - 0a1ddc51308d46f29f305ead640a889c
+    - 871ad8ed7c054f7bb5e676fcf232a611
+    - 2ef027b3bd094043aa084ef09e96cd53
+    - ab691d9065c04693b6c70678bb986647
+    - f8be7f34a85147f09e02274aabc26188
+    nodeIds:
+    - Melee Attack4
+    - Melee Attack5
+    - Melee Attack6
+    - Melee Attack7
+    - Melee Attack8
+  - patternId: 89
     nodeGuids:
     - 851a5e4771bf4950acec53b652c5465f
     - b92c092216d649e3975ab02de8f7f1fc
@@ -517,20 +530,7 @@ MonoBehaviour:
     - 65c254d226814b58a1cd78342290dbf0
     nodeIds:
     - Spider Web1
-  - patternId: Pattern4
-    nodeGuids:
-    - 0a1ddc51308d46f29f305ead640a889c
-    - 871ad8ed7c054f7bb5e676fcf232a611
-    - 2ef027b3bd094043aa084ef09e96cd53
-    - ab691d9065c04693b6c70678bb986647
-    - f8be7f34a85147f09e02274aabc26188
-    nodeIds:
-    - Melee Attack4
-    - Melee Attack5
-    - Melee Attack6
-    - Melee Attack7
-    - Melee Attack8
-  - patternId: Pattern8
+  - patternId: P2-1
     nodeGuids:
     - e1bf27c670194054b048b5aba390fc35
     - d73f6a1c02f64577b7c67c2f5553bad2
@@ -852,7 +852,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern1
+  debugForcedPatternId: P1-1
   references:
     version: 2
     RefIds:
