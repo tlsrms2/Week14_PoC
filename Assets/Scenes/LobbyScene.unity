@@ -5416,7 +5416,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -8939,7 +8939,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument:
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
     onExit:
@@ -8950,27 +8950,27 @@ MonoBehaviour:
   - sequence: {fileID: 11400000, guid: 247b2b204e87a4c488c5f30030a873af, type: 2}
     requiredClearedBossIds: []
     requiredClearedBossCount: 0
-    requiredSeenStoryEpisodes: []
+    requiredSeenStoryEpisodes: 
   - sequence: {fileID: 11400000, guid: 8833d761889fc8a45adbe5aa6bc38a2d, type: 2}
     requiredClearedBossIds: []
     requiredClearedBossCount: 0
-    requiredSeenStoryEpisodes: []
+    requiredSeenStoryEpisodes: 
   - sequence: {fileID: 11400000, guid: 5400ed70730d78041a3ccd67c24d9d5e, type: 2}
     requiredClearedBossIds: []
     requiredClearedBossCount: 1
-    requiredSeenStoryEpisodes: []
+    requiredSeenStoryEpisodes: 
   - sequence: {fileID: 11400000, guid: 46e5e5751d8dc0049975e62c45ed8632, type: 2}
     requiredClearedBossIds:
     - Hog
     - Muscle
     requiredClearedBossCount: 0
-    requiredSeenStoryEpisodes: []
+    requiredSeenStoryEpisodes: 
   - sequence: {fileID: 11400000, guid: 950a67ae5433a2745bd505b00dc8e28d, type: 2}
     requiredClearedBossIds:
     - Assassin
     - Conductor
     requiredClearedBossCount: 0
-    requiredSeenStoryEpisodes: []
+    requiredSeenStoryEpisodes: 
   skipHoldSeconds: 1.5
 --- !u!4 &1089529234
 Transform:
@@ -17191,7 +17191,7 @@ PrefabInstance:
     - target: {fileID: 6363621013669705922, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: skill
       value: 
-      objectReference: {fileID: 11400000, guid: bd2bc82a7651f5d45afa0d7a75a1b056, type: 2}
+      objectReference: {fileID: 11400000, guid: fe67bbbe237044fe84370df4cbc1a335, type: 2}
     - target: {fileID: 6500270917010895826, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

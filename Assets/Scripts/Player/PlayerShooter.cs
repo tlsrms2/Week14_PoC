@@ -113,6 +113,7 @@ namespace Week14.Combat
             Vector2 origin = fireOrigin.position;
 
             DamageEnemiesAlongLine(origin, direction, beamLength, config.ProjectileRadius, finalDamage);
+            context.Owner.NotifyPlayerAttackPerformed(finalDamage);
 
             Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
             ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
@@ -184,6 +185,7 @@ namespace Week14.Combat
 
             ClearProjectilesInSemicircle(origin, direction, range);
             DamageEnemiesInSemicircle(origin, direction, range, damage);
+            context.Owner.NotifyPlayerAttackPerformed(damage);
             ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
 
             if (!string.IsNullOrEmpty(slashSfxId))
@@ -367,6 +369,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx("SniperFire");
             SoundManager.PlaySfx("BulletLoss");
+            context.Owner.NotifyPlayerAttackPerformed(damage);
         }
 
         // damage는 펠릿 하나하나가 각각 그대로 받는 값입니다(무기 기본 데미지 그대로, 펠릿 수로 나누지 않음).
@@ -413,6 +416,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(pelletCount >= 2 ? "ShotgunFire" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
+            context.Owner.NotifyPlayerAttackPerformed(pelletDamage * pelletCount);
         }
 
         private PlayerProjectile ResolveProjectilePrefab(PlayerCombatConfig config)
@@ -475,6 +479,7 @@ namespace Week14.Combat
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
             SoundManager.PlaySfx("BulletLoss");
+            context.Owner.NotifyPlayerAttackPerformed(dynamicDamage);
             return true;
         }
 

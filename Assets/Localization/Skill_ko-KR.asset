@@ -19,93 +19,94 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 63427674112
-    m_Localized: "순간 추진 모듈"
+    m_Localized: "\uC21C\uAC04 \uCD94\uC9C4 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 238342733824
-    m_Localized: "짧은 거리를 돌진하며 주변의
-      탄막을 제거합니다."
+    m_Localized: "\uC9E7\uC740 \uAC70\uB9AC\uB97C \uB3CC\uC9C4\uD558\uBA70 \uC8FC\uBCC0\uC758
+      \uD0C4\uB9C9\uC744 \uC81C\uAC70\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 300527484928
-    m_Localized: "공격 강화 모듈"
+    m_Localized: "\uD640\uB85C\uADF8\uB7A8 \uBCF5\uC81C \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 303861956608
-    m_Localized: "다음 공격의 피해량이 2배가
-      됩니다."
+    m_Localized: "\uC81C\uC790\uB9AC\uC5D0 10\uCD08 \uB3D9\uC548 \uD640\uB85C\uADF8\uB7A8\uC744
+      \uB0A8\uAE41\uB2C8\uB2E4.\n\uD640\uB85C\uADF8\uB7A8\uC740 \uD50C\uB808\uC774\uC5B4\uC640
+      \uD568\uAED8 \uACF5\uACA9\uD558\uBA70, \uC801\uC5D0\uAC8C 50% \uAC10\uC18C\uB41C
+      \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 347285585920
-    m_Localized: "시간 조작 모듈"
+    m_Localized: "\uC2DC\uAC04 \uC870\uC791 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 349898637312
-    m_Localized: "3초 동안 주변의 시간을 느리게
-      만듭니다."
+    m_Localized: "3\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uC2DC\uAC04\uC744 \uB290\uB9AC\uAC8C
+      \uB9CC\uB4ED\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 352498637312
-    m_Localized: "자성 모듈"
+    m_Localized: "\uC790\uC131 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 355098637312
-    m_Localized: "2초 동안 주변의 탄막을 흡수해
-      탄환을 회복합니다."
+    m_Localized: "2\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uD0C4\uB9C9\uC744 \uD761\uC218\uD574
+      \uD0C4\uD658\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 357698637312
-    m_Localized: "패링 모듈"
+    m_Localized: "\uD328\uB9C1 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 360298637312
-    m_Localized: "아주 짧은 시간 동안 무적 상태가
-      되며, 이때 피해를 받으면 탄환을
-      모두 회복합니다."
+    m_Localized: "\uC544\uC8FC \uC9E7\uC740 \uC2DC\uAC04 \uB3D9\uC548 \uBB34\uC801
+      \uC0C1\uD0DC\uAC00 \uB418\uBA70, \uC774\uB54C \uD53C\uD574\uB97C \uBC1B\uC73C\uBA74
+      \uD0C4\uD658\uC744 \uBAA8\uB450 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 362898637312
-    m_Localized: "자동 추적 모듈"
+    m_Localized: "\uC790\uB3D9 \uCD94\uC801 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 365498637312
-    m_Localized: "탄환이 항상 적을 향해
-      발사됩니다."
+    m_Localized: "\uD0C4\uD658\uC774 \uD56D\uC0C1 \uC801\uC744 \uD5A5\uD574 \uBC1C\uC0AC\uB429\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 368098637312
-    m_Localized: "고성능 요격 모듈"
+    m_Localized: "\uACE0\uC131\uB2A5 \uC694\uACA9 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 370698637312
-    m_Localized: "요격 범위가 25% 증가합니다."
+    m_Localized: "\uC694\uACA9 \uBC94\uC704\uAC00 25% \uC99D\uAC00\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 373298637312
-    m_Localized: "가속 모듈"
+    m_Localized: "\uAC00\uC18D \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 375898637312
-    m_Localized: "보유한 탄환이 없을 때 이동
-      속도가 25% 증가합니다."
+    m_Localized: "\uBCF4\uC720\uD55C \uD0C4\uD658\uC774 \uC5C6\uC744 \uB54C \uC774\uB3D9
+      \uC18D\uB3C4\uAC00 25% \uC99D\uAC00\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 378498637312
-    m_Localized: "에너지 전환 모듈"
+    m_Localized: "\uC5D0\uB108\uC9C0 \uC804\uD658 \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 381098637312
-    m_Localized: "요격 성공 시 액티브 스킬의
-      쿨타임이 0.5초 감소합니다."
+    m_Localized: "\uC694\uACA9 \uC131\uACF5 \uC2DC \uC561\uD2F0\uBE0C \uC2A4\uD0AC\uC758
+      \uCFE8\uD0C0\uC784\uC774 0.5\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 383698637312
-    m_Localized: "비상 프로토콜 모듈"
+    m_Localized: "\uBE44\uC0C1 \uD504\uB85C\uD1A0\uCF5C \uBAA8\uB4C8"
     m_Metadata:
       m_Items: []
   - m_Id: 386298637312
-    m_Localized: "치명적인 피해를 입었을 때
-      1회에 한해 위기를 모면합니다."
+    m_Localized: "\uCE58\uBA85\uC801\uC778 \uD53C\uD574\uB97C \uC785\uC5C8\uC744
+      \uB54C 1\uD68C\uC5D0 \uD55C\uD574 \uC704\uAE30\uB97C \uBAA8\uBA74\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   references:

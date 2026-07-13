@@ -76,6 +76,8 @@ namespace Week14.Combat
         private bool nextAttackDamageMultiplierArmed;
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
+
+        public event Action<int> PlayerAttackPerformed;
         private Coroutine invulnerableAmmoRefillRoutine;
         private float invulnerableAmmoRefillParryClearRadius;
         private GameObject invulnerableAmmoRefillBlankVfxPrefab;
@@ -645,6 +647,14 @@ namespace Week14.Combat
         {
             nextAttackDamageMultiplierArmed = multiplier > 1f;
             nextAttackDamageMultiplier = Mathf.Max(1f, multiplier);
+        }
+
+        internal void NotifyPlayerAttackPerformed(int damage)
+        {
+            if (damage > 0)
+            {
+                PlayerAttackPerformed?.Invoke(damage);
+            }
         }
 
         internal float ConsumeNextAttackDamageMultiplier()
