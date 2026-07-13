@@ -21,27 +21,52 @@ namespace Week14.Weapons
         [SerializeField, Min(0.01f)] private float reflectedProjectileSpeed = 8f;
         [Tooltip("휘두르는 순간 반원 공격범위를 짧게 보여주는 플래시 색상입니다.")]
         [SerializeField] private Color rangeFlashColor = new Color(1f, 0.55f, 0.1f, 0.6f);
+        [Tooltip("공격 버튼을 누르고 있는 동안 보여줄 차징 범위 미리보기 색상입니다.")]
+        [SerializeField] private Color previewRangeColor = new Color(1f, 0.75f, 0.2f, 0.35f);
         [Tooltip("범위 플래시가 사라지는 데 걸리는 시간(초)입니다.")]
         [SerializeField, Min(0.01f)] private float rangeFlashSeconds = 0.1f;
         [Tooltip("휘두를 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [SerializeField] private string swingSfxId = string.Empty;
+        [Tooltip("야구 배트를 장착했을 때 적용할 이동 속도 배율입니다. 1.5 = 50% 증가.")]
+        [SerializeField, Min(0f)] private float moveSpeedMultiplier = 1.5f;
 
         public float MaxAttackRange => maxAttackRange;
         public Color RangeFlashColor => rangeFlashColor;
         public float RangeFlashSeconds => rangeFlashSeconds;
         public float ReflectedProjectileSpeed => reflectedProjectileSpeed;
+        public float MoveSpeedMultiplier => moveSpeedMultiplier;
 
         public override void BeginAttack(PlayerShooter shooter)
         {
+            if (!shooter.IsBayonetCooldownReady())
+            {
+                shooter.HideBaseballBatRangePreview();
+                shooter.ResetChargeTime();
+                return;
+            }
+
+            shooter.PreviewBaseballBatRange(GetAttackRange(0f), previewRangeColor);
+        }
+
+        public override void HoldAttack(PlayerShooter shooter, float chargeTime)
+        {
+            if (!shooter.IsBayonetCooldownReady())
+            {
+                shooter.HideBaseballBatRangePreview();
+                shooter.ResetChargeTime();
+                return;
+            }
+
+            shooter.PreviewBaseballBatRange(GetAttackRange(chargeTime), previewRangeColor);
         }
 
         public override void ReleaseAttack(PlayerShooter shooter, float chargeTime)
         {
+            shooter.HideBaseballBatRangePreview();
             if (shooter.TryConsumeBayonetCooldown(attackCooldownSeconds))
             {
-                float charge01 = maxChargeSeconds > 0f ? Mathf.Clamp01(chargeTime / maxChargeSeconds) : 1f;
-                float attackRange = Mathf.Lerp(minAttackRange, maxAttackRange, charge01);
+                float attackRange = GetAttackRange(chargeTime);
                 shooter.SwingBaseballBat(
                     reflectedDamage,
                     attackRange,
@@ -52,11 +77,28 @@ namespace Week14.Weapons
             }
         }
 
+        public override void ApplyWeaponTrait(GameObject player)
+        {
+            player?.GetComponent<PlayerCombatController>()?.SetWeaponMoveSpeedMultiplier(moveSpeedMultiplier);
+        }
+
+        public override void RemoveWeaponTrait(GameObject player)
+        {
+            player?.GetComponent<PlayerCombatController>()?.SetWeaponMoveSpeedMultiplier(1f);
+        }
+
+        private float GetAttackRange(float chargeTime)
+        {
+            float charge01 = maxChargeSeconds > 0f ? Mathf.Clamp01(chargeTime / maxChargeSeconds) : 1f;
+            return Mathf.Lerp(minAttackRange, maxAttackRange, charge01);
+        }
+
         protected override void OnValidate()
         {
             base.OnValidate();
             maxAttackRange = Mathf.Max(minAttackRange, maxAttackRange);
             maxChargeSeconds = Mathf.Max(0.01f, maxChargeSeconds);
+            moveSpeedMultiplier = Mathf.Max(0f, moveSpeedMultiplier);
         }
     }
 }

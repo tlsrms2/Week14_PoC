@@ -15,6 +15,7 @@ namespace Week14.Combat
         private bool isCharging;
         private bool hasShownChargeLaser;
         private float nextBayonetAttackTime;
+        private BaseballBatRangePreviewVfx baseballBatRangePreview;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -51,6 +52,7 @@ namespace Week14.Combat
             context.PlayerHpView?.FreezeNewestBullet(false);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.ReleaseAttack(this, chargeTime);
             context.SniperChargeLaserEffect?.EndCharge();
+            HideBaseballBatRangePreview();
             isCharging = false;
             chargeTime = 0f;
             hasShownChargeLaser = false;
@@ -74,9 +76,41 @@ namespace Week14.Combat
         {
             context.PlayerHpView?.FreezeNewestBullet(false);
             context.SniperChargeLaserEffect?.EndCharge();
+            HideBaseballBatRangePreview();
             isCharging = false;
             chargeTime = 0f;
             hasShownChargeLaser = false;
+        }
+
+        public void PreviewBaseballBatRange(float range, Color color)
+        {
+            if (range <= 0f)
+            {
+                HideBaseballBatRangePreview();
+                return;
+            }
+
+            if (baseballBatRangePreview == null)
+            {
+                GameObject previewObject = new GameObject("BaseballBatRangePreviewVfx");
+                baseballBatRangePreview = previewObject.AddComponent<BaseballBatRangePreviewVfx>();
+                baseballBatRangePreview.Initialize();
+            }
+
+            Vector2 origin = context.CombatCenterOrigin.position;
+            Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
+            baseballBatRangePreview.UpdatePreview(origin, direction, range, color);
+        }
+
+        public void HideBaseballBatRangePreview()
+        {
+            if (baseballBatRangePreview == null)
+            {
+                return;
+            }
+
+            Object.Destroy(baseballBatRangePreview.gameObject);
+            baseballBatRangePreview = null;
         }
 
         public bool TrySpendOneBullet()
@@ -168,6 +202,16 @@ namespace Week14.Combat
 
             nextBayonetAttackTime = Time.time + Mathf.Max(0f, cooldownSeconds);
             return true;
+        }
+
+        public bool IsBayonetCooldownReady()
+        {
+            return Time.time >= nextBayonetAttackTime;
+        }
+
+        public void ResetChargeTime()
+        {
+            chargeTime = 0f;
         }
 
         // 근접 반원 공격(총검): 조준 방향(락온 중이면 GetAimDirection이 알아서 보스 방향을 반환) 기준
