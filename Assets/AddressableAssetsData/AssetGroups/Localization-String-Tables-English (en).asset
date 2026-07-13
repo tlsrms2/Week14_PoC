@@ -27,6 +27,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c3e7b2d8f4a1c6e7f3a9c2e8b4d1f6a
+    m_Address: Challenge_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2beb748e37c1244d8c49d0c1aa31695
+    m_Address: Story_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b84595cb3a68ab1418483c1b096c642b
     m_Address: Skill_en
     m_ReadOnly: 1
@@ -35,12 +47,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: beba7e7c0d1fb4148844ed0d77b3bfb0
     m_Address: Weapon_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9c3e7b2d8f4a1c6e7f3a9c2e8b4d1f6a
-    m_Address: Challenge_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en

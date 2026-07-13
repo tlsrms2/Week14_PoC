@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-Assets-Shared
   m_GUID: 923937bab5ba1824ead7195e919a1449
   m_SerializeEntries:
+  - m_GUID: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
+    m_Address: Assets/Localization/Challenge Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 54d974a73685256428bdf277f9c3cd3b
     m_Address: Assets/Localization/UI Shared Data.asset
     m_ReadOnly: 1
@@ -25,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a8e32e629c410a4c97867fa550435ab
+    m_Address: Assets/Localization/Story Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b1a0083a9ae987c4c95c94f0dce7f455
     m_Address: Assets/Localization/Boss Shared Data.asset
     m_ReadOnly: 1
@@ -32,11 +42,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c2940797846812f4881a7a287f9eb620
     m_Address: Assets/Localization/Skill Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
-    m_Address: Assets/Localization/Challenge Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

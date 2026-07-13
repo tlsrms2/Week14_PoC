@@ -118,6 +118,8 @@ namespace Week14.Tutorial
     {
         [SerializeField] private List<TutorialStepContent> steps = new();
 
+        public IReadOnlyList<TutorialStepContent> Steps => steps;
+
         public TutorialStepContent GetStep(TutorialStepId step)
         {
             for (int i = 0; i < steps.Count; i++)
