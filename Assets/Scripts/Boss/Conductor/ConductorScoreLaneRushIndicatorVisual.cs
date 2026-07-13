@@ -19,6 +19,8 @@ namespace Week14.Enemy
         private float laneWidth = 0.035f;
         private int sortingOrder = 66;
         private float alphaMultiplier = 1f;
+        private bool blocksPlayer;
+        private float playerBlockingThickness = 0.12f;
         private bool clearOnExecutionCinematic;
         private bool isClearing;
 
@@ -34,6 +36,16 @@ namespace Week14.Enemy
         public void ConfigureClearOnExecutionCinematic(bool enabled)
         {
             clearOnExecutionCinematic = enabled;
+        }
+
+        public void ConfigurePlayerBlocking(bool enabled, float thickness = 0.12f)
+        {
+            blocksPlayer = enabled;
+            playerBlockingThickness = Mathf.Max(0.01f, thickness);
+            for (int i = 0; i < lines.Count; i++)
+            {
+                RefreshLine(lines[i]);
+            }
         }
 
         private void LateUpdate()
@@ -126,6 +138,7 @@ namespace Week14.Enemy
             line.Renderer.sortingOrder = sortingOrder;
             line.Renderer.SetPosition(0, Vector2.Lerp(line.Start, line.End, startT));
             line.Renderer.SetPosition(1, Vector2.Lerp(line.Start, line.End, endT));
+            RefreshBarrier(line, startT, endT);
         }
 
         private void RefreshDashedLine(LaneLine line)
@@ -137,6 +150,7 @@ namespace Week14.Enemy
             if (length <= 0.01f || line.Progress <= line.TravelProgress || alphaMultiplier <= 0f)
             {
                 DisableDashRenderers(line, 0);
+                RefreshBarrier(line, 0f, 0f);
                 return;
             }
 
@@ -175,6 +189,7 @@ namespace Week14.Enemy
             }
 
             DisableDashRenderers(line, visibleCount);
+            RefreshBarrier(line, line.TravelProgress, line.Progress);
         }
 
         public void ClearAndDestroy()
@@ -190,6 +205,11 @@ namespace Week14.Enemy
                 if (lines[i].Renderer != null)
                 {
                     lines[i].Renderer.enabled = false;
+                }
+
+                if (lines[i].Barrier != null)
+                {
+                    lines[i].Barrier.enabled = false;
                 }
 
                 DisableDashRenderers(lines[i], 0);
@@ -211,7 +231,12 @@ namespace Week14.Enemy
                 renderer.numCapVertices = 3;
                 renderer.numCornerVertices = 2;
                 renderer.material = GetLaneMaterial();
-                lines.Add(new LaneLine(renderer));
+                BoxCollider2D barrier = lineObject.AddComponent<BoxCollider2D>();
+                barrier.isTrigger = true;
+                barrier.enabled = false;
+                lineObject.AddComponent<PlayerOnlyMovementBarrier>();
+
+                lines.Add(new LaneLine(renderer, barrier));
             }
 
             return lines[index];
@@ -252,6 +277,33 @@ namespace Week14.Enemy
             }
         }
 
+        private void RefreshBarrier(LaneLine line, float startT, float endT)
+        {
+            if (line?.Barrier == null)
+            {
+                return;
+            }
+
+            float visibleStart = Mathf.Clamp01(startT);
+            float visibleEnd = Mathf.Clamp01(endT);
+            Vector2 start = Vector2.Lerp(line.Start, line.End, visibleStart);
+            Vector2 end = Vector2.Lerp(line.Start, line.End, visibleEnd);
+            Vector2 delta = end - start;
+            float length = delta.magnitude;
+            bool active = blocksPlayer && alphaMultiplier > 0f && length > 0.01f;
+            line.Barrier.enabled = active;
+            if (!active)
+            {
+                return;
+            }
+
+            Transform barrierTransform = line.Barrier.transform;
+            barrierTransform.position = (start + end) * 0.5f;
+            barrierTransform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
+            line.Barrier.offset = Vector2.zero;
+            line.Barrier.size = new Vector2(length, Mathf.Max(playerBlockingThickness, laneWidth));
+        }
+
         private static Material GetLaneMaterial()
         {
             if (laneMaterial != null)
@@ -266,12 +318,14 @@ namespace Week14.Enemy
 
         private sealed class LaneLine
         {
-            public LaneLine(LineRenderer renderer)
+            public LaneLine(LineRenderer renderer, BoxCollider2D barrier)
             {
                 Renderer = renderer;
+                Barrier = barrier;
             }
 
             public LineRenderer Renderer { get; }
+            public BoxCollider2D Barrier { get; }
             public List<LineRenderer> DashRenderers { get; } = new();
             public Vector2 Start { get; set; }
             public Vector2 End { get; set; }

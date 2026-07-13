@@ -202,7 +202,10 @@ namespace Week14.Enemy
         protected float RushDistance => Mathf.Max(0f, rushDistance);
         protected float RushSpeed => Mathf.Max(0.01f, rushSpeed);
         protected float RestSeconds => Mathf.Max(0f, restSeconds);
+        protected float MaxStartDelaySeconds => GetMaxStartDelaySeconds(startTimings);
         protected IReadOnlyList<StartTiming> StartTimings => startTimings;
+        protected MinionGraphProjectileOriginSpec MinionOrigin => minionOrigin;
+        protected BossGraphEffectSettings Effects => effects;
         internal IReadOnlyList<Volley> SerializedVolleysForGraphCopy => volleys;
 
         public virtual bool TryGetDurationSeconds(BossActionContext context, out float seconds)
@@ -316,17 +319,25 @@ namespace Week14.Enemy
             Vector2 center,
             IReadOnlyList<ExecutionVolley> executionVolleys)
         {
-            if (!standardDrawLaneIndicators || executionVolleys == null)
+            if (executionVolleys == null)
             {
                 return null;
             }
 
             GameObject indicatorObject = new("ConductorScoreLaneRushIndicators");
             ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
+            Color color = standardDrawLaneIndicators
+                ? standardLaneIndicatorColor
+                : new Color(
+                    standardLaneIndicatorColor.r,
+                    standardLaneIndicatorColor.g,
+                    standardLaneIndicatorColor.b,
+                    0f);
             visual.Configure(
-                standardLaneIndicatorColor,
+                color,
                 standardLaneIndicatorWidth,
                 standardLaneIndicatorSortingOrder);
+            visual.ConfigurePlayerBlocking(true);
             visual.ConfigureClearOnExecutionCinematic(true);
 
             int lineIndex = 0;
@@ -584,7 +595,7 @@ namespace Week14.Enemy
             return standardDrawLaneIndicators ? Mathf.Max(0f, standardLaneIndicatorHideSeconds) : 0f;
         }
 
-        protected float EstimateLongestVolleyWaitSeconds(IReadOnlyList<Volley> pool, bool hasNextVolley)
+        protected virtual float EstimateLongestVolleyWaitSeconds(IReadOnlyList<Volley> pool, bool hasNextVolley)
         {
             float movementDuration = EstimateMovementDurationSeconds();
             float longestSeconds = 0f;
@@ -745,11 +756,16 @@ namespace Week14.Enemy
             Vector2 rushDirection = GetRushDirection(volley);
             float movementDuration = CommandScoreLaneRush(minions, patternStartPlayerPosition, volley, rushDirection);
             float maxFireSeconds = GetMaxFireSeconds(volley);
-            float waitSeconds = Mathf.Max(maxFireSeconds, (waitForDuration || hasNextVolley) ? movementDuration : 0f);
+            float waitSeconds = Mathf.Max(
+                maxFireSeconds,
+                (waitForDuration || hasNextVolley) ? movementDuration : 0f);
+            waitSeconds = Mathf.Max(waitSeconds, GetAdditionalVolleyWaitSeconds(volley));
             MinionGraphProjectileFireSpec volleyFireSpec = fireSpec.WithFixedDirection(GetProjectileDirection(volley.Side));
             OrderedParrySequence parrySequence = new(volley.FireTimings, CreateTieLinkSettings());
             bool[] fired = new bool[volley.FireTimings != null ? volley.FireTimings.Count : 0];
             float elapsed = 0f;
+
+            OnVolleyRushStarted(context, host, volley, minions);
 
             while (elapsed < waitSeconds)
             {
@@ -759,12 +775,40 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                TickVolleyRush(context, host, volley, minions, elapsed);
                 FireDueProjectiles(context, host, volleyFireSpec, volley, minions, parrySequence, fired, elapsed);
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
             FireDueProjectiles(context, host, volleyFireSpec, volley, minions, parrySequence, fired, float.PositiveInfinity);
+        }
+
+        protected virtual float GetAdditionalVolleyWaitSeconds(ExecutionVolley volley)
+        {
+            return 0f;
+        }
+
+        protected virtual float GetAdditionalRushStartDelaySeconds(ExecutionVolley volley, int minionNumber)
+        {
+            return 0f;
+        }
+
+        protected virtual void OnVolleyRushStarted(
+            BossActionContext context,
+            IMinionPatternHost host,
+            ExecutionVolley volley,
+            IReadOnlyList<Minion> minions)
+        {
+        }
+
+        protected virtual void TickVolleyRush(
+            BossActionContext context,
+            IMinionPatternHost host,
+            ExecutionVolley volley,
+            IReadOnlyList<Minion> minions,
+            float elapsed)
+        {
         }
 
         protected virtual void OnVolleyProjectileFired(
@@ -809,7 +853,8 @@ namespace Week14.Enemy
                 int minionNumber = GetMinionNumber(minion, i);
                 Vector2 laneCenter = lineCenter + lineAxis * ((i - centeredOffset) * volley.LineSpacing);
                 Vector2 startPosition = laneCenter - rushDirection * (volley.RushDistance * 0.5f);
-                float startDelay = GetStartDelay(volley, minionNumber);
+                float startDelay = GetStartDelay(volley, minionNumber)
+                    + GetAdditionalRushStartDelaySeconds(volley, minionNumber);
                 float duration = minion.CommandScoreLaneRush(
                     startPosition,
                     rushDirection,

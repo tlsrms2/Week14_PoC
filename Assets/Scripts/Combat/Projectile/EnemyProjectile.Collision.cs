@@ -8,6 +8,11 @@ namespace Week14.Combat
     {
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
+            if (other.GetComponent<PlayerOnlyMovementBarrier>() != null)
+            {
+                return;
+            }
+
             if (IsGroundCollider(other))
             {
                 return;

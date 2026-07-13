@@ -9,6 +9,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class MinionConductorScoreLaneRushSpecialAction : MinionConductorScoreLaneRushAction
     {
+        private const float LaneShrinkPushPadding = 0.02f;
+
         private static readonly ConductorScoreLaneSide[] IndicatorSideOrder =
         {
             ConductorScoreLaneSide.Top,
@@ -36,12 +38,28 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float postProjectileClearDelaySeconds = 0.5f;
         [SerializeField] private int laneIndicatorSortingOrder = 66;
         [SerializeField, Min(1)] private int laneIndicatorLineCount = 4;
+        [Header("Lane Shrink")]
+        [SerializeField, Min(1f)] private float initialLaneDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float initialLaneHoldSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float laneShrinkSeconds = 0.6f;
         [Header("Boss Reposition")]
+        [SerializeField] private Vector2 bossTargetPosition;
         [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
         [SerializeField, Min(0.001f)] private float bossOriginArriveDistance = 0.04f;
+        [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
+        [Header("Rush Start Cross Fire")]
+        [SerializeField, BossGraphProjectileName] private string rushStartProjectileName = "Default";
+        [SerializeField, Min(0f)] private float rushStartLineupWaitSeconds = 0.25f;
+        [SerializeField, Min(0f)] private float rushStartFireSeconds = 1f;
+        [SerializeField, Min(0.01f)] private float rushStartFireInterval = 0.15f;
 
         private readonly List<EnemyProjectile> trackedProjectiles = new();
         private ConductorScoreLaneRushIndicatorVisual activeLaneIndicators;
+        private BossProjectileSettings rushStartProjectile;
+        private MinionGraphProjectileFireSpec rushStartFireSpec;
+        private float nextRushStartFireSeconds;
+
+        internal IReadOnlyList<Volley> SerializedSpecialVolleysForGraphCopy => specialVolleys;
 
         public override bool TryGetDurationSeconds(BossActionContext context, out float seconds)
         {
@@ -54,13 +72,17 @@ namespace Week14.Enemy
 
             float laneIndicatorRevealSeconds = GetLaneIndicatorRevealDuration();
             float volleySequenceSeconds = EstimateVolleySequenceDuration(specialVolleys, volleyCount);
-            seconds = EstimateBossOriginMoveSeconds(context)
-                + WindupSeconds
-                + Mathf.Max(MoveToStartSeconds, laneIndicatorRevealSeconds)
+            float trackedProjectileRemainingSeconds = Mathf.Max(
+                EstimateTrackedProjectileRemainingSeconds(context, specialVolleys, volleyCount, volleySequenceSeconds),
+                EstimateRushStartProjectileRemainingSeconds(context));
+            float patternSeconds = WindupSeconds
+                + laneIndicatorRevealSeconds
+                + GetLaneShrinkPreludeSeconds()
                 + volleySequenceSeconds
-                + EstimateTrackedProjectileRemainingSeconds(context, specialVolleys, volleyCount, volleySequenceSeconds)
+                + trackedProjectileRemainingSeconds
                 + Mathf.Max(0f, postProjectileClearDelaySeconds)
                 + GetLaneIndicatorHideDuration();
+            seconds = Mathf.Max(EstimateBossTargetMoveSeconds(context), patternSeconds);
             return seconds > 0f;
         }
 
@@ -78,24 +100,27 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            yield return MoveBossToWorldOrigin(context);
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
+            Coroutine bossMoveRoutine = context.Boss.StartCoroutine(MoveBossToTargetPosition(context));
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
-                float prepositionSeconds = CommandMinionsToFirstVolleyStart(host, patternStartPlayerPosition, executionVolleys[0]);
                 yield return BeforeExecuteVolleys(context, patternStartPlayerPosition);
-                float remainingPrepositionSeconds = prepositionSeconds - GetLaneIndicatorRevealDuration();
-                if (remainingPrepositionSeconds > 0f)
-                {
-                    yield return context.WaitSeconds(remainingPrepositionSeconds);
-                }
-
                 yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
                 yield return AfterExecuteVolleys(context, patternStartPlayerPosition);
+                if (bossMoveRoutine != null)
+                {
+                    yield return bossMoveRoutine;
+                }
             }
             finally
             {
+                if (bossMoveRoutine != null && context?.Boss != null)
+                {
+                    context.Boss.StopCoroutine(bossMoveRoutine);
+                }
+
+                context?.Stop();
                 ClearActiveLaneIndicators();
                 ClearTrackedProjectiles();
             }
@@ -105,8 +130,12 @@ namespace Week14.Enemy
         {
             ClearTrackedProjectiles();
             ClearActiveLaneIndicators();
-            activeLaneIndicators = CreateLaneIndicators(patternStartPlayerPosition);
+            activeLaneIndicators = CreateLaneIndicators(
+                patternStartPlayerPosition,
+                GetInitialLaneDistance());
             yield return RevealLaneIndicators(context, activeLaneIndicators);
+            yield return context.WaitSeconds(initialLaneHoldSeconds);
+            yield return ShrinkLaneIndicators(context, activeLaneIndicators, patternStartPlayerPosition);
         }
 
         protected override IEnumerator AfterExecuteVolleys(BossActionContext context, Vector2 patternStartPlayerPosition)
@@ -125,10 +154,100 @@ namespace Week14.Enemy
             BossProjectileSettings projectile,
             EnemyProjectile spawned)
         {
-            if (spawned != null)
+            TrackProjectile(spawned);
+        }
+
+        protected override float GetAdditionalVolleyWaitSeconds(ExecutionVolley volley)
+        {
+            return GetRushStartCrossFireEndSeconds(volley);
+        }
+
+        protected override float GetAdditionalRushStartDelaySeconds(ExecutionVolley volley, int minionNumber)
+        {
+            return Mathf.Max(0f, rushStartLineupWaitSeconds);
+        }
+
+        protected override float EstimateLongestVolleyWaitSeconds(IReadOnlyList<Volley> pool, bool hasNextVolley)
+        {
+            float movementSeconds = MoveToStartSeconds
+                + MaxStartDelaySeconds
+                + Mathf.Max(0f, rushStartLineupWaitSeconds)
+                + (RushDistance / RushSpeed);
+            return Mathf.Max(
+                base.EstimateLongestVolleyWaitSeconds(pool, hasNextVolley),
+                Mathf.Max(movementSeconds, GetRushStartCrossFireEndSeconds(null)));
+        }
+
+        protected override void OnVolleyRushStarted(
+            BossActionContext context,
+            IMinionPatternHost host,
+            ExecutionVolley volley,
+            IReadOnlyList<Minion> minions)
+        {
+            rushStartProjectile = host?.ResolveMinionProjectileSettings(rushStartProjectileName);
+            rushStartFireSpec = new MinionGraphProjectileFireSpec(
+                    MinionOrigin,
+                    null,
+                    Effects,
+                    context)
+                .WithFixedDirection(GetRushStartCrossFireDirection(volley));
+            nextRushStartFireSeconds = GetRushStartCrossFireStartSeconds(volley);
+        }
+
+        private static Vector2 GetRushStartCrossFireDirection(ExecutionVolley volley)
+        {
+            Vector2 towardCenter = -GetSideOffset(volley.Side);
+            return IsHorizontalRush(volley.Side)
+                ? new Vector2(0f, towardCenter.y)
+                : new Vector2(towardCenter.x, 0f);
+        }
+
+        private float GetRushStartCrossFireStartSeconds(ExecutionVolley volley)
+        {
+            float moveToStartSeconds = volley != null ? volley.MoveToStartSeconds : MoveToStartSeconds;
+            return moveToStartSeconds
+                + MaxStartDelaySeconds
+                + Mathf.Max(0f, rushStartLineupWaitSeconds);
+        }
+
+        private float GetRushStartCrossFireEndSeconds(ExecutionVolley volley)
+        {
+            return GetRushStartCrossFireStartSeconds(volley) + Mathf.Max(0f, rushStartFireSeconds);
+        }
+
+        protected override void TickVolleyRush(
+            BossActionContext context,
+            IMinionPatternHost host,
+            ExecutionVolley volley,
+            IReadOnlyList<Minion> minions,
+            float elapsed)
+        {
+            if (rushStartProjectile == null
+                || rushStartFireSeconds <= 0f
+                || rushStartFireInterval <= 0f
+                || minions == null)
             {
-                trackedProjectiles.Add(spawned);
-                spawned.Destroyed += HandleTrackedProjectileDestroyed;
+                return;
+            }
+
+            float fireEndSeconds = GetRushStartCrossFireEndSeconds(volley);
+            while (elapsed >= nextRushStartFireSeconds
+                && nextRushStartFireSeconds < fireEndSeconds)
+            {
+                for (int i = 0; i < minions.Count; i++)
+                {
+                    Minion minion = minions[i];
+                    if (minion == null || minion.Health == null || minion.Health.IsDead)
+                    {
+                        continue;
+                    }
+
+                    EnemyProjectile spawned = minion.FireOnce(rushStartProjectile, rushStartFireSpec, i);
+                    spawned?.ConfigurePathIndicatorDelayedUntilLaunch(true);
+                    TrackProjectile(spawned);
+                }
+
+                nextRushStartFireSeconds += rushStartFireInterval;
             }
         }
 
@@ -137,17 +256,19 @@ namespace Week14.Enemy
             return BuildExecutionVolleysFromPool(specialVolleys, ExecutionOrder);
         }
 
-        private IEnumerator MoveBossToWorldOrigin(BossActionContext context)
+        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
         {
             if (context?.Boss == null || context.Boss.Body == null)
             {
                 yield break;
             }
 
-            Vector2 target = Vector2.zero;
+            Vector2 target = bossTargetPosition;
             float arriveDistance = Mathf.Max(0.001f, bossOriginArriveDistance);
             float arriveDistanceSqr = arriveDistance * arriveDistance;
-            while (((Vector2)context.Boss.Body.position - target).sqrMagnitude > arriveDistanceSqr)
+            float elapsed = 0f;
+            while (((Vector2)context.Boss.Body.position - target).sqrMagnitude > arriveDistanceSqr
+                && elapsed < Mathf.Max(0.01f, bossMoveTimeoutSeconds))
             {
                 if (context.IsExecutionPaused)
                 {
@@ -160,13 +281,14 @@ namespace Week14.Enemy
                 Vector2 toTarget = target - current;
                 float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
                 context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
             context.Boss.Stop();
         }
 
-        private float EstimateBossOriginMoveSeconds(BossActionContext context)
+        private float EstimateBossTargetMoveSeconds(BossActionContext context)
         {
             if (context?.Boss == null)
             {
@@ -176,53 +298,12 @@ namespace Week14.Enemy
             Vector2 current = context.Boss.Body != null
                 ? context.Boss.Body.position
                 : context.Boss.transform.position;
-            float distance = Mathf.Max(0f, current.magnitude - Mathf.Max(0.001f, bossOriginArriveDistance));
+            float distance = Mathf.Max(
+                0f,
+                Vector2.Distance(current, bossTargetPosition) - Mathf.Max(0.001f, bossOriginArriveDistance));
             float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
-            return speed > 0f ? distance / speed : 0f;
-        }
-
-        private float CommandMinionsToFirstVolleyStart(
-            IMinionPatternHost host,
-            Vector2 center,
-            ExecutionVolley firstVolley)
-        {
-            if (host == null || firstVolley == null)
-            {
-                return 0f;
-            }
-
-            List<Minion> minions = GetOrderedMinions(host.GetControlledMinionsForGraph());
-            if (minions.Count == 0)
-            {
-                return 0f;
-            }
-
-            float maxDuration = 0f;
-            Vector2 rushDirection = GetRushDirection(firstVolley.Side, firstVolley.RushPositiveDirection);
-            Vector2 lineCenter = center + GetSideOffset(firstVolley.Side) * firstVolley.LineDistanceFromPlayer;
-            Vector2 lineAxis = IsHorizontalRush(firstVolley.Side) ? Vector2.up : Vector2.right;
-            float centeredOffset = (minions.Count - 1) * 0.5f;
-            for (int i = 0; i < minions.Count; i++)
-            {
-                Minion minion = minions[i];
-                if (minion == null)
-                {
-                    continue;
-                }
-
-                Vector2 laneCenter = lineCenter + lineAxis * ((i - centeredOffset) * firstVolley.LineSpacing);
-                Vector2 startPosition = laneCenter - rushDirection * (firstVolley.RushDistance * 0.5f);
-                float duration = minion.CommandScoreLaneRush(
-                    startPosition,
-                    rushDirection,
-                    MoveToStartSeconds,
-                    0f,
-                    0f,
-                    firstVolley.RushSpeed);
-                maxDuration = Mathf.Max(maxDuration, duration);
-            }
-
-            return maxDuration;
+            float estimate = speed > 0f ? distance / speed : 0f;
+            return Mathf.Min(estimate, Mathf.Max(0.01f, bossMoveTimeoutSeconds));
         }
 
         private float GetLaneIndicatorRevealDuration()
@@ -239,6 +320,17 @@ namespace Week14.Enemy
         private float GetLaneIndicatorHideDuration()
         {
             return drawLaneIndicators ? Mathf.Max(0f, laneIndicatorHideSeconds) : 0f;
+        }
+
+        private float GetLaneShrinkPreludeSeconds()
+        {
+            return Mathf.Max(0f, initialLaneHoldSeconds)
+                + Mathf.Max(0f, laneShrinkSeconds);
+        }
+
+        private float GetInitialLaneDistance()
+        {
+            return LineDistanceFromPlayer * Mathf.Max(1f, initialLaneDistanceMultiplier);
         }
 
         private float EstimateTrackedProjectileRemainingSeconds(
@@ -311,42 +403,33 @@ namespace Week14.Enemy
             return Mathf.Max(0f, maxRemainingSeconds);
         }
 
-        private static List<Minion> GetOrderedMinions(IReadOnlyList<Minion> source)
+        private float EstimateRushStartProjectileRemainingSeconds(BossActionContext context)
         {
-            List<Minion> results = new();
-            if (source == null)
+            if (rushStartFireSeconds <= 0f
+                || rushStartFireInterval <= 0f
+                || !MinionGraphActionHost.TryGet(context, out IMinionPatternHost host))
             {
-                return results;
+                return 0f;
             }
 
-            for (int i = 0; i < source.Count; i++)
+            BossProjectileSettings projectile = host.ResolveMinionProjectileSettings(rushStartProjectileName);
+            if (projectile == null)
             {
-                Minion minion = source[i];
-                if (minion != null && minion.Health != null && !minion.Health.IsDead)
-                {
-                    results.Add(minion);
-                }
+                return 0f;
             }
 
-            results.Sort((a, b) => GetSortNumber(a).CompareTo(GetSortNumber(b)));
-            return results;
+            return Mathf.Max(0f, projectile.ChargeSeconds) + Mathf.Max(0f, projectile.Lifetime);
         }
 
-        private static int GetSortNumber(Minion minion)
+        private ConductorScoreLaneRushIndicatorVisual CreateLaneIndicators(Vector2 center, float lineDistance)
         {
-            return minion != null && minion.HasOwnerSlotNumber ? minion.OwnerSlotNumber : int.MaxValue;
-        }
-
-        private ConductorScoreLaneRushIndicatorVisual CreateLaneIndicators(Vector2 center)
-        {
-            if (!drawLaneIndicators)
-            {
-                return null;
-            }
-
             GameObject indicatorObject = new("ConductorScoreLaneRushSpecialIndicators");
             ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
-            visual.Configure(laneIndicatorColor, laneIndicatorWidth, laneIndicatorSortingOrder);
+            Color color = drawLaneIndicators
+                ? laneIndicatorColor
+                : new Color(laneIndicatorColor.r, laneIndicatorColor.g, laneIndicatorColor.b, 0f);
+            visual.Configure(color, laneIndicatorWidth, laneIndicatorSortingOrder);
+            visual.ConfigurePlayerBlocking(true);
             visual.ConfigureClearOnExecutionCinematic(true);
 
             int lineIndex = 0;
@@ -356,13 +439,293 @@ namespace Week14.Enemy
                 int lineCount = Mathf.Max(1, laneIndicatorLineCount);
                 for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
                 {
-                    BuildLaneIndicatorLine(center, side, laneIndex, lineCount, out Vector2 start, out Vector2 end);
+                    BuildLaneIndicatorLine(
+                        center,
+                        side,
+                        laneIndex,
+                        lineCount,
+                        lineDistance,
+                        out Vector2 start,
+                        out Vector2 end);
                     visual.SetLane(lineIndex, start, end);
                     lineIndex++;
                 }
             }
 
             return visual;
+        }
+
+        private IEnumerator ShrinkLaneIndicators(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual,
+            Vector2 center)
+        {
+            if (visual == null)
+            {
+                yield break;
+            }
+
+            float initialDistance = GetInitialLaneDistance();
+            float finalDistance = LineDistanceFromPlayer;
+            float duration = Mathf.Max(0f, laneShrinkSeconds);
+            if (duration <= 0f)
+            {
+                UpdateLaneIndicatorPositions(visual, center, finalDistance);
+                PushPlayerWithShrinkingLanes(context, center, initialDistance, finalDistance);
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float previousDistance = initialDistance;
+            while (elapsed < duration)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / duration);
+                float distance = Mathf.Lerp(initialDistance, finalDistance, progress);
+                UpdateLaneIndicatorPositions(visual, center, distance);
+                PushPlayerWithShrinkingLanes(context, center, previousDistance, distance);
+                previousDistance = distance;
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            UpdateLaneIndicatorPositions(visual, center, finalDistance);
+            PushPlayerWithShrinkingLanes(context, center, previousDistance, finalDistance);
+        }
+
+        private void PushPlayerWithShrinkingLanes(
+            BossActionContext context,
+            Vector2 center,
+            float previousDistance,
+            float currentDistance)
+        {
+            if (currentDistance >= previousDistance
+                || context?.Boss?.Player == null
+                || !TryGetPlayerBodyAndColliders(context.Boss.Player, out Rigidbody2D body, out Collider2D[] colliders))
+            {
+                return;
+            }
+
+            int lineCount = Mathf.Max(1, laneIndicatorLineCount);
+            for (int sideIndex = 0; sideIndex < IndicatorSideOrder.Length; sideIndex++)
+            {
+                ConductorScoreLaneSide side = IndicatorSideOrder[sideIndex];
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    if (!TryGetPlayerBounds(colliders, out Bounds playerBounds))
+                    {
+                        return;
+                    }
+
+                    BuildLaneIndicatorLine(
+                        center,
+                        side,
+                        laneIndex,
+                        lineCount,
+                        previousDistance,
+                        out Vector2 previousStart,
+                        out Vector2 previousEnd);
+                    BuildLaneIndicatorLine(
+                        center,
+                        side,
+                        laneIndex,
+                        lineCount,
+                        currentDistance,
+                        out Vector2 currentStart,
+                        out Vector2 currentEnd);
+                    if (!TryGetLaneShrinkPushDisplacement(
+                            side,
+                            playerBounds,
+                            previousStart,
+                            previousEnd,
+                            currentStart,
+                            currentEnd,
+                            out Vector2 displacement))
+                    {
+                        continue;
+                    }
+
+                    Vector2 currentPosition = body.position;
+                    Vector2 targetPosition = GroundMovementConstraint.ClampStep(
+                        currentPosition,
+                        currentPosition + displacement,
+                        colliders);
+                    body.position = targetPosition;
+                    RemovePlayerOutwardVelocity(body, GetSideOffset(side));
+                }
+            }
+        }
+
+        private static bool TryGetPlayerBodyAndColliders(
+            Transform player,
+            out Rigidbody2D body,
+            out Collider2D[] colliders)
+        {
+            body = player != null ? player.GetComponentInParent<Rigidbody2D>() : null;
+            if (body == null && player != null)
+            {
+                body = player.GetComponentInChildren<Rigidbody2D>();
+            }
+
+            colliders = body != null ? body.GetComponentsInChildren<Collider2D>() : null;
+            return body != null && colliders != null && colliders.Length > 0;
+        }
+
+        private static bool TryGetPlayerBounds(Collider2D[] colliders, out Bounds bounds)
+        {
+            bounds = default;
+            bool hasBounds = false;
+            if (colliders == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    bounds = collider.bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(collider.bounds);
+                }
+            }
+
+            return hasBounds;
+        }
+
+        private static bool TryGetLaneShrinkPushDisplacement(
+            ConductorScoreLaneSide side,
+            Bounds playerBounds,
+            Vector2 previousStart,
+            Vector2 previousEnd,
+            Vector2 currentStart,
+            Vector2 currentEnd,
+            out Vector2 displacement)
+        {
+            displacement = Vector2.zero;
+            if (IsHorizontalRush(side))
+            {
+                float segmentMinX = Mathf.Min(currentStart.x, currentEnd.x);
+                float segmentMaxX = Mathf.Max(currentStart.x, currentEnd.x);
+                if (playerBounds.max.x < segmentMinX || playerBounds.min.x > segmentMaxX)
+                {
+                    return false;
+                }
+
+                float previousY = previousStart.y;
+                float currentY = currentStart.y;
+                if (side == ConductorScoreLaneSide.Top)
+                {
+                    if (playerBounds.max.y <= currentY - LaneShrinkPushPadding
+                        || playerBounds.min.y > previousY + LaneShrinkPushPadding)
+                    {
+                        return false;
+                    }
+
+                    displacement.y = currentY - LaneShrinkPushPadding - playerBounds.max.y;
+                    return displacement.y < 0f;
+                }
+
+                if (playerBounds.min.y >= currentY + LaneShrinkPushPadding
+                    || playerBounds.max.y < previousY - LaneShrinkPushPadding)
+                {
+                    return false;
+                }
+
+                displacement.y = currentY + LaneShrinkPushPadding - playerBounds.min.y;
+                return displacement.y > 0f;
+            }
+
+            float segmentMinY = Mathf.Min(currentStart.y, currentEnd.y);
+            float segmentMaxY = Mathf.Max(currentStart.y, currentEnd.y);
+            if (playerBounds.max.y < segmentMinY || playerBounds.min.y > segmentMaxY)
+            {
+                return false;
+            }
+
+            float previousX = previousStart.x;
+            float currentX = currentStart.x;
+            if (side == ConductorScoreLaneSide.Left)
+            {
+                if (playerBounds.min.x >= currentX + LaneShrinkPushPadding
+                    || playerBounds.max.x < previousX - LaneShrinkPushPadding)
+                {
+                    return false;
+                }
+
+                displacement.x = currentX + LaneShrinkPushPadding - playerBounds.min.x;
+                return displacement.x > 0f;
+            }
+
+            if (playerBounds.max.x <= currentX - LaneShrinkPushPadding
+                || playerBounds.min.x > previousX + LaneShrinkPushPadding)
+            {
+                return false;
+            }
+
+            displacement.x = currentX - LaneShrinkPushPadding - playerBounds.max.x;
+            return displacement.x < 0f;
+        }
+
+        private static void RemovePlayerOutwardVelocity(Rigidbody2D body, Vector2 outwardDirection)
+        {
+            if (body == null || outwardDirection.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            Vector2 velocity = body.linearVelocity;
+            float outwardSpeed = Vector2.Dot(velocity, outwardDirection);
+            if (outwardSpeed > 0f)
+            {
+                body.linearVelocity = velocity - outwardDirection * outwardSpeed;
+            }
+        }
+
+        private void UpdateLaneIndicatorPositions(
+            ConductorScoreLaneRushIndicatorVisual visual,
+            Vector2 center,
+            float lineDistance)
+        {
+            if (visual == null)
+            {
+                return;
+            }
+
+            int lineIndex = 0;
+            int lineCount = Mathf.Max(1, laneIndicatorLineCount);
+            for (int i = 0; i < IndicatorSideOrder.Length; i++)
+            {
+                ConductorScoreLaneSide side = IndicatorSideOrder[i];
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    BuildLaneIndicatorLine(
+                        center,
+                        side,
+                        laneIndex,
+                        lineCount,
+                        lineDistance,
+                        out Vector2 start,
+                        out Vector2 end);
+                    visual.SetLane(lineIndex, start, end);
+                    visual.SetProgress(lineIndex, 1f);
+                    lineIndex++;
+                }
+            }
         }
 
         private IEnumerator RevealLaneIndicators(BossActionContext context, ConductorScoreLaneRushIndicatorVisual visual)
@@ -537,6 +900,17 @@ namespace Week14.Enemy
             trackedProjectiles.Remove(projectile);
         }
 
+        private void TrackProjectile(EnemyProjectile projectile)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            trackedProjectiles.Add(projectile);
+            projectile.Destroyed += HandleTrackedProjectileDestroyed;
+        }
+
         private void ClearTrackedProjectiles()
         {
             for (int i = 0; i < trackedProjectiles.Count; i++)
@@ -555,13 +929,14 @@ namespace Week14.Enemy
             ConductorScoreLaneSide side,
             int laneIndex,
             int laneCount,
+            float lineDistance,
             out Vector2 start,
             out Vector2 end)
         {
             bool positiveDirection = GetFixedRushPositiveDirection(side);
             Vector2 rushDirection = GetRushDirection(side, positiveDirection);
             Vector2 lineAxis = IsHorizontalRush(side) ? Vector2.up : Vector2.right;
-            Vector2 lineCenter = center + GetSideOffset(side) * LineDistanceFromPlayer;
+            Vector2 lineCenter = center + GetSideOffset(side) * Mathf.Max(0.1f, lineDistance);
             float centeredOffset = (Mathf.Max(1, laneCount) - 1) * 0.5f;
             Vector2 laneCenter = lineCenter + lineAxis * ((laneIndex - centeredOffset) * LineSpacing);
             start = laneCenter - rushDirection * (RushDistance * 0.5f);

@@ -70,6 +70,11 @@ namespace Week14.Enemy
 
         public static BossGraphNodeKind GetDefaultNodeKind(Type actionType)
         {
+            if (IsConductorAction(actionType))
+            {
+                return BossGraphNodeKind.Attack;
+            }
+
             if (IsMinionAction(actionType))
             {
                 return BossGraphNodeKind.Minion;
@@ -101,13 +106,23 @@ namespace Week14.Enemy
                 || actionType == typeof(AimBossChildAtPlayerAction)
                 || actionType == typeof(CustomEventAction)
                 || actionType == typeof(SpawnPrefabAction)
-                || actionType == typeof(PlaySfxAction)
-                || actionType == typeof(ConductorConductingCueAction))
+                || actionType == typeof(PlaySfxAction))
             {
                 return BossGraphNodeKind.Utility;
             }
 
             return BossGraphNodeKind.Attack;
+        }
+
+        public static bool IsConductorAction(Type actionType)
+        {
+            if (actionType == null || !typeof(BossAction).IsAssignableFrom(actionType))
+            {
+                return false;
+            }
+
+            return actionType.Name.StartsWith("Conductor", StringComparison.Ordinal)
+                || actionType.Name.StartsWith("MinionConductor", StringComparison.Ordinal);
         }
 
         private static bool IsMinionAction(Type actionType)
@@ -117,8 +132,8 @@ namespace Week14.Enemy
                 return false;
             }
 
-            return actionType.Name.StartsWith("Minion", StringComparison.Ordinal)
-                || actionType == typeof(ConductorSpawnTurretsAction);
+            return !IsConductorAction(actionType)
+                && actionType.Name.StartsWith("Minion", StringComparison.Ordinal);
         }
 
         private bool TryGetConfiguredNodeKind(Type actionType, out BossGraphNodeKind nodeKind)

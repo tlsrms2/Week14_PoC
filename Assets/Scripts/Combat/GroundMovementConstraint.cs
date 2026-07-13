@@ -3,6 +3,11 @@ using UnityEngine.Tilemaps;
 
 namespace Week14.Combat
 {
+    [AddComponentMenu("")]
+    public sealed class PlayerOnlyMovementBarrier : MonoBehaviour
+    {
+    }
+
     public static class GroundMovementConstraint
     {
         private const string GroundLayerName = "Ground";
@@ -11,6 +16,7 @@ namespace Week14.Combat
         private const float WallCastSkin = 0.01f;
         private static Tilemap[] groundTilemaps;
         private static readonly RaycastHit2D[] wallCastHits = new RaycastHit2D[8];
+        private static readonly RaycastHit2D[] playerBarrierCastHits = new RaycastHit2D[16];
         private static int cachedGroundLayer = -1;
 
         public static Vector2 ClampVelocity(Rigidbody2D body, Vector2 velocity)
@@ -69,6 +75,46 @@ namespace Week14.Combat
                 if (intoWallSpeed < 0f)
                 {
                     constrainedVelocity -= hit.normal * intoWallSpeed;
+                }
+            }
+
+            return constrainedVelocity;
+        }
+
+        public static Vector2 ClampVelocityAgainstPlayerOnlyBarriers(Rigidbody2D body, Vector2 velocity)
+        {
+            if (body == null || velocity.sqrMagnitude <= 0.0001f)
+            {
+                return velocity;
+            }
+
+            float stepSeconds = Mathf.Max(Time.fixedDeltaTime, Time.deltaTime);
+            float castDistance = velocity.magnitude * Mathf.Max(0f, stepSeconds);
+            if (castDistance <= 0f)
+            {
+                return velocity;
+            }
+
+            ContactFilter2D filter = new();
+            filter.useTriggers = true;
+            int hitCount = body.Cast(
+                velocity.normalized,
+                filter,
+                playerBarrierCastHits,
+                castDistance + WallCastSkin);
+            Vector2 constrainedVelocity = velocity;
+            for (int i = 0; i < hitCount; i++)
+            {
+                RaycastHit2D hit = playerBarrierCastHits[i];
+                if (hit.collider == null || hit.collider.GetComponent<PlayerOnlyMovementBarrier>() == null)
+                {
+                    continue;
+                }
+
+                float intoBarrierSpeed = Vector2.Dot(constrainedVelocity, hit.normal);
+                if (intoBarrierSpeed < 0f)
+                {
+                    constrainedVelocity -= hit.normal * intoBarrierSpeed;
                 }
             }
 
