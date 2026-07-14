@@ -1,10 +1,25 @@
 fileFormatVersion: 2
-guid: ad57ae01bb5f17a46934f8e02b075af0
+guid: 85c8d57a369036648b15c8157402d654
 TextureImporter:
   internalIDToNameTable:
   - first:
       213: 4483148089180215978
     second: boss-05-idle-1w_0
+  - first:
+      213: -1944328914490386518
+    second: boss-05-idle-1w_1
+  - first:
+      213: 7942803797519835957
+    second: boss-05-idle-1w_2
+  - first:
+      213: 396980146370586151
+    second: boss-05-idle-1w_3
+  - first:
+      213: 8023302992080208570
+    second: boss-05-idle-1w_4
+  - first:
+      213: -5588235351528496397
+    second: boss-05-idle-1w_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +115,73 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boss-05-idle-1w_0
+      name: boss-05-1w-Idle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a7dc07bf5a1f0649a19b8aa210647dd
+      internalID: -696094776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-05-1w-Idle_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ac5025d682fb4a4380f259259426a32
+      internalID: -34705450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-05-1w-Idle_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82f0a7d09e495974dbe46e28a308052f
+      internalID: 2021442346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-05-1w-Idle_3
       rect:
         serializedVersion: 2
         x: 0
@@ -113,10 +194,54 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: aaade033f67573e30800000000000000
-      internalID: 4483148089180215978
+      spriteID: df32b78d06a67b84a86188befdf0050a
+      internalID: 723212924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-05-1w-Idle_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 381404ef10a490448a54051eb7d46efd
+      internalID: -1653517067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-05-1w-Idle_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d6c1e56d215e5c41a825f657c86f3a5
+      internalID: 1718498320
       vertices: []
       indices: 
       edges: []
@@ -125,7 +250,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e0253ffaa2e74624983b4544f9f8f0f3
+    spriteID: 540beca7753b495418acd872a5864a98
     internalID: 0
     vertices: []
     indices: 
@@ -137,7 +262,12 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      boss-05-idle-1w_0: 4483148089180215978
+      boss-05-1w-Idle_0: -696094776
+      boss-05-1w-Idle_1: -34705450
+      boss-05-1w-Idle_2: 2021442346
+      boss-05-1w-Idle_3: 723212924
+      boss-05-1w-Idle_4: -1653517067
+      boss-05-1w-Idle_5: 1718498320
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
