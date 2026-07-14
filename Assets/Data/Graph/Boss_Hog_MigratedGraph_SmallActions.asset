@@ -2895,3 +2895,27 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.ConductorSpawnTurretsAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerChargeDashAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerSnipingFireAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerSequentialSweepFireAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerFireGlitchProjectileAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerFireWireBranchAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerWeaponWireOrbitAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConductorDefenseArcVolleyAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConductorDiamondCollapseAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0

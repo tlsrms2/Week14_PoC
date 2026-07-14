@@ -115,6 +115,7 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Attached Projectiles", typeof(FireAttachedProjectilesAction), () => new FireAttachedProjectilesAction()),
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
         new("Projectile/Fire Player Circle", typeof(FirePlayerCircleProjectilesAction), () => new FirePlayerCircleProjectilesAction()),
+        new("Projectile/Spawn Parryable Bomb", typeof(SpawnParryableBombAction), () => new SpawnParryableBombAction()),
         new("Arsonist/Fire Circle Orbit Attack", typeof(ArsonistCircleOrbitAttackAction), () => new ArsonistCircleOrbitAttackAction()),
         new("Arsonist/Fire Character", typeof(ArsonistFireCharacterProjectileAction), () => new ArsonistFireCharacterProjectileAction()),
         new("Arsonist/Set Sprinkler Active", typeof(ArsonistSetSprinklerActiveAction), () => new ArsonistSetSprinklerActiveAction()),
