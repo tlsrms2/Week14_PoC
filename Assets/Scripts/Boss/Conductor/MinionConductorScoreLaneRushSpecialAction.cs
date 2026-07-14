@@ -38,14 +38,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float postProjectileClearDelaySeconds = 0.5f;
         [SerializeField] private int laneIndicatorSortingOrder = 66;
         [SerializeField, Min(1)] private int laneIndicatorLineCount = 4;
-        [Header("Lane Shrink")]
-        [SerializeField, Min(1f)] private float initialLaneDistanceMultiplier = 1.5f;
-        [SerializeField, Min(0f)] private float initialLaneHoldSeconds = 0.2f;
-        [SerializeField, Min(0f)] private float laneShrinkSeconds = 0.6f;
-        [Header("Lane Creation Wander")]
-        [SerializeField, Min(0f)] private float laneCreationWanderSpeed = 3.2f;
-        [SerializeField, Min(0.1f)] private float laneCreationWanderRadius = 2.8f;
-        [SerializeField, Min(0.1f)] private float laneCreationWanderRetargetSeconds = 1.5f;
         [Header("Boss Reposition")]
         [SerializeField] private Vector2 bossTargetPosition;
         [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
@@ -79,7 +71,7 @@ namespace Week14.Enemy
                 EstimateRushStartProjectileRemainingSeconds(context));
             float patternSeconds = WindupSeconds
                 + laneIndicatorRevealSeconds
-                + GetLaneShrinkPreludeSeconds()
+                + GetInitialLaneShrinkPreludeSeconds()
                 + volleySequenceSeconds
                 + trackedProjectileRemainingSeconds
                 + Mathf.Max(0f, postProjectileClearDelaySeconds)
@@ -107,7 +99,9 @@ namespace Week14.Enemy
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
-                CommandLaneCreationWander(host.GetControlledMinionsForGraph());
+                CommandLaneCreationWander(
+                    host.GetControlledMinionsForGraph(),
+                    GetLaneIndicatorRevealDuration());
                 yield return BeforeExecuteVolleys(context, patternStartPlayerPosition);
                 yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
                 yield return AfterExecuteVolleys(context, patternStartPlayerPosition);
@@ -135,9 +129,9 @@ namespace Week14.Enemy
             ClearActiveLaneIndicators();
             activeLaneIndicators = CreateLaneIndicators(
                 patternStartPlayerPosition,
-                GetInitialLaneDistance());
+                InitialLaneDistance);
             yield return RevealLaneIndicators(context, activeLaneIndicators);
-            yield return context.WaitSeconds(initialLaneHoldSeconds);
+            yield return context.WaitSeconds(InitialLaneHoldSeconds);
             yield return ShrinkLaneIndicators(context, activeLaneIndicators, patternStartPlayerPosition);
         }
 
@@ -325,35 +319,6 @@ namespace Week14.Enemy
             return drawLaneIndicators ? Mathf.Max(0f, laneIndicatorHideSeconds) : 0f;
         }
 
-        private float GetLaneShrinkPreludeSeconds()
-        {
-            return Mathf.Max(0f, initialLaneHoldSeconds)
-                + Mathf.Max(0f, laneShrinkSeconds);
-        }
-
-        private void CommandLaneCreationWander(IReadOnlyList<Minion> minions)
-        {
-            float duration = GetLaneIndicatorRevealDuration() + GetLaneShrinkPreludeSeconds();
-            if (duration <= 0f || minions == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < minions.Count; i++)
-            {
-                minions[i]?.CommandWander(
-                    duration,
-                    laneCreationWanderSpeed,
-                    laneCreationWanderRadius,
-                    laneCreationWanderRetargetSeconds);
-            }
-        }
-
-        private float GetInitialLaneDistance()
-        {
-            return LineDistanceFromPlayer * Mathf.Max(1f, initialLaneDistanceMultiplier);
-        }
-
         private float EstimateTrackedProjectileRemainingSeconds(
             BossActionContext context,
             IReadOnlyList<Volley> pool,
@@ -486,9 +451,9 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            float initialDistance = GetInitialLaneDistance();
+            float initialDistance = InitialLaneDistance;
             float finalDistance = LineDistanceFromPlayer;
-            float duration = Mathf.Max(0f, laneShrinkSeconds);
+            float duration = LaneShrinkSeconds;
             if (duration <= 0f)
             {
                 UpdateLaneIndicatorPositions(visual, center, finalDistance);

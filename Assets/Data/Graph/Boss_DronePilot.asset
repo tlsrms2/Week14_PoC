@@ -1078,7 +1078,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703785
     sequences: []
-    editorPosition: {x: 1693, y: 784}
+    editorPosition: {x: 1692, y: 784}
   - nodeId: Conducting Cue13
     nodeGuid: 86a382294aed4564a5ae3210d8705494
     nodeKind: 0
@@ -5215,6 +5215,12 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+        initialLaneDistanceMultiplier: 1.5
+        initialLaneHoldSeconds: 0.2
+        laneShrinkSeconds: 0.6
+        laneCreationWanderSpeed: 3.2
+        laneCreationWanderRadius: 2.8
+        laneCreationWanderRetargetSeconds: 1.5
         standardDrawLaneIndicators: 1
         standardLaneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         standardLaneIndicatorWidth: 0.035
@@ -6550,6 +6556,12 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
+        initialLaneDistanceMultiplier: 2.5
+        initialLaneHoldSeconds: 0.2
+        laneShrinkSeconds: 2
+        laneCreationWanderSpeed: 3.2
+        laneCreationWanderRadius: 2.8
+        laneCreationWanderRetargetSeconds: 1.5
         standardDrawLaneIndicators: 1
         standardLaneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         standardLaneIndicatorWidth: 0.035
@@ -7165,6 +7177,12 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
+        initialLaneDistanceMultiplier: 2.5
+        initialLaneHoldSeconds: 0.2
+        laneShrinkSeconds: 2
+        laneCreationWanderSpeed: 3.2
+        laneCreationWanderRadius: 2.8
+        laneCreationWanderRetargetSeconds: 1.5
         standardDrawLaneIndicators: 1
         standardLaneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         standardLaneIndicatorWidth: 0.035
@@ -9180,6 +9198,12 @@ MonoBehaviour:
             fireSeconds: 2.35
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
+        initialLaneDistanceMultiplier: 2.5
+        initialLaneHoldSeconds: 0.2
+        laneShrinkSeconds: 2
+        laneCreationWanderSpeed: 3.2
+        laneCreationWanderRadius: 2.8
+        laneCreationWanderRetargetSeconds: 1.5
         standardDrawLaneIndicators: 1
         standardLaneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         standardLaneIndicatorWidth: 0.035
@@ -10229,6 +10253,12 @@ MonoBehaviour:
             fireSeconds: 2.1
             parryOrder: 8
             projectileName: "\uC21C\uC11C\uD0C4"
+        initialLaneDistanceMultiplier: 2.5
+        initialLaneHoldSeconds: 0.2
+        laneShrinkSeconds: 0.6
+        laneCreationWanderSpeed: 3.2
+        laneCreationWanderRadius: 2.8
+        laneCreationWanderRetargetSeconds: 1.5
         standardDrawLaneIndicators: 1
         standardLaneIndicatorColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
         standardLaneIndicatorWidth: 0.035
@@ -10905,12 +10935,6 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
-        initialLaneDistanceMultiplier: 2.5
-        initialLaneHoldSeconds: 0.2
-        laneShrinkSeconds: 0.6
-        laneCreationWanderSpeed: 3.2
-        laneCreationWanderRadius: 2.8
-        laneCreationWanderRetargetSeconds: 1.5
         bossTargetPosition: {x: 6, y: 3}
         bossOriginMoveSpeedMultiplier: 1
         bossOriginArriveDistance: 0.04
@@ -13582,6 +13606,12 @@ MonoBehaviour:
             fireSeconds: 2.15
             parryOrder: 4
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
+        initialLaneDistanceMultiplier: 2.5
+        initialLaneHoldSeconds: 0.2
+        laneShrinkSeconds: 2
+        laneCreationWanderSpeed: 3.2
+        laneCreationWanderRadius: 2.8
+        laneCreationWanderRetargetSeconds: 1.5
         standardDrawLaneIndicators: 1
         standardLaneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         standardLaneIndicatorWidth: 0.035
