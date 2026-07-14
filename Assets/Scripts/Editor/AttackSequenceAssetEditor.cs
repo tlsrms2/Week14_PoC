@@ -123,6 +123,8 @@ internal static class BossGraphActionEditorUtility
         new("Assassin/Fire Homing Dagger", typeof(FireAssassinHomingDaggerProjectileAction), () => new FireAssassinHomingDaggerProjectileAction()),
         new("Assassin/Enter Stealth", typeof(AssassinEnterStealthAction), () => new AssassinEnterStealthAction()),
         new("Assassin/Recall Daggers", typeof(AssassinRecallDaggersAction), () => new AssassinRecallDaggersAction()),
+        new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
+        new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
         new("Hacker/Melee Attack", typeof(HackerMeleeAttackAction), () => new HackerMeleeAttackAction()),
         new("Hacker/Thrust", typeof(HackerThrustAction), () => new HackerThrustAction()),
         new("Hacker/Dash", typeof(HackerDashAction), () => new HackerDashAction()),
@@ -307,6 +309,16 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(AssassinRecallDaggersAction))
         {
             return "Assassin 전용 액션입니다. 스폰된 단검 개수가 충분하면 전부 보스에게 회수하며 비행 중 플레이어에게 데미지를 주고, 끝나면 은신을 해제합니다. 단검이 부족하면 즉시 종료됩니다(이 패턴의 Cooldown Pattern Count는 0으로 설정하세요).";
+        }
+
+        if (actionType == typeof(AssassinSpawnCloneShootersAction))
+        {
+            return "Assassin 전용 액션입니다. 지정한 구역 안 랜덤 두 지점에 분신을 소환하고, 분신1/분신2/(옵션)보스 위치를 랜덤 순서로 섞어 발사 대기열에 채워둡니다. 실제 발사는 Fire Next Clone Shooter가 담당합니다.";
+        }
+
+        if (actionType == typeof(AssassinFireNextCloneShooterAction))
+        {
+            return "Assassin 전용 액션입니다. Spawn Clone Shooters가 채워둔 발사 대기열에서 다음 순서 하나를 꺼내 그 위치에서 투사체를 발사합니다. 분신 차례였다면 발사 직후 그 분신이 페이드아웃되며 사라집니다. 대기열이 비어 있으면 아무 것도 하지 않습니다. 이 노드를 여러 번(원하는 만큼) 배치하고 사이에 Wait 등을 끼워 넣어 템포를 자유롭게 조절하세요.";
         }
 
         if (actionType == typeof(HackerFireWireBranchAction))

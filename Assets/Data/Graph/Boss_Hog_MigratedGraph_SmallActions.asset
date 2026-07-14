@@ -2919,3 +2919,18 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.ConductorDiamondCollapseAction, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     nodeKind: 0
+  - actionTypeName: Week14.Enemy.BossRandomDirectionMoveAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 1
+  - actionTypeName: Week14.Enemy.SpawnParryableBombAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireAssassinHomingDaggerProjectileAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinEnterStealthAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinRecallDaggersAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
