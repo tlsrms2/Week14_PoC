@@ -10,13 +10,12 @@ namespace Week14.Enemy
     using ScoreLaneVolley = MinionConductorScoreLaneRushAction.Volley;
 
     [Serializable]
-    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossGraphValidatedAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource
+    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource
     {
         private const float DefaultFormationMoveSpeed = 24f;
         private const float FormationAlignmentTolerance = 0.08f;
+        private const float ShrinkingStaffPushPadding = 0.08f;
         private const int DroneCount = 4;
-        private const string ScoreLaneRushSpecial2PatternId = "Pattern5";
-        private const string FormationLineVolley2PatternId = "Pattern7";
 
         [Serializable]
         private sealed class TimedVolley
@@ -64,36 +63,43 @@ namespace Week14.Enemy
         [Header("Stage 1 North/South Staff")]
         [SerializeField, InspectorName("Staff Center")] private Vector2 staffCenter;
         [SerializeField, Min(0.1f)] private float northSouthStaffDistance = 4f;
-        [SerializeField, Min(0f)] private float northSouthStaffShrinkDistance = 1.5f;
+        [SerializeField, Min(1f)] private float initialNorthSouthStaffDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float northSouthStaffHoldSeconds = 0.2f;
         [SerializeField, Min(0f)] private float northSouthStaffShrinkSeconds = 0.6f;
         [SerializeField, Min(0.01f)] private float staffLineSpacing = 0.6f;
+        [Header("Staff Creation Wander")]
+        [SerializeField, Min(0f)] private float staffCreationWanderSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float staffCreationWanderRadius = 2.8f;
+        [SerializeField, Min(0.1f)] private float staffCreationWanderRetargetSeconds = 1.5f;
+        [SerializeField, InspectorName("Side Drone Distance"), Min(0.1f)] private float sideDroneDistance = 12f;
         [SerializeField, Min(0.01f)] private float sideDronePairSpacing = 1.4f;
         [SerializeField, Min(0f)] private float sideDroneSetupSeconds = 0.6f;
+        [SerializeField, Min(0.01f)] private float sideDronePassMoveSeconds = 0.7f;
+        [SerializeField, InspectorName("Projectile Speed Multiplier"), Min(0.01f)] private float sideDroneProjectileSpeedMultiplier = 1f;
         [SerializeField, InspectorName("Volleys")] private List<TimedVolley> northSouthVolleys = new();
-        [Header("Stage 1 Fallback Volley")]
-        [SerializeField, BossGraphProjectileName] private string sideCrossProjectileName = "Default";
-        [SerializeField, Min(0f)] private float sideCrossFireSeconds = 2f;
-        [SerializeField, Min(0.01f)] private float sideCrossFireInterval = 0.15f;
-        [SerializeField, Min(0.01f)] private float sideCrossMoveSeconds = 0.7f;
 
         [Header("Stage 2 West Staff")]
+        [SerializeField, Min(0.1f)] private float westStaffDistance = 4f;
+        [SerializeField, Min(1f)] private float initialWestStaffDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float westStaffHoldSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float westStaffShrinkSeconds = 0.6f;
+        [SerializeField, Min(0.01f)] private float westStaffLineSpacing = 0.6f;
+        [SerializeField, Min(0.1f)] private float westDroneDistance = 4f;
+        [SerializeField, Min(0.01f)] private float westDroneLineSpacing = 1.25f;
         [SerializeField, Min(0f)] private float westStaffSetupSeconds = 0.45f;
-        [SerializeField, Min(0.01f)] private float centerDroneSpacing = 1.25f;
         [SerializeField, InspectorName("Volleys")] private List<CenterVolley> westStaffVolleys = new();
-        [Header("Stage 2 Fallback Volley")]
-        [SerializeField, Min(0f)] private float centerFireSeconds = 1.2f;
-        [SerializeField, Min(0.01f)] private float centerFireInterval = 0.15f;
-        [SerializeField] private List<CenterFireProjectile> centerFireProjectiles = new()
-        {
-            new CenterFireProjectile(1),
-            new CenterFireProjectile(2),
-            new CenterFireProjectile(3),
-            new CenterFireProjectile(4)
-        };
         [Header("Stage 3 North/South Merge")]
         [SerializeField, Min(0f)] private float staffCollapseSeconds = 0.6f;
 
+        [Header("Boss Reposition")]
+        [SerializeField] private bool repositionBossAtPatternStart;
+        [SerializeField] private Vector2 bossTargetPosition;
+        [SerializeField, Min(0.01f)] private float bossMoveSpeedMultiplier = 1f;
+        [SerializeField, Min(0.001f)] private float bossArriveDistance = 0.04f;
+        [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
+
         [Header("Miss Launch")]
+        [SerializeField, InspectorName("Line Travel Multiplier"), Min(1f)] private float missLaunchLineTravelMultiplier = 1.5f;
         [SerializeField, BossGraphProjectileName] private string missedLaunchProjectileName = "Default";
         [SerializeField, Min(0f)] private float missedLaunchIntervalSeconds = 0.12f;
 
@@ -121,6 +127,8 @@ namespace Week14.Enemy
         private readonly List<ConductorFormationLineProjectileMotion> trackedMotions = new();
         private bool completedByAllProjectilesCleared;
         private float activeNorthSouthStaffDistance;
+        private float activeWestStaffDistance;
+        private bool isBossRepositioning;
 
         public bool ShouldStartConductorCueOverlayEarly => completedByAllProjectilesCleared;
 
@@ -132,11 +140,6 @@ namespace Week14.Enemy
         public bool TryGetDurationSeconds(BossActionContext context, out float seconds)
         {
             seconds = 0f;
-            BossGraphAsset graph = context?.GraphAsset;
-            RestoreStage3VolleysFromScoreLaneRushSpecial2(
-                graph,
-                graph != null ? graph.GetNode(context.CurrentNodeId) : null);
-
             if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
                 || context?.Boss == null
                 || context.Boss.Player == null
@@ -160,140 +163,15 @@ namespace Week14.Enemy
                 ? EstimateMissLaunchPhaseSeconds(context, lineSlots, missCount)
                 : GetLineIndicatorFadeSeconds();
 
-            seconds = GetStaffPreludeSeconds()
+            float patternSeconds = GetStaffPreludeSeconds()
                 + lineVolleySeconds
                 + finishSeconds;
+            seconds = Mathf.Max(patternSeconds, EstimateBossRepositionSeconds(context));
             return seconds > 0f;
-        }
-
-        void IBossGraphValidatedAction.OnGraphValidated(BossGraphAsset graph, BossStateNode node)
-        {
-            RestoreStage3VolleysFromScoreLaneRushSpecial2(graph, node);
-        }
-
-        private void RestoreStage3VolleysFromScoreLaneRushSpecial2(BossGraphAsset graph, BossStateNode node)
-        {
-            if (HasStage3VolleyData()
-                || node == null
-                || !IsNodeInPattern(graph, node.NodeId, node.NodeGuid, FormationLineVolley2PatternId)
-                || !TryFindScoreLaneRushSpecialAction(graph, ScoreLaneRushSpecial2PatternId, out MinionConductorScoreLaneRushSpecialAction sourceAction))
-            {
-                return;
-            }
-
-            IReadOnlyList<ScoreLaneVolley> sourceVolleys = sourceAction.SerializedSpecialVolleysForGraphCopy;
-            if (sourceVolleys == null || sourceVolleys.Count == 0)
-            {
-                return;
-            }
-
-            volleys = new List<ScoreLaneVolley>(sourceVolleys.Count);
-            for (int i = 0; i < sourceVolleys.Count; i++)
-            {
-                ScoreLaneVolley sourceVolley = sourceVolleys[i];
-                volleys.Add(sourceVolley != null
-                    ? new ScoreLaneVolley(sourceVolley.FireTimings)
-                    : new ScoreLaneVolley());
-            }
-        }
-
-        private bool HasStage3VolleyData()
-        {
-            if (volleys == null)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < volleys.Count; i++)
-            {
-                if (volleys[i]?.FireTimings != null && volleys[i].FireTimings.Count > 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool TryFindScoreLaneRushSpecialAction(
-            BossGraphAsset graph,
-            string patternId,
-            out MinionConductorScoreLaneRushSpecialAction action)
-        {
-            action = null;
-            BossGraphPattern pattern = graph != null ? graph.GetPattern(patternId) : null;
-            if (pattern == null)
-            {
-                return false;
-            }
-
-            return TryFindScoreLaneRushSpecialAction(graph, pattern.NodeKeys, out action)
-                || TryFindScoreLaneRushSpecialAction(graph, pattern.NodeIds, out action);
-        }
-
-        private static bool TryFindScoreLaneRushSpecialAction(
-            BossGraphAsset graph,
-            IReadOnlyList<string> nodeKeys,
-            out MinionConductorScoreLaneRushSpecialAction action)
-        {
-            action = null;
-            if (graph == null || nodeKeys == null)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < nodeKeys.Count; i++)
-            {
-                BossStateNode sourceNode = graph.GetNode(nodeKeys[i]);
-                if (sourceNode?.Action is MinionConductorScoreLaneRushSpecialAction specialAction)
-                {
-                    action = specialAction;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsNodeInPattern(
-            BossGraphAsset graph,
-            string nodeId,
-            string nodeGuid,
-            string patternId)
-        {
-            BossGraphPattern pattern = graph != null ? graph.GetPattern(patternId) : null;
-            return pattern != null
-                && (ContainsNodeKey(pattern.NodeKeys, nodeId, nodeGuid)
-                    || ContainsNodeKey(pattern.NodeIds, nodeId, nodeGuid));
-        }
-
-        private static bool ContainsNodeKey(IReadOnlyList<string> nodeKeys, string nodeId, string nodeGuid)
-        {
-            if (nodeKeys == null)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < nodeKeys.Count; i++)
-            {
-                string key = nodeKeys[i];
-                if ((!string.IsNullOrWhiteSpace(nodeId) && key == nodeId)
-                    || (!string.IsNullOrWhiteSpace(nodeGuid) && key == nodeGuid))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public override IEnumerator Execute(BossActionContext context)
         {
-            BossGraphAsset graph = context?.GraphAsset;
-            RestoreStage3VolleysFromScoreLaneRushSpecial2(
-                graph,
-                graph != null ? graph.GetNode(context.CurrentNodeId) : null);
-
             if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
                 || context.Boss == null
                 || context.Boss.Player == null
@@ -313,22 +191,40 @@ namespace Week14.Enemy
             List<LineSlot> lineSlots = BuildStaffLineSlots(minions);
             ConductorScoreLaneRushIndicatorVisual staffIndicator = null;
             ConductorScoreLaneRushIndicatorVisual volleyIndicator = null;
+            Coroutine bossMoveRoutine = repositionBossAtPatternStart
+                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context))
+                : null;
             try
             {
                 completedByAllProjectilesCleared = false;
-                activeNorthSouthStaffDistance = Mathf.Max(0.1f, northSouthStaffDistance);
+                activeNorthSouthStaffDistance = GetInitialNorthSouthStaffDistance();
                 SetFormationFacingOverride(minions, Vector2.left);
+                CommandStaffCreationWander(
+                    minions,
+                    northSouthStaffHoldSeconds + northSouthStaffShrinkSeconds);
                 staffIndicator = CreateStaffIndicators();
+                yield return WaitSeconds(context, northSouthStaffHoldSeconds);
+                yield return ShrinkNorthSouthStaff(context, staffIndicator);
+
                 CommandSideDronePairs(minions, sideDroneSetupSeconds);
                 yield return WaitSeconds(context, sideDroneSetupSeconds);
                 yield return RunNorthSouthVolleys(context, host, minions);
-                yield return ShrinkNorthSouthStaff(context, staffIndicator);
 
+                activeWestStaffDistance = GetInitialWestStaffDistance();
+                CommandStaffCreationWander(
+                    minions,
+                    westStaffHoldSeconds + westStaffShrinkSeconds);
                 AddWestStaff(staffIndicator);
-                CommandCenterDroneLine(minions, westStaffSetupSeconds);
+                yield return WaitSeconds(context, westStaffHoldSeconds);
+                yield return ShrinkWestStaff(context, staffIndicator);
+
+                CommandWestDroneLine(minions, westStaffSetupSeconds);
                 yield return WaitSeconds(context, westStaffSetupSeconds);
                 yield return RunWestStaffVolleys(context, host, minions);
                 yield return CollapseStaff(context, staffIndicator, lineSlots);
+
+                staffIndicator?.ClearAndDestroy();
+                staffIndicator = null;
 
                 volleyIndicator = CreateLineIndicators(lineSlots);
                 trackedMotions.Clear();
@@ -359,6 +255,11 @@ namespace Week14.Enemy
             }
             finally
             {
+                if (bossMoveRoutine != null && context?.Boss != null)
+                {
+                    context.Boss.StopCoroutine(bossMoveRoutine);
+                }
+
                 staffIndicator?.ClearAndDestroy();
                 volleyIndicator?.ClearAndDestroy();
 
@@ -366,6 +267,8 @@ namespace Week14.Enemy
                 ClearFormationFacingOverride(minions);
                 trackedMotions.Clear();
                 activeNorthSouthStaffDistance = 0f;
+                activeWestStaffDistance = 0f;
+                isBossRepositioning = false;
             }
         }
 
@@ -381,19 +284,84 @@ namespace Week14.Enemy
 
         private float GetStaffPreludeSeconds()
         {
-            return Mathf.Max(0f, sideDroneSetupSeconds)
-                + GetNorthSouthVolleySeconds()
+            return Mathf.Max(0f, northSouthStaffHoldSeconds)
                 + Mathf.Max(0f, northSouthStaffShrinkSeconds)
+                + Mathf.Max(0f, sideDroneSetupSeconds)
+                + GetNorthSouthVolleySeconds()
+                + Mathf.Max(0f, westStaffHoldSeconds)
+                + Mathf.Max(0f, westStaffShrinkSeconds)
                 + Mathf.Max(0f, westStaffSetupSeconds)
                 + GetWestStaffVolleySeconds()
                 + Mathf.Max(0f, staffCollapseSeconds);
+        }
+
+        private float GetMissLaunchLineTravelDistance()
+        {
+            return Mathf.Max(0.1f, lineIndicatorLength)
+                * Mathf.Max(1f, missLaunchLineTravelMultiplier);
+        }
+
+        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
+        {
+            if (!repositionBossAtPatternStart || context?.Boss == null || context.Boss.Body == null)
+            {
+                yield break;
+            }
+
+            isBossRepositioning = true;
+            try
+            {
+                float arriveDistance = Mathf.Max(0.001f, bossArriveDistance);
+                float arriveDistanceSqr = arriveDistance * arriveDistance;
+                float elapsed = 0f;
+                while (((Vector2)context.Boss.Body.position - bossTargetPosition).sqrMagnitude > arriveDistanceSqr
+                    && elapsed < Mathf.Max(0.01f, bossMoveTimeoutSeconds))
+                {
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Boss.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    Vector2 current = context.Boss.Body.position;
+                    Vector2 toTarget = bossTargetPosition - current;
+                    float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossMoveSpeedMultiplier);
+                    context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                isBossRepositioning = false;
+                context?.Boss?.Stop();
+            }
+        }
+
+        private float EstimateBossRepositionSeconds(BossActionContext context)
+        {
+            if (!repositionBossAtPatternStart || context?.Boss == null)
+            {
+                return 0f;
+            }
+
+            Vector2 current = context.Boss.Body != null
+                ? context.Boss.Body.position
+                : context.Boss.transform.position;
+            float distance = Mathf.Max(
+                0f,
+                Vector2.Distance(current, bossTargetPosition) - Mathf.Max(0.001f, bossArriveDistance));
+            float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossMoveSpeedMultiplier);
+            float estimate = speed > 0f ? distance / speed : 0f;
+            return Mathf.Min(estimate, Mathf.Max(0.01f, bossMoveTimeoutSeconds));
         }
 
         private float GetNorthSouthVolleySeconds()
         {
             if (northSouthVolleys == null || northSouthVolleys.Count == 0)
             {
-                return Mathf.Max(0f, sideCrossFireSeconds);
+                return 0f;
             }
 
             float seconds = 0f;
@@ -413,7 +381,7 @@ namespace Week14.Enemy
         {
             if (westStaffVolleys == null || westStaffVolleys.Count == 0)
             {
-                return Mathf.Max(0f, centerFireSeconds);
+                return 0f;
             }
 
             float seconds = 0f;
@@ -454,15 +422,9 @@ namespace Week14.Enemy
                 return;
             }
 
-            float halfLength = Mathf.Max(0.1f, lineIndicatorLength);
-            float westX = staffCenter.x - halfLength;
             for (int i = 0; i < DroneCount; i++)
             {
-                float x = westX + GetCenteredOffset(i, DroneCount, staffLineSpacing);
-                visual.SetLane(DroneCount * 2 + i,
-                    new Vector2(x, staffCenter.y - halfLength),
-                    new Vector2(x, staffCenter.y + halfLength));
-                visual.SetProgress(DroneCount * 2 + i, 1f);
+                SetWestStaffLine(visual, i, 1f);
             }
         }
 
@@ -483,11 +445,20 @@ namespace Week14.Enemy
 
         private void GetNorthSouthStaffLine(int lineIndex, out Vector2 start, out Vector2 end)
         {
-            int groupIndex = lineIndex < DroneCount ? 0 : 1;
-            int laneIndex = Mathf.Abs(lineIndex % DroneCount);
             float distance = activeNorthSouthStaffDistance > 0f
                 ? activeNorthSouthStaffDistance
                 : Mathf.Max(0.1f, northSouthStaffDistance);
+            GetNorthSouthStaffLine(lineIndex, distance, out start, out end);
+        }
+
+        private void GetNorthSouthStaffLine(
+            int lineIndex,
+            float distance,
+            out Vector2 start,
+            out Vector2 end)
+        {
+            int groupIndex = lineIndex < DroneCount ? 0 : 1;
+            int laneIndex = Mathf.Abs(lineIndex % DroneCount);
             float staffY = staffCenter.y + (groupIndex == 0 ? distance : -distance);
             float y = staffY + GetCenteredOffset(laneIndex, DroneCount, staffLineSpacing);
             float halfLength = Mathf.Max(0.1f, lineIndicatorLength);
@@ -503,14 +474,60 @@ namespace Week14.Enemy
             end = new Vector2(staffCenter.x + halfLength, y);
         }
 
+        private void SetWestStaffLine(
+            ConductorScoreLaneRushIndicatorVisual visual,
+            int laneIndex,
+            float progress)
+        {
+            if (visual == null || laneIndex < 0 || laneIndex >= DroneCount)
+            {
+                return;
+            }
+
+            GetWestStaffLine(laneIndex, out Vector2 start, out Vector2 end);
+            int visualIndex = DroneCount * 2 + laneIndex;
+            visual.SetLane(visualIndex, start, end);
+            visual.SetProgress(visualIndex, progress);
+        }
+
+        private void GetWestStaffLine(int laneIndex, out Vector2 start, out Vector2 end)
+        {
+            float distance = activeWestStaffDistance > 0f
+                ? activeWestStaffDistance
+                : Mathf.Max(0.1f, westStaffDistance);
+            GetWestStaffLine(laneIndex, distance, out start, out end);
+        }
+
+        private void GetWestStaffLine(
+            int laneIndex,
+            float distance,
+            out Vector2 start,
+            out Vector2 end)
+        {
+            float x = staffCenter.x - distance + GetCenteredOffset(laneIndex, DroneCount, westStaffLineSpacing);
+            float halfLength = Mathf.Max(0.1f, lineIndicatorLength);
+            start = new Vector2(x, staffCenter.y - halfLength);
+            end = new Vector2(x, staffCenter.y + halfLength);
+        }
+
+        private float GetInitialNorthSouthStaffDistance()
+        {
+            return Mathf.Max(0.1f, northSouthStaffDistance)
+                * Mathf.Max(1f, initialNorthSouthStaffDistanceMultiplier);
+        }
+
+        private float GetInitialWestStaffDistance()
+        {
+            return Mathf.Max(0.1f, westStaffDistance)
+                * Mathf.Max(1f, initialWestStaffDistanceMultiplier);
+        }
+
         private IEnumerator ShrinkNorthSouthStaff(
             BossActionContext context,
             ConductorScoreLaneRushIndicatorVisual visual)
         {
-            float initialDistance = Mathf.Max(0.1f, northSouthStaffDistance);
-            float targetDistance = Mathf.Max(
-                0.1f,
-                initialDistance - Mathf.Max(0f, northSouthStaffShrinkDistance));
+            float initialDistance = GetInitialNorthSouthStaffDistance();
+            float targetDistance = Mathf.Max(0.1f, northSouthStaffDistance);
             float duration = Mathf.Max(0f, northSouthStaffShrinkSeconds);
             if (duration <= 0f)
             {
@@ -520,10 +537,13 @@ namespace Week14.Enemy
                     SetNorthSouthStaffLine(visual, i, 1f);
                 }
 
+                PushPlayerWithShrinkingNorthSouthStaff(context, initialDistance, targetDistance);
+
                 yield break;
             }
 
             float elapsed = 0f;
+            float previousDistance = initialDistance;
             while (elapsed < duration)
             {
                 if (context.IsExecutionPaused)
@@ -539,6 +559,9 @@ namespace Week14.Enemy
                     SetNorthSouthStaffLine(visual, i, 1f);
                 }
 
+                PushPlayerWithShrinkingNorthSouthStaff(context, previousDistance, activeNorthSouthStaffDistance);
+                previousDistance = activeNorthSouthStaffDistance;
+
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
@@ -547,6 +570,95 @@ namespace Week14.Enemy
             for (int i = 0; i < DroneCount * 2; i++)
             {
                 SetNorthSouthStaffLine(visual, i, 1f);
+            }
+
+            PushPlayerWithShrinkingNorthSouthStaff(context, previousDistance, targetDistance);
+        }
+
+        private IEnumerator ShrinkWestStaff(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual)
+        {
+            float initialDistance = GetInitialWestStaffDistance();
+            float targetDistance = Mathf.Max(0.1f, westStaffDistance);
+            float duration = Mathf.Max(0f, westStaffShrinkSeconds);
+            if (duration <= 0f)
+            {
+                activeWestStaffDistance = targetDistance;
+                AddWestStaff(visual);
+                PushPlayerWithShrinkingWestStaff(context, initialDistance, targetDistance);
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float previousDistance = initialDistance;
+            while (elapsed < duration)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / duration);
+                activeWestStaffDistance = Mathf.Lerp(initialDistance, targetDistance, progress);
+                AddWestStaff(visual);
+                PushPlayerWithShrinkingWestStaff(context, previousDistance, activeWestStaffDistance);
+                previousDistance = activeWestStaffDistance;
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            activeWestStaffDistance = targetDistance;
+            AddWestStaff(visual);
+            PushPlayerWithShrinkingWestStaff(context, previousDistance, targetDistance);
+        }
+
+        private void PushPlayerWithShrinkingNorthSouthStaff(
+            BossActionContext context,
+            float previousDistance,
+            float currentDistance)
+        {
+            if (currentDistance >= previousDistance || context?.Boss?.Player == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < DroneCount * 2; i++)
+            {
+                GetNorthSouthStaffLine(i, previousDistance, out Vector2 previousStart, out Vector2 previousEnd);
+                GetNorthSouthStaffLine(i, currentDistance, out Vector2 currentStart, out Vector2 currentEnd);
+                GroundMovementConstraint.PushPlayerOutOfMovingLine(
+                    context.Boss.Player,
+                    previousStart,
+                    previousEnd,
+                    currentStart,
+                    currentEnd,
+                    ShrinkingStaffPushPadding);
+            }
+        }
+
+        private void PushPlayerWithShrinkingWestStaff(
+            BossActionContext context,
+            float previousDistance,
+            float currentDistance)
+        {
+            if (currentDistance >= previousDistance || context?.Boss?.Player == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < DroneCount; i++)
+            {
+                GetWestStaffLine(i, previousDistance, out Vector2 previousStart, out Vector2 previousEnd);
+                GetWestStaffLine(i, currentDistance, out Vector2 currentStart, out Vector2 currentEnd);
+                GroundMovementConstraint.PushPlayerOutOfMovingLine(
+                    context.Boss.Player,
+                    previousStart,
+                    previousEnd,
+                    currentStart,
+                    currentEnd,
+                    ShrinkingStaffPushPadding);
             }
         }
 
@@ -571,9 +683,7 @@ namespace Week14.Enemy
 
         private Vector2 GetSideDronePosition(int index)
         {
-            float x = staffCenter.x + (index < 2 ? -1f : 1f) * Mathf.Max(0.1f, lineIndicatorLength);
-            float y = staffCenter.y + (index % 2 == 0 ? -0.5f : 0.5f) * sideDronePairSpacing;
-            return new Vector2(x, y);
+            return GetSideCrossStartPosition(index, false);
         }
 
         private IEnumerator RunNorthSouthVolleys(
@@ -583,13 +693,6 @@ namespace Week14.Enemy
         {
             if (northSouthVolleys == null || northSouthVolleys.Count == 0)
             {
-                yield return RunSideCrossVolley(
-                    context,
-                    host,
-                    minions,
-                    sideCrossProjectileName,
-                    sideCrossFireSeconds,
-                    sideCrossFireInterval);
                 yield break;
             }
 
@@ -629,7 +732,6 @@ namespace Week14.Enemy
             MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, null, effects, context);
             float elapsed = 0f;
             float nextFireSeconds = 0f;
-            float nextMoveSeconds = 0f;
             int passIndex = 0;
             while (elapsed < fireSeconds)
             {
@@ -639,14 +741,9 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                while (elapsed >= nextMoveSeconds)
-                {
-                    CommandSideCrossPass(minions, passIndex++);
-                    nextMoveSeconds += Mathf.Max(0.01f, sideCrossMoveSeconds);
-                }
-
                 while (elapsed >= nextFireSeconds)
                 {
+                    CommandSideCrossPass(minions, passIndex++);
                     for (int i = 0; i < minions.Count; i++)
                     {
                         Minion minion = minions[i];
@@ -656,7 +753,8 @@ namespace Week14.Enemy
                         }
 
                         Vector2 direction = i < 2 ? Vector2.right : Vector2.left;
-                        minion.FireOnce(projectile, fireSpec.WithFixedDirection(direction), i);
+                        EnemyProjectile spawned = minion.FireOnce(projectile, fireSpec.WithFixedDirection(direction), i);
+                        spawned?.ConfigureSpeedMultiplier(sideDroneProjectileSpeedMultiplier);
                     }
 
                     nextFireSeconds += Mathf.Max(0.01f, fireInterval);
@@ -670,8 +768,7 @@ namespace Week14.Enemy
         private void CommandSideCrossPass(IReadOnlyList<Minion> minions, int passIndex)
         {
             bool invert = passIndex % 2 != 0;
-            float halfSpacing = Mathf.Max(0.01f, sideDronePairSpacing) * 0.5f;
-            float duration = Mathf.Max(0.01f, sideCrossMoveSeconds);
+            float duration = Mathf.Max(0.01f, sideDronePassMoveSeconds);
             float speed = sideDronePairSpacing / duration;
             for (int i = 0; i < minions.Count; i++)
             {
@@ -681,13 +778,11 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                bool startsLow = (i % 2 == 0) != invert;
-                Vector2 start = new(
-                    staffCenter.x + (i < 2 ? -1f : 1f) * Mathf.Max(0.1f, lineIndicatorLength),
-                    staffCenter.y + (startsLow ? -halfSpacing : halfSpacing));
+                bool movesUp = (i % 2 == 0) != invert;
+                Vector2 start = GetSideCrossStartPosition(i, invert);
                 minion.CommandScoreLaneRush(
                     start,
-                    startsLow ? Vector2.up : Vector2.down,
+                    movesUp ? Vector2.up : Vector2.down,
                     0f,
                     0f,
                     sideDronePairSpacing,
@@ -695,7 +790,28 @@ namespace Week14.Enemy
             }
         }
 
-        private void CommandCenterDroneLine(IReadOnlyList<Minion> minions, float moveSeconds)
+        private Vector2 GetSideCrossStartPosition(int index, bool invert)
+        {
+            bool isLeft = index < 2;
+            bool movesUp = (index % 2 == 0) != invert;
+            float verticalOffset = GetSideCrossVerticalOffset(isLeft, movesUp);
+            return new Vector2(
+                staffCenter.x + (isLeft ? -1f : 1f) * Mathf.Max(0.1f, sideDroneDistance),
+                staffCenter.y + verticalOffset);
+        }
+
+        private float GetSideCrossVerticalOffset(bool isLeft, bool movesUp)
+        {
+            float halfSpacing = Mathf.Max(0.01f, sideDronePairSpacing) * 0.5f;
+            if (isLeft)
+            {
+                return movesUp ? -halfSpacing * 3f : -halfSpacing;
+            }
+
+            return movesUp ? halfSpacing : halfSpacing * 3f;
+        }
+
+        private void CommandWestDroneLine(IReadOnlyList<Minion> minions, float moveSeconds)
         {
             if (minions == null)
             {
@@ -704,13 +820,15 @@ namespace Week14.Enemy
 
             for (int i = 0; i < minions.Count; i++)
             {
-                CommandMoveToPosition(minions[i], GetCenterDronePosition(i), moveSeconds);
+                CommandMoveToPosition(minions[i], GetWestDronePosition(i), moveSeconds);
             }
         }
 
-        private Vector2 GetCenterDronePosition(int index)
+        private Vector2 GetWestDronePosition(int index)
         {
-            return staffCenter + Vector2.right * GetCenteredOffset(index, DroneCount, centerDroneSpacing);
+            return staffCenter
+                + Vector2.right * Mathf.Max(0.1f, westDroneDistance)
+                + Vector2.up * GetCenteredOffset(index, DroneCount, westDroneLineSpacing);
         }
 
         private IEnumerator RunWestStaffVolleys(
@@ -720,13 +838,6 @@ namespace Week14.Enemy
         {
             if (westStaffVolleys == null || westStaffVolleys.Count == 0)
             {
-                yield return RunCenterVolley(
-                    context,
-                    host,
-                    minions,
-                    centerFireSeconds,
-                    centerFireInterval,
-                    centerFireProjectiles);
                 yield break;
             }
 
@@ -790,14 +901,8 @@ namespace Week14.Enemy
                             continue;
                         }
 
-                        Vector2 direction = staffCenter - (Vector2)minion.transform.position;
-                        if (direction.sqrMagnitude <= 0.0001f)
-                        {
-                            direction = i < DroneCount / 2 ? Vector2.right : Vector2.left;
-                        }
-
                         MinionGraphProjectileFireSpec fireSpec = new MinionGraphProjectileFireSpec(minionOrigin, null, effects, context)
-                            .WithFixedDirection(direction);
+                            .WithFixedDirection(Vector2.left);
                         minion.FireOnce(projectile, fireSpec, i);
                     }
 
@@ -825,7 +930,7 @@ namespace Week14.Enemy
                 }
             }
 
-            return sideCrossProjectileName;
+            return string.Empty;
         }
 
         private IEnumerator CollapseStaff(
@@ -834,16 +939,14 @@ namespace Week14.Enemy
             IReadOnlyList<LineSlot> lineSlots)
         {
             int[] retainedLines = { 0, 1, 6, 7 };
-            for (int i = 2; i < 6; i++)
+            for (int i = 0; i < DroneCount * 3; i++)
             {
-                visual?.SetProgress(i, 0f);
-            }
-
-            if (lineSlots != null)
-            {
-                for (int i = 0; i < lineSlots.Count; i++)
+                if (i != retainedLines[0]
+                    && i != retainedLines[1]
+                    && i != retainedLines[2]
+                    && i != retainedLines[3])
                 {
-                    CommandMoveToPosition(lineSlots[i].Minion, GetLaneMinionTarget(lineSlots[i], lineSlots), staffCollapseSeconds);
+                    visual?.SetProgress(i, 0f);
                 }
             }
 
@@ -903,6 +1006,23 @@ namespace Week14.Enemy
             }
 
             minion.CommandScoreLaneRush(target, Vector2.right, Mathf.Max(0f, moveSeconds), 0f, 0f, 1f);
+        }
+
+        private void CommandStaffCreationWander(IReadOnlyList<Minion> minions, float duration)
+        {
+            if (minions == null || duration <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.CommandWander(
+                    duration,
+                    staffCreationWanderSpeed,
+                    staffCreationWanderRadius,
+                    staffCreationWanderRetargetSeconds);
+            }
         }
 
         private IEnumerator RunVolleys(
@@ -1054,7 +1174,7 @@ namespace Week14.Enemy
                     () => GetLaneOrigin(slot, lineSlots),
                     slot.LineDirection,
                     projectileSpeed,
-                    lineIndicatorLength);
+                    GetMissLaunchLineTravelDistance());
 
                 trackedMotions.Add(motion);
             }
@@ -1390,7 +1510,10 @@ namespace Week14.Enemy
 
         private void TickBossFormationAlignment(BossActionContext context, IReadOnlyList<LineSlot> lineSlots)
         {
-            context?.Boss?.Stop();
+            if (!isBossRepositioning)
+            {
+                context?.Boss?.Stop();
+            }
         }
 
         private ConductorScoreLaneRushIndicatorVisual CreateLineIndicators(IReadOnlyList<LineSlot> lineSlots)
@@ -1430,7 +1553,7 @@ namespace Week14.Enemy
                 }
 
                 Vector2 origin = GetLaneOrigin(slot, lineSlots);
-                visual.SetLane(i, origin, origin + slot.LineDirection * Mathf.Max(0.1f, lineIndicatorLength));
+                visual.SetLane(i, origin, origin + slot.LineDirection * GetMissLaunchLineTravelDistance());
                 visual.SetProgress(i, 1f);
             }
         }
@@ -1696,7 +1819,7 @@ namespace Week14.Enemy
             }
 
             float speed = projectile.Speed * Mathf.Max(0.01f, projectileSpeedMultiplier);
-            return speed > 0f ? Mathf.Max(0f, lineIndicatorLength) / speed : 0f;
+            return speed > 0f ? GetMissLaunchLineTravelDistance() / speed : 0f;
         }
 
         private int EstimateMaxMissLaunchCount(IMinionPatternHost host)
@@ -1927,15 +2050,12 @@ namespace Week14.Enemy
 
         private Vector2 GetLaneOrigin(LineSlot slot, IReadOnlyList<LineSlot> lineSlots)
         {
-            Vector2 idealOrigin = GetLaneMinionTarget(slot, lineSlots);
             if (slot.Minion == null)
             {
-                return idealOrigin;
+                return GetLaneMinionTarget(slot, lineSlots);
             }
 
-            Vector2 authoredOrigin = minionOrigin.GetSpawnOrigin(slot.Minion, 0, slot.LineDirection);
-            float forwardOffset = Vector2.Dot(authoredOrigin - idealOrigin, slot.LineDirection);
-            return idealOrigin + slot.LineDirection * forwardOffset;
+            return minionOrigin.GetSpawnOrigin(slot.Minion, 0, slot.LineDirection);
         }
 
         private Vector2 GetLaneMinionTarget(LineSlot slot, IReadOnlyList<LineSlot> lineSlots)
@@ -2011,11 +2131,6 @@ namespace Week14.Enemy
 
             public CenterFireProjectile()
             {
-            }
-
-            public CenterFireProjectile(int nextMinionNumber)
-            {
-                minionNumber = Mathf.Max(1, nextMinionNumber);
             }
 
             public int MinionNumber => minionNumber;

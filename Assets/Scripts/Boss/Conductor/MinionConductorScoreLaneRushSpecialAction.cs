@@ -42,6 +42,10 @@ namespace Week14.Enemy
         [SerializeField, Min(1f)] private float initialLaneDistanceMultiplier = 1.5f;
         [SerializeField, Min(0f)] private float initialLaneHoldSeconds = 0.2f;
         [SerializeField, Min(0f)] private float laneShrinkSeconds = 0.6f;
+        [Header("Lane Creation Wander")]
+        [SerializeField, Min(0f)] private float laneCreationWanderSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float laneCreationWanderRadius = 2.8f;
+        [SerializeField, Min(0.1f)] private float laneCreationWanderRetargetSeconds = 1.5f;
         [Header("Boss Reposition")]
         [SerializeField] private Vector2 bossTargetPosition;
         [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
@@ -58,8 +62,6 @@ namespace Week14.Enemy
         private BossProjectileSettings rushStartProjectile;
         private MinionGraphProjectileFireSpec rushStartFireSpec;
         private float nextRushStartFireSeconds;
-
-        internal IReadOnlyList<Volley> SerializedSpecialVolleysForGraphCopy => specialVolleys;
 
         public override bool TryGetDurationSeconds(BossActionContext context, out float seconds)
         {
@@ -105,6 +107,7 @@ namespace Week14.Enemy
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
+                CommandLaneCreationWander(host.GetControlledMinionsForGraph());
                 yield return BeforeExecuteVolleys(context, patternStartPlayerPosition);
                 yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
                 yield return AfterExecuteVolleys(context, patternStartPlayerPosition);
@@ -326,6 +329,24 @@ namespace Week14.Enemy
         {
             return Mathf.Max(0f, initialLaneHoldSeconds)
                 + Mathf.Max(0f, laneShrinkSeconds);
+        }
+
+        private void CommandLaneCreationWander(IReadOnlyList<Minion> minions)
+        {
+            float duration = GetLaneIndicatorRevealDuration() + GetLaneShrinkPreludeSeconds();
+            if (duration <= 0f || minions == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.CommandWander(
+                    duration,
+                    laneCreationWanderSpeed,
+                    laneCreationWanderRadius,
+                    laneCreationWanderRetargetSeconds);
+            }
         }
 
         private float GetInitialLaneDistance()

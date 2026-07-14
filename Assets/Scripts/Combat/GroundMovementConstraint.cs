@@ -121,6 +121,33 @@ namespace Week14.Combat
             return constrainedVelocity;
         }
 
+        public static void PushPlayerOutOfMovingLine(
+            Transform player,
+            Vector2 previousStart,
+            Vector2 previousEnd,
+            Vector2 currentStart,
+            Vector2 currentEnd,
+            float padding)
+        {
+            if (player == null
+                || !TryGetBodyAndColliders(player, out Rigidbody2D body, out Collider2D[] colliders)
+                || !TryGetBounds(colliders, out Bounds playerBounds)
+                || !TryGetMovingLineDisplacement(
+                    playerBounds,
+                    previousStart,
+                    previousEnd,
+                    currentStart,
+                    currentEnd,
+                    Mathf.Max(0f, padding),
+                    out Vector2 displacement))
+            {
+                return;
+            }
+
+            body.position = ClampStep(body.position, body.position + displacement, colliders);
+            RemoveVelocityInDirection(body, -displacement);
+        }
+
         public static Vector2 ClampStep(Vector2 current, Vector2 target)
         {
             return ClampStep(current, target, null);
@@ -150,6 +177,154 @@ namespace Week14.Combat
 
             Vector2 yOnly = new(current.x, target.y);
             return IsGrounded(yOnly, probeRadius, current, probeColliders) ? yOnly : current;
+        }
+
+        private static bool TryGetBodyAndColliders(
+            Transform target,
+            out Rigidbody2D body,
+            out Collider2D[] colliders)
+        {
+            body = target.GetComponentInParent<Rigidbody2D>();
+            if (body == null)
+            {
+                body = target.GetComponentInChildren<Rigidbody2D>();
+            }
+
+            colliders = body != null ? body.GetComponentsInChildren<Collider2D>() : null;
+            return body != null && colliders != null && colliders.Length > 0;
+        }
+
+        private static bool TryGetBounds(Collider2D[] colliders, out Bounds bounds)
+        {
+            bounds = default;
+            bool hasBounds = false;
+            if (colliders == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    bounds = collider.bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(collider.bounds);
+                }
+            }
+
+            return hasBounds;
+        }
+
+        private static bool TryGetMovingLineDisplacement(
+            Bounds playerBounds,
+            Vector2 previousStart,
+            Vector2 previousEnd,
+            Vector2 currentStart,
+            Vector2 currentEnd,
+            float padding,
+            out Vector2 displacement)
+        {
+            displacement = Vector2.zero;
+            Vector2 lineDelta = currentEnd - currentStart;
+            if (lineDelta.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            if (Mathf.Abs(lineDelta.x) >= Mathf.Abs(lineDelta.y))
+            {
+                float segmentMinX = Mathf.Min(currentStart.x, currentEnd.x);
+                float segmentMaxX = Mathf.Max(currentStart.x, currentEnd.x);
+                if (playerBounds.max.x < segmentMinX || playerBounds.min.x > segmentMaxX)
+                {
+                    return false;
+                }
+
+                float previousY = (previousStart.y + previousEnd.y) * 0.5f;
+                float currentY = (currentStart.y + currentEnd.y) * 0.5f;
+                if (currentY < previousY)
+                {
+                    if (playerBounds.max.y <= currentY - padding || playerBounds.min.y > previousY + padding)
+                    {
+                        return false;
+                    }
+
+                    displacement.y = currentY - padding - playerBounds.max.y;
+                    return displacement.y < 0f;
+                }
+
+                if (currentY > previousY)
+                {
+                    if (playerBounds.min.y >= currentY + padding || playerBounds.max.y < previousY - padding)
+                    {
+                        return false;
+                    }
+
+                    displacement.y = currentY + padding - playerBounds.min.y;
+                    return displacement.y > 0f;
+                }
+
+                return false;
+            }
+
+            float segmentMinY = Mathf.Min(currentStart.y, currentEnd.y);
+            float segmentMaxY = Mathf.Max(currentStart.y, currentEnd.y);
+            if (playerBounds.max.y < segmentMinY || playerBounds.min.y > segmentMaxY)
+            {
+                return false;
+            }
+
+            float previousX = (previousStart.x + previousEnd.x) * 0.5f;
+            float currentX = (currentStart.x + currentEnd.x) * 0.5f;
+            if (currentX < previousX)
+            {
+                if (playerBounds.max.x <= currentX - padding || playerBounds.min.x > previousX + padding)
+                {
+                    return false;
+                }
+
+                displacement.x = currentX - padding - playerBounds.max.x;
+                return displacement.x < 0f;
+            }
+
+            if (currentX > previousX)
+            {
+                if (playerBounds.min.x >= currentX + padding || playerBounds.max.x < previousX - padding)
+                {
+                    return false;
+                }
+
+                displacement.x = currentX + padding - playerBounds.min.x;
+                return displacement.x > 0f;
+            }
+
+            return false;
+        }
+
+        private static void RemoveVelocityInDirection(Rigidbody2D body, Vector2 direction)
+        {
+            if (body == null || direction.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            Vector2 normalizedDirection = direction.normalized;
+            Vector2 velocity = body.linearVelocity;
+            float speed = Vector2.Dot(velocity, normalizedDirection);
+            if (speed > 0f)
+            {
+                body.linearVelocity = velocity - normalizedDirection * speed;
+            }
         }
 
         private static bool IsGrounded(
