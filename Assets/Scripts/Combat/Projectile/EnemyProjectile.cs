@@ -139,6 +139,7 @@ namespace Week14.Combat
         private static readonly Dictionary<int, EnemyProjectile> activeProjectileByInterceptGroup = new();
 
         public event System.Action<EnemyProjectile> Launched;
+        public event System.Action<EnemyProjectile, EnemyProjectile> LaunchReplaced;
         public event System.Action<EnemyProjectile> RadialSplit;
         public event System.Action<EnemyProjectile> RadialSplitImminent;
         public event System.Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> Destroyed;

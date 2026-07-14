@@ -51,6 +51,7 @@ namespace Week14.Combat
             }
 
             CopyLaunchRuntimeStateTo(replacement);
+            LaunchReplaced?.Invoke(this, replacement);
             if (growScaleWhileCharging)
             {
                 replacement.transform.localScale = chargeGrowthEndScale;

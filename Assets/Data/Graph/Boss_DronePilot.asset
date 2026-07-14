@@ -11692,9 +11692,13 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        previewLaneDistance: 10
+        previewLaneDistance: 5
         previewLaneSpacing: 0.7
         previewLaneLength: 35
+        previewInitialLaneDistanceMultiplier: 12
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 6.5
+        previewLaneFadeSeconds: 0.2
         previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
         previewLaneWidth: 0.035
         previewLaneSortingOrder: 66
@@ -13826,6 +13830,10 @@ MonoBehaviour:
         previewLaneDistance: 4.5
         previewLaneSpacing: 0.7
         previewLaneLength: 8
+        previewInitialLaneDistanceMultiplier: 1.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 0.6
+        previewLaneFadeSeconds: 0.14
         previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
         previewLaneWidth: 0.035
         previewLaneSortingOrder: 66
@@ -13982,6 +13990,10 @@ MonoBehaviour:
         previewLaneDistance: 4.5
         previewLaneSpacing: 0.7
         previewLaneLength: 8
+        previewInitialLaneDistanceMultiplier: 1.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 0.6
+        previewLaneFadeSeconds: 0.14
         previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
         previewLaneWidth: 0.035
         previewLaneSortingOrder: 66
@@ -14564,6 +14576,10 @@ MonoBehaviour:
         previewLaneDistance: 4.5
         previewLaneSpacing: 0.7
         previewLaneLength: 8
+        previewInitialLaneDistanceMultiplier: 1.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 0.6
+        previewLaneFadeSeconds: 0.14
         previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
         previewLaneWidth: 0.035
         previewLaneSortingOrder: 66

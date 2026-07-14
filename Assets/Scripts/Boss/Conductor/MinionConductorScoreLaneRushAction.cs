@@ -1355,26 +1355,10 @@ namespace Week14.Enemy
                 }
 
                 entry.Projectile = projectile;
-                entry.RequiredStepCount = 1;
-                entry.CompletedStepCount = 0;
                 entry.LinkReleased = !projectile.IsCharging;
-                if (projectile is IConductorMultiStepOrderedProjectile multiStepProjectile)
-                {
-                    entry.RequiredStepCount = Mathf.Max(1, multiStepProjectile.RequiredSequenceSteps);
-                    entry.CompletedStepCount = Mathf.Clamp(
-                        multiStepProjectile.CompletedSequenceSteps,
-                        0,
-                        entry.RequiredStepCount);
-                    entry.SequenceStepHandler = completedProjectile =>
-                        HandleSequenceStepCompleted(entry, completedProjectile);
-                    multiStepProjectile.SequenceStepCompleted += entry.SequenceStepHandler;
-                }
-
+                ConfigureEntryProgress(entry, projectile);
                 SetInterceptable(projectile, false);
-                entry.LaunchedHandler = launched => HandleLaunched(entry, launched);
-                projectile.Launched += entry.LaunchedHandler;
-                entry.DestroyedHandler = (destroyed, reason, _) => HandleDestroyed(entry, destroyed, reason);
-                projectile.Destroyed += entry.DestroyedHandler;
+                AttachEntryHandlers(entry, projectile);
                 Refresh();
             }
 
@@ -1406,8 +1390,34 @@ namespace Week14.Enemy
 
             private void HandleDestroyed(Entry entry, EnemyProjectile projectile, EnemyProjectileDestroyReason _)
             {
+                if (entry == null || projectile == null || entry.Projectile != projectile)
+                {
+                    return;
+                }
+
                 ReleaseEntryHandlers(entry, projectile);
                 entry.Completed = true;
+                Refresh();
+            }
+
+            private void HandleLaunchReplaced(
+                Entry entry,
+                EnemyProjectile source,
+                EnemyProjectile replacement)
+            {
+                if (entry == null
+                    || source == null
+                    || replacement == null
+                    || entry.Projectile != source)
+                {
+                    return;
+                }
+
+                DetachEntryHandlers(entry, source);
+                entry.Projectile = replacement;
+                entry.LinkReleased = !replacement.IsCharging;
+                ConfigureEntryProgress(entry, replacement);
+                AttachEntryHandlers(entry, replacement);
                 Refresh();
             }
 
@@ -1505,6 +1515,47 @@ namespace Week14.Enemy
                 }
             }
 
+            private void ConfigureEntryProgress(Entry entry, EnemyProjectile projectile)
+            {
+                entry.RequiredStepCount = 1;
+                entry.CompletedStepCount = 0;
+                if (projectile is not IConductorMultiStepOrderedProjectile multiStepProjectile)
+                {
+                    return;
+                }
+
+                entry.RequiredStepCount = Mathf.Max(1, multiStepProjectile.RequiredSequenceSteps);
+                entry.CompletedStepCount = Mathf.Clamp(
+                    multiStepProjectile.CompletedSequenceSteps,
+                    0,
+                    entry.RequiredStepCount);
+            }
+
+            private void AttachEntryHandlers(Entry entry, EnemyProjectile projectile)
+            {
+                entry.LaunchedHandler ??= launched => HandleLaunched(entry, launched);
+                entry.DestroyedHandler ??= (destroyed, reason, _) => HandleDestroyed(entry, destroyed, reason);
+                entry.ReplacementHandler ??= (source, replacement) =>
+                    HandleLaunchReplaced(entry, source, replacement);
+
+                projectile.Launched -= entry.LaunchedHandler;
+                projectile.Launched += entry.LaunchedHandler;
+                projectile.Destroyed -= entry.DestroyedHandler;
+                projectile.Destroyed += entry.DestroyedHandler;
+                projectile.LaunchReplaced -= entry.ReplacementHandler;
+                projectile.LaunchReplaced += entry.ReplacementHandler;
+
+                if (projectile is not IConductorMultiStepOrderedProjectile multiStepProjectile)
+                {
+                    return;
+                }
+
+                entry.SequenceStepHandler ??= completedProjectile =>
+                    HandleSequenceStepCompleted(entry, completedProjectile);
+                multiStepProjectile.SequenceStepCompleted -= entry.SequenceStepHandler;
+                multiStepProjectile.SequenceStepCompleted += entry.SequenceStepHandler;
+            }
+
             private static void ReleaseEntryHandlers(Entry entry, EnemyProjectile projectile)
             {
                 if (entry == null)
@@ -1512,14 +1563,34 @@ namespace Week14.Enemy
                     return;
                 }
 
-                if (projectile != null && entry.DestroyedHandler != null)
+                DetachEntryHandlers(entry, projectile);
+
+                entry.DestroyedHandler = null;
+                entry.LaunchedHandler = null;
+                entry.ReplacementHandler = null;
+                entry.SequenceStepHandler = null;
+            }
+
+            private static void DetachEntryHandlers(Entry entry, EnemyProjectile projectile)
+            {
+                if (entry == null || projectile == null)
+                {
+                    return;
+                }
+
+                if (entry.DestroyedHandler != null)
                 {
                     projectile.Destroyed -= entry.DestroyedHandler;
                 }
 
-                if (projectile != null && entry.LaunchedHandler != null)
+                if (entry.LaunchedHandler != null)
                 {
                     projectile.Launched -= entry.LaunchedHandler;
+                }
+
+                if (entry.ReplacementHandler != null)
+                {
+                    projectile.LaunchReplaced -= entry.ReplacementHandler;
                 }
 
                 if (projectile is IConductorMultiStepOrderedProjectile multiStepProjectile
@@ -1527,10 +1598,6 @@ namespace Week14.Enemy
                 {
                     multiStepProjectile.SequenceStepCompleted -= entry.SequenceStepHandler;
                 }
-
-                entry.DestroyedHandler = null;
-                entry.LaunchedHandler = null;
-                entry.SequenceStepHandler = null;
             }
 
             private void RefreshTieLinks()
@@ -1639,6 +1706,7 @@ namespace Week14.Enemy
                 }
                 public Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> DestroyedHandler { get; set; }
                 public Action<EnemyProjectile> LaunchedHandler { get; set; }
+                public Action<EnemyProjectile, EnemyProjectile> ReplacementHandler { get; set; }
                 public Action<EnemyProjectile> SequenceStepHandler { get; set; }
             }
         }
