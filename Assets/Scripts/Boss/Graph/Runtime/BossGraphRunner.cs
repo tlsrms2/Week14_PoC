@@ -15,6 +15,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, List<BossSequenceEntry>> sequenceBags = new();
         private readonly Dictionary<string, int> patternCooldownRemainingCounts = new();
         private readonly HashSet<int> openingPatternsPlayed = new();
+        private readonly HashSet<int> signaturePatternsPlayed = new();
         private string currentNodeId;
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
@@ -27,6 +28,7 @@ namespace Week14.Enemy
             sequenceBags.Clear();
             patternCooldownRemainingCounts.Clear();
             openingPatternsPlayed.Clear();
+            signaturePatternsPlayed.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;
         }
@@ -163,6 +165,13 @@ namespace Week14.Enemy
                 yield return ExecutePattern(graph, pattern, context);
                 RegisterCompletedPattern(phase, patternEntry);
                 context.Stop();
+                if (TryGetPendingSignaturePattern(graph, phase, context, out BossGraphPattern signaturePattern))
+                {
+                    signaturePatternsPlayed.Add(phase.PhaseIndex);
+                    yield return ExecutePattern(graph, signaturePattern, context);
+                    context.Stop();
+                }
+
                 if (phase.PatternIntervalSeconds > 0f)
                 {
                     yield return context.WaitSeconds(phase.PatternIntervalSeconds);
@@ -1305,6 +1314,28 @@ namespace Week14.Enemy
 
             patternEntry = SelectPattern(phase);
             return graph.GetPattern(patternEntry?.PatternId);
+        }
+
+        private bool TryGetPendingSignaturePattern(
+            BossGraphAsset graph,
+            BossGraphPhase phase,
+            BossActionContext context,
+            out BossGraphPattern pattern)
+        {
+            pattern = null;
+            if (graph == null
+                || phase == null
+                || context?.Boss == null
+                || context.Boss.CurrentPhaseIndex != phase.PhaseIndex
+                || signaturePatternsPlayed.Contains(phase.PhaseIndex)
+                || string.IsNullOrWhiteSpace(phase.SignaturePatternId)
+                || GetHpRatio(context.Boss) > phase.SignaturePatternHpRatio)
+            {
+                return false;
+            }
+
+            pattern = graph.GetPattern(phase.SignaturePatternId);
+            return pattern?.NodeKeys != null && pattern.NodeKeys.Count > 0;
         }
 
         private BossGraphPatternEntry SelectPattern(BossGraphPhase phase)

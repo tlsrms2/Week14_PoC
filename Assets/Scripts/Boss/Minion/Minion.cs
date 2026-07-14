@@ -80,6 +80,7 @@ namespace Week14.Enemy
         private bool ownsStatusView;
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
+        private int playerProjectileBlockerCount;
         private bool hasGraphFacingOverride;
         private Vector2 graphFacingOverrideDirection;
         [SerializeField, Min(0)] private int ownerSlotNumber;
@@ -94,6 +95,8 @@ namespace Week14.Enemy
         public bool IsCommanded => movementRoutine != null || fireRoutine != null;
         public bool IsSummoning => isSummoning;
         public bool SuppressesBodyContactDamage => suppressBodyContactDamage;
+        public bool IsPlayerTargetable => !(Owner is Conductor);
+        public bool BlocksPlayerProjectiles => playerProjectileBlockerCount > 0;
         public bool IsBulletEmpty => isBulletEmpty || (bullets != null && bullets.IsEmpty);
         public bool IsExecutionLocked => isExecutionLocked;
         public Color BulletBarColor => bulletBarColor;
@@ -153,6 +156,7 @@ namespace Week14.Enemy
         private void OnDisable()
         {
             ActiveMinions.Remove(this);
+            playerProjectileBlockerCount = 0;
             SetPlayerCollisionIgnored(false);
             EndMovementPathIndicator();
             if (health != null)
@@ -278,6 +282,16 @@ namespace Week14.Enemy
             RefreshIgnoredCollisionPairs();
         }
 
+        public void BeginPlayerProjectileBlocking()
+        {
+            playerProjectileBlockerCount++;
+        }
+
+        public void EndPlayerProjectileBlocking()
+        {
+            playerProjectileBlockerCount = Mathf.Max(0, playerProjectileBlockerCount - 1);
+        }
+
         internal void AssignOwnerSlotNumber(int slotNumber)
         {
             ownerSlotNumber = Mathf.Max(0, slotNumber);
@@ -398,7 +412,7 @@ namespace Week14.Enemy
 
         public bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
-            if (health == null || health.IsDead || isSummoning)
+            if (!IsPlayerTargetable || health == null || health.IsDead || isSummoning)
             {
                 return false;
             }

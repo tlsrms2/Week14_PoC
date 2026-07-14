@@ -10,6 +10,7 @@ namespace Week14.Enemy
     public sealed class ConductorDiamondCollapseAction : BossAction
     {
         private const int DroneCount = 4;
+        private const float LaneShrinkPushPadding = 0.02f;
 
         [Serializable]
         public sealed class VolleyStage
@@ -47,6 +48,19 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
+        [Header("Score Lane Preview")]
+        [SerializeField, Min(0.1f)] private float previewLaneDistance = 3f;
+        [SerializeField, Min(0f)] private float previewLaneSpacing = 0.7f;
+        [SerializeField, Min(0f)] private float previewLaneLength = 8f;
+        [SerializeField, Min(1f)] private float previewInitialLaneDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float previewInitialLaneHoldSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float previewLaneShrinkSeconds = 0.6f;
+        [SerializeField, Min(0f)] private float previewLaneFadeSeconds = 0.14f;
+        [SerializeField] private Color previewLaneColor = new(0.62f, 0.92f, 1f, 0.66f);
+        [SerializeField, Min(0.001f)] private float previewLaneWidth = 0.035f;
+        [SerializeField] private int previewLaneSortingOrder = 66;
+        [SerializeField, Min(1)] private int previewLaneLineCount = 4;
+
         [Header("Diamond Volleys")]
         [SerializeField] private List<VolleyStage> volleyStages = new()
         {
@@ -57,6 +71,13 @@ namespace Week14.Enemy
         [Header("Final Center Shot")]
         [SerializeField, BossGraphProjectileName] private string finalProjectileName = "Default";
         [SerializeField, Min(0f)] private float finalShotDelaySeconds = 0.15f;
+
+        [Header("Boss Reposition")]
+        [SerializeField] private bool repositionBossAtPatternStart;
+        [SerializeField] private Vector2 bossTargetPosition;
+        [SerializeField, Min(0.01f)] private float bossMoveSpeedMultiplier = 1f;
+        [SerializeField, Min(0.001f)] private float bossArriveDistance = 0.04f;
+        [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -74,34 +95,453 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
-
-            float currentRadius = Mathf.Max(0.01f, initialRadius);
-            CommandDronesToCardinalSlots(drones, currentRadius, initialAlignSeconds);
-            yield return context.WaitSeconds(initialAlignSeconds);
-
-            for (int i = 0; i < volleyStages.Count; i++)
+            Coroutine bossMoveRoutine = repositionBossAtPatternStart && context?.Boss != null
+                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context))
+                : null;
+            try
             {
-                VolleyStage stage = volleyStages[i];
-                if (stage == null)
+                yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
+
+                float currentRadius = Mathf.Max(0.01f, initialRadius);
+                yield return ShowScoreLanePreview(context);
+                CommandDronesToCardinalSlots(drones, currentRadius, initialAlignSeconds);
+                yield return context.WaitSeconds(initialAlignSeconds);
+
+                for (int i = 0; i < volleyStages.Count; i++)
                 {
-                    continue;
+                    VolleyStage stage = volleyStages[i];
+                    if (stage == null)
+                    {
+                        continue;
+                    }
+
+                    yield return FireStage(context, host, drones, stage);
+                    if (!stage.ShrinkAfter || stage.NextRadius >= currentRadius)
+                    {
+                        continue;
+                    }
+
+                    yield return context.WaitSeconds(stage.FirePauseBeforeShrinkSeconds);
+                    currentRadius = stage.NextRadius;
+                    CommandDronesToCardinalSlots(drones, currentRadius, stage.ShrinkMoveSeconds);
+                    yield return context.WaitSeconds(stage.ShrinkMoveSeconds);
                 }
 
-                yield return FireStage(context, host, drones, stage);
-                if (!stage.ShrinkAfter || stage.NextRadius >= currentRadius)
+                yield return context.WaitSeconds(finalShotDelaySeconds);
+                FireCenterVolley(context, host, drones);
+                if (bossMoveRoutine != null)
                 {
-                    continue;
+                    yield return bossMoveRoutine;
                 }
+            }
+            finally
+            {
+                if (bossMoveRoutine != null && context?.Boss != null)
+                {
+                    context.Boss.StopCoroutine(bossMoveRoutine);
+                }
+            }
+        }
 
-                yield return context.WaitSeconds(stage.FirePauseBeforeShrinkSeconds);
-                currentRadius = stage.NextRadius;
-                CommandDronesToCardinalSlots(drones, currentRadius, stage.ShrinkMoveSeconds);
-                yield return context.WaitSeconds(stage.ShrinkMoveSeconds);
+        private IEnumerator ShowScoreLanePreview(BossActionContext context)
+        {
+            float targetDistance = Mathf.Max(0.1f, previewLaneDistance);
+            float initialDistance = targetDistance * Mathf.Max(1f, previewInitialLaneDistanceMultiplier);
+            ConductorScoreLaneRushIndicatorVisual visual = CreateScoreLanePreview(initialDistance);
+            try
+            {
+                yield return context.WaitSeconds(previewInitialLaneHoldSeconds);
+                yield return ShrinkScoreLanePreview(context, visual, initialDistance, targetDistance);
+                yield return FadeScoreLanePreview(context, visual);
+            }
+            finally
+            {
+                visual?.ClearAndDestroy();
+            }
+        }
+
+        private ConductorScoreLaneRushIndicatorVisual CreateScoreLanePreview(float distance)
+        {
+            GameObject indicatorObject = new("ConductorDiamondCollapseScoreLanePreview");
+            ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
+            visual.Configure(previewLaneColor, previewLaneWidth, previewLaneSortingOrder);
+            visual.ConfigurePlayerBlocking(true);
+            visual.ConfigureClearOnExecutionCinematic(true);
+            int visualLineIndex = 0;
+            int lineCount = Mathf.Max(1, previewLaneLineCount);
+            for (int sideIndex = 0; sideIndex < DroneCount; sideIndex++)
+            {
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    BuildScoreLanePreviewLine(
+                        sideIndex,
+                        laneIndex,
+                        lineCount,
+                        distance,
+                        out Vector2 start,
+                        out Vector2 end);
+                    visual.SetLane(visualLineIndex, start, end);
+                    visual.SetProgress(visualLineIndex, 1f);
+                    visualLineIndex++;
+                }
+            }
+            return visual;
+        }
+
+        private void BuildScoreLanePreviewLine(
+            int sideIndex,
+            int laneIndex,
+            int lineCount,
+            float distance,
+            out Vector2 start,
+            out Vector2 end)
+        {
+            Vector2 sideOffset = GetScoreLaneSideOffset(sideIndex);
+            bool isHorizontal = sideIndex == 0 || sideIndex == 2;
+            Vector2 lineAxis = isHorizontal ? Vector2.up : Vector2.right;
+            Vector2 travelDirection = isHorizontal ? Vector2.right : Vector2.up;
+            float centeredOffset = (Mathf.Max(1, lineCount) - 1) * 0.5f;
+            Vector2 lineCenter = centerPosition
+                + sideOffset * Mathf.Max(0.1f, distance)
+                + lineAxis * ((laneIndex - centeredOffset) * Mathf.Max(0f, previewLaneSpacing));
+            float halfLength = Mathf.Max(0f, previewLaneLength) * 0.5f;
+            start = lineCenter - travelDirection * halfLength;
+            end = lineCenter + travelDirection * halfLength;
+        }
+
+        private void UpdateScoreLanePreview(ConductorScoreLaneRushIndicatorVisual visual, float distance)
+        {
+            if (visual == null)
+            {
+                return;
             }
 
-            yield return context.WaitSeconds(finalShotDelaySeconds);
-            FireCenterVolley(context, host, drones);
+            int visualLineIndex = 0;
+            int lineCount = Mathf.Max(1, previewLaneLineCount);
+            for (int sideIndex = 0; sideIndex < DroneCount; sideIndex++)
+            {
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    BuildScoreLanePreviewLine(
+                        sideIndex,
+                        laneIndex,
+                        lineCount,
+                        distance,
+                        out Vector2 start,
+                        out Vector2 end);
+                    visual.SetLane(visualLineIndex, start, end);
+                    visual.SetProgress(visualLineIndex, 1f);
+                    visualLineIndex++;
+                }
+            }
+        }
+
+        private IEnumerator ShrinkScoreLanePreview(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual,
+            float initialDistance,
+            float targetDistance)
+        {
+            if (visual == null || initialDistance <= targetDistance)
+            {
+                yield break;
+            }
+
+            if (previewLaneShrinkSeconds <= 0f)
+            {
+                UpdateScoreLanePreview(visual, targetDistance);
+                PushPlayerWithShrinkingScoreLanes(context, initialDistance, targetDistance);
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float previousDistance = initialDistance;
+            while (elapsed < previewLaneShrinkSeconds)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / previewLaneShrinkSeconds);
+                float currentDistance = Mathf.Lerp(initialDistance, targetDistance, progress);
+                UpdateScoreLanePreview(visual, currentDistance);
+                PushPlayerWithShrinkingScoreLanes(context, previousDistance, currentDistance);
+                previousDistance = currentDistance;
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            UpdateScoreLanePreview(visual, targetDistance);
+            PushPlayerWithShrinkingScoreLanes(context, previousDistance, targetDistance);
+        }
+
+        private IEnumerator FadeScoreLanePreview(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual)
+        {
+            if (visual == null)
+            {
+                yield break;
+            }
+
+            if (previewLaneFadeSeconds <= 0f)
+            {
+                visual.SetAlpha(0f);
+                yield break;
+            }
+
+            float elapsed = 0f;
+            while (elapsed < previewLaneFadeSeconds)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                visual.SetAlpha(1f - Mathf.Clamp01(elapsed / previewLaneFadeSeconds));
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            visual.SetAlpha(0f);
+        }
+
+        private static Vector2 GetScoreLaneSideOffset(int sideIndex)
+        {
+            return sideIndex switch
+            {
+                0 => Vector2.up,
+                1 => Vector2.right,
+                2 => Vector2.down,
+                _ => Vector2.left
+            };
+        }
+
+        private void PushPlayerWithShrinkingScoreLanes(
+            BossActionContext context,
+            float previousDistance,
+            float currentDistance)
+        {
+            if (currentDistance >= previousDistance
+                || context?.Boss?.Player == null
+                || !TryGetPlayerBodyAndColliders(context.Boss.Player, out Rigidbody2D body, out Collider2D[] colliders))
+            {
+                return;
+            }
+
+            int lineCount = Mathf.Max(1, previewLaneLineCount);
+            for (int sideIndex = 0; sideIndex < DroneCount; sideIndex++)
+            {
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    if (!TryGetPlayerBounds(colliders, out Bounds playerBounds))
+                    {
+                        return;
+                    }
+
+                    BuildScoreLanePreviewLine(
+                        sideIndex,
+                        laneIndex,
+                        lineCount,
+                        previousDistance,
+                        out Vector2 previousStart,
+                        out Vector2 previousEnd);
+                    BuildScoreLanePreviewLine(
+                        sideIndex,
+                        laneIndex,
+                        lineCount,
+                        currentDistance,
+                        out Vector2 currentStart,
+                        out Vector2 currentEnd);
+                    if (!TryGetScoreLaneShrinkPushDisplacement(
+                            sideIndex,
+                            playerBounds,
+                            previousStart,
+                            previousEnd,
+                            currentStart,
+                            currentEnd,
+                            out Vector2 displacement))
+                    {
+                        continue;
+                    }
+
+                    Vector2 currentPosition = body.position;
+                    body.position = GroundMovementConstraint.ClampStep(
+                        currentPosition,
+                        currentPosition + displacement,
+                        colliders);
+                    RemovePlayerOutwardVelocity(body, GetScoreLaneSideOffset(sideIndex));
+                }
+            }
+        }
+
+        private static bool TryGetScoreLaneShrinkPushDisplacement(
+            int sideIndex,
+            Bounds playerBounds,
+            Vector2 previousStart,
+            Vector2 previousEnd,
+            Vector2 currentStart,
+            Vector2 currentEnd,
+            out Vector2 displacement)
+        {
+            displacement = Vector2.zero;
+            bool isHorizontal = sideIndex == 0 || sideIndex == 2;
+            if (isHorizontal)
+            {
+                float segmentMinX = Mathf.Min(currentStart.x, currentEnd.x);
+                float segmentMaxX = Mathf.Max(currentStart.x, currentEnd.x);
+                if (playerBounds.max.x < segmentMinX || playerBounds.min.x > segmentMaxX)
+                {
+                    return false;
+                }
+
+                float previousY = previousStart.y;
+                float currentY = currentStart.y;
+                if (sideIndex == 0)
+                {
+                    if (playerBounds.max.y <= currentY - LaneShrinkPushPadding
+                        || playerBounds.min.y > previousY + LaneShrinkPushPadding)
+                    {
+                        return false;
+                    }
+
+                    displacement.y = currentY - LaneShrinkPushPadding - playerBounds.max.y;
+                    return displacement.y < 0f;
+                }
+
+                if (playerBounds.min.y >= currentY + LaneShrinkPushPadding
+                    || playerBounds.max.y < previousY - LaneShrinkPushPadding)
+                {
+                    return false;
+                }
+
+                displacement.y = currentY + LaneShrinkPushPadding - playerBounds.min.y;
+                return displacement.y > 0f;
+            }
+
+            float segmentMinY = Mathf.Min(currentStart.y, currentEnd.y);
+            float segmentMaxY = Mathf.Max(currentStart.y, currentEnd.y);
+            if (playerBounds.max.y < segmentMinY || playerBounds.min.y > segmentMaxY)
+            {
+                return false;
+            }
+
+            float previousX = previousStart.x;
+            float currentX = currentStart.x;
+            if (sideIndex == 3)
+            {
+                if (playerBounds.min.x >= currentX + LaneShrinkPushPadding
+                    || playerBounds.max.x < previousX - LaneShrinkPushPadding)
+                {
+                    return false;
+                }
+
+                displacement.x = currentX + LaneShrinkPushPadding - playerBounds.min.x;
+                return displacement.x > 0f;
+            }
+
+            if (playerBounds.max.x <= currentX - LaneShrinkPushPadding
+                || playerBounds.min.x > previousX + LaneShrinkPushPadding)
+            {
+                return false;
+            }
+
+            displacement.x = currentX - LaneShrinkPushPadding - playerBounds.max.x;
+            return displacement.x < 0f;
+        }
+
+        private static bool TryGetPlayerBodyAndColliders(
+            Transform player,
+            out Rigidbody2D body,
+            out Collider2D[] colliders)
+        {
+            body = player != null ? player.GetComponentInParent<Rigidbody2D>() : null;
+            if (body == null && player != null)
+            {
+                body = player.GetComponentInChildren<Rigidbody2D>();
+            }
+
+            colliders = body != null ? body.GetComponentsInChildren<Collider2D>() : null;
+            return body != null && colliders != null && colliders.Length > 0;
+        }
+
+        private static bool TryGetPlayerBounds(Collider2D[] colliders, out Bounds bounds)
+        {
+            bounds = default;
+            bool hasBounds = false;
+            if (colliders == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    bounds = collider.bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(collider.bounds);
+                }
+            }
+
+            return hasBounds;
+        }
+
+        private static void RemovePlayerOutwardVelocity(Rigidbody2D body, Vector2 outwardDirection)
+        {
+            if (body == null || outwardDirection.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            Vector2 velocity = body.linearVelocity;
+            float outwardSpeed = Vector2.Dot(velocity, outwardDirection);
+            if (outwardSpeed > 0f)
+            {
+                body.linearVelocity = velocity - outwardDirection * outwardSpeed;
+            }
+        }
+
+        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
+        {
+            if (!repositionBossAtPatternStart || context?.Boss == null || context.Boss.Body == null)
+            {
+                yield break;
+            }
+
+            float arriveDistance = Mathf.Max(0.001f, bossArriveDistance);
+            float arriveDistanceSqr = arriveDistance * arriveDistance;
+            float elapsed = 0f;
+            while (((Vector2)context.Boss.Body.position - bossTargetPosition).sqrMagnitude > arriveDistanceSqr
+                && elapsed < Mathf.Max(0.01f, bossMoveTimeoutSeconds))
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Boss.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 toTarget = bossTargetPosition - context.Boss.Body.position;
+                float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossMoveSpeedMultiplier);
+                context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            context.Boss.Stop();
         }
 
         private IEnumerator FireStage(

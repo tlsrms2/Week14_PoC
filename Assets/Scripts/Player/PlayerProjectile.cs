@@ -206,6 +206,21 @@ namespace Week14.Combat
                 return false;
             }
 
+            Minion minion = other.GetComponentInParent<Minion>();
+            if (minion != null)
+            {
+                if (minion.BlocksPlayerProjectiles)
+                {
+                    DestroyProjectile();
+                    return true;
+                }
+
+                if (!minion.IsPlayerTargetable)
+                {
+                    return false;
+                }
+            }
+
             Health targetHealth = other.GetComponentInParent<Health>();
             if (targetHealth == null)
             {
@@ -273,6 +288,11 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<Minion>();
             if (minion != null)
             {
+                if (!minion.IsPlayerTargetable)
+                {
+                    return false;
+                }
+
                 int appliedDamage = bulletDamage;
                 if (minion.Owner is Conductor minionConductor
                     && minionConductor.TryGetMinionSharedDamage(minion, bulletDamage, out int sharedDamage))

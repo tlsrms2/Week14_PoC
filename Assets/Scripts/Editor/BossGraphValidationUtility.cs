@@ -573,6 +573,14 @@ internal static class BossGraphValidationUtility
                 messages.Add(new BossGraphValidationMessage(MessageType.Error, $"{phaseLabel}: Opening Pattern '{openingPatternId}'를 찾을 수 없습니다."));
             }
 
+            string signaturePatternId = GetString(phase, "signaturePatternId");
+            if (!string.IsNullOrWhiteSpace(signaturePatternId) && !patternIdCounts.ContainsKey(signaturePatternId))
+            {
+                messages.Add(new BossGraphValidationMessage(
+                    MessageType.Error,
+                    $"{phaseLabel}: Signature Pattern '{signaturePatternId}'를 찾을 수 없습니다."));
+            }
+
             SerializedProperty patternEntries = phase.FindPropertyRelative("patterns");
             if (patternEntries == null || patternEntries.arraySize == 0)
             {
