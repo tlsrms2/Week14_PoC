@@ -318,9 +318,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512824
-    m_Localized: " \uC7A5\uC18C\uB294 M-8 \uBE14\uB85D \uC778\uADFC \uD3D0\uC1C4\uB41C
+    m_Localized: " \uC7A5\uC18C\uB294 M-8 \uBE14\uB85D \uC778\uADFC \uD3D0\uB41C
       \uC9C0\uD558\uCCA0\uC5D0 \uC704\uCE58\uD55C \uC554\uC2DC\uC7A5. \uD310\uB9E4\uC790\uB294
-      <B>\uBB34\uAE30\uC0C1 \uC0D0\uBCF4</B>\uC785\uB2C8\uB2E4."
+      <B>\uBB34\uAE30\uC0C1 \uC0B4\uBCF4</B>\uC785\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512825
@@ -349,7 +349,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512829
-    m_Localized: " \uC9C1\uC811 \uC0D0\uBCF4\uB97C <B><color=red>\uBC29\uBB38</B></color>\uD574\uC11C,
+    m_Localized: " \uC9C1\uC811 \uC0B4\uBCF4\uB97C <B><color=red>\uBC29\uBB38</B></color>\uD574\uC11C,
       \uC815\uBCF4\uB97C \uC5BB\uC5B4\uC57C\uC9C0."
     m_Metadata:
       m_Items: []
