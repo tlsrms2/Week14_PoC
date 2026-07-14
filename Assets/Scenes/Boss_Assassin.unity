@@ -8322,7 +8322,7 @@ Transform:
   m_GameObject: {fileID: 2958469294905631101}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.01, z: 0}
+  m_LocalPosition: {x: 1.288, y: 7.01, z: 0}
   m_LocalScale: {x: 3.3000002, y: 3.3000002, z: 3.3000002}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -9511,7 +9511,7 @@ Animator:
   m_GameObject: {fileID: 3680933712553594655}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 993ffe56cbf1b674280c8ffd19c4a3c0, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -9718,7 +9718,7 @@ MonoBehaviour:
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 1
       aimAtPlayerOnLaunch: 0
-      speed: 7
+      speed: 8
       lifetime: 3
       radius: 0.12
       trailSeconds: 0.1
@@ -9749,6 +9749,14 @@ MonoBehaviour:
       radius: 0.12
       trailSeconds: 0.1
       trailWidthMultiplier: 3
+  stealthGraph: {fileID: 11400000, guid: f2cf3a1837f71cb429ac22ca0984a449, type: 2}
+  daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
+  stealthAlpha: 0.35
+  daggerCountForRecallPattern: 5
+  stealthDamageThresholdForForceRecall: 20
+  daggerRecallDamagePerDagger: 1
+  daggerRecallPlayerDamage: 5
+  daggerRecallSpeed: 12
 --- !u!222 &8937255414088847800
 CanvasRenderer:
   m_ObjectHideFlags: 0
