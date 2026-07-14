@@ -17,7 +17,850 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8a8e32e629c410a4c97867fa550435ab, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 43636948828160
+    m_Localized: Movement Training {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828161
+    m_Localized: Basic Shot {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828162
+    m_Localized: Basic Attack Hits {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828163
+    m_Localized: Enemy Bullets Hit {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828164
+    m_Localized: Projectile Interception {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828165
+    m_Localized: Skill Evasion {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828166
+    m_Localized: Dummy Destruction {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333461598208
+    m_Localized: ERIS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318464
+    m_Localized: Verifying identity.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318465
+    m_Localized: Codename Lee On, Class K26, No mission in progress.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318466
+    m_Localized: Significant findings.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512768
+    m_Localized: Amputation of the right upper limb, extensive burns extending from
+      the face to the shoulder, and nervous system damage have been detected.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512769
+    m_Localized: Access granted. Immediate first aid is highly recommended.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512770
+    m_Localized: Do you have any additional requests?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512771
+    m_Localized: Lee On
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512772
+    m_Localized: ...R-2 Block, Cafe Vesper. All video records around 17:33 today.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512773
+    m_Localized: Physical function recovery rate at 79%. Neural connection for the
+      right prosthetic arm has been completed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512774
+    m_Localized: Per your request, the visual calibration function of the ARGUS tactical
+      prosthetic eye has been linked with the prosthetic arm's motion control system.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512775
+    m_Localized: Additionally, the AEGIS core interface has been implanted into the
+      nervous system. Upon completing adaptation training, reaction speed and control
+      precision are expected to improve beyond pre-loss levels.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512776
+    m_Localized: What about the Vesper data?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512777
+    m_Localized: Most of the original records were lost due to the explosion, so
+      data is being reconstructed from fragments remaining in nearby recording devices.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512778
+    m_Localized: As this is expected to take some time, it is recommended to proceed
+      with adaptation training while you wait.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512779
+    m_Localized: Start.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512780
+    m_Localized: '[ R-2 Block Cafe Vesper. July 21st, 17:29:20 ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512781
+    m_Localized: '[ Playing back the reconstructed recording media. ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512782
+    m_Localized: "Dad, what\u2019s this box?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512783
+    m_Localized: Father
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512784
+    m_Localized: A patient I operated on this time gave it to me as a premium tea
+      set to show gratitude, so I brought it along since it's been a while since
+      I've seen my daughter.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512785
+    m_Localized: Is it really okay to just accept things like that from patients?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512786
+    m_Localized: If we reject even their gratitude, a doctor's work would become
+      too bleak, don't you think?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512787
+    m_Localized: I spend hours covered in blood trying to save people... It's hard
+      to understand what could possibly make people want to kill each other.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512788
+    m_Localized: ...Ahem. Still, wouldn't it be fine if it's someone who does terrible
+      things who dies? Just like a surgery cutting away a bad tumor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512789
+    m_Localized: There is nothing you won't say in front of a doctor, my dear daughter.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512790
+    m_Localized: But... yes. Sometimes a surgery is indeed necessary.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512791
+    m_Localized: "However. When it comes to saving a person, what's important is\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512792
+    m_Localized: '[ The recording between 17:32:26 and 17:32:41 has been corrupted.
+      ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512793
+    m_Localized: ...must.....it down... Do you understand?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512794
+    m_Localized: I don't really get it...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512795
+    m_Localized: You're a smart girl, so I believe you'll understand someday.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512796
+    m_Localized: "Ah, I should try the tea I received as a gift. I'm sure you liked
+      green tea\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512797
+    m_Localized: '[ From 17:33:44 onwards, the recording media were destroyed by
+      the explosion, and no data exists. ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512798
+    m_Localized: ...I'm here, Dad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512799
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512800
+    m_Localized: I wanted to be a good person too, just like you, Dad...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512801
+    m_Localized: Even if it looked a bit different... I wanted to be someone who
+      saves people...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512802
+    m_Localized: I couldn't even protect my loving family... I...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512803
+    m_Localized: <b><color=red>I want to make a world where good people don't get
+      hurt anymore.</b></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512804
+    m_Localized: Codename Lee On, after investigating Jin's data, I have finished
+      analyzing the individuals who appear to be connected to the incident.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512805
+    m_Localized: Should I transmit the list?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512807
+    m_Localized: But... yes. Sometimes a surgery is indeed necessary.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512806
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512808
+    m_Localized: However. When it comes to saving a person, what's important is,
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512809
+    m_Localized: Not only <b><color=red>cutting away the bad tumor</b></color>, but
+      putting down the knife and suturing the wound is also important.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512810
+    m_Localized: I don't really get it...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512811
+    m_Localized: You're a smart girl, so I believe you'll understand someday.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512812
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512813
+    m_Localized: Should I transmit the list?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512814
+    m_Localized: No...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512815
+    m_Localized: Delete the list.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512816
+    m_Localized: ...Understood.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512817
+    m_Localized: Dad. I finally understand what you meant back then.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512818
+    m_Localized: That cutting away the bad isn't the end, but caring for the remaining
+      wounds is also necessary.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512819
+    m_Localized: I'm going to try and find a way to do that now.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512820
+    m_Localized: ...I'm leaving now.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512821
+    m_Localized: The video recording has ended. Please understand that while every
+      effort was made to reconstruct it, some parts were lost.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512822
+    m_Localized: ...This is enough. What is the source of the explosive?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512823
+    m_Localized: As a result of backtracking the distribution channel of the components
+      found in the fragments, a sales record for items of the same lineage two days
+      prior to the incident was confirmed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512824
+    m_Localized: The location is a black market situated in a closed subway near
+      M-8 Block. The seller is <B>Salvo the Arms Dealer</B>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512825
+    m_Localized: The eccentric guy rumored to ride around on those guns? What about
+      the buyer?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512826
+    m_Localized: They used a pseudonym, making tracking difficult. As you know, due
+      to the nature of unofficial missions, there are heavy constraints on tracking
+      targets whose identities are not clearly revealed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512827
+    m_Localized: Is it impossible even if we pay an additional fee?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512828
+    m_Localized: It is impossible. It would be possible if you personally register
+      it as an official mission, but it is not recommended as the likelihood of exposure
+      to the target is high. Another way is...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512829
+    m_Localized: I'll have to <B><color=red>visit</B></color> Salvo directly to get
+      the information.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512830
+    m_Localized: Information analysis would be possible if we only secure the data,
+      are you truly going to <B><color=red>visit</B></color> him?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512831
+    m_Localized: That's more comfortable for me. Fewer loose ends. Besides, that
+      guy has crossed the line far enough.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512832
+    m_Localized: ...And I also happen to need someone to take my anger out on.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512833
+    m_Localized: Confirmed. Additionally, we have been able to identify the courier
+      who delivered the explosive to the hospital.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512834
+    m_Localized: Who is that?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512835
+    m_Localized: The individual is a bulky mercenary named <B>Ram</B>, and because
+      they are equipped with high-output physical enhancement gear, they were not
+      difficult to identify.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512836
+    m_Localized: However, similarly, we could not track down who commissioned them
+      to move the explosive.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512837
+    m_Localized: I'll have to <B><Color=red>visit</B></Color> that guy directly as
+      well. Do you know where he is currently located?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512838
+    m_Localized: Please wait. I will register the relevant data on the panel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512839
+    m_Localized: Verifying identity. Codename Lee On. Welcome back.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512840
+    m_Localized: The data you acquired has already been nearly completely analyzed.
+      Do you have any questions?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512841
+    m_Localized: The purpose of the bomb's delivery. I want to know why my dad had
+      to die.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512842
+    m_Localized: The reason is simple. The explosion at Vesper was an accident.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512843
+    m_Localized: ...What?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512844
+    m_Localized: "As a result of investigating Ram's terminal, the elimination target
+      was the original recipient of the gift\u2014that is, the patient your father
+      was treating."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512845
+    m_Localized: The individual is presumed to be an accountant for the Syndicate,
+      an organization that manages the distribution of weapons, information, and
+      funds, but the reason they were designated as an elimination target has not
+      been confirmed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512846
+    m_Localized: Circumstantially, the explosive being delivered to your father was
+      an unplanned variable; originally, it appears they intended to detonate it
+      at the target's residence and disguise it as a gas accident.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512847
+    m_Localized: Then... where is that person now?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512848
+    m_Localized: The day after the Vesper accident, they were found dead by suicide
+      at their residence. Based on the analysis of relevant data, it is predicted
+      that "Boss 4 (To be revised)" <B><color=red>visited</B></color> them.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512849
+    m_Localized: If it's "Boss 4"... that's the guy rumored to do the "Boss Gimmick."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512850
+    m_Localized: Although the location of "Boss 4" currently registered in the database
+      exists... please understand that it cannot be provided unless it is registered
+      as an official mission.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512851
+    m_Localized: No need for that. If I loiter around that accountant's house, he'll
+      come to <b><color=red>visit</b></color> me on his own.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512852
+    m_Localized: Confirmed. Also, separately, we have identified some individuals
+      connected to the incident through Salvo's transaction history.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512853
+    m_Localized: Must be people from the Syndicate side.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512854
+    m_Localized: Correct. The person who led the operation is "Boss 3," and the person
+      who made the final decision is someone named Jin, who is presumed to be part
+      of the Syndicate's executive leadership.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512855
+    m_Localized: '"Boss 3"? That person belongs to the underworld?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512856
+    m_Localized: Publicly, they active as an artist combining music and drone performances,
+      but in reality, they appear to belong to the Syndicate.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512857
+    m_Localized: Jin's location cannot be specified, but since there is a lot of
+      known information about "Boss 3," they were easily pinpointed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512858
+    m_Localized: However, since we also maintain a collaborative relationship with
+      the Syndicate, it will be difficult to grant you accommodations if you <b><color=red>visit</b></color>
+      the related individual without going through proper procedures.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512859
+    m_Localized: Will you still proceed?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512860
+    m_Localized: If I had cared about profits, I would have washed my hands of this,
+      but...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512861
+    m_Localized: <b><color=red>This is a strictly personal revenge.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512862
+    m_Localized: Confirmed. Before you depart, please check as we have expanded the
+      available modules.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512863
+    m_Localized: Verifying identity. Codename Lee On. Welcome back.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512864
+    m_Localized: There are two pieces of information that have currently been analyzed.
+      Borrowing an idiomatic expression, it is good news and bad news. Which side
+      would you like to hear first?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512865
+    m_Localized: ...Tell me one by one. I'll judge after I listen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512866
+    m_Localized: First then, as a result of analyzing the devices of those who were
+      commissioned, we were able to pinpoint Jin's current location and movement
+      patterns.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512867
+    m_Localized: And the bad news?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512868
+    m_Localized: Not long ago, a new mission was registered under the name of the
+      client, Jin. Visitor codename "Boss 5."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512869
+    m_Localized: The target of the visit. Codename Lee On, it is you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512870
+    m_Localized: That bastard must have caught wind of it. "Boss 5"... of all people,
+      he brought the most troublesome opponent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512871
+    m_Localized: By the way, ERIS. If it has been designated as an official mission,
+      you have no reason to take my side anymore, so why are you informing me?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512872
+    m_Localized: To explain it simply, it is a sort of investment.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512873
+    m_Localized: An investment?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512874
+    m_Localized: As you know, we adjust the balance of society through visits.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512875
+    m_Localized: However, those who move according to profit are bound to have their
+      judgment clouded and eventually become corrupt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512876
+    m_Localized: On the other hand, those who move with a <b><color=red>consistent
+      motivation</b></color> as their driving force rather than profit become a pure
+      and predictable engine.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512877
+    m_Localized: Therefore, it is judged that helping you, Lee On, to continue your
+      visits is beneficial to society as a whole.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512878
+    m_Localized: ...I see. Then to what extent can you support me?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512879
+    m_Localized: I have registered Jin's location on the panel. It is recommended
+      that you visit him first before "Boss 5" arrives.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512880
+    m_Localized: The locations of the individuals whose identities have been specified
+      have been registered on the tactical panel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512881
+    m_Localized: Through the tactical panel, you can check the target's information
+      and move to the corresponding location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512882
+    m_Localized: When you access the panel, the following interface will be displayed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512883
+    m_Localized: <B><color=red>Visit</B></color> the desired target and secure the
+      data. As soon as valid data is secured, we will analyze it immediately.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512884
+    m_Localized: Even if it is a target you have already completed a <b><color=red>visit</b></color>
+      to, it is possible to record that individual's data and engage in battle repeatedly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512885
+    m_Localized: If you achieve additional conditions, you can secure more battle
+      data in addition to the incident data to be analyzed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512886
+    m_Localized: Since the collected data chips are subsequently used for module
+      expansion to improve equipment performance, it is recommended to prioritize
+      securing data chips if the battle is challenging.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512887
+    m_Localized: Now that you have secured a certain amount of battle data chips,
+      I will explain the module expansion function.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512888
+    m_Localized: By accessing the corresponding module panel, you can improve the
+      performance of your implanted equipment.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512889
+    m_Localized: When you access the panel, the following interface will be displayed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512890
+    m_Localized: You can consume the battle data chips you possess to expand and
+      equip the modules you want.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512891
+    m_Localized: Expanded modules can be changed freely, but please note that modules
+      of the same type cannot be equipped duplicate.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333528707072
+    m_Localized: You can also refund selected modules back into data chips, so if
+      a battle is challenging, it is recommended to utilize various module combinations.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901376
+    m_Localized: Commencing equipment adaptation training.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901377
+    m_Localized: First, we will verify whether the equipment implantation has caused
+      any adverse effects on your nervous system. Please move your body sufficiently.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901378
+    m_Localized: Movement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901379
+    m_Localized: You can move by pressing the WASD keys.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901380
+    m_Localized: Movement normal. No significant findings.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901381
+    m_Localized: Next, we will measure the impact of momentary shock. Please fire
+      the gun held in your left hand.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901382
+    m_Localized: Basic Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901383
+    m_Localized: Left-click the mouse to fire a bullet-type energy core in the direction
+      of the cursor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901384
+    m_Localized: Recoil control and posture calibration normal. No abnormalities
+      in the physical balance system.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901385
+    m_Localized: Opening the front bulkhead. Please advance.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901386
+    m_Localized: Next is adaptation training utilizing dummy targets.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901387
+    m_Localized: First, land an attack on the dummy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901388
+    m_Localized: Aim calibration module normal. This module can be removed later
+      if it becomes unnecessary.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901389
+    m_Localized: Next, we will check the operation of the AEGIS interface through
+      the dummy's suppression rounds. The core has been resupplied, so please stand
+      in the line of fire of the dummy's attack.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901390
+    m_Localized: You want me to get shot?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901391
+    m_Localized: The AEGIS system consumes a core upon taking damage to momentarily
+      block lethal damage. Please get hit by the attack fired by the dummy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901392
+    m_Localized: Taking Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901393
+    m_Localized: 'When hit by an enemy attack, a bullet-type energy core is consumed
+      first to absorb the damage.
+
+
+      If you take damage while possessing zero
+      cores, it will result in death.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901394
+    m_Localized: AEGIS system normal. Please note that while physical damage can
+      be neutralized, the shock and pain cannot be mitigated.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901395
+    m_Localized: You should have told me something that important sooner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901396
+    m_Localized: My apologies. Additionally, please be extremely cautious, as the
+      AEGIS system will not function if there are no bullet-type energy cores available
+      to block the attack, which may result in fatal injury.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901397
+    m_Localized: Next is training utilizing the ARGUS tactical prosthetic eye and
+      the prosthetic arm's motion control system. Try to intercept the bullets fired
+      by the dummy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901398
+    m_Localized: Interception
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901399
+    m_Localized: 'By right-clicking the mouse to capture certain enemy attacks with
+      the ARGUS eye, the prosthetic arm will automatically perform an interception
+      without consuming bullets.
+
+
+      Upon successful capture and interception,
+      it neutralizes the enemy attack and automatically absorbs the corresponding
+      energy into the core.
+
+
+      If you frequently attempt to capture without
+      successfully intercepting, strain will be placed on the ARGUS eye, causing
+      the capture range to gradually decrease.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901400
+    m_Localized: Interception is the sole method to replenish bullet-type energy
+      cores during battle. Please be aware that some attacks cannot be intercepted
+      depending on the form of the enemy attack.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901401
+    m_Localized: Next is the explanation regarding Overload. Energy cores continuously
+      release energy to maintain the AEGIS system.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901403
+    m_Localized: Overload
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901404
+    m_Localized: 'Bullet-type energy cores will overload and be automatically discharged
+      if held for a certain period of time.
+
+
+      You can identify that a discharge
+      is imminent by the bullets on the HUD turning red.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901405
+    m_Localized: Next is Tactical Dodge. You can recycle a portion of the energy
+      released by the core to use it as a momentary enhancement of physical capability.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901406
+    m_Localized: Skill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901407
+    m_Localized: 'You can use the skill by pressing the Spacebar.
+
+
+      The skill
+      can only be used when the HUD gauge is ready, and it will recharge after a
+      certain period of time.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901408
+    m_Localized: Try to dodge the enemy attack using the Tactical Dodge skill.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901409
+    m_Localized: The basic training for the implanted equipment has concluded. Lastly,
+      we will conduct a mock battle with an enemy dummy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901410
+    m_Localized: Utilize attack, interception, and tactical dodge appropriately to
+      destroy the dummy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901411
+    m_Localized: Adaptation training concluded. Information updated. Adjusting the
+      physical capability information of Codename Lee On upward.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901412
+    m_Localized: The data analysis related to Cafe Vesper is 98% complete. Please
+      return to the lobby.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901413
+    m_Localized: Tactical dodge failed. Please try again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901414
+    m_Localized: Perform the tactical dodge right before making contact with the
+      bullet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901415
+    m_Localized: All bullet-type energy cores have been depleted; resupplying now.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636894302208
+    m_Localized: They probably already know I'm coming and are waiting for me along
+      with "Boss 5."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901402
+    m_Localized: If the same core is not consumed for a long time, it will overload
+      and be automatically discharged, as it can inflict thermal damage to the user.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

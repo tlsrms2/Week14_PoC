@@ -160,6 +160,10 @@ MonoBehaviour:
     m_Localized: Enhancement Points +{0}
     m_Metadata:
       m_Items: []
+  - m_Id: 4478459079655424
+    m_Localized: target
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

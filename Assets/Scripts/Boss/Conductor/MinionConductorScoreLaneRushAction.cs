@@ -17,6 +17,11 @@ namespace Week14.Enemy
     [Serializable]
     public class MinionConductorScoreLaneRushAction : BossAction, IBossActionContextDurationProvider
     {
+        private const float LaneShrinkPushPadding = 0.02f;
+        private const float DefaultInitialLaneDistanceMultiplier = 1.5f;
+        private const float DefaultInitialLaneHoldSeconds = 0.2f;
+        private const float DefaultLaneShrinkSeconds = 0.6f;
+
         [Serializable]
         public sealed class StartTiming
         {
@@ -175,6 +180,14 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float restSeconds = 0.35f;
         [SerializeField] private List<StartTiming> startTimings = new();
         [SerializeField, InspectorName("Volleys")] private List<Volley> volleys = new() { new Volley() };
+        [Header("Initial Lane Shrink")]
+        [SerializeField, Min(1f)] private float initialLaneDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float initialLaneHoldSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float laneShrinkSeconds = 0.6f;
+        [Header("Lane Creation Wander")]
+        [SerializeField, Min(0f)] private float laneCreationWanderSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float laneCreationWanderRadius = 2.8f;
+        [SerializeField, Min(0.1f)] private float laneCreationWanderRetargetSeconds = 1.5f;
         [Header("Lane Indicators")]
         [SerializeField, InspectorName("Draw Lane Indicators")] private bool standardDrawLaneIndicators = true;
         [SerializeField] private Color standardLaneIndicatorColor = new(0.62f, 0.92f, 1f, 0.66f);
@@ -202,7 +215,20 @@ namespace Week14.Enemy
         protected float RushDistance => Mathf.Max(0f, rushDistance);
         protected float RushSpeed => Mathf.Max(0.01f, rushSpeed);
         protected float RestSeconds => Mathf.Max(0f, restSeconds);
+        protected float InitialLaneDistanceMultiplier => initialLaneDistanceMultiplier >= 1f
+            ? initialLaneDistanceMultiplier
+            : DefaultInitialLaneDistanceMultiplier;
+        protected float InitialLaneDistance => LineDistanceFromPlayer * InitialLaneDistanceMultiplier;
+        protected float InitialLaneHoldSeconds => initialLaneDistanceMultiplier >= 1f
+            ? Mathf.Max(0f, initialLaneHoldSeconds)
+            : DefaultInitialLaneHoldSeconds;
+        protected float LaneShrinkSeconds => initialLaneDistanceMultiplier >= 1f
+            ? Mathf.Max(0f, laneShrinkSeconds)
+            : DefaultLaneShrinkSeconds;
+        protected float MaxStartDelaySeconds => GetMaxStartDelaySeconds(startTimings);
         protected IReadOnlyList<StartTiming> StartTimings => startTimings;
+        protected MinionGraphProjectileOriginSpec MinionOrigin => minionOrigin;
+        protected BossGraphEffectSettings Effects => effects;
         internal IReadOnlyList<Volley> SerializedVolleysForGraphCopy => volleys;
 
         public virtual bool TryGetDurationSeconds(BossActionContext context, out float seconds)
@@ -216,6 +242,7 @@ namespace Week14.Enemy
 
             seconds = WindupSeconds
                 + GetStandardLaneIndicatorRevealDuration(volleyCount)
+                + GetInitialLaneShrinkPreludeSeconds()
                 + EstimateVolleySequenceDuration(Volleys, volleyCount)
                 + GetStandardLaneIndicatorHideDuration();
             return seconds > 0f;
@@ -235,6 +262,9 @@ namespace Week14.Enemy
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
+                CommandLaneCreationWander(
+                    host.GetControlledMinionsForGraph(),
+                    GetStandardLaneIndicatorRevealDuration(executionVolleys.Count));
                 yield return BeforeExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
                 yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
                 yield return AfterExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
@@ -282,8 +312,17 @@ namespace Week14.Enemy
             IReadOnlyList<ExecutionVolley> executionVolleys)
         {
             ClearActiveStandardLaneIndicators();
-            activeStandardLaneIndicators = CreateStandardLaneIndicators(patternStartPlayerPosition, executionVolleys);
+            activeStandardLaneIndicators = CreateStandardLaneIndicators(
+                patternStartPlayerPosition,
+                executionVolleys,
+                InitialLaneDistanceMultiplier);
             yield return RevealStandardLaneIndicators(context, activeStandardLaneIndicators);
+            yield return context.WaitSeconds(InitialLaneHoldSeconds);
+            yield return ShrinkStandardLaneIndicators(
+                context,
+                activeStandardLaneIndicators,
+                patternStartPlayerPosition,
+                executionVolleys);
             yield return BeforeExecuteVolleys(context, patternStartPlayerPosition);
         }
 
@@ -314,19 +353,28 @@ namespace Week14.Enemy
 
         private ConductorScoreLaneRushIndicatorVisual CreateStandardLaneIndicators(
             Vector2 center,
-            IReadOnlyList<ExecutionVolley> executionVolleys)
+            IReadOnlyList<ExecutionVolley> executionVolleys,
+            float distanceMultiplier)
         {
-            if (!standardDrawLaneIndicators || executionVolleys == null)
+            if (executionVolleys == null)
             {
                 return null;
             }
 
             GameObject indicatorObject = new("ConductorScoreLaneRushIndicators");
             ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
+            Color color = standardDrawLaneIndicators
+                ? standardLaneIndicatorColor
+                : new Color(
+                    standardLaneIndicatorColor.r,
+                    standardLaneIndicatorColor.g,
+                    standardLaneIndicatorColor.b,
+                    0f);
             visual.Configure(
-                standardLaneIndicatorColor,
+                color,
                 standardLaneIndicatorWidth,
                 standardLaneIndicatorSortingOrder);
+            visual.ConfigurePlayerBlocking(true);
             visual.ConfigureClearOnExecutionCinematic(true);
 
             int lineIndex = 0;
@@ -346,6 +394,7 @@ namespace Week14.Enemy
                         volley,
                         laneIndex,
                         lineCount,
+                        distanceMultiplier,
                         out Vector2 start,
                         out Vector2 end);
                     visual.SetLane(lineIndex, start, end);
@@ -360,6 +409,154 @@ namespace Week14.Enemy
 
             visual.ClearAndDestroy();
             return null;
+        }
+
+        private IEnumerator ShrinkStandardLaneIndicators(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual,
+            Vector2 center,
+            IReadOnlyList<ExecutionVolley> executionVolleys)
+        {
+            if (visual == null || executionVolleys == null)
+            {
+                yield break;
+            }
+
+            float initialMultiplier = InitialLaneDistanceMultiplier;
+            float duration = LaneShrinkSeconds;
+            if (duration <= 0f)
+            {
+                UpdateStandardLaneIndicatorPositions(visual, center, executionVolleys, 1f);
+                PushPlayerWithShrinkingStandardLanes(
+                    context,
+                    center,
+                    executionVolleys,
+                    initialMultiplier,
+                    1f);
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float previousMultiplier = initialMultiplier;
+            while (elapsed < duration)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / duration);
+                float multiplier = Mathf.Lerp(initialMultiplier, 1f, progress);
+                UpdateStandardLaneIndicatorPositions(visual, center, executionVolleys, multiplier);
+                PushPlayerWithShrinkingStandardLanes(
+                    context,
+                    center,
+                    executionVolleys,
+                    previousMultiplier,
+                    multiplier);
+                previousMultiplier = multiplier;
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            UpdateStandardLaneIndicatorPositions(visual, center, executionVolleys, 1f);
+            PushPlayerWithShrinkingStandardLanes(
+                context,
+                center,
+                executionVolleys,
+                previousMultiplier,
+                1f);
+        }
+
+        private void UpdateStandardLaneIndicatorPositions(
+            ConductorScoreLaneRushIndicatorVisual visual,
+            Vector2 center,
+            IReadOnlyList<ExecutionVolley> executionVolleys,
+            float distanceMultiplier)
+        {
+            if (visual == null || executionVolleys == null)
+            {
+                return;
+            }
+
+            int lineIndex = 0;
+            int lineCount = Mathf.Max(1, standardLaneIndicatorLineCount);
+            for (int volleyIndex = 0; volleyIndex < executionVolleys.Count; volleyIndex++)
+            {
+                ExecutionVolley volley = executionVolleys[volleyIndex];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    BuildStandardLaneIndicatorLine(
+                        center,
+                        volley,
+                        laneIndex,
+                        lineCount,
+                        distanceMultiplier,
+                        out Vector2 start,
+                        out Vector2 end);
+                    visual.SetLane(lineIndex, start, end);
+                    visual.SetProgress(lineIndex, 1f);
+                    lineIndex++;
+                }
+            }
+        }
+
+        private void PushPlayerWithShrinkingStandardLanes(
+            BossActionContext context,
+            Vector2 center,
+            IReadOnlyList<ExecutionVolley> executionVolleys,
+            float previousMultiplier,
+            float currentMultiplier)
+        {
+            if (previousMultiplier <= currentMultiplier
+                || context?.Boss?.Player == null
+                || executionVolleys == null)
+            {
+                return;
+            }
+
+            int lineCount = Mathf.Max(1, standardLaneIndicatorLineCount);
+            for (int volleyIndex = 0; volleyIndex < executionVolleys.Count; volleyIndex++)
+            {
+                ExecutionVolley volley = executionVolleys[volleyIndex];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                for (int laneIndex = 0; laneIndex < lineCount; laneIndex++)
+                {
+                    BuildStandardLaneIndicatorLine(
+                        center,
+                        volley,
+                        laneIndex,
+                        lineCount,
+                        previousMultiplier,
+                        out Vector2 previousStart,
+                        out Vector2 previousEnd);
+                    BuildStandardLaneIndicatorLine(
+                        center,
+                        volley,
+                        laneIndex,
+                        lineCount,
+                        currentMultiplier,
+                        out Vector2 currentStart,
+                        out Vector2 currentEnd);
+                    GroundMovementConstraint.PushPlayerOutOfMovingLine(
+                        context.Boss.Player,
+                        previousStart,
+                        previousEnd,
+                        currentStart,
+                        currentEnd,
+                        LaneShrinkPushPadding);
+                }
+            }
         }
 
         private IEnumerator RevealStandardLaneIndicators(
@@ -502,12 +699,14 @@ namespace Week14.Enemy
             ExecutionVolley volley,
             int laneIndex,
             int laneCount,
+            float distanceMultiplier,
             out Vector2 start,
             out Vector2 end)
         {
             Vector2 rushDirection = GetRushDirection(volley.Side, volley.RushPositiveDirection);
             Vector2 lineAxis = IsHorizontalRush(volley.Side) ? Vector2.up : Vector2.right;
-            Vector2 lineCenter = center + GetSideOffset(volley.Side) * volley.LineDistanceFromPlayer;
+            float lineDistance = volley.LineDistanceFromPlayer * Mathf.Max(1f, distanceMultiplier);
+            Vector2 lineCenter = center + GetSideOffset(volley.Side) * lineDistance;
             float centeredOffset = (Mathf.Max(1, laneCount) - 1) * 0.5f;
             Vector2 laneCenter = lineCenter + lineAxis * ((laneIndex - centeredOffset) * volley.LineSpacing);
             start = laneCenter - rushDirection * (volley.RushDistance * 0.5f);
@@ -584,7 +783,30 @@ namespace Week14.Enemy
             return standardDrawLaneIndicators ? Mathf.Max(0f, standardLaneIndicatorHideSeconds) : 0f;
         }
 
-        protected float EstimateLongestVolleyWaitSeconds(IReadOnlyList<Volley> pool, bool hasNextVolley)
+        protected void CommandLaneCreationWander(IReadOnlyList<Minion> minions, float revealSeconds)
+        {
+            float duration = Mathf.Max(0f, revealSeconds) + GetInitialLaneShrinkPreludeSeconds();
+            if (minions == null || duration <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.CommandWander(
+                    duration,
+                    laneCreationWanderSpeed,
+                    laneCreationWanderRadius,
+                    laneCreationWanderRetargetSeconds);
+            }
+        }
+
+        protected float GetInitialLaneShrinkPreludeSeconds()
+        {
+            return InitialLaneHoldSeconds + LaneShrinkSeconds;
+        }
+
+        protected virtual float EstimateLongestVolleyWaitSeconds(IReadOnlyList<Volley> pool, bool hasNextVolley)
         {
             float movementDuration = EstimateMovementDurationSeconds();
             float longestSeconds = 0f;
@@ -745,11 +967,16 @@ namespace Week14.Enemy
             Vector2 rushDirection = GetRushDirection(volley);
             float movementDuration = CommandScoreLaneRush(minions, patternStartPlayerPosition, volley, rushDirection);
             float maxFireSeconds = GetMaxFireSeconds(volley);
-            float waitSeconds = Mathf.Max(maxFireSeconds, (waitForDuration || hasNextVolley) ? movementDuration : 0f);
+            float waitSeconds = Mathf.Max(
+                maxFireSeconds,
+                (waitForDuration || hasNextVolley) ? movementDuration : 0f);
+            waitSeconds = Mathf.Max(waitSeconds, GetAdditionalVolleyWaitSeconds(volley));
             MinionGraphProjectileFireSpec volleyFireSpec = fireSpec.WithFixedDirection(GetProjectileDirection(volley.Side));
             OrderedParrySequence parrySequence = new(volley.FireTimings, CreateTieLinkSettings());
             bool[] fired = new bool[volley.FireTimings != null ? volley.FireTimings.Count : 0];
             float elapsed = 0f;
+
+            OnVolleyRushStarted(context, host, volley, minions);
 
             while (elapsed < waitSeconds)
             {
@@ -759,12 +986,40 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                TickVolleyRush(context, host, volley, minions, elapsed);
                 FireDueProjectiles(context, host, volleyFireSpec, volley, minions, parrySequence, fired, elapsed);
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
             FireDueProjectiles(context, host, volleyFireSpec, volley, minions, parrySequence, fired, float.PositiveInfinity);
+        }
+
+        protected virtual float GetAdditionalVolleyWaitSeconds(ExecutionVolley volley)
+        {
+            return 0f;
+        }
+
+        protected virtual float GetAdditionalRushStartDelaySeconds(ExecutionVolley volley, int minionNumber)
+        {
+            return 0f;
+        }
+
+        protected virtual void OnVolleyRushStarted(
+            BossActionContext context,
+            IMinionPatternHost host,
+            ExecutionVolley volley,
+            IReadOnlyList<Minion> minions)
+        {
+        }
+
+        protected virtual void TickVolleyRush(
+            BossActionContext context,
+            IMinionPatternHost host,
+            ExecutionVolley volley,
+            IReadOnlyList<Minion> minions,
+            float elapsed)
+        {
         }
 
         protected virtual void OnVolleyProjectileFired(
@@ -809,7 +1064,8 @@ namespace Week14.Enemy
                 int minionNumber = GetMinionNumber(minion, i);
                 Vector2 laneCenter = lineCenter + lineAxis * ((i - centeredOffset) * volley.LineSpacing);
                 Vector2 startPosition = laneCenter - rushDirection * (volley.RushDistance * 0.5f);
-                float startDelay = GetStartDelay(volley, minionNumber);
+                float startDelay = GetStartDelay(volley, minionNumber)
+                    + GetAdditionalRushStartDelaySeconds(volley, minionNumber);
                 float duration = minion.CommandScoreLaneRush(
                     startPosition,
                     rushDirection,

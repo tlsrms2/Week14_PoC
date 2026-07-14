@@ -392,6 +392,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         graphObject = graphAsset != null ? new SerializedObject(graphAsset) : null;
         graphObject?.Update();
         NormalizeGraphNodeIds("Rename Boss Graph Nodes", false, true);
+        MigrateConductorActionCategoriesToAttack();
+        MigrateConductorActionNodesToAttack();
         bossHierarchyRoot = explicitBossHierarchyRoot != null ? explicitBossHierarchyRoot : FindBossHierarchyRoot(graphAsset);
         RefreshMinionHierarchyRoot();
         SetBossHierarchySelection(bossHierarchyRoot, string.Empty);
@@ -405,6 +407,66 @@ public sealed class BossGraphEditorWindow : EditorWindow
         RebuildGraph();
         detailsPanel?.MarkDirtyRepaint();
         bossHierarchyPanel?.MarkDirtyRepaint();
+    }
+
+    private void MigrateConductorActionCategoriesToAttack()
+    {
+        BossGraphActionCategoryAsset categories = GetActionCategoryAsset();
+        if (categories == null)
+        {
+            return;
+        }
+
+        bool changed = false;
+        foreach (BossGraphActionMenuItem item in BossGraphActionEditorUtility.ActionMenuItems)
+        {
+            if (!BossGraphActionCategoryAsset.IsConductorAction(item.ActionType)
+                || !categories.HasActionKind(item.ActionType)
+                || categories.GetNodeKind(item.ActionType) == BossGraphNodeKind.Attack)
+            {
+                continue;
+            }
+
+            categories.SetActionKind(item.ActionType, BossGraphNodeKind.Attack);
+            changed = true;
+        }
+
+        if (changed)
+        {
+            EditorUtility.SetDirty(categories);
+        }
+    }
+
+    private void MigrateConductorActionNodesToAttack()
+    {
+        SerializedProperty stateNodes = graphObject?.FindProperty("stateNodes");
+        if (stateNodes == null)
+        {
+            return;
+        }
+
+        bool changed = false;
+        for (int i = 0; i < stateNodes.arraySize; i++)
+        {
+            SerializedProperty node = stateNodes.GetArrayElementAtIndex(i);
+            if (!BossGraphActionCategoryAsset.IsConductorAction(GetNodeActionType(node))
+                || GetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack) == (int)BossGraphNodeKind.Attack)
+            {
+                continue;
+            }
+
+            SetEnum(node, "nodeKind", (int)BossGraphNodeKind.Attack);
+            changed = true;
+        }
+
+        if (!changed)
+        {
+            return;
+        }
+
+        graphObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(graphAsset);
+        graphObject.Update();
     }
 
     private void OnDisable()

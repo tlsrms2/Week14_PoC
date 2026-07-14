@@ -51,7 +51,6 @@ namespace Week14.Enemy
         [SerializeField] private SpriteRenderer executionIndicator;
 
         private readonly List<EnemyProjectile> activeProjectiles = new();
-        private readonly List<Collider2D> ignoredPlayerCollisionColliders = new();
         private readonly List<Vector2> movementPathIndicatorPoints = new();
         private Coroutine movementRoutine;
         private Coroutine fireRoutine;
@@ -81,7 +80,6 @@ namespace Week14.Enemy
         private bool ownsStatusView;
         private bool isExecutionLocked;
         private bool suppressBodyContactDamage;
-        private bool ignoringPlayerCollision;
         private bool hasGraphFacingOverride;
         private Vector2 graphFacingOverrideDirection;
         [SerializeField, Min(0)] private int ownerSlotNumber;
@@ -289,6 +287,7 @@ namespace Week14.Enemy
         {
             IgnoreOtherMinionCollisions();
             IgnoreOwnerCollisions();
+            IgnorePlayerCollisions();
         }
 
         private void IgnoreOtherMinionCollisions()
@@ -882,6 +881,23 @@ namespace Week14.Enemy
                 safeRotateSeconds,
                 angularSpeedDegrees));
             return safeMoveToStartSeconds + safeRotateSeconds;
+        }
+
+        public void CommandConductorDefenseArc(
+            int slotIndex,
+            int slotCount,
+            float radius,
+            float arcDegrees,
+            float moveSpeed)
+        {
+            StopMovementCommand();
+            isFormationCommand = true;
+            movementRoutine = StartCoroutine(RunConductorDefenseArc(
+                slotIndex,
+                slotCount,
+                Mathf.Max(0f, radius),
+                Mathf.Max(0f, arcDegrees),
+                Mathf.Max(0f, moveSpeed)));
         }
 
         private IEnumerator RunRepeatFire(
@@ -1650,6 +1666,53 @@ namespace Week14.Enemy
             FinishMovementCommand();
         }
 
+        private IEnumerator RunConductorDefenseArc(
+            int slotIndex,
+            int slotCount,
+            float radius,
+            float arcDegrees,
+            float moveSpeed)
+        {
+            int safeSlotCount = Mathf.Max(1, slotCount);
+            int safeSlotIndex = Mathf.Clamp(slotIndex, 0, safeSlotCount - 1);
+            bool lockedToPattern = false;
+            while (true)
+            {
+                IMinionOwner currentOwner = Owner;
+                Transform ownerTransform = currentOwner?.MinionOwnerTransform;
+                Transform player = currentOwner?.MinionTarget;
+                if (ownerTransform == null || player == null)
+                {
+                    break;
+                }
+
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 ownerPosition = ownerTransform.position;
+                Vector2 directionToPlayer = (Vector2)player.position - ownerPosition;
+                if (directionToPlayer.sqrMagnitude <= 0.0001f)
+                {
+                    directionToPlayer = Vector2.right;
+                }
+
+                float slotT = safeSlotCount <= 1
+                    ? 0f
+                    : safeSlotIndex / (safeSlotCount - 1f) - 0.5f;
+                float centerAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+                Vector2 target = ownerPosition + AngleToDirection(centerAngle + arcDegrees * slotT) * radius;
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed);
+                FacePlayer();
+                yield return null;
+            }
+
+            FinishMovementCommand();
+        }
+
         private IEnumerator MoveToPlayerPathStart(Vector2 target, float moveToStartSeconds)
         {
             suppressBodyContactDamage = true;
@@ -2007,64 +2070,26 @@ namespace Week14.Enemy
 
         private void SetPlayerCollisionIgnored(bool ignored)
         {
-            if (ignored == ignoringPlayerCollision)
+            if (ignored)
+            {
+                IgnorePlayerCollisions();
+            }
+        }
+
+        private void IgnorePlayerCollisions()
+        {
+            if (colliders == null)
             {
                 return;
             }
 
-            if (!ignored)
-            {
-                SetIgnoredPlayerCollisionPairs(false);
-                ignoredPlayerCollisionColliders.Clear();
-                ignoringPlayerCollision = false;
-                return;
-            }
-
-            Transform player = Owner?.MinionTarget;
+            Transform player = Owner?.MinionTarget ?? PlayerCombatController.Active?.transform;
             if (player == null)
             {
                 return;
             }
 
-            Collider2D[] playerColliders = player.GetComponentsInChildren<Collider2D>(true);
-            ignoredPlayerCollisionColliders.Clear();
-            for (int i = 0; i < playerColliders.Length; i++)
-            {
-                Collider2D playerCollider = playerColliders[i];
-                if (playerCollider != null)
-                {
-                    ignoredPlayerCollisionColliders.Add(playerCollider);
-                }
-            }
-
-            SetIgnoredPlayerCollisionPairs(true);
-            ignoringPlayerCollision = ignoredPlayerCollisionColliders.Count > 0;
-        }
-
-        private void SetIgnoredPlayerCollisionPairs(bool ignored)
-        {
-            if (colliders == null || ignoredPlayerCollisionColliders.Count == 0)
-            {
-                return;
-            }
-
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                Collider2D source = colliders[i];
-                if (source == null)
-                {
-                    continue;
-                }
-
-                for (int j = 0; j < ignoredPlayerCollisionColliders.Count; j++)
-                {
-                    Collider2D target = ignoredPlayerCollisionColliders[j];
-                    if (target != null && target != source)
-                    {
-                        Physics2D.IgnoreCollision(source, target, ignored);
-                    }
-                }
-            }
+            IgnoreColliderPairs(colliders, player.GetComponentsInChildren<Collider2D>(true));
         }
 
         private bool CanFlyOverGround()

@@ -74,7 +74,8 @@ namespace Week14.Combat
 
         private Vector2 ClampWallVelocity(Vector2 velocity)
         {
-            return GroundMovementConstraint.ClampVelocityAgainstLayer(body, velocity, wallLayerMask);
+            Vector2 wallClampedVelocity = GroundMovementConstraint.ClampVelocityAgainstLayer(body, velocity, wallLayerMask);
+            return GroundMovementConstraint.ClampVelocityAgainstPlayerOnlyBarriers(body, wallClampedVelocity);
         }
     }
 }

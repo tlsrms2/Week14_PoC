@@ -734,6 +734,7 @@ MonoBehaviour:
     toNodeGuid: 266779658870470e92d2caaf9062946e
     fromNodeId: Move Body Root1
     toNodeId: Move Body Root2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -741,6 +742,7 @@ MonoBehaviour:
     toNodeGuid: 6b9cb46fa8ff45779719798b81e23367
     fromNodeId: Move Body Root2
     toNodeId: Fire Radial Emission2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -748,6 +750,7 @@ MonoBehaviour:
     toNodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
     fromNodeId: Wait1
     toNodeId: Move Body Root3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -755,6 +758,7 @@ MonoBehaviour:
     toNodeGuid: 05e87771345d40f38b36daeb46a72fe4
     fromNodeId: Move Body Root3
     toNodeId: Move Body Root4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -762,6 +766,7 @@ MonoBehaviour:
     toNodeGuid: ec2d10c5f5b5423291d90c573763374a
     fromNodeId: Move Body Root4
     toNodeId: Fire Radial Emission3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -769,6 +774,7 @@ MonoBehaviour:
     toNodeGuid: dc151c7ad02d420cbb25278e1af7d217
     fromNodeId: Wait2
     toNodeId: Move Body Root5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -776,6 +782,7 @@ MonoBehaviour:
     toNodeGuid: dbb3c2a625b54e2194035fb6cd895f88
     fromNodeId: Move Body Root5
     toNodeId: Move Body Root6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -783,6 +790,7 @@ MonoBehaviour:
     toNodeGuid: 55d7655e94ff40d797850d3ef53faf33
     fromNodeId: Move Body Root6
     toNodeId: Fire Radial Emission4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -790,6 +798,7 @@ MonoBehaviour:
     toNodeGuid: 95e98c45d91f40ebaa39891809eb0608
     fromNodeId: Move Body Root7
     toNodeId: Move Body Root8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -797,6 +806,7 @@ MonoBehaviour:
     toNodeGuid: 9f8c1fc4eb744cd384a3643ef74d455a
     fromNodeId: Move Body Root8
     toNodeId: Fire Radial Emission5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -804,6 +814,7 @@ MonoBehaviour:
     toNodeGuid: 0acd709aa19344e79ad72ae80ed9fdcb
     fromNodeId: Wait3
     toNodeId: Move Body Root9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -811,6 +822,7 @@ MonoBehaviour:
     toNodeGuid: 7c4770aa65154af98e33055a559f6b7e
     fromNodeId: Move Body Root9
     toNodeId: Move Body Root10
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -818,6 +830,7 @@ MonoBehaviour:
     toNodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
     fromNodeId: Move Body Root10
     toNodeId: Fire Radial Emission6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -825,6 +838,7 @@ MonoBehaviour:
     toNodeGuid: 7e0bd7072aab4922bcc429c8f2929853
     fromNodeId: Wait4
     toNodeId: Move Body Root11
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -832,6 +846,7 @@ MonoBehaviour:
     toNodeGuid: 67d9c894747a4aaebeda59d6935820c9
     fromNodeId: Move Body Root11
     toNodeId: Move Body Root12
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -839,6 +854,7 @@ MonoBehaviour:
     toNodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
     fromNodeId: Move Body Root12
     toNodeId: Fire Radial Emission7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -846,6 +862,7 @@ MonoBehaviour:
     toNodeGuid: 1d6dbb80b83640088c83456b28f5d70a
     fromNodeId: Wait5
     toNodeId: Move Body Root13
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -853,6 +870,7 @@ MonoBehaviour:
     toNodeGuid: 43cb0c9274d249438ad006337ace37ef
     fromNodeId: Move Body Root13
     toNodeId: Move Body Root14
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -860,6 +878,7 @@ MonoBehaviour:
     toNodeGuid: 2a97dae38643419da32275bdb5c96da2
     fromNodeId: Move Body Root14
     toNodeId: Fire Radial Emission8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -867,6 +886,7 @@ MonoBehaviour:
     toNodeGuid: 3600947d532846f994de2a6e69474b44
     fromNodeId: Wait6
     toNodeId: Move Body Root15
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -874,6 +894,7 @@ MonoBehaviour:
     toNodeGuid: 35be3ef8c8d943e58a6387d109e9d4ea
     fromNodeId: Move Body Root15
     toNodeId: Move Body Root16
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -881,6 +902,7 @@ MonoBehaviour:
     toNodeGuid: 012e402336f44732aa1ece9020f26813
     fromNodeId: Move Body Root16
     toNodeId: Fire Radial Emission9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -888,6 +910,7 @@ MonoBehaviour:
     toNodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
     fromNodeId: Fire Radial Emission2
     toNodeId: Wait1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -895,6 +918,7 @@ MonoBehaviour:
     toNodeGuid: 52076fff63ad4879af076bea9518ac7e
     fromNodeId: Fire Radial Emission3
     toNodeId: Wait2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -902,6 +926,7 @@ MonoBehaviour:
     toNodeGuid: 8dfda553c39943a58e5177d1346527c2
     fromNodeId: Fire Radial Emission5
     toNodeId: Wait3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -909,6 +934,7 @@ MonoBehaviour:
     toNodeGuid: 8c27086e8f584597a5bc7125fced5d11
     fromNodeId: Fire Radial Emission6
     toNodeId: Wait4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -916,6 +942,7 @@ MonoBehaviour:
     toNodeGuid: 93f8a75329124d559a1799f7dda03cdb
     fromNodeId: Fire Radial Emission7
     toNodeId: Wait5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -923,6 +950,7 @@ MonoBehaviour:
     toNodeGuid: e22393eb8224461d82b26890b75ed7a3
     fromNodeId: Fire Radial Emission8
     toNodeId: Wait6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -930,6 +958,7 @@ MonoBehaviour:
     toNodeGuid: f64e87439a744250ada746965fef8941
     fromNodeId: Aim Boss Child At Player1
     toNodeId: Windup1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -937,6 +966,7 @@ MonoBehaviour:
     toNodeGuid: 026997160ec14eecbdfa8d663852dc41
     fromNodeId: Fire Sweep Emission1
     toNodeId: Aim Boss Child At Player3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -944,6 +974,7 @@ MonoBehaviour:
     toNodeGuid: bc17b7c047f7467ea6384f77cc8be044
     fromNodeId: Start Move Toward Player1
     toNodeId: Fire Projectile Burst1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -951,6 +982,7 @@ MonoBehaviour:
     toNodeGuid: 6ca8dbed633e4f95814d4d982619d858
     fromNodeId: Configure Projectile Growth1
     toNodeId: Configure Radial Split1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -958,6 +990,7 @@ MonoBehaviour:
     toNodeGuid: 69c1183ac8c64355bc30c31a8e0359e9
     fromNodeId: Configure Radial Split1
     toNodeId: Wait Projectile Charge End1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -965,6 +998,7 @@ MonoBehaviour:
     toNodeGuid: 6ecdb80d596a424b80eae1b965355f04
     fromNodeId: Windup1
     toNodeId: Fire Sweep Emission1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -972,6 +1006,7 @@ MonoBehaviour:
     toNodeGuid: 4f166750756041f1bd28bff0851d3141
     fromNodeId: Fire Projectile Burst1
     toNodeId: Stop Movement1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -979,6 +1014,7 @@ MonoBehaviour:
     toNodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
     fromNodeId: Fire Projectile1
     toNodeId: Wait7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -986,6 +1022,7 @@ MonoBehaviour:
     toNodeGuid: 4d4c777b10d748b4aef300dc52dae234
     fromNodeId: Wait7
     toNodeId: Fire Projectile2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -993,6 +1030,7 @@ MonoBehaviour:
     toNodeGuid: d731207df0924bb985ae011d9a897f60
     fromNodeId: Wait8
     toNodeId: Fire Projectile3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1000,6 +1038,7 @@ MonoBehaviour:
     toNodeGuid: 6073531e69744f6dad7877e5ff9f25b0
     fromNodeId: Fire Projectile2
     toNodeId: Wait8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1007,6 +1046,7 @@ MonoBehaviour:
     toNodeGuid: 657ce8a70222473485a7835f4bd97d00
     fromNodeId: Wait9
     toNodeId: Fire Projectile4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1014,6 +1054,7 @@ MonoBehaviour:
     toNodeGuid: e1459056c764436ba482e779533a7a6a
     fromNodeId: Fire Projectile3
     toNodeId: Wait9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1021,6 +1062,7 @@ MonoBehaviour:
     toNodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
     fromNodeId: Fire Projectile4
     toNodeId: Wait10
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1028,6 +1070,7 @@ MonoBehaviour:
     toNodeGuid: faa2dc5f3f8f410893003ab68637810d
     fromNodeId: Wait10
     toNodeId: Fire Projectile5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1035,6 +1078,7 @@ MonoBehaviour:
     toNodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     fromNodeId: Windup2
     toNodeId: Fire Fan Emission1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1042,6 +1086,7 @@ MonoBehaviour:
     toNodeGuid: e330ece8d47f4556a7bed8e7095c0461
     fromNodeId: Fire Fan Emission1
     toNodeId: Wait11
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1049,6 +1094,7 @@ MonoBehaviour:
     toNodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
     fromNodeId: Wait11
     toNodeId: Fire Projectile Burst2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1056,6 +1102,7 @@ MonoBehaviour:
     toNodeGuid: c5e098adc418431c97fe263c92282899
     fromNodeId: Aim Boss Child At Player4
     toNodeId: Spawn Charged Projectile1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1063,6 +1110,7 @@ MonoBehaviour:
     toNodeGuid: 4154f61cfbd64b47a57d61a14432fe6a
     fromNodeId: Spawn Charged Projectile1
     toNodeId: Configure Projectile Growth1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1070,6 +1118,7 @@ MonoBehaviour:
     toNodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     fromNodeId: Wait Projectile Charge End1
     toNodeId: Aim Boss Child At Player2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2827,22 +2876,22 @@ MonoBehaviour:
     nodeKind: 3
   - actionTypeName: Week14.Enemy.ConductorConductingCueAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-    nodeKind: 3
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.MinionConductorScoreLaneRushAction, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    nodeKind: 4
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.MinionConductorScoreLaneRushSpecialAction, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    nodeKind: 4
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.MinionConductorPlayerPathSideFireAction, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    nodeKind: 4
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.MinionConductorFormationLineVolleyAction, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    nodeKind: 4
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.MinionConductorFanBladeAction, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    nodeKind: 4
+    nodeKind: 0
   - actionTypeName: Week14.Enemy.ConductorSpawnTurretsAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-    nodeKind: 4
+    nodeKind: 0

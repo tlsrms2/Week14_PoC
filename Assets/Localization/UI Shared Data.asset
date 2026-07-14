@@ -157,6 +157,10 @@ MonoBehaviour:
     m_Key: ui.pont.point
     m_Metadata:
       m_Items: []
+  - m_Id: 4478459079655424
+    m_Key: ui.tutorial.target
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -691,6 +691,38 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_28_Text
     m_Metadata:
       m_Items: []
+  - m_Id: 43636894302208
+    m_Key: InGame_05-Act3_18_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828160
+    m_Key: TutorialDialogueSet_Move_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828161
+    m_Key: TutorialDialogueSet_Shoot_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828162
+    m_Key: TutorialDialogueSet_Attack_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828163
+    m_Key: TutorialDialogueSet_Hit_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828164
+    m_Key: TutorialDialogueSet_Parry_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828165
+    m_Key: TutorialDialogueSet_Skill_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828166
+    m_Key: TutorialDialogueSet_Duel_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

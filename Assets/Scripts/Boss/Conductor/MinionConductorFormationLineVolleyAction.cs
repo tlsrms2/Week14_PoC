@@ -10,27 +10,46 @@ namespace Week14.Enemy
     using ScoreLaneVolley = MinionConductorScoreLaneRushAction.Volley;
 
     [Serializable]
-    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossGraphValidatedAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource
+    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource
     {
         private const float DefaultFormationMoveSpeed = 24f;
         private const float FormationAlignmentTolerance = 0.08f;
-        private const string CopiedVolleysSourcePatternId = "Pattern5";
-        private const string CopiedVolleysTargetPatternId = "Pattern7";
+        private const float ShrinkingStaffPushPadding = 0.08f;
+        private const int DroneCount = 4;
 
-        [Header("Formation Straight")]
-        [SerializeField] private MinionGraphFormationStraightMode mode = MinionGraphFormationStraightMode.BetweenBossAndPlayer;
-        [SerializeField, Min(0.1f)] private float distanceFromPlayer = 6f;
-        [SerializeField, Min(0.1f)] private float spacing = 1f;
-        [SerializeField, Min(0f)] private float speedMultiplier = 1.2f;
-        [SerializeField, Min(0f)] private float bossDistanceBehindMinionLine = 2f;
-        [SerializeField, Min(0f)] private float bossMoveSpeedMultiplier = 1.2f;
-        [SerializeField, Min(0f)] private float settleSeconds = 1f;
-        [SerializeField] private bool waitForFormationDuration = true;
+        [Serializable]
+        private sealed class TimedVolley
+        {
+            [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+            [SerializeField, Min(0f)] private float fireSeconds = 1f;
+            [SerializeField, Min(0.01f)] private float fireInterval = 0.15f;
+            [SerializeField, Min(0f)] private float restSeconds = 0.2f;
 
-        [Header("Projectile")]
+            public string ProjectileName => projectileName;
+            public float FireSeconds => Mathf.Max(0f, fireSeconds);
+            public float FireInterval => Mathf.Max(0.01f, fireInterval);
+            public float RestSeconds => Mathf.Max(0f, restSeconds);
+        }
+
+        [Serializable]
+        private sealed class CenterVolley
+        {
+            [SerializeField, Min(0f)] private float fireSeconds = 1f;
+            [SerializeField, Min(0.01f)] private float fireInterval = 0.15f;
+            [SerializeField, Min(0f)] private float restSeconds = 0.2f;
+            [SerializeField] private List<CenterFireProjectile> projectiles = new();
+
+            public float FireSeconds => Mathf.Max(0f, fireSeconds);
+            public float FireInterval => Mathf.Max(0.01f, fireInterval);
+            public float RestSeconds => Mathf.Max(0f, restSeconds);
+            public IReadOnlyList<CenterFireProjectile> Projectiles => projectiles;
+        }
+
+        [Header("Shared Projectile")]
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField, InspectorName("Projectile Speed Multiplier"), Min(0.01f)] private float projectileSpeedMultiplier = 1f;
         [SerializeField] private BossGraphEffectSettings effects = new();
+        [Header("Stage 3 Merge Volleys")]
         [SerializeField, InspectorName("Volleys")] private List<ScoreLaneVolley> volleys = new() { new ScoreLaneVolley() };
 
         [Header("Line Indicator")]
@@ -41,7 +60,46 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float lineIndicatorFadeSeconds = 0.14f;
         [SerializeField] private int lineIndicatorSortingOrder = 66;
 
+        [Header("Stage 1 North/South Staff")]
+        [SerializeField, InspectorName("Staff Center")] private Vector2 staffCenter;
+        [SerializeField, Min(0.1f)] private float northSouthStaffDistance = 4f;
+        [SerializeField, Min(1f)] private float initialNorthSouthStaffDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float northSouthStaffHoldSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float northSouthStaffShrinkSeconds = 0.6f;
+        [SerializeField, Min(0.01f)] private float staffLineSpacing = 0.6f;
+        [Header("Staff Creation Wander")]
+        [SerializeField, Min(0f)] private float staffCreationWanderSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float staffCreationWanderRadius = 2.8f;
+        [SerializeField, Min(0.1f)] private float staffCreationWanderRetargetSeconds = 1.5f;
+        [SerializeField, InspectorName("Side Drone Distance"), Min(0.1f)] private float sideDroneDistance = 12f;
+        [SerializeField, Min(0.01f)] private float sideDronePairSpacing = 1.4f;
+        [SerializeField, Min(0f)] private float sideDroneSetupSeconds = 0.6f;
+        [SerializeField, Min(0.01f)] private float sideDronePassMoveSeconds = 0.7f;
+        [SerializeField, InspectorName("Projectile Speed Multiplier"), Min(0.01f)] private float sideDroneProjectileSpeedMultiplier = 1f;
+        [SerializeField, InspectorName("Volleys")] private List<TimedVolley> northSouthVolleys = new();
+
+        [Header("Stage 2 West Staff")]
+        [SerializeField, Min(0.1f)] private float westStaffDistance = 4f;
+        [SerializeField, Min(1f)] private float initialWestStaffDistanceMultiplier = 1.5f;
+        [SerializeField, Min(0f)] private float westStaffHoldSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float westStaffShrinkSeconds = 0.6f;
+        [SerializeField, Min(0.01f)] private float westStaffLineSpacing = 0.6f;
+        [SerializeField, Min(0.1f)] private float westDroneDistance = 4f;
+        [SerializeField, Min(0.01f)] private float westDroneLineSpacing = 1.25f;
+        [SerializeField, Min(0f)] private float westStaffSetupSeconds = 0.45f;
+        [SerializeField, InspectorName("Volleys")] private List<CenterVolley> westStaffVolleys = new();
+        [Header("Stage 3 North/South Merge")]
+        [SerializeField, Min(0f)] private float staffCollapseSeconds = 0.6f;
+
+        [Header("Boss Reposition")]
+        [SerializeField] private bool repositionBossAtPatternStart;
+        [SerializeField] private Vector2 bossTargetPosition;
+        [SerializeField, Min(0.01f)] private float bossMoveSpeedMultiplier = 1f;
+        [SerializeField, Min(0.001f)] private float bossArriveDistance = 0.04f;
+        [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
+
         [Header("Miss Launch")]
+        [SerializeField, InspectorName("Line Travel Multiplier"), Min(1f)] private float missLaunchLineTravelMultiplier = 1.5f;
         [SerializeField, BossGraphProjectileName] private string missedLaunchProjectileName = "Default";
         [SerializeField, Min(0f)] private float missedLaunchIntervalSeconds = 0.12f;
 
@@ -67,10 +125,10 @@ namespace Week14.Enemy
         [SerializeField, Min(0.1f)] private float earlyClearWanderRetargetSeconds = 1.5f;
 
         private readonly List<ConductorFormationLineProjectileMotion> trackedMotions = new();
-        private PlayerCombatController lockedPlayerMovement;
         private bool completedByAllProjectilesCleared;
-        private bool hasBossFormationTargetSample;
-        private Vector2 previousBossFormationTarget;
+        private float activeNorthSouthStaffDistance;
+        private float activeWestStaffDistance;
+        private bool isBossRepositioning;
 
         public bool ShouldStartConductorCueOverlayEarly => completedByAllProjectilesCleared;
 
@@ -97,40 +155,23 @@ namespace Week14.Enemy
                 return false;
             }
 
-            Vector2 formationCenterDirection = ResolveFormationCenterDirection(context, minions);
-            Vector2 lineDirection = -formationCenterDirection;
-            if (lineDirection.sqrMagnitude <= 0.0001f)
-            {
-                lineDirection = ResolveSharedLineDirection(minions, context.Boss.Player.position);
-                formationCenterDirection = -lineDirection;
-            }
+            List<LineSlot> lineSlots = BuildStaffLineSlots(minions);
 
-            List<LineSlot> lineSlots = BuildLineSlots(
-                minions,
-                lineDirection,
-                formationCenterDirection,
-                context.Boss.Player);
-
-            float formationSeconds = waitForFormationDuration ? Mathf.Max(0f, settleSeconds) : 0f;
             float lineVolleySeconds = EstimateLongestLineVolleySeconds(host);
             int missCount = EstimateMaxMissLaunchCount(host);
             float finishSeconds = missCount > 0
                 ? EstimateMissLaunchPhaseSeconds(context, lineSlots, missCount)
                 : GetLineIndicatorFadeSeconds();
 
-            seconds = formationSeconds + lineVolleySeconds + finishSeconds;
+            float patternSeconds = GetStaffPreludeSeconds()
+                + lineVolleySeconds
+                + finishSeconds;
+            seconds = Mathf.Max(patternSeconds, EstimateBossRepositionSeconds(context));
             return seconds > 0f;
-        }
-
-        void IBossGraphValidatedAction.OnGraphValidated(BossGraphAsset graph, BossStateNode node)
-        {
-            CopyPatternVolleysIfTargetNode(graph, node);
         }
 
         public override IEnumerator Execute(BossActionContext context)
         {
-            CopyPatternVolleysIfTargetNode(context?.GraphAsset, context?.CurrentNodeId);
-
             if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
                 || context.Boss == null
                 || context.Boss.Player == null
@@ -140,259 +181,848 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            yield return host.EnsureMinionCount(DroneCount);
             List<Minion> minions = GetLineMinions(host.GetControlledMinionsForGraph());
-            if (minions.Count == 0)
+            if (minions.Count != DroneCount)
             {
                 yield break;
             }
 
-            Vector2 formationCenterDirection = ResolveFormationCenterDirection(context, minions);
-            Vector2 lineDirection = -formationCenterDirection;
-            if (lineDirection.sqrMagnitude <= 0.0001f)
-            {
-                lineDirection = ResolveSharedLineDirection(minions, context.Boss.Player.position);
-                formationCenterDirection = -lineDirection;
-            }
-
-            ResetBossFormationTargetSample();
-            List<LineSlot> lineSlots = BuildLineSlots(
-                minions,
-                lineDirection,
-                formationCenterDirection,
-                context.Boss.Player);
-            float formationDuration = CommandLockedFormation(minions, formationCenterDirection);
-            SetFormationFacingOverride(minions, lineDirection);
-
-            ConductorScoreLaneRushIndicatorVisual indicator = null;
+            List<LineSlot> lineSlots = BuildStaffLineSlots(minions);
+            ConductorScoreLaneRushIndicatorVisual staffIndicator = null;
+            ConductorScoreLaneRushIndicatorVisual volleyIndicator = null;
+            Coroutine bossMoveRoutine = repositionBossAtPatternStart
+                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context))
+                : null;
             try
             {
                 completedByAllProjectilesCleared = false;
-                LockPlayerMovement(context);
+                activeNorthSouthStaffDistance = GetInitialNorthSouthStaffDistance();
+                SetFormationFacingOverride(minions, Vector2.left);
+                CommandStaffCreationWander(
+                    minions,
+                    northSouthStaffHoldSeconds + northSouthStaffShrinkSeconds);
+                staffIndicator = CreateStaffIndicators();
+                yield return WaitSeconds(context, northSouthStaffHoldSeconds);
+                yield return ShrinkNorthSouthStaff(context, staffIndicator);
 
-                if (waitForFormationDuration && formationDuration > 0f)
-                {
-                    yield return WaitForFormationAlignment(context, lineSlots, formationDuration);
-                }
+                CommandSideDronePairs(minions, sideDroneSetupSeconds);
+                yield return WaitSeconds(context, sideDroneSetupSeconds);
+                yield return RunNorthSouthVolleys(context, host, minions);
 
-                indicator = CreateLineIndicators(lineSlots);
+                activeWestStaffDistance = GetInitialWestStaffDistance();
+                CommandStaffCreationWander(
+                    minions,
+                    westStaffHoldSeconds + westStaffShrinkSeconds);
+                AddWestStaff(staffIndicator);
+                yield return WaitSeconds(context, westStaffHoldSeconds);
+                yield return ShrinkWestStaff(context, staffIndicator);
+
+                CommandWestDroneLine(minions, westStaffSetupSeconds);
+                yield return WaitSeconds(context, westStaffSetupSeconds);
+                yield return RunWestStaffVolleys(context, host, minions);
+                yield return CollapseStaff(context, staffIndicator, lineSlots);
+
+                staffIndicator?.ClearAndDestroy();
+                staffIndicator = null;
+
+                volleyIndicator = CreateLineIndicators(lineSlots);
                 trackedMotions.Clear();
 
-                yield return RunVolleys(context, host, lineSlots, indicator);
+                yield return RunVolleys(context, host, lineSlots, volleyIndicator);
                 if (completedByAllProjectilesCleared)
                 {
-                    CompleteEarlyAfterClearedProjectiles(minions, indicator);
-                    indicator = null;
+                    CompleteEarlyAfterClearedProjectiles(minions, staffIndicator, volleyIndicator);
+                    staffIndicator = null;
+                    volleyIndicator = null;
                     yield break;
                 }
 
-                yield return WaitForLineProjectilesToRelease(context, lineSlots, indicator);
+                yield return WaitForLineProjectilesToRelease(context, lineSlots, volleyIndicator);
                 if (completedByAllProjectilesCleared)
                 {
-                    CompleteEarlyAfterClearedProjectiles(minions, indicator);
-                    indicator = null;
+                    CompleteEarlyAfterClearedProjectiles(minions, staffIndicator, volleyIndicator);
+                    staffIndicator = null;
+                    volleyIndicator = null;
                     yield break;
                 }
 
-                UnlockPlayerMovement();
-                yield return RunMissLaunchPhase(context, host, lineSlots, indicator);
-                yield return FadeAndClearIndicator(context, lineSlots, indicator);
-                indicator = null;
+                staffIndicator?.ClearAndDestroy();
+                staffIndicator = null;
+                volleyIndicator?.ClearAndDestroy();
+                volleyIndicator = null;
+                yield return RunMissLaunchPhase(context, host, lineSlots, null);
             }
             finally
             {
-                UnlockPlayerMovement();
-
-                if (indicator != null)
+                if (bossMoveRoutine != null && context?.Boss != null)
                 {
-                    indicator.ClearAndDestroy();
+                    context.Boss.StopCoroutine(bossMoveRoutine);
                 }
+
+                staffIndicator?.ClearAndDestroy();
+                volleyIndicator?.ClearAndDestroy();
 
                 context.Boss?.Stop();
                 ClearFormationFacingOverride(minions);
                 trackedMotions.Clear();
-                ResetBossFormationTargetSample();
+                activeNorthSouthStaffDistance = 0f;
+                activeWestStaffDistance = 0f;
+                isBossRepositioning = false;
             }
         }
 
         private void CompleteEarlyAfterClearedProjectiles(
             IReadOnlyList<Minion> minions,
-            ConductorScoreLaneRushIndicatorVisual indicator)
+            ConductorScoreLaneRushIndicatorVisual staffIndicator,
+            ConductorScoreLaneRushIndicatorVisual volleyIndicator)
         {
-            UnlockPlayerMovement();
-            indicator?.ClearAndDestroy();
+            staffIndicator?.ClearAndDestroy();
+            volleyIndicator?.ClearAndDestroy();
             CommandLineMinionsEarlyClearWander(minions);
         }
 
-        private void CopyPatternVolleysIfTargetNode(BossGraphAsset graph, BossStateNode node)
+        private float GetStaffPreludeSeconds()
         {
-            if (node == null || !IsNodeInPattern(graph, node.NodeId, node.NodeGuid, CopiedVolleysTargetPatternId))
-            {
-                return;
-            }
-
-            CopyVolleysFromPattern(graph, CopiedVolleysSourcePatternId);
+            return Mathf.Max(0f, northSouthStaffHoldSeconds)
+                + Mathf.Max(0f, northSouthStaffShrinkSeconds)
+                + Mathf.Max(0f, sideDroneSetupSeconds)
+                + GetNorthSouthVolleySeconds()
+                + Mathf.Max(0f, westStaffHoldSeconds)
+                + Mathf.Max(0f, westStaffShrinkSeconds)
+                + Mathf.Max(0f, westStaffSetupSeconds)
+                + GetWestStaffVolleySeconds()
+                + Mathf.Max(0f, staffCollapseSeconds);
         }
 
-        private void CopyPatternVolleysIfTargetNode(BossGraphAsset graph, string nodeId)
+        private float GetMissLaunchLineTravelDistance()
         {
-            if (!IsNodeInPattern(graph, nodeId, null, CopiedVolleysTargetPatternId))
-            {
-                return;
-            }
-
-            CopyVolleysFromPattern(graph, CopiedVolleysSourcePatternId);
+            return Mathf.Max(0.1f, lineIndicatorLength)
+                * Mathf.Max(1f, missLaunchLineTravelMultiplier);
         }
 
-        private void CopyVolleysFromPattern(BossGraphAsset graph, string patternId)
+        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
         {
-            if (!TryFindScoreLaneRushAction(graph, patternId, out MinionConductorScoreLaneRushAction sourceAction))
+            if (!repositionBossAtPatternStart || context?.Boss == null || context.Boss.Body == null)
             {
-                return;
+                yield break;
             }
 
-            CopyVolleysFrom(sourceAction.SerializedVolleysForGraphCopy);
-        }
-
-        private void CopyVolleysFrom(IReadOnlyList<ScoreLaneVolley> sourceVolleys)
-        {
-            if (sourceVolleys == null || sourceVolleys.Count == 0 || AreVolleysEqual(sourceVolleys))
+            isBossRepositioning = true;
+            try
             {
-                return;
-            }
-
-            volleys = new List<ScoreLaneVolley>(sourceVolleys.Count);
-            for (int i = 0; i < sourceVolleys.Count; i++)
-            {
-                ScoreLaneVolley sourceVolley = sourceVolleys[i];
-                volleys.Add(sourceVolley != null
-                    ? new ScoreLaneVolley(sourceVolley.FireTimings)
-                    : new ScoreLaneVolley());
-            }
-        }
-
-        private bool AreVolleysEqual(IReadOnlyList<ScoreLaneVolley> sourceVolleys)
-        {
-            if (volleys == null || sourceVolleys == null || volleys.Count != sourceVolleys.Count)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < sourceVolleys.Count; i++)
-            {
-                IReadOnlyList<ScoreLaneFireTiming> sourceTimings = sourceVolleys[i]?.FireTimings;
-                IReadOnlyList<ScoreLaneFireTiming> currentTimings = volleys[i]?.FireTimings;
-                int sourceCount = sourceTimings != null ? sourceTimings.Count : 0;
-                int currentCount = currentTimings != null ? currentTimings.Count : 0;
-                if (sourceCount != currentCount)
+                float arriveDistance = Mathf.Max(0.001f, bossArriveDistance);
+                float arriveDistanceSqr = arriveDistance * arriveDistance;
+                float elapsed = 0f;
+                while (((Vector2)context.Boss.Body.position - bossTargetPosition).sqrMagnitude > arriveDistanceSqr
+                    && elapsed < Mathf.Max(0.01f, bossMoveTimeoutSeconds))
                 {
-                    return false;
-                }
-
-                for (int timingIndex = 0; timingIndex < sourceCount; timingIndex++)
-                {
-                    ScoreLaneFireTiming source = sourceTimings[timingIndex];
-                    ScoreLaneFireTiming current = currentTimings[timingIndex];
-                    if (source == null || current == null)
+                    if (context.IsExecutionPaused)
                     {
-                        if (source != current)
-                        {
-                            return false;
-                        }
-
+                        context.Boss.Stop();
+                        yield return null;
                         continue;
                     }
 
-                    if (source.MinionNumber != current.MinionNumber
-                        || !Mathf.Approximately(source.FireSeconds, current.FireSeconds)
-                        || source.ProjectileName != current.ProjectileName)
+                    Vector2 current = context.Boss.Body.position;
+                    Vector2 toTarget = bossTargetPosition - current;
+                    float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossMoveSpeedMultiplier);
+                    context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                isBossRepositioning = false;
+                context?.Boss?.Stop();
+            }
+        }
+
+        private float EstimateBossRepositionSeconds(BossActionContext context)
+        {
+            if (!repositionBossAtPatternStart || context?.Boss == null)
+            {
+                return 0f;
+            }
+
+            Vector2 current = context.Boss.Body != null
+                ? context.Boss.Body.position
+                : context.Boss.transform.position;
+            float distance = Mathf.Max(
+                0f,
+                Vector2.Distance(current, bossTargetPosition) - Mathf.Max(0.001f, bossArriveDistance));
+            float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossMoveSpeedMultiplier);
+            float estimate = speed > 0f ? distance / speed : 0f;
+            return Mathf.Min(estimate, Mathf.Max(0.01f, bossMoveTimeoutSeconds));
+        }
+
+        private float GetNorthSouthVolleySeconds()
+        {
+            if (northSouthVolleys == null || northSouthVolleys.Count == 0)
+            {
+                return 0f;
+            }
+
+            float seconds = 0f;
+            for (int i = 0; i < northSouthVolleys.Count; i++)
+            {
+                TimedVolley volley = northSouthVolleys[i];
+                if (volley != null)
+                {
+                    seconds += volley.FireSeconds + volley.RestSeconds;
+                }
+            }
+
+            return seconds;
+        }
+
+        private float GetWestStaffVolleySeconds()
+        {
+            if (westStaffVolleys == null || westStaffVolleys.Count == 0)
+            {
+                return 0f;
+            }
+
+            float seconds = 0f;
+            for (int i = 0; i < westStaffVolleys.Count; i++)
+            {
+                CenterVolley volley = westStaffVolleys[i];
+                if (volley != null)
+                {
+                    seconds += volley.FireSeconds + volley.RestSeconds;
+                }
+            }
+
+            return seconds;
+        }
+
+        private ConductorScoreLaneRushIndicatorVisual CreateStaffIndicators()
+        {
+            GameObject indicatorObject = new("ConductorFormationLineVolleyStaffs");
+            ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
+            Color color = drawLineIndicators
+                ? lineIndicatorColor
+                : new Color(lineIndicatorColor.r, lineIndicatorColor.g, lineIndicatorColor.b, 0f);
+            visual.Configure(color, lineIndicatorWidth, lineIndicatorSortingOrder);
+            visual.ConfigurePlayerBlocking(true);
+
+            for (int i = 0; i < DroneCount * 2; i++)
+            {
+                SetNorthSouthStaffLine(visual, i, 1f);
+            }
+
+            return visual;
+        }
+
+        private void AddWestStaff(ConductorScoreLaneRushIndicatorVisual visual)
+        {
+            if (visual == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < DroneCount; i++)
+            {
+                SetWestStaffLine(visual, i, 1f);
+            }
+        }
+
+        private void SetNorthSouthStaffLine(
+            ConductorScoreLaneRushIndicatorVisual visual,
+            int lineIndex,
+            float progress)
+        {
+            if (visual == null || lineIndex < 0 || lineIndex >= DroneCount * 2)
+            {
+                return;
+            }
+
+            GetNorthSouthStaffLine(lineIndex, out Vector2 start, out Vector2 end);
+            visual.SetLane(lineIndex, start, end);
+            visual.SetProgress(lineIndex, progress);
+        }
+
+        private void GetNorthSouthStaffLine(int lineIndex, out Vector2 start, out Vector2 end)
+        {
+            float distance = activeNorthSouthStaffDistance > 0f
+                ? activeNorthSouthStaffDistance
+                : Mathf.Max(0.1f, northSouthStaffDistance);
+            GetNorthSouthStaffLine(lineIndex, distance, out start, out end);
+        }
+
+        private void GetNorthSouthStaffLine(
+            int lineIndex,
+            float distance,
+            out Vector2 start,
+            out Vector2 end)
+        {
+            int groupIndex = lineIndex < DroneCount ? 0 : 1;
+            int laneIndex = Mathf.Abs(lineIndex % DroneCount);
+            float staffY = staffCenter.y + (groupIndex == 0 ? distance : -distance);
+            float y = staffY + GetCenteredOffset(laneIndex, DroneCount, staffLineSpacing);
+            float halfLength = Mathf.Max(0.1f, lineIndicatorLength);
+            start = new Vector2(staffCenter.x - halfLength, y);
+            end = new Vector2(staffCenter.x + halfLength, y);
+        }
+
+        private void GetFinalStaffLine(int laneIndex, out Vector2 start, out Vector2 end)
+        {
+            float y = staffCenter.y + GetCenteredOffset(laneIndex, DroneCount, staffLineSpacing);
+            float halfLength = Mathf.Max(0.1f, lineIndicatorLength);
+            start = new Vector2(staffCenter.x - halfLength, y);
+            end = new Vector2(staffCenter.x + halfLength, y);
+        }
+
+        private void SetWestStaffLine(
+            ConductorScoreLaneRushIndicatorVisual visual,
+            int laneIndex,
+            float progress)
+        {
+            if (visual == null || laneIndex < 0 || laneIndex >= DroneCount)
+            {
+                return;
+            }
+
+            GetWestStaffLine(laneIndex, out Vector2 start, out Vector2 end);
+            int visualIndex = DroneCount * 2 + laneIndex;
+            visual.SetLane(visualIndex, start, end);
+            visual.SetProgress(visualIndex, progress);
+        }
+
+        private void GetWestStaffLine(int laneIndex, out Vector2 start, out Vector2 end)
+        {
+            float distance = activeWestStaffDistance > 0f
+                ? activeWestStaffDistance
+                : Mathf.Max(0.1f, westStaffDistance);
+            GetWestStaffLine(laneIndex, distance, out start, out end);
+        }
+
+        private void GetWestStaffLine(
+            int laneIndex,
+            float distance,
+            out Vector2 start,
+            out Vector2 end)
+        {
+            float x = staffCenter.x - distance + GetCenteredOffset(laneIndex, DroneCount, westStaffLineSpacing);
+            float halfLength = Mathf.Max(0.1f, lineIndicatorLength);
+            start = new Vector2(x, staffCenter.y - halfLength);
+            end = new Vector2(x, staffCenter.y + halfLength);
+        }
+
+        private float GetInitialNorthSouthStaffDistance()
+        {
+            return Mathf.Max(0.1f, northSouthStaffDistance)
+                * Mathf.Max(1f, initialNorthSouthStaffDistanceMultiplier);
+        }
+
+        private float GetInitialWestStaffDistance()
+        {
+            return Mathf.Max(0.1f, westStaffDistance)
+                * Mathf.Max(1f, initialWestStaffDistanceMultiplier);
+        }
+
+        private IEnumerator ShrinkNorthSouthStaff(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual)
+        {
+            float initialDistance = GetInitialNorthSouthStaffDistance();
+            float targetDistance = Mathf.Max(0.1f, northSouthStaffDistance);
+            float duration = Mathf.Max(0f, northSouthStaffShrinkSeconds);
+            if (duration <= 0f)
+            {
+                activeNorthSouthStaffDistance = targetDistance;
+                for (int i = 0; i < DroneCount * 2; i++)
+                {
+                    SetNorthSouthStaffLine(visual, i, 1f);
+                }
+
+                PushPlayerWithShrinkingNorthSouthStaff(context, initialDistance, targetDistance);
+
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float previousDistance = initialDistance;
+            while (elapsed < duration)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / duration);
+                activeNorthSouthStaffDistance = Mathf.Lerp(initialDistance, targetDistance, progress);
+                for (int i = 0; i < DroneCount * 2; i++)
+                {
+                    SetNorthSouthStaffLine(visual, i, 1f);
+                }
+
+                PushPlayerWithShrinkingNorthSouthStaff(context, previousDistance, activeNorthSouthStaffDistance);
+                previousDistance = activeNorthSouthStaffDistance;
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            activeNorthSouthStaffDistance = targetDistance;
+            for (int i = 0; i < DroneCount * 2; i++)
+            {
+                SetNorthSouthStaffLine(visual, i, 1f);
+            }
+
+            PushPlayerWithShrinkingNorthSouthStaff(context, previousDistance, targetDistance);
+        }
+
+        private IEnumerator ShrinkWestStaff(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual)
+        {
+            float initialDistance = GetInitialWestStaffDistance();
+            float targetDistance = Mathf.Max(0.1f, westStaffDistance);
+            float duration = Mathf.Max(0f, westStaffShrinkSeconds);
+            if (duration <= 0f)
+            {
+                activeWestStaffDistance = targetDistance;
+                AddWestStaff(visual);
+                PushPlayerWithShrinkingWestStaff(context, initialDistance, targetDistance);
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float previousDistance = initialDistance;
+            while (elapsed < duration)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / duration);
+                activeWestStaffDistance = Mathf.Lerp(initialDistance, targetDistance, progress);
+                AddWestStaff(visual);
+                PushPlayerWithShrinkingWestStaff(context, previousDistance, activeWestStaffDistance);
+                previousDistance = activeWestStaffDistance;
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            activeWestStaffDistance = targetDistance;
+            AddWestStaff(visual);
+            PushPlayerWithShrinkingWestStaff(context, previousDistance, targetDistance);
+        }
+
+        private void PushPlayerWithShrinkingNorthSouthStaff(
+            BossActionContext context,
+            float previousDistance,
+            float currentDistance)
+        {
+            if (currentDistance >= previousDistance || context?.Boss?.Player == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < DroneCount * 2; i++)
+            {
+                GetNorthSouthStaffLine(i, previousDistance, out Vector2 previousStart, out Vector2 previousEnd);
+                GetNorthSouthStaffLine(i, currentDistance, out Vector2 currentStart, out Vector2 currentEnd);
+                GroundMovementConstraint.PushPlayerOutOfMovingLine(
+                    context.Boss.Player,
+                    previousStart,
+                    previousEnd,
+                    currentStart,
+                    currentEnd,
+                    ShrinkingStaffPushPadding);
+            }
+        }
+
+        private void PushPlayerWithShrinkingWestStaff(
+            BossActionContext context,
+            float previousDistance,
+            float currentDistance)
+        {
+            if (currentDistance >= previousDistance || context?.Boss?.Player == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < DroneCount; i++)
+            {
+                GetWestStaffLine(i, previousDistance, out Vector2 previousStart, out Vector2 previousEnd);
+                GetWestStaffLine(i, currentDistance, out Vector2 currentStart, out Vector2 currentEnd);
+                GroundMovementConstraint.PushPlayerOutOfMovingLine(
+                    context.Boss.Player,
+                    previousStart,
+                    previousEnd,
+                    currentStart,
+                    currentEnd,
+                    ShrinkingStaffPushPadding);
+            }
+        }
+
+        private void CommandSideDronePairs(IReadOnlyList<Minion> minions, float moveSeconds)
+        {
+            if (minions == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                CommandMoveToPosition(minion, GetSideDronePosition(i), moveSeconds);
+            }
+        }
+
+        private Vector2 GetSideDronePosition(int index)
+        {
+            return GetSideCrossStartPosition(index, false);
+        }
+
+        private IEnumerator RunNorthSouthVolleys(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions)
+        {
+            if (northSouthVolleys == null || northSouthVolleys.Count == 0)
+            {
+                yield break;
+            }
+
+            for (int i = 0; i < northSouthVolleys.Count; i++)
+            {
+                TimedVolley volley = northSouthVolleys[i];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                yield return RunSideCrossVolley(
+                    context,
+                    host,
+                    minions,
+                    volley.ProjectileName,
+                    volley.FireSeconds,
+                    volley.FireInterval);
+                yield return WaitSeconds(context, volley.RestSeconds);
+            }
+        }
+
+        private IEnumerator RunSideCrossVolley(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions,
+            string projectileName,
+            float fireSeconds,
+            float fireInterval)
+        {
+            BossProjectileSettings projectile = host?.ResolveMinionProjectileSettings(projectileName);
+            if (projectile == null || fireSeconds <= 0f || minions == null)
+            {
+                yield break;
+            }
+
+            MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, null, effects, context);
+            float elapsed = 0f;
+            float nextFireSeconds = 0f;
+            int passIndex = 0;
+            while (elapsed < fireSeconds)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                while (elapsed >= nextFireSeconds)
+                {
+                    CommandSideCrossPass(minions, passIndex++);
+                    for (int i = 0; i < minions.Count; i++)
                     {
-                        return false;
+                        Minion minion = minions[i];
+                        if (minion == null || minion.Health == null || minion.Health.IsDead)
+                        {
+                            continue;
+                        }
+
+                        Vector2 direction = i < 2 ? Vector2.right : Vector2.left;
+                        EnemyProjectile spawned = minion.FireOnce(projectile, fireSpec.WithFixedDirection(direction), i);
+                        spawned?.ConfigureSpeedMultiplier(sideDroneProjectileSpeedMultiplier);
+                    }
+
+                    nextFireSeconds += Mathf.Max(0.01f, fireInterval);
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+        }
+
+        private void CommandSideCrossPass(IReadOnlyList<Minion> minions, int passIndex)
+        {
+            bool invert = passIndex % 2 != 0;
+            float duration = Mathf.Max(0.01f, sideDronePassMoveSeconds);
+            float speed = sideDronePairSpacing / duration;
+            for (int i = 0; i < minions.Count; i++)
+            {
+                Minion minion = minions[i];
+                if (minion == null)
+                {
+                    continue;
+                }
+
+                bool movesUp = (i % 2 == 0) != invert;
+                Vector2 start = GetSideCrossStartPosition(i, invert);
+                minion.CommandScoreLaneRush(
+                    start,
+                    movesUp ? Vector2.up : Vector2.down,
+                    0f,
+                    0f,
+                    sideDronePairSpacing,
+                    speed);
+            }
+        }
+
+        private Vector2 GetSideCrossStartPosition(int index, bool invert)
+        {
+            bool isLeft = index < 2;
+            bool movesUp = (index % 2 == 0) != invert;
+            float verticalOffset = GetSideCrossVerticalOffset(isLeft, movesUp);
+            return new Vector2(
+                staffCenter.x + (isLeft ? -1f : 1f) * Mathf.Max(0.1f, sideDroneDistance),
+                staffCenter.y + verticalOffset);
+        }
+
+        private float GetSideCrossVerticalOffset(bool isLeft, bool movesUp)
+        {
+            float halfSpacing = Mathf.Max(0.01f, sideDronePairSpacing) * 0.5f;
+            if (isLeft)
+            {
+                return movesUp ? -halfSpacing * 3f : -halfSpacing;
+            }
+
+            return movesUp ? halfSpacing : halfSpacing * 3f;
+        }
+
+        private void CommandWestDroneLine(IReadOnlyList<Minion> minions, float moveSeconds)
+        {
+            if (minions == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                CommandMoveToPosition(minions[i], GetWestDronePosition(i), moveSeconds);
+            }
+        }
+
+        private Vector2 GetWestDronePosition(int index)
+        {
+            return staffCenter
+                + Vector2.right * Mathf.Max(0.1f, westDroneDistance)
+                + Vector2.up * GetCenteredOffset(index, DroneCount, westDroneLineSpacing);
+        }
+
+        private IEnumerator RunWestStaffVolleys(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions)
+        {
+            if (westStaffVolleys == null || westStaffVolleys.Count == 0)
+            {
+                yield break;
+            }
+
+            for (int i = 0; i < westStaffVolleys.Count; i++)
+            {
+                CenterVolley volley = westStaffVolleys[i];
+                if (volley == null)
+                {
+                    continue;
+                }
+
+                yield return RunCenterVolley(
+                    context,
+                    host,
+                    minions,
+                    volley.FireSeconds,
+                    volley.FireInterval,
+                    volley.Projectiles);
+                yield return WaitSeconds(context, volley.RestSeconds);
+            }
+        }
+
+        private IEnumerator RunCenterVolley(
+            BossActionContext context,
+            IMinionPatternHost host,
+            IReadOnlyList<Minion> minions,
+            float fireSeconds,
+            float fireInterval,
+            IReadOnlyList<CenterFireProjectile> projectileSettings)
+        {
+            if (fireSeconds <= 0f || minions == null)
+            {
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float nextFireSeconds = 0f;
+            while (elapsed < fireSeconds)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                while (elapsed >= nextFireSeconds)
+                {
+                    for (int i = 0; i < minions.Count; i++)
+                    {
+                        Minion minion = minions[i];
+                        if (minion == null || minion.Health == null || minion.Health.IsDead)
+                        {
+                            continue;
+                        }
+
+                        int minionNumber = GetMinionNumber(minion, i);
+                        BossProjectileSettings projectile = host?.ResolveMinionProjectileSettings(
+                            GetCenterProjectileName(projectileSettings, minionNumber));
+                        if (projectile == null)
+                        {
+                            continue;
+                        }
+
+                        MinionGraphProjectileFireSpec fireSpec = new MinionGraphProjectileFireSpec(minionOrigin, null, effects, context)
+                            .WithFixedDirection(Vector2.left);
+                        minion.FireOnce(projectile, fireSpec, i);
+                    }
+
+                    nextFireSeconds += Mathf.Max(0.01f, fireInterval);
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+        }
+
+        private string GetCenterProjectileName(
+            IReadOnlyList<CenterFireProjectile> projectileSettings,
+            int minionNumber)
+        {
+            if (projectileSettings != null)
+            {
+                for (int i = 0; i < projectileSettings.Count; i++)
+                {
+                    CenterFireProjectile setting = projectileSettings[i];
+                    if (setting != null && setting.MinionNumber == minionNumber)
+                    {
+                        return setting.ProjectileName;
                     }
                 }
             }
 
-            return true;
+            return string.Empty;
         }
 
-        private static bool TryFindScoreLaneRushAction(
-            BossGraphAsset graph,
-            string patternId,
-            out MinionConductorScoreLaneRushAction action)
+        private IEnumerator CollapseStaff(
+            BossActionContext context,
+            ConductorScoreLaneRushIndicatorVisual visual,
+            IReadOnlyList<LineSlot> lineSlots)
         {
-            action = null;
-            BossGraphPattern pattern = graph != null ? graph.GetPattern(patternId) : null;
-            if (pattern == null)
+            int[] retainedLines = { 0, 1, 6, 7 };
+            for (int i = 0; i < DroneCount * 3; i++)
             {
-                return false;
-            }
-
-            if (TryFindScoreLaneRushAction(graph, pattern.NodeKeys, out action))
-            {
-                return true;
-            }
-
-            return TryFindScoreLaneRushAction(graph, pattern.NodeIds, out action);
-        }
-
-        private static bool TryFindScoreLaneRushAction(
-            BossGraphAsset graph,
-            IReadOnlyList<string> nodeKeys,
-            out MinionConductorScoreLaneRushAction action)
-        {
-            action = null;
-            if (graph == null || nodeKeys == null)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < nodeKeys.Count; i++)
-            {
-                BossStateNode node = graph.GetNode(nodeKeys[i]);
-                if (node?.Action != null
-                    && node.Action.GetType() == typeof(MinionConductorScoreLaneRushAction))
+                if (i != retainedLines[0]
+                    && i != retainedLines[1]
+                    && i != retainedLines[2]
+                    && i != retainedLines[3])
                 {
-                    action = (MinionConductorScoreLaneRushAction)node.Action;
-                    return true;
+                    visual?.SetProgress(i, 0f);
                 }
             }
 
-            return false;
-        }
-
-        private static bool IsNodeInPattern(
-            BossGraphAsset graph,
-            string nodeId,
-            string nodeGuid,
-            string patternId)
-        {
-            BossGraphPattern pattern = graph != null ? graph.GetPattern(patternId) : null;
-            if (pattern == null)
+            float elapsed = 0f;
+            float duration = Mathf.Max(0f, staffCollapseSeconds);
+            while (elapsed < duration)
             {
-                return false;
-            }
-
-            return ContainsNodeKey(pattern.NodeKeys, nodeId, nodeGuid)
-                || ContainsNodeKey(pattern.NodeIds, nodeId, nodeGuid);
-        }
-
-        private static bool ContainsNodeKey(IReadOnlyList<string> nodeKeys, string nodeId, string nodeGuid)
-        {
-            if (nodeKeys == null)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < nodeKeys.Count; i++)
-            {
-                string key = nodeKeys[i];
-                if ((!string.IsNullOrWhiteSpace(nodeId) && key == nodeId)
-                    || (!string.IsNullOrWhiteSpace(nodeGuid) && key == nodeGuid))
+                if (context.IsExecutionPaused)
                 {
-                    return true;
+                    yield return null;
+                    continue;
                 }
+
+                float t = Mathf.Clamp01(elapsed / duration);
+                for (int i = 0; i < retainedLines.Length; i++)
+                {
+                    int sourceLine = retainedLines[i];
+                    GetNorthSouthStaffLine(sourceLine, out Vector2 sourceStart, out Vector2 sourceEnd);
+                    GetFinalStaffLine(i, out Vector2 targetStart, out Vector2 targetEnd);
+                    visual?.SetLane(sourceLine, Vector2.Lerp(sourceStart, targetStart, t), Vector2.Lerp(sourceEnd, targetEnd, t));
+                    visual?.SetProgress(sourceLine, 1f);
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
             }
 
-            return false;
+            for (int i = 0; i < retainedLines.Length; i++)
+            {
+                GetFinalStaffLine(i, out Vector2 start, out Vector2 end);
+                visual?.SetLane(retainedLines[i], start, end);
+                visual?.SetProgress(retainedLines[i], 1f);
+            }
+        }
+
+        private static IEnumerator WaitSeconds(BossActionContext context, float seconds)
+        {
+            float elapsed = 0f;
+            while (elapsed < Mathf.Max(0f, seconds))
+            {
+                if (context != null && context.IsExecutionPaused)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+        }
+
+        private static void CommandMoveToPosition(Minion minion, Vector2 target, float moveSeconds)
+        {
+            if (minion == null)
+            {
+                return;
+            }
+
+            minion.CommandScoreLaneRush(target, Vector2.right, Mathf.Max(0f, moveSeconds), 0f, 0f, 1f);
+        }
+
+        private void CommandStaffCreationWander(IReadOnlyList<Minion> minions, float duration)
+        {
+            if (minions == null || duration <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < minions.Count; i++)
+            {
+                minions[i]?.CommandWander(
+                    duration,
+                    staffCreationWanderSpeed,
+                    staffCreationWanderRadius,
+                    staffCreationWanderRetargetSeconds);
+            }
         }
 
         private IEnumerator RunVolleys(
@@ -544,7 +1174,7 @@ namespace Week14.Enemy
                     () => GetLaneOrigin(slot, lineSlots),
                     slot.LineDirection,
                     projectileSpeed,
-                    lineIndicatorLength);
+                    GetMissLaunchLineTravelDistance());
 
                 trackedMotions.Add(motion);
             }
@@ -695,7 +1325,7 @@ namespace Week14.Enemy
             Vector2 baseDirection = laneCenter - playerPosition;
             if (baseDirection.sqrMagnitude <= 0.0001f)
             {
-                baseDirection = lineSlots[0].FormationCenterDirection;
+                baseDirection = -lineSlots[0].LineDirection;
             }
 
             baseDirection = baseDirection.sqrMagnitude > 0.0001f ? baseDirection.normalized : Vector2.right;
@@ -851,17 +1481,13 @@ namespace Week14.Enemy
             }
         }
 
-        private List<LineSlot> BuildLineSlots(
-            IReadOnlyList<Minion> minions,
-            Vector2 lineDirection,
-            Vector2 formationCenterDirection,
-            Transform player)
+        private List<LineSlot> BuildStaffLineSlots(IReadOnlyList<Minion> minions)
         {
             List<LineSlot> slots = new();
-            Vector2 safeLineDirection = lineDirection.sqrMagnitude > 0.0001f ? lineDirection.normalized : Vector2.left;
-            Vector2 safeCenterDirection = formationCenterDirection.sqrMagnitude > 0.0001f
-                ? formationCenterDirection.normalized
-                : -safeLineDirection;
+            if (minions == null)
+            {
+                return slots;
+            }
 
             for (int i = 0; i < minions.Count; i++)
             {
@@ -874,227 +1500,36 @@ namespace Week14.Enemy
                 slots.Add(new LineSlot(
                     minion,
                     GetMinionNumber(minion, i),
-                    safeLineDirection,
-                    safeCenterDirection,
-                    player,
-                    distanceFromPlayer,
-                    GetCenteredOffset(i, minions.Count, spacing)));
+                    Vector2.left,
+                    GetCenteredOffset(i, minions.Count, staffLineSpacing),
+                    staffCenter));
             }
 
             return slots;
         }
 
-        private float CommandLockedFormation(IReadOnlyList<Minion> minions, Vector2 formationCenterDirection)
-        {
-            if (minions == null)
-            {
-                return 0f;
-            }
-
-            float moveSpeed = DefaultFormationMoveSpeed * Mathf.Max(0f, speedMultiplier);
-            bool hasSharedCenterDirection = formationCenterDirection.sqrMagnitude > 0.0001f;
-            Vector2 safeCenterDirection = hasSharedCenterDirection ? formationCenterDirection.normalized : Vector2.zero;
-            for (int i = 0; i < minions.Count; i++)
-            {
-                Minion minion = minions[i];
-                if (minion == null)
-                {
-                    continue;
-                }
-
-                float lateralOffset = GetCenteredOffset(i, minions.Count, spacing);
-                if (hasSharedCenterDirection)
-                {
-                    minion.CommandFormationStraightLockedToPlayerOffset(
-                        -lateralOffset,
-                        distanceFromPlayer,
-                        safeCenterDirection,
-                        moveSpeed);
-                }
-                else
-                {
-                    minion.CommandFormationStraightLockedToPlayerOffset(
-                        lateralOffset,
-                        distanceFromPlayer,
-                        mode,
-                        moveSpeed);
-                }
-            }
-
-            return Mathf.Max(0f, settleSeconds);
-        }
-
-        private IEnumerator WaitForFormationAlignment(
-            BossActionContext context,
-            IReadOnlyList<LineSlot> lineSlots,
-            float maxSeconds)
-        {
-            float elapsed = 0f;
-            float duration = Mathf.Max(0f, maxSeconds);
-            while (elapsed < duration)
-            {
-                if (context.IsExecutionPaused)
-                {
-                    context.Boss?.Stop();
-                    yield return null;
-                    continue;
-                }
-
-                TickBossFormationAlignment(context, lineSlots);
-                if (AreLineMinionsAligned(lineSlots) && IsBossFormationAligned(context, lineSlots))
-                {
-                    yield break;
-                }
-
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
-            }
-        }
-
-        private bool AreLineMinionsAligned(IReadOnlyList<LineSlot> lineSlots)
-        {
-            if (lineSlots == null || lineSlots.Count == 0)
-            {
-                return true;
-            }
-
-            float toleranceSqr = FormationAlignmentTolerance * FormationAlignmentTolerance;
-            for (int i = 0; i < lineSlots.Count; i++)
-            {
-                LineSlot slot = lineSlots[i];
-                if (slot.Minion == null)
-                {
-                    continue;
-                }
-
-                Vector2 current = slot.Minion.transform.position;
-                if ((current - GetLaneMinionTarget(slot, lineSlots)).sqrMagnitude > toleranceSqr)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         private void TickBossFormationAlignment(BossActionContext context, IReadOnlyList<LineSlot> lineSlots)
         {
-            if (context?.Boss == null || context.Boss.Body == null || lineSlots == null || lineSlots.Count == 0)
+            if (!isBossRepositioning)
             {
-                return;
+                context?.Boss?.Stop();
             }
-
-            Vector2 target = GetBossFormationTarget(lineSlots);
-            Vector2 current = context.Boss.Body.position;
-            Vector2 targetVelocity = GetBossFormationTargetVelocity(target);
-            Vector2 toTarget = target - current;
-            float toleranceSqr = FormationAlignmentTolerance * FormationAlignmentTolerance;
-            if (toTarget.sqrMagnitude <= toleranceSqr)
-            {
-                if (targetVelocity.sqrMagnitude > 0.0001f)
-                {
-                    context.Boss.SetMovementVelocity(targetVelocity);
-                }
-                else
-                {
-                    context.Boss.Stop();
-                }
-
-                return;
-            }
-
-            float speed = context.Boss.MoveSpeed * Mathf.Max(0f, bossMoveSpeedMultiplier);
-            context.Boss.SetMovementVelocity(toTarget.normalized * speed + targetVelocity);
-        }
-
-        private Vector2 GetBossFormationTargetVelocity(Vector2 target)
-        {
-            float deltaTime = EnemyTimeScale.DeltaTime;
-            Vector2 targetVelocity = Vector2.zero;
-            if (hasBossFormationTargetSample && deltaTime > 0f)
-            {
-                targetVelocity = (target - previousBossFormationTarget) / deltaTime;
-            }
-
-            previousBossFormationTarget = target;
-            hasBossFormationTargetSample = true;
-            return targetVelocity;
-        }
-
-        private void ResetBossFormationTargetSample()
-        {
-            hasBossFormationTargetSample = false;
-            previousBossFormationTarget = Vector2.zero;
-        }
-
-        private void LockPlayerMovement(BossActionContext context)
-        {
-            if (lockedPlayerMovement != null)
-            {
-                return;
-            }
-
-            PlayerCombatController player = PlayerCombatController.Active;
-            if (player == null && context?.Boss?.Player != null)
-            {
-                player = context.Boss.Player.GetComponentInParent<PlayerCombatController>();
-            }
-
-            if (player == null)
-            {
-                return;
-            }
-
-            player.PushExternalMovementLock();
-            lockedPlayerMovement = player;
-        }
-
-        private void UnlockPlayerMovement()
-        {
-            if (lockedPlayerMovement == null)
-            {
-                return;
-            }
-
-            lockedPlayerMovement.PopExternalMovementLock();
-            lockedPlayerMovement = null;
-        }
-
-        private bool IsBossFormationAligned(BossActionContext context, IReadOnlyList<LineSlot> lineSlots)
-        {
-            if (context?.Boss == null || context.Boss.Body == null || lineSlots == null || lineSlots.Count == 0)
-            {
-                return true;
-            }
-
-            float toleranceSqr = FormationAlignmentTolerance * FormationAlignmentTolerance;
-            return ((Vector2)context.Boss.Body.position - GetBossFormationTarget(lineSlots)).sqrMagnitude <= toleranceSqr;
-        }
-
-        private Vector2 GetBossFormationTarget(IReadOnlyList<LineSlot> lineSlots)
-        {
-            if (lineSlots == null || lineSlots.Count == 0)
-            {
-                return Vector2.zero;
-            }
-
-            LineSlot referenceSlot = lineSlots[0];
-            Vector2 centerDirection = referenceSlot.FormationCenterDirection.sqrMagnitude > 0.0001f
-                ? referenceSlot.FormationCenterDirection.normalized
-                : -referenceSlot.LineDirection;
-            return GetLaneCenter(lineSlots) + centerDirection * Mathf.Max(0f, bossDistanceBehindMinionLine);
         }
 
         private ConductorScoreLaneRushIndicatorVisual CreateLineIndicators(IReadOnlyList<LineSlot> lineSlots)
         {
-            if (!drawLineIndicators || lineSlots == null || lineSlots.Count == 0)
+            if (lineSlots == null || lineSlots.Count == 0)
             {
                 return null;
             }
 
             GameObject indicatorObject = new("ConductorFormationLineVolleyIndicators");
             ConductorScoreLaneRushIndicatorVisual visual = indicatorObject.AddComponent<ConductorScoreLaneRushIndicatorVisual>();
-            visual.Configure(lineIndicatorColor, lineIndicatorWidth, lineIndicatorSortingOrder);
+            Color color = drawLineIndicators
+                ? lineIndicatorColor
+                : new Color(lineIndicatorColor.r, lineIndicatorColor.g, lineIndicatorColor.b, 0f);
+            visual.Configure(color, lineIndicatorWidth, lineIndicatorSortingOrder);
+            visual.ConfigurePlayerBlocking(true);
             UpdateLineIndicators(visual, lineSlots);
             return visual;
         }
@@ -1118,7 +1553,7 @@ namespace Week14.Enemy
                 }
 
                 Vector2 origin = GetLaneOrigin(slot, lineSlots);
-                visual.SetLane(i, origin, origin + slot.LineDirection * Mathf.Max(0.1f, lineIndicatorLength));
+                visual.SetLane(i, origin, origin + slot.LineDirection * GetMissLaunchLineTravelDistance());
                 visual.SetProgress(i, 1f);
             }
         }
@@ -1384,7 +1819,7 @@ namespace Week14.Enemy
             }
 
             float speed = projectile.Speed * Mathf.Max(0.01f, projectileSpeedMultiplier);
-            return speed > 0f ? Mathf.Max(0f, lineIndicatorLength) / speed : 0f;
+            return speed > 0f ? GetMissLaunchLineTravelDistance() / speed : 0f;
         }
 
         private int EstimateMaxMissLaunchCount(IMinionPatternHost host)
@@ -1484,69 +1919,6 @@ namespace Week14.Enemy
             }
 
             return results;
-        }
-
-        private Vector2 ResolveFormationCenterDirection(BossActionContext context, IReadOnlyList<Minion> minions)
-        {
-            Transform player = context?.Boss?.Player;
-            if (player == null)
-            {
-                return Vector2.right;
-            }
-
-            if (context.Boss != null)
-            {
-                Vector2 bossToPlayer = (Vector2)player.position - (Vector2)context.Boss.transform.position;
-                if (bossToPlayer.sqrMagnitude > 0.0001f)
-                {
-                    return -bossToPlayer.normalized;
-                }
-            }
-
-            Vector2 minionCenter = GetMinionAimCenter(minions);
-            Vector2 playerToMinions = minionCenter - (Vector2)player.position;
-            if (playerToMinions.sqrMagnitude > 0.0001f)
-            {
-                return playerToMinions.normalized;
-            }
-
-            return Vector2.right;
-        }
-
-        private Vector2 ResolveSharedLineDirection(IReadOnlyList<Minion> minions, Vector2 target)
-        {
-            if (minions == null || minions.Count == 0)
-            {
-                return Vector2.left;
-            }
-
-            Vector2 center = GetMinionAimCenter(minions);
-            Vector2 direction = target - center;
-            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
-        }
-
-        private Vector2 GetMinionAimCenter(IReadOnlyList<Minion> minions)
-        {
-            if (minions == null || minions.Count == 0)
-            {
-                return Vector2.zero;
-            }
-
-            Vector2 center = Vector2.zero;
-            int count = 0;
-            for (int i = 0; i < minions.Count; i++)
-            {
-                Minion minion = minions[i];
-                if (minion == null)
-                {
-                    continue;
-                }
-
-                center += (Vector2)minionOrigin.GetAimOrigin(minion, 0);
-                count++;
-            }
-
-            return count > 0 ? center / count : Vector2.zero;
         }
 
         private static LineSlot FindSlot(IReadOnlyList<LineSlot> lineSlots, int minionNumber)
@@ -1678,15 +2050,12 @@ namespace Week14.Enemy
 
         private Vector2 GetLaneOrigin(LineSlot slot, IReadOnlyList<LineSlot> lineSlots)
         {
-            Vector2 idealOrigin = GetLaneMinionTarget(slot, lineSlots);
             if (slot.Minion == null)
             {
-                return idealOrigin;
+                return GetLaneMinionTarget(slot, lineSlots);
             }
 
-            Vector2 authoredOrigin = minionOrigin.GetSpawnOrigin(slot.Minion, 0, slot.LineDirection);
-            float forwardOffset = Vector2.Dot(authoredOrigin - idealOrigin, slot.LineDirection);
-            return idealOrigin + slot.LineDirection * forwardOffset;
+            return minionOrigin.GetSpawnOrigin(slot.Minion, 0, slot.LineDirection);
         }
 
         private Vector2 GetLaneMinionTarget(LineSlot slot, IReadOnlyList<LineSlot> lineSlots)
@@ -1701,29 +2070,7 @@ namespace Week14.Enemy
                 return Vector2.zero;
             }
 
-            LineSlot referenceSlot = lineSlots[0];
-            if (referenceSlot.Player != null && referenceSlot.FormationCenterDirection.sqrMagnitude > 0.0001f)
-            {
-                return (Vector2)referenceSlot.Player.position
-                    + referenceSlot.FormationCenterDirection.normalized
-                    * Mathf.Max(0.1f, referenceSlot.DistanceFromPlayer);
-            }
-
-            Vector2 sum = Vector2.zero;
-            int count = 0;
-            for (int i = 0; i < lineSlots.Count; i++)
-            {
-                Minion minion = lineSlots[i].Minion;
-                if (minion == null)
-                {
-                    continue;
-                }
-
-                sum += (Vector2)minion.transform.position;
-                count++;
-            }
-
-            return count > 0 ? sum / count : Vector2.zero;
+            return lineSlots[0].LaneCenter;
         }
 
         private static Vector2 GetLineAxis(Vector2 lineDirection)
@@ -1759,27 +2106,35 @@ namespace Week14.Enemy
                 Minion minion,
                 int minionNumber,
                 Vector2 lineDirection,
-                Vector2 formationCenterDirection,
-                Transform player,
-                float distanceFromPlayer,
-                float lateralOffset)
+                float lateralOffset,
+                Vector2 laneCenter)
             {
                 Minion = minion;
                 MinionNumber = minionNumber;
                 LineDirection = lineDirection;
-                FormationCenterDirection = formationCenterDirection;
-                Player = player;
-                DistanceFromPlayer = distanceFromPlayer;
                 LateralOffset = lateralOffset;
+                LaneCenter = laneCenter;
             }
 
             public Minion Minion { get; }
             public int MinionNumber { get; }
             public Vector2 LineDirection { get; }
-            public Vector2 FormationCenterDirection { get; }
-            public Transform Player { get; }
-            public float DistanceFromPlayer { get; }
             public float LateralOffset { get; }
+            public Vector2 LaneCenter { get; }
+        }
+
+        [Serializable]
+        private sealed class CenterFireProjectile
+        {
+            [SerializeField, Min(1)] private int minionNumber = 1;
+            [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+
+            public CenterFireProjectile()
+            {
+            }
+
+            public int MinionNumber => minionNumber;
+            public string ProjectileName => projectileName;
         }
 
         private readonly struct FinalReleaseSlot

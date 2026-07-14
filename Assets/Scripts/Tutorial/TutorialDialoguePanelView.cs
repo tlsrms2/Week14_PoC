@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
+using Week14.UI;
 
 namespace Week14.Tutorial
 {
@@ -26,7 +28,9 @@ namespace Week14.Tutorial
 
         private const string DialoguePrefix = ">> ";
         private const string AdvancePromptObjectName = "MouseClick_Image";
-        private const string ObjectivePrefix = "[목표] ";
+
+        [Tooltip("목표 텍스트 앞에 붙는 접두어의 로컬라이징 문구입니다. 비워두면 기본값(\"[목표] \")을 그대로 사용합니다.")]
+        [SerializeField] private LocalizedString localizedObjectivePrefix;
 
         [Header("Root")]
         [SerializeField] private GameObject root;
@@ -70,6 +74,9 @@ namespace Week14.Tutorial
         private bool hasAdvancePromptBaseColor;
         private bool isVisible;
 
+        // 로컬라이징 필드가 비어있으면 이 기본값이 그대로 쓰인다.
+        private string objectivePrefixCache = "[목표] ";
+
         public bool IsTyping { get; private set; }
 
         private void Awake()
@@ -77,8 +84,24 @@ namespace Week14.Tutorial
             CacheShownPosition();
             CacheDefaultDialogueColor();
             CacheAdvancePromptImage();
+
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(
+                localizedObjectivePrefix,
+                LoadoutSelectedSkillPanelLocalization.HasLocalizedString(localizedObjectivePrefix),
+                SetObjectivePrefixCache);
+
             Hide();
         }
+
+        private void OnDestroy()
+        {
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(
+                localizedObjectivePrefix,
+                LoadoutSelectedSkillPanelLocalization.HasLocalizedString(localizedObjectivePrefix),
+                SetObjectivePrefixCache);
+        }
+
+        private void SetObjectivePrefixCache(string value) => objectivePrefixCache = value;
 
         public void ShowLine(string speaker, string text)
         {
@@ -558,10 +581,10 @@ namespace Week14.Tutorial
             return value.StartsWith(DialoguePrefix, StringComparison.Ordinal) ? value : DialoguePrefix + value;
         }
 
-        private static string FormatObjective(string text)
+        private string FormatObjective(string text)
         {
             string value = text ?? string.Empty;
-            return value.StartsWith(ObjectivePrefix, StringComparison.Ordinal) ? value : ObjectivePrefix + value;
+            return value.StartsWith(objectivePrefixCache, StringComparison.Ordinal) ? value : objectivePrefixCache + value;
         }
 
         private static IEnumerator WaitUnscaled(float seconds)
