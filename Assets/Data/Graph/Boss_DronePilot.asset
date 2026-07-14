@@ -1294,7 +1294,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861202
     sequences: []
-    editorPosition: {x: 1661, y: -429}
+    editorPosition: {x: 1659, y: -407}
   - nodeId: Fan Blade5
     nodeGuid: 6f56668697304146b747e2c951bd22d8
     nodeKind: 0
@@ -1303,7 +1303,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861203
     sequences: []
-    editorPosition: {x: 1880, y: -242}
+    editorPosition: {x: 1881, y: -241}
   - nodeId: Wander23
     nodeGuid: c093d6281206439691797c939493f312
     nodeKind: 4
@@ -7676,6 +7676,13 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.95
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 0
           durationSeconds: 0.75
@@ -7940,6 +7947,13 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.95
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 0
           durationSeconds: 0.75
@@ -11823,6 +11837,13 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.95
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 0
           durationSeconds: 0.75
@@ -11979,6 +12000,13 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.95
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 0
           durationSeconds: 0.75
@@ -12089,7 +12117,7 @@ MonoBehaviour:
     - rid: 6489939164457861205
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        patternId: P6
+        patternId: UP2
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
@@ -12153,7 +12181,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 8
@@ -12174,7 +12202,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 2
@@ -12195,7 +12223,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 4
@@ -12435,7 +12463,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 8
@@ -12456,7 +12484,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 2
@@ -12477,7 +12505,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 4
@@ -12556,6 +12584,13 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.95
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 0
           durationSeconds: 0.75
@@ -13726,7 +13761,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 8
@@ -13747,7 +13782,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 2
@@ -13768,7 +13803,7 @@ MonoBehaviour:
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
+          fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 4
