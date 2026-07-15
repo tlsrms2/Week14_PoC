@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 35762831360
-    m_Localized: START
+    m_Localized: GAME START
     m_Metadata:
       m_Items: []
   - m_Id: 103836385280
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44034297004032
-    m_Localized: TITLE
+    m_Localized: MAIN MENU
     m_Metadata:
       m_Items: []
   - m_Id: 44079612264448
@@ -75,9 +75,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3316185476464640
-    m_Localized: 'Physical Enhancement
-
-'
+    m_Localized: Enhancement
     m_Metadata:
       m_Items: []
   - m_Id: 3316405463515136
@@ -162,6 +160,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4478459079655424
     m_Localized: target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984204011692032
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984524653649920
+    m_Localized: Enhancement
     m_Metadata:
       m_Items: []
   references:
