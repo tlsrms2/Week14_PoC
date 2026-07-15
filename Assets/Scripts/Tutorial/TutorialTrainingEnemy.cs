@@ -10,6 +10,7 @@ namespace Week14.Tutorial
     {
         Passive,
         AttackTarget,
+        ForcedHitPractice,
         ParryPractice,
         DodgePractice,
         Duel
@@ -74,11 +75,14 @@ namespace Week14.Tutorial
         private Health health;
         private BulletGauge bullets;
         private SpriteRenderer configuredLockOnIndicator;
+        private Collider2D[] interactionColliders;
+        private bool[] interactionColliderBaseEnabled;
         private Color[] bodyRendererBaseColors;
         private MaterialPropertyBlock hitFlashPropertyBlock;
         private Transform target;
         private TutorialTrainingEnemyMode mode;
         private bool isActive;
+        private bool playerInteractionEnabled = true;
         private float nextFireAt;
         private float nextContactDamageAt;
         private float bodyHitColorEndsAt;
@@ -92,6 +96,7 @@ namespace Week14.Tutorial
 
         public Health Health => health;
         public BulletGauge Bullets => bullets;
+        public bool IsPlayerTargetable => playerInteractionEnabled && isActive && health != null && !health.IsDead;
         public Color LockOnIndicatorColor => colorSettings != null ? colorSettings.LockOnIndicatorColor : lockOnIndicatorColor;
         public event Action<TutorialTrainingEnemy> Defeated;
 
@@ -167,7 +172,9 @@ namespace Week14.Tutorial
             EnsureReferences();
             target = nextTarget;
             mode = nextMode;
+            playerInteractionEnabled = true;
             gameObject.SetActive(true);
+            ApplyPlayerInteractionState();
             health.Revive();
             bullets.Configure(maxBullets, true, BulletChangeSource.CombatStart);
             isActive = true;
@@ -180,14 +187,27 @@ namespace Week14.Tutorial
         public void Deactivate()
         {
             isActive = false;
+            SetPlayerInteractionEnabled(false);
             SetLockOnIndicatorVisible(false);
             StopBody();
+        }
+
+        public void SetPlayerInteractionEnabled(bool enabled)
+        {
+            playerInteractionEnabled = enabled;
+            EnsureReferences();
+            ApplyPlayerInteractionState();
+
+            if (!enabled)
+            {
+                SetLockOnIndicatorVisible(false);
+            }
         }
 
         public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
             EnsureReferences();
-            if (health == null || health.IsDead)
+            if (!IsPlayerTargetable)
             {
                 return false;
             }
@@ -223,7 +243,9 @@ namespace Week14.Tutorial
             projectileOrigin ??= bodyRoot != null ? bodyRoot : transform;
             lockOnIndicator ??= FindIndicator("LockOnIndicator");
             CacheBodyRenderers();
+            CacheInteractionColliders();
             ConfigureLockOnIndicator();
+            ApplyPlayerInteractionState();
 
             if (body != null)
             {
@@ -279,9 +301,51 @@ namespace Week14.Tutorial
             }
         }
 
+        private void CacheInteractionColliders()
+        {
+            if (interactionColliders != null && interactionColliders.Length > 0)
+            {
+                return;
+            }
+
+            interactionColliders = GetComponentsInChildren<Collider2D>(true);
+            if (interactionColliders == null)
+            {
+                interactionColliderBaseEnabled = Array.Empty<bool>();
+                return;
+            }
+
+            interactionColliderBaseEnabled = new bool[interactionColliders.Length];
+            for (int i = 0; i < interactionColliders.Length; i++)
+            {
+                interactionColliderBaseEnabled[i] = interactionColliders[i] != null && interactionColliders[i].enabled;
+            }
+        }
+
+        private void ApplyPlayerInteractionState()
+        {
+            if (interactionColliders == null || interactionColliderBaseEnabled == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < interactionColliders.Length; i++)
+            {
+                Collider2D targetCollider = interactionColliders[i];
+                if (targetCollider == null)
+                {
+                    continue;
+                }
+
+                bool baseEnabled = i < interactionColliderBaseEnabled.Length && interactionColliderBaseEnabled[i];
+                targetCollider.enabled = playerInteractionEnabled && baseEnabled;
+            }
+        }
+
         private bool CanAct()
         {
             return isActive
+                && playerInteractionEnabled
                 && target != null
                 && health != null
                 && !health.IsDead;
@@ -319,6 +383,13 @@ namespace Week14.Tutorial
             BossProjectileSettings settings = ResolveProjectileSettings();
             if (settings == null || settings.Prefab == null)
             {
+                return;
+            }
+
+            if (mode == TutorialTrainingEnemyMode.ForcedHitPractice)
+            {
+                FireRadialVolley(settings, true);
+                nextFireAt = Time.time + Mathf.Max(0.1f, GetFireIntervalSeconds());
                 return;
             }
 
@@ -442,7 +513,9 @@ namespace Week14.Tutorial
 
         private BossProjectileSettings ResolveProjectileSettings()
         {
-            if (mode == TutorialTrainingEnemyMode.DodgePractice && dodgeProjectile != null && dodgeProjectile.Prefab != null)
+            if (mode == TutorialTrainingEnemyMode.DodgePractice
+                && dodgeProjectile != null
+                && dodgeProjectile.Prefab != null)
             {
                 return dodgeProjectile;
             }
@@ -531,7 +604,8 @@ namespace Week14.Tutorial
 
         private float GetInitialFireDelaySeconds()
         {
-            if (mode == TutorialTrainingEnemyMode.DodgePractice)
+            if (mode == TutorialTrainingEnemyMode.ForcedHitPractice
+                || mode == TutorialTrainingEnemyMode.DodgePractice)
             {
                 return Mathf.Max(0f, dodgeFireDelaySeconds);
             }
@@ -664,7 +738,7 @@ namespace Week14.Tutorial
         private bool IsLockOnTarget()
         {
             PlayerCombatController player = PlayerCombatController.Active;
-            if (player == null || player.IsExecuting || health == null || health.IsDead || player.LockOnTarget == null)
+            if (!IsPlayerTargetable || player == null || player.IsExecuting || player.LockOnTarget == null)
             {
                 return false;
             }
@@ -794,6 +868,7 @@ namespace Week14.Tutorial
         private bool ShouldFire()
         {
             return mode == TutorialTrainingEnemyMode.ParryPractice
+                || mode == TutorialTrainingEnemyMode.ForcedHitPractice
                 || mode == TutorialTrainingEnemyMode.DodgePractice && !dodgeVolleyFired
                 || mode == TutorialTrainingEnemyMode.Duel;
         }

@@ -152,15 +152,21 @@ namespace Week14.Combat
                 return false;
             }
 
+            TutorialTrainingEnemy tutorialEnemy = targetHealth != null
+                ? targetHealth.GetComponent<TutorialTrainingEnemy>() ?? targetHealth.GetComponentInParent<TutorialTrainingEnemy>()
+                : null;
+            if (tutorialEnemy != null)
+            {
+                return tutorialEnemy.IsPlayerTargetable;
+            }
+
             return targetHealth != null
                 && targetHealth != context.Health
                 && !targetHealth.IsDead
                 && (targetHealth.GetComponent<BossAI>() != null
                     || targetHealth.GetComponentInParent<BossAI>() != null
                     || targetHealth.GetComponent<Minion>() != null
-                    || targetHealth.GetComponentInParent<Minion>() != null
-                    || targetHealth.GetComponent<TutorialTrainingEnemy>() != null
-                    || targetHealth.GetComponentInParent<TutorialTrainingEnemy>() != null);
+                    || targetHealth.GetComponentInParent<Minion>() != null);
         }
 
         private bool IsValidLockOnTargetInCamera(Health targetHealth, Camera camera)
