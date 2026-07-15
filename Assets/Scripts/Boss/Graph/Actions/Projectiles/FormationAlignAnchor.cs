@@ -9,8 +9,9 @@ namespace Week14.Enemy
         private Vector3 targetPosition;
         private float duration;
         private AnimationCurve ease;
-        private float startedAt;
-        private float pausedSince = -1f;
+        private float elapsed;
+        private float lifetimeSeconds;
+        private float lifetimeElapsed;
 
         public static Transform Create(
             Vector3 startPosition,
@@ -21,18 +22,24 @@ namespace Week14.Enemy
         {
             GameObject anchorObject = new("FormationAlignAnchor");
             FormationAlignAnchor anchor = anchorObject.AddComponent<FormationAlignAnchor>();
-            anchor.Initialize(startPosition, targetPosition, duration, ease);
-            Destroy(anchorObject, Mathf.Max(0.05f, lifetimeSeconds));
+            anchor.Initialize(startPosition, targetPosition, duration, ease, Mathf.Max(0.05f, lifetimeSeconds));
             return anchorObject.transform;
         }
 
-        private void Initialize(Vector3 nextStartPosition, Vector3 nextTargetPosition, float nextDuration, AnimationCurve nextEase)
+        private void Initialize(
+            Vector3 nextStartPosition,
+            Vector3 nextTargetPosition,
+            float nextDuration,
+            AnimationCurve nextEase,
+            float nextLifetimeSeconds)
         {
             startPosition = nextStartPosition;
             targetPosition = nextTargetPosition;
             duration = Mathf.Max(0f, nextDuration);
             ease = nextEase != null && nextEase.length > 0 ? nextEase : AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-            startedAt = Time.time;
+            elapsed = 0f;
+            lifetimeSeconds = nextLifetimeSeconds;
+            lifetimeElapsed = 0f;
             transform.position = startPosition;
         }
 
@@ -40,18 +47,15 @@ namespace Week14.Enemy
         {
             if (PlayerCombatController.IsExecutionCinematicActive)
             {
-                if (pausedSince < 0f)
-                {
-                    pausedSince = Time.time;
-                }
-
                 return;
             }
 
-            if (pausedSince >= 0f)
+            float deltaTime = EnemyTimeScale.DeltaTime;
+            lifetimeElapsed += deltaTime;
+            if (lifetimeElapsed >= lifetimeSeconds)
             {
-                startedAt += Time.time - pausedSince;
-                pausedSince = -1f;
+                Destroy(gameObject);
+                return;
             }
 
             if (duration <= 0f)
@@ -60,7 +64,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            float t = Mathf.Clamp01((Time.time - startedAt) / duration);
+            elapsed += deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
             transform.position = Vector3.LerpUnclamped(startPosition, targetPosition, ease.Evaluate(t));
         }
     }

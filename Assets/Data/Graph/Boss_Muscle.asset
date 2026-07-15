@@ -1671,6 +1671,7 @@ MonoBehaviour:
     toNodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     fromNodeId: Maintain Player Distance2
     toNodeId: Boss Dash2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1678,6 +1679,7 @@ MonoBehaviour:
     toNodeGuid: dbd1b9f57dc34140b36f7939ff09a3b0
     fromNodeId: Boss Dash1
     toNodeId: Wait1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1685,6 +1687,7 @@ MonoBehaviour:
     toNodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     fromNodeId: Wait1
     toNodeId: Maintain Player Distance2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1692,6 +1695,7 @@ MonoBehaviour:
     toNodeGuid: febd09203906470486d228f80fc19c01
     fromNodeId: Maintain Player Distance3
     toNodeId: Boss Dash4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1699,6 +1703,7 @@ MonoBehaviour:
     toNodeGuid: a6d837d55c884ba583edce60f2ae0e5f
     fromNodeId: Maintain Player Distance4
     toNodeId: Boss Dash5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1706,6 +1711,7 @@ MonoBehaviour:
     toNodeGuid: 062ef5e90ce8471c9058edbc8d18e523
     fromNodeId: Boss Dash4
     toNodeId: Maintain Player Distance4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1713,6 +1719,7 @@ MonoBehaviour:
     toNodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     fromNodeId: Boss Dash6
     toNodeId: Boss Dash7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1720,6 +1727,7 @@ MonoBehaviour:
     toNodeGuid: 8f62d2ec9fdc4384b6871602c338b0e3
     fromNodeId: Boss Dash7
     toNodeId: Boss Dash8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1727,6 +1735,7 @@ MonoBehaviour:
     toNodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
     fromNodeId: Boss Dash8
     toNodeId: Boss Dash9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1734,6 +1743,7 @@ MonoBehaviour:
     toNodeGuid: 25beafe770334374b83e7b18a4dee9ce
     fromNodeId: Move Until Player Distance3
     toNodeId: Boss Dash6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1741,6 +1751,7 @@ MonoBehaviour:
     toNodeGuid: 30cd97d6b32c40778ee567e351bf4cc9
     fromNodeId: Boss Dash10
     toNodeId: Boss Dash11
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1748,6 +1759,7 @@ MonoBehaviour:
     toNodeGuid: d79fb59e26364649a80c98c326ad044d
     fromNodeId: Boss Dash11
     toNodeId: Boss Dash12
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1755,6 +1767,7 @@ MonoBehaviour:
     toNodeGuid: 32166bb39f414bbbad5793c88c365ad4
     fromNodeId: Boss Dash12
     toNodeId: Boss Dash13
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1762,6 +1775,7 @@ MonoBehaviour:
     toNodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     fromNodeId: Move Until Player Distance4
     toNodeId: Boss Dash10
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1769,6 +1783,7 @@ MonoBehaviour:
     toNodeGuid: 9d360200b2194cc4830bccdd7e622e9d
     fromNodeId: Boss Dash13
     toNodeId: Move Until Player Distance5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1776,6 +1791,7 @@ MonoBehaviour:
     toNodeGuid: 8fa5d3d3d7e147a29b6787231ed2ab6a
     fromNodeId: Maintain Player Distance5
     toNodeId: Boss Dash14
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1783,6 +1799,7 @@ MonoBehaviour:
     toNodeGuid: 221617aecff84a7e966f781184805a0d
     fromNodeId: Boss Dash3
     toNodeId: Fire Radial Emission1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1790,6 +1807,7 @@ MonoBehaviour:
     toNodeGuid: e7d379c95d9c4859ad3179669179dfe2
     fromNodeId: Move Until Player Distance1
     toNodeId: Wait3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1797,6 +1815,7 @@ MonoBehaviour:
     toNodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
     fromNodeId: Move Until Player Distance2
     toNodeId: Wait4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1804,6 +1823,7 @@ MonoBehaviour:
     toNodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     fromNodeId: Move Until Player Distance5
     toNodeId: Wait5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1811,6 +1831,7 @@ MonoBehaviour:
     toNodeGuid: 3ab2497c3b984870834e7e4e1012795a
     fromNodeId: Move Until Player Distance6
     toNodeId: Wait6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1818,6 +1839,7 @@ MonoBehaviour:
     toNodeGuid: 9ebe6e5e7f2c46988b6d955c3fa74ffc
     fromNodeId: Wait3
     toNodeId: Set Parameter1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1825,6 +1847,7 @@ MonoBehaviour:
     toNodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     fromNodeId: Spawn Parryable Bomb1
     toNodeId: Wait2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1832,6 +1855,7 @@ MonoBehaviour:
     toNodeGuid: 1c806044cde744fda9762e94d5aae37e
     fromNodeId: Wait4
     toNodeId: Set Parameter2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1839,6 +1863,7 @@ MonoBehaviour:
     toNodeGuid: 28ca69fc380146dcbe570ed92ec959ad
     fromNodeId: Set Parameter3
     toNodeId: Set Parameter4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1846,6 +1871,7 @@ MonoBehaviour:
     toNodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     fromNodeId: Wait2
     toNodeId: Set Parameter3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1853,6 +1879,7 @@ MonoBehaviour:
     toNodeGuid: 8905948f06494740b377b2174b303a59
     fromNodeId: Set Parameter5
     toNodeId: Set Parameter6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1860,6 +1887,7 @@ MonoBehaviour:
     toNodeGuid: 903239b3d04049078b59a10d20bb9f95
     fromNodeId: Wait7
     toNodeId: Set Parameter5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1867,6 +1895,7 @@ MonoBehaviour:
     toNodeGuid: d8e19f1aff984433b0efa0e801f90d96
     fromNodeId: Spawn Parryable Bomb2
     toNodeId: Wait7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1874,6 +1903,7 @@ MonoBehaviour:
     toNodeGuid: 0a612e45c1df4d5688c76786dbe9478f
     fromNodeId: Set Parameter8
     toNodeId: Set Parameter9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1881,6 +1911,7 @@ MonoBehaviour:
     toNodeGuid: cbedf38408d640349061049c2eb2c479
     fromNodeId: Wait8
     toNodeId: Set Parameter8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1888,6 +1919,7 @@ MonoBehaviour:
     toNodeGuid: b76bfcf7ab09443c806ca013e896085a
     fromNodeId: Spawn Parryable Bomb3
     toNodeId: Wait8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1895,6 +1927,7 @@ MonoBehaviour:
     toNodeGuid: 1d990f318ffe4ef48684d3f82217b553
     fromNodeId: Wait5
     toNodeId: Set Parameter7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1902,6 +1935,7 @@ MonoBehaviour:
     toNodeGuid: e8b53d1da47047bcac12d1fc226e1d53
     fromNodeId: Set Parameter11
     toNodeId: Set Parameter12
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1909,6 +1943,7 @@ MonoBehaviour:
     toNodeGuid: ace94b83b12f458c9445a4719fe51ad6
     fromNodeId: Wait9
     toNodeId: Set Parameter11
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1916,6 +1951,7 @@ MonoBehaviour:
     toNodeGuid: 60258f26f6e8489eb9ffb1088c891f53
     fromNodeId: Spawn Parryable Bomb4
     toNodeId: Wait9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1923,6 +1959,7 @@ MonoBehaviour:
     toNodeGuid: cf3ebd505db742a3b6a2ce846e4aa723
     fromNodeId: Wait6
     toNodeId: Set Parameter10
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1930,6 +1967,7 @@ MonoBehaviour:
     toNodeGuid: 273309f2f610471b8717081b30d02179
     fromNodeId: Set Parameter12
     toNodeId: Boss Dash15
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1937,6 +1975,7 @@ MonoBehaviour:
     toNodeGuid: 85f8a72636a54a7b995878ccb89bd82e
     fromNodeId: Wait10
     toNodeId: Set Parameter14
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1944,6 +1983,7 @@ MonoBehaviour:
     toNodeGuid: 6506837df174493a91d75302e88a1ea3
     fromNodeId: Boss Dash15
     toNodeId: Set Parameter13
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1951,6 +1991,7 @@ MonoBehaviour:
     toNodeGuid: 5c7ff2ebf19a40f4b192c15ad5ea7d06
     fromNodeId: Set Parameter13
     toNodeId: Windup2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1958,6 +1999,7 @@ MonoBehaviour:
     toNodeGuid: 33375804fbdd44cf9c6e1f24ce5a30fa
     fromNodeId: Windup2
     toNodeId: Set Parameter15
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1965,6 +2007,7 @@ MonoBehaviour:
     toNodeGuid: 5028a5904c174d138dfd167230259553
     fromNodeId: Wait11
     toNodeId: Set Parameter16
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1972,6 +2015,7 @@ MonoBehaviour:
     toNodeGuid: d95883e37d63446a9415d90baa899a35
     fromNodeId: Fire Radial Emission2
     toNodeId: Wait11
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1979,6 +2023,7 @@ MonoBehaviour:
     toNodeGuid: a673207cec4143888ec2528e789b8663
     fromNodeId: Set Parameter17
     toNodeId: Wait12
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1986,6 +2031,7 @@ MonoBehaviour:
     toNodeGuid: 25bc687a676346078ac5460530aedb72
     fromNodeId: Windup1
     toNodeId: Set Parameter17
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -1993,6 +2039,7 @@ MonoBehaviour:
     toNodeGuid: 13f9de00d17b47dbb79785b59d38eedf
     fromNodeId: Boss Dash9
     toNodeId: Set Parameter18
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2000,6 +2047,7 @@ MonoBehaviour:
     toNodeGuid: 9aca0817834c4c7891e79f35869aba73
     fromNodeId: Set Parameter18
     toNodeId: Windup1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2007,6 +2055,7 @@ MonoBehaviour:
     toNodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     fromNodeId: Maintain Player Distance1
     toNodeId: Boss Dash3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2014,6 +2063,7 @@ MonoBehaviour:
     toNodeGuid: 031ec70f30a14eeebf783a3157d6d19d
     fromNodeId: Wait12
     toNodeId: Play Sfx1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2021,6 +2071,7 @@ MonoBehaviour:
     toNodeGuid: 7bf735e05cfa41169d9cf9f17a8d4300
     fromNodeId: Play Sfx1
     toNodeId: Wait13
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2028,6 +2079,7 @@ MonoBehaviour:
     toNodeGuid: bcf3d485c22c432180fac7eb914bbd0e
     fromNodeId: Wait13
     toNodeId: Fire Radial Emission2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2035,6 +2087,7 @@ MonoBehaviour:
     toNodeGuid: bc3cc4bc0742418ab1db9da578c5f5d1
     fromNodeId: Wait14
     toNodeId: Play Sfx2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2042,6 +2095,7 @@ MonoBehaviour:
     toNodeGuid: 97f7ec693db1499da121d19080dbca8a
     fromNodeId: Play Sfx2
     toNodeId: Wait15
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2049,6 +2103,7 @@ MonoBehaviour:
     toNodeGuid: 3d76238ee24443ec8318b2524078453e
     fromNodeId: Wait15
     toNodeId: Fire Radial Emission3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2056,6 +2111,7 @@ MonoBehaviour:
     toNodeGuid: a37245bd978242a789cc22e3686136e5
     fromNodeId: Set Parameter15
     toNodeId: Wait14
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2063,6 +2119,7 @@ MonoBehaviour:
     toNodeGuid: bd7ef666b55a43f2b50804bf1889da1e
     fromNodeId: Fire Radial Emission3
     toNodeId: Wait10
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2070,6 +2127,7 @@ MonoBehaviour:
     toNodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     fromNodeId: Set Parameter4
     toNodeId: Move Until Player Distance2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2077,6 +2135,7 @@ MonoBehaviour:
     toNodeGuid: f8b8f5742b384e78a0d6d8a0dfbabba7
     fromNodeId: Move Until Player Distance7
     toNodeId: Boss Dash16
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2084,6 +2143,7 @@ MonoBehaviour:
     toNodeGuid: 236dbf127a2e45018eba433c7dbad0c8
     fromNodeId: Wait16
     toNodeId: Set Parameter19
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2091,6 +2151,7 @@ MonoBehaviour:
     toNodeGuid: 56fc8b11fc02494c9c7e89652a7bbd85
     fromNodeId: Fire Radial Emission4
     toNodeId: Wait16
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2098,6 +2159,7 @@ MonoBehaviour:
     toNodeGuid: c1f59dabf4dc4e88b0490c816c9bd2e2
     fromNodeId: Set Parameter20
     toNodeId: Wait17
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2105,6 +2167,7 @@ MonoBehaviour:
     toNodeGuid: 81f75cd7b457464d9ca17dafbffde3bb
     fromNodeId: Windup3
     toNodeId: Set Parameter20
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2112,6 +2175,7 @@ MonoBehaviour:
     toNodeGuid: 874f33b2c9af4064ac58553679b3289c
     fromNodeId: Set Parameter21
     toNodeId: Windup3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2119,6 +2183,7 @@ MonoBehaviour:
     toNodeGuid: 7e5ae3423c654bd0935dc83cb9a196d3
     fromNodeId: Wait17
     toNodeId: Play Sfx3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2126,6 +2191,7 @@ MonoBehaviour:
     toNodeGuid: 87f9d2e245394373b754a53217ce636c
     fromNodeId: Play Sfx3
     toNodeId: Wait18
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2133,6 +2199,7 @@ MonoBehaviour:
     toNodeGuid: 28d59dba1e6549a99df166bea52a9b1b
     fromNodeId: Wait18
     toNodeId: Fire Radial Emission4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2140,6 +2207,7 @@ MonoBehaviour:
     toNodeGuid: 76eddb127f214a89bc6b549088eab609
     fromNodeId: Boss Dash16
     toNodeId: Set Parameter21
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2147,6 +2215,7 @@ MonoBehaviour:
     toNodeGuid: 43f42c214782492a87d377021cdfccbf
     fromNodeId: Move Until Player Distance8
     toNodeId: Boss Dash17
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2154,6 +2223,7 @@ MonoBehaviour:
     toNodeGuid: 3ec12c6321a84e67acfaf764ac970f11
     fromNodeId: Wait19
     toNodeId: Set Parameter22
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2161,6 +2231,7 @@ MonoBehaviour:
     toNodeGuid: ed1d12b1f4b0470391f9a093bccb0379
     fromNodeId: Fire Radial Emission5
     toNodeId: Wait19
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2168,6 +2239,7 @@ MonoBehaviour:
     toNodeGuid: e2c8187e70fd479e9db2d9c44d2c8937
     fromNodeId: Set Parameter23
     toNodeId: Wait20
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2175,6 +2247,7 @@ MonoBehaviour:
     toNodeGuid: 7579a8f77f144419b58944c0861f73a2
     fromNodeId: Windup4
     toNodeId: Set Parameter23
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2182,6 +2255,7 @@ MonoBehaviour:
     toNodeGuid: 306f89fcc1a04bbfba3a14a43d2c8f20
     fromNodeId: Set Parameter24
     toNodeId: Windup4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2189,6 +2263,7 @@ MonoBehaviour:
     toNodeGuid: d00cd9d414694f2688db75c1cf705cfd
     fromNodeId: Wait20
     toNodeId: Play Sfx4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2196,6 +2271,7 @@ MonoBehaviour:
     toNodeGuid: a0f4f853715c4597bd3a86828399aaa2
     fromNodeId: Play Sfx4
     toNodeId: Wait21
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2203,6 +2279,7 @@ MonoBehaviour:
     toNodeGuid: 5f1b513d4eca4d418162596d469680dc
     fromNodeId: Wait21
     toNodeId: Fire Radial Emission5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2210,6 +2287,7 @@ MonoBehaviour:
     toNodeGuid: ee22a8a22a15418287b290cddf178915
     fromNodeId: Boss Dash17
     toNodeId: Set Parameter24
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2217,6 +2295,7 @@ MonoBehaviour:
     toNodeGuid: 1ae7b21ef27642269fdbc08268cbd4b4
     fromNodeId: Set Parameter19
     toNodeId: Move Until Player Distance8
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2224,6 +2303,7 @@ MonoBehaviour:
     toNodeGuid: 17a4a4fb5c794298bbbe36377648bdda
     fromNodeId: Wait22
     toNodeId: Set Parameter25
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2231,6 +2311,7 @@ MonoBehaviour:
     toNodeGuid: 4bcf7375469b4367972ee9e3078fd1ca
     fromNodeId: Fire Radial Emission6
     toNodeId: Wait22
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2238,6 +2319,7 @@ MonoBehaviour:
     toNodeGuid: 6c807fc0e9114ac2a8574b688f948d41
     fromNodeId: Set Parameter26
     toNodeId: Wait23
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2245,6 +2327,7 @@ MonoBehaviour:
     toNodeGuid: eb76215f83974175a082f09df5a8341f
     fromNodeId: Windup5
     toNodeId: Set Parameter26
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2252,6 +2335,7 @@ MonoBehaviour:
     toNodeGuid: 013309de455c4d429b8ba45a6cc43902
     fromNodeId: Set Parameter27
     toNodeId: Windup5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2259,6 +2343,7 @@ MonoBehaviour:
     toNodeGuid: fa6e3181904c4b19a7c343765bed7f89
     fromNodeId: Wait23
     toNodeId: Play Sfx5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2266,6 +2351,7 @@ MonoBehaviour:
     toNodeGuid: c3dc39dfc5e3418ba14d2dbb7f9e216a
     fromNodeId: Play Sfx5
     toNodeId: Wait24
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2273,6 +2359,7 @@ MonoBehaviour:
     toNodeGuid: 56ec7cfe1f9b44e69bcd612efa8974a5
     fromNodeId: Wait24
     toNodeId: Fire Radial Emission6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2280,6 +2367,7 @@ MonoBehaviour:
     toNodeGuid: 8019daadbc3c482298a6db0bb39513e0
     fromNodeId: Set Parameter25
     toNodeId: Move Until Player Distance7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2287,6 +2375,7 @@ MonoBehaviour:
     toNodeGuid: 4c342ed47e044a7ebeefd9b2e285e5a3
     fromNodeId: Maintain Player Distance6
     toNodeId: Boss Dash18
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2294,6 +2383,7 @@ MonoBehaviour:
     toNodeGuid: 6f89b729f45f46e0ac0d1e5de2da26ed
     fromNodeId: Boss Dash14
     toNodeId: Maintain Player Distance6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2301,6 +2391,7 @@ MonoBehaviour:
     toNodeGuid: d66610f5c8a74072accfd1ee4ba01bac
     fromNodeId: Wait25
     toNodeId: Set Parameter28
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2308,6 +2399,7 @@ MonoBehaviour:
     toNodeGuid: a1f6fe085fc74346a0b2d3b346aa26a2
     fromNodeId: Fire Radial Emission7
     toNodeId: Wait25
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2315,6 +2407,7 @@ MonoBehaviour:
     toNodeGuid: 092c067024104aec97d7df25872858af
     fromNodeId: Set Parameter29
     toNodeId: Wait26
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2322,6 +2415,7 @@ MonoBehaviour:
     toNodeGuid: cd22d2510b814e33a456f2d850da5cf0
     fromNodeId: Windup6
     toNodeId: Set Parameter29
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2329,6 +2423,7 @@ MonoBehaviour:
     toNodeGuid: 217c9078916e40b0baae155c973f98ce
     fromNodeId: Set Parameter30
     toNodeId: Windup6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2336,6 +2431,7 @@ MonoBehaviour:
     toNodeGuid: f1d2249d2e8648b5bb72526fa2f7fce7
     fromNodeId: Wait26
     toNodeId: Play Sfx6
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2343,6 +2439,7 @@ MonoBehaviour:
     toNodeGuid: 13676495a7b34079aff008fac084363b
     fromNodeId: Play Sfx6
     toNodeId: Wait27
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2350,6 +2447,7 @@ MonoBehaviour:
     toNodeGuid: 1cb3fdd9733949d2a8c05b70a84636a1
     fromNodeId: Wait27
     toNodeId: Fire Radial Emission7
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2357,6 +2455,7 @@ MonoBehaviour:
     toNodeGuid: 34e93466cddd4adfbedcfc5a1f11c116
     fromNodeId: Set Parameter32
     toNodeId: Set Parameter33
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2364,6 +2463,7 @@ MonoBehaviour:
     toNodeGuid: 7a4b94e02204486d898d59a24c217ac5
     fromNodeId: Wait29
     toNodeId: Set Parameter32
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2371,6 +2471,7 @@ MonoBehaviour:
     toNodeGuid: 6ecc19b2218f48959781d696e66880dd
     fromNodeId: Spawn Parryable Bomb5
     toNodeId: Wait29
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2378,6 +2479,7 @@ MonoBehaviour:
     toNodeGuid: 16a1eacce1454a6b947374ef61ca1d82
     fromNodeId: Wait28
     toNodeId: Set Parameter31
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2385,6 +2487,7 @@ MonoBehaviour:
     toNodeGuid: 11fddda48e7b4f338461e50a6b84197c
     fromNodeId: Boss Dash19
     toNodeId: Wait28
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2392,6 +2495,7 @@ MonoBehaviour:
     toNodeGuid: 81a6a7740fc144a886f8496ff7ee6ba3
     fromNodeId: Set Parameter28
     toNodeId: Move Until Player Distance9
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2399,6 +2503,7 @@ MonoBehaviour:
     toNodeGuid: e68bcf36d1234ad09151f8e23ed5bb92
     fromNodeId: Move Until Player Distance9
     toNodeId: Boss Dash19
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2406,6 +2511,7 @@ MonoBehaviour:
     toNodeGuid: d66ca81144914574b54cfb544b48c503
     fromNodeId: Set Parameter1
     toNodeId: Wait30
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2413,6 +2519,7 @@ MonoBehaviour:
     toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
     fromNodeId: Wait30
     toNodeId: Spawn Parryable Bomb1
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2420,6 +2527,7 @@ MonoBehaviour:
     toNodeGuid: a7bf4538a4cd492585324f85bd904841
     fromNodeId: Wait31
     toNodeId: Spawn Parryable Bomb2
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2427,6 +2535,7 @@ MonoBehaviour:
     toNodeGuid: 85ef4446e38048819bb17e8dad886054
     fromNodeId: Set Parameter2
     toNodeId: Wait31
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2434,6 +2543,7 @@ MonoBehaviour:
     toNodeGuid: 31e716fee72c460ca7240785d602533d
     fromNodeId: Wait32
     toNodeId: Spawn Parryable Bomb3
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2441,6 +2551,7 @@ MonoBehaviour:
     toNodeGuid: aa65c546ef7745f5bff7615a925e4bf3
     fromNodeId: Set Parameter7
     toNodeId: Wait32
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2448,6 +2559,7 @@ MonoBehaviour:
     toNodeGuid: 0f7c21815cf248acbd8e029b76b3ed5c
     fromNodeId: Wait33
     toNodeId: Spawn Parryable Bomb4
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2455,6 +2567,7 @@ MonoBehaviour:
     toNodeGuid: b50b4e8319e54a9fbb41e1fa571c1d4d
     fromNodeId: Set Parameter10
     toNodeId: Wait33
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2462,6 +2575,7 @@ MonoBehaviour:
     toNodeGuid: d686967b9314491189ed041df7c40bc9
     fromNodeId: Wait34
     toNodeId: Spawn Parryable Bomb5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -2469,6 +2583,7 @@ MonoBehaviour:
     toNodeGuid: 6048a5cd1a5e48d790ea488bbeab54db
     fromNodeId: Set Parameter31
     toNodeId: Wait34
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
