@@ -1,6 +1,8 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Week14.Challenge;
 using Week14.GameFlow;
@@ -29,9 +31,28 @@ namespace Week14.UI
         [SerializeField] private string completedLabel = "[COMPLETED]";
         [SerializeField] private Color clearedColor = Color.white;
         [SerializeField] private Color completedColor = new(1f, 0.85f, 0.3f);
+        [Header("Hover Mask Reveal")]
+        [Tooltip("마우스 오버 시 폭을 늘려 왼쪽부터 표시할 MaskParent 오브젝트입니다.")]
+        [FormerlySerializedAs("hoverMask")]
+        [SerializeField] private RectTransform maskParent;
+        [Tooltip("MaskParent가 완전히 펼쳐졌을 때의 폭입니다. 0 이하면 자식 RectTransform 폭 중 가장 큰 값을 사용합니다.")]
+        [Min(0f)]
+        [SerializeField] private float maskParentRevealWidth;
+        [Tooltip("MaskParent가 완전히 펼쳐지는 데 걸리는 시간입니다.")]
+        [Min(0.01f)]
+        [SerializeField] private float hoverMaskRevealDuration = 0.25f;
+        [Tooltip("MaskParent 펼침 진행도를 조절하는 커브입니다. 기본값은 처음 느리고 뒤로 갈수록 빨라집니다.")]
+        [SerializeField] private AnimationCurve hoverMaskRevealCurve = new(
+            new Keyframe(0f, 0f, 0f, 0f),
+            new Keyframe(1f, 1f, 2f, 2f));
+
+        private Coroutine hoverMaskRevealRoutine;
+        private float hoverMaskRevealProgress;
 
         private void OnValidate()
         {
+            ResolveMaskParent();
+
             if (bossData == null)
             {
                 return;
@@ -59,6 +80,8 @@ namespace Week14.UI
 
             RefreshStatusLabel();
             RefreshNameText();
+            ResolveMaskParent();
+            SetHoverMaskRevealProgress(0f);
             BossHoverHighlight.HoveredBossIdChanged += HandleHoveredBossChanged;
 
             // 구독이 SetHovered 호출보다 늦게 시작됐을 수도 있으니, 지금 시점의 값으로 한 번 더 맞춘다.
@@ -69,17 +92,20 @@ namespace Week14.UI
         {
             BossHoverHighlight.HoveredBossIdChanged -= HandleHoveredBossChanged;
             UnbindLocalizedName();
+            StopHoverMaskRevealRoutine();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             BossDescriptionPanel.Instance?.Show(bossData);
+            PlayHoverMaskReveal(1f);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             // 여기서 아무것도 비우지 않는다. 설명 패널과 아웃라인 모두 마지막으로
             // 호버한 보스를 그대로 유지한다.
+            PlayHoverMaskReveal(0f);
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -98,6 +124,111 @@ namespace Week14.UI
             {
                 hoverOutline.SetActive(bossData != null && hoveredBossId == bossData.Id);
             }
+        }
+
+        private void ResolveMaskParent()
+        {
+            if (maskParent == null)
+            {
+                Transform maskParentTransform = transform.Find("MaskParent");
+                if (maskParentTransform != null)
+                {
+                    maskParent = maskParentTransform as RectTransform;
+                }
+            }
+        }
+
+        private void PlayHoverMaskReveal(float targetProgress)
+        {
+            ResolveMaskParent();
+            if (maskParent == null)
+            {
+                return;
+            }
+
+            maskParent.gameObject.SetActive(true);
+            StopHoverMaskRevealRoutine();
+            hoverMaskRevealRoutine = StartCoroutine(AnimateHoverMaskReveal(Mathf.Clamp01(targetProgress)));
+        }
+
+        private IEnumerator AnimateHoverMaskReveal(float targetProgress)
+        {
+            float startProgress = hoverMaskRevealProgress;
+            float elapsed = 0f;
+
+            while (elapsed < hoverMaskRevealDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float normalizedTime = Mathf.Clamp01(elapsed / hoverMaskRevealDuration);
+                float curveProgress = hoverMaskRevealCurve != null ? hoverMaskRevealCurve.Evaluate(normalizedTime) : normalizedTime;
+                SetHoverMaskRevealProgress(Mathf.LerpUnclamped(startProgress, targetProgress, curveProgress));
+                yield return null;
+            }
+
+            SetHoverMaskRevealProgress(targetProgress);
+            hoverMaskRevealRoutine = null;
+        }
+
+        private void SetHoverMaskRevealProgress(float progress)
+        {
+            ResolveMaskParent();
+            hoverMaskRevealProgress = Mathf.Clamp01(progress);
+
+            if (maskParent == null)
+            {
+                return;
+            }
+
+            Vector3 localScale = maskParent.localScale;
+            localScale.x = 1f;
+            maskParent.localScale = localScale;
+
+            Vector2 offsetMin = maskParent.offsetMin;
+            Vector2 offsetMax = maskParent.offsetMax;
+            maskParent.pivot = new Vector2(0f, maskParent.pivot.y);
+            maskParent.offsetMin = offsetMin;
+            maskParent.offsetMax = offsetMax;
+
+            Vector2 sizeDelta = maskParent.sizeDelta;
+            sizeDelta.x = GetMaskParentRevealWidth() * hoverMaskRevealProgress;
+            maskParent.sizeDelta = sizeDelta;
+
+            maskParent.gameObject.SetActive(hoverMaskRevealProgress > 0f);
+        }
+
+        private float GetMaskParentRevealWidth()
+        {
+            if (maskParentRevealWidth > 0f)
+            {
+                return maskParentRevealWidth;
+            }
+
+            float maxChildWidth = 0f;
+            for (int i = 0; i < maskParent.childCount; i++)
+            {
+                if (maskParent.GetChild(i) is RectTransform childRect)
+                {
+                    maxChildWidth = Mathf.Max(maxChildWidth, childRect.rect.width, childRect.sizeDelta.x);
+                }
+            }
+
+            if (maxChildWidth > 0f)
+            {
+                return maxChildWidth;
+            }
+
+            return Mathf.Max(maskParent.rect.width, maskParent.sizeDelta.x);
+        }
+
+        private void StopHoverMaskRevealRoutine()
+        {
+            if (hoverMaskRevealRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(hoverMaskRevealRoutine);
+            hoverMaskRevealRoutine = null;
         }
 
         private void RefreshNameText()
