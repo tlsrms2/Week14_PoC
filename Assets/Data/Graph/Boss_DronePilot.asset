@@ -2561,7 +2561,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
     - patternId: Pattern2
-      weight: 99
+      weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
   - phaseIndex: 1

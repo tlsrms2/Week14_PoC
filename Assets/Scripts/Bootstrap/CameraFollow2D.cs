@@ -43,6 +43,7 @@ namespace Week14.Bootstrap
         private float shakeDuration;
         private float shakeEndsAt;
         private float shakeSeed;
+        private int mouseLookLockCount;
         private Vector2 shakeDirection = Vector2.right;
         private bool hasBasePosition;
         private bool hasCurrentFocusPosition;
@@ -95,6 +96,18 @@ namespace Week14.Bootstrap
             hasCurrentFocusPosition = false;
             hasBasePosition = false;
             CacheTargetBody();
+        }
+
+        public void PushMouseLookLock()
+        {
+            mouseLookLockCount++;
+            currentMouseLookOffset = Vector2.zero;
+            mouseLookOffsetVelocity = Vector2.zero;
+        }
+
+        public void PopMouseLookLock()
+        {
+            mouseLookLockCount = Mathf.Max(0, mouseLookLockCount - 1);
         }
 
         public void SetFocusTarget(Transform nextFocusTarget)
@@ -431,6 +444,7 @@ namespace Week14.Bootstrap
             Vector2 targetOffset = Vector2.zero;
             if (!cinematicFocusActive
                 && !cinematicReturnToCombatViewActive
+                && mouseLookLockCount == 0
                 && controlledCamera != null
                 && mouseLookMaxOffset > 0f)
             {

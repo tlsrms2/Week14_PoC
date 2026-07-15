@@ -47,6 +47,8 @@ MonoBehaviour:
   deathImage: {fileID: -9002140298747577265, guid: c7786867e4dfcc143b3e48c2d5d152ee, type: 3}
   panelIcon: {fileID: 21300000, guid: 35b2acb266d1a1048bbf850ebf7fe5d1, type: 3}
   sceneName: Boss_Muscle
+  introWalkStartPosition: {x: 0, y: -1.1}
+  introWalkEndPosition: {x: 0, y: 0.8}
   unlocksBossIds: []
   unlocksSkillIds:
   - ACT_003
@@ -55,6 +57,7 @@ MonoBehaviour:
   unlocksWeaponIds:
   - GUN_003
   requiredDistinctBossKills: 0
+  isFinalBoss: 0
   references:
     version: 2
     RefIds: []

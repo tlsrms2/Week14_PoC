@@ -28,6 +28,8 @@ namespace Week14.UI
         [SerializeField] private Transform mugShotBackgroundRoot;
         [Tooltip("머그샷 배경이 좌우 화면 밖으로 이동할 월드 거리입니다.")]
         [SerializeField, Min(0f)] private float mugShotBackgroundTravelOffsetX = 20f;
+        [Tooltip("보스별 카메라 확대 차이에도 배경이 화면을 덮도록 추가할 여백 비율입니다.")]
+        [SerializeField, Min(1f)] private float mugShotBackgroundViewportFillMultiplier = 1.05f;
         [FormerlySerializedAs("mugShotBackgroundFadeSeconds")]
         [SerializeField, Min(0f)] private float mugShotBackgroundEnterSeconds = 0.22f;
         [SerializeField, Min(0f)] private float mugShotBackgroundExitSeconds = 0.2f;
@@ -130,8 +132,10 @@ namespace Week14.UI
         private Vector2[] locationIntroTargetPositions = System.Array.Empty<Vector2>();
         private Vector2 bossInfoPanelTargetPosition;
         private Vector3 mugShotBackgroundTargetLocalPosition;
+        private Vector3 mugShotBackgroundBaseLocalScale;
         private float currentBossInfoOffsetY;
         private float currentMugShotBackgroundOffsetX;
+        private bool hasMugShotBackgroundBaseLocalScale;
         private Vector2 topLetterboxTargetPosition;
         private Vector2 bottomLetterboxTargetPosition;
         private Vector2 bossCombatUiTargetPosition;
@@ -139,6 +143,7 @@ namespace Week14.UI
         private Coroutine locationIntroRoutine;
         private BossData localizedBossData;
         private bool introControlAcquired;
+        private bool cameraMouseLookLocked;
         private bool previousGameplayInputBlocked;
         private bool playFullBossIntro = true;
         private bool cinematicFocusActive;
@@ -239,6 +244,7 @@ namespace Week14.UI
             yield return WaitUnscaled(startDelaySeconds);
 
             ResolveReferences();
+            AcquireIntroControl();
             ResolveCanvasGroup();
             BindBossData();
             PreparePresentation();
@@ -349,6 +355,7 @@ namespace Week14.UI
             }
 
             SetMugShotStageVisible(true);
+            FitMugShotBackgroundToCameraViewport();
             yield return AnimateMugShotBackground(
                 -mugShotBackgroundTravelOffsetX,
                 0f,
@@ -562,6 +569,12 @@ namespace Week14.UI
 
         private void AcquireIntroControl()
         {
+            if (!cameraMouseLookLocked && cameraFollow != null)
+            {
+                cameraFollow.PushMouseLookLock();
+                cameraMouseLookLocked = true;
+            }
+
             if (introControlAcquired || boss == null)
             {
                 return;
@@ -587,6 +600,12 @@ namespace Week14.UI
             if (startCombat)
             {
                 boss?.TryStartCombatFromIntro();
+            }
+
+            if (cameraMouseLookLocked)
+            {
+                cameraFollow?.PopMouseLookLock();
+                cameraMouseLookLocked = false;
             }
         }
 
@@ -715,6 +734,11 @@ namespace Week14.UI
             {
                 mugShotBackgroundTargetLocalPosition = mugShotBackgroundRoot.localPosition
                     - Vector3.right * currentMugShotBackgroundOffsetX;
+                if (!hasMugShotBackgroundBaseLocalScale)
+                {
+                    mugShotBackgroundBaseLocalScale = mugShotBackgroundRoot.localScale;
+                    hasMugShotBackgroundBaseLocalScale = true;
+                }
             }
         }
 
@@ -758,6 +782,65 @@ namespace Week14.UI
                 mugShotBackgroundRoot.localPosition = mugShotBackgroundTargetLocalPosition
                     + Vector3.right * offsetX;
             }
+        }
+
+        private void FitMugShotBackgroundToCameraViewport()
+        {
+            if (mugShotBackgroundRoot == null)
+            {
+                return;
+            }
+
+            if (!hasMugShotBackgroundBaseLocalScale)
+            {
+                mugShotBackgroundBaseLocalScale = mugShotBackgroundRoot.localScale;
+                hasMugShotBackgroundBaseLocalScale = true;
+            }
+
+            Camera activeCamera = cameraFollow != null
+                ? cameraFollow.GetComponent<Camera>()
+                : null;
+            activeCamera ??= Camera.main;
+            if (activeCamera == null || !activeCamera.orthographic)
+            {
+                return;
+            }
+
+            mugShotBackgroundRoot.localScale = mugShotBackgroundBaseLocalScale;
+            SpriteRenderer[] renderers = mugShotBackgroundRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            bool hasBounds = false;
+            Bounds combinedBounds = default;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                SpriteRenderer renderer = renderers[i];
+                if (renderer == null || renderer.sprite == null)
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    combinedBounds = renderer.bounds;
+                    hasBounds = true;
+                }
+                else
+                {
+                    combinedBounds.Encapsulate(renderer.bounds);
+                }
+            }
+
+            if (!hasBounds || combinedBounds.size.x <= 0f || combinedBounds.size.y <= 0f)
+            {
+                return;
+            }
+
+            float viewportHeight = activeCamera.orthographicSize * 2f;
+            float viewportWidth = viewportHeight * activeCamera.aspect;
+            float fillMultiplier = Mathf.Max(1f, mugShotBackgroundViewportFillMultiplier);
+            float requiredScale = Mathf.Max(
+                viewportWidth * fillMultiplier / combinedBounds.size.x,
+                viewportHeight * fillMultiplier / combinedBounds.size.y);
+            mugShotBackgroundRoot.localScale = mugShotBackgroundBaseLocalScale * Mathf.Max(1f, requiredScale);
         }
 
         private void SetMugShotStageVisible(bool visible)
