@@ -692,6 +692,9 @@ MonoBehaviour:
     pullSpeed: 16
     pullStopDistance: 0.75
     color: {r: 1, g: 1, b: 1, a: 0.78431374}
+  hologramPrefab: {fileID: 0}
+  hologramStartPhaseNumber: 3
+  hologramSpawnOffset: {x: 1.5, y: 0}
   drawApproachRangeGizmos: 1
 --- !u!114 &4667363922611649476
 MonoBehaviour:
@@ -1130,7 +1133,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2709475748522699742, guid: 9cd10c16727976a4a87d294b0c4ac1a7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1394,6 +1397,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1412772958237053164}
     m_Modifications:
+    - target: {fileID: 2978956140441095515, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3075335018326461686, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.047688134

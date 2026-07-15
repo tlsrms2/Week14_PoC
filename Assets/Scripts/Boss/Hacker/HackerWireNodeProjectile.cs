@@ -21,7 +21,7 @@ namespace Week14.Enemy
         protected override void OnProjectileAwake()
         {
             wallLayer = LayerMask.NameToLayer("Wall");
-            ConfigureInterceptable(false);
+            ConfigureInterceptable(true);
         }
 
         protected override void OnProjectileInitialized()
@@ -31,7 +31,7 @@ namespace Week14.Enemy
             hackingPerHit = 1;
             attachedLifetimeSeconds = 0f;
             ConfigurePlayerCollisionIgnored(true);
-            ConfigureInterceptable(false);
+            ConfigureInterceptable(true);
         }
 
         protected override bool CanHitPlayer(PlayerCombatController player)
@@ -41,12 +41,6 @@ namespace Week14.Enemy
 
         protected override bool TryDestroyIfCrossedWall()
         {
-            return false;
-        }
-
-        public override bool TryDestroyByInterceptShot(out bool parried)
-        {
-            parried = false;
             return false;
         }
 

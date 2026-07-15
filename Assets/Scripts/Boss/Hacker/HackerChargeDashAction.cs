@@ -46,6 +46,7 @@ namespace Week14.Enemy
             context.PlayAnimationTrigger(windupTriggerName);
 
             HackerAttackRangeIndicator rangeIndicator = null;
+            bool isHologram = context.Boss is HackerHologramBoss;
             float dashDistance = GetDashDistance();
             float elapsed = 0f;
             float directionLockTime = Mathf.Max(0f, windupSeconds - directionLockLeadSeconds);
@@ -76,6 +77,7 @@ namespace Week14.Enemy
                         previewDirection,
                         dashDistance,
                         damageRadius * 2f);
+                    rangeIndicator.SetHologramStyle(isHologram);
                 }
                 else
                 {
@@ -103,6 +105,7 @@ namespace Week14.Enemy
                 dashDirection,
                 dashDistance,
                 damageRadius * 2f);
+            rangeIndicator.SetHologramStyle(isHologram);
             rangeIndicator.SetThrust(
                 context.Boss.transform.position,
                 dashDirection,

@@ -8094,20 +8094,21 @@ internal sealed class BossGraphNodeView : Node
         mainContainer.style.borderRightColor = color;
     }
 
-    public void SetHackerFireWireBranchPorts(bool isBranch)
+    public void SetHackerFireWireBranchPorts(bool isFireWireBranch)
     {
-        OutputPort.portName = isBranch ? "Out1" : "Out";
-        OutputPort.tooltip = isBranch ? "플레이어 그랩 성공 시 실행" : string.Empty;
-        SecondaryOutputPort.style.display = isBranch ? DisplayStyle.Flex : DisplayStyle.None;
-        SecondaryOutputPort.tooltip = isBranch ? "와이어 그랩 실패 시 실행" : string.Empty;
+        OutputPort.portName = isFireWireBranch ? "Out1" : "Out";
+        OutputPort.tooltip = isFireWireBranch ? "플레이어 그랩 성공 시 실행" : string.Empty;
+        SecondaryOutputPort.portName = "Out2";
+        SecondaryOutputPort.style.display = isFireWireBranch ? DisplayStyle.Flex : DisplayStyle.None;
+        SecondaryOutputPort.tooltip = isFireWireBranch ? "와이어 그랩 실패 시 실행" : string.Empty;
         for (int i = 0; i < ParallelInputPorts.Length; i++)
         {
-            ParallelInputPorts[i].style.display = isBranch ? DisplayStyle.None : DisplayStyle.Flex;
+            ParallelInputPorts[i].style.display = isFireWireBranch ? DisplayStyle.None : DisplayStyle.Flex;
         }
 
         for (int i = 0; i < ParallelOutputPorts.Length; i++)
         {
-            ParallelOutputPorts[i].style.display = isBranch ? DisplayStyle.None : DisplayStyle.Flex;
+            ParallelOutputPorts[i].style.display = isFireWireBranch ? DisplayStyle.None : DisplayStyle.Flex;
             ParallelOutputPorts[i].tooltip = "동시 실행";
         }
     }

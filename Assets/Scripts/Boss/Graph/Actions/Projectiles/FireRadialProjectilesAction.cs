@@ -81,6 +81,11 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (context.IsMeleeAdvanceSynchronized)
+            {
+                yield return WaitForMeleeAttackAdvanceCompletion(context);
+            }
+
             if (windupSeconds > 0f)
             {
                 yield return context.WaitSeconds(windupSeconds);
@@ -207,6 +212,19 @@ namespace Week14.Enemy
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);
+        }
+
+        private static IEnumerator WaitForMeleeAttackAdvanceCompletion(BossActionContext context)
+        {
+            while (!context.HasMeleeAttackAdvanceCompleted)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                }
+
+                yield return null;
+            }
         }
 
         private static float GetAngleStep(int count, float arcDegrees)

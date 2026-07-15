@@ -22,6 +22,7 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string bossWireAnchorPath;
         [SerializeField] private string weaponWireAnchorPath = "WireAnchor";
         [SerializeField, BossGraphBossChildPath] private string returnAnchorPath;
+        [SerializeField, Min(0f)] private float weaponReadyWaitSeconds = 2f;
 
         [Header("Animation")]
         [SerializeField] private string windupTriggerName = "WeaponWireOrbitWindup";
@@ -59,12 +60,39 @@ namespace Week14.Enemy
 
         public override IEnumerator Execute(BossActionContext context)
         {
-            if (context?.Boss is not HackerBossAI hacker
-                || !TryGetWeapon(hacker, out HackerThrownWeapon weapon)
+            if (context?.Boss is not HackerBossAI hacker)
+            {
+                yield break;
+            }
+
+            HackerThrownWeapon weapon = null;
+            bool isHologramReplayWeapon = false;
+            float weaponWaitElapsed = 0f;
+            while (!TryGetWeapon(hacker, out weapon, out isHologramReplayWeapon)
                 || weapon == null
                 || !weapon.BeginOrbit())
             {
-                yield break;
+                if (isHologramReplayWeapon && weapon != null)
+                {
+                    UnityEngine.Object.Destroy(weapon.gameObject);
+                }
+
+                weapon = null;
+                isHologramReplayWeapon = false;
+                if (weaponWaitElapsed >= weaponReadyWaitSeconds)
+                {
+                    yield break;
+                }
+
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                weaponWaitElapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
             }
 
             Transform bossWireAnchor = context.GetBossChildTransform(bossWireAnchorPath) ?? hacker.transform;
@@ -79,6 +107,7 @@ namespace Week14.Enemy
                 bossWireAnchor.position,
                 safeInnerRadius,
                 orbitRadius);
+            rangeIndicator.SetHologramStyle(hacker is HackerHologramBoss);
             rangeIndicator.SetFillVisible(true);
             Vector3 initialWeaponPosition = weapon.transform.position;
             Quaternion initialWeaponRotation = weapon.transform.rotation;
@@ -184,11 +213,16 @@ namespace Week14.Enemy
             }
 
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+            if (isHologramReplayWeapon && weapon != null)
+            {
+                UnityEngine.Object.Destroy(weapon.gameObject);
+            }
         }
 
         public bool TryGetDurationSeconds(out float seconds)
         {
             seconds = GetPreparationSeconds()
+                + Mathf.Max(0f, weaponReadyWaitSeconds)
                 + Mathf.Max(0.05f, orbitSeconds)
                 + Mathf.Max(0.05f, recallSeconds)
                 + Mathf.Max(0f, recoverySeconds);
@@ -260,7 +294,29 @@ namespace Week14.Enemy
             }
         }
 
-        private bool TryGetWeapon(HackerBossAI hacker, out HackerThrownWeapon weapon)
+        private bool TryGetWeapon(
+            HackerBossAI hacker,
+            out HackerThrownWeapon weapon,
+            out bool isHologramReplayWeapon)
+        {
+            isHologramReplayWeapon = false;
+            if (TryGetGroundedWeapon(hacker, out weapon))
+            {
+                return true;
+            }
+
+            if (hacker is HackerHologramBoss hologram
+                && hologram.TryCreateOrbitReplayWeapon(weaponSelection, out weapon))
+            {
+                isHologramReplayWeapon = true;
+                return true;
+            }
+
+            weapon = null;
+            return false;
+        }
+
+        private bool TryGetGroundedWeapon(HackerBossAI hacker, out HackerThrownWeapon weapon)
         {
             if (weaponSelection != HackerRecallWeaponSelection.RandomAvailable)
             {

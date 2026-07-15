@@ -33,6 +33,8 @@ namespace Week14.Enemy
         private int activeNodeExecutionCount;
         private int nodeExecutionVersion;
         private int conductorMinionOutlineHoldRequests;
+        private bool isMeleeAdvanceSynchronized;
+        private bool hasMeleeAttackAdvanceCompleted;
 
         public BossActionContext(
             BossAI boss,
@@ -54,6 +56,8 @@ namespace Week14.Enemy
         public bool IsExecutionPaused => isExecutionPaused?.Invoke() == true;
         public bool IsDashing { get; private set; }
         public bool IsFacingLocked { get; private set; }
+        public bool IsMeleeAdvanceSynchronized => isMeleeAdvanceSynchronized;
+        public bool HasMeleeAttackAdvanceCompleted => hasMeleeAttackAdvanceCompleted;
 
         public void SetDashing(bool dashing)
         {
@@ -103,6 +107,27 @@ namespace Week14.Enemy
             {
                 currentNodeId = null;
             }
+
+        }
+
+        public void BeginMeleeAdvanceSynchronization()
+        {
+            isMeleeAdvanceSynchronized = true;
+            hasMeleeAttackAdvanceCompleted = false;
+        }
+
+        public void NotifyMeleeAttackAdvanceCompleted()
+        {
+            if (isMeleeAdvanceSynchronized)
+            {
+                hasMeleeAttackAdvanceCompleted = true;
+            }
+        }
+
+        public void EndMeleeAdvanceSynchronization()
+        {
+            isMeleeAdvanceSynchronized = false;
+            hasMeleeAttackAdvanceCompleted = false;
         }
 
         public void RegisterConductorMinionOutlineHold()
@@ -684,6 +709,15 @@ namespace Week14.Enemy
 
         public Vector2 GetDirectionToPlayer(Vector3 origin)
         {
+            if (Boss is HackerHologramBoss hologram
+                && hologram.TryGetRecordedPlayerPosition(out Vector2 recordedPlayerPosition))
+            {
+                Vector2 recordedDirection = recordedPlayerPosition - (Vector2)origin;
+                return recordedDirection.sqrMagnitude > 0.0001f
+                    ? recordedDirection.normalized
+                    : Vector2.left;
+            }
+
             if (Boss == null || Boss.Player == null)
             {
                 return Vector2.left;
@@ -691,6 +725,22 @@ namespace Week14.Enemy
 
             Vector2 direction = (Vector2)Boss.Player.position - (Vector2)origin;
             return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
+        }
+
+        public Vector2 GetPlayerPosition()
+        {
+            if (Boss is HackerHologramBoss hologram
+                && hologram.TryGetRecordedPlayerPosition(out Vector2 recordedPlayerPosition))
+            {
+                return recordedPlayerPosition;
+            }
+
+            if (Boss?.Player != null)
+            {
+                return Boss.Player.position;
+            }
+
+            return Boss != null ? (Vector2)Boss.transform.position : Vector2.zero;
         }
 
         public static Vector2 AngleToDirection(float degrees)

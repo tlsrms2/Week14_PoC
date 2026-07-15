@@ -361,7 +361,7 @@ namespace Week14.Enemy
             return hit.collider == null;
         }
 
-        public float DistanceToPlayer()
+        public virtual float DistanceToPlayer()
         {
             return player != null ? Vector2.Distance(transform.position, player.position) : float.MaxValue;
         }
@@ -377,7 +377,7 @@ namespace Week14.Enemy
             SetMovementVelocity(direction * moveSpeed);
         }
 
-        internal void SetMovementVelocity(Vector2 velocity)
+        internal virtual void SetMovementVelocity(Vector2 velocity)
         {
             if (body == null)
             {

@@ -5,6 +5,9 @@ namespace Week14.Enemy
     internal sealed class HackerAttackRangeIndicator : MonoBehaviour
     {
         private const int ArcSegments = 24;
+        private static readonly Color DefaultOutlineColor = new(1f, 0.25f, 0.08f, 0.9f);
+        private static readonly Color HologramOutlineColor = new(0.2f, 0.75f, 1f, 0.9f);
+        private const float FillAlpha = 0.24f;
 
         private LineRenderer line;
         private Mesh fillMesh;
@@ -93,6 +96,23 @@ namespace Week14.Enemy
             }
         }
 
+        internal void SetHologramStyle(bool isHologram)
+        {
+            Color outlineColor = isHologram ? HologramOutlineColor : DefaultOutlineColor;
+            if (line != null)
+            {
+                line.startColor = outlineColor;
+                line.endColor = outlineColor;
+            }
+
+            if (fillRenderer?.sharedMaterial != null)
+            {
+                Color fillColor = outlineColor;
+                fillColor.a = FillAlpha;
+                fillRenderer.sharedMaterial.color = fillColor;
+            }
+        }
+
         internal void SetThrust(Vector2 origin, Vector2 direction, float length, float width)
         {
             line.loop = false;
@@ -176,9 +196,6 @@ namespace Week14.Enemy
             line.startWidth = 0.045f;
             line.endWidth = 0.045f;
             line.sortingOrder = 19;
-            Color color = new(1f, 0.25f, 0.08f, 0.9f);
-            line.startColor = color;
-            line.endColor = color;
             Shader shader = Shader.Find("Sprites/Default");
             if (shader != null)
             {
@@ -186,6 +203,7 @@ namespace Week14.Enemy
             }
 
             CreateArcFill(shader);
+            SetHologramStyle(false);
         }
 
         private void CreateArcFill(Shader shader)
@@ -200,7 +218,7 @@ namespace Week14.Enemy
             meshFilter.sharedMesh = fillMesh;
             if (shader != null)
             {
-                Material material = new Material(shader) { color = new Color(1f, 0.25f, 0.08f, 0.24f) };
+                Material material = new Material(shader) { color = new Color(1f, 0.25f, 0.08f, FillAlpha) };
                 fillRenderer.sharedMaterial = material;
             }
         }

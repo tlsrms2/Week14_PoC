@@ -7,6 +7,8 @@ namespace Week14.Enemy
     internal sealed class HackerMeleeParryWindow : MonoBehaviour
     {
         private const int CircleSegments = 32;
+        private static readonly Color DefaultIndicatorColor = new(0.2f, 0.65f, 1f, 0.9f);
+        private static readonly Color HologramIndicatorColor = new(0.35f, 0.9f, 1f, 0.9f);
         private static readonly List<HackerMeleeParryWindow> ActiveWindows = new();
 
         private Transform followTarget;
@@ -15,6 +17,13 @@ namespace Week14.Enemy
         private float endsAt;
         private Action parried;
         private LineRenderer indicator;
+        private Color indicatorColor = DefaultIndicatorColor;
+
+        internal void SetHologramStyle(bool isHologram)
+        {
+            indicatorColor = isHologram ? HologramIndicatorColor : DefaultIndicatorColor;
+            ApplyIndicatorColor();
+        }
 
         internal void Initialize(Transform nextFollowTarget, float radius, float durationSeconds, Action onParried)
         {
@@ -102,9 +111,7 @@ namespace Week14.Enemy
 
             if (indicator != null)
             {
-                Color color = new(0.2f, 0.65f, 1f, 0.9f);
-                indicator.startColor = color;
-                indicator.endColor = color;
+                ApplyIndicatorColor();
             }
         }
 
@@ -147,6 +154,19 @@ namespace Week14.Enemy
                 float angle = Mathf.PI * 2f * i / CircleSegments;
                 indicator.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius));
             }
+
+            ApplyIndicatorColor();
+        }
+
+        private void ApplyIndicatorColor()
+        {
+            if (indicator == null)
+            {
+                return;
+            }
+
+            indicator.startColor = indicatorColor;
+            indicator.endColor = indicatorColor;
         }
     }
 }

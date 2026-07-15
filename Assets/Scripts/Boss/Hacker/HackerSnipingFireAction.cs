@@ -30,6 +30,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float knockbackStaggerSeconds = 0.16f;
 
         [Header("Flight Speed")]
+        [SerializeField, Min(0f)] private float initialZeroSpeedSeconds;
         [SerializeField, Min(0.01f)] private float flightSpeedCurveSeconds = 1f;
         [SerializeField] private AnimationCurve flightSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
@@ -133,7 +134,10 @@ namespace Week14.Enemy
 
             firedProjectile.ConfigurePathIndicatorSuppressed(true);
             firedProjectile.ConfigurePlayerHitKnockback(knockbackSpeed, knockbackStaggerSeconds);
-            firedProjectile.ConfigureFlightSpeedCurve(flightSpeedCurve, flightSpeedCurveSeconds);
+            firedProjectile.ConfigureFlightSpeedCurve(
+                flightSpeedCurve,
+                flightSpeedCurveSeconds,
+                initialZeroSpeedSeconds);
             if (enableSlightHoming)
             {
                 firedProjectile.ConfigureHomingOverride(

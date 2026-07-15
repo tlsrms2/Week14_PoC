@@ -185,14 +185,158 @@ namespace Week14.Enemy
             BossGraphPattern pattern,
             BossActionContext context)
         {
+            if (TryBuildHologramReplayPlan(graph, pattern, out HackerHologramReplayPlan hologramPlan))
+            {
+                yield return ExecuteHologramReplayPattern(graph, hologramPlan, context);
+                yield break;
+            }
+
+            yield return ExecutePatternNodes(graph, pattern?.NodeKeys, context, true);
+        }
+
+        private static IEnumerator ExecuteHologramReplayPattern(
+            BossGraphAsset graph,
+            HackerHologramReplayPlan plan,
+            BossActionContext context)
+        {
+            if (plan.PreludeNodeKeys.Count > 0)
+            {
+                yield return ExecutePatternNodes(
+                    graph,
+                    plan.PreludeNodeKeys,
+                    context,
+                    true);
+            }
+
+            yield return ExecuteSinglePatternNode(
+                graph,
+                plan.ReplayNode,
+                null,
+                context,
+                true);
+
+            if (context?.Boss is not HackerBossAI hacker
+                || !hacker.TryGetHologram(out HackerHologramBoss hologram))
+            {
+                yield return ExecutePatternNodes(
+                    graph,
+                    plan.PatternNodeKeys,
+                    context,
+                    true,
+                    plan.ReplayNode.NodeId);
+                yield break;
+            }
+
+            float hologramStartDelaySeconds = plan.ReplayNode.Action is HackerHologramReplayAction replayAction
+                ? replayAction.HologramStartDelaySeconds
+                : 0.01f;
+            BossActionContext hologramContext = new(
+                hologram,
+                hologram.Stop,
+                () => BossAI.IsExecutionPausedForState,
+                graph);
+            Dictionary<string, BossAction> hologramActions = ClonePatternActions(
+                graph,
+                plan.PatternNodeKeys);
+            hologram.BeginRecordedReplay(hologramStartDelaySeconds);
             try
             {
-                IReadOnlyList<string> nodeKeys = pattern.NodeKeys;
+                List<IEnumerator> routines = new()
+                {
+                    ExecuteRecordedBodyPattern(
+                        graph,
+                        plan.PatternNodeKeys,
+                        context,
+                        hologram,
+                        plan.ReplayNode.NodeId),
+                    ExecuteDelayedHologramActions(
+                        graph,
+                        plan.PatternNodeKeys,
+                        hologramContext,
+                        plan.ReplayNode.NodeId,
+                        hologramStartDelaySeconds,
+                        hologramActions)
+                };
+                yield return RunParallelRoutines(routines);
+
+                if (hologram != null)
+                {
+                    yield return hologram.WaitForRecordedReplayCompletion();
+                    yield return hologram.ReturnToOwner();
+                }
+            }
+            finally
+            {
+                if (hologram != null)
+                {
+                    hologram.CancelRecordedReplay();
+                }
+            }
+        }
+
+        private static IEnumerator ExecuteRecordedBodyPattern(
+            BossGraphAsset graph,
+            IReadOnlyList<string> nodeKeys,
+            BossActionContext context,
+            HackerHologramBoss hologram,
+            string initialPreviousNodeId)
+        {
+            try
+            {
+                yield return ExecutePatternNodes(
+                    graph,
+                    nodeKeys,
+                    context,
+                    true,
+                    initialPreviousNodeId);
+            }
+            finally
+            {
+                if (hologram != null)
+                {
+                    hologram.EndRecordedReplayCapture();
+                }
+            }
+        }
+
+        private static IEnumerator ExecuteDelayedHologramActions(
+            BossGraphAsset graph,
+            IReadOnlyList<string> nodeKeys,
+            BossActionContext context,
+            string initialPreviousNodeId,
+            float delaySeconds,
+            IReadOnlyDictionary<string, BossAction> actionOverrides)
+        {
+            yield return context.WaitSeconds(Mathf.Max(0.01f, delaySeconds));
+            yield return ExecutePatternNodes(
+                graph,
+                nodeKeys,
+                context,
+                false,
+                initialPreviousNodeId,
+                actionOverrides);
+        }
+
+        private static IEnumerator ExecutePatternNodes(
+            BossGraphAsset graph,
+            IReadOnlyList<string> nodeKeys,
+            BossActionContext context,
+            bool updateRuntimeState,
+            string initialPreviousNodeId = null,
+            IReadOnlyDictionary<string, BossAction> actionOverrides = null)
+        {
+            if (graph == null || nodeKeys == null || context == null)
+            {
+                yield break;
+            }
+
+            try
+            {
                 Dictionary<string, List<BossStateNode>> parallelGroups = BuildPatternParallelGroups(graph, nodeKeys);
                 List<List<BossStateNode>> executionGroups = BuildPatternExecutionGroups(graph, nodeKeys, parallelGroups);
                 int[] conductorOutlineReleaseCounts = new int[executionGroups.Count];
                 HashSet<string> skippedNodeKeys = new(StringComparer.Ordinal);
-                string previousNodeId = null;
+                string previousNodeId = initialPreviousNodeId;
                 for (int i = 0; i < executionGroups.Count; i++)
                 {
                     List<BossStateNode> group = executionGroups[i];
@@ -201,7 +345,13 @@ namespace Week14.Enemy
                         .ToList();
                     if (activeGroup.Count > 0)
                     {
-                        yield return ExecutePatternNodeGroup(graph, activeGroup, previousNodeId, context);
+                        yield return ExecutePatternNodeGroup(
+                            graph,
+                            activeGroup,
+                            previousNodeId,
+                            context,
+                            updateRuntimeState,
+                            actionOverrides);
                         ApplyHackerFireWireBranchSelection(graph, activeGroup, context, skippedNodeKeys);
                     }
 
@@ -222,6 +372,213 @@ namespace Week14.Enemy
                 ClearConductorMinionOutlineHolds(context);
                 context.ClearPatternScopedBossChildAims();
             }
+        }
+
+        private static bool TryBuildHologramReplayPlan(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            out HackerHologramReplayPlan plan)
+        {
+            plan = default;
+            if (graph == null || pattern?.NodeKeys == null)
+            {
+                return false;
+            }
+
+            Dictionary<string, BossStateNode> patternNodes = new(StringComparer.Ordinal);
+            BossStateNode replayNode = null;
+            for (int i = 0; i < pattern.NodeKeys.Count; i++)
+            {
+                BossStateNode node = graph.GetNode(pattern.NodeKeys[i]);
+                string nodeKey = GetRuntimeNodeKey(node);
+                if (node == null || string.IsNullOrWhiteSpace(nodeKey))
+                {
+                    continue;
+                }
+
+                patternNodes[nodeKey] = node;
+                if (replayNode == null && node.Action is HackerHologramReplayAction)
+                {
+                    replayNode = node;
+                }
+            }
+
+            if (replayNode == null)
+            {
+                return false;
+            }
+
+            string replayNodeKey = GetRuntimeNodeKey(replayNode);
+            string patternStartKey = GetTransitionTargetKey(graph, replayNode, 0);
+            if (string.IsNullOrWhiteSpace(patternStartKey))
+            {
+                return false;
+            }
+
+            HashSet<string> replayPatternNodeKeys = CollectHologramReplayPath(
+                graph,
+                patternNodes,
+                replayNodeKey,
+                patternStartKey);
+            if (replayPatternNodeKeys.Count == 0)
+            {
+                return false;
+            }
+
+            HashSet<string> preludeNodeKeys = CollectHologramReplayPrelude(
+                graph,
+                patternNodes,
+                replayNodeKey);
+            plan = new HackerHologramReplayPlan(
+                replayNode,
+                GetOrderedPatternNodeKeys(pattern.NodeKeys, graph, preludeNodeKeys),
+                GetOrderedPatternNodeKeys(pattern.NodeKeys, graph, replayPatternNodeKeys));
+            return true;
+        }
+
+        private static HashSet<string> CollectHologramReplayPath(
+            BossGraphAsset graph,
+            IReadOnlyDictionary<string, BossStateNode> patternNodes,
+            string replayNodeKey,
+            string startNodeKey)
+        {
+            HashSet<string> nodeKeys = new(StringComparer.Ordinal);
+            if (!patternNodes.ContainsKey(startNodeKey))
+            {
+                return nodeKeys;
+            }
+
+            Queue<string> pendingNodeKeys = new();
+            pendingNodeKeys.Enqueue(startNodeKey);
+            while (pendingNodeKeys.Count > 0)
+            {
+                string sourceNodeKey = pendingNodeKeys.Dequeue();
+                if (sourceNodeKey == replayNodeKey || !nodeKeys.Add(sourceNodeKey))
+                {
+                    continue;
+                }
+
+                BossStateNode sourceNode = patternNodes[sourceNodeKey];
+                if (graph.Transitions != null)
+                {
+                    for (int i = 0; i < graph.Transitions.Count; i++)
+                    {
+                        BossTransition transition = graph.Transitions[i];
+                        if (transition == null || !transition.IsFromNode(sourceNode))
+                        {
+                            continue;
+                        }
+
+                        string targetNodeKey = GetRuntimeNodeKey(graph.GetNode(transition.ToNodeKey));
+                        if (!string.IsNullOrWhiteSpace(targetNodeKey)
+                            && targetNodeKey != replayNodeKey
+                            && patternNodes.ContainsKey(targetNodeKey))
+                        {
+                            pendingNodeKeys.Enqueue(targetNodeKey);
+                        }
+                    }
+                }
+
+                // 홀로그램 재생도 본체와 동일한 P 병렬 묶음을 실행해야 한다.
+                // Fire Wire 분기는 P 엣지를 분기 선택에 사용하므로 병렬 재생 대상에서 제외한다.
+                if (sourceNode.Action is HackerFireWireBranchAction || graph.ParallelEdges == null)
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < graph.ParallelEdges.Count; i++)
+                {
+                    BossParallelEdge edge = graph.ParallelEdges[i];
+                    BossStateNode edgeSource = graph.GetNode(edge?.FromNodeKey);
+                    BossStateNode edgeTarget = graph.GetNode(edge?.ToNodeKey);
+                    if (edge == null || edgeSource?.Action is HackerFireWireBranchAction)
+                    {
+                        continue;
+                    }
+
+                    string edgeSourceKey = GetRuntimeNodeKey(edgeSource);
+                    string edgeTargetKey = GetRuntimeNodeKey(edgeTarget);
+                    string pairedNodeKey = edgeSourceKey == sourceNodeKey
+                        ? edgeTargetKey
+                        : edgeTargetKey == sourceNodeKey
+                            ? edgeSourceKey
+                            : string.Empty;
+                    if (!string.IsNullOrWhiteSpace(pairedNodeKey)
+                        && pairedNodeKey != replayNodeKey
+                        && patternNodes.ContainsKey(pairedNodeKey))
+                    {
+                        pendingNodeKeys.Enqueue(pairedNodeKey);
+                    }
+                }
+            }
+
+            return nodeKeys;
+        }
+
+        private static HashSet<string> CollectHologramReplayPrelude(
+            BossGraphAsset graph,
+            IReadOnlyDictionary<string, BossStateNode> patternNodes,
+            string replayNodeKey)
+        {
+            HashSet<string> nodeKeys = new(StringComparer.Ordinal);
+            Queue<string> pendingNodeKeys = new();
+            pendingNodeKeys.Enqueue(replayNodeKey);
+            while (pendingNodeKeys.Count > 0)
+            {
+                string targetNodeKey = pendingNodeKeys.Dequeue();
+                if (graph.Transitions == null)
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < graph.Transitions.Count; i++)
+                {
+                    BossTransition transition = graph.Transitions[i];
+                    BossStateNode transitionTarget = graph.GetNode(transition?.ToNodeKey);
+                    if (transition == null || GetRuntimeNodeKey(transitionTarget) != targetNodeKey)
+                    {
+                        continue;
+                    }
+
+                    string sourceNodeKey = GetRuntimeNodeKey(graph.GetNode(transition.FromNodeKey));
+                    if (!string.IsNullOrWhiteSpace(sourceNodeKey)
+                        && sourceNodeKey != replayNodeKey
+                        && patternNodes.ContainsKey(sourceNodeKey)
+                        && nodeKeys.Add(sourceNodeKey))
+                    {
+                        pendingNodeKeys.Enqueue(sourceNodeKey);
+                    }
+                }
+            }
+
+            return nodeKeys;
+        }
+
+        private static List<string> GetOrderedPatternNodeKeys(
+            IReadOnlyList<string> patternNodeKeys,
+            BossGraphAsset graph,
+            ISet<string> selectedNodeKeys)
+        {
+            List<string> orderedNodeKeys = new();
+            if (patternNodeKeys == null || selectedNodeKeys == null)
+            {
+                return orderedNodeKeys;
+            }
+
+            HashSet<string> addedNodeKeys = new(StringComparer.Ordinal);
+            for (int i = 0; i < patternNodeKeys.Count; i++)
+            {
+                BossStateNode node = graph.GetNode(patternNodeKeys[i]);
+                string nodeKey = GetRuntimeNodeKey(node);
+                if (!string.IsNullOrWhiteSpace(nodeKey)
+                    && selectedNodeKeys.Contains(nodeKey)
+                    && addedNodeKeys.Add(nodeKey))
+                {
+                    orderedNodeKeys.Add(patternNodeKeys[i]);
+                }
+            }
+
+            return orderedNodeKeys;
         }
 
         private static void ApplyHackerFireWireBranchSelection(
@@ -445,8 +802,18 @@ namespace Week14.Enemy
             BossGraphAsset graph,
             IReadOnlyList<BossStateNode> nodes,
             string previousNodeId,
-            BossActionContext context)
+            BossActionContext context,
+            bool updateRuntimeState,
+            IReadOnlyDictionary<string, BossAction> actionOverrides)
         {
+            bool synchronizeMeleeAdvance = nodes.Count(node => node?.Action is HackerMeleeAttackAction) == 1
+                && nodes.Any(node => node?.Action is HackerSequentialSweepFireAction
+                    || node?.Action is FireRadialEmissionAction);
+            if (synchronizeMeleeAdvance)
+            {
+                context.BeginMeleeAdvanceSynchronization();
+            }
+
             List<ConductorCueOverlayPlan> overlayPlans = BuildConductorCueOverlayPlans(nodes, context);
             HashSet<BossStateNode> overlayCueNodes = new(overlayPlans.Select(plan => plan.CueNode));
             List<IEnumerator> routines = new();
@@ -463,7 +830,20 @@ namespace Week14.Enemy
                 BossStateNode node = nodes[i];
                 if (node?.Action != null && !overlayCueNodes.Contains(node))
                 {
-                    routines.Add(ExecuteSinglePatternNode(graph, node, previousNodeId, context));
+                    BossAction actionOverride = null;
+                    string nodeKey = GetRuntimeNodeKey(node);
+                    if (actionOverrides != null && !string.IsNullOrWhiteSpace(nodeKey))
+                    {
+                        actionOverrides.TryGetValue(nodeKey, out actionOverride);
+                    }
+
+                    routines.Add(ExecuteSinglePatternNode(
+                        graph,
+                        node,
+                        previousNodeId,
+                        context,
+                        updateRuntimeState,
+                        actionOverride));
                 }
             }
 
@@ -478,6 +858,11 @@ namespace Week14.Enemy
             }
             finally
             {
+                if (synchronizeMeleeAdvance)
+                {
+                    context.EndMeleeAdvanceSynchronization();
+                }
+
                 ClearConductorCueOverlayEarlyStart(nodes);
             }
         }
@@ -486,13 +871,24 @@ namespace Week14.Enemy
             BossGraphAsset graph,
             BossStateNode node,
             string previousNodeId,
-            BossActionContext context)
+            BossActionContext context,
+            bool updateRuntimeState,
+            BossAction actionOverride = null)
         {
+            BossAction action = actionOverride ?? node?.Action;
+            if (action == null)
+            {
+                yield break;
+            }
+
             try
             {
-                BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
+                if (updateRuntimeState)
+                {
+                    BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousNodeId);
+                }
                 context.BeginNodeExecution(node.NodeId);
-                if (node.Action is ConductorConductingCueAction cue
+                if (action is ConductorConductingCueAction cue
                     && context.Boss is Conductor conductor)
                 {
                     yield return conductor.PlayConductingPattern(
@@ -503,12 +899,61 @@ namespace Week14.Enemy
                 }
                 else
                 {
-                    yield return node.Action.Execute(context);
+                    yield return action.Execute(context);
                 }
             }
             finally
             {
                 context.EndNodeExecution();
+            }
+        }
+
+        private static Dictionary<string, BossAction> ClonePatternActions(
+            BossGraphAsset graph,
+            IReadOnlyList<string> nodeKeys)
+        {
+            Dictionary<string, BossAction> clones = new(StringComparer.Ordinal);
+            if (graph == null || nodeKeys == null)
+            {
+                return clones;
+            }
+
+            for (int i = 0; i < nodeKeys.Count; i++)
+            {
+                BossStateNode node = graph.GetNode(nodeKeys[i]);
+                string nodeKey = GetRuntimeNodeKey(node);
+                if (node?.Action != null && !string.IsNullOrWhiteSpace(nodeKey))
+                {
+                    clones[nodeKey] = CloneBossAction(node.Action);
+                }
+            }
+
+            return clones;
+        }
+
+        private static BossAction CloneBossAction(BossAction source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                BossAction clone = Activator.CreateInstance(source.GetType()) as BossAction;
+                if (clone == null)
+                {
+                    return source;
+                }
+
+                JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(source), clone);
+                return clone;
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning(
+                    $"[BossGraphRunner] 홀로그램 액션 복제 실패: {source.GetType().Name} ({exception.Message})");
+                return source;
             }
         }
 
@@ -701,6 +1146,23 @@ namespace Week14.Enemy
         private static ConductorConductingCueAction GetConductorCueAction(BossStateNode node)
         {
             return node?.Action as ConductorConductingCueAction;
+        }
+
+        private readonly struct HackerHologramReplayPlan
+        {
+            public HackerHologramReplayPlan(
+                BossStateNode replayNode,
+                IReadOnlyList<string> preludeNodeKeys,
+                IReadOnlyList<string> patternNodeKeys)
+            {
+                ReplayNode = replayNode;
+                PreludeNodeKeys = preludeNodeKeys ?? Array.Empty<string>();
+                PatternNodeKeys = patternNodeKeys ?? Array.Empty<string>();
+            }
+
+            public BossStateNode ReplayNode { get; }
+            public IReadOnlyList<string> PreludeNodeKeys { get; }
+            public IReadOnlyList<string> PatternNodeKeys { get; }
         }
 
         private readonly struct ConductorCueOverlayPlan
