@@ -192,6 +192,7 @@ namespace Week14.Enemy
             if (isTouching && !playerWasTouching && hackingOwner != null)
             {
                 hackingOwner.ApplyHacking(player, hackingPerHit);
+                dissolveStartedAt = Time.time;
             }
 
             playerWasTouching = isTouching;

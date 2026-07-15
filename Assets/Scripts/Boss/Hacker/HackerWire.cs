@@ -41,6 +41,7 @@ namespace Week14.Enemy
         private bool persistsAfterPlayerHit;
         private bool persistsAfterWallHit;
         private bool appliesHackingOnTouch;
+        private bool dissolvesOnPlayerTouch;
         private bool wasTouchingPlayer;
         private PlayerCombatController forcedGrabTarget;
         private bool hasResolved;
@@ -143,7 +144,8 @@ namespace Week14.Enemy
             float width,
             float hitRadius,
             Color color,
-            int hackingPerTouch = 0)
+            int hackingPerTouch = 0,
+            bool dissolveOnPlayerTouch = false)
         {
             HackerWire wire = Create(
                 owner,
@@ -159,6 +161,7 @@ namespace Week14.Enemy
                 color);
             wire.hackingPerHit = Mathf.Max(0, hackingPerTouch);
             wire.appliesHackingOnTouch = wire.hackingPerHit > 0;
+            wire.dissolvesOnPlayerTouch = dissolveOnPlayerTouch;
             return wire;
         }
 
@@ -396,6 +399,10 @@ namespace Week14.Enemy
             if (isTouchingPlayer && !wasTouchingPlayer)
             {
                 owner.ApplyHacking(player, hackingPerHit);
+                if (dissolvesOnPlayerTouch)
+                {
+                    BeginDissolve();
+                }
             }
 
             wasTouchingPlayer = isTouchingPlayer;
