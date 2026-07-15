@@ -161,6 +161,14 @@ MonoBehaviour:
     m_Key: ui.tutorial.target
     m_Metadata:
       m_Items: []
+  - m_Id: 4984204011692032
+    m_Key: ui.lobby.battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984524653649920
+    m_Key: ui.lobby.enhancement
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
