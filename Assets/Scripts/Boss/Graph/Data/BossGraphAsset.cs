@@ -332,10 +332,15 @@ namespace Week14.Enemy
         [FormerlySerializedAs("cooldownSeconds")]
         [SerializeField, HideInInspector] private float legacyCooldownSeconds = -1f;
         [SerializeField, Min(0)] private int cooldownPatternCount;
+        [SerializeField, Min(0)] private int minPatternsPlayed;
 
         public string PatternId => patternId;
         public int Weight => Mathf.Max(0, weight);
         public int CooldownPatternCount => Mathf.Max(0, cooldownPatternCount);
+        // 이 페이즈에서 (이 패턴 자신을 포함해) 총 몇 개의 패턴이 먼저 끝나야 이 패턴이 뽑힐 자격이
+        // 생기는지를 나타낸다. cooldownPatternCount(반복 억제, 조건이 안 맞으면 완화될 수 있음)와 달리
+        // 이건 최초 등장을 늦추는 절대 조건이라 완화되지 않는다.
+        public int MinPatternsPlayed => Mathf.Max(0, minPatternsPlayed);
 
         public void OnBeforeSerialize()
         {

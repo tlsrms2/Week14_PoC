@@ -129,6 +129,7 @@ internal static class BossGraphActionEditorUtility
         new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
         new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
         new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
+        new("Assassin/Teleport Around Player", typeof(AssassinTeleportAroundPlayerAction), () => new AssassinTeleportAroundPlayerAction()),
         new("Hacker/Melee Attack", typeof(HackerMeleeAttackAction), () => new HackerMeleeAttackAction()),
         new("Hacker/Thrust", typeof(HackerThrustAction), () => new HackerThrustAction()),
         new("Hacker/Thrust Perpendicular Fire", typeof(HackerThrustPerpendicularFireAction), () => new HackerThrustPerpendicularFireAction()),
@@ -330,6 +331,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(AssassinSpawnRandomBombsAction))
         {
             return "Assassin 전용 액션입니다. 분신 스폰 구역(Clone Spawn Zone) 안에 폭탄을 여러 개 랜덤 배치합니다. 구역은 분신 소환과 공유하지만, 폭탄끼리 최소 간격(Min Separation Distance)과 플레이어와 최소거리(Min Distance From Player)는 이 액션에서 따로 지정합니다. Spawn Interval만큼 텀을 두고 하나씩 소환하며, Charge Seconds가 패링 유예 시간(=터질 때까지 남은 시간)입니다. 패링 판정이나 터질 때의 동작은 스폰되는 탄 프리팹 자신이 담당합니다.";
+        }
+
+        if (actionType == typeof(AssassinTeleportAroundPlayerAction))
+        {
+            return "Assassin 전용 액션입니다. 보스가 사라졌다가 플레이어로부터 Teleport Radius만큼 떨어진 원 위의 무작위 지점으로 순간이동해 다시 나타납니다. 목적지는 분신 스폰 구역(Clone Spawn Zone) 밖으로 나가지 않도록 제한됩니다. 사라짐/재등장 연출은 Spawn Clone Shooters가 보스 자신을 순간이동시킬 때와 동일한 방식(은신 알파 페이드)을 재사용합니다.";
         }
 
         if (actionType == typeof(HackerFireWireBranchAction))

@@ -16,6 +16,10 @@ namespace Week14.Enemy
         private readonly Dictionary<string, int> patternCooldownRemainingCounts = new();
         private readonly HashSet<int> openingPatternsPlayed = new();
         private readonly HashSet<int> signaturePatternsPlayed = new();
+        // 페이즈별로 지금까지 몇 개의 패턴이 완료됐는지 누적한다. Min Patterns Played 조건(최초 등장을
+        // 늦추는 절대 조건) 판정에 쓰인다 — cooldownPatternCount(반복 억제)와 달리 페이즈가 바뀌면
+        // Reset()에서 같이 초기화된다.
+        private readonly Dictionary<int, int> patternsPlayedCountByPhase = new();
         private string currentNodeId;
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
@@ -29,6 +33,7 @@ namespace Week14.Enemy
             patternCooldownRemainingCounts.Clear();
             openingPatternsPlayed.Clear();
             signaturePatternsPlayed.Clear();
+            patternsPlayedCountByPhase.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;
         }
@@ -2275,6 +2280,14 @@ namespace Week14.Enemy
                 return false;
             }
 
+            // Min Patterns Played는 쿨다운과 달리 완화(fallback)되지 않는 절대 조건이라, requireCooldownReady
+            // 값과 상관없이 항상 체크한다.
+            int playedCount = patternsPlayedCountByPhase.TryGetValue(phase.PhaseIndex, out int count) ? count : 0;
+            if (playedCount < entry.MinPatternsPlayed)
+            {
+                return false;
+            }
+
             if (!requireCooldownReady)
             {
                 return true;
@@ -2309,6 +2322,9 @@ namespace Week14.Enemy
             {
                 return;
             }
+
+            patternsPlayedCountByPhase[phase.PhaseIndex] =
+                (patternsPlayedCountByPhase.TryGetValue(phase.PhaseIndex, out int playedCount) ? playedCount : 0) + 1;
 
             string completedKey = GetPatternCooldownKey(phase, entry.PatternId);
             ReduceOtherPatternCooldowns(phase, completedKey);

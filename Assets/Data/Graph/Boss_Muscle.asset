@@ -178,7 +178,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288620
     sequences: []
-    editorPosition: {x: 43, y: 1087}
+    editorPosition: {x: 79, y: 1087}
   - nodeId: Boss Dash7
     nodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     nodeKind: 1
@@ -3692,8 +3692,8 @@ MonoBehaviour:
     - rid: 4705777899588288621
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.7
-        lockSeconds: 0.6
+        windupSeconds: 0.8
+        lockSeconds: 0.7
         trackPlayerDuringWindup: 1
         maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
@@ -3757,8 +3757,8 @@ MonoBehaviour:
     - rid: 4705777899588288622
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
-        lockSeconds: 0.5
+        windupSeconds: 0.7
+        lockSeconds: 0.6
         trackPlayerDuringWindup: 1
         maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
@@ -3822,8 +3822,8 @@ MonoBehaviour:
     - rid: 4705777899588288623
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.5
-        lockSeconds: 0.4
+        windupSeconds: 0.7
+        lockSeconds: 0.6
         trackPlayerDuringWindup: 1
         maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 

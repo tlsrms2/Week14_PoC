@@ -249,8 +249,14 @@ namespace Week14.Enemy
         // "보스가 다시 나타나는 순간"에 맞춰 분신 등장 연출도 같이 시작할 수 있게 한다.
         internal IEnumerator VanishForTeleport(Vector3 destination)
         {
+            yield return VanishForTeleport(destination, stealthAlphaFadeSeconds);
+        }
+
+        // fadeSeconds를 직접 지정하고 싶은 호출부(예: AssassinTeleportAroundPlayerAction)를 위한 오버로드.
+        internal IEnumerator VanishForTeleport(Vector3 destination, float fadeSeconds)
+        {
             teleportVisibilityOverrideActive = true;
-            yield return WaitSecondsScaled(stealthAlphaFadeSeconds);
+            yield return WaitSecondsScaled(fadeSeconds);
 
             if (Body != null)
             {
@@ -262,8 +268,13 @@ namespace Week14.Enemy
 
         internal IEnumerator ReappearAfterTeleport()
         {
+            yield return ReappearAfterTeleport(stealthAlphaFadeSeconds);
+        }
+
+        internal IEnumerator ReappearAfterTeleport(float fadeSeconds)
+        {
             teleportVisibilityOverrideActive = false;
-            yield return WaitSecondsScaled(stealthAlphaFadeSeconds);
+            yield return WaitSecondsScaled(fadeSeconds);
         }
 
         private static IEnumerator WaitSecondsScaled(float seconds)
@@ -457,6 +468,29 @@ namespace Week14.Enemy
             }
 
             return bounds.center;
+        }
+
+        // 플레이어를 중심으로 반지름 radius인 원 위의 무작위 지점을 고른다. cloneSpawnZone 밖으로는
+        // 순간이동하면 안 되므로, 구역 안에 들어오는 지점이 나올 때까지 각도를 다시 뽑고, 그래도
+        // 못 찾으면 분신 소환과 동일한 폴백(SampleCloneSpawnZonePosition)으로 구역 안 아무 지점을 쓴다.
+        internal Vector2 GetRandomTeleportPositionAroundPlayer(float radius)
+        {
+            if (Player == null)
+            {
+                return SampleCloneSpawnZonePosition();
+            }
+
+            Vector2 playerPosition = Player.position;
+            for (int i = 0; i < CloneSpawnPositionAttempts; i++)
+            {
+                Vector2 candidate = playerPosition + BossActionContext.AngleToDirection(Random.Range(0f, 360f)) * radius;
+                if (cloneSpawnZone == null || cloneSpawnZone.OverlapPoint(candidate))
+                {
+                    return candidate;
+                }
+            }
+
+            return SampleCloneSpawnZonePosition();
         }
 
         private void ClearCloneShooterQueue()

@@ -2808,6 +2808,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 string patternId = GetString(entry, "patternId", string.Empty);
                 int weight = GetInt(entry, "weight", 1);
                 int cooldownPatternCount = GetInt(entry, "cooldownPatternCount", 0);
+                int minPatternsPlayed = GetInt(entry, "minPatternsPlayed", 0);
                 if (replacementMap.TryGetValue(patternId, out List<string> replacementIds))
                 {
                     for (int replacementIndex = 0; replacementIndex < replacementIds.Count; replacementIndex++)
@@ -2818,7 +2819,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                             continue;
                         }
 
-                        nextEntries.Add(new PhasePatternEntrySnapshot(replacementId, weight, cooldownPatternCount));
+                        nextEntries.Add(new PhasePatternEntrySnapshot(replacementId, weight, cooldownPatternCount, minPatternsPlayed));
                     }
 
                     continue;
@@ -2829,7 +2830,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                     continue;
                 }
 
-                nextEntries.Add(new PhasePatternEntrySnapshot(patternId, weight, cooldownPatternCount));
+                nextEntries.Add(new PhasePatternEntrySnapshot(patternId, weight, cooldownPatternCount, minPatternsPlayed));
             }
 
             if (ArePhasePatternEntriesEqual(patternEntries, nextEntries))
@@ -2846,6 +2847,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 SetString(entry, "patternId", snapshot.PatternId);
                 SetInt(entry, "weight", snapshot.Weight);
                 SetInt(entry, "cooldownPatternCount", snapshot.CooldownPatternCount);
+                SetInt(entry, "minPatternsPlayed", snapshot.MinPatternsPlayed);
             }
 
             changed = true;
@@ -2868,7 +2870,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
             SerializedProperty entry = patternEntries.GetArrayElementAtIndex(i);
             if (GetString(entry, "patternId", string.Empty) != nextEntries[i].PatternId
                 || GetInt(entry, "weight", 1) != nextEntries[i].Weight
-                || GetInt(entry, "cooldownPatternCount", 0) != nextEntries[i].CooldownPatternCount)
+                || GetInt(entry, "cooldownPatternCount", 0) != nextEntries[i].CooldownPatternCount
+                || GetInt(entry, "minPatternsPlayed", 0) != nextEntries[i].MinPatternsPlayed)
             {
                 return false;
             }
@@ -4500,7 +4503,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
     {
         Rect rowRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
         rowRect.xMin += PatternDragHandleWidth + 4f;
-        Rect waitRect = new(rowRect.xMax - 86f, rowRect.y, 48f, rowRect.height);
+        Rect minRect = new(rowRect.xMax - 86f, rowRect.y, 46f, rowRect.height);
+        Rect waitRect = new(minRect.xMin - 52f, rowRect.y, 48f, rowRect.height);
         Rect weightRect = new(waitRect.xMin - 46f, rowRect.y, 42f, rowRect.height);
         Rect patternRect = rowRect;
         patternRect.xMax = weightRect.xMin - 4f;
@@ -4508,6 +4512,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         EditorGUI.LabelField(patternRect, "Pattern", EditorStyles.miniBoldLabel);
         EditorGUI.LabelField(weightRect, "Weight", EditorStyles.miniBoldLabel);
         EditorGUI.LabelField(waitRect, new GUIContent("Wait", "이 패턴 실행 후 다시 후보가 되기 전까지 기다릴 다른 패턴 실행 횟수입니다."), EditorStyles.miniBoldLabel);
+        EditorGUI.LabelField(minRect, new GUIContent("Min", "이 페이즈에서 총 이 숫자만큼의 다른 패턴이 먼저 끝나야 이 패턴이 처음 후보로 등장합니다."), EditorStyles.miniBoldLabel);
     }
 
     private bool DrawPhasePatternAssignmentEntry(
@@ -4523,6 +4528,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty patternId = entry.FindPropertyRelative("patternId");
         SerializedProperty weight = entry.FindPropertyRelative("weight");
         SerializedProperty cooldownPatternCount = entry.FindPropertyRelative("cooldownPatternCount");
+        SerializedProperty minPatternsPlayed = entry.FindPropertyRelative("minPatternsPlayed");
         if (patternId == null || weight == null)
         {
             return false;
@@ -4534,7 +4540,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
         Rect dragRect = new(rowRect.x, rowRect.y, PatternDragHandleWidth, rowRect.height);
         Rect deleteRect = new(rowRect.xMax - 34f, rowRect.y, 34f, rowRect.height);
-        Rect waitRect = new(deleteRect.xMin - 52f, rowRect.y, 48f, rowRect.height);
+        Rect minRect = new(deleteRect.xMin - 50f, rowRect.y, 46f, rowRect.height);
+        Rect waitRect = new(minRect.xMin - 52f, rowRect.y, 48f, rowRect.height);
         Rect weightRect = new(waitRect.xMin - 46f, rowRect.y, 42f, rowRect.height);
         Rect patternRect = rowRect;
         patternRect.xMin += PatternDragHandleWidth + 4f;
@@ -4564,6 +4571,15 @@ public sealed class BossGraphEditorWindow : EditorWindow
         if (cooldownPatternCount != null && nextCooldown != cooldownPatternCount.intValue)
         {
             cooldownPatternCount.intValue = nextCooldown;
+            changed = true;
+        }
+
+        int currentMinPlayed = minPatternsPlayed != null ? minPatternsPlayed.intValue : 0;
+        int nextMinPlayed = EditorGUI.IntField(minRect, Mathf.Max(0, currentMinPlayed));
+        nextMinPlayed = Mathf.Max(0, nextMinPlayed);
+        if (minPatternsPlayed != null && nextMinPlayed != minPatternsPlayed.intValue)
+        {
+            minPatternsPlayed.intValue = nextMinPlayed;
             changed = true;
         }
 
@@ -5684,6 +5700,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SetString(entry, "patternId", snapshot.PatternId);
         SetInt(entry, "weight", snapshot.Weight);
         SetInt(entry, "cooldownPatternCount", snapshot.CooldownPatternCount);
+        SetInt(entry, "minPatternsPlayed", snapshot.MinPatternsPlayed);
     }
 
     private static bool TryReadPhasePatternEntry(
@@ -5705,7 +5722,8 @@ public sealed class BossGraphEditorWindow : EditorWindow
         snapshot = new PhasePatternEntrySnapshot(
             patternId,
             Mathf.Max(0, GetInt(entry, "weight", 1)),
-            Mathf.Max(0, GetInt(entry, "cooldownPatternCount", 0)));
+            Mathf.Max(0, GetInt(entry, "cooldownPatternCount", 0)),
+            Mathf.Max(0, GetInt(entry, "minPatternsPlayed", 0)));
         return true;
     }
 
@@ -7312,16 +7330,18 @@ public sealed class BossGraphEditorWindow : EditorWindow
 
     private readonly struct PhasePatternEntrySnapshot
     {
-        public PhasePatternEntrySnapshot(string patternId, int weight, int cooldownPatternCount)
+        public PhasePatternEntrySnapshot(string patternId, int weight, int cooldownPatternCount, int minPatternsPlayed = 0)
         {
             PatternId = patternId;
             Weight = weight;
             CooldownPatternCount = cooldownPatternCount;
+            MinPatternsPlayed = minPatternsPlayed;
         }
 
         public string PatternId { get; }
         public int Weight { get; }
         public int CooldownPatternCount { get; }
+        public int MinPatternsPlayed { get; }
     }
 
     private readonly struct CopiedNodeSnapshot
