@@ -223,6 +223,20 @@ MonoBehaviour:
       radius: 0.12
       trailSeconds: 0.01
       trailWidthMultiplier: 0.1
+  - projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+    projectile:
+      prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+      bulletDamage: 0
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 0
+      lifetime: 3
+      radius: 0.01
+      trailSeconds: 1
+      trailWidthMultiplier: 0.1
+  patternGroggyAnimator: {fileID: 0}
   bodyHitDamageMultiplier: 1
   minionHitDamageMultiplier: 0.7
   minionOutlineFlashSeconds: 0.12

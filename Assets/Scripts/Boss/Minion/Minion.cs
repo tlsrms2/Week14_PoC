@@ -650,6 +650,28 @@ namespace Week14.Enemy
             return duration;
         }
 
+        public float CommandConductorShrinkingOrbit(
+            float startRadius,
+            float endRadius,
+            float orbitSeconds,
+            float angularSpeedDegrees,
+            bool clockwise,
+            float moveSpeed,
+            float startAngleDegrees)
+        {
+            StopMovementCommand();
+            float duration = Mathf.Max(0.01f, orbitSeconds);
+            movementRoutine = StartCoroutine(RunConductorShrinkingOrbit(
+                Mathf.Max(0.1f, startRadius),
+                Mathf.Max(0.1f, endRadius),
+                duration,
+                Mathf.Max(0f, angularSpeedDegrees),
+                clockwise,
+                Mathf.Max(0f, moveSpeed),
+                startAngleDegrees));
+            return duration;
+        }
+
         public float CommandWander(
             float wanderSeconds,
             float wanderSpeed,
@@ -1017,6 +1039,53 @@ namespace Week14.Enemy
                 Vector2 target = center + AngleToDirection(angle) * radius;
                 BeginOrbitMovementPathIndicator(center, radius);
                 SetPatternPosition(target, ref lockedToPattern, moveSpeed, false);
+                yield return null;
+            }
+
+            StopBody();
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunConductorShrinkingOrbit(
+            float startRadius,
+            float endRadius,
+            float orbitSeconds,
+            float angularSpeedDegrees,
+            bool clockwise,
+            float moveSpeed,
+            float startAngleDegrees)
+        {
+            Transform player = GetPlayer();
+            if (player == null)
+            {
+                yield break;
+            }
+
+            float elapsed = 0f;
+            float signedAngularSpeed = angularSpeedDegrees * (clockwise ? -1f : 1f);
+            bool lockedToPattern = false;
+            while (elapsed < orbitSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                if (player == null)
+                {
+                    break;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / orbitSeconds);
+                float radius = Mathf.Lerp(startRadius, endRadius, progress);
+                float angle = startAngleDegrees + signedAngularSpeed * elapsed;
+                Vector2 center = player.position;
+                Vector2 target = center + AngleToDirection(angle) * radius;
+                SetPatternPosition(target, ref lockedToPattern, moveSpeed, false);
+
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 

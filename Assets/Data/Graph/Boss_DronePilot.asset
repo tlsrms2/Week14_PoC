@@ -1943,6 +1943,15 @@ MonoBehaviour:
       rid: 6489939172654055508
     sequences: []
     editorPosition: {x: 5014, y: 1018}
+  - nodeId: Parry Suppression Bait1
+    nodeGuid: 58e96085d30f42808ebc37f093409405
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939200651559127
+    sequences: []
+    editorPosition: {x: -314, y: 205}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -2459,6 +2468,11 @@ MonoBehaviour:
     - Wander9
     - Conducting Cue19
     - Wander22
+  - patternId: Pattern1
+    nodeGuids:
+    - 58e96085d30f42808ebc37f093409405
+    nodeIds:
+    - Parry Suppression Bait1
   defaultPatternIds:
   - "\uD328\uD134 \uC0AC\uC774"
   - P1
@@ -2524,6 +2538,10 @@ MonoBehaviour:
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+    - patternId: Pattern1
+      weight: 999
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 0
   - phaseIndex: 1
     selectionMode: 3
     phaseMaxHp: 150
@@ -14846,3 +14864,96 @@ MonoBehaviour:
         placementIndicatorOuterRadius: 0.42
         placementIndicatorSpikeCount: 12
         placementIndicatorSortingOrder: 67
+    - rid: 6489939200651559127
+      type: {class: ConductorParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        bossTargetPosition: {x: 6, y: 0}
+        bossMoveSpeed: 8
+        bossArrivalDistance: 0.05
+        bossMoveTimeoutSeconds: 5
+        initialOrbitRadius: 5
+        finalOrbitRadius: 1.5
+        orbitSeconds: 6
+        angularSpeedDegrees: 120
+        clockwise: 1
+        startAngleDegrees: 0
+        droneMoveSpeed: 14
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        fireInterval: 0.18
+        firstFireDelaySeconds: 0
+        tangentCircleRadius: 0.8
+        minionOrigin:
+          mode: 0
+          minionChildPath: 
+          minionChildPaths: []
+          firstMinionChildPath: 
+          secondMinionChildPath: 
+          fallbackSpacing: 0.18
+        projectileEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        baitProjectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+        baitProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        baitDroneOffset: {x: 0, y: 0}
+        baitSpawnSeconds: 3
+        baitDurationSeconds: 2
+        rewardBulletCount: 5
+        rewardCircleRadius: 1.5
+        rewardLifetimeSeconds: 2
+        baitSpawnSfxId: 
+        baitEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        parryStopSeconds: 1
+        bossGroggySeconds: 3
+        finalCollapseDamage: 1
+        releaseDronesAfterPattern: 1
