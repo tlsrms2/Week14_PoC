@@ -9817,6 +9817,20 @@ MonoBehaviour:
       radius: 0.12
       trailSeconds: 0.1
       trailWidthMultiplier: 3
+  - projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+    projectile:
+      prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+      bulletDamage: 0
+      chargeSeconds: 1
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 0
+      lifetime: 7
+      radius: 0.12
+      trailSeconds: 0.1
+      trailWidthMultiplier: 3
+  groggyAnimatorBoolName: isStun
   stealthGraph: {fileID: 11400000, guid: 47bf25dcafb39c34980cbf5edf312333, type: 2}
   daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
   stealthVisualTargetA: {fileID: 1518477478}
