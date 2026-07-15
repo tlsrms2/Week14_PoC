@@ -30,6 +30,8 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int bulletCount = 5;
         [Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")]
         [SerializeField] private float chargeSecondsOverride = -1f;
+        [Tooltip("플레이어 방향 조준에 좌우로 무작위 오프셋을 주는 각도 범위(도)입니다. 0이면 정확히 플레이어를 조준합니다.")]
+        [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -77,7 +79,7 @@ namespace Week14.Enemy
 
         private void SpawnTrailBullet(BossActionContext context, Vector3 spawnOrigin)
         {
-            Vector2 direction = context.GetDirectionToPlayer(spawnOrigin);
+            Vector2 direction = GetSpreadDirectionToPlayer(context, spawnOrigin);
             EnemyProjectile spawned = context.FireProjectile(
                 projectile,
                 spawnOrigin,
@@ -91,6 +93,9 @@ namespace Week14.Enemy
                 return;
             }
 
+            // 충전 중(발사 전)에는 조준선(경로 인디케이터)을 숨기고, 실제로 발사되는 순간부터 보이게 한다.
+            spawned.ConfigurePathIndicatorDelayedUntilLaunch(true);
+
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(spawned, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
@@ -100,6 +105,19 @@ namespace Week14.Enemy
         {
             Rigidbody2D body = context.Boss != null ? context.Boss.Body : null;
             return body != null && body.linearVelocity.sqrMagnitude < StoppedSpeedThresholdSqr;
+        }
+
+        private Vector2 GetSpreadDirectionToPlayer(BossActionContext context, Vector3 spawnOrigin)
+        {
+            Vector2 direction = context.GetDirectionToPlayer(spawnOrigin);
+            if (aimSpreadDegrees <= 0f)
+            {
+                return direction;
+            }
+
+            float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float halfSpread = aimSpreadDegrees * 0.5f;
+            return BossActionContext.AngleToDirection(baseAngle + UnityEngine.Random.Range(-halfSpread, halfSpread));
         }
     }
 }

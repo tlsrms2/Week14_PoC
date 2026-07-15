@@ -152,6 +152,42 @@ MonoBehaviour:
       rid: 4705778169994805474
     sequences: []
     editorPosition: {x: -295, y: 592}
+  - nodeId: Random Direction Move3
+    nodeGuid: e445d7e2c6e74803bf80213b313e6150
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805502
+    sequences: []
+    editorPosition: {x: 35, y: 474}
+  - nodeId: Fire Distance Trail2
+    nodeGuid: 54fbc9f8c31748b1a9e16e91acddf767
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805503
+    sequences: []
+    editorPosition: {x: 36, y: 592}
+  - nodeId: Wait5
+    nodeGuid: 0ca9abcfcc1c43d9812fa402c5bfc9b5
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805504
+    sequences: []
+    editorPosition: {x: -83, y: 474}
+  - nodeId: Action1
+    nodeGuid: dd601c7ae73540d6844eab7f454c19ec
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: -2
+    sequences: []
+    editorPosition: {x: -295, y: 806}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -191,15 +227,26 @@ MonoBehaviour:
   - patternId: Pattern4
     nodeGuids:
     - e4c422895b4e423a9e3ec6a061344ecc
+    - 0ca9abcfcc1c43d9812fa402c5bfc9b5
+    - e445d7e2c6e74803bf80213b313e6150
     - 883d36bf6b944b9a88c762b119ebd3de
+    - 54fbc9f8c31748b1a9e16e91acddf767
     nodeIds:
     - Random Direction Move2
+    - Wait5
+    - Random Direction Move3
     - Fire Distance Trail1
+    - Fire Distance Trail2
+  - patternId: Pattern5
+    nodeGuids:
+    - dd601c7ae73540d6844eab7f454c19ec
+    nodeIds:
+    - Action1
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    patternIntervalSeconds: 2
+    patternIntervalSeconds: 1.5
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern1
@@ -207,15 +254,19 @@ MonoBehaviour:
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 1
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 2
+      cooldownPatternCount: 1
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 5
+    - patternId: Pattern4
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 1
   transitions:
   - fromNodeGuid: c6500d9e684e40fa835ec49902598fa7
     toNodeGuid: 06905a3118bd45548280596d7fc6a04e
@@ -297,6 +348,22 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    toNodeGuid: 0ca9abcfcc1c43d9812fa402c5bfc9b5
+    fromNodeId: Random Direction Move2
+    toNodeId: Wait5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0ca9abcfcc1c43d9812fa402c5bfc9b5
+    toNodeGuid: e445d7e2c6e74803bf80213b313e6150
+    fromNodeId: Wait5
+    toNodeId: Random Direction Move3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
     toNodeGuid: 883d36bf6b944b9a88c762b119ebd3de
@@ -304,11 +371,19 @@ MonoBehaviour:
     toNodeId: Fire Distance Trail1
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
+  - fromNodeGuid: e445d7e2c6e74803bf80213b313e6150
+    toNodeGuid: 54fbc9f8c31748b1a9e16e91acddf767
+    fromNodeId: Random Direction Move3
+    toNodeId: Fire Distance Trail2
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 0
   debugForcedPatternId: Pattern4
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4705778150679249020
       type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -651,8 +726,8 @@ MonoBehaviour:
         bombCount: 8
         minSeparationDistance: 3
         minDistanceFromPlayer: 3
-        spawnInterval: 0.2
-        chargeSeconds: 15
+        spawnInterval: 0.1
+        chargeSeconds: 10
         spawnSfxId: 
         effects:
           explosion:
@@ -713,7 +788,7 @@ MonoBehaviour:
     - rid: 4705778169994805451
       type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        distance: 12
+        distance: 6
         duration: 0.5
         strafeAroundPlayer: 0
         minAngleDegrees: 0
@@ -750,7 +825,7 @@ MonoBehaviour:
     - rid: 4705778169994805474
       type: {class: FireDistanceTrailProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uD50C\uB808\uC774\uC5B4\uC870\uC900\uC77C\uBC18\uD0C4"
+        projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -763,9 +838,10 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        moveDistance: 12
+        moveDistance: 5
         bulletCount: 7
-        chargeSecondsOverride: 1.5
+        chargeSecondsOverride: 0
+        aimSpreadDegrees: 5
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -790,3 +866,88 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+    - rid: 4705778169994805502
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778169994805503
+      type: {class: FireDistanceTrailProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        moveDistance: 5
+        bulletCount: 7
+        chargeSecondsOverride: 0
+        aimSpreadDegrees: 5
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805504
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
