@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0a73435a5dcde46921a668bbacb94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AssassinClone
+  attackFlashTarget: {fileID: 5807435305362679572}
+  facingSpriteTargetA: {fileID: 6913051438510895473}
+  facingSpriteTargetB: {fileID: 5807435305362679572}
 --- !u!1 &2040885682576899637
 GameObject:
   m_ObjectHideFlags: 0

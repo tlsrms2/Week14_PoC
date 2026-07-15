@@ -51,8 +51,15 @@ namespace Week14.Enemy
         private int stealthDamageAccumulated;
         private float stealthEntryDelayRemaining;
         private bool teleportVisibilityOverrideActive;
-        private readonly FacingMirrorCache facingMirrorCacheA = new();
-        private readonly FacingMirrorCache facingMirrorCacheB = new();
+        private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
+        private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
+        private Color ownAttackFlashOriginalColor;
+        private bool ownAttackFlashActive;
+        private Color cloneShooterAttackFlashColor = Color.white;
+        private AssassinClone flashedQueueFrontClone;
+        private bool flashedQueueFrontIsBoss;
+        private bool hasFlashedQueueFront;
+        private bool isShooterAttackInProgress;
 
         protected override bool RotatesBodyToPlayer => false;
         protected override BossGraphAsset GraphAsset => isStealthed ? stealthGraph : base.GraphAsset;
@@ -77,6 +84,8 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            isShooterAttackInProgress = false;
+            ClearCloneShooterAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnBossDied();
@@ -84,6 +93,8 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            isShooterAttackInProgress = false;
+            ClearCloneShooterAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnDisable();
@@ -110,6 +121,7 @@ namespace Week14.Enemy
         {
             UpdateFacingSprite();
             ApplyStealthAlpha();
+            UpdateCloneShooterAttackFlash();
 
             if (isStealthed && stealthEntryDelayRemaining > 0f)
             {
@@ -198,6 +210,40 @@ namespace Week14.Enemy
             return candidate;
         }
 
+        // 지정한 개수만큼, 서로 minSeparationDistance 이상 떨어지고(플레이어 최소거리 조건도 만족하는)
+        // 지점들을 분신 스폰 구역 안에서 뽑는다. 구역 자체는 분신 소환과 공유하지만, 간격/플레이어
+        // 최소거리는 호출하는 쪽이 원하는 값을 넘길 수 있다 — 분신과 다른 간격을 쓰고 싶은 액션(예: 폭탄
+        // 스폰)이 같은 구역을 재사용하면서도 자기만의 거리 규칙을 쓸 수 있게 하기 위함이다.
+        internal List<Vector2> GetSeparatedRandomZonePositions(int count, float minSeparationDistance, float minDistanceFromPlayer)
+        {
+            List<Vector2> positions = new(Mathf.Max(0, count));
+            for (int i = 0; i < count; i++)
+            {
+                Vector2 candidate = GetRandomCloneSpawnPosition(minDistanceFromPlayer);
+                for (int attempt = 0; attempt < CloneSpawnPositionAttempts && IsTooCloseToAny(candidate, positions, minSeparationDistance); attempt++)
+                {
+                    candidate = GetRandomCloneSpawnPosition(minDistanceFromPlayer);
+                }
+
+                positions.Add(candidate);
+            }
+
+            return positions;
+        }
+
+        private static bool IsTooCloseToAny(Vector2 candidate, List<Vector2> positions, float minSeparationDistance)
+        {
+            for (int i = 0; i < positions.Count; i++)
+            {
+                if (Vector2.Distance(candidate, positions[i]) < minSeparationDistance)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         // 보스 스스로를 투명하게 만들었다가(분신과 똑같은 은신 알파 페이드 인프라 재사용) 그 사이에
         // 순간이동시킨다. 다시 나타나는 시점은 ReappearAfterTeleport로 분리해서, 호출하는 쪽이
         // "보스가 다시 나타나는 순간"에 맞춰 분신 등장 연출도 같이 시작할 수 있게 한다.
@@ -230,6 +276,116 @@ namespace Week14.Enemy
             }
         }
 
+        // 분신 발사 대기열의 맨 앞(=지금부터 공격 차례를 기다리는 중인 개체)을 매 프레임 감시해서,
+        // 대기열 맨 앞이 바뀔 때마다 이전 차례 개체는 원래 색으로 되돌리고 새 차례 개체를 색칠한다.
+        // 단, 실제로 발사 중(BeginShooterAttack ~ EndShooterAttack 사이)일 때는 손대지 않는다 —
+        // 총알을 여러 발 나눠 쏘는 동안에도 이미 대기열에서는 빠진 상태이기 때문에, 발사가
+        // 완전히 끝날 때까지는 Fire 액션이 직접 색을 유지/해제하도록 맡긴다.
+        internal void SetCloneShooterAttackFlashColor(Color flashColor)
+        {
+            cloneShooterAttackFlashColor = flashColor;
+        }
+
+        internal void BeginShooterAttack()
+        {
+            isShooterAttackInProgress = true;
+        }
+
+        internal void EndShooterAttack()
+        {
+            isShooterAttackInProgress = false;
+            ClearCloneShooterAttackFlash();
+        }
+
+        private void UpdateCloneShooterAttackFlash()
+        {
+            if (isShooterAttackInProgress)
+            {
+                return;
+            }
+
+            if (cloneShooterQueue.Count == 0)
+            {
+                ClearCloneShooterAttackFlash();
+                return;
+            }
+
+            AssassinClone frontClone = cloneShooterQueue[0].clone;
+            bool frontIsBoss = frontClone == null;
+
+            if (hasFlashedQueueFront && flashedQueueFrontClone == frontClone && flashedQueueFrontIsBoss == frontIsBoss)
+            {
+                return;
+            }
+
+            ClearCloneShooterAttackFlash();
+
+            if (frontIsBoss)
+            {
+                PlayOwnAttackFlash(cloneShooterAttackFlashColor);
+                flashedQueueFrontIsBoss = true;
+            }
+            else
+            {
+                frontClone.PlayAttackFlash(cloneShooterAttackFlashColor);
+                flashedQueueFrontClone = frontClone;
+            }
+
+            hasFlashedQueueFront = true;
+        }
+
+        private void ClearCloneShooterAttackFlash()
+        {
+            if (!hasFlashedQueueFront)
+            {
+                return;
+            }
+
+            if (flashedQueueFrontClone != null)
+            {
+                flashedQueueFrontClone.EndAttackFlash();
+            }
+
+            if (flashedQueueFrontIsBoss)
+            {
+                EndOwnAttackFlash();
+            }
+
+            flashedQueueFrontClone = null;
+            flashedQueueFrontIsBoss = false;
+            hasFlashedQueueFront = false;
+        }
+
+        private void PlayOwnAttackFlash(Color flashColor)
+        {
+            if (stealthVisualTargetB == null)
+            {
+                return;
+            }
+
+            if (!ownAttackFlashActive)
+            {
+                ownAttackFlashOriginalColor = stealthVisualTargetB.color;
+            }
+
+            Color applied = flashColor;
+            applied.a = stealthVisualTargetB.color.a;
+            stealthVisualTargetB.color = applied;
+            ownAttackFlashActive = true;
+        }
+
+        private void EndOwnAttackFlash()
+        {
+            if (ownAttackFlashActive && stealthVisualTargetB != null)
+            {
+                Color reverted = ownAttackFlashOriginalColor;
+                reverted.a = stealthVisualTargetB.color.a;
+                stealthVisualTargetB.color = reverted;
+            }
+
+            ownAttackFlashActive = false;
+        }
+
         internal void EnqueueCloneShooter(Vector3 position, AssassinClone clone)
         {
             cloneShooterQueue.Add((position, clone));
@@ -260,13 +416,18 @@ namespace Week14.Enemy
 
         private Vector2 GetRandomCloneSpawnPosition()
         {
+            return GetRandomCloneSpawnPosition(cloneMinDistanceFromPlayer);
+        }
+
+        private Vector2 GetRandomCloneSpawnPosition(float minDistanceFromPlayer)
+        {
             Vector2 candidate = SampleCloneSpawnZonePosition();
-            if (Player == null || cloneMinDistanceFromPlayer <= 0f)
+            if (Player == null || minDistanceFromPlayer <= 0f)
             {
                 return candidate;
             }
 
-            for (int i = 0; i < CloneSpawnPositionAttempts && Vector2.Distance(candidate, Player.position) < cloneMinDistanceFromPlayer; i++)
+            for (int i = 0; i < CloneSpawnPositionAttempts && Vector2.Distance(candidate, Player.position) < minDistanceFromPlayer; i++)
             {
                 candidate = SampleCloneSpawnZonePosition();
             }
@@ -375,7 +536,7 @@ namespace Week14.Enemy
             ApplyFacing(stealthVisualTargetB, flip, facingMirrorCacheB);
         }
 
-        private static void ApplyFacing(SpriteRenderer renderer, bool flip, FacingMirrorCache mirrorCache)
+        private static void ApplyFacing(SpriteRenderer renderer, bool flip, AssassinFacingMirrorCache mirrorCache)
         {
             if (renderer == null)
             {
@@ -384,47 +545,6 @@ namespace Week14.Enemy
 
             renderer.flipX = flip;
             mirrorCache.Apply(renderer.transform, flip);
-        }
-
-        private sealed class FacingMirrorCache
-        {
-            private Transform[] children;
-            private Vector3[] baseLocalPositions;
-            private bool cached;
-
-            public void Apply(Transform root, bool flip)
-            {
-                if (root == null)
-                {
-                    return;
-                }
-
-                if (!cached)
-                {
-                    cached = true;
-                    int childCount = root.childCount;
-                    children = new Transform[childCount];
-                    baseLocalPositions = new Vector3[childCount];
-                    for (int i = 0; i < childCount; i++)
-                    {
-                        Transform child = root.GetChild(i);
-                        children[i] = child;
-                        baseLocalPositions[i] = child.localPosition;
-                    }
-                }
-
-                for (int i = 0; i < children.Length; i++)
-                {
-                    Transform child = children[i];
-                    if (child == null)
-                    {
-                        continue;
-                    }
-
-                    Vector3 basePosition = baseLocalPositions[i];
-                    child.localPosition = new Vector3(flip ? -basePosition.x : basePosition.x, basePosition.y, basePosition.z);
-                }
-            }
         }
 
         private void ApplyStealthAlpha()

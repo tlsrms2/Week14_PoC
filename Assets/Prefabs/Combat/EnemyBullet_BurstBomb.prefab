@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
   - component: {fileID: 6470095641802324841}
-  - component: {fileID: -4836479999064069895}
+  - component: {fileID: 1636386283175442648}
   m_Layer: 7
-  m_Name: EnemyBullet_Bomb
+  m_Name: EnemyBullet_BurstBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.000000014901161, y: 0.0022179484}
   m_Radius: 0.15399449
---- !u!114 &-4836479999064069895
+--- !u!114 &1636386283175442648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,22 +109,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 744419277602116065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfcfd179e00d03543a1e784067df51c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3276f86a31ad0054d92ccde8b958da35, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ParryTimedBomb
-  indicatorColor: {r: 0.69411767, g: 0.96470594, b: 0.9960785, a: 1}
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ParryTimedRadialBurstProjectile
+  indicatorColor: {r: 0, g: 0, b: 0, a: 0}
   parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
-  explosionRadius: 8
-  explosionDamage: 1
-  explosionColor: {r: 1, g: 0.6, b: 0.2, a: 1}
-  rangeSprite: {fileID: -2413806693520163455, guid: 106cd4fe22dc0cc41b827ec1c67bb71b, type: 3}
-  rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
-  rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}
-  rangeSortingOrder: -1
   chargeGaugeRenderer: {fileID: 1698442614420345829}
+  burstProjectile:
+    prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+    bulletDamage: 1
+    chargeSeconds: 0
+    chargeDriftSpeed: 0
+    aimAtPlayerWhileCharging: 1
+    aimAtPlayerOnLaunch: 0
+    speed: 10
+    lifetime: 3
+    radius: 0.12
+    trailSeconds: 0.1
+    trailWidthMultiplier: 3
+  burstBulletCount: 12
+  burstStartAngleOffset: 0
+  burstSfxId: 
+  burstEffects:
+    explosion:
+      enabled: 0
+      color: {r: 1, g: 1, b: 1, a: 1}
+      scale: 1
+      count: 12
+    smoke:
+      enabled: 0
+      color: {r: 1, g: 1, b: 1, a: 1}
+      scale: 1
+      count: 12
+    smokeInterval: 0.12
+    muzzleFlash:
+      enabled: 0
+      color: {r: 1, g: 1, b: 1, a: 1}
+      scale: 1
+      count: 12
+    cameraShake:
+      enabled: 0
+      seconds: 0.14
+      distance: 0.22
+      frequency: 0.12
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,12 +327,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 2462b133bd4635b4db437bbd719dcc66, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 022251b8b9b0ac440acb085575248c82, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -777,7 +807,7 @@ SpriteRenderer:
   m_SortingOrder: 21
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 6bba3578aaa949c468c09d783ae52377, type: 3}
-  m_Color: {r: 0, g: 0.63529414, b: 0.909804, a: 1}
+  m_Color: {r: 1, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

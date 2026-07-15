@@ -149,6 +149,7 @@ namespace Week14.Combat
         public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public BossAI OwnerBoss => ownerBoss;
+        protected BulletGauge OwnerBullets => ownerBullets;
         protected Rigidbody2D ProjectileBody => body;
         protected int BulletDamage => bulletDamage;
         protected float ProjectileSpeed => projectileSpeed;

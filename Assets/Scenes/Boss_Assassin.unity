@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &11169860
 Transform:
   m_ObjectHideFlags: 0
@@ -374,7 +374,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.101960786, g: 0.14509805, b: 0.1882353, a: 1}
+  m_Color: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
   m_Intensity: 4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -2828,7 +2828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &670637065
 Transform:
   m_ObjectHideFlags: 0
@@ -3103,7 +3103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &819233378
 Transform:
   m_ObjectHideFlags: 0
@@ -3372,7 +3372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &895086930
 Transform:
   m_ObjectHideFlags: 0
@@ -3635,7 +3635,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3873820293937629566, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_Color.a
-      value: 0.19607843
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5266926221931298650, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_LocalScale.x
@@ -3695,7 +3695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7372413297064936419, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_Color.a
-      value: 0.11764706
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4752,7 +4752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1262190631
 Transform:
   m_ObjectHideFlags: 0
@@ -5353,7 +5353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1446885261
 Transform:
   m_ObjectHideFlags: 0
@@ -5516,7 +5516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1489943086
 Transform:
   m_ObjectHideFlags: 0
@@ -5901,7 +5901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1553370251
 Transform:
   m_ObjectHideFlags: 0
@@ -5985,7 +5985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1565568395
 Transform:
   m_ObjectHideFlags: 0
@@ -7275,7 +7275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1876702467
 Transform:
   m_ObjectHideFlags: 0
@@ -8047,7 +8047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2064610579
 Transform:
   m_ObjectHideFlags: 0
@@ -8499,7 +8499,7 @@ Transform:
   m_GameObject: {fileID: 2958469294905631101}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.288, y: 7.01, z: 0}
+  m_LocalPosition: {x: 0, y: 7.01, z: 0}
   m_LocalScale: {x: 3.3000002, y: 3.3000002, z: 3.3000002}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -9787,6 +9787,19 @@ MonoBehaviour:
       aimAtPlayerWhileCharging: 1
       aimAtPlayerOnLaunch: 0
       speed: 7
+      lifetime: 3
+      radius: 0.12
+      trailSeconds: 0.1
+      trailWidthMultiplier: 3
+  - projectileName: "\uD328\uB9C1\uC548\uD558\uBA74 \uD130\uC9D0"
+    projectile:
+      prefab: {fileID: 1636386283175442648, guid: e13a092842a8017469e895cdff590d97, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 1
+      aimAtPlayerOnLaunch: 0
+      speed: 0
       lifetime: 3
       radius: 0.12
       trailSeconds: 0.1

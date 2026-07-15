@@ -125,6 +125,7 @@ internal static class BossGraphActionEditorUtility
         new("Assassin/Recall Daggers", typeof(AssassinRecallDaggersAction), () => new AssassinRecallDaggersAction()),
         new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
         new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
+        new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
         new("Hacker/Melee Attack", typeof(HackerMeleeAttackAction), () => new HackerMeleeAttackAction()),
         new("Hacker/Thrust", typeof(HackerThrustAction), () => new HackerThrustAction()),
         new("Hacker/Dash", typeof(HackerDashAction), () => new HackerDashAction()),
@@ -319,6 +320,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(AssassinFireNextCloneShooterAction))
         {
             return "Assassin 전용 액션입니다. Spawn Clone Shooters가 채워둔 발사 대기열에서 다음 순서 하나를 꺼내 그 위치에서 투사체를 발사합니다. 분신 차례였다면 발사 직후 그 분신이 페이드아웃되며 사라집니다. 대기열이 비어 있으면 아무 것도 하지 않습니다. 이 노드를 여러 번(원하는 만큼) 배치하고 사이에 Wait 등을 끼워 넣어 템포를 자유롭게 조절하세요.";
+        }
+
+        if (actionType == typeof(AssassinSpawnRandomBombsAction))
+        {
+            return "Assassin 전용 액션입니다. 분신 스폰 구역(Clone Spawn Zone) 안에 폭탄을 여러 개 랜덤 배치합니다. 구역은 분신 소환과 공유하지만, 폭탄끼리 최소 간격(Min Separation Distance)과 플레이어와 최소거리(Min Distance From Player)는 이 액션에서 따로 지정합니다. Spawn Interval만큼 텀을 두고 하나씩 소환하며, Charge Seconds가 패링 유예 시간(=터질 때까지 남은 시간)입니다. 패링 판정이나 터질 때의 동작은 스폰되는 탄 프리팹 자신이 담당합니다.";
         }
 
         if (actionType == typeof(HackerFireWireBranchAction))

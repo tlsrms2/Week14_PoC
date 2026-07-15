@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249020
     sequences: []
-    editorPosition: {x: 134, y: -20}
+    editorPosition: {x: 112, y: -20}
   - nodeId: Fire Radial Emission2
     nodeGuid: 06905a3118bd45548280596d7fc6a04e
     nodeKind: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249099
     sequences: []
-    editorPosition: {x: 387, y: -20}
+    editorPosition: {x: 348, y: -20}
   - nodeId: Wait1
     nodeGuid: 61877faef7b7488ea899abc6fa29e6f9
     nodeKind: 3
@@ -53,24 +53,6 @@ MonoBehaviour:
       rid: 4705778150679249057
     sequences: []
     editorPosition: {x: -51, y: -20}
-  - nodeId: Enter Stealth1
-    nodeGuid: 52d3050ecbad4ee1833e30d565e49c8d
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778150679249148
-    sequences: []
-    editorPosition: {x: 790, y: -20}
-  - nodeId: Wait2
-    nodeGuid: 7d64d4e953054c819b556b0a696e56b8
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778150679249154
-    sequences: []
-    editorPosition: {x: 576, y: -20}
   - nodeId: Spawn Clone Shooters1
     nodeGuid: dfa298a4204c49e089cad7110b65e1fe
     nodeKind: 0
@@ -88,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249238
     sequences: []
-    editorPosition: {x: 48, y: 147}
+    editorPosition: {x: 36, y: 147}
   - nodeId: Fire Next Clone Shooter2
     nodeGuid: 4d575d3d313f4c3eb28a95709c99e775
     nodeKind: 0
@@ -97,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249239
     sequences: []
-    editorPosition: {x: 355, y: 147}
+    editorPosition: {x: 364, y: 147}
   - nodeId: Fire Next Clone Shooter3
     nodeGuid: 09207c3143b2436e9468a7923cf5b5be
     nodeKind: 0
@@ -106,8 +88,8 @@ MonoBehaviour:
     action:
       rid: 4705778150679249240
     sequences: []
-    editorPosition: {x: 690, y: 147}
-  - nodeId: Wait3
+    editorPosition: {x: 692, y: 147}
+  - nodeId: Wait2
     nodeGuid: f6cd9cfbecec4ab887b5eb5ca431460e
     nodeKind: 3
     phaseIndex: 0
@@ -115,8 +97,8 @@ MonoBehaviour:
     action:
       rid: 4705778150679249241
     sequences: []
-    editorPosition: {x: 236, y: 147}
-  - nodeId: Wait4
+    editorPosition: {x: 246, y: 147}
+  - nodeId: Wait3
     nodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
     nodeKind: 3
     phaseIndex: 0
@@ -124,8 +106,8 @@ MonoBehaviour:
     action:
       rid: 4705778150679249242
     sequences: []
-    editorPosition: {x: -71, y: 147}
-  - nodeId: Wait5
+    editorPosition: {x: -110, y: 147}
+  - nodeId: Wait4
     nodeGuid: a16dea3ce45149189f532312e8739e43
     nodeKind: 3
     phaseIndex: 0
@@ -134,6 +116,24 @@ MonoBehaviour:
       rid: 4705778150679249243
     sequences: []
     editorPosition: {x: 564, y: 147}
+  - nodeId: Spawn Random Bombs1
+    nodeGuid: 4db8338282ed4baba5e6cd5e6620801a
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805375
+    sequences: []
+    editorPosition: {x: -133, y: 315}
+  - nodeId: Windup1
+    nodeGuid: dc684a5283b943d0830142e6998cd60f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805384
+    sequences: []
+    editorPosition: {x: -297, y: 315}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -141,15 +141,11 @@ MonoBehaviour:
     - 61877faef7b7488ea899abc6fa29e6f9
     - c6500d9e684e40fa835ec49902598fa7
     - 06905a3118bd45548280596d7fc6a04e
-    - 7d64d4e953054c819b556b0a696e56b8
-    - 52d3050ecbad4ee1833e30d565e49c8d
     nodeIds:
     - Fire Radial Emission1
     - Wait1
     - Random Direction Move1
     - Fire Radial Emission2
-    - Wait2
-    - Enter Stealth1
   - patternId: Pattern2
     nodeGuids:
     - dfa298a4204c49e089cad7110b65e1fe
@@ -161,25 +157,40 @@ MonoBehaviour:
     - 09207c3143b2436e9468a7923cf5b5be
     nodeIds:
     - Spawn Clone Shooters1
-    - Wait4
-    - Fire Next Clone Shooter1
     - Wait3
+    - Fire Next Clone Shooter1
+    - Wait2
     - Fire Next Clone Shooter2
-    - Wait5
+    - Wait4
     - Fire Next Clone Shooter3
+  - patternId: Pattern3
+    nodeGuids:
+    - dc684a5283b943d0830142e6998cd60f
+    - 4db8338282ed4baba5e6cd5e6620801a
+    nodeIds:
+    - Windup1
+    - Spawn Random Bombs1
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    patternIntervalSeconds: 3
+    patternIntervalSeconds: 2
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
-    openingPatternId: Pattern2
+    openingPatternId: Pattern1
     patterns:
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 2
+    - patternId: Pattern1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 2
+    - patternId: Pattern3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 5
   transitions:
   - fromNodeGuid: c6500d9e684e40fa835ec49902598fa7
     toNodeGuid: 06905a3118bd45548280596d7fc6a04e
@@ -205,33 +216,17 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 06905a3118bd45548280596d7fc6a04e
-    toNodeGuid: 7d64d4e953054c819b556b0a696e56b8
-    fromNodeId: Fire Radial Emission2
-    toNodeId: Wait2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 7d64d4e953054c819b556b0a696e56b8
-    toNodeGuid: 52d3050ecbad4ee1833e30d565e49c8d
-    fromNodeId: Wait2
-    toNodeId: Enter Stealth1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: bd08acf3447c487d939c24d1e9af6ed0
     toNodeGuid: f6cd9cfbecec4ab887b5eb5ca431460e
     fromNodeId: Fire Next Clone Shooter1
-    toNodeId: Wait3
+    toNodeId: Wait2
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f6cd9cfbecec4ab887b5eb5ca431460e
     toNodeGuid: 4d575d3d313f4c3eb28a95709c99e775
-    fromNodeId: Wait3
+    fromNodeId: Wait2
     toNodeId: Fire Next Clone Shooter2
     fromOutputPortIndex: 0
     conditionType: 0
@@ -240,14 +235,14 @@ MonoBehaviour:
   - fromNodeGuid: dfa298a4204c49e089cad7110b65e1fe
     toNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
     fromNodeId: Spawn Clone Shooters1
-    toNodeId: Wait4
+    toNodeId: Wait3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
     toNodeGuid: bd08acf3447c487d939c24d1e9af6ed0
-    fromNodeId: Wait4
+    fromNodeId: Wait3
     toNodeId: Fire Next Clone Shooter1
     fromOutputPortIndex: 0
     conditionType: 0
@@ -256,22 +251,30 @@ MonoBehaviour:
   - fromNodeGuid: 4d575d3d313f4c3eb28a95709c99e775
     toNodeGuid: a16dea3ce45149189f532312e8739e43
     fromNodeId: Fire Next Clone Shooter2
-    toNodeId: Wait5
+    toNodeId: Wait4
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: a16dea3ce45149189f532312e8739e43
     toNodeGuid: 09207c3143b2436e9468a7923cf5b5be
-    fromNodeId: Wait5
+    fromNodeId: Wait4
     toNodeId: Fire Next Clone Shooter3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: dc684a5283b943d0830142e6998cd60f
+    toNodeGuid: 4db8338282ed4baba5e6cd5e6620801a
+    fromNodeId: Windup1
+    toNodeId: Spawn Random Bombs1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges: []
-  debugForceSinglePattern: 1
-  debugForcedPatternId: 
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -309,10 +312,13 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
     - rid: 4705778150679249057
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.1
+        seconds: 0.3
     - rid: 4705778150679249099
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -443,19 +449,14 @@ MonoBehaviour:
           spawnRadius: 0
           fireInterval: 0
           restSeconds: 0.35
-    - rid: 4705778150679249148
-      type: {class: AssassinEnterStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
-    - rid: 4705778150679249154
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 5
     - rid: 4705778150679249237
       type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        cloneIntroSeconds: 0.2
+        cloneIntroSeconds: 0.4
         cloneTargetAlpha: 200
         includeBossPosition: 1
+        teleportHiddenSeconds: 0.4
+        attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
     - rid: 4705778150679249238
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -472,7 +473,10 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        despawnFadeSeconds: 1.5
+        despawnFadeSeconds: 3
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -513,7 +517,10 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
+        despawnFadeSeconds: 2
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -554,7 +561,10 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        despawnFadeSeconds: 0.2
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -582,7 +592,7 @@ MonoBehaviour:
     - rid: 4705778150679249241
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.5
+        seconds: 1
     - rid: 4705778150679249242
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -590,4 +600,82 @@ MonoBehaviour:
     - rid: 4705778150679249243
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.5
+        seconds: 1
+    - rid: 4705778169994805375
+      type: {class: AssassinSpawnRandomBombsAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC548\uD558\uBA74 \uD130\uC9D0"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        bombCount: 8
+        minSeparationDistance: 3
+        minDistanceFromPlayer: 3
+        spawnInterval: 0.2
+        chargeSeconds: 15
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805384
+      type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 2
+        stopMovement: 1
+        effectOrigin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 1, g: 0, b: 0, a: 1}
+            scale: 1.5
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
