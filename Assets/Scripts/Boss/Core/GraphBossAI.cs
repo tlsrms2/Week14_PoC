@@ -17,7 +17,7 @@ namespace Week14.Enemy
 
         [Header("Groggy (패링 억제)")]
         [Tooltip("그로기 상태 진입/해제 시 애니메이터를 못 찾으면 사용할 대체 검색용입니다. 보통은 자동으로 BodyRoot 밑에서 찾습니다.")]
-        [SerializeField] private Animator groggyAnimator;
+        [SerializeField] private Animator patternGroggyAnimator;
 
         private static readonly int StunParameter = Animator.StringToHash("Stun");
         private static readonly int EndStunParameter = Animator.StringToHash("EndStun");
@@ -142,16 +142,16 @@ namespace Week14.Enemy
 
         private void SetGroggyAnimatorTrigger(int parameter)
         {
-            if (groggyAnimator == null)
+            if (patternGroggyAnimator == null)
             {
-                groggyAnimator = BodyRoot != null
+                patternGroggyAnimator = BodyRoot != null
                     ? BodyRoot.GetComponentInChildren<Animator>(true)
                     : GetComponentInChildren<Animator>(true);
             }
 
-            if (groggyAnimator != null)
+            if (patternGroggyAnimator != null)
             {
-                groggyAnimator.SetTrigger(parameter);
+                patternGroggyAnimator.SetTrigger(parameter);
             }
         }
 
