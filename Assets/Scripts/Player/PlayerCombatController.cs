@@ -479,18 +479,10 @@ namespace Week14.Combat
             RotateToAim();
             UpdateMouseParryRangeRecovery();
             bool isParrySuppressed = IsParrySuppressed;
-            if (isParrySuppressed)
-            {
-                SetMouseParryReticleVisible(false);
-                SetProjectileLockOnIndicatorVisible(false);
-            }
-            else
-            {
-                UpdateMouseParryReticle();
-                UpdateProjectileLockOnTarget();
-                UpdateMouseParryReticleThreat();
-                UpdateProjectileLockOnIndicator();
-            }
+            UpdateMouseParryReticle();
+            UpdateProjectileLockOnTarget();
+            UpdateMouseParryReticleThreat();
+            UpdateProjectileLockOnIndicator();
 
             UpdateBodyColor();
             UpdateDashAutoParry();

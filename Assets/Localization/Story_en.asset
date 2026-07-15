@@ -652,7 +652,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333532901377
     m_Localized: First, we will verify whether the equipment implantation has caused
-      any adverse effects on your nervous system. Please move your body sufficiently.
+      any adverse effects on your nervous system. Please move forward.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901378
@@ -695,7 +695,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901387
-    m_Localized: First, land an attack on the dummy.
+    m_Localized: First, let's test a module that automatically calibrates its aim
+      to adversarial objects. Shoot anywhere.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901388
@@ -710,12 +711,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901390
-    m_Localized: You want me to get shot?
+    m_Localized: Wait, I just had surgery?
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901391
-    m_Localized: The AEGIS system consumes a core upon taking damage to momentarily
-      block lethal damage. Please get hit by the attack fired by the dummy.
+    m_Localized: The AEGIS system is an important function that consumes the core
+      at the time of attack to momentarily block fatal damage, and we will check
+      it in advance for safety.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901392
@@ -737,13 +739,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901395
-    m_Localized: You should have told me something that important sooner.
+    m_Localized: I know...
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901396
-    m_Localized: My apologies. Additionally, please be extremely cautious, as the
-      AEGIS system will not function if there are no bullet-type energy cores available
-      to block the attack, which may result in fatal injury.
+    m_Localized: Additionally, please be extremely cautious, as the AEGIS system
+      will not function if there are no bullet-type energy cores available to block
+      the attack, which may result in fatal injury.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901397
@@ -859,6 +861,16 @@ MonoBehaviour:
   - m_Id: 5333532901402
     m_Localized: If the same core is not consumed for a long time, it will overload
       and be automatically discharged, as it can inflict thermal damage to the user.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 739306561925120
+    m_Localized: In addition, the bullet-shaped energy core displayed on the HUD
+      is consumed when shooting.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 739877813547008
+    m_Localized: However, damage to the body can be invalidated, but shock and pain
+      cannot be alleviated, so please refer to it.
     m_Metadata:
       m_Items: []
   references:

@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.UI;
-using Week14.UI;
 
 namespace Week14.Tutorial
 {
@@ -27,10 +25,10 @@ namespace Week14.Tutorial
         }
 
         private const string DialoguePrefix = ">> ";
+        private const string ObjectiveTitle = "[ 목표 ]";
+        private const string ObjectiveTitleObjectName = "Dialogue_Text-title";
+        private const string ObjectiveTextObjectName = "Dialogue_Text-objective";
         private const string AdvancePromptObjectName = "MouseClick_Image";
-
-        [Tooltip("목표 텍스트 앞에 붙는 접두어의 로컬라이징 문구입니다. 비워두면 기본값(\"[목표] \")을 그대로 사용합니다.")]
-        [SerializeField] private LocalizedString localizedObjectivePrefix;
 
         [Header("Root")]
         [SerializeField] private GameObject root;
@@ -39,6 +37,7 @@ namespace Week14.Tutorial
         [Header("Text")]
         [SerializeField] private GameObject speakerRoot;
         [SerializeField] private TMP_Text speakerText;
+        [SerializeField] private TMP_Text objectiveTitleText;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField, Min(1f)] private float charactersPerSecond = 45f;
 
@@ -74,40 +73,24 @@ namespace Week14.Tutorial
         private bool hasAdvancePromptBaseColor;
         private bool isVisible;
 
-        // 로컬라이징 필드가 비어있으면 이 기본값이 그대로 쓰인다.
-        private string objectivePrefixCache = "[목표] ";
-
         public bool IsTyping { get; private set; }
 
         private void Awake()
         {
+            ResolveObjectiveTextReferences();
             CacheShownPosition();
             CacheDefaultDialogueColor();
             CacheAdvancePromptImage();
 
-            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(
-                localizedObjectivePrefix,
-                LoadoutSelectedSkillPanelLocalization.HasLocalizedString(localizedObjectivePrefix),
-                SetObjectivePrefixCache);
-
             Hide();
         }
-
-        private void OnDestroy()
-        {
-            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(
-                localizedObjectivePrefix,
-                LoadoutSelectedSkillPanelLocalization.HasLocalizedString(localizedObjectivePrefix),
-                SetObjectivePrefixCache);
-        }
-
-        private void SetObjectivePrefixCache(string value) => objectivePrefixCache = value;
 
         public void ShowLine(string speaker, string text)
         {
             ShowPanel();
             SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
+            SetObjectiveTitleVisible(false);
             SetSpeaker(speaker);
             SetDialogueColor(defaultDialogueColor);
             SetDialogueText(FormatDialogue(text), 0);
@@ -164,6 +147,7 @@ namespace Week14.Tutorial
             SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
             SetSpeaker(null);
+            SetObjectiveTitleVisible(true);
             SetDialogueColor(defaultDialogueColor);
             SetDialogueText(FormatObjective(text), int.MaxValue);
         }
@@ -173,6 +157,7 @@ namespace Week14.Tutorial
             ShowPanel();
             SetAdvancePromptBlinking(false);
             SetSpeaker(null);
+            SetObjectiveTitleVisible(true);
             SetDialogueColor(objectiveCompleteColor);
             SetDialogueText(FormatObjective(text), int.MaxValue);
             ShowObjectiveStrikeLine();
@@ -221,6 +206,7 @@ namespace Week14.Tutorial
             SetRootVisible(false);
             SetSpeaker(null);
             SetObjectiveStrikeLineVisible(false);
+            SetObjectiveTitleVisible(false);
             SetDialogueColor(defaultDialogueColor);
             SetText(dialogueText, string.Empty);
 
@@ -438,6 +424,57 @@ namespace Week14.Tutorial
             advancePromptImage.color = color;
         }
 
+        private void ResolveObjectiveTextReferences()
+        {
+            objectiveTitleText ??= FindChildText(ObjectiveTitleObjectName);
+
+            if (dialogueText == null || IsNamed(dialogueText, ObjectiveTitleObjectName))
+            {
+                TMP_Text objectiveText = FindChildText(ObjectiveTextObjectName);
+                if (objectiveText != null)
+                {
+                    dialogueText = objectiveText;
+                }
+            }
+        }
+
+        private TMP_Text FindChildText(string objectName)
+        {
+            if (string.IsNullOrWhiteSpace(objectName))
+            {
+                return null;
+            }
+
+            TMP_Text[] texts = GetComponentsInChildren<TMP_Text>(true);
+            for (int i = 0; i < texts.Length; i++)
+            {
+                TMP_Text text = texts[i];
+                if (IsNamed(text, objectName))
+                {
+                    return text;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool IsNamed(Component component, string objectName)
+        {
+            return component != null
+                && string.Equals(component.name, objectName, StringComparison.Ordinal);
+        }
+
+        private void SetObjectiveTitleVisible(bool visible)
+        {
+            if (objectiveTitleText == null)
+            {
+                return;
+            }
+
+            objectiveTitleText.gameObject.SetActive(visible);
+            SetText(objectiveTitleText, visible ? ObjectiveTitle : string.Empty);
+        }
+
         private void ShowObjectiveStrikeLine()
         {
             if (dialogueText == null)
@@ -581,10 +618,9 @@ namespace Week14.Tutorial
             return value.StartsWith(DialoguePrefix, StringComparison.Ordinal) ? value : DialoguePrefix + value;
         }
 
-        private string FormatObjective(string text)
+        private static string FormatObjective(string text)
         {
-            string value = text ?? string.Empty;
-            return value.StartsWith(objectivePrefixCache, StringComparison.Ordinal) ? value : objectivePrefixCache + value;
+            return text ?? string.Empty;
         }
 
         private static IEnumerator WaitUnscaled(float seconds)
