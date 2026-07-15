@@ -162,6 +162,7 @@ namespace Week14.Combat
         protected bool IsDestroying => isDestroying;
         protected float ProjectileChargeSeconds => projectileChargeSeconds;
         protected float ChargeEndsAt => chargeEndsAt;
+        protected float DestroyAt => destroyAt;
         protected Color ChargingColor => chargingColor;
         protected Color LaunchedColor => launchedColor;
         protected bool WillSplitRadiallyOnLaunch => splitRadiallyOnLaunch && radialSplitBulletCount > 0;

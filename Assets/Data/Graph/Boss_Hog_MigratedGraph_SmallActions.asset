@@ -3012,3 +3012,27 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.AssassinRecallDaggersAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireDistanceTrailProjectilesAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireParrySuppressionBaitAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.BossAreaDamageAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinSpawnCloneShootersAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinFireNextCloneShooterAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinSpawnRandomBombsAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerThrustPerpendicularFireAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerHologramReplayAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0

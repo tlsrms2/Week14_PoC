@@ -5803,19 +5803,6 @@ MonoBehaviour:
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
-  - projectileName: "\uD3ED\uD0C4"
-    projectile:
-      prefab: {fileID: -4836479999064069895, guid: aa5574e84bfb7844cb64ffa4b085348a, type: 3}
-      bulletDamage: 1
-      chargeSeconds: 2
-      chargeDriftSpeed: 0
-      aimAtPlayerWhileCharging: 0
-      aimAtPlayerOnLaunch: 0
-      speed: 0
-      lifetime: 3
-      radius: 0.1
-      trailSeconds: 1
-      trailWidthMultiplier: 3
   - projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
     projectile:
       prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
@@ -5829,7 +5816,7 @@ MonoBehaviour:
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
-  groggyAnimator: {fileID: 5291647841609170472}
+  patternGroggyAnimator: {fileID: 0}
   walkAnimator: {fileID: 0}
   walkVelocityThreshold: 0.01
 --- !u!4 &9185060628594991249

@@ -257,10 +257,13 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
+    phaseMaxHp: 0
     patternIntervalSeconds: 1.5
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern1
+    signaturePatternId: 
+    signaturePatternHpPercent: 50
     patterns:
     - patternId: Pattern2
       weight: 1
@@ -397,7 +400,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern5
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -744,6 +747,7 @@ MonoBehaviour:
         minSeparationDistance: 3
         minDistanceFromPlayer: 3
         spawnInterval: 0.1
+        flightSeconds: 0.1
         chargeSeconds: 10
         spawnSfxId: 
         effects:
@@ -788,7 +792,7 @@ MonoBehaviour:
             count: 12
           smoke:
             enabled: 1
-            color: {r: 1, g: 0, b: 0, a: 1}
+            color: {r: 0, g: 0, b: 0, a: 1}
             scale: 1.5
             count: 12
           smokeInterval: 0.12
