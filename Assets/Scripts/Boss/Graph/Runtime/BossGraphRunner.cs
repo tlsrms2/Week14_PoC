@@ -198,6 +198,12 @@ namespace Week14.Enemy
             }
             finally
             {
+                if (context?.Boss is HackerBossAI hacker
+                    && context.Boss is not HackerHologramBoss)
+                {
+                    hacker.ClearPatternSpawnedWeapons();
+                }
+
                 context?.ClearPatternTerminationRequest();
             }
         }
@@ -285,6 +291,8 @@ namespace Week14.Enemy
             Dictionary<string, BossAction> hologramActions = ClonePatternActions(
                 graph,
                 plan.PatternNodeKeys);
+            // 3페이즈 진입 연출 중에는 리플레이가 시작되어 연출을 취소하지 않도록 한다.
+            yield return hologram.WaitForSummonEntrance();
             hologram.BeginRecordedReplay(hologramStartDelaySeconds);
             try
             {

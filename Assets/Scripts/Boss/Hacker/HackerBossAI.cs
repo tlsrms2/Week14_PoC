@@ -58,6 +58,7 @@ namespace Week14.Enemy
         private float lastSlamAt = float.NegativeInfinity;
         private bool gunWalkCounterParryArmed;
         private bool gunWalkCounterParryTriggered;
+        private bool isHologramSummonUnlocked;
         private HackerFireWireResult lastFireWireResult;
         private HackerHologramBoss hologram;
         public override bool SuppressesBodyContactDamage => true;
@@ -144,7 +145,6 @@ namespace Week14.Enemy
             IgnorePlayerPhysicsCollisions();
             IgnoreTurretLayerCollisions();
             UpdateFacingFromPlayer();
-            TrySummonHologramForCurrentPhase();
         }
 
         private void LateUpdate()
@@ -165,10 +165,35 @@ namespace Week14.Enemy
             base.OnBossDied();
         }
 
+        protected override void OnHpEmptyBegan()
+        {
+            base.OnHpEmptyBegan();
+            DestroyActiveProjectiles();
+            ClearRuntimeCombatEffects();
+            ClearSpawnedWeapons();
+        }
+
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
-            TrySummonHologramForCurrentPhase();
+            int hologramStartPhase = Mathf.Max(1, hologramStartPhaseNumber);
+            if (phaseNumber < hologramStartPhase)
+            {
+                isHologramSummonUnlocked = false;
+                return;
+            }
+
+            if (phaseNumber == hologramStartPhase)
+            {
+                // 홀로그램 리플레이 노드가 먼저 실행되어도 3페이즈 전에는 생성하지 않는다.
+                isHologramSummonUnlocked = true;
+                TryEnsureHologram(playSummonEntrance: true);
+            }
+        }
+
+        internal void ClearPatternSpawnedWeapons()
+        {
+            ClearSpawnedWeapons();
         }
 
         protected override bool TryHandlePlayerHitBeforeDamage(
@@ -199,20 +224,30 @@ namespace Week14.Enemy
 
         protected virtual void OnIdleHackerLateUpdate() { }
 
-        internal bool TryEnsureHologram()
+        protected override bool CanStartGraphPattern()
+        {
+            return (hologram == null || !hologram.IsPlayingSummonEntrance)
+                && base.CanStartGraphPattern();
+        }
+
+        internal bool TryEnsureHologram(bool playSummonEntrance = false)
         {
             if (hologram != null)
             {
                 return false;
             }
 
-            if (hologramPrefab == null || CurrentPhaseNumber < Mathf.Max(1, hologramStartPhaseNumber))
+            if (hologramPrefab == null || !isHologramSummonUnlocked)
             {
                 return false;
             }
 
             hologram = Instantiate(hologramPrefab, transform.position, transform.rotation);
             hologram.Initialize(this);
+            if (playSummonEntrance)
+            {
+                hologram.PlaySummonEntrance();
+            }
             return true;
         }
 
@@ -328,16 +363,23 @@ namespace Week14.Enemy
             {
                 if (weapon != null)
                 {
-                    Destroy(weapon.gameObject);
+                    weapon.DespawnAndRestoreEquippedWeapon();
                 }
             }
         }
 
-        private void TrySummonHologramForCurrentPhase()
+        private void ClearSpawnedWeapons()
         {
-            if (CurrentPhaseNumber >= Mathf.Max(1, hologramStartPhaseNumber))
+            ClearGroundedWeapons();
+
+            HackerThrownWeapon[] weapons = UnityEngine.Object.FindObjectsByType<HackerThrownWeapon>(FindObjectsSortMode.None);
+            for (int i = 0; i < weapons.Length; i++)
             {
-                TryEnsureHologram();
+                HackerThrownWeapon weapon = weapons[i];
+                if (weapon != null && weapon.IsOwnedBy(this))
+                {
+                    weapon.DespawnAndRestoreEquippedWeapon();
+                }
             }
         }
 
@@ -347,6 +389,31 @@ namespace Week14.Enemy
             {
                 Destroy(hologram.gameObject);
                 hologram = null;
+            }
+        }
+
+        private static void ClearRuntimeCombatEffects()
+        {
+            DestroyRuntimeObjects<HackerAttackRangeIndicator>();
+            DestroyRuntimeObjects<HackerMeleeParryWindow>();
+            DestroyRuntimeObjects<HackerSnipingChargeIndicator>();
+            DestroyRuntimeObjects<HackerDashedAimIndicator>();
+            DestroyRuntimeObjects<HackerSpiderWebHazard>();
+            DestroyRuntimeObjects<HackerSpiderWebCellIndicator>();
+            DestroyRuntimeObjects<HackerSpiderWebCellExplosionVisual>();
+            DestroyRuntimeObjects<HackerWire>();
+            DestroyRuntimeObjects<HackerWireNodeLinkVisual>();
+        }
+
+        private static void DestroyRuntimeObjects<T>() where T : Component
+        {
+            T[] runtimeObjects = UnityEngine.Object.FindObjectsByType<T>(FindObjectsSortMode.None);
+            for (int i = 0; i < runtimeObjects.Length; i++)
+            {
+                if (runtimeObjects[i] != null)
+                {
+                    UnityEngine.Object.Destroy(runtimeObjects[i].gameObject);
+                }
             }
         }
     }

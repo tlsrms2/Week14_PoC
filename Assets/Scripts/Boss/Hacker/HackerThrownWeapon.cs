@@ -33,6 +33,7 @@ namespace Week14.Enemy
 
         public HackerThrownWeaponType WeaponType { get; private set; }
         public bool IsGrounded => !isThrown && !isRecalling && !isOrbiting;
+        internal bool IsOwnedBy(HackerBossAI boss) => owner == boss;
 
         public Transform GetChildTransform(string childPath)
         {
@@ -85,6 +86,7 @@ namespace Week14.Enemy
             isRecalling = false;
             isOrbiting = false;
             equippedWeapon = nextEquippedWeapon;
+            MatchEquippedWeaponWorldScale();
             restoreEquippedWeapon = equippedWeapon != null && equippedWeapon.gameObject.activeSelf;
             if (restoreEquippedWeapon)
             {
@@ -170,7 +172,14 @@ namespace Week14.Enemy
 
         private void OnDestroy()
         {
+            RestoreEquippedWeapon();
             owner?.UnregisterGroundedWeapon(this);
+        }
+
+        internal void DespawnAndRestoreEquippedWeapon()
+        {
+            RestoreEquippedWeapon();
+            Destroy(gameObject);
         }
 
         private void TickRecall()
@@ -210,6 +219,17 @@ namespace Week14.Enemy
             }
 
             restoreEquippedWeapon = false;
+        }
+
+        private void MatchEquippedWeaponWorldScale()
+        {
+            if (equippedWeapon == null || transform.parent != null)
+            {
+                return;
+            }
+
+            // 투척 프리팹은 월드 루트에 생성되므로, 손에 장착된 무기의 실제 표시 크기를 그대로 사용한다.
+            transform.localScale = equippedWeapon.lossyScale;
         }
 
         private void ConfigurePhysicsCollisionsIgnored()

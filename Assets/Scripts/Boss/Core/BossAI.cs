@@ -695,6 +695,11 @@ namespace Week14.Enemy
             projectileTracker.Unregister(projectile);
         }
 
+        protected void DestroyActiveProjectiles()
+        {
+            projectileTracker.DestroyAll();
+        }
+
         public Vector2 GetFacingDirection()
         {
             return bodyRoot != null ? (Vector2)bodyRoot.right : Vector2.right;
