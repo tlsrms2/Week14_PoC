@@ -107,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.AssassinDagger
   turnDegreesPerSecond: 720
   arrivalDistance: 0.2
+  trailRadius: 0.15
+  trailSeconds: 0.1
+  trailWidthMultiplier: 3
 --- !u!58 &-4263489955315390070
 CircleCollider2D:
   m_ObjectHideFlags: 0

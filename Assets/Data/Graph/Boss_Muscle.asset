@@ -1682,6 +1682,7 @@ MonoBehaviour:
     selectionMode: 3
     phaseMaxHp: 0
     patternIntervalSeconds: 2
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern1
@@ -1717,6 +1718,7 @@ MonoBehaviour:
     selectionMode: 3
     phaseMaxHp: 0
     patternIntervalSeconds: 2
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern6

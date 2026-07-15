@@ -4971,6 +4971,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 signaturePatternId.stringValue = newPatternId;
             }
 
+            SerializedProperty forcedPatternId = phase.FindPropertyRelative("forcedPatternId");
+            if (forcedPatternId != null && forcedPatternId.stringValue == oldPatternId)
+            {
+                forcedPatternId.stringValue = newPatternId;
+            }
+
             SerializedProperty entries = phase.FindPropertyRelative("patterns");
             if (entries == null)
             {
@@ -5592,6 +5598,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
             EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("initialPatternDelaySeconds"),
+                new GUIContent("Initial Pattern Delay Seconds", "이 페이즈에 진입해서 첫 패턴을 고르기 전까지 딱 한 번만 대기하는 시간입니다."));
+            EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("bossCanFlyOverGround"),
                 new GUIContent("Boss Can Fly Over Ground"));
             EditorGUILayout.PropertyField(
@@ -5632,6 +5641,23 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 phase.FindPropertyRelative("signaturePatternHpPercent"),
                 new GUIContent("Signature Pattern HP Percent"));
 
+            SerializedProperty forcedPatternId = phase.FindPropertyRelative("forcedPatternId");
+            if (forcedPatternId != null)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField(
+                        new GUIContent("Forced Pattern", "보스의 ShouldUseForcedGraphPattern()이 true인 동안, 정상적인 가중치 선택 대신 다음 패턴으로 무조건 이 패턴을 씁니다(예: Assassin - 단검이 일정 개수 이상 쌓였을 때)."),
+                        GUILayout.Width(EditorGUIUtility.labelWidth - 4f));
+                    string nextForcedPatternId = DrawPatternIdPopup(forcedPatternId.stringValue, patternIds);
+                    if (nextForcedPatternId != forcedPatternId.stringValue)
+                    {
+                        forcedPatternId.stringValue = nextForcedPatternId;
+                        changed = true;
+                    }
+                }
+            }
+
             EditorGUI.indentLevel--;
         }
 
@@ -5648,9 +5674,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SetEnum(phase, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SetInt(phase, "phaseMaxHp", 0);
         SetFloat(phase, "patternIntervalSeconds", 0f);
+        SetFloat(phase, "initialPatternDelaySeconds", 0f);
         SetString(phase, "openingPatternId", string.Empty);
         SetString(phase, "signaturePatternId", string.Empty);
         SetFloat(phase, "signaturePatternHpPercent", 50f);
+        SetString(phase, "forcedPatternId", string.Empty);
         SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
         phasePatterns?.ClearArray();
     }
