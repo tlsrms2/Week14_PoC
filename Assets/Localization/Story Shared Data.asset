@@ -723,6 +723,14 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_Duel_ObjectiveFormat
     m_Metadata:
       m_Items: []
+  - m_Id: 739306561925120
+    m_Key: TutorialDialogueSet_9_1_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 739877813547008
+    m_Key: TutorialDialogueSet_13_1_Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

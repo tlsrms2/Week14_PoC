@@ -8,7 +8,6 @@ using UnityEngine.Video;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
-using Week14.Environment;
 using Week14.Input;
 using Week14.Save;
 using Week14.Skills;
@@ -25,6 +24,11 @@ namespace Week14.Tutorial
     {
         private const string TextPanelRootName = "TextPanelRoot";
         private const string ObjectivePanelRootName = "ObjectivePanelRoot";
+        private const string TutorialMapRootName = "TutorialMap";
+        private const string MoveDestinationName = "Move Destination";
+        private const string TrapdoorLeftName = "Trapdoor-L";
+        private const string TrapdoorRightName = "Trapdoor-R";
+        private const string UnderfloorName = "underfloor";
 
         [Header("Data")]
         [SerializeField] private TutorialDialogueSetSO dialogueSet;
@@ -57,16 +61,27 @@ namespace Week14.Tutorial
         [SerializeField] private string lobbySceneName = "LobbyScene";
         [SerializeField] private UnityEvent completed;
 
-        [Header("Room Transition")]
-        [SerializeField] private BossCombatSlidingDoor roomTransitionDoor;
-        [SerializeField] private Collider2D nextRoomArea;
-        [SerializeField] private Transform nextRoomTarget;
-        [SerializeField, Min(0.1f)] private float nextRoomArrivalRadius = 1f;
+        [Header("Training Enemy Summon")]
+        [SerializeField] private Transform trapdoorLeft;
+        [SerializeField] private Transform trapdoorRight;
+        [SerializeField] private Transform underfloor;
+        [SerializeField] private Vector3 trapdoorLowerLocalOffset = new(0f, -1f, 0f);
+        [SerializeField] private Vector3 underfloorRaiseLocalOffset = new(0f, 2f, 0f);
+        [SerializeField, Min(0f)] private float trapdoorLowerSeconds = 0.45f;
+        [SerializeField, Min(0f)] private float underfloorRaiseSeconds = 0.8f;
+        [SerializeField, Min(0f)] private float summonSettleSeconds = 0.15f;
+
+        [Header("Move Tutorial")]
+        [SerializeField] private Transform moveDestination;
+        [SerializeField, Min(0.01f)] private float moveDestinationBlinkSeconds = 0.8f;
+        [SerializeField, Range(0f, 1f)] private float moveDestinationMinAlpha = 0f;
+        [SerializeField, Range(0f, 1f)] private float moveDestinationMaxAlpha = 1f;
+        [SerializeField, Min(0f)] private float moveDestinationFallbackRadius = 0.5f;
+
+        [Header("Respawn")]
         [SerializeField] private Transform firstRoomRespawnPoint;
-        [SerializeField] private Transform secondRoomRespawnPoint;
 
         [Header("Goals")]
-        [SerializeField, Min(0.1f)] private float moveDistanceGoal = 3f;
         [SerializeField, Min(1)] private int attackHitGoal = 3;
         [SerializeField, Min(1)] private int hitGoal = 1;
         [SerializeField, Min(1)] private int parryGoal = 3;
@@ -83,14 +98,10 @@ namespace Week14.Tutorial
         private int shootCount;
         private int attackHitCount;
         private int hitCount;
-        private int roomTransitionCount;
         private int parryCount;
         private int skillCount;
         private int duelDefeatCount;
         private int previousPlayerBulletCount;
-        private float moveDistance;
-        private Vector2 previousMovePosition;
-        private bool hasPreviousMovePosition;
         private bool attackRefillRequested;
         private bool combatPermissionPushed;
         private bool bulletTimeoutLockPushed;
@@ -98,6 +109,8 @@ namespace Week14.Tutorial
         private bool dialogueSkillSuppressionPushed;
         private bool preLeftAttackSuppressionPushed;
         private bool preSkillSuppressionPushed;
+        private bool preParrySuppressionPushed;
+        private bool hitParrySuppressionPushed;
         private bool explanationLeftAttackSuppressionPushed;
         private bool explanationParrySuppressionPushed;
         private bool explanationSkillSuppressionPushed;
@@ -106,11 +119,24 @@ namespace Week14.Tutorial
         private bool skillHitThisAttempt;
         private bool initialMovementLockReleased;
         private bool completionInvulnerabilityPushed;
+        private bool trainingEnemySummoned;
+        private bool summonStartPoseCached;
+        private Vector3 trapdoorLeftClosedLocalPosition;
+        private Vector3 trapdoorRightClosedLocalPosition;
+        private Vector3 underfloorHiddenLocalPosition;
+        private SpriteRenderer[] moveDestinationRenderers;
+        private Color[] moveDestinationBaseColors;
+        private Collider2D[] moveDestinationColliders;
+        private BoxCollider2D trapdoorLeftBarrier;
+        private BoxCollider2D trapdoorRightBarrier;
         private PlayerCombatController initialMovementLockedPlayer;
+        private PlayerCombatController summonMovementLockedPlayer;
+        private PlayerCombatController dialogueMovementLockedPlayer;
         private PlayerCombatController explanationMovementLockedPlayer;
         private Coroutine tutorialRoutine;
         private Coroutine deathRoutine;
         private Coroutine explanationVideoRoutine;
+        private Coroutine moveDestinationBlinkRoutine;
 
         private void Awake()
         {
@@ -126,6 +152,7 @@ namespace Week14.Tutorial
             combatPermissionPushed = true;
             PushPreLeftAttackSuppression();
             PushPreSkillSuppression();
+            PushPreParrySuppression();
             PlayerHP.PushBulletTimeoutLock();
             bulletTimeoutLockPushed = true;
             TrySubscribeSkillManager();
@@ -144,11 +171,17 @@ namespace Week14.Tutorial
             ClearEnemySubscription();
             SetBossUiVisible(false);
             PopDialogueAdvanceInput();
+            PopDialogueMovementLock();
             PopPreLeftAttackSuppression();
             PopPreSkillSuppression();
+            PopPreParrySuppression();
+            PopHitParrySuppression();
             HideExplanation();
             PopExplanationInputLock();
+            EndMoveDestinationObjective(false);
+            SetTrapdoorBarrierActive(false);
             ReleaseInitialMovementLock();
+            ReleaseSummonMovementLock();
             PopCompletionInvulnerability();
 
             if (combatPermissionPushed)
@@ -184,16 +217,23 @@ namespace Week14.Tutorial
         private void Start()
         {
             ResolveDialoguePanels();
+            ResolveSummonSceneReferences();
+            ResolveMoveDestinationReference();
+            CacheSummonStartPose();
+            CacheMoveDestinationReferences();
+            SetupTrapdoorPlayerBarriers();
 
             if (sceneTrainingEnemy != null && hideSceneEnemyUntilTraining)
             {
                 sceneTrainingEnemy.gameObject.SetActive(false);
             }
 
+            PrepareTrainingEnemyForSummon();
+            SetMoveDestinationActive(false);
+
             HideDialoguePanels();
             HideExplanation();
             SetBossUiVisible(false);
-            ApplyDoorStateForStep(TutorialStepId.Intro);
             TryPushInitialMovementLock();
             tutorialRoutine = StartCoroutine(RunTutorial());
         }
@@ -301,16 +341,6 @@ namespace Week14.Tutorial
             }
         }
 
-        private IEnumerator HideTextDialoguePanelAnimated()
-        {
-            if (textDialoguePanel == null)
-            {
-                yield break;
-            }
-
-            yield return textDialoguePanel.HideAnimated();
-        }
-
         private IEnumerator HideAllDialoguePanelsAnimated()
         {
             if (textDialoguePanel != null)
@@ -332,7 +362,6 @@ namespace Week14.Tutorial
         private IEnumerator RunTutorialFrom(TutorialStepId startStep, bool waitFirstDialogue)
         {
             ConfigureInputSuppressionForStep(startStep);
-            ApplyDoorStateForStep(startStep);
 
             if (waitFirstDialogue)
             {
@@ -356,19 +385,15 @@ namespace Week14.Tutorial
                 yield return RunObjectiveStage(TutorialStepId.Shoot, TutorialTrainingEnemyMode.Passive, 1);
             }
 
-            if (ShouldRunStep(startIndex, TutorialStepId.RoomTransition))
-            {
-                yield return RunRoomTransitionStage();
-            }
-
             if (ShouldRunStep(startIndex, TutorialStepId.Attack))
             {
+                yield return EnsureTrainingEnemySummoned(startIndex < GetFlowIndex(TutorialStepId.Attack));
                 yield return RunObjectiveStage(TutorialStepId.Attack, TutorialTrainingEnemyMode.AttackTarget, attackHitGoal);
             }
 
             if (ShouldRunStep(startIndex, TutorialStepId.Hit))
             {
-                yield return RunObjectiveStage(TutorialStepId.Hit, TutorialTrainingEnemyMode.ParryPractice, hitGoal);
+                yield return RunObjectiveStage(TutorialStepId.Hit, TutorialTrainingEnemyMode.ForcedHitPractice, hitGoal);
             }
 
             if (ShouldRunStep(startIndex, TutorialStepId.Parry))
@@ -413,46 +438,22 @@ namespace Week14.Tutorial
             tutorialRoutine = null;
         }
 
-        private IEnumerator RunRoomTransitionStage()
-        {
-            activeStep = TutorialStepId.RoomTransition;
-            ResetStepProgress(TutorialStepId.RoomTransition);
-            SetBossUiVisible(false);
-            activeEnemy?.Deactivate();
-            EnemyProjectile.DestroyAllActive();
-
-            yield return PlayDialogue(TutorialStepId.RoomTransition);
-
-            if (roomTransitionDoor != null)
-            {
-                yield return roomTransitionDoor.OpenAndWait();
-            }
-
-            yield return HideTextDialoguePanelAnimated();
-
-            while (roomTransitionCount < 1)
-            {
-                TickStepProgress(TutorialStepId.RoomTransition);
-                yield return null;
-            }
-
-            if (roomTransitionDoor != null)
-            {
-                yield return roomTransitionDoor.CloseAndWait();
-            }
-        }
-
         private IEnumerator RunObjectiveStage(TutorialStepId step, TutorialTrainingEnemyMode enemyMode, int goal)
         {
             activeStep = step;
             ResetStepProgress(step);
-            ActivateTrainingEnemy(TutorialTrainingEnemyMode.Passive);
-            SetBossUiVisible(false);
-            if (step == TutorialStepId.Move)
+            bool usesTrainingEnemy = UsesTrainingEnemy(step);
+            if (usesTrainingEnemy)
             {
-                ReleaseInitialMovementLock();
+                ActivateTrainingEnemy(TutorialTrainingEnemyMode.Passive);
             }
-            else if (step == TutorialStepId.Hit)
+            else
+            {
+                PrepareTrainingEnemyForSummon();
+            }
+
+            SetBossUiVisible(false);
+            if (step == TutorialStepId.Hit)
             {
                 RestorePlayerResources(true);
             }
@@ -465,6 +466,15 @@ namespace Week14.Tutorial
             else if (step == TutorialStepId.Skill)
             {
                 PopPreSkillSuppression();
+            }
+            else if (step == TutorialStepId.Parry)
+            {
+                PopPreParrySuppression();
+            }
+
+            if (step == TutorialStepId.Hit)
+            {
+                PushHitParrySuppression();
             }
 
             int safeGoal = Mathf.Max(1, goal);
@@ -479,11 +489,20 @@ namespace Week14.Tutorial
                 RestorePlayerResources(true);
             }
 
-            ActivateTrainingEnemy(enemyMode);
+            if (usesTrainingEnemy)
+            {
+                ActivateTrainingEnemy(enemyMode);
+            }
+
             SetBossUiVisible(step == TutorialStepId.Duel);
             if (step == TutorialStepId.Shoot || step == TutorialStepId.Attack)
             {
                 RestorePlayerBullets();
+            }
+
+            if (step == TutorialStepId.Move)
+            {
+                BeginMoveDestinationObjective();
             }
 
             yield return ShowObjectivePanel(step, safeGoal);
@@ -500,6 +519,11 @@ namespace Week14.Tutorial
             }
 
             yield return CompleteObjectivePanel(step, safeGoal);
+
+            if (step == TutorialStepId.Hit)
+            {
+                PopHitParrySuppression();
+            }
         }
 
         private IEnumerator RunSkillObjectiveStage(TutorialTrainingEnemyMode enemyMode, int goal)
@@ -594,21 +618,37 @@ namespace Week14.Tutorial
 
         private IEnumerator PlayDialogueLines(TutorialStepContent content)
         {
-            PushDialogueAdvanceInput();
-            for (int i = 0; i < content.Dialogues.Count; i++)
+            bool shouldLockMovement = ShouldLockMovementDuringDialogue();
+            if (shouldLockMovement)
             {
-                TutorialDialogueLine line = content.Dialogues[i];
-                if (line == null)
-                {
-                    continue;
-                }
-
-                string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
-                string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
-                yield return PlayDialogueLine(speaker, text, line.SfxId, line.Explanation);
+                PushDialogueMovementLock();
             }
 
-            PopDialogueAdvanceInput();
+            PushDialogueAdvanceInput();
+            try
+            {
+                for (int i = 0; i < content.Dialogues.Count; i++)
+                {
+                    TutorialDialogueLine line = content.Dialogues[i];
+                    if (line == null)
+                    {
+                        continue;
+                    }
+
+                    string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
+                    string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
+                    yield return PlayDialogueLine(speaker, text, line.SfxId, line.Explanation);
+                }
+            }
+            finally
+            {
+                PopDialogueAdvanceInput();
+                if (shouldLockMovement)
+                {
+                    ReleaseInitialMovementLock();
+                    PopDialogueMovementLock();
+                }
+            }
         }
 
         private IEnumerator PlayDialogueLine(
@@ -828,6 +868,293 @@ namespace Week14.Tutorial
             yield return PlaySupplementalDialogue(TutorialStepId.AttackRefill);
         }
 
+        private IEnumerator EnsureTrainingEnemySummoned(bool playSequence)
+        {
+            if (trainingEnemySummoned)
+            {
+                yield break;
+            }
+
+            ResolveSummonSceneReferences();
+            CacheSummonStartPose();
+            PrepareTrainingEnemyForSummon();
+
+            if (playSequence)
+            {
+                PushSummonMovementLock();
+                yield return AnimateTrapdoorsLowering();
+                trainingEnemySummoned = true;
+                ActivateTrainingEnemy(TutorialTrainingEnemyMode.Passive);
+                activeEnemy?.SetPlayerInteractionEnabled(false);
+                yield return AnimateUnderfloorRaising();
+                ReleaseSummonMovementLock();
+                activeEnemy?.SetPlayerInteractionEnabled(true);
+                yield return WaitUnscaled(summonSettleSeconds);
+                yield break;
+            }
+            else
+            {
+                ApplyTrapdoorPose(1f);
+                ApplyUnderfloorPose(1f);
+                SetTrapdoorBarrierActive(false);
+            }
+
+            trainingEnemySummoned = true;
+            ActivateTrainingEnemy(TutorialTrainingEnemyMode.Passive);
+            ReleaseSummonMovementLock();
+        }
+
+        private IEnumerator AnimateTrapdoorsLowering()
+        {
+            float duration = Mathf.Max(0f, trapdoorLowerSeconds);
+            if (duration <= 0f)
+            {
+                ApplyTrapdoorPose(1f);
+                SetTrapdoorBarrierActive(false);
+                yield break;
+            }
+
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                ApplyTrapdoorPose(Ease01(elapsed / duration));
+                yield return null;
+            }
+
+            ApplyTrapdoorPose(1f);
+            SetTrapdoorBarrierActive(false);
+        }
+
+        private IEnumerator AnimateUnderfloorRaising()
+        {
+            float duration = Mathf.Max(0f, underfloorRaiseSeconds);
+            if (duration <= 0f)
+            {
+                ApplyUnderfloorPose(1f);
+                yield break;
+            }
+
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                ApplyUnderfloorPose(Ease01(elapsed / duration));
+                yield return null;
+            }
+
+            ApplyUnderfloorPose(1f);
+        }
+
+        private void ApplyTrapdoorPose(float t)
+        {
+            float eased = Mathf.Clamp01(t);
+            if (trapdoorLeft != null)
+            {
+                trapdoorLeft.localPosition = trapdoorLeftClosedLocalPosition + trapdoorLowerLocalOffset * eased;
+            }
+
+            if (trapdoorRight != null)
+            {
+                trapdoorRight.localPosition = trapdoorRightClosedLocalPosition + trapdoorLowerLocalOffset * eased;
+            }
+        }
+
+        private void ApplyUnderfloorPose(float t)
+        {
+            if (underfloor != null)
+            {
+                underfloor.localPosition = underfloorHiddenLocalPosition + underfloorRaiseLocalOffset * Mathf.Clamp01(t);
+            }
+        }
+
+        private void SetupTrapdoorPlayerBarriers()
+        {
+            ResolveSummonSceneReferences();
+            trapdoorLeftBarrier = EnsureTrapdoorPlayerBarrier(trapdoorLeft, trapdoorLeftBarrier);
+            trapdoorRightBarrier = EnsureTrapdoorPlayerBarrier(trapdoorRight, trapdoorRightBarrier);
+        }
+
+        private BoxCollider2D EnsureTrapdoorPlayerBarrier(Transform trapdoor, BoxCollider2D cachedBarrier)
+        {
+            if (trapdoor == null)
+            {
+                return null;
+            }
+
+            BoxCollider2D barrier = cachedBarrier != null && cachedBarrier.transform == trapdoor
+                ? cachedBarrier
+                : trapdoor.GetComponent<BoxCollider2D>();
+            if (barrier == null)
+            {
+                barrier = trapdoor.gameObject.AddComponent<BoxCollider2D>();
+            }
+
+            if (!trapdoor.TryGetComponent(out PlayerOnlyMovementBarrier _))
+            {
+                trapdoor.gameObject.AddComponent<PlayerOnlyMovementBarrier>();
+            }
+
+            barrier.isTrigger = true;
+            ConfigureTrapdoorBarrierSize(trapdoor, barrier);
+            return barrier;
+        }
+
+        private static void ConfigureTrapdoorBarrierSize(Transform trapdoor, BoxCollider2D barrier)
+        {
+            if (barrier == null)
+            {
+                return;
+            }
+
+            SpriteRenderer renderer = trapdoor != null ? trapdoor.GetComponent<SpriteRenderer>() : null;
+            Sprite sprite = renderer != null ? renderer.sprite : null;
+            if (sprite == null)
+            {
+                barrier.offset = Vector2.zero;
+                barrier.size = Vector2.one;
+                return;
+            }
+
+            Bounds localBounds = sprite.bounds;
+            barrier.offset = localBounds.center;
+            barrier.size = localBounds.size;
+        }
+
+        private void SetTrapdoorBarrierActive(bool active)
+        {
+            if (trapdoorLeftBarrier != null)
+            {
+                trapdoorLeftBarrier.enabled = active;
+            }
+
+            if (trapdoorRightBarrier != null)
+            {
+                trapdoorRightBarrier.enabled = active;
+            }
+        }
+
+        private void PrepareTrainingEnemyForSummon()
+        {
+            trainingEnemySummoned = false;
+            SetupTrapdoorPlayerBarriers();
+            SetTrapdoorBarrierActive(true);
+            TutorialTrainingEnemy enemy = EnsureTrainingEnemy();
+            if (enemy == null)
+            {
+                return;
+            }
+
+            enemy.Deactivate();
+            enemy.SetPlayerInteractionEnabled(false);
+            if (hideSceneEnemyUntilTraining)
+            {
+                enemy.gameObject.SetActive(false);
+            }
+        }
+
+        private void ResolveSummonSceneReferences()
+        {
+            trapdoorLeft ??= FindSceneTransformByName(TrapdoorLeftName);
+            trapdoorRight ??= FindSceneTransformByName(TrapdoorRightName);
+            underfloor ??= FindSceneTransformByName(UnderfloorName);
+        }
+
+        private void ResolveMoveDestinationReference()
+        {
+            moveDestination ??= FindSceneTransformByName(MoveDestinationName);
+        }
+
+        private void CacheMoveDestinationReferences()
+        {
+            ResolveMoveDestinationReference();
+            if (moveDestination == null)
+            {
+                moveDestinationRenderers = null;
+                moveDestinationBaseColors = null;
+                moveDestinationColliders = null;
+                return;
+            }
+
+            moveDestinationRenderers = moveDestination.GetComponentsInChildren<SpriteRenderer>(true);
+            moveDestinationBaseColors = new Color[moveDestinationRenderers.Length];
+            for (int i = 0; i < moveDestinationRenderers.Length; i++)
+            {
+                SpriteRenderer renderer = moveDestinationRenderers[i];
+                moveDestinationBaseColors[i] = renderer != null ? renderer.color : Color.white;
+            }
+
+            moveDestinationColliders = moveDestination.GetComponentsInChildren<Collider2D>(true);
+        }
+
+        private void CacheSummonStartPose()
+        {
+            if (summonStartPoseCached)
+            {
+                return;
+            }
+
+            ResolveSummonSceneReferences();
+            trapdoorLeftClosedLocalPosition = trapdoorLeft != null ? trapdoorLeft.localPosition : Vector3.zero;
+            trapdoorRightClosedLocalPosition = trapdoorRight != null ? trapdoorRight.localPosition : Vector3.zero;
+            underfloorHiddenLocalPosition = underfloor != null ? underfloor.localPosition : Vector3.zero;
+            summonStartPoseCached = true;
+        }
+
+        private Transform FindSceneTransformByName(string targetName)
+        {
+            if (string.IsNullOrWhiteSpace(targetName))
+            {
+                return null;
+            }
+
+            Transform fallback = null;
+            Transform[] transforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                Transform candidate = transforms[i];
+                if (candidate == null
+                    || candidate.gameObject.scene != gameObject.scene
+                    || candidate.name != targetName)
+                {
+                    continue;
+                }
+
+                if (HasParentNamed(candidate, TutorialMapRootName))
+                {
+                    return candidate;
+                }
+
+                fallback ??= candidate;
+            }
+
+            return fallback;
+        }
+
+        private static bool HasParentNamed(Transform candidate, string parentName)
+        {
+            for (Transform current = candidate; current != null; current = current.parent)
+            {
+                if (current.name == parentName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool UsesTrainingEnemy(TutorialStepId step)
+        {
+            TutorialStepId checkpoint = GetCheckpointStep(step);
+            return checkpoint == TutorialStepId.Attack
+                || checkpoint == TutorialStepId.Hit
+                || checkpoint == TutorialStepId.Parry
+                || checkpoint == TutorialStepId.Skill
+                || checkpoint == TutorialStepId.Duel;
+        }
+
+        private static float Ease01(float t)
+        {
+            return Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t));
+        }
+
         private void ActivateTrainingEnemy(TutorialTrainingEnemyMode mode)
         {
             TutorialTrainingEnemy enemy = EnsureTrainingEnemy();
@@ -851,14 +1178,8 @@ namespace Week14.Tutorial
                 return activeEnemy;
             }
 
-            if (trainingEnemyPrefab != null)
-            {
-                Vector3 position = enemySpawnPoint != null ? enemySpawnPoint.position : transform.position;
-                Quaternion rotation = enemySpawnPoint != null ? enemySpawnPoint.rotation : Quaternion.identity;
-                spawnedEnemy = Instantiate(trainingEnemyPrefab, position, rotation);
-                activeEnemy = spawnedEnemy;
-            }
-            else
+            TutorialTrainingEnemy prefab = IsSceneObjectReference(trainingEnemyPrefab) ? null : trainingEnemyPrefab;
+            if (sceneTrainingEnemy != null)
             {
                 activeEnemy = sceneTrainingEnemy;
                 if (activeEnemy != null && enemySpawnPoint != null)
@@ -866,8 +1187,20 @@ namespace Week14.Tutorial
                     activeEnemy.transform.SetPositionAndRotation(enemySpawnPoint.position, enemySpawnPoint.rotation);
                 }
             }
+            else if (prefab != null)
+            {
+                Vector3 position = enemySpawnPoint != null ? enemySpawnPoint.position : transform.position;
+                Quaternion rotation = enemySpawnPoint != null ? enemySpawnPoint.rotation : Quaternion.identity;
+                spawnedEnemy = Instantiate(prefab, position, rotation);
+                activeEnemy = spawnedEnemy;
+            }
 
             return activeEnemy;
+        }
+
+        private static bool IsSceneObjectReference(Component component)
+        {
+            return component != null && component.gameObject.scene.IsValid();
         }
 
         private Transform ResolvePlayer()
@@ -886,11 +1219,7 @@ namespace Week14.Tutorial
         {
             if (step == TutorialStepId.Move)
             {
-                TickMoveDistance();
-            }
-            else if (step == TutorialStepId.RoomTransition)
-            {
-                roomTransitionCount = HasReachedNextRoom() ? 1 : 0;
+                TickMoveDestination();
             }
         }
 
@@ -902,7 +1231,6 @@ namespace Week14.Tutorial
                 TutorialStepId.Shoot => shootCount,
                 TutorialStepId.Attack => attackHitCount,
                 TutorialStepId.Hit => hitCount,
-                TutorialStepId.RoomTransition => roomTransitionCount,
                 TutorialStepId.Parry => parryCount,
                 TutorialStepId.Skill => skillCount,
                 TutorialStepId.Duel => duelDefeatCount,
@@ -915,8 +1243,6 @@ namespace Week14.Tutorial
             if (step == TutorialStepId.Move)
             {
                 moveCount = 0;
-                moveDistance = 0f;
-                hasPreviousMovePosition = TryGetPlayerPosition(out previousMovePosition);
             }
             else if (step == TutorialStepId.Attack)
             {
@@ -934,10 +1260,6 @@ namespace Week14.Tutorial
             else if (step == TutorialStepId.Hit)
             {
                 hitCount = 0;
-            }
-            else if (step == TutorialStepId.RoomTransition)
-            {
-                roomTransitionCount = HasReachedNextRoom() ? 1 : 0;
             }
             else if (step == TutorialStepId.Skill)
             {
@@ -974,66 +1296,180 @@ namespace Week14.Tutorial
             objectiveDialoguePanel?.ShowObjective(FormatObjective(step, GetStepProgress(step), goal));
         }
 
-        private void TickMoveDistance()
+        private void BeginMoveDestinationObjective()
         {
-            if (!TryGetPlayerPosition(out Vector2 currentPosition))
-            {
-                return;
-            }
-
-            if (!hasPreviousMovePosition)
-            {
-                previousMovePosition = currentPosition;
-                hasPreviousMovePosition = true;
-                return;
-            }
-
-            float delta = Vector2.Distance(previousMovePosition, currentPosition);
-            previousMovePosition = currentPosition;
-            if (delta <= 0.001f)
-            {
-                return;
-            }
-
-            float goal = Mathf.Max(0.1f, moveDistanceGoal);
-            moveDistance = Mathf.Min(goal, moveDistance + delta);
-            moveCount = moveDistance >= goal ? 1 : 0;
+            moveCount = 0;
+            ReleaseSummonMovementLock();
+            ResolveMoveDestinationReference();
+            CacheMoveDestinationReferences();
+            SetMoveDestinationActive(true);
+            SetMoveDestinationAlpha(moveDestinationMinAlpha);
+            StartMoveDestinationBlink();
+            ReleaseInitialMovementLock();
         }
 
-        private bool TryGetPlayerPosition(out Vector2 position)
+        private void TickMoveDestination()
+        {
+            if (moveCount > 0 || !HasReachedMoveDestination())
+            {
+                return;
+            }
+
+            moveCount = 1;
+            EndMoveDestinationObjective(true);
+        }
+
+        private void EndMoveDestinationObjective(bool reached)
+        {
+            StopMoveDestinationBlink();
+            SetMoveDestinationActive(false);
+        }
+
+        private void StartMoveDestinationBlink()
+        {
+            StopMoveDestinationBlink();
+            if (moveDestination == null)
+            {
+                return;
+            }
+
+            moveDestinationBlinkRoutine = StartCoroutine(BlinkMoveDestination());
+        }
+
+        private void StopMoveDestinationBlink()
+        {
+            if (moveDestinationBlinkRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(moveDestinationBlinkRoutine);
+            moveDestinationBlinkRoutine = null;
+        }
+
+        private IEnumerator BlinkMoveDestination()
+        {
+            float elapsed = 0f;
+            float duration = Mathf.Max(0.01f, moveDestinationBlinkSeconds);
+            while (true)
+            {
+                float t = Mathf.PingPong(elapsed / duration, 1f);
+                float alpha = Mathf.Lerp(moveDestinationMinAlpha, moveDestinationMaxAlpha, t);
+                SetMoveDestinationAlpha(alpha);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private void SetMoveDestinationActive(bool active)
+        {
+            ResolveMoveDestinationReference();
+            if (moveDestination == null)
+            {
+                return;
+            }
+
+            if (moveDestination.gameObject.activeSelf != active)
+            {
+                moveDestination.gameObject.SetActive(active);
+            }
+
+            if (!active)
+            {
+                SetMoveDestinationAlpha(moveDestinationMinAlpha);
+            }
+        }
+
+        private void SetMoveDestinationAlpha(float alpha)
+        {
+            if (moveDestinationRenderers == null)
+            {
+                CacheMoveDestinationReferences();
+            }
+
+            if (moveDestinationRenderers == null || moveDestinationBaseColors == null)
+            {
+                return;
+            }
+
+            float clampedAlpha = Mathf.Clamp01(alpha);
+            for (int i = 0; i < moveDestinationRenderers.Length; i++)
+            {
+                SpriteRenderer renderer = moveDestinationRenderers[i];
+                if (renderer == null)
+                {
+                    continue;
+                }
+
+                Color color = i < moveDestinationBaseColors.Length ? moveDestinationBaseColors[i] : renderer.color;
+                color.a = clampedAlpha;
+                renderer.color = color;
+            }
+        }
+
+        private bool HasReachedMoveDestination()
         {
             Transform playerTransform = ResolvePlayer();
-            if (playerTransform == null)
+            if (playerTransform == null || moveDestination == null || !moveDestination.gameObject.activeInHierarchy)
             {
-                position = Vector2.zero;
                 return false;
             }
 
-            position = playerTransform.position;
-            return true;
-        }
-
-        private bool HasReachedNextRoom()
-        {
-            Transform playerTransform = ResolvePlayer();
-            if (playerTransform == null)
+            if (moveDestinationColliders == null)
             {
-                return false;
+                CacheMoveDestinationReferences();
             }
 
             Vector2 playerPosition = playerTransform.position;
-            if (nextRoomArea != null)
+            Collider2D[] playerColliders = playerTransform.GetComponentsInChildren<Collider2D>();
+            bool hasDestinationCollider = false;
+
+            if (moveDestinationColliders != null)
             {
-                return nextRoomArea.OverlapPoint(playerPosition);
+                for (int destinationIndex = 0; destinationIndex < moveDestinationColliders.Length; destinationIndex++)
+                {
+                    Collider2D destinationCollider = moveDestinationColliders[destinationIndex];
+                    if (!IsUsableCollider(destinationCollider))
+                    {
+                        continue;
+                    }
+
+                    hasDestinationCollider = true;
+                    if (destinationCollider.OverlapPoint(playerPosition))
+                    {
+                        return true;
+                    }
+
+                    for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
+                    {
+                        Collider2D playerCollider = playerColliders[playerIndex];
+                        if (!IsUsableCollider(playerCollider))
+                        {
+                            continue;
+                        }
+
+                        ColliderDistance2D distance = destinationCollider.Distance(playerCollider);
+                        if (destinationCollider.IsTouching(playerCollider)
+                            || distance.isOverlapped
+                            || distance.distance <= 0f)
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
 
-            if (nextRoomTarget == null)
+            if (hasDestinationCollider)
             {
                 return false;
             }
 
-            float radius = Mathf.Max(0.1f, nextRoomArrivalRadius);
-            return Vector2.SqrMagnitude(playerPosition - (Vector2)nextRoomTarget.position) <= radius * radius;
+            return Vector2.Distance(playerPosition, moveDestination.position) <= moveDestinationFallbackRadius;
+        }
+
+        private static bool IsUsableCollider(Collider2D collider)
+        {
+            return collider != null && collider.enabled && collider.gameObject.activeInHierarchy;
         }
 
         private void SetBossUiVisible(bool visible)
@@ -1272,8 +1708,9 @@ namespace Week14.Tutorial
             if (activeStep == TutorialStepId.Hit
                 && player == PlayerCombatController.Active)
             {
-                hitCount++;
+                hitCount = Mathf.Max(hitCount + 1, Mathf.Max(1, hitGoal));
                 EnemyProjectile.DestroyAllActive();
+                activeEnemy?.Deactivate();
                 return;
             }
 
@@ -1306,6 +1743,8 @@ namespace Week14.Tutorial
             }
 
             PopDialogueAdvanceInput();
+            PopDialogueMovementLock();
+            PopHitParrySuppression();
             HideExplanation();
             HideDialoguePanels();
             SetBossUiVisible(false);
@@ -1316,9 +1755,8 @@ namespace Week14.Tutorial
 
             yield return SceneTransition.PlayCoverReveal(() =>
             {
-                RestorePlayerForRetry(restartStep);
+                RestorePlayerForRetry();
                 ConfigureInputSuppressionForStep(restartStep);
-                ApplyDoorStateForStep(restartStep);
             });
 
             deathRoutine = null;
@@ -1374,6 +1812,67 @@ namespace Week14.Tutorial
 
             initialMovementLockedPlayer.PopExternalMovementLock();
             initialMovementLockedPlayer = null;
+        }
+
+        private void PushSummonMovementLock()
+        {
+            if (summonMovementLockedPlayer != null)
+            {
+                return;
+            }
+
+            PlayerCombatController activePlayer = PlayerCombatController.Active;
+            if (activePlayer == null)
+            {
+                return;
+            }
+
+            activePlayer.PushExternalMovementLock();
+            summonMovementLockedPlayer = activePlayer;
+        }
+
+        private void ReleaseSummonMovementLock()
+        {
+            if (summonMovementLockedPlayer == null)
+            {
+                return;
+            }
+
+            summonMovementLockedPlayer.PopExternalMovementLock();
+            summonMovementLockedPlayer = null;
+        }
+
+        private bool ShouldLockMovementDuringDialogue()
+        {
+            return GetFlowIndex(activeStep) > GetFlowIndex(TutorialStepId.Move);
+        }
+
+        private void PushDialogueMovementLock()
+        {
+            if (dialogueMovementLockedPlayer != null)
+            {
+                return;
+            }
+
+            PlayerCombatController activePlayer = PlayerCombatController.Active;
+            if (activePlayer == null)
+            {
+                return;
+            }
+
+            activePlayer.PushExternalMovementLock();
+            dialogueMovementLockedPlayer = activePlayer;
+        }
+
+        private void PopDialogueMovementLock()
+        {
+            if (dialogueMovementLockedPlayer == null)
+            {
+                return;
+            }
+
+            dialogueMovementLockedPlayer.PopExternalMovementLock();
+            dialogueMovementLockedPlayer = null;
         }
 
         private void PushDialogueAdvanceInput()
@@ -1449,6 +1948,50 @@ namespace Week14.Tutorial
 
             SkillLoadoutManager.PopSkillUseSuppression();
             preSkillSuppressionPushed = false;
+        }
+
+        private void PushPreParrySuppression()
+        {
+            if (preParrySuppressionPushed)
+            {
+                return;
+            }
+
+            PlayerCombatController.PushParrySuppression();
+            preParrySuppressionPushed = true;
+        }
+
+        private void PopPreParrySuppression()
+        {
+            if (!preParrySuppressionPushed)
+            {
+                return;
+            }
+
+            PlayerCombatController.PopParrySuppression();
+            preParrySuppressionPushed = false;
+        }
+
+        private void PushHitParrySuppression()
+        {
+            if (hitParrySuppressionPushed)
+            {
+                return;
+            }
+
+            PlayerCombatController.PushParrySuppression();
+            hitParrySuppressionPushed = true;
+        }
+
+        private void PopHitParrySuppression()
+        {
+            if (!hitParrySuppressionPushed)
+            {
+                return;
+            }
+
+            PlayerCombatController.PopParrySuppression();
+            hitParrySuppressionPushed = false;
         }
 
         private void PushExplanationInputLock()
@@ -1529,13 +2072,22 @@ namespace Week14.Tutorial
             {
                 PopPreSkillSuppression();
             }
+
+            if (GetFlowIndex(checkpoint) < GetFlowIndex(TutorialStepId.Parry))
+            {
+                PushPreParrySuppression();
+            }
+            else
+            {
+                PopPreParrySuppression();
+            }
         }
 
-        private void RestorePlayerForRetry(TutorialStepId step)
+        private void RestorePlayerForRetry()
         {
             PlayerCombatController activePlayer = PlayerCombatController.Active;
             Transform playerTransform = activePlayer != null ? activePlayer.transform : ResolvePlayer();
-            Transform checkpoint = ResolveRespawnPoint(step);
+            Transform checkpoint = ResolveRespawnPoint();
 
             if (playerTransform != null && checkpoint != null)
             {
@@ -1563,40 +2115,9 @@ namespace Week14.Tutorial
             hpView?.SetExecutionVisible(true);
         }
 
-        private Transform ResolveRespawnPoint(TutorialStepId step)
+        private Transform ResolveRespawnPoint()
         {
-            if (IsSecondRoomStep(step) && secondRoomRespawnPoint != null)
-            {
-                return secondRoomRespawnPoint;
-            }
-
-            if (firstRoomRespawnPoint != null)
-            {
-                return firstRoomRespawnPoint;
-            }
-
-            return ResolvePlayer();
-        }
-
-        private void ApplyDoorStateForStep(TutorialStepId step)
-        {
-            if (roomTransitionDoor == null)
-            {
-                return;
-            }
-
-            if (GetFlowIndex(GetCheckpointStep(step)) >= GetFlowIndex(TutorialStepId.RoomTransition))
-            {
-                roomTransitionDoor.CloseInstant();
-                return;
-            }
-
-            roomTransitionDoor.CloseInstant();
-        }
-
-        private static bool IsSecondRoomStep(TutorialStepId step)
-        {
-            return GetFlowIndex(GetCheckpointStep(step)) > GetFlowIndex(TutorialStepId.RoomTransition);
+            return firstRoomRespawnPoint != null ? firstRoomRespawnPoint : ResolvePlayer();
         }
 
         private static TutorialStepId GetCheckpointStep(TutorialStepId step)
@@ -1621,17 +2142,18 @@ namespace Week14.Tutorial
                 TutorialStepId.Intro => 0,
                 TutorialStepId.Move => 1,
                 TutorialStepId.Shoot => 2,
+                // Legacy serialized value resumes at the first post-shoot combat stage.
                 TutorialStepId.RoomTransition => 3,
-                TutorialStepId.Attack => 4,
-                TutorialStepId.Hit => 5,
-                TutorialStepId.Parry => 6,
-                TutorialStepId.BulletTimeout => 7,
-                TutorialStepId.SkillGauge => 8,
-                TutorialStepId.Skill => 9,
-                TutorialStepId.Duel => 10,
-                TutorialStepId.Complete => 11,
-                TutorialStepId.AttackRefill => 4,
-                TutorialStepId.SkillRetry => 9,
+                TutorialStepId.Attack => 3,
+                TutorialStepId.Hit => 4,
+                TutorialStepId.Parry => 5,
+                TutorialStepId.BulletTimeout => 6,
+                TutorialStepId.SkillGauge => 7,
+                TutorialStepId.Skill => 8,
+                TutorialStepId.Duel => 9,
+                TutorialStepId.Complete => 10,
+                TutorialStepId.AttackRefill => 3,
+                TutorialStepId.SkillRetry => 8,
                 _ => 0
             };
         }
