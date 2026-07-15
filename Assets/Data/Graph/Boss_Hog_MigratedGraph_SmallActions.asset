@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908213
     sequences: []
-    editorPosition: {x: -69, y: 111}
+    editorPosition: {x: -33, y: 113}
   - nodeId: Move Body Root7
     nodeGuid: ce4123afab7d4dd1a1006edc046127ae
     nodeKind: 1
@@ -331,7 +331,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908238
     sequences: []
-    editorPosition: {x: -184, y: 107}
+    editorPosition: {x: -258, y: 113}
   - nodeId: Aim Boss Child At Player2
     nodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeKind: 3
@@ -530,6 +530,15 @@ MonoBehaviour:
       rid: 5830051031957897377
     sequences: []
     editorPosition: {x: -41, y: -211}
+  - nodeId: Fire Parry Suppression Bait1
+    nodeGuid: 3522aa54567742e8b4cf7d6b8729de9b
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805693
+    sequences: []
+    editorPosition: {x: -422, y: 296}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -598,6 +607,7 @@ MonoBehaviour:
     - Aim Boss Child At Player3
   - patternId: Pattern6
     nodeGuids:
+    - 3522aa54567742e8b4cf7d6b8729de9b
     - ce4123afab7d4dd1a1006edc046127ae
     - 95e98c45d91f40ebaa39891809eb0608
     - 9f8c1fc4eb744cd384a3643ef74d455a
@@ -618,6 +628,7 @@ MonoBehaviour:
     - 35be3ef8c8d943e58a6387d109e9d4ea
     - 012e402336f44732aa1ece9020f26813
     nodeIds:
+    - Fire Parry Suppression Bait1
     - Move Body Root7
     - Move Body Root8
     - Fire Radial Emission5
@@ -673,10 +684,13 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 4
+    phaseMaxHp: 0
     patternIntervalSeconds: 2
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern8
+    signaturePatternId: 
+    signaturePatternHpPercent: 50
     patterns:
     - patternId: Pattern8
       weight: 1
@@ -696,10 +710,13 @@ MonoBehaviour:
       cooldownPatternCount: 2
   - phaseIndex: 1
     selectionMode: 4
+    phaseMaxHp: 0
     patternIntervalSeconds: 2
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern5
+    signaturePatternId: 
+    signaturePatternHpPercent: 50
     patterns:
     - patternId: Pattern8
       weight: 1
@@ -1122,9 +1139,17 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 3522aa54567742e8b4cf7d6b8729de9b
+    toNodeGuid: ce4123afab7d4dd1a1006edc046127ae
+    fromNodeId: Fire Parry Suppression Bait1
+    toNodeId: Move Body Root7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges: []
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:
@@ -2283,6 +2308,59 @@ MonoBehaviour:
         flipYByFacing: 1
         deactivateOnEnd: 1
         deactivateOnPatternEnd: 1
+    - rid: 4705778169994805693
+      type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uD134\uC5B5\uC81C\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        baitDurationSeconds: 0.8
+        rewardBulletCount: 3
+        rewardCircleRadius: 1
+        groggySeconds: 3
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 5830051031957897314
       type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2932,5 +3010,29 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
     nodeKind: 0
   - actionTypeName: Week14.Enemy.AssassinRecallDaggersAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireDistanceTrailProjectilesAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.FireParrySuppressionBaitAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.BossAreaDamageAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinSpawnCloneShootersAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinFireNextCloneShooterAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.AssassinSpawnRandomBombsAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerThrustPerpendicularFireAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0
+  - actionTypeName: Week14.Enemy.HackerHologramReplayAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 0

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
   - component: {fileID: 6470095641802324841}
-  - component: {fileID: 1636386283175442648}
+  - component: {fileID: 4145516694036420089}
   m_Layer: 7
-  m_Name: EnemyBullet_BurstBomb
+  m_Name: ParryBullet_Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 283032737206523962}
+  - {fileID: 2747033344528112976}
   - {fileID: 106508601314591411}
   - {fileID: 992607595532873848}
   m_Father: {fileID: 0}
@@ -100,7 +100,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.000000014901161, y: 0.0022179484}
   m_Radius: 0.15399449
---- !u!114 &1636386283175442648
+--- !u!114 &4145516694036420089
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,52 +109,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 744419277602116065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3276f86a31ad0054d92ccde8b958da35, type: 3}
+  m_Script: {fileID: 11500000, guid: 362d270217c11784b9f5c4ed02582d7b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ParryTimedRadialBurstProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.ParryBaitRewardProjectile
   indicatorColor: {r: 0, g: 0, b: 0, a: 0}
   parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
-  chargeGaugeRenderer: {fileID: 1698442614420345829}
-  burstProjectile:
-    prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
-    bulletDamage: 1
-    chargeSeconds: 0
-    chargeDriftSpeed: 0
-    aimAtPlayerWhileCharging: 1
+  rewardProjectile:
+    prefab: {fileID: 5897565683229663206, guid: 70f36bf00a1b0394e95570ecf3f378d8, type: 3}
+    bulletDamage: 0
+    chargeSeconds: 0.15
+    chargeDriftSpeed: 0.25
+    aimAtPlayerWhileCharging: 0
     aimAtPlayerOnLaunch: 0
-    speed: 10
+    speed: 0
     lifetime: 3
     radius: 0.12
     trailSeconds: 0.1
     trailWidthMultiplier: 3
-  burstBulletCount: 20
-  burstStartAngleOffset: 0
-  burstSfxId: 
-  burstEffects:
-    explosion:
-      enabled: 0
-      color: {r: 1, g: 1, b: 1, a: 1}
-      scale: 1
-      count: 12
-    smoke:
-      enabled: 0
-      color: {r: 1, g: 1, b: 1, a: 1}
-      scale: 1
-      count: 12
-    smokeInterval: 0.12
-    muzzleFlash:
-      enabled: 0
-      color: {r: 1, g: 1, b: 1, a: 1}
-      scale: 1
-      count: 12
-    cameraShake:
-      enabled: 0
-      seconds: 0.14
-      distance: 0.22
-      frequency: 0.12
+  rewardBulletCount: 3
+  rewardCircleRadius: 1.5
+  rewardLifetime: 2
+  chargeGaugeRenderer: {fileID: 4655416485861890584}
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,97 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1260421973164232580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2747033344528112976}
+  - component: {fileID: 4655416485861890584}
+  m_Layer: 0
+  m_Name: ChargeGauge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2747033344528112976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260421973164232580}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.04988, y: 4.04988, z: 4.04988}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2354031526117083692}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &4655416485861890584
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260421973164232580}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 06df8d8ec32a4290b36323049cb59f23, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 21
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: 6bba3578aaa949c468c09d783ae52377, type: 3}
+  m_Color: {r: 0, g: 0.63529414, b: 0.909804, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.32, y: 0.32}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &3615603145030084618
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,12 +396,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 022251b8b9b0ac440acb085575248c82, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2462b133bd4635b4db437bbd719dcc66, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -721,97 +790,6 @@ SpriteRenderer:
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.05, y: 0.05}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
---- !u!1 &8863555420136937086
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 283032737206523962}
-  - component: {fileID: 1698442614420345829}
-  m_Layer: 0
-  m_Name: ChargeGauge
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &283032737206523962
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8863555420136937086}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.049875, y: 4.049875, z: 4.049875}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 2354031526117083692}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1698442614420345829
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8863555420136937086}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 06df8d8ec32a4290b36323049cb59f23, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 21
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 6bba3578aaa949c468c09d783ae52377, type: 3}
-  m_Color: {r: 1, g: 0, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

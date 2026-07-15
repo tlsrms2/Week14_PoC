@@ -23,7 +23,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float minDistanceFromPlayer = 2f;
         [Tooltip("폭탄을 하나씩 스폰할 때, 스폰 사이에 두는 대기 시간(초)입니다. 0이면 전부 동시에 스폰합니다.")]
         [SerializeField, Min(0f)] private float spawnInterval = 0.2f;
-        [Tooltip("패링되지 않고 버틸 수 있는 시간(초)입니다. 이 시간이 지나면 폭탄이 알아서 터집니다(폭발 방식은 탄 프리팹이 결정합니다).")]
+        [Tooltip("보스 위치에서 스폰 위치까지 날아가는 데 걸리는 시간(초)입니다. 날아가는 동안에는 플레이어와 상호작용(피격 판정, 패링)이 되지 않고, 도착하면 정상적으로 상호작용 가능해집니다.")]
+        [SerializeField, Min(0f)] private float flightSeconds = 0.4f;
+        [Tooltip("(착지 후) 패링되지 않고 버틸 수 있는 시간(초)입니다. 이 시간이 지나면 폭탄이 알아서 터집니다(폭발 방식은 탄 프리팹이 결정합니다).")]
         [SerializeField, Min(0f)] private float chargeSeconds = 1.5f;
         [SerializeField, BossGraphSfxId] private string spawnSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -51,28 +53,65 @@ namespace Week14.Enemy
                 }
 
                 Vector3 spawnOrigin = positions[i];
-                Vector2 direction = context.GetDirectionToPlayer(spawnOrigin);
+                Vector3 bossOrigin = context.OriginPosition;
+                Vector2 direction = context.GetDirectionToPlayer(bossOrigin);
 
                 EnemyProjectile spawned = context.FireProjectile(
                     projectile,
-                    spawnOrigin,
+                    bossOrigin,
                     direction,
                     0f,
                     aimAtPlayerWhileChargingOverride: false,
                     aimAtPlayerOnLaunchOverride: false,
-                    chargeSecondsOverride: chargeSeconds,
+                    chargeSecondsOverride: flightSeconds + chargeSeconds,
                     projectileName: projectileName);
 
                 if (spawned != null)
                 {
                     context.PlaySfx(spawnSfxId);
-                    context.PlayOriginBurst(effects, spawnOrigin);
+                    context.PlayOriginBurst(effects, bossOrigin);
+
+                    if (flightSeconds > 0f)
+                    {
+                        // 보스 위치에서 스폰 위치까지 날아가는 동안에는 플레이어와 상호작용(피격/패링)을
+                        // 막아두고, 도착하는 순간 되돌린다. 폭탄 자신의 코루틴으로 돌려서, 다음 폭탄을
+                        // 스폰하는 이 액션의 메인 루프(spawnInterval 대기)와 독립적으로 진행된다.
+                        spawned.ConfigurePlayerCollisionIgnored(true);
+                        spawned.ConfigureInterceptable(false);
+
+                        Transform anchor = FormationAlignAnchor.Create(
+                            bossOrigin,
+                            spawnOrigin,
+                            flightSeconds,
+                            null,
+                            flightSeconds + chargeSeconds + 0.5f);
+                        spawned.ConfigureChargeAnchor(anchor);
+                        spawned.ConfigureChargeMotion(0f, false, false);
+
+                        spawned.StartCoroutine(ReenableInteractionAfterFlight(spawned, flightSeconds));
+                    }
                 }
 
                 if (i < positions.Count - 1 && spawnInterval > 0f)
                 {
                     yield return context.WaitSeconds(spawnInterval);
                 }
+            }
+        }
+
+        private static IEnumerator ReenableInteractionAfterFlight(EnemyProjectile bomb, float delaySeconds)
+        {
+            float remaining = delaySeconds;
+            while (remaining > 0f)
+            {
+                remaining -= EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            if (bomb != null)
+            {
+                bomb.ConfigurePlayerCollisionIgnored(false);
+                bomb.ConfigureInterceptable(true);
             }
         }
     }

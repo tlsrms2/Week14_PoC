@@ -118,6 +118,8 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
         new("Projectile/Fire Player Circle", typeof(FirePlayerCircleProjectilesAction), () => new FirePlayerCircleProjectilesAction()),
         new("Projectile/Spawn Parryable Bomb", typeof(SpawnParryableBombAction), () => new SpawnParryableBombAction()),
+        new("Projectile/Fire Parry Suppression Bait", typeof(FireParrySuppressionBaitAction), () => new FireParrySuppressionBaitAction()),
+        new("Combat/Boss Area Damage", typeof(BossAreaDamageAction), () => new BossAreaDamageAction()),
         new("Arsonist/Fire Circle Orbit Attack", typeof(ArsonistCircleOrbitAttackAction), () => new ArsonistCircleOrbitAttackAction()),
         new("Arsonist/Fire Character", typeof(ArsonistFireCharacterProjectileAction), () => new ArsonistFireCharacterProjectileAction()),
         new("Arsonist/Set Sprinkler Active", typeof(ArsonistSetSprinklerActiveAction), () => new ArsonistSetSprinklerActiveAction()),
@@ -373,6 +375,16 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(FireDistanceTrailProjectilesAction))
         {
             return "이동 액션(Random Direction Move 등)과 P 포트로 병렬 연결해서 씁니다. 시간 간격이 아니라 실제 이동 거리(Move Distance)를 Bullet Count로 균등 분할한 간격마다 그 순간의 보스 위치에 탄을 스폰합니다. 이동 속도에 가속/감속 커브가 있어도 궤적상 간격이 일정합니다. Move Distance는 함께 실행되는 이동 액션의 Distance 값과 같게 맞춰야 합니다. 조준/충전 오버라이드를 강제하지 않으므로 탄 프리셋의 Aim At Player On Launch 등이 그대로 적용됩니다.";
+        }
+
+        if (actionType == typeof(FireParrySuppressionBaitAction))
+        {
+            return "패링으로 패턴을 억제(취소)시키는 시퀀스의 시작 액션입니다. ParryBaitRewardProjectile(플레이어에게 데미지를 주지 않는 순수 패링 타겟)을 소환합니다. Bait Duration 안에 패링되면: 지금 돌고 있는 패턴 전체가 취소되고(뒤에 배치한 액션들은 실행되지 않음), 보스가 Groggy Seconds 동안 그로기(무력화) 상태가 되며, 그 자리에 보상 탄이 원형(Reward Circle Radius, Reward Bullet Count)으로 뿌려집니다(보상 탄의 지속시간도 Groggy Seconds와 같게 맞춰집니다). Bait Duration 안에 패링되지 않으면 아무 효과 없이 사라지고 패턴이 그대로 이어집니다.";
+        }
+
+        if (actionType == typeof(BossAreaDamageAction))
+        {
+            return "투사체 없이, 보스 자신을 중심으로 원형 인디케이터를 띄우고 Windup Seconds가 지나면 그 범위 안 플레이어에게 광역 데미지를 줍니다. 인디케이터가 다 차면 Slam Bool Name을 켜고(Spawn Parryable Bomb과 동일한 방식), Impact Event Id로 지정한 Animation Event가 올 때까지 기다렸다가 실제 폭발/데미지를 발동합니다 — 내려찍는 애니메이션의 충돌 프레임과 정확히 맞출 수 있습니다. Fire Parry Suppression Bait와 P 포트로 병렬 연결하고 Windup Seconds를 그 액션의 Bait Duration Seconds와 같게 맞추면, 패링 가능 시간 내내 인디케이터가 보이다가 패링 성공 시 패턴 전체(이 액션 포함)가 취소되고 패링 실패 시 애니메이션 타이밍에 맞춰 폭발 데미지가 발동하는 '패링으로 억제 가능한 광역 공격'을 만들 수 있습니다.";
         }
 
         if (actionType == typeof(WanderAroundPlayerDistanceAction))
