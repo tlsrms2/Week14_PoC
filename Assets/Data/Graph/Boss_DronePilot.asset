@@ -1952,6 +1952,24 @@ MonoBehaviour:
       rid: 6489939200651559127
     sequences: []
     editorPosition: {x: -312, y: 205}
+  - nodeId: Conducting Cue37
+    nodeGuid: aa726d3bbfd544f88ef36db7366fe1cf
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939200651559128
+    sequences: []
+    editorPosition: {x: -503, y: 204}
+  - nodeId: Wander40
+    nodeGuid: 9ab5e7849219404da6ddd9137351a6c7
+    nodeKind: 4
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939200651559129
+    sequences: []
+    editorPosition: {x: -500, y: 385}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -2468,11 +2486,15 @@ MonoBehaviour:
     - Wander9
     - Conducting Cue19
     - Wander22
-  - patternId: Pattern1
+  - patternId: Pattern2
     nodeGuids:
+    - aa726d3bbfd544f88ef36db7366fe1cf
     - 58e96085d30f42808ebc37f093409405
+    - 9ab5e7849219404da6ddd9137351a6c7
     nodeIds:
+    - Conducting Cue37
     - Parry Suppression Bait1
+    - Wander40
   defaultPatternIds:
   - "\uD328\uD134 \uC0AC\uC774"
   - P1
@@ -2538,8 +2560,8 @@ MonoBehaviour:
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
-    - patternId: Pattern1
-      weight: 1
+    - patternId: Pattern2
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
   - phaseIndex: 1
@@ -2592,7 +2614,7 @@ MonoBehaviour:
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
-    - patternId: Pattern1
+    - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -3253,6 +3275,14 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: aa726d3bbfd544f88ef36db7366fe1cf
+    toNodeGuid: 58e96085d30f42808ebc37f093409405
+    fromNodeId: Conducting Cue37
+    toNodeId: Parry Suppression Bait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
     toNodeGuid: 26515eb0638a43f1806915f4cdb037e0
@@ -3870,6 +3900,12 @@ MonoBehaviour:
     toNodeGuid: cc7f317add99417198f406c485884adc
     fromNodeId: Conducting Cue33
     toNodeId: Diamond Collapse4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: aa726d3bbfd544f88ef36db7366fe1cf
+    toNodeGuid: 9ab5e7849219404da6ddd9137351a6c7
+    fromNodeId: Conducting Cue37
+    toNodeId: Wander40
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -14872,7 +14908,7 @@ MonoBehaviour:
       type: {class: ConductorParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         bossTargetPosition: {x: 6, y: 0}
-        bossMoveSpeed: 8
+        bossMoveSpeed: 9
         bossArrivalDistance: 0.05
         bossMoveTimeoutSeconds: 5
         bossMoveStallSeconds: 0.2
@@ -14961,3 +14997,32 @@ MonoBehaviour:
         releaseWanderSpeed: 4
         releaseWanderRadius: 3
         releaseWanderRetargetSeconds: 0.6
+    - rid: 6489939200651559128
+      type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        patternId: P2-2
+        stopMovement: 1
+        headOffset: {x: 0, y: 0.5}
+        scale: 0.225
+        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        lineWidth: 0.125
+        strokeDrawSeconds: 0.3
+        strokeIntervalSeconds: 0.05
+        holdSeconds: 0.7
+        fadeSeconds: 0.1
+        sortingOrder: 90
+        completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
+        completedFlashSeconds: 0.08
+        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        drawCompletedOutline: 1
+        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineWidth: 0.025
+        migratedCompletedStrokeSettings: 1
+    - rid: 6489939200651559129
+      type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        wanderSeconds: 1.85
+        speed: 3.2
+        radius: 2.8
+        retargetSeconds: 1.5
+        waitForDuration: 1

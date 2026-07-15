@@ -74,7 +74,7 @@ namespace Week14.Enemy
                 return false;
             }
 
-            return IsCombatStartedForState || IsPlayerDetected();
+            return IsCombatStartedForState;
         }
 
         // 패링으로 패턴을 억제하는 액션(예: FireParrySuppressionBaitAction)이 패링 성공을 감지하면 호출한다.

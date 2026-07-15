@@ -653,7 +653,6 @@ public class GraphBossAIEditor : Editor
             || path == "displayName"
             || path == "maxHp"
             || path == "hpEmptyExecutionSeconds"
-            || path == "detectionRange"
             || path == "moveSpeed";
     }
 

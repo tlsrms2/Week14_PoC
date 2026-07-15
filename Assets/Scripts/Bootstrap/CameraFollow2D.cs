@@ -47,6 +47,7 @@ namespace Week14.Bootstrap
         private bool hasBasePosition;
         private bool hasCurrentFocusPosition;
         private bool cinematicFocusActive;
+        private bool cinematicReturnToCombatViewActive;
         private float cinematicFocusWeight = 0.5f;
         private float cinematicZoomMultiplier = 1f;
         private BossAI activeBoss;
@@ -69,7 +70,11 @@ namespace Week14.Bootstrap
 
             if (activeBoss == null)
             {
-                HandleBossCombatStarted(Object.FindFirstObjectByType<BossAI>());
+                BossAI boss = Object.FindFirstObjectByType<BossAI>();
+                if (boss != null && boss.IsCombatStarted)
+                {
+                    HandleBossCombatStarted(boss);
+                }
             }
         }
 
@@ -165,9 +170,24 @@ namespace Week14.Bootstrap
             }
 
             cinematicFocusActive = true;
+            cinematicReturnToCombatViewActive = false;
             cinematicFocusWeight = Mathf.Clamp01(weight);
-            cinematicZoomMultiplier = Mathf.Clamp(zoomMultiplier, 0.35f, 1f);
+            cinematicZoomMultiplier = Mathf.Clamp(zoomMultiplier, 0.1f, 1f);
             ApplyFocusTarget(nextFocusTarget);
+        }
+
+        public float CalculateCinematicZoomMultiplier(Bounds focusBounds, float viewportFillRatio)
+        {
+            if (controlledCamera == null || !controlledCamera.orthographic || baseOrthographicSize <= 0f)
+            {
+                return 1f;
+            }
+
+            float fillRatio = Mathf.Clamp(viewportFillRatio, 0.05f, 0.98f);
+            float aspect = Mathf.Max(0.01f, controlledCamera.aspect);
+            float requiredHalfHeight = Mathf.Max(focusBounds.extents.y, focusBounds.extents.x / aspect);
+            float targetOrthographicSize = requiredHalfHeight / fillRatio;
+            return Mathf.Clamp(targetOrthographicSize / baseOrthographicSize, 0.1f, 1f);
         }
 
         public bool IsCinematicZoomSettled(float toleranceRatio = 0.02f)
@@ -184,15 +204,96 @@ namespace Week14.Bootstrap
 
         public void EndCinematicFocus()
         {
-            if (!cinematicFocusActive)
+            if (!cinematicFocusActive && !cinematicReturnToCombatViewActive)
             {
                 return;
             }
 
             cinematicFocusActive = false;
+            cinematicReturnToCombatViewActive = false;
             cinematicZoomMultiplier = 1f;
             ApplyFocusTarget(pendingFocusTarget);
             pendingFocusTarget = null;
+        }
+
+        public void EndCinematicFocusToCombatView(Transform combatFocusTarget)
+        {
+            cinematicFocusActive = false;
+            cinematicReturnToCombatViewActive = false;
+            cinematicZoomMultiplier = 1f;
+            pendingFocusTarget = null;
+            ApplyFocusTarget(combatFocusTarget);
+
+            currentFocusWeight = focusTarget != null ? 0.5f : 0f;
+            focusWeightVelocity = 0f;
+            currentMouseLookOffset = Vector2.zero;
+            mouseLookOffsetVelocity = Vector2.zero;
+
+            Vector3 playerPosition = targetBody != null
+                ? targetBody.transform.position
+                : target != null ? target.position : transform.position - offset;
+            Vector3 bossPosition = focusBody != null
+                ? focusBody.transform.position
+                : focusTarget != null ? focusTarget.position : playerPosition;
+            currentFocusPosition = bossPosition;
+            lastFocusPosition = bossPosition;
+            focusPositionVelocity = Vector3.zero;
+            hasCurrentFocusPosition = focusTarget != null;
+            currentBasePosition = Vector3.Lerp(playerPosition, bossPosition, currentFocusWeight) + offset;
+            followVelocity = Vector3.zero;
+            hasBasePosition = true;
+            transform.position = currentBasePosition;
+
+            if (controlledCamera != null && controlledCamera.orthographic)
+            {
+                controlledCamera.orthographicSize = Mathf.Max(
+                    baseOrthographicSize,
+                    GetBossPairRequiredOrthographicSize(combatFocusTarget));
+                zoomVelocity = 0f;
+            }
+        }
+
+        public void BeginCinematicReturnToCombatView(Transform combatFocusTarget)
+        {
+            cinematicFocusActive = false;
+            cinematicReturnToCombatViewActive = true;
+            cinematicZoomMultiplier = 1f;
+            pendingFocusTarget = null;
+            ApplyFocusTarget(combatFocusTarget);
+        }
+
+        public bool IsCinematicReturnToCombatViewSettled(
+            Transform combatFocusTarget,
+            float positionTolerance = 0.03f,
+            float zoomToleranceRatio = 0.02f)
+        {
+            if (!cinematicReturnToCombatViewActive)
+            {
+                return true;
+            }
+
+            Vector3 playerPosition = targetBody != null
+                ? targetBody.transform.position
+                : target != null ? target.position : transform.position - offset;
+            Vector3 bossPosition = focusBody != null
+                ? focusBody.transform.position
+                : combatFocusTarget != null ? combatFocusTarget.position : playerPosition;
+            Vector3 targetPosition = Vector3.Lerp(playerPosition, bossPosition, 0.5f) + offset;
+            bool positionSettled = Vector3.Distance(currentBasePosition, targetPosition)
+                <= Mathf.Max(0f, positionTolerance);
+            bool focusSettled = Mathf.Abs(currentFocusWeight - 0.5f) <= 0.02f;
+
+            bool zoomSettled = true;
+            if (controlledCamera != null && controlledCamera.orthographic)
+            {
+                float targetSize = Mathf.Max(
+                    baseOrthographicSize,
+                    GetBossPairRequiredOrthographicSize(combatFocusTarget));
+                float tolerance = baseOrthographicSize * Mathf.Max(0f, zoomToleranceRatio);
+                zoomSettled = Mathf.Abs(controlledCamera.orthographicSize - targetSize) <= tolerance;
+            }
+
+            return positionSettled && focusSettled && zoomSettled;
         }
 
         private void ApplyFocusTarget(Transform nextFocusTarget)
@@ -328,7 +429,10 @@ namespace Week14.Bootstrap
         private Vector2 GetMouseLookOffset(bool hasFocusTarget)
         {
             Vector2 targetOffset = Vector2.zero;
-            if (!cinematicFocusActive && controlledCamera != null && mouseLookMaxOffset > 0f)
+            if (!cinematicFocusActive
+                && !cinematicReturnToCombatViewActive
+                && controlledCamera != null
+                && mouseLookMaxOffset > 0f)
             {
                 Vector2 screenPosition = GameInput.MouseScreenPosition;
                 Vector2 screenSize = new Vector2(Screen.width, Screen.height);
@@ -419,9 +523,9 @@ namespace Week14.Bootstrap
                 targetSize = Mathf.Max(targetSize, GetBossPairRequiredOrthographicSize());
             }
 
-            targetSize = Mathf.Max(0.5f, targetSize);
+            targetSize = Mathf.Max(0.1f, targetSize);
 
-            if (targetSize >= controlledCamera.orthographicSize)
+            if (targetSize >= controlledCamera.orthographicSize && !cinematicReturnToCombatViewActive)
             {
                 controlledCamera.orthographicSize = targetSize;
                 zoomVelocity = 0f;
@@ -446,6 +550,11 @@ namespace Week14.Bootstrap
         private float GetBossPairRequiredOrthographicSize()
         {
             Transform bossTarget = GetBossFocusTarget(activeBoss);
+            return GetBossPairRequiredOrthographicSize(bossTarget);
+        }
+
+        private float GetBossPairRequiredOrthographicSize(Transform bossTarget)
+        {
             if (target == null || bossTarget == null || controlledCamera == null)
             {
                 return 0f;

@@ -299,7 +299,6 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hpEmptyColor: {r: 0.45, g: 0.65, b: 1, a: 1}
   staggeredColor: {r: 1, g: 0.95, b: 0.35, a: 1}
-  detectionRange: 9
   moveSpeed: 3.5
   bodyRoot: {fileID: 0}
   body: {fileID: 0}
@@ -362,6 +361,18 @@ MonoBehaviour:
     pullSpeed: 16
     pullStopDistance: 0.75
     color: {r: 0.55, g: 0.82, b: 1, a: 0.9}
+  parryProjectileSettings:
+    prefab: {fileID: 0}
+    bulletDamage: 1
+    chargeSeconds: 0.15
+    chargeDriftSpeed: 0.25
+    aimAtPlayerWhileCharging: 1
+    aimAtPlayerOnLaunch: 0
+    speed: 7
+    lifetime: 3
+    radius: 0.12
+    trailSeconds: 0.1
+    trailWidthMultiplier: 3
   hologramPrefab: {fileID: 0}
   hologramStartPhaseNumber: 3
   drawApproachRangeGizmos: 1
@@ -475,6 +486,22 @@ PrefabInstance:
     - target: {fileID: 77790034321748601, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3656224386150639581, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3656224386150639581, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 547352579
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526906190661016772, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526906190661016772, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 547352579
       objectReference: {fileID: 0}
     - target: {fileID: 8949171339126285479, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
       propertyPath: m_Name

@@ -73,10 +73,6 @@ namespace Week14.Enemy
         [Tooltip("보스가 경직 상태일 때 보스 스프라이트에 적용할 색입니다.")]
         [SerializeField, HideInInspector] private Color staggeredColor = new(1f, 0.95f, 0.35f, 1f);
 
-        [Header("Detection")]
-        [Tooltip("플레이어를 감지할 수 있는 최대 거리입니다.")]
-        [SerializeField, Min(0f)] private float detectionRange = 9f;
-
         [Header("Movement")]
         [Tooltip("보스의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 3.5f;
@@ -137,6 +133,7 @@ namespace Week14.Enemy
         private bool combatStartedCounted;
         private static int combatStartedCount;
         private float combatStartedAt;
+        private int combatStartLockCount;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -154,7 +151,6 @@ namespace Week14.Enemy
         public virtual bool IsDashing => false;
         public virtual bool SuppressesBodyContactDamage => false;
         public bool IsStaggered => isStaggered;
-        public float DetectionRange => detectionRange;
         public float MoveSpeed => moveSpeed;
         public Color NormalColor => ActiveColorSettings != null ? ActiveColorSettings.NormalColor : normalColor;
         public Color HpEmptyColor => ActiveColorSettings != null ? ActiveColorSettings.HpEmptyColor : hpEmptyColor;
@@ -184,6 +180,9 @@ namespace Week14.Enemy
         public static bool IsAnyFinalDeathSequencePlaying => finalDeathSequencePlayCount > 0;
         public static bool IsAnyCombatStarted => combatStartedCount > 0;
         public BossData BossData => bossData;
+        public RectTransform BossCombatUiRect => bossCombatUiRoot != null
+            ? bossCombatUiRoot.transform as RectTransform
+            : bossHpBarView != null ? bossHpBarView.transform as RectTransform : null;
 
         private BossPhaseController PhaseController => phaseController ??= new BossPhaseController(this);
         private CombatEffectData ActiveEffectData => GraphAsset != null && GraphAsset.EffectData != null ? GraphAsset.EffectData : effectData;
@@ -290,6 +289,42 @@ namespace Week14.Enemy
             bossHpBarView?.PlayExecutionDrain();
         }
 
+        public void PushCombatStartLock()
+        {
+            combatStartLockCount++;
+        }
+
+        public void PopCombatStartLock()
+        {
+            combatStartLockCount = Mathf.Max(0, combatStartLockCount - 1);
+        }
+
+        public bool TryStartCombatFromIntro()
+        {
+            if (combatStartLockCount > 0 || health == null || health.IsDead)
+            {
+                return false;
+            }
+
+            ResolvePlayer();
+            PhaseController.TryStartCombat(true);
+            TryActivateBossCombatUiOnCombatStart();
+            return IsCombatStarted;
+        }
+
+        public void ShowBossCombatUiForIntro()
+        {
+            if (!UsesBossCombatUi())
+            {
+                return;
+            }
+
+            PrepareBossCombatUi();
+            SuppressEnemyStatusView();
+            SetBossCombatUiVisible(true);
+            bossHpBarView?.SetTarget(hpGauge);
+        }
+
         public void SetExecutionLocked(bool locked)
         {
             isExecutionLocked = locked;
@@ -340,22 +375,17 @@ namespace Week14.Enemy
 
         public bool IsPlayerDetected()
         {
-            return player != null && Vector2.Distance(transform.position, player.position) <= detectionRange;
+            return IsCombatStarted;
         }
 
         public bool CanSeePlayer()
         {
-            if (player == null)
+            if (!IsPlayerDetected() || player == null)
             {
                 return false;
             }
 
             float distance = Vector2.Distance(transform.position, player.position);
-            if (distance > detectionRange)
-            {
-                return false;
-            }
-
             Vector2 direction = (player.position - transform.position).normalized;
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distance, obstacleMask);
             return hit.collider == null;
@@ -550,11 +580,6 @@ namespace Week14.Enemy
         internal void ResolvePlayerForState()
         {
             ResolvePlayer();
-        }
-
-        internal void TryStartCombatForState()
-        {
-            PhaseController.TryStartCombat(IsPlayerDetected());
         }
 
         internal void TickActiveBehaviorForState()
@@ -993,7 +1018,7 @@ namespace Week14.Enemy
 
         private void TryActivateBossCombatUiOnCombatStart()
         {
-            if (isBossCombatUiActive || !UsesBossCombatUi() || !IsPlayerDetected())
+            if (isBossCombatUiActive || !UsesBossCombatUi() || !IsCombatStarted)
             {
                 return;
             }
@@ -1327,10 +1352,5 @@ namespace Week14.Enemy
             return null;
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, detectionRange);
-        }
     }
 }

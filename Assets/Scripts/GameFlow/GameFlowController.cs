@@ -20,6 +20,7 @@ namespace Week14.GameFlow
 
         private static GameFlowController instance;
         private static bool missingInstanceWarned;
+        private static bool bossRestartEntryPending;
 
         [Header("Scene Defaults")]
         [SerializeField] private string titleSceneName = "TitleScene";
@@ -74,6 +75,7 @@ namespace Week14.GameFlow
 
         public static void EnterBoss(BossData bossData)
         {
+            bossRestartEntryPending = false;
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.EnterBossInternal(bossData);
@@ -82,6 +84,7 @@ namespace Week14.GameFlow
 
         public static void RestartCurrentScene()
         {
+            bossRestartEntryPending = true;
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(SceneManager.GetActiveScene().buildIndex);
@@ -89,6 +92,13 @@ namespace Week14.GameFlow
             }
 
             SceneTransition.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public static bool ConsumeBossRestartEntry()
+        {
+            bool wasRestart = bossRestartEntryPending;
+            bossRestartEntryPending = false;
+            return wasRestart;
         }
 
         public static void ReturnToLobby(string fallbackLobbySceneName)

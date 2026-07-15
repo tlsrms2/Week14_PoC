@@ -26,7 +26,6 @@ namespace Week14.Enemy
         internal override void Tick()
         {
             Boss.ResolvePlayerForState();
-            Boss.TryStartCombatForState();
             Boss.TickActiveBehaviorForState();
         }
     }

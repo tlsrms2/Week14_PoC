@@ -50,5 +50,11 @@ TagManager:
   - name: Particles
     uniqueID: 4280937275
     locked: 0
+  - name: MugShotBackground
+    uniqueID: 3311343729
+    locked: 0
+  - name: Boss
+    uniqueID: 547352579
+    locked: 0
   m_RenderingLayers:
   - Default

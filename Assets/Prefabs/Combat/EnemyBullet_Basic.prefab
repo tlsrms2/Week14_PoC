@@ -284,8 +284,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 547352579
+  m_SortingLayer: 5
   m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: b8cf7d2177bbc8d488174517b26182ed, type: 3}
@@ -471,8 +471,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 547352579
+  m_SortingLayer: 5
   m_SortingOrder: 50
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 3e44e11ca41b739408f6edb2e5e6b507, type: 3}
@@ -497,63 +497,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ed3d7a4ccc32145bae2a156dbbf246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.MouseParryReticle
-  pieces:
-  - renderer: {fileID: 1179505098407446691}
-    moveDirection: {x: 0.025, y: -0.025}
-  - renderer: {fileID: 322260509650171522}
-    moveDirection: {x: -0.025, y: -0.025}
-  - renderer: {fileID: 2779937611606815152}
-    moveDirection: {x: 0.025, y: 0.025}
-  - renderer: {fileID: 3638054930119624123}
-    moveDirection: {x: -0.025, y: 0.025}
   colorOnlyRenderers:
   - {fileID: 8756200840090794356}
-  pieceIdleColor: {r: 1, g: 0, b: 0, a: 1}
-  pieceThreatenedColor: {r: 1, g: 0, b: 0, a: 1}
   colorOnlyIdleColor: {r: 1, g: 0, b: 0, a: 1}
   colorOnlyThreatenedColor: {r: 1, g: 0, b: 0, a: 1}
-  missPieceColor: {r: 1, g: 0, b: 0, a: 1}
   missColorOnlyColor: {r: 1, g: 0, b: 0, a: 1}
-  moveScale: 1
-  moveCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 4.3079123
-      outSlope: 4.3079123
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.20742899
-      value: 0.8935859
-      inSlope: 0.2674349
-      outSlope: 0.2674349
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.61436725
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.13426441
-      outSlope: 0.13426441
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  moveSpeed: 20
-  oscillatePiecesWhileThreatened: 1
-  pieceOscillationSpeed: 2
   colorSpeed: 20
   useUnscaledTime: 0
-  colorOnlyColorsInitialized: 1
 --- !u!1 &6954938256497996735
 GameObject:
   m_ObjectHideFlags: 0

@@ -351,9 +351,6 @@ namespace Week14.Enemy
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, DetectionRange);
-
             if (drawApproachRangeGizmos)
             {
                 HackerActionRangeGizmo.Draw(transform.position, BossGraph);
