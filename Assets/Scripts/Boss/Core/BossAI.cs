@@ -390,6 +390,39 @@ namespace Week14.Enemy
                 : GroundMovementConstraint.ClampVelocity(body, scaledVelocity, groundProbeColliders);
         }
 
+        internal bool TryMovePatternTowards(Vector2 target, float speed)
+        {
+            if (body == null)
+            {
+                return false;
+            }
+
+            Vector2 current = body.position;
+            float stepDistance = Mathf.Max(0f, speed) * EnemyTimeScale.DeltaTime;
+            if (stepDistance <= 0f)
+            {
+                Stop();
+                return false;
+            }
+
+            Vector2 desired = Vector2.MoveTowards(current, target, stepDistance);
+            Vector2 next = BossCanFlyOverGround
+                ? desired
+                : GroundMovementConstraint.ClampStep(current, desired, groundProbeColliders);
+            Vector2 displacement = next - current;
+            if (displacement.sqrMagnitude <= 0.000001f)
+            {
+                Stop();
+                return false;
+            }
+
+            body.linearVelocity = Vector2.zero;
+            body.angularVelocity = 0f;
+            body.position = next;
+            transform.position = new Vector3(next.x, next.y, transform.position.z);
+            return true;
+        }
+
         public void Stop()
         {
             if (body == null)

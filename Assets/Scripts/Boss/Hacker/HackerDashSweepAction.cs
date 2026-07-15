@@ -14,10 +14,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.05f)] private float chargeSeconds = 0.7f;
         [SerializeField, Min(0.05f)] private float parryWindowSeconds = 0.35f;
-        [Tooltip("Prefab에 ParryBaitRewardProjectile 컴포넌트가 있어야 합니다.")]
-        [SerializeField] private BossProjectileSettings parryProjectile = new();
-        [Tooltip("공격 시점에 파편이 원래 모습으로 결합되는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float parryReassembleSeconds = 0.2f;
 
         [Header("Dash Sweep")]
         [SerializeField] private string sweepTriggerName = "DashSweep";
@@ -28,6 +24,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float sweepForwardOffset = 0.9f;
         [SerializeField, Min(1)] private int damage = 1;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.3f;
+
+        [Header("Hacking")]
+        [SerializeField, Min(1)] private int hackingPerHit = 1;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -41,13 +40,12 @@ namespace Week14.Enemy
             Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
             HackerParryBait parryBait = HackerParryBait.Spawn(
                 context,
-                parryProjectile,
+                (context.Boss as HackerBossAI)?.ParryProjectileSettings,
                 parryAnchor.position,
                 parryAnchor,
                 Vector3.zero,
                 Mathf.Min(chargeSeconds, parryWindowSeconds),
-                chargeSeconds,
-                parryReassembleSeconds);
+                chargeSeconds);
 
             float elapsed = 0f;
             HackerAttackRangeIndicator rangeIndicator = null;
@@ -145,7 +143,11 @@ namespace Week14.Enemy
                 PlayerCombatController player = hits[i].GetComponentInParent<PlayerCombatController>();
                 if (player != null && hitPlayers.Add(player))
                 {
-                    player.ReceiveAttack(damage, center, direction);
+                    if (player.ReceiveAttack(damage, center, direction)
+                        && context.Boss is HackerBossAI hacker)
+                    {
+                        hacker.ApplyHacking(player, hackingPerHit);
+                    }
                 }
             }
         }

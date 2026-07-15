@@ -1951,7 +1951,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559127
     sequences: []
-    editorPosition: {x: -314, y: 205}
+    editorPosition: {x: -312, y: 205}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -2539,9 +2539,9 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
     - patternId: Pattern1
-      weight: 999
+      weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 3
   - phaseIndex: 1
     selectionMode: 3
     phaseMaxHp: 150
@@ -2589,6 +2589,10 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
     - patternId: P3 -> P6
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -14871,24 +14875,22 @@ MonoBehaviour:
         bossMoveSpeed: 8
         bossArrivalDistance: 0.05
         bossMoveTimeoutSeconds: 5
-        initialOrbitRadius: 5
-        finalOrbitRadius: 1.5
-        orbitSeconds: 6
-        angularSpeedDegrees: 120
-        clockwise: 1
-        startAngleDegrees: 0
-        droneMoveSpeed: 14
+        bossMoveStallSeconds: 0.2
+        formationCenter: {x: 6, y: -5}
+        initialSquareHalfExtent: 12
+        rowHalfHeight: 4
+        finalColumnHalfWidth: 0.1
+        closingSeconds: 6
+        finalCollapseHalfExtent: 0.1
         projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        fireInterval: 0.18
-        firstFireDelaySeconds: 0
-        tangentCircleRadius: 0.8
+        fireInterval: 0.15
         minionOrigin:
           mode: 0
           minionChildPath: 
           minionChildPaths: []
           firstMinionChildPath: 
           secondMinionChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         projectileEffects:
           explosion:
             enabled: 0
@@ -14925,9 +14927,9 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         baitDroneOffset: {x: 0, y: 0}
-        baitSpawnSeconds: 3
-        baitDurationSeconds: 2
-        rewardBulletCount: 5
+        baitSpawnRemainingSeconds: 1.25
+        baitDurationSeconds: 1.25
+        rewardBulletCount: 4
         rewardCircleRadius: 1.5
         rewardLifetimeSeconds: 2
         baitSpawnSfxId: 
@@ -14953,7 +14955,9 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        parryStopSeconds: 1
         bossGroggySeconds: 3
         finalCollapseDamage: 1
-        releaseDronesAfterPattern: 1
+        releaseWanderSeconds: 0
+        releaseWanderSpeed: 4
+        releaseWanderRadius: 3
+        releaseWanderRetargetSeconds: 0.6

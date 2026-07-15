@@ -650,26 +650,43 @@ namespace Week14.Enemy
             return duration;
         }
 
-        public float CommandConductorShrinkingOrbit(
-            float startRadius,
-            float endRadius,
-            float orbitSeconds,
-            float angularSpeedDegrees,
-            bool clockwise,
-            float moveSpeed,
-            float startAngleDegrees)
+        public float CommandConductorClosingColumns(
+            int slotIndex,
+            Vector2 center,
+            float startHalfWidth,
+            float endHalfWidth,
+            float halfHeight,
+            float closingSeconds)
         {
             StopMovementCommand();
-            float duration = Mathf.Max(0.01f, orbitSeconds);
-            movementRoutine = StartCoroutine(RunConductorShrinkingOrbit(
-                Mathf.Max(0.1f, startRadius),
-                Mathf.Max(0.1f, endRadius),
+            float duration = Mathf.Max(0.01f, closingSeconds);
+            movementRoutine = StartCoroutine(RunConductorClosingColumns(
+                Mathf.Max(0, slotIndex),
+                center,
+                Mathf.Max(0.1f, startHalfWidth),
+                Mathf.Max(0.1f, endHalfWidth),
+                Mathf.Max(0.1f, halfHeight),
                 duration,
-                Mathf.Max(0f, angularSpeedDegrees),
-                clockwise,
-                Mathf.Max(0f, moveSpeed),
-                startAngleDegrees));
+                GetConductorRowFacingDirection(slotIndex)));
             return duration;
+        }
+
+        public bool CommandConductorSnapToClosingColumn(
+            int slotIndex,
+            Vector2 center,
+            float halfWidth,
+            float halfHeight)
+        {
+            StopMovementCommand();
+            SetPlayerCollisionIgnored(true);
+            Vector2 target = GetConductorClosingRowTarget(
+                center,
+                slotIndex,
+                Mathf.Max(0.1f, halfWidth),
+                Mathf.Max(0.1f, halfHeight));
+            SetPatternPosition(target, true);
+            RotateToDirection(GetConductorRowFacingDirection(slotIndex));
+            return true;
         }
 
         public float CommandWander(
@@ -1046,25 +1063,17 @@ namespace Week14.Enemy
             FinishMovementCommand();
         }
 
-        private IEnumerator RunConductorShrinkingOrbit(
-            float startRadius,
-            float endRadius,
-            float orbitSeconds,
-            float angularSpeedDegrees,
-            bool clockwise,
-            float moveSpeed,
-            float startAngleDegrees)
+        private IEnumerator RunConductorClosingColumns(
+            int slotIndex,
+            Vector2 center,
+            float startHalfWidth,
+            float endHalfWidth,
+            float halfHeight,
+            float closingSeconds,
+            Vector2 facingDirection)
         {
-            Transform player = GetPlayer();
-            if (player == null)
-            {
-                yield break;
-            }
-
             float elapsed = 0f;
-            float signedAngularSpeed = angularSpeedDegrees * (clockwise ? -1f : 1f);
-            bool lockedToPattern = false;
-            while (elapsed < orbitSeconds)
+            while (elapsed < closingSeconds)
             {
                 if (IsExecutionPaused)
                 {
@@ -1073,17 +1082,16 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                if (player == null)
-                {
-                    break;
-                }
-
-                float progress = Mathf.Clamp01(elapsed / orbitSeconds);
-                float radius = Mathf.Lerp(startRadius, endRadius, progress);
-                float angle = startAngleDegrees + signedAngularSpeed * elapsed;
-                Vector2 center = player.position;
-                Vector2 target = center + AngleToDirection(angle) * radius;
-                SetPatternPosition(target, ref lockedToPattern, moveSpeed, false);
+                float progress = Mathf.Clamp01(elapsed / closingSeconds);
+                float halfWidth = Mathf.Lerp(startHalfWidth, endHalfWidth, progress);
+                Vector2 target = GetConductorClosingRowTarget(
+                    center,
+                    slotIndex,
+                    halfWidth,
+                    halfHeight);
+                SetPlayerCollisionIgnored(true);
+                SetPatternPosition(target, true);
+                RotateToDirection(facingDirection);
 
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
@@ -2676,6 +2684,23 @@ namespace Week14.Enemy
         {
             float radians = degrees * Mathf.Deg2Rad;
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        private static Vector2 GetConductorClosingRowTarget(
+            Vector2 center,
+            int slotIndex,
+            float halfWidth,
+            float halfHeight)
+        {
+            int safeSlotIndex = Mathf.Clamp(slotIndex, 0, 3);
+            float horizontal = safeSlotIndex % 2 == 0 ? -halfWidth : halfWidth;
+            float vertical = safeSlotIndex < 2 ? halfHeight : -halfHeight;
+            return center + new Vector2(horizontal, vertical);
+        }
+
+        private static Vector2 GetConductorRowFacingDirection(int slotIndex)
+        {
+            return Mathf.Clamp(slotIndex, 0, 3) < 2 ? Vector2.down : Vector2.up;
         }
 
         private static float DirectionToAngle(Vector2 direction)

@@ -23,8 +23,7 @@ namespace Week14.Enemy
             Transform followTarget,
             Vector3 followWorldOffset,
             float parrySeconds,
-            float attackDelaySeconds,
-            float reassembleSeconds)
+            float attackDelaySeconds)
         {
             if (context?.Boss == null || settings?.Prefab is not ParryBaitRewardProjectile)
             {
@@ -57,7 +56,6 @@ namespace Week14.Enemy
             bait.ConfigureHackerResilientMode(
                 parrySeconds,
                 attackDelaySeconds,
-                reassembleSeconds,
                 followTarget,
                 followWorldOffset);
             if (context.Boss is HackerHologramBoss)

@@ -328,6 +328,10 @@ namespace Week14.Enemy
             ? sourceBoss.WireSettings
             : base.WireSettings;
 
+        internal override BossProjectileSettings ParryProjectileSettings => sourceBoss != null
+            ? sourceBoss.ParryProjectileSettings
+            : base.ParryProjectileSettings;
+
         internal override void ApplyHacking(PlayerCombatController player, int hackingPerHit)
         {
             if (sourceBoss != null)

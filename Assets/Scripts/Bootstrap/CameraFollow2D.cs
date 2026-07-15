@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 using Week14.Input;
 
 namespace Week14.Bootstrap
@@ -17,6 +18,7 @@ namespace Week14.Bootstrap
         [SerializeField, Min(0f)] private float focusPositionSmoothTime = 0.28f;
         [SerializeField, Min(0f)] private float shakeFrequency = 34f;
         [SerializeField, Min(0f)] private float zoomBlendSpeed = 10f;
+        [SerializeField, Range(0f, 0.45f)] private float bossPairViewportPadding = 0.1f;
 
         private Camera controlledCamera;
         private Rigidbody2D targetBody;
@@ -47,6 +49,7 @@ namespace Week14.Bootstrap
         private bool cinematicFocusActive;
         private float cinematicFocusWeight = 0.5f;
         private float cinematicZoomMultiplier = 1f;
+        private BossAI activeBoss;
 
         private void Awake()
         {
@@ -57,6 +60,23 @@ namespace Week14.Bootstrap
             }
 
             CacheTargetBody();
+        }
+
+        private void OnEnable()
+        {
+            BossAI.CombatStarted += HandleBossCombatStarted;
+            BossAI.Defeated += HandleBossDefeated;
+
+            if (activeBoss == null)
+            {
+                HandleBossCombatStarted(Object.FindFirstObjectByType<BossAI>());
+            }
+        }
+
+        private void OnDisable()
+        {
+            BossAI.CombatStarted -= HandleBossCombatStarted;
+            BossAI.Defeated -= HandleBossDefeated;
         }
 
         public void SetTarget(Transform nextTarget)
@@ -74,6 +94,11 @@ namespace Week14.Bootstrap
 
         public void SetFocusTarget(Transform nextFocusTarget)
         {
+            if (activeBoss != null)
+            {
+                nextFocusTarget = GetBossFocusTarget(activeBoss);
+            }
+
             if (cinematicFocusActive)
             {
                 pendingFocusTarget = nextFocusTarget;
@@ -81,6 +106,33 @@ namespace Week14.Bootstrap
             }
 
             ApplyFocusTarget(nextFocusTarget);
+        }
+
+        private void HandleBossCombatStarted(BossAI boss)
+        {
+            if (boss == null)
+            {
+                return;
+            }
+
+            activeBoss = boss;
+            SetFocusTarget(GetBossFocusTarget(boss));
+        }
+
+        private void HandleBossDefeated(BossAI boss)
+        {
+            if (boss == null || boss != activeBoss)
+            {
+                return;
+            }
+
+            activeBoss = null;
+            SetFocusTarget(null);
+        }
+
+        private static Transform GetBossFocusTarget(BossAI boss)
+        {
+            return boss != null && boss.BodyRoot != null ? boss.BodyRoot : boss != null ? boss.transform : null;
         }
 
         public void PlayImpact(Vector2 direction, float amplitude, float seconds, float zoomAmount = 0f)
@@ -362,7 +414,19 @@ namespace Week14.Bootstrap
                 targetSize -= zoomKick * (1f - Mathf.Clamp01(t));
             }
 
+            if (!cinematicFocusActive)
+            {
+                targetSize = Mathf.Max(targetSize, GetBossPairRequiredOrthographicSize());
+            }
+
             targetSize = Mathf.Max(0.5f, targetSize);
+
+            if (targetSize >= controlledCamera.orthographicSize)
+            {
+                controlledCamera.orthographicSize = targetSize;
+                zoomVelocity = 0f;
+                return;
+            }
 
             if (zoomBlendSpeed <= 0f)
             {
@@ -377,6 +441,28 @@ namespace Week14.Bootstrap
                 1f / zoomBlendSpeed,
                 Mathf.Infinity,
                 Time.deltaTime);
+        }
+
+        private float GetBossPairRequiredOrthographicSize()
+        {
+            Transform bossTarget = GetBossFocusTarget(activeBoss);
+            if (target == null || bossTarget == null || controlledCamera == null)
+            {
+                return 0f;
+            }
+
+            Vector3 playerPosition = targetBody != null ? targetBody.transform.position : target.position;
+            Vector3 bossPosition = focusBody != null ? focusBody.transform.position : bossTarget.position;
+            Vector3 cameraPosition = transform.position;
+            float availableViewportRatio = 1f - bossPairViewportPadding;
+            float requiredHalfHeight = Mathf.Max(
+                Mathf.Abs(playerPosition.y - cameraPosition.y),
+                Mathf.Abs(bossPosition.y - cameraPosition.y)) / availableViewportRatio;
+            float requiredHalfWidth = Mathf.Max(
+                Mathf.Abs(playerPosition.x - cameraPosition.x),
+                Mathf.Abs(bossPosition.x - cameraPosition.x))
+                / (Mathf.Max(0.0001f, controlledCamera.aspect) * availableViewportRatio);
+            return Mathf.Max(requiredHalfHeight, requiredHalfWidth);
         }
     }
 }

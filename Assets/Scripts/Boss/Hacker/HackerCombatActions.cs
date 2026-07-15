@@ -56,10 +56,6 @@ namespace Week14.Enemy
         [Header("Parry")]
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
-        [Tooltip("Prefab에 ParryBaitRewardProjectile 컴포넌트가 있어야 합니다.")]
-        [SerializeField] private BossProjectileSettings parryProjectile = new();
-        [Tooltip("공격 시점에 파편이 원래 모습으로 결합되는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float parryReassembleSeconds = 0.2f;
 
         [Header("Hacking")]
         [SerializeField, Min(1)] private int hackingPerHit = 1;
@@ -109,13 +105,12 @@ namespace Week14.Enemy
                 float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
                 parryBait = HackerParryBait.Spawn(
                     context,
-                    parryProjectile,
+                    (context.Boss as HackerBossAI)?.ParryProjectileSettings,
                     parryAnchor.position,
                     parryAnchor,
                     Vector3.zero,
                     remainingWindup,
-                    remainingWindup,
-                    parryReassembleSeconds);
+                    remainingWindup);
 
                 float elapsed = 0f;
                 while (elapsed < remainingWindup)
@@ -510,10 +505,6 @@ namespace Week14.Enemy
         [Header("Parry")]
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
-        [Tooltip("Prefab에 ParryBaitRewardProjectile 컴포넌트가 있어야 합니다.")]
-        [SerializeField] private BossProjectileSettings parryProjectile = new();
-        [Tooltip("공격 시점에 파편이 원래 모습으로 결합되는 시간입니다.")]
-        [SerializeField, Min(0.01f)] private float parryReassembleSeconds = 0.2f;
 
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
@@ -556,13 +547,12 @@ namespace Week14.Enemy
             float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
             HackerParryBait parryBait = HackerParryBait.Spawn(
                 context,
-                parryProjectile,
+                (context.Boss as HackerBossAI)?.ParryProjectileSettings,
                 bossTransform.position + parryWorldOffset,
                 bossTransform,
                 parryWorldOffset,
                 remainingWindup,
-                remainingWindup,
-                parryReassembleSeconds);
+                remainingWindup);
 
             float elapsed = 0f;
             while (elapsed < remainingWindup)

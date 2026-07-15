@@ -44,6 +44,10 @@ namespace Week14.Enemy
         [Header("Wire Settings")]
         [SerializeField] private HackerWireSettings wireSettings = new();
 
+        [Header("Parry Bait Projectile")]
+        [Tooltip("Melee, Thrust, Dash Sweep이 공통으로 사용하는 ParryBaitRewardProjectile 설정입니다.")]
+        [SerializeField] private BossProjectileSettings parryProjectileSettings = new();
+
         [Header("Hologram")]
         [SerializeField] private HackerHologramBoss hologramPrefab;
         [SerializeField, Min(1)] private int hologramStartPhaseNumber = 3;
@@ -63,6 +67,7 @@ namespace Week14.Enemy
         private HackerHologramBoss hologram;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
+        internal virtual BossProjectileSettings ParryProjectileSettings => parryProjectileSettings ??= new BossProjectileSettings();
 
         internal bool IsFacingLeft => isFacingLeft;
         internal HackerFireWireResult LastFireWireResult => lastFireWireResult;

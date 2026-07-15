@@ -229,7 +229,104 @@ namespace Week14.Enemy
             }
 
             // 투척 프리팹은 월드 루트에 생성되므로, 손에 장착된 무기의 실제 표시 크기를 그대로 사용한다.
-            transform.localScale = equippedWeapon.lossyScale;
+            SpriteRenderer equippedRenderer = FindPrimarySpriteRenderer(equippedWeapon);
+            SpriteRenderer thrownRenderer = FindMatchingSpriteRenderer(equippedWeapon, equippedRenderer);
+            if (equippedRenderer == null || thrownRenderer == null)
+            {
+                transform.localScale = equippedWeapon.lossyScale;
+                return;
+            }
+
+            Vector3 targetScale = equippedRenderer.transform.lossyScale;
+            Vector3 currentScale = thrownRenderer.transform.lossyScale;
+            transform.localScale = Vector3.Scale(
+                transform.localScale,
+                new Vector3(
+                    GetScaleRatio(targetScale.x, currentScale.x),
+                    GetScaleRatio(targetScale.y, currentScale.y),
+                    GetScaleRatio(targetScale.z, currentScale.z)));
+        }
+
+        private SpriteRenderer FindMatchingSpriteRenderer(
+            Transform equippedRoot,
+            SpriteRenderer equippedRenderer)
+        {
+            if (equippedRenderer == null)
+            {
+                return null;
+            }
+
+            string relativePath = GetRelativePath(equippedRoot, equippedRenderer.transform);
+            Transform matchingTransform = string.IsNullOrEmpty(relativePath)
+                ? transform
+                : transform.Find(relativePath);
+            SpriteRenderer matchingRenderer = matchingTransform != null
+                ? matchingTransform.GetComponent<SpriteRenderer>()
+                : null;
+            return matchingRenderer ?? FindPrimarySpriteRenderer(transform);
+        }
+
+        private static SpriteRenderer FindPrimarySpriteRenderer(Transform root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true);
+            SpriteRenderer bestRenderer = null;
+            float bestArea = float.NegativeInfinity;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                SpriteRenderer renderer = renderers[i];
+                if (renderer == null || renderer.sprite == null)
+                {
+                    continue;
+                }
+
+                Vector3 size = renderer.sprite.bounds.size;
+                float area = size.x * size.y;
+                if (area > bestArea)
+                {
+                    bestArea = area;
+                    bestRenderer = renderer;
+                }
+            }
+
+            return bestRenderer;
+        }
+
+        private static string GetRelativePath(Transform root, Transform child)
+        {
+            if (root == null
+                || child == null
+                || (child != root && !child.IsChildOf(root)))
+            {
+                return null;
+            }
+
+            if (child == root)
+            {
+                return string.Empty;
+            }
+
+            System.Collections.Generic.List<string> segments = new();
+            Transform current = child;
+            while (current != null && current != root)
+            {
+                segments.Add(current.name);
+                current = current.parent;
+            }
+
+            segments.Reverse();
+            return string.Join("/", segments);
+        }
+
+        private static float GetScaleRatio(float targetScale, float currentScale)
+        {
+            return Mathf.Abs(currentScale) > 0.0001f
+                ? targetScale / currentScale
+                : 1f;
         }
 
         private void ConfigurePhysicsCollisionsIgnored()

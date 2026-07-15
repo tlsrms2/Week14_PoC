@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -18,20 +19,27 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
         [SerializeField, Min(0.01f)] private float bossMoveStallSeconds = 0.2f;
 
-        [Header("Shrinking Drone Orbit")]
-        [SerializeField, Min(0.1f)] private float initialOrbitRadius = 5f;
-        [SerializeField, Min(0.1f)] private float finalOrbitRadius = 0.55f;
-        [SerializeField, Min(0.01f)] private float orbitSeconds = 6f;
-        [SerializeField, Min(0f)] private float angularSpeedDegrees = 120f;
-        [SerializeField] private bool clockwise = true;
-        [SerializeField] private float startAngleDegrees;
-        [SerializeField, Min(0f)] private float droneMoveSpeed = 14f;
+        [Header("Closing Drone Columns")]
+        [SerializeField] private Vector2 formationCenter;
+        [FormerlySerializedAs("rowHalfWidth")]
+        [FormerlySerializedAs("initialSquareHalfExtent")]
+        [FormerlySerializedAs("initialOrbitRadius")]
+        [SerializeField, Min(0.1f)] private float initialSquareHalfExtent = 5f;
+        [SerializeField, Min(0.1f)] private float rowHalfHeight = 5f;
+        [FormerlySerializedAs("finalRowHalfHeight")]
+        [FormerlySerializedAs("finalSquareHalfExtent")]
+        [FormerlySerializedAs("finalOrbitRadius")]
+        [SerializeField, Min(0.1f)] private float finalColumnHalfWidth = 0.55f;
+        [FormerlySerializedAs("squareSeconds")]
+        [FormerlySerializedAs("orbitSeconds")]
+        [SerializeField, Min(0.01f)] private float closingSeconds = 6f;
+        [Tooltip("실패 시 좌·우 드론이 한 번에 압축되는 가로 반쪽 길이입니다.")]
+        [FormerlySerializedAs("finalCollapseRadius")]
+        [SerializeField, Min(0.1f)] private float finalCollapseHalfExtent = 0.1f;
 
-        [Header("Tangent Volley")]
+        [Header("Vertical Volley")]
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, Min(0.01f)] private float fireInterval = 0.18f;
-        [SerializeField, Min(0f)] private float firstFireDelaySeconds;
-        [SerializeField, Min(0.01f)] private float tangentCircleRadius = 0.8f;
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphEffectSettings projectileEffects = new();
 
@@ -39,7 +47,8 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string baitProjectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings baitProjectile = new();
         [SerializeField] private Vector2 baitDroneOffset = new(0f, 0.5f);
-        [SerializeField, Min(0f)] private float baitSpawnSeconds = 3f;
+        [Tooltip("전체 오비트 종료 전 이 시간만 남았을 때 패링 억제탄을 생성합니다.")]
+        [SerializeField, Min(0.01f)] private float baitSpawnRemainingSeconds = 1.5f;
         [SerializeField, Min(0.1f)] private float baitDurationSeconds = 2f;
         [SerializeField, Min(1)] private int rewardBulletCount = 8;
         [SerializeField, Min(0.01f)] private float rewardCircleRadius = 1.5f;
@@ -48,10 +57,12 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphEffectSettings baitEffects = new();
 
         [Header("Completion")]
-        [SerializeField, Min(0f)] private float parryStopSeconds = 1f;
         [SerializeField, Min(0f)] private float bossGroggySeconds = 3f;
         [SerializeField, Min(1)] private int finalCollapseDamage = 1;
-        [SerializeField] private bool releaseDronesAfterPattern = true;
+        [SerializeField, Min(0f)] private float releaseWanderSeconds;
+        [SerializeField, Min(0.01f)] private float releaseWanderSpeed = 4f;
+        [SerializeField, Min(0.1f)] private float releaseWanderRadius = 3f;
+        [SerializeField, Min(0.1f)] private float releaseWanderRetargetSeconds = 0.6f;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -72,21 +83,31 @@ namespace Week14.Enemy
 
             yield return MoveBossToTarget(context);
 
-            CommandShrinkingOrbit(drones);
+            float safeRowHalfHeight = GetSafeRowHalfHeight();
+            SnapDronesToColumns(
+                drones,
+                formationCenter,
+                initialSquareHalfExtent,
+                safeRowHalfHeight);
+            yield return null;
+            CommandClosingColumns(drones);
             bool baitParried = false;
-            bool baitWasSpawned = false;
-            bool collapseTriggered = false;
             EnemyProjectile baitProjectileInstance = null;
             Minion baitDrone = null;
             Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> baitDestroyedHandler = null;
             try
             {
                 float elapsed = 0f;
-                float nextFireAt = Mathf.Max(0f, firstFireDelaySeconds);
+                float nextFireAt = 0f;
                 int volleyIndex = 0;
                 float effectiveFireInterval = Mathf.Max(0.01f, fireInterval);
+                float safeClosingSeconds = Mathf.Max(0.01f, closingSeconds);
+                float safeBaitSpawnRemainingSeconds = baitSpawnRemainingSeconds > 0f
+                    ? baitSpawnRemainingSeconds
+                    : Mathf.Min(1.5f, safeClosingSeconds * 0.5f);
+                float baitSpawnTime = Mathf.Max(0f, safeClosingSeconds - safeBaitSpawnRemainingSeconds);
                 bool baitSpawned = false;
-                while (elapsed < Mathf.Max(0.01f, orbitSeconds))
+                while (elapsed < safeClosingSeconds)
                 {
                     if (context.IsExecutionPaused)
                     {
@@ -95,14 +116,13 @@ namespace Week14.Enemy
                         continue;
                     }
 
-                    if (!baitSpawned && elapsed >= Mathf.Max(0f, baitSpawnSeconds))
+                    if (!baitSpawned && elapsed >= baitSpawnTime)
                     {
                         baitSpawned = true;
                         baitDrone = GetRandomDrone(drones);
                         baitProjectileInstance = SpawnBait(context, baitDrone);
                         if (baitProjectileInstance != null)
                         {
-                            baitWasSpawned = true;
                             baitDestroyedHandler = (_, reason, _) =>
                             {
                                 baitParried = reason == EnemyProjectileDestroyReason.Intercepted;
@@ -115,21 +135,15 @@ namespace Week14.Enemy
 
                     if (elapsed >= nextFireAt)
                     {
-                        FireTangentVolley(context, drones, projectile, volleyIndex++);
+                        FireVerticalVolley(context, drones, projectile, volleyIndex++);
                         nextFireAt += effectiveFireInterval;
                     }
 
                     if (baitParried)
                     {
-                        HoldDrones(drones, parryStopSeconds);
                         if (bossGroggySeconds > 0f && context.Boss is GraphBossAI boss)
                         {
                             boss.RequestGroggy(bossGroggySeconds);
-                        }
-
-                        if (parryStopSeconds > 0f)
-                        {
-                            yield return context.WaitSeconds(parryStopSeconds);
                         }
 
                         yield break;
@@ -139,15 +153,19 @@ namespace Week14.Enemy
                     yield return null;
                 }
 
-                if (baitWasSpawned && !baitParried)
+                if (!baitParried)
                 {
-                    collapseTriggered = true;
                     if (baitProjectileInstance != null)
                     {
                         baitProjectileInstance.DestroyFromOwner();
                     }
 
-                    HoldDrones(drones, 0f);
+                    SnapDronesToColumns(
+                        drones,
+                        formationCenter,
+                        finalCollapseHalfExtent,
+                        safeRowHalfHeight);
+                    yield return null;
                     ApplyFinalCollapseDamage(context);
                 }
             }
@@ -158,10 +176,7 @@ namespace Week14.Enemy
                     baitProjectileInstance.Destroyed -= baitDestroyedHandler;
                 }
 
-                if (releaseDronesAfterPattern && !baitParried && !collapseTriggered)
-                {
-                    ResumeDrones(drones);
-                }
+                ResumeDrones(drones);
             }
         }
 
@@ -211,22 +226,38 @@ namespace Week14.Enemy
             bait.transform.position = drone.transform.position + (Vector3)baitDroneOffset;
         }
 
-        private void CommandShrinkingOrbit(IReadOnlyList<Minion> drones)
+        private void CommandClosingColumns(IReadOnlyList<Minion> drones)
         {
             for (int i = 0; i < drones.Count; i++)
             {
-                drones[i]?.CommandConductorShrinkingOrbit(
-                    initialOrbitRadius,
-                    finalOrbitRadius,
-                    orbitSeconds,
-                    angularSpeedDegrees,
-                    clockwise,
-                    droneMoveSpeed,
-                    startAngleDegrees + 360f * i / DroneCount);
+                drones[i]?.CommandConductorClosingColumns(
+                    i,
+                    formationCenter,
+                    initialSquareHalfExtent,
+                    finalColumnHalfWidth,
+                    GetSafeRowHalfHeight(),
+                    closingSeconds);
             }
         }
 
-        private void FireTangentVolley(
+        private static void SnapDronesToColumns(
+            IReadOnlyList<Minion> drones,
+            Vector2 center,
+            float halfWidth,
+            float halfHeight)
+        {
+            for (int i = 0; i < drones.Count; i++)
+            {
+                drones[i]?.CommandConductorSnapToClosingColumn(i, center, halfWidth, halfHeight);
+            }
+        }
+
+        private float GetSafeRowHalfHeight()
+        {
+            return rowHalfHeight > 0f ? rowHalfHeight : initialSquareHalfExtent;
+        }
+
+        private void FireVerticalVolley(
             BossActionContext context,
             IReadOnlyList<Minion> drones,
             BossProjectileSettings projectile,
@@ -245,7 +276,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Vector2 direction = GetTangentDirection(context.Boss.Player, drone);
+                Vector2 direction = GetRowFireDirection(i);
                 MinionGraphProjectileFireSpec droneFireSpec = fireSpec.WithFixedDirection(direction);
                 Vector3 spawnOrigin = droneFireSpec.GetSpawnOrigin(drone, shotIndex, direction);
                 EnemyProjectile spawned = context.FireProjectile(
@@ -264,25 +295,9 @@ namespace Week14.Enemy
             }
         }
 
-        private Vector2 GetTangentDirection(Transform player, Minion drone)
+        private static Vector2 GetRowFireDirection(int droneIndex)
         {
-            if (player == null || drone == null)
-            {
-                return Vector2.left;
-            }
-
-            Vector2 radial = (Vector2)drone.transform.position - (Vector2)player.position;
-            float distance = radial.magnitude;
-            if (distance <= 0.0001f)
-            {
-                return clockwise ? Vector2.down : Vector2.up;
-            }
-
-            float maxTangentRadius = Mathf.Max(0f, distance - 0.001f);
-            float radius = Mathf.Min(tangentCircleRadius, maxTangentRadius);
-            float turnRadians = Mathf.Asin(Mathf.Clamp01(radius / distance));
-            Vector2 inward = -radial / distance;
-            return Rotate(inward, clockwise ? turnRadians : -turnRadians);
+            return droneIndex < 2 ? Vector2.down : Vector2.up;
         }
 
         private IEnumerator MoveBossToTarget(BossActionContext context)
@@ -290,65 +305,60 @@ namespace Week14.Enemy
             float elapsed = 0f;
             float stalledSeconds = 0f;
             float arrivalDistanceSquared = bossArrivalDistance * bossArrivalDistance;
-            Vector2 previousPosition = context.Boss.Body != null
-                ? context.Boss.Body.position
-                : context.Boss.transform.position;
-            while (elapsed < bossMoveTimeoutSeconds)
+            context.Boss.SetIgnorePlayerCollision(true);
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < bossMoveTimeoutSeconds)
                 {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
 
-                Vector2 currentPosition = context.Boss.Body != null
-                    ? context.Boss.Body.position
-                    : context.Boss.transform.position;
-                if (elapsed > 0f)
-                {
-                    if ((currentPosition - previousPosition).sqrMagnitude <= 0.000001f)
+                    Vector2 currentPosition = context.Boss.Body != null
+                        ? context.Boss.Body.position
+                        : context.Boss.transform.position;
+                    Vector2 offset = bossTargetPosition - currentPosition;
+                    if (offset.sqrMagnitude <= arrivalDistanceSquared)
+                    {
+                        yield break;
+                    }
+
+                    if (context.Boss.TryMovePatternTowards(bossTargetPosition, bossMoveSpeed))
+                    {
+                        stalledSeconds = 0f;
+                    }
+                    else
                     {
                         stalledSeconds += EnemyTimeScale.DeltaTime;
                         if (stalledSeconds >= bossMoveStallSeconds)
                         {
-                            break;
+                            yield break;
                         }
                     }
-                    else
-                    {
-                        stalledSeconds = 0f;
-                    }
-                }
 
-                previousPosition = currentPosition;
-                Vector2 offset = bossTargetPosition - currentPosition;
-                if (offset.sqrMagnitude <= arrivalDistanceSquared)
-                {
-                    break;
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
                 }
-
-                context.Boss.SetMovementVelocity(offset.normalized * bossMoveSpeed);
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
             }
-
-            context.Stop();
-        }
-
-        private static void HoldDrones(IReadOnlyList<Minion> drones, float holdSeconds)
-        {
-            for (int i = 0; i < drones.Count; i++)
+            finally
             {
-                drones[i]?.CommandHoldPosition(holdSeconds);
+                context.Stop();
+                context.Boss.SetIgnorePlayerCollision(false);
             }
         }
 
-        private static void ResumeDrones(IReadOnlyList<Minion> drones)
+        private void ResumeDrones(IReadOnlyList<Minion> drones)
         {
             for (int i = 0; i < drones.Count; i++)
             {
-                drones[i]?.ResumeIdle();
+                drones[i]?.CommandWander(
+                    releaseWanderSeconds,
+                    releaseWanderSpeed > 0f ? releaseWanderSpeed : 4f,
+                    releaseWanderRadius > 0f ? releaseWanderRadius : 3f,
+                    releaseWanderRetargetSeconds > 0f ? releaseWanderRetargetSeconds : 0.6f);
             }
         }
 
@@ -410,13 +420,5 @@ namespace Week14.Enemy
             return minion != null && minion.HasOwnerSlotNumber ? minion.OwnerSlotNumber : int.MaxValue;
         }
 
-        private static Vector2 Rotate(Vector2 direction, float radians)
-        {
-            float cosine = Mathf.Cos(radians);
-            float sine = Mathf.Sin(radians);
-            return new Vector2(
-                direction.x * cosine - direction.y * sine,
-                direction.x * sine + direction.y * cosine);
-        }
     }
 }
