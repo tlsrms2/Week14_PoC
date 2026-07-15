@@ -35,6 +35,7 @@ namespace Week14.Enemy
         private int conductorMinionOutlineHoldRequests;
         private bool isMeleeAdvanceSynchronized;
         private bool hasMeleeAttackAdvanceCompleted;
+        private bool isPatternTerminationRequested;
 
         public BossActionContext(
             BossAI boss,
@@ -58,6 +59,17 @@ namespace Week14.Enemy
         public bool IsFacingLocked { get; private set; }
         public bool IsMeleeAdvanceSynchronized => isMeleeAdvanceSynchronized;
         public bool HasMeleeAttackAdvanceCompleted => hasMeleeAttackAdvanceCompleted;
+        public bool IsPatternTerminationRequested => isPatternTerminationRequested;
+
+        public void RequestPatternTermination()
+        {
+            isPatternTerminationRequested = true;
+        }
+
+        public void ClearPatternTerminationRequest()
+        {
+            isPatternTerminationRequested = false;
+        }
 
         public void SetDashing(bool dashing)
         {
@@ -768,6 +780,22 @@ namespace Week14.Enemy
             if (Boss == null || resolvedSettings == null || direction.sqrMagnitude <= 0.0001f)
             {
                 return null;
+            }
+
+            // 홀로그램은 본체와 겹친 위치에서 발사할 수 있다. 자체 소유 탄환으로 만들면
+            // 본체와 충돌해 즉시 파괴되므로, 처음부터 본체 소유자로 생성한다.
+            if (Boss is HackerHologramBoss hologram)
+            {
+                return hologram.FireReplayProjectile(
+                    resolvedSettings,
+                    origin,
+                    direction.normalized,
+                    muzzleFlashScale,
+                    aimAtPlayerWhileChargingOverride,
+                    aimAtPlayerOnLaunchOverride,
+                    chargeSecondsOverride,
+                    radiusOverride,
+                    suppressHoming);
             }
 
             return Boss.FireGraphProjectile(

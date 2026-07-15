@@ -49,6 +49,10 @@ namespace Week14.Enemy
                 {
                     yield return CounterGrab(context, hacker);
                 }
+                else
+                {
+                    context.RequestPatternTermination();
+                }
             }
             finally
             {

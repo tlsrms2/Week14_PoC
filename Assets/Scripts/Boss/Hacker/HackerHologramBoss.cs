@@ -12,6 +12,8 @@ namespace Week14.Enemy
     public sealed class HackerHologramBoss : HackerBossAI
     {
         private const float ReturnSeconds = 0.2f;
+        private const float ReplayWallSkin = 0.02f;
+        private const float ReplayWallProbeRadius = 0.22f;
         private static readonly Color HologramTint = new(0.3f, 0.85f, 1f, 0.65f);
 
         private HackerBossAI sourceBoss;
@@ -24,9 +26,11 @@ namespace Week14.Enemy
         private float replayClock;
         private float replayCaptureTime;
         private float replayPositionFollowPauseSeconds;
+        private float replayPoseFreezeSeconds;
+        private float replayPositionArcOffsetDegrees;
         private Vector2 recordedPlayerPosition;
-        private Vector3 replayPositionOffset;
         private readonly Queue<RecordedReplayFrame> replayFrames = new();
+        private readonly Queue<RecordedReplayActionGroup> replayActionGroups = new();
         private readonly List<TransformReplayBinding> transformReplayBindings = new();
         private readonly List<SpriteReplayBinding> spriteReplayBindings = new();
         private readonly HashSet<SpriteRenderer> excludedReplayRenderers = new();
@@ -62,10 +66,12 @@ namespace Week14.Enemy
             replayClock = 0f;
             replayCaptureTime = 0f;
             replayPositionFollowPauseSeconds = 0f;
-            replayPositionOffset = Vector3.zero;
+            replayPoseFreezeSeconds = 0f;
+            replayPositionArcOffsetDegrees = 0f;
             isHologramReplayRunning = true;
             isRecordingReplay = true;
             isReplayPlaybackComplete = false;
+            replayActionGroups.Clear();
             RecordedReplayFrame initialFrame = CaptureReplayFrame(0f);
             replayFrames.Enqueue(initialFrame);
             ApplyRecordedPlayerPosition(initialFrame);
@@ -106,8 +112,50 @@ namespace Week14.Enemy
             replayClock = 0f;
             replayCaptureTime = 0f;
             replayPositionFollowPauseSeconds = 0f;
-            replayPositionOffset = Vector3.zero;
+            replayPoseFreezeSeconds = 0f;
+            replayPositionArcOffsetDegrees = 0f;
             replayFrames.Clear();
+            replayActionGroups.Clear();
+        }
+
+        internal bool IsRecordingReplayActions => isRecordingReplay;
+
+        internal bool HasPendingReplayActionGroups => replayActionGroups.Count > 0;
+
+        internal void RecordReplayActionGroup(IReadOnlyList<BossStateNode> nodes)
+        {
+            if (!isHologramReplayRunning || !isRecordingReplay || nodes == null)
+            {
+                return;
+            }
+
+            List<string> nodeIds = new();
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                string nodeId = nodes[i]?.NodeId;
+                if (!string.IsNullOrWhiteSpace(nodeId))
+                {
+                    nodeIds.Add(nodeId);
+                }
+            }
+
+            if (nodeIds.Count > 0)
+            {
+                replayActionGroups.Enqueue(new RecordedReplayActionGroup(replayCaptureTime, nodeIds));
+            }
+        }
+
+        internal bool TryDequeueReplayActionGroup(out IReadOnlyList<string> nodeIds)
+        {
+            nodeIds = null;
+            if (replayActionGroups.Count == 0
+                || replayActionGroups.Peek().Time > replayClock - replayDelaySeconds + 0.0001f)
+            {
+                return false;
+            }
+
+            nodeIds = replayActionGroups.Dequeue().NodeIds;
+            return true;
         }
 
         internal IEnumerator ReturnToOwner()
@@ -192,21 +240,48 @@ namespace Week14.Enemy
             // 홀로그램의 위치는 본체 기록으로만 재생한다.
         }
 
-        internal void AddReplayPositionOffset(Vector2 offset)
-        {
-            if (!isHologramReplayRunning || offset.sqrMagnitude <= 0.0001f)
-            {
-                return;
-            }
-
-            replayPositionOffset += (Vector3)offset;
-        }
-
         internal void PauseRecordedPositionFollowing(float seconds)
         {
             replayPositionFollowPauseSeconds = Mathf.Max(
                 replayPositionFollowPauseSeconds,
                 Mathf.Max(0f, seconds));
+        }
+
+        internal void FreezeRecordedPose(float seconds)
+        {
+            replayPoseFreezeSeconds = Mathf.Max(
+                replayPoseFreezeSeconds,
+                Mathf.Max(0f, seconds));
+        }
+
+        internal void SetReplayPositionArcOffset(float degrees)
+        {
+            replayPositionArcOffsetDegrees = degrees;
+        }
+
+        internal EnemyProjectile FireReplayProjectile(
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            float muzzleFlashScale,
+            bool? aimAtPlayerWhileChargingOverride,
+            bool? aimAtPlayerOnLaunchOverride,
+            float chargeSecondsOverride,
+            float radiusOverride,
+            bool suppressHoming)
+        {
+            return sourceBoss != null
+                ? sourceBoss.FireGraphProjectile(
+                    settings,
+                    origin,
+                    direction,
+                    muzzleFlashScale,
+                    aimAtPlayerWhileChargingOverride,
+                    aimAtPlayerOnLaunchOverride,
+                    chargeSecondsOverride,
+                    radiusOverride,
+                    suppressHoming)
+                : null;
         }
 
         internal override HackerWireSettings WireSettings => sourceBoss != null
@@ -304,12 +379,28 @@ namespace Week14.Enemy
                 return;
             }
 
+            bool freezePose = replayPoseFreezeSeconds > 0f;
+            if (freezePose)
+            {
+                replayPoseFreezeSeconds = Mathf.Max(
+                    0f,
+                    replayPoseFreezeSeconds - deltaTime);
+            }
+
             replayClock += deltaTime;
 
             float playbackTime = replayClock - replayDelaySeconds;
             while (replayFrames.Count > 0 && replayFrames.Peek().Time <= playbackTime + 0.0001f)
             {
-                ApplyRecordedReplayFrame(replayFrames.Dequeue());
+                RecordedReplayFrame frame = replayFrames.Dequeue();
+                if (freezePose)
+                {
+                    ApplyRecordedPlayerPosition(frame);
+                }
+                else
+                {
+                    ApplyRecordedReplayFrame(frame);
+                }
             }
 
             if (!isRecordingReplay && replayFrames.Count == 0)
@@ -409,12 +500,67 @@ namespace Week14.Enemy
 
         private void ApplyRecordedReplayFrame(RecordedReplayFrame frame)
         {
-            transform.position = frame.RootPosition + replayPositionOffset;
+            transform.position = ClampReplayPosition(GetArcOffsetPosition(frame));
             transform.rotation = frame.RootRotation;
             transform.localScale = frame.RootLocalScale;
             ApplyRecordedPlayerPosition(frame);
             ApplyTransformStates(frame.TransformStates);
             ApplySpriteStates(frame.SpriteStates);
+        }
+
+        private Vector3 GetArcOffsetPosition(RecordedReplayFrame frame)
+        {
+            if (!frame.HasPlayerPosition || Mathf.Approximately(replayPositionArcOffsetDegrees, 0f))
+            {
+                return frame.RootPosition;
+            }
+
+            Vector2 fromPlayer = (Vector2)frame.RootPosition - frame.PlayerPosition;
+            if (fromPlayer.sqrMagnitude <= 0.0001f)
+            {
+                return frame.RootPosition;
+            }
+
+            float radians = replayPositionArcOffsetDegrees * Mathf.Deg2Rad;
+            float cosine = Mathf.Cos(radians);
+            float sine = Mathf.Sin(radians);
+            Vector2 rotatedOffset = new(
+                fromPlayer.x * cosine - fromPlayer.y * sine,
+                fromPlayer.x * sine + fromPlayer.y * cosine);
+            Vector2 position = frame.PlayerPosition + rotatedOffset;
+            return new Vector3(position.x, position.y, frame.RootPosition.z);
+        }
+
+        private Vector3 ClampReplayPosition(Vector3 targetPosition)
+        {
+            if (sourceBoss == null)
+            {
+                return targetPosition;
+            }
+
+            Vector2 currentPosition = transform.position;
+            Vector2 displacement = (Vector2)targetPosition - currentPosition;
+            float distance = displacement.magnitude;
+            if (distance <= 0.0001f)
+            {
+                return targetPosition;
+            }
+
+            int obstacleMask = sourceBoss.ObstacleMask.value | LayerMask.GetMask("Wall");
+            RaycastHit2D hit = Physics2D.CircleCast(
+                currentPosition,
+                ReplayWallProbeRadius,
+                displacement / distance,
+                distance,
+                obstacleMask);
+            if (hit.collider == null)
+            {
+                return targetPosition;
+            }
+
+            float clampedDistance = Mathf.Max(0f, hit.distance - ReplayWallSkin);
+            Vector2 clampedPosition = currentPosition + displacement.normalized * clampedDistance;
+            return new Vector3(clampedPosition.x, clampedPosition.y, targetPosition.z);
         }
 
         private void ApplyRecordedPlayerPosition(RecordedReplayFrame frame)
@@ -773,6 +919,18 @@ namespace Week14.Enemy
             public bool Enabled { get; }
             public int SortingLayerId { get; }
             public int SortingOrder { get; }
+        }
+
+        private readonly struct RecordedReplayActionGroup
+        {
+            public RecordedReplayActionGroup(float time, IReadOnlyList<string> nodeIds)
+            {
+                Time = time;
+                NodeIds = nodeIds;
+            }
+
+            public float Time { get; }
+            public IReadOnlyList<string> NodeIds { get; }
         }
 
         private sealed class RecordedReplayFrame

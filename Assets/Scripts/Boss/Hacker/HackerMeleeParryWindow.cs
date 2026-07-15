@@ -8,7 +8,7 @@ namespace Week14.Enemy
     {
         private const int CircleSegments = 32;
         private static readonly Color DefaultIndicatorColor = new(0.2f, 0.65f, 1f, 0.9f);
-        private static readonly Color HologramIndicatorColor = new(0.35f, 0.9f, 1f, 0.9f);
+        private static readonly Color HologramIndicatorColor = new(0.05f, 0.2f, 0.95f, 0.95f);
         private static readonly List<HackerMeleeParryWindow> ActiveWindows = new();
 
         private Transform followTarget;

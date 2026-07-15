@@ -61,6 +61,11 @@ namespace Week14.Enemy
             BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
             if (windupSeconds > 0f)
             {
+                if (context.Boss is HackerHologramBoss hologram)
+                {
+                    hologram.FreezeRecordedPose(windupSeconds);
+                }
+
                 Transform chargeFollowTarget = originSpec.GetAimOriginTransform(context, 0) ?? context.Boss?.transform;
                 HackerSnipingChargeIndicator chargeIndicator = HackerSnipingChargeIndicator.Create(
                     chargeFollowTarget,
@@ -166,13 +171,30 @@ namespace Week14.Enemy
             out Vector2 finalDirection)
         {
             Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
-            Vector2 direction = aimSpec.GetDirection(context, aimOrigin);
+            Vector2 direction = GetSnipingDirection(context, aimSpec, aimOrigin);
             spawnOrigin = originSpec.GetSpawnOrigin(context, 0, direction);
-            finalDirection = aimSpec.GetDirection(context, spawnOrigin);
+            finalDirection = GetSnipingDirection(context, aimSpec, spawnOrigin);
             if (spawnForwardOffset > 0f)
             {
                 spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
             }
+        }
+
+        private static Vector2 GetSnipingDirection(
+            BossActionContext context,
+            BossGraphProjectileAimSpec aimSpec,
+            Vector3 origin)
+        {
+            if (context?.Boss is HackerHologramBoss hologram && hologram.Player != null)
+            {
+                Vector2 playerDirection = (Vector2)hologram.Player.position - (Vector2)origin;
+                if (playerDirection.sqrMagnitude > 0.0001f)
+                {
+                    return playerDirection.normalized;
+                }
+            }
+
+            return aimSpec.GetDirection(context, origin);
         }
     }
 

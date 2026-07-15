@@ -804,7 +804,9 @@ namespace Week14.Enemy
 
         [Header("Hologram")]
         [SerializeField, Range(-180f, 180f)] private float hologramRetreatAngleDegrees = 30f;
-        [SerializeField, Min(0f)] private float hologramRetreatFollowDelaySeconds = 5f;
+        [FormerlySerializedAs("hologramRetreatFollowDelaySeconds")]
+        [Tooltip("홀로그램이 후퇴 또는 Diagonal Player 대시 후 본체의 기록 위치를 다시 따르기 전까지 대기할 시간입니다.")]
+        [SerializeField, Min(0f)] private float hologramRetreatWaitSeconds = 5f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
@@ -839,18 +841,20 @@ namespace Week14.Enemy
                         context,
                         Rotate(playerDirection, -playerDiagonalAngleDegrees),
                         false);
+
+                    if (context.Boss is HackerHologramBoss diagonalHologram)
+                    {
+                        diagonalHologram.PauseRecordedPositionFollowing(hologramRetreatWaitSeconds);
+                        yield return HackerMeleeAttackAction.Wait(
+                            context,
+                            hologramRetreatWaitSeconds);
+                    }
                 }
                 else
                 {
                     Vector2 dashDirection = direction == HackerDashDirection.Retreat
                         ? -playerDirection
                         : playerDirection;
-                    if (direction == HackerDashDirection.Retreat
-                        && context.Boss is HackerHologramBoss)
-                    {
-                        dashDirection = Rotate(dashDirection, hologramRetreatAngleDegrees);
-                    }
-
                     context.SetDashing(true);
                     yield return DashInDirection(
                         context,
@@ -860,10 +864,10 @@ namespace Week14.Enemy
                     if (direction == HackerDashDirection.Retreat
                         && context.Boss is HackerHologramBoss hologram)
                     {
-                        hologram.PauseRecordedPositionFollowing(hologramRetreatFollowDelaySeconds);
+                        hologram.PauseRecordedPositionFollowing(hologramRetreatWaitSeconds);
                         yield return HackerMeleeAttackAction.Wait(
                             context,
-                            hologramRetreatFollowDelaySeconds);
+                            hologramRetreatWaitSeconds);
                     }
                 }
             }
@@ -909,6 +913,12 @@ namespace Week14.Enemy
                 }
 
                 float progress = Mathf.Clamp01(elapsed / dashSeconds);
+                if (direction == HackerDashDirection.Retreat
+                    && context.Boss is HackerHologramBoss hologram)
+                {
+                    hologram.SetReplayPositionArcOffset(hologramRetreatAngleDegrees * progress);
+                }
+
                 float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
                 float currentSpeed = dashSpeed * speedMultiplier;
                 if (stopAtApproachDistance)
@@ -925,16 +935,7 @@ namespace Week14.Enemy
                     currentSpeed = Mathf.Min(currentSpeed, remainingDistance / deltaTime);
                 }
 
-                if (direction == HackerDashDirection.Retreat
-                    && context.Boss is HackerHologramBoss hologram)
-                {
-                    hologram.AddReplayPositionOffset(
-                        dashDirection * (currentSpeed * EnemyTimeScale.DeltaTime));
-                }
-                else
-                {
-                    context.Boss.SetMovementVelocity(dashDirection * currentSpeed);
-                }
+                context.Boss.SetMovementVelocity(dashDirection * currentSpeed);
 
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;

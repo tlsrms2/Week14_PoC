@@ -70,5 +70,25 @@ namespace Week14.Combat
                 : null;
         }
 
+        protected bool IsParryLockOnIndicatorRenderer(SpriteRenderer renderer)
+        {
+            if (renderer == null)
+            {
+                return false;
+            }
+
+            ResolveParryLockOnIndicator();
+            if (parryLockOnIndicatorRoot != null
+                && parryLockOnIndicatorRoot != gameObject
+                && renderer.transform.IsChildOf(parryLockOnIndicatorRoot.transform))
+            {
+                return true;
+            }
+
+            return parryLockOnReticle != null
+                && parryLockOnReticle.gameObject != gameObject
+                && renderer.transform.IsChildOf(parryLockOnReticle.transform);
+        }
+
     }
 }
