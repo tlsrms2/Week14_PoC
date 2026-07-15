@@ -9804,7 +9804,20 @@ MonoBehaviour:
       radius: 0.12
       trailSeconds: 0.1
       trailWidthMultiplier: 3
-  stealthGraph: {fileID: 11400000, guid: f2cf3a1837f71cb429ac22ca0984a449, type: 2}
+  - projectileName: "\uD50C\uB808\uC774\uC5B4\uC870\uC900\uC77C\uBC18\uD0C4"
+    projectile:
+      prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+      bulletDamage: 1
+      chargeSeconds: 1.5
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 1
+      aimAtPlayerOnLaunch: 1
+      speed: 7
+      lifetime: 7
+      radius: 0.12
+      trailSeconds: 0.1
+      trailWidthMultiplier: 3
+  stealthGraph: {fileID: 11400000, guid: 47bf25dcafb39c34980cbf5edf312333, type: 2}
   daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
   stealthVisualTargetA: {fileID: 1518477478}
   stealthAlphaA: 30

@@ -134,6 +134,24 @@ MonoBehaviour:
       rid: 4705778169994805384
     sequences: []
     editorPosition: {x: -297, y: 315}
+  - nodeId: Random Direction Move2
+    nodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805451
+    sequences: []
+    editorPosition: {x: -295, y: 474}
+  - nodeId: Fire Distance Trail1
+    nodeGuid: 883d36bf6b944b9a88c762b119ebd3de
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805474
+    sequences: []
+    editorPosition: {x: -295, y: 592}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -170,6 +188,13 @@ MonoBehaviour:
     nodeIds:
     - Windup1
     - Spawn Random Bombs1
+  - patternId: Pattern4
+    nodeGuids:
+    - e4c422895b4e423a9e3ec6a061344ecc
+    - 883d36bf6b944b9a88c762b119ebd3de
+    nodeIds:
+    - Random Direction Move2
+    - Fire Distance Trail1
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -272,9 +297,15 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  parallelEdges: []
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  parallelEdges:
+  - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    toNodeGuid: 883d36bf6b944b9a88c762b119ebd3de
+    fromNodeId: Random Direction Move2
+    toNodeId: Fire Distance Trail1
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern4
   references:
     version: 2
     RefIds:
@@ -667,6 +698,86 @@ MonoBehaviour:
             enabled: 1
             color: {r: 1, g: 0, b: 0, a: 1}
             scale: 1.5
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805451
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 12
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778169994805474
+      type: {class: FireDistanceTrailProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD50C\uB808\uC774\uC5B4\uC870\uC900\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        moveDistance: 12
+        bulletCount: 7
+        chargeSecondsOverride: 1.5
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:

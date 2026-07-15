@@ -112,6 +112,7 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
         new("Projectile/Fire Dash Formation", typeof(FireDashFormationAction), () => new FireDashFormationAction()),
+        new("Projectile/Fire Distance Trail", typeof(FireDistanceTrailProjectilesAction), () => new FireDistanceTrailProjectilesAction()),
         new("Projectile/Fire Rotating Spiral", typeof(FireRotatingProjectilesAction), () => new FireRotatingProjectilesAction()),
         new("Projectile/Fire Attached Projectiles", typeof(FireAttachedProjectilesAction), () => new FireAttachedProjectilesAction()),
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
@@ -365,6 +366,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(FireDashFormationAction))
         {
             return "보스 대시 방향에 맞춰 투사체 벽 또는 대시 경로 탄을 정렬한 뒤 발사합니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
+        }
+
+        if (actionType == typeof(FireDistanceTrailProjectilesAction))
+        {
+            return "이동 액션(Random Direction Move 등)과 P 포트로 병렬 연결해서 씁니다. 시간 간격이 아니라 실제 이동 거리(Move Distance)를 Bullet Count로 균등 분할한 간격마다 그 순간의 보스 위치에 탄을 스폰합니다. 이동 속도에 가속/감속 커브가 있어도 궤적상 간격이 일정합니다. Move Distance는 함께 실행되는 이동 액션의 Distance 값과 같게 맞춰야 합니다. 조준/충전 오버라이드를 강제하지 않으므로 탄 프리셋의 Aim At Player On Launch 등이 그대로 적용됩니다.";
         }
 
         if (actionType == typeof(WanderAroundPlayerDistanceAction))
