@@ -64,6 +64,7 @@ namespace Week14.Enemy
         private float homingSeconds;
         private float homingEndsAt;
         private Sprite normalSequenceSprite;
+        private bool hasNormalSequenceSprite;
 
         bool IConductorPlayerFacingProjectile.ShouldFacePlayer => homingActive;
         float IConductorPlayerFacingProjectile.PlayerFacingRotationOffsetDegrees => homingVisualRotationOffsetDegrees;
@@ -72,14 +73,15 @@ namespace Week14.Enemy
 
         protected override void OnProjectileAwake()
         {
-            normalSequenceSprite = GetProjectileSprite();
+            CacheNormalSequenceSprite();
             SetSequenceActive(false);
         }
 
         protected override void OnProjectileInitialized()
         {
-            normalSequenceSprite = GetProjectileSprite();
-            SetSequenceActive(sequenceActive);
+            CacheNormalSequenceSprite();
+            sequenceActive = false;
+            SetSequenceActive(false);
             SetChargeGaugeVisible(homingActive && IsCharging);
             if (IsLaunched)
             {
@@ -235,6 +237,17 @@ namespace Week14.Enemy
                 ? color
                 : fallbackBlinkColor;
             homingBlinkPhase = 0f;
+        }
+
+        private void CacheNormalSequenceSprite()
+        {
+            if (hasNormalSequenceSprite)
+            {
+                return;
+            }
+
+            normalSequenceSprite = GetProjectileSprite();
+            hasNormalSequenceSprite = normalSequenceSprite != null;
         }
 
         private void ApplySequenceColorForCurrentState()

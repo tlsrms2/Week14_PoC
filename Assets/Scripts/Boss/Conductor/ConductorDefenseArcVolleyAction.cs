@@ -39,10 +39,19 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
         [SerializeField] private bool releaseDronesAfterVolley = true;
 
+        [Header("Drone Shield")]
+        [SerializeField] private Color shieldColor = new(0.3f, 0.78f, 1f, 0.82f);
+        [SerializeField, Min(0.01f)] private float shieldRadius = 0.45f;
+        [SerializeField, Min(0.001f)] private float shieldLineWidth = 0.035f;
+        [SerializeField, Range(8, 64)] private int shieldSegments = 24;
+        [SerializeField] private int shieldSortingOrder = 72;
+
         [Header("Volleys")]
         [SerializeField] private List<Volley> volleys = new() { new Volley() };
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
+
+        private static Material shieldMaterial;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -61,24 +70,133 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            CommandDefenseArc(drones);
-            yield return MoveBossToTarget(context);
-            yield return context.WaitSeconds(formationHoldSeconds);
-            yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
-
-            yield return ExecuteVolleys(context, host, drones);
-
-            yield return context.WaitSeconds(recoverySeconds);
-            if (releaseDronesAfterVolley)
+            BeginDroneProjectileBlocking(drones);
+            List<GameObject> shieldVisuals = CreateDroneShieldVisuals(context, drones);
+            try
             {
-                for (int i = 0; i < drones.Count; i++)
+                CommandDefenseArc(drones);
+                yield return MoveBossToTarget(context);
+                yield return context.WaitSeconds(formationHoldSeconds);
+                yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
+
+                yield return ExecuteVolleys(context, host, drones);
+
+                yield return context.WaitSeconds(recoverySeconds);
+                if (releaseDronesAfterVolley)
                 {
-                    if (drones[i] != null)
+                    for (int i = 0; i < drones.Count; i++)
                     {
-                        drones[i].ResumeIdle();
+                        if (drones[i] != null)
+                        {
+                            drones[i].ResumeIdle();
+                        }
                     }
                 }
             }
+            finally
+            {
+                EndDroneProjectileBlocking(drones);
+                ClearDroneShieldVisuals(context, shieldVisuals);
+            }
+        }
+
+        private static void BeginDroneProjectileBlocking(IReadOnlyList<Minion> drones)
+        {
+            for (int i = 0; i < drones.Count; i++)
+            {
+                drones[i]?.BeginPlayerProjectileBlocking();
+            }
+        }
+
+        private static void EndDroneProjectileBlocking(IReadOnlyList<Minion> drones)
+        {
+            for (int i = 0; i < drones.Count; i++)
+            {
+                drones[i]?.EndPlayerProjectileBlocking();
+            }
+        }
+
+        private List<GameObject> CreateDroneShieldVisuals(BossActionContext context, IReadOnlyList<Minion> drones)
+        {
+            List<GameObject> visuals = new(drones.Count);
+            for (int i = 0; i < drones.Count; i++)
+            {
+                Minion drone = drones[i];
+                if (drone == null)
+                {
+                    continue;
+                }
+
+                GameObject shield = CreateDroneShieldVisual(drone);
+                if (shield == null)
+                {
+                    continue;
+                }
+
+                visuals.Add(shield);
+                context.RegisterTransientVisual(shield);
+            }
+
+            return visuals;
+        }
+
+        private void ClearDroneShieldVisuals(BossActionContext context, IReadOnlyList<GameObject> visuals)
+        {
+            if (visuals == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < visuals.Count; i++)
+            {
+                GameObject shield = visuals[i];
+                context.UnregisterTransientVisual(shield);
+                if (shield != null)
+                {
+                    UnityEngine.Object.Destroy(shield);
+                }
+            }
+        }
+
+        private GameObject CreateDroneShieldVisual(Minion drone)
+        {
+            GameObject shield = new("ConductorDefenseArcShield");
+            shield.transform.SetParent(drone.transform, false);
+
+            LineRenderer line = shield.AddComponent<LineRenderer>();
+            line.useWorldSpace = false;
+            line.loop = true;
+            line.numCapVertices = 3;
+            line.numCornerVertices = 3;
+            line.material = GetShieldMaterial();
+            line.startWidth = Mathf.Max(0.001f, shieldLineWidth);
+            line.endWidth = Mathf.Max(0.001f, shieldLineWidth);
+            line.startColor = shieldColor;
+            line.endColor = shieldColor;
+            line.sortingOrder = shieldSortingOrder;
+
+            int segments = Mathf.Clamp(shieldSegments, 8, 64);
+            float radius = Mathf.Max(0.01f, shieldRadius);
+            line.positionCount = segments;
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = Mathf.PI * 2f * i / segments;
+                line.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius));
+            }
+
+            return shield;
+        }
+
+        private static Material GetShieldMaterial()
+        {
+            if (shieldMaterial != null)
+            {
+                return shieldMaterial;
+            }
+
+            Shader shader = Shader.Find("Sprites/Default");
+            shieldMaterial = shader != null ? new Material(shader) : null;
+            return shieldMaterial;
         }
 
         private IEnumerator ExecuteVolleys(

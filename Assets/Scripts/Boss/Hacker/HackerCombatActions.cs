@@ -76,85 +76,114 @@ namespace Week14.Enemy
             }
 
             yield return ApproachToMeleeDistance(context);
-            context.PlayAnimationTrigger(GetAnimationTrigger());
+            HackerAttackRangeIndicator rangeIndicator = null;
+            HackerMeleeParryWindow parryWindow = null;
+            bool isHologram = context.Boss is HackerHologramBoss;
             Vector2 attackDirection = GetPlayerSideDirection(context);
-            GetMeleeEllipse(context, attackDirection, out Vector2 ellipseCenter, out float ellipseAngleDegrees);
-            HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateEllipse(
-                ellipseCenter,
-                range,
-                ellipseMinorRadius,
-                ellipseAngleDegrees);
-            yield return WaitWithMeleeEllipseIndicator(
-                context,
-                attackDirection,
-                Mathf.Max(0f, windupSeconds - parryWindowSeconds),
-                rangeIndicator);
-
-            bool wasParried = false;
-            GameObject parryObject = new("HackerMeleeParryWindow");
-            Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
-            parryObject.transform.position = parryAnchor.position;
-            HackerMeleeParryWindow parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
-            parryWindow.Initialize(
-                parryAnchor,
-                parryIndicatorRadius,
-                parryWindowSeconds,
-                () => wasParried = true);
-
-            float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
-            float elapsed = 0f;
-            while (elapsed < remainingWindup && !wasParried)
+            if (context.Boss is HackerBossAI hacker)
             {
-                if (context.IsExecutionPaused)
-                {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
-
-                GetMeleeEllipse(context, attackDirection, out ellipseCenter, out ellipseAngleDegrees);
-                rangeIndicator?.SetEllipse(ellipseCenter, range, ellipseMinorRadius, ellipseAngleDegrees);
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
+                hacker.FaceHorizontalDirection(attackDirection.x);
             }
 
-            if (parryWindow != null)
+            context.SetFacingLocked(true);
+            try
             {
-                UnityEngine.Object.Destroy(parryWindow.gameObject);
-            }
-            if (wasParried)
-            {
-                HackerAttackRangeIndicator.Destroy(rangeIndicator);
-                context.Stop();
-                yield return Wait(context, Mathf.Max(0f, remainingWindup - elapsed));
-                yield return AdvanceDuringAttack(
+                context.PlayAnimationTrigger(GetAnimationTrigger());
+                GetMeleeEllipse(context, attackDirection, out Vector2 ellipseCenter, out float ellipseAngleDegrees);
+                rangeIndicator = HackerAttackRangeIndicator.CreateEllipse(
+                    ellipseCenter,
+                    range,
+                    ellipseMinorRadius,
+                    ellipseAngleDegrees);
+                rangeIndicator.SetHologramStyle(isHologram);
+                yield return WaitWithMeleeEllipseIndicator(
                     context,
                     attackDirection,
-                    attackAdvanceSeconds,
-                    attackAdvanceSpeed,
-                    attackAdvanceSpeedCurve,
-                    null,
-                    null,
-                    false);
-                yield return Wait(context, recoverySeconds);
-                yield break;
+                    Mathf.Max(0f, windupSeconds - parryWindowSeconds),
+                    rangeIndicator);
+
+                bool wasParried = false;
+                GameObject parryObject = new("HackerMeleeParryWindow");
+                Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
+                parryObject.transform.position = parryAnchor.position;
+                parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
+                parryWindow.SetHologramStyle(isHologram);
+                parryWindow.Initialize(
+                    parryAnchor,
+                    parryIndicatorRadius,
+                    parryWindowSeconds,
+                    () => wasParried = true);
+
+                float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
+                float elapsed = 0f;
+                while (elapsed < remainingWindup && !wasParried)
+                {
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    GetMeleeEllipse(context, attackDirection, out ellipseCenter, out ellipseAngleDegrees);
+                    rangeIndicator?.SetEllipse(ellipseCenter, range, ellipseMinorRadius, ellipseAngleDegrees);
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
+                }
+
+                if (parryWindow != null)
+                {
+                    UnityEngine.Object.Destroy(parryWindow.gameObject);
+                    parryWindow = null;
+                }
+
+                if (wasParried)
+                {
+                    HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                    rangeIndicator = null;
+                    context.Stop();
+                    yield return Wait(context, Mathf.Max(0f, remainingWindup - elapsed));
+                    yield return AdvanceDuringAttack(
+                        context,
+                        attackDirection,
+                        attackAdvanceSeconds,
+                        attackAdvanceSpeed,
+                        attackAdvanceSpeedCurve,
+                        null,
+                        null,
+                        false);
+                    context.NotifyMeleeAttackAdvanceCompleted();
+                }
+                else
+                {
+                    GetMeleeEllipse(context, attackDirection, out ellipseCenter, out ellipseAngleDegrees);
+                    HashSet<PlayerCombatController> hitPlayers = new();
+                    rangeIndicator?.SetFillVisible(true);
+                    ApplyEllipseDamage(context, ellipseCenter, ellipseAngleDegrees, hitPlayers);
+                    yield return AdvanceDuringAttack(
+                        context,
+                        attackDirection,
+                        attackAdvanceSeconds,
+                        attackAdvanceSpeed,
+                        attackAdvanceSpeedCurve,
+                        rangeIndicator,
+                        hitPlayers,
+                        true);
+                    context.NotifyMeleeAttackAdvanceCompleted();
+                    TrySpawnConsecutiveSlamDust(context);
+                }
+            }
+            finally
+            {
+                if (parryWindow != null)
+                {
+                    UnityEngine.Object.Destroy(parryWindow.gameObject);
+                }
+
+                HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                context.SetFacingLocked(false);
             }
 
-            GetMeleeEllipse(context, attackDirection, out ellipseCenter, out ellipseAngleDegrees);
-            HashSet<PlayerCombatController> hitPlayers = new();
-            rangeIndicator?.SetFillVisible(true);
-            ApplyEllipseDamage(context, ellipseCenter, ellipseAngleDegrees, hitPlayers);
-            yield return AdvanceDuringAttack(
-                context,
-                attackDirection,
-                attackAdvanceSeconds,
-                attackAdvanceSpeed,
-                attackAdvanceSpeedCurve,
-                rangeIndicator,
-                hitPlayers,
-                true);
-            HackerAttackRangeIndicator.Destroy(rangeIndicator);
-            TrySpawnConsecutiveSlamDust(context);
             yield return Wait(context, recoverySeconds);
         }
 
@@ -456,7 +485,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class HackerThrustAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
+    public class HackerThrustAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
     {
         [SerializeField] private string animationTriggerName = "Thrust";
         [SerializeField, Min(0f)] private float windupSeconds = 0.5f;
@@ -489,6 +518,8 @@ namespace Week14.Enemy
 
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
+        protected float ThrustLength => length;
+
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
         float IHackerApproachRangeProvider.ApproachStopDistance => approachStopDistance;
 
@@ -500,11 +531,19 @@ namespace Week14.Enemy
             }
 
             yield return ApproachToThrustDistance(context);
-            context.PlayAnimationTrigger(animationTriggerName);
             Vector2 origin = context.Boss.transform.position;
             Vector2 direction = GetHorizontalThrustDirection(context, origin);
-            HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateThrust(origin, direction, length, width);
+            bool isHologram = context.Boss is HackerHologramBoss;
+            if (context.Boss is HackerBossAI hacker)
+            {
+                hacker.FaceHorizontalDirection(direction.x);
+            }
+
             context.SetFacingLocked(true);
+            context.PlayAnimationTrigger(animationTriggerName);
+            HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateThrust(origin, direction, length, width);
+            rangeIndicator.SetHologramStyle(isHologram);
+            float thrustExecutionSeconds = Mathf.Max(0f, thrustAdvanceSeconds);
             yield return WaitWithThrustIndicator(
                 context,
                 direction,
@@ -519,6 +558,7 @@ namespace Week14.Enemy
             parryWorldOffset.x = Mathf.Abs(parryWorldOffset.x) * Mathf.Sign(direction.x);
             parryObject.transform.position = bossTransform.position + parryWorldOffset;
             HackerMeleeParryWindow parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
+            parryWindow.SetHologramStyle(isHologram);
             parryWindow.Initialize(
                 bossTransform,
                 parryWorldOffset,
@@ -546,13 +586,13 @@ namespace Week14.Enemy
             {
                 UnityEngine.Object.Destroy(parryWindow.gameObject);
             }
-            context.SetFacingLocked(false);
             if (wasParried)
             {
+                context.SetFacingLocked(false);
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 context.Stop();
                 float cancelledAttackSeconds = Mathf.Max(0f, remainingWindup - elapsed)
-                    + Mathf.Max(0f, thrustAdvanceSeconds);
+                    + thrustExecutionSeconds;
                 yield return HackerMeleeAttackAction.Wait(context, cancelledAttackSeconds);
                 yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
                 yield break;
@@ -561,7 +601,19 @@ namespace Week14.Enemy
             HashSet<PlayerCombatController> hitPlayers = new();
             rangeIndicator?.SetFillVisible(true);
             ApplyLineDamage(context, context.Boss.transform.position, direction, hitPlayers);
-            yield return AdvanceDuringThrust(context, direction, rangeIndicator, hitPlayers);
+            IEnumerator payload = CreateThrustPayload(context, direction);
+            if (payload != null)
+            {
+                context.Boss.StartCoroutine(payload);
+            }
+
+            yield return AdvanceDuringThrust(
+                context,
+                direction,
+                rangeIndicator,
+                hitPlayers,
+                thrustExecutionSeconds);
+            context.SetFacingLocked(false);
             HackerAttackRangeIndicator.Destroy(rangeIndicator);
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
@@ -572,6 +624,11 @@ namespace Week14.Enemy
                 + Mathf.Max(0f, thrustAdvanceSeconds)
                 + Mathf.Max(0f, recoverySeconds);
             return true;
+        }
+
+        protected virtual IEnumerator CreateThrustPayload(BossActionContext context, Vector2 direction)
+        {
+            yield break;
         }
 
         private void ApplyLineDamage(
@@ -677,9 +734,10 @@ namespace Week14.Enemy
             BossActionContext context,
             Vector2 direction,
             HackerAttackRangeIndicator indicator,
-            HashSet<PlayerCombatController> hitPlayers)
+            HashSet<PlayerCombatController> hitPlayers,
+            float seconds)
         {
-            if (thrustAdvanceSeconds <= 0f || thrustAdvanceSpeed <= 0f)
+            if (seconds <= 0f || thrustAdvanceSpeed <= 0f)
             {
                 yield break;
             }
@@ -691,7 +749,7 @@ namespace Week14.Enemy
             try
             {
                 float elapsed = 0f;
-                while (elapsed < thrustAdvanceSeconds)
+                while (elapsed < seconds)
                 {
                     if (context.IsExecutionPaused)
                     {
@@ -700,7 +758,7 @@ namespace Week14.Enemy
                         continue;
                     }
 
-                    float progress = Mathf.Clamp01(elapsed / thrustAdvanceSeconds);
+                    float progress = Mathf.Clamp01(elapsed / seconds);
                     float speedMultiplier = EvaluateSpeedCurve(thrustAdvanceSpeedCurve, progress);
                     context.Boss.SetMovementVelocity(movementDirection * (thrustAdvanceSpeed * speedMultiplier));
                     indicator?.SetThrust(context.Boss.transform.position, direction, length, width);
@@ -743,6 +801,12 @@ namespace Week14.Enemy
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.7f);
         [SerializeField, Range(1f, 89f)] private float playerDiagonalAngleDegrees = 45f;
         [SerializeField, Min(0f)] private float diagonalIntervalSeconds = 0.15f;
+
+        [Header("Hologram")]
+        [SerializeField, Range(-180f, 180f)] private float hologramRetreatAngleDegrees = 30f;
+        [FormerlySerializedAs("hologramRetreatFollowDelaySeconds")]
+        [Tooltip("홀로그램이 후퇴 또는 Diagonal Player 대시 후 본체의 기록 위치를 다시 따르기 전까지 대기할 시간입니다.")]
+        [SerializeField, Min(0f)] private float hologramRetreatWaitSeconds = 5f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
@@ -765,12 +829,26 @@ namespace Week14.Enemy
                 if (direction == HackerDashDirection.DiagonalPlayer)
                 {
                     context.SetDashing(true);
-                    yield return DashInDirection(context, Rotate(playerDirection, playerDiagonalAngleDegrees));
+                    yield return DashInDirection(
+                        context,
+                        Rotate(playerDirection, playerDiagonalAngleDegrees),
+                        false);
                     context.SetDashing(false);
                     context.Stop();
                     yield return HackerMeleeAttackAction.Wait(context, diagonalIntervalSeconds);
                     context.SetDashing(true);
-                    yield return DashInDirection(context, Rotate(playerDirection, -playerDiagonalAngleDegrees));
+                    yield return DashInDirection(
+                        context,
+                        Rotate(playerDirection, -playerDiagonalAngleDegrees),
+                        false);
+
+                    if (context.Boss is HackerHologramBoss diagonalHologram)
+                    {
+                        diagonalHologram.PauseRecordedPositionFollowing(hologramRetreatWaitSeconds);
+                        yield return HackerMeleeAttackAction.Wait(
+                            context,
+                            hologramRetreatWaitSeconds);
+                    }
                 }
                 else
                 {
@@ -778,7 +856,19 @@ namespace Week14.Enemy
                         ? -playerDirection
                         : playerDirection;
                     context.SetDashing(true);
-                    yield return DashInDirection(context, dashDirection);
+                    yield return DashInDirection(
+                        context,
+                        dashDirection,
+                        direction == HackerDashDirection.Approach);
+
+                    if (direction == HackerDashDirection.Retreat
+                        && context.Boss is HackerHologramBoss hologram)
+                    {
+                        hologram.PauseRecordedPositionFollowing(hologramRetreatWaitSeconds);
+                        yield return HackerMeleeAttackAction.Wait(
+                            context,
+                            hologramRetreatWaitSeconds);
+                    }
                 }
             }
             finally
@@ -801,7 +891,10 @@ namespace Week14.Enemy
             return true;
         }
 
-        private IEnumerator DashInDirection(BossActionContext context, Vector2 dashDirection)
+        private IEnumerator DashInDirection(
+            BossActionContext context,
+            Vector2 dashDirection,
+            bool stopAtApproachDistance)
         {
             if (context?.Boss == null)
             {
@@ -820,8 +913,30 @@ namespace Week14.Enemy
                 }
 
                 float progress = Mathf.Clamp01(elapsed / dashSeconds);
+                if (direction == HackerDashDirection.Retreat
+                    && context.Boss is HackerHologramBoss hologram)
+                {
+                    hologram.SetReplayPositionArcOffset(hologramRetreatAngleDegrees * progress);
+                }
+
                 float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
-                context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
+                float currentSpeed = dashSpeed * speedMultiplier;
+                if (stopAtApproachDistance)
+                {
+                    float landingDistance = Mathf.Min(approachStartDistance, approachStopDistance);
+                    float remainingDistance = context.Boss.DistanceToPlayer() - landingDistance;
+                    if (remainingDistance <= 0f)
+                    {
+                        yield break;
+                    }
+
+                    dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
+                    float deltaTime = Mathf.Max(0.0001f, EnemyTimeScale.DeltaTime);
+                    currentSpeed = Mathf.Min(currentSpeed, remainingDistance / deltaTime);
+                }
+
+                context.Boss.SetMovementVelocity(dashDirection * currentSpeed);
+
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
@@ -838,7 +953,9 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            float stopDistance = Mathf.Min(approachStartDistance, approachStopDistance);
+            float stopDistance = direction == HackerDashDirection.Approach
+                ? approachStartDistance
+                : Mathf.Min(approachStartDistance, approachStopDistance);
             try
             {
                 float elapsed = 0f;

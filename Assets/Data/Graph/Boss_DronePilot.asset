@@ -665,15 +665,6 @@ MonoBehaviour:
       rid: 6489939025664671955
     sequences: []
     editorPosition: {x: 6636, y: -1106}
-  - nodeId: Fan Blade2
-    nodeGuid: 1b3f70d772774e93a70860e2c3b3b603
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939025664671959
-    sequences: []
-    editorPosition: {x: 5783, y: -1094}
   - nodeId: Formation Circle12
     nodeGuid: dea510815d7b434181f6bdfe741295cd
     nodeKind: 4
@@ -719,15 +710,6 @@ MonoBehaviour:
       rid: 6489939025664671978
     sequences: []
     editorPosition: {x: 4808, y: 1258}
-  - nodeId: Fan Blade3
-    nodeGuid: 4fd755f1c8de4039a39485f60733d557
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939025664671979
-    sequences: []
-    editorPosition: {x: 5030, y: 1023}
   - nodeId: Wander9
     nodeGuid: c330f4784b6743f1907351a798017f1e
     nodeKind: 4
@@ -1250,15 +1232,6 @@ MonoBehaviour:
       rid: 6489939164457861195
     sequences: []
     editorPosition: {x: -395, y: -626}
-  - nodeId: Diamond Collapse1
-    nodeGuid: 23a04e1266894a32a5cf46691984d75f
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939164457861198
-    sequences: []
-    editorPosition: {x: -63, y: 20}
   - nodeId: Score Lane Rush Special1
     nodeGuid: b595b783fb1c45ad87b79e162602a2d9
     nodeKind: 0
@@ -1267,7 +1240,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861199
     sequences: []
-    editorPosition: {x: 379, y: -456}
+    editorPosition: {x: 380, y: -456}
   - nodeId: Formation Line Volley1
     nodeGuid: 339b5728011740d0b5cfe451f91ff3b2
     nodeKind: 0
@@ -1277,15 +1250,6 @@ MonoBehaviour:
       rid: 6489939164457861200
     sequences: []
     editorPosition: {x: 407, y: -142}
-  - nodeId: Fan Blade4
-    nodeGuid: e883a9ef73a14a5f88bce14af3834145
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939164457861201
-    sequences: []
-    editorPosition: {x: 2570, y: -1219}
   - nodeId: Conducting Cue23
     nodeGuid: 8f30b7c6e91c4074b383a2bbbb32cd01
     nodeKind: 0
@@ -1295,15 +1259,6 @@ MonoBehaviour:
       rid: 6489939164457861202
     sequences: []
     editorPosition: {x: 1659, y: -407}
-  - nodeId: Fan Blade5
-    nodeGuid: 6f56668697304146b747e2c951bd22d8
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939164457861203
-    sequences: []
-    editorPosition: {x: 1881, y: -241}
   - nodeId: Wander23
     nodeGuid: c093d6281206439691797c939493f312
     nodeKind: 4
@@ -1331,15 +1286,6 @@ MonoBehaviour:
       rid: 6489939164457861206
     sequences: []
     editorPosition: {x: 1669, y: 292}
-  - nodeId: Diamond Collapse2
-    nodeGuid: 772ed00f216b414595d48763d0fa2c63
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939164457861207
-    sequences: []
-    editorPosition: {x: 1834, y: 296}
   - nodeId: Wander25
     nodeGuid: 10d58b96fdea431d86716104ee71a062
     nodeKind: 4
@@ -1411,7 +1357,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861215
     sequences: []
-    editorPosition: {x: 1695, y: 1079}
+    editorPosition: {x: 1692, y: 1104}
   - nodeId: Wander26
     nodeGuid: a1aceb64feaa4f2ea74ddf8b077ce47d
     nodeKind: 4
@@ -1421,7 +1367,7 @@ MonoBehaviour:
       rid: 6489939164457861216
     sequences: []
     editorPosition: {x: 1698, y: 1260}
-  - nodeId: Diamond Collapse3
+  - nodeId: Diamond Collapse1
     nodeGuid: 5b575b383ba24ec1968f637f899133f1
     nodeKind: 0
     phaseIndex: 0
@@ -1429,7 +1375,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861217
     sequences: []
-    editorPosition: {x: 1863, y: 1264}
+    editorPosition: {x: 1863, y: 1265}
   - nodeId: Conducting Cue27
     nodeGuid: 48d5605873184735a9feedfc19e4b744
     nodeKind: 0
@@ -1439,15 +1385,6 @@ MonoBehaviour:
       rid: 6489939164457861218
     sequences: []
     editorPosition: {x: 1870, y: 1082}
-  - nodeId: Fan Blade6
-    nodeGuid: 714054a83070491d864fcbb37fe77261
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939164457861219
-    sequences: []
-    editorPosition: {x: 2059, y: 1252}
   - nodeId: Wander27
     nodeGuid: fa40a9e2392b43b1aee40e38b30f357a
     nodeKind: 4
@@ -1610,15 +1547,6 @@ MonoBehaviour:
       rid: 6489939164457861241
     sequences: []
     editorPosition: {x: 4644, y: 428}
-  - nodeId: Diamond Collapse4
-    nodeGuid: 39683cf776ee4fac80d1e54adc0bb2f9
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939164457861242
-    sequences: []
-    editorPosition: {x: 4809, y: 432}
   - nodeId: Conducting Cue33
     nodeGuid: 79b54804f39e4398a5e360d34197d47f
     nodeKind: 0
@@ -1943,6 +1871,78 @@ MonoBehaviour:
       rid: 6489939164457861280
     sequences: []
     editorPosition: {x: 6805, y: 1718}
+  - nodeId: Fan Blade2
+    nodeGuid: b27a848d300140fe9a20e7574b2e4ffb
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055501
+    sequences: []
+    editorPosition: {x: 2037, y: 1256}
+  - nodeId: Diamond Collapse2
+    nodeGuid: 256ccdfb0b4a484f962c1339cde18051
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055502
+    sequences: []
+    editorPosition: {x: -47, y: 25}
+  - nodeId: Diamond Collapse3
+    nodeGuid: a1d5652f0c584286b95bfb5530596179
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055503
+    sequences: []
+    editorPosition: {x: 1863, y: 286}
+  - nodeId: Fan Blade3
+    nodeGuid: a58f4386be8846c1bf81e845446a9d33
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055504
+    sequences: []
+    editorPosition: {x: 1875, y: -252}
+  - nodeId: Fan Blade4
+    nodeGuid: 1d720d952632464c9038ff63e0ff2dc0
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055505
+    sequences: []
+    editorPosition: {x: 2554, y: -1227}
+  - nodeId: Fan Blade5
+    nodeGuid: 09c5219a0c60477dab7d77269c007076
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055506
+    sequences: []
+    editorPosition: {x: 5768, y: -1083}
+  - nodeId: Diamond Collapse4
+    nodeGuid: cc7f317add99417198f406c485884adc
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055507
+    sequences: []
+    editorPosition: {x: 4823, y: 437}
+  - nodeId: Fan Blade6
+    nodeGuid: 4dbdd095492b4ee1bd2d8c14fcd2858e
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939172654055508
+    sequences: []
+    editorPosition: {x: 5014, y: 1018}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -2079,9 +2079,9 @@ MonoBehaviour:
     - Spawn Turrets1
   - patternId: P9
     nodeGuids:
-    - 23a04e1266894a32a5cf46691984d75f
+    - 256ccdfb0b4a484f962c1339cde18051
     nodeIds:
-    - Diamond Collapse1
+    - Diamond Collapse2
   - patternId: P1 -> P6 -> P1
     nodeGuids:
     - cb9287a2d3e6462098e254bf5b55db88
@@ -2091,7 +2091,7 @@ MonoBehaviour:
     - 5b7413243391417390345961b2fa8c7c
     - d44f188d03bd4f8aa160f9f3bd72e770
     - 8337f7373dc743e0ac3d6f4d8af1706f
-    - e883a9ef73a14a5f88bce14af3834145
+    - 1d720d952632464c9038ff63e0ff2dc0
     - 35be457f108c45b7adeed7e464197f98
     - a213cb03476947b9ac11d7a345cd932a
     - 1f70c680dc9b4cda98cbb1a74ceeee65
@@ -2169,7 +2169,7 @@ MonoBehaviour:
     - b120f88b12af4af58b9e1d1d2a442525
     - 8f30b7c6e91c4074b383a2bbbb32cd01
     - c093d6281206439691797c939493f312
-    - 6f56668697304146b747e2c951bd22d8
+    - a58f4386be8846c1bf81e845446a9d33
     - a1a19c85d6f342e3ab3c63a3c2be5c91
     nodeIds:
     - Stop Movement3
@@ -2180,13 +2180,13 @@ MonoBehaviour:
     - Conducting Cue20
     - Conducting Cue23
     - Wander23
-    - Fan Blade5
+    - Fan Blade3
     - Maintain Player Distance19
   - patternId: "P9 -> P1(\uC720\uB3C4) 1\uD68C"
     nodeGuids:
     - 6298c20af34341ce87b774bbb858785b
     - f46399a8fb664ff390e199441128e619
-    - 772ed00f216b414595d48763d0fa2c63
+    - a1d5652f0c584286b95bfb5530596179
     - 4613b15629cc4f5b8c55893bb8a4b9f8
     - ab47a7264cf44bcf84c3f1e47e89008a
     - 9773fcc28230482c8ad1125197af0844
@@ -2197,7 +2197,7 @@ MonoBehaviour:
     nodeIds:
     - Conducting Cue24
     - Wander24
-    - Diamond Collapse2
+    - Diamond Collapse3
     - Maintain Player Distance31
     - Stop Movement11
     - Formation Circle13
@@ -2269,15 +2269,15 @@ MonoBehaviour:
     - 9bdbdca230d7435588ee5da629586e59
     - a1aceb64feaa4f2ea74ddf8b077ce47d
     - 5b575b383ba24ec1968f637f899133f1
-    - 714054a83070491d864fcbb37fe77261
+    - b27a848d300140fe9a20e7574b2e4ffb
     - fa40a9e2392b43b1aee40e38b30f357a
     - 48d5605873184735a9feedfc19e4b744
     - 796e98086f03499b971c34b0454aae48
     nodeIds:
     - Conducting Cue26
     - Wander26
-    - Diamond Collapse3
-    - Fan Blade6
+    - Diamond Collapse1
+    - Fan Blade2
     - Wander27
     - Conducting Cue27
     - Stop Movement12
@@ -2290,14 +2290,14 @@ MonoBehaviour:
     - 5cdc430833844b59a7c7bb5815a1fbe6
     - ee4a2b81291842fd8af031c88b42158d
     - b2d63a6e656f4600b2d0e54bde3cc148
-    - 1b3f70d772774e93a70860e2c3b3b603
+    - 09c5219a0c60477dab7d77269c007076
     - 0935e4fd03a14331990175503635228a
     - 3c45ab040ab240d3aed3ef9368172e8d
     - 1cc25c706e4546e29ca9aedb405f80e5
+    - 19fe991072d54c3aa744bc7e7bf10ac6
     - e1a2842443234b099e29728076b42c75
     - 01f1f85e7be14a57bda07f8c6b9ab1c8
     - 7278daf2f16b463c9e449c519bb7875a
-    - 19fe991072d54c3aa744bc7e7bf10ac6
     - 8f5e2136cc6d45b2a7fe7cb99163c8bf
     - de67b2a421d1484695e2905985ce8048
     - 45cbc8ff203144ef9177e13eb584216c
@@ -2317,14 +2317,14 @@ MonoBehaviour:
     - Maintain Player Distance21
     - Formation Circle10
     - Maintain Player Distance22
-    - Fan Blade2
+    - Fan Blade5
     - Orbit3
     - Maintain Player Distance27
     - Maintain Player Distance24
+    - Maintain Player Distance26
     - Repeat Fire12
     - Stop Movement6
     - Repeat Fire13
-    - Maintain Player Distance26
     - Formation Circle11
     - Maintain Player Distance25
     - Repeat Fire14
@@ -2374,7 +2374,7 @@ MonoBehaviour:
     nodeGuids:
     - 3ad3adcdb6ba45e2a08524ce014ba556
     - a15fa251c7f94c11ab5740480e10d41b
-    - 39683cf776ee4fac80d1e54adc0bb2f9
+    - cc7f317add99417198f406c485884adc
     - 12237603cd224786be7f3d7470ee593e
     - 894d2cb4ba434cb887ce430a539169a0
     - 79b54804f39e4398a5e360d34197d47f
@@ -2445,7 +2445,7 @@ MonoBehaviour:
     - 8efe93948b474fbb8e41df091892bcba
     - a50310ccf90848dc830c45e403c7e07a
     - b5cf2e6309e441baa9c77bb96c97b366
-    - 4fd755f1c8de4039a39485f60733d557
+    - 4dbdd095492b4ee1bd2d8c14fcd2858e
     - c330f4784b6743f1907351a798017f1e
     - 3f8783e7daa94e19b94a147dc4b70fe0
     - 41f08bcc693b44ffb8d0d6e68a23dc96
@@ -2455,7 +2455,7 @@ MonoBehaviour:
     - Stop Movement7
     - Conducting Cue18
     - Orbit2
-    - Fan Blade3
+    - Fan Blade6
     - Wander9
     - Conducting Cue19
     - Wander22
@@ -2476,10 +2476,13 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
+    phaseMaxHp: 100
     patternIntervalSeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
     openingPatternId: Summon
+    signaturePatternId: 
+    signaturePatternHpPercent: 50
     patterns:
     - patternId: P1
       weight: 1
@@ -2518,15 +2521,18 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
     - patternId: P9 -> P6
-      weight: 1
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
   - phaseIndex: 1
     selectionMode: 3
+    phaseMaxHp: 150
     patternIntervalSeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
     openingPatternId: UP5
+    signaturePatternId: P7
+    signaturePatternHpPercent: 50
     patterns:
     - patternId: P1
       weight: 1
@@ -2560,18 +2566,10 @@ MonoBehaviour:
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
-    - patternId: UP5
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
-    - patternId: P7
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
     - patternId: P2 -> P1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
     - patternId: P3 -> P6
       weight: 1
       legacyCooldownSeconds: -1
@@ -2753,14 +2751,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 7278daf2f16b463c9e449c519bb7875a
-    toNodeGuid: 19fe991072d54c3aa744bc7e7bf10ac6
-    fromNodeId: Repeat Fire13
-    toNodeId: Maintain Player Distance26
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 45cbc8ff203144ef9177e13eb584216c
     toNodeGuid: 2ba3d545414f45df8470c3266165be4c
     fromNodeId: Repeat Fire14
@@ -2769,34 +2759,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: b2d63a6e656f4600b2d0e54bde3cc148
-    toNodeGuid: 1b3f70d772774e93a70860e2c3b3b603
-    fromNodeId: Maintain Player Distance22
-    toNodeId: Fan Blade2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 3c45ab040ab240d3aed3ef9368172e8d
     toNodeGuid: 1cc25c706e4546e29ca9aedb405f80e5
     fromNodeId: Maintain Player Distance27
     toNodeId: Maintain Player Distance24
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 4fd755f1c8de4039a39485f60733d557
-    toNodeGuid: c330f4784b6743f1907351a798017f1e
-    fromNodeId: Fan Blade3
-    toNodeId: Wander9
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: b5cf2e6309e441baa9c77bb96c97b366
-    toNodeGuid: 4fd755f1c8de4039a39485f60733d557
-    fromNodeId: Orbit2
-    toNodeId: Fan Blade3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2829,14 +2795,6 @@ MonoBehaviour:
     toNodeGuid: 43a23d0338af4a8481209b843144e3dc
     fromNodeId: Player Path Side Fire7
     toNodeId: Wander11
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 1b3f70d772774e93a70860e2c3b3b603
-    toNodeGuid: 0935e4fd03a14331990175503635228a
-    fromNodeId: Fan Blade2
-    toNodeId: Orbit3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2937,22 +2895,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 8337f7373dc743e0ac3d6f4d8af1706f
-    toNodeGuid: e883a9ef73a14a5f88bce14af3834145
-    fromNodeId: Maintain Player Distance13
-    toNodeId: Fan Blade4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e883a9ef73a14a5f88bce14af3834145
-    toNodeGuid: 35be457f108c45b7adeed7e464197f98
-    fromNodeId: Fan Blade4
-    toNodeId: Maintain Player Distance15
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 3e890a11c03443cf9633ba310c270d0e
     toNodeGuid: dc7251fa3fa84f77b3679afe8940ff0d
     fromNodeId: Wander15
@@ -2965,30 +2907,6 @@ MonoBehaviour:
     toNodeGuid: 8a9aec4349c74e63b7377f50d81a419c
     fromNodeId: Wander16
     toNodeId: Player Path Side Fire4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: c093d6281206439691797c939493f312
-    toNodeGuid: 6f56668697304146b747e2c951bd22d8
-    fromNodeId: Wander23
-    toNodeId: Fan Blade5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 6f56668697304146b747e2c951bd22d8
-    toNodeGuid: a1a19c85d6f342e3ab3c63a3c2be5c91
-    fromNodeId: Fan Blade5
-    toNodeId: Maintain Player Distance19
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: f46399a8fb664ff390e199441128e619
-    toNodeGuid: 772ed00f216b414595d48763d0fa2c63
-    fromNodeId: Wander24
-    toNodeId: Diamond Collapse2
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3009,34 +2927,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 772ed00f216b414595d48763d0fa2c63
-    toNodeGuid: 4613b15629cc4f5b8c55893bb8a4b9f8
-    fromNodeId: Diamond Collapse2
-    toNodeId: Maintain Player Distance31
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: a1aceb64feaa4f2ea74ddf8b077ce47d
     toNodeGuid: 5b575b383ba24ec1968f637f899133f1
     fromNodeId: Wander26
-    toNodeId: Diamond Collapse3
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 5b575b383ba24ec1968f637f899133f1
-    toNodeGuid: 714054a83070491d864fcbb37fe77261
-    fromNodeId: Diamond Collapse3
-    toNodeId: Fan Blade6
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 714054a83070491d864fcbb37fe77261
-    toNodeGuid: fa40a9e2392b43b1aee40e38b30f357a
-    fromNodeId: Fan Blade6
-    toNodeId: Wander27
+    toNodeId: Diamond Collapse1
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3093,30 +2987,6 @@ MonoBehaviour:
     toNodeGuid: 760760fcc3034dc9973afcc0edcaefd6
     fromNodeId: Score Lane Rush5
     toNodeId: Wander31
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: a15fa251c7f94c11ab5740480e10d41b
-    toNodeGuid: 39683cf776ee4fac80d1e54adc0bb2f9
-    fromNodeId: Wander32
-    toNodeId: Diamond Collapse4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 39683cf776ee4fac80d1e54adc0bb2f9
-    toNodeGuid: 12237603cd224786be7f3d7470ee593e
-    fromNodeId: Diamond Collapse4
-    toNodeId: Orbit4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 12237603cd224786be7f3d7470ee593e
-    toNodeGuid: 894d2cb4ba434cb887ce430a539169a0
-    fromNodeId: Orbit4
-    toNodeId: Wander33
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3229,6 +3099,134 @@ MonoBehaviour:
     toNodeGuid: 74e8ed9245bd4fe7b85fdbb2c7e2fa25
     fromNodeId: Defense Arc Volley2
     toNodeId: Maintain Player Distance40
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5b575b383ba24ec1968f637f899133f1
+    toNodeGuid: b27a848d300140fe9a20e7574b2e4ffb
+    fromNodeId: Diamond Collapse1
+    toNodeId: Fan Blade2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b27a848d300140fe9a20e7574b2e4ffb
+    toNodeGuid: fa40a9e2392b43b1aee40e38b30f357a
+    fromNodeId: Fan Blade2
+    toNodeId: Wander27
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f46399a8fb664ff390e199441128e619
+    toNodeGuid: a1d5652f0c584286b95bfb5530596179
+    fromNodeId: Wander24
+    toNodeId: Diamond Collapse3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a1d5652f0c584286b95bfb5530596179
+    toNodeGuid: 4613b15629cc4f5b8c55893bb8a4b9f8
+    fromNodeId: Diamond Collapse3
+    toNodeId: Maintain Player Distance31
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a58f4386be8846c1bf81e845446a9d33
+    toNodeGuid: a1a19c85d6f342e3ab3c63a3c2be5c91
+    fromNodeId: Fan Blade3
+    toNodeId: Maintain Player Distance19
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c093d6281206439691797c939493f312
+    toNodeGuid: a58f4386be8846c1bf81e845446a9d33
+    fromNodeId: Wander23
+    toNodeId: Fan Blade3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 8337f7373dc743e0ac3d6f4d8af1706f
+    toNodeGuid: 1d720d952632464c9038ff63e0ff2dc0
+    fromNodeId: Maintain Player Distance13
+    toNodeId: Fan Blade4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1d720d952632464c9038ff63e0ff2dc0
+    toNodeGuid: 35be457f108c45b7adeed7e464197f98
+    fromNodeId: Fan Blade4
+    toNodeId: Maintain Player Distance15
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b2d63a6e656f4600b2d0e54bde3cc148
+    toNodeGuid: 09c5219a0c60477dab7d77269c007076
+    fromNodeId: Maintain Player Distance22
+    toNodeId: Fan Blade5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 09c5219a0c60477dab7d77269c007076
+    toNodeGuid: 0935e4fd03a14331990175503635228a
+    fromNodeId: Fan Blade5
+    toNodeId: Orbit3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1cc25c706e4546e29ca9aedb405f80e5
+    toNodeGuid: 19fe991072d54c3aa744bc7e7bf10ac6
+    fromNodeId: Maintain Player Distance24
+    toNodeId: Maintain Player Distance26
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a15fa251c7f94c11ab5740480e10d41b
+    toNodeGuid: cc7f317add99417198f406c485884adc
+    fromNodeId: Wander32
+    toNodeId: Diamond Collapse4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cc7f317add99417198f406c485884adc
+    toNodeGuid: 12237603cd224786be7f3d7470ee593e
+    fromNodeId: Diamond Collapse4
+    toNodeId: Orbit4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 12237603cd224786be7f3d7470ee593e
+    toNodeGuid: 894d2cb4ba434cb887ce430a539169a0
+    fromNodeId: Orbit4
+    toNodeId: Wander33
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b5cf2e6309e441baa9c77bb96c97b366
+    toNodeGuid: 4dbdd095492b4ee1bd2d8c14fcd2858e
+    fromNodeId: Orbit2
+    toNodeId: Fan Blade6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4dbdd095492b4ee1bd2d8c14fcd2858e
+    toNodeGuid: c330f4784b6743f1907351a798017f1e
+    fromNodeId: Fan Blade6
+    toNodeId: Wander9
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3546,12 +3544,6 @@ MonoBehaviour:
     toNodeId: Maintain Player Distance22
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 713244eee03047c8b6f866ef97c17bc9
-    toNodeGuid: 1b3f70d772774e93a70860e2c3b3b603
-    fromNodeId: Conducting Cue16
-    toNodeId: Fan Blade2
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 3f8783e7daa94e19b94a147dc4b70fe0
     toNodeGuid: b5cf2e6309e441baa9c77bb96c97b366
     fromNodeId: Conducting Cue19
@@ -3636,12 +3628,6 @@ MonoBehaviour:
     toNodeId: Wander22
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 595bfe7a1ddc4f30810fcf552697bbbe
-    toNodeGuid: e883a9ef73a14a5f88bce14af3834145
-    fromNodeId: Conducting Cue2
-    toNodeId: Fan Blade4
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 8f30b7c6e91c4074b383a2bbbb32cd01
     toNodeGuid: c093d6281206439691797c939493f312
     fromNodeId: Conducting Cue23
@@ -3687,7 +3673,7 @@ MonoBehaviour:
   - fromNodeGuid: 48d5605873184735a9feedfc19e4b744
     toNodeGuid: 5b575b383ba24ec1968f637f899133f1
     fromNodeId: Conducting Cue27
-    toNodeId: Diamond Collapse3
+    toNodeId: Diamond Collapse1
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: fa40a9e2392b43b1aee40e38b30f357a
@@ -3736,12 +3722,6 @@ MonoBehaviour:
     toNodeGuid: a15fa251c7f94c11ab5740480e10d41b
     fromNodeId: Conducting Cue32
     toNodeId: Wander32
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 79b54804f39e4398a5e360d34197d47f
-    toNodeGuid: 39683cf776ee4fac80d1e54adc0bb2f9
-    fromNodeId: Conducting Cue33
-    toNodeId: Diamond Collapse4
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 894d2cb4ba434cb887ce430a539169a0
@@ -3850,6 +3830,24 @@ MonoBehaviour:
     toNodeGuid: 6d218dfb13e2422180dd2a328aef7611
     fromNodeId: Conducting Cue36
     toNodeId: Defense Arc Volley2
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 595bfe7a1ddc4f30810fcf552697bbbe
+    toNodeGuid: 1d720d952632464c9038ff63e0ff2dc0
+    fromNodeId: Conducting Cue2
+    toNodeId: Fan Blade4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 09c5219a0c60477dab7d77269c007076
+    toNodeGuid: 713244eee03047c8b6f866ef97c17bc9
+    fromNodeId: Fan Blade5
+    toNodeId: Conducting Cue16
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 79b54804f39e4398a5e360d34197d47f
+    toNodeGuid: cc7f317add99417198f406c485884adc
+    fromNodeId: Conducting Cue33
+    toNodeId: Diamond Collapse4
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -5272,93 +5270,100 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         volleys:
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - projectileName: "\uC77C\uBC18\uD0C4"
           startSeconds: 0
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 0.75
           durationSeconds: 0.5
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 0.5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
           startSeconds: 1.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 2
           durationSeconds: 0.5
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 2.5
+          startSeconds: 1.75
           durationSeconds: 1.25
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 3.75
+          startSeconds: 3
           durationSeconds: 0.5
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 4.2
+          startSeconds: 3.5
           durationSeconds: 1
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.2
+          startSeconds: 4.5
           durationSeconds: 0.5
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5.7
+          startSeconds: 5
           durationSeconds: 0.75
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 6.45
+          startSeconds: 5.75
           durationSeconds: 0.5
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.95
+          startSeconds: 6.25
           durationSeconds: 1
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
+          startSeconds: 7.25
           durationSeconds: 0.5
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 8.45
+          startSeconds: 7.75
           durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 8.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 9.25
+          durationSeconds: 0.75
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
@@ -5612,7 +5617,7 @@ MonoBehaviour:
     - rid: 6489939025664671845
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -5816,7 +5821,7 @@ MonoBehaviour:
     - rid: 6489939025664671919
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -5943,7 +5948,7 @@ MonoBehaviour:
     - rid: 6489939025664671934
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -5951,7 +5956,7 @@ MonoBehaviour:
     - rid: 6489939025664671936
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -7439,7 +7444,7 @@ MonoBehaviour:
     - rid: 6489939025664671948
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -7640,148 +7645,6 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
-    - rid: 6489939025664671959
-      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerMode: 2
-        worldCenter: {x: 6, y: -5}
-        centerOffset: {x: 0, y: 0}
-        radius: 0.4
-        alignSeconds: 1.5
-        rotateSeconds: 5
-        angularSpeedDegrees: 70
-        startAngleOffsetDegrees: 0
-        maxMinionCount: 4
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 0
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 0.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 1.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 2.5
-          durationSeconds: 1.25
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 3.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 4.2
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5.7
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 6.45
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.95
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 8.45
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        waitForDuration: 1
-        drawPlacementIndicators: 1
-        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
-        placementIndicatorWidth: 0.035
-        placementIndicatorInnerRadius: 0.08
-        placementIndicatorOuterRadius: 0.42
-        placementIndicatorSpikeCount: 12
-        placementIndicatorSortingOrder: 67
     - rid: 6489939025664671962
       type: {class: MinionFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -7911,152 +7774,10 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
-    - rid: 6489939025664671979
-      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerMode: 2
-        worldCenter: {x: 6, y: -5}
-        centerOffset: {x: 0, y: 0}
-        radius: 0.4
-        alignSeconds: 1.5
-        rotateSeconds: 5
-        angularSpeedDegrees: 70
-        startAngleOffsetDegrees: 0
-        maxMinionCount: 4
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 0
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 0.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 1.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 2.5
-          durationSeconds: 1.25
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 3.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 4.2
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5.7
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 6.45
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.95
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 8.45
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        waitForDuration: 1
-        drawPlacementIndicators: 1
-        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
-        placementIndicatorWidth: 0.035
-        placementIndicatorInnerRadius: 0.08
-        placementIndicatorOuterRadius: 0.42
-        placementIndicatorSpikeCount: 12
-        placementIndicatorSortingOrder: 67
     - rid: 6489939025664671980
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -8417,7 +8138,7 @@ MonoBehaviour:
     - rid: 6489939039041355958
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -8482,7 +8203,7 @@ MonoBehaviour:
     - rid: 6489939039041355961
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -9236,7 +8957,7 @@ MonoBehaviour:
     - rid: 6489939039041355967
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -9976,6 +9697,11 @@ MonoBehaviour:
         windupSeconds: 0.5
         recoverySeconds: 0.25
         releaseDronesAfterVolley: 1
+        shieldColor: {r: 0.3, g: 0.78, b: 1, a: 0.82}
+        shieldRadius: 0.45
+        shieldLineWidth: 0.035
+        shieldSegments: 24
+        shieldSortingOrder: 72
         volleys:
         - projectileName: "\uC77C\uBC18\uD0C4"
           repeatCount: 3
@@ -10018,108 +9744,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-    - rid: 6489939164457861198
-      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerPosition: {x: 6, y: -5}
-        initialRadius: 10
-        initialAlignSeconds: 0.5
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleyStages:
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 6
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.5
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 1
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        finalShotDelaySeconds: 0.15
     - rid: 6489939164457861199
       type: {class: MinionConductorScoreLaneRushSpecialAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -10949,7 +10573,7 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
-        bossTargetPosition: {x: 6, y: 3}
+        bossTargetPosition: {x: 6, y: 2}
         bossOriginMoveSpeedMultiplier: 1
         bossOriginArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
@@ -11674,7 +11298,7 @@ MonoBehaviour:
         westStaffLineSpacing: 0.7
         westDroneDistance: 6.5
         westDroneLineSpacing: 0.65
-        westStaffSetupSeconds: 1.5
+        westStaffSetupSeconds: 1
         westStaffVolleys:
         - fireSeconds: 1
           fireInterval: 1
@@ -11748,7 +11372,7 @@ MonoBehaviour:
             projectileName: "\uC77C\uBC18\uD0C4"
           - minionNumber: 4
             projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        staffCollapseSeconds: 1
+        staffCollapseSeconds: 0.8
         repositionBossAtPatternStart: 1
         bossTargetPosition: {x: 6, y: 0.5}
         bossMoveSpeedMultiplier: 1
@@ -11801,148 +11425,6 @@ MonoBehaviour:
         earlyClearWanderSpeed: 3.2
         earlyClearWanderRadius: 2.8
         earlyClearWanderRetargetSeconds: 1.5
-    - rid: 6489939164457861201
-      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerMode: 2
-        worldCenter: {x: 6, y: -5}
-        centerOffset: {x: 0, y: 0}
-        radius: 0.4
-        alignSeconds: 1.5
-        rotateSeconds: 5
-        angularSpeedDegrees: 70
-        startAngleOffsetDegrees: 0
-        maxMinionCount: 4
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 0
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 0.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 1.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 2.5
-          durationSeconds: 1.25
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 3.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 4.2
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5.7
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 6.45
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.95
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 8.45
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        waitForDuration: 1
-        drawPlacementIndicators: 1
-        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
-        placementIndicatorWidth: 0.035
-        placementIndicatorInnerRadius: 0.08
-        placementIndicatorOuterRadius: 0.42
-        placementIndicatorSpikeCount: 12
-        placementIndicatorSortingOrder: 67
     - rid: 6489939164457861202
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -11964,148 +11446,6 @@ MonoBehaviour:
         completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
-    - rid: 6489939164457861203
-      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerMode: 2
-        worldCenter: {x: 6, y: -5}
-        centerOffset: {x: 0, y: 0}
-        radius: 0.4
-        alignSeconds: 1.5
-        rotateSeconds: 5
-        angularSpeedDegrees: 70
-        startAngleOffsetDegrees: 0
-        maxMinionCount: 4
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 0
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 0.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 1.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 2.5
-          durationSeconds: 1.25
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 3.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 4.2
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5.7
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 6.45
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.95
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 8.45
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        waitForDuration: 1
-        drawPlacementIndicators: 1
-        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
-        placementIndicatorWidth: 0.035
-        placementIndicatorInnerRadius: 0.08
-        placementIndicatorOuterRadius: 0.42
-        placementIndicatorSpikeCount: 12
-        placementIndicatorSortingOrder: 67
     - rid: 6489939164457861204
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -12143,112 +11483,10 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 6489939164457861207
-      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerPosition: {x: 6, y: -5}
-        initialRadius: 10
-        initialAlignSeconds: 0.5
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleyStages:
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 6
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 1
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        finalShotDelaySeconds: 0.15
     - rid: 6489939164457861208
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12429,8 +11667,8 @@ MonoBehaviour:
       type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         centerPosition: {x: 6, y: -5}
-        initialRadius: 10
-        initialAlignSeconds: 0.5
+        initialRadius: 9
+        initialAlignSeconds: 1
         windupSeconds: 0
         effects:
           explosion:
@@ -12454,6 +11692,17 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        previewLaneDistance: 5
+        previewLaneSpacing: 0.7
+        previewLaneLength: 35
+        previewInitialLaneDistanceMultiplier: 12
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 6.5
+        previewLaneFadeSeconds: 0.2
+        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
+        previewLaneWidth: 0.035
+        previewLaneSortingOrder: 66
+        previewLaneLineCount: 4
         volleyStages:
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           fireSeconds: 0.75
@@ -12473,9 +11722,16 @@ MonoBehaviour:
           fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 1
-          nextRadius: 6
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 7
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           fireSeconds: 0.75
           fireInterval: 0.12
@@ -12494,9 +11750,16 @@ MonoBehaviour:
           fireSeconds: 0.75
           fireInterval: 0.12
           shrinkAfter: 1
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
+          nextRadius: 6
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 5
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           fireSeconds: 0.75
           fireInterval: 0.12
@@ -12509,6 +11772,34 @@ MonoBehaviour:
           fireInterval: 0.12
           shrinkAfter: 0
           nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 3
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
           firePauseBeforeShrinkSeconds: 0.1
           shrinkMoveSeconds: 0.1
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
@@ -12527,6 +11818,11 @@ MonoBehaviour:
           shrinkMoveSeconds: 0.1
         finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         finalShotDelaySeconds: 0.15
+        repositionBossAtPatternStart: 1
+        bossTargetPosition: {x: 6, y: 2}
+        bossMoveSpeedMultiplier: 1
+        bossArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
     - rid: 6489939164457861218
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -12548,152 +11844,10 @@ MonoBehaviour:
         completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
-    - rid: 6489939164457861219
-      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerMode: 2
-        worldCenter: {x: 6, y: -5}
-        centerOffset: {x: 0, y: 0}
-        radius: 0.4
-        alignSeconds: 1.5
-        rotateSeconds: 5
-        angularSpeedDegrees: 70
-        startAngleOffsetDegrees: 0
-        maxMinionCount: 4
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleys:
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 0
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 0.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 1.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 2.5
-          durationSeconds: 1.25
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 3.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 4.2
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.2
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5.7
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 6.45
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.95
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.95
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 8.45
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        waitForDuration: 1
-        drawPlacementIndicators: 1
-        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
-        placementIndicatorWidth: 0.035
-        placementIndicatorInnerRadius: 0.08
-        placementIndicatorOuterRadius: 0.42
-        placementIndicatorSpikeCount: 12
-        placementIndicatorSortingOrder: 67
     - rid: 6489939164457861220
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 3.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12795,7 +11949,7 @@ MonoBehaviour:
     - rid: 6489939164457861225
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -13665,7 +12819,7 @@ MonoBehaviour:
     - rid: 6489939164457861237
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -13723,108 +12877,6 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 6489939164457861242
-      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerPosition: {x: 6, y: -5}
-        initialRadius: 10
-        initialAlignSeconds: 0.5
-        windupSeconds: 0
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        volleyStages:
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 6
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 1
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        finalShotDelaySeconds: 0.15
     - rid: 6489939164457861243
       type: {class: ConductorConductingCueAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -13849,7 +12901,7 @@ MonoBehaviour:
     - rid: 6489939164457861245
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -14020,6 +13072,11 @@ MonoBehaviour:
         windupSeconds: 0.5
         recoverySeconds: 0.25
         releaseDronesAfterVolley: 1
+        shieldColor: {r: 0.3, g: 0.78, b: 1, a: 0.82}
+        shieldRadius: 0.45
+        shieldLineWidth: 0.035
+        shieldSegments: 24
+        shieldSortingOrder: 72
         volleys:
         - projectileName: "\uC77C\uBC18\uD0C4"
           repeatCount: 3
@@ -14493,7 +13550,7 @@ MonoBehaviour:
     - rid: 6489939164457861275
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 2.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -14599,3 +13656,1193 @@ MonoBehaviour:
     - rid: 6489939164457861280
       type: {class: StopMovementAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
+    - rid: 6489939172654055501
+      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerMode: 2
+        worldCenter: {x: 6, y: -5}
+        centerOffset: {x: 0, y: 0}
+        radius: 0.4
+        alignSeconds: 1.5
+        rotateSeconds: 5
+        angularSpeedDegrees: 70
+        startAngleOffsetDegrees: 0
+        maxMinionCount: 4
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 0
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 0.5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 1.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 1.75
+          durationSeconds: 1.25
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 3
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 3.5
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 4.5
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 5.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 6.25
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 7.75
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 8.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 9.25
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        waitForDuration: 1
+        drawPlacementIndicators: 1
+        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
+        placementIndicatorWidth: 0.035
+        placementIndicatorInnerRadius: 0.08
+        placementIndicatorOuterRadius: 0.42
+        placementIndicatorSpikeCount: 12
+        placementIndicatorSortingOrder: 67
+    - rid: 6489939172654055502
+      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerPosition: {x: 6, y: -5}
+        initialRadius: 9
+        initialAlignSeconds: 1
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        previewLaneDistance: 4.5
+        previewLaneSpacing: 0.7
+        previewLaneLength: 8
+        previewInitialLaneDistanceMultiplier: 1.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 0.6
+        previewLaneFadeSeconds: 0.14
+        previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
+        previewLaneWidth: 0.035
+        previewLaneSortingOrder: 66
+        previewLaneLineCount: 4
+        volleyStages:
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 7
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 6
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 5
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 3
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 1
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        finalShotDelaySeconds: 0.15
+        repositionBossAtPatternStart: 0
+        bossTargetPosition: {x: 0, y: 0}
+        bossMoveSpeedMultiplier: 1
+        bossArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
+    - rid: 6489939172654055503
+      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerPosition: {x: 6, y: -5}
+        initialRadius: 9
+        initialAlignSeconds: 1
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        previewLaneDistance: 4.5
+        previewLaneSpacing: 0.7
+        previewLaneLength: 8
+        previewInitialLaneDistanceMultiplier: 1.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 0.6
+        previewLaneFadeSeconds: 0.14
+        previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
+        previewLaneWidth: 0.035
+        previewLaneSortingOrder: 66
+        previewLaneLineCount: 4
+        volleyStages:
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 7
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 6
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 5
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 3
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 1
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        finalShotDelaySeconds: 0.15
+        repositionBossAtPatternStart: 0
+        bossTargetPosition: {x: 6, y: 2}
+        bossMoveSpeedMultiplier: 1
+        bossArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
+    - rid: 6489939172654055504
+      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerMode: 2
+        worldCenter: {x: 6, y: -5}
+        centerOffset: {x: 0, y: 0}
+        radius: 0.4
+        alignSeconds: 1.5
+        rotateSeconds: 5
+        angularSpeedDegrees: 70
+        startAngleOffsetDegrees: 0
+        maxMinionCount: 4
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 0
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 0.5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 1.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 1.75
+          durationSeconds: 1.25
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 3
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 3.5
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 4.5
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 5.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 6.25
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 7.75
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 8.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 9.25
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        waitForDuration: 1
+        drawPlacementIndicators: 1
+        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
+        placementIndicatorWidth: 0.035
+        placementIndicatorInnerRadius: 0.08
+        placementIndicatorOuterRadius: 0.42
+        placementIndicatorSpikeCount: 12
+        placementIndicatorSortingOrder: 67
+    - rid: 6489939172654055505
+      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerMode: 2
+        worldCenter: {x: 6, y: -5}
+        centerOffset: {x: 0, y: 0}
+        radius: 0.4
+        alignSeconds: 1.5
+        rotateSeconds: 5
+        angularSpeedDegrees: 70
+        startAngleOffsetDegrees: 0
+        maxMinionCount: 4
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 0
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 0.5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 1.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 1.75
+          durationSeconds: 1.25
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 3
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 3.5
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 4.5
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 5.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 6.25
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 7.75
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 8.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 9.25
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        waitForDuration: 1
+        drawPlacementIndicators: 1
+        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
+        placementIndicatorWidth: 0.035
+        placementIndicatorInnerRadius: 0.08
+        placementIndicatorOuterRadius: 0.42
+        placementIndicatorSpikeCount: 12
+        placementIndicatorSortingOrder: 67
+    - rid: 6489939172654055506
+      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerMode: 2
+        worldCenter: {x: 6, y: -5}
+        centerOffset: {x: 0, y: 0}
+        radius: 0.4
+        alignSeconds: 1.5
+        rotateSeconds: 5
+        angularSpeedDegrees: 70
+        startAngleOffsetDegrees: 0
+        maxMinionCount: 4
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 0
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 0.5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 1.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 1.75
+          durationSeconds: 1.25
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 3
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 3.5
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 4.5
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 5.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 6.25
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 7.75
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 8.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 9.25
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        waitForDuration: 1
+        drawPlacementIndicators: 1
+        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
+        placementIndicatorWidth: 0.035
+        placementIndicatorInnerRadius: 0.08
+        placementIndicatorOuterRadius: 0.42
+        placementIndicatorSpikeCount: 12
+        placementIndicatorSortingOrder: 67
+    - rid: 6489939172654055507
+      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerPosition: {x: 6, y: -5}
+        initialRadius: 9
+        initialAlignSeconds: 1
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        previewLaneDistance: 4.5
+        previewLaneSpacing: 0.7
+        previewLaneLength: 8
+        previewInitialLaneDistanceMultiplier: 1.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 0.6
+        previewLaneFadeSeconds: 0.14
+        previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
+        previewLaneWidth: 0.035
+        previewLaneSortingOrder: 66
+        previewLaneLineCount: 4
+        volleyStages:
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 7
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 6
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 5
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 3
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 1
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        finalShotDelaySeconds: 0.15
+        repositionBossAtPatternStart: 0
+        bossTargetPosition: {x: 6, y: 2}
+        bossMoveSpeedMultiplier: 1
+        bossArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
+    - rid: 6489939172654055508
+      type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerMode: 2
+        worldCenter: {x: 6, y: -5}
+        centerOffset: {x: 0, y: 0}
+        radius: 0.4
+        alignSeconds: 1.5
+        rotateSeconds: 5
+        angularSpeedDegrees: 70
+        startAngleOffsetDegrees: 0
+        maxMinionCount: 4
+        windupSeconds: 0
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        volleys:
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 0
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 0.5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 1.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 1.75
+          durationSeconds: 1.25
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 3
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 3.5
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 4.5
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 5
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 5.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 6.25
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 7.25
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 7.75
+          durationSeconds: 1
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          startSeconds: 8.75
+          durationSeconds: 0.5
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          startSeconds: 9.25
+          durationSeconds: 0.75
+          fireInterval: 0.075
+          direction: 0
+          angleOffsetDegrees: 0
+          minionNumbers: 01000000020000000300000004000000
+        waitForDuration: 1
+        drawPlacementIndicators: 1
+        placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
+        placementIndicatorWidth: 0.035
+        placementIndicatorInnerRadius: 0.08
+        placementIndicatorOuterRadius: 0.42
+        placementIndicatorSpikeCount: 12
+        placementIndicatorSortingOrder: 67

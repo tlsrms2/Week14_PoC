@@ -49,6 +49,10 @@ namespace Week14.Enemy
                 {
                     yield return CounterGrab(context, hacker);
                 }
+                else
+                {
+                    context.RequestPatternTermination();
+                }
             }
             finally
             {
@@ -87,9 +91,7 @@ namespace Week14.Enemy
 
                 if (elapsed >= nextDestinationAt)
                 {
-                    Vector2 playerPosition = context.Boss.Player != null
-                        ? (Vector2)context.Boss.Player.position
-                        : (Vector2)context.Boss.transform.position;
+                    Vector2 playerPosition = context.GetPlayerPosition();
                     destination = playerPosition + UnityEngine.Random.insideUnitCircle.normalized * wanderRadius;
                     nextDestinationAt += wanderChangeSeconds;
                 }

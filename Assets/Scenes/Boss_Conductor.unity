@@ -1426,8 +1426,8 @@ Transform:
   m_GameObject: {fileID: 1022636621}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.89, y: 0.25, z: 0}
-  m_LocalScale: {x: 3.5, y: 3.5, z: 3.5}
+  m_LocalPosition: {x: 4.89, y: -1.32, z: 0}
+  m_LocalScale: {x: 3.1165893, y: 3.1165893, z: 3.1165893}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 497648241}
@@ -2315,16 +2315,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 261457479}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: graphProjectiles.Array.data[1].projectile.lifetime
-      value: 10
+      propertyPath: minionHitDamageMultiplier
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.81
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.82
+      value: -1.76
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.z

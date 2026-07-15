@@ -41,7 +41,15 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(animationTriggerName);
+            if (context.IsMeleeAdvanceSynchronized)
+            {
+                yield return WaitForMeleeAttackAdvanceCompletion(context);
+            }
+            else
+            {
+                context.PlayAnimationTrigger(animationTriggerName);
+            }
+
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             int count = Mathf.Max(1, bulletCount);
@@ -114,6 +122,19 @@ namespace Week14.Enemy
         {
             Vector2 direction = context.GetDirectionToPlayer(origin);
             return direction.sqrMagnitude > 0.0001f ? direction : Vector2.left;
+        }
+
+        private static IEnumerator WaitForMeleeAttackAdvanceCompletion(BossActionContext context)
+        {
+            while (!context.HasMeleeAttackAdvanceCompleted)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                }
+
+                yield return null;
+            }
         }
 
         private static Vector2 Rotate(Vector2 direction, float degrees)

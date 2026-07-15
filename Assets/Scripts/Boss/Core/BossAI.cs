@@ -269,7 +269,7 @@ namespace Week14.Enemy
             PhaseController.Initialize();
             
             SpawnPosition = transform.position;
-            hpGauge.Configure(maxHp, true);
+            hpGauge.Configure(GetCurrentPhaseMaxHp(), true);
 
             PrepareStatusViews();
             ApplyBodyStateColor();
@@ -361,7 +361,7 @@ namespace Week14.Enemy
             return hit.collider == null;
         }
 
-        public float DistanceToPlayer()
+        public virtual float DistanceToPlayer()
         {
             return player != null ? Vector2.Distance(transform.position, player.position) : float.MaxValue;
         }
@@ -377,7 +377,7 @@ namespace Week14.Enemy
             SetMovementVelocity(direction * moveSpeed);
         }
 
-        internal void SetMovementVelocity(Vector2 velocity)
+        internal virtual void SetMovementVelocity(Vector2 velocity)
         {
             if (body == null)
             {
@@ -633,10 +633,21 @@ namespace Week14.Enemy
 
         internal void RefillHpForPhaseController()
         {
-            hpGauge?.Configure(maxHp, true);
+            hpGauge?.Configure(GetCurrentPhaseMaxHp(), true);
             ApplyBodyStateColor();
             bossHpBarView?.PlayPhaseRefill();
             OnHpEmptyRecovered();
+        }
+
+        private int GetCurrentPhaseMaxHp()
+        {
+            BossGraphPhase phase = ActiveGraphPhase;
+            if (phase != null && phase.PhaseMaxHp > 0)
+            {
+                return phase.PhaseMaxHp;
+            }
+
+            return Mathf.Max(1, maxHp);
         }
 
         internal float HpEmptyExecutionSeconds => hpEmptyExecutionSeconds;

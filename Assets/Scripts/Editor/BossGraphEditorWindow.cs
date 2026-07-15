@@ -4949,6 +4949,12 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 openingPatternId.stringValue = newPatternId;
             }
 
+            SerializedProperty signaturePatternId = phase.FindPropertyRelative("signaturePatternId");
+            if (signaturePatternId != null && signaturePatternId.stringValue == oldPatternId)
+            {
+                signaturePatternId.stringValue = newPatternId;
+            }
+
             SerializedProperty entries = phase.FindPropertyRelative("patterns");
             if (entries == null)
             {
@@ -5564,6 +5570,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(phase.FindPropertyRelative("phaseIndex"), new GUIContent("Phase Index"));
             EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("phaseMaxHp"),
+                new GUIContent("Phase HP", "0이면 Boss AI의 Max HP를 사용합니다."));
+            EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
             EditorGUILayout.PropertyField(
@@ -5588,6 +5597,25 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 }
             }
 
+            SerializedProperty signaturePatternId = phase.FindPropertyRelative("signaturePatternId");
+            if (signaturePatternId != null)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Signature Pattern", GUILayout.Width(EditorGUIUtility.labelWidth - 4f));
+                    string nextSignaturePatternId = DrawPatternIdPopup(signaturePatternId.stringValue, patternIds);
+                    if (nextSignaturePatternId != signaturePatternId.stringValue)
+                    {
+                        signaturePatternId.stringValue = nextSignaturePatternId;
+                        changed = true;
+                    }
+                }
+            }
+
+            EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("signaturePatternHpPercent"),
+                new GUIContent("Signature Pattern HP Percent"));
+
             EditorGUI.indentLevel--;
         }
 
@@ -5602,8 +5630,11 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SerializedProperty phase = phases.GetArrayElementAtIndex(phaseArrayIndex);
         SetInt(phase, "phaseIndex", phaseArrayIndex);
         SetEnum(phase, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
+        SetInt(phase, "phaseMaxHp", 0);
         SetFloat(phase, "patternIntervalSeconds", 0f);
         SetString(phase, "openingPatternId", string.Empty);
+        SetString(phase, "signaturePatternId", string.Empty);
+        SetFloat(phase, "signaturePatternHpPercent", 50f);
         SerializedProperty phasePatterns = phase.FindPropertyRelative("patterns");
         phasePatterns?.ClearArray();
     }
@@ -8063,20 +8094,21 @@ internal sealed class BossGraphNodeView : Node
         mainContainer.style.borderRightColor = color;
     }
 
-    public void SetHackerFireWireBranchPorts(bool isBranch)
+    public void SetHackerFireWireBranchPorts(bool isFireWireBranch)
     {
-        OutputPort.portName = isBranch ? "Out1" : "Out";
-        OutputPort.tooltip = isBranch ? "플레이어 그랩 성공 시 실행" : string.Empty;
-        SecondaryOutputPort.style.display = isBranch ? DisplayStyle.Flex : DisplayStyle.None;
-        SecondaryOutputPort.tooltip = isBranch ? "와이어 그랩 실패 시 실행" : string.Empty;
+        OutputPort.portName = isFireWireBranch ? "Out1" : "Out";
+        OutputPort.tooltip = isFireWireBranch ? "플레이어 그랩 성공 시 실행" : string.Empty;
+        SecondaryOutputPort.portName = "Out2";
+        SecondaryOutputPort.style.display = isFireWireBranch ? DisplayStyle.Flex : DisplayStyle.None;
+        SecondaryOutputPort.tooltip = isFireWireBranch ? "와이어 그랩 실패 시 실행" : string.Empty;
         for (int i = 0; i < ParallelInputPorts.Length; i++)
         {
-            ParallelInputPorts[i].style.display = isBranch ? DisplayStyle.None : DisplayStyle.Flex;
+            ParallelInputPorts[i].style.display = isFireWireBranch ? DisplayStyle.None : DisplayStyle.Flex;
         }
 
         for (int i = 0; i < ParallelOutputPorts.Length; i++)
         {
-            ParallelOutputPorts[i].style.display = isBranch ? DisplayStyle.None : DisplayStyle.Flex;
+            ParallelOutputPorts[i].style.display = isFireWireBranch ? DisplayStyle.None : DisplayStyle.Flex;
             ParallelOutputPorts[i].tooltip = "동시 실행";
         }
     }

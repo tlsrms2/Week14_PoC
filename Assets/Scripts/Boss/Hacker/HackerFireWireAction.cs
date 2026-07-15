@@ -23,6 +23,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
         [SerializeField, Min(1)] private int hackingPerHit = 1;
         [SerializeField, Min(0.05f)] private float playerWallSearchRadius = 5f;
+        [SerializeField, Min(0f)] private float minimumWallDistance = 2f;
         [SerializeField, Min(1)] private int fireCount = 1;
         [SerializeField, Min(0f)] private float repeatIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
@@ -94,10 +95,7 @@ namespace Week14.Enemy
 
                     if (resolution == HackerWireResolution.WallAttached)
                     {
-                        yield return FlyBossToWall(
-                            context,
-                            wallPosition,
-                            targetMode == HackerFireWireTargetMode.Player);
+                        yield return FlyBossToWall(context, wallPosition);
                     }
                     else if (resolution == HackerWireResolution.PlayerGrabbed)
                     {
@@ -215,7 +213,7 @@ namespace Week14.Enemy
                 Vector2 candidatePoint = wallCollider.ClosestPoint(playerPosition);
                 Vector2 toCandidate = candidatePoint - origin;
                 float candidateDistance = toCandidate.magnitude;
-                if (candidateDistance <= 0.0001f)
+                if (candidateDistance <= 0.0001f || candidateDistance < minimumWallDistance)
                 {
                     continue;
                 }
@@ -226,6 +224,11 @@ namespace Week14.Enemy
                     candidateDistance + 0.05f,
                     1 << wallLayer);
                 if (hit.collider == null || hit.collider.gameObject.layer != wallLayer)
+                {
+                    continue;
+                }
+
+                if (hit.distance < minimumWallDistance)
                 {
                     continue;
                 }
@@ -245,8 +248,7 @@ namespace Week14.Enemy
 
         private IEnumerator FlyBossToWall(
             BossActionContext context,
-            Vector3 wallPosition,
-            bool fireFlightProjectiles)
+            Vector3 wallPosition)
         {
             if (context?.Boss == null)
             {
@@ -279,8 +281,7 @@ namespace Week14.Enemy
                     float progress = Mathf.Clamp01(elapsed / maxBossFlightSeconds);
                     float speedMultiplier = EvaluateSpeedCurve(bossFlightSpeedCurve, progress);
                     context.Boss.SetMovementVelocity(toWall.normalized * (bossFlightSpeed * speedMultiplier));
-                    if (fireFlightProjectiles
-                        && firedProjectileCount < maxFlightProjectileCount
+                    if (firedProjectileCount < maxFlightProjectileCount
                         && elapsed >= nextProjectileAt)
                     {
                         FireFlightProjectile(context, origin);

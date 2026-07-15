@@ -303,18 +303,24 @@ namespace Week14.Enemy
     {
         [SerializeField, Min(0)] private int phaseIndex;
         [SerializeField, HideInInspector] private BossSequenceSelectionMode selectionMode;
+        [SerializeField, Min(0)] private int phaseMaxHp;
         [SerializeField, Min(0f)] private float patternIntervalSeconds;
         [SerializeField] private bool bossCanFlyOverGround;
         [SerializeField] private bool minionsCanFlyOverGround;
         [SerializeField] private string openingPatternId;
+        [SerializeField] private string signaturePatternId;
+        [SerializeField, Range(0f, 100f)] private float signaturePatternHpPercent = 50f;
         [SerializeField] private List<BossGraphPatternEntry> patterns = new();
 
         public int PhaseIndex => phaseIndex;
         public BossSequenceSelectionMode SelectionMode => selectionMode;
+        public int PhaseMaxHp => Mathf.Max(0, phaseMaxHp);
         public float PatternIntervalSeconds => Mathf.Max(0f, patternIntervalSeconds);
         public bool BossCanFlyOverGround => bossCanFlyOverGround;
         public bool MinionsCanFlyOverGround => minionsCanFlyOverGround;
         public string OpeningPatternId => openingPatternId;
+        public string SignaturePatternId => signaturePatternId;
+        public float SignaturePatternHpRatio => Mathf.Clamp(signaturePatternHpPercent, 0f, 100f) * 0.01f;
         public IReadOnlyList<BossGraphPatternEntry> Patterns => patterns;
     }
 

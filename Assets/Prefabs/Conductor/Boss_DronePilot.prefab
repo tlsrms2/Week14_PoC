@@ -141,7 +141,7 @@ MonoBehaviour:
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 1
       speed: 12
-      lifetime: 3
+      lifetime: 10
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
@@ -162,12 +162,12 @@ MonoBehaviour:
     projectile:
       prefab: {fileID: 6302133993518822562, guid: ee930b0ed29e38741bcd8ac4ce9d4957, type: 3}
       bulletDamage: 1
-      chargeSeconds: 2
+      chargeSeconds: 3
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 1
       speed: 12
-      lifetime: 5
+      lifetime: 8
       radius: 0.1
       trailSeconds: 0.01
       trailWidthMultiplier: 0.1
@@ -175,12 +175,12 @@ MonoBehaviour:
     projectile:
       prefab: {fileID: 3310389949657122784, guid: ee153d6b4fc1bff4cbee6d78b4df4ff1, type: 3}
       bulletDamage: 1
-      chargeSeconds: 4
+      chargeSeconds: 5
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 1
       speed: 12
-      lifetime: 7
+      lifetime: 8
       radius: 0.1
       trailSeconds: 0.01
       trailWidthMultiplier: 0.1

@@ -144,6 +144,14 @@ namespace Week14.Combat
                 return turret.IsPlayerTargetable;
             }
 
+            Minion minion = targetHealth != null
+                ? targetHealth.GetComponent<Minion>() ?? targetHealth.GetComponentInParent<Minion>()
+                : null;
+            if (minion != null && !minion.IsPlayerTargetable)
+            {
+                return false;
+            }
+
             return targetHealth != null
                 && targetHealth != context.Health
                 && !targetHealth.IsDead

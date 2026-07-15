@@ -139,6 +139,7 @@ namespace Week14.Combat
         private static readonly Dictionary<int, EnemyProjectile> activeProjectileByInterceptGroup = new();
 
         public event System.Action<EnemyProjectile> Launched;
+        public event System.Action<EnemyProjectile, EnemyProjectile> LaunchReplaced;
         public event System.Action<EnemyProjectile> RadialSplit;
         public event System.Action<EnemyProjectile> RadialSplitImminent;
         public event System.Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> Destroyed;
@@ -435,7 +436,10 @@ namespace Week14.Combat
             RefreshPathIndicator();
         }
 
-        public void ConfigureFlightSpeedCurve(AnimationCurve speedCurve, float seconds)
+        public void ConfigureFlightSpeedCurve(
+            AnimationCurve speedCurve,
+            float seconds,
+            float initialZeroSpeedSeconds = 0f)
         {
             if (speedCurve == null || speedCurve.length == 0 || seconds <= 0f)
             {
@@ -446,7 +450,7 @@ namespace Week14.Combat
             runtimeFlightSpeedCurve = speedCurve;
             runtimeFlightSpeedCurveBaseSpeed = projectileSpeed;
             runtimeFlightSpeedCurveSeconds = Mathf.Max(0.01f, seconds);
-            runtimeFlightSpeedCurveElapsed = 0f;
+            runtimeFlightSpeedCurveElapsed = -Mathf.Max(0f, initialZeroSpeedSeconds);
             ApplyRuntimeFlightSpeedCurve();
             RefreshRuntimeVelocity();
         }
@@ -471,6 +475,12 @@ namespace Week14.Combat
             if (runtimeFlightSpeedCurve == null || runtimeFlightSpeedCurve.length == 0)
             {
                 runtimeFlightSpeedCurveActive = false;
+                return;
+            }
+
+            if (runtimeFlightSpeedCurveElapsed <= 0f)
+            {
+                projectileSpeed = 0f;
                 return;
             }
 

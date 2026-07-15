@@ -34,11 +34,13 @@ namespace Week14.Enemy
             }
 
             context.PlayAnimationTrigger(chargeTriggerName);
+            bool isHologram = context.Boss is HackerHologramBoss;
             bool wasParried = false;
             Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
             GameObject parryObject = new("HackerDashSweepParryWindow");
             parryObject.transform.position = parryAnchor.position;
             HackerMeleeParryWindow parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
+            parryWindow.SetHologramStyle(isHologram);
             parryWindow.Initialize(parryAnchor, parryIndicatorRadius, parryWindowSeconds, () => wasParried = true);
 
             float elapsed = 0f;
@@ -57,6 +59,7 @@ namespace Week14.Enemy
                 if (rangeIndicator == null)
                 {
                     rangeIndicator = HackerAttackRangeIndicator.CreateCircle(center, sweepRadius);
+                    rangeIndicator.SetHologramStyle(isHologram);
                 }
                 else
                 {
@@ -86,6 +89,7 @@ namespace Week14.Enemy
             context.SetDashing(true);
             Vector2 sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
             rangeIndicator = HackerAttackRangeIndicator.CreateCircle(sweepCenter, sweepRadius);
+            rangeIndicator.SetHologramStyle(isHologram);
             rangeIndicator.SetFillVisible(true);
             HashSet<PlayerCombatController> hitPlayers = new();
             elapsed = 0f;
