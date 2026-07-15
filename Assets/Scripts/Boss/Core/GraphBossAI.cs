@@ -16,13 +16,15 @@ namespace Week14.Enemy
         };
 
         [Header("Groggy (패링 억제)")]
-        [Tooltip("그로기 상태 진입/해제 시 켜고 끌 Animator Bool 이름입니다.")]
-        [SerializeField] private string groggyAnimatorBoolName = "isGroggy";
+        [Tooltip("그로기 상태 진입/해제 시 애니메이터를 못 찾으면 사용할 대체 검색용입니다. 보통은 자동으로 BodyRoot 밑에서 찾습니다.")]
+        [SerializeField] private Animator groggyAnimator;
+
+        private static readonly int StunParameter = Animator.StringToHash("Stun");
+        private static readonly int EndStunParameter = Animator.StringToHash("EndStun");
 
         private readonly BossGraphRunner graphRunner = new();
         private BossActionContext graphContext;
         private Coroutine patternRoutine;
-        private Animator groggyAnimator;
         private bool isGroggy;
         private bool pendingGroggyEnter;
         private float pendingGroggySeconds;
@@ -129,22 +131,17 @@ namespace Week14.Enemy
             isGroggy = true;
             groggyRemainingSeconds = seconds;
             SetMovementVelocity(Vector2.zero);
-            SetGroggyAnimatorBool(true);
+            SetGroggyAnimatorTrigger(StunParameter);
         }
 
         private void EndGroggy()
         {
             isGroggy = false;
-            SetGroggyAnimatorBool(false);
+            SetGroggyAnimatorTrigger(EndStunParameter);
         }
 
-        private void SetGroggyAnimatorBool(bool value)
+        private void SetGroggyAnimatorTrigger(int parameter)
         {
-            if (string.IsNullOrWhiteSpace(groggyAnimatorBoolName))
-            {
-                return;
-            }
-
             if (groggyAnimator == null)
             {
                 groggyAnimator = BodyRoot != null
@@ -154,7 +151,7 @@ namespace Week14.Enemy
 
             if (groggyAnimator != null)
             {
-                groggyAnimator.SetBool(groggyAnimatorBoolName, value);
+                groggyAnimator.SetTrigger(parameter);
             }
         }
 

@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288593
     sequences: []
-    editorPosition: {x: -366, y: 563}
+    editorPosition: {x: -633, y: 559}
   - nodeId: Wait2
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
@@ -403,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200318
     sequences: []
-    editorPosition: {x: -142, y: 563}
+    editorPosition: {x: -409, y: 559}
   - nodeId: Wait4
     nodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
     nodeKind: 3
@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824404
     sequences: []
-    editorPosition: {x: -36, y: 563}
+    editorPosition: {x: -303, y: 559}
   - nodeId: Spawn Parryable Bomb1
     nodeGuid: e72d87a6892c448482ba264c5e1b98e0
     nodeKind: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824405
     sequences: []
-    editorPosition: {x: 137, y: 563}
+    editorPosition: {x: 133, y: 591}
   - nodeId: Set Parameter2
     nodeGuid: 1c806044cde744fda9762e94d5aae37e
     nodeKind: 2
@@ -1258,7 +1258,7 @@ MonoBehaviour:
     action:
       rid: 4705778016365314173
     sequences: []
-    editorPosition: {x: 82, y: 639}
+    editorPosition: {x: -133, y: 559}
   - nodeId: Wait31
     nodeGuid: 85ef4446e38048819bb17e8dad886054
     nodeKind: 3
@@ -1295,6 +1295,114 @@ MonoBehaviour:
       rid: 4705778016365314191
     sequences: []
     editorPosition: {x: 2177, y: 2804}
+  - nodeId: Fire Parry Suppression Bait1
+    nodeGuid: 06b817bab08646ce9bfaeaa7173f0a71
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805632
+    sequences: []
+    editorPosition: {x: -48, y: 495}
+  - nodeId: Boss Area Damage1
+    nodeGuid: 75be7b25277a42ffb1a873493373023c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805633
+    sequences: []
+    editorPosition: {x: -31, y: 639}
+  - nodeId: Windup7
+    nodeGuid: 2150244d6ff94ce0841b25724af657c8
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805638
+    sequences: []
+    editorPosition: {x: -100, y: 3160}
+  - nodeId: Fire Radial Emission8
+    nodeGuid: a2e8689bd58d4f149b49d9628dc4b0bf
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805639
+    sequences: []
+    editorPosition: {x: 1025, y: 3160}
+  - nodeId: Wait35
+    nodeGuid: e0a769a65a2b47a2ad6af6008fbd615e
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805640
+    sequences: []
+    editorPosition: {x: 1189, y: 3160}
+  - nodeId: Set Parameter34
+    nodeGuid: 66a3a05b6232411b98a3877bbb150804
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805641
+    sequences: []
+    editorPosition: {x: 1436, y: 3160}
+  - nodeId: Set Parameter35
+    nodeGuid: 46962bbd9ba44681b23181f034c05e96
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805642
+    sequences: []
+    editorPosition: {x: 441, y: 3160}
+  - nodeId: Wait36
+    nodeGuid: ab56608cd1b542e2a9ce24d4abb9df2f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805643
+    sequences: []
+    editorPosition: {x: 593, y: 3160}
+  - nodeId: Play Sfx7
+    nodeGuid: 50f8d7ece6a34e4cb01dfe2ada4e6bf0
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805645
+    sequences: []
+    editorPosition: {x: 746, y: 3160}
+  - nodeId: Wait37
+    nodeGuid: bd6adc618d0a4f6e9c56c5b83db828dd
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805646
+    sequences: []
+    editorPosition: {x: 860, y: 3160}
+  - nodeId: Fire Parry Suppression Bait2
+    nodeGuid: e9714c57aa0747db8f0d52934a6c69f9
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805647
+    sequences: []
+    editorPosition: {x: 78, y: 3160}
+  - nodeId: Set Parameter36
+    nodeGuid: a2e374ba4b6147528bc78fce4a6fc4ae
+    nodeKind: 2
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805657
+    sequences: []
+    editorPosition: {x: -338, y: 3160}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1340,6 +1448,8 @@ MonoBehaviour:
     - d8e19f1aff984433b0efa0e801f90d96
     - 903239b3d04049078b59a10d20bb9f95
     - 8905948f06494740b377b2174b303a59
+    - 06b817bab08646ce9bfaeaa7173f0a71
+    - 75be7b25277a42ffb1a873493373023c
     nodeIds:
     - Move Until Player Distance1
     - Wait3
@@ -1357,6 +1467,8 @@ MonoBehaviour:
     - Wait7
     - Set Parameter5
     - Set Parameter6
+    - Fire Parry Suppression Bait1
+    - Boss Area Damage1
   - patternId: Pattern4
     nodeGuids:
     - f9067e3ab9cd4c118f62347c84af469f
@@ -1610,6 +1722,29 @@ MonoBehaviour:
     - Set Parameter32
     - Set Parameter33
     - Fire Dash Formation8
+  - patternId: Pattern11
+    nodeGuids:
+    - a2e374ba4b6147528bc78fce4a6fc4ae
+    - 2150244d6ff94ce0841b25724af657c8
+    - e9714c57aa0747db8f0d52934a6c69f9
+    - 46962bbd9ba44681b23181f034c05e96
+    - ab56608cd1b542e2a9ce24d4abb9df2f
+    - 50f8d7ece6a34e4cb01dfe2ada4e6bf0
+    - bd6adc618d0a4f6e9c56c5b83db828dd
+    - a2e8689bd58d4f149b49d9628dc4b0bf
+    - e0a769a65a2b47a2ad6af6008fbd615e
+    - 66a3a05b6232411b98a3877bbb150804
+    nodeIds:
+    - Set Parameter36
+    - Windup7
+    - Fire Parry Suppression Bait2
+    - Set Parameter35
+    - Wait36
+    - Play Sfx7
+    - Wait37
+    - Fire Radial Emission8
+    - Wait35
+    - Set Parameter34
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -2587,6 +2722,94 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: d66ca81144914574b54cfb544b48c503
+    toNodeGuid: 06b817bab08646ce9bfaeaa7173f0a71
+    fromNodeId: Wait30
+    toNodeId: Fire Parry Suppression Bait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 06b817bab08646ce9bfaeaa7173f0a71
+    toNodeGuid: e72d87a6892c448482ba264c5e1b98e0
+    fromNodeId: Fire Parry Suppression Bait1
+    toNodeId: Spawn Parryable Bomb1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e0a769a65a2b47a2ad6af6008fbd615e
+    toNodeGuid: 66a3a05b6232411b98a3877bbb150804
+    fromNodeId: Wait35
+    toNodeId: Set Parameter34
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a2e8689bd58d4f149b49d9628dc4b0bf
+    toNodeGuid: e0a769a65a2b47a2ad6af6008fbd615e
+    fromNodeId: Fire Radial Emission8
+    toNodeId: Wait35
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 46962bbd9ba44681b23181f034c05e96
+    toNodeGuid: ab56608cd1b542e2a9ce24d4abb9df2f
+    fromNodeId: Set Parameter35
+    toNodeId: Wait36
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ab56608cd1b542e2a9ce24d4abb9df2f
+    toNodeGuid: 50f8d7ece6a34e4cb01dfe2ada4e6bf0
+    fromNodeId: Wait36
+    toNodeId: Play Sfx7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 50f8d7ece6a34e4cb01dfe2ada4e6bf0
+    toNodeGuid: bd6adc618d0a4f6e9c56c5b83db828dd
+    fromNodeId: Play Sfx7
+    toNodeId: Wait37
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: bd6adc618d0a4f6e9c56c5b83db828dd
+    toNodeGuid: a2e8689bd58d4f149b49d9628dc4b0bf
+    fromNodeId: Wait37
+    toNodeId: Fire Radial Emission8
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a2e374ba4b6147528bc78fce4a6fc4ae
+    toNodeGuid: 2150244d6ff94ce0841b25724af657c8
+    fromNodeId: Set Parameter36
+    toNodeId: Windup7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 2150244d6ff94ce0841b25724af657c8
+    toNodeGuid: e9714c57aa0747db8f0d52934a6c69f9
+    fromNodeId: Windup7
+    toNodeId: Fire Parry Suppression Bait2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e9714c57aa0747db8f0d52934a6c69f9
+    toNodeGuid: 46962bbd9ba44681b23181f034c05e96
+    fromNodeId: Fire Parry Suppression Bait2
+    toNodeId: Set Parameter35
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: 8be623fe70134e86a5718bfa00394cb7
     toNodeGuid: 1b40313f298d441c9ee0c7c00c91b3a6
@@ -2690,8 +2913,14 @@ MonoBehaviour:
     toNodeId: Fire Dash Formation8
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  - fromNodeGuid: 06b817bab08646ce9bfaeaa7173f0a71
+    toNodeGuid: 75be7b25277a42ffb1a873493373023c
+    fromNodeId: Fire Parry Suppression Bait1
+    toNodeId: Boss Area Damage1
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern11
   references:
     version: 2
     RefIds:
@@ -6919,3 +7148,264 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.2
+    - rid: 4705778169994805632
+      type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 90
+        baitDurationSeconds: 0.8
+        rewardBulletCount: 3
+        rewardCircleRadius: 1
+        groggySeconds: 3
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805633
+      type: {class: BossAreaDamageAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        explosionRadius: 8
+        explosionDamage: 1
+        explosionColor: {r: 1, g: 0.6, b: 0.2, a: 1}
+        windupSeconds: 0.8
+        rangeSprite: {fileID: 0}
+        rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
+        rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}
+        rangeSortingOrder: 15
+        slamBoolName: isSlam
+        impactEventId: SlamImpact
+        impactEventTimeoutSeconds: 2
+        windupSfxId: 
+        explosionSfxId: 
+    - rid: 4705778169994805638
+      type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+        stopMovement: 1
+        effectOrigin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805639
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 40
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 4705778169994805640
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705778169994805641
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0
+    - rid: 4705778169994805642
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 2
+        parameterName: isSlam
+        floatValue: 0
+        intValue: 0
+        boolValue: 1
+    - rid: 4705778169994805643
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 4705778169994805645
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: Smash
+    - rid: 4705778169994805646
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 4705778169994805647
+      type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 1
+          bossChildPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 90
+        baitDurationSeconds: 0.8
+        rewardBulletCount: 3
+        rewardCircleRadius: 1
+        groggySeconds: 3
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805657
+      type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        parameterType: 3
+        parameterName: Slam
+        floatValue: 0
+        intValue: 0
+        boolValue: 0

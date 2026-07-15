@@ -4323,7 +4323,7 @@ Transform:
   m_GameObject: {fileID: 1696071456249183736}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.21, y: 7.75, z: 0}
+  m_LocalPosition: {x: -2.21, y: 4.67, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -5816,6 +5816,20 @@ MonoBehaviour:
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
+  - projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+    projectile:
+      prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+      bulletDamage: 0
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 0
+      lifetime: 3
+      radius: 0.1
+      trailSeconds: 1
+      trailWidthMultiplier: 3
+  groggyAnimator: {fileID: 5291647841609170472}
   walkAnimator: {fileID: 0}
   walkVelocityThreshold: 0.01
 --- !u!4 &9185060628594991249
