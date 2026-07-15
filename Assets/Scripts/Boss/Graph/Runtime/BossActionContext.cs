@@ -771,12 +771,15 @@ namespace Week14.Enemy
             float chargeSecondsOverride = -1f,
             float radiusOverride = -1f,
             bool suppressHoming = false,
-            string projectileName = null)
+            string projectileName = null,
+            bool useExactSettings = false)
         {
             UpdateBossChildAims();
-            BossProjectileSettings resolvedSettings = !string.IsNullOrWhiteSpace(projectileName)
-                ? ResolveGraphProjectileSettings(projectileName)
-                : ResolveGraphProjectileSettings(null) ?? projectileSettings;
+            BossProjectileSettings resolvedSettings = useExactSettings
+                ? projectileSettings
+                : !string.IsNullOrWhiteSpace(projectileName)
+                    ? ResolveGraphProjectileSettings(projectileName)
+                    : ResolveGraphProjectileSettings(null) ?? projectileSettings;
             if (Boss == null || resolvedSettings == null || direction.sqrMagnitude <= 0.0001f)
             {
                 return null;

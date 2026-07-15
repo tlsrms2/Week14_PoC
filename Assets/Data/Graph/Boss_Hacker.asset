@@ -4019,7 +4019,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4109,7 +4121,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
     - rid: 6489939136707035214
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4428,7 +4452,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4530,7 +4566,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4632,7 +4680,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4743,7 +4803,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4845,7 +4917,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4956,7 +5040,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -5067,7 +5163,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -6383,7 +6491,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
     - rid: 6489939186800656460
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -6564,7 +6684,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -6654,7 +6786,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -6806,7 +6950,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7104,7 +7260,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7364,7 +7532,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7475,7 +7655,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7577,7 +7769,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7688,7 +7892,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7799,7 +8015,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -8203,7 +8431,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -8393,7 +8633,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -9821,7 +10073,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -11413,7 +11677,19 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -11555,7 +11831,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12023,7 +12311,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12245,7 +12545,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12335,7 +12647,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -12487,7 +12811,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12781,7 +13117,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13037,7 +13385,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13148,7 +13508,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13250,7 +13622,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13361,7 +13745,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13472,7 +13868,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13872,7 +14280,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -14062,7 +14482,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -14497,7 +14929,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -15385,7 +15829,19 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -15715,7 +16171,19 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -15857,7 +16325,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -16321,7 +16801,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -16587,7 +17079,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -16727,7 +17231,19 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
     - rid: 6489939200651559084
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -17119,7 +17635,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -17669,7 +18197,19 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -18615,7 +19155,19 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -18757,7 +19309,19 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
+        parryProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        parryReassembleSeconds: 0.2
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}

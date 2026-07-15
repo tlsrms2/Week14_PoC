@@ -27,6 +27,8 @@ namespace Week14.Combat
         private float missShakeMagnitude;
         private float missShakeFrequency;
         private Vector2 missShakeDirection = Vector2.right;
+        private bool hasColorOverride;
+        private Color colorOverride;
 
         public void SetThreatened(bool value)
         {
@@ -36,6 +38,12 @@ namespace Week14.Combat
         public void SetHacked(bool value)
         {
             hacked = value;
+        }
+
+        public void SetColorOverride(Color? value)
+        {
+            hasColorOverride = value.HasValue;
+            colorOverride = value.GetValueOrDefault();
         }
 
         public void PlayMissFeedback(float colorSeconds, float shakeSeconds, float shakeAmplitude, float shakeFrequency)
@@ -88,7 +96,9 @@ namespace Week14.Combat
             bool useFeedbackColor = now < missFeedbackEndsAt;
             Vector3 shakeOffset = GetMissShakeOffset(now);
 
-            Color targetColor = hacked
+            Color targetColor = hasColorOverride
+                ? colorOverride
+                : hacked
                 ? new Color(1f, 0.12f, 0.08f, 1f)
                 : useFeedbackColor
                 ? missColorOnlyColor

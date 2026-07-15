@@ -1,29 +1,26 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Week14.Enemy;
 
 namespace Week14.Combat
 {
-    // 순수하게 "패링당하기 위한" 탄이다. 플레이어에게는 데미지를 주지 않고(ConfigurePlayerCollisionIgnored),
-    // 자신의 수명(지속시간) 동안 패링당하지 않으면 아무 효과 없이 그냥 사라진다.
-    // 패링(Intercepted)당하면 그 자리에 보상용 탄을 원형으로 균등하게 뿌린다.
-    // 소환(스폰)은 FireParrySuppressionBaitAction 같은 그래프 액션이 담당하고, "패링당하면 무슨 일이
-    // 일어나는지"(보상 탄 몇 발을 어떤 반경/지속시간으로 뿌릴지)는 전부 이 탄 자신이 들고 있다.
     [AddComponentMenu("Week14/Combat/Parry Bait Reward Projectile")]
     public sealed class ParryBaitRewardProjectile : EnemyProjectile
     {
-        [Header("보상 폭발")]
-        [Tooltip("패링 성공 시 사방으로 뿌릴 보상 탄의 프리팹/설정입니다.")]
+        [Header("보상 투사체")]
         [SerializeField] private BossProjectileSettings rewardProjectile = new();
-        [Tooltip("패링 성공 시 뿌릴 보상 탄 개수입니다(기본값 — 스폰한 액션이 다른 값으로 덮어쓸 수 있습니다).")]
         [SerializeField, Min(1)] private int rewardBulletCount = 8;
-        [Tooltip("보상 탄이 배치될 원의 반지름입니다(기본값 — 스폰한 액션이 다른 값으로 덮어쓸 수 있습니다).")]
         [SerializeField, Min(0.01f)] private float rewardCircleRadius = 1.5f;
-        [Tooltip("보상 탄의 지속시간입니다(기본값 — 스폰한 액션이 다른 값으로 덮어쓸 수 있습니다).")]
         [SerializeField, Min(0.01f)] private float rewardLifetime = 2f;
 
         [Header("남은 시간 게이지")]
-        [Tooltip("남은 시간(패링 유예 시간) 비율을 표시할 원형 게이지 스프라이트 렌더러입니다. 비워두면 게이지를 표시하지 않습니다.")]
         [SerializeField] private SpriteRenderer chargeGaugeRenderer;
+
+        [Header("Hacker 파괴 연출")]
+        [SerializeField, Min(0.01f)] private float hackerShatterSeconds = 0.12f;
+        [SerializeField, Min(0.01f)] private float hackerShardDistance = 0.35f;
+        [SerializeField, Min(0f)] private float hackerReassembledHoldSeconds = 0.08f;
 
         private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
 
@@ -31,24 +28,114 @@ namespace Week14.Combat
         private float? rewardRadiusOverride;
         private float? rewardLifetimeOverride;
         private MaterialPropertyBlock chargeGaugePropertyBlock;
+        private readonly List<ShardState> hackerShards = new();
+        private readonly List<RendererState> hackerSourceRenderers = new();
+        private bool hackerResilientMode;
+        private bool hackerWasParried;
+        private bool hackerReassemblyStarted;
+        private bool hackerReassemblyCompleted;
+        private float hackerParryDuration;
+        private float hackerParryEndsAt;
+        private float hackerAttackAt;
+        private float hackerReassembleStartsAt;
+        private float hackerReassembleSeconds;
+        private float hackerDestroyAt;
+        private float hackerParriedAt;
+        private Transform hackerFollowTarget;
+        private Vector3 hackerFollowWorldOffset;
+
+        internal event Action HackerParried;
 
         protected override void OnProjectileInitialized()
         {
-            // 이 탄은 순수 패링 타겟이라 플레이어와 부딪혀도 데미지를 주지 않는다.
+            CleanupHackerShards(true);
+            hackerResilientMode = false;
+            hackerWasParried = false;
+            hackerReassemblyStarted = false;
+            hackerReassemblyCompleted = false;
+            hackerFollowTarget = null;
+            rewardCountOverride = null;
+            rewardRadiusOverride = null;
+            rewardLifetimeOverride = null;
+            ConfigureParryLockOnIndicatorColor(null);
             ConfigurePlayerCollisionIgnored(true);
             SetChargeGaugeVisible(true);
         }
 
-        // 이 탄 자신이 패링 가능한 시간(=사라지기까지 남은 수명)을 스폰 직후에 지정한다.
         internal void ConfigureBaitDuration(float lifetimeSeconds)
         {
             OverrideProjectileLifetime(lifetimeSeconds);
         }
 
-        // 이 탄은 충전(Charge) 상태를 쓰지 않고 스폰 즉시 발사된 상태로 취급되므로(패링은 충전 여부와
-        // 무관하게 항상 가능), IsCharging/ChargeProgress01 대신 남은 수명(DestroyAt - Time.time)을
-        // ProjectileLifetime과 비교해서 게이지를 채운다. ApplyEnemyTimeScaleDeadlineCompensation이
-        // DestroyAt을 EnemyTimeScale 배율에 맞춰 계속 보정해주므로, 이 계산도 자동으로 같이 맞는다.
+        internal void ConfigureHackerResilientMode(
+            float parrySeconds,
+            float attackDelaySeconds,
+            float reassembleSeconds,
+            Transform followTarget,
+            Vector3 followWorldOffset)
+        {
+            hackerResilientMode = true;
+            hackerWasParried = false;
+            hackerReassemblyStarted = false;
+            hackerReassemblyCompleted = false;
+            hackerParryDuration = Mathf.Max(0.01f, parrySeconds);
+            hackerParryEndsAt = Time.time + hackerParryDuration;
+            hackerAttackAt = Time.time + Mathf.Max(hackerParryDuration, attackDelaySeconds);
+            hackerReassembleSeconds = Mathf.Max(0.01f, reassembleSeconds);
+            hackerDestroyAt = hackerAttackAt
+                + hackerReassembleSeconds
+                + Mathf.Max(0f, hackerReassembledHoldSeconds);
+            hackerFollowTarget = followTarget;
+            hackerFollowWorldOffset = followWorldOffset;
+
+            ConfigureExternalMotionDriven(true);
+            ConfigurePlayerCollisionIgnored(true);
+            ConfigureInterceptable(true);
+            ConfigurePathIndicatorSuppressed(true);
+            OverrideProjectileLifetime(hackerDestroyAt - Time.time + 0.1f);
+            FollowHackerAnchor();
+            SetChargeGaugeVisible(true);
+            SetChargeGaugeFill(1f);
+        }
+
+        internal void ConfigureRewardOverrides(int? countOverride, float? radiusOverride, float? lifetimeOverride)
+        {
+            rewardCountOverride = countOverride;
+            rewardRadiusOverride = radiusOverride;
+            rewardLifetimeOverride = lifetimeOverride;
+        }
+
+        public override bool TryDestroyByInterceptShot(out bool parried)
+        {
+            if (!hackerResilientMode)
+            {
+                return base.TryDestroyByInterceptShot(out parried);
+            }
+
+            if (!CanReceiveInterceptShot())
+            {
+                parried = false;
+                return false;
+            }
+
+            parried = true;
+            hackerWasParried = true;
+            hackerParriedAt = Time.time;
+            hackerReassembleStartsAt = Mathf.Max(
+                hackerParriedAt + Mathf.Max(0.01f, hackerShatterSeconds),
+                hackerAttackAt - hackerReassembleSeconds);
+            hackerDestroyAt = hackerReassembleStartsAt
+                + hackerReassembleSeconds
+                + Mathf.Max(0f, hackerReassembledHoldSeconds);
+            OverrideProjectileLifetime(hackerDestroyAt - Time.time + 0.1f);
+            CompletePartialIntercept();
+            ConfigureInterceptable(false);
+            SetChargeGaugeVisible(false);
+            CreateHackerShards();
+            HackerParried?.Invoke();
+            return true;
+        }
+
         protected override void OnProjectileTick()
         {
             if (IsDestroying)
@@ -56,10 +143,115 @@ namespace Week14.Combat
                 return;
             }
 
+            if (hackerResilientMode)
+            {
+                TickHackerResilientMode();
+                return;
+            }
+
             float remainingRatio = ProjectileLifetime > 0f
                 ? Mathf.Clamp01((DestroyAt - Time.time) / ProjectileLifetime)
                 : 0f;
             SetChargeGaugeFill(remainingRatio);
+        }
+
+        protected override void OnProjectileDestroying(EnemyProjectileDestroyReason reason, Vector3 position)
+        {
+            if (!hackerResilientMode && reason == EnemyProjectileDestroyReason.Intercepted)
+            {
+                FireRewardCircle(position);
+            }
+
+            CleanupHackerShards(true);
+            HackerParried = null;
+        }
+
+        protected override void OnProjectileReturnedToPool()
+        {
+            CleanupHackerShards(true);
+            HackerParried = null;
+            base.OnProjectileReturnedToPool();
+        }
+
+        protected override void OnDestroy()
+        {
+            CleanupHackerShards(true);
+            base.OnDestroy();
+        }
+
+        protected override void ExtendSpecialTimers(float pausedSeconds)
+        {
+            base.ExtendSpecialTimers(pausedSeconds);
+            if (!hackerResilientMode || pausedSeconds <= 0f)
+            {
+                return;
+            }
+
+            hackerParryEndsAt += pausedSeconds;
+            hackerAttackAt += pausedSeconds;
+            hackerReassembleStartsAt += pausedSeconds;
+            hackerDestroyAt += pausedSeconds;
+            if (hackerWasParried)
+            {
+                hackerParriedAt += pausedSeconds;
+            }
+        }
+
+        private void TickHackerResilientMode()
+        {
+            FollowHackerAnchor();
+            if (!hackerWasParried)
+            {
+                float remainingRatio = Mathf.Clamp01(
+                    (hackerParryEndsAt - Time.time) / hackerParryDuration);
+                SetChargeGaugeFill(remainingRatio);
+                if (Time.time >= hackerParryEndsAt)
+                {
+                    DestroyFromOwner();
+                }
+
+                return;
+            }
+
+            if (Time.time < hackerReassembleStartsAt)
+            {
+                float shatterProgress = Mathf.Clamp01(
+                    (Time.time - hackerParriedAt) / Mathf.Max(0.01f, hackerShatterSeconds));
+                ApplyHackerShardProgress(shatterProgress, false);
+                return;
+            }
+
+            if (!hackerReassemblyStarted)
+            {
+                hackerReassemblyStarted = true;
+                for (int i = 0; i < hackerShards.Count; i++)
+                {
+                    hackerShards[i].ReassembleStartLocalPosition = hackerShards[i].Transform.localPosition;
+                    hackerShards[i].ReassembleStartLocalRotation = hackerShards[i].Transform.localRotation;
+                }
+            }
+
+            float reassembleProgress = Mathf.Clamp01(
+                (Time.time - hackerReassembleStartsAt) / hackerReassembleSeconds);
+            ApplyHackerShardProgress(reassembleProgress, true);
+            if (!hackerReassemblyCompleted && reassembleProgress >= 1f)
+            {
+                hackerReassemblyCompleted = true;
+                CleanupHackerShards(true);
+            }
+
+            if (Time.time >= hackerDestroyAt)
+            {
+                DestroyFromOwner();
+            }
+        }
+
+        private void FollowHackerAnchor()
+        {
+            if (hackerFollowTarget != null)
+            {
+                transform.position = hackerFollowTarget.position + hackerFollowWorldOffset;
+            }
         }
 
         private void SetChargeGaugeVisible(bool visible)
@@ -83,21 +275,238 @@ namespace Week14.Combat
             chargeGaugeRenderer.SetPropertyBlock(chargeGaugePropertyBlock);
         }
 
-        internal void ConfigureRewardOverrides(int? countOverride, float? radiusOverride, float? lifetimeOverride)
+        private void CreateHackerShards()
         {
-            rewardCountOverride = countOverride;
-            rewardRadiusOverride = radiusOverride;
-            rewardLifetimeOverride = lifetimeOverride;
-        }
-
-        protected override void OnProjectileDestroying(EnemyProjectileDestroyReason reason, Vector3 position)
-        {
-            if (reason != EnemyProjectileDestroyReason.Intercepted)
+            CleanupHackerShards(true);
+            SpriteRenderer source = FindHackerSourceRenderer();
+            if (source == null || source.sprite == null)
             {
                 return;
             }
 
-            FireRewardCircle(position);
+            CaptureAndHideHackerSourceRenderers();
+            const int columns = 3;
+            const int rows = 2;
+            Rect textureRect = source.sprite.textureRect;
+            float shardWidth = textureRect.width / columns;
+            float shardHeight = textureRect.height / rows;
+            Vector2 sourcePivot = source.sprite.pivot;
+            float pixelsPerUnit = source.sprite.pixelsPerUnit;
+
+            try
+            {
+                for (int row = 0; row < rows; row++)
+                {
+                    for (int column = 0; column < columns; column++)
+                    {
+                        Rect shardRect = new(
+                            textureRect.x + shardWidth * column,
+                            textureRect.y + shardHeight * row,
+                            shardWidth,
+                            shardHeight);
+                        Sprite shardSprite = Sprite.Create(
+                            source.sprite.texture,
+                            shardRect,
+                            new Vector2(0.5f, 0.5f),
+                            pixelsPerUnit);
+                        Vector2 assembledOffset = new(
+                            ((column + 0.5f) * shardWidth - sourcePivot.x) / pixelsPerUnit,
+                            ((row + 0.5f) * shardHeight - sourcePivot.y) / pixelsPerUnit);
+                        if (source.flipX)
+                        {
+                            assembledOffset.x *= -1f;
+                        }
+                        if (source.flipY)
+                        {
+                            assembledOffset.y *= -1f;
+                        }
+
+                        CreateHackerShard(source, shardSprite, assembledOffset, true, row * columns + column);
+                    }
+                }
+            }
+            catch (UnityException)
+            {
+                CleanupHackerShards(true);
+                CaptureAndHideHackerSourceRenderers();
+                CreateFallbackHackerShards(source);
+            }
+            catch (ArgumentException)
+            {
+                CleanupHackerShards(true);
+                CaptureAndHideHackerSourceRenderers();
+                CreateFallbackHackerShards(source);
+            }
+        }
+
+        private SpriteRenderer FindHackerSourceRenderer()
+        {
+            Transform authoredVisual = transform.Find("BulletVisual");
+            SpriteRenderer authoredRenderer = authoredVisual != null
+                ? authoredVisual.GetComponent<SpriteRenderer>()
+                : null;
+            if (IsHackerBodyRenderer(authoredRenderer))
+            {
+                return authoredRenderer;
+            }
+
+            SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (IsHackerBodyRenderer(renderers[i]))
+                {
+                    return renderers[i];
+                }
+            }
+
+            return null;
+        }
+
+        private bool IsHackerBodyRenderer(SpriteRenderer renderer)
+        {
+            return renderer != null
+                && renderer.sprite != null
+                && renderer != chargeGaugeRenderer
+                && !renderer.gameObject.name.StartsWith("HackerParryShard_", StringComparison.Ordinal)
+                && !IsParryLockOnIndicatorRenderer(renderer);
+        }
+
+        private void CaptureAndHideHackerSourceRenderers()
+        {
+            hackerSourceRenderers.Clear();
+            SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                SpriteRenderer renderer = renderers[i];
+                if (!IsHackerBodyRenderer(renderer))
+                {
+                    continue;
+                }
+
+                hackerSourceRenderers.Add(new RendererState(renderer, renderer.enabled));
+                renderer.enabled = false;
+            }
+        }
+
+        private void CreateFallbackHackerShards(SpriteRenderer source)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                float angle = i * 60f * Mathf.Deg2Rad;
+                Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.08f;
+                CreateHackerShard(source, source.sprite, offset, false, i, 0.42f);
+            }
+        }
+
+        private void CreateHackerShard(
+            SpriteRenderer source,
+            Sprite sprite,
+            Vector2 assembledOffset,
+            bool ownsSprite,
+            int index,
+            float scale = 1f)
+        {
+            GameObject shardObject = new($"HackerParryShard_{index}");
+            shardObject.layer = gameObject.layer;
+            shardObject.transform.SetParent(source.transform, false);
+            shardObject.transform.localPosition = assembledOffset;
+            shardObject.transform.localRotation = Quaternion.identity;
+            shardObject.transform.localScale = Vector3.one * scale;
+
+            SpriteRenderer shardRenderer = shardObject.AddComponent<SpriteRenderer>();
+            shardRenderer.sprite = sprite;
+            shardRenderer.color = source.color;
+            shardRenderer.flipX = source.flipX;
+            shardRenderer.flipY = source.flipY;
+            shardRenderer.sharedMaterial = source.sharedMaterial;
+            shardRenderer.sortingLayerID = source.sortingLayerID;
+            shardRenderer.sortingOrder = source.sortingOrder + 1;
+
+            Vector2 direction = assembledOffset.sqrMagnitude > 0.0001f
+                ? assembledOffset.normalized
+                : new Vector2(Mathf.Cos(index * 60f * Mathf.Deg2Rad), Mathf.Sin(index * 60f * Mathf.Deg2Rad));
+            float distance = Mathf.Max(0.01f, hackerShardDistance) * (0.8f + index * 0.06f);
+            float rotation = (index % 2 == 0 ? 1f : -1f) * (24f + index * 7f);
+            hackerShards.Add(new ShardState(
+                shardObject.transform,
+                shardRenderer,
+                sprite,
+                ownsSprite,
+                assembledOffset,
+                assembledOffset + direction * distance,
+                Quaternion.Euler(0f, 0f, rotation)));
+        }
+
+        private void ApplyHackerShardProgress(float progress, bool reassembling)
+        {
+            float eased = Mathf.SmoothStep(0f, 1f, progress);
+            for (int i = 0; i < hackerShards.Count; i++)
+            {
+                ShardState shard = hackerShards[i];
+                if (shard.Transform == null)
+                {
+                    continue;
+                }
+
+                if (reassembling)
+                {
+                    shard.Transform.localPosition = Vector3.Lerp(
+                        shard.ReassembleStartLocalPosition,
+                        shard.AssembledLocalPosition,
+                        eased);
+                    shard.Transform.localRotation = Quaternion.Slerp(
+                        shard.ReassembleStartLocalRotation,
+                        Quaternion.identity,
+                        eased);
+                }
+                else
+                {
+                    shard.Transform.localPosition = Vector3.Lerp(
+                        shard.AssembledLocalPosition,
+                        shard.ScatteredLocalPosition,
+                        eased);
+                    shard.Transform.localRotation = Quaternion.Slerp(
+                        Quaternion.identity,
+                        shard.ScatteredLocalRotation,
+                        eased);
+                }
+            }
+        }
+
+        private void CleanupHackerShards(bool restoreSourceRenderers)
+        {
+            for (int i = 0; i < hackerShards.Count; i++)
+            {
+                ShardState shard = hackerShards[i];
+                if (shard.Renderer != null)
+                {
+                    shard.Renderer.enabled = false;
+                }
+                if (shard.Transform != null)
+                {
+                    shard.Transform.SetParent(null, true);
+                    shard.Transform.gameObject.SetActive(false);
+                    Destroy(shard.Transform.gameObject);
+                }
+                if (shard.OwnsSprite && shard.Sprite != null)
+                {
+                    Destroy(shard.Sprite);
+                }
+            }
+            hackerShards.Clear();
+
+            if (restoreSourceRenderers)
+            {
+                for (int i = 0; i < hackerSourceRenderers.Count; i++)
+                {
+                    RendererState state = hackerSourceRenderers[i];
+                    if (state.Renderer != null)
+                    {
+                        state.Renderer.enabled = state.WasEnabled;
+                    }
+                }
+            }
+            hackerSourceRenderers.Clear();
         }
 
         private void FireRewardCircle(Vector3 center)
@@ -117,7 +526,6 @@ namespace Week14.Combat
             {
                 Vector2 direction = AngleToDirection(step * i);
                 Vector3 spawnPosition = center + (Vector3)(direction * radius);
-
                 EnemyProjectile reward = Spawn(
                     prefab,
                     OwnerBullets,
@@ -134,9 +542,6 @@ namespace Week14.Combat
                     false,
                     0f,
                     0f);
-
-                // 보상 탄은 패링은 가능해야 하지만, 플레이어와 닿아도 접촉 데미지는 주지 않는다.
-                // (ConfigurePlayerCollisionIgnored는 패링 가능 여부와는 무관하다.)
                 reward?.ConfigurePlayerCollisionIgnored(true);
             }
         }
@@ -145,6 +550,49 @@ namespace Week14.Combat
         {
             float radians = angleDegrees * Mathf.Deg2Rad;
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        private sealed class ShardState
+        {
+            internal ShardState(
+                Transform transform,
+                SpriteRenderer renderer,
+                Sprite sprite,
+                bool ownsSprite,
+                Vector3 assembledLocalPosition,
+                Vector3 scatteredLocalPosition,
+                Quaternion scatteredLocalRotation)
+            {
+                Transform = transform;
+                Renderer = renderer;
+                Sprite = sprite;
+                OwnsSprite = ownsSprite;
+                AssembledLocalPosition = assembledLocalPosition;
+                ScatteredLocalPosition = scatteredLocalPosition;
+                ScatteredLocalRotation = scatteredLocalRotation;
+            }
+
+            internal Transform Transform { get; }
+            internal SpriteRenderer Renderer { get; }
+            internal Sprite Sprite { get; }
+            internal bool OwnsSprite { get; }
+            internal Vector3 AssembledLocalPosition { get; }
+            internal Vector3 ScatteredLocalPosition { get; }
+            internal Quaternion ScatteredLocalRotation { get; }
+            internal Vector3 ReassembleStartLocalPosition { get; set; }
+            internal Quaternion ReassembleStartLocalRotation { get; set; }
+        }
+
+        private readonly struct RendererState
+        {
+            internal RendererState(SpriteRenderer renderer, bool wasEnabled)
+            {
+                Renderer = renderer;
+                WasEnabled = wasEnabled;
+            }
+
+            internal SpriteRenderer Renderer { get; }
+            internal bool WasEnabled { get; }
         }
     }
 }

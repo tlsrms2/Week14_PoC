@@ -395,7 +395,6 @@ namespace Week14.Enemy
         private static void ClearRuntimeCombatEffects()
         {
             DestroyRuntimeObjects<HackerAttackRangeIndicator>();
-            DestroyRuntimeObjects<HackerMeleeParryWindow>();
             DestroyRuntimeObjects<HackerSnipingChargeIndicator>();
             DestroyRuntimeObjects<HackerDashedAimIndicator>();
             DestroyRuntimeObjects<HackerSpiderWebHazard>();
