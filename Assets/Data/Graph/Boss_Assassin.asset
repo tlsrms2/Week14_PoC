@@ -223,7 +223,7 @@ MonoBehaviour:
     action:
       rid: -2
     sequences: []
-    editorPosition: {x: -188, y: 1164}
+    editorPosition: {x: -295, y: 1139}
   patterns:
   - patternId: Pattern1
     nodeGuids:

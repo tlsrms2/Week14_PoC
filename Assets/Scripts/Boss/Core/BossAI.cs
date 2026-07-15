@@ -145,6 +145,7 @@ namespace Week14.Enemy
         public Transform Player => player;
         public Rigidbody2D Body => body;
         public Transform BodyRoot => bodyRoot;
+        public SpriteRenderer[] BodyRenderers => renderers;
         public LayerMask ObstacleMask => obstacleMask;
         public Vector3 SpawnPosition { get; private set; }
         public bool IsHpEmpty => hpGauge != null && hpGauge.IsEmpty;
