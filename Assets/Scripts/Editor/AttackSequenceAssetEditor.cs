@@ -99,6 +99,7 @@ internal static class BossGraphActionEditorUtility
         new("Move/Boss Dash", typeof(BossDashAction), () => new BossDashAction()),
         new("Move/Wander Around Player Distance", typeof(WanderAroundPlayerDistanceAction), () => new WanderAroundPlayerDistanceAction()),
         new("Move/Move Between Map Points", typeof(MoveBetweenMapPointsAction), () => new MoveBetweenMapPointsAction()),
+        new("Move/Random Direction Move", typeof(BossRandomDirectionMoveAction), () => new BossRandomDirectionMoveAction()),
         new("Projectile/Fire Projectile", typeof(FireProjectileAction), () => new FireProjectileAction()),
         new("Projectile/Charged/Spawn Charged Projectile", typeof(SpawnChargedProjectileAction), () => new SpawnChargedProjectileAction()),
         new("Projectile/Charged/Configure Projectile Growth", typeof(ConfigureProjectileGrowthAction), () => new ConfigureProjectileGrowthAction()),
@@ -111,13 +112,21 @@ internal static class BossGraphActionEditorUtility
         new("Projectile/Fire Sweep Emission", typeof(FireSweepEmissionAction), () => new FireSweepEmissionAction()),
         new("Projectile/Fire Fan Emission", typeof(FireFanEmissionAction), () => new FireFanEmissionAction()),
         new("Projectile/Fire Dash Formation", typeof(FireDashFormationAction), () => new FireDashFormationAction()),
+        new("Projectile/Fire Distance Trail", typeof(FireDistanceTrailProjectilesAction), () => new FireDistanceTrailProjectilesAction()),
         new("Projectile/Fire Rotating Spiral", typeof(FireRotatingProjectilesAction), () => new FireRotatingProjectilesAction()),
         new("Projectile/Fire Attached Projectiles", typeof(FireAttachedProjectilesAction), () => new FireAttachedProjectilesAction()),
         new("Projectile/Fire Configured Volley", typeof(FireConfiguredVolleyProjectilesAction), () => new FireConfiguredVolleyProjectilesAction()),
         new("Projectile/Fire Player Circle", typeof(FirePlayerCircleProjectilesAction), () => new FirePlayerCircleProjectilesAction()),
+        new("Projectile/Spawn Parryable Bomb", typeof(SpawnParryableBombAction), () => new SpawnParryableBombAction()),
         new("Arsonist/Fire Circle Orbit Attack", typeof(ArsonistCircleOrbitAttackAction), () => new ArsonistCircleOrbitAttackAction()),
         new("Arsonist/Fire Character", typeof(ArsonistFireCharacterProjectileAction), () => new ArsonistFireCharacterProjectileAction()),
         new("Arsonist/Set Sprinkler Active", typeof(ArsonistSetSprinklerActiveAction), () => new ArsonistSetSprinklerActiveAction()),
+        new("Assassin/Fire Homing Dagger", typeof(FireAssassinHomingDaggerProjectileAction), () => new FireAssassinHomingDaggerProjectileAction()),
+        new("Assassin/Enter Stealth", typeof(AssassinEnterStealthAction), () => new AssassinEnterStealthAction()),
+        new("Assassin/Recall Daggers", typeof(AssassinRecallDaggersAction), () => new AssassinRecallDaggersAction()),
+        new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
+        new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
+        new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
         new("Hacker/Melee Attack", typeof(HackerMeleeAttackAction), () => new HackerMeleeAttackAction()),
         new("Hacker/Thrust", typeof(HackerThrustAction), () => new HackerThrustAction()),
         new("Hacker/Thrust Perpendicular Fire", typeof(HackerThrustPerpendicularFireAction), () => new HackerThrustPerpendicularFireAction()),
@@ -291,6 +300,36 @@ internal static class BossGraphActionEditorUtility
             return "Arsonist 보스 인스펙터의 Sprinklers 리스트에서 지정 인덱스의 스프링쿨러 기능 활성 상태를 바꿉니다. 사용된 스프링쿨러는 다시 활성화되지 않습니다.";
         }
 
+        if (actionType == typeof(FireAssassinHomingDaggerProjectileAction))
+        {
+            return "Assassin 전용 액션입니다. 유도탄을 발사하고, 플레이어에게 패링당하면(Intercepted) 그 위치에 단검을 스폰합니다. 은신 그래프에서만 사용하세요.";
+        }
+
+        if (actionType == typeof(AssassinEnterStealthAction))
+        {
+            return "Assassin 전용 액션입니다. 실행 시 은신 상태로 전환합니다(통상 그래프 → 은신 그래프로 다음 틱에 전환).";
+        }
+
+        if (actionType == typeof(AssassinRecallDaggersAction))
+        {
+            return "Assassin 전용 액션입니다. 스폰된 단검 개수가 충분하면 전부 보스에게 회수하며 비행 중 플레이어에게 데미지를 주고, 끝나면 은신을 해제합니다. 단검이 부족하면 즉시 종료됩니다(이 패턴의 Cooldown Pattern Count는 0으로 설정하세요).";
+        }
+
+        if (actionType == typeof(AssassinSpawnCloneShootersAction))
+        {
+            return "Assassin 전용 액션입니다. 지정한 구역 안 랜덤 두 지점에 분신을 소환하고, 분신1/분신2/(옵션)보스 위치를 랜덤 순서로 섞어 발사 대기열에 채워둡니다. 실제 발사는 Fire Next Clone Shooter가 담당합니다.";
+        }
+
+        if (actionType == typeof(AssassinFireNextCloneShooterAction))
+        {
+            return "Assassin 전용 액션입니다. Spawn Clone Shooters가 채워둔 발사 대기열에서 다음 순서 하나를 꺼내 그 위치에서 투사체를 발사합니다. 분신 차례였다면 발사 직후 그 분신이 페이드아웃되며 사라집니다. 대기열이 비어 있으면 아무 것도 하지 않습니다. 이 노드를 여러 번(원하는 만큼) 배치하고 사이에 Wait 등을 끼워 넣어 템포를 자유롭게 조절하세요.";
+        }
+
+        if (actionType == typeof(AssassinSpawnRandomBombsAction))
+        {
+            return "Assassin 전용 액션입니다. 분신 스폰 구역(Clone Spawn Zone) 안에 폭탄을 여러 개 랜덤 배치합니다. 구역은 분신 소환과 공유하지만, 폭탄끼리 최소 간격(Min Separation Distance)과 플레이어와 최소거리(Min Distance From Player)는 이 액션에서 따로 지정합니다. Spawn Interval만큼 텀을 두고 하나씩 소환하며, Charge Seconds가 패링 유예 시간(=터질 때까지 남은 시간)입니다. 패링 판정이나 터질 때의 동작은 스폰되는 탄 프리팹 자신이 담당합니다.";
+        }
+
         if (actionType == typeof(HackerFireWireBranchAction))
         {
             return "바로 앞 Fire Wire Action의 결과를 분기합니다. Out1 연결은 플레이어 그랩 성공, Out2 연결은 그랩 실패 시에만 실행됩니다.";
@@ -331,6 +370,11 @@ internal static class BossGraphActionEditorUtility
             return "보스 대시 방향에 맞춰 투사체 벽 또는 대시 경로 탄을 정렬한 뒤 발사합니다. 대시 액션과 병렬로 배치해 타이밍을 맞추세요.";
         }
 
+        if (actionType == typeof(FireDistanceTrailProjectilesAction))
+        {
+            return "이동 액션(Random Direction Move 등)과 P 포트로 병렬 연결해서 씁니다. 시간 간격이 아니라 실제 이동 거리(Move Distance)를 Bullet Count로 균등 분할한 간격마다 그 순간의 보스 위치에 탄을 스폰합니다. 이동 속도에 가속/감속 커브가 있어도 궤적상 간격이 일정합니다. Move Distance는 함께 실행되는 이동 액션의 Distance 값과 같게 맞춰야 합니다. 조준/충전 오버라이드를 강제하지 않으므로 탄 프리셋의 Aim At Player On Launch 등이 그대로 적용됩니다.";
+        }
+
         if (actionType == typeof(WanderAroundPlayerDistanceAction))
         {
             return "보스가 플레이어 주변의 최소-최대 거리 안에서 최근 덜 지나간 각도와 이전 목표점에서 떨어진 위치를 우선해 배회합니다.";
@@ -339,6 +383,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(MoveBetweenMapPointsAction))
         {
             return "설정한 월드 좌표 시작점과 끝점 사이로 보스를 이동시킵니다.";
+        }
+
+        if (actionType == typeof(BossRandomDirectionMoveAction))
+        {
+            return "각도 범위 안에서 무작위로 방향을 골라 지정한 거리만큼 이동합니다. Strafe Around Player를 켜면 각도 범위 대신 플레이어를 바라보는 방향 기준 좌/우 중 무작위로 골라 이동합니다.";
         }
 
         if (actionType == typeof(SpawnChargedProjectileAction))

@@ -32,7 +32,7 @@ namespace Week14.Enemy
 
         protected override void OnBossTick()
         {
-            if (patternRoutine != null || bossGraph == null || !CanStartGraphPattern())
+            if (patternRoutine != null || GraphAsset == null || !CanStartGraphPattern())
             {
                 return;
             }
@@ -66,7 +66,7 @@ namespace Week14.Enemy
                 this,
                 Stop,
                 () => IsExecutionPaused,
-                bossGraph);
+                GraphAsset);
         }
 
         protected void StopGraphPattern()
@@ -91,7 +91,7 @@ namespace Week14.Enemy
 
         protected void ResetGraphRuntime()
         {
-            BossGraphRuntimeState.Clear(bossGraph);
+            BossGraphRuntimeState.Clear(GraphAsset);
             graphRunner.Reset();
         }
 
@@ -102,7 +102,7 @@ namespace Week14.Enemy
 
             try
             {
-                yield return graphRunner.RunLoop(bossGraph, graphContext);
+                yield return graphRunner.RunLoop(GraphAsset, graphContext);
             }
             finally
             {
