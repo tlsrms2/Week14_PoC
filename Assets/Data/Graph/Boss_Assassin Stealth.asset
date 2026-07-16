@@ -682,7 +682,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497998
     sequences: []
-    editorPosition: {x: -338, y: 1319}
+    editorPosition: {x: -341, y: 1319}
   - nodeId: Fire Radial Emission12
     nodeGuid: 88574ae773b242c4b65c520a27b83a2e
     nodeKind: 0
