@@ -17,8 +17,10 @@ namespace Week14.Enemy
         [SerializeField] private bool includeBossPosition = true;
         [Tooltip("보스가 완전히 사라진 상태로 대기하는 시간(초)입니다. 이 시간이 지난 뒤 분신 등장과 동시에 다시 나타납니다.")]
         [SerializeField, Min(0f)] private float teleportHiddenSeconds = 0f;
-        [Tooltip("발사 순서 대기 중(공격 사이 딜레이 동안)인 개체의 지정된 스프라이트가 바뀌는 색상입니다. 그 개체가 실제로 발사하는 순간 원래 색으로 돌아옵니다.")]
+        [Tooltip("발사 순서 대기 중(공격 사이 딜레이 동안)인 개체의 지정된 스프라이트가 바뀌는 색상입니다. Keep Attack Flash Color Applied가 꺼져 있으면, 그 개체가 실제로 발사하는 순간 원래 색으로 돌아옵니다.")]
         [SerializeField] private Color attackFlashColor = Color.white;
+        [Tooltip("켜면 발사 순서를 번갈아 표시하는 대신, 소환된 모든 분신(+포함된 보스)이 등장 직후부터 대기열이 빌 때까지 계속 Attack Flash Color로 칠해져 있습니다. 누가 다음 차례인지 구분이 사라집니다.")]
+        [SerializeField] private bool keepAttackFlashColorApplied;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -27,7 +29,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            assassin.SetCloneShooterAttackFlashColor(attackFlashColor);
+            assassin.SetCloneShooterAttackFlashColor(attackFlashColor, keepAttackFlashColorApplied);
 
             int spawnCount = Mathf.Max(1, cloneCount);
             List<Vector2> positions = assassin.GetSeparatedCloneZonePositions(spawnCount + (includeBossPosition ? 1 : 0));
@@ -58,12 +60,21 @@ namespace Week14.Enemy
             for (int i = 0; i < spawnCount; i++)
             {
                 clones[i]?.PlayIntro(cloneIntroSeconds, cloneTargetAlpha);
+                if (keepAttackFlashColorApplied)
+                {
+                    clones[i]?.PlayAttackFlash(attackFlashColor);
+                }
             }
 
             if (includeBossPosition)
             {
                 yield return assassin.ReappearAfterTeleport();
                 assassin.EnqueueCloneShooter(bossDestination, null);
+
+                if (keepAttackFlashColorApplied)
+                {
+                    assassin.ApplyCloneShooterFlashToBoss();
+                }
             }
 
             for (int i = 0; i < spawnCount; i++)

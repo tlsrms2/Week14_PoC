@@ -538,7 +538,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497908
     sequences: []
-    editorPosition: {x: 1823, y: 1286}
+    editorPosition: {x: 1715, y: 1286}
   - nodeId: Spawn Clone Shooters4
     nodeGuid: ffdb9f3f3bb6444486611be67140bf66
     nodeKind: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497910
     sequences: []
-    editorPosition: {x: 1834, y: 1428}
+    editorPosition: {x: 1726, y: 1428}
   - nodeId: Enter Stealth2
     nodeGuid: 93d9a50acf70469a8ecfed4f9ce7ced9
     nodeKind: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497911
     sequences: []
-    editorPosition: {x: 2200, y: 1286}
+    editorPosition: {x: 2092, y: 1286}
   - nodeId: Fire Next Clone Shooter7
     nodeGuid: 727949384fcf45f88ce1f34e4583a835
     nodeKind: 0
@@ -574,7 +574,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497912
     sequences: []
-    editorPosition: {x: 1805, y: 1570}
+    editorPosition: {x: 1697, y: 1570}
   - nodeId: Wait13
     nodeGuid: ec64bbb3196b49aa8dfc152837809537
     nodeKind: 3
@@ -583,7 +583,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497913
     sequences: []
-    editorPosition: {x: 2045, y: 1286}
+    editorPosition: {x: 1937, y: 1286}
   - nodeId: Wait14
     nodeGuid: 0120913445ea40baa7e0cc955e06c7b4
     nodeKind: 3
@@ -768,17 +768,17 @@ MonoBehaviour:
     openingPatternId: Pattern1
     signaturePatternId: 
     signaturePatternHpPercent: 50
-    forcedPatternId: Pattern7
+    forcedPatternId: 
     patterns:
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern3
       weight: 1
@@ -788,12 +788,12 @@ MonoBehaviour:
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern6
       weight: 20
@@ -821,22 +821,22 @@ MonoBehaviour:
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern9
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern10
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
+      cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: Pattern11
       weight: 20
@@ -1245,8 +1245,8 @@ MonoBehaviour:
     toNodeId: Fire Next Clone Shooter7
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern11
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern10
   references:
     version: 2
     RefIds:
@@ -1430,6 +1430,7 @@ MonoBehaviour:
         includeBossPosition: 1
         teleportHiddenSeconds: 0.4
         attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
+        keepAttackFlashColorApplied: 0
     - rid: 4705778150679249238
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2994,6 +2995,7 @@ MonoBehaviour:
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
         attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
+        keepAttackFlashColorApplied: 1
     - rid: 4705778196242497836
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3230,6 +3232,7 @@ MonoBehaviour:
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
         attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
+        keepAttackFlashColorApplied: 1
     - rid: 4705778196242497894
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3325,6 +3328,7 @@ MonoBehaviour:
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
         attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
+        keepAttackFlashColorApplied: 1
     - rid: 4705778196242497910
       type: {class: FireDistanceTrailProjectilesAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

@@ -55,6 +55,7 @@ namespace Week14.Enemy
         private Color ownAttackFlashOriginalColor;
         private bool ownAttackFlashActive;
         private Color cloneShooterAttackFlashColor = Color.white;
+        private bool cloneShooterKeepFlashOnAll;
         private AssassinClone flashedQueueFrontClone;
         private bool flashedQueueFrontIsBoss;
         private bool hasFlashedQueueFront;
@@ -88,10 +89,20 @@ namespace Week14.Enemy
             SoundManager.PlayBgm("AssassinBgm");
         }
 
+        // 페이즈가 넘어가면(목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던 단검도
+        // 전부 정리한다 — 다음 페이즈를 은신 상태/단검이 쌓인 채로 시작하지 않도록 하기 위함.
+        protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
+        {
+            RequestStealth(false);
+            ClearAssassinDaggers();
+            base.OnBossPhaseChanged(phaseIndex, phaseNumber);
+        }
+
         protected override void OnBossDied()
         {
             isShooterAttackInProgress = false;
             ClearCloneShooterAttackFlash();
+            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnBossDied();
@@ -101,6 +112,7 @@ namespace Week14.Enemy
         {
             isShooterAttackInProgress = false;
             ClearCloneShooterAttackFlash();
+            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnDisable();
@@ -271,9 +283,20 @@ namespace Week14.Enemy
         // 단, 실제로 발사 중(BeginShooterAttack ~ EndShooterAttack 사이)일 때는 손대지 않는다 —
         // 총알을 여러 발 나눠 쏘는 동안에도 이미 대기열에서는 빠진 상태이기 때문에, 발사가
         // 완전히 끝날 때까지는 Fire 액션이 직접 색을 유지/해제하도록 맡긴다.
-        internal void SetCloneShooterAttackFlashColor(Color flashColor)
+        // keepAppliedToAll이 켜져 있으면 이 매 프레임 감시(맨 앞만 번갈아 칠하기) 자체를 건너뛴다 —
+        // 대신 AssassinSpawnCloneShootersAction이 소환 직후 모든 개체에 색을 직접 칠해두고, 대기열이
+        // 완전히 빌 때 보스 자신의 색만 여기서 되돌린다(분신은 소멸하면서 자연히 사라진다).
+        internal void SetCloneShooterAttackFlashColor(Color flashColor, bool keepAppliedToAll)
         {
             cloneShooterAttackFlashColor = flashColor;
+            cloneShooterKeepFlashOnAll = keepAppliedToAll;
+        }
+
+        // AssassinSpawnCloneShootersAction이 keepAttackFlashColorApplied일 때 보스 자신에게 소환 즉시
+        // 색을 칠하기 위해 호출한다.
+        internal void ApplyCloneShooterFlashToBoss()
+        {
+            PlayOwnAttackFlash(cloneShooterAttackFlashColor);
         }
 
         internal void BeginShooterAttack()
@@ -291,6 +314,16 @@ namespace Week14.Enemy
         {
             if (isShooterAttackInProgress)
             {
+                return;
+            }
+
+            if (cloneShooterKeepFlashOnAll)
+            {
+                if (cloneShooterQueue.Count == 0)
+                {
+                    EndOwnAttackFlash();
+                }
+
                 return;
             }
 
@@ -530,11 +563,61 @@ namespace Week14.Enemy
             // 패링 실패(플레이어를 노리는 정상 회수)일 때만 탄환처럼 궤적을 보여준다.
             // 패링 성공(보스 자해)일 때는 궤적을 표시하지 않는다.
             yield return dagger.FlyToBoss(target, daggerRecallSpeed, damagesPlayer ? daggerRecallPlayerDamage : 0, damagesPlayer);
-            if (!damagesPlayer)
+            // dagger가 도중에(예: 페이즈 전환으로 ClearAssassinDaggers) 외부에서 파괴됐다면 도착한 게
+            // 아니므로 자해 데미지를 주지 않는다.
+            if (!damagesPlayer && dagger != null)
             {
                 ReceivePlayerHit(daggerRecallDamagePerDagger, false, transform.position, Vector2.zero, Color.white);
             }
 
+            onComplete?.Invoke();
+        }
+
+        // AssassinRecallDaggersWithParryBaitAction의 패링 실패 처리용. 보스에게로 돌아가는 대신,
+        // 각 단검이 자기 위치 기준으로 (호출 시점) 플레이어 방향을 한 번만 계산해 그 방향으로 계속
+        // 직진한다(유도 없음) — 발사 이후 플레이어가 움직여도 방향을 다시 잡지 않고, 특정 지점에서
+        // 멈추는 게 아니라 flightSeconds가 지나면 그 자리에서 사라진다.
+        internal IEnumerator RecallDaggersTowardPlayerRoutine(float flightSeconds)
+        {
+            if (isRecallInProgress)
+            {
+                yield break;
+            }
+
+            if (Player == null)
+            {
+                yield break;
+            }
+
+            isRecallInProgress = true;
+
+            Vector2 playerPosition = Player.position;
+            List<AssassinDagger> daggersToRecall = new(spawnedDaggers);
+            int flyingCount = daggersToRecall.Count;
+            for (int i = 0; i < daggersToRecall.Count; i++)
+            {
+                AssassinDagger dagger = daggersToRecall[i];
+                if (dagger == null)
+                {
+                    flyingCount--;
+                    continue;
+                }
+
+                Vector2 direction = playerPosition - (Vector2)dagger.transform.position;
+                StartCoroutine(FlyDaggerInDirectionRoutine(dagger, direction, flightSeconds, () => flyingCount--));
+            }
+
+            while (flyingCount > 0)
+            {
+                yield return null;
+            }
+
+            isRecallInProgress = false;
+        }
+
+        private IEnumerator FlyDaggerInDirectionRoutine(AssassinDagger dagger, Vector2 direction, float flightSeconds, System.Action onComplete)
+        {
+            yield return dagger.FlyInDirection(direction, daggerRecallSpeed, flightSeconds, daggerRecallPlayerDamage, true);
             onComplete?.Invoke();
         }
 

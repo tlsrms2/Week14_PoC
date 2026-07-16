@@ -107,7 +107,10 @@ namespace Week14.Enemy
                 trail.emitting = showTrail;
             }
 
-            while (target != null && Vector2.Distance(transform.position, target.position) > arrivalDistance)
+            // 이 코루틴은 보스(AssassinBossAI)의 StartCoroutine으로 구동되므로, 비행 도중 이 단검이
+            // 외부에서(예: 페이즈 전환 시 ClearAssassinDaggers) 먼저 파괴돼도 자동으로 멈추지 않는다.
+            // this != null로 매번 확인해 파괴된 뒤에는 자신의 transform에 더 이상 접근하지 않는다.
+            while (this != null && target != null && Vector2.Distance(transform.position, target.position) > arrivalDistance)
             {
                 Vector2 direction = ((Vector2)target.position - (Vector2)transform.position).normalized;
                 transform.position += (Vector3)(direction * speed * EnemyTimeScale.DeltaTime);
@@ -118,6 +121,56 @@ namespace Week14.Enemy
                 }
 
                 yield return null;
+            }
+
+            if (this == null)
+            {
+                yield break;
+            }
+
+            HidePathIndicator();
+            Destroy(gameObject);
+        }
+
+        // FlyToBoss와 달리 살아있는 Transform을 계속 쫓아가지 않는다 — 호출 시점에 넘겨받은 방향
+        // 하나로만 계속 직진하고(유도 없음), 특정 지점에 도착해서 멈추는 게 아니라 lifetimeSeconds가
+        // 지나면 그 자리에서 사라진다.
+        internal IEnumerator FlyInDirection(Vector2 direction, float speed, float lifetimeSeconds, int playerDamage, bool showTrail)
+        {
+            isRecalling = true;
+            hasHitPlayer = false;
+            pendingPlayerDamage = playerDamage;
+            if (playerDamage > 0 && hitCollider != null)
+            {
+                hitCollider.enabled = true;
+            }
+
+            if (trail != null)
+            {
+                trail.Clear();
+                trail.emitting = showTrail;
+            }
+
+            Vector2 normalizedDirection = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float remainingSeconds = Mathf.Max(0f, lifetimeSeconds);
+
+            while (this != null && remainingSeconds > 0f)
+            {
+                transform.position += (Vector3)(normalizedDirection * (speed * EnemyTimeScale.DeltaTime));
+
+                if (showTrail)
+                {
+                    Vector2 previewEnd = (Vector2)transform.position + normalizedDirection * (speed * remainingSeconds);
+                    UpdatePathIndicator(transform.position, previewEnd);
+                }
+
+                remainingSeconds -= EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            if (this == null)
+            {
+                yield break;
             }
 
             HidePathIndicator();

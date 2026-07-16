@@ -5759,17 +5759,21 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return true;
     }
 
+    // Opening/Signature/Forced/Debug Forced Pattern처럼 비워둬도(None) 되는 선택형 필드용 —
+    // 이미 실제 패턴이 지정돼 있어도 언제든 다시 None으로 되돌릴 수 있도록 항상 (None)을 보여준다.
     private static string DrawPatternIdPopup(string currentPatternId, IReadOnlyList<string> patternIds)
     {
-        BuildPatternIdPopupOptions(currentPatternId, patternIds, out List<string> values, out List<string> labels);
+        BuildPatternIdPopupOptions(currentPatternId, patternIds, true, out List<string> values, out List<string> labels);
         int selectedIndex = Mathf.Max(0, values.IndexOf(currentPatternId));
         int nextIndex = EditorGUILayout.Popup(selectedIndex, labels.ToArray());
         return values[nextIndex];
     }
 
+    // 페이즈의 가중치 패턴 목록 항목처럼 반드시 실제 패턴을 가리켜야 하는 필수 필드용 — 이미 값이
+    // 채워져 있으면 (None)을 선택지로 보여주지 않는다(빈 항목이 목록에 남는 것을 방지).
     private static string DrawPatternIdPopup(Rect rect, string currentPatternId, IReadOnlyList<string> patternIds)
     {
-        BuildPatternIdPopupOptions(currentPatternId, patternIds, out List<string> values, out List<string> labels);
+        BuildPatternIdPopupOptions(currentPatternId, patternIds, false, out List<string> values, out List<string> labels);
         int selectedIndex = Mathf.Max(0, values.IndexOf(currentPatternId));
         int nextIndex = EditorGUI.Popup(rect, selectedIndex, labels.ToArray());
         return values[nextIndex];
@@ -5778,17 +5782,20 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private static void BuildPatternIdPopupOptions(
         string currentPatternId,
         IReadOnlyList<string> patternIds,
+        bool alwaysIncludeNoneOption,
         out List<string> values,
         out List<string> labels)
     {
         values = new List<string>();
         labels = new List<string>();
-        if (string.IsNullOrWhiteSpace(currentPatternId))
+        bool isCurrentBlank = string.IsNullOrWhiteSpace(currentPatternId);
+        if (alwaysIncludeNoneOption || isCurrentBlank)
         {
             values.Add(string.Empty);
             labels.Add("(None)");
         }
-        else if (!patternIds.Contains(currentPatternId))
+
+        if (!isCurrentBlank && !patternIds.Contains(currentPatternId))
         {
             values.Add(currentPatternId);
             labels.Add($"{currentPatternId} (Missing)");
