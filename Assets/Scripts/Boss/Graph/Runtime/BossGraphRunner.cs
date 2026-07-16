@@ -233,8 +233,20 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                yield return ExecutePattern(graph, pattern, context);
-                RegisterCompletedPattern(phase, patternEntry);
+                // finally에서 등록해야, 그로기/은신 전환 등으로 StopGraphPattern이 이 코루틴 자체를
+                // 중간에 강제 종료(StopCoroutine)시키는 경우에도 "이 패턴을 한 번 썼다"는 게 쿨다운/
+                // Min Patterns Played에 반영된다. 반대로 취소된 경우에는 finally 이후 코드(Stop,
+                // Signature Pattern 체크, WaitBetweenPatterns)는 예정대로 실행되지 않는다 — 코루틴이
+                // 그 자리에서 끝나기 때문이며, 이는 기존과 동일한 동작이다.
+                try
+                {
+                    yield return ExecutePattern(graph, pattern, context);
+                }
+                finally
+                {
+                    RegisterCompletedPattern(phase, patternEntry);
+                }
+
                 context.Stop();
                 if (TryGetPendingSignaturePattern(graph, phase, context, out BossGraphPattern signaturePattern))
                 {

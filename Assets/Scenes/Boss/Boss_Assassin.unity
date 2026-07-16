@@ -285,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8111680843466306869, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.24069
+      value: 0.41930962
       objectReference: {fileID: 0}
     - target: {fileID: 8111680843466306869, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3002,7 +3002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4309581587629039353, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11.94
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 4309581587629039353, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5108,19 +5108,89 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.LocationIntroView
   locationName: "\uD3D0\uC1E0\uB41C \uC9C0\uD558\uCCA0"
   locationNameText: {fileID: 1751681368}
-  flyObjects:
+  locationIntroFlyObjects:
   - {fileID: 1062857174}
   - {fileID: 282449626}
   - {fileID: 1903770388}
+  bossNameText: {fileID: 0}
+  bossInfoPanel: {fileID: 0}
+  mugShotBackgroundRoot: {fileID: 0}
+  mugShotBackgroundTravelOffsetX: 20
+  mugShotBackgroundViewportFillMultiplier: 1.05
+  mugShotBackgroundEnterSeconds: 0.22
+  mugShotBackgroundExitSeconds: 0.2
+  mugShotBackgroundEnterCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mugShotBackgroundExitCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bossShadowWorldOffset: {x: 0.22, y: -0.12}
+  bossShadowColor: {r: 0, g: 0, b: 0, a: 0.55}
+  bossShadowSortingOrderOffset: -100
   canvasGroup: {fileID: 1349617390}
+  topLetterboxPanel: {fileID: 0}
+  bottomLetterboxPanel: {fileID: 0}
+  bossCombatUiRect: {fileID: 0}
+  boss: {fileID: 0}
+  player: {fileID: 0}
+  cameraFollow: {fileID: 0}
   playOnStart: 1
   waitForSceneTransition: 1
   startDelaySeconds: 0.15
-  flyOffsetX: 1200
-  flyInSeconds: 0.35
-  flyOutSeconds: 0.32
-  objectStaggerSeconds: 0.045
-  flyInCurve:
+  playerWalkSpeed: 3.5
+  bossFocusWeight: 1
+  bossViewportFillRatio: 0.9
+  bossFallbackZoomMultiplier: 0.2
+  bossFocusSeconds: 0.55
+  bossFocusSettleTimeoutSeconds: 1
+  locationFlyOffsetX: 1200
+  locationFlyInSeconds: 0.35
+  locationFlyOutSeconds: 0.32
+  locationObjectStaggerSeconds: 0.045
+  locationFlyInCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -5144,7 +5214,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  flyOutCurve:
+  locationFlyOutCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -5168,9 +5238,94 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  textFadeInSeconds: 0.18
-  textHoldSeconds: 0.85
-  textFadeOutSeconds: 0.45
+  locationTextFadeInSeconds: 0.18
+  locationTextHoldSeconds: 0.85
+  locationTextFadeOutSeconds: 0.45
+  bossInfoTravelOffsetY: 520
+  bossInfoEnterSeconds: 0.35
+  bossInfoExitSeconds: 0.32
+  bossInfoEnterCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bossInfoExitCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mugShotLight: {fileID: 0}
+  backgroundToInfoDelaySeconds: 0.15
+  infoToLightDelaySeconds: 0.1
+  infoHoldSeconds: 0.8
+  infoExitToLightOffDelaySeconds: 0.1
+  lightOffToBackgroundExitDelaySeconds: 0.1
+  combatViewReturnTimeoutSeconds: 1.5
+  letterboxExitOffset: 360
+  bossCombatUiEnterOffset: 260
+  combatUiRevealSeconds: 0.38
+  combatUiRevealCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!225 &1349617390
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8500,7 +8655,7 @@ Transform:
   m_GameObject: {fileID: 2958469294905631101}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.01, z: 0}
+  m_LocalPosition: {x: 0, y: 9.56, z: 0}
   m_LocalScale: {x: 3.3000002, y: 3.3000002, z: 3.3000002}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -9713,7 +9868,6 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hpEmptyColor: {r: 0.45, g: 0.65, b: 1, a: 1}
   staggeredColor: {r: 1, g: 0.95, b: 0.35, a: 1}
-  detectionRange: 9
   moveSpeed: 3.5
   bodyRoot: {fileID: 994976304}
   body: {fileID: 8932169066484967420}
@@ -9841,7 +9995,6 @@ MonoBehaviour:
   stealthAlphaFadeSeconds: 0.3
   stealthEntryPatternDelaySeconds: 1
   daggerCountForRecallPattern: 5
-  stealthDamageThresholdForForceRecall: 20
   daggerRecallDamagePerDagger: 1
   daggerRecallPlayerDamage: 5
   daggerRecallSpeed: 12
