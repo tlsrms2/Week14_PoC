@@ -472,6 +472,7 @@ namespace Week14.Combat
             Health health = context.Health;
             return context.Config != null
                 && !GameModalState.BlocksGameplayInput
+                && !PlayerCombatController.IsMouseParryReticleSuppressed
                 && !context.IsExecuting
                 && health != null
                 && !health.IsDead;
