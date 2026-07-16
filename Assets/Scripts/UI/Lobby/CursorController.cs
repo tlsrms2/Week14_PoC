@@ -22,6 +22,18 @@ public class CursorController : MonoBehaviour
     private bool skipCursorRestore;
     private bool customCursorVisible;
 
+    private static int forceCustomCursorVisibleCount;
+
+    public static void PushForceCustomCursorVisible()
+    {
+        forceCustomCursorVisibleCount++;
+    }
+
+    public static void PopForceCustomCursorVisible()
+    {
+        forceCustomCursorVisibleCount = Mathf.Max(0, forceCustomCursorVisibleCount - 1);
+    }
+
     private void Awake()
     {
         if (normalCursorImage == null)
@@ -301,6 +313,11 @@ public class CursorController : MonoBehaviour
 
     private bool ShouldSuppressCustomCursor()
     {
+        if (forceCustomCursorVisibleCount > 0)
+        {
+            return false;
+        }
+
         PlayerCombatController player = PlayerCombatController.Active;
         return player != null
             && !GameModalState.BlocksGameplayInput

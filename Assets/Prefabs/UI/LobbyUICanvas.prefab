@@ -7636,8 +7636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<sprite name=\"icon_point\" color=#00FFFF> \uD544\uC694 \uD3EC\uC778\uD2B8:
-    0"
+  m_text: "<sprite name=\"icon_point\"> \uD544\uC694 \uD3EC\uC778\uD2B8: 0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6d197c6221a5fc74099129e018d2d3fd, type: 2}
   m_sharedMaterial: {fileID: -715141778913414187, guid: 6d197c6221a5fc74099129e018d2d3fd, type: 2}

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 
 namespace Week14.Tutorial
@@ -25,7 +27,8 @@ namespace Week14.Tutorial
         }
 
         private const string DialoguePrefix = ">> ";
-        private const string ObjectiveTitle = "[ 목표 ]";
+        private const string ObjectiveTitleTable = "Story";
+        private const string ObjectiveTitleKey = "TutorialDialogueSet_Objective";
         private const string ObjectiveTitleObjectName = "Dialogue_Text-title";
         private const string ObjectiveTextObjectName = "Dialogue_Text-objective";
         private const string AdvancePromptObjectName = "MouseClick_Image";
@@ -40,6 +43,7 @@ namespace Week14.Tutorial
         [SerializeField] private TMP_Text objectiveTitleText;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField, Min(1f)] private float charactersPerSecond = 45f;
+        [SerializeField] private LocalizedString localizedObjectiveTitleText = new(ObjectiveTitleTable, ObjectiveTitleKey);
 
         [Header("Advance Prompt")]
         [SerializeField] private Image advancePromptImage;
@@ -472,7 +476,25 @@ namespace Week14.Tutorial
             }
 
             objectiveTitleText.gameObject.SetActive(visible);
-            SetText(objectiveTitleText, visible ? ObjectiveTitle : string.Empty);
+            SetText(objectiveTitleText, visible ? ResolveObjectiveTitleText() : string.Empty);
+        }
+
+        private string ResolveObjectiveTitleText()
+        {
+            if (HasLocalizedString(localizedObjectiveTitleText))
+            {
+                return localizedObjectiveTitleText.GetLocalizedString();
+            }
+
+            LocalizedString fallback = new(ObjectiveTitleTable, ObjectiveTitleKey);
+            return fallback.GetLocalizedString();
+        }
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
         }
 
         private void ShowObjectiveStrikeLine()
