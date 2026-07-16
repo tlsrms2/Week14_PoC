@@ -90,7 +90,7 @@ namespace Week14.Weapons
 
             if (currentWeapon == weapon)
             {
-                UnequipWeapon();
+                return false;
             }
 
             return GameSaveManager.RefundWeapon(weaponId, weapon.Price);

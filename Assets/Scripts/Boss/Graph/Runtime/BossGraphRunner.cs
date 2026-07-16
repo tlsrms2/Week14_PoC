@@ -16,19 +16,53 @@ namespace Week14.Enemy
         private readonly Dictionary<string, int> patternCooldownRemainingCounts = new();
         private readonly HashSet<int> openingPatternsPlayed = new();
         private readonly HashSet<int> signaturePatternsPlayed = new();
+        // 페이즈별로 InitialPatternDelaySeconds 대기를 이미 적용했는지 추적한다. 쿨다운/Min Patterns
+        // Played와 달리 "이 페이즈에서 있었던 일" 히스토리가 아니라 "패턴 루프가 막 (재)시작됐다"는
+        // 상태이므로, 그로기 종료/은신 전환처럼 코루틴이 다시 시작될 때마다(ResetTraversalState) 매번
+        // 같이 초기화된다 — 그래야 상태 전환 뒤 첫 패턴 앞에 항상 시작 딜레이가 다시 걸린다.
+        private readonly HashSet<int> initialPatternDelayApplied = new();
+        // 페이즈별로 지금까지 몇 개의 패턴이 완료됐는지 누적한다. Min Patterns Played 조건(최초 등장을
+        // 늦추는 절대 조건) 판정에 쓰인다 — cooldownPatternCount(반복 억제)와 달리 페이즈가 바뀌면
+        // Reset()에서 같이 초기화된다.
+        private readonly Dictionary<int, int> patternsPlayedCountByPhase = new();
         private string currentNodeId;
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
+        // 지금 RunPhasePatternLoop가 실행 중인 패턴. StopCoroutine으로 도중에 캔슬돼도 카운트/쿨다운이
+        // 반영되도록, GraphBossAI.StopGraphPattern이 코루틴을 끊기 직전에 RegisterInFlightPatternIfNeeded()
+        // 를 직접 호출한다(try/finally + Dispose 전파에 기대지 않는다).
+        private BossGraphPhase inFlightPhase;
+        private BossGraphPatternEntry inFlightPatternEntry;
+        private bool inFlightRegistered = true;
 
+        // 진짜 새 시작(페이즈 전환 등)에만 쓴다. 쿨다운/Min Patterns Played처럼 "이 페이즈에서
+        // 지금까지 있었던 일"을 나타내는 페이즈별 히스토리까지 전부 지운다.
         public void Reset()
+        {
+            ResetTraversalState();
+            patternCooldownRemainingCounts.Clear();
+            openingPatternsPlayed.Clear();
+            signaturePatternsPlayed.Clear();
+            patternsPlayedCountByPhase.Clear();
+        }
+
+        // 그로기 등으로 패턴 루프 코루틴이 중간에 끊겼다가 같은 페이즈에서 다시 시작될 때 쓴다.
+        // 그래프 순회 위치(현재 노드, 시퀀스 진행도)만 지우고, 쿨다운/Min Patterns Played 같은
+        // 페이즈별 히스토리는 보존한다 — 안 그러면 그로기가 걸릴 때마다 Min Patterns Played 조건이
+        // 0부터 다시 카운트되어, 그로기를 유발하는 패턴이 있는 페이즈에서는 Min이 걸린 패턴이
+        // 사실상 영영 등장하지 못하는 문제가 생긴다.
+        public void RestartAfterInterruption()
+        {
+            ResetTraversalState();
+        }
+
+        private void ResetTraversalState()
         {
             BossGraphRuntimeState.Clear(activeGraph);
             nextSequenceIndexes.Clear();
             lastSequences.Clear();
             sequenceBags.Clear();
-            patternCooldownRemainingCounts.Clear();
-            openingPatternsPlayed.Clear();
-            signaturePatternsPlayed.Clear();
+            initialPatternDelayApplied.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;
         }
@@ -140,11 +174,48 @@ namespace Week14.Enemy
                 context.Stop();
 
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
-                if (phase != null && phase.PatternIntervalSeconds > 0f)
+                yield return WaitBetweenPatterns(phase, context);
+            }
+        }
+
+        // 패턴과 패턴 사이 대기(PatternIntervalSeconds)를 처리한다. IntervalMoveSpeed가 0보다 크면
+        // 가만히 서서 기다리는 대신, 대기 시작 시점에 뽑은 랜덤한 한 방향으로 그 속도만큼 천천히
+        // 이동하며 기다린다(대기 도중 방향은 바뀌지 않는다). BossAI.SetMovementVelocity가 내부에서
+        // EnemyTimeScale.Current를 곱하므로 시간 슬로우도 자동으로 반영된다.
+        private static IEnumerator WaitBetweenPatterns(BossGraphPhase phase, BossActionContext context)
+        {
+            if (phase == null || phase.PatternIntervalSeconds <= 0f)
+            {
+                yield break;
+            }
+
+            if (phase.IntervalMoveSpeed > 0f && context.Boss != null)
+            {
+                Vector2 direction = Random.insideUnitCircle;
+                direction = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+
+                float remaining = phase.PatternIntervalSeconds;
+                while (remaining > 0f)
                 {
-                    yield return context.WaitSeconds(phase.PatternIntervalSeconds);
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    context.UpdateBossChildAims();
+                    context.Boss.SetMovementVelocity(direction * phase.IntervalMoveSpeed);
+                    remaining -= EnemyTimeScale.DeltaTime;
+                    yield return null;
                 }
+
+                context.Stop();
+            }
+            else
+            {
+                yield return context.WaitSeconds(phase.PatternIntervalSeconds);
+                context.Stop();
             }
         }
 
@@ -153,7 +224,13 @@ namespace Week14.Enemy
             while (true)
             {
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
-                BossGraphPattern pattern = ResolvePhasePattern(graph, phase, out BossGraphPatternEntry patternEntry);
+                if (phase != null && phase.InitialPatternDelaySeconds > 0f && initialPatternDelayApplied.Add(phase.PhaseIndex))
+                {
+                    yield return context.WaitSeconds(phase.InitialPatternDelaySeconds);
+                    context.Stop();
+                }
+
+                BossGraphPattern pattern = ResolvePhasePattern(graph, phase, context, out BossGraphPatternEntry patternEntry);
                 IReadOnlyList<string> nodeKeys = pattern?.NodeKeys;
                 if (nodeKeys == null || nodeKeys.Count == 0)
                 {
@@ -162,8 +239,18 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                // try/finally + StopCoroutine의 Dispose 전파에 기대지 않는다 — 이만큼 깊이 중첩된
+                // yield return 체인(RunGraphPatternLoop→RunLoop→RunPhasePatternLoop→ExecutePattern→...)
+                // 에서는 StopCoroutine이 finally를 안정적으로 안 돌려준다는 게 실측으로 확인됐다. 대신
+                // "지금 이 패턴이 실행 중"이라는 걸 필드에 기록해두고, 정상 완료 시엔 바로 아래에서,
+                // 그로기 등으로 캔슬될 때는 StopGraphPattern이 코루틴을 끊기 직전에 직접
+                // RegisterInFlightPatternIfNeeded()를 호출해 등록한다.
+                inFlightPhase = phase;
+                inFlightPatternEntry = patternEntry;
+                inFlightRegistered = false;
+
                 yield return ExecutePattern(graph, pattern, context);
-                RegisterCompletedPattern(phase, patternEntry);
+                RegisterInFlightPatternIfNeeded();
                 context.Stop();
                 if (TryGetPendingSignaturePattern(graph, phase, context, out BossGraphPattern signaturePattern))
                 {
@@ -172,11 +259,7 @@ namespace Week14.Enemy
                     context.Stop();
                 }
 
-                if (phase.PatternIntervalSeconds > 0f)
-                {
-                    yield return context.WaitSeconds(phase.PatternIntervalSeconds);
-                    context.Stop();
-                }
+                yield return WaitBetweenPatterns(phase, context);
             }
         }
 
@@ -198,6 +281,12 @@ namespace Week14.Enemy
             }
             finally
             {
+                if (context?.Boss is HackerBossAI hacker
+                    && context.Boss is not HackerHologramBoss)
+                {
+                    hacker.ClearPatternSpawnedWeapons();
+                }
+
                 context?.ClearPatternTerminationRequest();
             }
         }
@@ -285,6 +374,8 @@ namespace Week14.Enemy
             Dictionary<string, BossAction> hologramActions = ClonePatternActions(
                 graph,
                 plan.PatternNodeKeys);
+            // 3페이즈 진입 연출 중에는 리플레이가 시작되어 연출을 취소하지 않도록 한다.
+            yield return hologram.WaitForSummonEntrance();
             hologram.BeginRecordedReplay(hologramStartDelaySeconds);
             try
             {
@@ -2135,6 +2226,7 @@ namespace Week14.Enemy
         private BossGraphPattern ResolvePhasePattern(
             BossGraphAsset graph,
             BossGraphPhase phase,
+            BossActionContext context,
             out BossGraphPatternEntry patternEntry)
         {
             patternEntry = null;
@@ -2147,6 +2239,14 @@ namespace Week14.Enemy
             {
                 patternEntry = FindPatternEntry(phase, phase.OpeningPatternId);
                 return graph.GetPattern(phase.OpeningPatternId);
+            }
+
+            // 정상적인 가중치 선택보다 우선한다 — 보스가 "지금 이 패턴을 무조건 써야 한다"고 판단하면
+            // (예: Assassin의 단검 개수 조건) 매번(반복적으로) 이 패턴을 강제로 고른다.
+            if (!string.IsNullOrWhiteSpace(phase.ForcedPatternId) && context?.Boss?.ShouldUseForcedGraphPatternForRunner() == true)
+            {
+                patternEntry = FindPatternEntry(phase, phase.ForcedPatternId);
+                return graph.GetPattern(phase.ForcedPatternId);
             }
 
             patternEntry = SelectPattern(phase);
@@ -2275,6 +2375,14 @@ namespace Week14.Enemy
                 return false;
             }
 
+            // Min Patterns Played는 쿨다운과 달리 완화(fallback)되지 않는 절대 조건이라, requireCooldownReady
+            // 값과 상관없이 항상 체크한다.
+            int playedCount = patternsPlayedCountByPhase.TryGetValue(phase.PhaseIndex, out int count) ? count : 0;
+            if (playedCount < entry.MinPatternsPlayed)
+            {
+                return false;
+            }
+
             if (!requireCooldownReady)
             {
                 return true;
@@ -2303,12 +2411,28 @@ namespace Week14.Enemy
             return null;
         }
 
+        // RunPhasePatternLoop가 정상적으로 패턴을 끝냈을 때, 그리고 GraphBossAI.StopGraphPattern이
+        // 실행 중이던 패턴을 캔슬하기 직전에 각각 호출한다. 한쪽에서 이미 등록했으면 아무 것도 안 한다.
+        public void RegisterInFlightPatternIfNeeded()
+        {
+            if (inFlightRegistered)
+            {
+                return;
+            }
+
+            inFlightRegistered = true;
+            RegisterCompletedPattern(inFlightPhase, inFlightPatternEntry);
+        }
+
         private void RegisterCompletedPattern(BossGraphPhase phase, BossGraphPatternEntry entry)
         {
             if (phase == null || entry == null || string.IsNullOrWhiteSpace(entry.PatternId))
             {
                 return;
             }
+
+            patternsPlayedCountByPhase[phase.PhaseIndex] =
+                (patternsPlayedCountByPhase.TryGetValue(phase.PhaseIndex, out int playedCount) ? playedCount : 0) + 1;
 
             string completedKey = GetPatternCooldownKey(phase, entry.PatternId);
             ReduceOtherPatternCooldowns(phase, completedKey);

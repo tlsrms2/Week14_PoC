@@ -54,7 +54,8 @@ namespace Week14.Enemy
                 wireSettings.Width,
                 wireSettings.HitRadius,
                 wireSettings.Color,
-                hackingPerHit);
+                hackingPerHit,
+                dissolveOnPlayerTouch: true);
         }
 
         private static Vector2 Rotate(Vector2 direction, float degrees)

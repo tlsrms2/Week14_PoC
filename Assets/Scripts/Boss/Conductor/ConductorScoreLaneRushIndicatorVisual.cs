@@ -135,6 +135,7 @@ namespace Week14.Enemy
             color.a *= alphaMultiplier;
             line.Renderer.startColor = color;
             line.Renderer.endColor = color;
+            BossSorting.Apply(line.Renderer);
             line.Renderer.sortingOrder = sortingOrder;
             line.Renderer.SetPosition(0, Vector2.Lerp(line.Start, line.End, startT));
             line.Renderer.SetPosition(1, Vector2.Lerp(line.Start, line.End, endT));
@@ -183,6 +184,7 @@ namespace Week14.Enemy
                 dash.endWidth = laneWidth;
                 dash.startColor = color;
                 dash.endColor = color;
+                BossSorting.Apply(dash);
                 dash.sortingOrder = sortingOrder;
                 dash.SetPosition(0, line.Start + direction * segmentStart);
                 dash.SetPosition(1, line.Start + direction * segmentEnd);

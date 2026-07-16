@@ -22,6 +22,12 @@ namespace Week14.UI
         [SerializeField] private Sprite panelIcon;
         [SerializeField] private string sceneName;
 
+        [Header("보스전 진입 연출")]
+        [Tooltip("플레이어가 걷기 시작할 월드 좌표입니다.")]
+        [SerializeField] private Vector2 introWalkStartPosition;
+        [Tooltip("플레이어가 걷기를 마치고 전투를 시작할 월드 좌표입니다.")]
+        [SerializeField] private Vector2 introWalkEndPosition;
+
         [Header("클리어 보상")]
         [Tooltip("이 보스를 클리어하면 추가로 해금되는 보스 ID 목록입니다.")]
         [SerializeField] private List<string> unlocksBossIds = new();
@@ -56,6 +62,8 @@ namespace Week14.UI
         public Sprite ResultPortrait => deathImage != null ? deathImage : icon;
         public Sprite PanelIcon => panelIcon != null ? panelIcon : icon;
         public string SceneName => sceneName;
+        public Vector2 IntroWalkStartPosition => introWalkStartPosition;
+        public Vector2 IntroWalkEndPosition => introWalkEndPosition;
         public IReadOnlyList<string> UnlocksBossIds => unlocksBossIds;
         public IReadOnlyList<string> UnlocksSkillIds => unlocksSkillIds;
         public IReadOnlyList<string> UnlocksPassiveSkillIds => unlocksPassiveSkillIds;

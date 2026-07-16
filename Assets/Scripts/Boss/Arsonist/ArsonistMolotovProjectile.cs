@@ -316,6 +316,7 @@ namespace Week14.Enemy
             line.useWorldSpace = true;
             line.numCornerVertices = 2;
             line.numCapVertices = 2;
+            BossSorting.Apply(line);
             line.sortingOrder = sortingOrder;
             line.material = GetIndicatorMaterial();
         }

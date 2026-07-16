@@ -421,6 +421,7 @@ namespace Week14.Enemy
             line.endWidth = 0.035f;
             line.startColor = wireColor;
             line.endColor = wireColor;
+            BossSorting.Apply(line);
             line.sortingOrder = wireSortingOrder;
             Shader shader = Shader.Find("Sprites/Default");
             if (shader != null)
@@ -537,6 +538,7 @@ namespace Week14.Enemy
             line.endWidth = 0.045f;
             line.startColor = color;
             line.endColor = color;
+            BossSorting.Apply(line);
             line.sortingOrder = sortingOrder;
             for (int i = 0; i < 5; i++)
             {
@@ -566,6 +568,7 @@ namespace Week14.Enemy
             meshFilter.sharedMesh = fillMesh;
             fillMaterial = new Material(shader) { color = color };
             meshRenderer.sharedMaterial = fillMaterial;
+            BossSorting.Apply(meshRenderer);
             meshRenderer.sortingOrder = sortingOrder;
         }
 
@@ -620,6 +623,7 @@ namespace Week14.Enemy
             line.endWidth = 0.09f;
             line.startColor = color;
             line.endColor = color;
+            BossSorting.Apply(line);
             line.sortingOrder = sortingOrder;
             for (int i = 0; i < 5; i++)
             {

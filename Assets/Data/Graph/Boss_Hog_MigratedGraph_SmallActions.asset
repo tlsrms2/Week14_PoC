@@ -3036,3 +3036,6 @@ MonoBehaviour:
   - actionTypeName: Week14.Enemy.HackerHologramReplayAction, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     nodeKind: 0
+  - actionTypeName: Week14.Enemy.ConductorParrySuppressionBaitAction, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    nodeKind: 0

@@ -264,6 +264,7 @@ namespace Week14.Enemy
             line.endWidth = Mathf.Max(0.005f, width);
             line.startColor = color;
             line.endColor = color;
+            BossSorting.Apply(line);
             line.sortingOrder = sortingOrder;
             Shader shader = Shader.Find("Sprites/Default");
             if (shader != null)
@@ -364,6 +365,7 @@ namespace Week14.Enemy
                 dash.endWidth = dashWidth;
                 dash.startColor = color;
                 dash.endColor = color;
+                BossSorting.Apply(dash);
                 dash.sortingOrder = sortingOrder;
                 dash.sharedMaterial = material;
                 dashes.Add(dash);

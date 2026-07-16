@@ -1431,6 +1431,7 @@ namespace Week14.Enemy
                 dash.positionCount = 2;
                 dash.numCornerVertices = 0;
                 dash.numCapVertices = 1;
+                BossSorting.Apply(dash);
                 dash.sortingOrder = 17;
                 dash.material = GetIndicatorMaterial();
                 dashes.Add(dash);

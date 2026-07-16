@@ -195,6 +195,7 @@ namespace Week14.Enemy
             line.loop = false;
             line.startWidth = 0.045f;
             line.endWidth = 0.045f;
+            BossSorting.Apply(line);
             line.sortingOrder = 19;
             Shader shader = Shader.Find("Sprites/Default");
             if (shader != null)
@@ -212,6 +213,7 @@ namespace Week14.Enemy
             fillObject.transform.SetParent(transform, false);
             MeshFilter meshFilter = fillObject.AddComponent<MeshFilter>();
             fillRenderer = fillObject.AddComponent<MeshRenderer>();
+            BossSorting.Apply(fillRenderer);
             fillRenderer.sortingOrder = 18;
             fillRenderer.enabled = false;
             fillMesh = new Mesh { name = "HackerAttackRangeFillMesh" };

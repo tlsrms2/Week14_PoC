@@ -884,6 +884,7 @@ namespace Week14.Enemy
             line.positionCount = 2;
             line.numCornerVertices = 2;
             line.numCapVertices = 2;
+            BossSorting.Apply(line);
             line.sortingOrder = 17;
             line.material = GetMovementPathIndicatorMaterial();
             state.Line = line;

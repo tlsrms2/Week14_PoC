@@ -17,6 +17,7 @@ namespace Week14.Enemy
             }
 
             yield return assassin.RecallAllDaggersRoutine(true);
+            assassin.RequestStealth(false);
         }
     }
 }

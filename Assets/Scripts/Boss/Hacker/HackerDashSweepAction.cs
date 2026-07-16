@@ -14,7 +14,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.05f)] private float chargeSeconds = 0.7f;
         [SerializeField, Min(0.05f)] private float parryWindowSeconds = 0.35f;
-        [SerializeField, Min(0.05f)] private float parryIndicatorRadius = 0.38f;
 
         [Header("Dash Sweep")]
         [SerializeField] private string sweepTriggerName = "DashSweep";
@@ -26,6 +25,9 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int damage = 1;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.3f;
 
+        [Header("Hacking")]
+        [SerializeField, Min(1)] private int hackingPerHit = 1;
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss == null)
@@ -35,17 +37,19 @@ namespace Week14.Enemy
 
             context.PlayAnimationTrigger(chargeTriggerName);
             bool isHologram = context.Boss is HackerHologramBoss;
-            bool wasParried = false;
             Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
-            GameObject parryObject = new("HackerDashSweepParryWindow");
-            parryObject.transform.position = parryAnchor.position;
-            HackerMeleeParryWindow parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
-            parryWindow.SetHologramStyle(isHologram);
-            parryWindow.Initialize(parryAnchor, parryIndicatorRadius, parryWindowSeconds, () => wasParried = true);
+            HackerParryBait parryBait = HackerParryBait.Spawn(
+                context,
+                (context.Boss as HackerBossAI)?.ParryProjectileSettings,
+                parryAnchor.position,
+                parryAnchor,
+                Vector3.zero,
+                Mathf.Min(chargeSeconds, parryWindowSeconds),
+                chargeSeconds);
 
             float elapsed = 0f;
             HackerAttackRangeIndicator rangeIndicator = null;
-            while (elapsed < chargeSeconds && !wasParried)
+            while (elapsed < chargeSeconds)
             {
                 if (context.IsExecutionPaused)
                 {
@@ -70,15 +74,14 @@ namespace Week14.Enemy
                 yield return null;
             }
 
-            if (parryWindow != null)
-            {
-                UnityEngine.Object.Destroy(parryWindow.gameObject);
-            }
+            bool wasParried = parryBait?.WasParried == true;
+            parryBait?.Dispose();
 
             HackerAttackRangeIndicator.Destroy(rangeIndicator);
             if (wasParried)
             {
                 context.Stop();
+                yield return HackerMeleeAttackAction.Wait(context, dashSeconds);
                 yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
                 yield break;
             }
@@ -140,7 +143,11 @@ namespace Week14.Enemy
                 PlayerCombatController player = hits[i].GetComponentInParent<PlayerCombatController>();
                 if (player != null && hitPlayers.Add(player))
                 {
-                    player.ReceiveAttack(damage, center, direction);
+                    if (player.ReceiveAttack(damage, center, direction)
+                        && context.Boss is HackerBossAI hacker)
+                    {
+                        hacker.ApplyHacking(player, hackingPerHit);
+                    }
                 }
             }
         }

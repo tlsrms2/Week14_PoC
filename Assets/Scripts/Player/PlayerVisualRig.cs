@@ -85,6 +85,7 @@ namespace Week14.Combat
         private bool sideRightArmWasHolstering;
         private bool backRightArmWasHolstering;
         private Coroutine rollSpinRoutine;
+        private bool cinematicMovementActive;
 
         private void Awake()
         {
@@ -128,6 +129,28 @@ namespace Week14.Combat
         }
 
         public bool IsFacingLeft => visualRoot != null && visualRoot.localScale.x < 0f;
+
+        public void BeginCinematicMovement(Vector2 direction)
+        {
+            cinematicMovementActive = direction.sqrMagnitude > 0.0001f;
+            if (cinematicMovementActive)
+            {
+                SetBodyAimDirection(direction.normalized);
+            }
+
+            UpdateWalkAnimation(true);
+        }
+
+        public void EndCinematicMovement(Vector2 facingDirection)
+        {
+            cinematicMovementActive = false;
+            if (facingDirection.sqrMagnitude > 0.0001f)
+            {
+                SetBodyAimDirection(facingDirection);
+            }
+
+            UpdateWalkAnimation(true);
+        }
 
         public void SetBodyAimDirection(Vector2 direction)
         {
@@ -414,7 +437,8 @@ namespace Week14.Combat
         private void UpdateWalkAnimation(bool force)
         {
             bool canWalk = combat == null || combat.CanMove;
-            bool isWalking = canWalk && GameInput.Move.sqrMagnitude > 0.0001f;
+            bool isWalking = cinematicMovementActive
+                || (canWalk && GameInput.Move.sqrMagnitude > 0.0001f);
             if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
             {
                 return;

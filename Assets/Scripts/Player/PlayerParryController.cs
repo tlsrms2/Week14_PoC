@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
-using Week14.Enemy;
 using Week14.UI;
 using Week14.Weapons;
 
@@ -75,17 +74,6 @@ namespace Week14.Combat
             if (!HasValidParryConfig())
             {
                 return false;
-            }
-
-            HackerMeleeParryWindow meleeWindow = HackerMeleeParryWindow.FindClosest(
-                IsPointInsideMouseParryDiamond,
-                GetParryCursorWorldPosition());
-            Vector3 meleeWindowPosition = meleeWindow != null ? meleeWindow.transform.position : Vector3.zero;
-            if (meleeWindow != null && meleeWindow.TryParry())
-            {
-                PlayParryImpact(meleeWindowPosition, Vector2.right, true);
-                ProjectileParried?.Invoke();
-                return true;
             }
 
             EnemyProjectile target = projectileLockOnTarget != null

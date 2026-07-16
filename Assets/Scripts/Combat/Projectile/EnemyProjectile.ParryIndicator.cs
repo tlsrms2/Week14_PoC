@@ -90,5 +90,11 @@ namespace Week14.Combat
                 && renderer.transform.IsChildOf(parryLockOnReticle.transform);
         }
 
+        public void ConfigureParryLockOnIndicatorColor(Color? colorOverride)
+        {
+            ResolveParryLockOnIndicator();
+            parryLockOnReticle?.SetColorOverride(colorOverride);
+        }
+
     }
 }
