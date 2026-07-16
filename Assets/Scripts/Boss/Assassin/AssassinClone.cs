@@ -7,16 +7,12 @@ namespace Week14.Enemy
     [AddComponentMenu("Week14/Boss/Assassin Clone")]
     public sealed class AssassinClone : MonoBehaviour
     {
-        [Tooltip("공격(발사) 시 색이 바뀌었다가 돌아오는 대상 스프라이트입니다. 비워두면 색 변경을 하지 않습니다.")]
-        [SerializeField] private SpriteRenderer attackFlashTarget;
         [Tooltip("플레이어 쪽으로 좌우 반전(flipX)시킬 첫 번째 대상 스프라이트입니다. 비워두면 반전하지 않습니다.")]
         [SerializeField] private SpriteRenderer facingSpriteTargetA;
         [Tooltip("플레이어 쪽으로 좌우 반전(flipX)시킬 두 번째 대상 스프라이트입니다. 비워두면 반전하지 않습니다.")]
         [SerializeField] private SpriteRenderer facingSpriteTargetB;
 
         private SpriteRenderer[] renderers;
-        private Color attackFlashOriginalColor;
-        private bool attackFlashActive;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
 
@@ -63,37 +59,6 @@ namespace Week14.Enemy
         internal void PlayDespawn(float despawnSeconds)
         {
             StartCoroutine(DespawnRoutine(despawnSeconds));
-        }
-
-        // AssassinBossAI가 발사 대기열의 맨 앞(=이번 공격 차례)이 바뀔 때마다 호출해준다.
-        internal void PlayAttackFlash(Color flashColor)
-        {
-            if (attackFlashTarget == null)
-            {
-                return;
-            }
-
-            if (!attackFlashActive)
-            {
-                attackFlashOriginalColor = attackFlashTarget.color;
-            }
-
-            Color applied = flashColor;
-            applied.a = attackFlashTarget.color.a;
-            attackFlashTarget.color = applied;
-            attackFlashActive = true;
-        }
-
-        internal void EndAttackFlash()
-        {
-            if (attackFlashActive && attackFlashTarget != null)
-            {
-                Color reverted = attackFlashOriginalColor;
-                reverted.a = attackFlashTarget.color.a;
-                attackFlashTarget.color = reverted;
-            }
-
-            attackFlashActive = false;
         }
 
         private IEnumerator DespawnRoutine(float despawnSeconds)

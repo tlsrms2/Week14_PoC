@@ -56,11 +56,6 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            // 대기열에서는 이미 빠졌지만 아직 총알을 다 쏘지 않았으므로, 자동 색상 갱신(대기열 맨 앞 감시)이
-            // 다음 차례를 앞당겨 색칠하지 않도록 붙잡아 둔다. 다 쏘고 나면 EndShooterAttack에서 색을 되돌리고
-            // 자동 갱신을 다시 풀어준다.
-            assassin.BeginShooterAttack();
-
             if (fireMode == FireMode.Burst)
             {
                 yield return RunBurst(context, origin);
@@ -69,8 +64,6 @@ namespace Week14.Enemy
             {
                 yield return RunArcVolley(context, origin);
             }
-
-            assassin.EndShooterAttack();
 
             if (clone != null)
             {

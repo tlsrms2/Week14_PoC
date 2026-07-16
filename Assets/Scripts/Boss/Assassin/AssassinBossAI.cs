@@ -52,14 +52,6 @@ namespace Week14.Enemy
         private bool stealthVisibilityOverrideActive;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
-        private Color ownAttackFlashOriginalColor;
-        private bool ownAttackFlashActive;
-        private Color cloneShooterAttackFlashColor = Color.white;
-        private bool cloneShooterKeepFlashOnAll;
-        private AssassinClone flashedQueueFrontClone;
-        private bool flashedQueueFrontIsBoss;
-        private bool hasFlashedQueueFront;
-        private bool isShooterAttackInProgress;
 
         protected override bool RotatesBodyToPlayer => false;
         protected override BossGraphAsset GraphAsset => isStealthed ? stealthGraph : base.GraphAsset;
@@ -95,9 +87,6 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             RequestStealth(false);
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
@@ -151,9 +140,6 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnBossDied();
@@ -161,9 +147,6 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnDisable();
@@ -173,7 +156,6 @@ namespace Week14.Enemy
         {
             UpdateFacingSprite();
             ApplyStealthAlpha();
-            UpdateCloneShooterAttackFlash();
 
             if (isStealthed && stealthEntryDelayRemaining > 0f)
             {
@@ -327,137 +309,6 @@ namespace Week14.Enemy
                 remaining -= EnemyTimeScale.DeltaTime;
                 yield return null;
             }
-        }
-
-        // 분신 발사 대기열의 맨 앞(=지금부터 공격 차례를 기다리는 중인 개체)을 매 프레임 감시해서,
-        // 대기열 맨 앞이 바뀔 때마다 이전 차례 개체는 원래 색으로 되돌리고 새 차례 개체를 색칠한다.
-        // 단, 실제로 발사 중(BeginShooterAttack ~ EndShooterAttack 사이)일 때는 손대지 않는다 —
-        // 총알을 여러 발 나눠 쏘는 동안에도 이미 대기열에서는 빠진 상태이기 때문에, 발사가
-        // 완전히 끝날 때까지는 Fire 액션이 직접 색을 유지/해제하도록 맡긴다.
-        // keepAppliedToAll이 켜져 있으면 이 매 프레임 감시(맨 앞만 번갈아 칠하기) 자체를 건너뛴다 —
-        // 대신 AssassinSpawnCloneShootersAction이 소환 직후 모든 개체에 색을 직접 칠해두고, 대기열이
-        // 완전히 빌 때 보스 자신의 색만 여기서 되돌린다(분신은 소멸하면서 자연히 사라진다).
-        internal void SetCloneShooterAttackFlashColor(Color flashColor, bool keepAppliedToAll)
-        {
-            cloneShooterAttackFlashColor = flashColor;
-            cloneShooterKeepFlashOnAll = keepAppliedToAll;
-        }
-
-        // AssassinSpawnCloneShootersAction이 keepAttackFlashColorApplied일 때 보스 자신에게 소환 즉시
-        // 색을 칠하기 위해 호출한다.
-        internal void ApplyCloneShooterFlashToBoss()
-        {
-            PlayOwnAttackFlash(cloneShooterAttackFlashColor);
-        }
-
-        internal void BeginShooterAttack()
-        {
-            isShooterAttackInProgress = true;
-        }
-
-        internal void EndShooterAttack()
-        {
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-        }
-
-        private void UpdateCloneShooterAttackFlash()
-        {
-            if (isShooterAttackInProgress)
-            {
-                return;
-            }
-
-            if (cloneShooterKeepFlashOnAll)
-            {
-                if (cloneShooterQueue.Count == 0)
-                {
-                    EndOwnAttackFlash();
-                }
-
-                return;
-            }
-
-            if (cloneShooterQueue.Count == 0)
-            {
-                ClearCloneShooterAttackFlash();
-                return;
-            }
-
-            AssassinClone frontClone = cloneShooterQueue[0].clone;
-            bool frontIsBoss = frontClone == null;
-
-            if (hasFlashedQueueFront && flashedQueueFrontClone == frontClone && flashedQueueFrontIsBoss == frontIsBoss)
-            {
-                return;
-            }
-
-            ClearCloneShooterAttackFlash();
-
-            if (frontIsBoss)
-            {
-                PlayOwnAttackFlash(cloneShooterAttackFlashColor);
-                flashedQueueFrontIsBoss = true;
-            }
-            else
-            {
-                frontClone.PlayAttackFlash(cloneShooterAttackFlashColor);
-                flashedQueueFrontClone = frontClone;
-            }
-
-            hasFlashedQueueFront = true;
-        }
-
-        private void ClearCloneShooterAttackFlash()
-        {
-            if (!hasFlashedQueueFront)
-            {
-                return;
-            }
-
-            if (flashedQueueFrontClone != null)
-            {
-                flashedQueueFrontClone.EndAttackFlash();
-            }
-
-            if (flashedQueueFrontIsBoss)
-            {
-                EndOwnAttackFlash();
-            }
-
-            flashedQueueFrontClone = null;
-            flashedQueueFrontIsBoss = false;
-            hasFlashedQueueFront = false;
-        }
-
-        private void PlayOwnAttackFlash(Color flashColor)
-        {
-            if (stealthVisualTargetB == null)
-            {
-                return;
-            }
-
-            if (!ownAttackFlashActive)
-            {
-                ownAttackFlashOriginalColor = stealthVisualTargetB.color;
-            }
-
-            Color applied = flashColor;
-            applied.a = stealthVisualTargetB.color.a;
-            stealthVisualTargetB.color = applied;
-            ownAttackFlashActive = true;
-        }
-
-        private void EndOwnAttackFlash()
-        {
-            if (ownAttackFlashActive && stealthVisualTargetB != null)
-            {
-                Color reverted = ownAttackFlashOriginalColor;
-                reverted.a = stealthVisualTargetB.color.a;
-                stealthVisualTargetB.color = reverted;
-            }
-
-            ownAttackFlashActive = false;
         }
 
         internal void EnqueueCloneShooter(Vector3 position, AssassinClone clone)
