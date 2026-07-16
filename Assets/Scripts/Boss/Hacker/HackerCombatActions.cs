@@ -56,7 +56,6 @@ namespace Week14.Enemy
         [Header("Parry")]
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
-        [SerializeField, Min(0.05f)] private float parryIndicatorRadius = 0.38f;
 
         [Header("Hacking")]
         [SerializeField, Min(1)] private int hackingPerHit = 1;
@@ -77,7 +76,7 @@ namespace Week14.Enemy
 
             yield return ApproachToMeleeDistance(context);
             HackerAttackRangeIndicator rangeIndicator = null;
-            HackerMeleeParryWindow parryWindow = null;
+            HackerParryBait parryBait = null;
             bool isHologram = context.Boss is HackerHologramBoss;
             Vector2 attackDirection = GetPlayerSideDirection(context);
             if (context.Boss is HackerBossAI hacker)
@@ -102,21 +101,19 @@ namespace Week14.Enemy
                     Mathf.Max(0f, windupSeconds - parryWindowSeconds),
                     rangeIndicator);
 
-                bool wasParried = false;
-                GameObject parryObject = new("HackerMeleeParryWindow");
                 Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
-                parryObject.transform.position = parryAnchor.position;
-                parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
-                parryWindow.SetHologramStyle(isHologram);
-                parryWindow.Initialize(
-                    parryAnchor,
-                    parryIndicatorRadius,
-                    parryWindowSeconds,
-                    () => wasParried = true);
-
                 float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
+                parryBait = HackerParryBait.Spawn(
+                    context,
+                    (context.Boss as HackerBossAI)?.ParryProjectileSettings,
+                    parryAnchor.position,
+                    parryAnchor,
+                    Vector3.zero,
+                    remainingWindup,
+                    remainingWindup);
+
                 float elapsed = 0f;
-                while (elapsed < remainingWindup && !wasParried)
+                while (elapsed < remainingWindup)
                 {
                     if (context.IsExecutionPaused)
                     {
@@ -131,11 +128,9 @@ namespace Week14.Enemy
                     yield return null;
                 }
 
-                if (parryWindow != null)
-                {
-                    UnityEngine.Object.Destroy(parryWindow.gameObject);
-                    parryWindow = null;
-                }
+                bool wasParried = parryBait?.WasParried == true;
+                parryBait?.Dispose();
+                parryBait = null;
 
                 if (wasParried)
                 {
@@ -175,11 +170,7 @@ namespace Week14.Enemy
             }
             finally
             {
-                if (parryWindow != null)
-                {
-                    UnityEngine.Object.Destroy(parryWindow.gameObject);
-                }
-
+                parryBait?.Dispose();
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 context.SetFacingLocked(false);
             }
@@ -254,7 +245,11 @@ namespace Week14.Enemy
                 return;
             }
 
-            UnityEngine.Object.Instantiate(consecutiveSlamDustPrefab, context.Boss.transform.position, Quaternion.identity);
+            GameObject dust = UnityEngine.Object.Instantiate(
+                consecutiveSlamDustPrefab,
+                context.Boss.transform.position,
+                Quaternion.identity);
+            BossSorting.ApplyToChildren(dust);
         }
 
         internal static IEnumerator Wait(BossActionContext context, float seconds)
@@ -514,7 +509,6 @@ namespace Week14.Enemy
         [Header("Parry")]
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
-        [SerializeField, Min(0.05f)] private float parryIndicatorRadius = 0.38f;
 
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
@@ -550,25 +544,22 @@ namespace Week14.Enemy
                 Mathf.Max(0f, windupSeconds - parryWindowSeconds),
                 rangeIndicator);
 
-            bool wasParried = false;
-            GameObject parryObject = new("HackerThrustParryWindow");
             Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
             Transform bossTransform = context.Boss.transform;
             Vector3 parryWorldOffset = parryAnchor.position - bossTransform.position;
             parryWorldOffset.x = Mathf.Abs(parryWorldOffset.x) * Mathf.Sign(direction.x);
-            parryObject.transform.position = bossTransform.position + parryWorldOffset;
-            HackerMeleeParryWindow parryWindow = parryObject.AddComponent<HackerMeleeParryWindow>();
-            parryWindow.SetHologramStyle(isHologram);
-            parryWindow.Initialize(
+            float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
+            HackerParryBait parryBait = HackerParryBait.Spawn(
+                context,
+                (context.Boss as HackerBossAI)?.ParryProjectileSettings,
+                bossTransform.position + parryWorldOffset,
                 bossTransform,
                 parryWorldOffset,
-                parryIndicatorRadius,
-                parryWindowSeconds,
-                () => wasParried = true);
+                remainingWindup,
+                remainingWindup);
 
-            float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
             float elapsed = 0f;
-            while (elapsed < remainingWindup && !wasParried)
+            while (elapsed < remainingWindup)
             {
                 if (context.IsExecutionPaused)
                 {
@@ -582,10 +573,8 @@ namespace Week14.Enemy
                 yield return null;
             }
 
-            if (parryWindow != null)
-            {
-                UnityEngine.Object.Destroy(parryWindow.gameObject);
-            }
+            bool wasParried = parryBait?.WasParried == true;
+            parryBait?.Dispose();
             if (wasParried)
             {
                 context.SetFacingLocked(false);

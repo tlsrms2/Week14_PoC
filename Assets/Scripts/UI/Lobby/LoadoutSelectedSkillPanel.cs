@@ -23,6 +23,8 @@ namespace Week14.UI
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private TMP_Text requiredStackText;
         [SerializeField] private Image iconImage;
+        [Tooltip("현재 표시 중인 무기/스킬이 장착 중일 때 IconImage 위에 표시할 오브젝트입니다.")]
+        [SerializeField] private GameObject iconEquippedIndicator;
         [Tooltip("무기를 호버했을 때만 켜지는 무기 전용 수치 패널입니다. 스킬/패시브 호버 시, 그리고 아무것도 호버하지 않을 때는 꺼집니다.")]
         [SerializeField] private GameObject weaponStatsPanel;
         [SerializeField] private TMP_Text parryingRangeText;
@@ -59,6 +61,7 @@ namespace Week14.UI
         private string UnequipHintText => localization != null ? localization.UnequipHint : "장착해제";
         private string EquippedLabelText => localization != null ? localization.EquippedLabel : "장착중";
         private string NonRefundableText => localization != null ? localization.NonRefundable : "환불 불가";
+        private string DefaultGrantedNonRefundableText => localization != null ? localization.DefaultGrantedNonRefundable : "기본 지급 / 환불 불가";
 
         private void Awake()
         {
@@ -179,7 +182,7 @@ namespace Week14.UI
             // 로컬라이징이 연결된 필드는 일반 텍스트를 먼저 넣지 않는다(무기와 동일한 이유 — 깜빡임 방지).
             string displayName = skill.HasLocalizedDisplayName ? string.Empty : skill.DisplayName;
             string description = skill.HasLocalizedDescription ? string.Empty : skill.Description;
-            ShowInternal(displayName, description, cooldownText, skill.Icon, skill.Price, GameSaveManager.IsSkillPurchased(skill.SkillId), refundable, equipped, true);
+            ShowInternal(displayName, description, cooldownText, skill.Icon, skill.Price, GameSaveManager.IsSkillPurchased(skill.SkillId), refundable, equipped);
             BindLocalizedSkillText(skill);
         }
 
@@ -199,7 +202,7 @@ namespace Week14.UI
 
             string displayName = skill.HasLocalizedDisplayName ? string.Empty : skill.DisplayName;
             string description = skill.HasLocalizedDescription ? string.Empty : skill.Description;
-            ShowInternal(displayName, description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), refundable, equipped, true);
+            ShowInternal(displayName, description, string.Empty, skill.Icon, skill.Price, GameSaveManager.IsPassiveSkillPurchased(skill.SkillId), refundable, equipped);
             BindLocalizedPassiveSkillText(skill);
         }
 
@@ -222,7 +225,7 @@ namespace Week14.UI
             // BindLocalizedWeaponText가 곧바로 채운다. 로컬라이징이 없는 필드는 그냥 원래 텍스트를 쓴다.
             string displayName = weapon.HasLocalizedDisplayName ? string.Empty : weapon.DisplayName;
             string description = weapon.HasLocalizedDescription ? string.Empty : weapon.Description;
-            ShowInternal(displayName, description, string.Empty, weapon.Icon, weapon.Price, GameSaveManager.IsWeaponPurchased(weapon.WeaponId), refundable, equipped, false);
+            ShowInternal(displayName, description, string.Empty, weapon.Icon, weapon.Price, GameSaveManager.IsWeaponPurchased(weapon.WeaponId), refundable, equipped);
 
             SetActiveSafe(weaponStatsPanel, true);
             SetParryingRangeText(weapon.HasLocalizedParryingRangeTooltipText ? string.Empty : weapon.ParryingRangeTooltipText);
@@ -239,7 +242,7 @@ namespace Week14.UI
             UnbindAllLocalizedText();
             SetCategoryText(string.Empty);
             LoadoutHoverHighlight.ClearHovered();
-            ShowInternal(string.Empty, string.Empty, string.Empty, null, null, false, true, false, true);
+            ShowInternal(string.Empty, string.Empty, string.Empty, null, null, false, true, false);
         }
 
         private void SetCategoryText(string value)
@@ -355,7 +358,7 @@ namespace Week14.UI
             }
         }
 
-        private void ShowInternal(string displayName, string description, string requiredStack, Sprite icon, int? cost, bool isPurchased, bool isRefundable, bool isEquipped, bool canUnequip)
+        private void ShowInternal(string displayName, string description, string requiredStack, Sprite icon, int? cost, bool isPurchased, bool isRefundable, bool isEquipped)
         {
             SetNameText(displayName);
             SetDescriptionText(description);
@@ -370,6 +373,8 @@ namespace Week14.UI
                 iconImage.sprite = icon;
                 iconImage.enabled = icon != null;
             }
+
+            SetActiveSafe(iconEquippedIndicator, icon != null && isEquipped);
 
             bool showCost = cost.HasValue && !isEquipped;
 
@@ -390,10 +395,10 @@ namespace Week14.UI
                 costIcon.enabled = showCost;
             }
 
-            // 장착 중인데 해제가 불가능한 경우(무기)에는 액션 힌트 이미지는 숨기고,
+            // 장착 중인데 해제가 불가능한 경우에는 액션 힌트 이미지는 숨기고,
             // 대신 "장착중"이라는 상태 표시 텍스트만 보여준다(클릭해도 아무 일도 안 일어나므로).
-            bool showActionHint = cost.HasValue && (isEquipped ? canUnequip : (!isPurchased || isRefundable));
-            bool showEquippedOnlyLabel = cost.HasValue && isEquipped && !canUnequip;
+            bool showActionHint = cost.HasValue && !isEquipped && (!isPurchased || isRefundable);
+            bool showEquippedOnlyLabel = cost.HasValue && isEquipped;
 
             if (actionHintImage != null)
             {
@@ -411,6 +416,11 @@ namespace Week14.UI
                 else if (showEquippedOnlyLabel)
                 {
                     actionHintText.text = EquippedLabelText;
+                    actionHintText.enabled = true;
+                }
+                else if (cost.HasValue && isPurchased && !isRefundable)
+                {
+                    actionHintText.text = DefaultGrantedNonRefundableText;
                     actionHintText.enabled = true;
                 }
                 else

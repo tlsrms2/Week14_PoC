@@ -160,6 +160,7 @@ internal static class BossGraphActionEditorUtility
         new("Attack/Conductor/Conducting Cue", typeof(ConductorConductingCueAction), () => new ConductorConductingCueAction()),
         new("Attack/Conductor/Defense Arc Volley", typeof(ConductorDefenseArcVolleyAction), () => new ConductorDefenseArcVolleyAction()),
         new("Attack/Conductor/Diamond Collapse", typeof(ConductorDiamondCollapseAction), () => new ConductorDiamondCollapseAction()),
+        new("Attack/Conductor/Parry Suppression Bait", typeof(ConductorParrySuppressionBaitAction), () => new ConductorParrySuppressionBaitAction()),
         new("Minion/Spawn/Summon", typeof(MinionSummonAction), () => new MinionSummonAction()),
         new("Minion/Spawn/Ensure Count", typeof(MinionEnsureCountAction), () => new MinionEnsureCountAction()),
         new("Minion/Spawn/Auto Summon If Needed", typeof(MinionAutoSummonIfNeededAction), () => new MinionAutoSummonIfNeededAction()),
@@ -469,6 +470,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(ConductorConductingCueAction))
         {
             return "Conductor 전용 전조 액션입니다. 단독 실행 시 전조만 그리고, 보스 본체 액션과 P로 병렬 연결되면 보스 액션의 마지막 구간을 덮어씁니다.";
+        }
+
+        if (actionType == typeof(ConductorParrySuppressionBaitAction))
+        {
+            return "Conductor 전용 액션입니다. 보스를 지정 위치로 이동시킨 뒤 드론 4기가 플레이어 주위를 축소 회전하며 접선 방향으로 계속 발사합니다. 중간에 무작위 드론을 따라다니는 보상 미끼를 패링하면 멈추고, 놓치면 최종 축소 시 플레이어가 한 번 피해를 입습니다.";
         }
 
         if (actionType == typeof(MinionSummonAction))

@@ -11888,7 +11888,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<sprite name=\"OptionIcon\"> \uC124\uC815"
+  m_text: "<sprite name=\"icon_option\"> \uC124\uC815"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
   m_sharedMaterial: {fileID: -9187303386302699777, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
@@ -13883,7 +13883,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<sprite name=\"LanguageIcon\"> \uD55C\uAD6D\uC5B4"
+  m_text: "<sprite name=\"icon_language\"> \uD55C\uAD6D\uC5B4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
   m_sharedMaterial: {fileID: -9187303386302699777, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
@@ -18274,10 +18274,10 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: "<sprite name=\"LanguageIcon\"> \uD55C\uAD6D\uC5B4"
+    - m_Text: "<sprite name=\"icon_language\"> \uD55C\uAD6D\uC5B4"
       m_Image: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: <sprite name="LanguageIcon"> English
+    - m_Text: <sprite name="icon_language"> English
       m_Image: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:

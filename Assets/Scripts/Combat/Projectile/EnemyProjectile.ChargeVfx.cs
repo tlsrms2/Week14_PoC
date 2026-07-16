@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -62,6 +63,7 @@ namespace Week14.Combat
             chargeVfx.loop = false;
             chargeVfx.numCornerVertices = 2;
             chargeVfx.numCapVertices = 2;
+            BossSorting.Apply(chargeVfx);
             chargeVfx.sortingOrder = 24;
             chargeVfx.material = GetChargeVfxMaterial();
             return chargeVfx;

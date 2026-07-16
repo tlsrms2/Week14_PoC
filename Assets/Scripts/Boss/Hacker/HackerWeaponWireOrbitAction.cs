@@ -54,6 +54,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float hitRadius = 0.2f;
         [SerializeField, Min(1)] private int damage = 1;
 
+        [Header("Hacking")]
+        [SerializeField, Min(1)] private int hackingPerHit = 1;
+
         [Header("Recall")]
         [SerializeField, Min(0.05f)] private float recallSeconds = 0.55f;
         [SerializeField] private float recallRotationDegrees = 360f;
@@ -162,6 +165,7 @@ namespace Week14.Enemy
                         safeInnerRadius);
                     rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
                     TryApplyRingDamage(
+                        hacker,
                         bossWireAnchor.position,
                         orbitRadius,
                         ref playerHit);
@@ -181,6 +185,7 @@ namespace Week14.Enemy
                         safeInnerRadius);
                     rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
                     TryApplyRingDamage(
+                        hacker,
                         bossWireAnchor.position,
                         orbitRadius,
                         ref playerHit);
@@ -383,6 +388,7 @@ namespace Week14.Enemy
         }
 
         private void TryApplyRingDamage(
+            HackerBossAI hacker,
             Vector2 center,
             float outerRadius,
             ref bool playerHit)
@@ -407,7 +413,10 @@ namespace Week14.Enemy
             }
 
             playerHit = true;
-            player.ReceiveAttack(damage, center, toPlayer.normalized);
+            if (player.ReceiveAttack(damage, center, toPlayer.normalized))
+            {
+                hacker.ApplyHacking(player, hackingPerHit);
+            }
         }
 
         private static float GetCurveProgress(AnimationCurve curve, float progress)

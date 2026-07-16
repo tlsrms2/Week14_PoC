@@ -374,7 +374,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 1}
+  m_Color: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
   m_Intensity: 4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -2113,6 +2113,7 @@ MonoBehaviour:
   focusPositionSmoothTime: 1.5
   shakeFrequency: 34
   zoomBlendSpeed: 10
+  bossPairViewportPadding: 0.2
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3635,7 +3636,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3873820293937629566, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_Color.a
-      value: 0.11764706
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5266926221931298650, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_LocalScale.x
@@ -3695,7 +3696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7372413297064936419, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_Color.a
-      value: 0.11764706
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9821,7 +9822,7 @@ MonoBehaviour:
     projectile:
       prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
       bulletDamage: 0
-      chargeSeconds: 0
+      chargeSeconds: 1
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 0
@@ -9838,11 +9839,12 @@ MonoBehaviour:
   stealthVisualTargetB: {fileID: 1368611871}
   stealthAlphaB: 50
   stealthAlphaFadeSeconds: 0.3
-  stealthEntryPatternDelaySeconds: 2
-  daggerCountForRecallPattern: 10
+  stealthEntryPatternDelaySeconds: 1
+  daggerCountForRecallPattern: 5
+  stealthDamageThresholdForForceRecall: 20
   daggerRecallDamagePerDagger: 1
-  daggerRecallPlayerDamage: 1
-  daggerRecallSpeed: 10
+  daggerRecallPlayerDamage: 5
+  daggerRecallSpeed: 12
   clonePrefab: {fileID: 6933580441243757665, guid: b61e8d6fa0cd5a44f8e1ea72821f8ea9, type: 3}
   cloneSpawnZone: {fileID: 283274216}
   cloneMinSeparationDistance: 5

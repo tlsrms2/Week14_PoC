@@ -2432,7 +2432,139 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    phaseMaxHp: 0
+    phaseMaxHp: 100
+    patternIntervalSeconds: 2
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 0
+    openingPatternId: 
+    signaturePatternId: P10
+    signaturePatternHpPercent: 50
+    patterns:
+    - patternId: P1-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P1-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P1-3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P2-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P2-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P3-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P3-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P4
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P5-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P5-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P6
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P7
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P8
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P9
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+  - phaseIndex: 1
+    selectionMode: 3
+    phaseMaxHp: 150
+    patternIntervalSeconds: 2
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 0
+    openingPatternId: 
+    signaturePatternId: P11
+    signaturePatternHpPercent: 50
+    patterns:
+    - patternId: U/P1-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P1-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P1-3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P2-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P2-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P3-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P3-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P4
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P5-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P5-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P6
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P7
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P8
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: P9
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+  - phaseIndex: 2
+    selectionMode: 3
+    phaseMaxHp: 150
     patternIntervalSeconds: 2
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
@@ -2440,10 +2572,62 @@ MonoBehaviour:
     signaturePatternId: 
     signaturePatternHpPercent: 50
     patterns:
+    - patternId: UU/P1-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P1-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P1-3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P2-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P2-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P3-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P3-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P4
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: U/P5-1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P5-2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P6
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P7
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+    - patternId: UU/P8
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
     - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
+      cooldownPatternCount: 3
   transitions:
   - fromNodeGuid: c3917df5425047cf8c4553c0afc8ee62
     toNodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
@@ -3733,7 +3917,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: P1-1
+  debugForcedPatternId: P11
   references:
     version: 2
     RefIds:
@@ -3835,7 +4019,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -3925,7 +4108,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
     - rid: 6489939136707035214
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4244,7 +4426,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4346,7 +4527,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4448,7 +4628,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4559,7 +4738,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4661,7 +4839,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4772,7 +4949,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -4883,7 +5059,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -6027,7 +6202,7 @@ MonoBehaviour:
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        windupSeconds: 0
+        windupSeconds: 0.5
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -6111,6 +6286,7 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
+        hackingPerHit: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939156826587213
@@ -6199,7 +6375,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
     - rid: 6489939186800656460
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -6380,7 +6555,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -6470,7 +6644,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -6622,7 +6795,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -6920,7 +7092,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7180,7 +7351,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7291,7 +7461,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7393,7 +7562,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7504,7 +7672,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -7615,7 +7782,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -8019,7 +8185,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -8209,7 +8374,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -9444,7 +9608,7 @@ MonoBehaviour:
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        windupSeconds: 0
+        windupSeconds: 0.5
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -9528,6 +9692,7 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
+        hackingPerHit: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939186800656671
@@ -9637,7 +9802,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -11177,7 +11341,7 @@ MonoBehaviour:
         hackingPerHit: 1
         playerWallSearchRadius: 5
         minimumWallDistance: 7
-        fireCount: 1
+        fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
         bossFlightSpeed: 25
@@ -11229,7 +11393,6 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -11261,6 +11424,7 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
+        hackingPerHit: 1
     - rid: 6489939193110200402
       type: {class: HackerFireWireBranchAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -11371,7 +11535,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -11596,7 +11759,7 @@ MonoBehaviour:
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        windupSeconds: 0
+        windupSeconds: 0.5
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -11680,6 +11843,7 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
+        hackingPerHit: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939193110200418
@@ -11839,7 +12003,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12061,7 +12224,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12151,7 +12313,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -12303,7 +12464,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12597,7 +12757,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12853,7 +13012,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -12964,7 +13122,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13066,7 +13223,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13177,7 +13333,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13288,7 +13443,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13688,7 +13842,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -13878,7 +14031,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
@@ -14120,7 +14272,7 @@ MonoBehaviour:
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        windupSeconds: 0
+        windupSeconds: 0.5
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -14204,6 +14356,7 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
+        hackingPerHit: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939200651559023
@@ -14313,7 +14466,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -15201,7 +15353,6 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -15233,6 +15384,7 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
+        hackingPerHit: 1
     - rid: 6489939200651559038
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15479,7 +15631,7 @@ MonoBehaviour:
         hackingPerHit: 1
         playerWallSearchRadius: 5
         minimumWallDistance: 7
-        fireCount: 1
+        fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
         bossFlightSpeed: 25
@@ -15531,7 +15683,6 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -15563,6 +15714,7 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
+        hackingPerHit: 1
     - rid: 6489939200651559044
       type: {class: HackerFireWireBranchAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -15673,7 +15825,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -15894,7 +16045,7 @@ MonoBehaviour:
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        windupSeconds: 0
+        windupSeconds: 0.5
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -15978,6 +16129,7 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
+        hackingPerHit: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939200651559066
@@ -16137,7 +16289,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -16403,7 +16554,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -16543,7 +16693,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
     - rid: 6489939200651559084
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -16742,7 +16891,7 @@ MonoBehaviour:
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        windupSeconds: 0
+        windupSeconds: 0.5
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -16826,6 +16975,7 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
+        hackingPerHit: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939200651559088
@@ -16935,7 +17085,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
@@ -17485,7 +17634,6 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -17517,6 +17665,7 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
+        hackingPerHit: 1
     - rid: 6489939200651559096
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18379,7 +18528,7 @@ MonoBehaviour:
         hackingPerHit: 1
         playerWallSearchRadius: 5
         minimumWallDistance: 7
-        fireCount: 1
+        fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
         bossFlightSpeed: 25
@@ -18431,7 +18580,6 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
-        parryIndicatorRadius: 0.38
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -18463,6 +18611,7 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
+        hackingPerHit: 1
     - rid: 6489939200651559114
       type: {class: HackerFireWireBranchAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -18573,7 +18722,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
-        parryIndicatorRadius: 0.38
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}

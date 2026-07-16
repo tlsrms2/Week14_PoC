@@ -12,6 +12,10 @@ namespace Week14.Enemy
     public sealed class HackerHologramBoss : HackerBossAI
     {
         private const float ReturnSeconds = 0.2f;
+        private const float SummonSideDistance = 0.45f;
+        private const float SummonOutSeconds = 0.45f;
+        private const float SummonSideHoldSeconds = 0.35f;
+        private const float SummonReturnSeconds = 0.55f;
         private const float ReplayWallSkin = 0.02f;
         private const float ReplayWallProbeRadius = 0.22f;
         private static readonly Color HologramTint = new(0.3f, 0.85f, 1f, 0.65f);
@@ -21,6 +25,7 @@ namespace Week14.Enemy
         private bool isRecordingReplay;
         private bool isReplayPlaybackComplete;
         private bool isReturningToOwner;
+        private bool isPlayingSummonEntrance;
         private bool hasRecordedPlayerPosition;
         private float replayDelaySeconds;
         private float replayClock;
@@ -28,12 +33,22 @@ namespace Week14.Enemy
         private float replayPositionFollowPauseSeconds;
         private float replayPoseFreezeSeconds;
         private float replayPositionArcOffsetDegrees;
+        private Coroutine summonEntranceCoroutine;
         private Vector2 recordedPlayerPosition;
         private readonly Queue<RecordedReplayFrame> replayFrames = new();
         private readonly Queue<RecordedReplayActionGroup> replayActionGroups = new();
         private readonly List<TransformReplayBinding> transformReplayBindings = new();
         private readonly List<SpriteReplayBinding> spriteReplayBindings = new();
         private readonly HashSet<SpriteRenderer> excludedReplayRenderers = new();
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            // 홀로그램 프리팹/씬 인스턴스는 초기화 전 첫 프레임부터 숨긴다.
+            // Instantiate 직후 Initialize가 호출될 때만 다시 활성화된다.
+            gameObject.SetActive(false);
+        }
 
         protected override bool CanStartGraphPattern()
         {
@@ -49,10 +64,12 @@ namespace Week14.Enemy
             BuildReplayBindings();
             ApplyHologramTint();
             DisableHologramAnimators();
+            gameObject.SetActive(true);
         }
 
         internal void BeginRecordedReplay(float delaySeconds)
         {
+            StopSummonEntrance();
             CancelRecordedReplay();
             if (sourceBoss == null)
             {
@@ -75,6 +92,27 @@ namespace Week14.Enemy
             RecordedReplayFrame initialFrame = CaptureReplayFrame(0f);
             replayFrames.Enqueue(initialFrame);
             ApplyRecordedPlayerPosition(initialFrame);
+        }
+
+        internal void PlaySummonEntrance()
+        {
+            if (sourceBoss == null || isPlayingSummonEntrance)
+            {
+                return;
+            }
+
+            transform.position = GetRestPosition();
+            ApplyCurrentSourcePose();
+            isPlayingSummonEntrance = true;
+            summonEntranceCoroutine = StartCoroutine(PlaySummonEntranceRoutine());
+        }
+
+        internal IEnumerator WaitForSummonEntrance()
+        {
+            while (isPlayingSummonEntrance && sourceBoss != null)
+            {
+                yield return null;
+            }
         }
 
         internal void EndRecordedReplayCapture()
@@ -121,6 +159,8 @@ namespace Week14.Enemy
         internal bool IsRecordingReplayActions => isRecordingReplay;
 
         internal bool HasPendingReplayActionGroups => replayActionGroups.Count > 0;
+
+        internal bool IsPlayingSummonEntrance => isPlayingSummonEntrance;
 
         internal void RecordReplayActionGroup(IReadOnlyList<BossStateNode> nodes)
         {
@@ -288,6 +328,10 @@ namespace Week14.Enemy
             ? sourceBoss.WireSettings
             : base.WireSettings;
 
+        internal override BossProjectileSettings ParryProjectileSettings => sourceBoss != null
+            ? sourceBoss.ParryProjectileSettings
+            : base.ParryProjectileSettings;
+
         internal override void ApplyHacking(PlayerCombatController player, int hackingPerHit)
         {
             if (sourceBoss != null)
@@ -318,6 +362,14 @@ namespace Week14.Enemy
 
         protected override void Start()
         {
+            // 씬이나 보스 프리팹에 남아 있는 홀로그램은 초기화 전에는 표시하지 않는다.
+            // 런타임 생성본은 Instantiate 직후 Initialize가 먼저 호출되므로 여기에 걸리지 않는다.
+            if (sourceBoss == null)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
             base.Start();
             StripGameplayComponents();
             BuildReplayBindings();
@@ -333,6 +385,12 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (isPlayingSummonEntrance)
+            {
+                ApplyCurrentSourcePose();
+                return;
+            }
+
             if (!isReturningToOwner && sourceBoss != null)
             {
                 transform.position = GetRestPosition();
@@ -342,8 +400,97 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            StopSummonEntrance();
             CancelRecordedReplay();
             base.OnDisable();
+        }
+
+        private IEnumerator PlaySummonEntranceRoutine()
+        {
+            try
+            {
+                // 페이즈 변경 콜백보다 PhaseTransitionWait 설정이 늦으므로 한 프레임 뒤부터 판정한다.
+                yield return null;
+                yield return WaitForSummonEntranceStart();
+                yield return MoveAlongSummonOffset(0f, 1f, SummonOutSeconds);
+                yield return WaitSummonSeconds(SummonSideHoldSeconds);
+                yield return MoveAlongSummonOffset(1f, 0f, SummonReturnSeconds);
+                transform.position = GetRestPosition();
+            }
+            finally
+            {
+                isPlayingSummonEntrance = false;
+                summonEntranceCoroutine = null;
+            }
+        }
+
+        private IEnumerator MoveAlongSummonOffset(float from, float to, float seconds)
+        {
+            float elapsed = 0f;
+            float duration = Mathf.Max(0.01f, seconds);
+            while (elapsed < duration && sourceBoss != null)
+            {
+                if (ShouldPauseSummonEntrance())
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.SmoothStep(0f, 1f, elapsed / duration);
+                transform.position = GetRestPosition()
+                    + GetSummonSideOffset() * Mathf.Lerp(from, to, progress);
+                ApplyCurrentSourcePose();
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitForSummonEntranceStart()
+        {
+            while (sourceBoss != null && ShouldPauseSummonEntrance())
+            {
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitSummonSeconds(float seconds)
+        {
+            float elapsed = 0f;
+            float duration = Mathf.Max(0f, seconds);
+            while (elapsed < duration && sourceBoss != null)
+            {
+                if (ShouldPauseSummonEntrance())
+                {
+                    yield return null;
+                    continue;
+                }
+
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+        }
+
+        private bool ShouldPauseSummonEntrance()
+        {
+            return BossAI.IsExecutionPausedForState
+                || (sourceBoss != null && sourceBoss.IsPhaseTransitionWaitingForState);
+        }
+
+        private Vector3 GetSummonSideOffset()
+        {
+            float direction = sourceBoss != null && sourceBoss.IsFacingLeft ? 1f : -1f;
+            return Vector3.right * (SummonSideDistance * direction);
+        }
+
+        private void StopSummonEntrance()
+        {
+            if (summonEntranceCoroutine != null)
+            {
+                StopCoroutine(summonEntranceCoroutine);
+                summonEntranceCoroutine = null;
+            }
+
+            isPlayingSummonEntrance = false;
         }
 
         private void UpdateRecordedReplay()

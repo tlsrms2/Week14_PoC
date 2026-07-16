@@ -650,6 +650,45 @@ namespace Week14.Enemy
             return duration;
         }
 
+        public float CommandConductorClosingColumns(
+            int slotIndex,
+            Vector2 center,
+            float startHalfWidth,
+            float endHalfWidth,
+            float halfHeight,
+            float closingSeconds)
+        {
+            StopMovementCommand();
+            float duration = Mathf.Max(0.01f, closingSeconds);
+            movementRoutine = StartCoroutine(RunConductorClosingColumns(
+                Mathf.Max(0, slotIndex),
+                center,
+                Mathf.Max(0.1f, startHalfWidth),
+                Mathf.Max(0.1f, endHalfWidth),
+                Mathf.Max(0.1f, halfHeight),
+                duration,
+                GetConductorRowFacingDirection(slotIndex)));
+            return duration;
+        }
+
+        public bool CommandConductorSnapToClosingColumn(
+            int slotIndex,
+            Vector2 center,
+            float halfWidth,
+            float halfHeight)
+        {
+            StopMovementCommand();
+            SetPlayerCollisionIgnored(true);
+            Vector2 target = GetConductorClosingRowTarget(
+                center,
+                slotIndex,
+                Mathf.Max(0.1f, halfWidth),
+                Mathf.Max(0.1f, halfHeight));
+            SetPatternPosition(target, true);
+            RotateToDirection(GetConductorRowFacingDirection(slotIndex));
+            return true;
+        }
+
         public float CommandWander(
             float wanderSeconds,
             float wanderSpeed,
@@ -1017,6 +1056,44 @@ namespace Week14.Enemy
                 Vector2 target = center + AngleToDirection(angle) * radius;
                 BeginOrbitMovementPathIndicator(center, radius);
                 SetPatternPosition(target, ref lockedToPattern, moveSpeed, false);
+                yield return null;
+            }
+
+            StopBody();
+            FinishMovementCommand();
+        }
+
+        private IEnumerator RunConductorClosingColumns(
+            int slotIndex,
+            Vector2 center,
+            float startHalfWidth,
+            float endHalfWidth,
+            float halfHeight,
+            float closingSeconds,
+            Vector2 facingDirection)
+        {
+            float elapsed = 0f;
+            while (elapsed < closingSeconds)
+            {
+                if (IsExecutionPaused)
+                {
+                    StopBody();
+                    yield return null;
+                    continue;
+                }
+
+                float progress = Mathf.Clamp01(elapsed / closingSeconds);
+                float halfWidth = Mathf.Lerp(startHalfWidth, endHalfWidth, progress);
+                Vector2 target = GetConductorClosingRowTarget(
+                    center,
+                    slotIndex,
+                    halfWidth,
+                    halfHeight);
+                SetPlayerCollisionIgnored(true);
+                SetPatternPosition(target, true);
+                RotateToDirection(facingDirection);
+
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -2607,6 +2684,23 @@ namespace Week14.Enemy
         {
             float radians = degrees * Mathf.Deg2Rad;
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        }
+
+        private static Vector2 GetConductorClosingRowTarget(
+            Vector2 center,
+            int slotIndex,
+            float halfWidth,
+            float halfHeight)
+        {
+            int safeSlotIndex = Mathf.Clamp(slotIndex, 0, 3);
+            float horizontal = safeSlotIndex % 2 == 0 ? -halfWidth : halfWidth;
+            float vertical = safeSlotIndex < 2 ? halfHeight : -halfHeight;
+            return center + new Vector2(horizontal, vertical);
+        }
+
+        private static Vector2 GetConductorRowFacingDirection(int slotIndex)
+        {
+            return Mathf.Clamp(slotIndex, 0, 3) < 2 ? Vector2.down : Vector2.up;
         }
 
         private static float DirectionToAngle(Vector2 direction)

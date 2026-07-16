@@ -223,6 +223,7 @@ namespace Week14.Enemy
             line.endColor = color;
             line.startWidth = settings.LineWidth;
             line.endWidth = settings.LineWidth;
+            BossSorting.Apply(line);
             line.sortingOrder = settings.SortingOrder;
         }
 
@@ -239,6 +240,7 @@ namespace Week14.Enemy
             line.endColor = color;
             line.startWidth = settings.LineWidth + settings.CompletedOutlineWidth;
             line.endWidth = settings.LineWidth + settings.CompletedOutlineWidth;
+            BossSorting.Apply(line);
             line.sortingOrder = settings.SortingOrder - 1;
         }
 

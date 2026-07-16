@@ -771,12 +771,15 @@ namespace Week14.Enemy
             float chargeSecondsOverride = -1f,
             float radiusOverride = -1f,
             bool suppressHoming = false,
-            string projectileName = null)
+            string projectileName = null,
+            bool useExactSettings = false)
         {
             UpdateBossChildAims();
-            BossProjectileSettings resolvedSettings = !string.IsNullOrWhiteSpace(projectileName)
-                ? ResolveGraphProjectileSettings(projectileName)
-                : ResolveGraphProjectileSettings(null) ?? projectileSettings;
+            BossProjectileSettings resolvedSettings = useExactSettings
+                ? projectileSettings
+                : !string.IsNullOrWhiteSpace(projectileName)
+                    ? ResolveGraphProjectileSettings(projectileName)
+                    : ResolveGraphProjectileSettings(null) ?? projectileSettings;
             if (Boss == null || resolvedSettings == null || direction.sqrMagnitude <= 0.0001f)
             {
                 return null;
@@ -954,11 +957,13 @@ namespace Week14.Enemy
             }
 
             Transform parent = parentToBoss && Boss != null ? Boss.transform : null;
-            return UnityEngine.Object.Instantiate(
+            GameObject instance = UnityEngine.Object.Instantiate(
                 prefab,
                 OriginPosition + offset,
                 Quaternion.Euler(rotationEuler),
                 parent);
+            BossSorting.ApplyToChildren(instance);
+            return instance;
         }
 
         public IEnumerator WaitSeconds(float seconds)

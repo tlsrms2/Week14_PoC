@@ -21,10 +21,10 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 02e421b3cdcc1d74ebd8cb3879dd5669
   - enabled: 1
-    path: Assets/Scenes/Boss_Conductor.unity
+    path: Assets/Scenes/Boss/Boss_Conductor.unity
     guid: 3a58c4a2941184a48af8bf7085ca4444
   - enabled: 1
-    path: Assets/Scenes/Boss_Muscle.unity
+    path: Assets/Scenes/Boss/Boss_Muscle.unity
     guid: 98a83cb84ad30734bbfc6cba1d7e3a9a
   - enabled: 1
     path: Assets/Scenes/Boss_Assassin.unity
@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Boss_Assassin_Test.unity
     guid: 7b5a8493e046dd7428e93055a665452c
   - enabled: 1
-    path: Assets/Scenes/Boss_Hacker.unity
+    path: Assets/Scenes/Boss/Boss_Hacker.unity
     guid: 4b356c77dc5d6a34aace0340756deff2
   - enabled: 1
     path: Assets/Scenes/Boss_Hacker_Test.unity

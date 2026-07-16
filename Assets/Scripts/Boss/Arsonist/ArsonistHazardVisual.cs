@@ -102,6 +102,7 @@ namespace Week14.Enemy
             }
 
             meshRenderer.sharedMaterial = material;
+            BossSorting.Apply(meshRenderer);
             meshRenderer.sortingOrder = sortingOrder;
         }
 

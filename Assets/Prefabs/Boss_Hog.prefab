@@ -499,19 +499,23 @@ MonoBehaviour:
   finalDeathExplosionScale: 1.25
   finalDeathExplosionSparkCount: 24
   finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
+  finalDeathExplosionPrefab: {fileID: 507182190992537921, guid: 0bd30bab3f957254f8fc4b3ef1d43dfa, type: 3}
+  finalDeathExplosionPrefabLifetimeSeconds: 1.2
+  finalDeathExplosionAreaCenter: {fileID: 0}
+  finalDeathExplosionAreaRadius: 0
+  deathExplosionToAnimationDelaySeconds: 0
   deathAnimationFallbackSeconds: 1
   bossData: {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
   displayName: "\uCD1D\uAE30\uC0C1\uC778"
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
   maxHp: 150
-  hpEmptyExecutionSeconds: 10
+  hpEmptyExecutionSeconds: 50000
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.02
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hpEmptyColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   staggeredColor: {r: 1, g: 0.28872737, b: 0.19339621, a: 1}
-  detectionRange: 7
   moveSpeed: 1.5
   bodyRoot: {fileID: 3928034980745414157}
   body: {fileID: 8932169065044441375}
@@ -577,6 +581,21 @@ MonoBehaviour:
       radius: 0.1
       trailSeconds: 1
       trailWidthMultiplier: 3
+  - projectileName: "\uD328\uD134\uC5B5\uC81C\uD0C4"
+    projectile:
+      prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+      bulletDamage: 0
+      chargeSeconds: 0
+      chargeDriftSpeed: 0
+      aimAtPlayerWhileCharging: 0
+      aimAtPlayerOnLaunch: 0
+      speed: 0
+      lifetime: 3
+      radius: 0.1
+      trailSeconds: 1
+      trailWidthMultiplier: 3
+  patternGroggyAnimator: {fileID: 8640302714323975246}
+  groggyAnimator: {fileID: 0}
 --- !u!50 &8932169065044441375
 Rigidbody2D:
   serializedVersion: 5
@@ -668,6 +687,7 @@ MonoBehaviour:
   executionTarget: {fileID: 0}
   bossAI: {fileID: 0}
   minion: {fileID: 0}
+  turret: {fileID: 0}
   lockOnRenderer: {fileID: 0}
   executionRenderer: {fileID: 0}
   executionText: {fileID: 2572582979524411904}
@@ -793,7 +813,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7360286854126495715
 Transform:
   m_ObjectHideFlags: 0
@@ -858,8 +878,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -79925775, guid: 1364f1483f317134490a53f50c3cd2fb, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a056b1188ef73234fbaf3e85b1b09ebe, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1192,7 +1212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7031931205387098201
 Transform:
   m_ObjectHideFlags: 0
@@ -1257,8 +1277,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1203842067, guid: 1364f1483f317134490a53f50c3cd2fb, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a056b1188ef73234fbaf3e85b1b09ebe, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1371,9 +1391,17 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7920153977404560149, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920153977404560149, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 547352579
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920153977404560149, guid: c72449d79e8508241b7dc5efeeda5af5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1168bd0b05683b0fcb89e2277f372e67, type: 2}
+      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

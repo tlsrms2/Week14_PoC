@@ -128,6 +128,7 @@ namespace Week14.Enemy
             line.Renderer.endWidth = linkWidth;
             line.Renderer.startColor = linkColor;
             line.Renderer.endColor = linkColor;
+            BossSorting.Apply(line.Renderer);
             line.Renderer.sortingOrder = sortingOrder;
 
             for (int i = 0; i < segments; i++)

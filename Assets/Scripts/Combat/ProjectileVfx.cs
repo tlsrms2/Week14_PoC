@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -88,6 +89,7 @@ namespace Week14.Combat
             end.z = 0f;
             GameObject lineObject = new GameObject("ShotLineVfx");
             LineRenderer line = lineObject.AddComponent<LineRenderer>();
+            BossSorting.Apply(line);
             line.useWorldSpace = true;
             line.positionCount = 2;
             line.startWidth = width;
@@ -121,6 +123,7 @@ namespace Week14.Combat
 
             MeshFilter meshFilter = flashObject.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = flashObject.AddComponent<MeshRenderer>();
+            BossSorting.Apply(meshRenderer);
             meshRenderer.sharedMaterial = GetSpriteMaterial();
             meshRenderer.sortingOrder = 69;
 
@@ -215,6 +218,7 @@ namespace Week14.Combat
             sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
 
             ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+            BossSorting.Apply(renderer);
             renderer.sortingOrder = 73;
             renderer.sharedMaterial = GetSpriteMaterial();
 
@@ -361,6 +365,7 @@ namespace Week14.Combat
             trail.autodestruct = false;
             trail.emitting = true;
             trail.material = GetSpriteMaterial();
+            BossSorting.Apply(trail);
             trail.sortingOrder = 18;
         }
 
@@ -403,6 +408,7 @@ namespace Week14.Combat
             shape.radius = 0.05f;
 
             ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+            BossSorting.Apply(renderer);
             renderer.sortingOrder = 70;
             renderer.sharedMaterial = GetSpriteMaterial();
 
@@ -468,6 +474,7 @@ namespace Week14.Combat
             shape.enabled = false;
 
             ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+            BossSorting.Apply(renderer);
             renderer.sortingOrder = 72;
             renderer.sharedMaterial = GetSpriteMaterial();
 
@@ -497,6 +504,7 @@ namespace Week14.Combat
             GameObject ringObject = new GameObject("ParryRingVfx");
             ringObject.transform.position = position;
             LineRenderer line = ringObject.AddComponent<LineRenderer>();
+            BossSorting.Apply(line);
             line.loop = true;
             line.positionCount = RingSegments;
             line.useWorldSpace = false;
@@ -542,6 +550,7 @@ namespace Week14.Combat
             emission.enabled = false;
 
             ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+            BossSorting.Apply(renderer);
             renderer.sortingOrder = 71;
             renderer.sharedMaterial = GetSpriteMaterial();
 
