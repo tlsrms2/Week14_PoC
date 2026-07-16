@@ -137,12 +137,7 @@ namespace Week14.UI
             {
                 if (state == LoadoutSkillLockState.Purchased)
                 {
-                    if (isEquipped)
-                    {
-                        SkillLoadoutManager.Instance.UnequipSkill(ActiveSlot);
-                        LoadoutSelectedSkillPanel.Instance?.Show(skill);
-                    }
-                    else if (SkillLoadoutManager.Instance.RefundSkill(skill.SkillId))
+                    if (!isEquipped && SkillLoadoutManager.Instance.RefundSkill(skill.SkillId))
                     {
                         RefreshVisualState();
                         LoadoutSelectedSkillPanel.Instance?.Show(skill);

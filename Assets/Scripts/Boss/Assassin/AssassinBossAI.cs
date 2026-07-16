@@ -55,6 +55,7 @@ namespace Week14.Enemy
         private Color ownAttackFlashOriginalColor;
         private bool ownAttackFlashActive;
         private Color cloneShooterAttackFlashColor = Color.white;
+        private bool cloneShooterKeepFlashOnAll;
         private AssassinClone flashedQueueFrontClone;
         private bool flashedQueueFrontIsBoss;
         private bool hasFlashedQueueFront;
@@ -88,10 +89,71 @@ namespace Week14.Enemy
             SoundManager.PlayBgm("AssassinBgm");
         }
 
+        // 페이즈가 넘어가면(처형 성공으로 목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던
+        // 단검과 아직 발사 대기열에 남아있는 분신도 전부 정리한다 — 다음 페이즈를 은신 상태/단검/분신이
+        // 남아있는 채로 시작하지 않도록 하기 위함. OnBossDied/OnDisable이 하는 정리와 동일한 묶음이다.
+        protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
+        {
+            RequestStealth(false);
+            isShooterAttackInProgress = false;
+            ClearCloneShooterAttackFlash();
+            EndOwnAttackFlash();
+            ClearAssassinDaggers();
+            ClearCloneShooterQueue();
+            base.OnBossPhaseChanged(phaseIndex, phaseNumber);
+        }
+
+        // 체력이 바닥나 처형 판정 구간(HP Empty)에 들어가는 순간 호출된다. 페이즈 전환 때 쓰는
+        // RequestStealth와 달리 다음 LateUpdate까지 미루지 않고 그 자리에서 즉시 은신을 풀고 알파도
+        // 바로 완전히 보이게 만든다 — 실행 판정 구간에서는 페이드 연출 없이 즉시 노출돼야 하기 때문.
+        protected override void OnHpEmptyBegan()
+        {
+            ForceExitStealthImmediate();
+            base.OnHpEmptyBegan();
+        }
+
+        // 그래프 코루틴 실행 도중이 아니라 보스 상태 전이 코드(BeginHpEmptyForState)에서 호출되므로,
+        // StopGraphPattern을 바로 불러도 재진입 문제가 없다(은신 전환을 다음 프레임으로 미루는 이유는
+        // 그래프 액션의 Execute() 코루틴 안에서 호출될 수 있는 RequestStealth에만 해당한다).
+        private void ForceExitStealthImmediate()
+        {
+            pendingStealthChange = false;
+            teleportVisibilityOverrideActive = false;
+            stealthVisibilityOverrideActive = false;
+
+            if (!isStealthed)
+            {
+                return;
+            }
+
+            isStealthed = false;
+            SnapStealthAlphaToVisible();
+            StopGraphPattern(true);
+        }
+
+        private void SnapStealthAlphaToVisible()
+        {
+            SetAlphaImmediate(stealthVisualTargetA, 1f);
+            SetAlphaImmediate(stealthVisualTargetB, 1f);
+        }
+
+        private static void SetAlphaImmediate(SpriteRenderer renderer, float alpha)
+        {
+            if (renderer == null)
+            {
+                return;
+            }
+
+            Color color = renderer.color;
+            color.a = alpha;
+            renderer.color = color;
+        }
+
         protected override void OnBossDied()
         {
             isShooterAttackInProgress = false;
             ClearCloneShooterAttackFlash();
+            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnBossDied();
@@ -101,6 +163,7 @@ namespace Week14.Enemy
         {
             isShooterAttackInProgress = false;
             ClearCloneShooterAttackFlash();
+            EndOwnAttackFlash();
             ClearAssassinDaggers();
             ClearCloneShooterQueue();
             base.OnDisable();
@@ -134,7 +197,10 @@ namespace Week14.Enemy
 
             // 그래프 액션 실행 도중(코루틴 안)에서 바로 StopGraphPattern을 부르면 자기 자신을
             // 끊는 재진입 문제가 생길 수 있어, 상태 전환은 항상 다음 LateUpdate로 미뤄서 처리한다.
-            StopGraphPattern();
+            // 은신↔일반은 GraphAsset 자체가 stealthGraph/base.GraphAsset로 바뀌는 완전히 다른
+            // BossGraphAsset 전환이라, 쿨다운/Min Patterns Played 히스토리를 그대로 넘기면 서로
+            // 다른 그래프의 같은 페이즈 인덱스끼리 기록이 섞인다. 그래서 전체 초기화를 쓴다.
+            StopGraphPattern(true);
         }
 
         internal void RequestStealth(bool enable)
@@ -178,31 +244,12 @@ namespace Week14.Enemy
             return Instantiate(clonePrefab, position, Quaternion.identity);
         }
 
-        // 서로 cloneMinSeparationDistance 이상 떨어진 두 지점을 뽑는다(각 지점은 플레이어 최소거리 조건도 만족).
-        internal (Vector2 pointA, Vector2 pointB) GetSeparatedCloneSpawnPositions()
+        // 분신 소환 전용 간격/플레이어 최소거리 설정(cloneMinSeparationDistance/cloneMinDistanceFromPlayer)을
+        // 그대로 써서 count개의 서로 떨어진 지점을 뽑는다. 분신 소환(및 그 자리에 포함되는 보스 순간이동
+        // 목적지)이 공통으로 쓰는 진입점.
+        internal List<Vector2> GetSeparatedCloneZonePositions(int count)
         {
-            Vector2 pointA = GetRandomCloneSpawnPosition();
-            Vector2 pointB = GetRandomCloneSpawnPosition();
-            for (int i = 0; i < CloneSpawnPositionAttempts && Vector2.Distance(pointA, pointB) < cloneMinSeparationDistance; i++)
-            {
-                pointB = GetRandomCloneSpawnPosition();
-            }
-
-            return (pointA, pointB);
-        }
-
-        // 두 지점(단검/분신 위치 등) 모두로부터 cloneMinSeparationDistance 이상 떨어진 지점을 하나 뽑는다.
-        internal Vector2 GetSeparatedCloneSpawnPosition(Vector2 avoidPositionA, Vector2 avoidPositionB)
-        {
-            Vector2 candidate = GetRandomCloneSpawnPosition();
-            for (int i = 0; i < CloneSpawnPositionAttempts
-                && (Vector2.Distance(candidate, avoidPositionA) < cloneMinSeparationDistance
-                    || Vector2.Distance(candidate, avoidPositionB) < cloneMinSeparationDistance); i++)
-            {
-                candidate = GetRandomCloneSpawnPosition();
-            }
-
-            return candidate;
+            return GetSeparatedRandomZonePositions(count, cloneMinSeparationDistance, cloneMinDistanceFromPlayer);
         }
 
         // 지정한 개수만큼, 서로 minSeparationDistance 이상 떨어지고(플레이어 최소거리 조건도 만족하는)
@@ -287,9 +334,20 @@ namespace Week14.Enemy
         // 단, 실제로 발사 중(BeginShooterAttack ~ EndShooterAttack 사이)일 때는 손대지 않는다 —
         // 총알을 여러 발 나눠 쏘는 동안에도 이미 대기열에서는 빠진 상태이기 때문에, 발사가
         // 완전히 끝날 때까지는 Fire 액션이 직접 색을 유지/해제하도록 맡긴다.
-        internal void SetCloneShooterAttackFlashColor(Color flashColor)
+        // keepAppliedToAll이 켜져 있으면 이 매 프레임 감시(맨 앞만 번갈아 칠하기) 자체를 건너뛴다 —
+        // 대신 AssassinSpawnCloneShootersAction이 소환 직후 모든 개체에 색을 직접 칠해두고, 대기열이
+        // 완전히 빌 때 보스 자신의 색만 여기서 되돌린다(분신은 소멸하면서 자연히 사라진다).
+        internal void SetCloneShooterAttackFlashColor(Color flashColor, bool keepAppliedToAll)
         {
             cloneShooterAttackFlashColor = flashColor;
+            cloneShooterKeepFlashOnAll = keepAppliedToAll;
+        }
+
+        // AssassinSpawnCloneShootersAction이 keepAttackFlashColorApplied일 때 보스 자신에게 소환 즉시
+        // 색을 칠하기 위해 호출한다.
+        internal void ApplyCloneShooterFlashToBoss()
+        {
+            PlayOwnAttackFlash(cloneShooterAttackFlashColor);
         }
 
         internal void BeginShooterAttack()
@@ -307,6 +365,16 @@ namespace Week14.Enemy
         {
             if (isShooterAttackInProgress)
             {
+                return;
+            }
+
+            if (cloneShooterKeepFlashOnAll)
+            {
+                if (cloneShooterQueue.Count == 0)
+                {
+                    EndOwnAttackFlash();
+                }
+
                 return;
             }
 
@@ -538,7 +606,6 @@ namespace Week14.Enemy
             }
 
             isRecallInProgress = false;
-            RequestStealth(false);
         }
 
         private IEnumerator FlyDaggerHomeRoutine(AssassinDagger dagger, bool damagesPlayer, System.Action onComplete)
@@ -547,11 +614,61 @@ namespace Week14.Enemy
             // 패링 실패(플레이어를 노리는 정상 회수)일 때만 탄환처럼 궤적을 보여준다.
             // 패링 성공(보스 자해)일 때는 궤적을 표시하지 않는다.
             yield return dagger.FlyToBoss(target, daggerRecallSpeed, damagesPlayer ? daggerRecallPlayerDamage : 0, damagesPlayer);
-            if (!damagesPlayer)
+            // dagger가 도중에(예: 페이즈 전환으로 ClearAssassinDaggers) 외부에서 파괴됐다면 도착한 게
+            // 아니므로 자해 데미지를 주지 않는다.
+            if (!damagesPlayer && dagger != null)
             {
                 ReceivePlayerHit(daggerRecallDamagePerDagger, false, transform.position, Vector2.zero, Color.white);
             }
 
+            onComplete?.Invoke();
+        }
+
+        // AssassinRecallDaggersWithParryBaitAction의 패링 실패 처리용. 보스에게로 돌아가는 대신,
+        // 각 단검이 자기 위치 기준으로 (호출 시점) 플레이어 방향을 한 번만 계산해 그 방향으로 계속
+        // 직진한다(유도 없음) — 발사 이후 플레이어가 움직여도 방향을 다시 잡지 않고, 특정 지점에서
+        // 멈추는 게 아니라 flightSeconds가 지나면 그 자리에서 사라진다.
+        internal IEnumerator RecallDaggersTowardPlayerRoutine(float flightSeconds)
+        {
+            if (isRecallInProgress)
+            {
+                yield break;
+            }
+
+            if (Player == null)
+            {
+                yield break;
+            }
+
+            isRecallInProgress = true;
+
+            Vector2 playerPosition = Player.position;
+            List<AssassinDagger> daggersToRecall = new(spawnedDaggers);
+            int flyingCount = daggersToRecall.Count;
+            for (int i = 0; i < daggersToRecall.Count; i++)
+            {
+                AssassinDagger dagger = daggersToRecall[i];
+                if (dagger == null)
+                {
+                    flyingCount--;
+                    continue;
+                }
+
+                Vector2 direction = playerPosition - (Vector2)dagger.transform.position;
+                StartCoroutine(FlyDaggerInDirectionRoutine(dagger, direction, flightSeconds, () => flyingCount--));
+            }
+
+            while (flyingCount > 0)
+            {
+                yield return null;
+            }
+
+            isRecallInProgress = false;
+        }
+
+        private IEnumerator FlyDaggerInDirectionRoutine(AssassinDagger dagger, Vector2 direction, float flightSeconds, System.Action onComplete)
+        {
+            yield return dagger.FlyInDirection(direction, daggerRecallSpeed, flightSeconds, daggerRecallPlayerDamage, true);
             onComplete?.Invoke();
         }
 

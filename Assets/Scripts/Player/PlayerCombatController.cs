@@ -24,6 +24,7 @@ namespace Week14.Combat
         private static int externalCombatPermissionCount;
         private static int leftAttackSuppressionCount;
         private static int parrySuppressionCount;
+        private static int mouseParryReticleSuppressionCount;
         private static int externalInvulnerabilityCount;
 
         public static event Action<PlayerCombatController> AttackReceived;
@@ -155,6 +156,7 @@ namespace Week14.Combat
         private bool CanShoot => CanAct && (BossAI.IsAnyCombatStarted || externalCombatPermissionCount > 0);
         private static bool IsLeftAttackSuppressed => leftAttackSuppressionCount > 0;
         private static bool IsParrySuppressed => parrySuppressionCount > 0;
+        internal static bool IsMouseParryReticleSuppressed => mouseParryReticleSuppressionCount > 0;
         private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
@@ -199,6 +201,17 @@ namespace Week14.Combat
         public static void PopParrySuppression()
         {
             parrySuppressionCount = Mathf.Max(0, parrySuppressionCount - 1);
+        }
+
+        public static void PushMouseParryReticleSuppression()
+        {
+            mouseParryReticleSuppressionCount++;
+            Active?.SetMouseParryReticleVisible(false);
+        }
+
+        public static void PopMouseParryReticleSuppression()
+        {
+            mouseParryReticleSuppressionCount = Mathf.Max(0, mouseParryReticleSuppressionCount - 1);
         }
 
         public static void PushExternalInvulnerability()

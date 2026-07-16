@@ -1682,12 +1682,14 @@ MonoBehaviour:
     selectionMode: 3
     phaseMaxHp: 0
     patternIntervalSeconds: 2
-    initialPatternDelaySeconds: 0
+    intervalMoveSpeed: 0.7
+    initialPatternDelaySeconds: 1
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern1
     signaturePatternId: 
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: Pattern1
       weight: 1
@@ -1718,12 +1720,14 @@ MonoBehaviour:
     selectionMode: 3
     phaseMaxHp: 0
     patternIntervalSeconds: 2
-    initialPatternDelaySeconds: 0
+    intervalMoveSpeed: 0.7
+    initialPatternDelaySeconds: 1
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern6
     signaturePatternId: 
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: Pattern6
       weight: 2
@@ -6799,7 +6803,7 @@ MonoBehaviour:
         baitDurationSeconds: 0.8
         rewardBulletCount: 3
         rewardCircleRadius: 1
-        groggySeconds: 3
+        groggySeconds: 2
         spawnSfxId: 
         effects:
           explosion:
@@ -6868,7 +6872,7 @@ MonoBehaviour:
         baitDurationSeconds: 0.8
         rewardBulletCount: 3
         rewardCircleRadius: 1
-        groggySeconds: 3
+        groggySeconds: 2
         spawnSfxId: 
         effects:
           explosion:
@@ -6937,7 +6941,7 @@ MonoBehaviour:
         baitDurationSeconds: 0.9
         rewardBulletCount: 3
         rewardCircleRadius: 1
-        groggySeconds: 3
+        groggySeconds: 2
         spawnSfxId: 
         effects:
           explosion:
@@ -7006,7 +7010,7 @@ MonoBehaviour:
         baitDurationSeconds: 0.8
         rewardBulletCount: 3
         rewardCircleRadius: 1
-        groggySeconds: 3
+        groggySeconds: 2
         spawnSfxId: 
         effects:
           explosion:
@@ -7075,7 +7079,7 @@ MonoBehaviour:
         baitDurationSeconds: 1.5
         rewardBulletCount: 3
         rewardCircleRadius: 1
-        groggySeconds: 3
+        groggySeconds: 2
         spawnSfxId: 
         effects:
           explosion:

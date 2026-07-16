@@ -305,6 +305,7 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private BossSequenceSelectionMode selectionMode;
         [SerializeField, Min(0)] private int phaseMaxHp;
         [SerializeField, Min(0f)] private float patternIntervalSeconds;
+        [SerializeField, Min(0f)] private float intervalMoveSpeed;
         [SerializeField, Min(0f)] private float initialPatternDelaySeconds;
         [SerializeField] private bool bossCanFlyOverGround;
         [SerializeField] private bool minionsCanFlyOverGround;
@@ -318,6 +319,10 @@ namespace Week14.Enemy
         public BossSequenceSelectionMode SelectionMode => selectionMode;
         public int PhaseMaxHp => Mathf.Max(0, phaseMaxHp);
         public float PatternIntervalSeconds => Mathf.Max(0f, patternIntervalSeconds);
+        // 0보다 크면 PatternIntervalSeconds 대기 동안 가만히 서 있는 대신, 대기 시작 시점에 뽑은
+        // 랜덤한 한 방향으로 이 속도만큼 천천히 이동한다(EnemyTimeScale의 영향을 그대로 받는다).
+        // 0이면 기존처럼 가만히 서서 대기한다.
+        public float IntervalMoveSpeed => Mathf.Max(0f, intervalMoveSpeed);
         // 이 페이즈에 처음 진입해서 첫 패턴을 고르기 전까지 한 번만 대기하는 시간이다. 패턴과 패턴
         // 사이에 매번 적용되는 PatternIntervalSeconds와 달리, 페이즈 진입 후 딱 한 번만 적용된다.
         public float InitialPatternDelaySeconds => Mathf.Max(0f, initialPatternDelaySeconds);

@@ -5598,6 +5598,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
             EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("intervalMoveSpeed"),
+                new GUIContent("Interval Move Speed", "0보다 크면 Pattern Interval Seconds 동안 가만히 서 있는 대신, 대기 시작 시점에 뽑은 랜덤한 한 방향으로 이 속도만큼 천천히 이동합니다(대기 도중 방향은 바뀌지 않습니다). 0이면 기존처럼 가만히 서서 대기합니다."));
+            EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("initialPatternDelaySeconds"),
                 new GUIContent("Initial Pattern Delay Seconds", "이 페이즈에 진입해서 첫 패턴을 고르기 전까지 딱 한 번만 대기하는 시간입니다."));
             EditorGUILayout.PropertyField(
@@ -5674,6 +5677,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SetEnum(phase, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SetInt(phase, "phaseMaxHp", 0);
         SetFloat(phase, "patternIntervalSeconds", 0f);
+        SetFloat(phase, "intervalMoveSpeed", 0f);
         SetFloat(phase, "initialPatternDelaySeconds", 0f);
         SetString(phase, "openingPatternId", string.Empty);
         SetString(phase, "signaturePatternId", string.Empty);
@@ -5755,17 +5759,21 @@ public sealed class BossGraphEditorWindow : EditorWindow
         return true;
     }
 
+    // Opening/Signature/Forced/Debug Forced Pattern처럼 비워둬도(None) 되는 선택형 필드용 —
+    // 이미 실제 패턴이 지정돼 있어도 언제든 다시 None으로 되돌릴 수 있도록 항상 (None)을 보여준다.
     private static string DrawPatternIdPopup(string currentPatternId, IReadOnlyList<string> patternIds)
     {
-        BuildPatternIdPopupOptions(currentPatternId, patternIds, out List<string> values, out List<string> labels);
+        BuildPatternIdPopupOptions(currentPatternId, patternIds, true, out List<string> values, out List<string> labels);
         int selectedIndex = Mathf.Max(0, values.IndexOf(currentPatternId));
         int nextIndex = EditorGUILayout.Popup(selectedIndex, labels.ToArray());
         return values[nextIndex];
     }
 
+    // 페이즈의 가중치 패턴 목록 항목처럼 반드시 실제 패턴을 가리켜야 하는 필수 필드용 — 이미 값이
+    // 채워져 있으면 (None)을 선택지로 보여주지 않는다(빈 항목이 목록에 남는 것을 방지).
     private static string DrawPatternIdPopup(Rect rect, string currentPatternId, IReadOnlyList<string> patternIds)
     {
-        BuildPatternIdPopupOptions(currentPatternId, patternIds, out List<string> values, out List<string> labels);
+        BuildPatternIdPopupOptions(currentPatternId, patternIds, false, out List<string> values, out List<string> labels);
         int selectedIndex = Mathf.Max(0, values.IndexOf(currentPatternId));
         int nextIndex = EditorGUI.Popup(rect, selectedIndex, labels.ToArray());
         return values[nextIndex];
@@ -5774,17 +5782,20 @@ public sealed class BossGraphEditorWindow : EditorWindow
     private static void BuildPatternIdPopupOptions(
         string currentPatternId,
         IReadOnlyList<string> patternIds,
+        bool alwaysIncludeNoneOption,
         out List<string> values,
         out List<string> labels)
     {
         values = new List<string>();
         labels = new List<string>();
-        if (string.IsNullOrWhiteSpace(currentPatternId))
+        bool isCurrentBlank = string.IsNullOrWhiteSpace(currentPatternId);
+        if (alwaysIncludeNoneOption || isCurrentBlank)
         {
             values.Add(string.Empty);
             labels.Add("(None)");
         }
-        else if (!patternIds.Contains(currentPatternId))
+
+        if (!isCurrentBlank && !patternIds.Contains(currentPatternId))
         {
             values.Add(currentPatternId);
             labels.Add($"{currentPatternId} (Missing)");

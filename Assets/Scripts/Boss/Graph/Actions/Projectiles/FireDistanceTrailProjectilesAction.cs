@@ -32,6 +32,8 @@ namespace Week14.Enemy
         [SerializeField] private float chargeSecondsOverride = -1f;
         [Tooltip("플레이어 방향 조준에 좌우로 무작위 오프셋을 주는 각도 범위(도)입니다. 0이면 정확히 플레이어를 조준합니다.")]
         [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees;
+        [Tooltip("켜면 충전 중(발사 전)에는 예상 경로/호밍 조준 인디케이터를 숨기고 실제 발사 순간부터 보이게 합니다. 끄면 다른 발사 액션처럼 충전 중에도 인디케이터가 보입니다(유도탄 등 충전 중 예고가 필요한 경우 끄세요).")]
+        [SerializeField] private bool delayPathIndicatorUntilLaunch = true;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
@@ -94,7 +96,8 @@ namespace Week14.Enemy
             }
 
             // 충전 중(발사 전)에는 조준선(경로 인디케이터)을 숨기고, 실제로 발사되는 순간부터 보이게 한다.
-            spawned.ConfigurePathIndicatorDelayedUntilLaunch(true);
+            // (delayPathIndicatorUntilLaunch가 꺼져 있으면 다른 발사 액션과 동일하게 충전 중에도 보인다.)
+            spawned.ConfigurePathIndicatorDelayedUntilLaunch(delayPathIndicatorUntilLaunch);
 
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(spawned, launchSfxId);

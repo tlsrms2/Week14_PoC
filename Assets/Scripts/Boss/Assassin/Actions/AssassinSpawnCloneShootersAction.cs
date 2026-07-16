@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Week14.Enemy
@@ -7,6 +8,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class AssassinSpawnCloneShootersAction : BossAction
     {
+        [Tooltip("소환할 분신 개수입니다.")]
+        [SerializeField, Min(1)] private int cloneCount = 2;
         [SerializeField, Min(0f)] private float cloneIntroSeconds = 0.2f;
         [Tooltip("분신 등장 연출이 도달하는 목표 알파값(0~255)입니다.")]
         [SerializeField, Range(0, 255)] private int cloneTargetAlpha = 255;
@@ -14,8 +17,10 @@ namespace Week14.Enemy
         [SerializeField] private bool includeBossPosition = true;
         [Tooltip("보스가 완전히 사라진 상태로 대기하는 시간(초)입니다. 이 시간이 지난 뒤 분신 등장과 동시에 다시 나타납니다.")]
         [SerializeField, Min(0f)] private float teleportHiddenSeconds = 0f;
-        [Tooltip("발사 순서 대기 중(공격 사이 딜레이 동안)인 개체의 지정된 스프라이트가 바뀌는 색상입니다. 그 개체가 실제로 발사하는 순간 원래 색으로 돌아옵니다.")]
+        [Tooltip("발사 순서 대기 중(공격 사이 딜레이 동안)인 개체의 지정된 스프라이트가 바뀌는 색상입니다. Keep Attack Flash Color Applied가 꺼져 있으면, 그 개체가 실제로 발사하는 순간 원래 색으로 돌아옵니다.")]
         [SerializeField] private Color attackFlashColor = Color.white;
+        [Tooltip("켜면 발사 순서를 번갈아 표시하는 대신, 소환된 모든 분신(+포함된 보스)이 등장 직후부터 대기열이 빌 때까지 계속 Attack Flash Color로 칠해져 있습니다. 누가 다음 차례인지 구분이 사라집니다.")]
+        [SerializeField] private bool keepAttackFlashColorApplied;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -24,17 +29,24 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            assassin.SetCloneShooterAttackFlashColor(attackFlashColor);
+            assassin.SetCloneShooterAttackFlashColor(attackFlashColor, keepAttackFlashColorApplied);
 
-            (Vector2 pointA, Vector2 pointB) = assassin.GetSeparatedCloneSpawnPositions();
+            int spawnCount = Mathf.Max(1, cloneCount);
+            List<Vector2> positions = assassin.GetSeparatedCloneZonePositions(spawnCount + (includeBossPosition ? 1 : 0));
 
-            AssassinClone cloneA = assassin.CreateClone(pointA);
-            AssassinClone cloneB = assassin.CreateClone(pointB);
+            // includeBossPosition이 켜져 있으면 0번 슬롯은 보스 자신의 순간이동 목적지로 예약하고,
+            // 나머지 슬롯만 분신 소환에 쓴다.
+            int cloneStartIndex = includeBossPosition ? 1 : 0;
+            AssassinClone[] clones = new AssassinClone[spawnCount];
+            for (int i = 0; i < spawnCount; i++)
+            {
+                clones[i] = assassin.CreateClone(positions[cloneStartIndex + i]);
+            }
 
             Vector2 bossDestination = default;
             if (includeBossPosition)
             {
-                bossDestination = assassin.GetSeparatedCloneSpawnPosition(pointA, pointB);
+                bossDestination = positions[0];
                 // 보스가 사라진 상태로 순간이동하는 동안에는 분신 등장 연출을 아직 시작하지 않고 기다린다 —
                 // 보스가 다시 나타나는 순간에 분신들도 같이 나타나게 맞추기 위함.
                 yield return assassin.VanishForTeleport(bossDestination);
@@ -45,17 +57,30 @@ namespace Week14.Enemy
                 }
             }
 
-            cloneA?.PlayIntro(cloneIntroSeconds, cloneTargetAlpha);
-            cloneB?.PlayIntro(cloneIntroSeconds, cloneTargetAlpha);
+            for (int i = 0; i < spawnCount; i++)
+            {
+                clones[i]?.PlayIntro(cloneIntroSeconds, cloneTargetAlpha);
+                if (keepAttackFlashColorApplied)
+                {
+                    clones[i]?.PlayAttackFlash(attackFlashColor);
+                }
+            }
 
             if (includeBossPosition)
             {
                 yield return assassin.ReappearAfterTeleport();
                 assassin.EnqueueCloneShooter(bossDestination, null);
+
+                if (keepAttackFlashColorApplied)
+                {
+                    assassin.ApplyCloneShooterFlashToBoss();
+                }
             }
 
-            assassin.EnqueueCloneShooter(pointA, cloneA);
-            assassin.EnqueueCloneShooter(pointB, cloneB);
+            for (int i = 0; i < spawnCount; i++)
+            {
+                assassin.EnqueueCloneShooter(positions[cloneStartIndex + i], clones[i]);
+            }
 
             assassin.ShuffleCloneShooters();
         }

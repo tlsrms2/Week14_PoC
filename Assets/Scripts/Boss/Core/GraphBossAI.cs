@@ -164,15 +164,38 @@ namespace Week14.Enemy
                 GraphAsset);
         }
 
+        // 그로기/실행 연출 등 "같은 그래프 안에서" 패턴 코루틴이 잠깐 끊기는 경우 쓴다. 쿨다운/Min
+        // Patterns Played 같은 페이즈별 히스토리는 유지한 채 그래프 순회 위치만 지운다.
         protected void StopGraphPattern()
+        {
+            StopGraphPattern(false);
+        }
+
+        // resetPatternHistory=true는 GraphAsset 자체가 바뀌는 경우(예: AssassinBossAI의 은신↔일반
+        // 그래프 전환)에 쓴다. 서로 다른 BossGraphAsset은 phase.PhaseIndex가 각자 0부터 다시 매겨지므로,
+        // 쿨다운/Min Patterns Played 히스토리를 그대로 들고 넘어가면 전혀 다른 그래프의 같은 인덱스
+        // 페이즈끼리 기록이 섞인다. 그래서 이 경우는 페이즈 전환(OnBossPhaseChanged)과 동일하게
+        // 전체 초기화를 쓴다.
+        protected void StopGraphPattern(bool resetPatternHistory)
         {
             if (patternRoutine != null)
             {
+                // StopCoroutine은 이렇게 깊이 중첩된 코루틴 체인에서 try/finally를 안정적으로 안
+                // 돌려주므로(실측 확인됨), 코루틴을 끊기 전에 "지금 실행 중이던 패턴"을 직접 등록한다.
+                graphRunner.RegisterInFlightPatternIfNeeded();
                 StopCoroutine(patternRoutine);
                 patternRoutine = null;
             }
 
-            ResetGraphRuntime();
+            if (resetPatternHistory)
+            {
+                ResetGraphRuntime();
+            }
+            else
+            {
+                graphRunner.RestartAfterInterruption();
+            }
+
             graphContext?.ClearPatternScopedBossChildAims();
             graphContext?.ResetBodyRootLocalOffset();
             graphContext?.ClearConductorMinionOutlineHoldRequests();
@@ -192,7 +215,7 @@ namespace Week14.Enemy
 
         private IEnumerator RunGraphPatternLoop()
         {
-            graphRunner.Reset();
+            graphRunner.RestartAfterInterruption();
             graphContext = CreateGraphContext();
 
             try

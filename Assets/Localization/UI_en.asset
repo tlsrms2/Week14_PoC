@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103836385280
-    m_Localized: SETTINGS
+    m_Localized: <sprite name="icon_option"> SETTINGS
     m_Metadata:
       m_Items: []
   - m_Id: 221037821952
@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44328653258752
-    m_Localized: CLICK TO GO
+    m_Localized: GO
     m_Metadata:
       m_Items: []
   - m_Id: 56983963140096
@@ -103,23 +103,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3325868144689152
-    m_Localized: Buy
+    m_Localized: <sprite name="icon_leftclick"> Purchase
     m_Metadata:
       m_Items: []
   - m_Id: 3326043365933056
-    m_Localized: Refund
+    m_Localized: <sprite name="icon_leftclick"> Equip     <sprite name="icon_rightclick">
+      Refund
     m_Metadata:
       m_Items: []
   - m_Id: 3326175926910976
-    m_Localized: Unequip
+    m_Localized: ' '
     m_Metadata:
       m_Items: []
   - m_Id: 3326292574699520
-    m_Localized: Equipping
+    m_Localized: ' '
     m_Metadata:
       m_Items: []
   - m_Id: 3326345653616640
-    m_Localized: Non refundable
+    m_Localized: <sprite name="icon_point"> Non Refundable
     m_Metadata:
       m_Items: []
   - m_Id: 3326669890093056
@@ -127,15 +128,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: 'Point: {0}'
+    m_Localized: '<sprite name="icon_point"> Enhancement Points: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
-    m_Localized: 'Price: {0}'
+    m_Localized: '<sprite name="icon_point"> Required Points: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
-    m_Localized: 'Return upon refund: {0}'
+    m_Localized: '<sprite name="icon_point"> Points returned upon refund: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3663321485377536
@@ -155,7 +156,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4304213502164992
-    m_Localized: Enhancement Points +{0}
+    m_Localized: <sprite name="icon_point"> Enhancement Points +{0}
     m_Metadata:
       m_Items: []
   - m_Id: 4478459079655424
@@ -168,6 +169,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4984524653649920
     m_Localized: Enhancement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5398084768686080
+    m_Localized: <sprite name="icon_leftclick"> Equip
     m_Metadata:
       m_Items: []
   references:

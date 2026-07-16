@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103836385280
-    m_Localized: "\uC124\uC815"
+    m_Localized: "<sprite name=\"icon_option\"> \uC124\uC815"
     m_Metadata:
       m_Items: []
   - m_Id: 221037821952
@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44328653258752
-    m_Localized: "\uD074\uB9AD\uD558\uC5EC \uCD9C\uBC1C"
+    m_Localized: "\uCD9C\uBC1C"
     m_Metadata:
       m_Items: []
   - m_Id: 56983963140096
@@ -104,23 +104,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3325868144689152
-    m_Localized: "\uAD6C\uB9E4"
+    m_Localized: "<sprite name=\"icon_leftclick\"> \uAD6C\uC785"
     m_Metadata:
       m_Items: []
   - m_Id: 3326043365933056
-    m_Localized: "\uD658\uBD88"
+    m_Localized: "<sprite name=\"icon_leftclick\"> \uC7A5\uCC29     <sprite name=\"icon_rightclick\">
+      \uD658\uBD88"
     m_Metadata:
       m_Items: []
   - m_Id: 3326175926910976
-    m_Localized: "\uC7A5\uCC29\uD574\uC81C"
+    m_Localized: ' '
     m_Metadata:
       m_Items: []
   - m_Id: 3326292574699520
-    m_Localized: "\uC7A5\uCC29\uC911"
+    m_Localized: ' '
     m_Metadata:
       m_Items: []
   - m_Id: 3326345653616640
-    m_Localized: "\uD658\uBD88 \uBD88\uAC00"
+    m_Localized: "<sprite name=\"icon_point\"> \uD658\uBD88 \uBD88\uAC00"
     m_Metadata:
       m_Items: []
   - m_Id: 3326669890093056
@@ -128,15 +129,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: "\uD3EC\uC778\uD2B8: {0}"
+    m_Localized: "<sprite name=\"icon_point\"> \uAC15\uD654 \uD3EC\uC778\uD2B8: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
-    m_Localized: "\uAC00\uACA9: {0}"
+    m_Localized: "<sprite name=\"icon_point\"> \uD544\uC694 \uD3EC\uC778\uD2B8: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
-    m_Localized: "\uD658\uBD88 \uC2DC \uBC18\uD658: {0}"
+    m_Localized: "<sprite name=\"icon_point\"> \uD658\uBD88 \uC2DC \uBC18\uD658\uB418\uB294
+      \uD3EC\uC778\uD2B8: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3663321485377536
@@ -156,7 +158,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4304213502164992
-    m_Localized: "\uAC15\uD654 \uD3EC\uC778\uD2B8 +{0}"
+    m_Localized: "<sprite name=\"icon_point\"> \uAC15\uD654 \uD3EC\uC778\uD2B8 +{0}"
     m_Metadata:
       m_Items: []
   - m_Id: 4478459079655424
@@ -169,6 +171,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4984204011692032
     m_Localized: "\uC804\uD22C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5398084768686080
+    m_Localized: "<sprite name=\"icon_leftclick\"> \uC7A5\uCC29"
     m_Metadata:
       m_Items: []
   references:
