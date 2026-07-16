@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44328653258752
-    m_Key: ui.hold
+    m_Key: ui.go
     m_Metadata:
       m_Items: []
   - m_Id: 56983963140096
@@ -102,19 +102,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3325868144689152
-    m_Key: ui.Loadout.hint.puchase
+    m_Key: ui.Loadout.hint.canPurchase
     m_Metadata:
       m_Items: []
   - m_Id: 3326043365933056
-    m_Key: ui.Loadout.hint.Refund
+    m_Key: ui.Loadout.hint.canEquipAndRefund
     m_Metadata:
       m_Items: []
   - m_Id: 3326175926910976
-    m_Key: ui.Loadout.hint.Unequip
+    m_Key: ui.Loadout.hint.unequip
     m_Metadata:
       m_Items: []
   - m_Id: 3326292574699520
     m_Key: ui.Loadout.hint.equip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5398084768686080
+    m_Key: ui.Loadout.hint.canEquip
     m_Metadata:
       m_Items: []
   - m_Id: 3326345653616640

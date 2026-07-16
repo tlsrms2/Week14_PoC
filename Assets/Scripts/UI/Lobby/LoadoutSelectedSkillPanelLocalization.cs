@@ -31,6 +31,7 @@ namespace Week14.UI
         [SerializeField] private LocalizedString localizedUnequipHintText;
         [SerializeField] private LocalizedString localizedEquippedLabelText;
         [SerializeField] private LocalizedString localizedNonRefundableText;
+        [SerializeField] private LocalizedString localizedDefaultGrantedNonRefundableText;
 
         [Header("숫자 포맷 문구 (표시할 때마다 해당 값으로 새로 계산, {0}에 숫자가 들어감)")]
         [SerializeField] private LocalizedString localizedCooldownFormatText;
@@ -48,6 +49,7 @@ namespace Week14.UI
         private string unequipHintCache = "장착해제";
         private string equippedLabelCache = "장착중";
         private string nonRefundableCache = "환불 불가";
+        private string defaultGrantedNonRefundableCache = "기본 지급 / 환불 불가";
 
         public string ActiveSkillCategory => activeSkillCategoryCache;
         public string PassiveSkillCategory => passiveSkillCategoryCache;
@@ -57,6 +59,7 @@ namespace Week14.UI
         public string UnequipHint => unequipHintCache;
         public string EquippedLabel => equippedLabelCache;
         public string NonRefundable => nonRefundableCache;
+        public string DefaultGrantedNonRefundable => defaultGrantedNonRefundableCache;
 
         private void Awake()
         {
@@ -68,6 +71,7 @@ namespace Week14.UI
             BindLocalizedString(localizedUnequipHintText, HasLocalizedString(localizedUnequipHintText), SetUnequipHintCache);
             BindLocalizedString(localizedEquippedLabelText, HasLocalizedString(localizedEquippedLabelText), SetEquippedLabelCache);
             BindLocalizedString(localizedNonRefundableText, HasLocalizedString(localizedNonRefundableText), SetNonRefundableCache);
+            BindLocalizedString(localizedDefaultGrantedNonRefundableText, HasLocalizedString(localizedDefaultGrantedNonRefundableText), SetDefaultGrantedNonRefundableCache);
 
             WarmUpWeaponAssets();
             WarmUpSkillAssets();
@@ -94,6 +98,7 @@ namespace Week14.UI
             UnbindLocalizedString(localizedUnequipHintText, HasLocalizedString(localizedUnequipHintText), SetUnequipHintCache);
             UnbindLocalizedString(localizedEquippedLabelText, HasLocalizedString(localizedEquippedLabelText), SetEquippedLabelCache);
             UnbindLocalizedString(localizedNonRefundableText, HasLocalizedString(localizedNonRefundableText), SetNonRefundableCache);
+            UnbindLocalizedString(localizedDefaultGrantedNonRefundableText, HasLocalizedString(localizedDefaultGrantedNonRefundableText), SetDefaultGrantedNonRefundableCache);
         }
 
         // 언어가 바뀌면 고정 문구 8개는 이미 구독 중이라 자동으로 갱신되지만,
@@ -197,6 +202,7 @@ namespace Week14.UI
         private void SetUnequipHintCache(string value) => unequipHintCache = value;
         private void SetEquippedLabelCache(string value) => equippedLabelCache = value;
         private void SetNonRefundableCache(string value) => nonRefundableCache = value;
+        private void SetDefaultGrantedNonRefundableCache(string value) => defaultGrantedNonRefundableCache = value;
 
         public string FormatCooldown(float seconds) => ResolveLocalizedFormat(localizedCooldownFormatText, "쿨타임: {0}초", seconds);
         public string FormatPoints(int points) => ResolveLocalizedFormat(localizedPointsFormatText, "포인트: {0}", points);
