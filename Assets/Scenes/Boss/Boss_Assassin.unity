@@ -374,7 +374,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+  m_Color: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 1}
   m_Intensity: 4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
@@ -3636,7 +3636,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3873820293937629566, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0.11764706
       objectReference: {fileID: 0}
     - target: {fileID: 5266926221931298650, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_LocalScale.x
@@ -3696,7 +3696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7372413297064936419, guid: 1a74e840a12a56f4d8704cf15f874433, type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0.11764706
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9822,7 +9822,7 @@ MonoBehaviour:
     projectile:
       prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
       bulletDamage: 0
-      chargeSeconds: 1
+      chargeSeconds: 0
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 0
@@ -9832,19 +9832,18 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
   patternGroggyAnimator: {fileID: 0}
-  stealthGraph: {fileID: 11400000, guid: 47bf25dcafb39c34980cbf5edf312333, type: 2}
+  stealthGraph: {fileID: 11400000, guid: d45213f9339f3704ea8ad986782f5d74, type: 2}
   daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
   stealthVisualTargetA: {fileID: 1518477478}
   stealthAlphaA: 30
   stealthVisualTargetB: {fileID: 1368611871}
   stealthAlphaB: 50
   stealthAlphaFadeSeconds: 0.3
-  stealthEntryPatternDelaySeconds: 1
-  daggerCountForRecallPattern: 5
-  stealthDamageThresholdForForceRecall: 20
+  stealthEntryPatternDelaySeconds: 2
+  daggerCountForRecallPattern: 10
   daggerRecallDamagePerDagger: 1
-  daggerRecallPlayerDamage: 5
-  daggerRecallSpeed: 12
+  daggerRecallPlayerDamage: 1
+  daggerRecallSpeed: 10
   clonePrefab: {fileID: 6933580441243757665, guid: b61e8d6fa0cd5a44f8e1ea72821f8ea9, type: 3}
   cloneSpawnZone: {fileID: 283274216}
   cloneMinSeparationDistance: 5
