@@ -547,7 +547,7 @@ MonoBehaviour:
     action:
       rid: -2
     sequences: []
-    editorPosition: {x: 631, y: -332}
+    editorPosition: {x: 639, y: -356}
   - nodeId: Spawn Effect Prefab1
     nodeGuid: faa9f3db13d94965a30c67ee6434e0f0
     nodeKind: 3

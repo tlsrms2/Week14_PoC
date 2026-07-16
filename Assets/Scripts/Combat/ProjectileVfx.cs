@@ -109,6 +109,17 @@ namespace Week14.Combat
                     animator.Update(0f);
                     for (int layerIndex = 0; layerIndex < animator.layerCount; layerIndex++)
                     {
+                        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layerIndex);
+                        float stateSpeed = Mathf.Abs(stateInfo.speed * stateInfo.speedMultiplier);
+                        float effectiveSpeed = animatorSpeed * stateSpeed;
+                        if (effectiveSpeed <= 0.0001f)
+                        {
+                            animatorLifetimeSeconds = Mathf.Max(
+                                animatorLifetimeSeconds,
+                                DefaultPrefabLifetimeSeconds);
+                            continue;
+                        }
+
                         AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(layerIndex);
                         for (int clipIndex = 0; clipIndex < clipInfos.Length; clipIndex++)
                         {
@@ -117,7 +128,7 @@ namespace Week14.Combat
                             {
                                 animatorLifetimeSeconds = Mathf.Max(
                                     animatorLifetimeSeconds,
-                                    clip.length / animatorSpeed);
+                                    clip.length / effectiveSpeed);
                             }
                         }
                     }
