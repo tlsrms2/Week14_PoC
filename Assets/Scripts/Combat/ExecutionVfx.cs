@@ -8,10 +8,17 @@ namespace Week14.Combat
 
         public static void PlayImpact(Vector3 position, Color color, int count, float duration)
         {
-            PlayImpact(position, Vector2.right, color, count, duration);
+            PlayImpact(position, Vector2.right, color, count, duration, 60);
         }
 
-        public static void PlayImpact(Vector3 position, Vector2 direction, Color color, int count, float duration)
+        public static void PlayImpact(
+            Vector3 position,
+            Vector2 direction,
+            Color color,
+            int count,
+            float duration,
+            int sortingOrder = 60,
+            int? sortingLayerId = null)
         {
             Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
             Vector3 emitPosition = position + (Vector3)(forward * 0.08f);
@@ -33,7 +40,12 @@ namespace Week14.Combat
             shape.radius = 0.03f;
 
             ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
-            renderer.sortingOrder = 60;
+            if (sortingLayerId.HasValue)
+            {
+                renderer.sortingLayerID = sortingLayerId.Value;
+            }
+
+            renderer.sortingOrder = sortingOrder;
             AssignParticleMaterial(renderer);
 
             int particleCount = Mathf.Max(0, count);

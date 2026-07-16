@@ -334,6 +334,15 @@ namespace Week14.Enemy
             bossHpBarView?.SetTarget(hpGauge);
         }
 
+        public void HideBossCombatUiForFinalDeath()
+        {
+            SetBossCombatUiVisible(false);
+            if (bossLivesView != null)
+            {
+                bossLivesView.gameObject.SetActive(false);
+            }
+        }
+
         public void SetExecutionLocked(bool locked)
         {
             isExecutionLocked = locked;

@@ -90,6 +90,17 @@ namespace Week14.Combat
         [Tooltip("처형 사격 전 총 발사 애니메이션 반복 사이의 간격입니다.")]
         [SerializeField, Min(0.01f)] private float executionFlourishShotInterval = 0.08f;
 
+        [Header("Final Execution Presentation")]
+        [SerializeField, Min(0f)] private float finalExecutionLetterboxEnterSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeInSeconds = 0.14f;
+        [SerializeField, Min(0f)] private float finalExecutionBlackoutHoldSeconds = 0.45f;
+        [SerializeField, Range(0.01f, 1f)] private float finalExecutionImpactTimeScale = 0.08f;
+        [SerializeField, Min(0f)] private float finalExecutionImpactSlowSeconds = 0.55f;
+        [SerializeField, Min(0f)] private float finalExecutionOutlineFlashSeconds = 0.04f;
+        [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeOutSeconds = 0.24f;
+        [SerializeField, Min(0f)] private float finalExecutionLetterboxExitSeconds = 0.28f;
+        [SerializeField, Min(0.05f)] private float finalExecutionOutlineWidthPixels = 0.18f;
+
         [Header("Death")]
         [Tooltip("플레이어 사망 시 카메라 초점이 플레이어를 따라가는 강도입니다.")]
         [SerializeField, Range(0f, 1f)] private float deathCameraFocusWeight = 1f;
@@ -160,6 +171,15 @@ namespace Week14.Combat
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
         public int ExecutionFlourishShotCount => executionFlourishShotCount;
         public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
+        public float FinalExecutionLetterboxEnterSeconds => finalExecutionLetterboxEnterSeconds;
+        public float FinalExecutionBlackoutFadeInSeconds => finalExecutionBlackoutFadeInSeconds;
+        public float FinalExecutionBlackoutHoldSeconds => finalExecutionBlackoutHoldSeconds;
+        public float FinalExecutionImpactTimeScale => finalExecutionImpactTimeScale;
+        public float FinalExecutionImpactSlowSeconds => finalExecutionImpactSlowSeconds;
+        public float FinalExecutionOutlineFlashSeconds => finalExecutionOutlineFlashSeconds;
+        public float FinalExecutionBlackoutFadeOutSeconds => finalExecutionBlackoutFadeOutSeconds;
+        public float FinalExecutionLetterboxExitSeconds => finalExecutionLetterboxExitSeconds;
+        public float FinalExecutionOutlineWidthPixels => finalExecutionOutlineWidthPixels;
         public float DeathCameraFocusWeight => deathCameraFocusWeight;
         public float DeathCameraZoomMultiplier => deathCameraZoomMultiplier;
         public float DeathWorldFreezeDelaySeconds => deathWorldFreezeDelaySeconds;

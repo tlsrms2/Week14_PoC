@@ -83,13 +83,26 @@ namespace Week14.Combat
             PlayRingGlitter(position, direction, glitterColor, nextGlitterCount, nextGlitterSeconds, scale);
         }
 
-        public static void PlayShotLine(Vector3 start, Vector3 end, Color color, float seconds, float width = 0.035f)
+        public static GameObject PlayShotLine(
+            Vector3 start,
+            Vector3 end,
+            Color color,
+            float seconds,
+            float width = 0.035f,
+            int sortingOrder = 73,
+            int? sortingLayerId = null,
+            bool autoDestroy = true)
         {
             start.z = 0f;
             end.z = 0f;
             GameObject lineObject = new GameObject("ShotLineVfx");
             LineRenderer line = lineObject.AddComponent<LineRenderer>();
             BossSorting.Apply(line);
+            if (sortingLayerId.HasValue)
+            {
+                line.sortingLayerID = sortingLayerId.Value;
+            }
+
             line.useWorldSpace = true;
             line.positionCount = 2;
             line.startWidth = width;
@@ -98,10 +111,15 @@ namespace Week14.Combat
             line.endColor = color;
             line.numCapVertices = 2;
             line.material = GetSpriteMaterial();
-            line.sortingOrder = 73;
+            line.sortingOrder = sortingOrder;
             line.SetPosition(0, start);
             line.SetPosition(1, end);
-            Object.Destroy(lineObject, Mathf.Max(0.04f, seconds));
+            if (autoDestroy)
+            {
+                Object.Destroy(lineObject, Mathf.Max(0.04f, seconds));
+            }
+
+            return lineObject;
         }
 
         // 총검 등 반원 범위 판정을 순간적으로 보여주는 꽉 찬(면이 채워진) 플래시입니다.
