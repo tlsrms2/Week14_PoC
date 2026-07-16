@@ -86,6 +86,15 @@ namespace Week14.Combat
         private bool backRightArmWasHolstering;
         private Coroutine rollSpinRoutine;
         private bool cinematicMovementActive;
+        private bool executionVisualActive;
+        private VisualFacing facingBeforeExecution;
+        private VisualFacing executionFacing;
+        private bool leftArmWasActiveBeforeExecution;
+        private Animator executionRightArmAnimator;
+        private string executionRightArmIdleState;
+        private string executionRightArmHolsteringState;
+        private bool executionRightArmWasActive;
+        private float executionRightArmSpeedBeforeExecution = 1f;
 
         private void Awake()
         {
@@ -125,7 +134,10 @@ namespace Week14.Combat
         private void LateUpdate()
         {
             UpdateWalkAnimation(false);
-            SyncRightArmAfterHolstering();
+            if (!executionVisualActive)
+            {
+                SyncRightArmAfterHolstering();
+            }
         }
 
         public bool IsFacingLeft => visualRoot != null && visualRoot.localScale.x < 0f;
@@ -163,7 +175,7 @@ namespace Week14.Combat
             UpdateVisualRootFlip(direction.x);
 
             float angleFromDown = Vector2.Angle(Vector2.down, direction);
-            ApplyFacing(GetFacingFromAngle(angleFromDown));
+            ApplyFacing(executionVisualActive ? executionFacing : GetFacingFromAngle(angleFromDown));
         }
 
         public void SetLeftArmAimDirection(Vector2 direction)
@@ -271,6 +283,96 @@ namespace Week14.Combat
             SetTriggerIfExists(backRightArmAnimator, DoReloadParameter);
         }
 
+        public void SetLeftArmVisible(bool visible)
+        {
+            if (leftArm != null && leftArm.gameObject.activeSelf != visible)
+            {
+                leftArm.gameObject.SetActive(visible);
+            }
+        }
+
+        public void BeginExecutionVisual(Vector2 facingDirection)
+        {
+            if (!executionVisualActive)
+            {
+                facingBeforeExecution = currentFacing;
+                leftArmWasActiveBeforeExecution = leftArm != null && leftArm.gameObject.activeSelf;
+                executionFacing = GetFacingFromDirection(facingDirection, currentFacing);
+                ResolveExecutionRightArm(executionFacing);
+                executionRightArmWasActive = executionRightArmAnimator != null
+                    && executionRightArmAnimator.gameObject.activeSelf;
+                executionRightArmSpeedBeforeExecution = executionRightArmAnimator != null
+                    ? executionRightArmAnimator.speed
+                    : 1f;
+            }
+
+            executionVisualActive = true;
+            if (facingDirection.sqrMagnitude > 0.0001f)
+            {
+                UpdateVisualRootFlip(facingDirection.x);
+            }
+
+            SetLeftArmVisible(false);
+            if (executionRightArmAnimator != null)
+            {
+                executionRightArmAnimator.gameObject.SetActive(true);
+                executionRightArmAnimator.speed = 0f;
+            }
+
+            hasAppliedFacing = false;
+            ApplyFacing(executionFacing);
+            SampleExecutionRightArmHolstering(1f);
+        }
+
+        public IEnumerator PlayExecutionRightArmHolstering(float duration, bool reverse)
+        {
+            if (!executionVisualActive || executionRightArmAnimator == null)
+            {
+                yield break;
+            }
+
+            float animationDuration = Mathf.Max(0f, duration);
+            if (animationDuration <= 0f)
+            {
+                SampleExecutionRightArmHolstering(reverse ? 0f : 1f);
+                yield break;
+            }
+
+            for (float elapsed = 0f; elapsed < animationDuration; elapsed += Time.deltaTime)
+            {
+                float progress = elapsed / animationDuration;
+                SampleExecutionRightArmHolstering(reverse ? 1f - progress : progress);
+                yield return null;
+            }
+
+            SampleExecutionRightArmHolstering(reverse ? 0f : 1f);
+        }
+
+        public void EndExecutionVisual()
+        {
+            if (!executionVisualActive)
+            {
+                return;
+            }
+
+            executionVisualActive = false;
+            if (executionRightArmAnimator != null)
+            {
+                executionRightArmAnimator.speed = executionRightArmSpeedBeforeExecution;
+                executionRightArmAnimator.Play(BaseLayerPrefix + executionRightArmIdleState, BaseLayerIndex, 0f);
+                executionRightArmAnimator.Update(0f);
+                executionRightArmAnimator.gameObject.SetActive(executionRightArmWasActive);
+            }
+
+            SetLeftArmVisible(leftArmWasActiveBeforeExecution);
+            executionRightArmAnimator = null;
+            executionRightArmIdleState = null;
+            executionRightArmHolsteringState = null;
+            hasAppliedFacing = false;
+            ApplyFacing(facingBeforeExecution);
+            UpdateWalkAnimation(true);
+        }
+
         public void PlayRoll(float duration)
         {
             SetTriggerIfExists(frontBodyAnimator, DoRollParameter);
@@ -316,6 +418,21 @@ namespace Week14.Combat
             }
 
             animator.SetTrigger(parameterHash);
+        }
+
+        private void SampleExecutionRightArmHolstering(float normalizedTime)
+        {
+            if (!executionVisualActive || executionRightArmAnimator == null)
+            {
+                return;
+            }
+
+            executionRightArmAnimator.speed = 0f;
+            executionRightArmAnimator.Play(
+                BaseLayerPrefix + executionRightArmHolsteringState,
+                BaseLayerIndex,
+                Mathf.Clamp01(normalizedTime));
+            executionRightArmAnimator.Update(0f);
         }
 
         private static bool HasParameter(
@@ -432,6 +549,41 @@ namespace Week14.Combat
             }
 
             return VisualFacing.Side;
+        }
+
+        private VisualFacing GetFacingFromDirection(Vector2 direction, VisualFacing fallback)
+        {
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                return fallback;
+            }
+
+            float angleFromDown = Vector2.Angle(Vector2.down, direction);
+            return GetFacingFromAngle(angleFromDown);
+        }
+
+        private void ResolveExecutionRightArm(VisualFacing facing)
+        {
+            switch (facing)
+            {
+                case VisualFacing.Front:
+                    executionRightArmAnimator = frontRightArmAnimator;
+                    executionRightArmIdleState = FrontRightArmIdleState;
+                    executionRightArmHolsteringState = FrontRightArmHolsteringState;
+                    break;
+
+                case VisualFacing.Back:
+                    executionRightArmAnimator = backRightArmAnimator;
+                    executionRightArmIdleState = BackRightArmIdleState;
+                    executionRightArmHolsteringState = BackRightArmHolsteringState;
+                    break;
+
+                default:
+                    executionRightArmAnimator = sideRightArmAnimator;
+                    executionRightArmIdleState = SideRightArmIdleState;
+                    executionRightArmHolsteringState = SideRightArmHolsteringState;
+                    break;
+            }
         }
 
         private void UpdateWalkAnimation(bool force)

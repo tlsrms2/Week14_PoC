@@ -402,6 +402,7 @@ namespace Week14.Combat
             RestorePlayerHpAfterExecution();
             StopExecutionShotDim();
             executionImage?.Stop();
+            visual?.EndExecutionVisual();
             DamageReceiver.StopHitStop();
         }
 

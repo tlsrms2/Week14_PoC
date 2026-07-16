@@ -67,6 +67,7 @@ namespace Week14.Combat
         {
             isExecuting = false;
             executionRoutine = null;
+            context.Visual?.EndExecutionVisual();
             context.CameraFollow?.EndCinematicFocus();
             lockOnController.ClearInvalidLockOnTarget();
             UpdateHoveredExecutionTarget();
@@ -145,7 +146,13 @@ namespace Week14.Combat
             SoundManager.PlaySfx("Execute");
             float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
                 + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
-            context.ExecutionImage?.Play(flourishSeconds + config.ExecutionAimSeconds + config.ExecutionShotDelaySeconds + config.ExecutionKillDelaySeconds);
+            float holsteringSeconds = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
+            context.ExecutionImage?.Play(
+                flourishSeconds
+                + config.ExecutionAimSeconds
+                + config.ExecutionShotDelaySeconds
+                + holsteringSeconds * 2f
+                + config.ExecutionKillDelaySeconds);
 
             Health targetHealth = executionTarget.GetComponent<Health>();
             if (targetHealth != null)
@@ -173,12 +180,12 @@ namespace Week14.Combat
                 config.ExecutionCameraZoomMultiplier);
             activeCamera?.PlayImpact(standDirection, 0.08f, 0.14f, 0.12f);
 
-            Transform leftFireOrigin = rig.GetLeftFireOrigin();
-            Transform leftGunOrigin = GetLeftGunOrigin();
-            Vector2 aimDirection = targetPosition - (Vector2)leftGunOrigin.position;
+            Transform rightFireOrigin = rig.GetRightFireOrigin();
+            Vector2 aimDirection = targetPosition - (Vector2)rightFireOrigin.position;
             aimController.AimExecutionPose(aimDirection);
+            context.Visual?.BeginExecutionVisual(aimDirection);
             yield return new WaitForSeconds(config.ExecutionFlourishDelaySeconds);
-            yield return RunExecutionFlourish(executionTarget, aimDirection);
+            yield return RunExecutionFlourish(executionTarget);
 
             yield return new WaitForSeconds(config.ExecutionAimSeconds);
             if (executionTarget == null)
@@ -187,9 +194,8 @@ namespace Week14.Combat
                 yield break;
             }
 
-            leftFireOrigin = rig.GetLeftFireOrigin();
-            leftGunOrigin = GetLeftGunOrigin();
-            aimDirection = (Vector2)executionTarget.transform.position - (Vector2)leftGunOrigin.position;
+            rightFireOrigin = rig.GetRightFireOrigin();
+            aimDirection = (Vector2)executionTarget.transform.position - (Vector2)rightFireOrigin.position;
             aimController.AimExecutionPose(aimDirection);
 
             yield return new WaitForSeconds(config.ExecutionShotDelaySeconds);
@@ -199,35 +205,38 @@ namespace Week14.Combat
                 yield break;
             }
 
-            leftFireOrigin = rig.GetLeftFireOrigin();
-            leftGunOrigin = GetLeftGunOrigin();
+            rightFireOrigin = rig.GetRightFireOrigin();
             aimDirection = aimController.AimGunAndGetDirection(
-                leftGunOrigin,
-                (Vector2)executionTarget.transform.position - (Vector2)leftGunOrigin.position);
-            aimController.LockLeftGunAim(aimDirection);
+                rightFireOrigin,
+                (Vector2)executionTarget.transform.position - (Vector2)rightFireOrigin.position);
             presentation.UpdateExecutionFocusPoint(context.PlayerTransform.position, executionTarget.transform.position);
-            context.Visual?.PlayShot();
+            if (context.Visual != null)
+            {
+                yield return context.Visual.PlayExecutionRightArmHolstering(holsteringSeconds, true);
+            }
+            else
+            {
+                yield return new WaitForSeconds(holsteringSeconds);
+            }
+
             SoundManager.PlaySfx("PlayerPowerShot");
             presentation.PlayExecutionShotDim();
             executionTarget.GetComponentInParent<BossAI>()?.PlayExecutionBarDrain();
 
-            PlayerProjectile executionShot = PlayerProjectile.Spawn(
-                config.ProjectilePrefab,
-                leftFireOrigin.position,
+            PlayExecutionParryShotVfx(
+                rightFireOrigin.position,
+                executionTarget.transform.position,
                 aimDirection,
-                context.Owner,
-                config.ProjectileSpeed,
-                config.ProjectileLifetime,
-                config.ProjectileRadius,
-                0,
-                config.ExecutionShotColor,
-                false);
-            if (executionShot != null)
+                config);
+            activeCamera?.PlayImpact(aimDirection, 0.12f, 0.14f, 0.08f);
+
+            if (context.Visual != null)
             {
-                Color muzzleFlashColor = Color.Lerp(config.ExecutionShotColor, Color.white, 0.65f);
-                muzzleFlashColor.a = 1f;
-                ProjectileVfx.PlayMuzzleFlash(leftFireOrigin.position, aimDirection, muzzleFlashColor, 1.55f);
-                activeCamera?.PlayImpact(aimDirection, 0.12f, 0.14f, 0.08f);
+                yield return context.Visual.PlayExecutionRightArmHolstering(holsteringSeconds, false);
+            }
+            else
+            {
+                yield return new WaitForSeconds(holsteringSeconds);
             }
 
             yield return new WaitForSeconds(config.ExecutionKillDelaySeconds);
@@ -314,46 +323,48 @@ namespace Week14.Combat
             }
         }
 
-        private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget, Vector2 aimDirection)
+        private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget)
         {
             PlayerCombatConfig config = context.Config;
             int shotCount = Mathf.Max(0, config.ExecutionFlourishShotCount);
             float interval = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             for (int i = 0; i < shotCount; i++)
             {
-                context.Visual?.PlayShot();
+                Transform fireOrigin = rig.GetRightFireOrigin();
+                Vector2 aimDirection = executionTarget != null
+                    ? (Vector2)executionTarget.transform.position - (Vector2)fireOrigin.position
+                    : Vector2.right;
+                aimDirection = aimDirection.sqrMagnitude > 0.0001f
+                    ? aimDirection.normalized
+                    : Vector2.right;
+
+                if (context.Visual != null)
+                {
+                    yield return context.Visual.PlayExecutionRightArmHolstering(interval, true);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(interval);
+                }
+
                 SoundManager.PlaySfx("PlayerShot");
                 FireExecutionFlourishShot(executionTarget, aimDirection);
-                yield return new WaitForSeconds(interval);
             }
         }
 
         private void FireExecutionFlourishShot(ExecutionTarget executionTarget, Vector2 aimDirection)
         {
             PlayerCombatConfig config = context.Config;
-            Transform fireOrigin = rig.GetLeftFireOrigin();
+            Transform fireOrigin = rig.GetRightFireOrigin();
             if (fireOrigin == null || config == null)
             {
                 return;
             }
 
-            PlayerProjectile flourishShot = PlayerProjectile.Spawn(
-                config.ProjectilePrefab,
-                fireOrigin.position,
-                aimDirection,
-                context.Owner,
-                config.ProjectileSpeed,
-                config.ProjectileLifetime,
-                config.ProjectileRadius,
-                0,
-                config.ExecutionShotColor,
-                false);
-            if (flourishShot != null)
-            {
-                Color muzzleFlashColor = Color.Lerp(config.ExecutionShotColor, Color.white, 0.65f);
-                muzzleFlashColor.a = 1f;
-                ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, aimDirection, muzzleFlashColor, 1.55f);
-            }
+            Vector3 impactPosition = executionTarget != null
+                ? executionTarget.transform.position
+                : fireOrigin.position + (Vector3)(aimDirection * config.ExecutionRange);
+            PlayExecutionParryShotVfx(fireOrigin.position, impactPosition, aimDirection, config);
 
             if (executionTarget != null)
             {
@@ -361,9 +372,15 @@ namespace Week14.Combat
             }
         }
 
-        private Transform GetLeftGunOrigin()
+        private static void PlayExecutionParryShotVfx(
+            Vector3 firePosition,
+            Vector3 impactPosition,
+            Vector2 direction,
+            PlayerCombatConfig config)
         {
-            return context.LeftGunOrigin != null ? context.LeftGunOrigin : context.PlayerTransform;
+            ProjectileVfx.PlayShotLine(firePosition, impactPosition, config.ParryEffectColor, 0.08f, 0.06f);
+            ProjectileVfx.PlayMuzzleFlash(firePosition, direction, config.ParryEffectColor, 1f);
         }
+
     }
 }

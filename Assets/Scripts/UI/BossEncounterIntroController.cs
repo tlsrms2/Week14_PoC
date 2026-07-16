@@ -575,6 +575,8 @@ namespace Week14.UI
                 cameraMouseLookLocked = true;
             }
 
+            player?.Visual?.SetLeftArmVisible(false);
+
             if (introControlAcquired || boss == null)
             {
                 return;
@@ -589,6 +591,8 @@ namespace Week14.UI
 
         private void ReleaseIntroControl(bool startCombat)
         {
+            player?.Visual?.SetLeftArmVisible(true);
+
             if (introControlAcquired)
             {
                 player?.PopExternalMovementLock();
