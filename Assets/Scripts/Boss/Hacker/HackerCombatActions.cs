@@ -245,7 +245,11 @@ namespace Week14.Enemy
                 return;
             }
 
-            UnityEngine.Object.Instantiate(consecutiveSlamDustPrefab, context.Boss.transform.position, Quaternion.identity);
+            GameObject dust = UnityEngine.Object.Instantiate(
+                consecutiveSlamDustPrefab,
+                context.Boss.transform.position,
+                Quaternion.identity);
+            BossSorting.ApplyToChildren(dust);
         }
 
         internal static IEnumerator Wait(BossActionContext context, float seconds)

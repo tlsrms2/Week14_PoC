@@ -255,6 +255,10 @@ namespace Week14.UI
             {
                 renderer.color = color;
             }
+            if (bossAI != null || turret != null)
+            {
+                BossSorting.Apply(renderer);
+            }
             renderer.sortingOrder = sortingOrder;
         }
 

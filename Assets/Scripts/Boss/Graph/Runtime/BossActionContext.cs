@@ -957,11 +957,13 @@ namespace Week14.Enemy
             }
 
             Transform parent = parentToBoss && Boss != null ? Boss.transform : null;
-            return UnityEngine.Object.Instantiate(
+            GameObject instance = UnityEngine.Object.Instantiate(
                 prefab,
                 OriginPosition + offset,
                 Quaternion.Euler(rotationEuler),
                 parent);
+            BossSorting.ApplyToChildren(instance);
+            return instance;
         }
 
         public IEnumerator WaitSeconds(float seconds)

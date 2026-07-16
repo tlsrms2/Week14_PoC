@@ -132,6 +132,7 @@ namespace Week14.Enemy
             if (prefab != null)
             {
                 GameObject instance = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
+                BossSorting.ApplyToChildren(instance);
                 UnityEngine.Object.Destroy(instance, boss.FinalDeathExplosionPrefabLifetimeSecondsForSequence);
                 return;
             }

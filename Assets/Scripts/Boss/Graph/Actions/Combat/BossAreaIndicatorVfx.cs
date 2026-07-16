@@ -35,6 +35,7 @@ namespace Week14.Enemy
             SpriteRenderer bgRenderer = bgGo.AddComponent<SpriteRenderer>();
             bgRenderer.sprite = sprite;
             bgRenderer.color = backgroundColor;
+            BossSorting.Apply(bgRenderer);
             bgRenderer.sortingOrder = sortingOrder;
 
             GameObject fillGo = new("Fill");
@@ -43,6 +44,7 @@ namespace Week14.Enemy
             SpriteRenderer fillRenderer = fillGo.AddComponent<SpriteRenderer>();
             fillRenderer.sprite = sprite;
             fillRenderer.color = fillColor;
+            BossSorting.Apply(fillRenderer);
             fillRenderer.sortingOrder = sortingOrder + 1;
             fillTransform = fillGo.transform;
         }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -516,6 +517,7 @@ namespace Week14.Combat
                 GameObject dashObject = new($"{PathIndicatorName}_{pathIndicatorDashes.Count:00}");
                 dashObject.transform.SetParent(pathIndicatorRoot, false);
                 LineRenderer dash = dashObject.AddComponent<LineRenderer>();
+                BossSorting.Apply(dash);
                 dash.useWorldSpace = true;
                 dash.loop = false;
                 dash.positionCount = 2;
@@ -542,6 +544,7 @@ namespace Week14.Combat
                 GameObject lineObject = new($"{HomingAimReticleName}_{homingAimReticleLines.Count:00}");
                 lineObject.transform.SetParent(pathIndicatorRoot, false);
                 LineRenderer line = lineObject.AddComponent<LineRenderer>();
+                BossSorting.Apply(line);
                 line.useWorldSpace = true;
                 line.loop = false;
                 line.positionCount = 2;
@@ -568,6 +571,7 @@ namespace Week14.Combat
                 GameObject lineObject = new($"RadialSplitIndicator_{radialSplitIndicatorLines.Count:00}");
                 lineObject.transform.SetParent(pathIndicatorRoot, false);
                 LineRenderer line = lineObject.AddComponent<LineRenderer>();
+                BossSorting.Apply(line);
                 line.useWorldSpace = true;
                 line.loop = false;
                 line.positionCount = 2;

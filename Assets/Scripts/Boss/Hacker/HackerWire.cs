@@ -507,6 +507,7 @@ namespace Week14.Enemy
             line.endWidth = Mathf.Max(0.01f, width);
             line.startColor = color;
             line.endColor = color;
+            BossSorting.Apply(line);
             line.sortingOrder = 20;
             Shader shader = Shader.Find("Sprites/Default");
             if (shader != null)

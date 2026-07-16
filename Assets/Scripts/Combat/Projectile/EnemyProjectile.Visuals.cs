@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -30,6 +31,8 @@ namespace Week14.Combat
 
         private void EnsureProjectileShape()
         {
+            BossSorting.ApplyToChildren(gameObject);
+
             SpriteRenderer visualRenderer = GetProjectileVisualRenderer();
             if (visualRenderer != null)
             {

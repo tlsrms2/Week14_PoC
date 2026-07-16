@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -79,6 +80,7 @@ namespace Week14.Combat
             SpriteRenderer spriteRenderer = child.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = rangeSprite;
             spriteRenderer.color = color;
+            BossSorting.Apply(spriteRenderer);
             spriteRenderer.sortingOrder = sortingOrder;
             return spriteRenderer;
         }

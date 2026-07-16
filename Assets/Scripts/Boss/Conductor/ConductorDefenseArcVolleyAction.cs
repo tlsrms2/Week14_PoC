@@ -173,6 +173,7 @@ namespace Week14.Enemy
             line.endWidth = Mathf.Max(0.001f, shieldLineWidth);
             line.startColor = shieldColor;
             line.endColor = shieldColor;
+            BossSorting.Apply(line);
             line.sortingOrder = shieldSortingOrder;
 
             int segments = Mathf.Clamp(shieldSegments, 8, 64);
