@@ -154,7 +154,7 @@ namespace Week14.Skills
 
             if (equippedSkills.TryGetValue(ActiveSlot, out BaseSkillSO equipped) && equipped == skill)
             {
-                UnequipSkill(ActiveSlot);
+                return false;
             }
 
             return GameSaveManager.RefundSkill(skillId, skill.Price);
@@ -165,6 +165,15 @@ namespace Week14.Skills
             if (!equippedSkills.Remove(slot))
             {
                 return false;
+            }
+
+            if (slot == ActiveSlot && defaultSkill != null)
+            {
+                equippedSkills[slot] = defaultSkill;
+                ResetCooldown();
+                GameSaveManager.SetEquippedSkillId((int)slot, defaultSkill.SkillId);
+                SkillEquipped?.Invoke(slot, defaultSkill);
+                return true;
             }
 
             if (slot == ActiveSlot)
@@ -275,11 +284,11 @@ namespace Week14.Skills
             CooldownChanged?.Invoke(cooldownRemaining, skill != null ? skill.CooldownSeconds : -1f);
         }
 
-        // 저장 기록이 아예 없을 때(진짜 최초 실행)만 기본 스킬을 장착합니다. 플레이어가 명시적으로 해제한 뒤라면
-        // (저장된 skillId가 null이어도) 기록 자체는 존재하므로, 껐다 켜도 해제 상태가 유지됩니다.
+        // 기본 스킬이 있으면 ActiveSlot은 항상 하나를 장착합니다. 예전 세이브에 명시적 해제(null)가
+        // 남아 있어도 여기서 기본 스킬로 보정합니다.
         private void EquipDefaultSkillIfNeeded()
         {
-            if (defaultSkill == null || GameSaveManager.HasEquippedSkillEntry((int)ActiveSlot))
+            if (defaultSkill == null || GetEquippedSkill(ActiveSlot) != null)
             {
                 return;
             }

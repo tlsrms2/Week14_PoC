@@ -109,6 +109,16 @@ namespace Week14.Skills
 
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
             skill?.RemovePassive(playerObject);
+
+            if (slot == PassiveSkillSlot.Passive1 && defaultPassiveSkill != null)
+            {
+                equippedSkills[slot] = defaultPassiveSkill;
+                defaultPassiveSkill.ApplyPassive(playerObject);
+                GameSaveManager.SetEquippedPassiveSkillId((int)slot, defaultPassiveSkill.SkillId);
+                SkillEquipped?.Invoke(slot, defaultPassiveSkill);
+                return true;
+            }
+
             equippedSkills.Remove(slot);
 
             GameSaveManager.SetEquippedPassiveSkillId((int)slot, null);
@@ -128,8 +138,7 @@ namespace Week14.Skills
             {
                 if (equippedSkills.TryGetValue(slot, out BasePassiveSkillSO equipped) && equipped == skill)
                 {
-                    UnequipSkill(slot);
-                    break;
+                    return false;
                 }
             }
 
@@ -150,11 +159,11 @@ namespace Week14.Skills
             }
         }
 
-        // 저장 기록이 아예 없을 때(진짜 최초 실행)만 기본 패시브 스킬을 장착합니다. 플레이어가 명시적으로 해제한 뒤라면
-        // (저장된 skillId가 null이어도) 기록 자체는 존재하므로, 껐다 켜도 해제 상태가 유지됩니다.
+        // 기본 패시브가 있으면 Passive1 슬롯은 항상 하나를 장착합니다. 예전 세이브에 명시적 해제(null)가
+        // 남아 있어도 여기서 기본 패시브로 보정합니다.
         private void EquipDefaultPassiveSkillIfNeeded()
         {
-            if (defaultPassiveSkill == null || GameSaveManager.HasEquippedPassiveSkillEntry((int)PassiveSkillSlot.Passive1))
+            if (defaultPassiveSkill == null || GetEquippedSkill(PassiveSkillSlot.Passive1) != null)
             {
                 return;
             }
