@@ -592,7 +592,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497978
     sequences: []
-    editorPosition: {x: -250, y: 474}
+    editorPosition: {x: -271, y: 474}
   - nodeId: Fire Homing Dagger9
     nodeGuid: dfbd5e33a7dc4677a51e1d549b07f3c2
     nodeKind: 0
@@ -2563,7 +2563,7 @@ MonoBehaviour:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.05
+        reappearSeconds: 0.01
     - rid: 4705778193230463115
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2916,7 +2916,7 @@ MonoBehaviour:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.1
+        reappearSeconds: 0.01
     - rid: 4705778196242497661
       type: {class: FireProjectileBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3126,7 +3126,7 @@ MonoBehaviour:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.05
+        reappearSeconds: 0.01
     - rid: 4705778196242497745
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3198,7 +3198,7 @@ MonoBehaviour:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.05
+        reappearSeconds: 0.01
     - rid: 4705778196242497781
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3744,7 +3744,7 @@ MonoBehaviour:
         teleportRadius: 2
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.05
+        reappearSeconds: 0.01
     - rid: 4705778196242497893
       type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4442,7 +4442,7 @@ MonoBehaviour:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.3
+        reappearSeconds: 0.01
     - rid: 4705778196242497990
       type: {class: AssassinRecallDaggersWithParryBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5154,7 +5154,7 @@ MonoBehaviour:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
-        reappearSeconds: 0.3
+        reappearSeconds: 0.01
     - rid: 4705778196242498015
       type: {class: AssassinRecallDaggersWithParryBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

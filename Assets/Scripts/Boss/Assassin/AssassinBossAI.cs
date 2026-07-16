@@ -89,13 +89,64 @@ namespace Week14.Enemy
             SoundManager.PlayBgm("AssassinBgm");
         }
 
-        // 페이즈가 넘어가면(목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던 단검도
-        // 전부 정리한다 — 다음 페이즈를 은신 상태/단검이 쌓인 채로 시작하지 않도록 하기 위함.
+        // 페이즈가 넘어가면(처형 성공으로 목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던
+        // 단검과 아직 발사 대기열에 남아있는 분신도 전부 정리한다 — 다음 페이즈를 은신 상태/단검/분신이
+        // 남아있는 채로 시작하지 않도록 하기 위함. OnBossDied/OnDisable이 하는 정리와 동일한 묶음이다.
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             RequestStealth(false);
+            isShooterAttackInProgress = false;
+            ClearCloneShooterAttackFlash();
+            EndOwnAttackFlash();
             ClearAssassinDaggers();
+            ClearCloneShooterQueue();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
+        }
+
+        // 체력이 바닥나 처형 판정 구간(HP Empty)에 들어가는 순간 호출된다. 페이즈 전환 때 쓰는
+        // RequestStealth와 달리 다음 LateUpdate까지 미루지 않고 그 자리에서 즉시 은신을 풀고 알파도
+        // 바로 완전히 보이게 만든다 — 실행 판정 구간에서는 페이드 연출 없이 즉시 노출돼야 하기 때문.
+        protected override void OnHpEmptyBegan()
+        {
+            ForceExitStealthImmediate();
+            base.OnHpEmptyBegan();
+        }
+
+        // 그래프 코루틴 실행 도중이 아니라 보스 상태 전이 코드(BeginHpEmptyForState)에서 호출되므로,
+        // StopGraphPattern을 바로 불러도 재진입 문제가 없다(은신 전환을 다음 프레임으로 미루는 이유는
+        // 그래프 액션의 Execute() 코루틴 안에서 호출될 수 있는 RequestStealth에만 해당한다).
+        private void ForceExitStealthImmediate()
+        {
+            pendingStealthChange = false;
+            teleportVisibilityOverrideActive = false;
+            stealthVisibilityOverrideActive = false;
+
+            if (!isStealthed)
+            {
+                return;
+            }
+
+            isStealthed = false;
+            SnapStealthAlphaToVisible();
+            StopGraphPattern(true);
+        }
+
+        private void SnapStealthAlphaToVisible()
+        {
+            SetAlphaImmediate(stealthVisualTargetA, 1f);
+            SetAlphaImmediate(stealthVisualTargetB, 1f);
+        }
+
+        private static void SetAlphaImmediate(SpriteRenderer renderer, float alpha)
+        {
+            if (renderer == null)
+            {
+                return;
+            }
+
+            Color color = renderer.color;
+            color.a = alpha;
+            renderer.color = color;
         }
 
         protected override void OnBossDied()
