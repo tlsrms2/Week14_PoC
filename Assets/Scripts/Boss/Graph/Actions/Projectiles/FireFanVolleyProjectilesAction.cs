@@ -69,6 +69,7 @@ namespace Week14.Enemy
             int count = Mathf.Max(1, projectilesPerVolley);
             float centerIndex = (count - 1) * 0.5f;
             bool firedAny = false;
+            EnemyProjectile firstFiredProjectile = null;
 
             for (int i = 0; i < count; i++)
             {
@@ -86,6 +87,11 @@ namespace Week14.Enemy
                 if (firedProjectile != null)
                 {
                     firedAny = true;
+                    if (firstFiredProjectile == null)
+                    {
+                        firstFiredProjectile = firedProjectile;
+                    }
+
                     context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                 }
             }
@@ -95,7 +101,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlayMuzzleFlashIfEnabled(effects, aimOrigin, lockedDirection);
+            context.PlayMuzzleFlashIfEnabled(effects, firstFiredProjectile, lockedDirection);
             context.PlayCameraShakeIfEnabled(effects, lockedDirection);
             context.PlaySfx(fireSfxId);
         }

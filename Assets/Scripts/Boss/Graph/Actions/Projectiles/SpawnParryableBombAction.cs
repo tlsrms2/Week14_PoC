@@ -73,7 +73,6 @@ namespace Week14.Enemy
             Vector3 explosionCenter = Vector3.zero;
             float explosionRadius = 0f;
             int explosionDamage = 0;
-            Color explosionColor = Color.white;
 
             void OnBombDestroyed(EnemyProjectile destroyedProjectile, EnemyProjectileDestroyReason reason, Vector3 __)
             {
@@ -83,7 +82,6 @@ namespace Week14.Enemy
                     explosionCenter = parryBomb.ExplosionCenter;
                     explosionRadius = parryBomb.ExplosionRadius;
                     explosionDamage = parryBomb.ExplosionDamage;
-                    explosionColor = parryBomb.ExplosionColor;
                     hasExplosionConfig = true;
                 }
 
@@ -114,8 +112,6 @@ namespace Week14.Enemy
             {
                 yield return context.WaitForAnimationEvent(impactEventId, impactEventTimeoutSeconds);
             }
-
-            ProjectileVfx.PlayHogExplosion(explosionCenter, explosionColor, Mathf.Max(1f, explosionRadius));
 
             if (explosionDamage <= 0)
             {

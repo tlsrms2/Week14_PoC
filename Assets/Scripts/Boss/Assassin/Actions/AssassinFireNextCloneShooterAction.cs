@@ -167,7 +167,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, origin);
-            context.PlayMuzzleFlashIfEnabled(effects, origin, direction);
+            context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);
         }
     }

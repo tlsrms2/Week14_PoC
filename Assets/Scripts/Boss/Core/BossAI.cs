@@ -28,9 +28,6 @@ namespace Week14.Enemy
         [SerializeField] private string deathTriggerName = "Die";
         [SerializeField, Min(0f)] private float finalDeathExplosionSeconds = 1.4f;
         [SerializeField, Min(1)] private int finalDeathExplosionCount = 10;
-        [SerializeField, Min(0.1f)] private float finalDeathExplosionScale = 1.25f;
-        [SerializeField, Min(0)] private int finalDeathExplosionSparkCount = 24;
-        [SerializeField] private Color finalDeathExplosionColor = new(1f, 0.55f, 0.12f, 1f);
         [Tooltip("지정하면 절차적 스파크/연기 이펙트 대신 이 프리팹을 각 폭발 위치에 생성합니다.")]
         [SerializeField] private GameObject finalDeathExplosionPrefab;
         [Tooltip("프리팹으로 생성된 폭발 오브젝트가 파괴되기까지의 시간(초)입니다.")]
@@ -159,6 +156,8 @@ namespace Week14.Enemy
         public Color StaggeredColor => ActiveColorSettings != null ? ActiveColorSettings.StaggeredColor : staggeredColor;
         public Color BodyHitColor => ActiveEffectData != null ? ActiveEffectData.EnemyBodyHitColor : new Color(1f, 0.35f, 0.25f, 1f);
         public float BodyHitColorSeconds => ActiveEffectData != null ? ActiveEffectData.BodyHitColorSeconds : 0.08f;
+        internal GameObject EnemyHitVfxPrefab => ActiveEffectData != null ? ActiveEffectData.EnemyHitVfxPrefab : null;
+        internal GameObject EnemyMuzzleFlashVfxPrefab => BossMuzzleFlashVfxPrefab;
         public Color StatusBarBackgroundColor => ActiveColorSettings != null ? ActiveColorSettings.StatusBarBackgroundColor : statusBarBackgroundColor;
         public Color HpBarColor => ActiveColorSettings != null ? ActiveColorSettings.HpBarColor : hpBarColor;
         public Color EmptyHpBarColor => ActiveColorSettings != null ? ActiveColorSettings.EmptyHpBarColor : emptyHpBarColor;
@@ -168,6 +167,7 @@ namespace Week14.Enemy
         public Color ExecutionIndicatorColor => ActiveColorSettings != null ? ActiveColorSettings.ExecutionIndicatorColor : executionIndicatorColor;
 
         protected CombatEffectData EffectData => ActiveEffectData;
+        protected virtual GameObject BossMuzzleFlashVfxPrefab => null;
         protected virtual BossGraphAsset GraphAsset => null;
         protected virtual BossProjectileSettings ResolveGraphProjectileSettings(string projectileName) => null;
         // 페이즈에 ForcedPatternId가 지정돼 있을 때, 지금 그 패턴을 무조건 다음 패턴으로 강제 선택할지
@@ -372,7 +372,7 @@ namespace Week14.Enemy
             {
                 // 그로기 상태에서는 총격으로 목숨이 깎이지 않고 이펙트만 재생됩니다.
                 // 페이즈 전환은 오직 '처형 연출'이 끝났을 때 외부에서 TryConsumeLife()를 호출하여 처리합니다.
-                PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+                PlayEnemyHitVfx(hitPosition, hitDirection);
                 PlayEnemyHitCameraImpact(hitDirection);
                 return true;
             }
@@ -385,7 +385,7 @@ namespace Week14.Enemy
             hpGauge.TrySpend(bulletDamage, BulletChangeSource.Hit);
 
             FlashBodyHitColor();
-            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            PlayEnemyHitVfx(hitPosition, hitDirection);
             PlayEnemyHitCameraImpact(hitDirection);
             OnPlayerHitAfterDamage(bulletDamage, strongHit, hitPosition, hitDirection, hitColor);
             return true;
@@ -656,9 +656,6 @@ namespace Week14.Enemy
         internal string DeathTriggerNameForSequence => deathTriggerName;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
-        internal float FinalDeathExplosionScaleForSequence => finalDeathExplosionScale;
-        internal int FinalDeathExplosionSparkCountForSequence => finalDeathExplosionSparkCount;
-        internal Color FinalDeathExplosionColorForSequence => finalDeathExplosionColor;
         internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;
         internal float FinalDeathExplosionPrefabLifetimeSecondsForSequence => finalDeathExplosionPrefabLifetimeSeconds;
         internal Transform FinalDeathExplosionAreaCenterForSequence =>
@@ -841,8 +838,12 @@ namespace Week14.Enemy
 
             if (muzzleFlashScale > 0f)
             {
-                Color muzzleFlashColor = color == Color.clear ? Color.white : color;
-                ProjectileVfx.PlayMuzzleFlash(muzzleFlashPosition ?? position, direction, muzzleFlashColor, muzzleFlashScale);
+                ProjectileVfx.PlayPrefab(
+                    EnemyMuzzleFlashVfxPrefab,
+                    muzzleFlashPosition ?? projectile.transform.position,
+                    direction,
+                    bodyRoot != null ? bodyRoot : transform,
+                    muzzleFlashScale);
             }
 
             return projectile;
@@ -869,7 +870,7 @@ namespace Week14.Enemy
                 suppressHoming,
                 chargeSecondsOverride,
                 radiusOverride,
-                origin,
+                null,
                 muzzleFlashScale,
                 null);
         }
@@ -1104,28 +1105,18 @@ namespace Week14.Enemy
             }
 
             FlashBodyHitColor();
-            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            PlayEnemyHitVfx(hitPosition, hitDirection);
             PlayEnemyHitCameraImpact(hitDirection);
         }
 
-        private void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        private void PlayEnemyHitVfx(Vector3 hitPosition, Vector2 hitDirection)
         {
-            CombatEffectData activeEffectData = ActiveEffectData;
-            Color sparkColor = activeEffectData != null ? activeEffectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);
-            Color backSparkColor = activeEffectData != null ? activeEffectData.AttackImpactBackSparkColor : Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
-            Color flameColor = activeEffectData != null ? activeEffectData.AttackImpactFlameColor : backSparkColor;
-            Color ringColor = activeEffectData != null ? activeEffectData.AttackImpactRingColor : Color.Lerp(hitColor, Color.white, 0.35f);
-            ProjectileVfx.PlayPlayerAttackImpact(
+            ProjectileVfx.PlayPrefab(
+                EnemyHitVfxPrefab,
                 hitPosition,
                 hitDirection,
-                sparkColor,
-                backSparkColor,
-                flameColor,
-                ringColor,
-                activeEffectData != null ? activeEffectData.AttackImpactSparkCount : 14,
-                activeEffectData != null ? activeEffectData.AttackImpactBackSparkCount : 6,
-                activeEffectData != null ? activeEffectData.AttackImpactFlameCount : 8,
-                activeEffectData != null ? activeEffectData.AttackImpactEffectScale : 0.65f);
+                bodyRoot != null ? bodyRoot : transform,
+                followRotation: false);
         }
 
         private void FlashBodyHitColor()

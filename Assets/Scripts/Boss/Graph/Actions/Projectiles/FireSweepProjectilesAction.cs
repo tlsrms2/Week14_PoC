@@ -67,7 +67,7 @@ namespace Week14.Enemy
 
                 if (firedProjectile != null)
                 {
-                    context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+                    context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
                     context.PlayCameraShakeIfEnabled(effects, finalDirection);
                     context.PlaySfx(fireSfxId);
                     context.PlaySfxOnLaunch(firedProjectile, launchSfxId);

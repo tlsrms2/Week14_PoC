@@ -426,17 +426,12 @@ namespace Week14.Enemy
                     BeginStagger();
                 }
 
-                ProjectileVfx.PlayPlayerAttackImpact(
+                ProjectileVfx.PlayPrefab(
+                    effectData?.EnemyHitVfxPrefab,
                     hitPosition,
                     hitDirection,
-                    GetAttackImpactSparkColor(hitColor),
-                    GetAttackImpactBackSparkColor(hitColor),
-                    GetAttackImpactFlameColor(hitColor),
-                    GetAttackImpactRingColor(hitColor),
-                    effectData != null ? effectData.AttackImpactSparkCount : 14,
-                    effectData != null ? effectData.AttackImpactBackSparkCount : 6,
-                    effectData != null ? effectData.AttackImpactFlameCount : 8,
-                    effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                    transform,
+                    followRotation: false);
                 PlayEnemyHitCameraImpact(hitDirection);
                 return true;
             }
@@ -460,17 +455,12 @@ namespace Week14.Enemy
                 BeginStagger();
             }
 
-            ProjectileVfx.PlayPlayerAttackImpact(
+            ProjectileVfx.PlayPrefab(
+                effectData?.EnemyHitVfxPrefab,
                 hitPosition,
                 hitDirection,
-                GetAttackImpactSparkColor(hitColor),
-                GetAttackImpactBackSparkColor(hitColor),
-                GetAttackImpactFlameColor(hitColor),
-                GetAttackImpactRingColor(hitColor),
-                effectData != null ? effectData.AttackImpactSparkCount : 14,
-                effectData != null ? effectData.AttackImpactBackSparkCount : 6,
-                effectData != null ? effectData.AttackImpactFlameCount : 8,
-                effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                transform,
+                followRotation: false);
             PlayEnemyHitCameraImpact(hitDirection);
             return true;
         }
@@ -483,17 +473,12 @@ namespace Week14.Enemy
             }
 
             FlashBodyHitColor();
-            ProjectileVfx.PlayPlayerAttackImpact(
+            ProjectileVfx.PlayPrefab(
+                effectData?.EnemyHitVfxPrefab,
                 hitPosition,
                 hitDirection,
-                GetAttackImpactSparkColor(hitColor),
-                GetAttackImpactBackSparkColor(hitColor),
-                GetAttackImpactFlameColor(hitColor),
-                GetAttackImpactRingColor(hitColor),
-                effectData != null ? effectData.AttackImpactSparkCount : 14,
-                effectData != null ? effectData.AttackImpactBackSparkCount : 6,
-                effectData != null ? effectData.AttackImpactFlameCount : 8,
-                effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                transform,
+                followRotation: false);
             PlayEnemyHitCameraImpact(hitDirection);
         }
 
@@ -2333,26 +2318,6 @@ namespace Week14.Enemy
             }
         }
 
-        private Color GetAttackImpactSparkColor(Color hitColor)
-        {
-            return effectData != null ? effectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);
-        }
-
-        private Color GetAttackImpactBackSparkColor(Color hitColor)
-        {
-            return effectData != null ? effectData.AttackImpactBackSparkColor : Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
-        }
-
-        private Color GetAttackImpactFlameColor(Color hitColor)
-        {
-            return effectData != null ? effectData.AttackImpactFlameColor : GetAttackImpactBackSparkColor(hitColor);
-        }
-
-        private Color GetAttackImpactRingColor(Color hitColor)
-        {
-            return effectData != null ? effectData.AttackImpactRingColor : Color.Lerp(hitColor, Color.white, 0.35f);
-        }
-
         private Color GetBodyHitColor()
         {
             return effectData != null ? effectData.EnemyBodyHitColor : bodyHitColor;
@@ -2472,7 +2437,7 @@ namespace Week14.Enemy
                     firedProjectile.ConfigurePathIndicatorSuppressed(true);
                 }
 
-                fireSpec.PlayEffects(origin, direction);
+                fireSpec.PlayEffects(origin, firedProjectile, direction, transform);
             }
 
             return firedProjectile;

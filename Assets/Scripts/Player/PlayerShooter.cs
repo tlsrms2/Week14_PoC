@@ -151,7 +151,7 @@ namespace Week14.Combat
 
             Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
             ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
-            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, beamColor, 1.2f);
+            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 1.2f);
             context.Visual?.PlayShot();
             if (!string.IsNullOrEmpty(fireSfxId))
             {
@@ -185,7 +185,14 @@ namespace Week14.Combat
                     continue;
                 }
 
-                PlayerProjectile.TryApplyDamageToHealth(targetHealth, damage, false, targetHealth.transform.position, direction, Color.white);
+                PlayerProjectile.TryApplyDamageToHealth(
+                    targetHealth,
+                    damage,
+                    false,
+                    targetHealth.transform.position,
+                    direction,
+                    Color.white,
+                    context.Config?.EnemyHitVfxPrefab);
             }
         }
 
@@ -352,7 +359,14 @@ namespace Week14.Combat
                     continue;
                 }
 
-                PlayerProjectile.TryApplyDamageToHealth(targetHealth, damage, false, targetHealth.transform.position, direction, Color.white);
+                PlayerProjectile.TryApplyDamageToHealth(
+                    targetHealth,
+                    damage,
+                    false,
+                    targetHealth.transform.position,
+                    direction,
+                    Color.white,
+                    context.Config?.EnemyHitVfxPrefab);
             }
         }
 
@@ -469,7 +483,7 @@ namespace Week14.Combat
 
             if (projectile == null) return;
 
-            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, config.AttackEffectColor, 0.9f);
+            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
             SoundManager.PlaySfx("SniperFire");
             SoundManager.PlaySfx("BulletLoss");
@@ -516,7 +530,7 @@ namespace Week14.Combat
                     true);
             }
 
-            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, baseDirection, config.AttackEffectColor, 0.9f);
+            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, baseDirection, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(pelletCount >= 2 ? "ShotgunFire" : "PlayerShot");
             SoundManager.PlaySfx("BulletLoss");
@@ -579,7 +593,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, config.AttackEffectColor, 0.9f);
+            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
             SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
             SoundManager.PlaySfx("BulletLoss");
@@ -627,7 +641,7 @@ namespace Week14.Combat
                 return false;
             }
 
-            ProjectileVfx.PlayMuzzleFlash(fireOrigin.position, direction, color, 0.9f);
+            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
             SoundManager.PlaySfx("PlayerPowerShot");
             return true;

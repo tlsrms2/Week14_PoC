@@ -204,7 +204,7 @@ namespace Week14.Tutorial
             }
         }
 
-        public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
         {
             EnsureReferences();
             if (!IsPlayerTargetable)
@@ -229,7 +229,7 @@ namespace Week14.Tutorial
             }
 
             FlashBodyHitColor();
-            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            PlayEnemyHitVfx(hitPosition, hitDirection);
             BossAI.PlayEnemyHitCameraImpactForSequence(hitDirection, 0.08f, 0.12f, 0.05f);
             return true;
         }
@@ -829,23 +829,14 @@ namespace Week14.Tutorial
             }
         }
 
-        private void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        private void PlayEnemyHitVfx(Vector3 hitPosition, Vector2 hitDirection)
         {
-            Color sparkColor = effectData != null ? effectData.AttackImpactSparkColor : Color.Lerp(hitColor, Color.white, 0.35f);
-            Color backSparkColor = effectData != null ? effectData.AttackImpactBackSparkColor : Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
-            Color flameColor = effectData != null ? effectData.AttackImpactFlameColor : backSparkColor;
-            Color ringColor = effectData != null ? effectData.AttackImpactRingColor : Color.Lerp(hitColor, Color.white, 0.35f);
-            ProjectileVfx.PlayPlayerAttackImpact(
+            ProjectileVfx.PlayPrefab(
+                effectData?.EnemyHitVfxPrefab,
                 hitPosition,
                 hitDirection,
-                sparkColor,
-                backSparkColor,
-                flameColor,
-                ringColor,
-                effectData != null ? effectData.AttackImpactSparkCount : 14,
-                effectData != null ? effectData.AttackImpactBackSparkCount : 6,
-                effectData != null ? effectData.AttackImpactFlameCount : 8,
-                effectData != null ? effectData.AttackImpactEffectScale : 0.65f);
+                transform,
+                followRotation: false);
         }
 
         private Color BodyHitColor => effectData != null ? effectData.EnemyBodyHitColor : bodyHitColor;

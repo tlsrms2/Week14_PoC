@@ -7,7 +7,6 @@ namespace Week14.Combat
     {
         [SerializeField, Min(0f), Tooltip("폭발 판정 반경입니다.")] private float explosionRadius = 2f;
         [SerializeField, Min(0), Tooltip("폭발 시 플레이어에게 감소시킬 탄환 수입니다.")] private int explosionDamage = 1;
-        [SerializeField, Tooltip("폭발 이펙트 색상입니다.")] private Color explosionColor = new(1f, 0.6f, 0.2f, 1f);
         [SerializeField, Tooltip("폭발 범위를 표시할 원형 스프라이트입니다.")] private Sprite rangeSprite;
         [SerializeField, Tooltip("배경(전체 범위) 색상입니다.")] private Color rangeBackgroundColor = new(1f, 0.2f, 0.1f, 0.25f);
         [SerializeField, Tooltip("중앙에서 차오르는 채움 색상입니다.")] private Color rangeFillColor = new(1f, 0.4f, 0.15f, 0.55f);
@@ -24,7 +23,6 @@ namespace Week14.Combat
 
         public float ExplosionRadius => explosionRadius;
         public int ExplosionDamage => explosionDamage;
-        public Color ExplosionColor => explosionColor;
         public Vector3 ExplosionCenter => ResolveExplosionCenter();
 
         protected override void OnProjectileAwake()

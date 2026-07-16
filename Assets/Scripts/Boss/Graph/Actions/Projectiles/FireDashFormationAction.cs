@@ -140,7 +140,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(spawned, launchSfxId);
             context.PlayOriginBurst(effects, originPosition);
-            context.PlayMuzzleFlashIfEnabled(effects, targetPosition, dashDirection);
+            context.PlayMuzzleFlashIfEnabled(effects, spawned, dashDirection);
         }
 
         private IEnumerator ExecuteParallelLaneTrail(BossActionContext context)
@@ -230,7 +230,7 @@ namespace Week14.Enemy
 
                 context.PlaySfx(fireSfxId);
                 context.PlaySfxOnLaunch(spawned, launchSfxId);
-                context.PlayMuzzleFlashIfEnabled(effects, spawnPosition, launchDirection);
+                context.PlayMuzzleFlashIfEnabled(effects, spawned, launchDirection);
             }
 
             context.PlayOriginBurst(effects, position);

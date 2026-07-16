@@ -10,6 +10,9 @@ namespace Week14.Enemy
 
         [SerializeField] private Animator groggyAnimator;
 
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.HogMuzzleFlashVfxPrefab
+            : null;
         protected override bool RotatesBodyToPlayer => false;
 
         protected override void OnCombatStarted()

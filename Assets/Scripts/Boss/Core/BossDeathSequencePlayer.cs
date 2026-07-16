@@ -137,16 +137,6 @@ namespace Week14.Enemy
                 return;
             }
 
-            ProjectileVfx.PlayHogExplosion(
-                position,
-                boss.FinalDeathExplosionColorForSequence,
-                boss.FinalDeathExplosionScaleForSequence,
-                boss.FinalDeathExplosionSparkCountForSequence);
-            ProjectileVfx.PlayHogSmokeBurst(
-                position,
-                Color.Lerp(boss.FinalDeathExplosionColorForSequence, Color.gray, 0.55f),
-                boss.FinalDeathExplosionScaleForSequence,
-                Mathf.Max(8, boss.FinalDeathExplosionSparkCountForSequence / 2));
         }
 
         private static Vector3 GetRandomDeathExplosionPosition(BossAI boss)
@@ -223,7 +213,7 @@ namespace Week14.Enemy
             SpriteRenderer[] renderers = boss.RenderersForSequence;
             if (renderers == null)
             {
-                return Mathf.Max(0.35f, boss.FinalDeathExplosionScaleForSequence);
+                return 0.35f;
             }
 
             Bounds bounds = default;
@@ -248,7 +238,7 @@ namespace Week14.Enemy
 
             if (!hasBounds)
             {
-                return Mathf.Max(0.35f, boss.FinalDeathExplosionScaleForSequence);
+                return 0.35f;
             }
 
             return Mathf.Max(Mathf.Max(bounds.extents.x, bounds.extents.y), 0.35f);

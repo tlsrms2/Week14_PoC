@@ -7,6 +7,10 @@ namespace Week14.Enemy
 {
     public sealed partial class AssassinBossAI : GraphBossAI
     {
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.AssassinMuzzleFlashVfxPrefab
+            : null;
+
         [Header("Assassin Stealth")]
         [Tooltip("은신 상태에서 사용할 Boss Graph입니다. 통상 상태에서는 GraphBossAI의 기본 Boss Graph를 그대로 사용합니다.")]
         [SerializeField] private BossGraphAsset stealthGraph;

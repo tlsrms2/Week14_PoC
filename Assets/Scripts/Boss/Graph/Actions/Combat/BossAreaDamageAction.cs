@@ -21,9 +21,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.1f)] private float explosionRadius = 2f;
         [Tooltip("범위 안 플레이어에게 줄 피해량(감소시킬 탄환 수)입니다.")]
         [SerializeField, Min(0)] private int explosionDamage = 1;
-        [Tooltip("폭발 이펙트 색상입니다.")]
-        [SerializeField] private Color explosionColor = new(1f, 0.6f, 0.2f, 1f);
-
         [Header("범위 인디케이터")]
         [Tooltip("인디케이터가 차오르는 시간(초)입니다. 이 시간이 지나면 데미지가 발동합니다.")]
         [SerializeField, Min(0.1f)] private float windupSeconds = 1.5f;
@@ -95,7 +92,6 @@ namespace Week14.Enemy
             }
 
             context.PlaySfx(explosionSfxId);
-            ProjectileVfx.PlayHogExplosion(explosionCenter, explosionColor, Mathf.Max(1f, explosionRadius));
 
             if (explosionDamage <= 0)
             {

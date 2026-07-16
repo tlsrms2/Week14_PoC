@@ -358,7 +358,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908196
     sequences: []
-    editorPosition: {x: 16, y: -346}
+    editorPosition: {x: 61, y: -351}
   - nodeId: Stop Movement1
     nodeGuid: 4f166750756041f1bd28bff0851d3141
     nodeKind: 1
@@ -529,7 +529,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897377
     sequences: []
-    editorPosition: {x: -41, y: -211}
+    editorPosition: {x: 61, y: -208}
   - nodeId: Fire Parry Suppression Bait1
     nodeGuid: 3522aa54567742e8b4cf7d6b8729de9b
     nodeKind: 0
@@ -686,66 +686,83 @@ MonoBehaviour:
     selectionMode: 4
     phaseMaxHp: 0
     patternIntervalSeconds: 2
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern8
     signaturePatternId: 
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 2
+      minPatternsPlayed: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 2
+      minPatternsPlayed: 0
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 2
+      minPatternsPlayed: 0
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 2
+      minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 4
     phaseMaxHp: 0
     patternIntervalSeconds: 2
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern5
     signaturePatternId: 
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: Pattern8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
   transitions:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: 266779658870470e92d2caaf9062946e
@@ -1149,7 +1166,7 @@ MonoBehaviour:
     phaseIndex: 0
   parallelEdges: []
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern6
+  debugForcedPatternId: Pattern8
   references:
     version: 2
     RefIds:
@@ -1170,7 +1187,7 @@ MonoBehaviour:
           trailSeconds: 1
           trailWidthMultiplier: 3
         origin:
-          mode: 2
+          mode: 4
           bossChildPath: 
           bossChildPaths:
           - Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_3
@@ -1188,11 +1205,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
@@ -1200,10 +1212,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.5
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1284,11 +1295,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
@@ -1296,10 +1302,9 @@ MonoBehaviour:
             count: 18
           smokeInterval: 0.18
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
-            scale: 1
-            count: 12
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1353,11 +1358,6 @@ MonoBehaviour:
         aimTrackingSeconds: 1.5
         aimSpreadDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
@@ -1366,9 +1366,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
-            scale: 2
-            count: 12
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 4
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1418,22 +1417,16 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
-            color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
+            color: {r: 1, g: 1, b: 1, a: 1}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.24
@@ -1501,22 +1494,16 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
-            color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 1}
+            color: {r: 1, g: 1, b: 1, a: 1}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.24
@@ -1584,11 +1571,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1597,9 +1579,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.24
@@ -1632,11 +1613,6 @@ MonoBehaviour:
           secondBossChildPath: 
           fallbackSpacing: 0.18
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 1}
@@ -1644,10 +1620,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 1
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
+            enabled: 0
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1688,11 +1663,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 1}
@@ -1700,10 +1670,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 1
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
-            scale: 1
-            count: 12
+            enabled: 0
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1753,11 +1722,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1.45
-            count: 28
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1766,9 +1730,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.16
@@ -1836,22 +1799,16 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1.45
-            count: 28
           smoke:
             enabled: 0
-            color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 1}
+            color: {r: 1, g: 1, b: 1, a: 1}
             scale: 1
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 0.78823537, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.16
@@ -1919,11 +1876,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1.45
-            count: 28
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1932,9 +1884,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.16
@@ -2002,11 +1953,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1.45
-            count: 28
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2015,9 +1961,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.16
@@ -2085,11 +2030,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1.45
-            count: 28
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2098,9 +2038,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.16
@@ -2133,11 +2072,6 @@ MonoBehaviour:
           secondBossChildPath: 
           fallbackSpacing: 0.18
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
@@ -2145,15 +2079,14 @@ MonoBehaviour:
             count: 8
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 1
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
+            enabled: 0
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
-            enabled: 1
-            seconds: 0.05
-            distance: 0.06
-            frequency: 0.08
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
     - rid: 2634811931892908235
       type: {class: FireFanEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2189,11 +2122,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
@@ -2202,9 +2130,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
-            scale: 1
-            count: 12
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 1
             seconds: 0.05
@@ -2243,11 +2170,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.4156863, g: 0.4156863, b: 0.4156863, a: 0.6862745}
@@ -2256,9 +2178,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.7803922, b: 0.25882354, a: 1}
-            scale: 1
-            count: 12
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 1
             seconds: 0.05
@@ -2340,11 +2261,6 @@ MonoBehaviour:
         groggySeconds: 3
         spawnSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2353,9 +2269,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2393,11 +2308,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -2405,10 +2315,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.5
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2446,11 +2355,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -2458,10 +2362,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.5
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2503,11 +2406,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -2515,10 +2413,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.5
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2560,11 +2457,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
@@ -2572,10 +2464,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.5
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2621,11 +2512,6 @@ MonoBehaviour:
         fireSfxId: BossNormalShot
         launchSfxId: BossSpecialShot
         effects:
-          explosion:
-            enabled: 1
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
@@ -2633,10 +2519,9 @@ MonoBehaviour:
             count: 15
           smokeInterval: 0.5
           muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
+            enabled: 1
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2678,11 +2563,6 @@ MonoBehaviour:
         aimSpreadDegrees: 24
         launchSfxId: BossNormalShot
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2691,9 +2571,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14

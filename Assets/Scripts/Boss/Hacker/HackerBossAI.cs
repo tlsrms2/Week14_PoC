@@ -35,6 +35,9 @@ namespace Week14.Enemy
     {
         private const string TurretLayerName = "Turret";
 
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.HackerMuzzleFlashVfxPrefab
+            : null;
         protected override bool RotatesBodyToPlayer => false;
 
         [Header("Hacking")]

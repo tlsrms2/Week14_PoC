@@ -889,7 +889,6 @@ namespace Week14.Enemy
 
         public void PlayOriginBurst(BossGraphEffectSettings effects, Vector3 position)
         {
-            PlayExplosionIfEnabled(effects, position);
             PlaySmokeIfEnabled(effects, position);
         }
 
@@ -904,15 +903,39 @@ namespace Week14.Enemy
             nextSmokeAt = Time.time + Mathf.Max(0.01f, effects.SmokeInterval);
         }
 
-        public void PlayMuzzleFlashIfEnabled(BossGraphEffectSettings effects, Vector3 origin, Vector2 direction)
+        public void PlayMuzzleFlashIfEnabled(
+            BossGraphEffectSettings effects,
+            EnemyProjectile projectile,
+            Vector2 direction,
+            Transform followTarget = null)
         {
-            BossGraphParticleEffectSettings muzzleFlash = effects?.MuzzleFlash;
+            if (projectile == null)
+            {
+                return;
+            }
+
+            PlayMuzzleFlashIfEnabled(effects, projectile.transform.position, direction, followTarget);
+        }
+
+        public void PlayMuzzleFlashIfEnabled(
+            BossGraphEffectSettings effects,
+            Vector3 origin,
+            Vector2 direction,
+            Transform followTarget = null)
+        {
+            BossGraphPrefabEffectSettings muzzleFlash = effects?.MuzzleFlash;
             if (muzzleFlash == null || !muzzleFlash.Enabled)
             {
                 return;
             }
 
-            ProjectileVfx.PlayMuzzleFlash(origin, direction, muzzleFlash.Color, muzzleFlash.Scale);
+            Transform resolvedFollowTarget = followTarget;
+            if (resolvedFollowTarget == null && Boss != null)
+            {
+                resolvedFollowTarget = Boss.BodyRoot != null ? Boss.BodyRoot : Boss.transform;
+            }
+
+            ProjectileVfx.PlayPrefab(muzzleFlash.Prefab, origin, direction, resolvedFollowTarget, muzzleFlash.Scale);
         }
 
         public void PlayCameraShakeIfEnabled(BossGraphEffectSettings effects, Vector2 direction)
@@ -1025,17 +1048,6 @@ namespace Week14.Enemy
             }
 
             return animationEventBridge;
-        }
-
-        private static void PlayExplosionIfEnabled(BossGraphEffectSettings effects, Vector3 position)
-        {
-            BossGraphParticleEffectSettings explosion = effects?.Explosion;
-            if (explosion == null || !explosion.Enabled)
-            {
-                return;
-            }
-
-            ProjectileVfx.PlayHogExplosion(position, explosion.Color, explosion.Scale, explosion.Count);
         }
 
         private static void PlaySmokeIfEnabled(BossGraphEffectSettings effects, Vector3 position)

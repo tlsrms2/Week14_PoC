@@ -282,10 +282,9 @@ namespace Week14.Combat
             if (isFinalBossExecution)
             {
                 finalShotLines = PlayFinalExecutionParryShotVfx(
-                    rightFireOrigin.position,
+                    rightFireOrigin,
                     finalImpactPosition,
                     shotLineEnd,
-                    aimDirection,
                     config,
                     presentation.FinalExecutionSortingLayerId,
                     presentation.FinalExecutionBossFrontSortingOrder,
@@ -294,9 +293,8 @@ namespace Week14.Combat
             else
             {
                 PlayExecutionParryShotVfx(
-                    rightFireOrigin.position,
+                    rightFireOrigin,
                     shotLineEnd,
-                    aimDirection,
                     config);
             }
             if (isFinalBossExecution)
@@ -498,7 +496,7 @@ namespace Week14.Combat
             Vector3 impactPosition = executionTarget != null
                 ? executionTarget.transform.position
                 : fireOrigin.position + (Vector3)(aimDirection * config.ExecutionRange);
-            PlayExecutionParryShotVfx(fireOrigin.position, impactPosition, aimDirection, config);
+            PlayExecutionParryShotVfx(fireOrigin, impactPosition, config);
 
             if (executionTarget != null)
             {
@@ -507,25 +505,24 @@ namespace Week14.Combat
         }
 
         private static void PlayExecutionParryShotVfx(
-            Vector3 firePosition,
+            Transform fireOrigin,
             Vector3 impactPosition,
-            Vector2 direction,
             PlayerCombatConfig config)
         {
+            Vector3 firePosition = fireOrigin.position;
             ProjectileVfx.PlayShotLine(firePosition, impactPosition, config.ParryEffectColor, 0.08f, 0.06f);
-            ProjectileVfx.PlayMuzzleFlash(firePosition, direction, config.ParryEffectColor, 1f);
         }
 
         private static GameObject[] PlayFinalExecutionParryShotVfx(
-            Vector3 firePosition,
+            Transform fireOrigin,
             Vector3 impactPosition,
             Vector3 lineEndPosition,
-            Vector2 direction,
             PlayerCombatConfig config,
             int sortingLayerId,
             int frontSortingOrder,
             int backSortingOrder)
         {
+            Vector3 firePosition = fireOrigin.position;
             GameObject frontLine = ProjectileVfx.PlayShotLine(
                 firePosition,
                 impactPosition,
@@ -544,7 +541,6 @@ namespace Week14.Combat
                 backSortingOrder,
                 sortingLayerId,
                 false);
-            ProjectileVfx.PlayMuzzleFlash(firePosition, direction, config.ParryEffectColor, 1f);
             return new[] { frontLine, backLine };
         }
 

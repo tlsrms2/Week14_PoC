@@ -19,6 +19,9 @@ namespace Week14.Enemy
         private Vector3[] facingMirrorBaseLocalPositions;
         private bool facingMirrorChildrenCached;
 
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.MuscleMuzzleFlashVfxPrefab
+            : null;
         protected override bool RotatesBodyToPlayer => false;
 
         protected override void OnCombatStarted()

@@ -32,6 +32,9 @@ namespace Week14.Enemy
         private SpriteRenderer facingSpriteRenderer;
         private static Material movementPathIndicatorMaterial;
 
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.ConductorMuzzleFlashVfxPrefab
+            : null;
         protected override bool RotatesBodyToPlayer => false;
         protected override bool ShouldUseExecutionAvailableBodyColor => false;
         public IReadOnlyList<ConductorConductingPattern> ConductingPatterns => conductingPatterns;

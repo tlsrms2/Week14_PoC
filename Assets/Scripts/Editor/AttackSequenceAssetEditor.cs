@@ -1115,7 +1115,9 @@ internal sealed class BossGraphParticleEffectSettingsDrawer : PropertyDrawer
 
         EditorGUI.indentLevel++;
         lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
-        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, GetDescription(property.name));
+        BossGraphDrawerDescriptionGui.DrawDescription(
+            ref lineRect,
+            "연기 파티클 설정입니다. 사용 여부, 색, 크기, 개수를 정합니다.");
         foreach (string propertyName in PropertyNames)
         {
             BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
@@ -1123,17 +1125,6 @@ internal sealed class BossGraphParticleEffectSettingsDrawer : PropertyDrawer
 
         EditorGUI.indentLevel--;
         EditorGUI.EndProperty();
-    }
-
-    private static string GetDescription(string propertyName)
-    {
-        return propertyName switch
-        {
-            "explosion" => "폭발 파티클 설정입니다. 켜면 발사/생성 지점에서 폭발 파티클을 재생합니다.",
-            "smoke" => "연기 파티클 설정입니다. Smoke Interval은 이 연기가 반복 재생되는 간격입니다.",
-            "muzzleFlash" => "총구 섬광 설정입니다. 켜면 발사 위치와 방향에 맞춰 섬광을 재생합니다.",
-            _ => "파티클 이펙트의 사용 여부, 색, 크기, 개수를 정합니다."
-        };
     }
 }
 
@@ -1193,7 +1184,6 @@ internal sealed class BossGraphCameraShakeSettingsDrawer : PropertyDrawer
 [CustomPropertyDrawer(typeof(BossGraphEffectSettings))]
 internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
 {
-    private const string ExplosionProperty = "explosion";
     private const string SmokeProperty = "smoke";
     private const string SmokeIntervalProperty = "smokeInterval";
     private const string MuzzleFlashProperty = "muzzleFlash";
@@ -1209,7 +1199,6 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
 
         height += EditorGUIUtility.standardVerticalSpacing;
         height += BossGraphDrawerDescriptionGui.InlineDescriptionHeight;
-        height += GetDefaultPropertyHeight(property.FindPropertyRelative(ExplosionProperty));
         height += GetSmokePropertyHeight(property);
         height += GetDefaultPropertyHeight(property.FindPropertyRelative(MuzzleFlashProperty));
         height += GetDefaultPropertyHeight(property.FindPropertyRelative(CameraShakeProperty));
@@ -1231,7 +1220,6 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
         EditorGUI.indentLevel++;
         lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "액션과 함께 재생할 공통 이펙트 묶음입니다. SFX는 각 액션 필드에 그대로 둡니다.");
-        DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(ExplosionProperty));
         DrawSmokeProperty(ref lineRect, property);
         DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(MuzzleFlashProperty));
         DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(CameraShakeProperty));
@@ -1306,6 +1294,7 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
         lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         EditorGUI.indentLevel--;
     }
+
 }
 
 [CustomPropertyDrawer(typeof(AimBossChildAtPlayerAction))]

@@ -28,6 +28,9 @@ namespace Week14.Enemy
         private readonly Dictionary<PlayerCombatController, float> nextFireDamageAtByPlayer = new();
         private int oilIgnitionVersion;
 
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.ArsonistMuzzleFlashVfxPrefab
+            : null;
         protected override bool RotatesBodyToPlayer => false;
 
         protected override void OnCombatStarted()
@@ -686,7 +689,7 @@ namespace Week14.Enemy
                     context.PlaySfx(circleFireSfxId);
                     context.PlaySfxOnLaunch(firedProjectile, circleLaunchSfxId);
                     context.PlayOriginBurst(circleEffects, spawnPosition);
-                    context.PlayMuzzleFlashIfEnabled(circleEffects, spawnPosition, tangentDirection);
+                    context.PlayMuzzleFlashIfEnabled(circleEffects, firedProjectile, tangentDirection);
                     context.PlayCameraShakeIfEnabled(circleEffects, tangentDirection);
                 }
 
@@ -893,7 +896,7 @@ namespace Week14.Enemy
             context.PlaySfx(attackFireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, attackLaunchSfxId);
             context.PlayOriginBurst(attackEffects, spawnPosition);
-            context.PlayMuzzleFlashIfEnabled(attackEffects, spawnPosition, finalDirection);
+            context.PlayMuzzleFlashIfEnabled(attackEffects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(attackEffects, finalDirection);
         }
 
@@ -1064,7 +1067,7 @@ namespace Week14.Enemy
                         context.PlaySfx(fireSfxId);
                         context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                         context.PlayOriginBurst(effects, worldPoints[0]);
-                        context.PlayMuzzleFlashIfEnabled(effects, worldPoints[0], direction);
+                        context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
                         context.PlayCameraShakeIfEnabled(effects, direction);
                     }
 
@@ -1180,7 +1183,7 @@ namespace Week14.Enemy
                     context.PlaySfx(settings.FireSfxId);
                     context.PlaySfxOnLaunch(firedProjectile, settings.LaunchSfxId);
                     context.PlayOriginBurst(settings.Effects, spawnPosition);
-                    context.PlayMuzzleFlashIfEnabled(settings.Effects, spawnPosition, tangentDirection);
+                    context.PlayMuzzleFlashIfEnabled(settings.Effects, firedProjectile, tangentDirection);
                     context.PlayCameraShakeIfEnabled(settings.Effects, tangentDirection);
                 }
 

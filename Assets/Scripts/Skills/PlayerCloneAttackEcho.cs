@@ -181,7 +181,12 @@ namespace Week14.Skills
                     isSkillShot: true);
             }
 
-            ProjectileVfx.PlayMuzzleFlash(origin, direction, cloneTint, 0.8f);
+            ProjectileVfx.PlayPrefab(
+                config.PlayerMuzzleFlashVfxPrefab,
+                origin,
+                direction,
+                cloneVisualRoot.transform,
+                0.8f);
         }
 
         private void FireCloneLaser(Vector2 origin, Vector2 direction, int damage, RailgunWeaponSO railgun)
@@ -195,7 +200,11 @@ namespace Week14.Skills
             DamageEnemiesAlongLine(origin, direction, beamLength, railgun.BeamWidth, damage);
             Vector3 beamEnd = origin + direction * beamLength;
             ProjectileVfx.PlayShotLine(origin, beamEnd, cloneTint, railgun.BeamVisualSeconds, railgun.BeamWidth);
-            ProjectileVfx.PlayMuzzleFlash(origin, direction, cloneTint, 1f);
+            ProjectileVfx.PlayPrefab(
+                owner.Config.PlayerMuzzleFlashVfxPrefab,
+                origin,
+                direction,
+                cloneVisualRoot.transform);
         }
 
         private void SwingCloneBayonet(Vector2 origin, Vector2 direction, float range, int damage, Color flashColor, float flashSeconds)
@@ -669,7 +678,14 @@ namespace Week14.Skills
                 }
 
                 hitTargets[hitCount++] = targetHealth;
-                PlayerProjectile.TryApplyDamageToHealth(targetHealth, damage, true, targetHealth.transform.position, direction, cloneTint);
+                PlayerProjectile.TryApplyDamageToHealth(
+                    targetHealth,
+                    damage,
+                    true,
+                    targetHealth.transform.position,
+                    direction,
+                    cloneTint,
+                    owner?.Config?.EnemyHitVfxPrefab);
             }
         }
 
@@ -733,7 +749,14 @@ namespace Week14.Skills
                     continue;
                 }
 
-                PlayerProjectile.TryApplyDamageToHealth(targetHealth, damage, true, targetHealth.transform.position, direction, cloneTint);
+                PlayerProjectile.TryApplyDamageToHealth(
+                    targetHealth,
+                    damage,
+                    true,
+                    targetHealth.transform.position,
+                    direction,
+                    cloneTint,
+                    owner?.Config?.EnemyHitVfxPrefab);
             }
         }
 

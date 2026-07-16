@@ -165,7 +165,7 @@ namespace Week14.Enemy
                 Vector2 launchDirection = projectile.IncomingDirection.sqrMagnitude > 0.0001f
                     ? projectile.IncomingDirection
                     : aimSpec.GetDirection(context, launchOrigin);
-                context.PlayMuzzleFlashIfEnabled(effects, launchOrigin, launchDirection);
+                context.PlayMuzzleFlashIfEnabled(effects, projectile, launchDirection);
             }
         }
     }

@@ -17,28 +17,16 @@ MonoBehaviour:
   executionShotColor: {r: 1, g: 0.84050083, b: 0, a: 1}
   playerProjectileTrailSeconds: 0.08
   playerProjectileTrailWidthMultiplier: 2.6
-  parrySparkColor: {r: 0.20000002, g: 0.6509804, b: 1, a: 1}
-  parryRingColor: {r: 0.19999999, g: 0.37010992, b: 1, a: 0.75}
-  parryRingGlitterColor: {r: 0.19999999, g: 1, b: 0.9525625, a: 1}
-  parrySparkSeconds: 0.32
-  parryRingSeconds: 0.22
-  parryRingGlitterSeconds: 0.2
-  parrySparkCount: 12
-  parryRingGlitterCount: 8
-  parryFlameCount: 8
-  parryEffectScale: 0.75
-  attackImpactSparkColor: {r: 1, g: 0.92, b: 0.62, a: 1}
-  attackImpactBackSparkColor: {r: 1, g: 0.52, b: 0.12, a: 1}
-  attackImpactFlameColor: {r: 1, g: 0.48, b: 0.08, a: 1}
-  attackImpactRingColor: {r: 1, g: 0.92, b: 0.62, a: 0.72}
-  attackImpactSparkCount: 25
-  attackImpactBackSparkCount: 15
-  attackImpactFlameCount: 16
-  attackImpactEffectScale: 1
-  playerHitSparkCount: 5
-  playerHitBackSparkCount: 12
-  playerHitFlameCount: 6
-  playerHitEffectScale: 0.7
+  playerMuzzleFlashVfxPrefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+  hogMuzzleFlashVfxPrefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
+  muscleMuzzleFlashVfxPrefab: {fileID: 0}
+  hackerMuzzleFlashVfxPrefab: {fileID: 0}
+  assassinMuzzleFlashVfxPrefab: {fileID: 0}
+  arsonistMuzzleFlashVfxPrefab: {fileID: 0}
+  conductorMuzzleFlashVfxPrefab: {fileID: 0}
+  parrySuccessVfxPrefab: {fileID: 3814076209310931853, guid: 639c50148cfed194ba7ce4833513c052, type: 3}
+  enemyHitVfxPrefab: {fileID: 5358599431725786924, guid: 541eb311aac712c4eae92986584e8dd6, type: 3}
+  playerHitVfxPrefab: {fileID: 0}
   playerBodyBulletEmptyColor: {r: 1, g: 0.2, b: 0.12, a: 1}
   playerBodyHitColor: {r: 1, g: 1, b: 1, a: 1}
   enemyBodyHitColor: {r: 1, g: 1, b: 1, a: 1}

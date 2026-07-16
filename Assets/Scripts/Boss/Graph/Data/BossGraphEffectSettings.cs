@@ -18,6 +18,19 @@ namespace Week14.Enemy
     }
 
     [Serializable]
+    public sealed class BossGraphPrefabEffectSettings
+    {
+        [SerializeField] private bool enabled;
+        [Tooltip("생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 진행 방향입니다.")]
+        [SerializeField] private GameObject prefab;
+        [SerializeField, Min(0.1f)] private float scale = 1f;
+
+        public bool Enabled => enabled;
+        public GameObject Prefab => prefab;
+        public float Scale => scale;
+    }
+
+    [Serializable]
     public sealed class BossGraphCameraShakeSettings
     {
         [SerializeField] private bool enabled;
@@ -34,16 +47,14 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class BossGraphEffectSettings
     {
-        [SerializeField] private BossGraphParticleEffectSettings explosion = new();
         [SerializeField] private BossGraphParticleEffectSettings smoke = new();
         [SerializeField, Min(0.01f)] private float smokeInterval = 0.12f;
-        [SerializeField] private BossGraphParticleEffectSettings muzzleFlash = new();
+        [SerializeField] private BossGraphPrefabEffectSettings muzzleFlash = new();
         [SerializeField] private BossGraphCameraShakeSettings cameraShake = new();
 
-        public BossGraphParticleEffectSettings Explosion => explosion;
         public BossGraphParticleEffectSettings Smoke => smoke;
         public float SmokeInterval => smokeInterval;
-        public BossGraphParticleEffectSettings MuzzleFlash => muzzleFlash;
+        public BossGraphPrefabEffectSettings MuzzleFlash => muzzleFlash;
         public BossGraphCameraShakeSettings CameraShake => cameraShake;
     }
 }

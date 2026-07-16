@@ -276,7 +276,7 @@ namespace Week14.Enemy
 
                 firedProjectile.ConfigurePathIndicatorSuppressed(true);
                 context.PlayOriginBurst(effects, origin);
-                context.PlayMuzzleFlashIfEnabled(effects, origin, direction);
+                context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
                 context.PlayCameraShakeIfEnabled(effects, direction);
             }
         }
