@@ -156,6 +156,7 @@ internal static class BossGraphActionEditorUtility
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
+        new("Utility/Spawn Effect Prefab", typeof(SpawnEffectPrefabAction), () => new SpawnEffectPrefabAction()),
         new("Utility/Play Sfx", typeof(PlaySfxAction), () => new PlaySfxAction()),
         new("Attack/Conductor/Conducting Cue", typeof(ConductorConductingCueAction), () => new ConductorConductingCueAction()),
         new("Attack/Conductor/Defense Arc Volley", typeof(ConductorDefenseArcVolleyAction), () => new ConductorDefenseArcVolleyAction()),
@@ -460,6 +461,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(SpawnPrefabAction))
         {
             return "프리팹을 보스 기준 위치에 생성합니다. 필요하면 보스 자식으로 붙이고 일정 시간 뒤 제거합니다.";
+        }
+
+        if (actionType == typeof(SpawnEffectPrefabAction))
+        {
+            return "지정한 시간 뒤 보스 하이어러키 위치에 일회성 이펙트 프리팹을 원하는 스케일로 생성합니다.";
         }
 
         if (actionType == typeof(PlaySfxAction))

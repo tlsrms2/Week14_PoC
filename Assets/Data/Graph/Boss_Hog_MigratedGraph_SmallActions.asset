@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908202
     sequences: []
-    editorPosition: {x: -184, y: -56}
+    editorPosition: {x: -175, y: -49}
   - nodeId: Move Body Root2
     nodeGuid: 266779658870470e92d2caaf9062946e
     nodeKind: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908203
     sequences: []
-    editorPosition: {x: 8, y: -52}
+    editorPosition: {x: 17, y: -45}
   - nodeId: Fire Radial Emission2
     nodeGuid: 6b9cb46fa8ff45779719798b81e23367
     nodeKind: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908204
     sequences: []
-    editorPosition: {x: 205, y: -52}
+    editorPosition: {x: 214, y: -45}
   - nodeId: Wait1
     nodeGuid: e8e0cfebc00a4549930fe4cf9fe362d6
     nodeKind: 3
@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908205
     sequences: []
-    editorPosition: {x: 402, y: -56}
+    editorPosition: {x: 411, y: -49}
   - nodeId: Move Body Root3
     nodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
     nodeKind: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908206
     sequences: []
-    editorPosition: {x: 589, y: -52}
+    editorPosition: {x: 598, y: -45}
   - nodeId: Move Body Root4
     nodeGuid: 05e87771345d40f38b36daeb46a72fe4
     nodeKind: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908207
     sequences: []
-    editorPosition: {x: 786, y: -52}
+    editorPosition: {x: 795, y: -45}
   - nodeId: Fire Radial Emission3
     nodeGuid: ec2d10c5f5b5423291d90c573763374a
     nodeKind: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908208
     sequences: []
-    editorPosition: {x: 990, y: -50}
+    editorPosition: {x: 983, y: -43}
   - nodeId: Wait2
     nodeGuid: 52076fff63ad4879af076bea9518ac7e
     nodeKind: 3
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908209
     sequences: []
-    editorPosition: {x: 1191, y: -45}
+    editorPosition: {x: 1200, y: -38}
   - nodeId: Move Body Root5
     nodeGuid: dc151c7ad02d420cbb25278e1af7d217
     nodeKind: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908210
     sequences: []
-    editorPosition: {x: 1380, y: -44}
+    editorPosition: {x: 1389, y: -37}
   - nodeId: Move Body Root6
     nodeGuid: dbb3c2a625b54e2194035fb6cd895f88
     nodeKind: 1
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908211
     sequences: []
-    editorPosition: {x: 1570, y: -39}
+    editorPosition: {x: 1579, y: -32}
   - nodeId: Fire Radial Emission4
     nodeGuid: 55d7655e94ff40d797850d3ef53faf33
     nodeKind: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908212
     sequences: []
-    editorPosition: {x: 1766, y: -39}
+    editorPosition: {x: 1775, y: -32}
   - nodeId: Windup1
     nodeGuid: f64e87439a744250ada746965fef8941
     nodeKind: 3
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908213
     sequences: []
-    editorPosition: {x: -33, y: 113}
+    editorPosition: {x: 40, y: 277}
   - nodeId: Move Body Root7
     nodeGuid: ce4123afab7d4dd1a1006edc046127ae
     nodeKind: 1
@@ -151,7 +151,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908215
     sequences: []
-    editorPosition: {x: -170, y: 296}
+    editorPosition: {x: -170, y: 465}
   - nodeId: Move Body Root8
     nodeGuid: 95e98c45d91f40ebaa39891809eb0608
     nodeKind: 1
@@ -160,7 +160,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908216
     sequences: []
-    editorPosition: {x: 24, y: 296}
+    editorPosition: {x: 24, y: 465}
   - nodeId: Fire Radial Emission5
     nodeGuid: 9f8c1fc4eb744cd384a3643ef74d455a
     nodeKind: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908217
     sequences: []
-    editorPosition: {x: 201, y: 296}
+    editorPosition: {x: 201, y: 465}
   - nodeId: Wait3
     nodeGuid: 8dfda553c39943a58e5177d1346527c2
     nodeKind: 3
@@ -178,7 +178,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908218
     sequences: []
-    editorPosition: {x: 392, y: 290}
+    editorPosition: {x: 392, y: 459}
   - nodeId: Move Body Root9
     nodeGuid: 0acd709aa19344e79ad72ae80ed9fdcb
     nodeKind: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908219
     sequences: []
-    editorPosition: {x: 577, y: 288}
+    editorPosition: {x: 577, y: 457}
   - nodeId: Move Body Root10
     nodeGuid: 7c4770aa65154af98e33055a559f6b7e
     nodeKind: 1
@@ -196,7 +196,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908220
     sequences: []
-    editorPosition: {x: 768, y: 290}
+    editorPosition: {x: 768, y: 459}
   - nodeId: Fire Radial Emission6
     nodeGuid: 12d8e4bfa71f401eadeff1a0c0c2acc9
     nodeKind: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908221
     sequences: []
-    editorPosition: {x: 951, y: 296}
+    editorPosition: {x: 951, y: 465}
   - nodeId: Wait4
     nodeGuid: 8c27086e8f584597a5bc7125fced5d11
     nodeKind: 3
@@ -214,7 +214,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908222
     sequences: []
-    editorPosition: {x: 1143, y: 288}
+    editorPosition: {x: 1143, y: 457}
   - nodeId: Move Body Root11
     nodeGuid: 7e0bd7072aab4922bcc429c8f2929853
     nodeKind: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908223
     sequences: []
-    editorPosition: {x: 1330, y: 288}
+    editorPosition: {x: 1330, y: 457}
   - nodeId: Move Body Root12
     nodeGuid: 67d9c894747a4aaebeda59d6935820c9
     nodeKind: 1
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908224
     sequences: []
-    editorPosition: {x: 1505, y: 288}
+    editorPosition: {x: 1505, y: 457}
   - nodeId: Fire Radial Emission7
     nodeGuid: e7269c4bbfd84ca2b3cc87911f1991d7
     nodeKind: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908225
     sequences: []
-    editorPosition: {x: 1689, y: 286}
+    editorPosition: {x: 1689, y: 455}
   - nodeId: Wait5
     nodeGuid: 93f8a75329124d559a1799f7dda03cdb
     nodeKind: 3
@@ -250,7 +250,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908226
     sequences: []
-    editorPosition: {x: 1881, y: 286}
+    editorPosition: {x: 1881, y: 455}
   - nodeId: Move Body Root13
     nodeGuid: 1d6dbb80b83640088c83456b28f5d70a
     nodeKind: 1
@@ -259,7 +259,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908227
     sequences: []
-    editorPosition: {x: 2062, y: 290}
+    editorPosition: {x: 2062, y: 459}
   - nodeId: Move Body Root14
     nodeGuid: 43cb0c9274d249438ad006337ace37ef
     nodeKind: 1
@@ -268,7 +268,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908228
     sequences: []
-    editorPosition: {x: 2245, y: 296}
+    editorPosition: {x: 2245, y: 465}
   - nodeId: Fire Radial Emission8
     nodeGuid: 2a97dae38643419da32275bdb5c96da2
     nodeKind: 0
@@ -277,7 +277,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908229
     sequences: []
-    editorPosition: {x: 2432, y: 296}
+    editorPosition: {x: 2432, y: 465}
   - nodeId: Wait6
     nodeGuid: e22393eb8224461d82b26890b75ed7a3
     nodeKind: 3
@@ -286,7 +286,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908230
     sequences: []
-    editorPosition: {x: 2615, y: 296}
+    editorPosition: {x: 2615, y: 465}
   - nodeId: Move Body Root15
     nodeGuid: 3600947d532846f994de2a6e69474b44
     nodeKind: 1
@@ -295,7 +295,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908231
     sequences: []
-    editorPosition: {x: 2804, y: 290}
+    editorPosition: {x: 2804, y: 459}
   - nodeId: Move Body Root16
     nodeGuid: 35be3ef8c8d943e58a6387d109e9d4ea
     nodeKind: 1
@@ -304,7 +304,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908232
     sequences: []
-    editorPosition: {x: 2987, y: 290}
+    editorPosition: {x: 2987, y: 459}
   - nodeId: Fire Radial Emission9
     nodeGuid: 012e402336f44732aa1ece9020f26813
     nodeKind: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908233
     sequences: []
-    editorPosition: {x: 3180, y: 294}
+    editorPosition: {x: 3180, y: 463}
   - nodeId: Windup2
     nodeGuid: f0e7fffb17a84ecbb13e3a2b7c7b6c6e
     nodeKind: 3
@@ -322,7 +322,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908234
     sequences: []
-    editorPosition: {x: -170, y: 450}
+    editorPosition: {x: -176, y: 772}
   - nodeId: Aim Boss Child At Player1
     nodeGuid: 9e1f9a114f0c49578bd202859577b908
     nodeKind: 3
@@ -331,7 +331,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908238
     sequences: []
-    editorPosition: {x: -258, y: 113}
+    editorPosition: {x: -185, y: 277}
   - nodeId: Aim Boss Child At Player2
     nodeGuid: 7bdfb2d0f4f7400299ee51fe4a2706b0
     nodeKind: 3
@@ -349,7 +349,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908240
     sequences: []
-    editorPosition: {x: 378, y: 109}
+    editorPosition: {x: 451, y: 273}
   - nodeId: Fire Projectile Burst1
     nodeGuid: bc17b7c047f7467ea6384f77cc8be044
     nodeKind: 0
@@ -403,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908214
     sequences: []
-    editorPosition: {x: 118, y: 113}
+    editorPosition: {x: 191, y: 277}
   - nodeId: Fire Fan Emission1
     nodeGuid: 1a42c347f9284d4fac5955d3a99642fe
     nodeKind: 0
@@ -412,7 +412,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908235
     sequences: []
-    editorPosition: {x: 18, y: 456}
+    editorPosition: {x: 12, y: 778}
   - nodeId: Fire Projectile Burst2
     nodeGuid: 429e7d5f9ff1419982a16a6cb5654f6a
     nodeKind: 0
@@ -421,7 +421,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908236
     sequences: []
-    editorPosition: {x: 376, y: 454}
+    editorPosition: {x: 370, y: 776}
   - nodeId: Aim Boss Child At Player4
     nodeGuid: 9f129c30acf04730b54c4a4a2916738d
     nodeKind: 3
@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897314
     sequences: []
-    editorPosition: {x: -166, y: 592}
+    editorPosition: {x: -172, y: 914}
   - nodeId: Fire Projectile2
     nodeGuid: 4d4c777b10d748b4aef300dc52dae234
     nodeKind: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897315
     sequences: []
-    editorPosition: {x: 206, y: 592}
+    editorPosition: {x: 200, y: 914}
   - nodeId: Wait7
     nodeGuid: f5ee234d3ffa44ab96ac2765aca6e74f
     nodeKind: 3
@@ -457,7 +457,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897316
     sequences: []
-    editorPosition: {x: 23, y: 590}
+    editorPosition: {x: 17, y: 912}
   - nodeId: Fire Projectile3
     nodeGuid: d731207df0924bb985ae011d9a897f60
     nodeKind: 0
@@ -466,7 +466,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897317
     sequences: []
-    editorPosition: {x: 578, y: 588}
+    editorPosition: {x: 572, y: 910}
   - nodeId: Wait8
     nodeGuid: 6073531e69744f6dad7877e5ff9f25b0
     nodeKind: 3
@@ -475,7 +475,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897318
     sequences: []
-    editorPosition: {x: 399, y: 590}
+    editorPosition: {x: 393, y: 912}
   - nodeId: Fire Projectile4
     nodeGuid: 657ce8a70222473485a7835f4bd97d00
     nodeKind: 0
@@ -484,7 +484,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897319
     sequences: []
-    editorPosition: {x: 950, y: 592}
+    editorPosition: {x: 944, y: 914}
   - nodeId: Wait9
     nodeGuid: e1459056c764436ba482e779533a7a6a
     nodeKind: 3
@@ -493,7 +493,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897320
     sequences: []
-    editorPosition: {x: 773, y: 590}
+    editorPosition: {x: 767, y: 912}
   - nodeId: Wait10
     nodeGuid: 96a3f6d17ed24aae9564b78df86d86e6
     nodeKind: 3
@@ -502,7 +502,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897321
     sequences: []
-    editorPosition: {x: 1145, y: 592}
+    editorPosition: {x: 1139, y: 914}
   - nodeId: Fire Projectile5
     nodeGuid: faa2dc5f3f8f410893003ab68637810d
     nodeKind: 0
@@ -511,7 +511,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897322
     sequences: []
-    editorPosition: {x: 1330, y: 594}
+    editorPosition: {x: 1324, y: 916}
   - nodeId: Wait11
     nodeGuid: e330ece8d47f4556a7bed8e7095c0461
     nodeKind: 3
@@ -520,7 +520,7 @@ MonoBehaviour:
     action:
       rid: 5830051031957897355
     sequences: []
-    editorPosition: {x: 253, y: 452}
+    editorPosition: {x: 247, y: 774}
   - nodeId: Spawn Charged Projectile1
     nodeGuid: c5e098adc418431c97fe263c92282899
     nodeKind: 0
@@ -538,7 +538,88 @@ MonoBehaviour:
     action:
       rid: 4705778169994805693
     sequences: []
-    editorPosition: {x: -422, y: 296}
+    editorPosition: {x: -422, y: 465}
+  - nodeId: Action1
+    nodeGuid: 223dd3bebad34bf88d66ccc99f7eb32c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: -2
+    sequences: []
+    editorPosition: {x: 631, y: -332}
+  - nodeId: Spawn Effect Prefab1
+    nodeGuid: faa9f3db13d94965a30c67ee6434e0f0
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534669
+    sequences: []
+    editorPosition: {x: -169, y: 92}
+  - nodeId: Spawn Effect Prefab2
+    nodeGuid: 1d62b4a25d504f49bb20912024832d2b
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534670
+    sequences: []
+    editorPosition: {x: 221, y: 85}
+  - nodeId: Spawn Effect Prefab3
+    nodeGuid: 3270d28735b24ae09051ba7b487c4606
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534672
+    sequences: []
+    editorPosition: {x: 593, y: 88}
+  - nodeId: Spawn Effect Prefab4
+    nodeGuid: 6c55a43f78bd4a74a2798d357a69eb66
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534673
+    sequences: []
+    editorPosition: {x: 983, y: 81}
+  - nodeId: Spawn Effect Prefab5
+    nodeGuid: 9ae148a3fb444dcf8b4fd2febe736d60
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534674
+    sequences: []
+    editorPosition: {x: 1395, y: 102}
+  - nodeId: Spawn Effect Prefab6
+    nodeGuid: 7146538f2b404f97b9913afcda936e76
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534675
+    sequences: []
+    editorPosition: {x: 1784, y: 95}
+  - nodeId: Spawn Effect Prefab7
+    nodeGuid: 1e1931573edb41f68af2bb9dd49428f6
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534682
+    sequences: []
+    editorPosition: {x: -167, y: 607}
+  - nodeId: Spawn Effect Prefab8
+    nodeGuid: 632212625b664b38b7d57c9920eeec3a
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939233575534683
+    sequences: []
+    editorPosition: {x: 1336, y: 597}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -582,6 +663,12 @@ MonoBehaviour:
     - dc151c7ad02d420cbb25278e1af7d217
     - dbb3c2a625b54e2194035fb6cd895f88
     - 55d7655e94ff40d797850d3ef53faf33
+    - faa9f3db13d94965a30c67ee6434e0f0
+    - 1d62b4a25d504f49bb20912024832d2b
+    - 3270d28735b24ae09051ba7b487c4606
+    - 6c55a43f78bd4a74a2798d357a69eb66
+    - 9ae148a3fb444dcf8b4fd2febe736d60
+    - 7146538f2b404f97b9913afcda936e76
     nodeIds:
     - Move Body Root1
     - Move Body Root2
@@ -594,6 +681,12 @@ MonoBehaviour:
     - Move Body Root5
     - Move Body Root6
     - Fire Radial Emission4
+    - Spawn Effect Prefab1
+    - Spawn Effect Prefab2
+    - Spawn Effect Prefab3
+    - Spawn Effect Prefab4
+    - Spawn Effect Prefab5
+    - Spawn Effect Prefab6
   - patternId: Pattern5
     nodeGuids:
     - 9e1f9a114f0c49578bd202859577b908
@@ -627,6 +720,8 @@ MonoBehaviour:
     - 3600947d532846f994de2a6e69474b44
     - 35be3ef8c8d943e58a6387d109e9d4ea
     - 012e402336f44732aa1ece9020f26813
+    - 1e1931573edb41f68af2bb9dd49428f6
+    - 632212625b664b38b7d57c9920eeec3a
     nodeIds:
     - Fire Parry Suppression Bait1
     - Move Body Root7
@@ -648,6 +743,8 @@ MonoBehaviour:
     - Move Body Root15
     - Move Body Root16
     - Fire Radial Emission9
+    - Spawn Effect Prefab7
+    - Spawn Effect Prefab8
   - patternId: Pattern7
     nodeGuids:
     - f0e7fffb17a84ecbb13e3a2b7c7b6c6e
@@ -680,6 +777,11 @@ MonoBehaviour:
     - Fire Projectile4
     - Wait10
     - Fire Projectile5
+  - patternId: Pattern9
+    nodeGuids:
+    - 223dd3bebad34bf88d66ccc99f7eb32c
+    nodeIds:
+    - Action1
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -1164,12 +1266,62 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  parallelEdges: []
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern8
+  parallelEdges:
+  - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
+    toNodeGuid: faa9f3db13d94965a30c67ee6434e0f0
+    fromNodeId: Move Body Root1
+    toNodeId: Spawn Effect Prefab1
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 6b9cb46fa8ff45779719798b81e23367
+    toNodeGuid: 1d62b4a25d504f49bb20912024832d2b
+    fromNodeId: Fire Radial Emission2
+    toNodeId: Spawn Effect Prefab2
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
+    toNodeGuid: 3270d28735b24ae09051ba7b487c4606
+    fromNodeId: Move Body Root3
+    toNodeId: Spawn Effect Prefab3
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: ec2d10c5f5b5423291d90c573763374a
+    toNodeGuid: 6c55a43f78bd4a74a2798d357a69eb66
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Spawn Effect Prefab4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: dc151c7ad02d420cbb25278e1af7d217
+    toNodeGuid: 9ae148a3fb444dcf8b4fd2febe736d60
+    fromNodeId: Move Body Root5
+    toNodeId: Spawn Effect Prefab5
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 55d7655e94ff40d797850d3ef53faf33
+    toNodeGuid: 7146538f2b404f97b9913afcda936e76
+    fromNodeId: Fire Radial Emission4
+    toNodeId: Spawn Effect Prefab6
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: ce4123afab7d4dd1a1006edc046127ae
+    toNodeGuid: 1e1931573edb41f68af2bb9dd49428f6
+    fromNodeId: Move Body Root7
+    toNodeId: Spawn Effect Prefab7
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 7e0bd7072aab4922bcc429c8f2929853
+    toNodeGuid: 632212625b664b38b7d57c9920eeec3a
+    fromNodeId: Move Body Root11
+    toNodeId: Spawn Effect Prefab8
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern6
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 2634811931892908194
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2578,6 +2730,86 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+    - rid: 6489939233575534669
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 9125212537906268882, guid: 4762a2ce988f4a4469bfa5879655042d, type: 3}
+        spawnPointPath: Boss-Dealer Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 2
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534670
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 3262383520572041899, guid: 4051ae01bb3ca3a4786a2c7aa671841a, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534672
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 9125212537906268882, guid: 4762a2ce988f4a4469bfa5879655042d, type: 3}
+        spawnPointPath: Boss-Dealer Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 2
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534673
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 3262383520572041899, guid: 4051ae01bb3ca3a4786a2c7aa671841a, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534674
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 9125212537906268882, guid: 4762a2ce988f4a4469bfa5879655042d, type: 3}
+        spawnPointPath: Boss-Dealer Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 2
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534675
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 3262383520572041899, guid: 4051ae01bb3ca3a4786a2c7aa671841a, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534682
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 845528975078294498, guid: f46101aaf495fa5479a44eb021812385, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939233575534683
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 845528975078294498, guid: f46101aaf495fa5479a44eb021812385, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
 --- !u!114 &7712345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
