@@ -16,6 +16,13 @@ namespace Week14.Enemy
         private readonly Dictionary<string, int> patternCooldownRemainingCounts = new();
         private readonly HashSet<int> openingPatternsPlayed = new();
         private readonly HashSet<int> signaturePatternsPlayed = new();
+        // 페이즈별로 InitialPatternDelaySeconds 대기를 이미 적용했는지 추적한다. 페이즈 진입 후 첫
+        // 패턴 전에 딱 한 번만 대기해야 하므로, Reset()에서 같이 초기화된다.
+        private readonly HashSet<int> initialPatternDelayApplied = new();
+        // 페이즈별로 지금까지 몇 개의 패턴이 완료됐는지 누적한다. Min Patterns Played 조건(최초 등장을
+        // 늦추는 절대 조건) 판정에 쓰인다 — cooldownPatternCount(반복 억제)와 달리 페이즈가 바뀌면
+        // Reset()에서 같이 초기화된다.
+        private readonly Dictionary<int, int> patternsPlayedCountByPhase = new();
         private string currentNodeId;
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
@@ -29,6 +36,8 @@ namespace Week14.Enemy
             patternCooldownRemainingCounts.Clear();
             openingPatternsPlayed.Clear();
             signaturePatternsPlayed.Clear();
+            patternsPlayedCountByPhase.Clear();
+            initialPatternDelayApplied.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;
         }
@@ -153,7 +162,13 @@ namespace Week14.Enemy
             while (true)
             {
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
-                BossGraphPattern pattern = ResolvePhasePattern(graph, phase, out BossGraphPatternEntry patternEntry);
+                if (phase != null && phase.InitialPatternDelaySeconds > 0f && initialPatternDelayApplied.Add(phase.PhaseIndex))
+                {
+                    yield return context.WaitSeconds(phase.InitialPatternDelaySeconds);
+                    context.Stop();
+                }
+
+                BossGraphPattern pattern = ResolvePhasePattern(graph, phase, context, out BossGraphPatternEntry patternEntry);
                 IReadOnlyList<string> nodeKeys = pattern?.NodeKeys;
                 if (nodeKeys == null || nodeKeys.Count == 0)
                 {
@@ -2143,6 +2158,7 @@ namespace Week14.Enemy
         private BossGraphPattern ResolvePhasePattern(
             BossGraphAsset graph,
             BossGraphPhase phase,
+            BossActionContext context,
             out BossGraphPatternEntry patternEntry)
         {
             patternEntry = null;
@@ -2155,6 +2171,14 @@ namespace Week14.Enemy
             {
                 patternEntry = FindPatternEntry(phase, phase.OpeningPatternId);
                 return graph.GetPattern(phase.OpeningPatternId);
+            }
+
+            // 정상적인 가중치 선택보다 우선한다 — 보스가 "지금 이 패턴을 무조건 써야 한다"고 판단하면
+            // (예: Assassin의 단검 개수 조건) 매번(반복적으로) 이 패턴을 강제로 고른다.
+            if (!string.IsNullOrWhiteSpace(phase.ForcedPatternId) && context?.Boss?.ShouldUseForcedGraphPatternForRunner() == true)
+            {
+                patternEntry = FindPatternEntry(phase, phase.ForcedPatternId);
+                return graph.GetPattern(phase.ForcedPatternId);
             }
 
             patternEntry = SelectPattern(phase);
@@ -2283,6 +2307,14 @@ namespace Week14.Enemy
                 return false;
             }
 
+            // Min Patterns Played는 쿨다운과 달리 완화(fallback)되지 않는 절대 조건이라, requireCooldownReady
+            // 값과 상관없이 항상 체크한다.
+            int playedCount = patternsPlayedCountByPhase.TryGetValue(phase.PhaseIndex, out int count) ? count : 0;
+            if (playedCount < entry.MinPatternsPlayed)
+            {
+                return false;
+            }
+
             if (!requireCooldownReady)
             {
                 return true;
@@ -2317,6 +2349,9 @@ namespace Week14.Enemy
             {
                 return;
             }
+
+            patternsPlayedCountByPhase[phase.PhaseIndex] =
+                (patternsPlayedCountByPhase.TryGetValue(phase.PhaseIndex, out int playedCount) ? playedCount : 0) + 1;
 
             string completedKey = GetPatternCooldownKey(phase, entry.PatternId);
             ReduceOtherPatternCooldowns(phase, completedKey);

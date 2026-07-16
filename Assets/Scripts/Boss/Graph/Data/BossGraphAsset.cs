@@ -305,22 +305,30 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private BossSequenceSelectionMode selectionMode;
         [SerializeField, Min(0)] private int phaseMaxHp;
         [SerializeField, Min(0f)] private float patternIntervalSeconds;
+        [SerializeField, Min(0f)] private float initialPatternDelaySeconds;
         [SerializeField] private bool bossCanFlyOverGround;
         [SerializeField] private bool minionsCanFlyOverGround;
         [SerializeField] private string openingPatternId;
         [SerializeField] private string signaturePatternId;
         [SerializeField, Range(0f, 100f)] private float signaturePatternHpPercent = 50f;
+        [SerializeField] private string forcedPatternId;
         [SerializeField] private List<BossGraphPatternEntry> patterns = new();
 
         public int PhaseIndex => phaseIndex;
         public BossSequenceSelectionMode SelectionMode => selectionMode;
         public int PhaseMaxHp => Mathf.Max(0, phaseMaxHp);
         public float PatternIntervalSeconds => Mathf.Max(0f, patternIntervalSeconds);
+        // 이 페이즈에 처음 진입해서 첫 패턴을 고르기 전까지 한 번만 대기하는 시간이다. 패턴과 패턴
+        // 사이에 매번 적용되는 PatternIntervalSeconds와 달리, 페이즈 진입 후 딱 한 번만 적용된다.
+        public float InitialPatternDelaySeconds => Mathf.Max(0f, initialPatternDelaySeconds);
         public bool BossCanFlyOverGround => bossCanFlyOverGround;
         public bool MinionsCanFlyOverGround => minionsCanFlyOverGround;
         public string OpeningPatternId => openingPatternId;
         public string SignaturePatternId => signaturePatternId;
         public float SignaturePatternHpRatio => Mathf.Clamp(signaturePatternHpPercent, 0f, 100f) * 0.01f;
+        // 보스의 ShouldUseForcedGraphPattern()이 true를 반환하는 동안, 정상적인 가중치 선택 대신
+        // 다음 패턴으로 무조건 이 패턴을 쓴다(예: Assassin - 단검이 일정 개수 이상 쌓였을 때).
+        public string ForcedPatternId => forcedPatternId;
         public IReadOnlyList<BossGraphPatternEntry> Patterns => patterns;
     }
 
@@ -332,10 +340,15 @@ namespace Week14.Enemy
         [FormerlySerializedAs("cooldownSeconds")]
         [SerializeField, HideInInspector] private float legacyCooldownSeconds = -1f;
         [SerializeField, Min(0)] private int cooldownPatternCount;
+        [SerializeField, Min(0)] private int minPatternsPlayed;
 
         public string PatternId => patternId;
         public int Weight => Mathf.Max(0, weight);
         public int CooldownPatternCount => Mathf.Max(0, cooldownPatternCount);
+        // 이 페이즈에서 (이 패턴 자신을 포함해) 총 몇 개의 패턴이 먼저 끝나야 이 패턴이 뽑힐 자격이
+        // 생기는지를 나타낸다. cooldownPatternCount(반복 억제, 조건이 안 맞으면 완화될 수 있음)와 달리
+        // 이건 최초 등장을 늦추는 절대 조건이라 완화되지 않는다.
+        public int MinPatternsPlayed => Mathf.Max(0, minPatternsPlayed);
 
         public void OnBeforeSerialize()
         {
