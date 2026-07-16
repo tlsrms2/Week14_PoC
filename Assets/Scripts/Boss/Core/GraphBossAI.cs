@@ -180,6 +180,9 @@ namespace Week14.Enemy
         {
             if (patternRoutine != null)
             {
+                // StopCoroutine은 이렇게 깊이 중첩된 코루틴 체인에서 try/finally를 안정적으로 안
+                // 돌려주므로(실측 확인됨), 코루틴을 끊기 전에 "지금 실행 중이던 패턴"을 직접 등록한다.
+                graphRunner.RegisterInFlightPatternIfNeeded();
                 StopCoroutine(patternRoutine);
                 patternRoutine = null;
             }

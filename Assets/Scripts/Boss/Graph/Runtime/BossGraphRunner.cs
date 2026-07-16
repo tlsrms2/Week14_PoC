@@ -28,6 +28,12 @@ namespace Week14.Enemy
         private string currentNodeId;
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
+        // 지금 RunPhasePatternLoop가 실행 중인 패턴. StopCoroutine으로 도중에 캔슬돼도 카운트/쿨다운이
+        // 반영되도록, GraphBossAI.StopGraphPattern이 코루틴을 끊기 직전에 RegisterInFlightPatternIfNeeded()
+        // 를 직접 호출한다(try/finally + Dispose 전파에 기대지 않는다).
+        private BossGraphPhase inFlightPhase;
+        private BossGraphPatternEntry inFlightPatternEntry;
+        private bool inFlightRegistered = true;
 
         // 진짜 새 시작(페이즈 전환 등)에만 쓴다. 쿨다운/Min Patterns Played처럼 "이 페이즈에서
         // 지금까지 있었던 일"을 나타내는 페이즈별 히스토리까지 전부 지운다.
@@ -233,20 +239,18 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                // finally에서 등록해야, 그로기/은신 전환 등으로 StopGraphPattern이 이 코루틴 자체를
-                // 중간에 강제 종료(StopCoroutine)시키는 경우에도 "이 패턴을 한 번 썼다"는 게 쿨다운/
-                // Min Patterns Played에 반영된다. 반대로 취소된 경우에는 finally 이후 코드(Stop,
-                // Signature Pattern 체크, WaitBetweenPatterns)는 예정대로 실행되지 않는다 — 코루틴이
-                // 그 자리에서 끝나기 때문이며, 이는 기존과 동일한 동작이다.
-                try
-                {
-                    yield return ExecutePattern(graph, pattern, context);
-                }
-                finally
-                {
-                    RegisterCompletedPattern(phase, patternEntry);
-                }
+                // try/finally + StopCoroutine의 Dispose 전파에 기대지 않는다 — 이만큼 깊이 중첩된
+                // yield return 체인(RunGraphPatternLoop→RunLoop→RunPhasePatternLoop→ExecutePattern→...)
+                // 에서는 StopCoroutine이 finally를 안정적으로 안 돌려준다는 게 실측으로 확인됐다. 대신
+                // "지금 이 패턴이 실행 중"이라는 걸 필드에 기록해두고, 정상 완료 시엔 바로 아래에서,
+                // 그로기 등으로 캔슬될 때는 StopGraphPattern이 코루틴을 끊기 직전에 직접
+                // RegisterInFlightPatternIfNeeded()를 호출해 등록한다.
+                inFlightPhase = phase;
+                inFlightPatternEntry = patternEntry;
+                inFlightRegistered = false;
 
+                yield return ExecutePattern(graph, pattern, context);
+                RegisterInFlightPatternIfNeeded();
                 context.Stop();
                 if (TryGetPendingSignaturePattern(graph, phase, context, out BossGraphPattern signaturePattern))
                 {
@@ -2405,6 +2409,19 @@ namespace Week14.Enemy
             }
 
             return null;
+        }
+
+        // RunPhasePatternLoop가 정상적으로 패턴을 끝냈을 때, 그리고 GraphBossAI.StopGraphPattern이
+        // 실행 중이던 패턴을 캔슬하기 직전에 각각 호출한다. 한쪽에서 이미 등록했으면 아무 것도 안 한다.
+        public void RegisterInFlightPatternIfNeeded()
+        {
+            if (inFlightRegistered)
+            {
+                return;
+            }
+
+            inFlightRegistered = true;
+            RegisterCompletedPattern(inFlightPhase, inFlightPatternEntry);
         }
 
         private void RegisterCompletedPattern(BossGraphPhase phase, BossGraphPatternEntry entry)

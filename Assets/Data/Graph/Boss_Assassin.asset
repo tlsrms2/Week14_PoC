@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249239
     sequences: []
-    editorPosition: {x: 364, y: 147}
+    editorPosition: {x: 375, y: 147}
   - nodeId: Fire Next Clone Shooter3
     nodeGuid: 09207c3143b2436e9468a7923cf5b5be
     nodeKind: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805503
     sequences: []
-    editorPosition: {x: 36, y: 592}
+    editorPosition: {x: 35, y: 592}
   - nodeId: Wait5
     nodeGuid: 0ca9abcfcc1c43d9812fa402c5bfc9b5
     nodeKind: 3
@@ -196,7 +196,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805734
     sequences: []
-    editorPosition: {x: 191, y: 938}
+    editorPosition: {x: 191, y: 933}
   - nodeId: Fire Radial Emission3
     nodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
     nodeKind: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805735
     sequences: []
-    editorPosition: {x: -295, y: 796}
+    editorPosition: {x: -299, y: 796}
   - nodeId: Teleport Around Player1
     nodeGuid: 4553c45f47034f45b763c4f5fd909ae0
     nodeKind: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
     action:
       rid: 4705778180782817283
     sequences: []
-    editorPosition: {x: 627, y: 1147}
+    editorPosition: {x: 626, y: 1147}
   - nodeId: Wait6
     nodeGuid: 1da46b69448443118fec114763d56e60
     nodeKind: 3
@@ -340,7 +340,7 @@ MonoBehaviour:
     action:
       rid: 4705778193230463120
     sequences: []
-    editorPosition: {x: 1777, y: 130}
+    editorPosition: {x: 1803, y: 148}
   - nodeId: Wait9
     nodeGuid: 6cd9b65ff3c04700a589af7f5bd13738
     nodeKind: 3
@@ -350,6 +350,15 @@ MonoBehaviour:
       rid: 4705778193230463121
     sequences: []
     editorPosition: {x: 2032, y: -20}
+  - nodeId: Spawn Random Bombs2
+    nodeGuid: fc97420f48cf471cb76e37107cdd6860
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778193230463151
+    sequences: []
+    editorPosition: {x: 1366, y: 345}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -446,6 +455,11 @@ MonoBehaviour:
     - Random Direction Move6
     - Fire Radial Emission6
     - Fire Distance Trail3
+  - patternId: Pattern9
+    nodeGuids:
+    - fc97420f48cf471cb76e37107cdd6860
+    nodeIds:
+    - Spawn Random Bombs2
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -738,8 +752,8 @@ MonoBehaviour:
     toNodeId: Fire Distance Trail3
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern7
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern2
   references:
     version: 2
     RefIds:
@@ -919,6 +933,8 @@ MonoBehaviour:
       data:
         cloneIntroSeconds: 0.4
         cloneTargetAlpha: 180
+        cloneCountMin: 2
+        cloneCountMax: 2
         includeBossPosition: 1
         teleportHiddenSeconds: 0.4
         attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -942,6 +958,7 @@ MonoBehaviour:
         arcBulletCount: 7
         arcDegrees: 50
         arcFireInterval: 0.04
+        variants: []
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -986,6 +1003,7 @@ MonoBehaviour:
         arcBulletCount: 7
         arcDegrees: 50
         arcFireInterval: 0.04
+        variants: []
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -1030,6 +1048,7 @@ MonoBehaviour:
         arcBulletCount: 7
         arcDegrees: 50
         arcFireInterval: 0.04
+        variants: []
         fireSfxId: 
         launchSfxId: 
         effects:
@@ -2013,3 +2032,48 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.1
+    - rid: 4705778193230463151
+      type: {class: AssassinSpawnRandomBombsAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC548\uD558\uBA74 \uD130\uC9D0"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        bombCount: 1
+        minSeparationDistance: 3
+        minDistanceFromPlayer: 3
+        spawnInterval: 0.1
+        flightSeconds: 0.1
+        chargeSeconds: 10
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
