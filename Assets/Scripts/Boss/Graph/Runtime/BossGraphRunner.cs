@@ -16,8 +16,10 @@ namespace Week14.Enemy
         private readonly Dictionary<string, int> patternCooldownRemainingCounts = new();
         private readonly HashSet<int> openingPatternsPlayed = new();
         private readonly HashSet<int> signaturePatternsPlayed = new();
-        // 페이즈별로 InitialPatternDelaySeconds 대기를 이미 적용했는지 추적한다. 페이즈 진입 후 첫
-        // 패턴 전에 딱 한 번만 대기해야 하므로, Reset()에서 같이 초기화된다.
+        // 페이즈별로 InitialPatternDelaySeconds 대기를 이미 적용했는지 추적한다. 쿨다운/Min Patterns
+        // Played와 달리 "이 페이즈에서 있었던 일" 히스토리가 아니라 "패턴 루프가 막 (재)시작됐다"는
+        // 상태이므로, 그로기 종료/은신 전환처럼 코루틴이 다시 시작될 때마다(ResetTraversalState) 매번
+        // 같이 초기화된다 — 그래야 상태 전환 뒤 첫 패턴 앞에 항상 시작 딜레이가 다시 걸린다.
         private readonly HashSet<int> initialPatternDelayApplied = new();
         // 페이즈별로 지금까지 몇 개의 패턴이 완료됐는지 누적한다. Min Patterns Played 조건(최초 등장을
         // 늦추는 절대 조건) 판정에 쓰인다 — cooldownPatternCount(반복 억제)와 달리 페이즈가 바뀌면
@@ -27,16 +29,33 @@ namespace Week14.Enemy
         private string previousRuntimeNodeId;
         private BossGraphAsset activeGraph;
 
+        // 진짜 새 시작(페이즈 전환 등)에만 쓴다. 쿨다운/Min Patterns Played처럼 "이 페이즈에서
+        // 지금까지 있었던 일"을 나타내는 페이즈별 히스토리까지 전부 지운다.
         public void Reset()
+        {
+            ResetTraversalState();
+            patternCooldownRemainingCounts.Clear();
+            openingPatternsPlayed.Clear();
+            signaturePatternsPlayed.Clear();
+            patternsPlayedCountByPhase.Clear();
+        }
+
+        // 그로기 등으로 패턴 루프 코루틴이 중간에 끊겼다가 같은 페이즈에서 다시 시작될 때 쓴다.
+        // 그래프 순회 위치(현재 노드, 시퀀스 진행도)만 지우고, 쿨다운/Min Patterns Played 같은
+        // 페이즈별 히스토리는 보존한다 — 안 그러면 그로기가 걸릴 때마다 Min Patterns Played 조건이
+        // 0부터 다시 카운트되어, 그로기를 유발하는 패턴이 있는 페이즈에서는 Min이 걸린 패턴이
+        // 사실상 영영 등장하지 못하는 문제가 생긴다.
+        public void RestartAfterInterruption()
+        {
+            ResetTraversalState();
+        }
+
+        private void ResetTraversalState()
         {
             BossGraphRuntimeState.Clear(activeGraph);
             nextSequenceIndexes.Clear();
             lastSequences.Clear();
             sequenceBags.Clear();
-            patternCooldownRemainingCounts.Clear();
-            openingPatternsPlayed.Clear();
-            signaturePatternsPlayed.Clear();
-            patternsPlayedCountByPhase.Clear();
             initialPatternDelayApplied.Clear();
             currentNodeId = null;
             previousRuntimeNodeId = null;

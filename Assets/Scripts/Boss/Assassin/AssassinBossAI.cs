@@ -134,7 +134,10 @@ namespace Week14.Enemy
 
             // 그래프 액션 실행 도중(코루틴 안)에서 바로 StopGraphPattern을 부르면 자기 자신을
             // 끊는 재진입 문제가 생길 수 있어, 상태 전환은 항상 다음 LateUpdate로 미뤄서 처리한다.
-            StopGraphPattern();
+            // 은신↔일반은 GraphAsset 자체가 stealthGraph/base.GraphAsset로 바뀌는 완전히 다른
+            // BossGraphAsset 전환이라, 쿨다운/Min Patterns Played 히스토리를 그대로 넘기면 서로
+            // 다른 그래프의 같은 페이즈 인덱스끼리 기록이 섞인다. 그래서 전체 초기화를 쓴다.
+            StopGraphPattern(true);
         }
 
         internal void RequestStealth(bool enable)
@@ -538,7 +541,6 @@ namespace Week14.Enemy
             }
 
             isRecallInProgress = false;
-            RequestStealth(false);
         }
 
         private IEnumerator FlyDaggerHomeRoutine(AssassinDagger dagger, bool damagesPlayer, System.Action onComplete)

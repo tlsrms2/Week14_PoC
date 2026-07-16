@@ -8,10 +8,12 @@ namespace Week14.Enemy
     // 단검을 회수하기 전에 패링 전용 미끼(ParryBaitRewardProjectile)를 먼저 스폰한다.
     //  - 패링 실패(지속시간 안에 못 함): 단검이 평소처럼 보스에게 날아가며(닿는 플레이어에게 데미지),
     //    탄환처럼 궤적을 표시한다. 전부 회수되면 이 액션은 그대로 끝나 뒤에 있는 패턴이 이어서 진행된다.
+    //    이 경우 은신은 자동으로 풀리지 않는다 — 회수 뒤에 이어지는 노드(들)까지 다 실행된 뒤,
+    //    그래프에 직접 배치한 AssassinExitStealthAction으로 해제 타이밍을 지정한다.
     //  - 패링 성공: 그 자리에 보상 탄이 원형으로 뿌려지고, 단검이 보스 자신에게 날아가(궤적 없음)
     //    보스에게 데미지를 준다. 그 뒤 FireParrySuppressionBaitAction(그로기탄)과 완전히 동일하게
     //    boss.RequestGroggy(groggySeconds)로 패턴을 취소하고 보스가 그로기(무력화) 상태로 들어간다.
-    // 은신 해제는 회수가 끝나는 시점에 자동으로 처리된다(RecallAllDaggersRoutine 내부).
+    //    은신 해제는 이 경우에 한해 회수가 끝나는 시점에 자동으로 처리된다.
     [Serializable]
     public sealed class AssassinRecallDaggersWithParryBaitAction : BossAction
     {
@@ -93,6 +95,7 @@ namespace Week14.Enemy
             {
                 // 보상 탄은 ParryBaitRewardProjectile 자신이 Intercepted 처리 중에 이미 스폰한다.
                 yield return assassin.RecallAllDaggersRoutine(false);
+                assassin.RequestStealth(false);
 
                 // FireParrySuppressionBaitAction(그로기탄)과 동일한 처리: 그로기 진입/패턴 취소는
                 // 다음 프레임의 Update로 미뤄지므로(재진입 방지), 그 처리가 실제로 일어날 때까지
@@ -103,6 +106,9 @@ namespace Week14.Enemy
             }
             else
             {
+                // 패링 실패 시에는 여기서 은신을 자동으로 해제하지 않는다 — 회수 뒤에 이어지는
+                // 노드(들)까지 전부 실행되도록, 은신 해제 타이밍은 그래프에 배치하는
+                // AssassinExitStealthAction으로 직접 지정한다.
                 yield return assassin.RecallAllDaggersRoutine(true);
             }
         }

@@ -195,7 +195,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                context.MoveTowardPlayer(GetTimeSlowImmuneSpeedMultiplier(), GetSpeedCurve(), elapsed, 0f);
+                context.MoveTowardPlayer(speedMultiplier, GetSpeedCurve(), elapsed, 0f);
 
                 if (spawnAfterimages && elapsed >= nextAfterimageAt)
                 {
@@ -203,7 +203,7 @@ namespace Week14.Enemy
                     nextAfterimageAt += AfterimageInterval;
                 }
 
-                elapsed += spawnAfterimages ? Time.deltaTime : EnemyTimeScale.DeltaTime;
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -211,19 +211,6 @@ namespace Week14.Enemy
             {
                 context.Stop();
             }
-        }
-
-        // spawnAfterimages(잔상) 켜짐 = 시간 슬로우(EnemyTimeScale) 면역. SetMovementVelocity가 내부에서
-        // EnemyTimeScale.Current를 곱하기 때문에, 여기서 미리 그만큼 나눠 넣어서 최종 속도가 상쇄되게 한다.
-        private float GetTimeSlowImmuneSpeedMultiplier()
-        {
-            if (!spawnAfterimages)
-            {
-                return speedMultiplier;
-            }
-
-            float scale = Mathf.Max(EnemyTimeScale.Current, 0.001f);
-            return speedMultiplier / scale;
         }
 
         private static void SpawnAfterimage(BossAI boss)

@@ -46,7 +46,7 @@ MonoBehaviour:
   icon: {fileID: 1270279067752250102, guid: a0e89f1d438ad7c46a4637681bb00c8d, type: 3}
   deathImage: {fileID: -9002140298747577265, guid: c7786867e4dfcc143b3e48c2d5d152ee, type: 3}
   panelIcon: {fileID: 21300000, guid: 97bfeec2fd29c144cb6baefd29866d15, type: 3}
-  sceneName: Boss_Assassin_Test
+  sceneName: Boss_Assassin
   unlocksBossIds: []
   unlocksSkillIds:
   - ACT_005
@@ -55,6 +55,7 @@ MonoBehaviour:
   unlocksWeaponIds:
   - GUN_005
   requiredDistinctBossKills: 2
+  isFinalBoss: 0
   references:
     version: 2
     RefIds: []
