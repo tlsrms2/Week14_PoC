@@ -168,11 +168,48 @@ namespace Week14.Enemy
                 context.Stop();
 
                 BossGraphPhase phase = graph.GetPhase(context.Boss.CurrentPhaseIndex);
-                if (phase != null && phase.PatternIntervalSeconds > 0f)
+                yield return WaitBetweenPatterns(phase, context);
+            }
+        }
+
+        // 패턴과 패턴 사이 대기(PatternIntervalSeconds)를 처리한다. IntervalMoveSpeed가 0보다 크면
+        // 가만히 서서 기다리는 대신, 대기 시작 시점에 뽑은 랜덤한 한 방향으로 그 속도만큼 천천히
+        // 이동하며 기다린다(대기 도중 방향은 바뀌지 않는다). BossAI.SetMovementVelocity가 내부에서
+        // EnemyTimeScale.Current를 곱하므로 시간 슬로우도 자동으로 반영된다.
+        private static IEnumerator WaitBetweenPatterns(BossGraphPhase phase, BossActionContext context)
+        {
+            if (phase == null || phase.PatternIntervalSeconds <= 0f)
+            {
+                yield break;
+            }
+
+            if (phase.IntervalMoveSpeed > 0f && context.Boss != null)
+            {
+                Vector2 direction = Random.insideUnitCircle;
+                direction = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+
+                float remaining = phase.PatternIntervalSeconds;
+                while (remaining > 0f)
                 {
-                    yield return context.WaitSeconds(phase.PatternIntervalSeconds);
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    context.UpdateBossChildAims();
+                    context.Boss.SetMovementVelocity(direction * phase.IntervalMoveSpeed);
+                    remaining -= EnemyTimeScale.DeltaTime;
+                    yield return null;
                 }
+
+                context.Stop();
+            }
+            else
+            {
+                yield return context.WaitSeconds(phase.PatternIntervalSeconds);
+                context.Stop();
             }
         }
 
@@ -206,11 +243,7 @@ namespace Week14.Enemy
                     context.Stop();
                 }
 
-                if (phase.PatternIntervalSeconds > 0f)
-                {
-                    yield return context.WaitSeconds(phase.PatternIntervalSeconds);
-                    context.Stop();
-                }
+                yield return WaitBetweenPatterns(phase, context);
             }
         }
 

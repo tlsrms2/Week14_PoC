@@ -5598,6 +5598,9 @@ public sealed class BossGraphEditorWindow : EditorWindow
                 phase.FindPropertyRelative("patternIntervalSeconds"),
                 new GUIContent("Pattern Interval Seconds"));
             EditorGUILayout.PropertyField(
+                phase.FindPropertyRelative("intervalMoveSpeed"),
+                new GUIContent("Interval Move Speed", "0보다 크면 Pattern Interval Seconds 동안 가만히 서 있는 대신, 대기 시작 시점에 뽑은 랜덤한 한 방향으로 이 속도만큼 천천히 이동합니다(대기 도중 방향은 바뀌지 않습니다). 0이면 기존처럼 가만히 서서 대기합니다."));
+            EditorGUILayout.PropertyField(
                 phase.FindPropertyRelative("initialPatternDelaySeconds"),
                 new GUIContent("Initial Pattern Delay Seconds", "이 페이즈에 진입해서 첫 패턴을 고르기 전까지 딱 한 번만 대기하는 시간입니다."));
             EditorGUILayout.PropertyField(
@@ -5674,6 +5677,7 @@ public sealed class BossGraphEditorWindow : EditorWindow
         SetEnum(phase, "selectionMode", (int)BossSequenceSelectionMode.WeightedRandom);
         SetInt(phase, "phaseMaxHp", 0);
         SetFloat(phase, "patternIntervalSeconds", 0f);
+        SetFloat(phase, "intervalMoveSpeed", 0f);
         SetFloat(phase, "initialPatternDelaySeconds", 0f);
         SetString(phase, "openingPatternId", string.Empty);
         SetString(phase, "signaturePatternId", string.Empty);
