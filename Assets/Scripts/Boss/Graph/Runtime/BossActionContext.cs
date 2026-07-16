@@ -14,7 +14,7 @@ namespace Week14.Enemy
 
         private readonly Action stop;
         private readonly Func<bool> isExecutionPaused;
-        private Animator animator;
+        private Animator[] animators;
         private BossAnimationEventBridge animationEventBridge;
         private bool hasBodyRootLocalBase;
         private Vector3 bodyRootLocalBase;
@@ -166,10 +166,10 @@ namespace Week14.Enemy
                 return;
             }
 
-            Animator targetAnimator = GetAnimator();
-            if (targetAnimator != null)
+            Animator[] targetAnimators = GetAnimators();
+            for (int i = 0; i < targetAnimators.Length; i++)
             {
-                targetAnimator.SetTrigger(triggerName);
+                targetAnimators[i].SetTrigger(triggerName);
             }
         }
 
@@ -180,10 +180,10 @@ namespace Week14.Enemy
                 return;
             }
 
-            Animator targetAnimator = GetAnimator();
-            if (targetAnimator != null)
+            Animator[] targetAnimators = GetAnimators();
+            for (int i = 0; i < targetAnimators.Length; i++)
             {
-                targetAnimator.SetFloat(parameterName, value);
+                targetAnimators[i].SetFloat(parameterName, value);
             }
         }
 
@@ -194,10 +194,10 @@ namespace Week14.Enemy
                 return;
             }
 
-            Animator targetAnimator = GetAnimator();
-            if (targetAnimator != null)
+            Animator[] targetAnimators = GetAnimators();
+            for (int i = 0; i < targetAnimators.Length; i++)
             {
-                targetAnimator.SetInteger(parameterName, value);
+                targetAnimators[i].SetInteger(parameterName, value);
             }
         }
 
@@ -208,10 +208,10 @@ namespace Week14.Enemy
                 return;
             }
 
-            Animator targetAnimator = GetAnimator();
-            if (targetAnimator != null)
+            Animator[] targetAnimators = GetAnimators();
+            for (int i = 0; i < targetAnimators.Length; i++)
             {
-                targetAnimator.SetBool(parameterName, value);
+                targetAnimators[i].SetBool(parameterName, value);
             }
         }
 
@@ -1007,22 +1007,25 @@ namespace Week14.Enemy
             }
         }
 
-        private Animator GetAnimator()
+        // BodyRoot 밑에 Animator가 여러 개 있으면(예: Assassin처럼 애니메이터 두 개를 나눠 쓰는 보스)
+        // 전부 찾아서 캐싱해두고, 트리거/파라미터 명령을 전부 동일하게 받는다.
+        private Animator[] GetAnimators()
         {
-            if (animator != null)
+            if (animators != null)
             {
-                return animator;
+                return animators;
             }
 
             if (Boss == null)
             {
-                return null;
+                animators = Array.Empty<Animator>();
+                return animators;
             }
 
-            animator = Boss.BodyRoot != null
-                ? Boss.BodyRoot.GetComponentInChildren<Animator>(true)
-                : Boss.GetComponentInChildren<Animator>(true);
-            return animator;
+            animators = Boss.BodyRoot != null
+                ? Boss.BodyRoot.GetComponentsInChildren<Animator>(true)
+                : Boss.GetComponentsInChildren<Animator>(true);
+            return animators;
         }
 
         private BossAnimationEventBridge GetAnimationEventBridge()
@@ -1032,9 +1035,9 @@ namespace Week14.Enemy
                 return animationEventBridge;
             }
 
-            Animator targetAnimator = GetAnimator();
-            GameObject targetObject = targetAnimator != null
-                ? targetAnimator.gameObject
+            Animator[] targetAnimators = GetAnimators();
+            GameObject targetObject = targetAnimators.Length > 0
+                ? targetAnimators[0].gameObject
                 : Boss != null ? Boss.gameObject : null;
             if (targetObject == null)
             {

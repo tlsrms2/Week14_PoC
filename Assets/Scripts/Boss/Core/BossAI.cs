@@ -24,7 +24,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float phaseTransitionWaitSeconds = 1.2f;
 
         [Header("Death Sequence")]
+        [Tooltip("비워두면 BodyRoot 밑의 Animator를 전부 찾아 사망 트리거를 동일하게 보냅니다(애니메이터가 여러 개인 보스도 자동 지원). 특정 애니메이터 하나에만 보내고 싶을 때만 직접 지정하세요.")]
         [SerializeField] private Animator deathAnimator;
+        private Animator[] deathAnimators;
         [SerializeField] private string deathTriggerName = "Die";
         [SerializeField, Min(0f)] private float finalDeathExplosionSeconds = 1.4f;
         [SerializeField, Min(1)] private int finalDeathExplosionCount = 10;
@@ -222,9 +224,6 @@ namespace Week14.Enemy
             }
 
             bodyRoot ??= FindChild("Visual") ?? transform;
-            deathAnimator ??= bodyRoot != null
-                ? bodyRoot.GetComponentInChildren<Animator>(true)
-                : GetComponentInChildren<Animator>(true);
 
             lockOnIndicator ??= FindChild("LockOnIndicator")?.GetComponent<SpriteRenderer>();
             executionIndicator ??= FindChild("ExecutionIndicator")?.GetComponent<SpriteRenderer>();
@@ -652,7 +651,30 @@ namespace Week14.Enemy
             finalDeathSequencePlayCount = Mathf.Max(0, finalDeathSequencePlayCount + (playing ? 1 : -1));
         }
 
-        internal Animator DeathAnimatorForSequence => deathAnimator;
+        // deathAnimator를 인스펙터에서 직접 지정했다면 그것만 쓰고, 비워뒀다면 BodyRoot 밑의
+        // Animator를 전부 찾아 broadcast 대상으로 삼는다(Assassin처럼 애니메이터가 여러 개인 보스 지원).
+        internal Animator[] DeathAnimatorsForSequence
+        {
+            get
+            {
+                if (deathAnimators != null)
+                {
+                    return deathAnimators;
+                }
+
+                if (deathAnimator != null)
+                {
+                    deathAnimators = new[] { deathAnimator };
+                    return deathAnimators;
+                }
+
+                deathAnimators = bodyRoot != null
+                    ? bodyRoot.GetComponentsInChildren<Animator>(true)
+                    : GetComponentsInChildren<Animator>(true);
+                return deathAnimators;
+            }
+        }
+
         internal string DeathTriggerNameForSequence => deathTriggerName;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;

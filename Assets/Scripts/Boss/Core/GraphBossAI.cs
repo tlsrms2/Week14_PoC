@@ -16,7 +16,7 @@ namespace Week14.Enemy
         };
 
         [Header("Groggy (패링 억제)")]
-        [Tooltip("그로기 상태 진입/해제 시 애니메이터를 못 찾으면 사용할 대체 검색용입니다. 보통은 자동으로 BodyRoot 밑에서 찾습니다.")]
+        [Tooltip("비워두면 BodyRoot 밑의 Animator를 전부 찾아 그로기 트리거를 동일하게 보냅니다(애니메이터가 여러 개인 보스도 자동 지원). 특정 애니메이터 하나에만 보내고 싶을 때만 직접 지정하세요.")]
         [SerializeField] private Animator patternGroggyAnimator;
 
         private static readonly int StunParameter = Animator.StringToHash("Stun");
@@ -25,6 +25,7 @@ namespace Week14.Enemy
         private readonly BossGraphRunner graphRunner = new();
         private BossActionContext graphContext;
         private Coroutine patternRoutine;
+        private Animator[] groggyAnimators;
         private bool isGroggy;
         private bool pendingGroggyEnter;
         private float pendingGroggySeconds;
@@ -142,17 +143,33 @@ namespace Week14.Enemy
 
         private void SetGroggyAnimatorTrigger(int parameter)
         {
-            if (patternGroggyAnimator == null)
+            Animator[] targets = GetGroggyAnimators();
+            for (int i = 0; i < targets.Length; i++)
             {
-                patternGroggyAnimator = BodyRoot != null
-                    ? BodyRoot.GetComponentInChildren<Animator>(true)
-                    : GetComponentInChildren<Animator>(true);
+                targets[i].SetTrigger(parameter);
+            }
+        }
+
+        // patternGroggyAnimator를 인스펙터에서 직접 지정했다면 그것만 쓰고(기존 동작 그대로 유지),
+        // 비워뒀다면 BodyRoot 밑의 Animator를 전부 찾아 broadcast한다 — Assassin처럼 애니메이터를
+        // 두 개 이상 나눠 쓰는 보스도 자동으로 전부 같은 그로기 트리거를 받게 하기 위함.
+        private Animator[] GetGroggyAnimators()
+        {
+            if (groggyAnimators != null)
+            {
+                return groggyAnimators;
             }
 
             if (patternGroggyAnimator != null)
             {
-                patternGroggyAnimator.SetTrigger(parameter);
+                groggyAnimators = new[] { patternGroggyAnimator };
+                return groggyAnimators;
             }
+
+            groggyAnimators = BodyRoot != null
+                ? BodyRoot.GetComponentsInChildren<Animator>(true)
+                : GetComponentsInChildren<Animator>(true);
+            return groggyAnimators;
         }
 
         protected virtual BossActionContext CreateGraphContext()
