@@ -181,31 +181,12 @@ namespace Week14.Enemy
             return Instantiate(clonePrefab, position, Quaternion.identity);
         }
 
-        // 서로 cloneMinSeparationDistance 이상 떨어진 두 지점을 뽑는다(각 지점은 플레이어 최소거리 조건도 만족).
-        internal (Vector2 pointA, Vector2 pointB) GetSeparatedCloneSpawnPositions()
+        // 분신 소환 전용 간격/플레이어 최소거리 설정(cloneMinSeparationDistance/cloneMinDistanceFromPlayer)을
+        // 그대로 써서 count개의 서로 떨어진 지점을 뽑는다. 분신 소환(및 그 자리에 포함되는 보스 순간이동
+        // 목적지)이 공통으로 쓰는 진입점.
+        internal List<Vector2> GetSeparatedCloneZonePositions(int count)
         {
-            Vector2 pointA = GetRandomCloneSpawnPosition();
-            Vector2 pointB = GetRandomCloneSpawnPosition();
-            for (int i = 0; i < CloneSpawnPositionAttempts && Vector2.Distance(pointA, pointB) < cloneMinSeparationDistance; i++)
-            {
-                pointB = GetRandomCloneSpawnPosition();
-            }
-
-            return (pointA, pointB);
-        }
-
-        // 두 지점(단검/분신 위치 등) 모두로부터 cloneMinSeparationDistance 이상 떨어진 지점을 하나 뽑는다.
-        internal Vector2 GetSeparatedCloneSpawnPosition(Vector2 avoidPositionA, Vector2 avoidPositionB)
-        {
-            Vector2 candidate = GetRandomCloneSpawnPosition();
-            for (int i = 0; i < CloneSpawnPositionAttempts
-                && (Vector2.Distance(candidate, avoidPositionA) < cloneMinSeparationDistance
-                    || Vector2.Distance(candidate, avoidPositionB) < cloneMinSeparationDistance); i++)
-            {
-                candidate = GetRandomCloneSpawnPosition();
-            }
-
-            return candidate;
+            return GetSeparatedRandomZonePositions(count, cloneMinSeparationDistance, cloneMinDistanceFromPlayer);
         }
 
         // 지정한 개수만큼, 서로 minSeparationDistance 이상 떨어지고(플레이어 최소거리 조건도 만족하는)

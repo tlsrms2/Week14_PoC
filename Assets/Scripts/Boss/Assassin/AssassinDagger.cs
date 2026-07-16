@@ -11,7 +11,7 @@ namespace Week14.Enemy
     {
         // 단검 스프라이트 원본은 위쪽(+Y)을 향해 그려져 있는데, FaceBoss/회수 비행은
         // "0도 = +X(오른쪽)"을 기준으로 각도를 계산한다. 그 차이를 보정하는 값.
-        private const float SpriteForwardOffsetDegrees = -90f;
+        private const float SpriteForwardOffsetDegrees = -220f;
 
         private const int MaxPathDashCount = 64;
         private const float PathDashLength = 0.2f;

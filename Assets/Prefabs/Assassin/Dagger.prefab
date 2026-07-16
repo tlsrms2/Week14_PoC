@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1277304679486700384}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: -0.9396926, w: 0.34202018}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -140}
 --- !u!212 &1059926324460012397
 SpriteRenderer:
   serializedVersion: 2
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 1400f102e50016c49815eb407a7443c9, type: 3}
+  m_Sprite: {fileID: 1872732258777413398, guid: fc9dd8d24edf04441a9fd4c904b30b5c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -110,6 +110,8 @@ MonoBehaviour:
   trailRadius: 0.15
   trailSeconds: 0.1
   trailWidthMultiplier: 3
+  pathIndicatorColor: {r: 1, g: 0.3, b: 0.15, a: 0.6}
+  pathIndicatorWidth: 0.05
 --- !u!58 &-4263489955315390070
 CircleCollider2D:
   m_ObjectHideFlags: 0

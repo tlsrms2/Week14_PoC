@@ -8626,6 +8626,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6292351910150845621, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -9976,7 +9980,7 @@ MonoBehaviour:
     projectile:
       prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
       bulletDamage: 0
-      chargeSeconds: 1
+      chargeSeconds: 0
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 0
       aimAtPlayerOnLaunch: 0
