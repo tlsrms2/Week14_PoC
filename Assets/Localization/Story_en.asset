@@ -660,7 +660,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901379
-    m_Localized: You can move by pressing the WASD keys.
+    m_Localized: Press the <sprite name="icon_w"><sprite name="icon_a"><sprite name="icon_s"><sprite
+      name="icon_d"> keys to move.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901380
@@ -677,8 +678,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901383
-    m_Localized: Left-click the mouse to fire a bullet-type energy core in the direction
-      of the cursor.
+    m_Localized: <sprite name="icon_leftclick"> to fire a bullet-type energy core
+      in the direction of the cursor.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901384
@@ -759,25 +760,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901399
-    m_Localized: 'By right-clicking the mouse to capture certain enemy attacks with
-      the ARGUS eye, the prosthetic arm will automatically perform an interception
-      without consuming bullets.
+    m_Localized: '<sprite name="icon_rightclick"> to capture enemy projectiles with
+      the ARGUS eye, allowing your prosthetic arm to automatically intercept them.
 
 
-      Upon successful capture and interception,
-      it neutralizes the enemy attack and automatically absorbs the corresponding
-      energy into the core.
+      A
+      successful intercept neutralizes the attack and automatically absorbs its energy
+      into the core.
 
 
-      If you frequently attempt to capture without
-      successfully intercepting, strain will be placed on the ARGUS eye, causing
-      the capture range to gradually decrease.'
+      Failing multiple intercepts in a short time strains
+      the ARGUS eye, gradually reducing its capture range.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901400
-    m_Localized: Interception is the sole method to replenish bullet-type energy
-      cores during battle. Please be aware that some attacks cannot be intercepted
-      depending on the form of the enemy attack.
+    m_Localized: Intercepting is the only way to replenish bullet-type energy cores
+      during combat. Please note that some projectiles cannot be intercepted depending
+      on their type.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901401
@@ -791,29 +790,32 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333532901404
     m_Localized: 'Bullet-type energy cores will overload and be automatically discharged
-      if held for a certain period of time.
+      if held for too long.
 
 
-      You can identify that a discharge
-      is imminent by the bullets on the HUD turning red.'
+      The ammo icon in the magazine indicates the time
+      remaining until overload.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901405
-    m_Localized: Next is Tactical Dodge. You can recycle a portion of the energy
-      released by the core to use it as a momentary enhancement of physical capability.
+    m_Localized: Next is Active Skill. You can recycle a portion of the energy released
+      by the core to use it as a momentary enhancement of physical capability.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901406
-    m_Localized: Skill
+    m_Localized: Active Skill
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901407
-    m_Localized: 'You can use the skill by pressing the Spacebar.
+    m_Localized: 'Press the <sprite name="icon_space"> to use a active skill.
 
 
-      The skill
-      can only be used when the HUD gauge is ready, and it will recharge after a
-      certain period of time.'
+      Active
+      Skills have a cooldown and can be used again after a certain time.
+
+
+      The
+      skill gauge around the magazine indicates when the skill is ready to use.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901408
@@ -826,7 +828,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901410
-    m_Localized: Utilize attack, interception, and tactical dodge appropriately to
+    m_Localized: Utilize attack, interception, and active skill appropriately to
       destroy the dummy.
     m_Metadata:
       m_Items: []
@@ -864,13 +866,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 739306561925120
-    m_Localized: In addition, the bullet-shaped energy core displayed on the HUD
+    m_Localized: In addition, the bullet-type energy core displayed on the magazine
       is consumed when shooting.
     m_Metadata:
       m_Items: []
   - m_Id: 739877813547008
     m_Localized: However, damage to the body can be invalidated, but shock and pain
       cannot be alleviated, so please refer to it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1108486769008640
+    m_Localized: '[ Objective ]'
     m_Metadata:
       m_Items: []
   references:

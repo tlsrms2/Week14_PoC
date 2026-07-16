@@ -120,7 +120,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326345653616640
-    m_Localized: <sprite name="icon_point" color=#00FFFF> Non Refundable
+    m_Localized: <sprite name="icon_point"> Non Refundable
     m_Metadata:
       m_Items: []
   - m_Id: 3326669890093056
@@ -128,16 +128,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: '<sprite name="icon_point" color=#00FFFF> Enhancement Points: {0}'
+    m_Localized: '<sprite name="icon_point"> Enhancement Points: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
-    m_Localized: '<sprite name="icon_point" color=#00FFFF> Required Points: {0}'
+    m_Localized: '<sprite name="icon_point"> Required Points: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
-    m_Localized: '<sprite name="icon_point" color=#00FFFF> Points returned upon refund:
-      {0}'
+    m_Localized: '<sprite name="icon_point"> Points returned upon refund: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3663321485377536
@@ -157,7 +156,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4304213502164992
-    m_Localized: <sprite name="icon_point" color=#00FFFF> Enhancement Points +{0}
+    m_Localized: <sprite name="icon_point"> Enhancement Points +{0}
     m_Metadata:
       m_Items: []
   - m_Id: 4478459079655424

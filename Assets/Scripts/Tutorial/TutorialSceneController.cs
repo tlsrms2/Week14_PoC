@@ -43,6 +43,7 @@ namespace Week14.Tutorial
         [SerializeField] private VideoPlayer explanationVideoPlayer;
         [SerializeField] private TMP_Text explanationTitle;
         [SerializeField] private TMP_Text explanationText;
+        [SerializeField] private Button explanationCloseButton;
         [SerializeField, Min(0f)] private float firstDialogueDelaySeconds = 1f;
         [SerializeField, Min(0f)] private float objectiveCompleteResumeDelaySeconds = 0.25f;
         [SerializeField] private GameObject bossCombatUiRoot;
@@ -137,6 +138,8 @@ namespace Week14.Tutorial
         private Coroutine deathRoutine;
         private Coroutine explanationVideoRoutine;
         private Coroutine moveDestinationBlinkRoutine;
+        private bool explanationCloseRequested;
+        private bool explanationCursorPushed;
 
         private void Awake()
         {
@@ -145,6 +148,11 @@ namespace Week14.Tutorial
 
         private void OnEnable()
         {
+            if (explanationCloseButton != null)
+            {
+                explanationCloseButton.onClick.AddListener(HandleExplanationCloseButtonClicked);
+            }
+
             PlayerProjectile.NormalAttackDamageDealt += HandleNormalAttackDamageDealt;
             PlayerParryController.ProjectileParried += HandleProjectileParried;
             PlayerCombatController.AttackReceived += HandlePlayerAttackReceived;
@@ -162,6 +170,11 @@ namespace Week14.Tutorial
 
         private void OnDisable()
         {
+            if (explanationCloseButton != null)
+            {
+                explanationCloseButton.onClick.RemoveListener(HandleExplanationCloseButtonClicked);
+            }
+
             PlayerProjectile.NormalAttackDamageDealt -= HandleNormalAttackDamageDealt;
             PlayerParryController.ProjectileParried -= HandleProjectileParried;
             PlayerCombatController.AttackReceived -= HandlePlayerAttackReceived;
@@ -694,7 +707,7 @@ namespace Week14.Tutorial
             }
 
             ShowExplanation(explanation);
-            while (!ExplanationClosePressed())
+            while (!explanationCloseRequested)
             {
                 yield return null;
             }
@@ -712,6 +725,8 @@ namespace Week14.Tutorial
 
             SetText(explanationTitle, explanation.HasLocalizedTitle ? explanation.LocalizedTitle.GetLocalizedString() : explanation.Title);
             SetText(explanationText, explanation.HasLocalizedText ? explanation.LocalizedText.GetLocalizedString() : explanation.Text);
+            explanationCloseRequested = false;
+            PushExplanationCursor();
             PushExplanationInputLock();
             SetExplanationVisible(true);
 
@@ -727,7 +742,43 @@ namespace Week14.Tutorial
             SetExplanationImage(null);
             SetText(explanationTitle, string.Empty);
             SetText(explanationText, string.Empty);
+            explanationCloseRequested = false;
+            PopExplanationCursor();
             SetExplanationVisible(false);
+        }
+
+        private void PushExplanationCursor()
+        {
+            if (explanationCursorPushed)
+            {
+                return;
+            }
+
+            CursorController.PushForceCustomCursorVisible();
+            PlayerCombatController.PushMouseParryReticleSuppression();
+            explanationCursorPushed = true;
+        }
+
+        private void PopExplanationCursor()
+        {
+            if (!explanationCursorPushed)
+            {
+                return;
+            }
+
+            CursorController.PopForceCustomCursorVisible();
+            PlayerCombatController.PopMouseParryReticleSuppression();
+            explanationCursorPushed = false;
+        }
+
+        private void HandleExplanationCloseButtonClicked()
+        {
+            if (TutorialInputBlocked())
+            {
+                return;
+            }
+
+            explanationCloseRequested = true;
         }
 
         private void SetExplanationImage(Sprite sprite)
@@ -2181,21 +2232,6 @@ namespace Week14.Tutorial
                 || (keyboard != null && keyboard.spaceKey.wasPressedThisFrame);
 #else
             return Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space);
-#endif
-        }
-
-        private static bool ExplanationClosePressed()
-        {
-            if (TutorialInputBlocked())
-            {
-                return false;
-            }
-
-#if ENABLE_INPUT_SYSTEM
-            Keyboard keyboard = Keyboard.current;
-            return keyboard != null && keyboard.eKey.wasPressedThisFrame;
-#else
-            return Input.GetKeyDown(KeyCode.E);
 #endif
         }
 
