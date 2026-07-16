@@ -23,6 +23,7 @@ public class CursorController : MonoBehaviour
     private bool customCursorVisible;
 
     private static int forceCustomCursorVisibleCount;
+    private static int forceCursorHiddenCount;
 
     public static void PushForceCustomCursorVisible()
     {
@@ -32,6 +33,18 @@ public class CursorController : MonoBehaviour
     public static void PopForceCustomCursorVisible()
     {
         forceCustomCursorVisibleCount = Mathf.Max(0, forceCustomCursorVisibleCount - 1);
+    }
+
+    public static void PushForceCursorHidden()
+    {
+        forceCursorHiddenCount++;
+        instance?.SetCustomCursorVisible(false, false);
+        ApplyOsCursorVisible(false);
+    }
+
+    public static void PopForceCursorHidden()
+    {
+        forceCursorHiddenCount = Mathf.Max(0, forceCursorHiddenCount - 1);
     }
 
     private void Awake()
@@ -77,6 +90,13 @@ public class CursorController : MonoBehaviour
 
     private void Update()
     {
+        if (forceCursorHiddenCount > 0)
+        {
+            SetCustomCursorVisible(false, false);
+            ApplyOsCursorVisible(false);
+            return;
+        }
+
         if (ShouldSuppressCustomCursor())
         {
             SetCustomCursorVisible(false, false);

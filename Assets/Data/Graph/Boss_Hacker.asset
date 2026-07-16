@@ -1015,7 +1015,7 @@ MonoBehaviour:
     action:
       rid: 6489939193110200417
     sequences: []
-    editorPosition: {x: 3618, y: 3473}
+    editorPosition: {x: 3816, y: 3476}
   - nodeId: Fire Sequential Sweep17
     nodeGuid: 57c1cfc91e9147a5a1ca0d1db37467bf
     nodeKind: 0
@@ -1024,7 +1024,7 @@ MonoBehaviour:
     action:
       rid: 6489939193110200418
     sequences: []
-    editorPosition: {x: 3803, y: 3473}
+    editorPosition: {x: 4001, y: 3476}
   - nodeId: Melee Attack20
     nodeGuid: 43719e107df946ebb6ea16f72b0ac6c7
     nodeKind: 0
@@ -1033,7 +1033,7 @@ MonoBehaviour:
     action:
       rid: 6489939193110200421
     sequences: []
-    editorPosition: {x: 3225, y: 3471}
+    editorPosition: {x: 3423, y: 3474}
   - nodeId: Fire Sequential Sweep18
     nodeGuid: 9b202217755646ce8869255ef3c3f9f7
     nodeKind: 0
@@ -1042,7 +1042,7 @@ MonoBehaviour:
     action:
       rid: 6489939193110200423
     sequences: []
-    editorPosition: {x: 3212, y: 3618}
+    editorPosition: {x: 3410, y: 3621}
   - nodeId: Hologram Replay12
     nodeGuid: c4af46c80d514e2b9254812fc466e24c
     nodeKind: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     action:
       rid: 6489939193110200424
     sequences: []
-    editorPosition: {x: 3050, y: 3470}
+    editorPosition: {x: 3248, y: 3473}
   - nodeId: Move Toward Player2
     nodeGuid: 89b9278c41cd4d33ba0920ccb3d7ffa7
     nodeKind: 1
@@ -1078,7 +1078,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651558989
     sequences: []
-    editorPosition: {x: 3391, y: 3472}
+    editorPosition: {x: 3589, y: 3475}
   - nodeId: Melee Attack21
     nodeGuid: 7b7e7dcc93584b678d1fe28ae005b613
     nodeKind: 0
@@ -1582,7 +1582,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559065
     sequences: []
-    editorPosition: {x: 2049, y: 2434}
+    editorPosition: {x: 2042, y: 2603}
   - nodeId: Fire Sequential Sweep32
     nodeGuid: 1427583ef96f4e74a73adf31fc218e45
     nodeKind: 0
@@ -1591,7 +1591,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559066
     sequences: []
-    editorPosition: {x: 2234, y: 2434}
+    editorPosition: {x: 2227, y: 2603}
   - nodeId: Melee Attack32
     nodeGuid: 567fb18ec8b0439fb1fcc644723eb74f
     nodeKind: 0
@@ -1600,7 +1600,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559067
     sequences: []
-    editorPosition: {x: 1656, y: 2432}
+    editorPosition: {x: 1649, y: 2601}
   - nodeId: Fire Sequential Sweep33
     nodeGuid: f2011e6727794011a1eb854042eb3089
     nodeKind: 0
@@ -1609,7 +1609,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559068
     sequences: []
-    editorPosition: {x: 1643, y: 2579}
+    editorPosition: {x: 1636, y: 2748}
   - nodeId: Move Toward Player5
     nodeGuid: 7314bf4402be43d38290a4105a4798fa
     nodeKind: 1
@@ -1618,7 +1618,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559070
     sequences: []
-    editorPosition: {x: 1822, y: 2433}
+    editorPosition: {x: 1815, y: 2602}
   - nodeId: Dash11
     nodeGuid: b2d4b87edf8f4870a4a9feafd6bda811
     nodeKind: 0
@@ -1898,6 +1898,24 @@ MonoBehaviour:
       rid: 6489939200651559115
     sequences: []
     editorPosition: {x: 58, y: 2253}
+  - nodeId: Move Toward Player7
+    nodeGuid: 0d36d09eda7347768257c28842d5404a
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939224946016340
+    sequences: []
+    editorPosition: {x: 3053, y: 3471}
+  - nodeId: Move Toward Player8
+    nodeGuid: 44947a7402bb4f189721bb2937d1a6a4
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939224946016341
+    sequences: []
+    editorPosition: {x: 1656, y: 2432}
   patterns:
   - patternId: P1-1
     nodeGuids:
@@ -2206,6 +2224,7 @@ MonoBehaviour:
     - 29b9dca1edb34c2e89bda415567010a6
     - b0feadcb3b514ceeb84cbd82f1501b78
     - 536f20bf9c9149dbbd4b390ab9930f98
+    - 44947a7402bb4f189721bb2937d1a6a4
     - 567fb18ec8b0439fb1fcc644723eb74f
     - 7314bf4402be43d38290a4105a4798fa
     - b2336a534a434c46809f2cd577a17568
@@ -2215,6 +2234,7 @@ MonoBehaviour:
     - Throw Weapon5
     - Fire Twin Wire3
     - Ground Gun Turret3
+    - Move Toward Player8
     - Melee Attack32
     - Move Toward Player5
     - Weapon Wire Orbit5
@@ -2412,6 +2432,7 @@ MonoBehaviour:
     - c1ccd6cc77c049d78d9f6a368f8b2434
     - aec31ccbb8814976a3d86d0fe0f600f8
     - ab9d5d5cadf7486aa321c186a398fa6d
+    - 0d36d09eda7347768257c28842d5404a
     - c4af46c80d514e2b9254812fc466e24c
     - 43719e107df946ebb6ea16f72b0ac6c7
     - be64ddffa491413094081d30c2ea3724
@@ -2422,6 +2443,7 @@ MonoBehaviour:
     - Throw Weapon3
     - Fire Twin Wire2
     - Ground Gun Turret2
+    - Move Toward Player7
     - Hologram Replay12
     - Melee Attack20
     - Move Toward Player3
@@ -2434,200 +2456,251 @@ MonoBehaviour:
     selectionMode: 3
     phaseMaxHp: 100
     patternIntervalSeconds: 2
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: 
     signaturePatternId: P10
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: P1-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P1-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P1-3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P2-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P2-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P3-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P3-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P5-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P5-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
     phaseMaxHp: 150
     patternIntervalSeconds: 2
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: 
     signaturePatternId: P11
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: U/P1-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P1-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P1-3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P2-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P2-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P3-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P3-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P5-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P5-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
-  - phaseIndex: 2
+      minPatternsPlayed: 0
+  - phaseIndex: 3
     selectionMode: 3
     phaseMaxHp: 150
     patternIntervalSeconds: 2
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: 
     signaturePatternId: 
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: UU/P1-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P1-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P1-3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P2-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P2-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P3-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P3-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: U/P5-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P5-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UU/P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
   transitions:
   - fromNodeGuid: c3917df5425047cf8c4553c0afc8ee62
     toNodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
@@ -3133,14 +3206,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: ab9d5d5cadf7486aa321c186a398fa6d
-    toNodeGuid: c4af46c80d514e2b9254812fc466e24c
-    fromNodeId: Ground Gun Turret2
-    toNodeId: Hologram Replay12
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 89b9278c41cd4d33ba0920ccb3d7ffa7
     toNodeGuid: cf3ac7c494f949bc8442174aa7eec43a
     fromNodeId: Move Toward Player2
@@ -3185,14 +3250,6 @@ MonoBehaviour:
     toNodeGuid: 448dd8eb587f4e939fa1aaaebea410b2
     fromNodeId: Hologram Replay13
     toNodeId: Dash Sweep1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 43719e107df946ebb6ea16f72b0ac6c7
-    toNodeGuid: be64ddffa491413094081d30c2ea3724
-    fromNodeId: Melee Attack20
-    toNodeId: Move Toward Player3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3453,26 +3510,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 567fb18ec8b0439fb1fcc644723eb74f
-    toNodeGuid: 7314bf4402be43d38290a4105a4798fa
-    fromNodeId: Melee Attack32
-    toNodeId: Move Toward Player5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 7314bf4402be43d38290a4105a4798fa
     toNodeGuid: b2336a534a434c46809f2cd577a17568
     fromNodeId: Move Toward Player5
     toNodeId: Weapon Wire Orbit5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 536f20bf9c9149dbbd4b390ab9930f98
-    toNodeGuid: 567fb18ec8b0439fb1fcc644723eb74f
-    fromNodeId: Ground Gun Turret3
-    toNodeId: Melee Attack32
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3642,6 +3683,54 @@ MonoBehaviour:
     fromNodeId: Fire Wire Branch3
     toNodeId: Dash Sweep5
     fromOutputPortIndex: 1
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ab9d5d5cadf7486aa321c186a398fa6d
+    toNodeGuid: 0d36d09eda7347768257c28842d5404a
+    fromNodeId: Ground Gun Turret2
+    toNodeId: Move Toward Player7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0d36d09eda7347768257c28842d5404a
+    toNodeGuid: c4af46c80d514e2b9254812fc466e24c
+    fromNodeId: Move Toward Player7
+    toNodeId: Hologram Replay12
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 43719e107df946ebb6ea16f72b0ac6c7
+    toNodeGuid: be64ddffa491413094081d30c2ea3724
+    fromNodeId: Melee Attack20
+    toNodeId: Move Toward Player3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 536f20bf9c9149dbbd4b390ab9930f98
+    toNodeGuid: 44947a7402bb4f189721bb2937d1a6a4
+    fromNodeId: Ground Gun Turret3
+    toNodeId: Move Toward Player8
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 44947a7402bb4f189721bb2937d1a6a4
+    toNodeGuid: 567fb18ec8b0439fb1fcc644723eb74f
+    fromNodeId: Move Toward Player8
+    toNodeId: Melee Attack32
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 567fb18ec8b0439fb1fcc644723eb74f
+    toNodeGuid: 7314bf4402be43d38290a4105a4798fa
+    fromNodeId: Melee Attack32
+    toNodeId: Move Toward Player5
+    fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
@@ -11327,7 +11416,7 @@ MonoBehaviour:
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
         hologramRetreatAngleDegrees: 30
-        hologramRetreatWaitSeconds: 5
+        hologramRetreatWaitSeconds: 3
         recoverySeconds: 0.2
     - rid: 6489939193110200400
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -18725,3 +18814,65 @@ MonoBehaviour:
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939224946016340
+      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+        speedMultiplier: 0
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489939224946016341
+      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+        speedMultiplier: 0
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1

@@ -144,6 +144,7 @@ namespace Week14.UI
         private BossData localizedBossData;
         private bool introControlAcquired;
         private bool cameraMouseLookLocked;
+        private bool introCursorHidden;
         private bool previousGameplayInputBlocked;
         private bool playFullBossIntro = true;
         private bool cinematicFocusActive;
@@ -676,6 +677,12 @@ namespace Week14.UI
 
         private void AcquireIntroControl()
         {
+            if (!introCursorHidden)
+            {
+                CursorController.PushForceCursorHidden();
+                introCursorHidden = true;
+            }
+
             if (!cameraMouseLookLocked && cameraFollow != null)
             {
                 cameraFollow.PushMouseLookLock();
@@ -698,6 +705,12 @@ namespace Week14.UI
 
         private void ReleaseIntroControl(bool startCombat)
         {
+            if (introCursorHidden)
+            {
+                CursorController.PopForceCursorHidden();
+                introCursorHidden = false;
+            }
+
             player?.Visual?.SetLeftArmVisible(true);
 
             if (introControlAcquired)

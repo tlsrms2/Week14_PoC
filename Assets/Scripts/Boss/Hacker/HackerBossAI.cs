@@ -52,12 +52,20 @@ namespace Week14.Enemy
         [SerializeField] private HackerHologramBoss hologramPrefab;
         [SerializeField, Min(1)] private int hologramStartPhaseNumber = 3;
 
+        [Header("Facing")]
+        [SerializeField] private Transform facingVisual;
+        [SerializeField] private Transform facingHand;
+        [SerializeField] private Transform facingParryingPoint;
+
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
 
         private readonly Dictionary<HackerThrownWeaponType, HackerThrownWeapon> groundedWeapons = new();
         private Quaternion facingVisualBaseLocalRotation;
-        private bool hasFacingVisualBaseLocalRotation;
+        private Quaternion facingHandBaseLocalRotation;
+        private Quaternion facingParryingPointBaseLocalRotation;
+        private bool facingTargetsResolved;
+        private bool hasFacingBaseLocalRotations;
         private bool isFacingLeft = true;
         private float lastSlamAt = float.NegativeInfinity;
         private bool gunWalkCounterParryArmed;
@@ -181,6 +189,11 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
+            if (this is not HackerHologramBoss)
+            {
+                HackerPlayerHackStatus.Clear(PlayerCombatController.Active);
+            }
+
             int hologramStartPhase = Mathf.Max(1, hologramStartPhaseNumber);
             if (phaseNumber < hologramStartPhase)
             {
@@ -313,21 +326,62 @@ namespace Week14.Enemy
 
         internal void FaceHorizontalDirection(float horizontalDirection)
         {
-            Transform facingVisual = BodyRoot;
-            if (facingVisual == null || Mathf.Abs(horizontalDirection) <= 0.0001f)
+            if (Mathf.Abs(horizontalDirection) <= 0.0001f)
             {
                 return;
             }
 
-            if (!hasFacingVisualBaseLocalRotation)
+            ResolveFacingTargets();
+            if (!hasFacingBaseLocalRotations)
             {
-                facingVisualBaseLocalRotation = facingVisual.localRotation;
-                hasFacingVisualBaseLocalRotation = true;
+                facingVisualBaseLocalRotation = facingVisual != null ? facingVisual.localRotation : Quaternion.identity;
+                facingHandBaseLocalRotation = facingHand != null ? facingHand.localRotation : Quaternion.identity;
+                facingParryingPointBaseLocalRotation = facingParryingPoint != null
+                    ? facingParryingPoint.localRotation
+                    : Quaternion.identity;
+                hasFacingBaseLocalRotations = true;
             }
 
             isFacingLeft = horizontalDirection < 0f;
-            facingVisual.localRotation = facingVisualBaseLocalRotation
-                * Quaternion.Euler(0f, isFacingLeft ? 0f : 180f, 0f);
+            Quaternion facingRotation = Quaternion.Euler(0f, isFacingLeft ? 0f : 180f, 0f);
+            ApplyFacingRotation(facingVisual, facingVisualBaseLocalRotation, facingRotation);
+            ApplyFacingRotation(facingHand, facingHandBaseLocalRotation, facingRotation);
+            ApplyFacingRotation(facingParryingPoint, facingParryingPointBaseLocalRotation, facingRotation);
+        }
+
+        private void ResolveFacingTargets()
+        {
+            if (facingTargetsResolved)
+            {
+                return;
+            }
+
+            facingVisual ??= FindDescendant("Boss-Hacker Visual");
+            facingHand ??= FindDescendant("Hand");
+            facingParryingPoint ??= FindDescendant("ParryingPoint");
+            facingTargetsResolved = true;
+        }
+
+        private Transform FindDescendant(string targetName)
+        {
+            Transform[] descendants = GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < descendants.Length; i++)
+            {
+                if (descendants[i] != null && descendants[i].name == targetName)
+                {
+                    return descendants[i];
+                }
+            }
+
+            return null;
+        }
+
+        private static void ApplyFacingRotation(Transform target, Quaternion baseRotation, Quaternion facingRotation)
+        {
+            if (target != null)
+            {
+                target.localRotation = baseRotation * facingRotation;
+            }
         }
 
         private void IgnoreTurretLayerCollisions()

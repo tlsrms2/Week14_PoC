@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 using Week14.Audio;
+using Week14.Bootstrap;
 using Week14.Save;
 
 namespace Week14.UI
@@ -126,13 +127,28 @@ namespace Week14.UI
                     continue;
                 }
 
-                LocalizationSettings.SelectedLocale = locales[i];
-                SyncLanguageDropdownValue(localeCode);
-
-                if (save)
+                var locale = locales[i];
+                if (LocalizationSettings.SelectedLocale == locale)
                 {
-                    SettingsManager.SetLanguageCode(localeCode);
+                    SyncLanguageDropdownValue(localeCode);
+                    if (save)
+                    {
+                        SettingsManager.SetLanguageCode(localeCode);
+                    }
+
+                    languageRoutine = null;
+                    yield break;
                 }
+
+                yield return SceneTransition.PlayCoverReveal(() =>
+                {
+                    LocalizationSettings.SelectedLocale = locale;
+                    SyncLanguageDropdownValue(localeCode);
+                    if (save)
+                    {
+                        SettingsManager.SetLanguageCode(localeCode);
+                    }
+                });
 
                 languageRoutine = null;
                 yield break;

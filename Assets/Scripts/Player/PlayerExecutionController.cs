@@ -108,16 +108,8 @@ namespace Week14.Combat
         private ExecutionTarget FindHoveredExecutionTarget()
         {
             Vector2 executionCenter = rig.CombatCenterOrigin.position;
-            float executionRange = context.Config != null ? context.Config.ExecutionRange : 0f;
-            Collider2D[] hits = Physics2D.OverlapCircleAll(executionCenter, executionRange, context.EnemyMask);
             ExecutionTarget bestTarget = null;
             float bestDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                ExecutionTarget target = hits[i].GetComponentInParent<ExecutionTarget>();
-                ChooseCloserExecutionTarget(target, executionCenter, ref bestTarget, ref bestDistance);
-            }
 
             ExecutionTarget[] executionTargets = UnityEngine.Object.FindObjectsByType<ExecutionTarget>(FindObjectsSortMode.None);
             for (int i = 0; i < executionTargets.Length; i++)
@@ -140,8 +132,7 @@ namespace Week14.Combat
             }
 
             float distance = Vector2.Distance(executionCenter, target.transform.position);
-            float executionRange = context.Config != null ? context.Config.ExecutionRange : 0f;
-            if (distance > executionRange || distance >= bestDistance)
+            if (distance >= bestDistance)
             {
                 return;
             }
