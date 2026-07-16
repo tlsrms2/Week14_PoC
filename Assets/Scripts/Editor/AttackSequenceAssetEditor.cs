@@ -125,13 +125,10 @@ internal static class BossGraphActionEditorUtility
         new("Arsonist/Set Sprinkler Active", typeof(ArsonistSetSprinklerActiveAction), () => new ArsonistSetSprinklerActiveAction()),
         new("Assassin/Fire Homing Dagger", typeof(FireAssassinHomingDaggerProjectileAction), () => new FireAssassinHomingDaggerProjectileAction()),
         new("Assassin/Enter Stealth", typeof(AssassinEnterStealthAction), () => new AssassinEnterStealthAction()),
-        new("Assassin/Set Stealth Visibility", typeof(AssassinSetStealthVisibilityAction), () => new AssassinSetStealthVisibilityAction()),
         new("Assassin/Recall Daggers", typeof(AssassinRecallDaggersAction), () => new AssassinRecallDaggersAction()),
-        new("Assassin/Recall Daggers With Parry Bait", typeof(AssassinRecallDaggersWithParryBaitAction), () => new AssassinRecallDaggersWithParryBaitAction()),
         new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
         new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
         new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
-        new("Assassin/Teleport Around Player", typeof(AssassinTeleportAroundPlayerAction), () => new AssassinTeleportAroundPlayerAction()),
         new("Hacker/Melee Attack", typeof(HackerMeleeAttackAction), () => new HackerMeleeAttackAction()),
         new("Hacker/Thrust", typeof(HackerThrustAction), () => new HackerThrustAction()),
         new("Hacker/Thrust Perpendicular Fire", typeof(HackerThrustPerpendicularFireAction), () => new HackerThrustPerpendicularFireAction()),
@@ -316,19 +313,9 @@ internal static class BossGraphActionEditorUtility
             return "Assassin 전용 액션입니다. 실행 시 은신 상태로 전환합니다(통상 그래프 → 은신 그래프로 다음 틱에 전환).";
         }
 
-        if (actionType == typeof(AssassinSetStealthVisibilityAction))
-        {
-            return "Assassin 전용 액션입니다. 은신 상태(isStealthed)는 그대로 둔 채, 보스 스프라이트만 시각적으로 완전히 보이게(Visible 체크) 또는 다시 은신 알파값으로(체크 해제) 되돌립니다. 회수 패턴에서 패링 미끼를 스폰하기 전에 보스를 잠깐 노출시키는 용도로 씁니다.";
-        }
-
         if (actionType == typeof(AssassinRecallDaggersAction))
         {
             return "Assassin 전용 액션입니다. 스폰된 단검 개수가 충분하면 전부 보스에게 회수하며 비행 중 플레이어에게 데미지를 주고, 끝나면 은신을 해제합니다. 단검이 부족하면 즉시 종료됩니다(이 패턴의 Cooldown Pattern Count는 0으로 설정하세요).";
-        }
-
-        if (actionType == typeof(AssassinRecallDaggersWithParryBaitAction))
-        {
-            return "Assassin 전용 액션입니다. 단검이 충분히 모였을 때만 동작하며, 회수 전에 패링 전용 미끼(ParryBaitRewardProjectile)를 먼저 스폰합니다. 패링되지 않으면 단검이 보스에게 날아가며(궤적 표시, 닿는 플레이어에게 데미지) 회수되고 뒤에 있는 패턴이 그대로 이어집니다. 패링되면 그 자리에 보상 탄이 원형으로 뿌려지고 단검이 궤적 없이 보스 자신에게 회수되어(자해 데미지) 회수가 끝난 뒤 FireParrySuppressionBaitAction(그로기탄)과 완전히 동일하게 boss.RequestGroggy(Groggy Seconds)로 패턴을 취소하고 보스가 그로기(무력화, Stun/EndStun 애니메이터)에 들어갑니다. 은신 해제는 회수가 끝나는 시점(RecallAllDaggersRoutine 종료)에 자동으로 처리됩니다. 보상 탄 프리팹은 미끼 프리팹 자신의 Reward Projectile 필드에 지정하고, 개수/반지름/지속시간은 이 액션의 필드로 덮어씁니다. 궤적은 일반 투사체와 동일한 방식(ProjectileVfx.EnsureTrail)으로 AssassinDagger가 자동으로 TrailRenderer를 추가/설정하므로 프리팹에 따로 붙일 필요는 없고, AssassinDagger 인스펙터의 Trail Radius/Trail Seconds/Trail Width Multiplier로 두께/길이를 조절하면 됩니다. 단검이 부족하면 즉시 종료됩니다(이 패턴의 Cooldown Pattern Count는 0으로 설정하세요).";
         }
 
         if (actionType == typeof(AssassinSpawnCloneShootersAction))
@@ -344,11 +331,6 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(AssassinSpawnRandomBombsAction))
         {
             return "Assassin 전용 액션입니다. 분신 스폰 구역(Clone Spawn Zone) 안에 폭탄을 여러 개 랜덤 배치합니다. 구역은 분신 소환과 공유하지만, 폭탄끼리 최소 간격(Min Separation Distance)과 플레이어와 최소거리(Min Distance From Player)는 이 액션에서 따로 지정합니다. Spawn Interval만큼 텀을 두고 하나씩 소환하며, Charge Seconds가 패링 유예 시간(=터질 때까지 남은 시간)입니다. 패링 판정이나 터질 때의 동작은 스폰되는 탄 프리팹 자신이 담당합니다.";
-        }
-
-        if (actionType == typeof(AssassinTeleportAroundPlayerAction))
-        {
-            return "Assassin 전용 액션입니다. 보스가 사라졌다가 플레이어로부터 Teleport Radius만큼 떨어진 원 위의 무작위 지점으로 순간이동해 다시 나타납니다. 목적지는 분신 스폰 구역(Clone Spawn Zone) 밖으로 나가지 않도록 제한됩니다. 사라짐/재등장 연출은 Spawn Clone Shooters가 보스 자신을 순간이동시킬 때와 동일한 방식(은신 알파 페이드)을 재사용합니다.";
         }
 
         if (actionType == typeof(HackerFireWireBranchAction))

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -156,21 +155,12 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class MoveUntilPlayerDistanceAction : BossAction, ISerializationCallbackReceiver, IBossActionDurationProvider
     {
-        private const float AfterimageInterval = 0.06f;
-        private const float AfterimageDuration = 0.35f;
-        private const float AfterimageRainbowCycleSeconds = 1.2f;
-        private const float AfterimageRainbowSaturation = 0.85f;
-        private const float AfterimageRainbowValue = 1f;
-        private const float AfterimageRainbowAlpha = 0.45f;
-
         [SerializeField, Min(0f), Tooltip("플레이어와의 거리가 이 값 이하가 되면 이동을 멈추고 다음으로 넘어갑니다.")] private float targetDistance = 3f;
         [SerializeField, Min(0f)] private float speedMultiplier = 1f;
         [SerializeField] private AnimationCurve speedCurve;
         [SerializeField, HideInInspector] private bool speedCurveInitialized;
         [SerializeField, Min(0f), Tooltip("0이면 시간 제한 없이 목표 거리에 도달할 때까지 계속 이동합니다.")] private float timeoutSeconds;
         [SerializeField] private bool stopWhenFinished = true;
-        [Tooltip("이동하는 동안 TimeSlowSkillSO의 무지개 잔상 이펙트를 보스에게도 재생할지 여부입니다.")]
-        [SerializeField] private bool spawnAfterimages = false;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -180,7 +170,6 @@ namespace Week14.Enemy
             }
 
             float elapsed = 0f;
-            float nextAfterimageAt = AfterimageInterval;
             while (Vector2.Distance(context.Boss.transform.position, context.Boss.Player.position) > targetDistance)
             {
                 if (timeoutSeconds > 0f && elapsed >= timeoutSeconds)
@@ -195,15 +184,8 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                context.MoveTowardPlayer(GetTimeSlowImmuneSpeedMultiplier(), GetSpeedCurve(), elapsed, 0f);
-
-                if (spawnAfterimages && elapsed >= nextAfterimageAt)
-                {
-                    SpawnAfterimage(context.Boss);
-                    nextAfterimageAt += AfterimageInterval;
-                }
-
-                elapsed += spawnAfterimages ? Time.deltaTime : EnemyTimeScale.DeltaTime;
+                context.MoveTowardPlayer(speedMultiplier, GetSpeedCurve(), elapsed, 0f);
+                elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
 
@@ -211,34 +193,6 @@ namespace Week14.Enemy
             {
                 context.Stop();
             }
-        }
-
-        // spawnAfterimages(잔상) 켜짐 = 시간 슬로우(EnemyTimeScale) 면역. SetMovementVelocity가 내부에서
-        // EnemyTimeScale.Current를 곱하기 때문에, 여기서 미리 그만큼 나눠 넣어서 최종 속도가 상쇄되게 한다.
-        private float GetTimeSlowImmuneSpeedMultiplier()
-        {
-            if (!spawnAfterimages)
-            {
-                return speedMultiplier;
-            }
-
-            float scale = Mathf.Max(EnemyTimeScale.Current, 0.001f);
-            return speedMultiplier / scale;
-        }
-
-        private static void SpawnAfterimage(BossAI boss)
-        {
-            SpriteRenderer[] renderers = boss.BodyRenderers;
-            if (renderers == null || renderers.Length == 0)
-            {
-                return;
-            }
-
-            float hue = Mathf.Repeat(Time.time / AfterimageRainbowCycleSeconds, 1f);
-            Color tint = Color.HSVToRGB(hue, AfterimageRainbowSaturation, AfterimageRainbowValue);
-            tint.a = AfterimageRainbowAlpha;
-
-            PlayerDashVfx.SpawnRollAfterimage(boss, renderers, null, AfterimageDuration, tint);
         }
 
         public void OnBeforeSerialize()

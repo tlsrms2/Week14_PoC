@@ -187,115 +187,16 @@ MonoBehaviour:
     action:
       rid: 4705778169994805574
     sequences: []
-    editorPosition: {x: 155, y: 796}
-  - nodeId: Boss Dash1
-    nodeGuid: fece3e3ab912475bb4d3caf1990430fc
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778169994805734
-    sequences: []
-    editorPosition: {x: 191, y: 938}
+    editorPosition: {x: -295, y: 806}
   - nodeId: Fire Radial Emission3
-    nodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
+    nodeGuid: 950625b2b6fd4b06a061eedba0f161ed
     nodeKind: 0
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778169994805735
+      rid: 4705778169994805575
     sequences: []
-    editorPosition: {x: -295, y: 796}
-  - nodeId: Teleport Around Player1
-    nodeGuid: 4553c45f47034f45b763c4f5fd909ae0
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778169994805752
-    sequences: []
-    editorPosition: {x: -83, y: 796}
-  - nodeId: Fire Radial Emission4
-    nodeGuid: 3c9a141acddc4860a2e4a40b7f15a0f5
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817280
-    sequences: []
-    editorPosition: {x: -295, y: 1147}
-  - nodeId: Fire Projectile1
-    nodeGuid: ed8b3ff194674b73b73b726a17efedfe
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817282
-    sequences: []
-    editorPosition: {x: 224, y: 1147}
-  - nodeId: Random Direction Move4
-    nodeGuid: 8f475b41e9094e6a9a63d8973cabad4c
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817281
-    sequences: []
-    editorPosition: {x: 5, y: 1147}
-  - nodeId: Fire Projectile2
-    nodeGuid: 7fafc2d89beb4d55afb6df5f9493feca
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817283
-    sequences: []
-    editorPosition: {x: 744, y: 1147}
-  - nodeId: Wait6
-    nodeGuid: 1da46b69448443118fec114763d56e60
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817286
-    sequences: []
-    editorPosition: {x: 907, y: 1147}
-  - nodeId: Wait7
-    nodeGuid: 3350c17e2ccc41ebb9284803f8687e33
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817287
-    sequences: []
-    editorPosition: {x: -129, y: 1147}
-  - nodeId: Enter Stealth1
-    nodeGuid: ed7415f26f2e4b64a9a337cbebff2df3
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817288
-    sequences: []
-    editorPosition: {x: 1047, y: 1147}
-  - nodeId: Wait8
-    nodeGuid: 618031b801a04da59c304dd15991eb45
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817391
-    sequences: []
-    editorPosition: {x: 353, y: 1147}
-  - nodeId: Random Direction Move5
-    nodeGuid: 425f9c674f804d26930d18406b2f1898
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778180782817392
-    sequences: []
-    editorPosition: {x: 502, y: 1147}
+    editorPosition: {x: -33, y: 806}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -347,43 +248,17 @@ MonoBehaviour:
     - Fire Distance Trail2
   - patternId: Pattern5
     nodeGuids:
-    - fece3e3ab912475bb4d3caf1990430fc
-    - cbbfb4ab43fd4ef1afc58e8583458ad3
-    - 4553c45f47034f45b763c4f5fd909ae0
     - dd601c7ae73540d6844eab7f454c19ec
+    - 950625b2b6fd4b06a061eedba0f161ed
     nodeIds:
-    - Boss Dash1
-    - Fire Radial Emission3
-    - Teleport Around Player1
     - Fire Parry Suppression Bait1
-  - patternId: Pattern6
-    nodeGuids:
-    - 3c9a141acddc4860a2e4a40b7f15a0f5
-    - 3350c17e2ccc41ebb9284803f8687e33
-    - 8f475b41e9094e6a9a63d8973cabad4c
-    - ed8b3ff194674b73b73b726a17efedfe
-    - 618031b801a04da59c304dd15991eb45
-    - 425f9c674f804d26930d18406b2f1898
-    - 7fafc2d89beb4d55afb6df5f9493feca
-    - 1da46b69448443118fec114763d56e60
-    - ed7415f26f2e4b64a9a337cbebff2df3
-    nodeIds:
-    - Fire Radial Emission4
-    - Wait7
-    - Random Direction Move4
-    - Fire Projectile1
-    - Wait8
-    - Random Direction Move5
-    - Fire Projectile2
-    - Wait6
-    - Enter Stealth1
+    - Fire Radial Emission3
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
     selectionMode: 3
     phaseMaxHp: 0
-    patternIntervalSeconds: 2.5
-    initialPatternDelaySeconds: 2.5
+    patternIntervalSeconds: 1.5
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
     openingPatternId: Pattern1
@@ -393,33 +268,19 @@ MonoBehaviour:
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
-      minPatternsPlayed: 0
+      cooldownPatternCount: 1
     - patternId: Pattern1
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
-      minPatternsPlayed: 0
+      cooldownPatternCount: 1
     - patternId: Pattern3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 5
-      minPatternsPlayed: 0
     - patternId: Pattern4
       weight: 1
       legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
-      minPatternsPlayed: 0
-    - patternId: Pattern5
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 4
-      minPatternsPlayed: 0
-    - patternId: Pattern6
-      weight: 10
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
-      minPatternsPlayed: 4
+      cooldownPatternCount: 1
   transitions:
   - fromNodeGuid: c6500d9e684e40fa835ec49902598fa7
     toNodeGuid: 06905a3118bd45548280596d7fc6a04e
@@ -517,82 +378,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
-    toNodeGuid: 4553c45f47034f45b763c4f5fd909ae0
-    fromNodeId: Fire Radial Emission3
-    toNodeId: Teleport Around Player1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 4553c45f47034f45b763c4f5fd909ae0
-    toNodeGuid: dd601c7ae73540d6844eab7f454c19ec
-    fromNodeId: Teleport Around Player1
-    toNodeId: Fire Parry Suppression Bait1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 8f475b41e9094e6a9a63d8973cabad4c
-    toNodeGuid: ed8b3ff194674b73b73b726a17efedfe
-    fromNodeId: Random Direction Move4
-    toNodeId: Fire Projectile1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 7fafc2d89beb4d55afb6df5f9493feca
-    toNodeGuid: 1da46b69448443118fec114763d56e60
-    fromNodeId: Fire Projectile2
-    toNodeId: Wait6
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 3c9a141acddc4860a2e4a40b7f15a0f5
-    toNodeGuid: 3350c17e2ccc41ebb9284803f8687e33
-    fromNodeId: Fire Radial Emission4
-    toNodeId: Wait7
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 3350c17e2ccc41ebb9284803f8687e33
-    toNodeGuid: 8f475b41e9094e6a9a63d8973cabad4c
-    fromNodeId: Wait7
-    toNodeId: Random Direction Move4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 1da46b69448443118fec114763d56e60
-    toNodeGuid: ed7415f26f2e4b64a9a337cbebff2df3
-    fromNodeId: Wait6
-    toNodeId: Enter Stealth1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: ed8b3ff194674b73b73b726a17efedfe
-    toNodeGuid: 618031b801a04da59c304dd15991eb45
-    fromNodeId: Fire Projectile1
-    toNodeId: Wait8
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 618031b801a04da59c304dd15991eb45
-    toNodeGuid: 425f9c674f804d26930d18406b2f1898
-    fromNodeId: Wait8
-    toNodeId: Random Direction Move5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 425f9c674f804d26930d18406b2f1898
-    toNodeGuid: 7fafc2d89beb4d55afb6df5f9493feca
-    fromNodeId: Random Direction Move5
-    toNodeId: Fire Projectile2
+  - fromNodeGuid: dd601c7ae73540d6844eab7f454c19ec
+    toNodeGuid: 950625b2b6fd4b06a061eedba0f161ed
+    fromNodeId: Fire Parry Suppression Bait1
+    toNodeId: Fire Radial Emission3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -610,14 +399,8 @@ MonoBehaviour:
     toNodeId: Fire Distance Trail2
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: dd601c7ae73540d6844eab7f454c19ec
-    toNodeGuid: fece3e3ab912475bb4d3caf1990430fc
-    fromNodeId: Fire Parry Suppression Bait1
-    toNodeId: Boss Dash1
-    laneIndex: 0
-    targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern2
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -796,7 +579,7 @@ MonoBehaviour:
       type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 180
+        cloneTargetAlpha: 200
         includeBossPosition: 1
         teleportHiddenSeconds: 0.4
         attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1215,9 +998,9 @@ MonoBehaviour:
         aim:
           mode: 0
           angleDegrees: 0
-        baitDurationSeconds: 0.8
-        rewardBulletCount: 3
-        rewardCircleRadius: 1
+        baitDurationSeconds: 1.5
+        rewardBulletCount: 4
+        rewardCircleRadius: 1.5
         groggySeconds: 3
         spawnSfxId: 
         effects:
@@ -1242,72 +1025,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-    - rid: 4705778169994805734
-      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        windupSeconds: 0.8
-        lockSeconds: 0
-        trackPlayerDuringWindup: 1
-        maxTrackTurnDegreesPerSecond: 0
-        windupSfxId: 
-        windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        dashDuration: 0.3
-        dashSpeed: 30
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0.27256712
-            outSlope: 0.27256712
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.2701177
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: -3.7676113
-            outSlope: -3.7676113
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.06455445
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        dashSfxId: 
-        chargeTriggerName: 
-        chargeBoolName: 
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectorySortingOrder: -1
-    - rid: 4705778169994805735
+    - rid: 4705778169994805575
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         projectileName: "\uC77C\uBC18\uD0C4"
@@ -1372,270 +1090,3 @@ MonoBehaviour:
           spawnRadius: 0
           fireInterval: 0
           restSeconds: 0.35
-    - rid: 4705778169994805752
-      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        teleportRadius: 2.5
-        vanishSeconds: 0.5
-        hiddenSeconds: 1
-        reappearSeconds: 0.3
-    - rid: 4705778180782817280
-      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 0
-          angleDegrees: 0
-        windupSeconds: 0
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        legacyBulletCount: 0
-        legacyArcDegrees: -1
-        legacyStartAngleOffset: 0
-        legacyRandomizeStartAngle: 0
-        legacySpawnRadius: -1
-        legacyFireInterval: -1
-        volleys:
-        - bulletCount: 30
-          arcDegrees: 360
-          startAngleOffset: 0
-          randomizeStartAngle: 0
-          spawnRadius: 0
-          fireInterval: 0
-          restSeconds: 0.35
-    - rid: 4705778180782817281
-      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        distance: 2
-        duration: 0.2
-        strafeAroundPlayer: 0
-        minAngleDegrees: 0
-        maxAngleDegrees: 360
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0.064042404
-            value: 0.9785456
-            inSlope: 0.69874907
-            outSlope: 0.69874907
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.3916019
-          - serializedVersion: 3
-            time: 0.9955927
-            value: -0.007392386
-            inSlope: -2.7436628
-            outSlope: -2.7436628
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.05165236
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-        requireGroundDestination: 1
-        groundProbeRadius: 0.2
-        groundRetryAttempts: 8
-    - rid: 4705778180782817282
-      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC720\uB3C4\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: Boss-Assassin Visual/ProjectileOrigin_3
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
-        windupSeconds: 0
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-    - rid: 4705778180782817283
-      type: {class: FireProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC720\uB3C4\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: Boss-Assassin Visual/ProjectileOrigin_4
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
-        windupSeconds: 0
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-    - rid: 4705778180782817286
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.5
-    - rid: 4705778180782817287
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.5
-    - rid: 4705778180782817288
-      type: {class: AssassinEnterStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
-    - rid: 4705778180782817391
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.5
-    - rid: 4705778180782817392
-      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        distance: 2
-        duration: 0.2
-        strafeAroundPlayer: 0
-        minAngleDegrees: 0
-        maxAngleDegrees: 360
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0.064042404
-            value: 0.9785456
-            inSlope: 0.69874907
-            outSlope: 0.69874907
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.3916019
-          - serializedVersion: 3
-            time: 0.9955927
-            value: -0.007392386
-            inSlope: -2.7436628
-            outSlope: -2.7436628
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.05165236
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-        requireGroundDestination: 1
-        groundProbeRadius: 0.2
-        groundRetryAttempts: 8

@@ -23,7 +23,8 @@ namespace Week14.Enemy
         [Tooltip("은신에 진입한 뒤 첫 은신 패턴이 시작되기까지 대기하는 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float stealthEntryPatternDelaySeconds = 0.5f;
         [SerializeField, Min(1)] private int daggerCountForRecallPattern = 5;
-        [Tooltip("패링 성공으로 단검이 보스 자신에게 회수될 때, 단검 1개가 도착 시 보스 자신에게 주는 데미지입니다.")]
+        [SerializeField, Min(1)] private int stealthDamageThresholdForForceRecall = 20;
+        [Tooltip("피해 임계치로 강제 회수될 때, 단검 1개가 도착 시 보스 자신에게 주는 데미지입니다.")]
         [SerializeField, Min(1)] private int daggerRecallDamagePerDagger = 3;
         [Tooltip("회수 패턴을 직접 사용했을 때, 비행 중 단검이 플레이어에게 주는 데미지입니다.")]
         [SerializeField, Min(1)] private int daggerRecallPlayerDamage = 5;
@@ -47,9 +48,9 @@ namespace Week14.Enemy
         private bool pendingStealthChange;
         private bool pendingStealthValue;
         private bool isRecallInProgress;
+        private int stealthDamageAccumulated;
         private float stealthEntryDelayRemaining;
         private bool teleportVisibilityOverrideActive;
-        private bool stealthVisibilityOverrideActive;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
         private Color ownAttackFlashOriginalColor;
@@ -71,13 +72,6 @@ namespace Week14.Enemy
             }
 
             return base.CanStartGraphPattern();
-        }
-
-        // 은신 중 단검이 회수 패턴 발동 개수 이상 쌓이면, 다음 패턴은 무조건 페이즈의
-        // Forced Pattern Id(=회수 패턴)를 쓰도록 강제한다.
-        protected override bool ShouldUseForcedGraphPattern()
-        {
-            return isStealthed && HasEnoughDaggersForRecallPattern;
         }
 
         internal bool IsStealthed => isStealthed;
@@ -106,6 +100,23 @@ namespace Week14.Enemy
             base.OnDisable();
         }
 
+        protected override void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        {
+            if (!isStealthed || isRecallInProgress)
+            {
+                return;
+            }
+
+            stealthDamageAccumulated += bulletDamage;
+            if (stealthDamageAccumulated < stealthDamageThresholdForForceRecall)
+            {
+                return;
+            }
+
+            stealthDamageAccumulated = 0;
+            StartCoroutine(RecallAllDaggersRoutine(false));
+        }
+
         private void LateUpdate()
         {
             UpdateFacingSprite();
@@ -124,12 +135,13 @@ namespace Week14.Enemy
 
             pendingStealthChange = false;
             isStealthed = pendingStealthValue;
-            if (isStealthed)
+            if (!isStealthed)
+            {
+                stealthDamageAccumulated = 0;
+            }
+            else
             {
                 stealthEntryDelayRemaining = stealthEntryPatternDelaySeconds;
-                // 새 은신 세션은 항상 반투명 상태로 시작한다 — 이전 세션에서 켜뒀던
-                // 알파 노출(Reveal)은 여기서 초기화된다.
-                stealthVisibilityOverrideActive = false;
             }
 
             // 그래프 액션 실행 도중(코루틴 안)에서 바로 StopGraphPattern을 부르면 자기 자신을
@@ -146,13 +158,6 @@ namespace Week14.Enemy
 
             pendingStealthChange = true;
             pendingStealthValue = enable;
-        }
-
-        // 은신 상태(isStealthed)는 그대로 유지한 채, 시각적으로만 보스를 완전히 보이게(또는 다시
-        // 반투명하게) 만든다. 그래프 패턴/쿨다운 등 게임플레이 로직에는 영향을 주지 않는다.
-        internal void SetStealthVisibilityOverride(bool visible)
-        {
-            stealthVisibilityOverrideActive = visible;
         }
 
         internal AssassinDagger CreateDagger(Vector3 position)
@@ -244,14 +249,8 @@ namespace Week14.Enemy
         // "보스가 다시 나타나는 순간"에 맞춰 분신 등장 연출도 같이 시작할 수 있게 한다.
         internal IEnumerator VanishForTeleport(Vector3 destination)
         {
-            yield return VanishForTeleport(destination, stealthAlphaFadeSeconds);
-        }
-
-        // fadeSeconds를 직접 지정하고 싶은 호출부(예: AssassinTeleportAroundPlayerAction)를 위한 오버로드.
-        internal IEnumerator VanishForTeleport(Vector3 destination, float fadeSeconds)
-        {
             teleportVisibilityOverrideActive = true;
-            yield return WaitSecondsScaled(fadeSeconds);
+            yield return WaitSecondsScaled(stealthAlphaFadeSeconds);
 
             if (Body != null)
             {
@@ -263,13 +262,8 @@ namespace Week14.Enemy
 
         internal IEnumerator ReappearAfterTeleport()
         {
-            yield return ReappearAfterTeleport(stealthAlphaFadeSeconds);
-        }
-
-        internal IEnumerator ReappearAfterTeleport(float fadeSeconds)
-        {
             teleportVisibilityOverrideActive = false;
-            yield return WaitSecondsScaled(fadeSeconds);
+            yield return WaitSecondsScaled(stealthAlphaFadeSeconds);
         }
 
         private static IEnumerator WaitSecondsScaled(float seconds)
@@ -465,29 +459,6 @@ namespace Week14.Enemy
             return bounds.center;
         }
 
-        // 플레이어를 중심으로 반지름 radius인 원 위의 무작위 지점을 고른다. cloneSpawnZone 밖으로는
-        // 순간이동하면 안 되므로, 구역 안에 들어오는 지점이 나올 때까지 각도를 다시 뽑고, 그래도
-        // 못 찾으면 분신 소환과 동일한 폴백(SampleCloneSpawnZonePosition)으로 구역 안 아무 지점을 쓴다.
-        internal Vector2 GetRandomTeleportPositionAroundPlayer(float radius)
-        {
-            if (Player == null)
-            {
-                return SampleCloneSpawnZonePosition();
-            }
-
-            Vector2 playerPosition = Player.position;
-            for (int i = 0; i < CloneSpawnPositionAttempts; i++)
-            {
-                Vector2 candidate = playerPosition + BossActionContext.AngleToDirection(Random.Range(0f, 360f)) * radius;
-                if (cloneSpawnZone == null || cloneSpawnZone.OverlapPoint(candidate))
-                {
-                    return candidate;
-                }
-            }
-
-            return SampleCloneSpawnZonePosition();
-        }
-
         private void ClearCloneShooterQueue()
         {
             for (int i = 0; i < cloneShooterQueue.Count; i++)
@@ -544,9 +515,7 @@ namespace Week14.Enemy
         private IEnumerator FlyDaggerHomeRoutine(AssassinDagger dagger, bool damagesPlayer, System.Action onComplete)
         {
             Transform target = BodyRoot != null ? BodyRoot : transform;
-            // 패링 실패(플레이어를 노리는 정상 회수)일 때만 탄환처럼 궤적을 보여준다.
-            // 패링 성공(보스 자해)일 때는 궤적을 표시하지 않는다.
-            yield return dagger.FlyToBoss(target, daggerRecallSpeed, damagesPlayer ? daggerRecallPlayerDamage : 0, damagesPlayer);
+            yield return dagger.FlyToBoss(target, daggerRecallSpeed, damagesPlayer ? daggerRecallPlayerDamage : 0);
             if (!damagesPlayer)
             {
                 ReceivePlayerHit(daggerRecallDamagePerDagger, false, transform.position, Vector2.zero, Color.white);
@@ -580,9 +549,8 @@ namespace Week14.Enemy
 
         private void ApplyStealthAlpha()
         {
-            bool forceVisible = stealthVisibilityOverrideActive && !teleportVisibilityOverrideActive;
-            float targetAlphaA = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaA / 255f;
-            float targetAlphaB = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaB / 255f;
+            float targetAlphaA = teleportVisibilityOverrideActive ? 0f : isStealthed ? stealthAlphaA / 255f : 1f;
+            float targetAlphaB = teleportVisibilityOverrideActive ? 0f : isStealthed ? stealthAlphaB / 255f : 1f;
             FadeAlphaTowards(stealthVisualTargetA, targetAlphaA);
             FadeAlphaTowards(stealthVisualTargetB, targetAlphaB);
         }

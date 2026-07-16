@@ -142,7 +142,6 @@ namespace Week14.Enemy
         public Transform Player => player;
         public Rigidbody2D Body => body;
         public Transform BodyRoot => bodyRoot;
-        public SpriteRenderer[] BodyRenderers => renderers;
         public LayerMask ObstacleMask => obstacleMask;
         public Vector3 SpawnPosition { get; private set; }
         public bool IsHpEmpty => hpGauge != null && hpGauge.IsEmpty;
@@ -170,9 +169,6 @@ namespace Week14.Enemy
         protected CombatEffectData EffectData => ActiveEffectData;
         protected virtual BossGraphAsset GraphAsset => null;
         protected virtual BossProjectileSettings ResolveGraphProjectileSettings(string projectileName) => null;
-        // 페이즈에 ForcedPatternId가 지정돼 있을 때, 지금 그 패턴을 무조건 다음 패턴으로 강제 선택할지
-        // 여부를 보스마다 다르게 판단하게 하는 훅이다(예: Assassin의 "단검이 일정 개수 이상 쌓였는지").
-        protected virtual bool ShouldUseForcedGraphPattern() => false;
         public int MaxLives => Mathf.Max(1, maxLives);
         public int CurrentLives => PhaseController.CurrentLives;
         public int CurrentPhaseIndex => PhaseController.CurrentPhaseIndex;
@@ -194,11 +190,6 @@ namespace Week14.Enemy
         private BossGraphPhase ActiveGraphPhase => GraphAsset != null ? GraphAsset.GetPhase(CurrentPhaseIndex) : null;
         private bool BossCanFlyOverGround => ActiveGraphPhase != null && ActiveGraphPhase.BossCanFlyOverGround;
         public bool MinionsCanFlyOverGround => ActiveGraphPhase != null && ActiveGraphPhase.MinionsCanFlyOverGround;
-        internal bool ShouldUseForcedGraphPatternForRunner()
-        {
-            return ShouldUseForcedGraphPattern();
-        }
-
         internal BossProjectileSettings ResolveGraphProjectileSettingsForActions(string projectileName)
         {
             return ResolveGraphProjectileSettings(projectileName);
