@@ -2281,7 +2281,7 @@ PrefabInstance:
     - target: {fileID: 1481769879921159807, guid: ef64cab23b713ab46b517149cb6261af, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 2656836450882976452}
+      objectReference: {fileID: 0}
     - target: {fileID: 3689586481360686179, guid: ef64cab23b713ab46b517149cb6261af, type: 3}
       propertyPath: m_Name
       value: LowBulletVignettewEffect
