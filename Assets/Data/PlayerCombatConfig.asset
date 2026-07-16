@@ -53,9 +53,9 @@ MonoBehaviour:
   executionFlourishShotInterval: 0.1
   finalExecutionLetterboxEnterSeconds: 0.2
   finalExecutionBlackoutFadeInSeconds: 0.14
-  finalExecutionBlackoutHoldSeconds: 0.45
-  finalExecutionImpactTimeScale: 0.08
-  finalExecutionImpactSlowSeconds: 0.55
+  finalExecutionBlackoutHoldSeconds: 0.8
+  finalExecutionImpactTimeScale: 0.5
+  finalExecutionImpactSlowSeconds: 0.4
   finalExecutionOutlineFlashSeconds: 0.04
   finalExecutionBlackoutFadeOutSeconds: 0.24
   finalExecutionLetterboxExitSeconds: 0.28
