@@ -23,7 +23,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  icon: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
+  icon: {fileID: 21300000, guid: 5233526678ec17542a9c645045538460, type: 3}
   description: "\uC544\uC8FC \uC9E7\uC740 \uC2DC\uAC04 \uB3D9\uC548 \uBB34\uC801
     \uC0C1\uD0DC\uAC00 \uB418\uBA70, \uC774\uB54C \uD53C\uD574\uB97C \uBC1B\uC73C\uBA74
     \uD0C4\uD658\uC744 \uBAA8\uB450 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
@@ -40,6 +40,7 @@ MonoBehaviour:
   price: 2
   durationSeconds: 0.5
   parryClearRadius: 3
+  postParryInvulnerabilitySeconds: 0.3
   activateSfxId: 
   blankVfxPrefab: {fileID: 6502374957185654834, guid: 7850d2e7d2f21044ca25b3fb6b63398d, type: 3}
   references:

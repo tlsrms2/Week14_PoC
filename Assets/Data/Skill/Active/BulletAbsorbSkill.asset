@@ -23,7 +23,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  icon: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
+  icon: {fileID: 21300000, guid: 80f400742cecb4a41883af0570abc2f0, type: 3}
   description: "2\uCD08 \uB3D9\uC548 \uC8FC\uBCC0\uC758 \uD0C4\uB9C9\uC744 \uD761\uC218\uD574
     \uD0C4\uD658\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
   localizedDescription:

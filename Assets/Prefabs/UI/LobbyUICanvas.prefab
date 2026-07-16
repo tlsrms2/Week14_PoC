@@ -13525,7 +13525,7 @@ PrefabInstance:
     - target: {fileID: 3809394218523222738, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: ae1a269acbb08d843ad83bd48e8de271, type: 3}
+      objectReference: {fileID: 21300000, guid: 78ca45f6324b55a43af641a43cbd2b43, type: 3}
     - target: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
       propertyPath: m_Name
       value: ActiveSkill 3
