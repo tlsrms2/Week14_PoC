@@ -410,6 +410,37 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &105275531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105275532}
+  m_Layer: 6
+  m_Name: WirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &105275532
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105275531}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.173, y: 0.145, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091381950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &171359973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -921,6 +952,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13226010a27bc0a4bbe8123c0eca6d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerOverlayCameraTag
+--- !u!1 &548367998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 548367999}
+  m_Layer: 6
+  m_Name: SnipingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &548367999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548367998}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.376, y: 0.159, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2091381950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &563929843 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5964690344926625481, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
@@ -2212,6 +2274,14 @@ PrefabInstance:
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: facingMuzzlePoints
+      value: 
+      objectReference: {fileID: 2091381950}
+    - target: {fileID: 1535058767362792752, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.373
+      objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2256,9 +2326,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss_Hacker
       objectReference: {fileID: 0}
+    - target: {fileID: 5838719185078507383, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.563
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809740062559506956, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.275
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2091381950}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
 --- !u!114 &1505174552 stripped
@@ -2272,6 +2353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0acd04e99741d4b4785fb2a359422af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HackerBossAI
+--- !u!4 &1505174555 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+  m_PrefabInstance: {fileID: 1505174551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1521775367 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 739125593154593292, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
@@ -3065,6 +3151,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4309581587629039353, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
   m_PrefabInstance: {fileID: 741641526}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2091381949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2091381950}
+  m_Layer: 6
+  m_Name: MuzzlePoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2091381950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091381949}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 105275532}
+  - {fileID: 548367999}
+  m_Father: {fileID: 1505174555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &2100001001 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7243662158403844284, guid: 218813ba59c83c74190ce20f103782d5, type: 3}

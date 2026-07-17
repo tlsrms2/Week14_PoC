@@ -59,6 +59,7 @@ namespace Week14.Enemy
         [SerializeField] private Transform facingVisual;
         [SerializeField] private Transform facingHand;
         [SerializeField] private Transform facingParryingPoint;
+        [SerializeField] private Transform facingMuzzlePoints;
 
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
@@ -67,6 +68,7 @@ namespace Week14.Enemy
         private Quaternion facingVisualBaseLocalRotation;
         private Quaternion facingHandBaseLocalRotation;
         private Quaternion facingParryingPointBaseLocalRotation;
+        private Quaternion facingMuzzlePointsBaseLocalRotation;
         private bool facingTargetsResolved;
         private bool hasFacingBaseLocalRotations;
         private bool isFacingLeft = true;
@@ -342,6 +344,9 @@ namespace Week14.Enemy
                 facingParryingPointBaseLocalRotation = facingParryingPoint != null
                     ? facingParryingPoint.localRotation
                     : Quaternion.identity;
+                facingMuzzlePointsBaseLocalRotation = facingMuzzlePoints != null
+                    ? facingMuzzlePoints.localRotation
+                    : Quaternion.identity;
                 hasFacingBaseLocalRotations = true;
             }
 
@@ -350,6 +355,7 @@ namespace Week14.Enemy
             ApplyFacingRotation(facingVisual, facingVisualBaseLocalRotation, facingRotation);
             ApplyFacingRotation(facingHand, facingHandBaseLocalRotation, facingRotation);
             ApplyFacingRotation(facingParryingPoint, facingParryingPointBaseLocalRotation, facingRotation);
+            ApplyFacingRotation(facingMuzzlePoints, facingMuzzlePointsBaseLocalRotation, facingRotation);
         }
 
         private void ResolveFacingTargets()
@@ -362,6 +368,7 @@ namespace Week14.Enemy
             facingVisual ??= FindDescendant("Boss-Hacker Visual");
             facingHand ??= FindDescendant("Hand");
             facingParryingPoint ??= FindDescendant("ParryingPoint");
+            facingMuzzlePoints ??= FindDescendant("MuzzlePoints");
             facingTargetsResolved = true;
         }
 

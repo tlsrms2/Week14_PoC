@@ -4043,7 +4043,7 @@ MonoBehaviour:
     toNodeId: Fire Sequential Sweep43
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
+  debugForceSinglePattern: 0
   debugForcedPatternId: P9
   references:
     version: 2
@@ -4389,7 +4389,6 @@ MonoBehaviour:
         wanderChangeSeconds: 0.8
         fireInterval: 1
         maxShotCount: 8
-        swordParryTriggerName: SwordParry
         wireOriginPath: 
         wireTravelSeconds: 0.12
         grabSeconds: 0.65
@@ -5205,17 +5204,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -5346,17 +5335,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -5444,17 +5423,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -5542,17 +5511,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -5782,17 +5741,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -5951,17 +5900,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -6049,17 +5988,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -6119,7 +6048,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        windupSeconds: 3
+        windupSeconds: 1.5
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -6229,10 +6158,10 @@ MonoBehaviour:
         bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
         gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
         swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
-        bayonetEquippedWeaponPath: Visual/RightHand
-        gunEquippedWeaponPath: Visual/LeftHand
-        swordEquippedWeaponPath: Visual/RightHand
-        throwOriginPath: Visual/RightHand
+        bayonetEquippedWeaponPath: Hand/RightHand
+        gunEquippedWeaponPath: Hand/RightHand
+        swordEquippedWeaponPath: Hand/LeftHand
+        throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
         windupSeconds: 0
         flightSpeed: 6
@@ -6267,9 +6196,9 @@ MonoBehaviour:
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         weaponSelection: 3
-        bossWireAnchorPath: Visual/RightHand
+        bossWireAnchorPath: Hand/RightHand
         weaponWireAnchorPath: WireAnchor
-        returnAnchorPath: Visual/RightHand
+        returnAnchorPath: Hand/RightHand
         weaponReadyWaitSeconds: 2
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
@@ -7156,17 +7085,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -8407,17 +8326,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -8505,17 +8414,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -8603,17 +8502,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -8929,10 +8818,10 @@ MonoBehaviour:
         bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
         gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
         swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
-        bayonetEquippedWeaponPath: Visual/RightHand
-        gunEquippedWeaponPath: Visual/LeftHand
-        swordEquippedWeaponPath: Visual/RightHand
-        throwOriginPath: Visual/RightHand
+        bayonetEquippedWeaponPath: Hand/RightHand
+        gunEquippedWeaponPath: Hand/RightHand
+        swordEquippedWeaponPath: Hand/LeftHand
+        throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
         windupSeconds: 0
         flightSpeed: 6
@@ -9121,17 +9010,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -9290,17 +9169,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -9388,17 +9257,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -9474,9 +9333,9 @@ MonoBehaviour:
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         weaponSelection: 3
-        bossWireAnchorPath: Visual/RightHand
+        bossWireAnchorPath: Hand/RightHand
         weaponWireAnchorPath: WireAnchor
-        returnAnchorPath: Visual/RightHand
+        returnAnchorPath: Hand/RightHand
         weaponReadyWaitSeconds: 2
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
@@ -9917,17 +9776,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -10015,17 +9864,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -10113,17 +9952,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -10211,17 +10040,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -10451,17 +10270,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -10691,17 +10500,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -10860,17 +10659,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -11049,7 +10838,7 @@ MonoBehaviour:
     - rid: 6489939193110200400
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        launchOriginPath: 
+        firePointPath: MuzzlePoints/WirePoint
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 0
@@ -11300,10 +11089,10 @@ MonoBehaviour:
         bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
         gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
         swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
-        bayonetEquippedWeaponPath: Visual/RightHand
-        gunEquippedWeaponPath: Visual/LeftHand
-        swordEquippedWeaponPath: Visual/RightHand
-        throwOriginPath: Visual/RightHand
+        bayonetEquippedWeaponPath: Hand/RightHand
+        gunEquippedWeaponPath: Hand/RightHand
+        swordEquippedWeaponPath: Hand/LeftHand
+        throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
         windupSeconds: 0
         flightSpeed: 6
@@ -11338,9 +11127,9 @@ MonoBehaviour:
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         weaponSelection: 3
-        bossWireAnchorPath: Visual/RightHand
+        bossWireAnchorPath: Hand/RightHand
         weaponWireAnchorPath: WireAnchor
-        returnAnchorPath: Visual/RightHand
+        returnAnchorPath: Hand/RightHand
         weaponReadyWaitSeconds: 2
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
@@ -12328,17 +12117,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -13656,10 +13435,10 @@ MonoBehaviour:
         bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
         gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
         swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
-        bayonetEquippedWeaponPath: Visual/RightHand
-        gunEquippedWeaponPath: Visual/LeftHand
-        swordEquippedWeaponPath: Visual/RightHand
-        throwOriginPath: Visual/RightHand
+        bayonetEquippedWeaponPath: Hand/RightHand
+        gunEquippedWeaponPath: Hand/RightHand
+        swordEquippedWeaponPath: Hand/LeftHand
+        throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
         windupSeconds: 0
         flightSpeed: 6
@@ -13694,9 +13473,9 @@ MonoBehaviour:
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         weaponSelection: 3
-        bossWireAnchorPath: Visual/RightHand
+        bossWireAnchorPath: Hand/RightHand
         weaponWireAnchorPath: WireAnchor
-        returnAnchorPath: Visual/RightHand
+        returnAnchorPath: Hand/RightHand
         weaponReadyWaitSeconds: 2
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
@@ -14173,17 +13952,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -14342,17 +14111,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -14440,17 +14199,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -14693,7 +14442,7 @@ MonoBehaviour:
     - rid: 6489939200651559038
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        launchOriginPath: 
+        firePointPath: MuzzlePoints/WirePoint
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 1
@@ -14849,7 +14598,7 @@ MonoBehaviour:
     - rid: 6489939200651559042
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        launchOriginPath: 
+        firePointPath: MuzzlePoints/WirePoint
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 0
@@ -15096,10 +14845,10 @@ MonoBehaviour:
         bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
         gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
         swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
-        bayonetEquippedWeaponPath: Visual/RightHand
-        gunEquippedWeaponPath: Visual/LeftHand
-        swordEquippedWeaponPath: Visual/RightHand
-        throwOriginPath: Visual/RightHand
+        bayonetEquippedWeaponPath: Hand/RightHand
+        gunEquippedWeaponPath: Hand/RightHand
+        swordEquippedWeaponPath: Hand/LeftHand
+        throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
         windupSeconds: 0
         flightSpeed: 6
@@ -15134,9 +14883,9 @@ MonoBehaviour:
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         weaponSelection: 3
-        bossWireAnchorPath: Visual/RightHand
+        bossWireAnchorPath: Hand/RightHand
         weaponWireAnchorPath: WireAnchor
-        returnAnchorPath: Visual/RightHand
+        returnAnchorPath: Hand/RightHand
         weaponReadyWaitSeconds: 2
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
@@ -15917,10 +15666,10 @@ MonoBehaviour:
         bayonetPrefab: {fileID: 4033902920554242825, guid: 013c33a242973904a8ae47988d405fe7, type: 3}
         gunPrefab: {fileID: 4033902920554242825, guid: 8872e4122fc32544fa274b9bdff2ea5a, type: 3}
         swordPrefab: {fileID: 4033902920554242825, guid: f4e4410db956f4b46a2489dc5562c2c6, type: 3}
-        bayonetEquippedWeaponPath: Visual/RightHand
-        gunEquippedWeaponPath: Visual/LeftHand
-        swordEquippedWeaponPath: Visual/RightHand
-        throwOriginPath: Visual/RightHand
+        bayonetEquippedWeaponPath: Hand/RightHand
+        gunEquippedWeaponPath: Hand/RightHand
+        swordEquippedWeaponPath: Hand/LeftHand
+        throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
         windupSeconds: 0
         flightSpeed: 6
@@ -15955,9 +15704,9 @@ MonoBehaviour:
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         weaponSelection: 3
-        bossWireAnchorPath: Visual/RightHand
+        bossWireAnchorPath: Hand/RightHand
         weaponWireAnchorPath: WireAnchor
-        returnAnchorPath: Visual/RightHand
+        returnAnchorPath: Hand/RightHand
         weaponReadyWaitSeconds: 2
         windupTriggerName: WeaponWireOrbitWindup
         orbitTriggerName: WeaponWireOrbit
@@ -16206,17 +15955,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -16304,17 +16043,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -16402,17 +16131,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -16500,17 +16219,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -16716,7 +16425,7 @@ MonoBehaviour:
     - rid: 6489939200651559096
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        launchOriginPath: 
+        firePointPath: MuzzlePoints/WirePoint
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 1
@@ -17027,17 +16736,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -17267,17 +16966,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -17436,17 +17125,7 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        origin:
-          mode: 1
-          bossChildPath: Visual/RightHand/Weapon/Muzzle
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0
-        aim:
-          mode: 0
-          angleDegrees: 0
-        spawnForwardOffset: 0
+        firePointPath: MuzzlePoints/SnipingPoint
         chargeSecondsOverride: -1
         fireSfxId: 
         launchSfxId: 
@@ -17521,7 +17200,7 @@ MonoBehaviour:
     - rid: 6489939200651559112
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        launchOriginPath: 
+        firePointPath: MuzzlePoints/WirePoint
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 0

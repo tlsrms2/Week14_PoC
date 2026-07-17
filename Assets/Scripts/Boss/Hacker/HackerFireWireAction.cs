@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -20,7 +21,8 @@ namespace Week14.Enemy
         private const string IsWireGrabbingAnimationParameter = "IsWireGrabbing";
 
         [Header("Wire")]
-        [SerializeField, BossGraphBossChildPath] private string launchOriginPath;
+        [FormerlySerializedAs("launchOriginPath")]
+        [SerializeField, BossGraphBossChildPath] private string firePointPath;
         [SerializeField, Min(0f)] private float windupSeconds = 0.25f;
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 2f;
         [SerializeField] private HackerFireWireTargetMode targetMode;
@@ -164,7 +166,13 @@ namespace Week14.Enemy
         private bool TryCreateWire(BossActionContext context, HackerBossAI hacker, out HackerWire wire)
         {
             wire = null;
-            Transform launchOrigin = context.GetBossChildTransform(launchOriginPath) ?? hacker.transform;
+            Transform launchOrigin = context.GetBossChildTransform(firePointPath);
+            if (launchOrigin == null)
+            {
+                Debug.LogWarning($"{nameof(HackerFireWireAction)}: 설정된 발사 Point '{firePointPath}'를 찾을 수 없습니다.", hacker);
+                return false;
+            }
+
             Vector3 origin = launchOrigin.position;
             HackerWireSettings wireSettings = hacker.WireSettings;
             if (targetMode == HackerFireWireTargetMode.Player)

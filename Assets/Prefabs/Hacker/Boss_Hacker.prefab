@@ -508,10 +508,10 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 417437570628517833}
+  - {fileID: 4252293946166106329}
   - {fileID: 3826212517247301555}
   - {fileID: 6502647366495056629}
   - {fileID: 7787064756739442233}
-  - {fileID: 4252293946166106329}
   - {fileID: 8044641919718089452}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -717,9 +717,9 @@ MonoBehaviour:
     trailWidthMultiplier: 3
   hologramPrefab: {fileID: 2776275271019330438, guid: 4ada7c0abb03bd74b8343d37c63b6fea, type: 3}
   hologramStartPhaseNumber: 3
-  facingVisual: {fileID: 0}
-  facingHand: {fileID: 0}
-  facingParryingPoint: {fileID: 0}
+  facingVisual: {fileID: 417437570628517833}
+  facingHand: {fileID: 3826212517247301555}
+  facingParryingPoint: {fileID: 4252293946166106329}
   drawApproachRangeGizmos: 1
 --- !u!114 &4667363922611649476
 MonoBehaviour:
@@ -1167,7 +1167,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.06934059, y: 0.06934059, z: 0.06934059}
+  m_LocalScale: {x: 0.12334997, y: 0.18536125, z: 0.06934059}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2186068290515178274}
