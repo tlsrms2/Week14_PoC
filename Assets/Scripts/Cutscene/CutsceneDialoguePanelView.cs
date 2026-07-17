@@ -2,29 +2,40 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Week14.Cutscene
 {
     public sealed class CutsceneDialoguePanelView : MonoBehaviour
     {
+        private const string AdvancePromptObjectName = "MouseClick_Image";
+
         [SerializeField] private GameObject root;
         [SerializeField] private GameObject speakerRoot;
         [SerializeField] private TMP_Text speakerText;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField, Min(1f)] private float charactersPerSecond = 45f;
+        [SerializeField] private Image advancePromptImage;
+        [SerializeField, Min(0.05f)] private float advancePromptBlinkSeconds = 0.65f;
+        [SerializeField, Range(0f, 1f)] private float advancePromptMinAlpha = 0.15f;
 
         public bool IsTyping { get; private set; }
 
         private CanvasGroup fallbackCanvasGroup;
+        private Coroutine advancePromptRoutine;
+        private Color advancePromptBaseColor = Color.white;
+        private bool hasAdvancePromptBaseColor;
 
         private void Awake()
         {
+            CacheAdvancePromptImage();
             Hide();
         }
 
         public void ShowLine(string speaker, string text)
         {
             SetRootVisible(true);
+            SetAdvancePromptBlinking(false);
 
             bool hasSpeaker = !string.IsNullOrWhiteSpace(speaker);
             if (speakerRoot != null)
@@ -49,6 +60,7 @@ namespace Week14.Cutscene
             }
 
             IsTyping = true;
+            SetAdvancePromptBlinking(false);
             dialogueText.text = text ?? string.Empty;
             dialogueText.maxVisibleCharacters = 0;
             dialogueText.ForceMeshUpdate();
@@ -56,9 +68,16 @@ namespace Week14.Cutscene
             int totalCharacters = dialogueText.textInfo.characterCount;
             float visibleCharacters = 0f;
             float speed = Mathf.Max(1f, charactersPerSecond);
+            bool canceled = false;
             while (visibleCharacters < totalCharacters)
             {
-                if (cancelRequested?.Invoke() == true || revealRequested?.Invoke() == true)
+                if (cancelRequested?.Invoke() == true)
+                {
+                    canceled = true;
+                    break;
+                }
+
+                if (revealRequested?.Invoke() == true)
                 {
                     break;
                 }
@@ -73,6 +92,7 @@ namespace Week14.Cutscene
 
             RevealAll();
             IsTyping = false;
+            SetAdvancePromptBlinking(!canceled);
         }
 
         public void RevealAll()
@@ -85,6 +105,7 @@ namespace Week14.Cutscene
 
         public void Hide()
         {
+            SetAdvancePromptBlinking(false);
             SetRootVisible(false);
 
             if (speakerRoot != null)
@@ -101,6 +122,86 @@ namespace Week14.Cutscene
             }
 
             IsTyping = false;
+        }
+
+        private void CacheAdvancePromptImage()
+        {
+            if (advancePromptImage == null)
+            {
+                Image[] images = GetComponentsInChildren<Image>(true);
+                for (int i = 0; i < images.Length; i++)
+                {
+                    Image image = images[i];
+                    if (image != null && image.name == AdvancePromptObjectName)
+                    {
+                        advancePromptImage = image;
+                        break;
+                    }
+                }
+            }
+
+            if (advancePromptImage == null || hasAdvancePromptBaseColor)
+            {
+                return;
+            }
+
+            advancePromptBaseColor = advancePromptImage.color;
+            hasAdvancePromptBaseColor = true;
+        }
+
+        private void SetAdvancePromptBlinking(bool blinking)
+        {
+            CacheAdvancePromptImage();
+            if (advancePromptRoutine != null)
+            {
+                StopCoroutine(advancePromptRoutine);
+                advancePromptRoutine = null;
+            }
+
+            if (advancePromptImage == null)
+            {
+                return;
+            }
+
+            advancePromptImage.gameObject.SetActive(blinking);
+            if (!blinking)
+            {
+                SetAdvancePromptAlpha(0f);
+                return;
+            }
+
+            SetAdvancePromptAlpha(advancePromptBaseColor.a);
+            advancePromptRoutine = StartCoroutine(AdvancePromptBlinkRoutine());
+        }
+
+        private IEnumerator AdvancePromptBlinkRoutine()
+        {
+            float elapsed = 0f;
+            float duration = Mathf.Max(0.05f, advancePromptBlinkSeconds);
+            float maxAlpha = hasAdvancePromptBaseColor ? advancePromptBaseColor.a : 1f;
+            float minAlpha = Mathf.Clamp01(advancePromptMinAlpha) * maxAlpha;
+
+            while (advancePromptImage != null)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float wave = (Mathf.Sin(elapsed / duration * Mathf.PI * 2f) + 1f) * 0.5f;
+                SetAdvancePromptAlpha(Mathf.Lerp(minAlpha, maxAlpha, wave));
+                yield return null;
+            }
+
+            advancePromptRoutine = null;
+        }
+
+        private void SetAdvancePromptAlpha(float alpha)
+        {
+            if (advancePromptImage == null)
+            {
+                return;
+            }
+
+            Color color = hasAdvancePromptBaseColor ? advancePromptBaseColor : advancePromptImage.color;
+            color.a = Mathf.Clamp01(alpha);
+            advancePromptImage.color = color;
         }
 
         private void SetRootVisible(bool visible)
