@@ -16,6 +16,8 @@ namespace Week14.UI
         [SerializeField] private LocalizedString localizedBossName;
         [SerializeField] private LocalizedString localizedCrime;
         [SerializeField] private LocalizedString localizedDescription;
+        [Tooltip("비워두면 인트로 프리팹의 Location Name 문자열을 사용합니다.")]
+        [SerializeField] private LocalizedString localizedIntroLocationName;
         [SerializeField] private Sprite icon;
         [SerializeField] private Sprite deathImage;
         [Tooltip("로비 보스 패널의 보스슬롯에 표시할 이미지입니다. 비워두면 icon을 대신 사용합니다.")]
@@ -54,9 +56,11 @@ namespace Week14.UI
         public LocalizedString LocalizedBossName => localizedBossName;
         public LocalizedString LocalizedCrime => localizedCrime;
         public LocalizedString LocalizedDescription => localizedDescription;
+        public LocalizedString LocalizedIntroLocationName => localizedIntroLocationName;
         public bool HasLocalizedBossName => HasLocalizedString(localizedBossName);
         public bool HasLocalizedCrime => HasLocalizedString(localizedCrime);
         public bool HasLocalizedDescription => HasLocalizedString(localizedDescription);
+        public bool HasLocalizedIntroLocationName => HasLocalizedString(localizedIntroLocationName);
         public Sprite Icon => icon;
         public Sprite DeathImage => deathImage;
         public Sprite ResultPortrait => deathImage != null ? deathImage : icon;

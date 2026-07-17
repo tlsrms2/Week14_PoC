@@ -750,7 +750,10 @@ namespace Week14.UI
         private void PreparePresentation()
         {
             CacheTransitionTargetPositions();
-            SetLocationNameText(locationName);
+            if (localizedBossData == null || !localizedBossData.HasLocalizedIntroLocationName)
+            {
+                SetLocationNameText(locationName);
+            }
             SetTextAlpha(locationNameText, 0f);
             SetTextAlpha(bossNameText, 1f);
             SetLocationObjectsAtOffset(-locationFlyOffsetX);
@@ -792,6 +795,12 @@ namespace Week14.UI
                 localizedBossData.LocalizedBossName,
                 localizedBossData.HasLocalizedBossName,
                 SetBossNameText);
+
+            SetLocationNameText(locationName);
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(
+                localizedBossData.LocalizedIntroLocationName,
+                localizedBossData.HasLocalizedIntroLocationName,
+                SetLocationNameText);
         }
 
         private void UnbindBossData()
@@ -805,6 +814,10 @@ namespace Week14.UI
                 localizedBossData.LocalizedBossName,
                 localizedBossData.HasLocalizedBossName,
                 SetBossNameText);
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(
+                localizedBossData.LocalizedIntroLocationName,
+                localizedBossData.HasLocalizedIntroLocationName,
+                SetLocationNameText);
             localizedBossData = null;
         }
 

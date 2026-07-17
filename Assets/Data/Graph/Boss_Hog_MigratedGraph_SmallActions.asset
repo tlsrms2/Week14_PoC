@@ -539,15 +539,6 @@ MonoBehaviour:
       rid: 4705778169994805693
     sequences: []
     editorPosition: {x: -422, y: 465}
-  - nodeId: Spawn Effect Prefab1
-    nodeGuid: 223dd3bebad34bf88d66ccc99f7eb32c
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939233575534669
-    sequences: []
-    editorPosition: {x: 639, y: -356}
   - nodeId: Spawn Effect Prefab2
     nodeGuid: faa9f3db13d94965a30c67ee6434e0f0
     nodeKind: 3
@@ -777,11 +768,6 @@ MonoBehaviour:
     - Fire Projectile4
     - Wait10
     - Fire Projectile5
-  - patternId: Pattern9
-    nodeGuids:
-    - 223dd3bebad34bf88d66ccc99f7eb32c
-    nodeIds:
-    - Spawn Effect Prefab1
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -2730,16 +2716,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-    - rid: 6489939233575534669
-      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        effectPrefab: {fileID: 9125212537906268882, guid: 4762a2ce988f4a4469bfa5879655042d, type: 3}
-        spawnPointPath: Boss-Dealer Visual
-        positionOffset: {x: 0, y: 0}
-        delaySeconds: 0
-        scale: 2
-        followMode: 0
-        followRotation: 1
     - rid: 6489939233575534670
       type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

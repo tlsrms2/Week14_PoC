@@ -449,8 +449,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2}
-  m_SizeDelta: {x: 502, y: 190}
+  m_AnchoredPosition: {x: -10, y: -2}
+  m_SizeDelta: {x: 929.2886, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7847245423357272819
 CanvasRenderer:
@@ -1482,8 +1482,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: -2}
-  m_SizeDelta: {x: 502, y: 190}
+  m_AnchoredPosition: {x: 101.07037, y: -2}
+  m_SizeDelta: {x: 929.2886, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7190625084727979372
 CanvasRenderer:
@@ -1557,8 +1557,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -60, y: -2}
-  m_SizeDelta: {x: 502, y: 190}
+  m_AnchoredPosition: {x: -121.07037, y: -2}
+  m_SizeDelta: {x: 929.2886, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &850298893954936010
 CanvasRenderer:
@@ -1645,7 +1645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff505c1c3dd1734ebf39172a4f5f8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.LocationIntroView
-  locationName: "\uC0AC\uBB34\uC2E4"
+  locationName: "\uC720\uB839\uC5ED"
   locationNameText: {fileID: 7986942845898106311}
   locationIntroFlyObjects:
   - {fileID: 6072432635777859229}
@@ -1725,9 +1725,9 @@ MonoBehaviour:
   bossFallbackZoomMultiplier: 1
   bossFocusSeconds: 2.5
   bossFocusSettleTimeoutSeconds: 1
-  locationFlyOffsetX: 1500
+  locationFlyOffsetX: 1600
   locationFlyInSeconds: 0.35
-  locationFlyOutSeconds: 0.32
+  locationFlyOutSeconds: 0.45
   locationObjectStaggerSeconds: 0.045
   locationFlyInCurve:
     serializedVersion: 2
