@@ -4973,7 +4973,7 @@ MonoBehaviour:
         aim:
           mode: 0
           angleDegrees: 0
-        baitDurationSeconds: 1.5
+        baitDurationSeconds: 1
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
