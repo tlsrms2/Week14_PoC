@@ -406,16 +406,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512844
-    m_Localized: "As a result of investigating Ram's terminal, the elimination target
-      was the original recipient of the gift\u2014that is, the patient your father
-      was treating."
+    m_Localized: As a result of investigating Ram's terminal, the elimination target
+      was the original recipient of the gift, meaning the patient your father was
+      treating.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512845
     m_Localized: The individual is presumed to be an accountant for the Syndicate,
       an organization that manages the distribution of weapons, information, and
-      funds, but the reason they were designated as an elimination target has not
-      been confirmed.
+      funds.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512846
@@ -882,6 +881,11 @@ MonoBehaviour:
   - m_Id: 1345961062363136
     m_Localized: That's a reasonable guess, then I recommend you check the module
       for the last time before combat.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1424586970947584
+    m_Localized: However, the reason they were designated as an elimination target
+      has not been confirmed.
     m_Metadata:
       m_Items: []
   references:

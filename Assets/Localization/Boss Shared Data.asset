@@ -97,6 +97,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5818062072807424
     m_Key: hacker.location
+  - m_Id: 5784546324439040
+    m_Key: trainingbot.name
     m_Metadata:
       m_Items: []
   m_Metadata:

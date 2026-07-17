@@ -100,6 +100,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5818062072807424
     m_Localized: None
+  - m_Id: 5784546324439040
+    m_Localized: Training Bot
     m_Metadata:
       m_Items: []
   references:

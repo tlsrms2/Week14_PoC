@@ -101,6 +101,8 @@ namespace Week14.Tutorial
         [SerializeField] private List<TutorialDialogueLine> dialogues = new();
         [SerializeField] private string objectiveFormat;
         [SerializeField] private LocalizedString localizedObjectiveFormat;
+        [SerializeField] private string objectiveKeyText;
+        [SerializeField] private LocalizedString localizedObjectiveKeyText;
 
         public TutorialStepContent(TutorialStepId step, string objectiveFormat, params TutorialDialogueLine[] dialogues)
         {
@@ -114,6 +116,9 @@ namespace Week14.Tutorial
         public string ObjectiveFormat => objectiveFormat;
         public LocalizedString LocalizedObjectiveFormat => localizedObjectiveFormat;
         public bool HasLocalizedObjectiveFormat => HasLocalizedString(localizedObjectiveFormat);
+        public string ObjectiveKeyText => objectiveKeyText;
+        public LocalizedString LocalizedObjectiveKeyText => localizedObjectiveKeyText;
+        public bool HasLocalizedObjectiveKeyText => HasLocalizedString(localizedObjectiveKeyText);
 
         private static bool HasLocalizedString(LocalizedString value)
         {
