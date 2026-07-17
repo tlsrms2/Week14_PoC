@@ -5677,6 +5677,15 @@ MonoBehaviour:
   bossHpBarView: {fileID: 1023516960}
   bossNameText: {fileID: 1023516957}
   trainingEnemyName: "\uD6C8\uB828 \uB85C\uBD07"
+  localizedTrainingEnemyName:
+    m_TableReference:
+      m_TableCollectionName: Boss
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: trainingbot.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   player: {fileID: 2072256652}
   sceneTrainingEnemy: {fileID: 2043577102}
   trainingEnemyPrefab: {fileID: 2043577102}

@@ -2,6 +2,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -29,6 +31,8 @@ namespace Week14.Tutorial
         private const string TrapdoorLeftName = "Trapdoor-L";
         private const string TrapdoorRightName = "Trapdoor-R";
         private const string UnderfloorName = "underfloor";
+        private const string BossNameTable = "Boss";
+        private const string TrainingEnemyNameKey = "trainingbot.name";
 
         [Header("Data")]
         [SerializeField] private TutorialDialogueSetSO dialogueSet;
@@ -50,6 +54,7 @@ namespace Week14.Tutorial
         [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private TMP_Text bossNameText;
         [SerializeField] private string trainingEnemyName = "훈련 몹";
+        [SerializeField] private LocalizedString localizedTrainingEnemyName = new(BossNameTable, TrainingEnemyNameKey);
 
         [Header("Scene")]
         [SerializeField] private Transform player;
@@ -118,6 +123,7 @@ namespace Week14.Tutorial
         private bool skillAttemptRunning;
         private bool skillUsedThisAttempt;
         private bool skillHitThisAttempt;
+        private bool bossUiVisible;
         private bool initialMovementLockReleased;
         private bool completionInvulnerabilityPushed;
         private bool trainingEnemySummoned;
@@ -166,6 +172,7 @@ namespace Week14.Tutorial
             TrySubscribeSkillManager();
             TrySubscribePlayerBullets();
             TrySubscribePlayerHealth();
+            BindTrainingEnemyName();
         }
 
         private void OnDisable()
@@ -183,6 +190,7 @@ namespace Week14.Tutorial
             UnsubscribePlayerHealth();
             ClearEnemySubscription();
             SetBossUiVisible(false);
+            UnbindTrainingEnemyName();
             PopDialogueAdvanceInput();
             PopDialogueMovementLock();
             PopPreLeftAttackSuppression();
@@ -1541,6 +1549,7 @@ namespace Week14.Tutorial
 
         private void SetBossUiVisible(bool visible)
         {
+            bossUiVisible = visible;
             if (bossCombatUiRoot != null)
             {
                 bossCombatUiRoot.SetActive(visible);
@@ -1553,10 +1562,65 @@ namespace Week14.Tutorial
             }
 
             bossHpBarView?.SetTarget(activeEnemy != null ? activeEnemy.Bullets : null);
+            RefreshBossNameText();
+        }
+
+        private void BindTrainingEnemyName()
+        {
+            if (!HasLocalizedString(localizedTrainingEnemyName))
+            {
+                return;
+            }
+
+            localizedTrainingEnemyName.StringChanged += HandleTrainingEnemyNameChanged;
+            localizedTrainingEnemyName.RefreshString();
+        }
+
+        private void UnbindTrainingEnemyName()
+        {
+            if (!HasLocalizedString(localizedTrainingEnemyName))
+            {
+                return;
+            }
+
+            localizedTrainingEnemyName.StringChanged -= HandleTrainingEnemyNameChanged;
+        }
+
+        private void HandleTrainingEnemyNameChanged(string _)
+        {
+            if (bossUiVisible)
+            {
+                RefreshBossNameText();
+            }
+        }
+
+        private void RefreshBossNameText()
+        {
             if (bossNameText != null)
             {
-                bossNameText.text = trainingEnemyName;
+                bossNameText.text = ResolveTrainingEnemyName();
             }
+        }
+
+        private string ResolveTrainingEnemyName()
+        {
+            if (HasLocalizedString(localizedTrainingEnemyName))
+            {
+                string localizedName = localizedTrainingEnemyName.GetLocalizedString();
+                if (!string.IsNullOrWhiteSpace(localizedName))
+                {
+                    return localizedName;
+                }
+            }
+
+            return trainingEnemyName;
+        }
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
         }
 
         private void CompleteTutorial()

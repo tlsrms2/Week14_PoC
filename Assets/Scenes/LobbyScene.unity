@@ -7776,12 +7776,12 @@ MonoBehaviour:
   targetChallenge: {fileID: 0}
   debugPointsToGrant: 100
   debugPointsToSet: 0
-  prologueSeen: 0
-  tutorialCompleted: 0
-  pastSeen: 0
-  act1Seen: 0
-  lobbyTutorialBossSeen: 0
-  lobbyTutorialSkillSeen: 0
+  prologueSeen: 1
+  tutorialCompleted: 1
+  pastSeen: 1
+  act1Seen: 1
+  lobbyTutorialBossSeen: 1
+  lobbyTutorialSkillSeen: 1
   act2Seen: 0
   act3Seen: 0
   finalBossAftermathSeen: 0
@@ -18270,7 +18270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Dialogue Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6d197c6221a5fc74099129e018d2d3fd, type: 2}
   m_sharedMaterial: {fileID: -715141778913414187, guid: 6d197c6221a5fc74099129e018d2d3fd, type: 2}
@@ -18310,7 +18310,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 30
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

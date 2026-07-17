@@ -239,8 +239,18 @@ MonoBehaviour:
   speakerRoot: {fileID: 2939107907736989471}
   speakerText: {fileID: 2040395984986402983}
   objectiveTitleText: {fileID: 0}
+  objectiveKeyText: {fileID: 0}
   dialogueText: {fileID: 3595553897863219102}
   charactersPerSecond: 25
+  localizedObjectiveTitleText:
+    m_TableReference:
+      m_TableCollectionName: Story
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: TutorialDialogueSet_Objective
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   advancePromptImage: {fileID: 0}
   advancePromptBlinkSeconds: 0.65
   advancePromptMinAlpha: 0.15
@@ -278,9 +288,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   objectiveCompleteColor: {r: 0.3, g: 1, b: 0.45, a: 1}
+  objectiveLineOffset: {x: 0, y: 0}
   objectiveStrikeLineHeight: 2
   objectiveCompleteHoldSeconds: 0.45
   objectiveCompleteFadeSeconds: 0.2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6898539272180958346
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +617,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 30
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

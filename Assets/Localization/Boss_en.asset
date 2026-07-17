@@ -82,6 +82,10 @@ MonoBehaviour:
     m_Localized: Assassin
     m_Metadata:
       m_Items: []
+  - m_Id: 5784546324439040
+    m_Localized: Training Bot
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
