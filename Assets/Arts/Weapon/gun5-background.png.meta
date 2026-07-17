@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c529381564cd0e1449227703869dc361
+guid: db58f7d2cfbac2b4abba6f5032d603c7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5015372301578276493
-    second: module-passive-interceptRange_0
+      213: 6311387014929728421
+    second: gun5_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: module-passive-interceptRange_0
+      name: gun5_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 64
-        height: 64
+        y: 8
+        width: 32
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 371f71cd671d56ab0800000000000000
-      internalID: -5015372301578276493
+      spriteID: 5a346e80d0d869750800000000000000
+      internalID: 6311387014929728421
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      module-passive-interceptRange_0: -5015372301578276493
+      gun5_0: 6311387014929728421
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

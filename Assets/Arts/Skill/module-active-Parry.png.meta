@@ -3,8 +3,8 @@ guid: 5233526678ec17542a9c645045538460
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -881543010659338823
-    second: module-passive-parry_0
+      213: 7382853425519858241
+    second: module-active-parry_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: module-passive-parry_0
+      name: module-active-parry_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9b5fb6b6d4124c3f0800000000000000
-      internalID: -881543010659338823
+      spriteID: 14213e0131a257660800000000000000
+      internalID: 7382853425519858241
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      module-passive-parry_0: -881543010659338823
+      module-active-parry_0: 7382853425519858241
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

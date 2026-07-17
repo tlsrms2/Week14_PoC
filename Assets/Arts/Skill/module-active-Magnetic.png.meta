@@ -3,8 +3,8 @@ guid: 80f400742cecb4a41883af0570abc2f0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8584080707432933818
-    second: module-passive-magnetic_0
+      213: -7689662869581078899
+    second: module-Active-magnetic_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: module-passive-magnetic_0
+      name: module-Active-magnetic_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6461d26b3183fd880800000000000000
-      internalID: -8584080707432933818
+      spriteID: d8edb189c54d84590800000000000000
+      internalID: -7689662869581078899
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      module-passive-magnetic_0: -8584080707432933818
+      module-Active-magnetic_0: -7689662869581078899
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

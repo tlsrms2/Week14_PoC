@@ -3,8 +3,8 @@ guid: 98483adaffd5f2c4db04ba526886af54
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2691653296725216120
-    second: module-passive-Autolockon 1_0
+      213: -5631088021183107367
+    second: module-passive-Autolockon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: module-passive-Autolockon 1_0
+      name: module-passive-Autolockon_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8843f2e669355aad0800000000000000
-      internalID: -2691653296725216120
+      spriteID: 9de6c6e874b5ad1b0800000000000000
+      internalID: -5631088021183107367
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      module-passive-Autolockon 1_0: -2691653296725216120
+      module-passive-Autolockon_0: -5631088021183107367
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

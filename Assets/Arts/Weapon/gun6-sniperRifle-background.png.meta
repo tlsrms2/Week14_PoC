@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c529381564cd0e1449227703869dc361
+guid: 99af54c6b9d41684d994f409a45c13c1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5015372301578276493
-    second: module-passive-interceptRange_0
+      213: -6482489643203894062
+    second: gun6-sniperRifle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: module-passive-interceptRange_0
+      name: gun6-sniperRifle_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 1
+        y: 6
+        width: 30
+        height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 371f71cd671d56ab0800000000000000
-      internalID: -5015372301578276493
+      spriteID: 2d4eea4e3029906a0800000000000000
+      internalID: -6482489643203894062
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      module-passive-interceptRange_0: -5015372301578276493
+      gun6-sniperRifle_0: -6482489643203894062
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

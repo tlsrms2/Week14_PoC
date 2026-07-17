@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c529381564cd0e1449227703869dc361
+guid: e4f16977d25856d49ae07a545eeb1dd1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5015372301578276493
-    second: module-passive-interceptRange_0
+      213: -3616075707040771709
+    second: gun2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: module-passive-interceptRange_0
+      name: gun2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 1
+        y: 5
+        width: 28
+        height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 371f71cd671d56ab0800000000000000
-      internalID: -5015372301578276493
+      spriteID: 3815ae0ad4e11ddc0800000000000000
+      internalID: -3616075707040771709
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      module-passive-interceptRange_0: -5015372301578276493
+      gun2_0: -3616075707040771709
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
