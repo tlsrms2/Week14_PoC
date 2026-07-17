@@ -229,6 +229,19 @@ namespace Week14.Bootstrap
             pendingFocusTarget = null;
         }
 
+        public bool EndCinematicFocusIfTarget(Transform expectedFocusTarget)
+        {
+            if (expectedFocusTarget == null
+                || !cinematicFocusActive
+                || focusTarget != expectedFocusTarget)
+            {
+                return false;
+            }
+
+            EndCinematicFocus();
+            return true;
+        }
+
         public void EndCinematicFocusToCombatView(Transform combatFocusTarget)
         {
             cinematicFocusActive = false;
