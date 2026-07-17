@@ -4430,6 +4430,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3351740236045858961, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3539204742999253097, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0
