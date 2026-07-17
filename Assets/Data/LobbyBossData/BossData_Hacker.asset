@@ -43,6 +43,15 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  localizedIntroLocationName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 5818062072807424
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 698733565065801004, guid: 6b1bd49d9da9cac40b06c1706004f502, type: 3}
   deathImage: {fileID: 699310964, guid: abe325e9be00ccf4bb9f9533362a2d53, type: 3}
   panelIcon: {fileID: 21300000, guid: 97bfeec2fd29c144cb6baefd29866d15, type: 3}

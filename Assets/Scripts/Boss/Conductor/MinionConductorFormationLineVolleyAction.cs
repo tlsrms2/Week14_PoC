@@ -98,6 +98,10 @@ namespace Week14.Enemy
         [SerializeField, Min(0.001f)] private float bossArriveDistance = 0.04f;
         [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
 
+        [Header("Pattern Camera")]
+        [SerializeField, Min(0f)] private float cameraFocusDelaySeconds;
+        [SerializeField] private Vector2 cameraFocusWorldCenter;
+
         [Header("Miss Launch")]
         [SerializeField, InspectorName("Line Travel Multiplier"), Min(1f)] private float missLaunchLineTravelMultiplier = 1.5f;
         [SerializeField, BossGraphProjectileName] private string missedLaunchProjectileName = "Default";
@@ -194,6 +198,10 @@ namespace Week14.Enemy
             Coroutine bossMoveRoutine = repositionBossAtPatternStart
                 ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context))
                 : null;
+            ConductorPatternCameraFocus cameraFocus = ConductorPatternCameraFocus.Start(
+                context,
+                cameraFocusDelaySeconds,
+                cameraFocusWorldCenter);
             try
             {
                 completedByAllProjectilesCleared = false;
@@ -255,6 +263,8 @@ namespace Week14.Enemy
             }
             finally
             {
+                cameraFocus?.Dispose();
+
                 if (bossMoveRoutine != null && context?.Boss != null)
                 {
                     context.Boss.StopCoroutine(bossMoveRoutine);

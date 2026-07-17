@@ -2004,6 +2004,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab45c6f913685d4387ad369371d5499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatController
+--- !u!1 &757758254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 757758255}
+  m_Layer: 6
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &757758255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757758254}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.186, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2364752237372838212}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &789228287
 GameObject:
   m_ObjectHideFlags: 0
@@ -4430,6 +4461,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3351740236045858961, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3539204742999253097, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -5145,6 +5180,7 @@ Transform:
   - {fileID: 577620902295864427}
   - {fileID: 7257897650045661331}
   - {fileID: 5950950579800310879}
+  - {fileID: 757758255}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2471223333351950876
@@ -6532,9 +6568,6 @@ MonoBehaviour:
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
   finalDeathExplosionCount: 5
-  finalDeathExplosionScale: 1.2
-  finalDeathExplosionSparkCount: 24
-  finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
   finalDeathExplosionPrefab: {fileID: 507182190992537921, guid: 0bd30bab3f957254f8fc4b3ef1d43dfa, type: 3}
   finalDeathExplosionPrefabLifetimeSeconds: 2
   finalDeathExplosionAreaCenter: {fileID: 28455202}

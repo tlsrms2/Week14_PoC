@@ -341,6 +341,49 @@ namespace Week14.Combat
             executionFocusPoint.position = focusPosition;
         }
 
+        internal float CalculateExecutionCameraZoomMultiplier(
+            CameraFollow2D activeCamera,
+            Vector3 playerPosition,
+            Vector3 targetPosition)
+        {
+            PlayerCombatConfig config = context.Config;
+            if (activeCamera == null || config == null)
+            {
+                return config != null ? config.ExecutionCameraZoomMultiplier : 1f;
+            }
+
+            Vector3 center = (playerPosition + targetPosition) * 0.5f;
+            Vector3 size = new Vector3(
+                Mathf.Abs(playerPosition.x - targetPosition.x),
+                Mathf.Abs(playerPosition.y - targetPosition.y),
+                0f);
+            Bounds pairBounds = new Bounds(center, size);
+            float padding = config.ExecutionCameraPairPadding;
+            pairBounds.Expand(new Vector3(padding * 2f, padding * 2f, 0f));
+
+            float fittedZoomMultiplier = activeCamera.CalculateCinematicZoomMultiplier(
+                pairBounds,
+                config.ExecutionCameraSafeViewportRatio,
+                config.ExecutionCameraMaximumZoomMultiplier);
+            return Mathf.Max(config.ExecutionCameraZoomMultiplier, fittedZoomMultiplier);
+        }
+
+        internal IEnumerator WaitForExecutionCameraReframe(CameraFollow2D activeCamera)
+        {
+            PlayerCombatConfig config = context.Config;
+            if (activeCamera == null || config == null || config.ExecutionCameraReframeTimeoutSeconds <= 0f)
+            {
+                yield break;
+            }
+
+            for (float elapsed = 0f;
+                 elapsed < config.ExecutionCameraReframeTimeoutSeconds && !activeCamera.IsCinematicFocusSettled();
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
+            }
+        }
+
         internal IEnumerator WaitBeforeFinalDeathFocus()
         {
             if (context.FinalDeathCameraReturnSeconds > 0f)

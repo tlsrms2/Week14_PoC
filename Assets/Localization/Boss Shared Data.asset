@@ -79,6 +79,26 @@ MonoBehaviour:
     m_Key: hacker.description
     m_Metadata:
       m_Items: []
+  - m_Id: 5817060254908416
+    m_Key: dealer.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817555392495616
+    m_Key: conductor.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817807012986880
+    m_Key: muscle.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817958821625856
+    m_Key: assassin.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818062072807424
+    m_Key: hacker.location
+    m_Metadata:
+      m_Items: []
   - m_Id: 5784546324439040
     m_Key: trainingbot.name
     m_Metadata:
