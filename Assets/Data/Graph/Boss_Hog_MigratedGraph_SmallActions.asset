@@ -2730,16 +2730,6 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-    - rid: 6489939233575534669
-      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        effectPrefab: {fileID: 9125212537906268882, guid: 4762a2ce988f4a4469bfa5879655042d, type: 3}
-        spawnPointPath: Boss-Dealer Visual
-        positionOffset: {x: 0, y: 0}
-        delaySeconds: 0
-        scale: 2
-        followMode: 0
-        followRotation: 1
     - rid: 6489939233575534670
       type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

@@ -43,6 +43,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
         [SerializeField, Min(0.001f)] private float bossOriginArriveDistance = 0.04f;
         [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
+        [Header("Pattern Camera")]
+        [SerializeField, Min(0f)] private float cameraFocusDelaySeconds;
+        [SerializeField] private Vector2 cameraFocusWorldCenter;
         [Header("Rush Start Cross Fire")]
         [SerializeField, BossGraphProjectileName] private string rushStartProjectileName = "Default";
         [SerializeField, Min(0f)] private float rushStartLineupWaitSeconds = 0.25f;
@@ -96,6 +99,10 @@ namespace Week14.Enemy
 
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
             Coroutine bossMoveRoutine = context.Boss.StartCoroutine(MoveBossToTargetPosition(context));
+            ConductorPatternCameraFocus cameraFocus = ConductorPatternCameraFocus.Start(
+                context,
+                cameraFocusDelaySeconds,
+                cameraFocusWorldCenter);
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
@@ -112,6 +119,8 @@ namespace Week14.Enemy
             }
             finally
             {
+                cameraFocus?.Dispose();
+
                 if (bossMoveRoutine != null && context?.Boss != null)
                 {
                     context.Boss.StopCoroutine(bossMoveRoutine);

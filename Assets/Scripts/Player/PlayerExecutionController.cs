@@ -155,12 +155,6 @@ namespace Week14.Combat
             presentation.HidePlayerHpForExecution();
             BossAI executionBoss = executionTarget.GetComponentInParent<BossAI>();
             bool isFinalBossExecution = executionBoss != null && executionBoss.CurrentLives <= 1;
-            if (isFinalBossExecution)
-            {
-                yield return presentation.ShowFinalExecutionLetterbox();
-            }
-
-            SoundManager.PlaySfx("Execute");
             float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
                 + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             float holsteringSeconds = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
@@ -171,14 +165,6 @@ namespace Week14.Combat
                     + config.FinalExecutionBlackoutHoldSeconds
                     + config.FinalExecutionBlackoutFadeOutSeconds
                 : 0f;
-            context.ExecutionImage?.Play(
-                flourishSeconds
-                + config.ExecutionAimSeconds
-                + config.ExecutionShotDelaySeconds
-                + holsteringSeconds * 2f
-                + finalPresentationSeconds
-                + config.ExecutionKillDelaySeconds);
-
             Health targetHealth = executionTarget.GetComponent<Health>();
             if (targetHealth != null)
             {
@@ -199,10 +185,39 @@ namespace Week14.Combat
 
             presentation.UpdateExecutionFocusPoint(context.PlayerTransform.position, executionTarget.transform.position);
             CameraFollow2D activeCamera = context.CameraFollow;
+            float executionZoomMultiplier = presentation.CalculateExecutionCameraZoomMultiplier(
+                activeCamera,
+                context.PlayerTransform.position,
+                executionTarget.transform.position);
+            bool requiresCameraReframe = executionZoomMultiplier
+                > config.ExecutionCameraZoomMultiplier + 0.001f;
             activeCamera?.BeginCinematicFocus(
                 presentation.ExecutionFocusPoint != null ? presentation.ExecutionFocusPoint : executionTarget.transform,
                 config.ExecutionCameraFocusWeight,
-                config.ExecutionCameraZoomMultiplier);
+                executionZoomMultiplier);
+            if (requiresCameraReframe)
+            {
+                yield return presentation.WaitForExecutionCameraReframe(activeCamera);
+                if (executionTarget == null)
+                {
+                    FinishExecution();
+                    yield break;
+                }
+            }
+
+            if (isFinalBossExecution)
+            {
+                yield return presentation.ShowFinalExecutionLetterbox();
+            }
+
+            SoundManager.PlaySfx("Execute");
+            context.ExecutionImage?.Play(
+                flourishSeconds
+                + config.ExecutionAimSeconds
+                + config.ExecutionShotDelaySeconds
+                + holsteringSeconds * 2f
+                + finalPresentationSeconds
+                + config.ExecutionKillDelaySeconds);
             activeCamera?.PlayImpact(standDirection, 0.08f, 0.14f, 0.12f);
 
             Transform rightFireOrigin = rig.GetRightFireOrigin();

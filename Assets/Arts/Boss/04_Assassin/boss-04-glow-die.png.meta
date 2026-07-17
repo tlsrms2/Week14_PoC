@@ -1,0 +1,673 @@
+fileFormatVersion: 2
+guid: bc522fd4d4b20e2458bc9f181fd04fab
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6275310638541396475
+    second: boss-04-glow-die_0
+  - first:
+      213: 5483708548821369655
+    second: boss-04-glow-die_1
+  - first:
+      213: 1934753898442027
+    second: boss-04-glow-die_2
+  - first:
+      213: 1164077420265942595
+    second: boss-04-glow-die_3
+  - first:
+      213: -3789440782346061727
+    second: boss-04-glow-die_4
+  - first:
+      213: 3307111323466860376
+    second: boss-04-glow-die_5
+  - first:
+      213: 1244511363905560821
+    second: boss-04-glow-die_6
+  - first:
+      213: -3980707204462500947
+    second: boss-04-glow-die_7
+  - first:
+      213: 7829736054322363298
+    second: boss-04-glow-die_8
+  - first:
+      213: 5991886696103462035
+    second: boss-04-glow-die_9
+  - first:
+      213: 6574886440064667674
+    second: boss-04-glow-die_10
+  - first:
+      213: -8966140368274556824
+    second: boss-04-glow-die_11
+  - first:
+      213: 7723933829736430742
+    second: boss-04-glow-die_12
+  - first:
+      213: 8889856535543912333
+    second: boss-04-glow-die_13
+  - first:
+      213: 6832853448404357828
+    second: boss-04-glow-die_14
+  - first:
+      213: 5082996519352044137
+    second: boss-04-glow-die_15
+  - first:
+      213: 8566592590196823562
+    second: boss-04-glow-die_16
+  - first:
+      213: -4731813715211565716
+    second: boss-04-glow-die_17
+  - first:
+      213: 9193563726276774264
+    second: boss-04-glow-die_18
+  - first:
+      213: 7517479567616278755
+    second: boss-04-glow-die_19
+  - first:
+      213: -2072904248965283607
+    second: boss-04-glow-die_20
+  - first:
+      213: 4618073127069656285
+    second: boss-04-glow-die_21
+  - first:
+      213: 383138066726615687
+    second: boss-04-glow-die_22
+  - first:
+      213: 8310826093858246820
+    second: boss-04-glow-die_23
+  - first:
+      213: -5286946140911959326
+    second: boss-04-glow-die_24
+  - first:
+      213: -1043781612264702453
+    second: boss-04-glow-die_25
+  - first:
+      213: -394010594059307072
+    second: boss-04-glow-die_26
+  - first:
+      213: 3817430645534922584
+    second: boss-04-glow-die_27
+  - first:
+      213: 93139817632080687
+    second: boss-04-glow-die_28
+  - first:
+      213: -8114866933647199049
+    second: boss-04-glow-die_29
+  - first:
+      213: 7447437188336588034
+    second: boss-04-glow-die_30
+  - first:
+      213: 5485440560376522030
+    second: boss-04-glow-die_31
+  - first:
+      213: -4204212520413327670
+    second: boss-04-glow-die_32
+  - first:
+      213: -5632523017941961954
+    second: boss-04-glow-die_33
+  - first:
+      213: -7255109131703910082
+    second: boss-04-glow-die_34
+  - first:
+      213: 6940358555812845273
+    second: boss-04-glow-die_35
+  - first:
+      213: -7473963162180192251
+    second: boss-04-glow-die_36
+  - first:
+      213: -7736534621656881081
+    second: boss-04-glow-die_37
+  - first:
+      213: 6611691512109893007
+    second: boss-04-glow-die_38
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: boss-04-glow-die_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 506a286e83e99e8a0800000000000000
+      internalID: -6275310638541396475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73345480fdb0a1c40800000000000000
+      internalID: 5483708548821369655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2d28def5afd60000800000000000000
+      internalID: 1934753898442027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34e21060f32a72010800000000000000
+      internalID: 1164077420265942595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16872ee8fa3396bc0800000000000000
+      internalID: -3789440782346061727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_5
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8570ae31a3835ed20800000000000000
+      internalID: 3307111323466860376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f02784ed74654110800000000000000
+      internalID: 1244511363905560821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_7
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da3ac2363efa1c8c0800000000000000
+      internalID: -3980707204462500947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_8
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2abf3fa257fc8ac60800000000000000
+      internalID: 7829736054322363298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 394c2a72435772350800000000000000
+      internalID: 5991886696103462035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a10569ac160be3b50800000000000000
+      internalID: 6574886440064667674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_11
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86874b6f6ded19380800000000000000
+      internalID: -8966140368274556824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69cff0e15ece03b60800000000000000
+      internalID: 7723933829736430742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_13
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8797492b6d1f5b70800000000000000
+      internalID: 8889856535543912333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_14
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2d172620c23de50800000000000000
+      internalID: 6832853448404357828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96a868a476e6a8640800000000000000
+      internalID: 5082996519352044137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_16
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a06dc22b296a2e670800000000000000
+      internalID: 8566592590196823562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_17
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c654e790f78355eb0800000000000000
+      internalID: -4731813715211565716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss-04-glow-die_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 879c4acdf79169f70800000000000000
+      internalID: 9193563726276774264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5b6e2fa40223cd74bb7afea35dc8d915
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      boss-04-glow-die_0: -6275310638541396475
+      boss-04-glow-die_1: 5483708548821369655
+      boss-04-glow-die_10: 6574886440064667674
+      boss-04-glow-die_11: -8966140368274556824
+      boss-04-glow-die_12: 7723933829736430742
+      boss-04-glow-die_13: 8889856535543912333
+      boss-04-glow-die_14: 6832853448404357828
+      boss-04-glow-die_15: 5082996519352044137
+      boss-04-glow-die_16: 8566592590196823562
+      boss-04-glow-die_17: -4731813715211565716
+      boss-04-glow-die_18: 9193563726276774264
+      boss-04-glow-die_2: 1934753898442027
+      boss-04-glow-die_3: 1164077420265942595
+      boss-04-glow-die_4: -3789440782346061727
+      boss-04-glow-die_5: 3307111323466860376
+      boss-04-glow-die_6: 1244511363905560821
+      boss-04-glow-die_7: -3980707204462500947
+      boss-04-glow-die_8: 7829736054322363298
+      boss-04-glow-die_9: 5991886696103462035
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

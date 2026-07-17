@@ -185,11 +185,14 @@ namespace Week14.Bootstrap
             cinematicFocusActive = true;
             cinematicReturnToCombatViewActive = false;
             cinematicFocusWeight = Mathf.Clamp01(weight);
-            cinematicZoomMultiplier = Mathf.Clamp(zoomMultiplier, 0.1f, 1f);
+            cinematicZoomMultiplier = Mathf.Clamp(zoomMultiplier, 0.1f, 2.5f);
             ApplyFocusTarget(nextFocusTarget);
         }
 
-        public float CalculateCinematicZoomMultiplier(Bounds focusBounds, float viewportFillRatio)
+        public float CalculateCinematicZoomMultiplier(
+            Bounds focusBounds,
+            float viewportFillRatio,
+            float maximumZoomMultiplier = 1f)
         {
             if (controlledCamera == null || !controlledCamera.orthographic || baseOrthographicSize <= 0f)
             {
@@ -200,7 +203,10 @@ namespace Week14.Bootstrap
             float aspect = Mathf.Max(0.01f, controlledCamera.aspect);
             float requiredHalfHeight = Mathf.Max(focusBounds.extents.y, focusBounds.extents.x / aspect);
             float targetOrthographicSize = requiredHalfHeight / fillRatio;
-            return Mathf.Clamp(targetOrthographicSize / baseOrthographicSize, 0.1f, 1f);
+            return Mathf.Clamp(
+                targetOrthographicSize / baseOrthographicSize,
+                0.1f,
+                Mathf.Max(0.1f, maximumZoomMultiplier));
         }
 
         public bool IsCinematicZoomSettled(float toleranceRatio = 0.02f)
@@ -215,6 +221,24 @@ namespace Week14.Bootstrap
             return Mathf.Abs(controlledCamera.orthographicSize - targetSize) <= tolerance;
         }
 
+        public bool IsCinematicFocusSettled(
+            float positionTolerance = 0.05f,
+            float zoomToleranceRatio = 0.02f)
+        {
+            if (!cinematicFocusActive || target == null || focusTarget == null)
+            {
+                return true;
+            }
+
+            Vector3 playerPosition = targetBody != null ? targetBody.transform.position : target.position;
+            Vector3 focusPosition = focusBody != null ? focusBody.transform.position : focusTarget.position;
+            Vector3 desiredPosition = Vector3.Lerp(playerPosition, focusPosition, cinematicFocusWeight) + offset;
+            bool positionSettled = Vector3.Distance(currentBasePosition, desiredPosition)
+                <= Mathf.Max(0f, positionTolerance);
+            bool weightSettled = Mathf.Abs(currentFocusWeight - cinematicFocusWeight) <= 0.02f;
+            return positionSettled && weightSettled && IsCinematicZoomSettled(zoomToleranceRatio);
+        }
+
         public void EndCinematicFocus()
         {
             if (!cinematicFocusActive && !cinematicReturnToCombatViewActive)
@@ -227,6 +251,19 @@ namespace Week14.Bootstrap
             cinematicZoomMultiplier = 1f;
             ApplyFocusTarget(pendingFocusTarget);
             pendingFocusTarget = null;
+        }
+
+        public bool EndCinematicFocusIfTarget(Transform expectedFocusTarget)
+        {
+            if (expectedFocusTarget == null
+                || !cinematicFocusActive
+                || focusTarget != expectedFocusTarget)
+            {
+                return false;
+            }
+
+            EndCinematicFocus();
+            return true;
         }
 
         public void EndCinematicFocusToCombatView(Transform combatFocusTarget)

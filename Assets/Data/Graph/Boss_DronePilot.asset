@@ -1240,7 +1240,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861199
     sequences: []
-    editorPosition: {x: 380, y: -456}
+    editorPosition: {x: 382, y: -456}
   - nodeId: Formation Line Volley1
     nodeGuid: 339b5728011740d0b5cfe451f91ff3b2
     nodeKind: 0
@@ -2514,110 +2514,138 @@ MonoBehaviour:
     selectionMode: 3
     phaseMaxHp: 100
     patternIntervalSeconds: 0
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
     openingPatternId: Summon
     signaturePatternId: 
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P1 -> P6 -> P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P4-1 -> P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P4-2 -> P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: "P6 -> P1(\uC720\uB3C4) 1\uD68C"
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: "P9 -> P1(\uC720\uB3C4) 1\uD68C"
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P5 -> P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P8 -> P4-1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P8 -> P4-2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P9 -> P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
     phaseMaxHp: 150
     patternIntervalSeconds: 0
+    intervalMoveSpeed: 0
+    initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
     openingPatternId: UP5
     signaturePatternId: P7
     signaturePatternHpPercent: 50
+    forcedPatternId: 
     patterns:
     - patternId: P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P1 -> P6 -> P3 -> P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: UP4 -> P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: "P6 -> P1(\uC720\uB3C4) 1\uD68C"
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: "P9 -> P1(\uC720\uB3C4) 1\uD68C"
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P5 -> P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P8 -> UP4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P9 -> P3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P2 -> P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: P3 -> P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
     - patternId: Pattern2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
+      minPatternsPlayed: 0
   transitions:
   - fromNodeGuid: 555900de7cf44027a24ff126ca720cc1
     toNodeGuid: 97f24aeaed5640e2b90e1a5f4a59bca7
@@ -3970,11 +3998,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -3983,9 +4006,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4065,11 +4087,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -4078,9 +4095,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.14
@@ -4236,11 +4252,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -4249,9 +4260,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4355,11 +4365,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -4368,9 +4373,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4474,11 +4478,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -4487,9 +4486,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4580,11 +4578,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -4593,9 +4586,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5306,11 +5298,6 @@ MonoBehaviour:
         maxMinionCount: 4
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5319,9 +5306,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5458,11 +5444,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -5471,9 +5452,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5577,11 +5557,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -5590,9 +5565,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5695,11 +5669,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -5708,9 +5677,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5781,11 +5749,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -5794,9 +5757,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5908,11 +5870,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -5921,9 +5878,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -6030,11 +5986,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6043,16 +5994,15 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        patternCenter: {x: 6, y: -5}
+        patternCenter: {x: 6, y: -5.5}
         useTwoSides: 1
         lineDistanceFromPlayer: 5
         lineSpacing: 0.7
@@ -6651,11 +6601,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6664,16 +6609,15 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        patternCenter: {x: 6, y: -5}
+        patternCenter: {x: 6, y: -5.5}
         useTwoSides: 1
         lineDistanceFromPlayer: 5
         lineSpacing: 0.7
@@ -7285,11 +7229,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -7298,9 +7237,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7404,11 +7342,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -7417,9 +7350,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7522,11 +7454,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -7535,9 +7462,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7608,11 +7534,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -7621,9 +7542,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7770,11 +7690,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -7783,9 +7698,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.14
@@ -7860,11 +7774,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7873,9 +7782,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7917,11 +7825,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7930,9 +7833,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7974,11 +7876,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7987,9 +7884,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8031,11 +7927,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8044,9 +7935,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8088,11 +7978,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8101,9 +7986,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8221,11 +8105,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8234,9 +8113,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8286,11 +8164,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8299,9 +8172,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8402,11 +8274,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8415,9 +8282,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9045,11 +8911,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -9058,9 +8919,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.14
@@ -9781,11 +9641,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9794,9 +9649,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9813,11 +9667,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9826,16 +9675,15 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        patternCenter: {x: 6, y: -5}
+        patternCenter: {x: 6, y: -5.5}
         useTwoSides: 0
         lineDistanceFromPlayer: 5
         lineSpacing: 0.7
@@ -10631,10 +10479,12 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
-        bossTargetPosition: {x: 6, y: 2}
+        bossTargetPosition: {x: 6, y: -5.5}
         bossOriginMoveSpeedMultiplier: 1
         bossOriginArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
+        cameraFocusDelaySeconds: 3
+        cameraFocusWorldCenter: {x: 6, y: -6.1}
         rushStartProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         rushStartLineupWaitSeconds: 0
         rushStartFireSeconds: 2.2
@@ -10651,11 +10501,6 @@ MonoBehaviour:
           fallbackSpacing: 0
         projectileSpeedMultiplier: 0.5
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10664,9 +10509,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11330,7 +11174,7 @@ MonoBehaviour:
         lineIndicatorLength: 20
         lineIndicatorFadeSeconds: 0.14
         lineIndicatorSortingOrder: 66
-        staffCenter: {x: 6, y: -5}
+        staffCenter: {x: 6, y: -5.5}
         northSouthStaffDistance: 2.55
         initialNorthSouthStaffDistanceMultiplier: 4
         northSouthStaffHoldSeconds: 0.2
@@ -11432,10 +11276,12 @@ MonoBehaviour:
             projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         staffCollapseSeconds: 0.8
         repositionBossAtPatternStart: 1
-        bossTargetPosition: {x: 6, y: 0.5}
+        bossTargetPosition: {x: 6, y: -1.3}
         bossMoveSpeedMultiplier: 1
         bossArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
+        cameraFocusDelaySeconds: 3
+        cameraFocusWorldCenter: {x: 6, y: -6.1}
         missLaunchLineTravelMultiplier: 1.5
         missedLaunchProjectileName: "\uC720\uB3C4\uD0C4_\uBCF4\uC2A4"
         missedLaunchIntervalSeconds: 0.3
@@ -11458,11 +11304,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         finalProjectileEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -11471,9 +11312,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11576,11 +11416,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -11589,9 +11424,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11724,16 +11558,11 @@ MonoBehaviour:
     - rid: 6489939164457861217
       type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        centerPosition: {x: 6, y: -5}
+        centerPosition: {x: 6, y: -5.5}
         initialRadius: 9
         initialAlignSeconds: 1
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -11742,9 +11571,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11877,7 +11705,7 @@ MonoBehaviour:
         finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         finalShotDelaySeconds: 0.15
         repositionBossAtPatternStart: 1
-        bossTargetPosition: {x: 6, y: 2}
+        bossTargetPosition: {x: 6, y: -1.5}
         bossMoveSpeedMultiplier: 1
         bossArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
@@ -11967,11 +11795,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -11980,9 +11803,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12085,11 +11907,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12098,9 +11915,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12162,11 +11978,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12175,16 +11986,15 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        patternCenter: {x: 6, y: -5}
+        patternCenter: {x: 6, y: -5.5}
         useTwoSides: 1
         lineDistanceFromPlayer: 5
         lineSpacing: 0.7
@@ -12992,11 +12802,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -13005,9 +12810,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 1
             seconds: 0.14
@@ -13119,7 +12923,7 @@ MonoBehaviour:
     - rid: 6489939164457861258
       type: {class: ConductorDefenseArcVolleyAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        targetPosition: {x: 6, y: -5}
+        targetPosition: {x: 6, y: -5.5}
         moveSpeed: 10
         arrivalDistance: 0.05
         moveTimeoutSeconds: 5
@@ -13156,11 +12960,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13169,9 +12968,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13296,11 +13094,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -13309,9 +13102,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13382,11 +13174,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -13395,9 +13182,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13501,11 +13287,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -13514,9 +13295,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13628,11 +13408,6 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 0.61960787, b: 0.18039216, a: 1}
-            scale: 0.4
-            count: 8
           smoke:
             enabled: 0
             color: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 0.6862745}
@@ -13641,9 +13416,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            color: {r: 1, g: 0.78039217, b: 0.25882354, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13718,7 +13492,7 @@ MonoBehaviour:
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         centerMode: 2
-        worldCenter: {x: 6, y: -5}
+        worldCenter: {x: 6, y: -5.5}
         centerOffset: {x: 0, y: 0}
         radius: 0.4
         alignSeconds: 1.5
@@ -13728,11 +13502,6 @@ MonoBehaviour:
         maxMinionCount: 4
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13741,9 +13510,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13864,11 +13632,6 @@ MonoBehaviour:
         initialAlignSeconds: 1
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13877,9 +13640,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14019,16 +13781,11 @@ MonoBehaviour:
     - rid: 6489939172654055503
       type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        centerPosition: {x: 6, y: -5}
+        centerPosition: {x: 6, y: -5.5}
         initialRadius: 9
         initialAlignSeconds: 1
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14037,9 +13794,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14052,7 +13808,7 @@ MonoBehaviour:
         previewInitialLaneHoldSeconds: 0.2
         previewLaneShrinkSeconds: 0.6
         previewLaneFadeSeconds: 0.14
-        previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
+        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
         previewLaneWidth: 0.035
         previewLaneSortingOrder: 66
         previewLaneLineCount: 4
@@ -14172,7 +13928,7 @@ MonoBehaviour:
         finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         finalShotDelaySeconds: 0.15
         repositionBossAtPatternStart: 0
-        bossTargetPosition: {x: 6, y: 2}
+        bossTargetPosition: {x: 6, y: -1.5}
         bossMoveSpeedMultiplier: 1
         bossArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
@@ -14180,7 +13936,7 @@ MonoBehaviour:
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         centerMode: 2
-        worldCenter: {x: 6, y: -5}
+        worldCenter: {x: 6, y: -5.5}
         centerOffset: {x: 0, y: 0}
         radius: 0.4
         alignSeconds: 1.5
@@ -14190,11 +13946,6 @@ MonoBehaviour:
         maxMinionCount: 4
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14203,9 +13954,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14322,7 +14072,7 @@ MonoBehaviour:
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         centerMode: 2
-        worldCenter: {x: 6, y: -5}
+        worldCenter: {x: 6, y: -5.5}
         centerOffset: {x: 0, y: 0}
         radius: 0.4
         alignSeconds: 1.5
@@ -14332,11 +14082,6 @@ MonoBehaviour:
         maxMinionCount: 4
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14345,9 +14090,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14464,7 +14208,7 @@ MonoBehaviour:
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         centerMode: 2
-        worldCenter: {x: 6, y: -5}
+        worldCenter: {x: 6, y: -5.5}
         centerOffset: {x: 0, y: 0}
         radius: 0.4
         alignSeconds: 1.5
@@ -14474,11 +14218,6 @@ MonoBehaviour:
         maxMinionCount: 4
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14487,9 +14226,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14605,16 +14343,11 @@ MonoBehaviour:
     - rid: 6489939172654055507
       type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        centerPosition: {x: 6, y: -5}
+        centerPosition: {x: 6, y: -5.5}
         initialRadius: 9
         initialAlignSeconds: 1
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14623,9 +14356,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14638,7 +14370,7 @@ MonoBehaviour:
         previewInitialLaneHoldSeconds: 0.2
         previewLaneShrinkSeconds: 0.6
         previewLaneFadeSeconds: 0.14
-        previewLaneColor: {r: 0.62, g: 0.92, b: 1, a: 0.66}
+        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
         previewLaneWidth: 0.035
         previewLaneSortingOrder: 66
         previewLaneLineCount: 4
@@ -14758,7 +14490,7 @@ MonoBehaviour:
         finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         finalShotDelaySeconds: 0.15
         repositionBossAtPatternStart: 0
-        bossTargetPosition: {x: 6, y: 2}
+        bossTargetPosition: {x: 6, y: -1.5}
         bossMoveSpeedMultiplier: 1
         bossArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
@@ -14766,7 +14498,7 @@ MonoBehaviour:
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         centerMode: 2
-        worldCenter: {x: 6, y: -5}
+        worldCenter: {x: 6, y: -5.5}
         centerOffset: {x: 0, y: 0}
         radius: 0.4
         alignSeconds: 1.5
@@ -14776,11 +14508,6 @@ MonoBehaviour:
         maxMinionCount: 4
         windupSeconds: 0
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14789,9 +14516,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14907,12 +14633,12 @@ MonoBehaviour:
     - rid: 6489939200651559127
       type: {class: ConductorParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        bossTargetPosition: {x: 6, y: 0}
+        bossTargetPosition: {x: 6, y: -1.5}
         bossMoveSpeed: 9
         bossArrivalDistance: 0.05
         bossMoveTimeoutSeconds: 5
         bossMoveStallSeconds: 0.2
-        formationCenter: {x: 6, y: -5}
+        formationCenter: {x: 6, y: -5.5}
         initialSquareHalfExtent: 12
         rowHalfHeight: 4
         finalColumnHalfWidth: 0.1
@@ -14928,11 +14654,6 @@ MonoBehaviour:
           secondMinionChildPath: 
           fallbackSpacing: 0
         projectileEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14941,9 +14662,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14970,11 +14690,6 @@ MonoBehaviour:
         rewardLifetimeSeconds: 2
         baitSpawnSfxId: 
         baitEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14983,9 +14698,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14

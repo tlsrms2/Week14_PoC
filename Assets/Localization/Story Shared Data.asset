@@ -344,71 +344,71 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512846
-    m_Key: InGame_04-Act2_08_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512847
     m_Key: InGame_04-Act2_09_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512848
+  - m_Id: 5333524512847
     m_Key: InGame_04-Act2_10_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512849
+  - m_Id: 5333524512848
     m_Key: InGame_04-Act2_11_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512850
+  - m_Id: 5333524512849
     m_Key: InGame_04-Act2_12_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512851
+  - m_Id: 5333524512850
     m_Key: InGame_04-Act2_13_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512852
+  - m_Id: 5333524512851
     m_Key: InGame_04-Act2_14_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512853
+  - m_Id: 5333524512852
     m_Key: InGame_04-Act2_15_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512854
+  - m_Id: 5333524512853
     m_Key: InGame_04-Act2_16_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512855
+  - m_Id: 5333524512854
     m_Key: InGame_04-Act2_17_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512856
+  - m_Id: 5333524512855
     m_Key: InGame_04-Act2_18_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512857
+  - m_Id: 5333524512856
     m_Key: InGame_04-Act2_19_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512858
+  - m_Id: 5333524512857
     m_Key: InGame_04-Act2_20_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512859
+  - m_Id: 5333524512858
     m_Key: InGame_04-Act2_21_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512860
+  - m_Id: 5333524512859
     m_Key: InGame_04-Act2_22_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512861
+  - m_Id: 5333524512860
     m_Key: InGame_04-Act2_23_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512862
+  - m_Id: 5333524512861
     m_Key: InGame_04-Act2_24_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512862
+    m_Key: InGame_04-Act2_25_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512863
@@ -737,6 +737,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1345961062363136
     m_Key: InGame_05-Act3_19_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1424586970947584
+    m_Key: InGame_04-Act2_08_Text
     m_Metadata:
       m_Items: []
   m_Metadata:
