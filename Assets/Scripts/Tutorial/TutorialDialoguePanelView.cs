@@ -106,6 +106,20 @@ namespace Week14.Tutorial
             SetDialogueText(FormatDialogue(text), 0);
         }
 
+        public void ReplaceLineText(string speaker, string text)
+        {
+            SetSpeaker(speaker);
+            SetDialogueColor(defaultDialogueColor);
+
+            int visibleCharacters = dialogueText != null ? dialogueText.maxVisibleCharacters : 0;
+            if (!IsTyping)
+            {
+                visibleCharacters = int.MaxValue;
+            }
+
+            SetDialogueText(FormatDialogue(text), visibleCharacters);
+        }
+
         public IEnumerator PlayTypewriter(string text, Func<bool> revealRequested = null, Func<bool> cancelRequested = null)
         {
             if (dialogueText == null)
