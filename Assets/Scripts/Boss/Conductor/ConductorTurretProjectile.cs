@@ -118,7 +118,7 @@ namespace Week14.Enemy
             return false;
         }
 
-        public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        public bool ReceivePlayerHit(int bulletDamage, Vector3 hitPosition, Vector2 hitDirection)
         {
             if (health == null || health.IsDead || !IsAliveTurret || bulletDamage <= 0)
             {
@@ -131,7 +131,7 @@ namespace Week14.Enemy
                 return false;
             }
 
-            PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor);
+            PlayEnemyHitVfx(hitPosition, hitDirection);
             BossAI.PlayEnemyHitCameraImpactForSequence(hitDirection, 0.08f, 0.12f, 0.05f);
             return true;
         }
@@ -217,22 +217,14 @@ namespace Week14.Enemy
             statusView.SetTarget(health);
         }
 
-        private static void PlayPlayerAttackImpact(Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
+        private void PlayEnemyHitVfx(Vector3 hitPosition, Vector2 hitDirection)
         {
-            Color sparkColor = Color.Lerp(hitColor, Color.white, 0.35f);
-            Color backSparkColor = Color.Lerp(hitColor, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
-            Color ringColor = Color.Lerp(hitColor, Color.white, 0.35f);
-            ProjectileVfx.PlayPlayerAttackImpact(
+            ProjectileVfx.PlayPrefab(
+                turretOwner?.EnemyHitVfxPrefab,
                 hitPosition,
                 hitDirection,
-                sparkColor,
-                backSparkColor,
-                backSparkColor,
-                ringColor,
-                14,
-                6,
-                8,
-                0.65f);
+                transform,
+                followRotation: false);
         }
 
         private void FireCrossVolley()
@@ -242,13 +234,22 @@ namespace Week14.Enemy
                 float angle = angleOffsetDegrees + i * 90f;
                 Vector2 direction = BossActionContext.AngleToDirection(angle);
                 Vector3 origin = transform.position + (Vector3)(direction * muzzleOffset);
-                turretOwner.FireGraphProjectile(
+                EnemyProjectile projectile = turretOwner.FireGraphProjectile(
                     crossFireProjectile,
                     origin,
                     direction,
-                    muzzleFlashScale,
+                    0f,
                     aimAtPlayerWhileChargingOverride: false,
                     aimAtPlayerOnLaunchOverride: false);
+                if (projectile != null)
+                {
+                    ProjectileVfx.PlayPrefab(
+                        turretOwner.EnemyMuzzleFlashVfxPrefab,
+                        projectile.transform.position,
+                        direction,
+                        transform,
+                        muzzleFlashScale);
+                }
             }
         }
 

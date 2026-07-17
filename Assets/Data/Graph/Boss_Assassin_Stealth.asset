@@ -1,0 +1,4120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb545d716d819f1478bdeb840ca94e96, type: 3}
+  m_Name: Boss_Assassin_Stealth
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.BossGraphAsset
+  referenceSettings:
+    effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
+    colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
+    actionCategories: {fileID: 7712345678901234567, guid: aa9ef3dc79e16744a9589d8307f9d3d1, type: 2}
+  stateNodes:
+  - nodeId: Fire Radial Emission1
+    nodeGuid: 5a0d5ecf578a4e80b2d8d4b13a44aaea
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249104
+    sequences: []
+    editorPosition: {x: -299, y: -20}
+  - nodeId: Random Direction Move1
+    nodeGuid: c6500d9e684e40fa835ec49902598fa7
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249020
+    sequences: []
+    editorPosition: {x: 55, y: -20}
+  - nodeId: Fire Radial Emission2
+    nodeGuid: 06905a3118bd45548280596d7fc6a04e
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249099
+    sequences: []
+    editorPosition: {x: 305, y: -20}
+  - nodeId: Wait1
+    nodeGuid: 61877faef7b7488ea899abc6fa29e6f9
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249057
+    sequences: []
+    editorPosition: {x: -83, y: -20}
+  - nodeId: Spawn Clone Shooters1
+    nodeGuid: dfa298a4204c49e089cad7110b65e1fe
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249237
+    sequences: []
+    editorPosition: {x: -299, y: 147}
+  - nodeId: Fire Next Clone Shooter1
+    nodeGuid: bd08acf3447c487d939c24d1e9af6ed0
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249238
+    sequences: []
+    editorPosition: {x: 66, y: 147}
+  - nodeId: Wait2
+    nodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778150679249242
+    sequences: []
+    editorPosition: {x: -106, y: 147}
+  - nodeId: Spawn Random Bombs1
+    nodeGuid: 4db8338282ed4baba5e6cd5e6620801a
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805375
+    sequences: []
+    editorPosition: {x: -133, y: 315}
+  - nodeId: Windup1
+    nodeGuid: dc684a5283b943d0830142e6998cd60f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805384
+    sequences: []
+    editorPosition: {x: -292, y: 315}
+  - nodeId: Random Direction Move2
+    nodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805451
+    sequences: []
+    editorPosition: {x: -85, y: 643}
+  - nodeId: Random Direction Move3
+    nodeGuid: e445d7e2c6e74803bf80213b313e6150
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805502
+    sequences: []
+    editorPosition: {x: 416, y: 643}
+  - nodeId: Boss Dash1
+    nodeGuid: fece3e3ab912475bb4d3caf1990430fc
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805734
+    sequences: []
+    editorPosition: {x: 748, y: 1037}
+  - nodeId: Fire Radial Emission3
+    nodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805735
+    sequences: []
+    editorPosition: {x: 288, y: 1037}
+  - nodeId: Teleport Around Player1
+    nodeGuid: 4553c45f47034f45b763c4f5fd909ae0
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778169994805752
+    sequences: []
+    editorPosition: {x: 511, y: 1037}
+  - nodeId: Fire Radial Emission4
+    nodeGuid: d613670f5b7441a383a01e457037682a
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778193230463115
+    sequences: []
+    editorPosition: {x: 1304, y: -19}
+  - nodeId: Fire Radial Emission5
+    nodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778193230463117
+    sequences: []
+    editorPosition: {x: 2094, y: -19}
+  - nodeId: Wait3
+    nodeGuid: 6cd9b65ff3c04700a589af7f5bd13738
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778193230463121
+    sequences: []
+    editorPosition: {x: 1746, y: -19}
+  - nodeId: Random Direction Move4
+    nodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497738
+    sequences: []
+    editorPosition: {x: 1904, y: 150}
+  - nodeId: Random Direction Move5
+    nodeGuid: a599ca8b9f1545dc82074d03da2bf8c6
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497740
+    sequences: []
+    editorPosition: {x: 2628, y: 151}
+  - nodeId: Wait4
+    nodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497742
+    sequences: []
+    editorPosition: {x: 2133, y: 150}
+  - nodeId: Boss Dash2
+    nodeGuid: 0028fc57a02746d0b5b54d3438b7874e
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497743
+    sequences: []
+    editorPosition: {x: 1765, y: 150}
+  - nodeId: Teleport Around Player2
+    nodeGuid: 9eb33f61ee294914a1c84f80b113e908
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497744
+    sequences: []
+    editorPosition: {x: 1564, y: 150}
+  - nodeId: Boss Dash3
+    nodeGuid: bc6c56811b3948ec8df667622a94013e
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497745
+    sequences: []
+    editorPosition: {x: 2441, y: 150}
+  - nodeId: Teleport Around Player3
+    nodeGuid: 556f75cfe7cf4191881f8ac838aa57ea
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497746
+    sequences: []
+    editorPosition: {x: 2235, y: 150}
+  - nodeId: Fire Radial Emission6
+    nodeGuid: cadb200c2ec04400ba86ad4aba1474fd
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497781
+    sequences: []
+    editorPosition: {x: -85, y: 794}
+  - nodeId: Fire Radial Emission7
+    nodeGuid: b0b673b9b2014e7087edeb59966cfcd8
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497782
+    sequences: []
+    editorPosition: {x: 436, y: 794}
+  - nodeId: Fire Radial Emission8
+    nodeGuid: 46a85fd3cd58483482fb8a0c6979f628
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497787
+    sequences: []
+    editorPosition: {x: 1917, y: 283}
+  - nodeId: Fire Radial Emission9
+    nodeGuid: 5eb28bbcc0704629a6d3b15db9279d4b
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497788
+    sequences: []
+    editorPosition: {x: 2628, y: 284}
+  - nodeId: Fire Next Clone Shooter2
+    nodeGuid: 47c1c0d09bc74d62ba362a400224dbf6
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497834
+    sequences: []
+    editorPosition: {x: 305, y: 147}
+  - nodeId: Spawn Clone Shooters2
+    nodeGuid: e16e831d809842c88df2ba6972fdb979
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497835
+    sequences: []
+    editorPosition: {x: 1387, y: 505}
+  - nodeId: Fire Next Clone Shooter3
+    nodeGuid: 16914dc5c84c4fbbac847a7bd2821054
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497836
+    sequences: []
+    editorPosition: {x: 1879, y: 808}
+  - nodeId: Wait5
+    nodeGuid: 4859625f935f477bb11f9e5e1beb595f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497839
+    sequences: []
+    editorPosition: {x: 1604, y: 505}
+  - nodeId: Spawn Clone Shooters3
+    nodeGuid: b17013bf5180420b8a401058c65c2c0c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497893
+    sequences: []
+    editorPosition: {x: 1535, y: -19}
+  - nodeId: Fire Next Clone Shooter4
+    nodeGuid: d49eb5d08ec1433eb6c72b5367b84cf4
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778196242497894
+    sequences: []
+    editorPosition: {x: 2316, y: -19}
+  - nodeId: Spawn Clone Shooters4
+    nodeGuid: c4d5f983a6c14d0fb543ac336be34a93
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803201
+    sequences: []
+    editorPosition: {x: -133, y: 460}
+  - nodeId: Teleport Around Player4
+    nodeGuid: cacab2c5349a42a5888ec9b1195d1e54
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803202
+    sequences: []
+    editorPosition: {x: 70, y: 315}
+  - nodeId: Boss Dash4
+    nodeGuid: 87de8b5da4c04b84bb6c18a5daa25880
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803203
+    sequences: []
+    editorPosition: {x: 288, y: 315}
+  - nodeId: Fire Next Clone Shooter5
+    nodeGuid: 177366f5048a447ea054c23ef2b9d903
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803209
+    sequences: []
+    editorPosition: {x: 471, y: 460}
+  - nodeId: Spawn Clone Shooters5
+    nodeGuid: 151d6cd441454308a10111e0c41522a9
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803230
+    sequences: []
+    editorPosition: {x: -292, y: 643}
+  - nodeId: Fire Next Clone Shooter6
+    nodeGuid: 4ea16c64fa504678a8df9584087fd191
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803231
+    sequences: []
+    editorPosition: {x: 160, y: 643}
+  - nodeId: Boss Dash5
+    nodeGuid: a86867c6962e45bba2903c8ff35e7e07
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803237
+    sequences: []
+    editorPosition: {x: 113, y: 1037}
+  - nodeId: Teleport Around Player5
+    nodeGuid: 58209550492f481c91503271c52fbe2c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803238
+    sequences: []
+    editorPosition: {x: -131, y: 1037}
+  - nodeId: Spawn Clone Shooters6
+    nodeGuid: eab47427394e4b25aa939f7131488614
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803239
+    sequences: []
+    editorPosition: {x: -356, y: 1037}
+  - nodeId: Fire Next Clone Shooter7
+    nodeGuid: 5d0dd4438a964676b37ea2f3b8f6bf24
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803241
+    sequences: []
+    editorPosition: {x: 288, y: 1176}
+  - nodeId: Random Direction Move6
+    nodeGuid: 91d293a100144f99a5f89ef11ee030dc
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803258
+    sequences: []
+    editorPosition: {x: 887, y: 1037}
+  - nodeId: Fire Radial Emission10
+    nodeGuid: 671d0efe0cc144748064068af51daaeb
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803259
+    sequences: []
+    editorPosition: {x: 907, y: 1188}
+  - nodeId: Spawn Clone Shooters7
+    nodeGuid: 469714931ccf4ec0a60acf4e4592e6d3
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803264
+    sequences: []
+    editorPosition: {x: 1268, y: 150}
+  - nodeId: Fire Next Clone Shooter8
+    nodeGuid: b696a295c604429bb5835167687b4c65
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803265
+    sequences: []
+    editorPosition: {x: 1604, y: 296}
+  - nodeId: Fire Next Clone Shooter9
+    nodeGuid: d855bcf506c74155a13a0e6eb9636058
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803266
+    sequences: []
+    editorPosition: {x: 2260, y: 296}
+  - nodeId: Wait6
+    nodeGuid: 0a60910a04564966b5f9ae0ea5a18062
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803275
+    sequences: []
+    editorPosition: {x: 1450, y: 150}
+  - nodeId: Teleport Around Player6
+    nodeGuid: 3c1bb23ba0cb4eeb9148493c82363edc
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803278
+    sequences: []
+    editorPosition: {x: 1860, y: -19}
+  - nodeId: Fire Next Clone Shooter10
+    nodeGuid: ced2d50e9b2d4cd4b2b34e09eebe70d5
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803288
+    sequences: []
+    editorPosition: {x: 1879, y: 659}
+  - nodeId: Boss Dash6
+    nodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803309
+    sequences: []
+    editorPosition: {x: 1908, y: 505}
+  - nodeId: Teleport Around Player7
+    nodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803310
+    sequences: []
+    editorPosition: {x: 1707, y: 505}
+  - nodeId: Fire Radial Emission11
+    nodeGuid: aaabd0a1c24f42688a94cbb1cf336182
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803311
+    sequences: []
+    editorPosition: {x: 2072, y: 505}
+  - nodeId: Random Direction Move7
+    nodeGuid: d639ec7c51254416abe5caa058e43aa3
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803316
+    sequences: []
+    editorPosition: {x: 1752, y: 957}
+  - nodeId: Fire Radial Emission12
+    nodeGuid: 209ac40892174b85b4f88bb5a64757c5
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803318
+    sequences: []
+    editorPosition: {x: 1752, y: 1108}
+  - nodeId: Spawn Clone Shooters8
+    nodeGuid: 6cf6f48ba392469e87b07b5a387ed7d4
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803320
+    sequences: []
+    editorPosition: {x: 1403, y: 957}
+  - nodeId: Fire Next Clone Shooter11
+    nodeGuid: 9018bf570eac4de6a4b00cd4e7b57b6d
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803321
+    sequences: []
+    editorPosition: {x: 1987, y: 957}
+  - nodeId: Boss Dash7
+    nodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803322
+    sequences: []
+    editorPosition: {x: 2432, y: 957}
+  - nodeId: Teleport Around Player8
+    nodeGuid: 5e12056e78564b36af7f8c37914f2b83
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803323
+    sequences: []
+    editorPosition: {x: 2227, y: 957}
+  - nodeId: Fire Next Clone Shooter12
+    nodeGuid: 49c70a3dafd240589944e676b92a8b7f
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803324
+    sequences: []
+    editorPosition: {x: 2411, y: 1142}
+  - nodeId: Wait7
+    nodeGuid: 49f218bffdde463ab79283b87b90536c
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803333
+    sequences: []
+    editorPosition: {x: 1626, y: 957}
+  - nodeId: Fire Radial Emission13
+    nodeGuid: 7961bacafd5b4a0da4f1f495eef8df17
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803354
+    sequences: []
+    editorPosition: {x: 471, y: 315}
+  - nodeId: Spawn Clone Shooters9
+    nodeGuid: 795c8755713e4cbcbd4087d8167aee0e
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803441
+    sequences: []
+    editorPosition: {x: -369, y: 1354}
+  - nodeId: Boss Dash8
+    nodeGuid: 25d593d3074d456bb5d33906068e1856
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803442
+    sequences: []
+    editorPosition: {x: 39, y: 1354}
+  - nodeId: Teleport Around Player9
+    nodeGuid: 076cee8381dd4f7485393d302b9f716d
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803443
+    sequences: []
+    editorPosition: {x: -170, y: 1354}
+  - nodeId: Fire Parry Suppression Bait1
+    nodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803446
+    sequences: []
+    editorPosition: {x: 197, y: 1354}
+  - nodeId: Fire Next Clone Shooter13
+    nodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803447
+    sequences: []
+    editorPosition: {x: 424, y: 1354}
+  - nodeId: Fire Next Clone Shooter14
+    nodeGuid: 36351d607525413c91c71ddaf87c12f3
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803448
+    sequences: []
+    editorPosition: {x: 660, y: 1354}
+  - nodeId: Fire Next Clone Shooter15
+    nodeGuid: 806bc10dd24d482ba156a66135ddf38f
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803449
+    sequences: []
+    editorPosition: {x: 897, y: 1354}
+  - nodeId: Fire Next Clone Shooter16
+    nodeGuid: 2629c881d2614362ab55d2fbbc0b76cd
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803450
+    sequences: []
+    editorPosition: {x: 1140, y: 1354}
+  - nodeId: Exit Stealth1
+    nodeGuid: cd0debb5da2c4e1ab74616f6437d3391
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778205525803452
+    sequences: []
+    editorPosition: {x: 1423, y: 1354}
+  patterns:
+  - patternId: Pattern1
+    nodeGuids:
+    - 5a0d5ecf578a4e80b2d8d4b13a44aaea
+    - 61877faef7b7488ea899abc6fa29e6f9
+    - c6500d9e684e40fa835ec49902598fa7
+    - 06905a3118bd45548280596d7fc6a04e
+    nodeIds:
+    - Fire Radial Emission1
+    - Wait1
+    - Random Direction Move1
+    - Fire Radial Emission2
+  - patternId: Pattern2
+    nodeGuids:
+    - dfa298a4204c49e089cad7110b65e1fe
+    - 3e9c9bad0ed3460e92357fbd306d028d
+    - bd08acf3447c487d939c24d1e9af6ed0
+    - 47c1c0d09bc74d62ba362a400224dbf6
+    nodeIds:
+    - Spawn Clone Shooters1
+    - Wait2
+    - Fire Next Clone Shooter1
+    - Fire Next Clone Shooter2
+  - patternId: Pattern3
+    nodeGuids:
+    - dc684a5283b943d0830142e6998cd60f
+    - 4db8338282ed4baba5e6cd5e6620801a
+    - cacab2c5349a42a5888ec9b1195d1e54
+    - 87de8b5da4c04b84bb6c18a5daa25880
+    - 7961bacafd5b4a0da4f1f495eef8df17
+    - c4d5f983a6c14d0fb543ac336be34a93
+    - 177366f5048a447ea054c23ef2b9d903
+    nodeIds:
+    - Windup1
+    - Spawn Random Bombs1
+    - Teleport Around Player4
+    - Boss Dash4
+    - Fire Radial Emission13
+    - Spawn Clone Shooters4
+    - Fire Next Clone Shooter5
+  - patternId: Pattern4
+    nodeGuids:
+    - cadb200c2ec04400ba86ad4aba1474fd
+    - b0b673b9b2014e7087edeb59966cfcd8
+    - 151d6cd441454308a10111e0c41522a9
+    - e4c422895b4e423a9e3ec6a061344ecc
+    - 4ea16c64fa504678a8df9584087fd191
+    - e445d7e2c6e74803bf80213b313e6150
+    nodeIds:
+    - Fire Radial Emission6
+    - Fire Radial Emission7
+    - Spawn Clone Shooters5
+    - Random Direction Move2
+    - Fire Next Clone Shooter6
+    - Random Direction Move3
+  - patternId: Pattern5
+    nodeGuids:
+    - eab47427394e4b25aa939f7131488614
+    - 58209550492f481c91503271c52fbe2c
+    - a86867c6962e45bba2903c8ff35e7e07
+    - cbbfb4ab43fd4ef1afc58e8583458ad3
+    - 4553c45f47034f45b763c4f5fd909ae0
+    - fece3e3ab912475bb4d3caf1990430fc
+    - 91d293a100144f99a5f89ef11ee030dc
+    - 5d0dd4438a964676b37ea2f3b8f6bf24
+    - 671d0efe0cc144748064068af51daaeb
+    nodeIds:
+    - Spawn Clone Shooters6
+    - Teleport Around Player5
+    - Boss Dash5
+    - Fire Radial Emission3
+    - Teleport Around Player1
+    - Boss Dash1
+    - Random Direction Move6
+    - Fire Next Clone Shooter7
+    - Fire Radial Emission10
+  - patternId: Pattern7
+    nodeGuids:
+    - d613670f5b7441a383a01e457037682a
+    - b17013bf5180420b8a401058c65c2c0c
+    - 6cd9b65ff3c04700a589af7f5bd13738
+    - 3c1bb23ba0cb4eeb9148493c82363edc
+    - a58cfeb49e534a8f9bb2ea2e2286e54e
+    - d49eb5d08ec1433eb6c72b5367b84cf4
+    nodeIds:
+    - Fire Radial Emission4
+    - Spawn Clone Shooters3
+    - Wait3
+    - Teleport Around Player6
+    - Fire Radial Emission5
+    - Fire Next Clone Shooter4
+  - patternId: Pattern8
+    nodeGuids:
+    - 46a85fd3cd58483482fb8a0c6979f628
+    - 5eb28bbcc0704629a6d3b15db9279d4b
+    - 469714931ccf4ec0a60acf4e4592e6d3
+    - 0a60910a04564966b5f9ae0ea5a18062
+    - 9eb33f61ee294914a1c84f80b113e908
+    - 0028fc57a02746d0b5b54d3438b7874e
+    - e0a0bdfa969646debd70a5d1d703f7d7
+    - fc5fdd5d802d4c6c9fdd1ac624a6928b
+    - 556f75cfe7cf4191881f8ac838aa57ea
+    - bc6c56811b3948ec8df667622a94013e
+    - a599ca8b9f1545dc82074d03da2bf8c6
+    - b696a295c604429bb5835167687b4c65
+    - d855bcf506c74155a13a0e6eb9636058
+    nodeIds:
+    - Fire Radial Emission8
+    - Fire Radial Emission9
+    - Spawn Clone Shooters7
+    - Wait6
+    - Teleport Around Player2
+    - Boss Dash2
+    - Random Direction Move4
+    - Wait4
+    - Teleport Around Player3
+    - Boss Dash3
+    - Random Direction Move5
+    - Fire Next Clone Shooter8
+    - Fire Next Clone Shooter9
+  - patternId: Pattern9
+    nodeGuids:
+    - e16e831d809842c88df2ba6972fdb979
+    - 4859625f935f477bb11f9e5e1beb595f
+    - 076c1d2d1d6a43048be132b77abfcdb8
+    - bb2aae2074ff4096ba1fd6715dfa18ce
+    - aaabd0a1c24f42688a94cbb1cf336182
+    - 16914dc5c84c4fbbac847a7bd2821054
+    - ced2d50e9b2d4cd4b2b34e09eebe70d5
+    nodeIds:
+    - Spawn Clone Shooters2
+    - Wait5
+    - Teleport Around Player7
+    - Boss Dash6
+    - Fire Radial Emission11
+    - Fire Next Clone Shooter3
+    - Fire Next Clone Shooter10
+  - patternId: Pattern10
+    nodeGuids:
+    - 209ac40892174b85b4f88bb5a64757c5
+    - 6cf6f48ba392469e87b07b5a387ed7d4
+    - 49f218bffdde463ab79283b87b90536c
+    - d639ec7c51254416abe5caa058e43aa3
+    - 9018bf570eac4de6a4b00cd4e7b57b6d
+    - 5e12056e78564b36af7f8c37914f2b83
+    - 76fa2786eaf646b4bc235cf8c3cb1c2d
+    - 49c70a3dafd240589944e676b92a8b7f
+    nodeIds:
+    - Fire Radial Emission12
+    - Spawn Clone Shooters8
+    - Wait7
+    - Random Direction Move7
+    - Fire Next Clone Shooter11
+    - Teleport Around Player8
+    - Boss Dash7
+    - Fire Next Clone Shooter12
+  - patternId: Pattern11
+    nodeGuids:
+    - 795c8755713e4cbcbd4087d8167aee0e
+    - 076cee8381dd4f7485393d302b9f716d
+    - 25d593d3074d456bb5d33906068e1856
+    - 33c49d733e2640509a5b9143c1f0a6e2
+    - f7aa6797f6fc4cecb9b8a7b3d08e02c7
+    - 36351d607525413c91c71ddaf87c12f3
+    - 806bc10dd24d482ba156a66135ddf38f
+    - 2629c881d2614362ab55d2fbbc0b76cd
+    - cd0debb5da2c4e1ab74616f6437d3391
+    nodeIds:
+    - Spawn Clone Shooters9
+    - Teleport Around Player9
+    - Boss Dash8
+    - Fire Parry Suppression Bait1
+    - Fire Next Clone Shooter13
+    - Fire Next Clone Shooter14
+    - Fire Next Clone Shooter15
+    - Fire Next Clone Shooter16
+    - Exit Stealth1
+  defaultPatternIds: []
+  phases:
+  - phaseIndex: 0
+    selectionMode: 3
+    phaseMaxHp: 0
+    patternIntervalSeconds: 2.5
+    intervalMoveSpeed: 0.7
+    initialPatternDelaySeconds: 1
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 0
+    openingPatternId: 
+    signaturePatternId: 
+    signaturePatternHpPercent: 50
+    forcedPatternId: 
+    patterns:
+    - patternId: Pattern1
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 5
+      minPatternsPlayed: 0
+    - patternId: Pattern2
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 5
+      minPatternsPlayed: 0
+    - patternId: Pattern4
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern5
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern11
+      weight: 5
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 0
+      minPatternsPlayed: 4
+  - phaseIndex: 1
+    selectionMode: 3
+    phaseMaxHp: 0
+    patternIntervalSeconds: 2.5
+    intervalMoveSpeed: 0.7
+    initialPatternDelaySeconds: 1
+    bossCanFlyOverGround: 0
+    minionsCanFlyOverGround: 0
+    openingPatternId: 
+    signaturePatternId: 
+    signaturePatternHpPercent: 50
+    forcedPatternId: 
+    patterns:
+    - patternId: Pattern3
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 5
+      minPatternsPlayed: 0
+    - patternId: Pattern7
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern8
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern9
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern10
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: Pattern11
+      weight: 5
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 0
+      minPatternsPlayed: 4
+  transitions:
+  - fromNodeGuid: 5a0d5ecf578a4e80b2d8d4b13a44aaea
+    toNodeGuid: 61877faef7b7488ea899abc6fa29e6f9
+    fromNodeId: Fire Radial Emission1
+    toNodeId: Wait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 61877faef7b7488ea899abc6fa29e6f9
+    toNodeGuid: c6500d9e684e40fa835ec49902598fa7
+    fromNodeId: Wait1
+    toNodeId: Random Direction Move1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: dfa298a4204c49e089cad7110b65e1fe
+    toNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
+    fromNodeId: Spawn Clone Shooters1
+    toNodeId: Wait2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
+    toNodeGuid: bd08acf3447c487d939c24d1e9af6ed0
+    fromNodeId: Wait2
+    toNodeId: Fire Next Clone Shooter1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: dc684a5283b943d0830142e6998cd60f
+    toNodeGuid: 4db8338282ed4baba5e6cd5e6620801a
+    fromNodeId: Windup1
+    toNodeId: Spawn Random Bombs1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
+    toNodeGuid: 4553c45f47034f45b763c4f5fd909ae0
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Teleport Around Player1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
+    toNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
+    fromNodeId: Random Direction Move4
+    toNodeId: Wait4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9eb33f61ee294914a1c84f80b113e908
+    toNodeGuid: 0028fc57a02746d0b5b54d3438b7874e
+    fromNodeId: Teleport Around Player2
+    toNodeId: Boss Dash2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0028fc57a02746d0b5b54d3438b7874e
+    toNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
+    fromNodeId: Boss Dash2
+    toNodeId: Random Direction Move4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 556f75cfe7cf4191881f8ac838aa57ea
+    toNodeGuid: bc6c56811b3948ec8df667622a94013e
+    fromNodeId: Teleport Around Player3
+    toNodeId: Boss Dash3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
+    toNodeGuid: 556f75cfe7cf4191881f8ac838aa57ea
+    fromNodeId: Wait4
+    toNodeId: Teleport Around Player3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: bc6c56811b3948ec8df667622a94013e
+    toNodeGuid: a599ca8b9f1545dc82074d03da2bf8c6
+    fromNodeId: Boss Dash3
+    toNodeId: Random Direction Move5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e16e831d809842c88df2ba6972fdb979
+    toNodeGuid: 4859625f935f477bb11f9e5e1beb595f
+    fromNodeId: Spawn Clone Shooters2
+    toNodeId: Wait5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4db8338282ed4baba5e6cd5e6620801a
+    toNodeGuid: cacab2c5349a42a5888ec9b1195d1e54
+    fromNodeId: Spawn Random Bombs1
+    toNodeId: Teleport Around Player4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: cacab2c5349a42a5888ec9b1195d1e54
+    toNodeGuid: 87de8b5da4c04b84bb6c18a5daa25880
+    fromNodeId: Teleport Around Player4
+    toNodeId: Boss Dash4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 151d6cd441454308a10111e0c41522a9
+    toNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    fromNodeId: Spawn Clone Shooters5
+    toNodeId: Random Direction Move2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    toNodeGuid: 4ea16c64fa504678a8df9584087fd191
+    fromNodeId: Random Direction Move2
+    toNodeId: Fire Next Clone Shooter6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4ea16c64fa504678a8df9584087fd191
+    toNodeGuid: e445d7e2c6e74803bf80213b313e6150
+    fromNodeId: Fire Next Clone Shooter6
+    toNodeId: Random Direction Move3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4553c45f47034f45b763c4f5fd909ae0
+    toNodeGuid: fece3e3ab912475bb4d3caf1990430fc
+    fromNodeId: Teleport Around Player1
+    toNodeId: Boss Dash1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 58209550492f481c91503271c52fbe2c
+    toNodeGuid: a86867c6962e45bba2903c8ff35e7e07
+    fromNodeId: Teleport Around Player5
+    toNodeId: Boss Dash5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a86867c6962e45bba2903c8ff35e7e07
+    toNodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
+    fromNodeId: Boss Dash5
+    toNodeId: Fire Radial Emission3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: eab47427394e4b25aa939f7131488614
+    toNodeGuid: 58209550492f481c91503271c52fbe2c
+    fromNodeId: Spawn Clone Shooters6
+    toNodeId: Teleport Around Player5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fece3e3ab912475bb4d3caf1990430fc
+    toNodeGuid: 91d293a100144f99a5f89ef11ee030dc
+    fromNodeId: Boss Dash1
+    toNodeId: Random Direction Move6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 469714931ccf4ec0a60acf4e4592e6d3
+    toNodeGuid: 0a60910a04564966b5f9ae0ea5a18062
+    fromNodeId: Spawn Clone Shooters7
+    toNodeId: Wait6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0a60910a04564966b5f9ae0ea5a18062
+    toNodeGuid: 9eb33f61ee294914a1c84f80b113e908
+    fromNodeId: Wait6
+    toNodeId: Teleport Around Player2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b17013bf5180420b8a401058c65c2c0c
+    toNodeGuid: 6cd9b65ff3c04700a589af7f5bd13738
+    fromNodeId: Spawn Clone Shooters3
+    toNodeId: Wait3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6cd9b65ff3c04700a589af7f5bd13738
+    toNodeGuid: 3c1bb23ba0cb4eeb9148493c82363edc
+    fromNodeId: Wait3
+    toNodeId: Teleport Around Player6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 3c1bb23ba0cb4eeb9148493c82363edc
+    toNodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
+    fromNodeId: Teleport Around Player6
+    toNodeId: Fire Radial Emission5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d613670f5b7441a383a01e457037682a
+    toNodeGuid: b17013bf5180420b8a401058c65c2c0c
+    fromNodeId: Fire Radial Emission4
+    toNodeId: Spawn Clone Shooters3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
+    toNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
+    fromNodeId: Teleport Around Player7
+    toNodeId: Boss Dash6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4859625f935f477bb11f9e5e1beb595f
+    toNodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
+    fromNodeId: Wait5
+    toNodeId: Teleport Around Player7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
+    toNodeGuid: aaabd0a1c24f42688a94cbb1cf336182
+    fromNodeId: Boss Dash6
+    toNodeId: Fire Radial Emission11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d639ec7c51254416abe5caa058e43aa3
+    toNodeGuid: 9018bf570eac4de6a4b00cd4e7b57b6d
+    fromNodeId: Random Direction Move7
+    toNodeId: Fire Next Clone Shooter11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5e12056e78564b36af7f8c37914f2b83
+    toNodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
+    fromNodeId: Teleport Around Player8
+    toNodeId: Boss Dash7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9018bf570eac4de6a4b00cd4e7b57b6d
+    toNodeGuid: 5e12056e78564b36af7f8c37914f2b83
+    fromNodeId: Fire Next Clone Shooter11
+    toNodeId: Teleport Around Player8
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6cf6f48ba392469e87b07b5a387ed7d4
+    toNodeGuid: 49f218bffdde463ab79283b87b90536c
+    fromNodeId: Spawn Clone Shooters8
+    toNodeId: Wait7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 49f218bffdde463ab79283b87b90536c
+    toNodeGuid: d639ec7c51254416abe5caa058e43aa3
+    fromNodeId: Wait7
+    toNodeId: Random Direction Move7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 87de8b5da4c04b84bb6c18a5daa25880
+    toNodeGuid: 7961bacafd5b4a0da4f1f495eef8df17
+    fromNodeId: Boss Dash4
+    toNodeId: Fire Radial Emission13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c6500d9e684e40fa835ec49902598fa7
+    toNodeGuid: 06905a3118bd45548280596d7fc6a04e
+    fromNodeId: Random Direction Move1
+    toNodeId: Fire Radial Emission2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 076cee8381dd4f7485393d302b9f716d
+    toNodeGuid: 25d593d3074d456bb5d33906068e1856
+    fromNodeId: Teleport Around Player9
+    toNodeId: Boss Dash8
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 795c8755713e4cbcbd4087d8167aee0e
+    toNodeGuid: 076cee8381dd4f7485393d302b9f716d
+    fromNodeId: Spawn Clone Shooters9
+    toNodeId: Teleport Around Player9
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 25d593d3074d456bb5d33906068e1856
+    toNodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
+    fromNodeId: Boss Dash8
+    toNodeId: Fire Parry Suppression Bait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 2629c881d2614362ab55d2fbbc0b76cd
+    toNodeGuid: cd0debb5da2c4e1ab74616f6437d3391
+    fromNodeId: Fire Next Clone Shooter16
+    toNodeId: Exit Stealth1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
+    toNodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
+    fromNodeId: Fire Parry Suppression Bait1
+    toNodeId: Fire Next Clone Shooter13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  parallelEdges:
+  - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    toNodeGuid: cadb200c2ec04400ba86ad4aba1474fd
+    fromNodeId: Random Direction Move2
+    toNodeId: Fire Radial Emission6
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: e445d7e2c6e74803bf80213b313e6150
+    toNodeGuid: b0b673b9b2014e7087edeb59966cfcd8
+    fromNodeId: Random Direction Move3
+    toNodeId: Fire Radial Emission7
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
+    toNodeGuid: 46a85fd3cd58483482fb8a0c6979f628
+    fromNodeId: Random Direction Move4
+    toNodeId: Fire Radial Emission8
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: a599ca8b9f1545dc82074d03da2bf8c6
+    toNodeGuid: 5eb28bbcc0704629a6d3b15db9279d4b
+    fromNodeId: Random Direction Move5
+    toNodeId: Fire Radial Emission9
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: bd08acf3447c487d939c24d1e9af6ed0
+    toNodeGuid: 47c1c0d09bc74d62ba362a400224dbf6
+    fromNodeId: Fire Next Clone Shooter1
+    toNodeId: Fire Next Clone Shooter2
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 4db8338282ed4baba5e6cd5e6620801a
+    toNodeGuid: c4d5f983a6c14d0fb543ac336be34a93
+    fromNodeId: Spawn Random Bombs1
+    toNodeId: Spawn Clone Shooters4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
+    toNodeGuid: 5d0dd4438a964676b37ea2f3b8f6bf24
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Fire Next Clone Shooter7
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 91d293a100144f99a5f89ef11ee030dc
+    toNodeGuid: 671d0efe0cc144748064068af51daaeb
+    fromNodeId: Random Direction Move6
+    toNodeId: Fire Radial Emission10
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 556f75cfe7cf4191881f8ac838aa57ea
+    toNodeGuid: d855bcf506c74155a13a0e6eb9636058
+    fromNodeId: Teleport Around Player3
+    toNodeId: Fire Next Clone Shooter9
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 9eb33f61ee294914a1c84f80b113e908
+    toNodeGuid: b696a295c604429bb5835167687b4c65
+    fromNodeId: Teleport Around Player2
+    toNodeId: Fire Next Clone Shooter8
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
+    toNodeGuid: d49eb5d08ec1433eb6c72b5367b84cf4
+    fromNodeId: Fire Radial Emission5
+    toNodeId: Fire Next Clone Shooter4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: ced2d50e9b2d4cd4b2b34e09eebe70d5
+    toNodeGuid: 16914dc5c84c4fbbac847a7bd2821054
+    fromNodeId: Fire Next Clone Shooter10
+    toNodeId: Fire Next Clone Shooter3
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
+    toNodeGuid: ced2d50e9b2d4cd4b2b34e09eebe70d5
+    fromNodeId: Boss Dash6
+    toNodeId: Fire Next Clone Shooter10
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: d639ec7c51254416abe5caa058e43aa3
+    toNodeGuid: 209ac40892174b85b4f88bb5a64757c5
+    fromNodeId: Random Direction Move7
+    toNodeId: Fire Radial Emission12
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
+    toNodeGuid: 49c70a3dafd240589944e676b92a8b7f
+    fromNodeId: Boss Dash7
+    toNodeId: Fire Next Clone Shooter12
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 7961bacafd5b4a0da4f1f495eef8df17
+    toNodeGuid: 177366f5048a447ea054c23ef2b9d903
+    fromNodeId: Fire Radial Emission13
+    toNodeId: Fire Next Clone Shooter5
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
+    toNodeGuid: 36351d607525413c91c71ddaf87c12f3
+    fromNodeId: Fire Next Clone Shooter13
+    toNodeId: Fire Next Clone Shooter14
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 36351d607525413c91c71ddaf87c12f3
+    toNodeGuid: 806bc10dd24d482ba156a66135ddf38f
+    fromNodeId: Fire Next Clone Shooter14
+    toNodeId: Fire Next Clone Shooter15
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 806bc10dd24d482ba156a66135ddf38f
+    toNodeGuid: 2629c881d2614362ab55d2fbbc0b76cd
+    fromNodeId: Fire Next Clone Shooter15
+    toNodeId: Fire Next Clone Shooter16
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 0
+  debugForcedPatternId: Pattern1
+  references:
+    version: 2
+    RefIds:
+    - rid: 4705778150679249020
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 2
+        duration: 0.2
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778150679249057
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.3
+    - rid: 4705778150679249099
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 6
+          arcDegrees: 50
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0
+          restSeconds: 0.35
+    - rid: 4705778150679249104
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0
+          restSeconds: 0.35
+    - rid: 4705778150679249237
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 1
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 1
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778150679249238
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778150679249242
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705778169994805375
+      type: {class: AssassinSpawnRandomBombsAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC548\uD558\uBA74 \uD130\uC9D0"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        bombCount: 8
+        minSeparationDistance: 3
+        minDistanceFromPlayer: 3
+        spawnInterval: 0.05
+        flightSeconds: 0.1
+        chargeSeconds: 9
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805384
+      type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+        stopMovement: 1
+        effectOrigin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 1}
+            scale: 1.5
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778169994805451
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778169994805502
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778169994805734
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.6
+        lockSeconds: 0.5
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778169994805735
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0
+          restSeconds: 0.35
+    - rid: 4705778169994805752
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778193230463115
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0
+          restSeconds: 0.35
+    - rid: 4705778193230463117
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 4
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.04
+          restSeconds: 0.35
+    - rid: 4705778193230463121
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778196242497738
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778196242497740
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778196242497742
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705778196242497743
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.9
+        lockSeconds: 0.7
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778196242497744
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.05
+    - rid: 4705778196242497745
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.9
+        lockSeconds: 0.7
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778196242497746
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778196242497781
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778196242497782
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778196242497787
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778196242497788
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778196242497834
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778196242497835
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 2
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778196242497836
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778196242497839
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705778196242497893
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 1
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778196242497894
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 2
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803201
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 1
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778205525803202
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778205525803203
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.6
+        lockSeconds: 0.5
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778205525803209
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803230
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 1
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778205525803231
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803237
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.6
+        lockSeconds: 0.5
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778205525803238
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778205525803239
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 1
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778205525803241
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803258
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778205525803259
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778205525803264
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 2
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778205525803265
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 2
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803266
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 2
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803275
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.3
+    - rid: 4705778205525803278
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778205525803288
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803309
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.9
+        lockSeconds: 0.7
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778205525803310
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.05
+    - rid: 4705778205525803311
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 3
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.04
+          restSeconds: 0.35
+    - rid: 4705778205525803316
+      type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        distance: 6
+        duration: 0.5
+        strafeAroundPlayer: 0
+        minAngleDegrees: 0
+        maxAngleDegrees: 360
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.064042404
+            value: 0.9785456
+            inSlope: 0.69874907
+            outSlope: 0.69874907
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.3916019
+          - serializedVersion: 3
+            time: 0.9955927
+            value: -0.007392386
+            inSlope: -2.7436628
+            outSlope: -2.7436628
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.05165236
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+        requireGroundDestination: 1
+        groundProbeRadius: 0.2
+        groundRetryAttempts: 8
+    - rid: 4705778205525803318
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 7
+          arcDegrees: 60
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778205525803320
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 2
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 30
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778205525803321
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803322
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.9
+        lockSeconds: 0.7
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778205525803323
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.05
+    - rid: 4705778205525803324
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 7
+        arcDegrees: 50
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803333
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 1
+    - rid: 4705778205525803354
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC720\uB3C4\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 4
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0
+          fireInterval: 0.02
+          restSeconds: 0.35
+    - rid: 4705778205525803441
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 5
+        cloneIntroSeconds: 0.2
+        cloneTargetAlpha: 180
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0
+    - rid: 4705778205525803442
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.6
+        lockSeconds: 0.5
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: 
+        chargeTriggerName: 
+        chargeBoolName: 
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectorySortingOrder: -1
+    - rid: 4705778205525803443
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778205525803446
+      type: {class: AssassinFireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        baitDurationSeconds: 0.8
+        rewardBulletCount: 3
+        rewardCircleRadius: 1
+        groggySeconds: 2
+        spawnSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803447
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803448
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803449
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803450
+      type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.04
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          explosion:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778205525803452
+      type: {class: AssassinExitStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 

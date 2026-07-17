@@ -290,7 +290,7 @@ namespace Week14.Enemy
                     projectileName: projectileName);
                 if (spawned != null)
                 {
-                    droneFireSpec.PlayEffects(spawnOrigin, direction);
+                    droneFireSpec.PlayEffects(spawnOrigin, spawned, direction, drone.transform);
                 }
             }
         }

@@ -1,0 +1,293 @@
+fileFormatVersion: 2
+guid: 961b3a7beb0f4f446a0b66762e8d14c3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9134583702934747767
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_0"
+  - first:
+      213: 1074433707538712227
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_1"
+  - first:
+      213: 4681980938542658624
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_2"
+  - first:
+      213: 795345678381456368
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_3"
+  - first:
+      213: 1442022440129671452
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_4"
+  - first:
+      213: 6267213342265715490
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_5"
+  - first:
+      213: -5185955549443298853
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_6"
+  - first:
+      213: 6893479372031502950
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_7"
+  - first:
+      213: 6723624429045130255
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_8"
+  - first:
+      213: 7167116801795843957
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_9"
+  - first:
+      213: 2305047321075600436
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_10"
+  - first:
+      213: -8069030386741651006
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_11"
+  - first:
+      213: -8840020971008064716
+    second: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_12"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_0"
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 1
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77a7f701b7f84ce70800000000000000
+      internalID: 9134583702934747767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_1"
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 1
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a60d80b3c729ee00800000000000000
+      internalID: 1074433707538712227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_2"
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 1
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0443cfe7bdcb9f040800000000000000
+      internalID: 4681980938542658624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_3"
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 1
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fb91993ea2a90b00800000000000000
+      internalID: 795345678381456368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_13"
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b44712cac7d6de545b128c6ed9b2e6a4
+      internalID: 797344679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 9a4f2d552b589db4083412ad3f7c1626
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_0": 9134583702934747767
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_1": 1074433707538712227
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_10": 2305047321075600436
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_11": -8069030386741651006
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_12": -8840020971008064716
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_13": 797344679
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_2": 4681980938542658624
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_3": 795345678381456368
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_4": 1442022440129671452
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_5": 6267213342265715490
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_6": -5185955549443298853
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_7": 6893479372031502950
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_8": 6723624429045130255
+      "Retro Impact Effect Pack 3 A - \uBCF5\uC0AC\uBCF8_9": 7167116801795843957
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

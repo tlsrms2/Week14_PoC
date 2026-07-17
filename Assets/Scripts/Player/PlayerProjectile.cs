@@ -245,7 +245,14 @@ namespace Week14.Combat
             }
 
             resolved = true;
-            TryApplyDamageToHealth(targetHealth, bulletDamage, isSkillShot, transform.position, flightDirection, projectileColor);
+            TryApplyDamageToHealth(
+                targetHealth,
+                bulletDamage,
+                isSkillShot,
+                transform.position,
+                flightDirection,
+                projectileColor,
+                owner?.Config?.EnemyHitVfxPrefab);
             DestroyProjectile();
             return true;
         }
@@ -259,7 +266,8 @@ namespace Week14.Combat
             bool isSkillShot,
             Vector3 hitPosition,
             Vector2 hitDirection,
-            Color hitColor)
+            Color hitColor,
+            GameObject enemyHitVfxPrefab = null)
         {
             if (targetHealth == null)
             {
@@ -314,7 +322,7 @@ namespace Week14.Combat
                 ?? targetHealth.GetComponentInParent<TutorialTrainingEnemy>();
             if (tutorialEnemy != null)
             {
-                if (!tutorialEnemy.ReceivePlayerHit(bulletDamage, hitPosition, hitDirection, hitColor))
+                if (!tutorialEnemy.ReceivePlayerHit(bulletDamage, hitPosition, hitDirection))
                 {
                     return false;
                 }
@@ -343,7 +351,12 @@ namespace Week14.Combat
 
             ShowFloatingDamage(targetHealth, bulletDamage);
             NotifyNormalAttackDamageStatic(bulletDamage, isSkillShot);
-            ProjectileVfx.PlayPlayerAttackImpact(hitPosition, hitDirection, hitColor, 10, 0, 0, 0.45f);
+            ProjectileVfx.PlayPrefab(
+                enemyHitVfxPrefab,
+                hitPosition,
+                hitDirection,
+                targetHealth.transform,
+                followRotation: false);
             return true;
         }
 
@@ -355,7 +368,7 @@ namespace Week14.Combat
             }
 
             resolved = true;
-            if (canDamageHealth && turret.ReceivePlayerHit(bulletDamage, transform.position, flightDirection, projectileColor))
+            if (canDamageHealth && turret.ReceivePlayerHit(bulletDamage, transform.position, flightDirection))
             {
                 NotifyNormalAttackDamage();
             }

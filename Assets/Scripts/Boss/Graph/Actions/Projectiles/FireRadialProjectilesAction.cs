@@ -199,7 +199,7 @@ namespace Week14.Enemy
                 projectile,
                 spawnOrigin,
                 direction,
-                0.9f,
+                0f,
                 projectileName: projectileName);
 
             if (firedProjectile == null)
@@ -210,7 +210,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
-            context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, direction);
+            context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);
         }
 

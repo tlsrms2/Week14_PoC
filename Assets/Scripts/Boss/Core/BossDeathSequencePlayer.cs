@@ -55,43 +55,54 @@ namespace Week14.Enemy
             }
         }
 
+        // 애니메이터가 여러 개(예: Assassin)면 트리거는 전부에 보내지만, 타이밍(전환/재생 길이) 판정은
+        // 전부 같은 명령을 받아 서로 동기화돼 있다고 가정하고 첫 번째(primary) 애니메이터 기준으로만 잰다.
         private static IEnumerator PlayDeathAnimation(BossAI boss)
         {
-            Animator animator = boss.DeathAnimatorForSequence;
+            Animator[] animators = boss.DeathAnimatorsForSequence;
+            Animator primary = animators.Length > 0 ? animators[0] : null;
             string triggerName = boss.DeathTriggerNameForSequence;
-            if (animator == null || !animator.isActiveAndEnabled || string.IsNullOrWhiteSpace(triggerName))
+            if (primary == null || !primary.isActiveAndEnabled || string.IsNullOrWhiteSpace(triggerName))
             {
                 yield return WaitDeathAnimationFallback(boss);
                 yield break;
             }
 
             int triggerHash = Animator.StringToHash(triggerName);
-            if (!HasAnimatorTrigger(animator, triggerHash))
+            if (!HasAnimatorTrigger(primary, triggerHash))
             {
                 yield return WaitDeathAnimationFallback(boss);
                 yield break;
             }
 
-            animator.SetTrigger(triggerHash);
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                if (animator != null && animator.isActiveAndEnabled && HasAnimatorTrigger(animator, triggerHash))
+                {
+                    animator.SetTrigger(triggerHash);
+                }
+            }
+
             yield return null;
 
             float startedAt = Time.time;
             float fallbackSeconds = Mathf.Max(0.01f, boss.DeathAnimationFallbackSecondsForSequence);
-            while (animator != null
-                && animator.isActiveAndEnabled
-                && animator.IsInTransition(0)
+            while (primary != null
+                && primary.isActiveAndEnabled
+                && primary.IsInTransition(0)
                 && Time.time - startedAt < fallbackSeconds)
             {
                 yield return null;
             }
 
-            if (animator == null || !animator.isActiveAndEnabled)
+            if (primary == null || !primary.isActiveAndEnabled)
             {
                 yield break;
             }
 
-            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-            float animatorSpeed = Mathf.Abs(animator.speed);
+            AnimatorStateInfo state = primary.GetCurrentAnimatorStateInfo(0);
+            float animatorSpeed = Mathf.Abs(primary.speed);
             float animationSeconds = state.length > 0f && animatorSpeed > 0.01f
                 ? state.length / animatorSpeed
                 : fallbackSeconds;
@@ -99,14 +110,14 @@ namespace Week14.Enemy
 
             while (Time.time - startedAt < waitLimit)
             {
-                if (animator == null || !animator.isActiveAndEnabled)
+                if (primary == null || !primary.isActiveAndEnabled)
                 {
                     yield break;
                 }
 
-                if (!animator.IsInTransition(0))
+                if (!primary.IsInTransition(0))
                 {
-                    state = animator.GetCurrentAnimatorStateInfo(0);
+                    state = primary.GetCurrentAnimatorStateInfo(0);
                     if (!state.loop && state.normalizedTime >= 1f)
                     {
                         yield break;
@@ -137,16 +148,6 @@ namespace Week14.Enemy
                 return;
             }
 
-            ProjectileVfx.PlayHogExplosion(
-                position,
-                boss.FinalDeathExplosionColorForSequence,
-                boss.FinalDeathExplosionScaleForSequence,
-                boss.FinalDeathExplosionSparkCountForSequence);
-            ProjectileVfx.PlayHogSmokeBurst(
-                position,
-                Color.Lerp(boss.FinalDeathExplosionColorForSequence, Color.gray, 0.55f),
-                boss.FinalDeathExplosionScaleForSequence,
-                Mathf.Max(8, boss.FinalDeathExplosionSparkCountForSequence / 2));
         }
 
         private static Vector3 GetRandomDeathExplosionPosition(BossAI boss)
@@ -223,7 +224,7 @@ namespace Week14.Enemy
             SpriteRenderer[] renderers = boss.RenderersForSequence;
             if (renderers == null)
             {
-                return Mathf.Max(0.35f, boss.FinalDeathExplosionScaleForSequence);
+                return 0.35f;
             }
 
             Bounds bounds = default;
@@ -248,7 +249,7 @@ namespace Week14.Enemy
 
             if (!hasBounds)
             {
-                return Mathf.Max(0.35f, boss.FinalDeathExplosionScaleForSequence);
+                return 0.35f;
             }
 
             return Mathf.Max(Mathf.Max(bounds.extents.x, bounds.extents.y), 0.35f);

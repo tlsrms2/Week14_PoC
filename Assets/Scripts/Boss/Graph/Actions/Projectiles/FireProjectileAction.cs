@@ -190,7 +190,7 @@ namespace Week14.Enemy
                 context.PlaySfx(fireSfxId);
                 context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                 context.PlayOriginBurst(effects, spawnOrigin);
-                context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+                context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
                 context.PlayCameraShakeIfEnabled(effects, finalDirection);
             }
 
@@ -311,7 +311,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
-            context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+            context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
         }
 
@@ -419,7 +419,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
-            context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+            context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
         }
 
@@ -561,12 +561,12 @@ namespace Week14.Enemy
                     destroyOnSweepEnd);
                 spawnedAny = true;
                 context.PlaySfx(setupSfxId);
-                context.PlayOriginBurst(effects, bossPosition);
             }
 
             if (spawnedAny)
             {
                 context.PlaySfx(launchSfxId);
+                context.PlayOriginBurst(effects, bossPosition);
                 context.PlayCameraShakeIfEnabled(effects, toPlayer);
             }
 

@@ -29,6 +29,11 @@ namespace Week14.Enemy
             status.AddHack(amount, maximum, disableSeconds);
         }
 
+        internal static void Clear(PlayerCombatController target)
+        {
+            target?.GetComponent<HackerPlayerHackStatus>()?.ClearHack();
+        }
+
         private void Awake()
         {
             player = GetComponent<PlayerCombatController>();
@@ -82,6 +87,19 @@ namespace Week14.Enemy
                 parryDisabledEndsAt = Time.time + Mathf.Max(0.1f, disableSeconds);
                 PlayerCombatController.PushParrySuppression();
                 player?.SetHackerParryVisual(true);
+            }
+
+            RefreshDisplay();
+        }
+
+        private void ClearHack()
+        {
+            currentHack = 0;
+            if (isParrySuppressed)
+            {
+                isParrySuppressed = false;
+                PlayerCombatController.PopParrySuppression();
+                player?.SetHackerParryVisual(false);
             }
 
             RefreshDisplay();

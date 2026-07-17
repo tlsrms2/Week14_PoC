@@ -4677,7 +4677,7 @@ Transform:
   m_GameObject: {fileID: 950507607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.89, y: -8.48, z: 0}
+  m_LocalPosition: {x: 2.84, y: -5.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10330,6 +10330,15 @@ MonoBehaviour:
   objectiveTitleText: {fileID: 1997616337}
   dialogueText: {fileID: 2015441852428165602}
   charactersPerSecond: 25
+  localizedObjectiveTitleText:
+    m_TableReference:
+      m_TableCollectionName: Story
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: TutorialDialogueSet_Objective
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   advancePromptImage: {fileID: 0}
   advancePromptBlinkSeconds: 0.65
   advancePromptMinAlpha: 0.15
@@ -10370,6 +10379,9 @@ MonoBehaviour:
   objectiveStrikeLineHeight: 2
   objectiveCompleteHoldSeconds: 0.45
   objectiveCompleteFadeSeconds: 0.2
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &6735766338359257567
 RectTransform:
   m_ObjectHideFlags: 0

@@ -9222,7 +9222,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9231,9 +9231,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703755
@@ -9243,7 +9243,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9252,9 +9252,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703756
@@ -9264,7 +9264,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9273,9 +9273,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703768
@@ -9285,7 +9285,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9294,9 +9294,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703770
@@ -9306,7 +9306,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9315,9 +9315,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703771
@@ -9327,7 +9327,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9336,9 +9336,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703773
@@ -9348,7 +9348,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9357,9 +9357,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703781
@@ -9369,7 +9369,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9378,9 +9378,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703782
@@ -9390,7 +9390,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9399,9 +9399,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703783
@@ -9411,7 +9411,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9420,9 +9420,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703784
@@ -9432,7 +9432,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9441,9 +9441,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703785
@@ -9453,7 +9453,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9462,9 +9462,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703786
@@ -9474,7 +9474,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9483,9 +9483,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703787
@@ -9495,7 +9495,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9504,9 +9504,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703788
@@ -9516,7 +9516,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9525,9 +9525,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703789
@@ -9537,7 +9537,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9546,9 +9546,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703790
@@ -9558,7 +9558,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9567,9 +9567,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703798
@@ -9579,7 +9579,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9588,9 +9588,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703799
@@ -9600,7 +9600,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9609,9 +9609,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703817
@@ -9621,7 +9621,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9630,9 +9630,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703821
@@ -9682,7 +9682,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9691,9 +9691,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703830
@@ -9711,7 +9711,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -9720,9 +9720,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939082469703832
@@ -11490,7 +11490,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -11499,9 +11499,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861204
@@ -11519,7 +11519,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -11528,9 +11528,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861206
@@ -11678,7 +11678,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -11687,9 +11687,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861215
@@ -11699,7 +11699,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -11708,9 +11708,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861216
@@ -11888,7 +11888,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -11897,9 +11897,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861220
@@ -12022,7 +12022,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -12031,9 +12031,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861231
@@ -12043,7 +12043,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -12052,9 +12052,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861232
@@ -12129,7 +12129,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -12138,9 +12138,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861235
@@ -12892,7 +12892,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -12901,9 +12901,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861240
@@ -12913,7 +12913,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -12922,9 +12922,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861241
@@ -12942,7 +12942,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -12951,9 +12951,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861245
@@ -13061,7 +13061,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -13070,9 +13070,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861251
@@ -13184,7 +13184,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -13193,9 +13193,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861260
@@ -13664,7 +13664,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -13673,9 +13673,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939164457861278
@@ -15004,7 +15004,7 @@ MonoBehaviour:
         stopMovement: 1
         headOffset: {x: 0, y: 0.5}
         scale: 0.225
-        color: {r: 0.55, g: 0, b: 0, a: 0.9}
+        color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
         strokeDrawSeconds: 0.3
         strokeIntervalSeconds: 0.05
@@ -15013,9 +15013,9 @@ MonoBehaviour:
         sortingOrder: 90
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
-        completedColor: {r: 1, g: 0, b: 0, a: 1}
+        completedColor: {r: 0, g: 0, b: 0, a: 1}
         drawCompletedOutline: 1
-        completedOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+        completedOutlineColor: {r: 1, g: 1, b: 1, a: 1}
         completedOutlineWidth: 0.025
         migratedCompletedStrokeSettings: 1
     - rid: 6489939200651559129

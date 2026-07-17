@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Enemy;
 
 namespace Week14.UI
 {
@@ -138,6 +139,7 @@ namespace Week14.UI
 
             canvas.renderMode = RenderMode.WorldSpace;
             canvas.overrideSorting = true;
+            canvas.sortingLayerName = BossSorting.LayerName;
             canvas.sortingOrder = sortingOrder;
             canvasRect = canvas.GetComponent<RectTransform>();
             canvasRect.sizeDelta = Vector2.one;

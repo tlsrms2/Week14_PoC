@@ -105,14 +105,12 @@ namespace Week14.Combat
             }
 
             FlashBodyHitColor();
-            ProjectileVfx.PlayPlayerAttackImpact(
+            ProjectileVfx.PlayPrefab(
+                config.PlayerHitVfxPrefab,
                 hitPosition,
                 hitDirection,
-                config.PlayerBodyHitColor,
-                config.PlayerHitSparkCount,
-                config.PlayerHitBackSparkCount,
-                config.PlayerHitFlameCount,
-                config.PlayerHitEffectScale);
+                context.PlayerTransform,
+                followRotation: false);
             context.CameraFollow?.PlayImpact(hitDirection, 0.16f, 0.18f, 0.1f);
             context.Owner.NotifyAttackReceived();
             PlayerHitByEnemy?.Invoke(bulletDamage);

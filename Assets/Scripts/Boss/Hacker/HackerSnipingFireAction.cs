@@ -153,7 +153,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
-            context.PlayMuzzleFlashIfEnabled(effects, spawnOrigin, finalDirection);
+            context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
         }
 
@@ -322,13 +322,20 @@ namespace Week14.Enemy
             Vector2 normalized = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.left;
             float safeLength = Mathf.Max(0f, length);
             float period = dashLength + dashGap;
-            int dashCount = period > 0f
-                ? Mathf.Min(MaxDashCount, Mathf.CeilToInt(safeLength / period))
-                : 0;
+            int requestedDashCount = period > 0f ? Mathf.CeilToInt(safeLength / period) : 0;
+            int dashCount = Mathf.Min(MaxDashCount, requestedDashCount);
+            float renderedDashLength = dashLength;
+            if (requestedDashCount > MaxDashCount)
+            {
+                float dashRatio = dashLength / period;
+                period = safeLength / MaxDashCount;
+                renderedDashLength = period * dashRatio;
+            }
+
             for (int i = 0; i < dashCount; i++)
             {
                 float startDistance = i * period;
-                float endDistance = Mathf.Min(startDistance + dashLength, safeLength);
+                float endDistance = Mathf.Min(startDistance + renderedDashLength, safeLength);
                 LineRenderer dash = EnsureDash(i);
                 if (dash == null)
                 {

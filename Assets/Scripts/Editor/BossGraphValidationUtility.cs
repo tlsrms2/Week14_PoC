@@ -400,6 +400,10 @@ internal static class BossGraphValidationUtility
             case SpawnPrefabAction:
                 RequireObject(action, "prefab", label, messages);
                 break;
+            case SpawnEffectPrefabAction:
+                RequireObject(action, "effectPrefab", label, messages);
+                RequireString(action, "spawnPointPath", label, messages);
+                break;
             case ConductorConductingCueAction:
                 RequireString(action, "patternId", label, messages);
                 break;

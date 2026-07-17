@@ -129,6 +129,7 @@ internal static class BossGraphActionEditorUtility
         new("Assassin/Set Stealth Visibility", typeof(AssassinSetStealthVisibilityAction), () => new AssassinSetStealthVisibilityAction()),
         new("Assassin/Recall Daggers", typeof(AssassinRecallDaggersAction), () => new AssassinRecallDaggersAction()),
         new("Assassin/Recall Daggers With Parry Bait", typeof(AssassinRecallDaggersWithParryBaitAction), () => new AssassinRecallDaggersWithParryBaitAction()),
+        new("Assassin/Fire Parry Suppression Bait", typeof(AssassinFireParrySuppressionBaitAction), () => new AssassinFireParrySuppressionBaitAction()),
         new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
         new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
         new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
@@ -156,6 +157,7 @@ internal static class BossGraphActionEditorUtility
         new("Utility/Aim Boss Child At Player", typeof(AimBossChildAtPlayerAction), () => new AimBossChildAtPlayerAction()),
         new("Utility/Custom Event", typeof(CustomEventAction), () => new CustomEventAction()),
         new("Utility/Spawn Prefab", typeof(SpawnPrefabAction), () => new SpawnPrefabAction()),
+        new("Utility/Spawn Effect Prefab", typeof(SpawnEffectPrefabAction), () => new SpawnEffectPrefabAction()),
         new("Utility/Play Sfx", typeof(PlaySfxAction), () => new PlaySfxAction()),
         new("Attack/Conductor/Conducting Cue", typeof(ConductorConductingCueAction), () => new ConductorConductingCueAction()),
         new("Attack/Conductor/Defense Arc Volley", typeof(ConductorDefenseArcVolleyAction), () => new ConductorDefenseArcVolleyAction()),
@@ -337,6 +339,11 @@ internal static class BossGraphActionEditorUtility
             return "Assassin 전용 액션입니다. 단검이 충분히 모였을 때만 동작하며, 회수 전에 패링 전용 미끼(ParryBaitRewardProjectile)를 먼저 스폰합니다. 패링되지 않으면 단검이 보스에게 날아가며(궤적 표시, 닿는 플레이어에게 데미지) 회수되고 뒤에 있는 패턴이 그대로 이어집니다 — 이 경우 은신은 자동으로 풀리지 않으니, 회수 뒤 이어지는 노드들을 원하는 만큼 배치하고 마지막에 Assassin/Exit Stealth를 놓아 해제 타이밍을 직접 지정하세요. 패링되면 그 자리에 보상 탄이 원형으로 뿌려지고 단검이 궤적 없이 보스 자신에게 회수되어(자해 데미지) 회수가 끝난 뒤 FireParrySuppressionBaitAction(그로기탄)과 완전히 동일하게 boss.RequestGroggy(Groggy Seconds)로 패턴을 취소하고 보스가 그로기(무력화, Stun/EndStun 애니메이터)에 들어갑니다 — 이 경우에 한해 은신 해제는 회수가 끝나는 시점에 자동으로 처리됩니다. 보상 탄 프리팹은 미끼 프리팹 자신의 Reward Projectile 필드에 지정하고, 개수/반지름/지속시간은 이 액션의 필드로 덮어씁니다. 궤적은 일반 투사체와 동일한 방식(ProjectileVfx.EnsureTrail)으로 AssassinDagger가 자동으로 TrailRenderer를 추가/설정하므로 프리팹에 따로 붙일 필요는 없고, AssassinDagger 인스펙터의 Trail Radius/Trail Seconds/Trail Width Multiplier로 두께/길이를 조절하면 됩니다. 단검이 부족하면 즉시 종료됩니다(이 패턴의 Cooldown Pattern Count는 0으로 설정하세요).";
         }
 
+        if (actionType == typeof(AssassinFireParrySuppressionBaitAction))
+        {
+            return "Assassin 전용 액션입니다. FireParrySuppressionBaitAction과 동일하게 패링 전용 미끼(ParryBaitRewardProjectile)를 스폰합니다. 패링되지 않으면 아무 효과 없이 그대로 다음 액션으로 이어집니다. 패링되면 그 자리에 보상 탄이 원형으로 뿌려지고, 지금 존재하는 분신을 전부(발사 대기열에 남은 것 + 이미 발사돼 페이드아웃 중인 것 포함) 즉시 제거하고, 은신을 해제한 뒤, FireParrySuppressionBaitAction과 동일하게 boss.RequestGroggy(Groggy Seconds)로 지금 돌고 있는 패턴 전체를 취소하고 보스가 그로기(무력화) 상태로 들어갑니다.";
+        }
+
         if (actionType == typeof(AssassinSpawnCloneShootersAction))
         {
             return "Assassin 전용 액션입니다. 지정한 구역 안 랜덤 두 지점에 분신을 소환하고, 분신1/분신2/(옵션)보스 위치를 랜덤 순서로 섞어 발사 대기열에 채워둡니다. 실제 발사는 Fire Next Clone Shooter가 담당합니다.";
@@ -460,6 +467,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(SpawnPrefabAction))
         {
             return "프리팹을 보스 기준 위치에 생성합니다. 필요하면 보스 자식으로 붙이고 일정 시간 뒤 제거합니다.";
+        }
+
+        if (actionType == typeof(SpawnEffectPrefabAction))
+        {
+            return "지정한 시간 뒤 보스 하이어러키 위치에 일회성 이펙트 프리팹을 원하는 스케일로 생성합니다.";
         }
 
         if (actionType == typeof(PlaySfxAction))
@@ -1115,7 +1127,9 @@ internal sealed class BossGraphParticleEffectSettingsDrawer : PropertyDrawer
 
         EditorGUI.indentLevel++;
         lineRect.y += EditorGUIUtility.singleLineHeight + BossGraphDrawerDescriptionGui.Spacing;
-        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, GetDescription(property.name));
+        BossGraphDrawerDescriptionGui.DrawDescription(
+            ref lineRect,
+            "연기 파티클 설정입니다. 사용 여부, 색, 크기, 개수를 정합니다.");
         foreach (string propertyName in PropertyNames)
         {
             BossGraphDrawerDescriptionGui.DrawProperty(ref lineRect, property.FindPropertyRelative(propertyName));
@@ -1123,17 +1137,6 @@ internal sealed class BossGraphParticleEffectSettingsDrawer : PropertyDrawer
 
         EditorGUI.indentLevel--;
         EditorGUI.EndProperty();
-    }
-
-    private static string GetDescription(string propertyName)
-    {
-        return propertyName switch
-        {
-            "explosion" => "폭발 파티클 설정입니다. 켜면 발사/생성 지점에서 폭발 파티클을 재생합니다.",
-            "smoke" => "연기 파티클 설정입니다. Smoke Interval은 이 연기가 반복 재생되는 간격입니다.",
-            "muzzleFlash" => "총구 섬광 설정입니다. 켜면 발사 위치와 방향에 맞춰 섬광을 재생합니다.",
-            _ => "파티클 이펙트의 사용 여부, 색, 크기, 개수를 정합니다."
-        };
     }
 }
 
@@ -1193,7 +1196,6 @@ internal sealed class BossGraphCameraShakeSettingsDrawer : PropertyDrawer
 [CustomPropertyDrawer(typeof(BossGraphEffectSettings))]
 internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
 {
-    private const string ExplosionProperty = "explosion";
     private const string SmokeProperty = "smoke";
     private const string SmokeIntervalProperty = "smokeInterval";
     private const string MuzzleFlashProperty = "muzzleFlash";
@@ -1209,7 +1211,6 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
 
         height += EditorGUIUtility.standardVerticalSpacing;
         height += BossGraphDrawerDescriptionGui.InlineDescriptionHeight;
-        height += GetDefaultPropertyHeight(property.FindPropertyRelative(ExplosionProperty));
         height += GetSmokePropertyHeight(property);
         height += GetDefaultPropertyHeight(property.FindPropertyRelative(MuzzleFlashProperty));
         height += GetDefaultPropertyHeight(property.FindPropertyRelative(CameraShakeProperty));
@@ -1231,7 +1232,6 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
         EditorGUI.indentLevel++;
         lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "액션과 함께 재생할 공통 이펙트 묶음입니다. SFX는 각 액션 필드에 그대로 둡니다.");
-        DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(ExplosionProperty));
         DrawSmokeProperty(ref lineRect, property);
         DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(MuzzleFlashProperty));
         DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(CameraShakeProperty));
@@ -1306,6 +1306,7 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
         lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         EditorGUI.indentLevel--;
     }
+
 }
 
 [CustomPropertyDrawer(typeof(AimBossChildAtPlayerAction))]

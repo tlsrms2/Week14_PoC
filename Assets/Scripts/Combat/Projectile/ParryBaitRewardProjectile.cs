@@ -96,10 +96,8 @@ namespace Week14.Combat
 
             parried = true;
             hackerWasParried = true;
-            CompletePartialIntercept();
-            ConfigureInterceptable(false);
-            SetChargeGaugeVisible(false);
             HackerParried?.Invoke();
+            CompleteInterceptAndDestroy();
             return true;
         }
 

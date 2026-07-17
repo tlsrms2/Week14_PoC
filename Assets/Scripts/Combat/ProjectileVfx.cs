@@ -5,7 +5,8 @@ namespace Week14.Combat
 {
     public static class ProjectileVfx
     {
-        private const int RingSegments = 48;
+        private const float DefaultPrefabLifetimeSeconds = 1f;
+        private const float MinimumPrefabLifetimeSeconds = 0.05f;
         private static Material spriteMaterial;
 
         public static void ApplyVisibility(GameObject owner, Color color, float radius, float trailSeconds, float trailWidthMultiplier)
@@ -19,77 +20,156 @@ namespace Week14.Combat
             EnsureTrail(owner, color, radius, trailSeconds, trailWidthMultiplier);
         }
 
-        public static void PlayParry(Vector3 position, Color sparkColor, Color ringColor, int sparkCount, float duration)
-        {
-            position.z = 0f;
-            PlayBidirectionalSpark(position, Vector2.right, sparkColor, sparkCount, duration);
-            int flameCount = Mathf.Max(8, sparkCount / 2);
-            PlayFlameBurst(position, Vector2.right, sparkColor, Color.white, flameCount, duration * 1.15f);
-            PlayFlameBurst(position, Vector2.left, sparkColor, Color.white, flameCount, duration * 1.15f);
-            PlayRing(position, ringColor, duration);
-        }
-
-        public static void PlayParry(Vector3 position, Vector2 direction, Color sparkColor, Color ringColor, int sparkCount, float duration)
-        {
-            position.z = 0f;
-            PlayBidirectionalSpark(position, direction, sparkColor, sparkCount, duration);
-            int flameCount = Mathf.Max(8, sparkCount / 2);
-            PlayFlameBurst(position, direction, sparkColor, Color.white, flameCount, duration * 1.15f);
-            PlayFlameBurst(position, -direction, sparkColor, Color.white, flameCount, duration * 1.15f);
-            PlayRing(position, ringColor, duration);
-        }
-
-        public static void PlayParry(
+        public static GameObject PlayPrefab(
+            GameObject prefab,
             Vector3 position,
             Vector2 direction,
-            Color sparkColor,
-            Color ringColor,
-            Color glitterColor,
-            int sparkCount,
-            int glitterCount,
-            float sparkSeconds,
-            float ringSeconds,
-            float glitterSeconds,
-            int flameCount = -1,
-            float effectScale = 1f)
+            float scale = 1f)
         {
-            position.z = 0f;
-            float scale = Mathf.Max(0.25f, effectScale);
-            int nextSparkCount = Mathf.Max(8, sparkCount);
-            int nextGlitterCount = Mathf.Max(4, glitterCount);
-            int nextFlameCount = flameCount > 0 ? flameCount : Mathf.Max(10, nextSparkCount / 2 + nextGlitterCount);
-            float nextSparkSeconds = Mathf.Max(0.12f, sparkSeconds);
-            float nextRingSeconds = Mathf.Max(0.16f, ringSeconds);
-            float nextGlitterSeconds = Mathf.Max(0.1f, glitterSeconds);
-
-            PlayBidirectionalSpark(position, direction, sparkColor, nextSparkCount, nextSparkSeconds, scale);
-            PlayFlameBurst(
-                position,
-                direction,
-                sparkColor,
-                Color.Lerp(glitterColor, Color.white, 0.35f),
-                nextFlameCount,
-                Mathf.Max(nextSparkSeconds, nextGlitterSeconds) * 1.2f,
-                scale);
-            PlayFlameBurst(
-                position,
-                -direction,
-                sparkColor,
-                Color.Lerp(glitterColor, Color.white, 0.35f),
-                nextFlameCount,
-                Mathf.Max(nextSparkSeconds, nextGlitterSeconds) * 1.2f,
-                scale);
-            PlayRing(position, ringColor, nextRingSeconds, scale);
-            PlayRingGlitter(position, direction, glitterColor, nextGlitterCount, nextGlitterSeconds, scale);
+            return PlayPrefab(prefab, position, direction, null, scale);
         }
 
-        public static void PlayShotLine(Vector3 start, Vector3 end, Color color, float seconds, float width = 0.035f)
+        public static GameObject PlayPrefab(
+            GameObject prefab,
+            Vector3 position,
+            Vector2 direction,
+            Transform followTarget,
+            float scale = 1f,
+            bool followRotation = true)
+        {
+            if (prefab == null || scale <= 0f)
+            {
+                return null;
+            }
+
+            position.z = 0f;
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float angle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+            GameObject instance = Object.Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            if (followTarget != null)
+            {
+                VfxTransformFollower follower = instance.AddComponent<VfxTransformFollower>();
+                follower.Initialize(followTarget, followRotation);
+            }
+
+            instance.transform.localScale *= scale;
+            BossSorting.ApplyToChildren(instance);
+
+            ParticleSystem[] particles = instance.GetComponentsInChildren<ParticleSystem>(true);
+            float lifetimeSeconds = 0f;
+            for (int i = 0; i < particles.Length; i++)
+            {
+                ParticleSystem particle = particles[i];
+                if (particle == null)
+                {
+                    continue;
+                }
+
+                ParticleSystem.MainModule main = particle.main;
+                particle.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
+                main.loop = false;
+                main.simulationSpace = ParticleSystemSimulationSpace.Local;
+                main.stopAction = ParticleSystemStopAction.None;
+                float simulationSpeed = main.simulationSpeed;
+                float particleLifetime = simulationSpeed > 0.0001f
+                    ? (main.startDelay.constantMax + main.duration + main.startLifetime.constantMax)
+                        / simulationSpeed
+                    : DefaultPrefabLifetimeSeconds;
+                lifetimeSeconds = Mathf.Max(lifetimeSeconds, particleLifetime);
+            }
+
+            for (int i = 0; i < particles.Length; i++)
+            {
+                if (particles[i] != null)
+                {
+                    particles[i].Play(false);
+                }
+            }
+
+            Animator[] animators = instance.GetComponentsInChildren<Animator>(true);
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                RuntimeAnimatorController controller = animator != null ? animator.runtimeAnimatorController : null;
+                if (controller == null)
+                {
+                    continue;
+                }
+
+                float animatorSpeed = Mathf.Abs(animator.speed);
+                float animatorLifetimeSeconds = 0f;
+                if (animatorSpeed <= 0.0001f)
+                {
+                    lifetimeSeconds = Mathf.Max(lifetimeSeconds, DefaultPrefabLifetimeSeconds);
+                    continue;
+                }
+
+                if (animator.isActiveAndEnabled)
+                {
+                    animator.Update(0f);
+                    for (int layerIndex = 0; layerIndex < animator.layerCount; layerIndex++)
+                    {
+                        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layerIndex);
+                        float stateSpeed = Mathf.Abs(stateInfo.speed * stateInfo.speedMultiplier);
+                        float effectiveSpeed = animatorSpeed * stateSpeed;
+                        if (effectiveSpeed <= 0.0001f)
+                        {
+                            animatorLifetimeSeconds = Mathf.Max(
+                                animatorLifetimeSeconds,
+                                DefaultPrefabLifetimeSeconds);
+                            continue;
+                        }
+
+                        AnimatorClipInfo[] clipInfos = animator.GetCurrentAnimatorClipInfo(layerIndex);
+                        for (int clipIndex = 0; clipIndex < clipInfos.Length; clipIndex++)
+                        {
+                            AnimationClip clip = clipInfos[clipIndex].clip;
+                            if (clip != null)
+                            {
+                                animatorLifetimeSeconds = Mathf.Max(
+                                    animatorLifetimeSeconds,
+                                    clip.length / effectiveSpeed);
+                            }
+                        }
+                    }
+                }
+
+                if (animatorLifetimeSeconds <= 0f && controller.animationClips.Length > 0)
+                {
+                    AnimationClip fallbackClip = controller.animationClips[0];
+                    animatorLifetimeSeconds = fallbackClip != null ? fallbackClip.length / animatorSpeed : 0f;
+                }
+
+                lifetimeSeconds = Mathf.Max(lifetimeSeconds, animatorLifetimeSeconds);
+            }
+
+            float destroyAfterSeconds = lifetimeSeconds > 0f
+                ? Mathf.Max(MinimumPrefabLifetimeSeconds, lifetimeSeconds)
+                : DefaultPrefabLifetimeSeconds;
+            Object.Destroy(instance, destroyAfterSeconds);
+            return instance;
+        }
+
+        public static GameObject PlayShotLine(
+            Vector3 start,
+            Vector3 end,
+            Color color,
+            float seconds,
+            float width = 0.035f,
+            int sortingOrder = 73,
+            int? sortingLayerId = null,
+            bool autoDestroy = true)
         {
             start.z = 0f;
             end.z = 0f;
             GameObject lineObject = new GameObject("ShotLineVfx");
             LineRenderer line = lineObject.AddComponent<LineRenderer>();
             BossSorting.Apply(line);
+            if (sortingLayerId.HasValue)
+            {
+                line.sortingLayerID = sortingLayerId.Value;
+            }
+
             line.useWorldSpace = true;
             line.positionCount = 2;
             line.startWidth = width;
@@ -98,10 +178,15 @@ namespace Week14.Combat
             line.endColor = color;
             line.numCapVertices = 2;
             line.material = GetSpriteMaterial();
-            line.sortingOrder = 73;
+            line.sortingOrder = sortingOrder;
             line.SetPosition(0, start);
             line.SetPosition(1, end);
-            Object.Destroy(lineObject, Mathf.Max(0.04f, seconds));
+            if (autoDestroy)
+            {
+                Object.Destroy(lineObject, Mathf.Max(0.04f, seconds));
+            }
+
+            return lineObject;
         }
 
         // 총검 등 반원 범위 판정을 순간적으로 보여주는 꽉 찬(면이 채워진) 플래시입니다.
@@ -152,11 +237,6 @@ namespace Week14.Combat
 
             SemicircleFlashVfx flash = flashObject.AddComponent<SemicircleFlashVfx>();
             flash.Play(mesh, duration, color);
-        }
-
-        public static void PlayBulletImpact(Vector3 position, Vector2 direction, Color color)
-        {
-            PlayDirectionalSpark(position, direction, color, 10, 0.16f, 36f, 2.5f, 6f);
         }
 
         public static void PlayHogSmokeBurst(Vector3 position, Color baseColor, float effectScale = 1f, int smokeCount = 12)
@@ -245,94 +325,6 @@ namespace Week14.Combat
             }
         }
 
-        public static void PlayHogExplosion(Vector3 position, Color color, float effectScale = 1f, int sparkCount = 18)
-        {
-            position.z = 0f;
-            float scale = Mathf.Max(0.1f, effectScale);
-            int count = Mathf.Max(0, sparkCount);
-            Color coreColor = Color.Lerp(color, Color.white, 0.45f);
-            coreColor.a = color.a;
-            Color emberColor = Color.Lerp(color, new Color(1f, 0.32f, 0.05f, 1f), 0.45f);
-            emberColor.a = color.a;
-            Color ringColor = coreColor;
-            ringColor.a *= 0.55f;
-
-            PlayDirectionalSpark(position, Vector2.right, coreColor, count, 0.22f, 360f, 3.6f, 9.5f, scale);
-            PlayFlameBurst(position, Vector2.up, emberColor, coreColor, Mathf.Max(6, count / 2), 0.2f, scale);
-            PlayRing(position, ringColor, 0.16f, scale);
-        }
-
-        public static void PlayMuzzleFlash(Vector3 position, Vector2 direction, Color color, float effectScale = 1f)
-        {
-            position.z = 0f;
-            float scale = Mathf.Max(0.25f, effectScale);
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            Color coreColor = Color.Lerp(color, Color.white, 0.62f);
-            coreColor.a = 1f;
-            Color flameColor = Color.Lerp(color, new Color(1f, 0.58f, 0.08f, 1f), 0.35f);
-            flameColor.a = 1f;
-
-            PlayDirectionalSpark(position, forward, coreColor, 5, 0.08f, 22f, 2.2f, 5.4f, 0.75f * scale);
-            PlayFlameBurst(
-                position + (Vector3)(forward * 0.06f * scale),
-                forward,
-                flameColor,
-                coreColor,
-                9,
-                0.1f,
-                0.7f * scale);
-        }
-
-        public static void PlayPlayerAttackImpact(
-            Vector3 position,
-            Vector2 direction,
-            Color color,
-            int sparkCount = 14,
-            int backSparkCount = 6,
-            int flameCount = 8,
-            float effectScale = 0.65f)
-        {
-            Color flashColor = Color.Lerp(color, Color.white, 0.35f);
-            flashColor.a = color.a;
-            Color emberColor = Color.Lerp(color, new Color(1f, 0.72f, 0.12f, 1f), 0.55f);
-            emberColor.a = color.a;
-            Color ringColor = flashColor;
-            ringColor.a *= 0.72f;
-
-            PlayPlayerAttackImpact(
-                position,
-                direction,
-                flashColor,
-                emberColor,
-                emberColor,
-                ringColor,
-                sparkCount,
-                backSparkCount,
-                flameCount,
-                effectScale);
-        }
-
-        public static void PlayPlayerAttackImpact(
-            Vector3 position,
-            Vector2 direction,
-            Color sparkColor,
-            Color backSparkColor,
-            Color flameColor,
-            Color ringColor,
-            int sparkCount = 14,
-            int backSparkCount = 6,
-            int flameCount = 8,
-            float effectScale = 0.65f)
-        {
-            position.z = 0f;
-            float scale = Mathf.Max(0f, effectScale);
-
-            PlayDirectionalSpark(position, direction, sparkColor, sparkCount, 0.26f, 72f, 4.5f, 13f, scale);
-            PlayDirectionalSpark(position, -direction, backSparkColor, backSparkCount, 0.22f, 112f, 1.8f, 6.5f, scale);
-            PlayFlameBurst(position, direction, flameColor, sparkColor, flameCount, 0.24f, scale);
-            PlayRing(position, ringColor, 0.18f, scale);
-        }
-
         private static void RemoveFireballGlow(Transform owner)
         {
             Transform glow = owner.Find("ProjectileGlow");
@@ -369,212 +361,6 @@ namespace Week14.Combat
             trail.sortingOrder = 18;
         }
 
-        private static void PlayDirectionalSpark(
-            Vector3 position,
-            Vector2 direction,
-            Color color,
-            int count,
-            float duration,
-            float spreadDegrees,
-            float minSpeed,
-            float maxSpeed,
-            float sizeScale = 1f)
-        {
-            float scale = Mathf.Max(0f, sizeScale);
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            GameObject sparkObject = new GameObject("ParrySparkVfx");
-            sparkObject.transform.position = position;
-
-            ParticleSystem particles = sparkObject.AddComponent<ParticleSystem>();
-            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            ParticleSystem.MainModule main = particles.main;
-            main.playOnAwake = false;
-            main.duration = Mathf.Max(0.01f, duration);
-            main.loop = false;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.08f, 0.22f);
-            main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.018f * scale, 0.055f * scale);
-            main.startColor = color;
-            main.gravityModifier = 0f;
-            main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.stopAction = ParticleSystemStopAction.Destroy;
-
-            ParticleSystem.EmissionModule emission = particles.emission;
-            emission.enabled = false;
-
-            ParticleSystem.ShapeModule shape = particles.shape;
-            shape.enabled = true;
-            shape.shapeType = ParticleSystemShapeType.Circle;
-            shape.radius = 0.05f;
-
-            ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
-            BossSorting.Apply(renderer);
-            renderer.sortingOrder = 70;
-            renderer.sharedMaterial = GetSpriteMaterial();
-
-            particles.Play();
-            int emitCount = Mathf.Max(0, count);
-            float baseAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
-            for (int i = 0; i < emitCount; i++)
-            {
-                float angle = (baseAngle + Random.Range(-spreadDegrees * 0.5f, spreadDegrees * 0.5f)) * Mathf.Deg2Rad;
-                float speed = Random.Range(minSpeed, maxSpeed) * scale;
-                ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
-                {
-                    position = position,
-                    velocity = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * speed,
-                    startLifetime = Random.Range(0.08f, Mathf.Max(0.09f, duration)),
-                    startSize = Random.Range(0.018f, 0.055f) * scale,
-                    startColor = color
-                };
-                particles.Emit(emitParams, 1);
-            }
-        }
-
-        private static void PlayBidirectionalSpark(Vector3 position, Vector2 direction, Color color, int count, float duration, float sizeScale = 1f)
-        {
-            int forwardCount = Mathf.CeilToInt(Mathf.Max(0, count) * 0.5f);
-            int backwardCount = Mathf.Max(0, count) - forwardCount;
-            PlayDirectionalSpark(position, direction, color, forwardCount, duration, 38f, 4.6f, 10.5f, sizeScale);
-            PlayDirectionalSpark(position, -direction, color, backwardCount, duration, 38f, 4.6f, 10.5f, sizeScale);
-        }
-
-        private static void PlayFlameBurst(
-            Vector3 position,
-            Vector2 direction,
-            Color baseColor,
-            Color coreColor,
-            int count,
-            float duration,
-            float sizeScale = 1f)
-        {
-            float scale = Mathf.Max(0f, sizeScale);
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            GameObject flameObject = new GameObject("ParryFlameVfx");
-            flameObject.transform.position = position;
-
-            ParticleSystem particles = flameObject.AddComponent<ParticleSystem>();
-            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            ParticleSystem.MainModule main = particles.main;
-            main.playOnAwake = false;
-            main.duration = Mathf.Max(0.01f, duration);
-            main.loop = false;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.08f, Mathf.Max(0.1f, duration));
-            main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.035f * scale, 0.13f * scale);
-            main.startColor = baseColor;
-            main.gravityModifier = 0f;
-            main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.stopAction = ParticleSystemStopAction.Destroy;
-
-            ParticleSystem.EmissionModule emission = particles.emission;
-            emission.enabled = false;
-
-            ParticleSystem.ShapeModule shape = particles.shape;
-            shape.enabled = false;
-
-            ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
-            BossSorting.Apply(renderer);
-            renderer.sortingOrder = 72;
-            renderer.sharedMaterial = GetSpriteMaterial();
-
-            particles.Play();
-            float baseAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
-            int emitCount = Mathf.Max(0, count);
-            for (int i = 0; i < emitCount; i++)
-            {
-                float angle = (baseAngle + Random.Range(-92f, 92f)) * Mathf.Deg2Rad;
-                float speed = Random.Range(1.2f, 7.8f) * scale;
-                Color particleColor = Color.Lerp(baseColor, coreColor, Random.Range(0.2f, 0.85f));
-                particleColor.a *= Random.Range(0.72f, 1f);
-                ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
-                {
-                    position = position + (Vector3)(Random.insideUnitCircle * 0.035f * scale),
-                    velocity = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * speed,
-                    startLifetime = Random.Range(0.08f, Mathf.Max(0.1f, duration)),
-                    startSize = Random.Range(0.035f, 0.13f) * scale,
-                    startColor = particleColor
-                };
-                particles.Emit(emitParams, 1);
-            }
-        }
-
-        private static void PlayRing(Vector3 position, Color color, float duration, float sizeScale = 1f)
-        {
-            GameObject ringObject = new GameObject("ParryRingVfx");
-            ringObject.transform.position = position;
-            LineRenderer line = ringObject.AddComponent<LineRenderer>();
-            BossSorting.Apply(line);
-            line.loop = true;
-            line.positionCount = RingSegments;
-            line.useWorldSpace = false;
-            line.material = GetSpriteMaterial();
-            line.startColor = color;
-            line.endColor = color;
-            line.startWidth = 0.035f;
-            line.endWidth = 0.035f;
-            line.sortingOrder = 69;
-
-            for (int i = 0; i < RingSegments; i++)
-            {
-                float angle = Mathf.PI * 2f * i / RingSegments;
-                line.SetPosition(i, new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f));
-            }
-
-            ParryRingVfx ring = ringObject.AddComponent<ParryRingVfx>();
-            ring.Play(line, duration, color, sizeScale);
-        }
-
-        private static void PlayRingGlitter(Vector3 position, Vector2 direction, Color color, int count, float duration, float sizeScale = 1f)
-        {
-            float scale = Mathf.Max(0f, sizeScale);
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            Vector2 side = new Vector2(-forward.y, forward.x);
-            GameObject glitterObject = new GameObject("ParryRingGlitterVfx");
-            glitterObject.transform.position = position;
-
-            ParticleSystem particles = glitterObject.AddComponent<ParticleSystem>();
-            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            ParticleSystem.MainModule main = particles.main;
-            main.playOnAwake = false;
-            main.duration = Mathf.Max(0.01f, duration);
-            main.loop = false;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.06f, Mathf.Max(0.07f, duration));
-            main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.035f * scale, 0.11f * scale);
-            main.startColor = color;
-            main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.stopAction = ParticleSystemStopAction.Destroy;
-
-            ParticleSystem.EmissionModule emission = particles.emission;
-            emission.enabled = false;
-
-            ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
-            BossSorting.Apply(renderer);
-            renderer.sortingOrder = 71;
-            renderer.sharedMaterial = GetSpriteMaterial();
-
-            particles.Play();
-            int emitCount = Mathf.Max(0, count);
-            for (int i = 0; i < emitCount; i++)
-            {
-                float sideSign = i % 2 == 0 ? 1f : -1f;
-                float radius = Random.Range(0.16f, 0.52f) * scale;
-                Vector2 radial = (side * sideSign + forward * Random.Range(-0.35f, 0.35f)).normalized;
-                Color particleColor = color;
-                particleColor.a *= Random.Range(0.65f, 1f);
-                ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
-                {
-                    position = position + (Vector3)(radial * radius),
-                    velocity = radial * Random.Range(0.15f, 0.85f) * scale,
-                    startLifetime = Random.Range(0.06f, Mathf.Max(0.07f, duration)),
-                    startSize = Random.Range(0.035f, 0.11f) * scale,
-                    startColor = particleColor
-                };
-                particles.Emit(emitParams, 1);
-            }
-        }
-
         private static Material GetSpriteMaterial()
         {
             if (spriteMaterial != null)
@@ -592,6 +378,7 @@ namespace Week14.Combat
             color.a = Mathf.Clamp01(alpha);
             return color;
         }
+
 
         private static Sprite CreateCircleSprite()
         {

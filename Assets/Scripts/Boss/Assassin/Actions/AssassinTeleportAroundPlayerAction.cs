@@ -5,9 +5,11 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     // 보스가 사라졌다가 플레이어로부터 일정 거리(Teleport Radius) 떨어진 원 위의 무작위 지점으로
-    // 순간이동해 다시 나타난다. 사라짐/재등장 연출은 AssassinSpawnCloneShootersAction이 보스 자신을
-    // 순간이동시킬 때 쓰는 것과 완전히 같은 인프라(VanishForTeleport/ReappearAfterTeleport, 은신
-    // 알파 페이드 재사용)를 그대로 쓴다. 목적지는 분신 소환 구역(cloneSpawnZone) 밖으로 나가지 않는다.
+    // 순간이동해 다시 나타난다. 원래 자리에서 vanishSeconds 동안 사라지고, 그 자리에서 hiddenSeconds만큼
+    // 대기한 뒤에야 실제로 위치가 바뀌고, 곧바로 reappearSeconds 동안 새 자리에서 페이드 인한다.
+    // 은신 알파 페이드 인프라(VanishForTeleportInPlace/TeleportImmediate/ReappearAfterTeleport)는
+    // AssassinSpawnCloneShootersAction이 보스 자신을 순간이동시킬 때 쓰는 것과 공유한다. 목적지는
+    // 분신 소환 구역(cloneSpawnZone) 밖으로 나가지 않는다.
     [Serializable]
     public sealed class AssassinTeleportAroundPlayerAction : BossAction
     {
@@ -29,12 +31,16 @@ namespace Week14.Enemy
 
             Vector2 destination = assassin.GetRandomTeleportPositionAroundPlayer(teleportRadius);
 
-            yield return assassin.VanishForTeleport(destination, vanishSeconds);
+            // 원래 자리에서 안 보이게 된 뒤(vanishSeconds), 그 자리에서 hiddenSeconds만큼 대기하고,
+            // 그게 다 끝난 뒤에야 실제로 순간이동한다 — 새 목적지에서 곧바로 페이드 인이 시작된다.
+            yield return assassin.VanishForTeleportInPlace(vanishSeconds);
 
             if (hiddenSeconds > 0f)
             {
                 yield return context.WaitSeconds(hiddenSeconds);
             }
+
+            assassin.TeleportImmediate(destination);
 
             yield return assassin.ReappearAfterTeleport(reappearSeconds);
         }

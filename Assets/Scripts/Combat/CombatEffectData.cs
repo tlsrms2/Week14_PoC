@@ -17,53 +17,32 @@ namespace Week14.Combat
         [Tooltip("플레이어 투사체 궤적 두께 배율입니다.")]
         [SerializeField, Min(0.1f)] private float playerProjectileTrailWidthMultiplier = 2.8f;
 
+        [Header("Muzzle Flash VFX")]
+        [Tooltip("플레이어와 플레이어 클론의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [SerializeField] private GameObject playerMuzzleFlashVfxPrefab;
+        [Tooltip("Hog와 Hog 미니언의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [UnityEngine.Serialization.FormerlySerializedAs("enemyMuzzleFlashVfxPrefab")]
+        [SerializeField] private GameObject hogMuzzleFlashVfxPrefab;
+        [Tooltip("Muscle과 Muscle 미니언의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [SerializeField] private GameObject muscleMuzzleFlashVfxPrefab;
+        [Tooltip("Hacker와 Hacker 미니언의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [SerializeField] private GameObject hackerMuzzleFlashVfxPrefab;
+        [Tooltip("Assassin과 Assassin 미니언의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [SerializeField] private GameObject assassinMuzzleFlashVfxPrefab;
+        [Tooltip("Arsonist와 Arsonist 미니언의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [SerializeField] private GameObject arsonistMuzzleFlashVfxPrefab;
+        [Tooltip("Conductor와 Conductor 미니언의 총구에서 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 발사 방향입니다.")]
+        [SerializeField] private GameObject conductorMuzzleFlashVfxPrefab;
+
         [Header("Parry")]
-        [Tooltip("패링 성공 시 생성되는 스파크 색입니다.")]
-        [SerializeField] private Color parrySparkColor = new(1f, 0.88f, 0.35f, 1f);
-        [Tooltip("패링 성공 시 생성되는 링 색입니다.")]
-        [SerializeField] private Color parryRingColor = new(0.45f, 0.9f, 1f, 0.75f);
-        [Tooltip("패링 성공 링 주변 글리터 색입니다.")]
-        [SerializeField] private Color parryRingGlitterColor = new(1f, 0.96f, 0.68f, 1f);
-        [Tooltip("패링 스파크가 유지되는 시간입니다.")]
-        [SerializeField, Min(0f)] private float parrySparkSeconds = 0.22f;
-        [Tooltip("패링 링이 유지되는 시간입니다.")]
-        [SerializeField, Min(0f)] private float parryRingSeconds = 0.32f;
-        [Tooltip("패링 링 글리터가 유지되는 시간입니다.")]
-        [SerializeField, Min(0f)] private float parryRingGlitterSeconds = 0.2f;
-        [Tooltip("패링 성공 시 생성되는 스파크 수입니다.")]
-        [SerializeField, Min(0)] private int parrySparkCount = 34;
-        [Tooltip("패링 성공 링 주변에 생성되는 글리터 수입니다.")]
-        [SerializeField, Min(0)] private int parryRingGlitterCount = 18;
-        [Tooltip("패링 성공 시 생성되는 화염 입자 수입니다.")]
-        [SerializeField, Min(0)] private int parryFlameCount = 20;
-        [Tooltip("패링 성공 이펙트 전체 크기 배율입니다.")]
-        [SerializeField, Min(0f)] private float parryEffectScale = 1f;
+        [Tooltip("패링 성공 지점에 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 패링 방향입니다.")]
+        [SerializeField] private GameObject parrySuccessVfxPrefab;
 
         [Header("Hit Impact")]
-        [Tooltip("플레이어 공격이 적에게 적중했을 때 전방 스파크 색입니다.")]
-        [SerializeField] private Color attackImpactSparkColor = new(1f, 0.92f, 0.62f, 1f);
-        [Tooltip("플레이어 공격이 적에게 적중했을 때 반대 방향 스파크 색입니다.")]
-        [SerializeField] private Color attackImpactBackSparkColor = new(1f, 0.52f, 0.12f, 1f);
-        [Tooltip("플레이어 공격이 적에게 적중했을 때 화염 입자 색입니다.")]
-        [SerializeField] private Color attackImpactFlameColor = new(1f, 0.48f, 0.08f, 1f);
-        [Tooltip("플레이어 공격이 적에게 적중했을 때 충격 링 색입니다.")]
-        [SerializeField] private Color attackImpactRingColor = new(1f, 0.92f, 0.62f, 0.72f);
-        [Tooltip("플레이어 공격 적중 시 생성되는 전방 스파크 수입니다.")]
-        [SerializeField, Min(0)] private int attackImpactSparkCount = 14;
-        [Tooltip("플레이어 공격 적중 시 반대 방향으로 튀는 스파크 수입니다.")]
-        [SerializeField, Min(0)] private int attackImpactBackSparkCount = 6;
-        [Tooltip("플레이어 공격 적중 시 생성되는 화염 입자 수입니다.")]
-        [SerializeField, Min(0)] private int attackImpactFlameCount = 8;
-        [Tooltip("플레이어 공격 적중 이펙트 전체 크기 배율입니다.")]
-        [SerializeField, Min(0f)] private float attackImpactEffectScale = 0.65f;
-        [Tooltip("플레이어가 적 공격에 맞았을 때 생성되는 전방 스파크 수입니다.")]
-        [SerializeField, Min(0)] private int playerHitSparkCount = 12;
-        [Tooltip("플레이어가 적 공격에 맞았을 때 반대 방향으로 튀는 스파크 수입니다.")]
-        [SerializeField, Min(0)] private int playerHitBackSparkCount = 5;
-        [Tooltip("플레이어가 적 공격에 맞았을 때 생성되는 화염 입자 수입니다.")]
-        [SerializeField, Min(0)] private int playerHitFlameCount = 6;
-        [Tooltip("플레이어 피격 이펙트 전체 크기 배율입니다.")]
-        [SerializeField, Min(0f)] private float playerHitEffectScale = 0.55f;
+        [Tooltip("플레이어 공격이 적에게 적중했을 때 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 타격 방향입니다.")]
+        [SerializeField] private GameObject enemyHitVfxPrefab;
+        [Tooltip("플레이어가 적 공격에 맞았을 때 생성할 일회성 이펙트 프리팹입니다. 로컬 +X가 타격 방향입니다.")]
+        [SerializeField] private GameObject playerHitVfxPrefab;
 
         [Header("Body Color")]
         [Tooltip("플레이어 탄환이 0일 때 몸체에 적용할 색입니다.")]
@@ -88,29 +67,16 @@ namespace Week14.Combat
         public Color ExecutionShotColor => executionShotColor;
         public float PlayerProjectileTrailSeconds => playerProjectileTrailSeconds;
         public float PlayerProjectileTrailWidthMultiplier => playerProjectileTrailWidthMultiplier;
-
-        public Color ParrySparkColor => parrySparkColor;
-        public Color ParryRingColor => parryRingColor;
-        public Color ParryRingGlitterColor => parryRingGlitterColor;
-        public float ParrySparkSeconds => parrySparkSeconds > 0f ? parrySparkSeconds : 0.22f;
-        public float ParryRingSeconds => parryRingSeconds > 0f ? parryRingSeconds : 0.32f;
-        public float ParryRingGlitterSeconds => parryRingGlitterSeconds > 0f ? parryRingGlitterSeconds : 0.2f;
-        public int ParrySparkCount => parrySparkCount > 0 ? parrySparkCount : 34;
-        public int ParryRingGlitterCount => parryRingGlitterCount > 0 ? parryRingGlitterCount : 18;
-        public int ParryFlameCount => parryFlameCount > 0 ? parryFlameCount : 20;
-        public float ParryEffectScale => parryEffectScale > 0f ? parryEffectScale : 1f;
-        public int AttackImpactSparkCount => attackImpactSparkCount;
-        public int AttackImpactBackSparkCount => attackImpactBackSparkCount;
-        public int AttackImpactFlameCount => attackImpactFlameCount;
-        public float AttackImpactEffectScale => attackImpactEffectScale > 0f ? attackImpactEffectScale : 0.65f;
-        public Color AttackImpactSparkColor => attackImpactSparkColor;
-        public Color AttackImpactBackSparkColor => attackImpactBackSparkColor;
-        public Color AttackImpactFlameColor => attackImpactFlameColor;
-        public Color AttackImpactRingColor => attackImpactRingColor;
-        public int PlayerHitSparkCount => playerHitSparkCount;
-        public int PlayerHitBackSparkCount => playerHitBackSparkCount;
-        public int PlayerHitFlameCount => playerHitFlameCount;
-        public float PlayerHitEffectScale => playerHitEffectScale > 0f ? playerHitEffectScale : 0.55f;
+        public GameObject PlayerMuzzleFlashVfxPrefab => playerMuzzleFlashVfxPrefab;
+        public GameObject HogMuzzleFlashVfxPrefab => hogMuzzleFlashVfxPrefab;
+        public GameObject MuscleMuzzleFlashVfxPrefab => muscleMuzzleFlashVfxPrefab;
+        public GameObject HackerMuzzleFlashVfxPrefab => hackerMuzzleFlashVfxPrefab;
+        public GameObject AssassinMuzzleFlashVfxPrefab => assassinMuzzleFlashVfxPrefab;
+        public GameObject ArsonistMuzzleFlashVfxPrefab => arsonistMuzzleFlashVfxPrefab;
+        public GameObject ConductorMuzzleFlashVfxPrefab => conductorMuzzleFlashVfxPrefab;
+        public GameObject ParrySuccessVfxPrefab => parrySuccessVfxPrefab;
+        public GameObject EnemyHitVfxPrefab => enemyHitVfxPrefab;
+        public GameObject PlayerHitVfxPrefab => playerHitVfxPrefab;
         public Color PlayerBodyBulletEmptyColor => playerBodyBulletEmptyColor;
         public Color PlayerBodyHitColor => playerBodyHitColor;
         public Color EnemyBodyHitColor => enemyBodyHitColor;

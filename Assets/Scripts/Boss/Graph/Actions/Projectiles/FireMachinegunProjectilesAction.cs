@@ -228,7 +228,7 @@ namespace Week14.Enemy
             context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnPosition);
-            context.PlayMuzzleFlashIfEnabled(effects, spawnPosition, finalDirection);
+            context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
         }
 
@@ -314,7 +314,7 @@ namespace Week14.Enemy
                     context.PlaySfx(fireSfxId);
                     context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                     context.PlayOriginBurst(effects, spawnPosition);
-                    context.PlayMuzzleFlashIfEnabled(effects, spawnPosition, tangentDirection);
+                    context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, tangentDirection);
                     context.PlayCameraShakeIfEnabled(effects, tangentDirection);
                 }
 

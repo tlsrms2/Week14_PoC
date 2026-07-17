@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -310,7 +311,11 @@ namespace Week14.Enemy
             return (Aim ?? DefaultAim).GetDirection(getDirectionToPlayer, origin);
         }
 
-        public void PlayEffects(Vector3 origin, Vector2 direction)
+        public void PlayEffects(
+            Vector3 origin,
+            EnemyProjectile projectile,
+            Vector2 direction,
+            Transform followTarget)
         {
             if (Context == null || Effects == null)
             {
@@ -318,7 +323,7 @@ namespace Week14.Enemy
             }
 
             Context.PlayOriginBurst(Effects, origin);
-            Context.PlayMuzzleFlashIfEnabled(Effects, origin, direction);
+            Context.PlayMuzzleFlashIfEnabled(Effects, projectile, direction, followTarget);
             Context.PlayCameraShakeIfEnabled(Effects, direction);
         }
     }

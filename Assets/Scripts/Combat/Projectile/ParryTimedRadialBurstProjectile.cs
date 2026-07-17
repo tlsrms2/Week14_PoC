@@ -105,12 +105,6 @@ namespace Week14.Combat
 
         private void PlayBurstOriginEffects(Vector3 burstOrigin)
         {
-            BossGraphParticleEffectSettings explosion = burstEffects?.Explosion;
-            if (explosion != null && explosion.Enabled)
-            {
-                ProjectileVfx.PlayHogExplosion(burstOrigin, explosion.Color, explosion.Scale, explosion.Count);
-            }
-
             BossGraphParticleEffectSettings smoke = burstEffects?.Smoke;
             if (smoke != null && smoke.Enabled)
             {
@@ -120,13 +114,13 @@ namespace Week14.Combat
 
         private void PlayBurstMuzzleFlash(Vector3 burstOrigin, Vector2 shotDirection)
         {
-            BossGraphParticleEffectSettings muzzleFlash = burstEffects?.MuzzleFlash;
+            BossGraphPrefabEffectSettings muzzleFlash = burstEffects?.MuzzleFlash;
             if (muzzleFlash == null || !muzzleFlash.Enabled)
             {
                 return;
             }
 
-            ProjectileVfx.PlayMuzzleFlash(burstOrigin, shotDirection, muzzleFlash.Color, muzzleFlash.Scale);
+            ProjectileVfx.PlayPrefab(muzzleFlash.Prefab, burstOrigin, shotDirection, muzzleFlash.Scale);
         }
 
         private static Vector2 AngleToDirection(float angleDegrees)

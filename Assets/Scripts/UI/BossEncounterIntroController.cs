@@ -144,12 +144,20 @@ namespace Week14.UI
         private BossData localizedBossData;
         private bool introControlAcquired;
         private bool cameraMouseLookLocked;
+        private bool introCursorHidden;
         private bool previousGameplayInputBlocked;
         private bool playFullBossIntro = true;
         private bool cinematicFocusActive;
         private Transform bossShadowRoot;
         private SpriteRenderer[] bossShadowSources = System.Array.Empty<SpriteRenderer>();
         private SpriteRenderer[] bossShadowCopies = System.Array.Empty<SpriteRenderer>();
+        private Animator[] bossCinematicAnimators = System.Array.Empty<Animator>();
+        private float[] bossAnimatorSpeeds = System.Array.Empty<float>();
+        private bool bossAnimationFrozen;
+        private bool executionLetterboxActive;
+        private float canvasAlphaBeforeExecutionLetterbox;
+
+        public bool HasExecutionLetterbox => topLetterboxPanel != null && bottomLetterboxPanel != null;
 
         private void Awake()
         {
@@ -187,6 +195,8 @@ namespace Week14.UI
             }
 
             EndPlayerCinematicMovement();
+            SetBossAnimationFrozen(false);
+            HideExecutionLetterboxImmediate();
             if (cinematicFocusActive && cameraFollow != null)
             {
                 cameraFollow.EndCinematicFocus();
@@ -221,6 +231,8 @@ namespace Week14.UI
                 StopCoroutine(locationIntroRoutine);
                 locationIntroRoutine = null;
             }
+
+            SetBossAnimationFrozen(false);
 
             locationName = nextLocationName ?? string.Empty;
             ResolveReferences();
@@ -369,7 +381,9 @@ namespace Week14.UI
                 bossInfoEnterCurve);
             yield return WaitUnscaled(infoToLightDelaySeconds);
             SetMugShotLighting(true);
+            SetBossAnimationFrozen(true);
             yield return WaitUnscaled(infoHoldSeconds);
+            SetBossAnimationFrozen(false);
             yield return AnimateBossInfoPanel(
                 0f,
                 -bossInfoTravelOffsetY,
@@ -433,6 +447,100 @@ namespace Week14.UI
             SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
             SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
             SetAnchoredPosition(bossCombatUiRect, bossCombatUiTargetPosition);
+        }
+
+        public IEnumerator ShowExecutionLetterbox(float duration)
+        {
+            if (!HasExecutionLetterbox)
+            {
+                yield break;
+            }
+
+            ResolveCanvasGroup();
+            if (!executionLetterboxActive)
+            {
+                canvasAlphaBeforeExecutionLetterbox = canvasGroup.alpha;
+                executionLetterboxActive = true;
+            }
+
+            canvasGroup.alpha = 1f;
+            Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
+            Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
+            float animationDuration = Mathf.Max(0f, duration);
+
+            if (animationDuration <= 0f)
+            {
+                SetAnchoredPosition(topLetterboxPanel, topLetterboxTargetPosition);
+                SetAnchoredPosition(bottomLetterboxPanel, bottomLetterboxTargetPosition);
+                yield break;
+            }
+
+            for (float elapsed = 0f; elapsed < animationDuration; elapsed += Time.unscaledDeltaTime)
+            {
+                float progress = EvaluateCurve(combatUiRevealCurve, Mathf.Clamp01(elapsed / animationDuration));
+                SetAnchoredPosition(
+                    topLetterboxPanel,
+                    Vector2.LerpUnclamped(topHiddenPosition, topLetterboxTargetPosition, progress));
+                SetAnchoredPosition(
+                    bottomLetterboxPanel,
+                    Vector2.LerpUnclamped(bottomHiddenPosition, bottomLetterboxTargetPosition, progress));
+                yield return null;
+            }
+
+            SetAnchoredPosition(topLetterboxPanel, topLetterboxTargetPosition);
+            SetAnchoredPosition(bottomLetterboxPanel, bottomLetterboxTargetPosition);
+        }
+
+        public IEnumerator HideExecutionLetterbox(float duration)
+        {
+            if (!executionLetterboxActive || !HasExecutionLetterbox)
+            {
+                yield break;
+            }
+
+            Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
+            Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
+            float animationDuration = Mathf.Max(0f, duration);
+
+            if (animationDuration > 0f)
+            {
+                for (float elapsed = 0f; elapsed < animationDuration; elapsed += Time.unscaledDeltaTime)
+                {
+                    float progress = EvaluateCurve(combatUiRevealCurve, Mathf.Clamp01(elapsed / animationDuration));
+                    SetAnchoredPosition(
+                        topLetterboxPanel,
+                        Vector2.LerpUnclamped(topLetterboxTargetPosition, topHiddenPosition, progress));
+                    SetAnchoredPosition(
+                        bottomLetterboxPanel,
+                        Vector2.LerpUnclamped(bottomLetterboxTargetPosition, bottomHiddenPosition, progress));
+                    yield return null;
+                }
+            }
+
+            SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
+            SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
+            RestoreExecutionLetterboxCanvasAlpha();
+        }
+
+        public void HideExecutionLetterboxImmediate()
+        {
+            if (!executionLetterboxActive)
+            {
+                return;
+            }
+
+            Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
+            Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
+            SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
+            SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
+            RestoreExecutionLetterboxCanvasAlpha();
+        }
+
+        private void RestoreExecutionLetterboxCanvasAlpha()
+        {
+            ResolveCanvasGroup();
+            canvasGroup.alpha = canvasAlphaBeforeExecutionLetterbox;
+            executionLetterboxActive = false;
         }
 
         private IEnumerator AnimateLocationObjects(
@@ -569,11 +677,19 @@ namespace Week14.UI
 
         private void AcquireIntroControl()
         {
+            if (!introCursorHidden)
+            {
+                CursorController.PushForceCursorHidden();
+                introCursorHidden = true;
+            }
+
             if (!cameraMouseLookLocked && cameraFollow != null)
             {
                 cameraFollow.PushMouseLookLock();
                 cameraMouseLookLocked = true;
             }
+
+            player?.Visual?.SetLeftArmVisible(false);
 
             if (introControlAcquired || boss == null)
             {
@@ -589,6 +705,14 @@ namespace Week14.UI
 
         private void ReleaseIntroControl(bool startCombat)
         {
+            if (introCursorHidden)
+            {
+                CursorController.PopForceCursorHidden();
+                introCursorHidden = false;
+            }
+
+            player?.Visual?.SetLeftArmVisible(true);
+
             if (introControlAcquired)
             {
                 player?.PopExternalMovementLock();
@@ -871,6 +995,58 @@ namespace Week14.UI
                 SetMugShotShadowAlpha(0f);
                 bossShadowRoot.gameObject.SetActive(false);
             }
+        }
+
+        private void SetBossAnimationFrozen(bool frozen)
+        {
+            if (frozen)
+            {
+                if (bossAnimationFrozen)
+                {
+                    return;
+                }
+
+                Transform bossFocusTarget = GetBossFocusTarget();
+                if (bossFocusTarget == null)
+                {
+                    return;
+                }
+
+                bossCinematicAnimators = bossFocusTarget.GetComponentsInChildren<Animator>(true);
+                bossAnimatorSpeeds = new float[bossCinematicAnimators.Length];
+                for (int i = 0; i < bossCinematicAnimators.Length; i++)
+                {
+                    Animator animator = bossCinematicAnimators[i];
+                    if (animator == null)
+                    {
+                        continue;
+                    }
+
+                    bossAnimatorSpeeds[i] = animator.speed;
+                    animator.speed = 0f;
+                }
+
+                bossAnimationFrozen = true;
+                return;
+            }
+
+            if (!bossAnimationFrozen)
+            {
+                return;
+            }
+
+            int animatorCount = Mathf.Min(bossCinematicAnimators.Length, bossAnimatorSpeeds.Length);
+            for (int i = 0; i < animatorCount; i++)
+            {
+                if (bossCinematicAnimators[i] != null)
+                {
+                    bossCinematicAnimators[i].speed = bossAnimatorSpeeds[i];
+                }
+            }
+
+            bossCinematicAnimators = System.Array.Empty<Animator>();
+            bossAnimatorSpeeds = System.Array.Empty<float>();
+            bossAnimationFrozen = false;
         }
 
         private void EnsureMugShotShadow()

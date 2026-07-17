@@ -103,10 +103,17 @@ namespace Week14.Enemy
                 if (other != null && other != node)
                 {
                     HackerWireNodeLinkVisual.Create(other, node);
+                    other.DisableParry();
+                    node.DisableParry();
                 }
             }
 
             AttachedNodes.Add(node);
+        }
+
+        private void DisableParry()
+        {
+            ConfigureInterceptable(false);
         }
 
         private static void UnregisterNode(HackerWireNodeProjectile node)

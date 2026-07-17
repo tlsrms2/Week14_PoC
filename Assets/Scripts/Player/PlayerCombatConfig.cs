@@ -90,6 +90,17 @@ namespace Week14.Combat
         [Tooltip("처형 사격 전 총 발사 애니메이션 반복 사이의 간격입니다.")]
         [SerializeField, Min(0.01f)] private float executionFlourishShotInterval = 0.08f;
 
+        [Header("Final Execution Presentation")]
+        [SerializeField, Min(0f)] private float finalExecutionLetterboxEnterSeconds = 0.2f;
+        [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeInSeconds = 0.14f;
+        [SerializeField, Min(0f)] private float finalExecutionBlackoutHoldSeconds = 0.45f;
+        [SerializeField, Range(0.01f, 1f)] private float finalExecutionImpactTimeScale = 0.08f;
+        [SerializeField, Min(0f)] private float finalExecutionImpactSlowSeconds = 0.55f;
+        [SerializeField, Min(0f)] private float finalExecutionOutlineFlashSeconds = 0.04f;
+        [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeOutSeconds = 0.24f;
+        [SerializeField, Min(0f)] private float finalExecutionLetterboxExitSeconds = 0.28f;
+        [SerializeField, Min(0.05f)] private float finalExecutionOutlineWidthPixels = 0.18f;
+
         [Header("Death")]
         [Tooltip("플레이어 사망 시 카메라 초점이 플레이어를 따라가는 강도입니다.")]
         [SerializeField, Range(0f, 1f)] private float deathCameraFocusWeight = 1f;
@@ -130,20 +141,10 @@ namespace Week14.Combat
         public float MouseParryMissShakeAmplitude => mouseParryMissShakeAmplitude;
         public float MouseParryMissShakeFrequency => mouseParryMissShakeFrequency;
         public Color ParryEffectColor => effectData != null ? effectData.ParryEffectColor : new Color(0.2f, 0.65f, 1f, 0.45f);
-        public Color ParrySparkColor => effectData != null ? effectData.ParrySparkColor : new Color(1f, 0.88f, 0.35f, 1f);
-        public Color ParryRingColor => effectData != null ? effectData.ParryRingColor : new Color(0.45f, 0.9f, 1f, 0.75f);
-        public Color ParryRingGlitterColor => effectData != null ? effectData.ParryRingGlitterColor : new Color(1f, 0.96f, 0.68f, 1f);
-        public float ParrySparkSeconds => effectData != null ? effectData.ParrySparkSeconds : 0.22f;
-        public float ParryRingSeconds => effectData != null ? effectData.ParryRingSeconds : 0.32f;
-        public float ParryRingGlitterSeconds => effectData != null ? effectData.ParryRingGlitterSeconds : 0.2f;
-        public int ParrySparkCount => effectData != null ? effectData.ParrySparkCount : 34;
-        public int ParryRingGlitterCount => effectData != null ? effectData.ParryRingGlitterCount : 18;
-        public int ParryFlameCount => effectData != null ? effectData.ParryFlameCount : 20;
-        public float ParryEffectScale => effectData != null ? effectData.ParryEffectScale : 1f;
-        public int PlayerHitSparkCount => effectData != null ? effectData.PlayerHitSparkCount : 12;
-        public int PlayerHitBackSparkCount => effectData != null ? effectData.PlayerHitBackSparkCount : 5;
-        public int PlayerHitFlameCount => effectData != null ? effectData.PlayerHitFlameCount : 6;
-        public float PlayerHitEffectScale => effectData != null ? effectData.PlayerHitEffectScale : 0.55f;
+        public GameObject PlayerMuzzleFlashVfxPrefab => effectData != null ? effectData.PlayerMuzzleFlashVfxPrefab : null;
+        public GameObject ParrySuccessVfxPrefab => effectData != null ? effectData.ParrySuccessVfxPrefab : null;
+        public GameObject EnemyHitVfxPrefab => effectData != null ? effectData.EnemyHitVfxPrefab : null;
+        public GameObject PlayerHitVfxPrefab => effectData != null ? effectData.PlayerHitVfxPrefab : null;
         public Color PlayerBodyBulletEmptyColor => effectData != null ? effectData.PlayerBodyBulletEmptyColor : new Color(1f, 0.2f, 0.12f, 1f);
         public Color PlayerBodyHitColor => effectData != null ? effectData.PlayerBodyHitColor : new Color(1f, 0.85f, 0.25f, 1f);
         public float BodyHitColorSeconds => effectData != null ? effectData.BodyHitColorSeconds : 0.08f;
@@ -160,6 +161,15 @@ namespace Week14.Combat
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
         public int ExecutionFlourishShotCount => executionFlourishShotCount;
         public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
+        public float FinalExecutionLetterboxEnterSeconds => finalExecutionLetterboxEnterSeconds;
+        public float FinalExecutionBlackoutFadeInSeconds => finalExecutionBlackoutFadeInSeconds;
+        public float FinalExecutionBlackoutHoldSeconds => finalExecutionBlackoutHoldSeconds;
+        public float FinalExecutionImpactTimeScale => finalExecutionImpactTimeScale;
+        public float FinalExecutionImpactSlowSeconds => finalExecutionImpactSlowSeconds;
+        public float FinalExecutionOutlineFlashSeconds => finalExecutionOutlineFlashSeconds;
+        public float FinalExecutionBlackoutFadeOutSeconds => finalExecutionBlackoutFadeOutSeconds;
+        public float FinalExecutionLetterboxExitSeconds => finalExecutionLetterboxExitSeconds;
+        public float FinalExecutionOutlineWidthPixels => finalExecutionOutlineWidthPixels;
         public float DeathCameraFocusWeight => deathCameraFocusWeight;
         public float DeathCameraZoomMultiplier => deathCameraZoomMultiplier;
         public float DeathWorldFreezeDelaySeconds => deathWorldFreezeDelaySeconds;

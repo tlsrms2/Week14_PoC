@@ -76,7 +76,15 @@ namespace Week14.Enemy
 
             if (projectile != null && playMuzzleFlash)
             {
-                ProjectileVfx.PlayMuzzleFlash(origin, direction, Color.white, 0.75f);
+                Transform followTarget = source != null
+                    ? source.transform
+                    : minionProjectileOrigin != null ? minionProjectileOrigin : transform;
+                ProjectileVfx.PlayPrefab(
+                    EnemyMuzzleFlashVfxPrefab,
+                    projectile.transform.position,
+                    direction,
+                    followTarget,
+                    0.75f);
             }
 
             return projectile;

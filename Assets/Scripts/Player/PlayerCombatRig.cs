@@ -89,6 +89,16 @@ namespace Week14.Combat
             return context.LeftGunFireOrigin != null ? context.LeftGunFireOrigin : context.LeftGunOrigin;
         }
 
+        internal Transform GetRightFireOrigin()
+        {
+            if (context.RightGunFireOrigin != null)
+            {
+                return context.RightGunFireOrigin;
+            }
+
+            return GetLeftFireOrigin() != null ? GetLeftFireOrigin() : context.PlayerTransform;
+        }
+
         internal void StopBody()
         {
             if (context.Body != null)

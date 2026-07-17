@@ -7,6 +7,10 @@ namespace Week14.Enemy
 {
     public sealed partial class AssassinBossAI : GraphBossAI
     {
+        protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
+            ? EffectData.AssassinMuzzleFlashVfxPrefab
+            : null;
+
         [Header("Assassin Stealth")]
         [Tooltip("은신 상태에서 사용할 Boss Graph입니다. 통상 상태에서는 GraphBossAI의 기본 Boss Graph를 그대로 사용합니다.")]
         [SerializeField] private BossGraphAsset stealthGraph;
@@ -39,10 +43,15 @@ namespace Week14.Enemy
         [Tooltip("플레이어 주변 이 반경 안에는 분신이 소환되지 않습니다.")]
         [SerializeField, Min(0f)] private float cloneMinDistanceFromPlayer = 2f;
 
+        [Header("Assassin Walk")]
+        [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+
         private const int CloneSpawnPositionAttempts = 8;
+        private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
 
         private readonly List<AssassinDagger> spawnedDaggers = new();
         private readonly List<(Vector3 position, AssassinClone clone)> cloneShooterQueue = new();
+        private readonly List<AssassinClone> activeClones = new();
         private bool isStealthed;
         private bool pendingStealthChange;
         private bool pendingStealthValue;
@@ -52,14 +61,9 @@ namespace Week14.Enemy
         private bool stealthVisibilityOverrideActive;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
-        private Color ownAttackFlashOriginalColor;
-        private bool ownAttackFlashActive;
-        private Color cloneShooterAttackFlashColor = Color.white;
-        private bool cloneShooterKeepFlashOnAll;
-        private AssassinClone flashedQueueFrontClone;
-        private bool flashedQueueFrontIsBoss;
-        private bool hasFlashedQueueFront;
-        private bool isShooterAttackInProgress;
+        private Animator[] walkAnimators;
+        private bool hasAppliedWalkState;
+        private bool lastIsWalking;
 
         protected override bool RotatesBodyToPlayer => false;
         protected override BossGraphAsset GraphAsset => isStealthed ? stealthGraph : base.GraphAsset;
@@ -95,11 +99,8 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             RequestStealth(false);
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-            EndOwnAttackFlash();
             ClearAssassinDaggers();
-            ClearCloneShooterQueue();
+            ClearActiveClones();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
         }
 
@@ -151,21 +152,17 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-            EndOwnAttackFlash();
             ClearAssassinDaggers();
-            ClearCloneShooterQueue();
+            ClearActiveClones();
+            ApplyWalkState(false, true);
             base.OnBossDied();
         }
 
         protected override void OnDisable()
         {
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-            EndOwnAttackFlash();
             ClearAssassinDaggers();
-            ClearCloneShooterQueue();
+            ClearActiveClones();
+            ApplyWalkState(false, true);
             base.OnDisable();
         }
 
@@ -173,7 +170,7 @@ namespace Week14.Enemy
         {
             UpdateFacingSprite();
             ApplyStealthAlpha();
-            UpdateCloneShooterAttackFlash();
+            UpdateWalkState();
 
             if (isStealthed && stealthEntryDelayRemaining > 0f)
             {
@@ -241,7 +238,9 @@ namespace Week14.Enemy
                 return null;
             }
 
-            return Instantiate(clonePrefab, position, Quaternion.identity);
+            AssassinClone clone = Instantiate(clonePrefab, position, Quaternion.identity);
+            activeClones.Add(clone);
+            return clone;
         }
 
         // 분신 소환 전용 간격/플레이어 최소거리 설정(cloneMinSeparationDistance/cloneMinDistanceFromPlayer)을
@@ -297,9 +296,20 @@ namespace Week14.Enemy
         // fadeSeconds를 직접 지정하고 싶은 호출부(예: AssassinTeleportAroundPlayerAction)를 위한 오버로드.
         internal IEnumerator VanishForTeleport(Vector3 destination, float fadeSeconds)
         {
+            yield return VanishForTeleportInPlace(fadeSeconds);
+            TeleportImmediate(destination);
+        }
+
+        // 위치는 그대로 두고 투명해지기만 한다 — 순간이동 시점을 직접 제어하고 싶은 호출부
+        // (예: hiddenSeconds가 다 지난 뒤에야 이동하고 싶은 AssassinTeleportAroundPlayerAction)를 위함.
+        internal IEnumerator VanishForTeleportInPlace(float fadeSeconds)
+        {
             teleportVisibilityOverrideActive = true;
             yield return WaitSecondsScaled(fadeSeconds);
+        }
 
+        internal void TeleportImmediate(Vector3 destination)
+        {
             if (Body != null)
             {
                 Body.position = destination;
@@ -327,137 +337,6 @@ namespace Week14.Enemy
                 remaining -= EnemyTimeScale.DeltaTime;
                 yield return null;
             }
-        }
-
-        // 분신 발사 대기열의 맨 앞(=지금부터 공격 차례를 기다리는 중인 개체)을 매 프레임 감시해서,
-        // 대기열 맨 앞이 바뀔 때마다 이전 차례 개체는 원래 색으로 되돌리고 새 차례 개체를 색칠한다.
-        // 단, 실제로 발사 중(BeginShooterAttack ~ EndShooterAttack 사이)일 때는 손대지 않는다 —
-        // 총알을 여러 발 나눠 쏘는 동안에도 이미 대기열에서는 빠진 상태이기 때문에, 발사가
-        // 완전히 끝날 때까지는 Fire 액션이 직접 색을 유지/해제하도록 맡긴다.
-        // keepAppliedToAll이 켜져 있으면 이 매 프레임 감시(맨 앞만 번갈아 칠하기) 자체를 건너뛴다 —
-        // 대신 AssassinSpawnCloneShootersAction이 소환 직후 모든 개체에 색을 직접 칠해두고, 대기열이
-        // 완전히 빌 때 보스 자신의 색만 여기서 되돌린다(분신은 소멸하면서 자연히 사라진다).
-        internal void SetCloneShooterAttackFlashColor(Color flashColor, bool keepAppliedToAll)
-        {
-            cloneShooterAttackFlashColor = flashColor;
-            cloneShooterKeepFlashOnAll = keepAppliedToAll;
-        }
-
-        // AssassinSpawnCloneShootersAction이 keepAttackFlashColorApplied일 때 보스 자신에게 소환 즉시
-        // 색을 칠하기 위해 호출한다.
-        internal void ApplyCloneShooterFlashToBoss()
-        {
-            PlayOwnAttackFlash(cloneShooterAttackFlashColor);
-        }
-
-        internal void BeginShooterAttack()
-        {
-            isShooterAttackInProgress = true;
-        }
-
-        internal void EndShooterAttack()
-        {
-            isShooterAttackInProgress = false;
-            ClearCloneShooterAttackFlash();
-        }
-
-        private void UpdateCloneShooterAttackFlash()
-        {
-            if (isShooterAttackInProgress)
-            {
-                return;
-            }
-
-            if (cloneShooterKeepFlashOnAll)
-            {
-                if (cloneShooterQueue.Count == 0)
-                {
-                    EndOwnAttackFlash();
-                }
-
-                return;
-            }
-
-            if (cloneShooterQueue.Count == 0)
-            {
-                ClearCloneShooterAttackFlash();
-                return;
-            }
-
-            AssassinClone frontClone = cloneShooterQueue[0].clone;
-            bool frontIsBoss = frontClone == null;
-
-            if (hasFlashedQueueFront && flashedQueueFrontClone == frontClone && flashedQueueFrontIsBoss == frontIsBoss)
-            {
-                return;
-            }
-
-            ClearCloneShooterAttackFlash();
-
-            if (frontIsBoss)
-            {
-                PlayOwnAttackFlash(cloneShooterAttackFlashColor);
-                flashedQueueFrontIsBoss = true;
-            }
-            else
-            {
-                frontClone.PlayAttackFlash(cloneShooterAttackFlashColor);
-                flashedQueueFrontClone = frontClone;
-            }
-
-            hasFlashedQueueFront = true;
-        }
-
-        private void ClearCloneShooterAttackFlash()
-        {
-            if (!hasFlashedQueueFront)
-            {
-                return;
-            }
-
-            if (flashedQueueFrontClone != null)
-            {
-                flashedQueueFrontClone.EndAttackFlash();
-            }
-
-            if (flashedQueueFrontIsBoss)
-            {
-                EndOwnAttackFlash();
-            }
-
-            flashedQueueFrontClone = null;
-            flashedQueueFrontIsBoss = false;
-            hasFlashedQueueFront = false;
-        }
-
-        private void PlayOwnAttackFlash(Color flashColor)
-        {
-            if (stealthVisualTargetB == null)
-            {
-                return;
-            }
-
-            if (!ownAttackFlashActive)
-            {
-                ownAttackFlashOriginalColor = stealthVisualTargetB.color;
-            }
-
-            Color applied = flashColor;
-            applied.a = stealthVisualTargetB.color.a;
-            stealthVisualTargetB.color = applied;
-            ownAttackFlashActive = true;
-        }
-
-        private void EndOwnAttackFlash()
-        {
-            if (ownAttackFlashActive && stealthVisualTargetB != null)
-            {
-                Color reverted = ownAttackFlashOriginalColor;
-                reverted.a = stealthVisualTargetB.color.a;
-                stealthVisualTargetB.color = reverted;
-            }
-
-            ownAttackFlashActive = false;
         }
 
         internal void EnqueueCloneShooter(Vector3 position, AssassinClone clone)
@@ -556,18 +435,24 @@ namespace Week14.Enemy
             return SampleCloneSpawnZonePosition();
         }
 
-        private void ClearCloneShooterQueue()
+        // 발사 대기열에 남아있는 분신뿐 아니라, 이미 발사돼 대기열을 벗어나 PlayDespawn으로 페이드
+        // 아웃 중인 분신까지 포함해 지금 존재하는 분신을 전부 즉시 제거한다(activeClones가 소환 시점부터
+        // 계속 추적하는 전체 목록). 대기열 자체도 같이 비워서 이후 TryDequeueCloneShooter가 파괴된
+        // 분신을 다시 참조하지 않게 한다.
+        internal void ClearActiveClones()
         {
-            for (int i = 0; i < cloneShooterQueue.Count; i++)
+            cloneShooterQueue.Clear();
+
+            for (int i = activeClones.Count - 1; i >= 0; i--)
             {
-                AssassinClone clone = cloneShooterQueue[i].clone;
+                AssassinClone clone = activeClones[i];
                 if (clone != null)
                 {
                     Destroy(clone.gameObject);
                 }
             }
 
-            cloneShooterQueue.Clear();
+            activeClones.Clear();
         }
 
         internal void UnregisterDagger(AssassinDagger dagger)
@@ -715,6 +600,56 @@ namespace Week14.Enemy
             float maxDelta = EnemyTimeScale.DeltaTime / stealthAlphaFadeSeconds;
             color.a = Mathf.MoveTowards(color.a, targetAlpha, maxDelta);
             renderer.color = color;
+        }
+
+        // Body.linearVelocity는 SetMovementVelocity에서 이미 EnemyTimeScale이 곱해진 값이라,
+        // 여기서 별도로 시간 배율을 다시 반영할 필요가 없다.
+        private void UpdateWalkState()
+        {
+            if (Body == null)
+            {
+                ApplyWalkState(false, false);
+                return;
+            }
+
+            float threshold = Mathf.Max(0f, walkVelocityThreshold);
+            bool isWalking = Body.linearVelocity.sqrMagnitude > threshold * threshold;
+            ApplyWalkState(isWalking, false);
+        }
+
+        private void ApplyWalkState(bool isWalking, bool force)
+        {
+            if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
+            {
+                return;
+            }
+
+            Animator[] targets = GetWalkAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                if (targets[i] != null)
+                {
+                    targets[i].SetBool(IsWalkParameter, isWalking);
+                }
+            }
+
+            lastIsWalking = isWalking;
+            hasAppliedWalkState = true;
+        }
+
+        // 애니메이터가 두 개(boss-04-glow / boss-04-char)라 attack/groggy/death 트리거와 동일하게
+        // BodyRoot 밑의 Animator 전부를 찾아 broadcast한다.
+        private Animator[] GetWalkAnimators()
+        {
+            if (walkAnimators != null)
+            {
+                return walkAnimators;
+            }
+
+            walkAnimators = BodyRoot != null
+                ? BodyRoot.GetComponentsInChildren<Animator>(true)
+                : GetComponentsInChildren<Animator>(true);
+            return walkAnimators;
         }
 
         private void ClearAssassinDaggers()

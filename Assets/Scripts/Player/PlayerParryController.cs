@@ -53,19 +53,7 @@ namespace Week14.Combat
                 PlayerBulletAudio.PlayBulletRestoreSfx(bullets.CurrentBullets, bullets.MaxBullets);
             }
 
-            ProjectileVfx.PlayParry(
-                position,
-                direction,
-                config.ParrySparkColor,
-                config.ParryRingColor,
-                config.ParryRingGlitterColor,
-                config.ParrySparkCount,
-                config.ParryRingGlitterCount,
-                config.ParrySparkSeconds,
-                config.ParryRingSeconds,
-                config.ParryRingGlitterSeconds,
-                config.ParryFlameCount,
-                config.ParryEffectScale);
+            ProjectileVfx.PlayPrefab(config.ParrySuccessVfxPrefab, position, direction);
             context.CameraFollow?.PlayImpact(direction, 0.32f, 0.24f, 0.22f);
         }
 
@@ -130,7 +118,6 @@ namespace Week14.Combat
             }
 
             ProjectileVfx.PlayShotLine(firePosition, impactPosition, config.ParryEffectColor, 0.08f, 0.06f);
-            ProjectileVfx.PlayMuzzleFlash(firePosition, direction, config.ParryEffectColor, 1f);
             context.Visual?.PlayIntercept();
             return true;
         }
