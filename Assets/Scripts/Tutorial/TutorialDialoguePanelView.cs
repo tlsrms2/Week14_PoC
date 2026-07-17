@@ -31,6 +31,7 @@ namespace Week14.Tutorial
         private const string ObjectiveTitleKey = "TutorialDialogueSet_Objective";
         private const string ObjectiveTitleObjectName = "Dialogue_Text-title";
         private const string ObjectiveTextObjectName = "Dialogue_Text-objective";
+        private const string ObjectiveKeyTextObjectName = "Dialogue_Text-key";
         private const string AdvancePromptObjectName = "MouseClick_Image";
 
         [Header("Root")]
@@ -41,6 +42,7 @@ namespace Week14.Tutorial
         [SerializeField] private GameObject speakerRoot;
         [SerializeField] private TMP_Text speakerText;
         [SerializeField] private TMP_Text objectiveTitleText;
+        [SerializeField] private TMP_Text objectiveKeyText;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField, Min(1f)] private float charactersPerSecond = 45f;
         [SerializeField] private LocalizedString localizedObjectiveTitleText = new(ObjectiveTitleTable, ObjectiveTitleKey);
@@ -62,6 +64,7 @@ namespace Week14.Tutorial
 
         [Header("Objective Complete")]
         [SerializeField] private Color objectiveCompleteColor = new(0.3f, 1f, 0.45f, 1f);
+        [SerializeField] private Vector2 objectiveLineOffset = new(0f, 0f);
         [SerializeField, Min(1f)] private float objectiveStrikeLineHeight = 2f;
         [SerializeField, Min(0f)] private float objectiveCompleteHoldSeconds = 0.45f;
         [SerializeField, Min(0f)] private float objectiveCompleteFadeSeconds = 0.2f;
@@ -71,9 +74,11 @@ namespace Week14.Tutorial
         private Image objectiveStrikeLine;
         private Vector2 shownAnchoredPosition;
         private Color defaultDialogueColor = Color.white;
+        private Color defaultObjectiveKeyColor = Color.white;
         private Color advancePromptBaseColor = Color.white;
         private bool hasShownAnchoredPosition;
         private bool hasDefaultDialogueColor;
+        private bool hasDefaultObjectiveKeyColor;
         private bool hasAdvancePromptBaseColor;
         private bool isVisible;
 
@@ -95,6 +100,7 @@ namespace Week14.Tutorial
             SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
             SetObjectiveTitleVisible(false);
+            SetObjectiveKeyText(string.Empty, false);
             SetSpeaker(speaker);
             SetDialogueColor(defaultDialogueColor);
             SetDialogueText(FormatDialogue(text), 0);
@@ -145,7 +151,7 @@ namespace Week14.Tutorial
             SetAdvancePromptBlinking(!canceled);
         }
 
-        public void ShowObjective(string text)
+        public void ShowObjective(string text, string keyText = null)
         {
             ShowPanel();
             SetAdvancePromptBlinking(false);
@@ -153,16 +159,20 @@ namespace Week14.Tutorial
             SetSpeaker(null);
             SetObjectiveTitleVisible(true);
             SetDialogueColor(defaultDialogueColor);
+            SetObjectiveKeyColor(defaultObjectiveKeyColor);
+            SetObjectiveKeyText(keyText, true);
             SetDialogueText(FormatObjective(text), int.MaxValue);
         }
 
-        public IEnumerator PlayObjectiveCompleted(string text, bool fadeOut = true, bool clearText = true)
+        public IEnumerator PlayObjectiveCompleted(string text, string keyText = null, bool fadeOut = true, bool clearText = true)
         {
             ShowPanel();
             SetAdvancePromptBlinking(false);
             SetSpeaker(null);
             SetObjectiveTitleVisible(true);
             SetDialogueColor(objectiveCompleteColor);
+            SetObjectiveKeyColor(objectiveCompleteColor);
+            SetObjectiveKeyText(keyText, true);
             SetDialogueText(FormatObjective(text), int.MaxValue);
             ShowObjectiveStrikeLine();
 
@@ -177,6 +187,7 @@ namespace Week14.Tutorial
                     Color color = from;
                     color.a = Mathf.Lerp(from.a, 0f, t);
                     dialogueText.color = color;
+                    SetObjectiveKeyAlpha(color.a);
                     SetObjectiveStrikeLineAlpha(color.a);
                     yield return null;
                 }
@@ -186,6 +197,8 @@ namespace Week14.Tutorial
             {
                 SetObjectiveStrikeLineVisible(false);
                 SetDialogueColor(defaultDialogueColor);
+                SetObjectiveKeyColor(defaultObjectiveKeyColor);
+                SetObjectiveKeyText(string.Empty, false);
                 SetDialogueText(string.Empty, 0);
             }
         }
@@ -211,6 +224,7 @@ namespace Week14.Tutorial
             SetSpeaker(null);
             SetObjectiveStrikeLineVisible(false);
             SetObjectiveTitleVisible(false);
+            SetObjectiveKeyText(string.Empty, false);
             SetDialogueColor(defaultDialogueColor);
             SetText(dialogueText, string.Empty);
 
@@ -431,6 +445,7 @@ namespace Week14.Tutorial
         private void ResolveObjectiveTextReferences()
         {
             objectiveTitleText ??= FindChildText(ObjectiveTitleObjectName);
+            objectiveKeyText ??= FindChildText(ObjectiveKeyTextObjectName);
 
             if (dialogueText == null || IsNamed(dialogueText, ObjectiveTitleObjectName))
             {
@@ -479,6 +494,18 @@ namespace Week14.Tutorial
             SetText(objectiveTitleText, visible ? ResolveObjectiveTitleText() : string.Empty);
         }
 
+        private void SetObjectiveKeyText(string value, bool objectiveVisible)
+        {
+            if (objectiveKeyText == null)
+            {
+                return;
+            }
+
+            bool visible = objectiveVisible && !string.IsNullOrWhiteSpace(value);
+            objectiveKeyText.gameObject.SetActive(visible);
+            SetText(objectiveKeyText, visible ? value : string.Empty);
+        }
+
         private string ResolveObjectiveTitleText()
         {
             if (HasLocalizedString(localizedObjectiveTitleText))
@@ -513,7 +540,7 @@ namespace Week14.Tutorial
             dialogueText.ForceMeshUpdate();
             Bounds bounds = dialogueText.textBounds;
             RectTransform rectTransform = line.rectTransform;
-            rectTransform.localPosition = new Vector3(bounds.center.x, bounds.center.y, 0f);
+            rectTransform.localPosition = new Vector3(bounds.center.x + objectiveLineOffset.x, bounds.center.y + objectiveLineOffset.y, 0f);
             rectTransform.sizeDelta = new Vector2(Mathf.Max(1f, bounds.size.x), Mathf.Max(1f, objectiveStrikeLineHeight));
 
             Color color = objectiveCompleteColor;
@@ -582,6 +609,12 @@ namespace Week14.Tutorial
 
             defaultDialogueColor = dialogueText.color;
             hasDefaultDialogueColor = true;
+
+            if (objectiveKeyText != null && !hasDefaultObjectiveKeyColor)
+            {
+                defaultObjectiveKeyColor = objectiveKeyText.color;
+                hasDefaultObjectiveKeyColor = true;
+            }
         }
 
         private void SetDialogueColor(Color color)
@@ -591,6 +624,27 @@ namespace Week14.Tutorial
             {
                 dialogueText.color = color;
             }
+        }
+
+        private void SetObjectiveKeyColor(Color color)
+        {
+            CacheDefaultDialogueColor();
+            if (objectiveKeyText != null)
+            {
+                objectiveKeyText.color = color;
+            }
+        }
+
+        private void SetObjectiveKeyAlpha(float alpha)
+        {
+            if (objectiveKeyText == null)
+            {
+                return;
+            }
+
+            Color color = objectiveKeyText.color;
+            color.a = Mathf.Clamp01(alpha);
+            objectiveKeyText.color = color;
         }
 
         private void CacheShownPosition()

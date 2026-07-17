@@ -618,6 +618,7 @@ namespace Week14.Tutorial
             {
                 yield return objectiveDialoguePanel.PlayObjectiveCompleted(
                     FormatObjective(step, goal, goal),
+                    FormatObjectiveKeyText(step),
                     fadeOut: false,
                     clearText: false);
                 yield return objectiveDialoguePanel.HideAnimated();
@@ -1342,9 +1343,24 @@ namespace Week14.Tutorial
                 .Replace("{1}", goal.ToString());
         }
 
+        private string FormatObjectiveKeyText(TutorialStepId step)
+        {
+            TutorialStepContent content = dialogueSet != null ? dialogueSet.GetStep(step) : null;
+            if (content == null)
+            {
+                return string.Empty;
+            }
+
+            return content.HasLocalizedObjectiveKeyText
+                ? content.LocalizedObjectiveKeyText.GetLocalizedString()
+                : content.ObjectiveKeyText;
+        }
+
         private void ShowObjective(TutorialStepId step, int goal)
         {
-            objectiveDialoguePanel?.ShowObjective(FormatObjective(step, GetStepProgress(step), goal));
+            objectiveDialoguePanel?.ShowObjective(
+                FormatObjective(step, GetStepProgress(step), goal),
+                FormatObjectiveKeyText(step));
         }
 
         private void BeginMoveDestinationObjective()
