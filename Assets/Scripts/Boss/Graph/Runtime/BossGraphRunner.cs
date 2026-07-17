@@ -101,6 +101,34 @@ namespace Week14.Enemy
             }
         }
 
+        // 개발용 패턴 패널에서 기존 실행 규칙을 그대로 사용해 지정 패턴만 한 번 실행한다.
+        public IEnumerator RunPatternOnce(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            BossActionContext context)
+        {
+            if (graph == null || pattern == null || context == null)
+            {
+                yield break;
+            }
+
+            activeGraph = graph;
+            ResetTraversalState();
+            try
+            {
+                yield return ExecutePattern(graph, pattern, context);
+                context.Stop();
+            }
+            finally
+            {
+                BossGraphRuntimeState.Clear(graph);
+                if (activeGraph == graph)
+                {
+                    activeGraph = null;
+                }
+            }
+        }
+
         private IEnumerator RunLegacyNodeLoop(BossGraphAsset graph, BossActionContext context)
         {
             int immediateTransitionCount = 0;

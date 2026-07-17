@@ -30,6 +30,7 @@ namespace Week14.Enemy
         private bool pendingGroggyEnter;
         private float pendingGroggySeconds;
         private float groggyRemainingSeconds;
+        private bool isDebugPatternControlActive;
 
         protected override BossGraphAsset GraphAsset => bossGraph;
         protected BossGraphAsset BossGraph => bossGraph;
@@ -45,7 +46,10 @@ namespace Week14.Enemy
 
         protected override void OnBossTick()
         {
-            if (patternRoutine != null || GraphAsset == null || !CanStartGraphPattern())
+            if (isDebugPatternControlActive
+                || patternRoutine != null
+                || GraphAsset == null
+                || !CanStartGraphPattern())
             {
                 return;
             }
@@ -172,13 +176,65 @@ namespace Week14.Enemy
             return groggyAnimators;
         }
 
-        protected virtual BossActionContext CreateGraphContext()
+        protected virtual BossActionContext CreateGraphContext(
+            BossGraphAsset graphAsset = null,
+            bool skipApproachMovement = false)
         {
             return new BossActionContext(
                 this,
                 Stop,
                 () => IsExecutionPaused,
-                GraphAsset);
+                graphAsset != null ? graphAsset : GraphAsset,
+                skipApproachMovement);
+        }
+
+        internal bool IsDebugPatternRunning => isDebugPatternControlActive && patternRoutine != null;
+
+        internal void SetDebugPatternControlActive(bool active)
+        {
+            if (isDebugPatternControlActive == active)
+            {
+                return;
+            }
+
+            StopGraphPattern();
+            isDebugPatternControlActive = active;
+        }
+
+        internal bool TryRunDebugPatternOnce(BossGraphAsset graph, string patternId)
+        {
+            if (graph == null || string.IsNullOrWhiteSpace(patternId))
+            {
+                return false;
+            }
+
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogWarning($"{name}: 비활성 상태에서는 디버그 패턴을 실행할 수 없습니다.", this);
+                return false;
+            }
+
+            SetDebugPatternControlActive(true);
+            BossGraphPattern pattern = graph.GetPattern(patternId);
+            if (pattern == null || pattern.NodeKeys == null || pattern.NodeKeys.Count == 0)
+            {
+                Debug.LogWarning($"{name}: 그래프에서 실행 가능한 패턴 '{patternId}'을 찾지 못했습니다.", this);
+                return false;
+            }
+
+            StopGraphPattern();
+            graphRunner.RestartAfterInterruption();
+            graphContext = CreateGraphContext(graph, skipApproachMovement: true);
+            patternRoutine = StartCoroutine(RunDebugPatternOnce(graph, pattern, graphContext));
+            return true;
+        }
+
+        internal void StopDebugPattern()
+        {
+            if (isDebugPatternControlActive)
+            {
+                StopGraphPattern();
+            }
         }
 
         // 그로기/실행 연출 등 "같은 그래프 안에서" 패턴 코루틴이 잠깐 끊기는 경우 쓴다. 쿨다운/Min
@@ -242,6 +298,27 @@ namespace Week14.Enemy
             finally
             {
                 graphContext = null;
+                patternRoutine = null;
+            }
+        }
+
+        private IEnumerator RunDebugPatternOnce(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            BossActionContext context)
+        {
+            try
+            {
+                yield return graphRunner.RunPatternOnce(graph, pattern, context);
+            }
+            finally
+            {
+                Stop();
+                if (graphContext == context)
+                {
+                    graphContext = null;
+                }
+
                 patternRoutine = null;
             }
         }

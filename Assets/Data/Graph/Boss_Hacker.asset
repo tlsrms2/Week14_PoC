@@ -214,7 +214,7 @@ MonoBehaviour:
     action:
       rid: 6489939146365468752
     sequences: []
-    editorPosition: {x: 38, y: 1013}
+    editorPosition: {x: 211, y: 1011}
   - nodeId: Fire Sniping Projectile5
     nodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
     nodeKind: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 6489939146365468754
     sequences: []
-    editorPosition: {x: 392, y: 1013}
+    editorPosition: {x: 732, y: 1002}
   - nodeId: Fire Sniping Projectile6
     nodeGuid: e64b85ffc433432ab9f5517d4c3d8839
     nodeKind: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
     action:
       rid: 6489939146365468755
     sequences: []
-    editorPosition: {x: 197, y: 1012}
+    editorPosition: {x: 370, y: 1010}
   - nodeId: Fire Sniping Projectile7
     nodeGuid: 49b16033471c4f81961df300bcc3bb47
     nodeKind: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
     action:
       rid: 6489939146365468756
     sequences: []
-    editorPosition: {x: 545, y: 1009}
+    editorPosition: {x: 885, y: 998}
   - nodeId: Dash2
     nodeGuid: 5712dd11553e4d23a3ac60c782a69f7f
     nodeKind: 0
@@ -1267,7 +1267,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559021
     sequences: []
-    editorPosition: {x: 1732, y: 945}
+    editorPosition: {x: 1732, y: 943}
   - nodeId: Weapon Wire Orbit4
     nodeGuid: ce37fd6e869d404cb879e128f12d1252
     nodeKind: 0
@@ -1916,6 +1916,24 @@ MonoBehaviour:
       rid: 6489939224946016339
     sequences: []
     editorPosition: {x: 1912, y: 465}
+  - nodeId: Wait1
+    nodeGuid: ad26ac56183949f290607c2486f6579b
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939249705517261
+    sequences: []
+    editorPosition: {x: 68, y: 1010}
+  - nodeId: Wait2
+    nodeGuid: 25875e48072a4014be68319654d7fec1
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939249705517262
+    sequences: []
+    editorPosition: {x: 556, y: 1006}
   patterns:
   - patternId: P1-1
     nodeGuids:
@@ -1991,15 +2009,19 @@ MonoBehaviour:
     nodeGuids:
     - 1ca7b96ca4084b1e92962084b773d07c
     - 47af3cd50ff44bc29dc151e3b09eadb1
+    - ad26ac56183949f290607c2486f6579b
     - 4e3d535d597d4ca0a6711f65899b8e60
     - e64b85ffc433432ab9f5517d4c3d8839
+    - 25875e48072a4014be68319654d7fec1
     - 0f54198a01fe491b842a69e9001d6aa1
     - 49b16033471c4f81961df300bcc3bb47
     nodeIds:
     - Charge Dash1
     - Fire Sniping Projectile5
+    - Wait1
     - Charge Dash2
     - Fire Sniping Projectile6
+    - Wait2
     - Charge Dash3
     - Fire Sniping Projectile7
   - patternId: P4
@@ -2770,22 +2792,6 @@ MonoBehaviour:
     toNodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
     fromNodeId: Charge Dash1
     toNodeId: Fire Sniping Projectile5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
-    toNodeGuid: 4e3d535d597d4ca0a6711f65899b8e60
-    fromNodeId: Fire Sniping Projectile5
-    toNodeId: Charge Dash2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e64b85ffc433432ab9f5517d4c3d8839
-    toNodeGuid: 0f54198a01fe491b842a69e9001d6aa1
-    fromNodeId: Fire Sniping Projectile6
-    toNodeId: Charge Dash3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3734,6 +3740,38 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
+    toNodeGuid: ad26ac56183949f290607c2486f6579b
+    fromNodeId: Fire Sniping Projectile5
+    toNodeId: Wait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ad26ac56183949f290607c2486f6579b
+    toNodeGuid: 4e3d535d597d4ca0a6711f65899b8e60
+    fromNodeId: Wait1
+    toNodeId: Charge Dash2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e64b85ffc433432ab9f5517d4c3d8839
+    toNodeGuid: 25875e48072a4014be68319654d7fec1
+    fromNodeId: Fire Sniping Projectile6
+    toNodeId: Wait2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 25875e48072a4014be68319654d7fec1
+    toNodeGuid: 0f54198a01fe491b842a69e9001d6aa1
+    fromNodeId: Wait2
+    toNodeId: Charge Dash3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
     toNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
@@ -4005,8 +4043,8 @@ MonoBehaviour:
     toNodeId: Fire Sequential Sweep43
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: P11
+  debugForceSinglePattern: 1
+  debugForcedPatternId: P9
   references:
     version: 2
     RefIds:
@@ -5182,11 +5220,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5195,9 +5228,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5275,11 +5307,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5288,15 +5315,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -5336,11 +5361,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5349,9 +5369,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5440,11 +5459,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5453,9 +5467,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5544,11 +5557,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5557,9 +5565,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5620,8 +5627,6 @@ MonoBehaviour:
     - rid: 6489939146365468751
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
@@ -5693,15 +5698,13 @@ MonoBehaviour:
     - rid: 6489939146365468752
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
         approachSpeed: 10
-        maxApproachSeconds: 3
+        maxApproachSeconds: 0
         approachSpeedCurve:
           serializedVersion: 2
           m_Curve:
@@ -5794,11 +5797,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5807,9 +5805,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5870,15 +5867,13 @@ MonoBehaviour:
     - rid: 6489939146365468754
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.15
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
         approachSpeed: 10
-        maxApproachSeconds: 3
+        maxApproachSeconds: 0
         approachSpeedCurve:
           serializedVersion: 2
           m_Curve:
@@ -5971,11 +5966,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -5984,9 +5974,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -6075,11 +6064,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6088,9 +6072,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -6485,11 +6468,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6498,15 +6476,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -6751,11 +6727,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6764,9 +6735,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -6907,11 +6877,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6920,15 +6885,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -6957,11 +6920,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -6970,15 +6928,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -7215,11 +7171,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7228,9 +7179,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7308,11 +7258,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7321,15 +7266,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -7894,11 +7837,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7907,15 +7845,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -7944,11 +7880,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -7957,15 +7888,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -7994,11 +7923,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8007,15 +7931,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -8232,11 +8154,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8245,15 +8162,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -8282,11 +8197,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8295,15 +8205,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -8416,11 +8324,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8429,9 +8332,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8466,11 +8368,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8479,15 +8376,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 12
         spawnCircleRadius: 0.4
@@ -8527,11 +8422,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8540,9 +8430,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8631,11 +8520,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8644,9 +8528,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8735,11 +8618,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -8748,9 +8626,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8907,8 +8784,6 @@ MonoBehaviour:
     - rid: 6489939186800656661
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -8980,8 +8855,6 @@ MonoBehaviour:
     - rid: 6489939186800656662
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -9093,8 +8966,6 @@ MonoBehaviour:
     - rid: 6489939186800656664
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
@@ -9166,8 +9037,6 @@ MonoBehaviour:
     - rid: 6489939186800656665
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
@@ -9267,11 +9136,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9280,9 +9144,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9343,8 +9206,6 @@ MonoBehaviour:
     - rid: 6489939186800656667
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.15
         recoverySeconds: 0
@@ -9444,11 +9305,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9457,9 +9313,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9548,11 +9403,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9561,9 +9411,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9849,11 +9698,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9862,15 +9706,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -9899,11 +9741,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9912,15 +9749,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -9949,11 +9784,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -9962,15 +9792,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -9999,11 +9827,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10012,15 +9835,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -10049,11 +9870,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10062,15 +9878,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -10118,11 +9932,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10131,9 +9940,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10222,11 +10030,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10235,9 +10038,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10326,11 +10128,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10339,9 +10136,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10430,11 +10226,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10443,9 +10234,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10537,11 +10327,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10550,9 +10335,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10682,11 +10466,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10695,9 +10474,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10789,11 +10567,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10802,9 +10575,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10934,11 +10706,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -10947,9 +10714,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11010,8 +10776,6 @@ MonoBehaviour:
     - rid: 6489939186800656697
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -11111,11 +10875,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -11124,9 +10883,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11292,7 +11050,6 @@ MonoBehaviour:
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         launchOriginPath: 
-        animationTriggerName: FireWire
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 0
@@ -11695,11 +11452,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -11708,15 +11460,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -11855,11 +11605,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -11868,15 +11613,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -12160,11 +11903,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12173,9 +11911,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12316,11 +12053,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12329,15 +12061,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -12366,11 +12096,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12379,15 +12104,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -12620,11 +12343,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12633,9 +12351,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12713,11 +12430,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -12726,15 +12438,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -13295,11 +13005,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13308,15 +13013,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -13345,11 +13048,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13358,15 +13056,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -13395,11 +13091,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13408,15 +13099,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -13629,11 +13318,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13642,15 +13326,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -13679,11 +13361,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13692,15 +13369,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -13813,11 +13488,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -13826,9 +13496,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13842,8 +13511,6 @@ MonoBehaviour:
     - rid: 6489939200651559019
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -13915,8 +13582,6 @@ MonoBehaviour:
     - rid: 6489939200651559020
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -14253,11 +13918,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14266,15 +13926,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -14303,11 +13961,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14316,15 +13969,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -14367,8 +14018,6 @@ MonoBehaviour:
     - rid: 6489939200651559028
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
@@ -14440,8 +14089,6 @@ MonoBehaviour:
     - rid: 6489939200651559029
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
@@ -14541,11 +14188,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14554,9 +14196,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14617,8 +14258,6 @@ MonoBehaviour:
     - rid: 6489939200651559031
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.15
         recoverySeconds: 0
@@ -14718,11 +14357,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14731,9 +14365,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14822,11 +14455,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14835,9 +14463,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14915,11 +14542,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14928,15 +14550,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -14965,11 +14585,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -14978,15 +14593,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -15015,11 +14628,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -15028,15 +14636,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -15088,7 +14694,6 @@ MonoBehaviour:
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         launchOriginPath: 
-        animationTriggerName: FireWire
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 1
@@ -15175,11 +14780,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -15188,9 +14788,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -15231,11 +14830,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -15244,9 +14838,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -15257,7 +14850,6 @@ MonoBehaviour:
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         launchOriginPath: 
-        animationTriggerName: FireWire
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 0
@@ -15656,11 +15248,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -15669,15 +15256,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -15816,11 +15401,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -15829,15 +15409,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 0.4
@@ -16081,11 +15659,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -16094,15 +15667,13 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        animationTriggerName: FireSweep
         windupSeconds: 0.35
         bulletCount: 8
         spawnCircleRadius: 0.4
@@ -16201,8 +15772,6 @@ MonoBehaviour:
     - rid: 6489939200651559084
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -16274,8 +15843,6 @@ MonoBehaviour:
     - rid: 6489939200651559085
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -16654,11 +16221,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -16667,9 +16229,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -16758,11 +16319,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -16771,9 +16327,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -16862,11 +16417,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -16875,9 +16425,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -16966,11 +16515,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -16979,9 +16523,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17174,7 +16717,6 @@ MonoBehaviour:
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         launchOriginPath: 
-        animationTriggerName: FireWire
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 1
@@ -17261,11 +16803,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17274,9 +16811,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17317,11 +16853,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17330,9 +16861,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17373,11 +16903,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17386,9 +16911,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17518,11 +17042,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17531,9 +17050,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17625,11 +17143,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17638,9 +17151,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17770,11 +17282,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17783,9 +17290,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17846,8 +17352,6 @@ MonoBehaviour:
     - rid: 6489939200651559105
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupTriggerName: ChargeDashWindup
-        dashTriggerName: ChargeDash
         windupSeconds: 0.6
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
@@ -17947,11 +17451,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -17960,9 +17459,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -18024,7 +17522,6 @@ MonoBehaviour:
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         launchOriginPath: 
-        animationTriggerName: FireWire
         windupSeconds: 0.25
         maxFlightSeconds: 3
         targetMode: 0
@@ -18229,6 +17726,393 @@ MonoBehaviour:
         hackingPerHit: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939224946016331
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016332
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016333
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016334
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016335
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016336
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016337
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016338
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
+    - rid: 6489939224946016339
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 18
+        spawnCircleRadius: 0.4
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0
     - rid: 6489939224946016340
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18291,453 +18175,11 @@ MonoBehaviour:
           m_RotationOrder: 4
         speedCurveInitialized: 1
         stopWhenFinished: 1
-    - rid: 6489939224946016331
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+    - rid: 6489939249705517261
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016332
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+        seconds: 0.02
+    - rid: 6489939249705517262
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016333
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016334
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016335
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016336
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016337
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016338
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
-    - rid: 6489939224946016339
-      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        chargeSecondsOverride: -1
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        animationTriggerName: FireSweep
-        windupSeconds: 0
-        bulletCount: 18
-        spawnCircleRadius: 0.4
-        spawnArcDegrees: 360
-        clockwise: 0
-        trackPlayerPerShot: 0
-        fireInterval: 0.02
-        recoverySeconds: 0
+        seconds: 0.02

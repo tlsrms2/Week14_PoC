@@ -8,6 +8,10 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerSnipingFireAction : BossAction, IBossActionDurationProvider
     {
+        private const string ShootAnimationTrigger = "Shoot";
+        private const string ReleaseAnimationTrigger = "Release";
+        private const string HoldTelegraphAnimationParameter = "HoldShootTelegraph";
+
         [Header("Projectile")]
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
@@ -59,6 +63,7 @@ namespace Week14.Enemy
 
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
             BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            context.BeginSnipingTelegraph(ShootAnimationTrigger, HoldTelegraphAnimationParameter);
             if (windupSeconds > 0f)
             {
                 if (context.Boss is HackerHologramBoss hologram)
@@ -125,6 +130,7 @@ namespace Week14.Enemy
             }
 
             ResolveShot(context, originSpec, aimSpec, out Vector3 spawnOrigin, out Vector2 finalDirection);
+            context.ReleaseSnipingShot(HoldTelegraphAnimationParameter, ReleaseAnimationTrigger);
             EnemyProjectile firedProjectile = context.FireProjectile(
                 projectile,
                 spawnOrigin,

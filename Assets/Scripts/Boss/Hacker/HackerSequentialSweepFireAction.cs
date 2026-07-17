@@ -8,6 +8,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerSequentialSweepFireAction : BossAction, IBossActionDurationProvider
     {
+        private const string ScatterAnimationTrigger = "Scatter";
+
         [Header("Projectile")]
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
@@ -18,7 +20,6 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         [Header("Sweep")]
-        [SerializeField] private string animationTriggerName = "FireSweep";
         [SerializeField, Min(0f)] private float windupSeconds = 0.35f;
         [SerializeField, Min(1)] private int bulletCount = 8;
         [SerializeField, Min(0.01f)] private float spawnCircleRadius = 2.5f;
@@ -44,10 +45,6 @@ namespace Week14.Enemy
             if (context.IsMeleeAdvanceSynchronized)
             {
                 yield return WaitForMeleeAttackAdvanceCompletion(context);
-            }
-            else
-            {
-                context.PlayAnimationTrigger(animationTriggerName);
             }
 
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
@@ -82,6 +79,11 @@ namespace Week14.Enemy
                     : lockedPlayerDirection;
                 Vector2 spawnDirection = Rotate(playerDirection, sweepOffset);
                 Vector3 origin = context.Boss.transform.position + (Vector3)(spawnDirection * spawnCircleRadius);
+                if (index == 0)
+                {
+                    context.PlayAnimationTrigger(ScatterAnimationTrigger);
+                }
+
                 EnemyProjectile firedProjectile = context.FireProjectile(
                     settings,
                     origin,

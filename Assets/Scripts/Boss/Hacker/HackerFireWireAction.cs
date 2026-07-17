@@ -14,9 +14,13 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerFireWireAction : BossAction, IBossActionDurationProvider
     {
+        private const string WireShotAnimationTrigger = "WireShot";
+        private const string GrabAnimationTrigger = "Grab";
+        private const string IsWireShotActiveAnimationParameter = "IsWireShotActive";
+        private const string IsWireGrabbingAnimationParameter = "IsWireGrabbing";
+
         [Header("Wire")]
         [SerializeField, BossGraphBossChildPath] private string launchOriginPath;
-        [SerializeField] private string animationTriggerName = "FireWire";
         [SerializeField, Min(0f)] private float windupSeconds = 0.25f;
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 2f;
         [SerializeField] private HackerFireWireTargetMode targetMode;
@@ -49,84 +53,100 @@ namespace Week14.Enemy
 
             hacker.SetLastFireWireResult(HackerFireWireResult.Missed);
             bool playerGrabbed = false;
-            context.PlayAnimationTrigger(animationTriggerName);
-            yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
-
-            int count = Mathf.Max(1, fireCount);
-            for (int shotIndex = 0; shotIndex < count; shotIndex++)
+            try
             {
-                if (shotIndex > 0)
-                {
-                    context.PlayAnimationTrigger(animationTriggerName);
-                }
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, true);
+                context.RestartAnimationTrigger(WireShotAnimationTrigger);
+                yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
-                if (!TryCreateWire(context, hacker, out HackerWire wire))
+                int count = Mathf.Max(1, fireCount);
+                for (int shotIndex = 0; shotIndex < count; shotIndex++)
                 {
-                    break;
-                }
-
-                HackerWireResolution? resolution = null;
-                Vector3 wallPosition = default;
-                Action<HackerWireResolution> handleResolution = result =>
-                {
-                    resolution = result;
-                    if (result == HackerWireResolution.WallAttached)
+                    if (shotIndex > 0)
                     {
-                        wallPosition = wire.Position;
+                        context.SetAnimationBool(IsWireShotActiveAnimationParameter, true);
+                        context.RestartAnimationTrigger(WireShotAnimationTrigger);
                     }
-                };
-                wire.Resolved += handleResolution;
 
-                try
-                {
-                    float elapsed = 0f;
-                    while (elapsed < maxFlightSeconds && !resolution.HasValue)
+                    if (!TryCreateWire(context, hacker, out HackerWire wire))
                     {
-                        if (context.IsExecutionPaused)
+                        context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                        break;
+                    }
+
+                    HackerWireResolution? resolution = null;
+                    Vector3 wallPosition = default;
+                    Action<HackerWireResolution> handleResolution = result =>
+                    {
+                        resolution = result;
+                        if (result == HackerWireResolution.WallAttached)
                         {
-                            context.Stop();
+                            wallPosition = wire.Position;
+                        }
+                    };
+                    wire.Resolved += handleResolution;
+
+                    try
+                    {
+                        float elapsed = 0f;
+                        while (elapsed < maxFlightSeconds && !resolution.HasValue)
+                        {
+                            if (context.IsExecutionPaused)
+                            {
+                                context.Stop();
+                                yield return null;
+                                continue;
+                            }
+
+                            elapsed += EnemyTimeScale.DeltaTime;
                             yield return null;
-                            continue;
                         }
 
-                        elapsed += EnemyTimeScale.DeltaTime;
-                        yield return null;
+                        if (resolution == HackerWireResolution.WallAttached)
+                        {
+                            yield return FlyBossToWall(context, wallPosition);
+                        }
+                        else if (resolution == HackerWireResolution.PlayerGrabbed)
+                        {
+                            playerGrabbed = true;
+                            context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                            context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
+                            context.RestartAnimationTrigger(GrabAnimationTrigger);
+                            yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
+                        }
+                    }
+                    finally
+                    {
+                        context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                        context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
+                        if (wire != null)
+                        {
+                            wire.Resolved -= handleResolution;
+                            wire.BeginDissolve();
+                        }
                     }
 
-                    if (resolution == HackerWireResolution.WallAttached)
+                    if (playerGrabbed)
                     {
-                        yield return FlyBossToWall(context, wallPosition);
+                        break;
                     }
-                    else if (resolution == HackerWireResolution.PlayerGrabbed)
+
+                    if (shotIndex < count - 1)
                     {
-                        playerGrabbed = true;
-                        yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
-                    }
-                }
-                finally
-                {
-                    if (wire != null)
-                    {
-                        wire.Resolved -= handleResolution;
-                        wire.BeginDissolve();
+                        yield return HackerMeleeAttackAction.Wait(context, repeatIntervalSeconds);
                     }
                 }
 
-                if (playerGrabbed)
-                {
-                    break;
-                }
-
-                if (shotIndex < count - 1)
-                {
-                    yield return HackerMeleeAttackAction.Wait(context, repeatIntervalSeconds);
-                }
+                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+                hacker.SetLastFireWireResult(playerGrabbed
+                    ? HackerFireWireResult.PlayerGrabbed
+                    : HackerFireWireResult.Missed);
             }
-
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-            hacker.SetLastFireWireResult(playerGrabbed
-                ? HackerFireWireResult.PlayerGrabbed
-                : HackerFireWireResult.Missed);
+            finally
+            {
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
+            }
         }
 
         public bool TryGetDurationSeconds(out float seconds)

@@ -636,37 +636,6 @@ MonoBehaviour:
   pressedCursorImage: {fileID: 1646793287}
   dontDestroyOnLoad: 1
   persistentCanvasSortingOrder: 32767
---- !u!1 &207757208
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 207757209}
-  m_Layer: 6
-  m_Name: Head
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &207757209
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207757208}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.282, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1505174553}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &261457479 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6889689407787825621, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
@@ -2243,46 +2212,6 @@ PrefabInstance:
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: hologramStartPhaseNumber
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.speed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.prefab
-      value: 
-      objectReference: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.radius
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.bulletDamage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.trailSeconds
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.chargeSeconds
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.chargeDriftSpeed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: parryProjectileSettings.aimAtPlayerWhileCharging
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 417437570628517833, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2329,10 +2258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 207757209}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
 --- !u!114 &1505174552 stripped
@@ -2346,11 +2272,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0acd04e99741d4b4785fb2a359422af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HackerBossAI
---- !u!4 &1505174553 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-  m_PrefabInstance: {fileID: 1505174551}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1521775367 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 739125593154593292, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
@@ -3045,6 +2966,10 @@ PrefabInstance:
     - target: {fileID: 7625243295146896537, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Name
       value: UICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7625243295146896537, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

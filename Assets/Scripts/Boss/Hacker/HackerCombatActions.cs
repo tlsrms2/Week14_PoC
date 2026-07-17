@@ -25,6 +25,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerMeleeAttackAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
     {
+        private const string ReleaseAnimationTrigger = "Release";
+
         [Header("Attack")]
         [SerializeField] private HackerMeleeAttackStyle style;
         [FormerlySerializedAs("cutTriggerName")]
@@ -131,6 +133,7 @@ namespace Week14.Enemy
                 bool wasParried = parryBait?.WasParried == true;
                 parryBait?.Dispose();
                 parryBait = null;
+                context.PlayAnimationTrigger(ReleaseAnimationTrigger);
 
                 if (wasParried)
                 {
@@ -295,6 +298,7 @@ namespace Week14.Enemy
         private IEnumerator ApproachToMeleeDistance(BossActionContext context)
         {
             if (context?.Boss == null
+                || context.SkipApproachMovement
                 || approachSpeed <= 0f
                 || maxApproachSeconds <= 0f
                 || context.Boss.DistanceToPlayer() <= approachStartDistance)
@@ -482,6 +486,8 @@ namespace Week14.Enemy
     [Serializable]
     public class HackerThrustAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
     {
+        private const string ReleaseAnimationTrigger = "Release";
+
         [SerializeField] private string animationTriggerName = "Thrust";
         [SerializeField, Min(0f)] private float windupSeconds = 0.5f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
@@ -575,6 +581,7 @@ namespace Week14.Enemy
 
             bool wasParried = parryBait?.WasParried == true;
             parryBait?.Dispose();
+            context.PlayAnimationTrigger(ReleaseAnimationTrigger);
             if (wasParried)
             {
                 context.SetFacingLocked(false);
@@ -663,6 +670,7 @@ namespace Week14.Enemy
         private IEnumerator ApproachToThrustDistance(BossActionContext context)
         {
             if (context?.Boss == null
+                || context.SkipApproachMovement
                 || approachSpeed <= 0f
                 || maxApproachSeconds <= 0f
                 || context.Boss.DistanceToPlayer() <= approachStartDistance)
