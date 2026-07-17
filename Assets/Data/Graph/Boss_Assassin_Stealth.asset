@@ -1284,6 +1284,14 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
+    toNodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
+    fromNodeId: Fire Parry Suppression Bait1
+    toNodeId: Fire Next Clone Shooter13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
     toNodeGuid: cadb200c2ec04400ba86ad4aba1474fd
@@ -1379,12 +1387,6 @@ MonoBehaviour:
     toNodeGuid: 177366f5048a447ea054c23ef2b9d903
     fromNodeId: Fire Radial Emission13
     toNodeId: Fire Next Clone Shooter5
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
-    toNodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
-    fromNodeId: Fire Parry Suppression Bait1
-    toNodeId: Fire Next Clone Shooter13
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
@@ -3789,7 +3791,7 @@ MonoBehaviour:
       data:
         cloneCount: 5
         cloneIntroSeconds: 0.2
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 180
         includeBossPosition: 0
         teleportHiddenSeconds: 0
     - rid: 4705778205525803442
@@ -3890,7 +3892,7 @@ MonoBehaviour:
         aim:
           mode: 0
           angleDegrees: 0
-        baitDurationSeconds: 1
+        baitDurationSeconds: 0.8
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
