@@ -6532,9 +6532,6 @@ MonoBehaviour:
   deathTriggerName: Die
   finalDeathExplosionSeconds: 1.4
   finalDeathExplosionCount: 5
-  finalDeathExplosionScale: 1.2
-  finalDeathExplosionSparkCount: 24
-  finalDeathExplosionColor: {r: 1, g: 0.55, b: 0.12, a: 1}
   finalDeathExplosionPrefab: {fileID: 507182190992537921, guid: 0bd30bab3f957254f8fc4b3ef1d43dfa, type: 3}
   finalDeathExplosionPrefabLifetimeSeconds: 2
   finalDeathExplosionAreaCenter: {fileID: 28455202}
