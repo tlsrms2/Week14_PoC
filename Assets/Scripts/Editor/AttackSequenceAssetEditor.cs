@@ -132,6 +132,7 @@ internal static class BossGraphActionEditorUtility
         new("Assassin/Fire Parry Suppression Bait", typeof(AssassinFireParrySuppressionBaitAction), () => new AssassinFireParrySuppressionBaitAction()),
         new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
         new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
+        new("Assassin/Fire Next Clone Shooter (Atk2)", typeof(AssassinFireNextCloneShooterAtk2Action), () => new AssassinFireNextCloneShooterAtk2Action()),
         new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
         new("Assassin/Teleport Around Player", typeof(AssassinTeleportAroundPlayerAction), () => new AssassinTeleportAroundPlayerAction()),
         new("Hacker/Melee Attack", typeof(HackerMeleeAttackAction), () => new HackerMeleeAttackAction()),
@@ -352,6 +353,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(AssassinFireNextCloneShooterAction))
         {
             return "Assassin 전용 액션입니다. Spawn Clone Shooters가 채워둔 발사 대기열에서 다음 순서 하나를 꺼내 그 위치에서 투사체를 발사합니다. 분신 차례였다면 발사 직후 그 분신이 페이드아웃되며 사라집니다. 대기열이 비어 있으면 아무 것도 하지 않습니다. 이 노드를 여러 번(원하는 만큼) 배치하고 사이에 Wait 등을 끼워 넣어 템포를 자유롭게 조절하세요.";
+        }
+
+        if (actionType == typeof(AssassinFireNextCloneShooterAtk2Action))
+        {
+            return "Fire Next Clone Shooter와 동일하게 동작하지만, 발사 전 재생하는 애니메이션이 Atk1 콤보 대신 Atk2(DoAtk2)입니다. 나머지 발사/대기열/페이드아웃 동작은 완전히 동일합니다.";
         }
 
         if (actionType == typeof(AssassinSpawnRandomBombsAction))
