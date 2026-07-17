@@ -4950,7 +4950,7 @@ MonoBehaviour:
     - rid: 4705778220989677838
       type: {class: AssassinFireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uD50C\uB808\uC774\uC5B4\uC870\uC900\uC77C\uBC18\uD0C4"
+        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
