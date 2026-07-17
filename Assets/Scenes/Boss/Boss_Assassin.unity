@@ -715,7 +715,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.92036366, y: -0.51131153}
+  m_Offset: {x: -0.9203634, y: -3.684397}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -725,7 +725,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 17.634668, y: 11.021706}
+  m_Size: {x: 17.634668, y: 10.594242}
   m_EdgeRadius: 0
 --- !u!1001 &306593782
 PrefabInstance:
@@ -3324,6 +3324,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map1_Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 3852833696087534762, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3852833696087534762, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_CompositePaths.m_Paths.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433867525501855556, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6292351910150845621, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
@@ -3366,6 +3378,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6292351910150845621, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885586951120756698, guid: 914109cfec0b1ff468e260e64c587556, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -4662,7 +4678,7 @@ MonoBehaviour:
       trailWidthMultiplier: 3
   - projectileName: "\uC720\uB3C4\uD0C4"
     projectile:
-      prefab: {fileID: -8187778193616843994, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+      prefab: {fileID: 5357817955291268167, guid: e25037cb3c3f0a64b9bb1ed45dbc5b9e, type: 3}
       bulletDamage: 1
       chargeSeconds: 2
       chargeDriftSpeed: 1
@@ -4726,7 +4742,7 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
   patternGroggyAnimator: {fileID: 0}
-  stealthGraph: {fileID: 11400000, guid: 8997bae306e02704a96acdc774de9398, type: 2}
+  stealthGraph: {fileID: 11400000, guid: 38c539ec5ca490e4c8f6941891dacb37, type: 2}
   daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
   stealthVisualTargetA: {fileID: 1518477478}
   stealthAlphaA: 30

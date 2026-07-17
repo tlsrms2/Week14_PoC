@@ -174,6 +174,7 @@ namespace Week14.Combat
             set => ApplyFlightDirection(value);
         }
         protected virtual bool IsHomingProjectile => false;
+        protected virtual bool IgnoresWalls => false;
         public float ChargeProgress01 => projectileChargeSeconds > 0f
             ? 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds)
             : 1f;

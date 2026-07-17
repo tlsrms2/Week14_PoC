@@ -14,7 +14,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float duration = 0.3f;
         [Tooltip("켜면 아래 각도 범위 대신, 플레이어를 바라보는 방향 기준 좌/우(90도) 중 하나를 무작위로 골라 이동합니다.")]
         [SerializeField] private bool strafeAroundPlayer;
-        [Tooltip("Strafe Around Player가 꺼져 있을 때 사용하는 랜덤 방향의 각도 범위입니다. 0~360이면 전방위, 예를 들어 -60~60이면 보스의 현재 오른쪽 기준 부채꼴 범위로 제한됩니다.")]
+        [Tooltip("Strafe Around Player가 꺼져 있을 때 사용하는 랜덤 방향의 각도 범위입니다. 0도가 플레이어 방향, 180도가 플레이어 반대편 기준입니다. 0~360이면 전방위, 예를 들어 -60~60이면 플레이어 쪽 기준 부채꼴 범위로 제한됩니다.")]
         [SerializeField] private float minAngleDegrees;
         [SerializeField] private float maxAngleDegrees = 360f;
         [SerializeField] private AnimationCurve speedCurve;
@@ -86,7 +86,9 @@ namespace Week14.Enemy
 
             float lowAngle = Mathf.Min(minAngleDegrees, maxAngleDegrees);
             float highAngle = Mathf.Max(minAngleDegrees, maxAngleDegrees);
-            return BossActionContext.AngleToDirection(UnityEngine.Random.Range(lowAngle, highAngle));
+            Vector2 directionToPlayer = context.GetDirectionToPlayer(context.OriginPosition);
+            float playerAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+            return BossActionContext.AngleToDirection(playerAngle + UnityEngine.Random.Range(lowAngle, highAngle));
         }
 
         // ConductorSpawnTurretsAction의 지면 판정 방식(콜라이더 + 타일맵 둘 다 확인)과 동일한 방식이다 —

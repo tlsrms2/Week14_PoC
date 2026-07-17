@@ -7,8 +7,9 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
+    // AssassinFireNextCloneShooterAction과 동일하게 동작하되, Atk1 콤보 대신 Atk2 애니메이션을 재생한다.
     [Serializable]
-    public sealed class AssassinFireNextCloneShooterAction : BossAction
+    public sealed class AssassinFireNextCloneShooterAtk2Action : BossAction
     {
         private enum FireMode
         {
@@ -48,14 +49,11 @@ namespace Week14.Enemy
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
-        // Anim-Assassin-char(.glow).controller의 Atk1 콤보 파라미터 이름과 정확히 일치해야 한다.
-        private const string IsAtk1Parameter = "isAtk1";
-        private const string DoAtk1Parameter = "DoAtk1";
-        private const string ContAtk1Parameter = "ContAtk1";
-        // Atk1-0.anim(윈드업) 재생 시간에 맞춘 대기: 0.35s clip / speed 1.
-        private const float AttackWindupSeconds = 0.3f;
-        [Tooltip("ContAtk1(타격 스윙) 트리거를 쏜 뒤 실제 총알이 발사되기까지 대기하는 시간(초)입니다. 스윙 모션과 발사 타이밍을 맞추는 용도입니다.")]
-        [SerializeField, Min(0f)] private float attackContinueDelaySeconds = 0.2f;
+        // Anim-Assassin-char(.glow).controller의 Atk2 파라미터 이름과 정확히 일치해야 한다.
+        private const string IsAtk2Parameter = "isAtk2";
+        private const string DoAtk2Parameter = "DoAtk2";
+        [Tooltip("DoAtk2 트리거를 쏜 뒤 실제 총알이 발사되기까지 대기하는 시간(초)입니다. Atk2 스윙 모션과 발사 타이밍을 맞추는 용도입니다. Atk2.anim 기준 약 0.28초.")]
+        [SerializeField, Min(0f)] private float attackDelaySeconds = 0.28f;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -65,7 +63,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            yield return PlaySingleAttackAnimation(context, clone);
+            yield return PlayAttackAnimation(context, clone);
 
             if (fireMode == FireMode.Burst)
             {
@@ -82,16 +80,13 @@ namespace Week14.Enemy
             }
         }
 
-        private IEnumerator PlaySingleAttackAnimation(BossActionContext context, AssassinClone clone)
+        private IEnumerator PlayAttackAnimation(BossActionContext context, AssassinClone clone)
         {
-            // Atk1-0 -> Atk1-1 전환은 ContAtk1만 보므로 isAtk1을 켤 필요는 없다. 다만 Atk1-1이 끝난 뒤
-            // Atk1-2(콤보 계속)로 안 새고 Atk1-2-cancel(1회 공격 종료)로 빠지도록 false로 명시해둔다.
-            SetAnimationBool(context, clone, IsAtk1Parameter, false);
-            PlayAnimationTrigger(context, clone, DoAtk1Parameter);
-            yield return context.WaitSeconds(AttackWindupSeconds);
-
-            PlayAnimationTrigger(context, clone, ContAtk1Parameter);
-            yield return context.WaitSeconds(attackContinueDelaySeconds);
+            // Atk2는 클립이 끝나고(ExitTime=1) isAtk2==false일 때 자동으로 Idle로 빠지므로,
+            // false로 유지해두기만 하면 DoAtk2 트리거만으로 재생 후 자동 복귀한다.
+            SetAnimationBool(context, clone, IsAtk2Parameter, false);
+            PlayAnimationTrigger(context, clone, DoAtk2Parameter);
+            yield return context.WaitSeconds(attackDelaySeconds);
         }
 
         private static void PlayAnimationTrigger(BossActionContext context, AssassinClone clone, string triggerName)

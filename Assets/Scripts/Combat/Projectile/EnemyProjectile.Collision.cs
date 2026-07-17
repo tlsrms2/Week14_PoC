@@ -46,6 +46,11 @@ namespace Week14.Combat
 
             if (IsWallCollider(other))
             {
+                if (IgnoresWalls)
+                {
+                    return;
+                }
+
                 DestroyProjectile();
                 return;
             }

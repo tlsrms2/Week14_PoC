@@ -6,6 +6,11 @@ namespace Week14.Combat
     {
         private float GetWallClippedLength(Vector2 start, Vector2 direction, float length)
         {
+            if (IgnoresWalls)
+            {
+                return length;
+            }
+
             return TryGetWallHit(start, direction, length, out RaycastHit2D hit)
                 ? Mathf.Max(0f, hit.distance)
                 : length;
@@ -13,6 +18,11 @@ namespace Week14.Combat
 
         protected virtual bool TryDestroyIfCrossedWall()
         {
+            if (IgnoresWalls)
+            {
+                return false;
+            }
+
             Vector2 currentPosition = transform.position;
             Vector2 delta = currentPosition - lastWallCheckPosition;
             if (delta.sqrMagnitude <= 0.000001f)
