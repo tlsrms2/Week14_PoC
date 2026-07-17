@@ -4307,7 +4307,7 @@ MonoBehaviour:
         windupSeconds: 0.35
         nodeCount: 6
         startAngleOffset: 0
-        randomizeStartAngle: 0
+        randomizeStartAngle: 1
         minAngleDistanceDegrees: 25
         fireInterval: 0.08
         hackingPerHit: 1

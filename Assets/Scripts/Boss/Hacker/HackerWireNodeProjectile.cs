@@ -21,7 +21,7 @@ namespace Week14.Enemy
         protected override void OnProjectileAwake()
         {
             wallLayer = LayerMask.NameToLayer("Wall");
-            ConfigureInterceptable(true);
+            ConfigureInterceptable(false);
         }
 
         protected override void OnProjectileInitialized()
@@ -31,7 +31,7 @@ namespace Week14.Enemy
             hackingPerHit = 1;
             attachedLifetimeSeconds = 0f;
             ConfigurePlayerCollisionIgnored(true);
-            ConfigureInterceptable(true);
+            ConfigureInterceptable(false);
         }
 
         protected override bool CanHitPlayer(PlayerCombatController player)
