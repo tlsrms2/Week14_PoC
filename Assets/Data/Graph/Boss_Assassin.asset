@@ -2559,7 +2559,7 @@ MonoBehaviour:
     toNodeId: Fire Next Clone Shooter (Atk2)1
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
+  debugForceSinglePattern: 0
   debugForcedPatternId: Pattern3
   references:
     version: 2
