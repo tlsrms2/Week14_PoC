@@ -71,6 +71,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 1
     dialogues:
     - speaker: ERIS
@@ -127,6 +137,17 @@ MonoBehaviour:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
       m_TableEntryReference:
         m_KeyId: 43636948828160
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: <sprite name="icon_w"><sprite name="icon_a"><sprite name="icon_s"><sprite
+      name="icon_d">
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -240,6 +261,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: <sprite name="icon_leftclick">
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 13
     dialogues:
     - speaker: ERIS
@@ -337,6 +368,16 @@ MonoBehaviour:
         m_LocalVariables: []
     objectiveFormat: 
     localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
       m_TableReference:
         m_TableCollectionName: 
       m_TableEntryReference:
@@ -450,6 +491,16 @@ MonoBehaviour:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
       m_TableEntryReference:
         m_KeyId: 43636948828162
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: <sprite name="icon_leftclick">
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -711,6 +762,16 @@ MonoBehaviour:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
       m_TableEntryReference:
         m_KeyId: 43636948828163
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -996,6 +1057,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: <sprite name="icon_rightclick">
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 7
     dialogues:
     - speaker: ERIS
@@ -1169,6 +1240,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 8
     dialogues:
     - speaker: ERIS
@@ -1234,6 +1315,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 4
     dialogues:
     - speaker: ERIS
@@ -1289,6 +1380,16 @@ MonoBehaviour:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
       m_TableEntryReference:
         m_KeyId: 43636948828165
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: <sprite name="icon_space">
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -1400,6 +1501,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 6
     dialogues:
     - speaker: ERIS
@@ -1500,6 +1611,16 @@ MonoBehaviour:
         m_LocalVariables: []
     objectiveFormat: 
     localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
       m_TableReference:
         m_TableCollectionName: 
       m_TableEntryReference:
@@ -1613,6 +1734,16 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - step: 11
     dialogues:
     - speaker: ERIS
@@ -1664,6 +1795,16 @@ MonoBehaviour:
         m_LocalVariables: []
     objectiveFormat: 
     localizedObjectiveFormat:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectiveKeyText: 
+    localizedObjectiveKeyText:
       m_TableReference:
         m_TableCollectionName: 
       m_TableEntryReference:

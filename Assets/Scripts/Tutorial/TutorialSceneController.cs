@@ -2,6 +2,10 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -29,6 +33,8 @@ namespace Week14.Tutorial
         private const string TrapdoorLeftName = "Trapdoor-L";
         private const string TrapdoorRightName = "Trapdoor-R";
         private const string UnderfloorName = "underfloor";
+        private const string BossNameTable = "Boss";
+        private const string TrainingEnemyNameKey = "trainingbot.name";
 
         [Header("Data")]
         [SerializeField] private TutorialDialogueSetSO dialogueSet;
@@ -50,6 +56,7 @@ namespace Week14.Tutorial
         [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private TMP_Text bossNameText;
         [SerializeField] private string trainingEnemyName = "훈련 몹";
+        [SerializeField] private LocalizedString localizedTrainingEnemyName = new(BossNameTable, TrainingEnemyNameKey);
 
         [Header("Scene")]
         [SerializeField] private Transform player;
@@ -118,6 +125,10 @@ namespace Week14.Tutorial
         private bool skillAttemptRunning;
         private bool skillUsedThisAttempt;
         private bool skillHitThisAttempt;
+        private bool bossUiVisible;
+        private TutorialDialogueLine currentTextDialogueLine;
+        private bool currentTextDialogueRevealRequestedByLocale;
+        private TutorialExplanationContent currentExplanationContent;
         private bool initialMovementLockReleased;
         private bool completionInvulnerabilityPushed;
         private bool trainingEnemySummoned;
@@ -166,6 +177,8 @@ namespace Week14.Tutorial
             TrySubscribeSkillManager();
             TrySubscribePlayerBullets();
             TrySubscribePlayerHealth();
+            BindTrainingEnemyName();
+            LocalizationSettings.SelectedLocaleChanged += HandleSelectedLocaleChanged;
         }
 
         private void OnDisable()
@@ -183,6 +196,9 @@ namespace Week14.Tutorial
             UnsubscribePlayerHealth();
             ClearEnemySubscription();
             SetBossUiVisible(false);
+            UnbindTrainingEnemyName();
+            LocalizationSettings.SelectedLocaleChanged -= HandleSelectedLocaleChanged;
+            SetCurrentTextDialogueLine(null);
             PopDialogueAdvanceInput();
             PopDialogueMovementLock();
             PopPreLeftAttackSuppression();
@@ -618,6 +634,7 @@ namespace Week14.Tutorial
             {
                 yield return objectiveDialoguePanel.PlayObjectiveCompleted(
                     FormatObjective(step, goal, goal),
+                    FormatObjectiveKeyText(step),
                     fadeOut: false,
                     clearText: false);
                 yield return objectiveDialoguePanel.HideAnimated();
@@ -648,13 +665,12 @@ namespace Week14.Tutorial
                         continue;
                     }
 
-                    string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
-                    string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
-                    yield return PlayDialogueLine(speaker, text, line.SfxId, line.Explanation);
+                    yield return PlayDialogueLine(line);
                 }
             }
             finally
             {
+                SetCurrentTextDialogueLine(null);
                 PopDialogueAdvanceInput();
                 if (shouldLockMovement)
                 {
@@ -664,17 +680,19 @@ namespace Week14.Tutorial
             }
         }
 
-        private IEnumerator PlayDialogueLine(
-            string speaker,
-            string text,
-            string sfxId,
-            TutorialExplanationContent explanation)
+        private IEnumerator PlayDialogueLine(TutorialDialogueLine line)
         {
+            SetCurrentTextDialogueLine(line);
+            currentTextDialogueRevealRequestedByLocale = false;
+            string speaker = ResolveDialogueSpeaker(line);
+            string text = ResolveDialogueText(line);
             bool revealRequested = false;
             bool canAcceptAdvance = false;
-            PlayDialogueSfx(sfxId);
+            PlayDialogueSfx(line.SfxId);
             textDialoguePanel.ShowLine(speaker, text);
-            IEnumerator typing = textDialoguePanel.PlayTypewriter(text, () => revealRequested);
+            IEnumerator typing = textDialoguePanel.PlayTypewriter(
+                text,
+                () => revealRequested || currentTextDialogueRevealRequestedByLocale);
             while (typing.MoveNext())
             {
                 if (canAcceptAdvance && AdvancePressed())
@@ -692,10 +710,106 @@ namespace Week14.Tutorial
                 yield return null;
             }
 
+            TutorialExplanationContent explanation = line.Explanation;
             if (explanation != null && explanation.HasContent)
             {
                 yield return PlayExplanation(explanation);
             }
+
+            currentTextDialogueRevealRequestedByLocale = false;
+        }
+
+        private void HandleSelectedLocaleChanged(Locale _)
+        {
+            RefreshCurrentTextDialogueLine();
+            RefreshCurrentExplanation();
+            RefreshExplanationPanelLocalizedEvents();
+        }
+
+        private void HandleCurrentTextDialogueLocalizedStringChanged(string _)
+        {
+            RefreshCurrentTextDialogueLine();
+        }
+
+        private void SetCurrentTextDialogueLine(TutorialDialogueLine line)
+        {
+            if (currentTextDialogueLine == line)
+            {
+                return;
+            }
+
+            UnbindCurrentTextDialogueLine();
+            currentTextDialogueLine = line;
+            BindCurrentTextDialogueLine();
+        }
+
+        private void BindCurrentTextDialogueLine()
+        {
+            if (currentTextDialogueLine == null)
+            {
+                return;
+            }
+
+            if (currentTextDialogueLine.HasLocalizedSpeaker)
+            {
+                currentTextDialogueLine.LocalizedSpeaker.StringChanged += HandleCurrentTextDialogueLocalizedStringChanged;
+            }
+
+            if (currentTextDialogueLine.HasLocalizedText)
+            {
+                currentTextDialogueLine.LocalizedText.StringChanged += HandleCurrentTextDialogueLocalizedStringChanged;
+            }
+        }
+
+        private void UnbindCurrentTextDialogueLine()
+        {
+            if (currentTextDialogueLine == null)
+            {
+                return;
+            }
+
+            if (currentTextDialogueLine.HasLocalizedSpeaker)
+            {
+                currentTextDialogueLine.LocalizedSpeaker.StringChanged -= HandleCurrentTextDialogueLocalizedStringChanged;
+            }
+
+            if (currentTextDialogueLine.HasLocalizedText)
+            {
+                currentTextDialogueLine.LocalizedText.StringChanged -= HandleCurrentTextDialogueLocalizedStringChanged;
+            }
+        }
+
+        private void RefreshCurrentTextDialogueLine()
+        {
+            if (currentTextDialogueLine == null || textDialoguePanel == null)
+            {
+                return;
+            }
+
+            textDialoguePanel.ReplaceLineText(
+                ResolveDialogueSpeaker(currentTextDialogueLine),
+                ResolveDialogueText(currentTextDialogueLine));
+            currentTextDialogueRevealRequestedByLocale = true;
+        }
+
+        private static string ResolveDialogueSpeaker(TutorialDialogueLine line)
+        {
+            if (line == null)
+            {
+                return string.Empty;
+            }
+
+            return line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
+        }
+
+        private static string ResolveDialogueText(TutorialDialogueLine line)
+        {
+            if (line == null)
+            {
+                return string.Empty;
+            }
+
+            return line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
         }
 
         private IEnumerator PlayExplanation(TutorialExplanationContent explanation)
@@ -723,8 +837,9 @@ namespace Week14.Tutorial
                 return;
             }
 
-            SetText(explanationTitle, explanation.HasLocalizedTitle ? explanation.LocalizedTitle.GetLocalizedString() : explanation.Title);
-            SetText(explanationText, explanation.HasLocalizedText ? explanation.LocalizedText.GetLocalizedString() : explanation.Text);
+            SetCurrentExplanationContent(explanation);
+            RefreshCurrentExplanation();
+            RefreshExplanationPanelLocalizedEvents();
             explanationCloseRequested = false;
             PushExplanationCursor();
             PushExplanationInputLock();
@@ -737,6 +852,7 @@ namespace Week14.Tutorial
 
         private void HideExplanation()
         {
+            SetCurrentExplanationContent(null);
             PopExplanationInputLock();
             StopExplanationVideo();
             SetExplanationImage(null);
@@ -745,6 +861,99 @@ namespace Week14.Tutorial
             explanationCloseRequested = false;
             PopExplanationCursor();
             SetExplanationVisible(false);
+        }
+
+        private void HandleCurrentExplanationLocalizedStringChanged(string _)
+        {
+            RefreshCurrentExplanation();
+        }
+
+        private void SetCurrentExplanationContent(TutorialExplanationContent explanation)
+        {
+            if (currentExplanationContent == explanation)
+            {
+                return;
+            }
+
+            UnbindCurrentExplanationContent();
+            currentExplanationContent = explanation;
+            BindCurrentExplanationContent();
+        }
+
+        private void BindCurrentExplanationContent()
+        {
+            if (currentExplanationContent == null)
+            {
+                return;
+            }
+
+            if (currentExplanationContent.HasLocalizedTitle)
+            {
+                currentExplanationContent.LocalizedTitle.StringChanged += HandleCurrentExplanationLocalizedStringChanged;
+            }
+
+            if (currentExplanationContent.HasLocalizedText)
+            {
+                currentExplanationContent.LocalizedText.StringChanged += HandleCurrentExplanationLocalizedStringChanged;
+            }
+        }
+
+        private void UnbindCurrentExplanationContent()
+        {
+            if (currentExplanationContent == null)
+            {
+                return;
+            }
+
+            if (currentExplanationContent.HasLocalizedTitle)
+            {
+                currentExplanationContent.LocalizedTitle.StringChanged -= HandleCurrentExplanationLocalizedStringChanged;
+            }
+
+            if (currentExplanationContent.HasLocalizedText)
+            {
+                currentExplanationContent.LocalizedText.StringChanged -= HandleCurrentExplanationLocalizedStringChanged;
+            }
+        }
+
+        private void RefreshCurrentExplanation()
+        {
+            if (currentExplanationContent == null)
+            {
+                return;
+            }
+
+            SetText(
+                explanationTitle,
+                currentExplanationContent.HasLocalizedTitle
+                    ? currentExplanationContent.LocalizedTitle.GetLocalizedString()
+                    : currentExplanationContent.Title);
+            SetText(
+                explanationText,
+                currentExplanationContent.HasLocalizedText
+                    ? currentExplanationContent.LocalizedText.GetLocalizedString()
+                    : currentExplanationContent.Text);
+        }
+
+        private void RefreshExplanationPanelLocalizedEvents()
+        {
+            GameObject root = explanationPanelRoot != null
+                ? explanationPanelRoot
+                : explanationPanelCanvasGroup != null ? explanationPanelCanvasGroup.gameObject : null;
+            if (root == null)
+            {
+                return;
+            }
+
+            LocalizeStringEvent[] localizedTexts = root.GetComponentsInChildren<LocalizeStringEvent>(true);
+            for (int i = 0; i < localizedTexts.Length; i++)
+            {
+                LocalizeStringEvent localizedText = localizedTexts[i];
+                if (localizedText != null)
+                {
+                    localizedText.RefreshString();
+                }
+            }
         }
 
         private void PushExplanationCursor()
@@ -1342,9 +1551,24 @@ namespace Week14.Tutorial
                 .Replace("{1}", goal.ToString());
         }
 
+        private string FormatObjectiveKeyText(TutorialStepId step)
+        {
+            TutorialStepContent content = dialogueSet != null ? dialogueSet.GetStep(step) : null;
+            if (content == null)
+            {
+                return string.Empty;
+            }
+
+            return content.HasLocalizedObjectiveKeyText
+                ? content.LocalizedObjectiveKeyText.GetLocalizedString()
+                : content.ObjectiveKeyText;
+        }
+
         private void ShowObjective(TutorialStepId step, int goal)
         {
-            objectiveDialoguePanel?.ShowObjective(FormatObjective(step, GetStepProgress(step), goal));
+            objectiveDialoguePanel?.ShowObjective(
+                FormatObjective(step, GetStepProgress(step), goal),
+                FormatObjectiveKeyText(step));
         }
 
         private void BeginMoveDestinationObjective()
@@ -1525,6 +1749,7 @@ namespace Week14.Tutorial
 
         private void SetBossUiVisible(bool visible)
         {
+            bossUiVisible = visible;
             if (bossCombatUiRoot != null)
             {
                 bossCombatUiRoot.SetActive(visible);
@@ -1537,10 +1762,65 @@ namespace Week14.Tutorial
             }
 
             bossHpBarView?.SetTarget(activeEnemy != null ? activeEnemy.Bullets : null);
+            RefreshBossNameText();
+        }
+
+        private void BindTrainingEnemyName()
+        {
+            if (!HasLocalizedString(localizedTrainingEnemyName))
+            {
+                return;
+            }
+
+            localizedTrainingEnemyName.StringChanged += HandleTrainingEnemyNameChanged;
+            localizedTrainingEnemyName.RefreshString();
+        }
+
+        private void UnbindTrainingEnemyName()
+        {
+            if (!HasLocalizedString(localizedTrainingEnemyName))
+            {
+                return;
+            }
+
+            localizedTrainingEnemyName.StringChanged -= HandleTrainingEnemyNameChanged;
+        }
+
+        private void HandleTrainingEnemyNameChanged(string _)
+        {
+            if (bossUiVisible)
+            {
+                RefreshBossNameText();
+            }
+        }
+
+        private void RefreshBossNameText()
+        {
             if (bossNameText != null)
             {
-                bossNameText.text = trainingEnemyName;
+                bossNameText.text = ResolveTrainingEnemyName();
             }
+        }
+
+        private string ResolveTrainingEnemyName()
+        {
+            if (HasLocalizedString(localizedTrainingEnemyName))
+            {
+                string localizedName = localizedTrainingEnemyName.GetLocalizedString();
+                if (!string.IsNullOrWhiteSpace(localizedName))
+                {
+                    return localizedName;
+                }
+            }
+
+            return trainingEnemyName;
+        }
+
+        private static bool HasLocalizedString(LocalizedString value)
+        {
+            return value != null
+                && value.TableReference.ReferenceType != TableReference.Type.Empty
+                && value.TableEntryReference.ReferenceType != TableEntryReference.Type.Empty;
         }
 
         private void CompleteTutorial()
