@@ -13,13 +13,42 @@ namespace Week14.Enemy
         [SerializeField] private SpriteRenderer facingSpriteTargetB;
 
         private SpriteRenderer[] renderers;
+        private Animator[] animators;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
 
         private void Awake()
         {
             renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            animators = GetComponentsInChildren<Animator>(true);
             SetAlpha(0f);
+        }
+
+        // 분신도 보스 본체와 같은 애니메이터 두 개(char/glow)를 갖고 있어서 전부에 broadcast한다.
+        internal void PlayAnimationTrigger(string triggerName)
+        {
+            if (string.IsNullOrWhiteSpace(triggerName))
+            {
+                return;
+            }
+
+            for (int i = 0; i < animators.Length; i++)
+            {
+                animators[i]?.SetTrigger(triggerName);
+            }
+        }
+
+        internal void SetAnimationBool(string parameterName, bool value)
+        {
+            if (string.IsNullOrWhiteSpace(parameterName))
+            {
+                return;
+            }
+
+            for (int i = 0; i < animators.Length; i++)
+            {
+                animators[i]?.SetBool(parameterName, value);
+            }
         }
 
         private void LateUpdate()

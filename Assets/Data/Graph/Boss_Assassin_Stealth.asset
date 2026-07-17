@@ -620,7 +620,7 @@ MonoBehaviour:
       rid: 4705778205525803443
     sequences: []
     editorPosition: {x: -170, y: 1354}
-  - nodeId: Action1
+  - nodeId: Fire Parry Suppression Bait1
     nodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
     nodeKind: 0
     phaseIndex: 0
@@ -845,7 +845,7 @@ MonoBehaviour:
     - Spawn Clone Shooters9
     - Teleport Around Player9
     - Boss Dash8
-    - Action1
+    - Fire Parry Suppression Bait1
     - Fire Next Clone Shooter13
     - Fire Next Clone Shooter14
     - Fire Next Clone Shooter15
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   - fromNodeGuid: 25d593d3074d456bb5d33906068e1856
     toNodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
     fromNodeId: Boss Dash8
-    toNodeId: Action1
+    toNodeId: Fire Parry Suppression Bait1
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -1286,7 +1286,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 33c49d733e2640509a5b9143c1f0a6e2
     toNodeGuid: f7aa6797f6fc4cecb9b8a7b3d08e02c7
-    fromNodeId: Action1
+    fromNodeId: Fire Parry Suppression Bait1
     toNodeId: Fire Next Clone Shooter13
     fromOutputPortIndex: 0
     conditionType: 0
@@ -1412,8 +1412,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 4705778150679249020
       type: {class: BossRandomDirectionMoveAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1485,11 +1483,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1498,9 +1491,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1550,11 +1542,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1563,9 +1550,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1593,8 +1579,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 1
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778150679249238
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1623,11 +1607,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1636,9 +1615,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1672,11 +1650,6 @@ MonoBehaviour:
         chargeSeconds: 9
         spawnSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1685,9 +1658,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1706,11 +1678,6 @@ MonoBehaviour:
           secondBossChildPath: 
           fallbackSpacing: 0.18
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 1
             color: {r: 0, g: 0, b: 0, a: 1}
@@ -1719,9 +1686,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1810,11 +1776,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1823,9 +1784,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1896,11 +1856,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1909,9 +1864,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -1968,11 +1922,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -1981,9 +1930,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2033,11 +1981,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2046,9 +1989,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2159,11 +2101,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2172,9 +2109,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2231,11 +2167,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2244,9 +2175,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2324,11 +2254,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2337,9 +2262,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2389,11 +2313,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2402,9 +2321,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2454,11 +2372,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2467,9 +2380,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2519,11 +2431,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2532,9 +2439,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2582,11 +2488,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2595,9 +2496,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2611,8 +2511,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778196242497836
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2641,11 +2539,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2654,9 +2547,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2674,8 +2566,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778196242497894
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2704,11 +2594,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2717,9 +2602,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2733,8 +2617,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778205525803202
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2751,11 +2633,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2764,9 +2641,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2835,11 +2711,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2848,9 +2719,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2864,8 +2734,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778205525803231
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2894,11 +2762,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2907,9 +2770,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2924,11 +2786,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -2937,9 +2794,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -2995,8 +2851,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778205525803241
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3025,11 +2879,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3038,9 +2887,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3113,11 +2961,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3126,9 +2969,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3156,8 +2998,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778205525803265
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3186,11 +3026,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3199,9 +3034,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3235,11 +3069,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3248,9 +3077,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3295,11 +3123,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3308,9 +3131,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3325,11 +3147,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3338,9 +3155,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3418,11 +3234,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3431,9 +3242,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3520,11 +3330,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3533,9 +3338,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3563,8 +3367,6 @@ MonoBehaviour:
         cloneTargetAlpha: 30
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778205525803321
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3593,11 +3395,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3606,9 +3403,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3623,11 +3419,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3636,9 +3427,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3714,11 +3504,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3727,9 +3512,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3769,11 +3553,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3782,9 +3561,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3812,8 +3590,6 @@ MonoBehaviour:
         cloneTargetAlpha: 180
         includeBossPosition: 0
         teleportHiddenSeconds: 0
-        attackFlashColor: {r: 1, g: 1, b: 1, a: 1}
-        keepAttackFlashColorApplied: 0
     - rid: 4705778205525803442
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3823,11 +3599,6 @@ MonoBehaviour:
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
         windupEffects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3836,9 +3607,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3918,11 +3688,6 @@ MonoBehaviour:
         groggySeconds: 2
         spawnSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3931,9 +3696,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -3967,11 +3731,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -3980,9 +3739,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4016,11 +3774,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -4029,9 +3782,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4065,11 +3817,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -4078,9 +3825,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -4114,11 +3860,6 @@ MonoBehaviour:
         fireSfxId: 
         launchSfxId: 
         effects:
-          explosion:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
           smoke:
             enabled: 0
             color: {r: 1, g: 1, b: 1, a: 1}
@@ -4127,9 +3868,8 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            prefab: {fileID: 0}
             scale: 1
-            count: 12
           cameraShake:
             enabled: 0
             seconds: 0.14
