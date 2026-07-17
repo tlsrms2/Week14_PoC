@@ -213,7 +213,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4234270684753785712, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5162903531614677023, guid: 2ee214c3d7c63bd409a4f8605fbee6ca, type: 3}
       propertyPath: target
@@ -9043,7 +9043,7 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
   patternGroggyAnimator: {fileID: 0}
-  stealthGraph: {fileID: 11400000, guid: 75a6c571b21fc844dbd43fca27faa931, type: 2}
+  stealthGraph: {fileID: 11400000, guid: 8997bae306e02704a96acdc774de9398, type: 2}
   daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
   stealthVisualTargetA: {fileID: 1518477478}
   stealthAlphaA: 30
@@ -9059,6 +9059,7 @@ MonoBehaviour:
   cloneSpawnZone: {fileID: 283274216}
   cloneMinSeparationDistance: 5
   cloneMinDistanceFromPlayer: 5
+  walkVelocityThreshold: 0.01
 --- !u!222 &8937255414088847800
 CanvasRenderer:
   m_ObjectHideFlags: 0

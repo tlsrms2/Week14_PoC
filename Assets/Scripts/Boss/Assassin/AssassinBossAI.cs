@@ -43,10 +43,15 @@ namespace Week14.Enemy
         [Tooltip("플레이어 주변 이 반경 안에는 분신이 소환되지 않습니다.")]
         [SerializeField, Min(0f)] private float cloneMinDistanceFromPlayer = 2f;
 
+        [Header("Assassin Walk")]
+        [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+
         private const int CloneSpawnPositionAttempts = 8;
+        private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
 
         private readonly List<AssassinDagger> spawnedDaggers = new();
         private readonly List<(Vector3 position, AssassinClone clone)> cloneShooterQueue = new();
+        private readonly List<AssassinClone> activeClones = new();
         private bool isStealthed;
         private bool pendingStealthChange;
         private bool pendingStealthValue;
@@ -56,6 +61,9 @@ namespace Week14.Enemy
         private bool stealthVisibilityOverrideActive;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
+        private Animator[] walkAnimators;
+        private bool hasAppliedWalkState;
+        private bool lastIsWalking;
 
         protected override bool RotatesBodyToPlayer => false;
         protected override BossGraphAsset GraphAsset => isStealthed ? stealthGraph : base.GraphAsset;
@@ -92,7 +100,7 @@ namespace Week14.Enemy
         {
             RequestStealth(false);
             ClearAssassinDaggers();
-            ClearCloneShooterQueue();
+            ClearActiveClones();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
         }
 
@@ -145,14 +153,16 @@ namespace Week14.Enemy
         protected override void OnBossDied()
         {
             ClearAssassinDaggers();
-            ClearCloneShooterQueue();
+            ClearActiveClones();
+            ApplyWalkState(false, true);
             base.OnBossDied();
         }
 
         protected override void OnDisable()
         {
             ClearAssassinDaggers();
-            ClearCloneShooterQueue();
+            ClearActiveClones();
+            ApplyWalkState(false, true);
             base.OnDisable();
         }
 
@@ -160,6 +170,7 @@ namespace Week14.Enemy
         {
             UpdateFacingSprite();
             ApplyStealthAlpha();
+            UpdateWalkState();
 
             if (isStealthed && stealthEntryDelayRemaining > 0f)
             {
@@ -227,7 +238,9 @@ namespace Week14.Enemy
                 return null;
             }
 
-            return Instantiate(clonePrefab, position, Quaternion.identity);
+            AssassinClone clone = Instantiate(clonePrefab, position, Quaternion.identity);
+            activeClones.Add(clone);
+            return clone;
         }
 
         // 분신 소환 전용 간격/플레이어 최소거리 설정(cloneMinSeparationDistance/cloneMinDistanceFromPlayer)을
@@ -283,9 +296,20 @@ namespace Week14.Enemy
         // fadeSeconds를 직접 지정하고 싶은 호출부(예: AssassinTeleportAroundPlayerAction)를 위한 오버로드.
         internal IEnumerator VanishForTeleport(Vector3 destination, float fadeSeconds)
         {
+            yield return VanishForTeleportInPlace(fadeSeconds);
+            TeleportImmediate(destination);
+        }
+
+        // 위치는 그대로 두고 투명해지기만 한다 — 순간이동 시점을 직접 제어하고 싶은 호출부
+        // (예: hiddenSeconds가 다 지난 뒤에야 이동하고 싶은 AssassinTeleportAroundPlayerAction)를 위함.
+        internal IEnumerator VanishForTeleportInPlace(float fadeSeconds)
+        {
             teleportVisibilityOverrideActive = true;
             yield return WaitSecondsScaled(fadeSeconds);
+        }
 
+        internal void TeleportImmediate(Vector3 destination)
+        {
             if (Body != null)
             {
                 Body.position = destination;
@@ -411,18 +435,24 @@ namespace Week14.Enemy
             return SampleCloneSpawnZonePosition();
         }
 
-        private void ClearCloneShooterQueue()
+        // 발사 대기열에 남아있는 분신뿐 아니라, 이미 발사돼 대기열을 벗어나 PlayDespawn으로 페이드
+        // 아웃 중인 분신까지 포함해 지금 존재하는 분신을 전부 즉시 제거한다(activeClones가 소환 시점부터
+        // 계속 추적하는 전체 목록). 대기열 자체도 같이 비워서 이후 TryDequeueCloneShooter가 파괴된
+        // 분신을 다시 참조하지 않게 한다.
+        internal void ClearActiveClones()
         {
-            for (int i = 0; i < cloneShooterQueue.Count; i++)
+            cloneShooterQueue.Clear();
+
+            for (int i = activeClones.Count - 1; i >= 0; i--)
             {
-                AssassinClone clone = cloneShooterQueue[i].clone;
+                AssassinClone clone = activeClones[i];
                 if (clone != null)
                 {
                     Destroy(clone.gameObject);
                 }
             }
 
-            cloneShooterQueue.Clear();
+            activeClones.Clear();
         }
 
         internal void UnregisterDagger(AssassinDagger dagger)
@@ -570,6 +600,56 @@ namespace Week14.Enemy
             float maxDelta = EnemyTimeScale.DeltaTime / stealthAlphaFadeSeconds;
             color.a = Mathf.MoveTowards(color.a, targetAlpha, maxDelta);
             renderer.color = color;
+        }
+
+        // Body.linearVelocity는 SetMovementVelocity에서 이미 EnemyTimeScale이 곱해진 값이라,
+        // 여기서 별도로 시간 배율을 다시 반영할 필요가 없다.
+        private void UpdateWalkState()
+        {
+            if (Body == null)
+            {
+                ApplyWalkState(false, false);
+                return;
+            }
+
+            float threshold = Mathf.Max(0f, walkVelocityThreshold);
+            bool isWalking = Body.linearVelocity.sqrMagnitude > threshold * threshold;
+            ApplyWalkState(isWalking, false);
+        }
+
+        private void ApplyWalkState(bool isWalking, bool force)
+        {
+            if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
+            {
+                return;
+            }
+
+            Animator[] targets = GetWalkAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                if (targets[i] != null)
+                {
+                    targets[i].SetBool(IsWalkParameter, isWalking);
+                }
+            }
+
+            lastIsWalking = isWalking;
+            hasAppliedWalkState = true;
+        }
+
+        // 애니메이터가 두 개(boss-04-glow / boss-04-char)라 attack/groggy/death 트리거와 동일하게
+        // BodyRoot 밑의 Animator 전부를 찾아 broadcast한다.
+        private Animator[] GetWalkAnimators()
+        {
+            if (walkAnimators != null)
+            {
+                return walkAnimators;
+            }
+
+            walkAnimators = BodyRoot != null
+                ? BodyRoot.GetComponentsInChildren<Animator>(true)
+                : GetComponentsInChildren<Animator>(true);
+            return walkAnimators;
         }
 
         private void ClearAssassinDaggers()

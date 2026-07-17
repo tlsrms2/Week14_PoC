@@ -129,6 +129,7 @@ internal static class BossGraphActionEditorUtility
         new("Assassin/Set Stealth Visibility", typeof(AssassinSetStealthVisibilityAction), () => new AssassinSetStealthVisibilityAction()),
         new("Assassin/Recall Daggers", typeof(AssassinRecallDaggersAction), () => new AssassinRecallDaggersAction()),
         new("Assassin/Recall Daggers With Parry Bait", typeof(AssassinRecallDaggersWithParryBaitAction), () => new AssassinRecallDaggersWithParryBaitAction()),
+        new("Assassin/Fire Parry Suppression Bait", typeof(AssassinFireParrySuppressionBaitAction), () => new AssassinFireParrySuppressionBaitAction()),
         new("Assassin/Spawn Clone Shooters", typeof(AssassinSpawnCloneShootersAction), () => new AssassinSpawnCloneShootersAction()),
         new("Assassin/Fire Next Clone Shooter", typeof(AssassinFireNextCloneShooterAction), () => new AssassinFireNextCloneShooterAction()),
         new("Assassin/Spawn Random Bombs", typeof(AssassinSpawnRandomBombsAction), () => new AssassinSpawnRandomBombsAction()),
@@ -336,6 +337,11 @@ internal static class BossGraphActionEditorUtility
         if (actionType == typeof(AssassinRecallDaggersWithParryBaitAction))
         {
             return "Assassin 전용 액션입니다. 단검이 충분히 모였을 때만 동작하며, 회수 전에 패링 전용 미끼(ParryBaitRewardProjectile)를 먼저 스폰합니다. 패링되지 않으면 단검이 보스에게 날아가며(궤적 표시, 닿는 플레이어에게 데미지) 회수되고 뒤에 있는 패턴이 그대로 이어집니다 — 이 경우 은신은 자동으로 풀리지 않으니, 회수 뒤 이어지는 노드들을 원하는 만큼 배치하고 마지막에 Assassin/Exit Stealth를 놓아 해제 타이밍을 직접 지정하세요. 패링되면 그 자리에 보상 탄이 원형으로 뿌려지고 단검이 궤적 없이 보스 자신에게 회수되어(자해 데미지) 회수가 끝난 뒤 FireParrySuppressionBaitAction(그로기탄)과 완전히 동일하게 boss.RequestGroggy(Groggy Seconds)로 패턴을 취소하고 보스가 그로기(무력화, Stun/EndStun 애니메이터)에 들어갑니다 — 이 경우에 한해 은신 해제는 회수가 끝나는 시점에 자동으로 처리됩니다. 보상 탄 프리팹은 미끼 프리팹 자신의 Reward Projectile 필드에 지정하고, 개수/반지름/지속시간은 이 액션의 필드로 덮어씁니다. 궤적은 일반 투사체와 동일한 방식(ProjectileVfx.EnsureTrail)으로 AssassinDagger가 자동으로 TrailRenderer를 추가/설정하므로 프리팹에 따로 붙일 필요는 없고, AssassinDagger 인스펙터의 Trail Radius/Trail Seconds/Trail Width Multiplier로 두께/길이를 조절하면 됩니다. 단검이 부족하면 즉시 종료됩니다(이 패턴의 Cooldown Pattern Count는 0으로 설정하세요).";
+        }
+
+        if (actionType == typeof(AssassinFireParrySuppressionBaitAction))
+        {
+            return "Assassin 전용 액션입니다. FireParrySuppressionBaitAction과 동일하게 패링 전용 미끼(ParryBaitRewardProjectile)를 스폰합니다. 패링되지 않으면 아무 효과 없이 그대로 다음 액션으로 이어집니다. 패링되면 그 자리에 보상 탄이 원형으로 뿌려지고, 지금 존재하는 분신을 전부(발사 대기열에 남은 것 + 이미 발사돼 페이드아웃 중인 것 포함) 즉시 제거하고, 은신을 해제한 뒤, FireParrySuppressionBaitAction과 동일하게 boss.RequestGroggy(Groggy Seconds)로 지금 돌고 있는 패턴 전체를 취소하고 보스가 그로기(무력화) 상태로 들어갑니다.";
         }
 
         if (actionType == typeof(AssassinSpawnCloneShootersAction))
