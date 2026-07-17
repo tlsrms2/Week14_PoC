@@ -871,7 +871,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355966
     sequences: []
-    editorPosition: {x: 1882, y: 778}
+    editorPosition: {x: 1883, y: 778}
   - nodeId: Wander12
     nodeGuid: 0687b02a47654dbda35eecdb2c36414c
     nodeKind: 4
@@ -1015,7 +1015,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703773
     sequences: []
-    editorPosition: {x: 2759, y: -896}
+    editorPosition: {x: 2758, y: -897}
   - nodeId: Conducting Cue8
     nodeGuid: e24aec6548eb4e17a793d6cdff596ef1
     nodeKind: 0
@@ -1114,7 +1114,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703798
     sequences: []
-    editorPosition: {x: 4630, y: 1024}
+    editorPosition: {x: 4630, y: 1023}
   - nodeId: Conducting Cue19
     nodeGuid: 3f8783e7daa94e19b94a147dc4b70fe0
     nodeKind: 0
@@ -1889,15 +1889,6 @@ MonoBehaviour:
       rid: 6489939172654055502
     sequences: []
     editorPosition: {x: -47, y: 25}
-  - nodeId: Diamond Collapse3
-    nodeGuid: a1d5652f0c584286b95bfb5530596179
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939172654055503
-    sequences: []
-    editorPosition: {x: 1863, y: 286}
   - nodeId: Fan Blade3
     nodeGuid: a58f4386be8846c1bf81e845446a9d33
     nodeKind: 0
@@ -1906,7 +1897,7 @@ MonoBehaviour:
     action:
       rid: 6489939172654055504
     sequences: []
-    editorPosition: {x: 1875, y: -252}
+    editorPosition: {x: 1877, y: -254}
   - nodeId: Fan Blade4
     nodeGuid: 1d720d952632464c9038ff63e0ff2dc0
     nodeKind: 0
@@ -1925,15 +1916,6 @@ MonoBehaviour:
       rid: 6489939172654055506
     sequences: []
     editorPosition: {x: 5768, y: -1083}
-  - nodeId: Diamond Collapse4
-    nodeGuid: cc7f317add99417198f406c485884adc
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939172654055507
-    sequences: []
-    editorPosition: {x: 4823, y: 437}
   - nodeId: Fan Blade6
     nodeGuid: 4dbdd095492b4ee1bd2d8c14fcd2858e
     nodeKind: 0
@@ -1970,6 +1952,24 @@ MonoBehaviour:
       rid: 6489939200651559129
     sequences: []
     editorPosition: {x: -500, y: 385}
+  - nodeId: Diamond Collapse3
+    nodeGuid: 5c576d084c89415fa63d1a05dd928163
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939249705517132
+    sequences: []
+    editorPosition: {x: 1864, y: 296}
+  - nodeId: Diamond Collapse4
+    nodeGuid: b3fed55cec0544919d10499d49aeea6b
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939249705517133
+    sequences: []
+    editorPosition: {x: 4810, y: 433}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -2213,12 +2213,12 @@ MonoBehaviour:
     nodeGuids:
     - 6298c20af34341ce87b774bbb858785b
     - f46399a8fb664ff390e199441128e619
-    - a1d5652f0c584286b95bfb5530596179
+    - 5c576d084c89415fa63d1a05dd928163
     - 4613b15629cc4f5b8c55893bb8a4b9f8
-    - ab47a7264cf44bcf84c3f1e47e89008a
-    - 9773fcc28230482c8ad1125197af0844
     - 132f099edeb54a23ab0e90c56be12911
     - 10d58b96fdea431d86716104ee71a062
+    - ab47a7264cf44bcf84c3f1e47e89008a
+    - 9773fcc28230482c8ad1125197af0844
     - 3023862a7ea248bd8777f055428d5fae
     - e1e889e7327c45568a24abb2025d0e5e
     nodeIds:
@@ -2226,10 +2226,10 @@ MonoBehaviour:
     - Wander24
     - Diamond Collapse3
     - Maintain Player Distance31
-    - Stop Movement11
-    - Formation Circle13
     - Maintain Player Distance30
     - Wander25
+    - Stop Movement11
+    - Formation Circle13
     - Repeat Fire17
     - Conducting Cue25
   - patternId: P5 -> P8
@@ -2401,7 +2401,7 @@ MonoBehaviour:
     nodeGuids:
     - 3ad3adcdb6ba45e2a08524ce014ba556
     - a15fa251c7f94c11ab5740480e10d41b
-    - cc7f317add99417198f406c485884adc
+    - b3fed55cec0544919d10499d49aeea6b
     - 12237603cd224786be7f3d7470ee593e
     - 894d2cb4ba434cb887ce430a539169a0
     - 79b54804f39e4398a5e360d34197d47f
@@ -2529,7 +2529,7 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P1 -> P6 -> P1
-      weight: 1
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
@@ -2983,14 +2983,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 9773fcc28230482c8ad1125197af0844
-    toNodeGuid: 132f099edeb54a23ab0e90c56be12911
-    fromNodeId: Formation Circle13
-    toNodeId: Maintain Player Distance30
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 132f099edeb54a23ab0e90c56be12911
     toNodeGuid: 10d58b96fdea431d86716104ee71a062
     fromNodeId: Maintain Player Distance30
@@ -3191,22 +3183,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: f46399a8fb664ff390e199441128e619
-    toNodeGuid: a1d5652f0c584286b95bfb5530596179
-    fromNodeId: Wander24
-    toNodeId: Diamond Collapse3
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: a1d5652f0c584286b95bfb5530596179
-    toNodeGuid: 4613b15629cc4f5b8c55893bb8a4b9f8
-    fromNodeId: Diamond Collapse3
-    toNodeId: Maintain Player Distance31
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: a58f4386be8846c1bf81e845446a9d33
     toNodeGuid: a1a19c85d6f342e3ab3c63a3c2be5c91
     fromNodeId: Fan Blade3
@@ -3263,30 +3239,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: a15fa251c7f94c11ab5740480e10d41b
-    toNodeGuid: cc7f317add99417198f406c485884adc
-    fromNodeId: Wander32
-    toNodeId: Diamond Collapse4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: cc7f317add99417198f406c485884adc
-    toNodeGuid: 12237603cd224786be7f3d7470ee593e
-    fromNodeId: Diamond Collapse4
-    toNodeId: Orbit4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 12237603cd224786be7f3d7470ee593e
-    toNodeGuid: 894d2cb4ba434cb887ce430a539169a0
-    fromNodeId: Orbit4
-    toNodeId: Wander33
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: b5cf2e6309e441baa9c77bb96c97b366
     toNodeGuid: 4dbdd095492b4ee1bd2d8c14fcd2858e
     fromNodeId: Orbit2
@@ -3307,6 +3259,54 @@ MonoBehaviour:
     toNodeGuid: 58e96085d30f42808ebc37f093409405
     fromNodeId: Conducting Cue37
     toNodeId: Parry Suppression Bait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f46399a8fb664ff390e199441128e619
+    toNodeGuid: 5c576d084c89415fa63d1a05dd928163
+    fromNodeId: Wander24
+    toNodeId: Diamond Collapse3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5c576d084c89415fa63d1a05dd928163
+    toNodeGuid: 4613b15629cc4f5b8c55893bb8a4b9f8
+    fromNodeId: Diamond Collapse3
+    toNodeId: Maintain Player Distance31
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4613b15629cc4f5b8c55893bb8a4b9f8
+    toNodeGuid: 132f099edeb54a23ab0e90c56be12911
+    fromNodeId: Maintain Player Distance31
+    toNodeId: Maintain Player Distance30
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a15fa251c7f94c11ab5740480e10d41b
+    toNodeGuid: b3fed55cec0544919d10499d49aeea6b
+    fromNodeId: Wander32
+    toNodeId: Diamond Collapse4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b3fed55cec0544919d10499d49aeea6b
+    toNodeGuid: 12237603cd224786be7f3d7470ee593e
+    fromNodeId: Diamond Collapse4
+    toNodeId: Orbit4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 12237603cd224786be7f3d7470ee593e
+    toNodeGuid: 894d2cb4ba434cb887ce430a539169a0
+    fromNodeId: Orbit4
+    toNodeId: Wander33
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3924,16 +3924,16 @@ MonoBehaviour:
     toNodeId: Conducting Cue16
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 79b54804f39e4398a5e360d34197d47f
-    toNodeGuid: cc7f317add99417198f406c485884adc
-    fromNodeId: Conducting Cue33
-    toNodeId: Diamond Collapse4
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: aa726d3bbfd544f88ef36db7366fe1cf
     toNodeGuid: 9ab5e7849219404da6ddd9137351a6c7
     fromNodeId: Conducting Cue37
     toNodeId: Wander40
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 79b54804f39e4398a5e360d34197d47f
+    toNodeGuid: b3fed55cec0544919d10499d49aeea6b
+    fromNodeId: Conducting Cue33
+    toNodeId: Diamond Collapse4
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -5284,6 +5284,10 @@ MonoBehaviour:
         parryTieSegments: 16
         parryTieSortingOrder: 68
         waitForDuration: 1
+        bossTargetPosition: {x: 6, y: -5.5}
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
     - rid: 6489939025664671825
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6590,6 +6594,10 @@ MonoBehaviour:
         parryTieSegments: 16
         parryTieSortingOrder: 68
         waitForDuration: 1
+        bossTargetPosition: {x: 6, y: -5.5}
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
     - rid: 6489939025664671939
       type: {class: MinionConductorScoreLaneRushAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -7205,6 +7213,10 @@ MonoBehaviour:
         parryTieSegments: 16
         parryTieSortingOrder: 68
         waitForDuration: 1
+        bossTargetPosition: {x: 6, y: -5.5}
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
     - rid: 6489939025664671940
       type: {class: MinionFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -8290,7 +8302,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        patternCenter: {x: 6, y: -5}
+        patternCenter: {x: 6, y: -5.5}
         useTwoSides: 1
         lineDistanceFromPlayer: 5
         lineSpacing: 0.7
@@ -8878,6 +8890,10 @@ MonoBehaviour:
         parryTieSegments: 16
         parryTieSortingOrder: 68
         waitForDuration: 1
+        bossTargetPosition: {x: 6, y: -5.5}
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
     - rid: 6489939039041355967
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -9089,6 +9105,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9110,6 +9129,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9131,6 +9153,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7989450042714749149, guid: da1a473b4ef86914fac54fc147711f00, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9152,6 +9177,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7419351394205480846, guid: 67df3bd6408cf624bb0488cbea09589e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9173,6 +9201,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6604054486049378884, guid: 2988035264c53a84b80fd58158de7150, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9194,6 +9225,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7419351394205480846, guid: 67df3bd6408cf624bb0488cbea09589e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9215,6 +9249,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6604054486049378884, guid: 2988035264c53a84b80fd58158de7150, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9236,6 +9273,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 4162089806990092522, guid: aa2e5a0914b32b045b2e1269ac1f952e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9257,6 +9297,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7419351394205480846, guid: 67df3bd6408cf624bb0488cbea09589e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9278,6 +9321,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7419351394205480846, guid: 67df3bd6408cf624bb0488cbea09589e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9299,6 +9345,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 4162089806990092522, guid: aa2e5a0914b32b045b2e1269ac1f952e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9320,6 +9369,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6604054486049378884, guid: 2988035264c53a84b80fd58158de7150, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9341,6 +9393,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 4162089806990092522, guid: aa2e5a0914b32b045b2e1269ac1f952e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9362,6 +9417,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9383,6 +9441,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7989450042714749149, guid: da1a473b4ef86914fac54fc147711f00, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9404,6 +9465,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 5662745412710745466, guid: accab457fb4b96b44b14af5f1be91dc9, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9425,6 +9489,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9446,6 +9513,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 5662745412710745466, guid: accab457fb4b96b44b14af5f1be91dc9, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9467,6 +9537,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7989450042714749149, guid: da1a473b4ef86914fac54fc147711f00, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9488,6 +9561,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9549,6 +9625,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9578,6 +9657,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 2184773374242668092, guid: 9fc7570d54cb0694ca07cfb7174be419, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -9818,6 +9900,10 @@ MonoBehaviour:
         parryTieSegments: 8
         parryTieSortingOrder: 68
         waitForDuration: 1
+        bossTargetPosition: {x: 6, y: -5.5}
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
         drawLaneIndicators: 1
         specialVolleys:
         - fireTimings:
@@ -10479,10 +10565,6 @@ MonoBehaviour:
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
         laneIndicatorLineCount: 4
-        bossTargetPosition: {x: 6, y: -5.5}
-        bossOriginMoveSpeedMultiplier: 1
-        bossOriginArriveDistance: 0.04
-        bossMoveTimeoutSeconds: 5
         cameraFocusDelaySeconds: 3
         cameraFocusWorldCenter: {x: 6, y: -6.1}
         rushStartProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
@@ -11337,6 +11419,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7989450042714749149, guid: da1a473b4ef86914fac54fc147711f00, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11366,6 +11451,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6694752098521060328, guid: d83e2600edc6d4b4ea113d9b8ac3e9cc, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11519,6 +11607,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11540,6 +11631,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6694752098521060328, guid: d83e2600edc6d4b4ea113d9b8ac3e9cc, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11578,12 +11672,15 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        preludeWanderSpeed: 3.2
+        preludeWanderRadius: 2.8
+        preludeWanderRetargetSeconds: 1.5
         previewLaneDistance: 5
         previewLaneSpacing: 0.7
         previewLaneLength: 35
-        previewInitialLaneDistanceMultiplier: 12
+        previewInitialLaneDistanceMultiplier: 5.5
         previewInitialLaneHoldSeconds: 0.2
-        previewLaneShrinkSeconds: 6.5
+        previewLaneShrinkSeconds: 1.5
         previewLaneFadeSeconds: 0.2
         previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
         previewLaneWidth: 0.035
@@ -11723,6 +11820,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7989450042714749149, guid: da1a473b4ef86914fac54fc147711f00, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11851,6 +11951,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 4162089806990092522, guid: aa2e5a0914b32b045b2e1269ac1f952e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11872,6 +11975,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7419351394205480846, guid: 67df3bd6408cf624bb0488cbea09589e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -11952,6 +12058,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7419351394205480846, guid: 67df3bd6408cf624bb0488cbea09589e, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -12684,6 +12793,10 @@ MonoBehaviour:
         parryTieSegments: 16
         parryTieSortingOrder: 68
         waitForDuration: 1
+        bossTargetPosition: {x: 6, y: -5.5}
+        bossOriginMoveSpeedMultiplier: 1
+        bossOriginArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
     - rid: 6489939164457861237
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -12709,6 +12822,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6604054486049378884, guid: 2988035264c53a84b80fd58158de7150, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -12730,6 +12846,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6694752098521060328, guid: d83e2600edc6d4b4ea113d9b8ac3e9cc, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -12759,6 +12878,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 5662745412710745466, guid: accab457fb4b96b44b14af5f1be91dc9, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -12872,6 +12994,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 2184773374242668092, guid: 9fc7570d54cb0694ca07cfb7174be419, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -12989,6 +13114,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 7289365483218541331, guid: 65918c889e4ec884c8ff573eb7919b9d, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -13445,6 +13573,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 8323784350632563001, guid: c47a809f5cb99744bbc8ca10a2faf189, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -13560,62 +13691,6 @@ MonoBehaviour:
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 4.5
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.25
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.25
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 7.75
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 8.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 9.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
         waitForDuration: 1
         drawPlacementIndicators: 1
         placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
@@ -13647,6 +13722,9 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        preludeWanderSpeed: 3.2
+        preludeWanderRadius: 2.8
+        preludeWanderRetargetSeconds: 1.5
         previewLaneDistance: 4.5
         previewLaneSpacing: 0.7
         previewLaneLength: 8
@@ -13778,160 +13856,6 @@ MonoBehaviour:
         bossMoveSpeedMultiplier: 1
         bossArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
-    - rid: 6489939172654055503
-      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerPosition: {x: 6, y: -5.5}
-        initialRadius: 9
-        initialAlignSeconds: 1
-        windupSeconds: 0
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        previewLaneDistance: 4.5
-        previewLaneSpacing: 0.7
-        previewLaneLength: 8
-        previewInitialLaneDistanceMultiplier: 1.5
-        previewInitialLaneHoldSeconds: 0.2
-        previewLaneShrinkSeconds: 0.6
-        previewLaneFadeSeconds: 0.14
-        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
-        previewLaneWidth: 0.035
-        previewLaneSortingOrder: 66
-        previewLaneLineCount: 4
-        volleyStages:
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 7
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 6
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 5
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 3
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 1
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        finalShotDelaySeconds: 0.15
-        repositionBossAtPatternStart: 0
-        bossTargetPosition: {x: 6, y: -1.5}
-        bossMoveSpeedMultiplier: 1
-        bossArriveDistance: 0.04
-        bossMoveTimeoutSeconds: 5
     - rid: 6489939172654055504
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -14000,62 +13924,6 @@ MonoBehaviour:
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 3.5
           durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 4.5
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.25
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.25
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 7.75
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 8.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 9.25
-          durationSeconds: 0.75
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
@@ -14140,62 +14008,6 @@ MonoBehaviour:
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 4.5
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.25
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.25
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 7.75
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 8.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 9.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
         waitForDuration: 1
         drawPlacementIndicators: 1
         placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
@@ -14276,62 +14088,6 @@ MonoBehaviour:
           direction: 0
           angleOffsetDegrees: 0
           minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 4.5
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.25
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.25
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 7.75
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 8.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 9.25
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
         waitForDuration: 1
         drawPlacementIndicators: 1
         placementIndicatorColor: {r: 1, g: 0.78, b: 0.24, a: 0.78}
@@ -14340,160 +14096,6 @@ MonoBehaviour:
         placementIndicatorOuterRadius: 0.42
         placementIndicatorSpikeCount: 12
         placementIndicatorSortingOrder: 67
-    - rid: 6489939172654055507
-      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        centerPosition: {x: 6, y: -5.5}
-        initialRadius: 9
-        initialAlignSeconds: 1
-        windupSeconds: 0
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        previewLaneDistance: 4.5
-        previewLaneSpacing: 0.7
-        previewLaneLength: 8
-        previewInitialLaneDistanceMultiplier: 1.5
-        previewInitialLaneHoldSeconds: 0.2
-        previewLaneShrinkSeconds: 0.6
-        previewLaneFadeSeconds: 0.14
-        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
-        previewLaneWidth: 0.035
-        previewLaneSortingOrder: 66
-        previewLaneLineCount: 4
-        volleyStages:
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 8
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 7
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 6
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 5
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 4
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 3
-          firePauseBeforeShrinkSeconds: 0
-          shrinkMoveSeconds: 0.01
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 0.75
-          fireInterval: 0.12
-          shrinkAfter: 1
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          fireSeconds: 1
-          fireInterval: 0.12
-          shrinkAfter: 0
-          nextRadius: 2
-          firePauseBeforeShrinkSeconds: 0.1
-          shrinkMoveSeconds: 0.1
-        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-        finalShotDelaySeconds: 0.15
-        repositionBossAtPatternStart: 0
-        bossTargetPosition: {x: 6, y: -1.5}
-        bossMoveSpeedMultiplier: 1
-        bossArriveDistance: 0.04
-        bossMoveTimeoutSeconds: 5
     - rid: 6489939172654055508
       type: {class: MinionConductorFanBladeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -14562,62 +14164,6 @@ MonoBehaviour:
         - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
           startSeconds: 3.5
           durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 4.5
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 5
-          durationSeconds: 0.75
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 5.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 6.25
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 7.25
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 7.75
-          durationSeconds: 1
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uC77C\uBC18\uD0C4"
-          startSeconds: 8.75
-          durationSeconds: 0.5
-          fireInterval: 0.075
-          direction: 0
-          angleOffsetDegrees: 0
-          minionNumbers: 01000000020000000300000004000000
-        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
-          startSeconds: 9.25
-          durationSeconds: 0.75
           fireInterval: 0.075
           direction: 0
           angleOffsetDegrees: 0
@@ -14725,6 +14271,9 @@ MonoBehaviour:
         holdSeconds: 0.7
         fadeSeconds: 0.1
         sortingOrder: 90
+        completedEffectPrefab: {fileID: 6926347579080853783, guid: 91723d1cbab48234c8a06b38c3ca139c, type: 3}
+        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
         completedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -14740,3 +14289,317 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
+    - rid: 6489939249705517132
+      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerPosition: {x: 6, y: -5.5}
+        initialRadius: 9
+        initialAlignSeconds: 1
+        windupSeconds: 0
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        preludeWanderSpeed: 3.2
+        preludeWanderRadius: 2.8
+        preludeWanderRetargetSeconds: 1.5
+        previewLaneDistance: 5
+        previewLaneSpacing: 0.7
+        previewLaneLength: 35
+        previewInitialLaneDistanceMultiplier: 5.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 1.5
+        previewLaneFadeSeconds: 0.2
+        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
+        previewLaneWidth: 0.035
+        previewLaneSortingOrder: 66
+        previewLaneLineCount: 4
+        volleyStages:
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 7
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 6
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 5
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 3
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 1
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        finalShotDelaySeconds: 0.15
+        repositionBossAtPatternStart: 1
+        bossTargetPosition: {x: 6, y: -1.5}
+        bossMoveSpeedMultiplier: 1
+        bossArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5
+    - rid: 6489939249705517133
+      type: {class: ConductorDiamondCollapseAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        centerPosition: {x: 6, y: -5.5}
+        initialRadius: 9
+        initialAlignSeconds: 1
+        windupSeconds: 0
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        preludeWanderSpeed: 3.2
+        preludeWanderRadius: 2.8
+        preludeWanderRetargetSeconds: 1.5
+        previewLaneDistance: 5
+        previewLaneSpacing: 0.7
+        previewLaneLength: 35
+        previewInitialLaneDistanceMultiplier: 5.5
+        previewInitialLaneHoldSeconds: 0.2
+        previewLaneShrinkSeconds: 1.5
+        previewLaneFadeSeconds: 0.2
+        previewLaneColor: {r: 0, g: 0, b: 0, a: 0.66}
+        previewLaneWidth: 0.035
+        previewLaneSortingOrder: 66
+        previewLaneLineCount: 4
+        volleyStages:
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 8
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 7
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 6
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 5
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 4
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 3
+          firePauseBeforeShrinkSeconds: 0
+          shrinkMoveSeconds: 0.01
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uC77C\uBC18\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 0.75
+          fireInterval: 0.12
+          shrinkAfter: 1
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        - projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+          fireSeconds: 1
+          fireInterval: 0.12
+          shrinkAfter: 0
+          nextRadius: 2
+          firePauseBeforeShrinkSeconds: 0.1
+          shrinkMoveSeconds: 0.1
+        finalProjectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        finalShotDelaySeconds: 0.15
+        repositionBossAtPatternStart: 1
+        bossTargetPosition: {x: 6, y: -1.5}
+        bossMoveSpeedMultiplier: 1
+        bossArriveDistance: 0.04
+        bossMoveTimeoutSeconds: 5

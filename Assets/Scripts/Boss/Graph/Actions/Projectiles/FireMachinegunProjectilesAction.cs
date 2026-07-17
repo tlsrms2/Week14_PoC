@@ -8,7 +8,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class FireAttachedProjectilesAction : BossAction
+    public sealed class FireAttachedProjectilesAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
@@ -120,7 +120,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FireConfiguredVolleyProjectilesAction : BossAction
+    public sealed class FireConfiguredVolleyProjectilesAction : BossAction, IBossProjectileEmissionAction
     {
         [Serializable]
         public sealed class Volley
@@ -244,7 +244,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FirePlayerCircleProjectilesAction : BossAction
+    public sealed class FirePlayerCircleProjectilesAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();

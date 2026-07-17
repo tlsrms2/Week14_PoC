@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionRadialBurstAction : BossAction, ISerializationCallbackReceiver
+    public sealed class MinionRadialBurstAction : BossAction, ISerializationCallbackReceiver, IBossProjectileEmissionAction
     {
         [Serializable]
         public sealed class Volley

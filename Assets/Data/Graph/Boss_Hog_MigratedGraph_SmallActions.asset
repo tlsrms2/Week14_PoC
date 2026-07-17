@@ -539,7 +539,7 @@ MonoBehaviour:
       rid: 4705778169994805693
     sequences: []
     editorPosition: {x: -422, y: 465}
-  - nodeId: Spawn Effect Prefab2
+  - nodeId: Spawn Effect Prefab1
     nodeGuid: faa9f3db13d94965a30c67ee6434e0f0
     nodeKind: 3
     phaseIndex: 0
@@ -548,7 +548,7 @@ MonoBehaviour:
       rid: 6489939233575534670
     sequences: []
     editorPosition: {x: -169, y: 92}
-  - nodeId: Spawn Effect Prefab3
+  - nodeId: Spawn Effect Prefab2
     nodeGuid: 1d62b4a25d504f49bb20912024832d2b
     nodeKind: 3
     phaseIndex: 0
@@ -557,7 +557,7 @@ MonoBehaviour:
       rid: 6489939233575534672
     sequences: []
     editorPosition: {x: 221, y: 85}
-  - nodeId: Spawn Effect Prefab4
+  - nodeId: Spawn Effect Prefab3
     nodeGuid: 3270d28735b24ae09051ba7b487c4606
     nodeKind: 3
     phaseIndex: 0
@@ -566,7 +566,7 @@ MonoBehaviour:
       rid: 6489939233575534673
     sequences: []
     editorPosition: {x: 593, y: 88}
-  - nodeId: Spawn Effect Prefab5
+  - nodeId: Spawn Effect Prefab4
     nodeGuid: 6c55a43f78bd4a74a2798d357a69eb66
     nodeKind: 3
     phaseIndex: 0
@@ -575,7 +575,7 @@ MonoBehaviour:
       rid: 6489939233575534674
     sequences: []
     editorPosition: {x: 983, y: 81}
-  - nodeId: Spawn Effect Prefab6
+  - nodeId: Spawn Effect Prefab5
     nodeGuid: 9ae148a3fb444dcf8b4fd2febe736d60
     nodeKind: 3
     phaseIndex: 0
@@ -584,7 +584,7 @@ MonoBehaviour:
       rid: 6489939233575534675
     sequences: []
     editorPosition: {x: 1395, y: 102}
-  - nodeId: Spawn Effect Prefab7
+  - nodeId: Spawn Effect Prefab6
     nodeGuid: 7146538f2b404f97b9913afcda936e76
     nodeKind: 3
     phaseIndex: 0
@@ -593,7 +593,7 @@ MonoBehaviour:
       rid: 6489939233575534682
     sequences: []
     editorPosition: {x: 1784, y: 95}
-  - nodeId: Spawn Effect Prefab8
+  - nodeId: Spawn Effect Prefab7
     nodeGuid: 1e1931573edb41f68af2bb9dd49428f6
     nodeKind: 3
     phaseIndex: 0
@@ -672,12 +672,12 @@ MonoBehaviour:
     - Move Body Root5
     - Move Body Root6
     - Fire Radial Emission4
+    - Spawn Effect Prefab1
     - Spawn Effect Prefab2
     - Spawn Effect Prefab3
     - Spawn Effect Prefab4
     - Spawn Effect Prefab5
     - Spawn Effect Prefab6
-    - Spawn Effect Prefab7
   - patternId: Pattern5
     nodeGuids:
     - 9e1f9a114f0c49578bd202859577b908
@@ -734,7 +734,7 @@ MonoBehaviour:
     - Move Body Root15
     - Move Body Root16
     - Fire Radial Emission9
-    - Spawn Effect Prefab8
+    - Spawn Effect Prefab7
     - Action1
   - patternId: Pattern7
     nodeGuids:
@@ -1256,43 +1256,43 @@ MonoBehaviour:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: faa9f3db13d94965a30c67ee6434e0f0
     fromNodeId: Move Body Root1
-    toNodeId: Spawn Effect Prefab2
+    toNodeId: Spawn Effect Prefab1
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 6b9cb46fa8ff45779719798b81e23367
     toNodeGuid: 1d62b4a25d504f49bb20912024832d2b
     fromNodeId: Fire Radial Emission2
-    toNodeId: Spawn Effect Prefab3
+    toNodeId: Spawn Effect Prefab2
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: cf6ddc7d9df54ee7b7e3a17be36c8adb
     toNodeGuid: 3270d28735b24ae09051ba7b487c4606
     fromNodeId: Move Body Root3
-    toNodeId: Spawn Effect Prefab4
+    toNodeId: Spawn Effect Prefab3
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: ec2d10c5f5b5423291d90c573763374a
     toNodeGuid: 6c55a43f78bd4a74a2798d357a69eb66
     fromNodeId: Fire Radial Emission3
-    toNodeId: Spawn Effect Prefab5
+    toNodeId: Spawn Effect Prefab4
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: dc151c7ad02d420cbb25278e1af7d217
     toNodeGuid: 9ae148a3fb444dcf8b4fd2febe736d60
     fromNodeId: Move Body Root5
-    toNodeId: Spawn Effect Prefab6
+    toNodeId: Spawn Effect Prefab5
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 55d7655e94ff40d797850d3ef53faf33
     toNodeGuid: 7146538f2b404f97b9913afcda936e76
     fromNodeId: Fire Radial Emission4
-    toNodeId: Spawn Effect Prefab7
+    toNodeId: Spawn Effect Prefab6
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: ce4123afab7d4dd1a1006edc046127ae
     toNodeGuid: 1e1931573edb41f68af2bb9dd49428f6
     fromNodeId: Move Body Root7
-    toNodeId: Spawn Effect Prefab8
+    toNodeId: Spawn Effect Prefab7
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 7e0bd7072aab4922bcc429c8f2929853

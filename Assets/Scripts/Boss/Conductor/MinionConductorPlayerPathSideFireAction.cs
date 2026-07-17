@@ -13,7 +13,9 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class MinionConductorPlayerPathSideFireAction : BossAction
+    public sealed class MinionConductorPlayerPathSideFireAction : BossAction,
+        IBossActionContextDurationProvider,
+        IBossProjectileEmissionAction
     {
         [Header("Player Path")]
         [SerializeField] private ConductorPlayerPathSideFireMode mode;
@@ -45,6 +47,27 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int indicatorPathCount = 4;
         [SerializeField, Min(1)] private int maxIndicatorShotsPerPath = 64;
         [SerializeField, Min(0f)] private float indicatorRetainSeconds = 0.2f;
+
+        public bool TryGetDurationSeconds(BossActionContext context, out float seconds)
+        {
+            seconds = 0f;
+            if (!MinionGraphActionHost.TryResolveProjectile(
+                    context,
+                    projectileName,
+                    out _,
+                    out _))
+            {
+                return false;
+            }
+
+            float finalStepStartSeconds = mode == ConductorPlayerPathSideFireMode.HorizontalVerticalThenDiagonal
+                ? GetForcedStepCompletionSeconds()
+                : 0f;
+            seconds = finalStepStartSeconds
+                + GetFireStartDelaySeconds()
+                + GetLastProjectileFireOffsetSeconds();
+            return seconds > 0f;
+        }
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -287,6 +310,21 @@ namespace Week14.Enemy
         private float GetFireStartDelaySeconds()
         {
             return Mathf.Max(0f, moveToStartSeconds) + Mathf.Max(0f, windupSeconds);
+        }
+
+        private float GetForcedStepCompletionSeconds()
+        {
+            float pathDuration = Mathf.Max(0f, moveToStartSeconds) + Mathf.Max(0.05f, moveSeconds);
+            float fireCompletionSeconds = GetFireStartDelaySeconds() + Mathf.Max(0.05f, fireSeconds);
+            return Mathf.Max(pathDuration, fireCompletionSeconds);
+        }
+
+        private float GetLastProjectileFireOffsetSeconds()
+        {
+            float duration = Mathf.Max(0.05f, fireSeconds);
+            float interval = Mathf.Max(0.01f, fireInterval);
+            int shotCount = Mathf.Max(1, Mathf.CeilToInt(duration / interval));
+            return (shotCount - 1) * interval;
         }
 
         private static IEnumerator WaitSecondsIfNeeded(BossActionContext context, float seconds)

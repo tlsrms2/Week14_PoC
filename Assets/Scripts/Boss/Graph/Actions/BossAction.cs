@@ -24,9 +24,26 @@ namespace Week14.Enemy
         bool TryGetDurationSeconds(BossActionContext context, out float seconds);
     }
 
+    public interface IBossProjectileEmissionAction
+    {
+    }
+
     internal interface IConductorCueOverlayEarlyStartSource
     {
         bool ShouldStartConductorCueOverlayEarly { get; }
         void ClearConductorCueOverlayEarlyStart();
+    }
+
+    internal interface IConductorCueOverlayExplicitStartSource
+    {
+        bool ShouldStartConductorCueOverlay { get; }
+        bool IsConductorCueOverlaySourceFinished { get; }
+        void ClearConductorCueOverlayStart();
+    }
+
+    internal interface IConductorCueDurationCompanion
+    {
+        void SetMinimumConductorCueDuration(float seconds);
+        void ClearMinimumConductorCueDuration();
     }
 }

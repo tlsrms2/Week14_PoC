@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class MinionSideFireAction : BossAction
+    public sealed class MinionSideFireAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();

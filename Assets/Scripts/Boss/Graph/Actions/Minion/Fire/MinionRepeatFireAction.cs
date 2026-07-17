@@ -9,7 +9,7 @@ namespace Week14.Enemy
 {
     [MovedFrom(true, "Week14.Enemy", "Assembly-CSharp", "MinionFireAllAction")]
     [Serializable]
-    public sealed class MinionRepeatFireAction : BossAction, ISerializationCallbackReceiver
+    public sealed class MinionRepeatFireAction : BossAction, ISerializationCallbackReceiver, IBossProjectileEmissionAction
     {
         [Serializable]
         public sealed class Volley

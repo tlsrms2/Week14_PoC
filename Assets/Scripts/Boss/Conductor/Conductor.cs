@@ -20,6 +20,10 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float minionOutlineFlashSeconds = 0.12f;
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+        [Header("패턴 완료 이펙트")]
+        [SerializeField, InspectorName("프리팹")] private GameObject conductingCompleteEffectPrefab;
+        [SerializeField, InspectorName("보스 로컬 오프셋")] private Vector2 conductingCompleteEffectOffset;
+        [SerializeField, InspectorName("스케일 배율"), Min(0.01f)] private float conductingCompleteEffectScale = 1f;
         [SerializeField, HideInInspector] private List<ConductorConductingPattern> conductingPatterns = new();
 
         private readonly Dictionary<Health, Minion> spawnedMinionsByHealth = new();
@@ -214,6 +218,8 @@ namespace Week14.Enemy
                     }
                 }
 
+                PlayConductingCueCompleteEffect(anchor, settings);
+
                 if (settings.CompletedFlashSeconds > 0f)
                 {
                     visual.ApplyFlashStyle();
@@ -260,6 +266,47 @@ namespace Week14.Enemy
                     visual.ClearAndDestroy();
                 }
             }
+        }
+
+        private static void PlayConductingCueCompleteEffect(
+            Transform anchor,
+            ConductorConductingCueSettings settings)
+        {
+            if (anchor == null || settings.CompletedEffectPrefab == null)
+            {
+                return;
+            }
+
+            Vector3 localOffset = new(
+                settings.CompletedEffectOffset.x,
+                settings.CompletedEffectOffset.y,
+                0f);
+            ProjectileVfx.PlayPrefab(
+                settings.CompletedEffectPrefab,
+                anchor.TransformPoint(localOffset),
+                anchor.right,
+                anchor,
+                settings.CompletedEffectScale);
+        }
+
+        internal void PlayPatternCompleteEffect()
+        {
+            Transform anchor = BodyRoot != null ? BodyRoot : transform;
+            if (anchor == null || conductingCompleteEffectPrefab == null)
+            {
+                return;
+            }
+
+            Vector3 localOffset = new(
+                conductingCompleteEffectOffset.x,
+                conductingCompleteEffectOffset.y,
+                0f);
+            ProjectileVfx.PlayPrefab(
+                conductingCompleteEffectPrefab,
+                anchor.TransformPoint(localOffset),
+                anchor.right,
+                anchor,
+                Mathf.Max(0.01f, conductingCompleteEffectScale));
         }
 
         public override EnemyProjectile FireMinionProjectile(

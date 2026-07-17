@@ -2851,6 +2851,14 @@ PrefabInstance:
       propertyPath: minionHitDamageMultiplier
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingCompleteEffectPrefab
+      value: 
+      objectReference: {fileID: 6168326557715391449, guid: 9952fc8144218984291a84453872babe, type: 3}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: conductingCompleteEffectOffset.y
+      value: -0.32
+      objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6

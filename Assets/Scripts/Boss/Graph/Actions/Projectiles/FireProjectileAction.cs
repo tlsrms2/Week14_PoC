@@ -149,7 +149,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FireProjectileAction : BossAction
+    public sealed class FireProjectileAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
@@ -217,7 +217,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FireProjectileBurstAction : BossAction
+    public sealed class FireProjectileBurstAction : BossAction, IBossProjectileEmissionAction
     {
         [Serializable]
         public sealed class Volley
@@ -335,7 +335,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FireRandomConeBurstAction : BossAction
+    public sealed class FireRandomConeBurstAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
@@ -449,7 +449,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FirePlayerSideFanSweepAction : BossAction
+    public sealed class FirePlayerSideFanSweepAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();

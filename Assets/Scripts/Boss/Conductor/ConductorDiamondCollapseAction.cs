@@ -7,7 +7,9 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class ConductorDiamondCollapseAction : BossAction
+    public sealed class ConductorDiamondCollapseAction : BossAction,
+        IBossProjectileEmissionAction,
+        IConductorCueOverlayExplicitStartSource
     {
         private const int DroneCount = 4;
         private const float LaneShrinkPushPadding = 0.02f;
@@ -48,6 +50,11 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
+        [Header("Prelude Wander")]
+        [SerializeField, Min(0f)] private float preludeWanderSpeed = 3.2f;
+        [SerializeField, Min(0.1f)] private float preludeWanderRadius = 2.8f;
+        [SerializeField, Min(0.1f)] private float preludeWanderRetargetSeconds = 1.5f;
+
         [Header("Score Lane Preview")]
         [SerializeField, Min(0.1f)] private float previewLaneDistance = 3f;
         [SerializeField, Min(0f)] private float previewLaneSpacing = 0.7f;
@@ -79,12 +86,27 @@ namespace Week14.Enemy
         [SerializeField, Min(0.001f)] private float bossArriveDistance = 0.04f;
         [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
 
+        private bool finalCenterShotTriggered;
+        private bool executionFinished;
+
+        public bool ShouldStartConductorCueOverlay => finalCenterShotTriggered;
+        public bool IsConductorCueOverlaySourceFinished => executionFinished;
+
+        public void ClearConductorCueOverlayStart()
+        {
+            finalCenterShotTriggered = false;
+            executionFinished = false;
+        }
+
         public override IEnumerator Execute(BossActionContext context)
         {
+            finalCenterShotTriggered = false;
+            executionFinished = false;
             if (!MinionGraphActionHost.TryGet(context, out IMinionPatternHost host)
                 || volleyStages == null
                 || volleyStages.Count == 0)
             {
+                executionFinished = true;
                 yield break;
             }
 
@@ -92,6 +114,7 @@ namespace Week14.Enemy
             List<Minion> drones = GetDrones(host.GetControlledMinionsForGraph());
             if (drones.Count != DroneCount)
             {
+                executionFinished = true;
                 yield break;
             }
 
@@ -100,12 +123,15 @@ namespace Week14.Enemy
                 : null;
             try
             {
+                CommandPreludeWander(drones, windupSeconds);
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
 
                 float currentRadius = Mathf.Max(0.01f, initialRadius);
-                yield return ShowScoreLanePreview(context);
                 CommandDronesToCardinalSlots(drones, currentRadius, initialAlignSeconds);
-                yield return context.WaitSeconds(initialAlignSeconds);
+                yield return ShowScoreLanePreview(context);
+                yield return context.WaitSeconds(Mathf.Max(
+                    0f,
+                    initialAlignSeconds - GetScoreLanePreviewSeconds()));
 
                 for (int i = 0; i < volleyStages.Count; i++)
                 {
@@ -128,6 +154,7 @@ namespace Week14.Enemy
                 }
 
                 yield return context.WaitSeconds(finalShotDelaySeconds);
+                finalCenterShotTriggered = true;
                 FireCenterVolley(context, host, drones);
                 if (bossMoveRoutine != null)
                 {
@@ -140,6 +167,35 @@ namespace Week14.Enemy
                 {
                     context.Boss.StopCoroutine(bossMoveRoutine);
                 }
+
+                executionFinished = true;
+            }
+        }
+
+        private float GetScoreLanePreviewSeconds()
+        {
+            return Mathf.Max(0f, previewInitialLaneHoldSeconds)
+                + (previewInitialLaneDistanceMultiplier > 1f
+                    ? Mathf.Max(0f, previewLaneShrinkSeconds)
+                    : 0f)
+                + Mathf.Max(0f, previewLaneFadeSeconds);
+        }
+
+        private void CommandPreludeWander(IReadOnlyList<Minion> drones, float duration)
+        {
+            duration = Mathf.Max(0f, duration);
+            if (drones == null || duration <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < drones.Count; i++)
+            {
+                drones[i]?.CommandWander(
+                    duration,
+                    preludeWanderSpeed,
+                    preludeWanderRadius,
+                    preludeWanderRetargetSeconds);
             }
         }
 

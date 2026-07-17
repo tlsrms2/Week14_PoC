@@ -38,11 +38,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float postProjectileClearDelaySeconds = 0.5f;
         [SerializeField] private int laneIndicatorSortingOrder = 66;
         [SerializeField, Min(1)] private int laneIndicatorLineCount = 4;
-        [Header("Boss Reposition")]
-        [SerializeField] private Vector2 bossTargetPosition;
-        [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
-        [SerializeField, Min(0.001f)] private float bossOriginArriveDistance = 0.04f;
-        [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
         [Header("Pattern Camera")]
         [SerializeField, Min(0f)] private float cameraFocusDelaySeconds;
         [SerializeField] private Vector2 cameraFocusWorldCenter;
@@ -260,56 +255,6 @@ namespace Week14.Enemy
         protected override List<ExecutionVolley> BuildExecutionVolleys()
         {
             return BuildExecutionVolleysFromPool(specialVolleys, ExecutionOrder);
-        }
-
-        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
-        {
-            if (context?.Boss == null || context.Boss.Body == null)
-            {
-                yield break;
-            }
-
-            Vector2 target = bossTargetPosition;
-            float arriveDistance = Mathf.Max(0.001f, bossOriginArriveDistance);
-            float arriveDistanceSqr = arriveDistance * arriveDistance;
-            float elapsed = 0f;
-            while (((Vector2)context.Boss.Body.position - target).sqrMagnitude > arriveDistanceSqr
-                && elapsed < Mathf.Max(0.01f, bossMoveTimeoutSeconds))
-            {
-                if (context.IsExecutionPaused)
-                {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Vector2 current = context.Boss.Body.position;
-                Vector2 toTarget = target - current;
-                float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
-                context.Boss.SetMovementVelocity(toTarget.normalized * speed);
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
-            }
-
-            context.Boss.Stop();
-        }
-
-        private float EstimateBossTargetMoveSeconds(BossActionContext context)
-        {
-            if (context?.Boss == null)
-            {
-                return 0f;
-            }
-
-            Vector2 current = context.Boss.Body != null
-                ? context.Boss.Body.position
-                : context.Boss.transform.position;
-            float distance = Mathf.Max(
-                0f,
-                Vector2.Distance(current, bossTargetPosition) - Mathf.Max(0.001f, bossOriginArriveDistance));
-            float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
-            float estimate = speed > 0f ? distance / speed : 0f;
-            return Mathf.Min(estimate, Mathf.Max(0.01f, bossMoveTimeoutSeconds));
         }
 
         private float GetLaneIndicatorRevealDuration()
