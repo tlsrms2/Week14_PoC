@@ -735,6 +735,10 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_Objective
     m_Metadata:
       m_Items: []
+  - m_Id: 1345961062363136
+    m_Key: InGame_05-Act3_19_Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

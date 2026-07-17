@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2169673711616
-    m_Localized: Dealer
+    m_Localized: Salvo
     m_Metadata:
       m_Items: []
   - m_Id: 2201940492288
@@ -43,11 +43,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3144186691584
-    m_Localized: Conductor
+    m_Localized: Canon
     m_Metadata:
       m_Items: []
   - m_Id: 1036685002768384
-    m_Localized: Security Director
+    m_Localized: Ram
     m_Metadata:
       m_Items: []
   - m_Id: 1036872689483776
@@ -59,7 +59,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4200008682668032
-    m_Localized: Assassin
+    m_Localized: Mirage
     m_Metadata:
       m_Items: []
   - m_Id: 4200012361072640
@@ -71,7 +71,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4212237473775616
-    m_Localized: Hacker
+    m_Localized: Echo
     m_Metadata:
       m_Items: []
   - m_Id: 4212276363362304

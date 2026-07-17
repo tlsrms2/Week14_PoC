@@ -429,19 +429,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512848
-    m_Localized: The day after the Vesper accident, they were found dead by suicide
-      at their residence. Based on the analysis of relevant data, it is predicted
-      that "Boss 4 (To be revised)" <B><color=red>visited</B></color> them.
+    m_Localized: The day after the Vesper accident, he was found suicidal at home.
+      After analyzing the relevant data, it is predicted that <B>Mirage</B> has <B><color=red>visited</b></color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512849
-    m_Localized: If it's "Boss 4"... that's the guy rumored to do the "Boss Gimmick."
+    m_Localized: <B>Mirage</B>.. is it the one who disappears in front of you and
+      suddenly appears and stabs you in the back?
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512850
-    m_Localized: Although the location of "Boss 4" currently registered in the database
-      exists... please understand that it cannot be provided unless it is registered
-      as an official mission.
+    m_Localized: Although the estimated location of <B>Mirage</B> currently registered
+      in the database exists... please understand that it cannot be provided unless
+      it is registered as an official mission.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512851
@@ -459,13 +459,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512854
-    m_Localized: Correct. The person who led the operation is "Boss 3," and the person
-      who made the final decision is someone named Jin, who is presumed to be part
-      of the Syndicate's executive leadership.
+    m_Localized: Correct. The person who led the operation is <B>Canon</B>, and the
+      person who made the final decision is someone named Jin, who is presumed to
+      be part of the Syndicate's executive leadership.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512855
-    m_Localized: '"Boss 3"? That person belongs to the underworld?'
+    m_Localized: Canon? That person belongs to the underworld?
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512856
@@ -475,7 +475,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512857
     m_Localized: Jin's location cannot be specified, but since there is a lot of
-      known information about "Boss 3," they were easily pinpointed.
+      known information about Canon they were easily pinpointed.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512858
@@ -528,7 +528,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512868
     m_Localized: Not long ago, a new mission was registered under the name of the
-      client, Jin. Visitor codename "Boss 5."
+      client, Jin. Visitor codename ECHO.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512869
@@ -536,7 +536,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512870
-    m_Localized: That bastard must have caught wind of it. "Boss 5"... of all people,
+    m_Localized: That bastard must have caught wind of it. Echo.. of all people,
       he brought the most troublesome opponent.
     m_Metadata:
       m_Items: []
@@ -579,7 +579,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512879
     m_Localized: I have registered Jin's location on the panel. It is recommended
-      that you visit him first before "Boss 5" arrives.
+      that you visit him first before codename Echo arrives.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512880
@@ -857,7 +857,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 43636894302208
     m_Localized: They probably already know I'm coming and are waiting for me along
-      with "Boss 5."
+      with Echo
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901402
@@ -877,6 +877,11 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1108486769008640
     m_Localized: '[ Objective ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1345961062363136
+    m_Localized: That's a reasonable guess, then I recommend you check the module
+      for the last time before combat.
     m_Metadata:
       m_Items: []
   references:
