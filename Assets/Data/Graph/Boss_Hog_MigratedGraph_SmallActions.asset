@@ -1315,7 +1315,7 @@ MonoBehaviour:
     toNodeId: Spawn Effect Prefab8
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
+  debugForceSinglePattern: 0
   debugForcedPatternId: Pattern6
   references:
     version: 2

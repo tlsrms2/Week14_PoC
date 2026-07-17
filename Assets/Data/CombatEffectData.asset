@@ -23,7 +23,7 @@ MonoBehaviour:
   hackerMuzzleFlashVfxPrefab: {fileID: 0}
   assassinMuzzleFlashVfxPrefab: {fileID: 0}
   arsonistMuzzleFlashVfxPrefab: {fileID: 0}
-  conductorMuzzleFlashVfxPrefab: {fileID: 0}
+  conductorMuzzleFlashVfxPrefab: {fileID: 5806147221709328024, guid: fc50743612e48ce44b1768b36069a6e6, type: 3}
   parrySuccessVfxPrefab: {fileID: 3814076209310931853, guid: 639c50148cfed194ba7ce4833513c052, type: 3}
   enemyHitVfxPrefab: {fileID: 5358599431725786924, guid: 541eb311aac712c4eae92986584e8dd6, type: 3}
   playerHitVfxPrefab: {fileID: 0}
