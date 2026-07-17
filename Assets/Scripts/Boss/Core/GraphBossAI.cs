@@ -21,6 +21,7 @@ namespace Week14.Enemy
 
         private static readonly int StunParameter = Animator.StringToHash("Stun");
         private static readonly int EndStunParameter = Animator.StringToHash("EndStun");
+        private static readonly int IsStunParameter = Animator.StringToHash("isStun");
 
         private readonly BossGraphRunner graphRunner = new();
         private BossActionContext graphContext;
@@ -132,13 +133,39 @@ namespace Week14.Enemy
             isGroggy = true;
             groggyRemainingSeconds = seconds;
             SetMovementVelocity(Vector2.zero);
-            SetGroggyAnimatorTrigger(StunParameter);
+            PlayGroggyStunVisual();
         }
 
         private void EndGroggy()
         {
             isGroggy = false;
+
+            // 그로기 지속시간이 다 됐어도 그 사이 체력이 0이 되어 처형 가능 상태(HP Empty)에
+            // 들어가 있다면 EndStun 비주얼을 쏘지 않는다 — 여기서 쏘면 보스가 여전히 처형
+            // 대기 중인데 애니메이션만 Idle로 풀려버리는 시각 버그가 생긴다. 처형 창이 실제로
+            // 끝나는 시점(성공/실패 불문)은 OnHpEmptyRecovered가 따로 책임진다.
+            if (IsHpEmpty)
+            {
+                return;
+            }
+
+            PlayGroggyEndStunVisual();
+        }
+
+        // HP가 바닥나 처형 가능 상태(HP Empty)에 들어갈 때도 동일한 그로기 비주얼을 쓰고 싶은
+        // 하위 클래스(예: AssassinBossAI)를 위해 공개한다. isGroggy 게임플레이 상태(패턴 억제,
+        // 이동 정지 등)는 건드리지 않는다 — HP Empty 동안의 패턴/이동 정지는 BossAI의
+        // BeginHpEmptyForState가 이미 별도로 처리한다.
+        protected void PlayGroggyStunVisual()
+        {
+            SetGroggyAnimatorTrigger(StunParameter);
+            SetGroggyAnimatorBool(IsStunParameter, true);
+        }
+
+        protected void PlayGroggyEndStunVisual()
+        {
             SetGroggyAnimatorTrigger(EndStunParameter);
+            SetGroggyAnimatorBool(IsStunParameter, false);
         }
 
         private void SetGroggyAnimatorTrigger(int parameter)
@@ -147,6 +174,15 @@ namespace Week14.Enemy
             for (int i = 0; i < targets.Length; i++)
             {
                 targets[i].SetTrigger(parameter);
+            }
+        }
+
+        private void SetGroggyAnimatorBool(int parameter, bool value)
+        {
+            Animator[] targets = GetGroggyAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                targets[i].SetBool(parameter, value);
             }
         }
 

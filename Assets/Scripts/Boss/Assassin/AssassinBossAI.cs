@@ -110,7 +110,17 @@ namespace Week14.Enemy
         protected override void OnHpEmptyBegan()
         {
             ForceExitStealthImmediate();
+            PlayGroggyStunVisual();
             base.OnHpEmptyBegan();
+        }
+
+        // 처형 실패(시간 초과)로 체력이 회복되어 처형 가능 상태를 벗어날 때, 그로기(스턴) 비주얼도
+        // 함께 원상복구한다. 처형에 성공한 경우에는 OnBossPhaseChanged가 은신/단검/분신과 함께
+        // 전체 정리를 담당하므로 이 훅이 따로 필요 없다.
+        protected override void OnHpEmptyRecovered()
+        {
+            PlayGroggyEndStunVisual();
+            base.OnHpEmptyRecovered();
         }
 
         // 그래프 코루틴 실행 도중이 아니라 보스 상태 전이 코드(BeginHpEmptyForState)에서 호출되므로,
