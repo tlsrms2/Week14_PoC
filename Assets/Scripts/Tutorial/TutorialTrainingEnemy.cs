@@ -175,7 +175,6 @@ namespace Week14.Tutorial
             if (!ShouldMove())
             {
                 StopBody();
-                Face((Vector2)target.position - (Vector2)transform.position);
                 return;
             }
 
@@ -184,6 +183,7 @@ namespace Week14.Tutorial
 
         private void LateUpdate()
         {
+            UpdateFacingSprite();
             UpdateLockOnIndicator();
         }
 
@@ -385,13 +385,11 @@ namespace Week14.Tutorial
             if (offset.sqrMagnitude <= safeStopDistance * safeStopDistance)
             {
                 StopBody();
-                Face(offset);
                 return;
             }
 
             Vector2 direction = offset.normalized;
             body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, direction * moveSpeed);
-            Face(direction);
         }
 
         private void TryFire()
@@ -885,12 +883,20 @@ namespace Week14.Tutorial
             }
         }
 
-        private void Face(Vector2 direction)
+        private void UpdateFacingSprite()
         {
-            if (direction.sqrMagnitude > 0.0001f)
+            if (target == null || bodyRenderers == null)
             {
-                Transform faceRoot = bodyRoot != null ? bodyRoot : transform;
-                faceRoot.right = direction.normalized;
+                return;
+            }
+
+            bool flip = target.position.x < transform.position.x;
+            for (int i = 0; i < bodyRenderers.Length; i++)
+            {
+                if (bodyRenderers[i] != null)
+                {
+                    bodyRenderers[i].flipX = flip;
+                }
             }
         }
 
