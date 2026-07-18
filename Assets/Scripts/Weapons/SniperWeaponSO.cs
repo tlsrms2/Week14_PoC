@@ -26,6 +26,11 @@ namespace Week14.Weapons
 
         public override void BeginAttack(PlayerShooter shooter)
         {
+            if (shooter.CurrentBullets <= 0)
+            {
+                return;
+            }
+
             if (!string.IsNullOrEmpty(chargeStartSfxId))
             {
                 SoundManager.PlaySfx(chargeStartSfxId);

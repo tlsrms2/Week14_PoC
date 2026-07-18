@@ -75,8 +75,13 @@ namespace Week14.Combat
             Vector3 origin = player.LeftGunOrigin != null ? player.LeftGunOrigin.position : player.transform.position;
             origin.z = 0f;
 
-            Vector2 mouseWorld = cam.ScreenToWorldPoint(GameInput.MouseScreenPosition);
-            Vector2 aimDir = mouseWorld - (Vector2)origin;
+            // 실제 발사 방향(PlayerAimController.GetAimPoint)과 동일한 기준을 써야 한다 — 락온 타겟이
+            // 있으면 총알은 마우스가 아니라 타겟 쪽으로 나가므로, 레이저도 마우스만 보면 방향이 어긋난다.
+            Health lockOnTarget = player.LockOnTarget;
+            Vector2 aimPoint = lockOnTarget != null && !lockOnTarget.IsDead
+                ? (Vector2)lockOnTarget.transform.position
+                : (Vector2)cam.ScreenToWorldPoint(GameInput.MouseScreenPosition);
+            Vector2 aimDir = aimPoint - (Vector2)origin;
             if (aimDir.sqrMagnitude < 0.0001f)
             {
                 aimDir = Vector2.right;

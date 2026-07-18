@@ -28,6 +28,12 @@ namespace Week14.Enemy
         [Header("Hacking")]
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
+        [Header("Attack Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
+
+        [Header("Parried Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings parriedEffect = new();
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss == null)
@@ -80,6 +86,7 @@ namespace Week14.Enemy
             HackerAttackRangeIndicator.Destroy(rangeIndicator);
             if (wasParried)
             {
+                parriedEffect?.Play(context);
                 context.Stop();
                 yield return HackerMeleeAttackAction.Wait(context, dashSeconds);
                 yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
@@ -87,6 +94,7 @@ namespace Week14.Enemy
             }
 
             context.PlayAnimationTrigger(sweepTriggerName);
+            attackEffect?.Play(context);
             Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             context.SetFacingLocked(true);
             context.SetDashing(true);

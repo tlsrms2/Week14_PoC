@@ -31,6 +31,9 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float dashSpeed = 15f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 0.7f, 1f, 1f);
 
+        [Header("Dash Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings dashEffect = new();
+
         [Header("Path Damage")]
         [SerializeField, Min(0.05f)] private float damageRadius = 0.55f;
         [SerializeField, Min(1)] private int damage = 1;
@@ -104,6 +107,7 @@ namespace Week14.Enemy
             context.RestartAnimationTrigger(ReleaseAnimationTrigger);
             context.SetFacingLocked(true);
             context.SetDashing(true);
+            HackerDashEffect.Play(dashEffect, context, dashDirection);
             rangeIndicator ??= HackerAttackRangeIndicator.CreateThrust(
                 context.Boss.transform.position,
                 dashDirection,
