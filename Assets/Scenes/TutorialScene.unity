@@ -5715,6 +5715,7 @@ MonoBehaviour:
   hitGoal: 1
   parryGoal: 3
   skillGoal: 1
+  suppressGoal: 2
   skillAttemptResolveSeconds: 2.5
   references:
     version: 2
@@ -9235,6 +9236,23 @@ MonoBehaviour:
     trailWidthMultiplier: 3
   dodgeProjectileCount: 75
   dodgeFireDelaySeconds: 0.65
+  suppressionBaitProjectile:
+    prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+    bulletDamage: 0
+    chargeSeconds: 0
+    chargeDriftSpeed: 0
+    aimAtPlayerWhileCharging: 0
+    aimAtPlayerOnLaunch: 0
+    speed: 0
+    lifetime: 2
+    radius: 0.12
+    trailSeconds: 0.1
+    trailWidthMultiplier: 3
+  suppressionRewardBulletCount: 3
+  suppressionRewardCircleRadius: 1
+  suppressionRewardLifetime: 2
+  suppressionGroggySeconds: 2
+  suppressionRetryDelaySeconds: 2
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.08
   bodyRoot: {fileID: 2043577108}
