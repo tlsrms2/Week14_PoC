@@ -1150,7 +1150,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902356
     sequences: []
-    editorPosition: {x: 1442, y: -251}
+    editorPosition: {x: 1517, y: -155}
   - nodeId: Play Sfx14
     nodeGuid: 2c1b9f16eb954c95aca62459c0b0f752
     nodeKind: 3

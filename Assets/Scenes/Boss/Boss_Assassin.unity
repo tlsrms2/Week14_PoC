@@ -715,7 +715,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.9203634, y: -3.684397}
+  m_Offset: {x: -0.9068098, y: -3.572839}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -725,7 +725,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 17.634668, y: 10.594242}
+  m_Size: {x: 16.956911, y: 9.624504}
   m_EdgeRadius: 0
 --- !u!1001 &306593782
 PrefabInstance:
@@ -11726,7 +11726,7 @@ MonoBehaviour:
   effectData: {fileID: 11400000, guid: 10d1b3003852955459147f14e86dd879, type: 2}
   colorSettings: {fileID: 11400000, guid: b036996d14be8a34abac54fbb0657125, type: 2}
   maxHp: 175
-  hpEmptyExecutionSeconds: 3
+  hpEmptyExecutionSeconds: 5000
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.08
   normalColor: {r: 1, g: 1, b: 1, a: 1}
