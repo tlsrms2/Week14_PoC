@@ -3971,8 +3971,8 @@ MonoBehaviour:
     toNodeId: Fire Sequential Sweep40
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: UU/P8
+  debugForceSinglePattern: 1
+  debugForcedPatternId: P1-3
   references:
     version: 2
     RefIds:
@@ -4075,6 +4075,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/CutUTB
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 6306429664291524553, guid: be20adbdcb76a764a9871aeab891d074, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutUTB
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035211
@@ -4445,6 +4459,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035228
@@ -4546,6 +4574,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035230
@@ -4647,6 +4689,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 6306429664291524553, guid: be20adbdcb76a764a9871aeab891d074, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutUTB
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035231
@@ -4757,6 +4813,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 5834203851159885832, guid: 3d0ac2ebd00e13847a372f631c7b7da2, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutTTB
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035232
@@ -4858,6 +4928,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 6306429664291524553, guid: be20adbdcb76a764a9871aeab891d074, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutUTB
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035233
@@ -4968,6 +5052,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/Lift
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 3113004032934459916, guid: 49131f8a4e9d7944983c8b78ae4eeec1, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/Lift
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035236
@@ -5078,6 +5176,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/Slam
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 8019392123321661575, guid: 822e5482db07a0043a01fd2326e783e2, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/Slam
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035237
@@ -6230,6 +6342,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656587
@@ -6464,6 +6590,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656589
@@ -6747,6 +6887,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656616
@@ -6983,6 +7137,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656620
@@ -7093,6 +7261,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656621
@@ -7194,6 +7376,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656622
@@ -7304,6 +7500,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656623
@@ -7414,6 +7624,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656624
@@ -7731,6 +7955,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656651
@@ -9215,6 +9453,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656672
@@ -10721,6 +10973,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939193110200405
@@ -11082,6 +11348,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651558992
@@ -11316,6 +11596,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651558994
@@ -11595,6 +11889,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559003
@@ -11827,6 +12135,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559006
@@ -11937,6 +12259,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559007
@@ -12038,6 +12374,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559008
@@ -12148,6 +12498,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559009
@@ -12258,6 +12622,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559010
@@ -12571,6 +12949,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559016
@@ -13171,6 +13563,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559024
@@ -14297,6 +14703,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559062
@@ -14698,6 +15118,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559081
@@ -15218,6 +15652,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559089
@@ -16715,6 +17163,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939224946016331
@@ -17490,6 +17952,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939249705517362
@@ -17600,6 +18076,20 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
+        spawnEffectOnAttack: 0
+        attackEffectPrefab: {fileID: 0}
+        attackEffectSpawnPointPath: 
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 0
+        parriedEffectPrefab: {fileID: 0}
+        parriedEffectSpawnPointPath: 
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939249705517368

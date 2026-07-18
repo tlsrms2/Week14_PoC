@@ -62,6 +62,24 @@ namespace Week14.Enemy
         [Header("Hacking")]
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
+        [Header("Attack Effect")]
+        [SerializeField] private bool spawnEffectOnAttack;
+        [SerializeField] private GameObject attackEffectPrefab;
+        [SerializeField, BossGraphBossChildPath] private string attackEffectSpawnPointPath;
+        [SerializeField] private Vector2 attackEffectPositionOffset;
+        [SerializeField, Min(0.01f)] private float attackEffectScale = 1f;
+        [SerializeField] private SpawnEffectFollowMode attackEffectFollowMode = SpawnEffectFollowMode.FollowSpawnPoint;
+        [SerializeField] private bool attackEffectFollowRotation = true;
+
+        [Header("Parried Effect")]
+        [SerializeField] private bool spawnEffectOnParried;
+        [SerializeField] private GameObject parriedEffectPrefab;
+        [SerializeField, BossGraphBossChildPath] private string parriedEffectSpawnPointPath;
+        [SerializeField] private Vector2 parriedEffectPositionOffset;
+        [SerializeField, Min(0.01f)] private float parriedEffectScale = 1f;
+        [SerializeField] private SpawnEffectFollowMode parriedEffectFollowMode = SpawnEffectFollowMode.FollowSpawnPoint;
+        [SerializeField] private bool parriedEffectFollowRotation = true;
+
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
         float IHackerApproachRangeProvider.ApproachStopDistance => approachStopDistance;
 
@@ -137,6 +155,7 @@ namespace Week14.Enemy
 
                 if (wasParried)
                 {
+                    TrySpawnParriedEffect(context);
                     HackerAttackRangeIndicator.Destroy(rangeIndicator);
                     rangeIndicator = null;
                     context.Stop();
@@ -157,6 +176,7 @@ namespace Week14.Enemy
                     GetMeleeEllipse(context, attackDirection, out ellipseCenter, out ellipseAngleDegrees);
                     HashSet<PlayerCombatController> hitPlayers = new();
                     rangeIndicator?.SetFillVisible(true);
+                    TrySpawnAttackEffect(context);
                     ApplyEllipseDamage(context, ellipseCenter, ellipseAngleDegrees, hitPlayers);
                     yield return AdvanceDuringAttack(
                         context,
@@ -253,6 +273,68 @@ namespace Week14.Enemy
                 context.Boss.transform.position,
                 Quaternion.identity);
             BossSorting.ApplyToChildren(dust);
+        }
+
+        private void TrySpawnAttackEffect(BossActionContext context)
+        {
+            TrySpawnEffect(
+                context,
+                spawnEffectOnAttack,
+                attackEffectPrefab,
+                attackEffectSpawnPointPath,
+                attackEffectPositionOffset,
+                attackEffectScale,
+                attackEffectFollowMode,
+                attackEffectFollowRotation);
+        }
+
+        private void TrySpawnParriedEffect(BossActionContext context)
+        {
+            TrySpawnEffect(
+                context,
+                spawnEffectOnParried,
+                parriedEffectPrefab,
+                parriedEffectSpawnPointPath,
+                parriedEffectPositionOffset,
+                parriedEffectScale,
+                parriedEffectFollowMode,
+                parriedEffectFollowRotation);
+        }
+
+        private static void TrySpawnEffect(
+            BossActionContext context,
+            bool isEnabled,
+            GameObject effectPrefab,
+            string spawnPointPath,
+            Vector2 positionOffset,
+            float scale,
+            SpawnEffectFollowMode followMode,
+            bool followRotation)
+        {
+            if (!isEnabled || effectPrefab == null)
+            {
+                return;
+            }
+
+            Transform spawnPoint = context.GetBossChildTransform(spawnPointPath);
+            if (spawnPoint == null)
+            {
+                return;
+            }
+
+            Vector3 position = spawnPoint.TransformPoint(
+                new Vector3(positionOffset.x, positionOffset.y, 0f));
+            Transform followTarget = followMode == SpawnEffectFollowMode.FollowSpawnPoint
+                ? spawnPoint
+                : null;
+
+            ProjectileVfx.PlayPrefab(
+                effectPrefab,
+                position,
+                spawnPoint.rotation,
+                followTarget,
+                Mathf.Max(0.01f, scale),
+                followRotation);
         }
 
         internal static IEnumerator Wait(BossActionContext context, float seconds)

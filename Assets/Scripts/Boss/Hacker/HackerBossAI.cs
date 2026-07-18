@@ -60,6 +60,7 @@ namespace Week14.Enemy
         [SerializeField] private Transform facingHand;
         [SerializeField] private Transform facingParryingPoint;
         [SerializeField] private Transform facingMuzzlePoints;
+        [SerializeField] private Transform facingEffectPrefabPoint;
 
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
@@ -69,6 +70,7 @@ namespace Week14.Enemy
         private Quaternion facingHandBaseLocalRotation;
         private Quaternion facingParryingPointBaseLocalRotation;
         private Quaternion facingMuzzlePointsBaseLocalRotation;
+        private Quaternion facingEffectPrefabPointBaseLocalRotation;
         private bool facingTargetsResolved;
         private bool hasFacingBaseLocalRotations;
         private bool isFacingLeft = true;
@@ -347,6 +349,9 @@ namespace Week14.Enemy
                 facingMuzzlePointsBaseLocalRotation = facingMuzzlePoints != null
                     ? facingMuzzlePoints.localRotation
                     : Quaternion.identity;
+                facingEffectPrefabPointBaseLocalRotation = facingEffectPrefabPoint != null
+                    ? facingEffectPrefabPoint.localRotation
+                    : Quaternion.identity;
                 hasFacingBaseLocalRotations = true;
             }
 
@@ -356,6 +361,7 @@ namespace Week14.Enemy
             ApplyFacingRotation(facingHand, facingHandBaseLocalRotation, facingRotation);
             ApplyFacingRotation(facingParryingPoint, facingParryingPointBaseLocalRotation, facingRotation);
             ApplyFacingRotation(facingMuzzlePoints, facingMuzzlePointsBaseLocalRotation, facingRotation);
+            ApplyFacingRotation(facingEffectPrefabPoint, facingEffectPrefabPointBaseLocalRotation, facingRotation);
         }
 
         private void ResolveFacingTargets()
@@ -369,6 +375,7 @@ namespace Week14.Enemy
             facingHand ??= FindDescendant("Hand");
             facingParryingPoint ??= FindDescendant("ParryingPoint");
             facingMuzzlePoints ??= FindDescendant("MuzzlePoints");
+            facingEffectPrefabPoint ??= FindDescendant("EffectPrefabPoint");
             facingTargetsResolved = true;
         }
 

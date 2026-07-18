@@ -37,15 +37,32 @@ namespace Week14.Combat
             float scale = 1f,
             bool followRotation = true)
         {
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float angle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+            return PlayPrefab(
+                prefab,
+                position,
+                Quaternion.Euler(0f, 0f, angle),
+                followTarget,
+                scale,
+                followRotation);
+        }
+
+        public static GameObject PlayPrefab(
+            GameObject prefab,
+            Vector3 position,
+            Quaternion rotation,
+            Transform followTarget,
+            float scale = 1f,
+            bool followRotation = true)
+        {
             if (prefab == null || scale <= 0f)
             {
                 return null;
             }
 
             position.z = 0f;
-            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
-            float angle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
-            GameObject instance = Object.Instantiate(prefab, position, Quaternion.Euler(0f, 0f, angle));
+            GameObject instance = Object.Instantiate(prefab, position, rotation);
             if (followTarget != null)
             {
                 VfxTransformFollower follower = instance.AddComponent<VfxTransformFollower>();
