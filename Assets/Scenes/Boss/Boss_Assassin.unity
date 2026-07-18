@@ -11850,7 +11850,7 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
   patternGroggyAnimator: {fileID: 0}
-  stealthGraph: {fileID: 11400000, guid: 38c539ec5ca490e4c8f6941891dacb37, type: 2}
+  stealthGraph: {fileID: 11400000, guid: 2efd7ecc954369448a3522a846a8433e, type: 2}
   daggerPrefab: {fileID: 7713972961906811441, guid: 9b04a6c7900af6147a0378111cfa430e, type: 3}
   stealthVisualTargetA: {fileID: 1518477478}
   stealthAlphaA: 30

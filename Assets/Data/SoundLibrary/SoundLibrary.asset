@@ -118,3 +118,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 06f1984fb44143341983e4e3cb614965, type: 3}
     volume: 0.7
     pitch: 1
+  - id: DaggerThrow
+    clip: {fileID: 8300000, guid: bad9eaa0f1ceade488525e2d4420530f, type: 3}
+    volume: 2
+    pitch: 1.2
+  - id: AssassinDash
+    clip: {fileID: 8300000, guid: 04155b3b5a0993e43b662e32eef38b13, type: 3}
+    volume: 1
+    pitch: 1

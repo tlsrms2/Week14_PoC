@@ -25,7 +25,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249104
     sequences: []
-    editorPosition: {x: -423, y: -57}
+    editorPosition: {x: -679, y: -94}
   - nodeId: Random Direction Move1
     nodeGuid: c6500d9e684e40fa835ec49902598fa7
     nodeKind: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249020
     sequences: []
-    editorPosition: {x: -178, y: -57}
+    editorPosition: {x: -491, y: -94}
   - nodeId: Fire Radial Emission2
     nodeGuid: 06905a3118bd45548280596d7fc6a04e
     nodeKind: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249099
     sequences: []
-    editorPosition: {x: 319, y: -43}
+    editorPosition: {x: 75, y: -96}
   - nodeId: Spawn Clone Shooters1
     nodeGuid: dfa298a4204c49e089cad7110b65e1fe
     nodeKind: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249237
     sequences: []
-    editorPosition: {x: -288, y: 147}
+    editorPosition: {x: -644, y: 110}
   - nodeId: Fire Next Clone Shooter1
     nodeGuid: bd08acf3447c487d939c24d1e9af6ed0
     nodeKind: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249238
     sequences: []
-    editorPosition: {x: 66, y: 147}
+    editorPosition: {x: 39, y: 110}
   - nodeId: Wait1
     nodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
     nodeKind: 3
@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705778150679249242
     sequences: []
-    editorPosition: {x: -95, y: 147}
+    editorPosition: {x: -451, y: 110}
   - nodeId: Spawn Random Bombs1
     nodeGuid: 4db8338282ed4baba5e6cd5e6620801a
     nodeKind: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805375
     sequences: []
-    editorPosition: {x: 26, y: 315}
+    editorPosition: {x: -230, y: 278}
   - nodeId: Windup1
     nodeGuid: dc684a5283b943d0830142e6998cd60f
     nodeKind: 3
@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805384
     sequences: []
-    editorPosition: {x: -307, y: 315}
+    editorPosition: {x: -563, y: 278}
   - nodeId: Random Direction Move2
     nodeGuid: e4c422895b4e423a9e3ec6a061344ecc
     nodeKind: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805451
     sequences: []
-    editorPosition: {x: -85, y: 643}
+    editorPosition: {x: -341, y: 606}
   - nodeId: Random Direction Move3
     nodeGuid: e445d7e2c6e74803bf80213b313e6150
     nodeKind: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805502
     sequences: []
-    editorPosition: {x: 942, y: 641}
+    editorPosition: {x: 686, y: 604}
   - nodeId: Boss Dash1
     nodeGuid: fece3e3ab912475bb4d3caf1990430fc
     nodeKind: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805734
     sequences: []
-    editorPosition: {x: 213, y: 1024}
+    editorPosition: {x: -43, y: 987}
   - nodeId: Fire Radial Emission3
     nodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
     nodeKind: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805735
     sequences: []
-    editorPosition: {x: -251, y: 1190}
+    editorPosition: {x: -590, y: 1151}
   - nodeId: Teleport Around Player1
     nodeGuid: 4553c45f47034f45b763c4f5fd909ae0
     nodeKind: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805752
     sequences: []
-    editorPosition: {x: 31, y: 1024}
+    editorPosition: {x: -225, y: 987}
   - nodeId: Fire Radial Emission4
     nodeGuid: d613670f5b7441a383a01e457037682a
     nodeKind: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 4705778193230463115
     sequences: []
-    editorPosition: {x: 1710, y: -42}
+    editorPosition: {x: 1760, y: -42}
   - nodeId: Fire Radial Emission5
     nodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
     nodeKind: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
     action:
       rid: 4705778193230463117
     sequences: []
-    editorPosition: {x: 2500, y: -42}
+    editorPosition: {x: 2624, y: -55}
   - nodeId: Wait2
     nodeGuid: 6cd9b65ff3c04700a589af7f5bd13738
     nodeKind: 3
@@ -178,7 +178,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497740
     sequences: []
-    editorPosition: {x: 3847, y: 143}
+    editorPosition: {x: 3892, y: 143}
   - nodeId: Wait3
     nodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
     nodeKind: 3
@@ -187,7 +187,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497742
     sequences: []
-    editorPosition: {x: 2707, y: 162}
+    editorPosition: {x: 2667, y: 162}
   - nodeId: Boss Dash2
     nodeGuid: 0028fc57a02746d0b5b54d3438b7874e
     nodeKind: 1
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497781
     sequences: []
-    editorPosition: {x: -85, y: 794}
+    editorPosition: {x: -341, y: 757}
   - nodeId: Fire Radial Emission7
     nodeGuid: b0b673b9b2014e7087edeb59966cfcd8
     nodeKind: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497782
     sequences: []
-    editorPosition: {x: 962, y: 792}
+    editorPosition: {x: 709, y: 757}
   - nodeId: Fire Radial Emission8
     nodeGuid: 46a85fd3cd58483482fb8a0c6979f628
     nodeKind: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497788
     sequences: []
-    editorPosition: {x: 3847, y: 275}
+    editorPosition: {x: 3892, y: 275}
   - nodeId: Fire Next Clone Shooter2
     nodeGuid: 47c1c0d09bc74d62ba362a400224dbf6
     nodeKind: 0
@@ -268,7 +268,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497834
     sequences: []
-    editorPosition: {x: 308, y: 147}
+    editorPosition: {x: 281, y: 110}
   - nodeId: Spawn Clone Shooters2
     nodeGuid: e16e831d809842c88df2ba6972fdb979
     nodeKind: 0
@@ -277,7 +277,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497835
     sequences: []
-    editorPosition: {x: 1387, y: 505}
+    editorPosition: {x: 1249, y: 505}
   - nodeId: Fire Next Clone Shooter3
     nodeGuid: 16914dc5c84c4fbbac847a7bd2821054
     nodeKind: 0
@@ -295,7 +295,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497839
     sequences: []
-    editorPosition: {x: 1604, y: 505}
+    editorPosition: {x: 1466, y: 505}
   - nodeId: Spawn Clone Shooters3
     nodeGuid: b17013bf5180420b8a401058c65c2c0c
     nodeKind: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
     action:
       rid: 4705778196242497894
     sequences: []
-    editorPosition: {x: 2722, y: -42}
+    editorPosition: {x: 2847, y: -55}
   - nodeId: Spawn Clone Shooters4
     nodeGuid: c4d5f983a6c14d0fb543ac336be34a93
     nodeKind: 0
@@ -322,7 +322,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803201
     sequences: []
-    editorPosition: {x: 26, y: 460}
+    editorPosition: {x: -230, y: 423}
   - nodeId: Teleport Around Player4
     nodeGuid: cacab2c5349a42a5888ec9b1195d1e54
     nodeKind: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803202
     sequences: []
-    editorPosition: {x: 262, y: 315}
+    editorPosition: {x: 6, y: 278}
   - nodeId: Boss Dash4
     nodeGuid: 87de8b5da4c04b84bb6c18a5daa25880
     nodeKind: 1
@@ -340,7 +340,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803203
     sequences: []
-    editorPosition: {x: 477, y: 315}
+    editorPosition: {x: 221, y: 278}
   - nodeId: Fire Next Clone Shooter5
     nodeGuid: 177366f5048a447ea054c23ef2b9d903
     nodeKind: 0
@@ -349,7 +349,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803209
     sequences: []
-    editorPosition: {x: 764, y: 460}
+    editorPosition: {x: 589, y: 423}
   - nodeId: Spawn Clone Shooters5
     nodeGuid: 151d6cd441454308a10111e0c41522a9
     nodeKind: 0
@@ -358,7 +358,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803230
     sequences: []
-    editorPosition: {x: -916, y: 659}
+    editorPosition: {x: -1238, y: 624}
   - nodeId: Fire Next Clone Shooter6
     nodeGuid: 4ea16c64fa504678a8df9584087fd191
     nodeKind: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803231
     sequences: []
-    editorPosition: {x: 160, y: 643}
+    editorPosition: {x: -96, y: 606}
   - nodeId: Boss Dash5
     nodeGuid: a86867c6962e45bba2903c8ff35e7e07
     nodeKind: 1
@@ -376,7 +376,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803237
     sequences: []
-    editorPosition: {x: -933, y: 1009}
+    editorPosition: {x: -1189, y: 972}
   - nodeId: Teleport Around Player5
     nodeGuid: 58209550492f481c91503271c52fbe2c
     nodeKind: 0
@@ -385,7 +385,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803238
     sequences: []
-    editorPosition: {x: -1177, y: 1009}
+    editorPosition: {x: -1433, y: 972}
   - nodeId: Spawn Clone Shooters6
     nodeGuid: eab47427394e4b25aa939f7131488614
     nodeKind: 0
@@ -394,7 +394,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803239
     sequences: []
-    editorPosition: {x: -1402, y: 1009}
+    editorPosition: {x: -1658, y: 972}
   - nodeId: Fire Next Clone Shooter7
     nodeGuid: 5d0dd4438a964676b37ea2f3b8f6bf24
     nodeKind: 0
@@ -403,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803241
     sequences: []
-    editorPosition: {x: -43, y: 1190}
+    editorPosition: {x: -259, y: 1151}
   - nodeId: Random Direction Move6
     nodeGuid: 91d293a100144f99a5f89ef11ee030dc
     nodeKind: 1
@@ -412,7 +412,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803258
     sequences: []
-    editorPosition: {x: 887, y: 1037}
+    editorPosition: {x: 631, y: 1000}
   - nodeId: Fire Radial Emission10
     nodeGuid: 671d0efe0cc144748064068af51daaeb
     nodeKind: 0
@@ -421,7 +421,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803259
     sequences: []
-    editorPosition: {x: 907, y: 1188}
+    editorPosition: {x: 651, y: 1151}
   - nodeId: Spawn Clone Shooters7
     nodeGuid: 469714931ccf4ec0a60acf4e4592e6d3
     nodeKind: 0
@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803265
     sequences: []
-    editorPosition: {x: 1486, y: 306}
+    editorPosition: {x: 1547, y: 298}
   - nodeId: Fire Next Clone Shooter9
     nodeGuid: d855bcf506c74155a13a0e6eb9636058
     nodeKind: 0
@@ -493,7 +493,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803310
     sequences: []
-    editorPosition: {x: 1707, y: 505}
+    editorPosition: {x: 1569, y: 505}
   - nodeId: Fire Radial Emission11
     nodeGuid: aaabd0a1c24f42688a94cbb1cf336182
     nodeKind: 0
@@ -502,7 +502,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803311
     sequences: []
-    editorPosition: {x: 2347, y: 505}
+    editorPosition: {x: 2482, y: 505}
   - nodeId: Random Direction Move7
     nodeGuid: d639ec7c51254416abe5caa058e43aa3
     nodeKind: 1
@@ -511,7 +511,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803316
     sequences: []
-    editorPosition: {x: 2329, y: 968}
+    editorPosition: {x: 2329, y: 966}
   - nodeId: Fire Radial Emission12
     nodeGuid: 209ac40892174b85b4f88bb5a64757c5
     nodeKind: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803321
     sequences: []
-    editorPosition: {x: 2564, y: 968}
+    editorPosition: {x: 2567, y: 966}
   - nodeId: Boss Dash7
     nodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
     nodeKind: 1
@@ -547,7 +547,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803322
     sequences: []
-    editorPosition: {x: 3009, y: 968}
+    editorPosition: {x: 3155, y: 966}
   - nodeId: Teleport Around Player8
     nodeGuid: 5e12056e78564b36af7f8c37914f2b83
     nodeKind: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803323
     sequences: []
-    editorPosition: {x: 2804, y: 968}
+    editorPosition: {x: 2803, y: 966}
   - nodeId: Fire Next Clone Shooter12
     nodeGuid: 49c70a3dafd240589944e676b92a8b7f
     nodeKind: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803324
     sequences: []
-    editorPosition: {x: 2988, y: 1153}
+    editorPosition: {x: 3134, y: 1151}
   - nodeId: Wait6
     nodeGuid: 49f218bffdde463ab79283b87b90536c
     nodeKind: 3
@@ -583,7 +583,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803354
     sequences: []
-    editorPosition: {x: 764, y: 315}
+    editorPosition: {x: 589, y: 278}
   - nodeId: Set Parameter1
     nodeGuid: da4f1dacc58a4d50905c562ccb077bf9
     nodeKind: 2
@@ -592,7 +592,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677568
     sequences: []
-    editorPosition: {x: -1233, y: -59}
+    editorPosition: {x: -1659, y: -96}
   - nodeId: Set Parameter2
     nodeGuid: 59a0ab3255084af888ee6b54a82616c5
     nodeKind: 2
@@ -601,7 +601,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677569
     sequences: []
-    editorPosition: {x: -1040, y: -59}
+    editorPosition: {x: -1466, y: -96}
   - nodeId: Wait7
     nodeGuid: 294b13cb85c0438280b8eb5f1b54f908
     nodeKind: 3
@@ -610,7 +610,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677572
     sequences: []
-    editorPosition: {x: -888, y: -57}
+    editorPosition: {x: -1314, y: -94}
   - nodeId: Set Parameter3
     nodeGuid: b13dd0e1f6654c5a881a201dbf849f4f
     nodeKind: 2
@@ -619,7 +619,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677573
     sequences: []
-    editorPosition: {x: -758, y: -59}
+    editorPosition: {x: -1184, y: -96}
   - nodeId: Set Parameter4
     nodeGuid: d5c27fdd844e4b659771181a2da2b2cf
     nodeKind: 2
@@ -628,7 +628,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677574
     sequences: []
-    editorPosition: {x: 127, y: -59}
+    editorPosition: {x: -186, y: -96}
   - nodeId: Set Parameter5
     nodeGuid: 48e4f887ab734544814351939dc7d82c
     nodeKind: 2
@@ -637,7 +637,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677575
     sequences: []
-    editorPosition: {x: 525, y: -48}
+    editorPosition: {x: 272, y: -96}
   - nodeId: Wait8
     nodeGuid: 6b3a5ff56fd447d0853a424af5455033
     nodeKind: 3
@@ -646,7 +646,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677660
     sequences: []
-    editorPosition: {x: 15, y: -59}
+    editorPosition: {x: -298, y: -96}
   - nodeId: Wait9
     nodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
     nodeKind: 3
@@ -655,7 +655,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677661
     sequences: []
-    editorPosition: {x: -563, y: -57}
+    editorPosition: {x: -819, y: -85}
   - nodeId: Set Parameter6
     nodeGuid: fe2d4dc1cb74423986afc58a605c3fdf
     nodeKind: 2
@@ -664,7 +664,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677679
     sequences: []
-    editorPosition: {x: -175, y: 315}
+    editorPosition: {x: -431, y: 278}
   - nodeId: Set Parameter7
     nodeGuid: 75e761590e2c40a3ae5ab5cb8d58b5ee
     nodeKind: 2
@@ -673,7 +673,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677702
     sequences: []
-    editorPosition: {x: -715, y: 664}
+    editorPosition: {x: -1037, y: 629}
   - nodeId: Wait10
     nodeGuid: 05d8730dad6e40a3bc85ddb257df2f33
     nodeKind: 3
@@ -682,7 +682,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677703
     sequences: []
-    editorPosition: {x: -563, y: 666}
+    editorPosition: {x: -885, y: 631}
   - nodeId: Set Parameter8
     nodeGuid: 9336e5bd807b4e6e8f65c082e8a8554a
     nodeKind: 2
@@ -691,7 +691,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677704
     sequences: []
-    editorPosition: {x: -434, y: 664}
+    editorPosition: {x: -756, y: 629}
   - nodeId: Wait11
     nodeGuid: d9b74fedfcf74fd69d8c3b0a870fe576
     nodeKind: 3
@@ -700,7 +700,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677705
     sequences: []
-    editorPosition: {x: -235, y: 666}
+    editorPosition: {x: -491, y: 629}
   - nodeId: Set Parameter9
     nodeGuid: 5c09dcc6b48349f7b915aa46abeb565c
     nodeKind: 2
@@ -709,7 +709,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677706
     sequences: []
-    editorPosition: {x: 359, y: 641}
+    editorPosition: {x: 103, y: 604}
   - nodeId: Wait12
     nodeGuid: 473b36e8d7d744ecaf2ec052c982080c
     nodeKind: 3
@@ -718,7 +718,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677707
     sequences: []
-    editorPosition: {x: 494, y: 643}
+    editorPosition: {x: 238, y: 606}
   - nodeId: Set Parameter10
     nodeGuid: e5a414a257274353a3bb60ae761eff25
     nodeKind: 2
@@ -727,7 +727,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677708
     sequences: []
-    editorPosition: {x: 623, y: 641}
+    editorPosition: {x: 367, y: 604}
   - nodeId: Wait13
     nodeGuid: 13c401bafe89441b93b8b7b034bf6da2
     nodeKind: 3
@@ -736,7 +736,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677709
     sequences: []
-    editorPosition: {x: 819, y: 643}
+    editorPosition: {x: 563, y: 606}
   - nodeId: Set Parameter11
     nodeGuid: 224519a5d5974501a066ce22f19a9f84
     nodeKind: 2
@@ -745,7 +745,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677710
     sequences: []
-    editorPosition: {x: -911, y: 1197}
+    editorPosition: {x: -1167, y: 1160}
   - nodeId: Wait14
     nodeGuid: f30b329ff1c242cdaddabca11aed5862
     nodeKind: 3
@@ -754,7 +754,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677711
     sequences: []
-    editorPosition: {x: -759, y: 1199}
+    editorPosition: {x: -1015, y: 1162}
   - nodeId: Set Parameter12
     nodeGuid: 7b4fdbd19edc4bbcb519561843bc7a8b
     nodeKind: 2
@@ -763,7 +763,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677712
     sequences: []
-    editorPosition: {x: -630, y: 1197}
+    editorPosition: {x: -886, y: 1160}
   - nodeId: Wait15
     nodeGuid: 2d08ebed0aa145c790f005a7d01a4aeb
     nodeKind: 3
@@ -772,7 +772,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677713
     sequences: []
-    editorPosition: {x: -434, y: 1199}
+    editorPosition: {x: -641, y: 987}
   - nodeId: Set Parameter13
     nodeGuid: f8e30e070fe9489cad975dc68333d69a
     nodeKind: 2
@@ -781,7 +781,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677714
     sequences: []
-    editorPosition: {x: 253, y: 1188}
+    editorPosition: {x: -3, y: 1151}
   - nodeId: Wait16
     nodeGuid: be5bce643c7640cfaed4cb9e8df7e567
     nodeKind: 3
@@ -790,7 +790,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677715
     sequences: []
-    editorPosition: {x: 405, y: 1190}
+    editorPosition: {x: 149, y: 1153}
   - nodeId: Set Parameter14
     nodeGuid: a1e0ed753c944fd5b9458c3edb065509
     nodeKind: 2
@@ -799,16 +799,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677716
     sequences: []
-    editorPosition: {x: 534, y: 1188}
-  - nodeId: Wait17
-    nodeGuid: 48f9c6f4e74644538861207bb088e8e4
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778220989677717
-    sequences: []
-    editorPosition: {x: 730, y: 1190}
+    editorPosition: {x: 278, y: 1151}
   - nodeId: Set Parameter15
     nodeGuid: ff06f7c5987b45d6a1f7f9ccba7061c3
     nodeKind: 2
@@ -817,7 +808,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677762
     sequences: []
-    editorPosition: {x: 605, y: 315}
+    editorPosition: {x: 349, y: 278}
   - nodeId: Random Direction Move8
     nodeGuid: 258dd1534d574b9896e447234905ef2b
     nodeKind: 1
@@ -826,8 +817,8 @@ MonoBehaviour:
     action:
       rid: 4705778220989677764
     sequences: []
-    editorPosition: {x: -212, y: 1024}
-  - nodeId: Wait18
+    editorPosition: {x: -468, y: 987}
+  - nodeId: Wait17
     nodeGuid: 1a80f26239f844ada83559df1c630453
     nodeKind: 3
     phaseIndex: 0
@@ -835,8 +826,8 @@ MonoBehaviour:
     action:
       rid: 4705778220989677766
     sequences: []
-    editorPosition: {x: -795, y: 1009}
-  - nodeId: Wait19
+    editorPosition: {x: -1051, y: 972}
+  - nodeId: Wait18
     nodeGuid: c45e52f3470b4d8db22995d93600a74e
     nodeKind: 3
     phaseIndex: 0
@@ -844,7 +835,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677767
     sequences: []
-    editorPosition: {x: 339, y: 1024}
+    editorPosition: {x: 83, y: 987}
   - nodeId: Set Parameter16
     nodeGuid: b3ced54591844824847eb5f919753168
     nodeKind: 2
@@ -854,7 +845,7 @@ MonoBehaviour:
       rid: 4705778220989677772
     sequences: []
     editorPosition: {x: 1106, y: -42}
-  - nodeId: Wait20
+  - nodeId: Wait19
     nodeGuid: 56b02b106f0f43989277745290bdb7d3
     nodeKind: 3
     phaseIndex: 0
@@ -881,7 +872,7 @@ MonoBehaviour:
       rid: 4705778220989677782
     sequences: []
     editorPosition: {x: 2379, y: -176}
-  - nodeId: Wait21
+  - nodeId: Wait20
     nodeGuid: 439e431899484f6d92c81e29d3d27172
     nodeKind: 3
     phaseIndex: 0
@@ -889,7 +880,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677787
     sequences: []
-    editorPosition: {x: 1564, y: -42}
+    editorPosition: {x: 1614, y: -42}
   - nodeId: Set Parameter19
     nodeGuid: 4cfd64f751c04130acd3bd0efd48dd6c
     nodeKind: 2
@@ -899,7 +890,7 @@ MonoBehaviour:
       rid: 4705778220989677792
     sequences: []
     editorPosition: {x: 1843, y: 169}
-  - nodeId: Wait22
+  - nodeId: Wait21
     nodeGuid: ee696814c0eb48ae985bd8be196bc59b
     nodeKind: 3
     phaseIndex: 0
@@ -916,8 +907,8 @@ MonoBehaviour:
     action:
       rid: 4705778220989677794
     sequences: []
-    editorPosition: {x: 2124, y: 169}
-  - nodeId: Wait23
+    editorPosition: {x: 2111, y: 171}
+  - nodeId: Wait22
     nodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
     nodeKind: 3
     phaseIndex: 0
@@ -925,7 +916,7 @@ MonoBehaviour:
     action:
       rid: 4705778220989677795
     sequences: []
-    editorPosition: {x: 2301, y: 169}
+    editorPosition: {x: 2367, y: 162}
   - nodeId: Set Parameter21
     nodeGuid: 8db8f961d925431f8dfe3e9109d8ad1d
     nodeKind: 2
@@ -935,7 +926,7 @@ MonoBehaviour:
       rid: 4705778220989677796
     sequences: []
     editorPosition: {x: 3203, y: 141}
-  - nodeId: Wait24
+  - nodeId: Wait23
     nodeGuid: 942a22e5067b4e71b8352dbea6ae5f1d
     nodeKind: 3
     phaseIndex: 0
@@ -953,7 +944,7 @@ MonoBehaviour:
       rid: 4705778220989677798
     sequences: []
     editorPosition: {x: 3484, y: 141}
-  - nodeId: Wait25
+  - nodeId: Wait24
     nodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
     nodeKind: 3
     phaseIndex: 0
@@ -961,8 +952,8 @@ MonoBehaviour:
     action:
       rid: 4705778220989677799
     sequences: []
-    editorPosition: {x: 3661, y: 141}
-  - nodeId: Wait26
+    editorPosition: {x: 3767, y: 143}
+  - nodeId: Wait25
     nodeGuid: 3c6b18903d864d60b5e01a5b7e969fe9
     nodeKind: 3
     phaseIndex: 0
@@ -971,7 +962,7 @@ MonoBehaviour:
       rid: 4705778220989677804
     sequences: []
     editorPosition: {x: 1763, y: 298}
-  - nodeId: Wait27
+  - nodeId: Wait26
     nodeGuid: fba6ab0c80254b93b6a0c564fe97b7eb
     nodeKind: 3
     phaseIndex: 0
@@ -989,7 +980,7 @@ MonoBehaviour:
       rid: 4705778220989677806
     sequences: []
     editorPosition: {x: 2176, y: 505}
-  - nodeId: Wait28
+  - nodeId: Wait27
     nodeGuid: 91d6897d3c3843a0bcab936d19f07dec
     nodeKind: 3
     phaseIndex: 0
@@ -1007,7 +998,7 @@ MonoBehaviour:
       rid: 4705778220989677808
     sequences: []
     editorPosition: {x: 1741, y: 966}
-  - nodeId: Wait29
+  - nodeId: Wait28
     nodeGuid: 6b5c2148b4624c8f8fdabcd0d8a3afc5
     nodeKind: 3
     phaseIndex: 0
@@ -1025,258 +1016,528 @@ MonoBehaviour:
       rid: 4705778220989677810
     sequences: []
     editorPosition: {x: 2022, y: 966}
+  - nodeId: Play Sfx1
+    nodeGuid: 6b7dc8ec32f848458dd64194c7c59b9f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902288
+    sequences: []
+    editorPosition: {x: -997, y: -85}
+  - nodeId: Play Sfx2
+    nodeGuid: 22820c0c3f7f4d769be709a91ffa41a1
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902291
+    sequences: []
+    editorPosition: {x: -30, y: -96}
+  - nodeId: Play Sfx3
+    nodeGuid: dd4bedbe1714431b9aee5dd5128a7b4e
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902311
+    sequences: []
+    editorPosition: {x: -332, y: 110}
+  - nodeId: Play Sfx4
+    nodeGuid: e7fdb07e1ea84e3495d61e5abfc19457
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902318
+    sequences: []
+    editorPosition: {x: 349, y: 396}
+  - nodeId: Play Sfx5
+    nodeGuid: 31a61404546748a3a29f10cf729b3ae6
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902320
+    sequences: []
+    editorPosition: {x: -609, y: 624}
+  - nodeId: Play Sfx6
+    nodeGuid: eb43833270e946fea21a80ebbabaf985
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902321
+    sequences: []
+    editorPosition: {x: 470, y: 742}
+  - nodeId: Play Sfx7
+    nodeGuid: 164fe4f70f5840ed86e62c3c4299b84c
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902322
+    sequences: []
+    editorPosition: {x: -110, y: 757}
+  - nodeId: Wait29
+    nodeGuid: d001d2e8326e463bb0ec6135ee2d1a20
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902330
+    sequences: []
+    editorPosition: {x: -212, y: 110}
+  - nodeId: Play Sfx8
+    nodeGuid: edb9ca5042e34e2892508f947c112800
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902332
+    sequences: []
+    editorPosition: {x: -102, y: 110}
+  - nodeId: Play Sfx9
+    nodeGuid: b891610d36c1413bb655d803636e6fea
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902335
+    sequences: []
+    editorPosition: {x: 470, y: 396}
   - nodeId: Wait30
-    nodeGuid: 4f1999a153514ffba299d6b83cc4bfa4
+    nodeGuid: 5bc594fbd88147cb80b5aa2331a11393
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778220989677811
+      rid: 4705778240567902344
     sequences: []
-    editorPosition: {x: 2199, y: 966}
-  - nodeId: Spawn Clone Shooters9
-    nodeGuid: 3cd5feea97f540c7b2e0a5e84543a413
-    nodeKind: 0
+    editorPosition: {x: 521, y: 1000}
+  - nodeId: Play Sfx10
+    nodeGuid: 1700484e714b45afaa623bfcf961c5f5
+    nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778220989677834
+      rid: 4705778240567902345
     sequences: []
-    editorPosition: {x: -765, y: 1459}
-  - nodeId: Set Stealth Visibility1
-    nodeGuid: 53ea8898bfe3420398f273192a854472
-    nodeKind: 0
+    editorPosition: {x: 399, y: 1000}
+  - nodeId: Play Sfx11
+    nodeGuid: e5414f874eaa46819e2c41006161869b
+    nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778220989677835
+      rid: 4705778240567902346
     sequences: []
-    editorPosition: {x: -960, y: 1459}
-  - nodeId: Boss Dash8
-    nodeGuid: c9ac110cc88e4010b79fde2f375d0869
-    nodeKind: 1
+    editorPosition: {x: -800, y: 987}
+  - nodeId: Play Sfx12
+    nodeGuid: c9f8b51af91f41628af423748e1b9e4e
+    nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778220989677836
+      rid: 4705778240567902347
     sequences: []
-    editorPosition: {x: -308, y: 1459}
-  - nodeId: Teleport Around Player9
-    nodeGuid: 9ca313b162f34b48b6066fd79e6ffc0a
-    nodeKind: 0
+    editorPosition: {x: -418, y: 1153}
+  - nodeId: Play Sfx13
+    nodeGuid: 6bb3cce2e66549e098973a27a54e3589
+    nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778220989677837
+      rid: 4705778240567902356
     sequences: []
-    editorPosition: {x: -552, y: 1459}
-  - nodeId: Fire Parry Suppression Bait1
-    nodeGuid: 26706ec836164083b97899cf4201fb4a
-    nodeKind: 0
+    editorPosition: {x: 1442, y: -251}
+  - nodeId: Play Sfx14
+    nodeGuid: 2c1b9f16eb954c95aca62459c0b0f752
+    nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778220989677838
+      rid: 4705778240567902359
     sequences: []
-    editorPosition: {x: -177, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)1
-    nodeGuid: ef6cff8513d4456381a92277ba0f1062
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778220989677839
-    sequences: []
-    editorPosition: {x: 68, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)2
-    nodeGuid: 14517c1e5caf4396bd9c53b490fd34b1
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778220989677840
-    sequences: []
-    editorPosition: {x: 318, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)3
-    nodeGuid: c5e74cb71d8549c48b7c5640fedd20c5
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778220989677841
-    sequences: []
-    editorPosition: {x: 567, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)4
-    nodeGuid: a36c6b5322d94a06853ac9137e564f55
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778220989677842
-    sequences: []
-    editorPosition: {x: 810, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)5
-    nodeGuid: 018fb85a8ae645769e3df51d0f5bed2f
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778220989677843
-    sequences: []
-    editorPosition: {x: 1071, y: 1459}
-  - nodeId: Spawn Clone Shooters10
-    nodeGuid: b378e3fc80154398af07768c538ad271
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356167
-    sequences: []
-    editorPosition: {x: 1759, y: 1459}
-  - nodeId: Set Stealth Visibility2
-    nodeGuid: fa74d50e254d49d6a7ed2efb0fcb82af
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356168
-    sequences: []
-    editorPosition: {x: 1564, y: 1459}
-  - nodeId: Boss Dash9
-    nodeGuid: 42a2668ca6444c45b3274963fea97144
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356169
-    sequences: []
-    editorPosition: {x: 2281, y: 1458}
-  - nodeId: Teleport Around Player10
-    nodeGuid: 68b16c62e9e84ee18177c2c9300710f4
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356170
-    sequences: []
-    editorPosition: {x: 2066, y: 1457}
-  - nodeId: Fire Parry Suppression Bait2
-    nodeGuid: 601c003ebb8a49578df81e11e73180c4
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356171
-    sequences: []
-    editorPosition: {x: 3037, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)6
-    nodeGuid: 9d77b18ddd4a439c8cd92aaa4def962a
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356172
-    sequences: []
-    editorPosition: {x: 3285, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)7
-    nodeGuid: a78736b7b2e744fb8c4ce96e3f9e4aa8
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356173
-    sequences: []
-    editorPosition: {x: 3532, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)8
-    nodeGuid: 018817ee65864265bf4cbf092ff3e5fa
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356174
-    sequences: []
-    editorPosition: {x: 3781, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)9
-    nodeGuid: 6c6af33fbfce47ebba1bc32c8e93013a
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356175
-    sequences: []
-    editorPosition: {x: 4024, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)10
-    nodeGuid: 71bb89f7625147e88aba5c579c9d38f3
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356176
-    sequences: []
-    editorPosition: {x: 4285, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)11
-    nodeGuid: c0ec64edacd646eeb8799337b5e631ea
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356177
-    sequences: []
-    editorPosition: {x: 2066, y: 1622}
-  - nodeId: Boss Dash10
-    nodeGuid: 8178aadf5c3c43d0a39d1fb603924cbe
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356178
-    sequences: []
-    editorPosition: {x: 2869, y: 1458}
-  - nodeId: Teleport Around Player11
-    nodeGuid: 4f100d715700427d91930a7dcacc2f10
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356179
-    sequences: []
-    editorPosition: {x: 2627, y: 1459}
-  - nodeId: Fire Next Clone Shooter (Atk2)12
-    nodeGuid: 23cb7242db4d4a479435bd88b68b5be3
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356180
-    sequences: []
-    editorPosition: {x: 2627, y: 1623}
-  - nodeId: Exit Stealth1
-    nodeGuid: ddcfcfd640c64e56be2d89e0b9533ed0
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356186
-    sequences: []
-    editorPosition: {x: 1157, y: 1597}
-  - nodeId: Exit Stealth2
-    nodeGuid: 676c74ff609b4898b7ba5d7d919d5a07
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778237021356187
-    sequences: []
-    editorPosition: {x: 4530, y: 1459}
+    editorPosition: {x: 2554, y: -255}
   - nodeId: Wait31
-    nodeGuid: 70202e1d96c94eeca574e3ff8af981ba
+    nodeGuid: fcd91604509c4fe0905deefb00253b97
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778237021356188
+      rid: 4705778240567902360
     sequences: []
-    editorPosition: {x: 2449, y: 1457}
+    editorPosition: {x: 2667, y: -255}
+  - nodeId: Play Sfx15
+    nodeGuid: 0545a75d609c4b77adc725be03eef478
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902361
+    sequences: []
+    editorPosition: {x: 2786, y: -251}
+  - nodeId: Play Sfx16
+    nodeGuid: 0c12c92be39546e2b33f02e9a93dae44
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902367
+    sequences: []
+    editorPosition: {x: 1387, y: 305}
+  - nodeId: Play Sfx17
+    nodeGuid: 26460d55045a41c8a4a4105be360aa77
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902368
+    sequences: []
+    editorPosition: {x: 2262, y: 169}
+  - nodeId: Play Sfx18
+    nodeGuid: 50aa19b5609a43a6b92b87c9d2bc1e18
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902369
+    sequences: []
+    editorPosition: {x: 2685, y: 287}
+  - nodeId: Play Sfx19
+    nodeGuid: 66a5eb049270413d8dbbc2b6ae09b1ad
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902370
+    sequences: []
+    editorPosition: {x: 3648, y: 141}
+  - nodeId: Play Sfx20
+    nodeGuid: 66de0f9f3f3145da827f6975b3eb6799
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902374
+    sequences: []
+    editorPosition: {x: 1447, y: 633}
+  - nodeId: Wait32
+    nodeGuid: c80ab285620740ea9d43d63325112c62
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902375
+    sequences: []
+    editorPosition: {x: 1567, y: 633}
+  - nodeId: Play Sfx21
+    nodeGuid: 992202487a7945a89bef3981a4dd26a4
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902376
+    sequences: []
+    editorPosition: {x: 1677, y: 633}
+  - nodeId: Play Sfx22
+    nodeGuid: 1c684090182343cb8b369526ebe30eb9
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902377
+    sequences: []
+    editorPosition: {x: 2338, y: 505}
+  - nodeId: Wait33
+    nodeGuid: 9c279bc977824732aed1953c7632e9f6
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902378
+    sequences: []
+    editorPosition: {x: 2141, y: 1128}
+  - nodeId: Play Sfx23
+    nodeGuid: 476c9648aa0545e189de78a63340e725
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902379
+    sequences: []
+    editorPosition: {x: 2023, y: 1123}
+  - nodeId: Play Sfx24
+    nodeGuid: 866d46d218e24503b4da93846e9909a0
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902380
+    sequences: []
+    editorPosition: {x: 2549, y: 1099}
+  - nodeId: Play Sfx25
+    nodeGuid: fd03a2b245c94b65976c8a9d6b0104cc
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902381
+    sequences: []
+    editorPosition: {x: 3016, y: 966}
+  - nodeId: Set Stealth Visibility1
+    nodeGuid: 895ce312ce4b4a6dbaf40f992e9aa798
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902388
+    sequences: []
+    editorPosition: {x: -1414, y: 1472}
+  - nodeId: Spawn Clone Shooters9
+    nodeGuid: 106fb095d27344a78756daee78137732
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902389
+    sequences: []
+    editorPosition: {x: -1147, y: 1472}
+  - nodeId: Boss Dash8
+    nodeGuid: 6d7e36ffb5b7446ab228b551a31fe18c
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902390
+    sequences: []
+    editorPosition: {x: -779, y: 1472}
+  - nodeId: Teleport Around Player9
+    nodeGuid: d1b48d0dd6154938bf0ab6723078ae53
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902391
+    sequences: []
+    editorPosition: {x: -963, y: 1472}
+  - nodeId: Wait34
+    nodeGuid: f14a508387c545e8bf9127492fe1d12e
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902392
+    sequences: []
+    editorPosition: {x: -1249, y: 1472}
+  - nodeId: Fire Parry Suppression Bait1
+    nodeGuid: 6fef2238d8a0438e9af2094c068fd815
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902393
+    sequences: []
+    editorPosition: {x: -652, y: 1472}
+  - nodeId: Fire Next Clone Shooter (Atk2)1
+    nodeGuid: 4e896e0920e14496b505c49a6e9b6832
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902394
+    sequences: []
+    editorPosition: {x: -409, y: 1472}
+  - nodeId: Fire Next Clone Shooter (Atk2)2
+    nodeGuid: e3b27012b16a4737848fb7bcfb78b562
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902395
+    sequences: []
+    editorPosition: {x: -171, y: 1472}
+  - nodeId: Fire Next Clone Shooter (Atk2)3
+    nodeGuid: 4244fcac6dcd4ca49809e5edcc3c201f
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902396
+    sequences: []
+    editorPosition: {x: 67, y: 1472}
+  - nodeId: Fire Next Clone Shooter (Atk2)4
+    nodeGuid: 29115f1cd0974eea8bd40bed7b578144
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902397
+    sequences: []
+    editorPosition: {x: 305, y: 1472}
+  - nodeId: Fire Next Clone Shooter (Atk2)5
+    nodeGuid: 4d9d557ed37c439b9d7a4324cf99d934
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902398
+    sequences: []
+    editorPosition: {x: 538, y: 1472}
+  - nodeId: Set Stealth Visibility2
+    nodeGuid: ff555fa901c04ee68e33a375518eb050
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902399
+    sequences: []
+    editorPosition: {x: 1319, y: 1369}
+  - nodeId: Spawn Clone Shooters10
+    nodeGuid: cd2e8d40b021408e8e53796b3e4bebd7
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902400
+    sequences: []
+    editorPosition: {x: 1586, y: 1369}
+  - nodeId: Boss Dash9
+    nodeGuid: 9d41036ce2f14074a570ab6f21e46c2e
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902401
+    sequences: []
+    editorPosition: {x: 1954, y: 1369}
+  - nodeId: Teleport Around Player10
+    nodeGuid: 3792e48253db43af92ffef240881d22b
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902402
+    sequences: []
+    editorPosition: {x: 1770, y: 1369}
+  - nodeId: Wait35
+    nodeGuid: 843c1cd32efe445a8dd941ab503c39ea
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902403
+    sequences: []
+    editorPosition: {x: 1484, y: 1369}
+  - nodeId: Fire Parry Suppression Bait2
+    nodeGuid: dac2e3beef0d40c1841528167ff96871
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902404
+    sequences: []
+    editorPosition: {x: 2433, y: 1369}
+  - nodeId: Fire Next Clone Shooter (Atk2)6
+    nodeGuid: a337dc7cc14a4b9389122a3663fc84c1
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902405
+    sequences: []
+    editorPosition: {x: 2661, y: 1369}
+  - nodeId: Fire Next Clone Shooter (Atk2)7
+    nodeGuid: bfa71b1843784d6399dd691f1cd69430
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902406
+    sequences: []
+    editorPosition: {x: 2899, y: 1369}
+  - nodeId: Fire Next Clone Shooter (Atk2)8
+    nodeGuid: 61f56d10f09c4285aed4069f3b668c83
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902407
+    sequences: []
+    editorPosition: {x: 3137, y: 1369}
+  - nodeId: Fire Next Clone Shooter (Atk2)9
+    nodeGuid: d5287de9bcb0456199b1fff33300c169
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902408
+    sequences: []
+    editorPosition: {x: 3375, y: 1369}
+  - nodeId: Fire Next Clone Shooter (Atk2)10
+    nodeGuid: 54531ed4865743f8a950718a146bdf41
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902409
+    sequences: []
+    editorPosition: {x: 3611, y: 1369}
+  - nodeId: Exit Stealth1
+    nodeGuid: 3d98385c909c44e9b7a065790bd70a00
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902410
+    sequences: []
+    editorPosition: {x: 790, y: 1472}
+  - nodeId: Exit Stealth2
+    nodeGuid: aaccfdad45044678abe793620b183f06
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902411
+    sequences: []
+    editorPosition: {x: 3875, y: 1369}
+  - nodeId: Boss Dash10
+    nodeGuid: 0d5f0d03d04c4a4683db4db53efc483a
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902412
+    sequences: []
+    editorPosition: {x: 2284, y: 1369}
+  - nodeId: Fire Next Clone Shooter (Atk2)11
+    nodeGuid: 3a99ba03d6d6404487e27e2e2703d377
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902414
+    sequences: []
+    editorPosition: {x: 1775, y: 1532}
+  - nodeId: Fire Next Clone Shooter (Atk2)12
+    nodeGuid: 0db2534dd84644d78faae1534c348812
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902415
+    sequences: []
+    editorPosition: {x: 2086, y: 1532}
+  - nodeId: Teleport Around Player11
+    nodeGuid: 1b1bf6bad018476f909e3de714ef39eb
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 4705778240567902416
+    sequences: []
+    editorPosition: {x: 2086, y: 1369}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1284,11 +1545,13 @@ MonoBehaviour:
     - 59a0ab3255084af888ee6b54a82616c5
     - 294b13cb85c0438280b8eb5f1b54f908
     - b13dd0e1f6654c5a881a201dbf849f4f
+    - 6b7dc8ec32f848458dd64194c7c59b9f
     - 80d2b02fee3c4fc0a36bd6d205fe8f25
     - 5a0d5ecf578a4e80b2d8d4b13a44aaea
     - c6500d9e684e40fa835ec49902598fa7
     - 6b3a5ff56fd447d0853a424af5455033
     - d5c27fdd844e4b659771181a2da2b2cf
+    - 22820c0c3f7f4d769be709a91ffa41a1
     - 06905a3118bd45548280596d7fc6a04e
     - 48e4f887ab734544814351939dc7d82c
     nodeIds:
@@ -1296,22 +1559,30 @@ MonoBehaviour:
     - Set Parameter2
     - Wait7
     - Set Parameter3
+    - Play Sfx1
     - Wait9
     - Fire Radial Emission1
     - Random Direction Move1
     - Wait8
     - Set Parameter4
+    - Play Sfx2
     - Fire Radial Emission2
     - Set Parameter5
   - patternId: Pattern2
     nodeGuids:
     - dfa298a4204c49e089cad7110b65e1fe
     - 3e9c9bad0ed3460e92357fbd306d028d
+    - dd4bedbe1714431b9aee5dd5128a7b4e
+    - d001d2e8326e463bb0ec6135ee2d1a20
+    - edb9ca5042e34e2892508f947c112800
     - bd08acf3447c487d939c24d1e9af6ed0
     - 47c1c0d09bc74d62ba362a400224dbf6
     nodeIds:
     - Spawn Clone Shooters1
     - Wait1
+    - Play Sfx3
+    - Wait29
+    - Play Sfx8
     - Fire Next Clone Shooter1
     - Fire Next Clone Shooter2
   - patternId: Pattern3
@@ -1322,6 +1593,8 @@ MonoBehaviour:
     - cacab2c5349a42a5888ec9b1195d1e54
     - 87de8b5da4c04b84bb6c18a5daa25880
     - ff06f7c5987b45d6a1f7f9ccba7061c3
+    - e7fdb07e1ea84e3495d61e5abfc19457
+    - b891610d36c1413bb655d803636e6fea
     - 7961bacafd5b4a0da4f1f495eef8df17
     - c4d5f983a6c14d0fb543ac336be34a93
     - 177366f5048a447ea054c23ef2b9d903
@@ -1332,6 +1605,8 @@ MonoBehaviour:
     - Teleport Around Player4
     - Boss Dash4
     - Set Parameter15
+    - Play Sfx4
+    - Play Sfx9
     - Fire Radial Emission13
     - Spawn Clone Shooters4
     - Fire Next Clone Shooter5
@@ -1343,12 +1618,15 @@ MonoBehaviour:
     - 75e761590e2c40a3ae5ab5cb8d58b5ee
     - 05d8730dad6e40a3bc85ddb257df2f33
     - 9336e5bd807b4e6e8f65c082e8a8554a
+    - 31a61404546748a3a29f10cf729b3ae6
     - d9b74fedfcf74fd69d8c3b0a870fe576
     - e4c422895b4e423a9e3ec6a061344ecc
+    - 164fe4f70f5840ed86e62c3c4299b84c
     - 4ea16c64fa504678a8df9584087fd191
     - 5c09dcc6b48349f7b915aa46abeb565c
     - 473b36e8d7d744ecaf2ec052c982080c
     - e5a414a257274353a3bb60ae761eff25
+    - eb43833270e946fea21a80ebbabaf985
     - 13c401bafe89441b93b8b7b034bf6da2
     - e445d7e2c6e74803bf80213b313e6150
     nodeIds:
@@ -1358,12 +1636,15 @@ MonoBehaviour:
     - Set Parameter7
     - Wait10
     - Set Parameter8
+    - Play Sfx5
     - Wait11
     - Random Direction Move2
+    - Play Sfx7
     - Fire Next Clone Shooter6
     - Set Parameter9
     - Wait12
     - Set Parameter10
+    - Play Sfx6
     - Wait13
     - Random Direction Move3
   - patternId: Pattern5
@@ -1376,6 +1657,7 @@ MonoBehaviour:
     - 224519a5d5974501a066ce22f19a9f84
     - f30b329ff1c242cdaddabca11aed5862
     - 7b4fdbd19edc4bbcb519561843bc7a8b
+    - e5414f874eaa46819e2c41006161869b
     - 2d08ebed0aa145c790f005a7d01a4aeb
     - 258dd1534d574b9896e447234905ef2b
     - 4553c45f47034f45b763c4f5fd909ae0
@@ -1384,55 +1666,68 @@ MonoBehaviour:
     - f8e30e070fe9489cad975dc68333d69a
     - be5bce643c7640cfaed4cb9e8df7e567
     - a1e0ed753c944fd5b9458c3edb065509
-    - 48f9c6f4e74644538861207bb088e8e4
+    - 1700484e714b45afaa623bfcf961c5f5
+    - 5bc594fbd88147cb80b5aa2331a11393
     - 91d293a100144f99a5f89ef11ee030dc
     - 5d0dd4438a964676b37ea2f3b8f6bf24
     - 671d0efe0cc144748064068af51daaeb
+    - c9f8b51af91f41628af423748e1b9e4e
     nodeIds:
     - Fire Radial Emission3
     - Spawn Clone Shooters6
     - Teleport Around Player5
     - Boss Dash5
-    - Wait18
+    - Wait17
     - Set Parameter11
     - Wait14
     - Set Parameter12
+    - Play Sfx11
     - Wait15
     - Random Direction Move8
     - Teleport Around Player1
     - Boss Dash1
-    - Wait19
+    - Wait18
     - Set Parameter13
     - Wait16
     - Set Parameter14
-    - Wait17
+    - Play Sfx10
+    - Wait30
     - Random Direction Move6
     - Fire Next Clone Shooter7
     - Fire Radial Emission10
+    - Play Sfx12
   - patternId: Pattern7
     nodeGuids:
     - d49eb5d08ec1433eb6c72b5367b84cf4
     - b3ced54591844824847eb5f919753168
     - 56b02b106f0f43989277745290bdb7d3
     - fac4351d2ad44ecb818324de24e66acf
+    - 6bb3cce2e66549e098973a27a54e3589
     - 439e431899484f6d92c81e29d3d27172
     - d613670f5b7441a383a01e457037682a
     - b17013bf5180420b8a401058c65c2c0c
     - 6cd9b65ff3c04700a589af7f5bd13738
     - 3c1bb23ba0cb4eeb9148493c82363edc
     - b751954103174eb48f8893391e503361
+    - 2c1b9f16eb954c95aca62459c0b0f752
+    - fcd91604509c4fe0905deefb00253b97
+    - 0545a75d609c4b77adc725be03eef478
     - a58cfeb49e534a8f9bb2ea2e2286e54e
     nodeIds:
     - Fire Next Clone Shooter4
     - Set Parameter16
-    - Wait20
+    - Wait19
     - Set Parameter17
-    - Wait21
+    - Play Sfx13
+    - Wait20
     - Fire Radial Emission4
     - Spawn Clone Shooters3
     - Wait2
     - Teleport Around Player6
     - Set Parameter18
+    - Play Sfx14
+    - Wait31
+    - Play Sfx15
     - Fire Radial Emission5
   - patternId: Pattern8
     nodeGuids:
@@ -1440,21 +1735,25 @@ MonoBehaviour:
     - 5eb28bbcc0704629a6d3b15db9279d4b
     - 469714931ccf4ec0a60acf4e4592e6d3
     - 0a60910a04564966b5f9ae0ea5a18062
+    - 0c12c92be39546e2b33f02e9a93dae44
     - 9eb33f61ee294914a1c84f80b113e908
     - 0028fc57a02746d0b5b54d3438b7874e
     - 3c6b18903d864d60b5e01a5b7e969fe9
     - 4cfd64f751c04130acd3bd0efd48dd6c
     - ee696814c0eb48ae985bd8be196bc59b
     - ba21a2c8ac56423abc54ba7f6edbdaa4
+    - 26460d55045a41c8a4a4105be360aa77
     - bb9ac855b04c4bfeb708de73d8eb4494
     - e0a0bdfa969646debd70a5d1d703f7d7
     - fc5fdd5d802d4c6c9fdd1ac624a6928b
+    - 50aa19b5609a43a6b92b87c9d2bc1e18
     - 556f75cfe7cf4191881f8ac838aa57ea
     - bc6c56811b3948ec8df667622a94013e
     - fba6ab0c80254b93b6a0c564fe97b7eb
     - 8db8f961d925431f8dfe3e9109d8ad1d
     - 942a22e5067b4e71b8352dbea6ae5f1d
     - 674fc8cae670441ca134fea892d59ed6
+    - 66a5eb049270413d8dbbc2b6ae09b1ad
     - e0e8503fa8ad44e4a363b90a593f3f77
     - a599ca8b9f1545dc82074d03da2bf8c6
     - b696a295c604429bb5835167687b4c65
@@ -1464,22 +1763,26 @@ MonoBehaviour:
     - Fire Radial Emission9
     - Spawn Clone Shooters7
     - Wait5
+    - Play Sfx16
     - Teleport Around Player2
     - Boss Dash2
-    - Wait26
+    - Wait25
     - Set Parameter19
-    - Wait22
+    - Wait21
     - Set Parameter20
-    - Wait23
+    - Play Sfx17
+    - Wait22
     - Random Direction Move4
     - Wait3
+    - Play Sfx18
     - Teleport Around Player3
     - Boss Dash3
-    - Wait27
+    - Wait26
     - Set Parameter21
-    - Wait24
+    - Wait23
     - Set Parameter22
-    - Wait25
+    - Play Sfx19
+    - Wait24
     - Random Direction Move5
     - Fire Next Clone Shooter8
     - Fire Next Clone Shooter9
@@ -1488,9 +1791,13 @@ MonoBehaviour:
     - e16e831d809842c88df2ba6972fdb979
     - 4859625f935f477bb11f9e5e1beb595f
     - 076c1d2d1d6a43048be132b77abfcdb8
+    - 66de0f9f3f3145da827f6975b3eb6799
+    - c80ab285620740ea9d43d63325112c62
+    - 992202487a7945a89bef3981a4dd26a4
     - bb2aae2074ff4096ba1fd6715dfa18ce
     - 91d6897d3c3843a0bcab936d19f07dec
     - 9eb3b506c3544a92bfccd4162463d7cd
+    - 1c684090182343cb8b369526ebe30eb9
     - aaabd0a1c24f42688a94cbb1cf336182
     - 16914dc5c84c4fbbac847a7bd2821054
     - ced2d50e9b2d4cd4b2b34e09eebe70d5
@@ -1498,9 +1805,13 @@ MonoBehaviour:
     - Spawn Clone Shooters2
     - Wait4
     - Teleport Around Player7
+    - Play Sfx20
+    - Wait32
+    - Play Sfx21
     - Boss Dash6
-    - Wait28
+    - Wait27
     - Set Parameter23
+    - Play Sfx22
     - Fire Radial Emission11
     - Fire Next Clone Shooter3
     - Fire Next Clone Shooter10
@@ -1512,10 +1823,13 @@ MonoBehaviour:
     - 3f1a11853aeb4d85ad9beebda338a346
     - 6b5c2148b4624c8f8fdabcd0d8a3afc5
     - 7c7e5549faa1485dba667101ef86d596
-    - 4f1999a153514ffba299d6b83cc4bfa4
+    - 476c9648aa0545e189de78a63340e725
+    - 9c279bc977824732aed1953c7632e9f6
     - d639ec7c51254416abe5caa058e43aa3
+    - 866d46d218e24503b4da93846e9909a0
     - 9018bf570eac4de6a4b00cd4e7b57b6d
     - 5e12056e78564b36af7f8c37914f2b83
+    - fd03a2b245c94b65976c8a9d6b0104cc
     - 76fa2786eaf646b4bc235cf8c3cb1c2d
     - 49c70a3dafd240589944e676b92a8b7f
     nodeIds:
@@ -1523,29 +1837,34 @@ MonoBehaviour:
     - Spawn Clone Shooters8
     - Wait6
     - Set Parameter24
-    - Wait29
+    - Wait28
     - Set Parameter25
-    - Wait30
+    - Play Sfx23
+    - Wait33
     - Random Direction Move7
+    - Play Sfx24
     - Fire Next Clone Shooter11
     - Teleport Around Player8
+    - Play Sfx25
     - Boss Dash7
     - Fire Next Clone Shooter12
   - patternId: Pattern6
     nodeGuids:
-    - 53ea8898bfe3420398f273192a854472
-    - 3cd5feea97f540c7b2e0a5e84543a413
-    - 9ca313b162f34b48b6066fd79e6ffc0a
-    - c9ac110cc88e4010b79fde2f375d0869
-    - 26706ec836164083b97899cf4201fb4a
-    - ef6cff8513d4456381a92277ba0f1062
-    - 14517c1e5caf4396bd9c53b490fd34b1
-    - c5e74cb71d8549c48b7c5640fedd20c5
-    - a36c6b5322d94a06853ac9137e564f55
-    - 018fb85a8ae645769e3df51d0f5bed2f
-    - ddcfcfd640c64e56be2d89e0b9533ed0
+    - 895ce312ce4b4a6dbaf40f992e9aa798
+    - f14a508387c545e8bf9127492fe1d12e
+    - 106fb095d27344a78756daee78137732
+    - d1b48d0dd6154938bf0ab6723078ae53
+    - 6d7e36ffb5b7446ab228b551a31fe18c
+    - 6fef2238d8a0438e9af2094c068fd815
+    - 4e896e0920e14496b505c49a6e9b6832
+    - e3b27012b16a4737848fb7bcfb78b562
+    - 4244fcac6dcd4ca49809e5edcc3c201f
+    - 29115f1cd0974eea8bd40bed7b578144
+    - 4d9d557ed37c439b9d7a4324cf99d934
+    - 3d98385c909c44e9b7a065790bd70a00
     nodeIds:
     - Set Stealth Visibility1
+    - Wait34
     - Spawn Clone Shooters9
     - Teleport Around Player9
     - Boss Dash8
@@ -1558,28 +1877,28 @@ MonoBehaviour:
     - Exit Stealth1
   - patternId: Pattern11
     nodeGuids:
-    - fa74d50e254d49d6a7ed2efb0fcb82af
-    - b378e3fc80154398af07768c538ad271
-    - 68b16c62e9e84ee18177c2c9300710f4
-    - 42a2668ca6444c45b3274963fea97144
-    - 70202e1d96c94eeca574e3ff8af981ba
-    - 4f100d715700427d91930a7dcacc2f10
-    - 8178aadf5c3c43d0a39d1fb603924cbe
-    - 601c003ebb8a49578df81e11e73180c4
-    - 9d77b18ddd4a439c8cd92aaa4def962a
-    - a78736b7b2e744fb8c4ce96e3f9e4aa8
-    - 018817ee65864265bf4cbf092ff3e5fa
-    - 6c6af33fbfce47ebba1bc32c8e93013a
-    - 71bb89f7625147e88aba5c579c9d38f3
-    - 676c74ff609b4898b7ba5d7d919d5a07
-    - c0ec64edacd646eeb8799337b5e631ea
-    - 23cb7242db4d4a479435bd88b68b5be3
+    - ff555fa901c04ee68e33a375518eb050
+    - 843c1cd32efe445a8dd941ab503c39ea
+    - cd2e8d40b021408e8e53796b3e4bebd7
+    - 3792e48253db43af92ffef240881d22b
+    - 9d41036ce2f14074a570ab6f21e46c2e
+    - 1b1bf6bad018476f909e3de714ef39eb
+    - 0d5f0d03d04c4a4683db4db53efc483a
+    - dac2e3beef0d40c1841528167ff96871
+    - a337dc7cc14a4b9389122a3663fc84c1
+    - bfa71b1843784d6399dd691f1cd69430
+    - 61f56d10f09c4285aed4069f3b668c83
+    - d5287de9bcb0456199b1fff33300c169
+    - 54531ed4865743f8a950718a146bdf41
+    - aaccfdad45044678abe793620b183f06
+    - 3a99ba03d6d6404487e27e2e2703d377
+    - 0db2534dd84644d78faae1534c348812
     nodeIds:
     - Set Stealth Visibility2
+    - Wait35
     - Spawn Clone Shooters10
     - Teleport Around Player10
     - Boss Dash9
-    - Wait31
     - Teleport Around Player11
     - Boss Dash10
     - Fire Parry Suppression Bait2
@@ -1688,14 +2007,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
-    toNodeGuid: bd08acf3447c487d939c24d1e9af6ed0
-    fromNodeId: Wait1
-    toNodeId: Fire Next Clone Shooter1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
     toNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
     fromNodeId: Random Direction Move4
@@ -1720,14 +2031,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
-    toNodeGuid: 556f75cfe7cf4191881f8ac838aa57ea
-    fromNodeId: Wait3
-    toNodeId: Teleport Around Player3
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: e16e831d809842c88df2ba6972fdb979
     toNodeGuid: 4859625f935f477bb11f9e5e1beb595f
     fromNodeId: Spawn Clone Shooters2
@@ -1740,14 +2043,6 @@ MonoBehaviour:
     toNodeGuid: 87de8b5da4c04b84bb6c18a5daa25880
     fromNodeId: Teleport Around Player4
     toNodeId: Boss Dash4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
-    toNodeGuid: 4ea16c64fa504678a8df9584087fd191
-    fromNodeId: Random Direction Move2
-    toNodeId: Fire Next Clone Shooter6
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -1784,14 +2079,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 0a60910a04564966b5f9ae0ea5a18062
-    toNodeGuid: 9eb33f61ee294914a1c84f80b113e908
-    fromNodeId: Wait5
-    toNodeId: Teleport Around Player2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: b17013bf5180420b8a401058c65c2c0c
     toNodeGuid: 6cd9b65ff3c04700a589af7f5bd13738
     fromNodeId: Spawn Clone Shooters3
@@ -1816,34 +2103,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
-    toNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
-    fromNodeId: Teleport Around Player7
-    toNodeId: Boss Dash6
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 4859625f935f477bb11f9e5e1beb595f
     toNodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
     fromNodeId: Wait4
     toNodeId: Teleport Around Player7
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: d639ec7c51254416abe5caa058e43aa3
-    toNodeGuid: 9018bf570eac4de6a4b00cd4e7b57b6d
-    fromNodeId: Random Direction Move7
-    toNodeId: Fire Next Clone Shooter11
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 5e12056e78564b36af7f8c37914f2b83
-    toNodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
-    fromNodeId: Teleport Around Player8
-    toNodeId: Boss Dash7
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -1888,14 +2151,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: d5c27fdd844e4b659771181a2da2b2cf
-    toNodeGuid: 06905a3118bd45548280596d7fc6a04e
-    fromNodeId: Set Parameter4
-    toNodeId: Fire Radial Emission2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 06905a3118bd45548280596d7fc6a04e
     toNodeGuid: 48e4f887ab734544814351939dc7d82c
     fromNodeId: Fire Radial Emission2
@@ -1916,22 +2171,6 @@ MonoBehaviour:
     toNodeGuid: d5c27fdd844e4b659771181a2da2b2cf
     fromNodeId: Wait8
     toNodeId: Set Parameter4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: b13dd0e1f6654c5a881a201dbf849f4f
-    toNodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
-    fromNodeId: Set Parameter3
-    toNodeId: Wait9
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
-    toNodeGuid: 5a0d5ecf578a4e80b2d8d4b13a44aaea
-    fromNodeId: Wait9
-    toNodeId: Fire Radial Emission1
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -1968,14 +2207,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 9336e5bd807b4e6e8f65c082e8a8554a
-    toNodeGuid: d9b74fedfcf74fd69d8c3b0a870fe576
-    fromNodeId: Set Parameter8
-    toNodeId: Wait11
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 151d6cd441454308a10111e0c41522a9
     toNodeGuid: 75e761590e2c40a3ae5ab5cb8d58b5ee
     fromNodeId: Spawn Clone Shooters5
@@ -2004,14 +2235,6 @@ MonoBehaviour:
     toNodeGuid: e5a414a257274353a3bb60ae761eff25
     fromNodeId: Wait12
     toNodeId: Set Parameter10
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e5a414a257274353a3bb60ae761eff25
-    toNodeGuid: 13c401bafe89441b93b8b7b034bf6da2
-    fromNodeId: Set Parameter10
-    toNodeId: Wait13
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2048,14 +2271,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 7b4fdbd19edc4bbcb519561843bc7a8b
-    toNodeGuid: 2d08ebed0aa145c790f005a7d01a4aeb
-    fromNodeId: Set Parameter12
-    toNodeId: Wait15
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: f8e30e070fe9489cad975dc68333d69a
     toNodeGuid: be5bce643c7640cfaed4cb9e8df7e567
     fromNodeId: Set Parameter13
@@ -2072,22 +2287,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: a1e0ed753c944fd5b9458c3edb065509
-    toNodeGuid: 48f9c6f4e74644538861207bb088e8e4
-    fromNodeId: Set Parameter14
-    toNodeId: Wait17
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 48f9c6f4e74644538861207bb088e8e4
-    toNodeGuid: 91d293a100144f99a5f89ef11ee030dc
-    fromNodeId: Wait17
-    toNodeId: Random Direction Move6
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 4db8338282ed4baba5e6cd5e6620801a
     toNodeGuid: cacab2c5349a42a5888ec9b1195d1e54
     fromNodeId: Spawn Random Bombs1
@@ -2100,14 +2299,6 @@ MonoBehaviour:
     toNodeGuid: ff06f7c5987b45d6a1f7f9ccba7061c3
     fromNodeId: Boss Dash4
     toNodeId: Set Parameter15
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: ff06f7c5987b45d6a1f7f9ccba7061c3
-    toNodeGuid: 7961bacafd5b4a0da4f1f495eef8df17
-    fromNodeId: Set Parameter15
-    toNodeId: Fire Radial Emission13
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2131,14 +2322,14 @@ MonoBehaviour:
   - fromNodeGuid: a86867c6962e45bba2903c8ff35e7e07
     toNodeGuid: 1a80f26239f844ada83559df1c630453
     fromNodeId: Boss Dash5
-    toNodeId: Wait18
+    toNodeId: Wait17
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1a80f26239f844ada83559df1c630453
     toNodeGuid: 224519a5d5974501a066ce22f19a9f84
-    fromNodeId: Wait18
+    fromNodeId: Wait17
     toNodeId: Set Parameter11
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2147,14 +2338,14 @@ MonoBehaviour:
   - fromNodeGuid: fece3e3ab912475bb4d3caf1990430fc
     toNodeGuid: c45e52f3470b4d8db22995d93600a74e
     fromNodeId: Boss Dash1
-    toNodeId: Wait19
+    toNodeId: Wait18
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c45e52f3470b4d8db22995d93600a74e
     toNodeGuid: f8e30e070fe9489cad975dc68333d69a
-    fromNodeId: Wait19
+    fromNodeId: Wait18
     toNodeId: Set Parameter13
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2163,14 +2354,14 @@ MonoBehaviour:
   - fromNodeGuid: b3ced54591844824847eb5f919753168
     toNodeGuid: 56b02b106f0f43989277745290bdb7d3
     fromNodeId: Set Parameter16
-    toNodeId: Wait20
+    toNodeId: Wait19
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 56b02b106f0f43989277745290bdb7d3
     toNodeGuid: fac4351d2ad44ecb818324de24e66acf
-    fromNodeId: Wait20
+    fromNodeId: Wait19
     toNodeId: Set Parameter17
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2184,25 +2375,9 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: b751954103174eb48f8893391e503361
-    toNodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
-    fromNodeId: Set Parameter18
-    toNodeId: Fire Radial Emission5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: fac4351d2ad44ecb818324de24e66acf
-    toNodeGuid: 439e431899484f6d92c81e29d3d27172
-    fromNodeId: Set Parameter17
-    toNodeId: Wait21
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 439e431899484f6d92c81e29d3d27172
     toNodeGuid: d613670f5b7441a383a01e457037682a
-    fromNodeId: Wait21
+    fromNodeId: Wait20
     toNodeId: Fire Radial Emission4
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2211,30 +2386,22 @@ MonoBehaviour:
   - fromNodeGuid: 4cfd64f751c04130acd3bd0efd48dd6c
     toNodeGuid: ee696814c0eb48ae985bd8be196bc59b
     fromNodeId: Set Parameter19
-    toNodeId: Wait22
+    toNodeId: Wait21
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ee696814c0eb48ae985bd8be196bc59b
     toNodeGuid: ba21a2c8ac56423abc54ba7f6edbdaa4
-    fromNodeId: Wait22
+    fromNodeId: Wait21
     toNodeId: Set Parameter20
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: ba21a2c8ac56423abc54ba7f6edbdaa4
-    toNodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
-    fromNodeId: Set Parameter20
-    toNodeId: Wait23
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
     toNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
-    fromNodeId: Wait23
+    fromNodeId: Wait22
     toNodeId: Random Direction Move4
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2243,30 +2410,22 @@ MonoBehaviour:
   - fromNodeGuid: 8db8f961d925431f8dfe3e9109d8ad1d
     toNodeGuid: 942a22e5067b4e71b8352dbea6ae5f1d
     fromNodeId: Set Parameter21
-    toNodeId: Wait24
+    toNodeId: Wait23
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 942a22e5067b4e71b8352dbea6ae5f1d
     toNodeGuid: 674fc8cae670441ca134fea892d59ed6
-    fromNodeId: Wait24
+    fromNodeId: Wait23
     toNodeId: Set Parameter22
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 674fc8cae670441ca134fea892d59ed6
-    toNodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
-    fromNodeId: Set Parameter22
-    toNodeId: Wait25
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
     toNodeGuid: a599ca8b9f1545dc82074d03da2bf8c6
-    fromNodeId: Wait25
+    fromNodeId: Wait24
     toNodeId: Random Direction Move5
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2275,14 +2434,14 @@ MonoBehaviour:
   - fromNodeGuid: 0028fc57a02746d0b5b54d3438b7874e
     toNodeGuid: 3c6b18903d864d60b5e01a5b7e969fe9
     fromNodeId: Boss Dash2
-    toNodeId: Wait26
+    toNodeId: Wait25
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 3c6b18903d864d60b5e01a5b7e969fe9
     toNodeGuid: 4cfd64f751c04130acd3bd0efd48dd6c
-    fromNodeId: Wait26
+    fromNodeId: Wait25
     toNodeId: Set Parameter19
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2291,14 +2450,14 @@ MonoBehaviour:
   - fromNodeGuid: bc6c56811b3948ec8df667622a94013e
     toNodeGuid: fba6ab0c80254b93b6a0c564fe97b7eb
     fromNodeId: Boss Dash3
-    toNodeId: Wait27
+    toNodeId: Wait26
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: fba6ab0c80254b93b6a0c564fe97b7eb
     toNodeGuid: 8db8f961d925431f8dfe3e9109d8ad1d
-    fromNodeId: Wait27
+    fromNodeId: Wait26
     toNodeId: Set Parameter21
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2307,23 +2466,15 @@ MonoBehaviour:
   - fromNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
     toNodeGuid: 91d6897d3c3843a0bcab936d19f07dec
     fromNodeId: Boss Dash6
-    toNodeId: Wait28
+    toNodeId: Wait27
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 91d6897d3c3843a0bcab936d19f07dec
     toNodeGuid: 9eb3b506c3544a92bfccd4162463d7cd
-    fromNodeId: Wait28
+    fromNodeId: Wait27
     toNodeId: Set Parameter23
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 9eb3b506c3544a92bfccd4162463d7cd
-    toNodeGuid: aaabd0a1c24f42688a94cbb1cf336182
-    fromNodeId: Set Parameter23
-    toNodeId: Fire Radial Emission11
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2331,23 +2482,15 @@ MonoBehaviour:
   - fromNodeGuid: 3f1a11853aeb4d85ad9beebda338a346
     toNodeGuid: 6b5c2148b4624c8f8fdabcd0d8a3afc5
     fromNodeId: Set Parameter24
-    toNodeId: Wait29
+    toNodeId: Wait28
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6b5c2148b4624c8f8fdabcd0d8a3afc5
     toNodeGuid: 7c7e5549faa1485dba667101ef86d596
-    fromNodeId: Wait29
+    fromNodeId: Wait28
     toNodeId: Set Parameter25
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 7c7e5549faa1485dba667101ef86d596
-    toNodeGuid: 4f1999a153514ffba299d6b83cc4bfa4
-    fromNodeId: Set Parameter25
-    toNodeId: Wait30
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2360,14 +2503,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 4f1999a153514ffba299d6b83cc4bfa4
-    toNodeGuid: d639ec7c51254416abe5caa058e43aa3
-    fromNodeId: Wait30
-    toNodeId: Random Direction Move7
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: fe2d4dc1cb74423986afc58a605c3fdf
     toNodeGuid: 4db8338282ed4baba5e6cd5e6620801a
     fromNodeId: Set Parameter6
@@ -2376,122 +2511,530 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 53ea8898bfe3420398f273192a854472
-    toNodeGuid: 3cd5feea97f540c7b2e0a5e84543a413
-    fromNodeId: Set Stealth Visibility1
-    toNodeId: Spawn Clone Shooters9
+  - fromNodeGuid: b13dd0e1f6654c5a881a201dbf849f4f
+    toNodeGuid: 6b7dc8ec32f848458dd64194c7c59b9f
+    fromNodeId: Set Parameter3
+    toNodeId: Play Sfx1
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 9ca313b162f34b48b6066fd79e6ffc0a
-    toNodeGuid: c9ac110cc88e4010b79fde2f375d0869
+  - fromNodeGuid: 6b7dc8ec32f848458dd64194c7c59b9f
+    toNodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
+    fromNodeId: Play Sfx1
+    toNodeId: Wait9
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
+    toNodeGuid: 5a0d5ecf578a4e80b2d8d4b13a44aaea
+    fromNodeId: Wait9
+    toNodeId: Fire Radial Emission1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d5c27fdd844e4b659771181a2da2b2cf
+    toNodeGuid: 22820c0c3f7f4d769be709a91ffa41a1
+    fromNodeId: Set Parameter4
+    toNodeId: Play Sfx2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 22820c0c3f7f4d769be709a91ffa41a1
+    toNodeGuid: 06905a3118bd45548280596d7fc6a04e
+    fromNodeId: Play Sfx2
+    toNodeId: Fire Radial Emission2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
+    toNodeGuid: dd4bedbe1714431b9aee5dd5128a7b4e
+    fromNodeId: Wait1
+    toNodeId: Play Sfx3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ff06f7c5987b45d6a1f7f9ccba7061c3
+    toNodeGuid: e7fdb07e1ea84e3495d61e5abfc19457
+    fromNodeId: Set Parameter15
+    toNodeId: Play Sfx4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9336e5bd807b4e6e8f65c082e8a8554a
+    toNodeGuid: 31a61404546748a3a29f10cf729b3ae6
+    fromNodeId: Set Parameter8
+    toNodeId: Play Sfx5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 31a61404546748a3a29f10cf729b3ae6
+    toNodeGuid: d9b74fedfcf74fd69d8c3b0a870fe576
+    fromNodeId: Play Sfx5
+    toNodeId: Wait11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e5a414a257274353a3bb60ae761eff25
+    toNodeGuid: eb43833270e946fea21a80ebbabaf985
+    fromNodeId: Set Parameter10
+    toNodeId: Play Sfx6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: eb43833270e946fea21a80ebbabaf985
+    toNodeGuid: 13c401bafe89441b93b8b7b034bf6da2
+    fromNodeId: Play Sfx6
+    toNodeId: Wait13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
+    toNodeGuid: 164fe4f70f5840ed86e62c3c4299b84c
+    fromNodeId: Random Direction Move2
+    toNodeId: Play Sfx7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: dd4bedbe1714431b9aee5dd5128a7b4e
+    toNodeGuid: d001d2e8326e463bb0ec6135ee2d1a20
+    fromNodeId: Play Sfx3
+    toNodeId: Wait29
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d001d2e8326e463bb0ec6135ee2d1a20
+    toNodeGuid: edb9ca5042e34e2892508f947c112800
+    fromNodeId: Wait29
+    toNodeId: Play Sfx8
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: edb9ca5042e34e2892508f947c112800
+    toNodeGuid: bd08acf3447c487d939c24d1e9af6ed0
+    fromNodeId: Play Sfx8
+    toNodeId: Fire Next Clone Shooter1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e7fdb07e1ea84e3495d61e5abfc19457
+    toNodeGuid: b891610d36c1413bb655d803636e6fea
+    fromNodeId: Play Sfx4
+    toNodeId: Play Sfx9
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b891610d36c1413bb655d803636e6fea
+    toNodeGuid: 7961bacafd5b4a0da4f1f495eef8df17
+    fromNodeId: Play Sfx9
+    toNodeId: Fire Radial Emission13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 164fe4f70f5840ed86e62c3c4299b84c
+    toNodeGuid: 4ea16c64fa504678a8df9584087fd191
+    fromNodeId: Play Sfx7
+    toNodeId: Fire Next Clone Shooter6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1700484e714b45afaa623bfcf961c5f5
+    toNodeGuid: 5bc594fbd88147cb80b5aa2331a11393
+    fromNodeId: Play Sfx10
+    toNodeId: Wait30
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a1e0ed753c944fd5b9458c3edb065509
+    toNodeGuid: 1700484e714b45afaa623bfcf961c5f5
+    fromNodeId: Set Parameter14
+    toNodeId: Play Sfx10
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5bc594fbd88147cb80b5aa2331a11393
+    toNodeGuid: 91d293a100144f99a5f89ef11ee030dc
+    fromNodeId: Wait30
+    toNodeId: Random Direction Move6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 7b4fdbd19edc4bbcb519561843bc7a8b
+    toNodeGuid: e5414f874eaa46819e2c41006161869b
+    fromNodeId: Set Parameter12
+    toNodeId: Play Sfx11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e5414f874eaa46819e2c41006161869b
+    toNodeGuid: 2d08ebed0aa145c790f005a7d01a4aeb
+    fromNodeId: Play Sfx11
+    toNodeId: Wait15
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fac4351d2ad44ecb818324de24e66acf
+    toNodeGuid: 6bb3cce2e66549e098973a27a54e3589
+    fromNodeId: Set Parameter17
+    toNodeId: Play Sfx13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 2c1b9f16eb954c95aca62459c0b0f752
+    toNodeGuid: fcd91604509c4fe0905deefb00253b97
+    fromNodeId: Play Sfx14
+    toNodeId: Wait31
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fcd91604509c4fe0905deefb00253b97
+    toNodeGuid: 0545a75d609c4b77adc725be03eef478
+    fromNodeId: Wait31
+    toNodeId: Play Sfx15
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b751954103174eb48f8893391e503361
+    toNodeGuid: 2c1b9f16eb954c95aca62459c0b0f752
+    fromNodeId: Set Parameter18
+    toNodeId: Play Sfx14
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0545a75d609c4b77adc725be03eef478
+    toNodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
+    fromNodeId: Play Sfx15
+    toNodeId: Fire Radial Emission5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6bb3cce2e66549e098973a27a54e3589
+    toNodeGuid: 439e431899484f6d92c81e29d3d27172
+    fromNodeId: Play Sfx13
+    toNodeId: Wait20
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0a60910a04564966b5f9ae0ea5a18062
+    toNodeGuid: 0c12c92be39546e2b33f02e9a93dae44
+    fromNodeId: Wait5
+    toNodeId: Play Sfx16
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0c12c92be39546e2b33f02e9a93dae44
+    toNodeGuid: 9eb33f61ee294914a1c84f80b113e908
+    fromNodeId: Play Sfx16
+    toNodeId: Teleport Around Player2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ba21a2c8ac56423abc54ba7f6edbdaa4
+    toNodeGuid: 26460d55045a41c8a4a4105be360aa77
+    fromNodeId: Set Parameter20
+    toNodeId: Play Sfx17
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 26460d55045a41c8a4a4105be360aa77
+    toNodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
+    fromNodeId: Play Sfx17
+    toNodeId: Wait22
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
+    toNodeGuid: 50aa19b5609a43a6b92b87c9d2bc1e18
+    fromNodeId: Wait3
+    toNodeId: Play Sfx18
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 50aa19b5609a43a6b92b87c9d2bc1e18
+    toNodeGuid: 556f75cfe7cf4191881f8ac838aa57ea
+    fromNodeId: Play Sfx18
+    toNodeId: Teleport Around Player3
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 674fc8cae670441ca134fea892d59ed6
+    toNodeGuid: 66a5eb049270413d8dbbc2b6ae09b1ad
+    fromNodeId: Set Parameter22
+    toNodeId: Play Sfx19
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 66a5eb049270413d8dbbc2b6ae09b1ad
+    toNodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
+    fromNodeId: Play Sfx19
+    toNodeId: Wait24
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 66de0f9f3f3145da827f6975b3eb6799
+    toNodeGuid: c80ab285620740ea9d43d63325112c62
+    fromNodeId: Play Sfx20
+    toNodeId: Wait32
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c80ab285620740ea9d43d63325112c62
+    toNodeGuid: 992202487a7945a89bef3981a4dd26a4
+    fromNodeId: Wait32
+    toNodeId: Play Sfx21
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
+    toNodeGuid: 66de0f9f3f3145da827f6975b3eb6799
+    fromNodeId: Teleport Around Player7
+    toNodeId: Play Sfx20
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 992202487a7945a89bef3981a4dd26a4
+    toNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
+    fromNodeId: Play Sfx21
+    toNodeId: Boss Dash6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9eb3b506c3544a92bfccd4162463d7cd
+    toNodeGuid: 1c684090182343cb8b369526ebe30eb9
+    fromNodeId: Set Parameter23
+    toNodeId: Play Sfx22
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1c684090182343cb8b369526ebe30eb9
+    toNodeGuid: aaabd0a1c24f42688a94cbb1cf336182
+    fromNodeId: Play Sfx22
+    toNodeId: Fire Radial Emission11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 476c9648aa0545e189de78a63340e725
+    toNodeGuid: 9c279bc977824732aed1953c7632e9f6
+    fromNodeId: Play Sfx23
+    toNodeId: Wait33
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 7c7e5549faa1485dba667101ef86d596
+    toNodeGuid: 476c9648aa0545e189de78a63340e725
+    fromNodeId: Set Parameter25
+    toNodeId: Play Sfx23
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9c279bc977824732aed1953c7632e9f6
+    toNodeGuid: d639ec7c51254416abe5caa058e43aa3
+    fromNodeId: Wait33
+    toNodeId: Random Direction Move7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d639ec7c51254416abe5caa058e43aa3
+    toNodeGuid: 866d46d218e24503b4da93846e9909a0
+    fromNodeId: Random Direction Move7
+    toNodeId: Play Sfx24
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 866d46d218e24503b4da93846e9909a0
+    toNodeGuid: 9018bf570eac4de6a4b00cd4e7b57b6d
+    fromNodeId: Play Sfx24
+    toNodeId: Fire Next Clone Shooter11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5e12056e78564b36af7f8c37914f2b83
+    toNodeGuid: fd03a2b245c94b65976c8a9d6b0104cc
+    fromNodeId: Teleport Around Player8
+    toNodeId: Play Sfx25
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fd03a2b245c94b65976c8a9d6b0104cc
+    toNodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
+    fromNodeId: Play Sfx25
+    toNodeId: Boss Dash7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d1b48d0dd6154938bf0ab6723078ae53
+    toNodeGuid: 6d7e36ffb5b7446ab228b551a31fe18c
     fromNodeId: Teleport Around Player9
     toNodeId: Boss Dash8
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 3cd5feea97f540c7b2e0a5e84543a413
-    toNodeGuid: 9ca313b162f34b48b6066fd79e6ffc0a
+  - fromNodeGuid: 106fb095d27344a78756daee78137732
+    toNodeGuid: d1b48d0dd6154938bf0ab6723078ae53
     fromNodeId: Spawn Clone Shooters9
     toNodeId: Teleport Around Player9
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: c9ac110cc88e4010b79fde2f375d0869
-    toNodeGuid: 26706ec836164083b97899cf4201fb4a
+  - fromNodeGuid: 895ce312ce4b4a6dbaf40f992e9aa798
+    toNodeGuid: f14a508387c545e8bf9127492fe1d12e
+    fromNodeId: Set Stealth Visibility1
+    toNodeId: Wait34
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f14a508387c545e8bf9127492fe1d12e
+    toNodeGuid: 106fb095d27344a78756daee78137732
+    fromNodeId: Wait34
+    toNodeId: Spawn Clone Shooters9
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6d7e36ffb5b7446ab228b551a31fe18c
+    toNodeGuid: 6fef2238d8a0438e9af2094c068fd815
     fromNodeId: Boss Dash8
     toNodeId: Fire Parry Suppression Bait1
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 26706ec836164083b97899cf4201fb4a
-    toNodeGuid: ef6cff8513d4456381a92277ba0f1062
+  - fromNodeGuid: 6fef2238d8a0438e9af2094c068fd815
+    toNodeGuid: 4e896e0920e14496b505c49a6e9b6832
     fromNodeId: Fire Parry Suppression Bait1
     toNodeId: Fire Next Clone Shooter (Atk2)1
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: fa74d50e254d49d6a7ed2efb0fcb82af
-    toNodeGuid: b378e3fc80154398af07768c538ad271
-    fromNodeId: Set Stealth Visibility2
-    toNodeId: Spawn Clone Shooters10
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 68b16c62e9e84ee18177c2c9300710f4
-    toNodeGuid: 42a2668ca6444c45b3274963fea97144
+  - fromNodeGuid: 3792e48253db43af92ffef240881d22b
+    toNodeGuid: 9d41036ce2f14074a570ab6f21e46c2e
     fromNodeId: Teleport Around Player10
     toNodeId: Boss Dash9
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 601c003ebb8a49578df81e11e73180c4
-    toNodeGuid: 9d77b18ddd4a439c8cd92aaa4def962a
-    fromNodeId: Fire Parry Suppression Bait2
-    toNodeId: Fire Next Clone Shooter (Atk2)6
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 4f100d715700427d91930a7dcacc2f10
-    toNodeGuid: 8178aadf5c3c43d0a39d1fb603924cbe
-    fromNodeId: Teleport Around Player11
-    toNodeId: Boss Dash10
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 8178aadf5c3c43d0a39d1fb603924cbe
-    toNodeGuid: 601c003ebb8a49578df81e11e73180c4
-    fromNodeId: Boss Dash10
-    toNodeId: Fire Parry Suppression Bait2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 018fb85a8ae645769e3df51d0f5bed2f
-    toNodeGuid: ddcfcfd640c64e56be2d89e0b9533ed0
-    fromNodeId: Fire Next Clone Shooter (Atk2)5
-    toNodeId: Exit Stealth1
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 71bb89f7625147e88aba5c579c9d38f3
-    toNodeGuid: 676c74ff609b4898b7ba5d7d919d5a07
-    fromNodeId: Fire Next Clone Shooter (Atk2)10
-    toNodeId: Exit Stealth2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: b378e3fc80154398af07768c538ad271
-    toNodeGuid: 68b16c62e9e84ee18177c2c9300710f4
+  - fromNodeGuid: cd2e8d40b021408e8e53796b3e4bebd7
+    toNodeGuid: 3792e48253db43af92ffef240881d22b
     fromNodeId: Spawn Clone Shooters10
     toNodeId: Teleport Around Player10
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 42a2668ca6444c45b3274963fea97144
-    toNodeGuid: 70202e1d96c94eeca574e3ff8af981ba
-    fromNodeId: Boss Dash9
-    toNodeId: Wait31
+  - fromNodeGuid: ff555fa901c04ee68e33a375518eb050
+    toNodeGuid: 843c1cd32efe445a8dd941ab503c39ea
+    fromNodeId: Set Stealth Visibility2
+    toNodeId: Wait35
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 70202e1d96c94eeca574e3ff8af981ba
-    toNodeGuid: 4f100d715700427d91930a7dcacc2f10
-    fromNodeId: Wait31
+  - fromNodeGuid: 843c1cd32efe445a8dd941ab503c39ea
+    toNodeGuid: cd2e8d40b021408e8e53796b3e4bebd7
+    fromNodeId: Wait35
+    toNodeId: Spawn Clone Shooters10
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 4d9d557ed37c439b9d7a4324cf99d934
+    toNodeGuid: 3d98385c909c44e9b7a065790bd70a00
+    fromNodeId: Fire Next Clone Shooter (Atk2)5
+    toNodeId: Exit Stealth1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 54531ed4865743f8a950718a146bdf41
+    toNodeGuid: aaccfdad45044678abe793620b183f06
+    fromNodeId: Fire Next Clone Shooter (Atk2)10
+    toNodeId: Exit Stealth2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 9d41036ce2f14074a570ab6f21e46c2e
+    toNodeGuid: 1b1bf6bad018476f909e3de714ef39eb
+    fromNodeId: Boss Dash9
     toNodeId: Teleport Around Player11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1b1bf6bad018476f909e3de714ef39eb
+    toNodeGuid: 0d5f0d03d04c4a4683db4db53efc483a
+    fromNodeId: Teleport Around Player11
+    toNodeId: Boss Dash10
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0d5f0d03d04c4a4683db4db53efc483a
+    toNodeGuid: dac2e3beef0d40c1841528167ff96871
+    fromNodeId: Boss Dash10
+    toNodeId: Fire Parry Suppression Bait2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: dac2e3beef0d40c1841528167ff96871
+    toNodeGuid: a337dc7cc14a4b9389122a3663fc84c1
+    fromNodeId: Fire Parry Suppression Bait2
+    toNodeId: Fire Next Clone Shooter (Atk2)6
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2533,12 +3076,6 @@ MonoBehaviour:
     toNodeId: Spawn Clone Shooters4
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
-    toNodeGuid: 5d0dd4438a964676b37ea2f3b8f6bf24
-    fromNodeId: Fire Radial Emission3
-    toNodeId: Fire Next Clone Shooter7
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 91d293a100144f99a5f89ef11ee030dc
     toNodeGuid: 671d0efe0cc144748064068af51daaeb
     fromNodeId: Random Direction Move6
@@ -2549,12 +3086,6 @@ MonoBehaviour:
     toNodeGuid: d855bcf506c74155a13a0e6eb9636058
     fromNodeId: Teleport Around Player3
     toNodeId: Fire Next Clone Shooter9
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 9eb33f61ee294914a1c84f80b113e908
-    toNodeGuid: b696a295c604429bb5835167687b4c65
-    fromNodeId: Teleport Around Player2
-    toNodeId: Fire Next Clone Shooter8
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: a58cfeb49e534a8f9bb2ea2e2286e54e
@@ -2599,68 +3130,86 @@ MonoBehaviour:
     toNodeId: Fire Radial Emission3
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: ef6cff8513d4456381a92277ba0f1062
-    toNodeGuid: 14517c1e5caf4396bd9c53b490fd34b1
+  - fromNodeGuid: cbbfb4ab43fd4ef1afc58e8583458ad3
+    toNodeGuid: c9f8b51af91f41628af423748e1b9e4e
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Play Sfx12
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: c9f8b51af91f41628af423748e1b9e4e
+    toNodeGuid: 5d0dd4438a964676b37ea2f3b8f6bf24
+    fromNodeId: Play Sfx12
+    toNodeId: Fire Next Clone Shooter7
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 9eb33f61ee294914a1c84f80b113e908
+    toNodeGuid: b696a295c604429bb5835167687b4c65
+    fromNodeId: Teleport Around Player2
+    toNodeId: Fire Next Clone Shooter8
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 4e896e0920e14496b505c49a6e9b6832
+    toNodeGuid: e3b27012b16a4737848fb7bcfb78b562
     fromNodeId: Fire Next Clone Shooter (Atk2)1
     toNodeId: Fire Next Clone Shooter (Atk2)2
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 14517c1e5caf4396bd9c53b490fd34b1
-    toNodeGuid: c5e74cb71d8549c48b7c5640fedd20c5
-    fromNodeId: Fire Next Clone Shooter (Atk2)2
-    toNodeId: Fire Next Clone Shooter (Atk2)3
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: c5e74cb71d8549c48b7c5640fedd20c5
-    toNodeGuid: a36c6b5322d94a06853ac9137e564f55
+  - fromNodeGuid: 4244fcac6dcd4ca49809e5edcc3c201f
+    toNodeGuid: 29115f1cd0974eea8bd40bed7b578144
     fromNodeId: Fire Next Clone Shooter (Atk2)3
     toNodeId: Fire Next Clone Shooter (Atk2)4
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: a36c6b5322d94a06853ac9137e564f55
-    toNodeGuid: 018fb85a8ae645769e3df51d0f5bed2f
+  - fromNodeGuid: e3b27012b16a4737848fb7bcfb78b562
+    toNodeGuid: 4244fcac6dcd4ca49809e5edcc3c201f
+    fromNodeId: Fire Next Clone Shooter (Atk2)2
+    toNodeId: Fire Next Clone Shooter (Atk2)3
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 29115f1cd0974eea8bd40bed7b578144
+    toNodeGuid: 4d9d557ed37c439b9d7a4324cf99d934
     fromNodeId: Fire Next Clone Shooter (Atk2)4
     toNodeId: Fire Next Clone Shooter (Atk2)5
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 9d77b18ddd4a439c8cd92aaa4def962a
-    toNodeGuid: a78736b7b2e744fb8c4ce96e3f9e4aa8
+  - fromNodeGuid: a337dc7cc14a4b9389122a3663fc84c1
+    toNodeGuid: bfa71b1843784d6399dd691f1cd69430
     fromNodeId: Fire Next Clone Shooter (Atk2)6
     toNodeId: Fire Next Clone Shooter (Atk2)7
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: a78736b7b2e744fb8c4ce96e3f9e4aa8
-    toNodeGuid: 018817ee65864265bf4cbf092ff3e5fa
-    fromNodeId: Fire Next Clone Shooter (Atk2)7
-    toNodeId: Fire Next Clone Shooter (Atk2)8
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 018817ee65864265bf4cbf092ff3e5fa
-    toNodeGuid: 6c6af33fbfce47ebba1bc32c8e93013a
+  - fromNodeGuid: 61f56d10f09c4285aed4069f3b668c83
+    toNodeGuid: d5287de9bcb0456199b1fff33300c169
     fromNodeId: Fire Next Clone Shooter (Atk2)8
     toNodeId: Fire Next Clone Shooter (Atk2)9
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 6c6af33fbfce47ebba1bc32c8e93013a
-    toNodeGuid: 71bb89f7625147e88aba5c579c9d38f3
+  - fromNodeGuid: bfa71b1843784d6399dd691f1cd69430
+    toNodeGuid: 61f56d10f09c4285aed4069f3b668c83
+    fromNodeId: Fire Next Clone Shooter (Atk2)7
+    toNodeId: Fire Next Clone Shooter (Atk2)8
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: d5287de9bcb0456199b1fff33300c169
+    toNodeGuid: 54531ed4865743f8a950718a146bdf41
     fromNodeId: Fire Next Clone Shooter (Atk2)9
     toNodeId: Fire Next Clone Shooter (Atk2)10
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 68b16c62e9e84ee18177c2c9300710f4
-    toNodeGuid: c0ec64edacd646eeb8799337b5e631ea
+  - fromNodeGuid: 3792e48253db43af92ffef240881d22b
+    toNodeGuid: 3a99ba03d6d6404487e27e2e2703d377
     fromNodeId: Teleport Around Player10
     toNodeId: Fire Next Clone Shooter (Atk2)11
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 4f100d715700427d91930a7dcacc2f10
-    toNodeGuid: 23cb7242db4d4a479435bd88b68b5be3
+  - fromNodeGuid: 1b1bf6bad018476f909e3de714ef39eb
+    toNodeGuid: 0db2534dd84644d78faae1534c348812
     fromNodeId: Teleport Around Player11
     toNodeId: Fire Next Clone Shooter (Atk2)12
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  debugForcedPatternId: Pattern11
   references:
     version: 2
     RefIds:
@@ -2874,7 +3423,7 @@ MonoBehaviour:
     - rid: 4705778150679249242
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 1
+        seconds: 0.8
     - rid: 4705778169994805375
       type: {class: AssassinSpawnRandomBombsAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2897,7 +3446,7 @@ MonoBehaviour:
         spawnInterval: 0.05
         flightSeconds: 0.1
         chargeSeconds: 9
-        spawnSfxId: 
+        spawnSfxId: BossNormalShot
         effects:
           smoke:
             enabled: 0
@@ -3067,7 +3616,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -3232,7 +3781,7 @@ MonoBehaviour:
           angleDegrees: 0
         windupSeconds: 0
         fireSfxId: 
-        launchSfxId: 
+        launchSfxId: BossSpecialShot
         effects:
           smoke:
             enabled: 0
@@ -3396,7 +3945,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -3466,7 +4015,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -3939,7 +4488,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -4098,7 +4647,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -4467,7 +5016,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -4514,7 +5063,7 @@ MonoBehaviour:
           angleDegrees: 0
         windupSeconds: 0
         fireSfxId: 
-        launchSfxId: 
+        launchSfxId: BossSpecialShot
         effects:
           smoke:
             enabled: 0
@@ -4744,7 +5293,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -4839,7 +5388,7 @@ MonoBehaviour:
           angleDegrees: 0
         windupSeconds: 0
         fireSfxId: 
-        launchSfxId: 
+        launchSfxId: BossSpecialShot
         effects:
           smoke:
             enabled: 0
@@ -5022,10 +5571,6 @@ MonoBehaviour:
         floatValue: 0
         intValue: 0
         boolValue: 1
-    - rid: 4705778220989677717
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 0.2
     - rid: 4705778220989677762
       type: {class: PlayAnimationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5199,27 +5744,143 @@ MonoBehaviour:
         floatValue: 0
         intValue: 0
         boolValue: 1
-    - rid: 4705778220989677811
+    - rid: 4705778240567902288
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902291
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902311
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902318
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902320
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902321
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902322
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902330
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 4705778240567902332
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902335
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: BossNormalShot
+    - rid: 4705778240567902344
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.2
-    - rid: 4705778220989677834
+    - rid: 4705778240567902345
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902346
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902347
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902356
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902359
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: BossNormalShot
+    - rid: 4705778240567902360
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 4705778240567902361
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902367
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902368
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902369
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902370
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902374
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902375
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 4705778240567902376
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902377
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: BossNormalShot
+    - rid: 4705778240567902378
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778240567902379
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902380
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902381
+      type: {class: PlaySfxAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        sfxId: DaggerThrow
+    - rid: 4705778240567902388
+      type: {class: AssassinSetStealthVisibilityAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        visible: 1
+    - rid: 4705778240567902389
       type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         cloneCount: 5
-        cloneIntroSeconds: 0.2
+        cloneIntroSeconds: 0.4
         cloneTargetAlpha: 180
         includeBossPosition: 0
-        teleportHiddenSeconds: 0
-    - rid: 4705778220989677835
-      type: {class: AssassinSetStealthVisibilityAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        visible: 1
-    - rid: 4705778220989677836
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778240567902390
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.7
-        lockSeconds: 0.6
+        windupSeconds: 0.9
+        lockSeconds: 0.8
         trackPlayerDuringWindup: 0
         maxTrackTurnDegreesPerSecond: 0
         windupSfxId: 
@@ -5266,7 +5927,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-        dashSfxId: 
+        dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
@@ -5278,794 +5939,798 @@ MonoBehaviour:
         trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
         trajectoryExtraLength: 1
-    - rid: 4705778220989677837
+    - rid: 4705778240567902391
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         teleportRadius: 2.5
         vanishSeconds: 0.5
         hiddenSeconds: 1
         reappearSeconds: 0.01
-    - rid: 4705778220989677838
-      type: {class: AssassinFireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 0
-          angleDegrees: 0
-        baitDurationSeconds: 0.8
-        rewardBulletCount: 3
-        rewardCircleRadius: 1
-        groggySeconds: 2
-        spawnSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-    - rid: 4705778220989677839
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778220989677840
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778220989677841
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778220989677842
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778220989677843
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356167
-      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        cloneCount: 7
-        cloneIntroSeconds: 0.2
-        cloneTargetAlpha: 180
-        includeBossPosition: 0
-        teleportHiddenSeconds: 0
-    - rid: 4705778237021356168
-      type: {class: AssassinSetStealthVisibilityAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        visible: 1
-    - rid: 4705778237021356169
-      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        windupSeconds: 0.7
-        lockSeconds: 0.6
-        trackPlayerDuringWindup: 0
-        maxTrackTurnDegreesPerSecond: 0
-        windupSfxId: 
-        windupEffects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        dashDuration: 0.3
-        dashSpeed: 30
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0.27256712
-            outSlope: 0.27256712
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.2701177
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: -3.7676113
-            outSlope: -3.7676113
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.06455445
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        dashSfxId: 
-        chargeTriggerName: DoStep
-        chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
-    - rid: 4705778237021356170
-      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        teleportRadius: 2.5
-        vanishSeconds: 0.5
-        hiddenSeconds: 1
-        reappearSeconds: 0.01
-    - rid: 4705778237021356171
-      type: {class: AssassinFireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        origin:
-          mode: 0
-          bossChildPath: 
-          bossChildPaths: []
-          firstBossChildPath: 
-          secondBossChildPath: 
-          fallbackSpacing: 0.18
-        aim:
-          mode: 0
-          angleDegrees: 0
-        baitDurationSeconds: 0.8
-        rewardBulletCount: 3
-        rewardCircleRadius: 1
-        groggySeconds: 2
-        spawnSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-    - rid: 4705778237021356172
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356173
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356174
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356175
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356176
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356177
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356178
-      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        windupSeconds: 0.7
-        lockSeconds: 0.6
-        trackPlayerDuringWindup: 0
-        maxTrackTurnDegreesPerSecond: 0
-        windupSfxId: 
-        windupEffects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        dashDuration: 0.3
-        dashSpeed: 30
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0.27256712
-            outSlope: 0.27256712
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.2701177
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: -3.7676113
-            outSlope: -3.7676113
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.06455445
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        dashSfxId: 
-        chargeTriggerName: DoStep
-        chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
-    - rid: 4705778237021356179
-      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        teleportRadius: 2.5
-        vanishSeconds: 0.5
-        hiddenSeconds: 1
-        reappearSeconds: 0.01
-    - rid: 4705778237021356180
-      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        fireMode: 0
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        despawnFadeSeconds: 1
-        arcBulletCount: 30
-        arcDegrees: 360
-        arcFireInterval: 0.05
-        volleys:
-        - bulletCount: 4
-          fireInterval: 0.12
-          restSeconds: 0.35
-        fireSfxId: 
-        launchSfxId: 
-        effects:
-          smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
-            count: 12
-          smokeInterval: 0.12
-          muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
-          cameraShake:
-            enabled: 0
-            seconds: 0.14
-            distance: 0.22
-            frequency: 0.12
-        attackDelaySeconds: 0.28
-    - rid: 4705778237021356186
-      type: {class: AssassinExitStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
-    - rid: 4705778237021356187
-      type: {class: AssassinExitStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
-    - rid: 4705778237021356188
+    - rid: 4705778240567902392
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.2
+    - rid: 4705778240567902393
+      type: {class: AssassinFireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        baitDurationSeconds: 0.8
+        rewardBulletCount: 3
+        rewardCircleRadius: 1
+        groggySeconds: 2
+        spawnSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778240567902394
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: DaggerThrow
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902395
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902396
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902397
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902398
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902399
+      type: {class: AssassinSetStealthVisibilityAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        visible: 1
+    - rid: 4705778240567902400
+      type: {class: AssassinSpawnCloneShootersAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        cloneCount: 7
+        cloneIntroSeconds: 0.4
+        cloneTargetAlpha: 180
+        includeBossPosition: 0
+        teleportHiddenSeconds: 0.4
+    - rid: 4705778240567902401
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.9
+        lockSeconds: 0.8
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: AssassinDash
+        chargeTriggerName: DoStep
+        chargeBoolName: isAtk3
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
+        trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
+    - rid: 4705778240567902402
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
+    - rid: 4705778240567902403
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.2
+    - rid: 4705778240567902404
+      type: {class: AssassinFireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uC5B5\uC81C\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 0
+          angleDegrees: 0
+        baitDurationSeconds: 0.8
+        rewardBulletCount: 3
+        rewardCircleRadius: 1
+        groggySeconds: 2
+        spawnSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+    - rid: 4705778240567902405
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: DaggerThrow
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902406
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902407
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902408
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902409
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902410
+      type: {class: AssassinExitStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 4705778240567902411
+      type: {class: AssassinExitStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
+    - rid: 4705778240567902412
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.9
+        lockSeconds: 0.8
+        trackPlayerDuringWindup: 0
+        maxTrackTurnDegreesPerSecond: 0
+        windupSfxId: 
+        windupEffects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.3
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.27256712
+            outSlope: 0.27256712
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.2701177
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.7676113
+            outSlope: -3.7676113
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.06455445
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: AssassinDash
+        chargeTriggerName: DoStep
+        chargeBoolName: isAtk3
+        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
+        trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
+        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
+        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
+        trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
+    - rid: 4705778240567902414
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: DaggerThrow
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902415
+      type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        fireMode: 0
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        despawnFadeSeconds: 1
+        arcBulletCount: 30
+        arcDegrees: 360
+        arcFireInterval: 0.05
+        volleys:
+        - bulletCount: 4
+          fireInterval: 0.12
+          restSeconds: 0.35
+        fireSfxId: DaggerThrow
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        attackDelaySeconds: 0.28
+    - rid: 4705778240567902416
+      type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        teleportRadius: 2.5
+        vanishSeconds: 0.5
+        hiddenSeconds: 1
+        reappearSeconds: 0.01
