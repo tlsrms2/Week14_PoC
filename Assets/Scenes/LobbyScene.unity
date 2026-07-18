@@ -19177,9 +19177,9 @@ MonoBehaviour:
   fallbackProfileSprite: {fileID: 0}
   speakerProfiles:
   - speaker: "\uC774\uC628"
-    profileSprite: {fileID: -4565277893826926653, guid: 87c76420dcbb7c04b89c55ee640b3fee, type: 3}
-  - speaker: AI
-    profileSprite: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
+    profileSprite: {fileID: 21300000, guid: ec058bb051ca4964f8bc764e642e1f32, type: 3}
+  - speaker: ERIS
+    profileSprite: {fileID: 21300000, guid: 35e076604abb97148965a2314065aa0e, type: 3}
   skipRoot: {fileID: 1102866633}
   skipFillImage: {fileID: 312444007}
 --- !u!1 &7583865313150525774
