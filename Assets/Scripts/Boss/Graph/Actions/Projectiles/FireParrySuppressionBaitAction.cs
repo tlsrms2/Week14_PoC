@@ -11,7 +11,7 @@ namespace Week14.Enemy
     //    그로기(무력화) 상태로 들어가 정해진 시간 동안 멈춰있다가 새 패턴을 고른다.
     //  - 패링 실패(지속시간 안에 패링 못 함): 아무 효과 없이 그대로 다음 액션으로 이어진다.
     [Serializable]
-    public sealed class FireParrySuppressionBaitAction : BossAction
+    public sealed class FireParrySuppressionBaitAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();

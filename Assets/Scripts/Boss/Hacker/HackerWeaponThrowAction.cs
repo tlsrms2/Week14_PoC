@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Week14.Enemy
@@ -118,33 +117,16 @@ namespace Week14.Enemy
 
         private bool TryResolveWeapon(int phaseIndex, out HackerThrownWeaponType weaponType, out GameObject weaponPrefab)
         {
-            if (phaseIndex <= 0)
+            if (phaseIndex > 0)
             {
                 weaponType = HackerThrownWeaponType.Bayonet;
                 weaponPrefab = bayonetPrefab;
                 return weaponPrefab != null;
             }
 
-            List<(HackerThrownWeaponType Type, GameObject Prefab)> candidates = new(2);
-            if (gunPrefab != null)
-            {
-                candidates.Add((HackerThrownWeaponType.Gun, gunPrefab));
-            }
-
-            if (swordPrefab != null)
-            {
-                candidates.Add((HackerThrownWeaponType.Sword, swordPrefab));
-            }
-
-            if (candidates.Count == 0)
-            {
-                weaponType = default;
-                weaponPrefab = null;
-                return false;
-            }
-
-            (weaponType, weaponPrefab) = candidates[UnityEngine.Random.Range(0, candidates.Count)];
-            return true;
+            weaponType = HackerThrownWeaponType.Gun;
+            weaponPrefab = gunPrefab;
+            return weaponPrefab != null;
         }
     }
 }

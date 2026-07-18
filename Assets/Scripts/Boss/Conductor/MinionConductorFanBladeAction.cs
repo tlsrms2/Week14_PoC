@@ -22,7 +22,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class MinionConductorFanBladeAction : BossAction, IBossActionContextDurationProvider
+    public sealed class MinionConductorFanBladeAction : BossAction, IBossActionContextDurationProvider, IBossProjectileEmissionAction
     {
         [Serializable]
         public sealed class Volley

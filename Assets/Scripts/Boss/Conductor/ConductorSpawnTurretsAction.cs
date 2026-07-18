@@ -16,7 +16,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class ConductorSpawnTurretsAction : BossAction, IBossActionContextDurationProvider
+    public sealed class ConductorSpawnTurretsAction : BossAction, IBossActionContextDurationProvider, IBossProjectileEmissionAction
     {
         private const string GroundLayerName = "Ground";
 

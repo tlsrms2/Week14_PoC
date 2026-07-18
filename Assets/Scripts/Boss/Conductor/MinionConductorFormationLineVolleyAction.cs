@@ -10,7 +10,7 @@ namespace Week14.Enemy
     using ScoreLaneVolley = MinionConductorScoreLaneRushAction.Volley;
 
     [Serializable]
-    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource
+    public sealed class MinionConductorFormationLineVolleyAction : BossAction, IBossActionContextDurationProvider, IConductorCueOverlayEarlyStartSource, IBossProjectileEmissionAction
     {
         private const float DefaultFormationMoveSpeed = 24f;
         private const float FormationAlignmentTolerance = 0.08f;

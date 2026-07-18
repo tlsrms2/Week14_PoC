@@ -13,7 +13,7 @@ namespace Week14.Enemy
     // 조준/충전 오버라이드를 강제하지 않으므로, 탄 프리셋의 Aim At Player On Launch 등이 그대로 적용된다
     // (예: 충전이 끝나면 그 순간의 플레이어 방향으로 날아가는 탄을 그대로 궤적에 흘릴 수 있다).
     [Serializable]
-    public sealed class FireDistanceTrailProjectilesAction : BossAction
+    public sealed class FireDistanceTrailProjectilesAction : BossAction, IBossProjectileEmissionAction
     {
         private const float SafetyTimeoutSeconds = 5f;
         private const float StoppedSpeedThresholdSqr = 0.0025f;

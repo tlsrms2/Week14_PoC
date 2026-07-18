@@ -8,7 +8,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class FireRadialEmissionAction : BossAction, ISerializationCallbackReceiver
+    public sealed class FireRadialEmissionAction : BossAction, ISerializationCallbackReceiver, IBossProjectileEmissionAction
     {
         [Serializable]
         public sealed class Volley

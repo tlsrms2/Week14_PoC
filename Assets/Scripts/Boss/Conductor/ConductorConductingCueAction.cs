@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Week14.Enemy
 {
@@ -19,6 +20,13 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float holdSeconds = 0.2f;
         [SerializeField, Min(0f)] private float fadeSeconds = 0.12f;
         [SerializeField] private int sortingOrder = 90;
+        [Header("Cue 완료 이펙트")]
+        [FormerlySerializedAs("bossAttachedEffectPrefab")]
+        [SerializeField] private GameObject completedEffectPrefab;
+        [FormerlySerializedAs("bossAttachedEffectOffset")]
+        [SerializeField] private Vector2 completedEffectOffset = new(0f, -0.32f);
+        [FormerlySerializedAs("bossAttachedEffectScale")]
+        [SerializeField, Min(0.01f)] private float completedEffectScale = 1f;
         [Header("Completed Stroke")]
         [SerializeField] private Color completedFlashColor = Color.white;
         [SerializeField, Min(0f)] private float completedFlashSeconds = 0.08f;
@@ -80,6 +88,9 @@ namespace Week14.Enemy
                 holdSeconds,
                 fadeSeconds,
                 sortingOrder,
+                completedEffectPrefab,
+                completedEffectOffset,
+                completedEffectScale,
                 completedFlashColor,
                 completedFlashSeconds,
                 completedColor,
@@ -142,6 +153,9 @@ namespace Week14.Enemy
             float holdSeconds,
             float fadeSeconds,
             int sortingOrder,
+            GameObject completedEffectPrefab,
+            Vector2 completedEffectOffset,
+            float completedEffectScale,
             Color completedFlashColor,
             float completedFlashSeconds,
             Color completedColor,
@@ -159,6 +173,9 @@ namespace Week14.Enemy
             HoldSeconds = Mathf.Max(0f, holdSeconds);
             FadeSeconds = Mathf.Max(0f, fadeSeconds);
             SortingOrder = sortingOrder;
+            CompletedEffectPrefab = completedEffectPrefab;
+            CompletedEffectOffset = completedEffectOffset;
+            CompletedEffectScale = Mathf.Max(0.01f, completedEffectScale);
             CompletedFlashColor = completedFlashColor;
             CompletedFlashSeconds = Mathf.Max(0f, completedFlashSeconds);
             CompletedColor = completedColor;
@@ -177,6 +194,9 @@ namespace Week14.Enemy
         public float HoldSeconds { get; }
         public float FadeSeconds { get; }
         public int SortingOrder { get; }
+        public GameObject CompletedEffectPrefab { get; }
+        public Vector2 CompletedEffectOffset { get; }
+        public float CompletedEffectScale { get; }
         public Color CompletedFlashColor { get; }
         public float CompletedFlashSeconds { get; }
         public Color CompletedColor { get; }

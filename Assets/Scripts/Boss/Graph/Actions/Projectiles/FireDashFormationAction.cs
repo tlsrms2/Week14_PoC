@@ -19,7 +19,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public sealed class FireDashFormationAction : BossAction, ISerializationCallbackReceiver
+    public sealed class FireDashFormationAction : BossAction, ISerializationCallbackReceiver, IBossProjectileEmissionAction
     {
         private const float ParallelLaneSafetyTimeoutSeconds = 3f;
         private const float DashStoppedSpeedThresholdSqr = 0.0025f;

@@ -8,12 +8,14 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerSnipingFireAction : BossAction, IBossActionDurationProvider
     {
+        private const string ShootAnimationTrigger = "Shoot";
+        private const string ReleaseAnimationTrigger = "Release";
+        private const string HoldTelegraphAnimationParameter = "HoldShootTelegraph";
+
         [Header("Projectile")]
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
-        [SerializeField] private BossGraphProjectileOriginSpec origin = new();
-        [SerializeField] private BossGraphProjectileAimSpec aim = new();
-        [SerializeField, Min(0f)] private float spawnForwardOffset;
+        [SerializeField, BossGraphBossChildPath] private string firePointPath;
         [SerializeField, Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")]
         private float chargeSecondsOverride = -1f;
         [SerializeField, BossGraphSfxId] private string fireSfxId;
@@ -57,8 +59,14 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();
-            BossGraphProjectileAimSpec aimSpec = aim ?? new BossGraphProjectileAimSpec();
+            Transform firePoint = context.GetBossChildTransform(firePointPath);
+            if (firePoint == null)
+            {
+                Debug.LogWarning($"{nameof(HackerSnipingFireAction)}: 설정된 발사 Point '{firePointPath}'를 찾을 수 없습니다.", context.Boss);
+                yield break;
+            }
+
+            context.BeginSnipingTelegraph(ShootAnimationTrigger, HoldTelegraphAnimationParameter);
             if (windupSeconds > 0f)
             {
                 if (context.Boss is HackerHologramBoss hologram)
@@ -66,16 +74,15 @@ namespace Week14.Enemy
                     hologram.FreezeRecordedPose(windupSeconds);
                 }
 
-                Transform chargeFollowTarget = originSpec.GetAimOriginTransform(context, 0) ?? context.Boss?.transform;
                 HackerSnipingChargeIndicator chargeIndicator = HackerSnipingChargeIndicator.Create(
-                    chargeFollowTarget,
-                    originSpec.GetAimOrigin(context, 0),
+                    firePoint,
+                    firePoint.position,
                     chargeStartRadius,
                     chargeEndRadius,
                     chargeLineWidth,
                     chargeColor,
                     chargeSortingOrder);
-                ResolveShot(context, originSpec, aimSpec, out Vector3 indicatorOrigin, out Vector2 indicatorDirection);
+                ResolveShot(context, firePoint, out Vector3 indicatorOrigin, out Vector2 indicatorDirection);
                 HackerDashedAimIndicator aimIndicator = HackerDashedAimIndicator.Create(
                     indicatorOrigin,
                     indicatorDirection,
@@ -99,7 +106,7 @@ namespace Week14.Enemy
                         }
 
                         chargeIndicator?.SetProgress(elapsed / windupSeconds);
-                        ResolveShot(context, originSpec, aimSpec, out indicatorOrigin, out indicatorDirection);
+                        ResolveShot(context, firePoint, out indicatorOrigin, out indicatorDirection);
                         aimIndicator?.SetLine(
                             indicatorOrigin,
                             indicatorDirection,
@@ -124,7 +131,8 @@ namespace Week14.Enemy
                 }
             }
 
-            ResolveShot(context, originSpec, aimSpec, out Vector3 spawnOrigin, out Vector2 finalDirection);
+            ResolveShot(context, firePoint, out Vector3 spawnOrigin, out Vector2 finalDirection);
+            context.ReleaseSnipingShot(HoldTelegraphAnimationParameter, ReleaseAnimationTrigger);
             EnemyProjectile firedProjectile = context.FireProjectile(
                 projectile,
                 spawnOrigin,
@@ -165,24 +173,16 @@ namespace Week14.Enemy
 
         private void ResolveShot(
             BossActionContext context,
-            BossGraphProjectileOriginSpec originSpec,
-            BossGraphProjectileAimSpec aimSpec,
+            Transform firePoint,
             out Vector3 spawnOrigin,
             out Vector2 finalDirection)
         {
-            Vector3 aimOrigin = originSpec.GetAimOrigin(context, 0);
-            Vector2 direction = GetSnipingDirection(context, aimSpec, aimOrigin);
-            spawnOrigin = originSpec.GetSpawnOrigin(context, 0, direction);
-            finalDirection = GetSnipingDirection(context, aimSpec, spawnOrigin);
-            if (spawnForwardOffset > 0f)
-            {
-                spawnOrigin += (Vector3)(finalDirection.normalized * spawnForwardOffset);
-            }
+            spawnOrigin = firePoint != null ? firePoint.position : context.OriginPosition;
+            finalDirection = GetSnipingDirection(context, spawnOrigin);
         }
 
         private static Vector2 GetSnipingDirection(
             BossActionContext context,
-            BossGraphProjectileAimSpec aimSpec,
             Vector3 origin)
         {
             if (context?.Boss is HackerHologramBoss hologram && hologram.Player != null)
@@ -194,7 +194,7 @@ namespace Week14.Enemy
                 }
             }
 
-            return aimSpec.GetDirection(context, origin);
+            return context.GetDirectionToPlayer(origin);
         }
     }
 

@@ -33,6 +33,7 @@ namespace Week14.Enemy
         private int activeNodeExecutionCount;
         private int nodeExecutionVersion;
         private int conductorMinionOutlineHoldRequests;
+        private int activeSnipingTelegraphCount;
         private bool isMeleeAdvanceSynchronized;
         private bool hasMeleeAttackAdvanceCompleted;
         private bool isPatternTerminationRequested;
@@ -41,16 +42,19 @@ namespace Week14.Enemy
             BossAI boss,
             Action stop,
             Func<bool> isExecutionPaused,
-            BossGraphAsset graphAsset = null)
+            BossGraphAsset graphAsset = null,
+            bool skipApproachMovement = false)
         {
             Boss = boss;
             this.stop = stop;
             this.isExecutionPaused = isExecutionPaused;
             GraphAsset = graphAsset;
+            SkipApproachMovement = skipApproachMovement;
         }
 
         public BossAI Boss { get; }
         public BossGraphAsset GraphAsset { get; }
+        public bool SkipApproachMovement { get; }
         public string CurrentNodeId => currentNodeId;
         public bool IsNodeActionExecuting => activeNodeExecutionCount > 0;
         public int NodeExecutionVersion => nodeExecutionVersion;
@@ -171,6 +175,38 @@ namespace Week14.Enemy
             {
                 targetAnimators[i].SetTrigger(triggerName);
             }
+        }
+
+        public void RestartAnimationTrigger(string triggerName)
+        {
+            if (string.IsNullOrWhiteSpace(triggerName))
+            {
+                return;
+            }
+
+            Animator[] targetAnimators = GetAnimators();
+            for (int i = 0; i < targetAnimators.Length; i++)
+            {
+                targetAnimators[i].ResetTrigger(triggerName);
+                targetAnimators[i].SetTrigger(triggerName);
+            }
+        }
+
+        public void BeginSnipingTelegraph(string shootTriggerName, string holdParameterName)
+        {
+            activeSnipingTelegraphCount++;
+            SetAnimationBool(holdParameterName, true);
+            if (activeSnipingTelegraphCount == 1)
+            {
+                PlayAnimationTrigger(shootTriggerName);
+            }
+        }
+
+        public void ReleaseSnipingShot(string holdParameterName, string releaseTriggerName)
+        {
+            activeSnipingTelegraphCount = Mathf.Max(0, activeSnipingTelegraphCount - 1);
+            SetAnimationBool(holdParameterName, activeSnipingTelegraphCount > 0);
+            PlayAnimationTrigger(releaseTriggerName);
         }
 
         public void SetAnimationFloat(string parameterName, float value)

@@ -87,7 +87,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5817555392495616
-    m_Localized: "M\xE4kel\xE4 Hotel Rooftop"
+    m_Localized: Makela Hotel Rooftop
     m_Metadata:
       m_Items: []
   - m_Id: 5817807012986880
@@ -100,6 +100,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5818062072807424
     m_Localized: None
+    m_Metadata:
+      m_Items: []
   - m_Id: 5784546324439040
     m_Localized: Training Bot
     m_Metadata:

@@ -539,22 +539,13 @@ MonoBehaviour:
       rid: 4705778169994805693
     sequences: []
     editorPosition: {x: -422, y: 465}
-  - nodeId: Action1
-    nodeGuid: 223dd3bebad34bf88d66ccc99f7eb32c
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: -2
-    sequences: []
-    editorPosition: {x: 639, y: -356}
   - nodeId: Spawn Effect Prefab1
     nodeGuid: faa9f3db13d94965a30c67ee6434e0f0
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534670
+      rid: 6489939233575534669
     sequences: []
     editorPosition: {x: -169, y: 92}
   - nodeId: Spawn Effect Prefab2
@@ -563,7 +554,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534672
+      rid: 6489939233575534670
     sequences: []
     editorPosition: {x: 221, y: 85}
   - nodeId: Spawn Effect Prefab3
@@ -572,7 +563,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534673
+      rid: 6489939233575534672
     sequences: []
     editorPosition: {x: 593, y: 88}
   - nodeId: Spawn Effect Prefab4
@@ -581,7 +572,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534674
+      rid: 6489939233575534673
     sequences: []
     editorPosition: {x: 983, y: 81}
   - nodeId: Spawn Effect Prefab5
@@ -590,7 +581,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534675
+      rid: 6489939233575534674
     sequences: []
     editorPosition: {x: 1395, y: 102}
   - nodeId: Spawn Effect Prefab6
@@ -599,7 +590,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534682
+      rid: 6489939233575534675
     sequences: []
     editorPosition: {x: 1784, y: 95}
   - nodeId: Spawn Effect Prefab7
@@ -608,16 +599,16 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 6489939233575534683
+      rid: 6489939233575534682
     sequences: []
     editorPosition: {x: -167, y: 607}
-  - nodeId: Action2
+  - nodeId: Spawn Effect Prefab8
     nodeGuid: 632212625b664b38b7d57c9920eeec3a
     nodeKind: 3
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: -2
+      rid: 6489939233575534683
     sequences: []
     editorPosition: {x: 1336, y: 597}
   patterns:
@@ -744,7 +735,7 @@ MonoBehaviour:
     - Move Body Root16
     - Fire Radial Emission9
     - Spawn Effect Prefab7
-    - Action2
+    - Spawn Effect Prefab8
   - patternId: Pattern7
     nodeGuids:
     - f0e7fffb17a84ecbb13e3a2b7c7b6c6e
@@ -777,11 +768,6 @@ MonoBehaviour:
     - Fire Projectile4
     - Wait10
     - Fire Projectile5
-  - patternId: Pattern9
-    nodeGuids:
-    - 223dd3bebad34bf88d66ccc99f7eb32c
-    nodeIds:
-    - Action1
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -1312,7 +1298,7 @@ MonoBehaviour:
   - fromNodeGuid: 7e0bd7072aab4922bcc429c8f2929853
     toNodeGuid: 632212625b664b38b7d57c9920eeec3a
     fromNodeId: Move Body Root11
-    toNodeId: Action2
+    toNodeId: Spawn Effect Prefab8
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -1320,8 +1306,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 2634811931892908194
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1365,7 +1349,7 @@ MonoBehaviour:
           smokeInterval: 0.5
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
           cameraShake:
             enabled: 0
@@ -1455,7 +1439,7 @@ MonoBehaviour:
           smokeInterval: 0.18
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -1518,7 +1502,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 4
           cameraShake:
             enabled: 0
@@ -1577,7 +1561,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
           cameraShake:
             enabled: 1
@@ -1654,7 +1638,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
           cameraShake:
             enabled: 1
@@ -1731,7 +1715,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 1
           cameraShake:
             enabled: 0
@@ -1823,7 +1807,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 0
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -2282,7 +2266,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 1
@@ -2330,7 +2314,7 @@ MonoBehaviour:
           smokeInterval: 0.12
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 1
@@ -2468,7 +2452,7 @@ MonoBehaviour:
           smokeInterval: 0.5
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -2515,7 +2499,7 @@ MonoBehaviour:
           smokeInterval: 0.5
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -2566,7 +2550,7 @@ MonoBehaviour:
           smokeInterval: 0.5
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -2617,7 +2601,7 @@ MonoBehaviour:
           smokeInterval: 0.5
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -2672,7 +2656,7 @@ MonoBehaviour:
           smokeInterval: 0.5
           muzzleFlash:
             enabled: 1
-            prefab: {fileID: 0}
+            prefab: {fileID: 4260089253706455031, guid: 154dd3a61b0f66941878b300bfca9efa, type: 3}
             scale: 2
           cameraShake:
             enabled: 0
@@ -2730,6 +2714,16 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+    - rid: 6489939233575534669
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 9125212537906268882, guid: 4762a2ce988f4a4469bfa5879655042d, type: 3}
+        spawnPointPath: Boss-Dealer Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 2
+        followMode: 0
+        followRotation: 1
     - rid: 6489939233575534670
       type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

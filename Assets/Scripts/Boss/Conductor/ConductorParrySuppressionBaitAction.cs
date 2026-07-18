@@ -8,7 +8,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class ConductorParrySuppressionBaitAction : BossAction
+    public sealed class ConductorParrySuppressionBaitAction : BossAction, IBossProjectileEmissionAction
     {
         private const int DroneCount = 4;
 

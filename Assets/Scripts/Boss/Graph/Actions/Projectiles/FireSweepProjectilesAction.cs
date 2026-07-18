@@ -6,7 +6,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class FireSweepEmissionAction : BossAction
+    public sealed class FireSweepEmissionAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();

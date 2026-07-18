@@ -8,6 +8,11 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerWalkFireCounterGrabAction : BossAction, IBossActionDurationProvider
     {
+        private const string WireShotAnimationTrigger = "WireShot";
+        private const string GrabAnimationTrigger = "Grab";
+        private const string IsWireShotActiveAnimationParameter = "IsWireShotActive";
+        private const string IsWireGrabbingAnimationParameter = "IsWireGrabbing";
+
         [Header("Walk Fire")]
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
@@ -22,7 +27,6 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int maxShotCount = 8;
 
         [Header("Counter Grab")]
-        [SerializeField] private string swordParryTriggerName = "SwordParry";
         [SerializeField, BossGraphBossChildPath] private string wireOriginPath;
         [SerializeField, Min(0.01f)] private float wireTravelSeconds = 0.12f;
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
@@ -126,7 +130,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(swordParryTriggerName);
+            context.SetAnimationBool(IsWireShotActiveAnimationParameter, true);
+            context.RestartAnimationTrigger(WireShotAnimationTrigger);
             Transform wireOrigin = context.GetBossChildTransform(wireOriginPath) ?? context.Boss.transform;
             HackerWireSettings wireSettings = hacker.WireSettings;
             HackerWire wire = HackerWire.CreateGuaranteedGrab(
@@ -144,10 +149,15 @@ namespace Week14.Enemy
             try
             {
                 yield return HackerMeleeAttackAction.Wait(context, wireTravelSeconds);
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
+                context.RestartAnimationTrigger(GrabAnimationTrigger);
                 yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
             }
             finally
             {
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
                 if (wire != null)
                 {
                     wire.BeginDissolve();

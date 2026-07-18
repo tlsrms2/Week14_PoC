@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class ConductorDefenseArcVolleyAction : BossAction
+    public sealed class ConductorDefenseArcVolleyAction : BossAction, IBossProjectileEmissionAction
     {
         private const int DroneCount = 4;
 

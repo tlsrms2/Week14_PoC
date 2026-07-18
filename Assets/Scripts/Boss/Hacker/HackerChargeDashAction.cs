@@ -9,9 +9,12 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerChargeDashAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
     {
+        private const string ChargeAnimationTrigger = "Charge";
+        private const string ReleaseAnimationTrigger = "Release";
+        private const string EndAnimationTrigger = "End";
+        private const string IsChargeDashingAnimationParameter = "IsChargeDashing";
+
         [Header("Animation")]
-        [SerializeField] private string windupTriggerName = "ChargeDashWindup";
-        [SerializeField] private string dashTriggerName = "ChargeDash";
         [SerializeField, Min(0f)] private float windupSeconds = 0.45f;
         [SerializeField, Min(0f)] private float directionLockLeadSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.3f;
@@ -43,7 +46,7 @@ namespace Week14.Enemy
             }
 
             yield return ApproachToDashDistance(context);
-            context.PlayAnimationTrigger(windupTriggerName);
+            context.PlayAnimationTrigger(ChargeAnimationTrigger);
 
             HackerAttackRangeIndicator rangeIndicator = null;
             bool isHologram = context.Boss is HackerHologramBoss;
@@ -97,7 +100,8 @@ namespace Week14.Enemy
                 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             }
 
-            context.PlayAnimationTrigger(dashTriggerName);
+            context.SetAnimationBool(IsChargeDashingAnimationParameter, true);
+            context.RestartAnimationTrigger(ReleaseAnimationTrigger);
             context.SetFacingLocked(true);
             context.SetDashing(true);
             rangeIndicator ??= HackerAttackRangeIndicator.CreateThrust(
@@ -151,6 +155,8 @@ namespace Week14.Enemy
                 context.SetFacingLocked(false);
                 context.Stop();
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                context.SetAnimationBool(IsChargeDashingAnimationParameter, false);
+                context.RestartAnimationTrigger(EndAnimationTrigger);
             }
 
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
@@ -167,6 +173,7 @@ namespace Week14.Enemy
         private IEnumerator ApproachToDashDistance(BossActionContext context)
         {
             if (context?.Boss == null
+                || context.SkipApproachMovement
                 || approachStartDistance <= 0f
                 || approachSpeed <= 0f
                 || maxApproachSeconds <= 0f

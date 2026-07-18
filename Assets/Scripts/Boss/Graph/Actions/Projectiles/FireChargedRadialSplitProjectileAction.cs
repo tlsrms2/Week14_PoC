@@ -6,7 +6,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [Serializable]
-    public sealed class SpawnChargedProjectileAction : BossAction
+    public sealed class SpawnChargedProjectileAction : BossAction, IBossProjectileEmissionAction
     {
         [SerializeField] private string handleKey = "Projectile";
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";

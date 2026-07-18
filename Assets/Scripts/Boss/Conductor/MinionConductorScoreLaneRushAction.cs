@@ -15,7 +15,7 @@ namespace Week14.Enemy
     }
 
     [Serializable]
-    public class MinionConductorScoreLaneRushAction : BossAction, IBossActionContextDurationProvider
+    public class MinionConductorScoreLaneRushAction : BossAction, IBossActionContextDurationProvider, IBossProjectileEmissionAction
     {
         private const float LaneShrinkPushPadding = 0.02f;
         private const float DefaultInitialLaneDistanceMultiplier = 1.5f;
@@ -204,6 +204,11 @@ namespace Week14.Enemy
         [SerializeField, Range(3, 24)] private int parryTieSegments = 8;
         [SerializeField] private int parryTieSortingOrder = 68;
         [SerializeField] private bool waitForDuration = true;
+        [Header("Boss Reposition")]
+        [SerializeField] private Vector2 bossTargetPosition;
+        [SerializeField, Min(0.01f)] private float bossOriginMoveSpeedMultiplier = 1f;
+        [SerializeField, Min(0.001f)] private float bossOriginArriveDistance = 0.04f;
+        [SerializeField, Min(0.01f)] private float bossMoveTimeoutSeconds = 5f;
 
         private ConductorScoreLaneRushIndicatorVisual activeStandardLaneIndicators;
 
@@ -240,11 +245,12 @@ namespace Week14.Enemy
                 return false;
             }
 
-            seconds = WindupSeconds
+            float patternSeconds = WindupSeconds
                 + GetStandardLaneIndicatorRevealDuration(volleyCount)
                 + GetInitialLaneShrinkPreludeSeconds()
                 + EstimateVolleySequenceDuration(Volleys, volleyCount)
                 + GetStandardLaneIndicatorHideDuration();
+            seconds = Mathf.Max(EstimateBossTargetMoveSeconds(context), patternSeconds);
             return seconds > 0f;
         }
 
@@ -259,6 +265,7 @@ namespace Week14.Enemy
             }
 
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
+            Coroutine bossMoveRoutine = context.Boss.StartCoroutine(MoveBossToTargetPosition(context));
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
@@ -268,11 +275,69 @@ namespace Week14.Enemy
                 yield return BeforeExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
                 yield return ExecuteVolleySequence(context, host, patternStartPlayerPosition, executionVolleys);
                 yield return AfterExecuteVolleys(context, patternStartPlayerPosition, executionVolleys);
+                if (bossMoveRoutine != null)
+                {
+                    yield return bossMoveRoutine;
+                }
             }
             finally
             {
+                if (bossMoveRoutine != null && context?.Boss != null)
+                {
+                    context.Boss.StopCoroutine(bossMoveRoutine);
+                }
+
+                context?.Stop();
                 ClearActiveStandardLaneIndicators();
             }
+        }
+
+        protected IEnumerator MoveBossToTargetPosition(BossActionContext context)
+        {
+            if (context?.Boss == null || context.Boss.Body == null)
+            {
+                yield break;
+            }
+
+            float arriveDistance = Mathf.Max(0.001f, bossOriginArriveDistance);
+            float arriveDistanceSqr = arriveDistance * arriveDistance;
+            float elapsed = 0f;
+            while (((Vector2)context.Boss.Body.position - bossTargetPosition).sqrMagnitude > arriveDistanceSqr
+                && elapsed < Mathf.Max(0.01f, bossMoveTimeoutSeconds))
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                Vector2 toTarget = bossTargetPosition - context.Boss.Body.position;
+                float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
+                context.Boss.SetMovementVelocity(toTarget.normalized * speed);
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            context.Boss.Stop();
+        }
+
+        protected float EstimateBossTargetMoveSeconds(BossActionContext context)
+        {
+            if (context?.Boss == null)
+            {
+                return 0f;
+            }
+
+            Vector2 current = context.Boss.Body != null
+                ? context.Boss.Body.position
+                : context.Boss.transform.position;
+            float distance = Mathf.Max(
+                0f,
+                Vector2.Distance(current, bossTargetPosition) - Mathf.Max(0.001f, bossOriginArriveDistance));
+            float speed = context.Boss.MoveSpeed * Mathf.Max(0.01f, bossOriginMoveSpeedMultiplier);
+            float estimate = speed > 0f ? distance / speed : 0f;
+            return Mathf.Min(estimate, Mathf.Max(0.01f, bossMoveTimeoutSeconds));
         }
 
         protected IEnumerator ExecuteVolleySequence(

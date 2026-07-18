@@ -101,6 +101,34 @@ namespace Week14.Enemy
             }
         }
 
+        // 개발용 패턴 패널에서 기존 실행 규칙을 그대로 사용해 지정 패턴만 한 번 실행한다.
+        public IEnumerator RunPatternOnce(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            BossActionContext context)
+        {
+            if (graph == null || pattern == null || context == null)
+            {
+                yield break;
+            }
+
+            activeGraph = graph;
+            ResetTraversalState();
+            try
+            {
+                yield return ExecutePattern(graph, pattern, context);
+                context.Stop();
+            }
+            finally
+            {
+                BossGraphRuntimeState.Clear(graph);
+                if (activeGraph == graph)
+                {
+                    activeGraph = null;
+                }
+            }
+        }
+
         private IEnumerator RunLegacyNodeLoop(BossGraphAsset graph, BossActionContext context)
         {
             int immediateTransitionCount = 0;
@@ -546,6 +574,7 @@ namespace Week14.Enemy
                 Dictionary<string, List<BossStateNode>> parallelGroups = BuildPatternParallelGroups(graph, nodeKeys);
                 List<List<BossStateNode>> executionGroups = BuildPatternExecutionGroups(graph, nodeKeys, parallelGroups);
                 int[] conductorOutlineReleaseCounts = new int[executionGroups.Count];
+                bool conductorPatternCompleteEffectPlayed = false;
                 HashSet<string> skippedNodeKeys = initialSkippedNodeKeys != null
                     ? new HashSet<string>(initialSkippedNodeKeys, StringComparer.Ordinal)
                     : new HashSet<string>(StringComparer.Ordinal);
@@ -563,6 +592,35 @@ namespace Week14.Enemy
                         .ToList();
                     if (activeGroup.Count > 0)
                     {
+                        Action<BossStateNode> onNodeCompleted = null;
+                        if (!conductorPatternCompleteEffectPlayed
+                            && context.Boss is Conductor conductor
+                            && ContainsProjectileEmissionAction(activeGroup)
+                            && !ContainsFutureProjectileEmissionAction(
+                                executionGroups,
+                                i + 1,
+                                skippedNodeKeys))
+                        {
+                            int remainingProjectileEmissionActionCount =
+                                CountProjectileEmissionActions(activeGroup);
+                            onNodeCompleted = completedNode =>
+                            {
+                                if (completedNode?.Action is not IBossProjectileEmissionAction)
+                                {
+                                    return;
+                                }
+
+                                remainingProjectileEmissionActionCount--;
+                                if (remainingProjectileEmissionActionCount <= 0
+                                    && !conductorPatternCompleteEffectPlayed
+                                    && !context.IsPatternTerminationRequested)
+                                {
+                                    conductor.PlayPatternCompleteEffect();
+                                    conductorPatternCompleteEffectPlayed = true;
+                                }
+                            };
+                        }
+
                         RecordHologramReplayActionGroup(context, activeGroup);
                         yield return ExecutePatternNodeGroup(
                             graph,
@@ -570,8 +628,10 @@ namespace Week14.Enemy
                             previousNodeId,
                             context,
                             updateRuntimeState,
-                            actionOverrides);
+                            actionOverrides,
+                            onNodeCompleted);
                         ApplyHackerFireWireBranchSelection(graph, activeGroup, context, skippedNodeKeys);
+
                         if (context.IsPatternTerminationRequested)
                         {
                             yield break;
@@ -595,6 +655,71 @@ namespace Week14.Enemy
                 ClearConductorMinionOutlineHolds(context);
                 context.ClearPatternScopedBossChildAims();
             }
+        }
+
+        private static bool ContainsProjectileEmissionAction(IReadOnlyList<BossStateNode> nodes)
+        {
+            if (nodes == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i]?.Action is IBossProjectileEmissionAction)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static int CountProjectileEmissionActions(IReadOnlyList<BossStateNode> nodes)
+        {
+            if (nodes == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i]?.Action is IBossProjectileEmissionAction)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private static bool ContainsFutureProjectileEmissionAction(
+            IReadOnlyList<List<BossStateNode>> executionGroups,
+            int startIndex,
+            ISet<string> skippedNodeKeys)
+        {
+            if (executionGroups == null)
+            {
+                return false;
+            }
+
+            for (int groupIndex = Mathf.Max(0, startIndex); groupIndex < executionGroups.Count; groupIndex++)
+            {
+                List<BossStateNode> group = executionGroups[groupIndex];
+                for (int nodeIndex = 0; nodeIndex < group.Count; nodeIndex++)
+                {
+                    BossStateNode node = group[nodeIndex];
+                    if (node?.Action is IBossProjectileEmissionAction
+                        && (skippedNodeKeys == null
+                            || !skippedNodeKeys.Contains(GetRuntimeNodeKey(node))))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static void RecordHologramReplayActionGroup(
@@ -1267,7 +1392,8 @@ namespace Week14.Enemy
             string previousNodeId,
             BossActionContext context,
             bool updateRuntimeState,
-            IReadOnlyDictionary<string, BossAction> actionOverrides)
+            IReadOnlyDictionary<string, BossAction> actionOverrides,
+            Action<BossStateNode> onNodeCompleted = null)
         {
             bool synchronizeMeleeAdvance = nodes.Count(node => node?.Action is HackerMeleeAttackAction) == 1
                 && nodes.Any(node => node?.Action is HackerSequentialSweepFireAction
@@ -1277,6 +1403,7 @@ namespace Week14.Enemy
                 context.BeginMeleeAdvanceSynchronization();
             }
 
+            ConfigureConductorCueDurationCompanions(nodes, context);
             List<ConductorCueOverlayPlan> overlayPlans = BuildConductorCueOverlayPlans(nodes, context);
             HashSet<BossStateNode> overlayCueNodes = new(overlayPlans.Select(plan => plan.CueNode));
             List<IEnumerator> routines = new();
@@ -1306,12 +1433,14 @@ namespace Week14.Enemy
                         previousNodeId,
                         context,
                         updateRuntimeState,
-                        actionOverride));
+                        actionOverride,
+                        onNodeCompleted));
                 }
             }
 
             if (routines.Count == 0)
             {
+                ClearConductorCueDurationCompanions(nodes);
                 yield break;
             }
 
@@ -1327,6 +1456,7 @@ namespace Week14.Enemy
                 }
 
                 ClearConductorCueOverlayEarlyStart(nodes);
+                ClearConductorCueDurationCompanions(nodes);
             }
         }
 
@@ -1336,7 +1466,8 @@ namespace Week14.Enemy
             string previousNodeId,
             BossActionContext context,
             bool updateRuntimeState,
-            BossAction actionOverride = null)
+            BossAction actionOverride = null,
+            Action<BossStateNode> onCompleted = null)
         {
             BossAction action = actionOverride ?? node?.Action;
             if (action == null)
@@ -1344,6 +1475,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            bool completed = false;
             try
             {
                 if (updateRuntimeState)
@@ -1364,10 +1496,16 @@ namespace Week14.Enemy
                 {
                     yield return action.Execute(context);
                 }
+
+                completed = true;
             }
             finally
             {
                 context.EndNodeExecution();
+                if (completed)
+                {
+                    onCompleted?.Invoke(node);
+                }
             }
         }
 
@@ -1434,8 +1572,27 @@ namespace Week14.Enemy
             {
                 BossStateNode cueNode = nodes[i];
                 ConductorConductingCueAction cue = GetConductorCueAction(cueNode);
-                if (cue == null
-                    || !cue.TryGetTotalSeconds(conductor, out float cueSeconds)
+                if (cue == null)
+                {
+                    continue;
+                }
+
+                IConductorCueOverlayExplicitStartSource explicitStartSource = nodes
+                    .Where(node => node != cueNode)
+                    .Select(node => node?.Action)
+                    .OfType<IConductorCueOverlayExplicitStartSource>()
+                    .FirstOrDefault();
+                if (explicitStartSource != null)
+                {
+                    plans.Add(new ConductorCueOverlayPlan(
+                        cueNode,
+                        cue,
+                        0f,
+                        explicitStartSource));
+                    continue;
+                }
+
+                if (!cue.TryGetTotalSeconds(conductor, out float cueSeconds)
                     || !TryGetParallelGroupActionDuration(nodes, cueNode, context, out float actionSeconds))
                 {
                     continue;
@@ -1446,6 +1603,55 @@ namespace Week14.Enemy
             }
 
             return plans;
+        }
+
+        private static void ConfigureConductorCueDurationCompanions(
+            IReadOnlyList<BossStateNode> nodes,
+            BossActionContext context)
+        {
+            if (nodes == null || context?.Boss is not Conductor conductor)
+            {
+                return;
+            }
+
+            float longestCueSeconds = 0f;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                ConductorConductingCueAction cue = GetConductorCueAction(nodes[i]);
+                if (cue != null && cue.TryGetTotalSeconds(conductor, out float cueSeconds))
+                {
+                    longestCueSeconds = Mathf.Max(longestCueSeconds, cueSeconds);
+                }
+            }
+
+            if (longestCueSeconds <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i]?.Action is IConductorCueDurationCompanion companion)
+                {
+                    companion.SetMinimumConductorCueDuration(longestCueSeconds);
+                }
+            }
+        }
+
+        private static void ClearConductorCueDurationCompanions(IReadOnlyList<BossStateNode> nodes)
+        {
+            if (nodes == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i]?.Action is IConductorCueDurationCompanion companion)
+                {
+                    companion.ClearMinimumConductorCueDuration();
+                }
+            }
         }
 
         private static bool TryGetParallelGroupActionDuration(
@@ -1513,7 +1719,24 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (plan.DelaySeconds > 0f)
+            if (plan.ExplicitStartSource != null)
+            {
+                while (!plan.ExplicitStartSource.ShouldStartConductorCueOverlay)
+                {
+                    if (plan.ExplicitStartSource.IsConductorCueOverlaySourceFinished)
+                    {
+                        yield break;
+                    }
+
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                    }
+
+                    yield return null;
+                }
+            }
+            else if (plan.DelaySeconds > 0f)
             {
                 float remainingSeconds = plan.DelaySeconds;
                 while (remainingSeconds > 0f)
@@ -1603,6 +1826,11 @@ namespace Week14.Enemy
                 {
                     earlyStartSource.ClearConductorCueOverlayEarlyStart();
                 }
+
+                if (nodes[i]?.Action is IConductorCueOverlayExplicitStartSource explicitStartSource)
+                {
+                    explicitStartSource.ClearConductorCueOverlayStart();
+                }
             }
         }
 
@@ -1636,16 +1864,19 @@ namespace Week14.Enemy
             public ConductorCueOverlayPlan(
                 BossStateNode cueNode,
                 ConductorConductingCueAction cue,
-                float delaySeconds)
+                float delaySeconds,
+                IConductorCueOverlayExplicitStartSource explicitStartSource = null)
             {
                 CueNode = cueNode;
                 Cue = cue;
                 DelaySeconds = Mathf.Max(0f, delaySeconds);
+                ExplicitStartSource = explicitStartSource;
             }
 
             public BossStateNode CueNode { get; }
             public ConductorConductingCueAction Cue { get; }
             public float DelaySeconds { get; }
+            public IConductorCueOverlayExplicitStartSource ExplicitStartSource { get; }
         }
 
         private static IEnumerator RunParallelRoutines(IReadOnlyList<IEnumerator> routines)
