@@ -5030,7 +5030,7 @@ MonoBehaviour:
   canvasScale: 0.01
   textBoxSize: {x: 2.4, y: 0.8}
   sortingOrder: 80
-  font: {fileID: 11400000, guid: be779b8214e5f964f9224e869a7082f3, type: 2}
+  font: {fileID: 11400000, guid: 170e6f3307ae3f84f849202323b1f689, type: 2}
   alphaCurve:
     serializedVersion: 2
     m_Curve:
@@ -5067,27 +5067,27 @@ MonoBehaviour:
   format: '{0}'
   styles:
   - minDamage: 1
-    fontSize: 6
+    fontSize: 14
     textColor: {r: 0.11965811, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.38823533, g: 0.7137255, b: 0.34509805, a: 1}
     outlineWidth: 0.1
   - minDamage: 2
-    fontSize: 10
+    fontSize: 18
     textColor: {r: 0.49650347, g: 1, b: 0, a: 1}
     outlineColor: {r: 0.57254905, g: 0.7960785, b: 0.34901962, a: 1}
     outlineWidth: 0.1
   - minDamage: 3
-    fontSize: 16
+    fontSize: 22
     textColor: {r: 1, g: 0.86184216, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.7294118, b: 0.32156864, a: 1}
     outlineWidth: 0.1
   - minDamage: 4
-    fontSize: 24
+    fontSize: 26
     textColor: {r: 1, g: 0.52662724, b: 0, a: 1}
     outlineColor: {r: 0.7960785, g: 0.54509807, b: 0.26666668, a: 1}
     outlineWidth: 0.1
   - minDamage: 5
-    fontSize: 38
+    fontSize: 30
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
     outlineWidth: 0.1
