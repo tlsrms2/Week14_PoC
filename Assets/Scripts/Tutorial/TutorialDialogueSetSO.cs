@@ -22,7 +22,8 @@ namespace Week14.Tutorial
         Shoot,
         AttackRefill,
         Hit,
-        RoomTransition
+        RoomTransition,
+        Suppress
     }
 
     [Serializable]

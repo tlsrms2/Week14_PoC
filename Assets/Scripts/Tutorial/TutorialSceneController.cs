@@ -94,6 +94,7 @@ namespace Week14.Tutorial
         [SerializeField, Min(1)] private int hitGoal = 1;
         [SerializeField, Min(1)] private int parryGoal = 3;
         [SerializeField, Min(1)] private int skillGoal = 1;
+        [SerializeField, Min(1)] private int suppressGoal = 2;
         [SerializeField, Min(0.1f)] private float skillAttemptResolveSeconds = 2.5f;
 
         private TutorialTrainingEnemy activeEnemy;
@@ -108,6 +109,7 @@ namespace Week14.Tutorial
         private int hitCount;
         private int parryCount;
         private int skillCount;
+        private int suppressCount;
         private int duelDefeatCount;
         private int previousPlayerBulletCount;
         private bool attackRefillRequested;
@@ -448,6 +450,11 @@ namespace Week14.Tutorial
             if (ShouldRunStep(startIndex, TutorialStepId.Skill))
             {
                 yield return RunObjectiveStage(TutorialStepId.Skill, TutorialTrainingEnemyMode.DodgePractice, skillGoal);
+            }
+
+            if (ShouldRunStep(startIndex, TutorialStepId.Suppress))
+            {
+                yield return RunObjectiveStage(TutorialStepId.Suppress, TutorialTrainingEnemyMode.SuppressionPractice, suppressGoal);
             }
 
             if (ShouldRunStep(startIndex, TutorialStepId.Duel))
@@ -1407,6 +1414,7 @@ namespace Week14.Tutorial
                 || checkpoint == TutorialStepId.Hit
                 || checkpoint == TutorialStepId.Parry
                 || checkpoint == TutorialStepId.Skill
+                || checkpoint == TutorialStepId.Suppress
                 || checkpoint == TutorialStepId.Duel;
         }
 
@@ -1428,6 +1436,10 @@ namespace Week14.Tutorial
             if (mode == TutorialTrainingEnemyMode.Duel)
             {
                 enemy.Defeated += HandleTrainingEnemyDefeated;
+            }
+            else if (mode == TutorialTrainingEnemyMode.SuppressionPractice)
+            {
+                enemy.BaitSuppressed += HandleSuppressionBaitSuppressed;
             }
         }
 
@@ -1493,6 +1505,7 @@ namespace Week14.Tutorial
                 TutorialStepId.Hit => hitCount,
                 TutorialStepId.Parry => parryCount,
                 TutorialStepId.Skill => skillCount,
+                TutorialStepId.Suppress => suppressCount,
                 TutorialStepId.Duel => duelDefeatCount,
                 _ => 0
             };
@@ -1527,6 +1540,11 @@ namespace Week14.Tutorial
                 skillAttemptRunning = false;
                 skillUsedThisAttempt = false;
                 skillHitThisAttempt = false;
+            }
+            else if (step == TutorialStepId.Suppress)
+            {
+                ClearEnemySubscription();
+                suppressCount = 0;
             }
             else if (step == TutorialStepId.Duel)
             {
@@ -1973,6 +1991,7 @@ namespace Week14.Tutorial
             }
 
             activeEnemy.Defeated -= HandleTrainingEnemyDefeated;
+            activeEnemy.BaitSuppressed -= HandleSuppressionBaitSuppressed;
         }
 
         private void HandleNormalAttackDamageDealt(int _)
@@ -2011,6 +2030,14 @@ namespace Week14.Tutorial
             if (activeStep == TutorialStepId.Parry)
             {
                 parryCount++;
+            }
+        }
+
+        private void HandleSuppressionBaitSuppressed()
+        {
+            if (activeStep == TutorialStepId.Suppress)
+            {
+                suppressCount++;
             }
         }
 
@@ -2481,8 +2508,9 @@ namespace Week14.Tutorial
                 TutorialStepId.BulletTimeout => 6,
                 TutorialStepId.SkillGauge => 7,
                 TutorialStepId.Skill => 8,
-                TutorialStepId.Duel => 9,
-                TutorialStepId.Complete => 10,
+                TutorialStepId.Suppress => 9,
+                TutorialStepId.Duel => 10,
+                TutorialStepId.Complete => 11,
                 TutorialStepId.AttackRefill => 3,
                 TutorialStepId.SkillRetry => 8,
                 _ => 0
