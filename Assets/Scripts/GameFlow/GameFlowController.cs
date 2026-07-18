@@ -217,8 +217,7 @@ namespace Week14.GameFlow
                     PlayCutsceneThenLoadInternal(
                         prologueCutscene,
                         tutorialSceneName,
-                        PendingCutsceneCompletion.Prologue,
-                        GameSaveManager.HasSeenPrologue);
+                        PendingCutsceneCompletion.Prologue);
                     return;
                 }
 

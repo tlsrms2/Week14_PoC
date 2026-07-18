@@ -832,59 +832,6 @@ MonoBehaviour:
         m_FallbackState: 0
         m_WaitForCompletion: 0
         m_LocalVariables: []
-    - speaker: ERIS
-      text: "\uB2E8, \uC2E0\uCCB4\uC758 \uC190\uC0C1\uC740 \uBB34\uD6A8\uD654\uD560
-        \uC218 \uC788\uC73C\uB098 \uCDA9\uACA9\uACFC \uD1B5\uC99D\uAE4C\uC9C0\uB294
-        \uC644\uD654\uD560 \uC218 \uC5C6\uC73C\uB2C8 \uCC38\uACE0\uD574\uC8FC\uC138\uC694."
-      sfxId: 
-      explanation:
-        enabled: 0
-        image: {fileID: 21300000, guid: fab06e0be9375cc4d823efa71629885c, type: 3}
-        video: {fileID: 0}
-        loopVideo: 1
-        title: "\uC694\uACA9"
-        text: "\uC6B0\uD074\uB9AD\n\n \uAE30\uACC4\uD654 \uC548\uAD6C\uAC00 \uC801
-          \uD0C4\uD658\uC744 \uD3EC\uCC29\uD558\uBA74 \uAE30\uACC4\uD314\uC774 \uC694\uACA9
-          \uADA4\uB3C4\uB97C \uBCF4\uC870\uD569\uB2C8\uB2E4.\n\n \uC801 \uD0C4\uD658\uC744
-          \uC694\uACA9\uD558\uBA74 \uBB34\uB825\uD560 \uC218 \uC788\uC73C\uBA70 \uBB34\uB825\uD654\uB41C
-          \uD0C4\uD658\uC758 \uC5D0\uB108\uC9C0\uB294 \uC790\uC2E0\uC758 \uCF54\uC5B4
-          \uBCF4\uCDA9\uC5D0 \uC0AC\uC6A9\uB429\uB2C8\uB2E4.\n\n \uC5F0\uC18D\uC801\uC73C\uB85C "
-        localizedTitle:
-          m_TableReference:
-            m_TableCollectionName: 
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: 
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: 
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: 
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-      localizedSpeaker:
-        m_TableReference:
-          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
-        m_TableEntryReference:
-          m_KeyId: 5333461598208
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
-      localizedText:
-        m_TableReference:
-          m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
-        m_TableEntryReference:
-          m_KeyId: 739877813547008
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
     - speaker: "\uC774\uC628"
       text: "\uADF8\uB7F0 \uC911\uC694\uD55C \uAC74 \uBE68\uB9AC \uB9D0\uD588\uC5B4\uC57C\uC9C0."
       sfxId: 

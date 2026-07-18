@@ -1047,7 +1047,7 @@ namespace Week14.Combat
 
         private void UpdateCursorPresentation()
         {
-            if (GameModalState.BlocksGameplayInput)
+            if (GameModalState.BlocksGameplayInput || CursorController.IsForceVisible)
             {
                 return;
             }
