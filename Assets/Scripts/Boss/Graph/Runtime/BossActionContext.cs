@@ -1104,9 +1104,21 @@ namespace Week14.Enemy
                 return animators;
             }
 
-            animators = Boss.BodyRoot != null
+            Animator[] discoveredAnimators = Boss.BodyRoot != null
                 ? Boss.BodyRoot.GetComponentsInChildren<Animator>(true)
                 : Boss.GetComponentsInChildren<Animator>(true);
+            List<Animator> activeAnimators = new(discoveredAnimators.Length);
+            for (int i = 0; i < discoveredAnimators.Length; i++)
+            {
+                Animator animator = discoveredAnimators[i];
+                if (animator != null
+                    && (Boss is not HackerBossAI || animator.gameObject.activeInHierarchy))
+                {
+                    activeAnimators.Add(animator);
+                }
+            }
+
+            animators = activeAnimators.ToArray();
             return animators;
         }
 

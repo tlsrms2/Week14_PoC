@@ -33,6 +33,7 @@ namespace Week14.Enemy
         private float replayPositionFollowPauseSeconds;
         private float replayPoseFreezeSeconds;
         private float replayPositionArcOffsetDegrees;
+        private string replayProjectileName;
         private Coroutine summonEntranceCoroutine;
         private Vector2 recordedPlayerPosition;
         private readonly Queue<RecordedReplayFrame> replayFrames = new();
@@ -67,7 +68,7 @@ namespace Week14.Enemy
             gameObject.SetActive(true);
         }
 
-        internal void BeginRecordedReplay(float delaySeconds)
+        internal void BeginRecordedReplay(float delaySeconds, string projectileName)
         {
             StopSummonEntrance();
             CancelRecordedReplay();
@@ -85,6 +86,7 @@ namespace Week14.Enemy
             replayPositionFollowPauseSeconds = 0f;
             replayPoseFreezeSeconds = 0f;
             replayPositionArcOffsetDegrees = 0f;
+            replayProjectileName = projectileName?.Trim() ?? string.Empty;
             isHologramReplayRunning = true;
             isRecordingReplay = true;
             isReplayPlaybackComplete = false;
@@ -142,6 +144,7 @@ namespace Week14.Enemy
 
         internal void CancelRecordedReplay()
         {
+            ClearPatternSpawnedWeapons();
             isHologramReplayRunning = false;
             isRecordingReplay = false;
             isReplayPlaybackComplete = true;
@@ -152,6 +155,7 @@ namespace Week14.Enemy
             replayPositionFollowPauseSeconds = 0f;
             replayPoseFreezeSeconds = 0f;
             replayPositionArcOffsetDegrees = 0f;
+            replayProjectileName = string.Empty;
             replayFrames.Clear();
             replayActionGroups.Clear();
         }
@@ -268,6 +272,11 @@ namespace Week14.Enemy
             return true;
         }
 
+        internal void ApplyHologramStyle(GameObject target)
+        {
+            ApplyHologramTint(target);
+        }
+
         public override float DistanceToPlayer()
         {
             return hasRecordedPlayerPosition
@@ -310,9 +319,20 @@ namespace Week14.Enemy
             float radiusOverride,
             bool suppressHoming)
         {
-            return sourceBoss != null
-                ? sourceBoss.FireGraphProjectile(
-                    settings,
+            if (sourceBoss == null)
+            {
+                return null;
+            }
+
+            BossProjectileSettings replaySettings = settings;
+            if (!string.IsNullOrWhiteSpace(replayProjectileName))
+            {
+                replaySettings = sourceBoss.ResolveGraphProjectileSettingsForActions(replayProjectileName)
+                    ?? settings;
+            }
+
+            return sourceBoss.FireGraphProjectile(
+                    replaySettings,
                     origin,
                     direction,
                     muzzleFlashScale,
@@ -320,8 +340,7 @@ namespace Week14.Enemy
                     aimAtPlayerOnLaunchOverride,
                     chargeSecondsOverride,
                     radiusOverride,
-                    suppressHoming)
-                : null;
+                    suppressHoming);
         }
 
         internal override HackerWireSettings WireSettings => sourceBoss != null

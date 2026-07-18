@@ -391,9 +391,13 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            float hologramStartDelaySeconds = plan.ReplayNode.Action is HackerHologramReplayAction replayAction
+            HackerHologramReplayAction replayAction = plan.ReplayNode.Action as HackerHologramReplayAction;
+            float hologramStartDelaySeconds = replayAction != null
                 ? replayAction.HologramStartDelaySeconds
                 : 0.01f;
+            string hologramProjectileName = replayAction != null
+                ? replayAction.HologramProjectileName
+                : string.Empty;
             BossActionContext hologramContext = new(
                 hologram,
                 hologram.Stop,
@@ -404,7 +408,7 @@ namespace Week14.Enemy
                 plan.PatternNodeKeys);
             // 3페이즈 진입 연출 중에는 리플레이가 시작되어 연출을 취소하지 않도록 한다.
             yield return hologram.WaitForSummonEntrance();
-            hologram.BeginRecordedReplay(hologramStartDelaySeconds);
+            hologram.BeginRecordedReplay(hologramStartDelaySeconds, hologramProjectileName);
             try
             {
                 List<IEnumerator> routines = new()

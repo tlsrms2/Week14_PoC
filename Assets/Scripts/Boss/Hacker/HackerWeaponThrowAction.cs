@@ -34,7 +34,10 @@ namespace Week14.Enemy
             }
 
             Transform equippedWeapon = context.GetBossChildTransform(equippedThrowingWeaponPath);
-            if (equippedWeapon != null && !equippedWeapon.gameObject.activeSelf)
+            bool isHologram = hacker is HackerHologramBoss;
+            if (!isHologram
+                && equippedWeapon != null
+                && !equippedWeapon.gameObject.activeSelf)
             {
                 yield break;
             }
@@ -62,6 +65,11 @@ namespace Week14.Enemy
             float playerAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(0f, 0f, playerAngle + 180f);
             GameObject weaponObject = UnityEngine.Object.Instantiate(throwingWeaponPrefab, throwOrigin.position, rotation);
+            if (hacker is HackerHologramBoss hologram)
+            {
+                hologram.ApplyHologramStyle(weaponObject);
+            }
+
             HackerThrownWeapon weapon = weaponObject.GetComponent<HackerThrownWeapon>();
             if (weapon == null)
             {

@@ -623,7 +623,7 @@ namespace Week14.Enemy
             }
 
             using IDisposable facingLock = context.AcquireFacingLock();
-            context.PlayAnimationTrigger(animationTriggerName);
+            context.RestartAnimationTrigger(animationTriggerName);
             HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateThrust(
                 context,
                 origin,
@@ -669,7 +669,7 @@ namespace Week14.Enemy
 
             bool wasParried = parryBait?.WasParried == true;
             parryBait?.Dispose();
-            context.PlayAnimationTrigger(ReleaseAnimationTrigger);
+            context.RestartAnimationTrigger(ReleaseAnimationTrigger);
             HashSet<PlayerCombatController> hitPlayers = null;
             if (wasParried)
             {

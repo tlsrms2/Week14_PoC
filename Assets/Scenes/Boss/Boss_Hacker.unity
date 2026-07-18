@@ -641,6 +641,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6889689407787825621, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
   m_PrefabInstance: {fileID: 1023516955}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &304830340 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3779504813441475545, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+  m_PrefabInstance: {fileID: 1505174551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &306593782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -972,6 +977,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &587503850 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5261254130208838959, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+  m_PrefabInstance: {fileID: 1505174551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &591869942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2239,6 +2249,14 @@ PrefabInstance:
       propertyPath: bossLivesView
       value: 
       objectReference: {fileID: 1521775367}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: oneWeaponVisual
+      value: 
+      objectReference: {fileID: 587503850}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: twoWeaponVisual
+      value: 
+      objectReference: {fileID: 304830340}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: bossCombatUiRoot
       value: 
