@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 8942248851828651709}
   - component: {fileID: 8016830944531714042}
   - component: {fileID: 6088675980722657127}
+  - component: {fileID: 6382410701673459167}
   m_Layer: 5
   m_Name: LoadOutPanel
   m_TagString: Untagged
@@ -566,6 +567,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6382410701673459167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338107754997006502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f2d5ab244654585a3e4bf1242ac293c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipSfxId: UI_Equip
+  debounceSeconds: 0.1
 --- !u!1 &545445334503820491
 GameObject:
   m_ObjectHideFlags: 0
@@ -7196,6 +7211,7 @@ GameObject:
   - component: {fileID: 7047029583187654860}
   - component: {fileID: 1213492245554054481}
   - component: {fileID: 261513023265773889}
+  - component: {fileID: 2753944526623404097}
   m_Layer: 0
   m_Name: LoadoutPanelReturnButton
   m_TagString: Untagged
@@ -7359,6 +7375,21 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   configureAsHorizontalFill: 0
+--- !u!114 &2753944526623404097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073283034908149776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1 &6086894065993714668
 GameObject:
   m_ObjectHideFlags: 0
@@ -11199,6 +11230,7 @@ GameObject:
   - component: {fileID: 960204077912855243}
   - component: {fileID: 6500270917010895826}
   - component: {fileID: 454342486229410998}
+  - component: {fileID: 5453855773730146976}
   m_Layer: 0
   m_Name: BossPanelReturnButton
   m_TagString: Untagged
@@ -11362,6 +11394,21 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   configureAsHorizontalFill: 0
+--- !u!114 &5453855773730146976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9160535778891122725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1 &9173054062248956282
 GameObject:
   m_ObjectHideFlags: 0
@@ -11576,13 +11623,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6495786023597646850}
   m_SourcePrefab: {fileID: 100100000, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
 --- !u!224 &33128834399241171 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 307172836396156660, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
   m_PrefabInstance: {fileID: 303709777055860007}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3743377706746264338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+  m_PrefabInstance: {fileID: 303709777055860007}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6495786023597646850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743377706746264338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &915211030803830208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11939,13 +12009,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8844957030271418095}
   m_SourcePrefab: {fileID: 100100000, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
 --- !u!224 &1674808508758293415 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 307172836396156660, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
   m_PrefabInstance: {fileID: 1404368157897669971}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2646015655360086886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+  m_PrefabInstance: {fileID: 1404368157897669971}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8844957030271418095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646015655360086886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &1692784754915226555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11957,7 +12050,7 @@ PrefabInstance:
     - target: {fileID: 1496606587646637439, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f93d70b828bdacc43b738d5bbd8ce888, type: 3}
+      objectReference: {fileID: 21300000, guid: 6d62dbc22aa66c441b30a960b95acf36, type: 3}
     - target: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12049,13 +12142,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8572265349461313654}
   m_SourcePrefab: {fileID: 100100000, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
 --- !u!224 &143356731032180876 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
   m_PrefabInstance: {fileID: 1692784754915226555}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5693409137825948203 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+  m_PrefabInstance: {fileID: 1692784754915226555}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8572265349461313654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693409137825948203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &1927493151761526441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12159,13 +12275,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1399680102911837736}
   m_SourcePrefab: {fileID: 100100000, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
 --- !u!224 &68648763886130252 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1894950432028867301, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
   m_PrefabInstance: {fileID: 1927493151761526441}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8026580021850002102 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+  m_PrefabInstance: {fileID: 1927493151761526441}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1399680102911837736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8026580021850002102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &2053084033350020082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12177,7 +12316,7 @@ PrefabInstance:
     - target: {fileID: 1496606587646637439, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 404b5aeaebac3274d91d46968808ad31, type: 3}
+      objectReference: {fileID: 21300000, guid: 99af54c6b9d41684d994f409a45c13c1, type: 3}
     - target: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12269,13 +12408,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8928043633054301622}
   m_SourcePrefab: {fileID: 100100000, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
 --- !u!224 &792266190384005317 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
   m_PrefabInstance: {fileID: 2053084033350020082}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4900183278967175778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+  m_PrefabInstance: {fileID: 2053084033350020082}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8928043633054301622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4900183278967175778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &2228704790460216755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12379,8 +12541,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1958781032289311583}
   m_SourcePrefab: {fileID: 100100000, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+--- !u!1 &6252594634341610002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+  m_PrefabInstance: {fileID: 2228704790460216755}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1958781032289311583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6252594634341610002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Swoosh
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &6870765338764083494 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4734461467557770389, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
@@ -12489,13 +12674,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9129960108064344460}
   m_SourcePrefab: {fileID: 100100000, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
 --- !u!224 &7055348013060474256 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4734461467557770389, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
   m_PrefabInstance: {fileID: 2332176578143088901}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7527151867039725220 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+  m_PrefabInstance: {fileID: 2332176578143088901}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9129960108064344460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7527151867039725220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Swoosh
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &4118483228313338072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12599,8 +12807,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6056744725856458867}
   m_SourcePrefab: {fileID: 100100000, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+--- !u!1 &1072440495810363117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+  m_PrefabInstance: {fileID: 4118483228313338072}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6056744725856458867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072440495810363117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &4423808883966838316 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 307172836396156660, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
@@ -12709,8 +12940,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4144418995864706909}
   m_SourcePrefab: {fileID: 100100000, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+--- !u!1 &956054711159914043 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+  m_PrefabInstance: {fileID: 4215737517854818318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4144418995864706909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956054711159914043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &4522180269872826106 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 307172836396156660, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
@@ -12819,13 +13073,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7354388253717401485}
   m_SourcePrefab: {fileID: 100100000, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
 --- !u!224 &2397524863740944699 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1894950432028867301, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
   m_PrefabInstance: {fileID: 4254088870942972894}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5679742293592778689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+  m_PrefabInstance: {fileID: 4254088870942972894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7354388253717401485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5679742293592778689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!1001 &5221023178124619943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12929,8 +13206,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1076087719419110107}
   m_SourcePrefab: {fileID: 100100000, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+--- !u!1 &4444837486347242680 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+  m_PrefabInstance: {fileID: 5221023178124619943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1076087719419110107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4444837486347242680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &5924761887718722114 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1894950432028867301, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
@@ -13039,8 +13339,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7889306988560979821}
   m_SourcePrefab: {fileID: 100100000, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+--- !u!1 &4495354010700519294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+  m_PrefabInstance: {fileID: 5456467637964712801}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7889306988560979821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495354010700519294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &5905752968610746756 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1894950432028867301, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
@@ -13149,8 +13472,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5120719595976180191}
   m_SourcePrefab: {fileID: 100100000, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+--- !u!1 &4292607785718048677 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8492646298382744607, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
+  m_PrefabInstance: {fileID: 5641207985669626810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5120719595976180191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4292607785718048677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &6054438403748061535 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1894950432028867301, guid: ddae840f34259e5428aefb8d25269b00, type: 3}
@@ -13259,8 +13605,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3665998039355781419}
   m_SourcePrefab: {fileID: 100100000, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+--- !u!1 &545801365576272125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+  m_PrefabInstance: {fileID: 5745271445412286300}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3665998039355781419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545801365576272125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Swoosh
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &1013136666865482697 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4734461467557770389, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
@@ -13274,6 +13643,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4808180573648424146}
     m_Modifications:
+    - target: {fileID: 1496606587646637439, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 039d2997969c92e45ab3eedaa0da8b7e, type: 3}
     - target: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -13365,8 +13738,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6007537238291080072}
   m_SourcePrefab: {fileID: 100100000, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+--- !u!1 &438847204836403601 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+  m_PrefabInstance: {fileID: 6803230958562408449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6007537238291080072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438847204836403601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &5253829847233581878 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
@@ -13383,7 +13779,7 @@ PrefabInstance:
     - target: {fileID: 1496606587646637439, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6187ad3bd064dba4d8077e6df39f9103, type: 3}
+      objectReference: {fileID: 21300000, guid: 36275f62fd5b4114386e467c78f787fa, type: 3}
     - target: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -13475,8 +13871,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3377824747375355857}
   m_SourcePrefab: {fileID: 100100000, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+--- !u!1 &4156812394725351948 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+  m_PrefabInstance: {fileID: 7048416469162701724}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3377824747375355857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4156812394725351948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &8597852745284327595 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
@@ -13585,8 +14004,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5927647574197174443}
   m_SourcePrefab: {fileID: 100100000, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+--- !u!1 &5767520647526445234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4018856140845645365, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
+  m_PrefabInstance: {fileID: 7480339508979502727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5927647574197174443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5767520647526445234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &7173333945117952115 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 307172836396156660, guid: 50fb78df64693904594f9ab1c8efdf51, type: 3}
@@ -13695,8 +14137,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5706483547226325079}
   m_SourcePrefab: {fileID: 100100000, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+--- !u!1 &2329440392459245058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+  m_PrefabInstance: {fileID: 7528764249835606435}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5706483547226325079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329440392459245058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Swoosh
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &3012807738361292086 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4734461467557770389, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
@@ -13713,7 +14178,7 @@ PrefabInstance:
     - target: {fileID: 1496606587646637439, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 14706f9efe08f3745b1665556b4948ea, type: 3}
+      objectReference: {fileID: 21300000, guid: db58f7d2cfbac2b4abba6f5032d603c7, type: 3}
     - target: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -13805,8 +14270,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8125654882132205682}
   m_SourcePrefab: {fileID: 100100000, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+--- !u!1 &3724412233880301127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6376806484147114384, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
+  m_PrefabInstance: {fileID: 7769046389965914071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8125654882132205682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724412233880301127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Hover
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &9030146528245470432 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1621494791436938039, guid: 04c13752ce5239b4d82ea2696248444b, type: 3}
@@ -13915,8 +14403,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4458382470363197224}
   m_SourcePrefab: {fileID: 100100000, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+--- !u!1 &3533653459561873717 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5199509690171934625, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
+  m_PrefabInstance: {fileID: 8728628752489268884}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4458382470363197224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3533653459561873717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17167d82c2473524080c7d338a2438d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.HoverSoundSource
+  hoverSfxId: UI_Swoosh
+  debounceSeconds: 0.1
+  selectable: {fileID: 0}
 --- !u!224 &4077585070170075649 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4734461467557770389, guid: 4f9cb109ef1de2741b73374873abb0c8, type: 3}
