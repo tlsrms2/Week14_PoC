@@ -9,6 +9,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerDashSweepAction : BossAction, IBossActionDurationProvider
     {
+        private const string IsDashSweepingAnimationParameter = "IsDashSweeping";
+
         [Header("Charge")]
         [SerializeField] private string chargeTriggerName = "DashSweepCharge";
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
@@ -41,96 +43,114 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(chargeTriggerName);
-            bool isHologram = context.Boss is HackerHologramBoss;
-            Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
-            HackerParryBait parryBait = HackerParryBait.Spawn(
-                context,
-                (context.Boss as HackerBossAI)?.ParryProjectileSettings,
-                parryAnchor.position,
-                parryAnchor,
-                Vector3.zero,
-                Mathf.Min(chargeSeconds, parryWindowSeconds),
-                chargeSeconds);
-
-            float elapsed = 0f;
+            HackerParryBait parryBait = null;
             HackerAttackRangeIndicator rangeIndicator = null;
-            while (elapsed < chargeSeconds)
+            context.SetAnimationBool(IsDashSweepingAnimationParameter, true);
+            try
             {
-                if (context.IsExecutionPaused)
+                context.RestartAnimationTrigger(chargeTriggerName);
+                bool isHologram = context.Boss is HackerHologramBoss;
+                Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
+                parryBait = HackerParryBait.Spawn(
+                    context,
+                    (context.Boss as HackerBossAI)?.ParryProjectileSettings,
+                    parryAnchor.position,
+                    parryAnchor,
+                    Vector3.zero,
+                    Mathf.Min(chargeSeconds, parryWindowSeconds),
+                    chargeSeconds);
+
+                float elapsed = 0f;
+                while (elapsed < chargeSeconds)
                 {
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    Vector2 direction = context.GetDirectionToPlayer(context.Boss.transform.position);
+                    Vector2 center = (Vector2)context.Boss.transform.position + direction * sweepForwardOffset;
+                    if (rangeIndicator == null)
+                    {
+                        rangeIndicator = HackerAttackRangeIndicator.CreateCircle(center, sweepRadius);
+                        rangeIndicator.SetHologramStyle(isHologram);
+                    }
+                    else
+                    {
+                        rangeIndicator.SetCircle(center, sweepRadius);
+                    }
+
+                    elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
-                    continue;
                 }
 
-                Vector2 direction = context.GetDirectionToPlayer(context.Boss.transform.position);
-                Vector2 center = (Vector2)context.Boss.transform.position + direction * sweepForwardOffset;
-                if (rangeIndicator == null)
+                bool wasParried = parryBait?.WasParried == true;
+                parryBait?.Dispose();
+                parryBait = null;
+                HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                rangeIndicator = null;
+                if (wasParried)
                 {
-                    rangeIndicator = HackerAttackRangeIndicator.CreateCircle(center, sweepRadius);
-                    rangeIndicator.SetHologramStyle(isHologram);
+                    context.SetAnimationBool(IsDashSweepingAnimationParameter, false);
+                    parriedEffect?.Play(context);
+                    context.Stop();
+                    yield return HackerMeleeAttackAction.Wait(context, dashSeconds);
+                    yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+                    yield break;
                 }
-                else
+
+                context.RestartAnimationTrigger(sweepTriggerName);
+                attackEffect?.Play(context);
+                Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
+                context.SetFacingLocked(true);
+                context.SetDashing(true);
+                Vector2 sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
+                rangeIndicator = HackerAttackRangeIndicator.CreateCircle(sweepCenter, sweepRadius);
+                rangeIndicator.SetHologramStyle(isHologram);
+                rangeIndicator.SetFillVisible(true);
+                HashSet<PlayerCombatController> hitPlayers = new();
+                elapsed = 0f;
+                while (elapsed < dashSeconds)
                 {
-                    rangeIndicator.SetCircle(center, sweepRadius);
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    float progress = Mathf.Clamp01(elapsed / dashSeconds);
+                    float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
+                    context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
+                    sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
+                    rangeIndicator.SetCircle(sweepCenter, sweepRadius);
+                    ApplySweepDamage(context, dashDirection, hitPlayers);
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
                 }
 
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
-            }
-
-            bool wasParried = parryBait?.WasParried == true;
-            parryBait?.Dispose();
-
-            HackerAttackRangeIndicator.Destroy(rangeIndicator);
-            if (wasParried)
-            {
-                parriedEffect?.Play(context);
+                context.SetDashing(false);
+                context.SetFacingLocked(false);
+                context.SetAnimationBool(IsDashSweepingAnimationParameter, false);
                 context.Stop();
-                yield return HackerMeleeAttackAction.Wait(context, dashSeconds);
-                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-                yield break;
-            }
-
-            context.PlayAnimationTrigger(sweepTriggerName);
-            attackEffect?.Play(context);
-            Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
-            context.SetFacingLocked(true);
-            context.SetDashing(true);
-            Vector2 sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
-            rangeIndicator = HackerAttackRangeIndicator.CreateCircle(sweepCenter, sweepRadius);
-            rangeIndicator.SetHologramStyle(isHologram);
-            rangeIndicator.SetFillVisible(true);
-            HashSet<PlayerCombatController> hitPlayers = new();
-            elapsed = 0f;
-            while (elapsed < dashSeconds)
-            {
-                if (context.IsExecutionPaused)
-                {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
-
-                float progress = Mathf.Clamp01(elapsed / dashSeconds);
-                float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
-                context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
                 sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
                 rangeIndicator.SetCircle(sweepCenter, sweepRadius);
                 ApplySweepDamage(context, dashDirection, hitPlayers);
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
+                HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                rangeIndicator = null;
+                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
             }
-
-            context.SetDashing(false);
-            context.SetFacingLocked(false);
-            context.Stop();
-            sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
-            rangeIndicator.SetCircle(sweepCenter, sweepRadius);
-            ApplySweepDamage(context, dashDirection, hitPlayers);
-            HackerAttackRangeIndicator.Destroy(rangeIndicator);
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+            finally
+            {
+                parryBait?.Dispose();
+                HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                context.SetDashing(false);
+                context.SetFacingLocked(false);
+                context.SetAnimationBool(IsDashSweepingAnimationParameter, false);
+                context.Stop();
+            }
         }
 
         public bool TryGetDurationSeconds(out float seconds)

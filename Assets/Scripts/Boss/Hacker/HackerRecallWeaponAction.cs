@@ -67,6 +67,7 @@ namespace Week14.Enemy
 
             HackerThrownWeaponType[] types =
             {
+                HackerThrownWeaponType.ThrowingWeapon,
                 HackerThrownWeaponType.Bayonet,
                 HackerThrownWeaponType.Gun,
                 HackerThrownWeaponType.Sword

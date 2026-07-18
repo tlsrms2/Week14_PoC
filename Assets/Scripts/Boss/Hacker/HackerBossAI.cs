@@ -34,6 +34,7 @@ namespace Week14.Enemy
     public class HackerBossAI : GraphBossAI
     {
         private const string TurretLayerName = "Turret";
+        private const string IsWalkAnimationParameter = "isWalk";
 
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
             ? EffectData.HackerMuzzleFlashVfxPrefab
@@ -62,6 +63,9 @@ namespace Week14.Enemy
         [SerializeField] private Transform facingMuzzlePoints;
         [SerializeField] private Transform facingEffectPrefabPoint;
 
+        [Header("Animation")]
+        [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
 
@@ -74,6 +78,8 @@ namespace Week14.Enemy
         private bool facingTargetsResolved;
         private bool hasFacingBaseLocalRotations;
         private bool isFacingLeft = true;
+        private bool hasAppliedWalkState;
+        private bool lastIsWalking;
         private float lastSlamAt = float.NegativeInfinity;
         private bool gunWalkCounterParryArmed;
         private bool gunWalkCounterParryTriggered;
@@ -169,6 +175,7 @@ namespace Week14.Enemy
 
         private void LateUpdate()
         {
+            UpdateWalkState();
             if (IsExternalActionExecuting)
             {
                 return;
@@ -180,6 +187,7 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            ApplyWalkState(false, true);
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnBossDied();
@@ -187,10 +195,17 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
+            PlayGroggyStunVisual();
             base.OnHpEmptyBegan();
             DestroyActiveProjectiles();
             ClearRuntimeCombatEffects();
             ClearSpawnedWeapons();
+        }
+
+        protected override void OnHpEmptyRecovered()
+        {
+            PlayGroggyEndStunVisual();
+            base.OnHpEmptyRecovered();
         }
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
@@ -239,6 +254,7 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            ApplyWalkState(false, true);
             EndGunWalkCounterParry();
             ClearGroundedWeapons();
             DestroyHologram();
@@ -329,6 +345,26 @@ namespace Week14.Enemy
             }
 
             FaceHorizontalDirection(horizontalOffset);
+        }
+
+        private void UpdateWalkState()
+        {
+            float threshold = Mathf.Max(0f, walkVelocityThreshold);
+            bool isWalking = Body != null
+                && Body.linearVelocity.sqrMagnitude > threshold * threshold;
+            ApplyWalkState(isWalking, false);
+        }
+
+        private void ApplyWalkState(bool isWalking, bool force)
+        {
+            if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
+            {
+                return;
+            }
+
+            GraphContext?.SetAnimationBool(IsWalkAnimationParameter, isWalking);
+            lastIsWalking = isWalking;
+            hasAppliedWalkState = true;
         }
 
         internal void FaceHorizontalDirection(float horizontalDirection)

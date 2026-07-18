@@ -16,6 +16,7 @@ namespace Week14.Enemy
     public sealed class HackerWeaponWireOrbitAction : BossAction, IBossActionDurationProvider
     {
         private const float DefaultWeaponPositioningSeconds = 0.35f;
+        private const string IsWeaponWireOrbitActiveAnimationParameter = "IsWeaponWireOrbitActive";
 
         [Header("Weapon")]
         [SerializeField] private HackerRecallWeaponSelection weaponSelection = HackerRecallWeaponSelection.RandomAvailable;
@@ -25,10 +26,13 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float weaponReadyWaitSeconds = 2f;
 
         [Header("Animation")]
-        [SerializeField] private string windupTriggerName = "WeaponWireOrbitWindup";
+        [FormerlySerializedAs("windupTriggerName")]
+        [SerializeField] private string pullTriggerName = "WeaponWireOrbitWindup";
+        [SerializeField] private string readyTriggerName = "WeaponWireOrbitReady";
         [SerializeField] private string orbitTriggerName = "WeaponWireOrbit";
         [SerializeField] private string recallTriggerName = "RecallWeapon";
-        [SerializeField, Min(0f)] private float windupSeconds = 0.45f;
+        [FormerlySerializedAs("windupSeconds")]
+        [SerializeField, Min(0f)] private float readySeconds = 0.45f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
         [Header("Weapon Positioning")]
@@ -119,11 +123,13 @@ namespace Week14.Enemy
             Quaternion initialWeaponRotation = weapon.transform.rotation;
             Vector2 initialDirection = context.GetDirectionToPlayer(bossWireAnchor.position);
             float initialAngle = Mathf.Atan2(initialDirection.y, initialDirection.x) * Mathf.Rad2Deg;
-            float preparationSeconds = GetPreparationSeconds();
+            float positioningSeconds = GetWeaponPositioningSeconds();
+            bool orbitCompleted = false;
 
+            context.SetAnimationBool(IsWeaponWireOrbitActiveAnimationParameter, true);
             try
             {
-                context.PlayAnimationTrigger(windupTriggerName);
+                context.PlayAnimationTrigger(pullTriggerName);
                 rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
                 yield return null;
                 yield return MoveWeaponIntoOrbitPosition(
@@ -134,12 +140,15 @@ namespace Week14.Enemy
                     initialWeaponPosition,
                     initialWeaponRotation,
                     initialAngle,
-                    preparationSeconds);
+                    positioningSeconds);
 
                 if (weapon == null)
                 {
                     yield break;
                 }
+
+                context.PlayAnimationTrigger(readyTriggerName);
+                yield return HackerMeleeAttackAction.Wait(context, readySeconds);
 
                 context.PlayAnimationTrigger(orbitTriggerName);
                 attackEffect?.Play(context);
@@ -194,6 +203,8 @@ namespace Week14.Enemy
                         orbitRadius,
                         ref playerHit);
                 }
+
+                orbitCompleted = true;
             }
             finally
             {
@@ -205,32 +216,45 @@ namespace Week14.Enemy
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 weapon?.EndOrbit();
                 context.Stop();
+                if (!orbitCompleted)
+                {
+                    context.SetAnimationBool(IsWeaponWireOrbitActiveAnimationParameter, false);
+                }
             }
 
             if (weapon == null)
             {
+                context.SetAnimationBool(IsWeaponWireOrbitActiveAnimationParameter, false);
                 yield break;
             }
 
-            context.PlayAnimationTrigger(recallTriggerName);
-            Transform returnAnchor = context.GetBossChildTransform(returnAnchorPath) ?? hacker.transform;
-            weaponWireAnchor = weapon.GetChildTransform(weaponWireAnchorPath) ?? weapon.transform;
-            if (weapon.BeginRecall(returnAnchor, weaponWireAnchor, recallSeconds, recallRotationDegrees))
+            try
             {
-                HackerRecallWireVisual.Create(returnAnchor, weaponWireAnchor, wireSettings.Color, wireSettings.Width);
-                yield return HackerMeleeAttackAction.Wait(context, recallSeconds);
-            }
+                context.PlayAnimationTrigger(recallTriggerName);
+                Transform returnAnchor = context.GetBossChildTransform(returnAnchorPath) ?? hacker.transform;
+                weaponWireAnchor = weapon.GetChildTransform(weaponWireAnchorPath) ?? weapon.transform;
+                if (weapon.BeginRecall(returnAnchor, weaponWireAnchor, recallSeconds, recallRotationDegrees))
+                {
+                    HackerRecallWireVisual.Create(returnAnchor, weaponWireAnchor, wireSettings.Color, wireSettings.Width);
+                    yield return HackerMeleeAttackAction.Wait(context, recallSeconds);
+                }
 
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-            if (isHologramReplayWeapon && weapon != null)
+                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+                if (isHologramReplayWeapon && weapon != null)
+                {
+                    UnityEngine.Object.Destroy(weapon.gameObject);
+                }
+            }
+            finally
             {
-                UnityEngine.Object.Destroy(weapon.gameObject);
+                context.SetAnimationBool(IsWeaponWireOrbitActiveAnimationParameter, false);
             }
         }
 
         public bool TryGetDurationSeconds(out float seconds)
         {
-            seconds = GetPreparationSeconds()
+            seconds = GetWeaponPositioningSeconds()
+                + Mathf.Max(0f, readySeconds)
                 + Mathf.Max(0f, weaponReadyWaitSeconds)
                 + Mathf.Max(0.05f, orbitSeconds)
                 + Mathf.Max(0.05f, recallSeconds)
@@ -238,12 +262,11 @@ namespace Week14.Enemy
             return true;
         }
 
-        private float GetPreparationSeconds()
+        private float GetWeaponPositioningSeconds()
         {
-            float positioningSeconds = weaponPositioningSeconds > 0f
+            return weaponPositioningSeconds > 0f
                 ? weaponPositioningSeconds
                 : DefaultWeaponPositioningSeconds;
-            return Mathf.Max(windupSeconds, positioningSeconds);
         }
 
         private IEnumerator MoveWeaponIntoOrbitPosition(
@@ -336,6 +359,7 @@ namespace Week14.Enemy
 
             HackerThrownWeaponType[] types =
             {
+                HackerThrownWeaponType.ThrowingWeapon,
                 HackerThrownWeaponType.Bayonet,
                 HackerThrownWeaponType.Gun,
                 HackerThrownWeaponType.Sword

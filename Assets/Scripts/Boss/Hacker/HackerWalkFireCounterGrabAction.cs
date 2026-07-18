@@ -17,7 +17,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField, BossGraphBossChildPath] private string fireOriginPath;
-        [SerializeField] private string walkFireTriggerName = "WalkFire";
         [SerializeField, Min(0f)] private float windupSeconds = 0.25f;
         [SerializeField, Min(0.1f)] private float activeSeconds = 3f;
         [SerializeField, Min(0f)] private float walkSpeed = 2.5f;
@@ -42,13 +41,14 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(walkFireTriggerName);
-            yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
-
-            hacker.BeginGunWalkCounterParry();
             try
             {
+                yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
+
+                hacker.BeginGunWalkCounterParry();
                 yield return WalkAndFire(context, hacker);
+                context.Stop();
+
                 if (hacker.IsGunWalkCounterParryTriggered)
                 {
                     yield return CounterGrab(context, hacker);
@@ -60,6 +60,8 @@ namespace Week14.Enemy
             }
             finally
             {
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
                 hacker.EndGunWalkCounterParry();
                 context.Stop();
             }

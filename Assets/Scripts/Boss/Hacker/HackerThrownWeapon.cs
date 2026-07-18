@@ -6,7 +6,8 @@ namespace Week14.Enemy
     {
         Bayonet,
         Gun,
-        Sword
+        Sword,
+        ThrowingWeapon
     }
 
     public sealed class HackerThrownWeapon : MonoBehaviour
