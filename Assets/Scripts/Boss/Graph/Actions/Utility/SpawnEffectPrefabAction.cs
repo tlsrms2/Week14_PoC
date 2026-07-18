@@ -12,6 +12,95 @@ namespace Week14.Enemy
     }
 
     [Serializable]
+    public sealed class BossActionPrefabEffectSettings
+    {
+        [SerializeField] private bool enabled;
+        [SerializeField] private GameObject effectPrefab;
+        [SerializeField, BossGraphBossChildPath] private string spawnPointPath;
+        [SerializeField] private Vector2 positionOffset;
+        [SerializeField, Min(0.01f)] private float scale = 1f;
+        [SerializeField] private SpawnEffectFollowMode followMode = SpawnEffectFollowMode.FollowSpawnPoint;
+        [SerializeField] private bool followRotation = true;
+
+        internal GameObject Play(BossActionContext context)
+        {
+            return Play(
+                context,
+                enabled,
+                effectPrefab,
+                spawnPointPath,
+                positionOffset,
+                scale,
+                followMode,
+                followRotation);
+        }
+
+        internal GameObject PlayAtWorldYRotation(
+            BossActionContext context,
+            string spawnPointPathOverride,
+            float worldYRotationDegrees)
+        {
+            return Play(
+                context,
+                enabled,
+                effectPrefab,
+                string.IsNullOrWhiteSpace(spawnPointPathOverride)
+                    ? spawnPointPath
+                    : spawnPointPathOverride,
+                positionOffset,
+                scale,
+                followMode,
+                followRotation: false,
+                worldYRotationDegrees: worldYRotationDegrees,
+                useSpawnPointRotation: false);
+        }
+
+        internal static GameObject Play(
+            BossActionContext context,
+            bool enabled,
+            GameObject effectPrefab,
+            string spawnPointPath,
+            Vector2 positionOffset,
+            float scale,
+            SpawnEffectFollowMode followMode,
+            bool followRotation,
+            float worldYRotationDegrees = 0f,
+            bool useSpawnPointRotation = true)
+        {
+            if (!enabled || context == null || effectPrefab == null)
+            {
+                return null;
+            }
+
+            Transform spawnPoint = context.GetBossChildTransform(spawnPointPath);
+            if (spawnPoint == null)
+            {
+                return null;
+            }
+
+            Vector3 position = spawnPoint.TransformPoint(
+                new Vector3(positionOffset.x, positionOffset.y, 0f));
+            Transform followTarget = followMode == SpawnEffectFollowMode.FollowSpawnPoint
+                ? spawnPoint
+                : null;
+
+            Quaternion rotation = Quaternion.AngleAxis(worldYRotationDegrees, Vector3.up);
+            if (useSpawnPointRotation)
+            {
+                rotation *= spawnPoint.rotation;
+            }
+
+            return ProjectileVfx.PlayPrefab(
+                effectPrefab,
+                position,
+                rotation,
+                followTarget,
+                Mathf.Max(0.01f, scale),
+                followRotation);
+        }
+    }
+
+    [Serializable]
     public sealed class SpawnEffectPrefabAction : BossAction, IBossActionDurationProvider
     {
         [Tooltip("생성할 일회성 이펙트 프리팹입니다.")]
