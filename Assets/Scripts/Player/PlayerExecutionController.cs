@@ -155,6 +155,10 @@ namespace Week14.Combat
             presentation.HidePlayerHpForExecution();
             BossAI executionBoss = executionTarget.GetComponentInParent<BossAI>();
             bool isFinalBossExecution = executionBoss != null && executionBoss.CurrentLives <= 1;
+            if (isFinalBossExecution)
+            {
+                executionBoss.FreezeCombatTimer();
+            }
             float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
                 + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             float holsteringSeconds = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);

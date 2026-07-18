@@ -1941,6 +1941,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1023516958 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9023042446440157273, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
+  m_PrefabInstance: {fileID: 1023516955}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1119019017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,6 +2688,10 @@ PrefabInstance:
       propertyPath: bossCombatUiRoot
       value: 
       objectReference: {fileID: 261457479}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossElapsedTimeText
+      value: 
+      objectReference: {fileID: 1023516958}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: minionHitDamageMultiplier
       value: 0

@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -17,6 +18,7 @@ namespace Week14.UI
         [SerializeField] private GameObject gameOverRoot;
         [SerializeField] private Button restartButton;
         [SerializeField] private BossChallengePanel gameOverChallengePanel;
+        [SerializeField] private TMP_Text gameOverElapsedTimeText;
 
         [FormerlySerializedAs("titleButton")]
         [SerializeField] private Button gameOverLobbyButton;
@@ -25,6 +27,7 @@ namespace Week14.UI
         [SerializeField] private GameObject victoryRoot;
         [SerializeField] private Button victoryLobbyButton;
         [SerializeField] private BossChallengePanel victoryChallengePanel;
+        [SerializeField] private TMP_Text victoryElapsedTimeText;
 
         [Header("Scene")]
         [FormerlySerializedAs("titleSceneName")]
@@ -205,6 +208,7 @@ namespace Week14.UI
 
         private void HandlePlayerDied(Health _)
         {
+            FindCurrentBoss()?.FreezeCombatTimer();
             StartCoroutine(PlayPlayerDeathThenShowGameOver());
         }
 
@@ -231,12 +235,14 @@ namespace Week14.UI
 
         private void ShowGameOver()
         {
-            BossData bossData = FindCurrentBossData();
+            BossAI boss = FindCurrentBoss();
+            BossData bossData = boss != null ? boss.BossData : null;
             gameOverChallengePanel?.PrepareReveal(bossData);
 
             HideResultButtonsFor(gameOverRoot);
             ShowResult(gameOverRoot, restartButton);
             SyncChallengeReveal(gameOverChallengePanel, gameOverRoot);
+            SetElapsedTimeText(gameOverElapsedTimeText, boss);
 
             if (gameOverChallengePanel != null)
             {
@@ -248,10 +254,19 @@ namespace Week14.UI
             }
         }
 
-        private static BossData FindCurrentBossData()
+        private static BossAI FindCurrentBoss()
         {
-            BossAI boss = FindFirstObjectByType<BossAI>();
-            return boss != null ? boss.BossData : null;
+            return FindFirstObjectByType<BossAI>();
+        }
+
+        private static void SetElapsedTimeText(TMP_Text text, BossAI boss)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            text.text = boss != null ? BossAI.FormatCombatTime(boss.CombatElapsedSeconds) : "--:--:--";
         }
 
         private void ShowVictory(BossAI boss)
@@ -265,6 +280,7 @@ namespace Week14.UI
             HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget);
             SyncChallengeReveal(victoryChallengePanel, targetRoot);
+            SetElapsedTimeText(victoryElapsedTimeText, boss);
 
             RefreshVictorySummary(boss);
         }
