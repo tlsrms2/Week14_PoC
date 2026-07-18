@@ -118,3 +118,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 06f1984fb44143341983e4e3cb614965, type: 3}
     volume: 0.7
     pitch: 1
+  - id: UI_Swoosh
+    clip: {fileID: 8300000, guid: feebc58631ece584c8aa4fef1d1c72e6, type: 3}
+    volume: 1
+    pitch: 1
+  - id: UI_Equip
+    clip: {fileID: 8300000, guid: 948410a506001e247bb8073a9ed9107f, type: 3}
+    volume: 1
+    pitch: 1
