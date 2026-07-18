@@ -134,11 +134,6 @@ MonoBehaviour:
   burstStartAngleOffset: 0
   burstSfxId: 
   burstEffects:
-    explosion:
-      enabled: 0
-      color: {r: 1, g: 1, b: 1, a: 1}
-      scale: 1
-      count: 12
     smoke:
       enabled: 0
       color: {r: 1, g: 1, b: 1, a: 1}
@@ -147,9 +142,8 @@ MonoBehaviour:
     smokeInterval: 0.12
     muzzleFlash:
       enabled: 0
-      color: {r: 1, g: 1, b: 1, a: 1}
+      prefab: {fileID: 0}
       scale: 1
-      count: 12
     cameraShake:
       enabled: 0
       seconds: 0.14
@@ -752,7 +746,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.049875, y: 4.049875, z: 4.049875}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2354031526117083692}
