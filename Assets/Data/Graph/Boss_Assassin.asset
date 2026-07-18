@@ -158,7 +158,7 @@ MonoBehaviour:
     phaseIndex: 0
     selectionMode: 0
     action:
-      rid: 4705778180782817288
+      rid: 4705778237021356185
     sequences: []
     editorPosition: {x: 322, y: 1416}
   - nodeId: Fire Radial Emission5
@@ -2972,9 +2972,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778169994805735
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3104,9 +3108,6 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.5
-    - rid: 4705778180782817288
-      type: {class: AssassinEnterStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data: 
     - rid: 4705778193230463115
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3363,9 +3364,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778196242497744
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3429,9 +3434,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778196242497746
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4065,9 +4074,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778205525803209
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4220,9 +4233,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778205525803238
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4585,9 +4602,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778205525803310
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4858,9 +4879,13 @@ MonoBehaviour:
         chargeBoolName: isAtk3
         trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
         trajectoryWidth: 1.5
+        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
         trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
+        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
         trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+        trajectoryGradientFalloffPower: 3
         trajectorySortingOrder: -1
+        trajectoryExtraLength: 1
     - rid: 4705778205525803323
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5412,3 +5437,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         attackDelaySeconds: 0.28
+    - rid: 4705778237021356185
+      type: {class: AssassinEnterStealthAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data: 
