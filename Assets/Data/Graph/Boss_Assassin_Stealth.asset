@@ -1411,7 +1411,7 @@ MonoBehaviour:
     initialPatternDelaySeconds: 1
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
-    openingPatternId: Pattern1
+    openingPatternId: 
     signaturePatternId: 
     signaturePatternHpPercent: 50
     forcedPatternId: 

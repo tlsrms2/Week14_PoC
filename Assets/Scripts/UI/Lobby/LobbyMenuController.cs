@@ -6,7 +6,7 @@ using Week14.Enemy;
 
 namespace Week14.UI
 {
-    public sealed class LobbyMenuController : MonoBehaviour
+    public sealed class LobbyMenuController : MonoBehaviour, IBackClosable
     {
         [Tooltip("로비 씬이 시작될 때 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphBgmId]
@@ -65,21 +65,59 @@ namespace Week14.UI
         public void OpenLoadoutPanel()
         {
             SetActiveSafe(loadoutPanelContent != null ? loadoutPanelContent.gameObject : null, true);
+            UIBackStack.Push(this);
         }
 
         public void CloseLoadoutPanel()
         {
             SetActiveSafe(loadoutPanelContent != null ? loadoutPanelContent.gameObject : null, false);
+            UpdateBackStackRegistration();
         }
 
         public void OpenBossPanel()
         {
             SetActiveSafe(bossPanelContent != null ? bossPanelContent.gameObject : null, true);
+            UIBackStack.Push(this);
         }
 
         public void CloseBossPanel()
         {
             SetActiveSafe(bossPanelContent != null ? bossPanelContent.gameObject : null, false);
+            UpdateBackStackRegistration();
+        }
+
+        // ESC(뒤로가기)로 로드아웃/보스 패널이 열려 있는 동안은 그 패널만 닫고,
+        // 일시정지 패널(PauseMenuView)이 대신 열리지 않도록 UIBackStack에 등록해둔다.
+        public bool CloseByBack()
+        {
+            if (loadoutPanelContent != null && loadoutPanelContent.gameObject.activeSelf)
+            {
+                CloseLoadoutPanel();
+                return true;
+            }
+
+            if (bossPanelContent != null && bossPanelContent.gameObject.activeSelf)
+            {
+                CloseBossPanel();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void UpdateBackStackRegistration()
+        {
+            bool loadoutOpen = loadoutPanelContent != null && loadoutPanelContent.gameObject.activeSelf;
+            bool bossOpen = bossPanelContent != null && bossPanelContent.gameObject.activeSelf;
+
+            if (loadoutOpen || bossOpen)
+            {
+                UIBackStack.Push(this);
+            }
+            else
+            {
+                UIBackStack.Remove(this);
+            }
         }
 
         public void ClearHoverHighlights()
@@ -122,6 +160,8 @@ namespace Week14.UI
 
         private void OnDestroy()
         {
+            UIBackStack.Remove(this);
+
             if (!string.IsNullOrEmpty(lobbyBgmId))
             {
                 SoundManager.StopBgm();
