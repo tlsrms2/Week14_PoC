@@ -4024,7 +4024,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: P7
+  debugForcedPatternId: P5-1
   references:
     version: 2
     RefIds:

@@ -199,8 +199,16 @@ namespace Week14.Enemy
 
         private void RushToward(Vector3 targetPosition)
         {
-            Vector2 direction = ((Vector2)targetPosition - (Vector2)transform.position).normalized;
-            ApplyFlightDirection(direction);
+            Vector2 toTarget = (Vector2)targetPosition - (Vector2)transform.position;
+            if (toTarget.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            Vector2 direction = toTarget.normalized;
+            ApplyFlightDirection(direction, false);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
             transform.position += (Vector3)(direction * rushSpeed * EnemyTimeScale.DeltaTime);
         }
 
