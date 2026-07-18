@@ -49,6 +49,9 @@ namespace Week14.Enemy
                 yield return WalkAndFire(context, hacker);
                 context.Stop();
 
+                Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+                hacker.FaceHorizontalDirection(facingDirection.x);
+                using IDisposable facingLock = context.AcquireFacingLock();
                 if (hacker.IsGunWalkCounterParryTriggered)
                 {
                     yield return CounterGrab(context, hacker);
@@ -57,6 +60,12 @@ namespace Week14.Enemy
                 {
                     context.RequestPatternTermination();
                 }
+
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
+                hacker.EndGunWalkCounterParry();
+                context.Stop();
+                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
             }
             finally
             {
@@ -66,7 +75,6 @@ namespace Week14.Enemy
                 context.Stop();
             }
 
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
 
         public bool TryGetDurationSeconds(out float seconds)

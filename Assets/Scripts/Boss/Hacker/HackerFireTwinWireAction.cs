@@ -23,12 +23,14 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            Transform launchOrigin = context.GetBossChildTransform(launchOriginPath) ?? hacker.transform;
+            Vector2 targetDirection = context.GetDirectionToPlayer(launchOrigin.position);
+            hacker.FaceHorizontalDirection(targetDirection.x);
+            using IDisposable facingLock = context.AcquireFacingLock();
             context.PlayAnimationTrigger(animationTriggerName);
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
-            Transform launchOrigin = context.GetBossChildTransform(launchOriginPath) ?? hacker.transform;
-            Vector3 origin = launchOrigin.position;
-            Vector2 targetDirection = context.GetDirectionToPlayer(origin);
+            launchOrigin = context.GetBossChildTransform(launchOriginPath) ?? hacker.transform;
             float halfAngle = wireAngleDegrees * 0.5f;
             FireWire(hacker, launchOrigin, Rotate(targetDirection, halfAngle));
             FireWire(hacker, launchOrigin, Rotate(targetDirection, -halfAngle));

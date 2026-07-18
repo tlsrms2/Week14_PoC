@@ -20,7 +20,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float minAngleDistanceDegrees = 25f;
         [SerializeField, Min(0f)] private float fireInterval = 0.08f;
         [SerializeField, Min(1)] private int hackingPerHit = 1;
-        [SerializeField, Min(0f)] private float attachedNodeLifetimeSeconds = 10f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -36,6 +35,13 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (context.Boss is HackerBossAI hacker)
+            {
+                Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+                hacker.FaceHorizontalDirection(facingDirection.x);
+            }
+
+            using IDisposable facingLock = context.AcquireFacingLock();
             context.PlayAnimationTrigger(animationTriggerName);
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
@@ -60,7 +66,6 @@ namespace Week14.Enemy
                 if (projectile is HackerWireNodeProjectile wireNode)
                 {
                     wireNode.ConfigureWireHacking(context.Boss as HackerBossAI, hackingPerHit);
-                    wireNode.ConfigureAttachedLifetime(attachedNodeLifetimeSeconds);
                 }
 
                 if (i < count - 1)

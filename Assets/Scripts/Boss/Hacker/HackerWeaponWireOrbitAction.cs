@@ -114,11 +114,12 @@ namespace Week14.Enemy
                 wireSettings.Color,
                 wireSettings.Width);
             HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateRing(
+                context,
                 bossWireAnchor.position,
                 safeInnerRadius,
                 orbitRadius);
-            rangeIndicator.SetHologramStyle(hacker is HackerHologramBoss);
-            rangeIndicator.SetFillVisible(true);
+            rangeIndicator?.SetHologramStyle(hacker is HackerHologramBoss);
+            rangeIndicator?.SetFillVisible(true);
             Vector3 initialWeaponPosition = weapon.transform.position;
             Quaternion initialWeaponRotation = weapon.transform.rotation;
             Vector2 initialDirection = context.GetDirectionToPlayer(bossWireAnchor.position);
@@ -126,11 +127,13 @@ namespace Week14.Enemy
             float positioningSeconds = GetWeaponPositioningSeconds();
             bool orbitCompleted = false;
 
+            hacker.FaceHorizontalDirection(initialDirection.x);
+            using IDisposable facingLock = context.AcquireFacingLock();
             context.SetAnimationBool(IsWeaponWireOrbitActiveAnimationParameter, true);
             try
             {
                 context.PlayAnimationTrigger(pullTriggerName);
-                rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
+                rangeIndicator?.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
                 yield return null;
                 yield return MoveWeaponIntoOrbitPosition(
                     context,
@@ -176,7 +179,7 @@ namespace Week14.Enemy
                         orbitRadius,
                         angle,
                         safeInnerRadius);
-                    rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
+                    rangeIndicator?.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
                     TryApplyRingDamage(
                         hacker,
                         bossWireAnchor.position,
@@ -196,7 +199,7 @@ namespace Week14.Enemy
                         orbitRadius,
                         finalAngle,
                         safeInnerRadius);
-                    rangeIndicator.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
+                    rangeIndicator?.SetRing(bossWireAnchor.position, safeInnerRadius, orbitRadius);
                     TryApplyRingDamage(
                         hacker,
                         bossWireAnchor.position,

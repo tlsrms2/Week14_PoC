@@ -332,6 +332,10 @@ namespace Week14.Enemy
             ? sourceBoss.ParryProjectileSettings
             : base.ParryProjectileSettings;
 
+        internal override bool ShowsAttackRangeIndicators => sourceBoss != null
+            ? sourceBoss.ShowsAttackRangeIndicators
+            : base.ShowsAttackRangeIndicators;
+
         internal override void ApplyHacking(PlayerCombatController player, int hackingPerHit)
         {
             if (sourceBoss != null)

@@ -200,6 +200,7 @@ namespace Week14.Enemy
         private void RushToward(Vector3 targetPosition)
         {
             Vector2 direction = ((Vector2)targetPosition - (Vector2)transform.position).normalized;
+            ApplyFlightDirection(direction);
             transform.position += (Vector3)(direction * rushSpeed * EnemyTimeScale.DeltaTime);
         }
 

@@ -47,6 +47,13 @@ namespace Week14.Enemy
                 yield return WaitForMeleeAttackAdvanceCompletion(context);
             }
 
+            Vector2 initialFacingDirection = GetDirectionToPlayer(context, context.Boss.transform.position);
+            if (context.Boss is HackerBossAI hacker)
+            {
+                hacker.FaceHorizontalDirection(initialFacingDirection.x);
+            }
+
+            using IDisposable facingLock = context.AcquireFacingLock();
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             int count = Mathf.Max(1, bulletCount);

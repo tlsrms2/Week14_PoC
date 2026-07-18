@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -31,8 +32,10 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float dashSpeed = 15f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 0.7f, 1f, 1f);
 
-        [Header("Dash Effect")]
-        [SerializeField] private BossActionPrefabEffectSettings dashEffect = new();
+        [Header("Attack Effect")]
+        [Tooltip("Release 애니메이션과 돌진 공격이 시작될 때 1회 생성되는 공격 이펙트입니다.")]
+        [FormerlySerializedAs("dashEffect")]
+        [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
 
         [Header("Path Damage")]
         [SerializeField, Min(0.05f)] private float damageRadius = 0.55f;
@@ -79,11 +82,13 @@ namespace Week14.Enemy
                 if (rangeIndicator == null)
                 {
                     rangeIndicator = HackerAttackRangeIndicator.CreateThrust(
+                        context,
                         context.Boss.transform.position,
                         previewDirection,
                         dashDistance,
-                        damageRadius * 2f);
-                    rangeIndicator.SetHologramStyle(isHologram);
+                        damageRadius * 2f,
+                        ignoreVisibilitySetting: true);
+                    rangeIndicator?.SetHologramStyle(isHologram);
                 }
                 else
                 {
@@ -93,6 +98,13 @@ namespace Week14.Enemy
                         dashDistance,
                         damageRadius * 2f);
                 }
+
+                rangeIndicator?.SetThrustCenterFillProgress(
+                    context.Boss.transform.position,
+                    previewDirection,
+                    dashDistance,
+                    damageRadius * 2f,
+                    windupSeconds > 0f ? elapsed / windupSeconds : 1f);
 
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
@@ -105,65 +117,78 @@ namespace Week14.Enemy
 
             context.SetAnimationBool(IsChargeDashingAnimationParameter, true);
             context.RestartAnimationTrigger(ReleaseAnimationTrigger);
-            context.SetFacingLocked(true);
+            object facingLockOwner = new();
+            context.SetFacingLocked(facingLockOwner, true);
             context.SetDashing(true);
-            HackerDashEffect.Play(dashEffect, context, dashDirection);
+            GameObject attackEffectInstance = HackerDashEffect.Play(
+                attackEffect,
+                context,
+                dashDirection);
             rangeIndicator ??= HackerAttackRangeIndicator.CreateThrust(
+                context,
+                context.Boss.transform.position,
+                dashDirection,
+                dashDistance,
+                damageRadius * 2f,
+                ignoreVisibilitySetting: true);
+            rangeIndicator?.SetHologramStyle(isHologram);
+            rangeIndicator?.SetThrust(
                 context.Boss.transform.position,
                 dashDirection,
                 dashDistance,
                 damageRadius * 2f);
-            rangeIndicator.SetHologramStyle(isHologram);
-            rangeIndicator.SetThrust(
-                context.Boss.transform.position,
-                dashDirection,
-                dashDistance,
-                damageRadius * 2f);
-            rangeIndicator.SetFillVisible(true);
+            rangeIndicator?.SetFillVisible(true);
 
             HashSet<PlayerCombatController> hitPlayers = new();
             Vector2 previousPosition = context.Boss.transform.position;
             elapsed = 0f;
             try
             {
-                while (elapsed < dashSeconds)
+                try
                 {
-                    if (context.IsExecutionPaused)
+                    while (elapsed < dashSeconds)
                     {
-                        context.Stop();
+                        if (context.IsExecutionPaused)
+                        {
+                            context.Stop();
+                            yield return null;
+                            continue;
+                        }
+
+                        Vector2 currentPosition = context.Boss.transform.position;
+                        ApplyPathDamage(context, previousPosition, currentPosition, dashDirection, hitPlayers);
+                        previousPosition = currentPosition;
+
+                        float progress = Mathf.Clamp01(elapsed / dashSeconds);
+                        float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
+                        context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
+                        elapsed += EnemyTimeScale.DeltaTime;
                         yield return null;
-                        continue;
                     }
 
-                    Vector2 currentPosition = context.Boss.transform.position;
-                    ApplyPathDamage(context, previousPosition, currentPosition, dashDirection, hitPlayers);
-                    previousPosition = currentPosition;
-
-                    float progress = Mathf.Clamp01(elapsed / dashSeconds);
-                    float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
-                    context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
-                    elapsed += EnemyTimeScale.DeltaTime;
-                    yield return null;
+                    ApplyPathDamage(
+                        context,
+                        previousPosition,
+                        context.Boss.transform.position,
+                        dashDirection,
+                        hitPlayers);
+                }
+                finally
+                {
+                    context.SetDashing(false);
+                    context.Stop();
+                    HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                    context.SetAnimationBool(IsChargeDashingAnimationParameter, false);
+                    context.RestartAnimationTrigger(EndAnimationTrigger);
                 }
 
-                ApplyPathDamage(
-                    context,
-                    previousPosition,
-                    context.Boss.transform.position,
-                    dashDirection,
-                    hitPlayers);
+                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
+                yield return WaitForAttackEffect(attackEffectInstance);
             }
             finally
             {
-                context.SetDashing(false);
-                context.SetFacingLocked(false);
-                context.Stop();
-                HackerAttackRangeIndicator.Destroy(rangeIndicator);
-                context.SetAnimationBool(IsChargeDashingAnimationParameter, false);
-                context.RestartAnimationTrigger(EndAnimationTrigger);
+                context.SetFacingLocked(facingLockOwner, false);
             }
-
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
 
         public bool TryGetDurationSeconds(out float seconds)
@@ -265,6 +290,14 @@ namespace Week14.Enemy
             return curve != null && curve.length > 0
                 ? Mathf.Max(0f, curve.Evaluate(progress))
                 : 1f;
+        }
+
+        private static IEnumerator WaitForAttackEffect(GameObject effectInstance)
+        {
+            while (effectInstance != null)
+            {
+                yield return null;
+            }
         }
     }
 }

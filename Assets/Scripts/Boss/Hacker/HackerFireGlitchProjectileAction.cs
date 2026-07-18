@@ -48,6 +48,13 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (context.Boss is HackerBossAI hacker)
+            {
+                Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+                hacker.FaceHorizontalDirection(facingDirection.x);
+            }
+
+            using IDisposable facingLock = context.AcquireFacingLock();
             context.PlayAnimationTrigger(animationTriggerName);
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 

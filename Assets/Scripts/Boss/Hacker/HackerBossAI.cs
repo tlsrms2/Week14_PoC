@@ -66,6 +66,11 @@ namespace Week14.Enemy
         [Header("Animation")]
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
 
+        [Header("Attack Indicators")]
+        [Tooltip("Melee, Thrust, Sweep 계열 공격의 범위 인디케이터를 표시합니다.")]
+        [InspectorName("Melee / Thrust / Sweep 인디케이터 표시")]
+        [SerializeField] private bool showAttackRangeIndicators = true;
+
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
 
@@ -89,6 +94,7 @@ namespace Week14.Enemy
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
         internal virtual BossProjectileSettings ParryProjectileSettings => parryProjectileSettings ??= new BossProjectileSettings();
+        internal virtual bool ShowsAttackRangeIndicators => showAttackRangeIndicators;
 
         internal bool IsFacingLeft => isFacingLeft;
         internal HackerFireWireResult LastFireWireResult => lastFireWireResult;
@@ -188,6 +194,7 @@ namespace Week14.Enemy
         protected override void OnBossDied()
         {
             ApplyWalkState(false, true);
+            HackerWireNodeProjectile.ClearAttachedNodes(this);
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnBossDied();
@@ -211,6 +218,7 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
+            HackerWireNodeProjectile.ClearAttachedNodes(this);
             if (this is not HackerHologramBoss)
             {
                 HackerPlayerHackStatus.Clear(PlayerCombatController.Active);
@@ -369,7 +377,8 @@ namespace Week14.Enemy
 
         internal void FaceHorizontalDirection(float horizontalDirection)
         {
-            if (Mathf.Abs(horizontalDirection) <= 0.0001f)
+            if (GraphContext?.IsFacingLocked == true
+                || Mathf.Abs(horizontalDirection) <= 0.0001f)
             {
                 return;
             }
@@ -510,7 +519,6 @@ namespace Week14.Enemy
             DestroyRuntimeObjects<HackerSpiderWebCellIndicator>();
             DestroyRuntimeObjects<HackerSpiderWebCellExplosionVisual>();
             DestroyRuntimeObjects<HackerWire>();
-            DestroyRuntimeObjects<HackerWireNodeLinkVisual>();
         }
 
         private static void DestroyRuntimeObjects<T>() where T : Component

@@ -15,41 +15,82 @@ namespace Week14.Enemy
         internal float Range { get; private set; }
         internal float ArcDegrees { get; private set; }
 
-        internal static HackerAttackRangeIndicator CreateArc(Vector2 origin, Vector2 direction, float range, float arcDegrees)
+        internal static HackerAttackRangeIndicator CreateArc(
+            BossActionContext context,
+            Vector2 origin,
+            Vector2 direction,
+            float range,
+            float arcDegrees)
         {
-            HackerAttackRangeIndicator indicator = Create();
+            HackerAttackRangeIndicator indicator = Create(context);
+            if (indicator == null)
+            {
+                return null;
+            }
+
             indicator.SetArc(origin, direction, range, arcDegrees);
             return indicator;
         }
 
         internal static HackerAttackRangeIndicator CreateEllipse(
+            BossActionContext context,
             Vector2 center,
             float majorRadius,
             float minorRadius,
             float angleDegrees)
         {
-            HackerAttackRangeIndicator indicator = Create();
+            HackerAttackRangeIndicator indicator = Create(context);
+            if (indicator == null)
+            {
+                return null;
+            }
+
             indicator.SetEllipse(center, majorRadius, minorRadius, angleDegrees);
             return indicator;
         }
 
-        internal static HackerAttackRangeIndicator CreateThrust(Vector2 origin, Vector2 direction, float length, float width)
+        internal static HackerAttackRangeIndicator CreateThrust(
+            BossActionContext context,
+            Vector2 origin,
+            Vector2 direction,
+            float length,
+            float width,
+            bool ignoreVisibilitySetting = false)
         {
-            HackerAttackRangeIndicator indicator = Create();
+            HackerAttackRangeIndicator indicator = Create(context, ignoreVisibilitySetting);
+            if (indicator == null)
+            {
+                return null;
+            }
+
             indicator.SetThrust(origin, direction, length, width);
             return indicator;
         }
 
-        internal static HackerAttackRangeIndicator CreateCircle(Vector2 center, float radius)
+        internal static HackerAttackRangeIndicator CreateCircle(BossActionContext context, Vector2 center, float radius)
         {
-            HackerAttackRangeIndicator indicator = Create();
+            HackerAttackRangeIndicator indicator = Create(context);
+            if (indicator == null)
+            {
+                return null;
+            }
+
             indicator.SetCircle(center, radius);
             return indicator;
         }
 
-        internal static HackerAttackRangeIndicator CreateRing(Vector2 center, float innerRadius, float outerRadius)
+        internal static HackerAttackRangeIndicator CreateRing(
+            BossActionContext context,
+            Vector2 center,
+            float innerRadius,
+            float outerRadius)
         {
-            HackerAttackRangeIndicator indicator = Create();
+            HackerAttackRangeIndicator indicator = Create(context);
+            if (indicator == null)
+            {
+                return null;
+            }
+
             indicator.SetRing(center, innerRadius, outerRadius);
             return indicator;
         }
@@ -129,6 +170,19 @@ namespace Week14.Enemy
             UpdateThrustFill(origin, direction, length, width);
         }
 
+        internal void SetThrustCenterFillProgress(
+            Vector2 origin,
+            Vector2 direction,
+            float length,
+            float width,
+            float progress)
+        {
+            direction = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            float clampedProgress = Mathf.Clamp01(progress);
+            UpdateThrustFill(origin, direction, length, width, clampedProgress);
+            SetFillVisible(clampedProgress > 0f);
+        }
+
         internal void SetEllipse(Vector2 center, float majorRadius, float minorRadius, float angleDegrees)
         {
             float major = Mathf.Max(0.05f, majorRadius);
@@ -180,12 +234,25 @@ namespace Week14.Enemy
             UpdateRingFill(center, inner, outer);
         }
 
-        private static HackerAttackRangeIndicator Create()
+        private static HackerAttackRangeIndicator Create(
+            BossActionContext context,
+            bool ignoreVisibilitySetting = false)
         {
+            if (!ShouldCreate(context, ignoreVisibilitySetting))
+            {
+                return null;
+            }
+
             GameObject indicatorObject = new("HackerAttackRangeIndicator");
             HackerAttackRangeIndicator indicator = indicatorObject.AddComponent<HackerAttackRangeIndicator>();
             indicator.CreateLine();
             return indicator;
+        }
+
+        private static bool ShouldCreate(BossActionContext context, bool ignoreVisibilitySetting)
+        {
+            return context?.Boss is HackerBossAI hacker
+                && (ignoreVisibilitySetting || hacker.ShowsAttackRangeIndicators);
         }
 
         private void CreateLine()
@@ -330,14 +397,20 @@ namespace Week14.Enemy
             fillMesh.RecalculateBounds();
         }
 
-        private void UpdateThrustFill(Vector2 origin, Vector2 direction, float length, float width)
+        private void UpdateThrustFill(
+            Vector2 origin,
+            Vector2 direction,
+            float length,
+            float width,
+            float centerFillProgress = 1f)
         {
             if (fillMesh == null)
             {
                 return;
             }
 
-            Vector2 perpendicular = new Vector2(-direction.y, direction.x) * Mathf.Max(0.025f, width * 0.5f);
+            float halfWidth = Mathf.Max(0.025f, width * 0.5f) * Mathf.Clamp01(centerFillProgress);
+            Vector2 perpendicular = new Vector2(-direction.y, direction.x) * halfWidth;
             Vector2 end = origin + direction * Mathf.Max(0.05f, length);
             Vector3[] vertices =
             {

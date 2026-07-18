@@ -52,40 +52,33 @@ namespace Week14.Enemy
             }
 
             hacker.FaceHorizontalDirection(direction.x);
-            context.SetFacingLocked(true);
-            try
-            {
-                Vector2 perpendicular = new Vector2(-direction.y, direction.x);
-                Vector3 landingPosition = throwOrigin.position
-                    + (Vector3)(direction * landingDistance)
-                    + (Vector3)(perpendicular * landingSideOffset);
-                landingPosition.z = throwOrigin.position.z;
+            using IDisposable facingLock = context.AcquireFacingLock();
+            Vector2 perpendicular = new Vector2(-direction.y, direction.x);
+            Vector3 landingPosition = throwOrigin.position
+                + (Vector3)(direction * landingDistance)
+                + (Vector3)(perpendicular * landingSideOffset);
+            landingPosition.z = throwOrigin.position.z;
 
-                float playerAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Quaternion rotation = Quaternion.Euler(0f, 0f, playerAngle + 180f);
-                GameObject weaponObject = UnityEngine.Object.Instantiate(throwingWeaponPrefab, throwOrigin.position, rotation);
-                HackerThrownWeapon weapon = weaponObject.GetComponent<HackerThrownWeapon>();
-                if (weapon == null)
-                {
-                    weapon = weaponObject.AddComponent<HackerThrownWeapon>();
-                }
-
-                float flightSeconds = GetFlightSeconds(throwOrigin.position, landingPosition);
-                weapon.ThrowTo(
-                    hacker,
-                    HackerThrownWeaponType.ThrowingWeapon,
-                    throwOrigin.position,
-                    landingPosition,
-                    flightSeconds,
-                    flightSpeedCurve,
-                    equippedWeapon);
-                yield return HackerMeleeAttackAction.Wait(context, flightSeconds);
-                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
-            }
-            finally
+            float playerAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.Euler(0f, 0f, playerAngle + 180f);
+            GameObject weaponObject = UnityEngine.Object.Instantiate(throwingWeaponPrefab, throwOrigin.position, rotation);
+            HackerThrownWeapon weapon = weaponObject.GetComponent<HackerThrownWeapon>();
+            if (weapon == null)
             {
-                context.SetFacingLocked(false);
+                weapon = weaponObject.AddComponent<HackerThrownWeapon>();
             }
+
+            float flightSeconds = GetFlightSeconds(throwOrigin.position, landingPosition);
+            weapon.ThrowTo(
+                hacker,
+                HackerThrownWeaponType.ThrowingWeapon,
+                throwOrigin.position,
+                landingPosition,
+                flightSeconds,
+                flightSpeedCurve,
+                equippedWeapon);
+            yield return HackerMeleeAttackAction.Wait(context, flightSeconds);
+            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
 
         public bool TryGetDurationSeconds(out float seconds)

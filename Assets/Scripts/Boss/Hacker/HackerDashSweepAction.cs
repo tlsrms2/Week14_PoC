@@ -74,12 +74,12 @@ namespace Week14.Enemy
                     Vector2 center = (Vector2)context.Boss.transform.position + direction * sweepForwardOffset;
                     if (rangeIndicator == null)
                     {
-                        rangeIndicator = HackerAttackRangeIndicator.CreateCircle(center, sweepRadius);
-                        rangeIndicator.SetHologramStyle(isHologram);
+                        rangeIndicator = HackerAttackRangeIndicator.CreateCircle(context, center, sweepRadius);
+                        rangeIndicator?.SetHologramStyle(isHologram);
                     }
                     else
                     {
-                        rangeIndicator.SetCircle(center, sweepRadius);
+                        rangeIndicator?.SetCircle(center, sweepRadius);
                     }
 
                     elapsed += EnemyTimeScale.DeltaTime;
@@ -104,12 +104,12 @@ namespace Week14.Enemy
                 context.RestartAnimationTrigger(sweepTriggerName);
                 attackEffect?.Play(context);
                 Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
-                context.SetFacingLocked(true);
+                using IDisposable facingLock = context.AcquireFacingLock();
                 context.SetDashing(true);
                 Vector2 sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
-                rangeIndicator = HackerAttackRangeIndicator.CreateCircle(sweepCenter, sweepRadius);
-                rangeIndicator.SetHologramStyle(isHologram);
-                rangeIndicator.SetFillVisible(true);
+                rangeIndicator = HackerAttackRangeIndicator.CreateCircle(context, sweepCenter, sweepRadius);
+                rangeIndicator?.SetHologramStyle(isHologram);
+                rangeIndicator?.SetFillVisible(true);
                 HashSet<PlayerCombatController> hitPlayers = new();
                 elapsed = 0f;
                 while (elapsed < dashSeconds)
@@ -125,18 +125,17 @@ namespace Week14.Enemy
                     float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
                     context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
                     sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
-                    rangeIndicator.SetCircle(sweepCenter, sweepRadius);
+                    rangeIndicator?.SetCircle(sweepCenter, sweepRadius);
                     ApplySweepDamage(context, dashDirection, hitPlayers);
                     elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
                 }
 
                 context.SetDashing(false);
-                context.SetFacingLocked(false);
                 context.SetAnimationBool(IsDashSweepingAnimationParameter, false);
                 context.Stop();
                 sweepCenter = (Vector2)context.Boss.transform.position + dashDirection * sweepForwardOffset;
-                rangeIndicator.SetCircle(sweepCenter, sweepRadius);
+                rangeIndicator?.SetCircle(sweepCenter, sweepRadius);
                 ApplySweepDamage(context, dashDirection, hitPlayers);
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 rangeIndicator = null;
@@ -147,7 +146,6 @@ namespace Week14.Enemy
                 parryBait?.Dispose();
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 context.SetDashing(false);
-                context.SetFacingLocked(false);
                 context.SetAnimationBool(IsDashSweepingAnimationParameter, false);
                 context.Stop();
             }

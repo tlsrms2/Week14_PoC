@@ -54,6 +54,9 @@ namespace Week14.Enemy
             }
 
             hacker.SetLastFireWireResult(HackerFireWireResult.Missed);
+            Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+            hacker.FaceHorizontalDirection(facingDirection.x);
+            using IDisposable facingLock = context.AcquireFacingLock();
             bool playerGrabbed = false;
             try
             {
