@@ -19,26 +19,24 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 500000000000
-    m_Localized: "전투에서 1번이상 피해를
-      받지 않고 승리하세요."
+    m_Localized: "\uC804\uD22C\uC5D0\uC11C 1\uBC88 \uC774\uC0C1 \uD53C\uD574\uB97C
+      \uBC1B\uC9C0 \uC54A\uACE0 \uC2B9\uB9AC\uD558\uC138\uC694."
     m_Metadata:
       m_Items: []
   - m_Id: 502600000000
-    m_Localized: "페이즈 2에 3번 진입하세요."
+    m_Localized: "\uD398\uC774\uC988 2\uC5D0 3\uBC88 \uC9C4\uC785\uD558\uC138\uC694."
     m_Metadata:
       m_Items: []
   - m_Id: 505200000000
-    m_Localized: "페이즈 2에 6번 진입하세요."
+    m_Localized: "\uD398\uC774\uC988 2\uC5D0 6\uBC88 \uC9C4\uC785\uD558\uC138\uC694."
     m_Metadata:
       m_Items: []
   - m_Id: 507800000000
-    m_Localized: "전투에서 1:30 내에
-      승리하세요."
+    m_Localized: "\uC804\uD22C\uC5D0\uC11C 1:30 \uB0B4\uC5D0 \uC2B9\uB9AC\uD558\uC138\uC694."
     m_Metadata:
       m_Items: []
   - m_Id: 510400000000
-    m_Localized: "전투에서 2:00 내에
-      승리하세요."
+    m_Localized: "\uC804\uD22C\uC5D0\uC11C 2:00 \uB0B4\uC5D0 \uC2B9\uB9AC\uD558\uC138\uC694."
     m_Metadata:
       m_Items: []
   references:
