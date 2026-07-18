@@ -57,6 +57,9 @@ namespace Week14.Enemy
         [Header("Hacking")]
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
+        [Header("Attack Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
+
         [Header("Recall")]
         [SerializeField, Min(0.05f)] private float recallSeconds = 0.55f;
         [SerializeField] private float recallRotationDegrees = 360f;
@@ -139,6 +142,7 @@ namespace Week14.Enemy
                 }
 
                 context.PlayAnimationTrigger(orbitTriggerName);
+                attackEffect?.Play(context);
 
                 Vector2 advanceDirection = context.GetDirectionToPlayer(hacker.transform.position);
                 float directionMultiplier = rotationDirection == HackerWeaponOrbitDirection.Clockwise ? -1f : 1f;

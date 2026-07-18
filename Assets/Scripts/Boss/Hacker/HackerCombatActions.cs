@@ -22,6 +22,27 @@ namespace Week14.Enemy
         DiagonalPlayer
     }
 
+    internal static class HackerDashEffect
+    {
+        internal static void Play(
+            BossActionPrefabEffectSettings effect,
+            BossActionContext context,
+            Vector2 dashDirection,
+            string spawnPointPathOverride = null)
+        {
+            if (effect == null)
+            {
+                return;
+            }
+
+            float worldYRotation = dashDirection.x > 0.0001f ? 180f : 0f;
+            effect.PlayAtWorldYRotation(
+                context,
+                spawnPointPathOverride,
+                worldYRotation);
+        }
+    }
+
     [Serializable]
     public sealed class HackerMeleeAttackAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
     {
@@ -311,29 +332,14 @@ namespace Week14.Enemy
             SpawnEffectFollowMode followMode,
             bool followRotation)
         {
-            if (!isEnabled || effectPrefab == null)
-            {
-                return;
-            }
-
-            Transform spawnPoint = context.GetBossChildTransform(spawnPointPath);
-            if (spawnPoint == null)
-            {
-                return;
-            }
-
-            Vector3 position = spawnPoint.TransformPoint(
-                new Vector3(positionOffset.x, positionOffset.y, 0f));
-            Transform followTarget = followMode == SpawnEffectFollowMode.FollowSpawnPoint
-                ? spawnPoint
-                : null;
-
-            ProjectileVfx.PlayPrefab(
+            BossActionPrefabEffectSettings.Play(
+                context,
+                isEnabled,
                 effectPrefab,
-                position,
-                spawnPoint.rotation,
-                followTarget,
-                Mathf.Max(0.01f, scale),
+                spawnPointPath,
+                positionOffset,
+                scale,
+                followMode,
                 followRotation);
         }
 
@@ -600,6 +606,12 @@ namespace Week14.Enemy
 
         [SerializeField, Min(1)] private int hackingPerHit = 1;
 
+        [Header("Attack Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
+
+        [Header("Parried Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings parriedEffect = new();
+
         protected float ThrustLength => length;
 
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
@@ -666,6 +678,7 @@ namespace Week14.Enemy
             context.PlayAnimationTrigger(ReleaseAnimationTrigger);
             if (wasParried)
             {
+                parriedEffect?.Play(context);
                 context.SetFacingLocked(false);
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 context.Stop();
@@ -678,6 +691,7 @@ namespace Week14.Enemy
 
             HashSet<PlayerCombatController> hitPlayers = new();
             rangeIndicator?.SetFillVisible(true);
+            attackEffect?.Play(context);
             ApplyLineDamage(context, context.Boss.transform.position, direction, hitPlayers);
             IEnumerator payload = CreateThrustPayload(context, direction);
             if (payload != null)
@@ -881,6 +895,13 @@ namespace Week14.Enemy
         [SerializeField, Range(1f, 89f)] private float playerDiagonalAngleDegrees = 45f;
         [SerializeField, Min(0f)] private float diagonalIntervalSeconds = 0.15f;
 
+        [Header("Dash Effect")]
+        [SerializeField] private BossActionPrefabEffectSettings dashEffect = new();
+        [Tooltip("접근 및 Diagonal Player 대시에서 사용할 이펙트 생성 지점입니다. 비어 있으면 Dash Effect의 Spawn Point Path를 사용합니다.")]
+        [SerializeField, BossGraphBossChildPath] private string approachDashEffectSpawnPointPath;
+        [Tooltip("후퇴 대시에서 사용할 이펙트 생성 지점입니다. 비어 있으면 Dash Effect의 Spawn Point Path를 사용합니다.")]
+        [SerializeField, BossGraphBossChildPath] private string retreatDashEffectSpawnPointPath;
+
         [Header("Hologram")]
         [SerializeField, Range(-180f, 180f)] private float hologramRetreatAngleDegrees = 30f;
         [FormerlySerializedAs("hologramRetreatFollowDelaySeconds")]
@@ -981,6 +1002,14 @@ namespace Week14.Enemy
             }
 
             dashDirection = dashDirection.sqrMagnitude > 0.0001f ? dashDirection.normalized : Vector2.right;
+            string effectSpawnPointPath = direction == HackerDashDirection.Retreat
+                ? retreatDashEffectSpawnPointPath
+                : approachDashEffectSpawnPointPath;
+            HackerDashEffect.Play(
+                dashEffect,
+                context,
+                dashDirection,
+                effectSpawnPointPath);
             float elapsed = 0f;
             while (elapsed < dashSeconds)
             {

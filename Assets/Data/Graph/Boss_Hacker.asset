@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035237
     sequences: []
-    editorPosition: {x: -9, y: -117}
+    editorPosition: {x: -9, y: -118}
   - nodeId: Melee Attack4
     nodeGuid: 0a1ddc51308d46f29f305ead640a889c
     nodeKind: 0
@@ -1591,7 +1591,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559097
     sequences: []
-    editorPosition: {x: -330, y: 1614}
+    editorPosition: {x: -330, y: 1613}
   - nodeId: Fire Glitch Projectile6
     nodeGuid: 4ba71e808d984c31b87436bddb892b93
     nodeKind: 0
@@ -3972,7 +3972,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: P1-3
+  debugForcedPatternId: P1-2
   references:
     version: 2
     RefIds:
@@ -4178,6 +4178,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939136707035214
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4267,6 +4283,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 1
+          effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+          spawnPointPath: EffectPrefabPoint/DashDust/Retreat
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 0
+          followRotation: 1
+        approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
+        retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -4574,16 +4600,16 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.35
         hackingPerHit: 1
-        spawnEffectOnAttack: 0
-        attackEffectPrefab: {fileID: 0}
-        attackEffectSpawnPointPath: 
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
         attackEffectPositionOffset: {x: 0, y: 0}
         attackEffectScale: 1
         attackEffectFollowMode: 1
         attackEffectFollowRotation: 1
-        spawnEffectOnParried: 0
-        parriedEffectPrefab: {fileID: 0}
-        parriedEffectSpawnPointPath: 
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 6306429664291524553, guid: be20adbdcb76a764a9871aeab891d074, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutTTB
         parriedEffectPositionOffset: {x: 0, y: 0}
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
@@ -4698,7 +4724,7 @@ MonoBehaviour:
         attackEffectFollowRotation: 1
         spawnEffectOnParried: 1
         parriedEffectPrefab: {fileID: 6306429664291524553, guid: be20adbdcb76a764a9871aeab891d074, type: 3}
-        parriedEffectSpawnPointPath: EffectPrefabPoint/CutUTB
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutTTB
         parriedEffectPositionOffset: {x: 0, y: 0}
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
@@ -4937,7 +4963,7 @@ MonoBehaviour:
         attackEffectFollowRotation: 1
         spawnEffectOnParried: 1
         parriedEffectPrefab: {fileID: 6306429664291524553, guid: be20adbdcb76a764a9871aeab891d074, type: 3}
-        parriedEffectSpawnPointPath: EffectPrefabPoint/CutUTB
+        parriedEffectSpawnPointPath: EffectPrefabPoint/CutTTB
         parriedEffectPositionOffset: {x: 0, y: 0}
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
@@ -5220,14 +5246,15 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -5271,9 +5298,19 @@ MonoBehaviour:
         windupSeconds: 1.5
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
-        chargeLineWidth: 0.075
+        chargeLineWidth: 0.065
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 8
+        chargeConvergenceLineWidth: 0.05
+        chargeConvergenceMaxLengthRatio: 0.55
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.3
+        chargeConvergenceMaxRepeatDelaySeconds: 0.22
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -5307,9 +5344,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 1.5
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -5359,6 +5396,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -5404,7 +5442,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 0
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -5447,6 +5495,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -5492,7 +5541,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 0
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -5535,6 +5594,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -5580,7 +5640,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 0
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -5656,6 +5726,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939146365468752
@@ -5727,6 +5805,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939146365468753
@@ -5765,6 +5851,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -5810,7 +5897,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -5886,6 +5983,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939146365468755
@@ -5924,6 +6029,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -5969,7 +6075,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -6012,6 +6128,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -6057,7 +6174,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -6153,6 +6280,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -6243,6 +6380,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939186800656586
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6445,6 +6598,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 0}
@@ -6785,6 +6954,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 1
         recoverySeconds: 0.1
@@ -6939,6 +7118,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -6984,7 +7164,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -7862,6 +8052,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -8144,6 +8344,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 0}
@@ -8264,6 +8480,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -8309,7 +8526,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -8352,6 +8579,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -8397,7 +8625,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -8440,6 +8678,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -8485,7 +8724,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -8581,6 +8830,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 2
         recoverySeconds: 0.1
@@ -8657,6 +8916,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939186800656662
@@ -8728,6 +8995,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939186800656663
@@ -8839,6 +9114,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939186800656665
@@ -8910,6 +9193,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939186800656666
@@ -8948,6 +9239,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -8993,7 +9285,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -9069,6 +9371,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939186800656668
@@ -9107,6 +9417,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -9152,7 +9463,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -9195,6 +9516,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -9240,7 +9562,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -9343,6 +9675,14 @@ MonoBehaviour:
         hitRadius: 0.2
         damage: 1
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939186800656671
@@ -9728,6 +10068,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -9773,7 +10114,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -9816,6 +10167,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -9861,7 +10213,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -9904,6 +10266,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -9949,7 +10312,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -9992,6 +10365,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -10037,7 +10411,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -10183,6 +10567,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 2
         recoverySeconds: 0.1
@@ -10222,6 +10616,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -10267,7 +10662,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -10413,6 +10818,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 1.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 0.5
         recoverySeconds: 0
@@ -10452,6 +10867,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -10497,7 +10913,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -10573,6 +10999,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939186800656698
@@ -10611,6 +11045,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -10656,7 +11091,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -10764,6 +11209,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 3
         recoverySeconds: 0.2
@@ -10862,6 +11317,22 @@ MonoBehaviour:
         damage: 1
         recoverySeconds: 0
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939193110200402
       type: {class: HackerFireWireBranchAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -11165,6 +11636,14 @@ MonoBehaviour:
         hitRadius: 0.2
         damage: 1
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939193110200418
@@ -11451,6 +11930,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 0}
@@ -11787,6 +12282,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 1
         recoverySeconds: 0.1
@@ -11941,6 +12446,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -11986,7 +12492,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -12856,6 +13372,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -13138,6 +13664,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         projectileName: "\uC77C\uBC18\uD0C4"
         projectile:
           prefab: {fileID: 0}
@@ -13244,6 +13786,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559020
@@ -13315,6 +13865,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559021
@@ -13453,6 +14011,14 @@ MonoBehaviour:
         hitRadius: 0.2
         damage: 1
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939200651559023
@@ -13765,6 +14331,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559029
@@ -13836,6 +14410,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559030
@@ -13874,6 +14456,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -13919,7 +14502,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -13995,6 +14588,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559032
@@ -14033,6 +14634,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -14078,7 +14680,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -14121,6 +14733,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -14166,7 +14779,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -14341,6 +14964,22 @@ MonoBehaviour:
         damage: 1
         recoverySeconds: 0
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939200651559038
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -14592,6 +15231,22 @@ MonoBehaviour:
         damage: 1
         recoverySeconds: 0
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939200651559044
       type: {class: HackerFireWireBranchAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -14891,6 +15546,14 @@ MonoBehaviour:
         hitRadius: 0.2
         damage: 1
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939200651559066
@@ -15025,6 +15688,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -15264,6 +15937,22 @@ MonoBehaviour:
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.5
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939200651559084
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15333,6 +16022,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559085
@@ -15404,6 +16101,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559086
@@ -15542,6 +16247,14 @@ MonoBehaviour:
         hitRadius: 0.2
         damage: 1
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939200651559088
@@ -15735,6 +16448,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -15780,7 +16494,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -15823,6 +16547,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -15868,7 +16593,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -15911,6 +16646,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -15956,7 +16692,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -15999,6 +16745,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -16044,7 +16791,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -16140,6 +16897,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.2
@@ -16182,6 +16949,22 @@ MonoBehaviour:
         damage: 1
         recoverySeconds: 0
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939200651559096
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16477,6 +17260,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 2
         recoverySeconds: 0.1
@@ -16516,6 +17309,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -16561,7 +17355,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
         chargeColor: {r: 1, g: 0, b: 0, a: 0.9}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -16707,6 +17511,16 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 1.15
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        approachDashEffectSpawnPointPath: 
+        retreatDashEffectSpawnPointPath: 
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 0.5
         recoverySeconds: 0
@@ -16746,6 +17560,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -16791,7 +17606,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -16867,6 +17692,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         damageRadius: 1
         damage: 1
     - rid: 6489939200651559106
@@ -16905,6 +17738,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
         enableSlightHoming: 1
         homingSeconds: 0.8
         homingTurnDegreesPerSecond: 40
@@ -16950,7 +17784,17 @@ MonoBehaviour:
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
         chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
         chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 24
+        chargeConvergenceLineWidth: 0.025
+        chargeConvergenceMaxLengthRatio: 0.35
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.24
+        chargeConvergenceMaxRepeatDelaySeconds: 0.08
         aimIndicatorLength: 12
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
@@ -17052,6 +17896,22 @@ MonoBehaviour:
         damage: 1
         recoverySeconds: 0
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        parriedEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
     - rid: 6489939200651559114
       type: {class: HackerFireWireBranchAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -17777,6 +18637,14 @@ MonoBehaviour:
         hitRadius: 0.2
         damage: 1
         hackingPerHit: 1
+        attackEffect:
+          enabled: 0
+          effectPrefab: {fileID: 0}
+          spawnPointPath: 
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
     - rid: 6489939249705517356
