@@ -739,6 +739,30 @@ MonoBehaviour:
     m_Key: InGame_04-Act2_08_Text
     m_Metadata:
       m_Items: []
+  - m_Id: 1826406394068992
+    m_Key: TutorialDialogueSet_Suppress_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789248
+    m_Key: TutorialDialogueSet_30_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789249
+    m_Key: TutorialDialogueSet_31_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789250
+    m_Key: TutorialDialogueSet_32_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789251
+    m_Key: TutorialDialogueSet_32_ExplanationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789252
+    m_Key: TutorialDialogueSet_32_ExplanationText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

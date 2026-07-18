@@ -90,6 +90,7 @@ namespace Week14.Combat
             delayPathIndicatorUntilLaunch = false;
             preserveLaunchDirectionOnLaunch = false;
             ignorePlayerCollision = false;
+            ignoresWallsOverride = false;
             externalMotionDriven = false;
             reflectedByPlayer = false;
             reflectedDamage = 0;
@@ -297,6 +298,7 @@ namespace Week14.Combat
             interceptPending = false;
             preserveLaunchDirectionOnLaunch = false;
             ignorePlayerCollision = false;
+            ignoresWallsOverride = false;
             externalMotionDriven = false;
             reflectedByPlayer = false;
             reflectedDamage = 0;
