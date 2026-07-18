@@ -593,6 +593,11 @@ namespace Week14.Combat
             DamageReceiver.ApplyExternalKnockback(direction, speed, staggerSeconds);
         }
 
+        public void FlashBodyColor(Color color, float seconds)
+        {
+            DamageReceiver.FlashBodyColor(color, seconds);
+        }
+
         public void SetHackerParryVisual(bool hacked)
         {
             Rig.ResolveMouseParryReticleReference();

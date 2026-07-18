@@ -4023,8 +4023,8 @@ MonoBehaviour:
     toNodeId: Fire Sequential Sweep43
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
-  debugForcedPatternId: P5-1
+  debugForceSinglePattern: 0
+  debugForcedPatternId: P9
   references:
     version: 2
     RefIds:
@@ -4126,7 +4126,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4229,7 +4228,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -4375,7 +4373,6 @@ MonoBehaviour:
         wireOriginPath: MuzzlePoints/WirePoint
         wireTravelSeconds: 0.12
         grabSeconds: 0.65
-        hackingPerHit: 1
         recoverySeconds: 0.25
     - rid: 6489939136707035224
       type: {class: HackerScatterWireNodeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4401,7 +4398,6 @@ MonoBehaviour:
         randomizeStartAngle: 1
         minAngleDistanceDegrees: 25
         fireInterval: 0.08
-        hackingPerHit: 1
         recoverySeconds: 0.25
     - rid: 6489939136707035227
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -4510,7 +4506,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4625,7 +4620,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4740,7 +4734,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4864,7 +4857,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4979,7 +4971,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -5103,7 +5094,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Lift
@@ -5227,7 +5217,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -6405,7 +6394,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -6520,7 +6508,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -6623,7 +6610,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -6784,7 +6770,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7091,7 +7076,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7352,7 +7336,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7476,7 +7459,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7591,7 +7573,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7715,7 +7696,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Lift
@@ -7839,7 +7819,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -8189,7 +8168,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -8378,7 +8356,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -9706,7 +9683,6 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
@@ -9824,7 +9800,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -11064,7 +11039,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 0
         grabSeconds: 0.65
-        hackingPerHit: 1
         playerWallSearchRadius: 5
         minimumWallDistance: 7
         fireCount: 3
@@ -11150,7 +11124,6 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: f6c12ff604c944a4cbf28fa8ab2b6905, type: 3}
@@ -11277,7 +11250,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -11431,7 +11403,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -11534,7 +11505,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        hackingPerHit: 1
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -11695,7 +11665,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -11998,7 +11967,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12255,7 +12223,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12379,7 +12346,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12494,7 +12460,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12618,7 +12583,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Lift
@@ -12742,7 +12706,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -13088,7 +13051,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -13277,7 +13239,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
-        hackingPerHit: 1
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -13621,7 +13582,6 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
@@ -13739,7 +13699,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -14574,7 +14533,6 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
-        hackingPerHit: 1
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -14599,7 +14557,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 1
         grabSeconds: 0.65
-        hackingPerHit: 1
         playerWallSearchRadius: 50
         minimumWallDistance: 7
         fireCount: 1
@@ -14755,7 +14712,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 0
         grabSeconds: 0.65
-        hackingPerHit: 1
         playerWallSearchRadius: 5
         minimumWallDistance: 7
         fireCount: 3
@@ -14841,7 +14797,6 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: f6c12ff604c944a4cbf28fa8ab2b6905, type: 3}
@@ -14968,7 +14923,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -15185,7 +15139,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -15331,7 +15284,6 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -15638,7 +15590,6 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
@@ -15756,7 +15707,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -16142,7 +16092,6 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 5739915608494964311, guid: 576074dacf19e854c968577b9c88aea2, type: 3}
@@ -16167,7 +16116,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 1
         grabSeconds: 0.65
-        hackingPerHit: 1
         playerWallSearchRadius: 50
         minimumWallDistance: 7
         fireCount: 1
@@ -17003,7 +16951,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 0
         grabSeconds: 0.65
-        hackingPerHit: 1
         playerWallSearchRadius: 5
         minimumWallDistance: 7
         fireCount: 3
@@ -17089,7 +17036,6 @@ MonoBehaviour:
         sweepForwardOffset: 0
         damage: 1
         recoverySeconds: 0
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: f6c12ff604c944a4cbf28fa8ab2b6905, type: 3}
@@ -17216,7 +17162,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -17637,7 +17582,6 @@ MonoBehaviour:
         wireAngleDegrees: 100
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
-        hackingPerHit: 1
         recoverySeconds: 0.2
     - rid: 6489939249705517353
       type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -17796,7 +17740,6 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
@@ -17979,7 +17922,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -18005,7 +17947,6 @@ MonoBehaviour:
         wireAngleDegrees: 100
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
-        hackingPerHit: 1
         recoverySeconds: 0.2
     - rid: 6489939269342724370
       type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -18164,7 +18105,6 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
@@ -18347,7 +18287,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -18416,7 +18355,6 @@ MonoBehaviour:
         wireAngleDegrees: 100
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
-        hackingPerHit: 1
         recoverySeconds: 0.2
     - rid: 6489939269342724381
       type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -18575,7 +18513,6 @@ MonoBehaviour:
         safeInnerRadius: 4.5
         hitRadius: 0.2
         damage: 1
-        hackingPerHit: 1
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
@@ -18758,7 +18695,6 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
-        hackingPerHit: 1
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -18936,5 +18872,4 @@ MonoBehaviour:
         randomizeStartAngle: 1
         minAngleDistanceDegrees: 25
         fireInterval: 0.08
-        hackingPerHit: 1
         recoverySeconds: 0.25

@@ -33,14 +33,13 @@ namespace Week14.Enemy
         private float grabSeconds;
         private float pullSpeed;
         private float pullStopDistance;
-        private int hackingPerHit;
         private float expiresAt;
         private float wallAttachedSeconds;
         private float attachedExpiresAt;
         private bool canGrabPlayer;
         private bool persistsAfterPlayerHit;
         private bool persistsAfterWallHit;
-        private bool appliesHackingOnTouch;
+        private bool appliesLifetimePenaltyOnTouch;
         private bool dissolvesOnPlayerTouch;
         private bool wasTouchingPlayer;
         private PlayerCombatController forcedGrabTarget;
@@ -67,7 +66,6 @@ namespace Week14.Enemy
             float flightSpeed,
             float flightSeconds,
             float grabSeconds,
-            int hackingPerHit,
             float pullSpeed,
             float pullStopDistance,
             bool nextPersistsAfterPlayerHit,
@@ -91,7 +89,6 @@ namespace Week14.Enemy
                 color);
             wire.canGrabPlayer = true;
             wire.grabSeconds = Mathf.Max(0.05f, grabSeconds);
-            wire.hackingPerHit = Mathf.Max(1, hackingPerHit);
             wire.pullSpeed = Mathf.Max(0.01f, pullSpeed);
             wire.pullStopDistance = Mathf.Max(0f, pullStopDistance);
             return wire;
@@ -103,7 +100,6 @@ namespace Week14.Enemy
             PlayerCombatController target,
             float flightSeconds,
             float grabSeconds,
-            int hackingPerHit,
             float pullSpeed,
             float pullStopDistance,
             float width,
@@ -120,7 +116,6 @@ namespace Week14.Enemy
                 Mathf.Max(0.01f, speed),
                 flightSeconds,
                 grabSeconds,
-                hackingPerHit,
                 pullSpeed,
                 pullStopDistance,
                 true,
@@ -144,7 +139,6 @@ namespace Week14.Enemy
             float width,
             float hitRadius,
             Color color,
-            int hackingPerTouch = 0,
             bool dissolveOnPlayerTouch = false)
         {
             HackerWire wire = Create(
@@ -159,8 +153,7 @@ namespace Week14.Enemy
                 width,
                 hitRadius,
                 color);
-            wire.hackingPerHit = Mathf.Max(0, hackingPerTouch);
-            wire.appliesHackingOnTouch = wire.hackingPerHit > 0;
+            wire.appliesLifetimePenaltyOnTouch = true;
             wire.dissolvesOnPlayerTouch = dissolveOnPlayerTouch;
             return wire;
         }
@@ -372,7 +365,7 @@ namespace Week14.Enemy
         {
             playerAnchor = player.transform;
             endpoint = playerAnchor.position;
-            owner?.ApplyHacking(player, hackingPerHit);
+            owner?.ApplyWireLifetimePenalty(player);
             Transform pullTarget = owner != null ? owner.transform : anchor;
             HackerWireGrab.Apply(player, pullTarget, grabSeconds, pullSpeed, pullStopDistance);
             Resolve(HackerWireResolution.PlayerGrabbed);
@@ -388,7 +381,7 @@ namespace Week14.Enemy
 
         private void TickPlayerWireContact()
         {
-            if (state == WireState.Dissolving || !appliesHackingOnTouch || hackingPerHit <= 0 || owner == null)
+            if (state == WireState.Dissolving || !appliesLifetimePenaltyOnTouch || owner == null)
             {
                 wasTouchingPlayer = false;
                 return;
@@ -398,7 +391,7 @@ namespace Week14.Enemy
             bool isTouchingPlayer = player != null && IsTouchingWire(player);
             if (isTouchingPlayer && !wasTouchingPlayer)
             {
-                owner.ApplyHacking(player, hackingPerHit);
+                owner.ApplyWireLifetimePenalty(player);
                 if (dissolvesOnPlayerTouch)
                 {
                     BeginDissolve();

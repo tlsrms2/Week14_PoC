@@ -10,12 +10,10 @@ namespace Week14.Enemy
 
         private bool isAttached;
         private int wallLayer = -1;
-        private HackerBossAI hackingOwner;
-        private int hackingPerHit = 1;
+        private HackerBossAI wireOwner;
 
         public bool IsAttached => isAttached;
-        internal HackerBossAI HackingOwner => hackingOwner ?? OwnerBoss as HackerBossAI;
-        internal int HackingPerHit => hackingPerHit;
+        internal HackerBossAI WireOwner => wireOwner ?? OwnerBoss as HackerBossAI;
 
         protected override void OnProjectileAwake()
         {
@@ -26,8 +24,7 @@ namespace Week14.Enemy
         protected override void OnProjectileInitialized()
         {
             isAttached = false;
-            hackingOwner = OwnerBoss as HackerBossAI;
-            hackingPerHit = 1;
+            wireOwner = OwnerBoss as HackerBossAI;
             ConfigurePlayerCollisionIgnored(true);
             ConfigureInterceptable(true);
         }
@@ -42,10 +39,9 @@ namespace Week14.Enemy
             return false;
         }
 
-        internal void ConfigureWireHacking(HackerBossAI nextOwner, int nextHackingPerHit)
+        internal void ConfigureWireOwner(HackerBossAI nextOwner)
         {
-            hackingOwner = nextOwner ?? OwnerBoss as HackerBossAI;
-            hackingPerHit = Mathf.Max(1, nextHackingPerHit);
+            wireOwner = nextOwner ?? OwnerBoss as HackerBossAI;
         }
 
         protected override void OnTriggerEnter2D(Collider2D other)
@@ -93,7 +89,7 @@ namespace Week14.Enemy
                 HackerWireNodeProjectile other = AttachedNodes[i];
                 if (other != null
                     && other != node
-                    && other.HackingOwner == node.HackingOwner)
+                    && other.WireOwner == node.WireOwner)
                 {
                     HackerWireNodeLinkVisual.Create(other, node);
                 }
@@ -108,7 +104,7 @@ namespace Week14.Enemy
             for (int i = AttachedNodes.Count - 1; i >= 0; i--)
             {
                 HackerWireNodeProjectile node = AttachedNodes[i];
-                if (node != null && node.HackingOwner == owner)
+                if (node != null && node.WireOwner == owner)
                 {
                     node.DestroyFromOwner();
                 }
@@ -145,8 +141,7 @@ namespace Week14.Enemy
 
         private HackerWireNodeProjectile first;
         private HackerWireNodeProjectile second;
-        private HackerBossAI hackingOwner;
-        private int hackingPerHit;
+        private HackerBossAI wireOwner;
         private float hitRadius;
         private bool playerWasTouching;
         private LineRenderer line;
@@ -165,10 +160,9 @@ namespace Week14.Enemy
             HackerWireNodeLinkVisual link = linkObject.AddComponent<HackerWireNodeLinkVisual>();
             link.first = first;
             link.second = second;
-            link.hackingOwner = second.HackingOwner ?? first.HackingOwner;
-            link.hackingPerHit = Mathf.Max(1, second.HackingPerHit);
-            link.hitRadius = link.hackingOwner != null
-                ? Mathf.Max(0.01f, link.hackingOwner.WireSettings.HitRadius)
+            link.wireOwner = second.WireOwner ?? first.WireOwner;
+            link.hitRadius = link.wireOwner != null
+                ? Mathf.Max(0.01f, link.wireOwner.WireSettings.HitRadius)
                 : 0.08f;
             link.firstPosition = first.transform.position;
             link.secondPosition = second.transform.position;
@@ -200,9 +194,9 @@ namespace Week14.Enemy
 
             PlayerCombatController player = PlayerCombatController.Active;
             bool isTouching = IsPlayerTouchingWire(player);
-            if (isTouching && !playerWasTouching && hackingOwner != null)
+            if (isTouching && !playerWasTouching && wireOwner != null)
             {
-                hackingOwner.ApplyHacking(player, hackingPerHit);
+                wireOwner.ApplyWireLifetimePenalty(player);
             }
 
             playerWasTouching = isTouching;

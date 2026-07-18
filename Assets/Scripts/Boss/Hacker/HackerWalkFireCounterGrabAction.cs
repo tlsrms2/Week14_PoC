@@ -29,7 +29,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string wireOriginPath;
         [SerializeField, Min(0.01f)] private float wireTravelSeconds = 0.12f;
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
 
         [Header("Recovery")]
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
@@ -150,7 +149,6 @@ namespace Week14.Enemy
                 player,
                 wireTravelSeconds,
                 grabSeconds,
-                hackingPerHit,
                 wireSettings.PullSpeed,
                 wireSettings.PullStopDistance,
                 wireSettings.Width,

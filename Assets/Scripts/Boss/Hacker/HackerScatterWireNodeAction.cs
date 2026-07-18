@@ -19,7 +19,6 @@ namespace Week14.Enemy
         [SerializeField] private bool randomizeStartAngle;
         [SerializeField, Min(0f)] private float minAngleDistanceDegrees = 25f;
         [SerializeField, Min(0f)] private float fireInterval = 0.08f;
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -65,7 +64,7 @@ namespace Week14.Enemy
                 EnemyProjectile projectile = context.FireProjectile(settings, origin, direction, 0f, projectileName: nodeProjectileName);
                 if (projectile is HackerWireNodeProjectile wireNode)
                 {
-                    wireNode.ConfigureWireHacking(context.Boss as HackerBossAI, hackingPerHit);
+                    wireNode.ConfigureWireOwner(context.Boss as HackerBossAI);
                 }
 
                 if (i < count - 1)

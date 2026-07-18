@@ -80,9 +80,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
 
-        [Header("Hacking")]
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
-
         [Header("Attack Effect")]
         [SerializeField] private bool spawnEffectOnAttack;
         [SerializeField] private GameObject attackEffectPrefab;
@@ -269,13 +266,7 @@ namespace Week14.Enemy
 
                 hitPlayers.Add(player);
 
-                if (player.ReceiveAttack(damage, ellipseCenter, majorAxis))
-                {
-                    if (context.Boss is HackerBossAI hacker)
-                    {
-                        hacker.ApplyHacking(player, hackingPerHit);
-                    }
-                }
+                player.ReceiveAttack(damage, ellipseCenter, majorAxis);
             }
         }
 
@@ -604,8 +595,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
 
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
-
         [Header("Attack Effect")]
         [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
 
@@ -754,10 +743,6 @@ namespace Week14.Enemy
                     if (player.ReceiveAttack(damage, origin, direction))
                     {
                         player.ApplyExternalKnockback(direction, knockbackSpeed, knockbackStaggerSeconds);
-                        if (context.Boss is HackerBossAI hacker)
-                        {
-                            hacker.ApplyHacking(player, hackingPerHit);
-                        }
                     }
                 }
             }

@@ -27,9 +27,6 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int damage = 1;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.3f;
 
-        [Header("Hacking")]
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
-
         [Header("Attack Effect")]
         [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
 
@@ -169,11 +166,7 @@ namespace Week14.Enemy
                 PlayerCombatController player = hits[i].GetComponentInParent<PlayerCombatController>();
                 if (player != null && hitPlayers.Add(player))
                 {
-                    if (player.ReceiveAttack(damage, center, direction)
-                        && context.Boss is HackerBossAI hacker)
-                    {
-                        hacker.ApplyHacking(player, hackingPerHit);
-                    }
+                    player.ReceiveAttack(damage, center, direction);
                 }
             }
         }

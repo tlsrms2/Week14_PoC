@@ -27,7 +27,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 2f;
         [SerializeField] private HackerFireWireTargetMode targetMode;
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
         [SerializeField, Min(0.05f)] private float playerWallSearchRadius = 5f;
         [SerializeField, Min(0f)] private float minimumWallDistance = 2f;
         [SerializeField, Min(1)] private int fireCount = 1;
@@ -187,7 +186,6 @@ namespace Week14.Enemy
                     wireSettings.FlightSpeed,
                     maxFlightSeconds,
                     grabSeconds,
-                    hackingPerHit,
                     wireSettings.PullSpeed,
                     wireSettings.PullStopDistance,
                     true,

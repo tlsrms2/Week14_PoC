@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Combat;
+using Week14.UI;
 
 namespace Week14.Enemy
 {
@@ -41,9 +42,12 @@ namespace Week14.Enemy
             : null;
         protected override bool RotatesBodyToPlayer => false;
 
-        [Header("Hacking")]
-        [SerializeField, Min(1)] private int hackingMax = 5;
-        [SerializeField, Min(0.1f)] private float parryDisableSeconds = 3f;
+        [Header("Wire Bullet Lifetime Penalty")]
+        [SerializeField, Min(0f)] private float wireLifetimeReductionSeconds = 2.5f;
+        [SerializeField, Min(0f)] private float wireMinimumRemainingSeconds = 1f;
+        [SerializeField] private Color wireContactFlashColor = new(0.2f, 0.7f, 1f, 1f);
+        [SerializeField, Min(0f)] private float wireContactFlashSeconds = 0.18f;
+        [SerializeField, Range(0f, 1f)] private float wireBulletShakeIntensity = 0.4f;
 
         [Header("Wire Settings")]
         [SerializeField] private HackerWireSettings wireSettings = new();
@@ -111,13 +115,19 @@ namespace Week14.Enemy
             return consecutive;
         }
 
-        internal virtual void ApplyHacking(PlayerCombatController player, int hackingPerHit)
+        internal virtual void ApplyWireLifetimePenalty(PlayerCombatController player)
         {
-            HackerPlayerHackStatus.Apply(
-                player,
-                Mathf.Max(1, hackingPerHit),
-                Mathf.Max(1, hackingMax),
-                Mathf.Max(0.1f, parryDisableSeconds));
+            if (player == null)
+            {
+                return;
+            }
+
+            PlayerHP.ShortenCurrentBulletLifetimes(
+                player.Bullets,
+                Mathf.Max(0f, wireLifetimeReductionSeconds),
+                Mathf.Max(0f, wireMinimumRemainingSeconds));
+            PlayerHP.PlayBulletShake(player.Bullets, wireBulletShakeIntensity);
+            player.FlashBodyColor(wireContactFlashColor, wireContactFlashSeconds);
         }
 
         internal void BeginGunWalkCounterParry()
@@ -219,10 +229,6 @@ namespace Week14.Enemy
         {
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
             HackerWireNodeProjectile.ClearAttachedNodes(this);
-            if (this is not HackerHologramBoss)
-            {
-                HackerPlayerHackStatus.Clear(PlayerCombatController.Active);
-            }
 
             int hologramStartPhase = Mathf.Max(1, hologramStartPhaseNumber);
             if (phaseNumber < hologramStartPhase)

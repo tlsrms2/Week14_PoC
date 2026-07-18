@@ -58,9 +58,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float hitRadius = 0.2f;
         [SerializeField, Min(1)] private int damage = 1;
 
-        [Header("Hacking")]
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
-
         [Header("Attack Effect")]
         [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
 
@@ -444,10 +441,8 @@ namespace Week14.Enemy
             }
 
             playerHit = true;
-            if (player.ReceiveAttack(damage, center, toPlayer.normalized))
-            {
-                hacker.ApplyHacking(player, hackingPerHit);
-            }
+            player.ReceiveAttack(damage, center, toPlayer.normalized);
+            hacker.ApplyWireLifetimePenalty(player);
         }
 
         private static float GetCurveProgress(AnimationCurve curve, float progress)

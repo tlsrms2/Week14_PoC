@@ -336,15 +336,15 @@ namespace Week14.Enemy
             ? sourceBoss.ShowsAttackRangeIndicators
             : base.ShowsAttackRangeIndicators;
 
-        internal override void ApplyHacking(PlayerCombatController player, int hackingPerHit)
+        internal override void ApplyWireLifetimePenalty(PlayerCombatController player)
         {
             if (sourceBoss != null)
             {
-                sourceBoss.ApplyHacking(player, hackingPerHit);
+                sourceBoss.ApplyWireLifetimePenalty(player);
                 return;
             }
 
-            base.ApplyHacking(player, hackingPerHit);
+            base.ApplyWireLifetimePenalty(player);
         }
 
         public override bool ReceivePlayerHit(

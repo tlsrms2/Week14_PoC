@@ -19,6 +19,8 @@ namespace Week14.Combat
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
         private float bodyHitColorEndsAt;
+        private float temporaryBodyColorEndsAt;
+        private Color temporaryBodyColor;
         private MaterialPropertyBlock bodyFlashPropertyBlock;
 
         internal PlayerDamageReceiver(PlayerCombatController.PlayerCombatContext context)
@@ -127,11 +129,14 @@ namespace Week14.Combat
             }
 
             BulletGauge bullets = context.Bullets;
-            bool flashing = Time.time < bodyHitColorEndsAt;
-            Color? overrideColor = !flashing && bullets != null && bullets.IsEmpty
-                ? config.PlayerBodyBulletEmptyColor
-                : null;
-            float flashAmount = flashing ? 1f : 0f;
+            bool temporaryColorActive = Time.time < temporaryBodyColorEndsAt;
+            bool hitColorActive = !temporaryColorActive && Time.time < bodyHitColorEndsAt;
+            Color? overrideColor = temporaryColorActive
+                ? temporaryBodyColor
+                : !hitColorActive && bullets != null && bullets.IsEmpty
+                    ? config.PlayerBodyBulletEmptyColor
+                    : null;
+            float flashAmount = hitColorActive ? 1f : 0f;
 
             bodyFlashPropertyBlock ??= new MaterialPropertyBlock();
 
@@ -155,6 +160,18 @@ namespace Week14.Combat
                 bodyFlashPropertyBlock.SetFloat(FlashAmountId, flashAmount);
                 renderer.SetPropertyBlock(bodyFlashPropertyBlock);
             }
+        }
+
+        internal void FlashBodyColor(Color color, float seconds)
+        {
+            if (seconds <= 0f)
+            {
+                return;
+            }
+
+            temporaryBodyColor = color;
+            temporaryBodyColorEndsAt = Time.time + seconds;
+            UpdateBodyColor(true);
         }
 
         internal void StopHitStop()
