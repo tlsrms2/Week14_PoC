@@ -42,6 +42,7 @@ namespace Week14.Combat
             rewardLifetimeOverride = null;
             ConfigureParryLockOnIndicatorColor(null);
             ConfigurePlayerCollisionIgnored(true);
+            ConfigureIgnoresWalls(true);
             SetChargeGaugeVisible(true);
         }
 
@@ -233,6 +234,7 @@ namespace Week14.Combat
                     0f,
                     0f);
                 reward?.ConfigurePlayerCollisionIgnored(true);
+                reward?.ConfigureIgnoresWalls(true);
             }
         }
 
