@@ -601,7 +601,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803316
     sequences: []
-    editorPosition: {x: 2329, y: 968}
+    editorPosition: {x: 2329, y: 966}
   - nodeId: Fire Radial Emission13
     nodeGuid: 209ac40892174b85b4f88bb5a64757c5
     nodeKind: 0
@@ -628,7 +628,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803321
     sequences: []
-    editorPosition: {x: 2564, y: 968}
+    editorPosition: {x: 2567, y: 966}
   - nodeId: Boss Dash7
     nodeGuid: 76fa2786eaf646b4bc235cf8c3cb1c2d
     nodeKind: 1
@@ -637,7 +637,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803322
     sequences: []
-    editorPosition: {x: 3009, y: 968}
+    editorPosition: {x: 3008, y: 966}
   - nodeId: Teleport Around Player8
     nodeGuid: 5e12056e78564b36af7f8c37914f2b83
     nodeKind: 0
@@ -646,7 +646,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803323
     sequences: []
-    editorPosition: {x: 2804, y: 968}
+    editorPosition: {x: 2803, y: 966}
   - nodeId: Fire Next Clone Shooter12
     nodeGuid: 49c70a3dafd240589944e676b92a8b7f
     nodeKind: 0
@@ -655,7 +655,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803324
     sequences: []
-    editorPosition: {x: 2988, y: 1153}
+    editorPosition: {x: 2987, y: 1151}
   - nodeId: Wait8
     nodeGuid: 49f218bffdde463ab79283b87b90536c
     nodeKind: 3
