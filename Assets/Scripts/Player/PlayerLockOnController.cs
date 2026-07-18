@@ -152,6 +152,14 @@ namespace Week14.Combat
                 return false;
             }
 
+            AssassinBossAI assassin = targetHealth != null
+                ? targetHealth.GetComponent<AssassinBossAI>() ?? targetHealth.GetComponentInParent<AssassinBossAI>()
+                : null;
+            if (assassin != null && !assassin.IsPlayerTargetable)
+            {
+                return false;
+            }
+
             TutorialTrainingEnemy tutorialEnemy = targetHealth != null
                 ? targetHealth.GetComponent<TutorialTrainingEnemy>() ?? targetHealth.GetComponentInParent<TutorialTrainingEnemy>()
                 : null;

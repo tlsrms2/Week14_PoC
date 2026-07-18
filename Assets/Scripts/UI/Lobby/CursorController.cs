@@ -25,6 +25,15 @@ public class CursorController : MonoBehaviour
     private static int forceCustomCursorVisibleCount;
     private static int forceCursorHiddenCount;
 
+    // 설명 패널(ShowExplanation)이 열려 있는 동안에만 forceCursorHiddenCount(보스 인트로 등)를 이기도록
+    // 하는 전용 카운터. 대화창 진행 입력 등 다른 forceCustomCursorVisibleCount 사용처는 여전히
+    // 강제-숨김에 가려져야 하므로 이 카운터를 공유하지 않는다.
+    private static int explanationHiddenOverrideCount;
+
+    private static bool IsHiddenLocked => forceCursorHiddenCount > 0 && explanationHiddenOverrideCount <= 0;
+
+    public static bool IsForceVisible => forceCustomCursorVisibleCount > 0 && !IsHiddenLocked;
+
     public static void PushForceCustomCursorVisible()
     {
         forceCustomCursorVisibleCount++;
@@ -35,11 +44,26 @@ public class CursorController : MonoBehaviour
         forceCustomCursorVisibleCount = Mathf.Max(0, forceCustomCursorVisibleCount - 1);
     }
 
+    public static void PushExplanationCursorVisible()
+    {
+        forceCustomCursorVisibleCount++;
+        explanationHiddenOverrideCount++;
+    }
+
+    public static void PopExplanationCursorVisible()
+    {
+        forceCustomCursorVisibleCount = Mathf.Max(0, forceCustomCursorVisibleCount - 1);
+        explanationHiddenOverrideCount = Mathf.Max(0, explanationHiddenOverrideCount - 1);
+    }
+
     public static void PushForceCursorHidden()
     {
         forceCursorHiddenCount++;
-        instance?.SetCustomCursorVisible(false, false);
-        ApplyOsCursorVisible(false);
+        if (explanationHiddenOverrideCount <= 0)
+        {
+            instance?.SetCustomCursorVisible(false, false);
+            ApplyOsCursorVisible(false);
+        }
     }
 
     public static void PopForceCursorHidden()
@@ -90,7 +114,7 @@ public class CursorController : MonoBehaviour
 
     private void Update()
     {
-        if (forceCursorHiddenCount > 0)
+        if (IsHiddenLocked)
         {
             SetCustomCursorVisible(false, false);
             ApplyOsCursorVisible(false);

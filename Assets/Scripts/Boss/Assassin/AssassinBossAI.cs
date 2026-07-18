@@ -59,6 +59,9 @@ namespace Week14.Enemy
         private float stealthEntryDelayRemaining;
         private bool teleportVisibilityOverrideActive;
         private bool stealthVisibilityOverrideActive;
+        private bool isHiddenFromMap;
+        private Collider2D[] hiddenFromMapColliders;
+        private bool[] hiddenFromMapColliderPreviousEnabled;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
         private Animator[] walkAnimators;
@@ -87,6 +90,10 @@ namespace Week14.Enemy
 
         internal bool IsStealthed => isStealthed;
         internal bool HasEnoughDaggersForRecallPattern => spawnedDaggers.Count >= daggerCountForRecallPattern;
+
+        // AssassinTeleportAroundPlayerAction의 hiddenSeconds 구간처럼 "맵에서 완전히 사라진" 상태일 때
+        // false가 되어, 락온/피격 판정에서 이 보스를 완전히 제외시키는 데 쓰인다.
+        internal bool IsPlayerTargetable => !isHiddenFromMap;
 
         protected override void OnCombatStarted()
         {
@@ -131,6 +138,7 @@ namespace Week14.Enemy
             pendingStealthChange = false;
             teleportVisibilityOverrideActive = false;
             stealthVisibilityOverrideActive = false;
+            SetHiddenFromMap(false);
 
             if (!isStealthed)
             {
@@ -165,6 +173,7 @@ namespace Week14.Enemy
             ClearAssassinDaggers();
             ClearActiveClones();
             ApplyWalkState(false, true);
+            SetHiddenFromMap(false);
             base.OnBossDied();
         }
 
@@ -173,6 +182,7 @@ namespace Week14.Enemy
             ClearAssassinDaggers();
             ClearActiveClones();
             ApplyWalkState(false, true);
+            SetHiddenFromMap(false);
             base.OnDisable();
         }
 
@@ -337,6 +347,50 @@ namespace Week14.Enemy
         {
             teleportVisibilityOverrideActive = false;
             yield return WaitSecondsScaled(fadeSeconds);
+        }
+
+        // 콜라이더를 전부 꺼서 총알/근접공격이 아예 맞지 않게 만든다(락온 제외는 IsPlayerTargetable로 처리).
+        // 꺼두기 전 각 콜라이더의 enabled 상태를 저장해뒀다가 그대로 복원하므로, 다른 이유로 이미
+        // 꺼져 있던 콜라이더를 실수로 켜버리는 일은 없다. 코루틴이 중간에 끊겨도(사망, 비활성화, 처형
+        // 진입 등) 절대 콜라이더가 계속 꺼진 채로 남지 않도록 OnBossDied/OnDisable/
+        // ForceExitStealthImmediate에서도 강제로 false 호출해 복원한다.
+        internal void SetHiddenFromMap(bool hidden)
+        {
+            if (hidden == isHiddenFromMap)
+            {
+                return;
+            }
+
+            isHiddenFromMap = hidden;
+
+            if (hidden)
+            {
+                hiddenFromMapColliders = GetComponentsInChildren<Collider2D>(true);
+                hiddenFromMapColliderPreviousEnabled = new bool[hiddenFromMapColliders.Length];
+                for (int i = 0; i < hiddenFromMapColliders.Length; i++)
+                {
+                    hiddenFromMapColliderPreviousEnabled[i] = hiddenFromMapColliders[i].enabled;
+                    hiddenFromMapColliders[i].enabled = false;
+                }
+
+                return;
+            }
+
+            if (hiddenFromMapColliders == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < hiddenFromMapColliders.Length; i++)
+            {
+                if (hiddenFromMapColliders[i] != null)
+                {
+                    hiddenFromMapColliders[i].enabled = hiddenFromMapColliderPreviousEnabled[i];
+                }
+            }
+
+            hiddenFromMapColliders = null;
+            hiddenFromMapColliderPreviousEnabled = null;
         }
 
         private static IEnumerator WaitSecondsScaled(float seconds)

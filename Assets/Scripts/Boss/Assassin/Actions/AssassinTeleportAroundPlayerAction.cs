@@ -37,7 +37,11 @@ namespace Week14.Enemy
 
             if (hiddenSeconds > 0f)
             {
+                // 이 구간(hiddenSeconds) 동안은 보스가 맵에서 아예 사라진 것으로 취급한다 —
+                // 콜라이더를 꺼서 총알/근접공격이 안 맞고, 락온 대상에서도 제외된다.
+                assassin.SetHiddenFromMap(true);
                 yield return context.WaitSeconds(hiddenSeconds);
+                assassin.SetHiddenFromMap(false);
             }
 
             assassin.TeleportImmediate(destination);

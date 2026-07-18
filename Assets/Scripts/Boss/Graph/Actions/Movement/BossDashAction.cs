@@ -37,10 +37,22 @@ namespace Week14.Enemy
         [Tooltip("궤적 표시에 사용할 스프라이트입니다. 비워두면 궤적 VFX를 표시하지 않습니다.")]
         [SerializeField] private Sprite trajectorySprite;
         [SerializeField, Min(0.01f)] private float trajectoryWidth = 0.3f;
+        [Tooltip("배경(전체 사거리) 폭 방향 그라데이션의 중심선(밝은 쪽) 색입니다.")]
+        [SerializeField] private Color trajectoryBackgroundInnerColor = new Color(1f, 1f, 1f, 0.05f);
+        [Tooltip("배경(전체 사거리) 폭 방향 그라데이션의 좌우 가장자리(어두운 쪽) 색입니다.")]
         [SerializeField] private Color trajectoryBackgroundColor = new Color(1f, 1f, 1f, 0.15f);
+        [Tooltip("Fill(진행률) 폭 방향 그라데이션의 중심선(밝은 쪽) 색입니다.")]
+        [SerializeField] private Color trajectoryFillInnerColor = new Color(1f, 0.4f, 0.1f, 0.15f);
+        [Tooltip("Fill(진행률) 폭 방향 그라데이션의 좌우 가장자리(어두운 쪽) 색입니다.")]
         [SerializeField] private Color trajectoryFillColor = new Color(1f, 0.4f, 0.1f, 0.6f);
+        [Tooltip("폭 방향 그라데이션에서 중심부가 얼마나 넓게 밝게 유지되다가 가장자리에서 급격히 어두워질지 정하는 지수입니다. " +
+            "1이면 중심에서 가장자리까지 균일한 선형 변화, 값이 클수록 중심부가 더 넓고 평평하게 밝게 유지되다가 가장자리 근처에서만 급격히 어두워집니다.")]
+        [SerializeField, Min(1f)] private float trajectoryGradientFalloffPower = 3f;
         [Tooltip("스프라이트 렌더러 Sorting Order입니다.")]
         [SerializeField] private int trajectorySortingOrder = 5;
+        [Tooltip("실제 이동 거리(ComputeDashDistance)에 이 값만큼 더해서 인디케이터만 더 길게 표시합니다. " +
+            "실제 대쉬 이동 거리에는 영향을 주지 않는 순수 표시용 여유값입니다.")]
+        [SerializeField, Min(0f)] private float trajectoryExtraLength = 0f;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -58,7 +70,7 @@ namespace Week14.Enemy
             float nextSmokeAt = Time.time;
             Vector2 dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
 
-            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx();
+            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(ComputeDashDistance() + trajectoryExtraLength);
             if (trajectoryVfx != null)
             {
                 context.RegisterTransientVisual(trajectoryVfx.gameObject);
@@ -147,7 +159,7 @@ namespace Week14.Enemy
             return seconds > 0f;
         }
 
-        private BossDashTrajectoryVfx SpawnTrajectoryVfx()
+        private BossDashTrajectoryVfx SpawnTrajectoryVfx(float indicatorLength)
         {
             if (trajectorySprite == null)
             {
@@ -156,11 +168,33 @@ namespace Week14.Enemy
 
             return BossDashTrajectoryVfx.Spawn(
                 trajectorySprite,
-                dashSpeed * dashDuration,
+                indicatorLength,
                 trajectoryWidth,
+                trajectoryBackgroundInnerColor,
                 trajectoryBackgroundColor,
+                trajectoryFillInnerColor,
                 trajectoryFillColor,
-                trajectorySortingOrder);
+                trajectorySortingOrder,
+                trajectoryGradientFalloffPower);
+        }
+
+        // speedCurve가 등속(1)이 아니면 dashSpeed * dashDuration은 실제 이동 거리와 다르므로,
+        // 커브를 적분해 실제로 이동할 거리를 근사한다. 대쉬 1회당 한 번만 호출됨.
+        private float ComputeDashDistance()
+        {
+            const int sampleCount = 32;
+            float sum = 0f;
+            float prev = Mathf.Max(0f, speedCurve.Evaluate(0f));
+            for (int i = 1; i <= sampleCount; i++)
+            {
+                float t = i / (float)sampleCount;
+                float curr = Mathf.Max(0f, speedCurve.Evaluate(t));
+                sum += (prev + curr) * 0.5f;
+                prev = curr;
+            }
+
+            float curveIntegral = sum / sampleCount;
+            return dashSpeed * dashDuration * curveIntegral;
         }
 
         private static Vector2 RotateTowards(Vector2 current, Vector2 target, float maxDegreesDelta)

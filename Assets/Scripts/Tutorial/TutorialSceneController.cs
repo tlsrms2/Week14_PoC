@@ -963,7 +963,7 @@ namespace Week14.Tutorial
                 return;
             }
 
-            CursorController.PushForceCustomCursorVisible();
+            CursorController.PushExplanationCursorVisible();
             PlayerCombatController.PushMouseParryReticleSuppression();
             explanationCursorPushed = true;
         }
@@ -975,7 +975,7 @@ namespace Week14.Tutorial
                 return;
             }
 
-            CursorController.PopForceCustomCursorVisible();
+            CursorController.PopExplanationCursorVisible();
             PlayerCombatController.PopMouseParryReticleSuppression();
             explanationCursorPushed = false;
         }

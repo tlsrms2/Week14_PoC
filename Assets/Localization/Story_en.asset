@@ -869,11 +869,6 @@ MonoBehaviour:
       is consumed when shooting.
     m_Metadata:
       m_Items: []
-  - m_Id: 739877813547008
-    m_Localized: However, damage to the body can be invalidated, but shock and pain
-      cannot be alleviated, so please refer to it.
-    m_Metadata:
-      m_Items: []
   - m_Id: 1108486769008640
     m_Localized: '[ Objective ]'
     m_Metadata:

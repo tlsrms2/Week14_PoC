@@ -3439,6 +3439,9 @@ MonoBehaviour:
   speakerText: {fileID: 122370247}
   dialogueText: {fileID: 627334934}
   charactersPerSecond: 25
+  advancePromptImage: {fileID: 0}
+  advancePromptBlinkSeconds: 0.65
+  advancePromptMinAlpha: 0.15
 --- !u!1 &953067549
 GameObject:
   m_ObjectHideFlags: 0
@@ -5645,7 +5648,7 @@ MonoBehaviour:
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2070142802
