@@ -2707,6 +2707,14 @@ PrefabInstance:
       propertyPath: conductingCompleteEffectOffset.y
       value: -0.32
       objectReference: {fileID: 0}
+    - target: {fileID: 439299506971469662, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439299506971469662, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 1249039353325914764, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_SortingLayer
       value: 5
@@ -2766,6 +2774,22 @@ PrefabInstance:
     - target: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_Name
       value: Boss_DronePilot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657559110451891335, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657559110451891335, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483780566694509113, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483780566694509113, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8837883821217332569, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: m_SortingLayer

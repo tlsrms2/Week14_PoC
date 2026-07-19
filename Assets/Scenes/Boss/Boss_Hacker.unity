@@ -2567,6 +2567,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss_Hacker
       objectReference: {fileID: 0}
+    - target: {fileID: 5626993334888473901, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5626993334888473901, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 6735452240196518299, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_SortingLayer
       value: 5
@@ -2574,6 +2582,22 @@ PrefabInstance:
     - target: {fileID: 6735452240196518299, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_SortingLayerID
       value: 547352579
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031931205387098201, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031931205387098201, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360286854126495715, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360286854126495715, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 8044641919718089452, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.y
