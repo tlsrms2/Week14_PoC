@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Combat;
@@ -13,7 +14,8 @@ namespace Week14.Tutorial
         ForcedHitPractice,
         ParryPractice,
         DodgePractice,
-        Duel
+        Duel,
+        SuppressionPractice
     }
 
     [DisallowMultipleComponent]
@@ -55,6 +57,18 @@ namespace Week14.Tutorial
         [SerializeField] private BossProjectileSettings dodgeProjectile = new();
         [SerializeField, Min(4)] private int dodgeProjectileCount = 12;
         [SerializeField, Min(0f)] private float dodgeFireDelaySeconds = 0.65f;
+        [Tooltip("패턴 억제 연습 단계에서 발사할 미끼탄 프리팹입니다. ParryBullet_Basic(ParryBaitRewardProjectile)을 지정하세요.")]
+        [SerializeField] private BossProjectileSettings suppressionBaitProjectile = new();
+        [Tooltip("패링 성공 시 사방으로 뿌릴 보상탄 개수입니다. 프리팹 기본값을 덮어씁니다.")]
+        [SerializeField, Min(1)] private int suppressionRewardBulletCount = 3;
+        [Tooltip("보상탄이 배치될 원의 반지름입니다.")]
+        [SerializeField, Min(0.01f)] private float suppressionRewardCircleRadius = 1.5f;
+        [Tooltip("보상탄의 지속 시간(초)입니다.")]
+        [SerializeField, Min(0.01f)] private float suppressionRewardLifetime = 2f;
+        [Tooltip("패링 성공 시 그로기(무력화) 상태로 공격을 멈추는 시간(초)입니다.")]
+        [SerializeField, Min(0f)] private float suppressionGroggySeconds = 2f;
+        [Tooltip("패링 실패로 회피 탄막(스킬 회피 튜토리얼과 동일한 패링불가탄 패턴)을 쏜 뒤, 다음 미끼탄을 다시 발사하기까지의 대기 시간(초)입니다.")]
+        [SerializeField, Min(0.1f)] private float suppressionRetryDelaySeconds = 1f;
 
         [Header("Hit Feedback")]
         [SerializeField] private Color hitFlashColor = Color.white;
@@ -93,12 +107,17 @@ namespace Week14.Tutorial
         private bool duelOpeningPatternCompleted;
         private int duelPatternIndex;
         private int duelBurstShotsRemaining;
+        private Coroutine suppressionRoutine;
+        private ParryBaitRewardProjectile activeSuppressionBait;
+        private bool suppressionBaitResolved;
+        private bool suppressionBaitParried;
 
         public Health Health => health;
         public BulletGauge Bullets => bullets;
         public bool IsPlayerTargetable => playerInteractionEnabled && isActive && health != null && !health.IsDead;
         public Color LockOnIndicatorColor => colorSettings != null ? colorSettings.LockOnIndicatorColor : lockOnIndicatorColor;
         public event Action<TutorialTrainingEnemy> Defeated;
+        public event Action BaitSuppressed;
 
         private void Awake()
         {
@@ -118,6 +137,7 @@ namespace Week14.Tutorial
                 health.Died -= HandleDied;
             }
 
+            StopSuppressionRoutine();
             SetLockOnIndicatorVisible(false);
             StopBody();
         }
@@ -155,7 +175,6 @@ namespace Week14.Tutorial
             if (!ShouldMove())
             {
                 StopBody();
-                Face((Vector2)target.position - (Vector2)transform.position);
                 return;
             }
 
@@ -164,12 +183,14 @@ namespace Week14.Tutorial
 
         private void LateUpdate()
         {
+            UpdateFacingSprite();
             UpdateLockOnIndicator();
         }
 
         public void Activate(Transform nextTarget, TutorialTrainingEnemyMode nextMode)
         {
             EnsureReferences();
+            StopSuppressionRoutine();
             target = nextTarget;
             mode = nextMode;
             playerInteractionEnabled = true;
@@ -182,11 +203,17 @@ namespace Week14.Tutorial
             ResetDuelPattern();
             nextFireAt = Time.time + GetInitialFireDelaySeconds();
             nextContactDamageAt = 0f;
+
+            if (mode == TutorialTrainingEnemyMode.SuppressionPractice)
+            {
+                StartSuppressionRoutine();
+            }
         }
 
         public void Deactivate()
         {
             isActive = false;
+            StopSuppressionRoutine();
             SetPlayerInteractionEnabled(false);
             SetLockOnIndicatorVisible(false);
             StopBody();
@@ -358,13 +385,11 @@ namespace Week14.Tutorial
             if (offset.sqrMagnitude <= safeStopDistance * safeStopDistance)
             {
                 StopBody();
-                Face(offset);
                 return;
             }
 
             Vector2 direction = offset.normalized;
             body.linearVelocity = GroundMovementConstraint.ClampVelocity(body, direction * moveSpeed);
-            Face(direction);
         }
 
         private void TryFire()
@@ -408,6 +433,13 @@ namespace Week14.Tutorial
         private void TryFireDuelPattern()
         {
             DuelPattern pattern = GetCurrentDuelPattern();
+
+            if (pattern == DuelPattern.DodgeRadial)
+            {
+                StartDuelSuppressionBait();
+                return;
+            }
+
             BossProjectileSettings settings = ResolveDuelPatternProjectileSettings(pattern);
             if (settings == null || settings.Prefab == null)
             {
@@ -424,6 +456,45 @@ namespace Week14.Tutorial
                 AdvanceDuelPattern();
             }
 
+            nextFireAt = Time.time + GetDuelPatternIntervalSeconds();
+        }
+
+        private void StartDuelSuppressionBait()
+        {
+            nextFireAt = float.PositiveInfinity;
+            StopSuppressionRoutine();
+            suppressionRoutine = StartCoroutine(RunDuelSuppressionBait());
+        }
+
+        private IEnumerator RunDuelSuppressionBait()
+        {
+            FireSuppressionBait();
+
+            if (activeSuppressionBait != null)
+            {
+                suppressionBaitResolved = false;
+                while (!suppressionBaitResolved)
+                {
+                    yield return null;
+                }
+
+                if (suppressionBaitParried)
+                {
+                    yield return new WaitForSeconds(Mathf.Max(0f, suppressionGroggySeconds));
+                }
+                else
+                {
+                    FireSuppressionDodgeVolley();
+                }
+            }
+            else
+            {
+                // 미끼탄 프리팹이 설정되지 않은 경우 기존처럼 회피 탄막만 발사한다.
+                FireSuppressionDodgeVolley();
+            }
+
+            AdvanceDuelPattern();
+            suppressionRoutine = null;
             nextFireAt = Time.time + GetDuelPatternIntervalSeconds();
         }
 
@@ -453,6 +524,131 @@ namespace Week14.Tutorial
             }
 
             SpawnProjectile(settings, origin, direction.normalized, true);
+        }
+
+        private void StartSuppressionRoutine()
+        {
+            StopSuppressionRoutine();
+            suppressionRoutine = StartCoroutine(RunSuppressionLoop());
+        }
+
+        private void StopSuppressionRoutine()
+        {
+            if (suppressionRoutine != null)
+            {
+                StopCoroutine(suppressionRoutine);
+                suppressionRoutine = null;
+            }
+
+            ClearActiveSuppressionBait();
+        }
+
+        private void ClearActiveSuppressionBait()
+        {
+            if (activeSuppressionBait == null)
+            {
+                return;
+            }
+
+            activeSuppressionBait.Destroyed -= HandleSuppressionBaitDestroyed;
+            activeSuppressionBait = null;
+        }
+
+        private IEnumerator RunSuppressionLoop()
+        {
+            yield return new WaitForSeconds(Mathf.Max(0f, dodgeFireDelaySeconds));
+
+            while (isActive && mode == TutorialTrainingEnemyMode.SuppressionPractice)
+            {
+                if (!CanAct())
+                {
+                    yield return null;
+                    continue;
+                }
+
+                FireSuppressionBait();
+                if (activeSuppressionBait == null)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                suppressionBaitResolved = false;
+                while (!suppressionBaitResolved)
+                {
+                    yield return null;
+                }
+
+                if (suppressionBaitParried)
+                {
+                    yield return new WaitForSeconds(Mathf.Max(0f, suppressionGroggySeconds));
+                }
+                else
+                {
+                    FireSuppressionDodgeVolley();
+                    yield return new WaitForSeconds(Mathf.Max(0.1f, suppressionRetryDelaySeconds));
+                }
+            }
+
+            suppressionRoutine = null;
+        }
+
+        private void FireSuppressionBait()
+        {
+            if (suppressionBaitProjectile == null || suppressionBaitProjectile.Prefab == null)
+            {
+                return;
+            }
+
+            Vector3 origin = projectileOrigin != null ? projectileOrigin.position : transform.position;
+            Vector2 direction = (Vector2)target.position - (Vector2)origin;
+            if (direction.sqrMagnitude <= 0.0001f)
+            {
+                direction = Vector2.left;
+            }
+
+            EnemyProjectile fired = SpawnProjectile(suppressionBaitProjectile, origin, direction.normalized, true);
+            if (fired is not ParryBaitRewardProjectile bait)
+            {
+                return;
+            }
+
+            activeSuppressionBait = bait;
+            bait.Destroyed += HandleSuppressionBaitDestroyed;
+        }
+
+        private void FireSuppressionDodgeVolley()
+        {
+            BossProjectileSettings settings = dodgeProjectile != null && dodgeProjectile.Prefab != null
+                ? dodgeProjectile
+                : projectile;
+            if (settings == null || settings.Prefab == null)
+            {
+                return;
+            }
+
+            FireRadialVolley(settings, false);
+        }
+
+        private void HandleSuppressionBaitDestroyed(
+            EnemyProjectile firedProjectile,
+            EnemyProjectileDestroyReason reason,
+            Vector3 _)
+        {
+            if (activeSuppressionBait == null || !ReferenceEquals(firedProjectile, activeSuppressionBait))
+            {
+                return;
+            }
+
+            activeSuppressionBait.Destroyed -= HandleSuppressionBaitDestroyed;
+            activeSuppressionBait = null;
+            suppressionBaitParried = reason == EnemyProjectileDestroyReason.Intercepted;
+            suppressionBaitResolved = true;
+
+            if (suppressionBaitParried)
+            {
+                BaitSuppressed?.Invoke();
+            }
         }
 
         private void FireRadialVolley(BossProjectileSettings settings, bool interceptable)
@@ -508,6 +704,15 @@ namespace Week14.Tutorial
                 settings.AimAtPlayerWhileCharging,
                 settings.AimAtPlayerOnLaunch);
             fired.ConfigureInterceptable(interceptable);
+
+            if (fired is ParryBaitRewardProjectile bait)
+            {
+                bait.ConfigureRewardOverrides(
+                    suppressionRewardBulletCount,
+                    suppressionRewardCircleRadius,
+                    suppressionRewardLifetime);
+            }
+
             return fired;
         }
 
@@ -678,12 +883,20 @@ namespace Week14.Tutorial
             }
         }
 
-        private void Face(Vector2 direction)
+        private void UpdateFacingSprite()
         {
-            if (direction.sqrMagnitude > 0.0001f)
+            if (target == null || bodyRenderers == null)
             {
-                Transform faceRoot = bodyRoot != null ? bodyRoot : transform;
-                faceRoot.right = direction.normalized;
+                return;
+            }
+
+            bool flip = target.position.x < transform.position.x;
+            for (int i = 0; i < bodyRenderers.Length; i++)
+            {
+                if (bodyRenderers[i] != null)
+                {
+                    bodyRenderers[i].flipX = flip;
+                }
             }
         }
 

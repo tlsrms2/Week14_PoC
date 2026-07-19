@@ -74,11 +74,11 @@ namespace Week14.Story
             SetSkipProgress(false, 0f);
         }
 
-        public void ShowLine(string speaker, string text)
+        public void ShowLine(string speaker, string text, string profileSpeaker = null)
         {
             ShowPanel();
             SetAdvancePromptBlinking(false);
-            SetSpeaker(speaker);
+            SetSpeaker(speaker, profileSpeaker);
             SetText(dialogueText, text);
 
             if (dialogueText != null)
@@ -294,7 +294,7 @@ namespace Week14.Story
             advancePromptImage.color = color;
         }
 
-        private void SetSpeaker(string speaker)
+        private void SetSpeaker(string speaker, string profileSpeaker = null)
         {
             bool hasSpeaker = !string.IsNullOrWhiteSpace(speaker);
             if (speakerRoot != null)
@@ -304,7 +304,8 @@ namespace Week14.Story
 
             SetText(speakerText, hasSpeaker ? speaker : string.Empty);
 
-            Sprite profileSprite = hasSpeaker ? ResolveProfileSprite(speaker) : null;
+            string profileKey = !string.IsNullOrWhiteSpace(profileSpeaker) ? profileSpeaker : speaker;
+            Sprite profileSprite = hasSpeaker ? ResolveProfileSprite(profileKey) : null;
             if (profileImage != null)
             {
                 profileImage.sprite = profileSprite;

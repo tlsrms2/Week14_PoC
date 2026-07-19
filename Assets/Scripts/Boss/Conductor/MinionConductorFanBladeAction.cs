@@ -34,6 +34,8 @@ namespace Week14.Enemy
             [SerializeField] private ConductorFanProjectileDirection direction = ConductorFanProjectileDirection.RadialOut;
             [SerializeField] private float angleOffsetDegrees;
             [SerializeField] private List<int> minionNumbers = new();
+            [SerializeField, BossGraphSfxId] private string fireSfxId;
+            [SerializeField, BossGraphSfxId] private string launchSfxId;
 
             public string ProjectileName => projectileName?.Trim();
             public float StartSeconds => Mathf.Max(0f, startSeconds);
@@ -42,6 +44,8 @@ namespace Week14.Enemy
             public ConductorFanProjectileDirection Direction => direction;
             public float AngleOffsetDegrees => angleOffsetDegrees;
             public IReadOnlyList<int> MinionNumbers => minionNumbers;
+            public string FireSfxId => fireSfxId;
+            public string LaunchSfxId => launchSfxId;
         }
 
         [SerializeField] private ConductorFanCenterMode centerMode = ConductorFanCenterMode.PlayerStart;
@@ -258,6 +262,8 @@ namespace Week14.Enemy
                 return;
             }
 
+            bool firedAny = false;
+            EnemyProjectile launchSfxTarget = null;
             for (int i = 0; i < minions.Count; i++)
             {
                 Minion minion = minions[i];
@@ -278,6 +284,16 @@ namespace Week14.Enemy
                 context.PlayOriginBurst(effects, origin);
                 context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
                 context.PlayCameraShakeIfEnabled(effects, direction);
+                firedAny = true;
+                launchSfxTarget ??= firedProjectile;
+            }
+
+            // 이 볼리에 몇 마리가 걸려 동시에 쐈든, 사운드는 볼리당 한 번만 재생한다.
+            // launchSfxId는 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 패링/파괴되면 소리가 안 나게 한다.
+            if (firedAny)
+            {
+                context.PlaySfx(volley.FireSfxId);
+                context.PlaySfxOnLaunch(launchSfxTarget, volley.LaunchSfxId);
             }
         }
 

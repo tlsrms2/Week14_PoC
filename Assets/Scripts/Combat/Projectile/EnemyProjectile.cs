@@ -108,6 +108,7 @@ namespace Week14.Combat
         private bool delayPathIndicatorUntilLaunch;
         private bool preserveLaunchDirectionOnLaunch;
         private bool ignorePlayerCollision;
+        private bool ignoresWallsOverride;
         private bool externalMotionDriven;
         private bool reflectedByPlayer;
         private int reflectedDamage;
@@ -174,7 +175,7 @@ namespace Week14.Combat
             set => ApplyFlightDirection(value);
         }
         protected virtual bool IsHomingProjectile => false;
-        protected virtual bool IgnoresWalls => false;
+        protected virtual bool IgnoresWalls => ignoresWallsOverride;
         public float ChargeProgress01 => projectileChargeSeconds > 0f
             ? 1f - Mathf.Clamp01((chargeEndsAt - Time.time) / projectileChargeSeconds)
             : 1f;
@@ -566,6 +567,11 @@ namespace Week14.Combat
         public void ConfigurePlayerCollisionIgnored(bool ignored)
         {
             ignorePlayerCollision = ignored;
+        }
+
+        public void ConfigureIgnoresWalls(bool ignoreWalls)
+        {
+            ignoresWallsOverride = ignoreWalls;
         }
 
         public void ConfigureExternalMotionDriven(bool driven)

@@ -1004,6 +1004,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.LocationIntroView
   locationName: "\uD6C8\uB828\uC7A5"
   locationNameText: {fileID: 1441807256}
+  localizedLocationName:
+    m_TableReference:
+      m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+    m_TableEntryReference:
+      m_KeyId: 2147990514270208
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   locationIntroFlyObjects:
   - {fileID: 1892401060}
   - {fileID: 408069191}
@@ -1222,6 +1231,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  references:
+    version: 2
+    RefIds: []
 --- !u!225 &117146446
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5050,6 +5062,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6889689407787825621, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7815084971993105136, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
       propertyPath: m_Color.g
       value: 0.32400048
@@ -5701,7 +5717,7 @@ MonoBehaviour:
   trapdoorRight: {fileID: 1770684317}
   underfloor: {fileID: 1543273019}
   trapdoorLowerLocalOffset: {x: 0, y: -3, z: 0}
-  underfloorRaiseLocalOffset: {x: 0, y: 1.962, z: 0}
+  underfloorRaiseLocalOffset: {x: 0, y: 2.462, z: 0}
   trapdoorLowerSeconds: 0.45
   underfloorRaiseSeconds: 0.8
   summonSettleSeconds: 0.15
@@ -5715,6 +5731,7 @@ MonoBehaviour:
   hitGoal: 1
   parryGoal: 3
   skillGoal: 1
+  suppressGoal: 2
   skillAttemptResolveSeconds: 2.5
   references:
     version: 2
@@ -6630,7 +6647,7 @@ Transform:
   m_GameObject: {fileID: 1543273018}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.155, y: -2.88, z: 0}
+  m_LocalPosition: {x: 5.155, y: -3.38, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -9173,11 +9190,11 @@ GameObject:
   - component: {fileID: 2043577108}
   - component: {fileID: 2043577107}
   - component: {fileID: 2043577106}
-  - component: {fileID: 2043577105}
   - component: {fileID: 2043577104}
   - component: {fileID: 2043577103}
   - component: {fileID: 2043577102}
   - component: {fileID: 2043577109}
+  - component: {fileID: 2043577110}
   m_Layer: 6
   m_Name: TutorialEnemy
   m_TagString: Untagged
@@ -9235,6 +9252,23 @@ MonoBehaviour:
     trailWidthMultiplier: 3
   dodgeProjectileCount: 75
   dodgeFireDelaySeconds: 0.65
+  suppressionBaitProjectile:
+    prefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+    bulletDamage: 0
+    chargeSeconds: 0
+    chargeDriftSpeed: 0
+    aimAtPlayerWhileCharging: 0
+    aimAtPlayerOnLaunch: 0
+    speed: 0
+    lifetime: 2
+    radius: 0.12
+    trailSeconds: 0.1
+    trailWidthMultiplier: 3
+  suppressionRewardBulletCount: 3
+  suppressionRewardCircleRadius: 1
+  suppressionRewardLifetime: 2
+  suppressionGroggySeconds: 2
+  suppressionRetryDelaySeconds: 2
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashSeconds: 0.08
   bodyRoot: {fileID: 2043577108}
@@ -9269,42 +9303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb26d3e1e4cbf7c488d372b9878cd439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.Health
---- !u!58 &2043577105
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043577101}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
 --- !u!50 &2043577106
 Rigidbody2D:
   serializedVersion: 5
@@ -9331,7 +9329,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 3
+  m_Constraints: 7
 --- !u!212 &2043577107
 SpriteRenderer:
   serializedVersion: 2
@@ -9381,7 +9379,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -9
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9dc7177bfe9644246b5c923245d1e9c2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9400,9 +9398,9 @@ Transform:
   m_GameObject: {fileID: 2043577101}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.124, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 391582348}
   m_Father: {fileID: 1543273019}
@@ -9485,6 +9483,52 @@ MonoBehaviour:
     textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
     outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
     outlineWidth: 0.1
+--- !u!61 &2043577110
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043577101}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.006304413, y: 0.027668178}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 0.984375}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.47043502, y: 0.519256}
+  m_EdgeRadius: 0
 --- !u!1 &2044555980
 GameObject:
   m_ObjectHideFlags: 0

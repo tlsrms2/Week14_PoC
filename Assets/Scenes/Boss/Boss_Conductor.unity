@@ -1941,6 +1941,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1023516958 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9023042446440157273, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
+  m_PrefabInstance: {fileID: 1023516955}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1119019017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2678,6 +2689,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 261457479}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bossElapsedTimeText
+      value: 
+      objectReference: {fileID: 1023516958}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: minionHitDamageMultiplier
       value: 0
       objectReference: {fileID: 0}
@@ -2739,17 +2754,14 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2044349385}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1569043243}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5683c565365137746b420562d5df4a97, type: 3}
 --- !u!114 &1569043240 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
   m_PrefabInstance: {fileID: 1569043239}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569043242}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b749bb43f86660a40a962c97858932dd, type: 3}
@@ -2760,89 +2772,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2186068290515178274, guid: 5683c565365137746b420562d5df4a97, type: 3}
   m_PrefabInstance: {fileID: 1569043239}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1569043242 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2958469296149594014, guid: 5683c565365137746b420562d5df4a97, type: 3}
-  m_PrefabInstance: {fileID: 1569043239}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1569043243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569043242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7a9f536d2677f44ba975327adb72d71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.FloatingDamageView
-  lifetimeSeconds: 1
-  floatOffset: {x: 0, y: 0.3}
-  canvasScale: 0.01
-  textBoxSize: {x: 2.4, y: 0.8}
-  sortingOrder: 80
-  font: {fileID: 11400000, guid: be779b8214e5f964f9224e869a7082f3, type: 2}
-  alphaCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.78039515
-      value: 0.54459727
-      inSlope: -1.4980786
-      outSlope: -1.4980786
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  format: '{0}'
-  styles:
-  - minDamage: 1
-    fontSize: 6
-    textColor: {r: 0.11965811, g: 1, b: 0, a: 1}
-    outlineColor: {r: 0.38823533, g: 0.7137255, b: 0.34509805, a: 1}
-    outlineWidth: 0.1
-  - minDamage: 2
-    fontSize: 10
-    textColor: {r: 0.49650347, g: 1, b: 0, a: 1}
-    outlineColor: {r: 0.57254905, g: 0.7960785, b: 0.34901962, a: 1}
-    outlineWidth: 0.1
-  - minDamage: 3
-    fontSize: 16
-    textColor: {r: 1, g: 0.86184216, b: 0, a: 1}
-    outlineColor: {r: 0.7960785, g: 0.7294118, b: 0.32156864, a: 1}
-    outlineWidth: 0.1
-  - minDamage: 4
-    fontSize: 24
-    textColor: {r: 1, g: 0.52662724, b: 0, a: 1}
-    outlineColor: {r: 0.7960785, g: 0.54509807, b: 0.26666668, a: 1}
-    outlineWidth: 0.1
-  - minDamage: 5
-    fontSize: 38
-    textColor: {r: 1, g: 0.0064516123, b: 0, a: 1}
-    outlineColor: {r: 0.55, g: 0, b: 0, a: 1}
-    outlineWidth: 0.1
 --- !u!114 &1569121906 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8844359666516434300, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
@@ -3379,31 +3308,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 884424909018282810, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 884424909018282810, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 884424909018282810, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1376734187763868879, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1376734187763868879, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1613180128374150396, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2195461279338371444, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2195461279338371444, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3351740236045858961, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_SortingOrder
@@ -3491,19 +3424,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4502639645030516895, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4502639645030516895, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4502639645030516895, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7333452412212431720, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7625243295146896537, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Name

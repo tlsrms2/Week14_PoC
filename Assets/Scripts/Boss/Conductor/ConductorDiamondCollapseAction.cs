@@ -24,6 +24,8 @@ namespace Week14.Enemy
             [SerializeField, Min(0.01f)] private float nextRadius = 1.5f;
             [SerializeField, Min(0f)] private float firePauseBeforeShrinkSeconds = 0.25f;
             [SerializeField, Min(0.01f)] private float shrinkMoveSeconds = 0.15f;
+            [SerializeField, BossGraphSfxId] private string fireSfxId;
+            [SerializeField, BossGraphSfxId] private string launchSfxId;
 
             public VolleyStage()
             {
@@ -41,6 +43,8 @@ namespace Week14.Enemy
             public float NextRadius => Mathf.Max(0.01f, nextRadius);
             public float FirePauseBeforeShrinkSeconds => Mathf.Max(0f, firePauseBeforeShrinkSeconds);
             public float ShrinkMoveSeconds => Mathf.Max(0.01f, shrinkMoveSeconds);
+            public string FireSfxId => fireSfxId;
+            public string LaunchSfxId => launchSfxId;
         }
 
         [Header("Formation")]
@@ -78,6 +82,8 @@ namespace Week14.Enemy
         [Header("Final Center Shot")]
         [SerializeField, BossGraphProjectileName] private string finalProjectileName = "Default";
         [SerializeField, Min(0f)] private float finalShotDelaySeconds = 0.15f;
+        [SerializeField, BossGraphSfxId] private string finalFireSfxId;
+        [SerializeField, BossGraphSfxId] private string finalLaunchSfxId;
 
         [Header("Boss Reposition")]
         [SerializeField] private bool repositionBossAtPatternStart;
@@ -614,7 +620,7 @@ namespace Week14.Enemy
 
             if (stage.FireSeconds <= 0f || stage.FireInterval <= 0f)
             {
-                FireDiamondVolley(context, host, drones, projectile);
+                FireDiamondVolley(context, host, drones, projectile, stage.FireSfxId, stage.LaunchSfxId);
                 yield break;
             }
 
@@ -630,7 +636,7 @@ namespace Week14.Enemy
 
                 while (elapsed >= nextFireSeconds && nextFireSeconds < stage.FireSeconds)
                 {
-                    FireDiamondVolley(context, host, drones, projectile);
+                    FireDiamondVolley(context, host, drones, projectile, stage.FireSfxId, stage.LaunchSfxId);
                     nextFireSeconds += stage.FireInterval;
                 }
 
@@ -643,8 +649,12 @@ namespace Week14.Enemy
             BossActionContext context,
             IMinionPatternHost host,
             IReadOnlyList<Minion> drones,
-            BossProjectileSettings projectile)
+            BossProjectileSettings projectile,
+            string fireSfxId,
+            string launchSfxId)
         {
+            bool firedAny = false;
+            EnemyProjectile launchSfxTarget = null;
             for (int i = 0; i < DroneCount; i++)
             {
                 Minion source = drones[i];
@@ -656,8 +666,15 @@ namespace Week14.Enemy
 
                 Vector3 origin = source.GetGraphProjectileOrigin();
                 Vector2 direction = (Vector2)target.GetGraphProjectileOrigin() - (Vector2)origin;
-                FireProjectile(context, host, source, projectile, origin, direction);
+                EnemyProjectile fired = FireProjectile(context, host, source, projectile, origin, direction);
+                if (fired != null)
+                {
+                    firedAny = true;
+                    launchSfxTarget ??= fired;
+                }
             }
+
+            PlayVolleySfx(context, firedAny, launchSfxTarget, fireSfxId, launchSfxId);
         }
 
         private void FireCenterVolley(
@@ -671,6 +688,8 @@ namespace Week14.Enemy
                 return;
             }
 
+            bool firedAny = false;
+            EnemyProjectile launchSfxTarget = null;
             for (int i = 0; i < DroneCount; i++)
             {
                 Minion source = drones[i];
@@ -681,8 +700,33 @@ namespace Week14.Enemy
 
                 Vector3 origin = source.GetGraphProjectileOrigin();
                 Vector2 direction = centerPosition - (Vector2)origin;
-                FireProjectile(context, host, source, projectile, origin, direction);
+                EnemyProjectile fired = FireProjectile(context, host, source, projectile, origin, direction);
+                if (fired != null)
+                {
+                    firedAny = true;
+                    launchSfxTarget ??= fired;
+                }
             }
+
+            PlayVolleySfx(context, firedAny, launchSfxTarget, finalFireSfxId, finalLaunchSfxId);
+        }
+
+        // 한 틱에 4마리가 동시에 쐈어도 사운드는 볼리당 한 번만 재생한다.
+        // launchSfxId는 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 패링/파괴되면 소리가 안 나게 한다.
+        private void PlayVolleySfx(
+            BossActionContext context,
+            bool firedAny,
+            EnemyProjectile launchSfxTarget,
+            string fireSfxId,
+            string launchSfxId)
+        {
+            if (!firedAny)
+            {
+                return;
+            }
+
+            context.PlaySfx(fireSfxId);
+            context.PlaySfxOnLaunch(launchSfxTarget, launchSfxId);
         }
 
         private void CommandDronesToCardinalSlots(
@@ -708,7 +752,7 @@ namespace Week14.Enemy
             }
         }
 
-        private void FireProjectile(
+        private EnemyProjectile FireProjectile(
             BossActionContext context,
             IMinionPatternHost host,
             Minion source,
@@ -718,7 +762,7 @@ namespace Week14.Enemy
         {
             if (direction.sqrMagnitude <= 0.0001f)
             {
-                return;
+                return null;
             }
 
             EnemyProjectile firedProjectile = host.FireMinionProjectile(
@@ -729,13 +773,14 @@ namespace Week14.Enemy
                 true);
             if (firedProjectile == null)
             {
-                return;
+                return null;
             }
 
             firedProjectile.ConfigurePathIndicatorSuppressed(true);
             context.PlayOriginBurst(effects, origin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);
+            return firedProjectile;
         }
 
         private static List<Minion> GetDrones(IReadOnlyList<Minion> source)

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Week14.Audio;
+using Week14.Enemy;
 
 namespace Week14.Bootstrap
 {
@@ -21,6 +23,9 @@ namespace Week14.Bootstrap
         [SerializeField] private Color blockColor = Color.black;
         [SerializeField] private int sortingOrder = 32760;
         [SerializeField, Min(0f)] private float blockOverlapPixels = 2f;
+        [Header("Audio")]
+        [Tooltip("화면 전환 효과가 시작될 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [SerializeField, BossGraphSfxId] private string transitionSfxId = "Title_Button";
 
         private readonly List<BlockEntry> blocks = new();
         private Canvas canvas;
@@ -184,6 +189,7 @@ namespace Week14.Bootstrap
 
         private IEnumerator LoadSceneRoutine(Func<AsyncOperation> loadOperationFactory, bool startCovered, bool leaveCovered)
         {
+            PlayTransitionSfx();
             EnsureOverlay();
             SetOverlayVisible(true);
 
@@ -233,6 +239,7 @@ namespace Week14.Bootstrap
 
         private IEnumerator CoverRevealRoutine(Action onCovered, Action onCompleted)
         {
+            PlayTransitionSfx();
             EnsureOverlay();
             SetOverlayVisible(true);
             yield return AnimateBlocks(true, coverDuration);
@@ -283,6 +290,14 @@ namespace Week14.Bootstrap
 
             canvas.sortingOrder = sortingOrder;
             RebuildBlocksIfNeeded();
+        }
+
+        private void PlayTransitionSfx()
+        {
+            if (!string.IsNullOrEmpty(transitionSfxId))
+            {
+                SoundManager.PlaySfx(transitionSfxId);
+            }
         }
 
         private void RebuildBlocksIfNeeded()

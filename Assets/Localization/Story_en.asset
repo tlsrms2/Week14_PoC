@@ -883,6 +883,41 @@ MonoBehaviour:
       has not been confirmed.
     m_Metadata:
       m_Items: []
+  - m_Id: 1826406394068992
+    m_Localized: Pattern Suppression {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789248
+    m_Localized: Lastly, this is pattern suppression training.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789249
+    m_Localized: When bosses prepare a powerful attack, there are times when a blue
+      energy core is revealed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789250
+    m_Localized: Intercepting that core will not only stun the boss but also generate
+      extra energy, so utilizing this can lead the battle to your advantage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789251
+    m_Localized: Pattern Suppression
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789252
+    m_Localized: 'A blue energy core is generated when the boss prepares a powerful
+      attack.
+
+
+      Intercepting that core stuns the boss and generates extra energy
+      around them.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2147990514270208
+    m_Localized: Training ground
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

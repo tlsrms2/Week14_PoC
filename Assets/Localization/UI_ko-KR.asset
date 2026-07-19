@@ -177,6 +177,10 @@ MonoBehaviour:
     m_Localized: "<sprite name=\"icon_leftclick\"> \uC7A5\uCC29"
     m_Metadata:
       m_Items: []
+  - m_Id: 6563875845234688
+    m_Localized: "<sprite name=\"icon_escape\">\uB97C \uB20C\uB7EC \uC2A4\uD0B5"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -175,6 +175,10 @@ MonoBehaviour:
     m_Localized: <sprite name="icon_leftclick"> Equip
     m_Metadata:
       m_Items: []
+  - m_Id: 6563875845234688
+    m_Localized: Press <sprite name="icon_escape"> to skip
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

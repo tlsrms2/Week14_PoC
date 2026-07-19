@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using Week14.Bootstrap;
@@ -15,6 +16,9 @@ namespace Week14.UI
         [Header("지역 정보")]
         [SerializeField] private string locationName = "지역명";
         [SerializeField] private TMP_Text locationNameText;
+        [Tooltip("이 인트로 자체의 로컬라이징된 지역명입니다. 보스의 BossData에 로컬라이징된 지역명이 있으면 그게 우선 적용되고, " +
+            "없으면(튜토리얼처럼 보스가 아예 없는 경우 포함) 이 값을 씁니다. 이것도 비어있으면 위 locationName 문자열을 그대로 씁니다.")]
+        [SerializeField] private LocalizedString localizedLocationName;
         [FormerlySerializedAs("flyObjects")]
         [FormerlySerializedAs("bossInfoFlyObjects")]
         [SerializeField] private RectTransform[] locationIntroFlyObjects = System.Array.Empty<RectTransform>();
@@ -142,6 +146,7 @@ namespace Week14.UI
         private Coroutine playRoutine;
         private Coroutine locationIntroRoutine;
         private BossData localizedBossData;
+        private LocalizedString boundLocationLocalizedString;
         private bool introControlAcquired;
         private bool cameraMouseLookLocked;
         private bool introCursorHidden;
@@ -750,7 +755,7 @@ namespace Week14.UI
         private void PreparePresentation()
         {
             CacheTransitionTargetPositions();
-            if (localizedBossData == null || !localizedBossData.HasLocalizedIntroLocationName)
+            if (boundLocationLocalizedString == null)
             {
                 SetLocationNameText(locationName);
             }
@@ -787,6 +792,7 @@ namespace Week14.UI
             if (localizedBossData == null)
             {
                 SetBossNameText(boss != null ? boss.DisplayName : string.Empty);
+                BindLocationLocalization();
                 return;
             }
 
@@ -796,15 +802,20 @@ namespace Week14.UI
                 localizedBossData.HasLocalizedBossName,
                 SetBossNameText);
 
-            SetLocationNameText(locationName);
-            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(
-                localizedBossData.LocalizedIntroLocationName,
-                localizedBossData.HasLocalizedIntroLocationName,
-                SetLocationNameText);
+            BindLocationLocalization();
         }
 
         private void UnbindBossData()
         {
+            if (boundLocationLocalizedString != null)
+            {
+                LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(
+                    boundLocationLocalizedString,
+                    true,
+                    SetLocationNameText);
+                boundLocationLocalizedString = null;
+            }
+
             if (localizedBossData == null)
             {
                 return;
@@ -814,11 +825,33 @@ namespace Week14.UI
                 localizedBossData.LocalizedBossName,
                 localizedBossData.HasLocalizedBossName,
                 SetBossNameText);
-            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(
-                localizedBossData.LocalizedIntroLocationName,
-                localizedBossData.HasLocalizedIntroLocationName,
-                SetLocationNameText);
             localizedBossData = null;
+        }
+
+        // 보스의 BossData에 로컬라이징된 지역명이 있으면 그걸 우선 쓰고, 없으면(튜토리얼처럼 보스가
+        // 없는 경우 포함) 이 인트로 자체의 localizedLocationName으로 폴백한다. 둘 다 없으면 plain
+        // locationName 문자열이 그대로 유지된다.
+        private void BindLocationLocalization()
+        {
+            SetLocationNameText(locationName);
+
+            LocalizedString source = null;
+            if (localizedBossData != null && localizedBossData.HasLocalizedIntroLocationName)
+            {
+                source = localizedBossData.LocalizedIntroLocationName;
+            }
+            else if (LoadoutSelectedSkillPanelLocalization.HasLocalizedString(localizedLocationName))
+            {
+                source = localizedLocationName;
+            }
+
+            if (source == null)
+            {
+                return;
+            }
+
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(source, true, SetLocationNameText);
+            boundLocationLocalizedString = source;
         }
 
         private Transform GetBossFocusTarget()

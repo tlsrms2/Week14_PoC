@@ -90,6 +90,7 @@ namespace Week14.Enemy
         [SerializeField] private BossBulletBarView bossHpBarView;
         [SerializeField] private BossLivesView bossLivesView;
         [SerializeField] private TMP_Text bossNameText;
+        [SerializeField] private TMP_Text bossElapsedTimeText;
 
         [SerializeField, HideInInspector] private Color statusBarBackgroundColor = new(0f, 0f, 0f, 0.55f);
         [FormerlySerializedAs("bulletBarColor")]
@@ -132,7 +133,9 @@ namespace Week14.Enemy
         private bool combatStartedCounted;
         private static int combatStartedCount;
         private float combatStartedAt;
+        private float? frozenCombatElapsedSeconds;
         private int combatStartLockCount;
+        private bool latestClearTimeWasNewRecord;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -180,6 +183,9 @@ namespace Week14.Enemy
         public int CurrentPhaseIndex => PhaseController.CurrentPhaseIndex;
         public int CurrentPhaseNumber => PhaseController.CurrentPhaseNumber;
         public bool IsCombatStarted => PhaseController.IsCombatStarted;
+        public float CombatElapsedSeconds => frozenCombatElapsedSeconds
+            ?? (combatStartedCounted ? Mathf.Max(0f, Time.time - combatStartedAt) : 0f);
+        public bool LatestClearTimeWasNewRecord => latestClearTimeWasNewRecord;
         public event Action<int, int> LivesChanged;
         public static event Action<BossAI> CombatStarted;
         public static event Action<BossAI> Defeated;
@@ -290,6 +296,22 @@ namespace Week14.Enemy
             stateMachine ??= new BossStateMachine(this);
             stateMachine.Tick();
             TickDashContactForState();
+            RefreshElapsedTimeText();
+        }
+
+        public static string FormatCombatTime(float seconds)
+        {
+            return TimeSpan.FromSeconds(Mathf.Max(0f, seconds)).ToString(@"mm\:ss\:ff");
+        }
+
+        private void RefreshElapsedTimeText()
+        {
+            if (bossElapsedTimeText == null)
+            {
+                return;
+            }
+
+            bossElapsedTimeText.text = combatStartedCounted ? FormatCombatTime(CombatElapsedSeconds) : "--:--:--";
         }
 
         public void PlayExecutionBarDrain()
@@ -615,6 +637,11 @@ namespace Week14.Enemy
             return PhaseController.TryConsumeLife();
         }
 
+        public void FreezeCombatTimer()
+        {
+            frozenCombatElapsedSeconds ??= CombatElapsedSeconds;
+        }
+
         public IEnumerator PlayFinalDeathSequence()
         {
             if (finalDeathSequencePlayed)
@@ -622,6 +649,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            FreezeCombatTimer();
             finalDeathSequencePlayed = true;
             SetFinalDeathSequencePlaying(true);
 
@@ -710,6 +738,8 @@ namespace Week14.Enemy
             }
 
             combatStartedAt = Time.time;
+            frozenCombatElapsedSeconds = null;
+            latestClearTimeWasNewRecord = false;
             OnCombatStarted();
             CombatStarted?.Invoke(this);
         }
@@ -1259,6 +1289,7 @@ namespace Week14.Enemy
 
         private void HandleDied(Health _)
         {
+            FreezeCombatTimer();
             projectileTracker.DestroyAll();
             SetBossCombatUiVisible(false);
             SoundManager.StopBgm();
@@ -1281,7 +1312,7 @@ namespace Week14.Enemy
             }
 
             GameSaveManager.ClearBoss(bossData.Id);
-            GameSaveManager.TrySetBestClearTime(bossData.Id, Time.time - combatStartedAt);
+            latestClearTimeWasNewRecord = GameSaveManager.TrySetBestClearTime(bossData.Id, CombatElapsedSeconds);
 
             IReadOnlyList<string> unlocksBossIds = bossData.UnlocksBossIds;
             for (int i = 0; i < unlocksBossIds.Count; i++)

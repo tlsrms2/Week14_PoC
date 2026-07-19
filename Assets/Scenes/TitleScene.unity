@@ -2063,7 +2063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.TitleMenuView
   titleBgmId: TitleBgm
-  startGameSfxId: Title_Button
+  startGameSfxId: 
 --- !u!4 &105794526
 Transform:
   m_ObjectHideFlags: 0

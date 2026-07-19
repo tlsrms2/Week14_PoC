@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Scripting.APIUpdating;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -38,6 +39,8 @@ namespace Week14.Enemy
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField, Min(0f)] private float windupSeconds;
         [FormerlySerializedAs("shotCount")]
         [FormerlySerializedAs("bulletCount")]
@@ -65,6 +68,7 @@ namespace Week14.Enemy
             }
 
             MinionGraphProjectileFireSpec fireSpec = new(minionOrigin, aim, effects, context);
+            bool hasSound = !string.IsNullOrWhiteSpace(fireSfxId) || !string.IsNullOrWhiteSpace(launchSfxId);
             yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
             for (int volleyIndex = 0; volleyIndex < volleyGroups.Count; volleyIndex++)
             {
@@ -74,12 +78,16 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                MinionGraphProjectileFireSpec volleyFireSpec = hasSound
+                    ? fireSpec.WithOnFired(CreateShotSfxHandler(context, volley.BulletCount))
+                    : fireSpec;
                 MinionGraphCommandRequest request = MinionGraphCommandRequest.RepeatFire(
                     projectile,
                     volley.BulletCount,
                     volley.FireInterval,
-                    fireSpec);
+                    volleyFireSpec);
                 float duration = host.CommandMinions(request);
+
                 bool hasNextVolley = HasNextVolley(volleyIndex + 1);
                 if ((waitForDuration || hasNextVolley) && duration > 0f)
                 {
@@ -113,6 +121,25 @@ namespace Week14.Enemy
             };
             legacyVolleyCount = 0;
             legacyFireInterval = -1f;
+        }
+
+        // 미니언이 몇 마리든, 같은 shotIndex에서 처음 실제로 발사에 성공한 투사체 하나만 대표로 삼아
+        // 볼리당(=shotIndex당) 사운드가 정확히 한 번만 나게 한다. launchSfxId는 그 투사체의 실제
+        // Launched 이벤트에 걸리므로, 차징 중 패링/파괴되면 소리가 나지 않는다.
+        private Action<int, EnemyProjectile> CreateShotSfxHandler(BossActionContext context, int bulletCount)
+        {
+            bool[] handledShots = new bool[Mathf.Max(1, bulletCount)];
+            return (shotIndex, firedProjectile) =>
+            {
+                if (shotIndex < 0 || shotIndex >= handledShots.Length || handledShots[shotIndex])
+                {
+                    return;
+                }
+
+                handledShots[shotIndex] = true;
+                context.PlaySfx(fireSfxId);
+                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            };
         }
 
         private bool HasNextVolley(int startIndex)
