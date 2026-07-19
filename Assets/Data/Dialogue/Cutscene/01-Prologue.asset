@@ -81,7 +81,7 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     skippable: 1
-    bgmId: 
+    bgmId: CutSceneBGM
     bgmFadeSeconds: 0
     transitionMode: 0
     fadeInSeconds: 2

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 using UnityEngine.Serialization;
+using Week14.Enemy;
 
 namespace Week14.Cutscene
 {
@@ -55,6 +56,7 @@ namespace Week14.Cutscene
         [SerializeField] private bool skippable;
 
         [Header("Audio")]
+        [BossGraphBgmId]
         [SerializeField] private string bgmId;
         [SerializeField, Min(0f)] private float bgmFadeSeconds = 0.5f;
 
