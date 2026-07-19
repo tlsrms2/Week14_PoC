@@ -19,6 +19,9 @@ namespace Week14.Enemy
         private const string GrabAnimationTrigger = "Grab";
         private const string IsWireShotActiveAnimationParameter = "IsWireShotActive";
         private const string IsWireGrabbingAnimationParameter = "IsWireGrabbing";
+        private const float WallCollisionSkin = 0.02f;
+        private const float WallArrivalTolerance = 0.03f;
+        private const float WallArrivalSettleSeconds = 0.08f;
 
         [Header("Wire")]
         [FormerlySerializedAs("launchOriginPath")]
@@ -80,12 +83,14 @@ namespace Week14.Enemy
 
                     HackerWireResolution? resolution = null;
                     Vector3 wallPosition = default;
+                    Vector2 wallNormal = default;
                     Action<HackerWireResolution> handleResolution = result =>
                     {
                         resolution = result;
                         if (result == HackerWireResolution.WallAttached)
                         {
                             wallPosition = wire.Position;
+                            wallNormal = wire.WallNormal;
                         }
                     };
                     wire.Resolved += handleResolution;
@@ -108,7 +113,7 @@ namespace Week14.Enemy
 
                         if (resolution == HackerWireResolution.WallAttached)
                         {
-                            yield return FlyBossToWall(context, wallPosition);
+                            yield return FlyBossToWall(context, wallPosition, wallNormal);
                         }
                         else if (resolution == HackerWireResolution.PlayerGrabbed)
                         {
@@ -126,7 +131,14 @@ namespace Week14.Enemy
                         if (wire != null)
                         {
                             wire.Resolved -= handleResolution;
-                            wire.BeginDissolve();
+                            if (resolution == HackerWireResolution.WallAttached)
+                            {
+                                wire.RemoveImmediate();
+                            }
+                            else
+                            {
+                                wire.BeginDissolve();
+                            }
                         }
                     }
 
@@ -277,13 +289,15 @@ namespace Week14.Enemy
 
         private IEnumerator FlyBossToWall(
             BossActionContext context,
-            Vector3 wallPosition)
+            Vector3 wallPosition,
+            Vector2 wallNormal)
         {
             if (context?.Boss == null)
             {
                 yield break;
             }
 
+            Vector2 arrivalPosition = ResolveWallArrivalPosition(context.Boss, wallPosition, wallNormal);
             context.SetFacingLocked(true);
             context.SetDashing(true);
             float elapsed = 0f;
@@ -300,16 +314,23 @@ namespace Week14.Enemy
                         continue;
                     }
 
-                    Vector2 origin = context.Boss.transform.position;
-                    Vector2 toWall = (Vector2)wallPosition - origin;
-                    if (toWall.magnitude <= wallArrivalDistance)
+                    Vector2 origin = context.Boss.Body != null
+                        ? context.Boss.Body.position
+                        : (Vector2)context.Boss.transform.position;
+                    Vector2 toWall = arrivalPosition - origin;
+                    if (toWall.magnitude <= WallArrivalTolerance)
                     {
                         yield break;
                     }
 
                     float progress = Mathf.Clamp01(elapsed / maxBossFlightSeconds);
                     float speedMultiplier = EvaluateSpeedCurve(bossFlightSpeedCurve, progress);
-                    context.Boss.SetMovementVelocity(toWall.normalized * (bossFlightSpeed * speedMultiplier));
+                    float speed = bossFlightSpeed * speedMultiplier;
+                    float scaledSettleSeconds = Mathf.Max(
+                        0.001f,
+                        WallArrivalSettleSeconds * Mathf.Max(0.01f, EnemyTimeScale.Current));
+                    speed = Mathf.Min(speed, toWall.magnitude / scaledSettleSeconds);
+                    context.Boss.SetMovementVelocity(toWall.normalized * speed);
                     if (firedProjectileCount < maxFlightProjectileCount
                         && elapsed >= nextProjectileAt)
                     {
@@ -328,6 +349,59 @@ namespace Week14.Enemy
                 context.SetFacingLocked(false);
                 context.Stop();
             }
+        }
+
+        private Vector2 ResolveWallArrivalPosition(
+            BossAI boss,
+            Vector2 wallPosition,
+            Vector2 wallNormal)
+        {
+            Vector2 bossPosition = boss.Body != null
+                ? boss.Body.position
+                : (Vector2)boss.transform.position;
+            Vector2 outwardDirection = wallNormal.sqrMagnitude > 0.0001f
+                ? wallNormal.normalized
+                : (bossPosition - wallPosition).normalized;
+            if (outwardDirection.sqrMagnitude <= 0.0001f)
+            {
+                outwardDirection = Vector2.left;
+            }
+
+            float colliderClearance = ResolveBossColliderClearance(boss, bossPosition, -outwardDirection);
+            float wallClearance = Mathf.Max(
+                Mathf.Max(0f, wallArrivalDistance),
+                colliderClearance + WallCollisionSkin);
+            return wallPosition + outwardDirection * wallClearance;
+        }
+
+        private static float ResolveBossColliderClearance(
+            BossAI boss,
+            Vector2 bossPosition,
+            Vector2 wallDirection)
+        {
+            Collider2D[] colliders = boss.GetComponentsInChildren<Collider2D>(true);
+            float clearance = 0f;
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D collider = colliders[i];
+                if (collider == null
+                    || !collider.enabled
+                    || collider.isTrigger
+                    || !collider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                Bounds bounds = collider.bounds;
+                Vector2 centerOffset = (Vector2)bounds.center - bossPosition;
+                Vector2 extents = bounds.extents;
+                float projectedExtent = Mathf.Abs(wallDirection.x) * extents.x
+                    + Mathf.Abs(wallDirection.y) * extents.y;
+                float leadingDistance = Vector2.Dot(centerOffset, wallDirection) + projectedExtent;
+                clearance = Mathf.Max(clearance, leadingDistance);
+            }
+
+            return clearance;
         }
 
         private void FireFlightProjectile(BossActionContext context, Vector3 origin)

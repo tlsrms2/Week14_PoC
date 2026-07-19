@@ -191,13 +191,13 @@ namespace Week14.Combat
                     presentation.ShowFinalExecutionLetterbox());
             }
 
-            if (requiresTeleport)
-            {
-                TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
-            }
+            bool teleported = requiresTeleport
+                && TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
 
             Vector2 targetPosition = executionTarget.transform.position;
-            Vector2 playerPosition = context.PlayerTransform.position;
+            Vector2 playerPosition = context.Body != null
+                ? context.Body.position
+                : (Vector2)context.PlayerTransform.position;
             Vector2 standDirection = playerPosition - targetPosition;
             if (standDirection.sqrMagnitude <= 0.0001f)
             {
@@ -208,12 +208,17 @@ namespace Week14.Combat
                 standDirection.Normalize();
             }
 
-            presentation.UpdateExecutionFocusPoint(context.PlayerTransform.position, executionTarget.transform.position);
+            presentation.UpdateExecutionFocusPoint(playerPosition, targetPosition);
             CameraFollow2D activeCamera = context.CameraFollow;
             activeCamera?.BeginCinematicFocus(
                 presentation.ExecutionFocusPoint != null ? presentation.ExecutionFocusPoint : executionTarget.transform,
-                config.ExecutionCameraFocusWeight,
+                teleported ? 1f : config.ExecutionCameraFocusWeight,
                 config.ExecutionCameraZoomMultiplier);
+            if (teleported)
+            {
+                activeCamera?.SnapToCinematicFocus();
+            }
+
             if (letterboxRoutine != null)
             {
                 yield return letterboxRoutine;
@@ -488,13 +493,13 @@ namespace Week14.Combat
             }
         }
 
-        private void TeleportBesideBoss(BossAI boss, float distance)
+        private bool TeleportBesideBoss(BossAI boss, float distance)
         {
             Transform playerTransform = context.PlayerTransform;
             Rigidbody2D body = context.Body;
             if (boss == null || playerTransform == null)
             {
-                return;
+                return false;
             }
 
             Vector2 originalPosition = body != null
@@ -523,7 +528,7 @@ namespace Week14.Combat
             }
             else
             {
-                return;
+                return false;
             }
 
             rig.StopBody();
@@ -538,6 +543,8 @@ namespace Week14.Combat
                 worldPosition.y = destination.y;
                 playerTransform.position = worldPosition;
             }
+
+            return true;
         }
 
         private static bool IsWallFreeTeleportPosition(

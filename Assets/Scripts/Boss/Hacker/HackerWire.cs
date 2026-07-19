@@ -28,6 +28,7 @@ namespace Week14.Enemy
         private Transform playerAnchor;
         private Vector2 endpoint;
         private Vector2 direction;
+        private Vector2 wallNormal;
         private float flightSpeed;
         private float hitRadius;
         private float grabSeconds;
@@ -52,6 +53,7 @@ namespace Week14.Enemy
         private int wallLayer = -1;
 
         internal Vector3 Position => playerAnchor != null ? playerAnchor.position : endpoint;
+        internal Vector2 WallNormal => wallNormal;
         internal event Action<HackerWireResolution> Resolved;
 
         private void Awake()
@@ -240,7 +242,11 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (TryGetCollision(distance, out Vector2 collisionPosition, out PlayerCombatController player))
+            if (TryGetCollision(
+                    distance,
+                    out Vector2 collisionPosition,
+                    out Vector2 collisionNormal,
+                    out PlayerCombatController player))
             {
                 endpoint = collisionPosition;
                 if (player != null)
@@ -249,6 +255,9 @@ namespace Week14.Enemy
                 }
                 else
                 {
+                    wallNormal = collisionNormal.sqrMagnitude > 0.0001f
+                        ? collisionNormal.normalized
+                        : -direction;
                     AttachToWall();
                 }
 
@@ -278,9 +287,14 @@ namespace Week14.Enemy
             endpoint += toTarget.normalized * distance;
         }
 
-        private bool TryGetCollision(float distance, out Vector2 collisionPosition, out PlayerCombatController hitPlayer)
+        private bool TryGetCollision(
+            float distance,
+            out Vector2 collisionPosition,
+            out Vector2 collisionNormal,
+            out PlayerCombatController hitPlayer)
         {
             collisionPosition = endpoint + direction * distance;
+            collisionNormal = -direction;
             hitPlayer = null;
             float nearestDistance = float.MaxValue;
             RaycastHit2D[] hits = Physics2D.CircleCastAll(endpoint, hitRadius, direction, distance);
@@ -304,6 +318,7 @@ namespace Week14.Enemy
 
                 nearestDistance = hit.distance;
                 collisionPosition = hit.point;
+                collisionNormal = hit.normal;
                 hitPlayer = hitPlayerCandidate;
             }
 
@@ -312,6 +327,7 @@ namespace Week14.Enemy
             {
                 nearestDistance = playerDistance;
                 collisionPosition = endpoint + direction * playerDistance;
+                collisionNormal = -direction;
                 hitPlayer = segmentPlayer;
             }
 
@@ -468,6 +484,17 @@ namespace Week14.Enemy
 
             state = WireState.Dissolving;
             dissolveStartedAt = Time.time;
+        }
+
+        internal void RemoveImmediate()
+        {
+            state = WireState.Dissolving;
+            if (line != null)
+            {
+                line.enabled = false;
+            }
+
+            Destroy(gameObject);
         }
 
         private void UpdateLine()

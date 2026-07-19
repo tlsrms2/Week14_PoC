@@ -133,6 +133,34 @@ namespace Week14.Bootstrap
             ApplyFocusTarget(nextFocusTarget);
         }
 
+        public void SnapToCinematicFocus()
+        {
+            if (!cinematicFocusActive || target == null || focusTarget == null)
+            {
+                return;
+            }
+
+            Vector3 targetPosition = targetBody != null
+                ? targetBody.transform.position
+                : target.position;
+            Vector3 focusPosition = focusBody != null
+                ? focusBody.transform.position
+                : focusTarget.position;
+
+            currentFocusWeight = cinematicFocusWeight;
+            focusWeightVelocity = 0f;
+            currentFocusPosition = focusPosition;
+            lastFocusPosition = focusPosition;
+            focusPositionVelocity = Vector3.zero;
+            hasCurrentFocusPosition = true;
+            currentMouseLookOffset = Vector2.zero;
+            mouseLookOffsetVelocity = Vector2.zero;
+            currentBasePosition = Vector3.Lerp(targetPosition, focusPosition, currentFocusWeight) + offset;
+            followVelocity = Vector3.zero;
+            hasBasePosition = true;
+            transform.position = currentBasePosition;
+        }
+
         public float CalculateCinematicZoomMultiplier(
             Bounds focusBounds,
             float viewportFillRatio,
