@@ -914,6 +914,10 @@ MonoBehaviour:
       around them.'
     m_Metadata:
       m_Items: []
+  - m_Id: 2147990514270208
+    m_Localized: Training ground
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -562,7 +562,7 @@ namespace Week14.Enemy
             Vector3 spawnOrigin = fireSpec.GetSpawnOrigin(this, shotIndex, direction);
             Vector2 finalDirection = fireSpec.GetDirection(this, spawnOrigin);
             FaceClosestMinionAim(fireSpec, finalDirection);
-            return FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec);
+            return FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec, shotIndex);
         }
 
         public void FaceGraphDirection(Vector2 direction)
@@ -1142,7 +1142,8 @@ namespace Week14.Enemy
                         origin,
                         AngleToDirection(start + step * i),
                         i == 0 && !fireSpec.HasEffects,
-                        fireSpec);
+                        fireSpec,
+                        volley);
                 }
 
                 if (volley < volleys - 1)
@@ -1233,13 +1234,15 @@ namespace Week14.Enemy
                         firstOrigin,
                         RotateDirection(sideFireForward, sideAngle),
                         !fireSpec.HasEffects,
-                        fireSpec);
+                        fireSpec,
+                        shotIndex);
                     FireCommandProjectile(
                         projectile,
                         secondOrigin,
                         RotateDirection(sideFireForward, -sideAngle),
                         false,
-                        fireSpec);
+                        fireSpec,
+                        shotIndex);
 
                     nextFireAt += interval;
                 }
@@ -2408,7 +2411,7 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playMuzzleFlash)
         {
-            return FireCommandProjectile(projectile, origin, direction, playMuzzleFlash, default);
+            return FireCommandProjectile(projectile, origin, direction, playMuzzleFlash, default, 0);
         }
 
         private EnemyProjectile FireCommandProjectile(
@@ -2416,7 +2419,8 @@ namespace Week14.Enemy
             Vector3 origin,
             Vector2 direction,
             bool playMuzzleFlash,
-            MinionGraphProjectileFireSpec fireSpec)
+            MinionGraphProjectileFireSpec fireSpec,
+            int shotIndex)
         {
             IMinionOwner currentOwner = Owner;
             if (IsExecutionPaused || currentOwner == null)
@@ -2438,6 +2442,7 @@ namespace Week14.Enemy
                 }
 
                 fireSpec.PlayEffects(origin, firedProjectile, direction, transform);
+                fireSpec.NotifyFired(shotIndex, firedProjectile);
             }
 
             return firedProjectile;

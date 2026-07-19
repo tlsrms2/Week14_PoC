@@ -1004,6 +1004,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.LocationIntroView
   locationName: "\uD6C8\uB828\uC7A5"
   locationNameText: {fileID: 1441807256}
+  localizedLocationName:
+    m_TableReference:
+      m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
+    m_TableEntryReference:
+      m_KeyId: 2147990514270208
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   locationIntroFlyObjects:
   - {fileID: 1892401060}
   - {fileID: 408069191}
@@ -1222,6 +1231,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  references:
+    version: 2
+    RefIds: []
 --- !u!225 &117146446
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5049,6 +5061,10 @@ PrefabInstance:
     - target: {fileID: 6889689407787825621, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
       propertyPath: m_Name
       value: BossUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889689407787825621, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7815084971993105136, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
       propertyPath: m_Color.g

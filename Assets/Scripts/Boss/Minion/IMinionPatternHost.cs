@@ -178,6 +178,7 @@ namespace Week14.Enemy
         private readonly bool useFixedDirection;
         private readonly Vector2 fixedDirection;
         private readonly bool suppressProjectilePathIndicator;
+        private readonly Action<int, EnemyProjectile> onFired;
 
         public MinionGraphProjectileFireSpec(
             MinionGraphProjectileOriginSpec origin,
@@ -196,7 +197,8 @@ namespace Week14.Enemy
             Func<Vector2> sharedMinionAimDirectionProvider,
             bool useFixedDirection = false,
             Vector2 fixedDirection = default,
-            bool suppressProjectilePathIndicator = false)
+            bool suppressProjectilePathIndicator = false,
+            Action<int, EnemyProjectile> onFired = null)
         {
             Origin = origin;
             Aim = aim;
@@ -206,6 +208,7 @@ namespace Week14.Enemy
             this.useFixedDirection = useFixedDirection && fixedDirection.sqrMagnitude > 0.0001f;
             this.fixedDirection = this.useFixedDirection ? fixedDirection.normalized : Vector2.zero;
             this.suppressProjectilePathIndicator = suppressProjectilePathIndicator;
+            this.onFired = onFired;
         }
 
         public MinionGraphProjectileOriginSpec Origin { get; }
@@ -232,7 +235,8 @@ namespace Week14.Enemy
                 directionProvider,
                 useFixedDirection,
                 fixedDirection,
-                suppressProjectilePathIndicator);
+                suppressProjectilePathIndicator,
+                onFired);
         }
 
         public MinionGraphProjectileFireSpec WithFixedDirection(Vector2 direction)
@@ -250,7 +254,8 @@ namespace Week14.Enemy
                 sharedMinionAimDirectionProvider,
                 useFixedDirection: true,
                 fixedDirection: direction,
-                suppressProjectilePathIndicator: suppressProjectilePathIndicator);
+                suppressProjectilePathIndicator: suppressProjectilePathIndicator,
+                onFired: onFired);
         }
 
         public MinionGraphProjectileFireSpec WithProjectilePathIndicatorSuppressed()
@@ -263,7 +268,27 @@ namespace Week14.Enemy
                 sharedMinionAimDirectionProvider,
                 useFixedDirection,
                 fixedDirection,
-                suppressProjectilePathIndicator: true);
+                suppressProjectilePathIndicator: true,
+                onFired: onFired);
+        }
+
+        public MinionGraphProjectileFireSpec WithOnFired(Action<int, EnemyProjectile> callback)
+        {
+            return new MinionGraphProjectileFireSpec(
+                Origin,
+                Aim,
+                Effects,
+                Context,
+                sharedMinionAimDirectionProvider,
+                useFixedDirection,
+                fixedDirection,
+                suppressProjectilePathIndicator,
+                onFired: callback);
+        }
+
+        public void NotifyFired(int shotIndex, EnemyProjectile projectile)
+        {
+            onFired?.Invoke(shotIndex, projectile);
         }
 
         public bool TryGetSharedMinionAimDirection(out Vector2 direction)

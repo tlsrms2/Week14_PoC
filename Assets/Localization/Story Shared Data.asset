@@ -763,6 +763,10 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_32_ExplanationText
     m_Metadata:
       m_Items: []
+  - m_Id: 2147990514270208
+    m_Key: Tutorial.Room
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
