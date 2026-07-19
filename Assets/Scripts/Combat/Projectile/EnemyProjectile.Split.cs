@@ -91,8 +91,17 @@ namespace Week14.Combat
                 out float homingSeconds,
                 out float homingTurnDegrees);
 
+            // 다른 프리팹을 지정한 경우, 그 프리팹 고유의 크기(자신의 BossProjectileSettings 반지름)를
+            // 기준으로 삼는다. splitRadiusMultiplier는 원래 "분열 전 탄이 커진 만큼을 상쇄"하는 용도라
+            // 자기복제(this)에만 의미가 있고, 남의 프리팹에 그대로 곱하면 의도치 않게 더 작아진다.
+            bool usesPrefabOverride = radialSplitPrefabOverride != null;
+            EnemyProjectile splitPrefab = usesPrefabOverride ? radialSplitPrefabOverride : this;
+            float baseRadius = usesPrefabOverride && radialSplitBaseRadiusOverride > 0f
+                ? radialSplitBaseRadiusOverride
+                : projectileRadius;
+
             EnemyProjectile child = SpawnInternal(
-                this,
+                splitPrefab,
                 ownerBullets,
                 transform.position + (Vector3)(direction.normalized * Mathf.Max(0.08f, projectileRadius)),
                 direction,
@@ -100,7 +109,7 @@ namespace Week14.Combat
                 0f,
                 projectileSpeed * splitSpeedMultiplier,
                 projectileLifetime * splitLifetimeMultiplier,
-                projectileRadius * splitRadiusMultiplier,
+                usesPrefabOverride ? baseRadius : baseRadius * splitRadiusMultiplier,
                 projectileColor,
                 0.08f,
                 3f,
@@ -120,8 +129,16 @@ namespace Week14.Combat
                 splitSpeedMultiplier,
                 splitRadiusMultiplier,
                 splitLifetimeMultiplier);
-            child.ConfigureProjectileSize(projectileRadius * splitRadiusMultiplier);
-            child.MultiplyProjectileScale(splitRadiusMultiplier);
+
+            if (usesPrefabOverride)
+            {
+                child.ConfigureProjectileSize(baseRadius);
+            }
+            else
+            {
+                child.ConfigureProjectileSize(baseRadius * splitRadiusMultiplier);
+                child.MultiplyProjectileScale(splitRadiusMultiplier);
+            }
         }
 
         private static Vector2 RotateDirection(Vector2 direction, float angleDegrees)

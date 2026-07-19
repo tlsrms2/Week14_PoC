@@ -861,7 +861,6 @@ MonoBehaviour:
   focusPositionSmoothTime: 1.5
   shakeFrequency: 34
   zoomBlendSpeed: 10
-  bossPairViewportPadding: 0.1
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2004,12 +2003,48 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1023516960}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: finalDeathExplosionAreaCenter
       value: 
       objectReference: {fileID: 1087503293}
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: finalDeathExplosionAreaRadius
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectileName
+      value: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.prefab
+      value: 
+      objectReference: {fileID: 1889336207425389046, guid: 19155292cae503b4e93777e7a1cd936b, type: 3}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.radius
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.lifetime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.bulletDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.trailSeconds
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
+      propertyPath: graphProjectiles.Array.data[3].projectile.trailWidthMultiplier
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 457855907784511599, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: m_Sprite
