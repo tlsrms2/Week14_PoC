@@ -527,8 +527,18 @@ namespace Week14.Enemy
 
             for (int i = 0; i < bossColliders.Length; i++)
             {
+                if (bossColliders[i] == null)
+                {
+                    continue;
+                }
+
                 for (int j = 0; j < targetPlayerColliders.Length; j++)
                 {
+                    if (targetPlayerColliders[j] == null)
+                    {
+                        continue;
+                    }
+
                     Physics2D.IgnoreCollision(bossColliders[i], targetPlayerColliders[j], ignore);
                 }
             }
@@ -561,9 +571,15 @@ namespace Week14.Enemy
             for (int i = 0; i < bossColliders.Length; i++)
             {
                 Collider2D bossCollider = bossColliders[i];
+                if (bossCollider == null)
+                {
+                    continue;
+                }
+
                 for (int j = 0; j < targetPlayerColliders.Length; j++)
                 {
-                    if (!Physics2D.Distance(bossCollider, targetPlayerColliders[j]).isOverlapped)
+                    if (targetPlayerColliders[j] == null
+                        || !Physics2D.Distance(bossCollider, targetPlayerColliders[j]).isOverlapped)
                     {
                         continue;
                     }
