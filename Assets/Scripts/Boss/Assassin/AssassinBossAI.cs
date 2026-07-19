@@ -22,6 +22,9 @@ namespace Week14.Enemy
         [Tooltip("은신 상태에서 반투명하게 만들 두 번째 비주얼 대상입니다.")]
         [SerializeField] private SpriteRenderer stealthVisualTargetB;
         [SerializeField, Range(0, 255)] private int stealthAlphaB = 90;
+        [Tooltip("은신 상태에서 함께 반투명하게 만들 그림자 스프라이트입니다.")]
+        [SerializeField] private SpriteRenderer stealthVisualTargetShadow;
+        [SerializeField, Range(0, 255)] private int stealthAlphaShadow = 90;
         [Tooltip("은신 진입/해제 시 알파값이 목표치까지 부드럽게 도달하는 데 걸리는 시간(초)입니다.")]
         [SerializeField, Min(0.01f)] private float stealthAlphaFadeSeconds = 0.3f;
         [Tooltip("은신에 진입한 뒤 첫 은신 패턴이 시작되기까지 대기하는 시간(초)입니다.")]
@@ -64,6 +67,7 @@ namespace Week14.Enemy
         private bool[] hiddenFromMapColliderPreviousEnabled;
         private readonly AssassinFacingMirrorCache facingMirrorCacheA = new();
         private readonly AssassinFacingMirrorCache facingMirrorCacheB = new();
+        private readonly AssassinFacingMirrorCache facingMirrorCacheShadow = new();
         private Animator[] walkAnimators;
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
@@ -154,6 +158,7 @@ namespace Week14.Enemy
         {
             SetAlphaImmediate(stealthVisualTargetA, 1f);
             SetAlphaImmediate(stealthVisualTargetB, 1f);
+            SetAlphaImmediate(stealthVisualTargetShadow, 1f);
         }
 
         private static void SetAlphaImmediate(SpriteRenderer renderer, float alpha)
@@ -631,6 +636,7 @@ namespace Week14.Enemy
             bool flip = Player.position.x > transform.position.x;
             ApplyFacing(stealthVisualTargetA, flip, facingMirrorCacheA);
             ApplyFacing(stealthVisualTargetB, flip, facingMirrorCacheB);
+            ApplyFacing(stealthVisualTargetShadow, flip, facingMirrorCacheShadow);
         }
 
         private static void ApplyFacing(SpriteRenderer renderer, bool flip, AssassinFacingMirrorCache mirrorCache)
@@ -649,8 +655,10 @@ namespace Week14.Enemy
             bool forceVisible = stealthVisibilityOverrideActive && !teleportVisibilityOverrideActive;
             float targetAlphaA = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaA / 255f;
             float targetAlphaB = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaB / 255f;
+            float targetAlphaShadow = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaShadow / 255f;
             FadeAlphaTowards(stealthVisualTargetA, targetAlphaA);
             FadeAlphaTowards(stealthVisualTargetB, targetAlphaB);
+            FadeAlphaTowards(stealthVisualTargetShadow, targetAlphaShadow);
         }
 
         private void FadeAlphaTowards(SpriteRenderer renderer, float targetAlpha)

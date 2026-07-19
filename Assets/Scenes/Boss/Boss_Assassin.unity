@@ -11619,6 +11619,7 @@ MonoBehaviour:
   phaseTransitionWaitSeconds: 1.2
   deathAnimator: {fileID: 0}
   deathTriggerName: Die
+  playFinalDeathExplosion: 0
   finalDeathExplosionSeconds: 1.4
   finalDeathExplosionCount: 10
   finalDeathExplosionPrefab: {fileID: 507182190992537921, guid: c5d17d1b1e27e404d9c1b47fdd4191fc, type: 3}
@@ -11763,6 +11764,8 @@ MonoBehaviour:
   stealthAlphaA: 30
   stealthVisualTargetB: {fileID: 1368611871}
   stealthAlphaB: 50
+  stealthVisualTargetShadow: {fileID: 701200896}
+  stealthAlphaShadow: 30
   stealthAlphaFadeSeconds: 0.3
   stealthEntryPatternDelaySeconds: 1
   daggerCountForRecallPattern: 5

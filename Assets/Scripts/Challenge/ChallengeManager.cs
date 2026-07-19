@@ -25,7 +25,6 @@ namespace Week14.Challenge
         private BossAI currentBoss;
         private Health subscribedPlayerHealth;
         private string currentBossId;
-        private float combatStartTime;
         private int hitCountThisRun;
         private int parryCountThisRun;
         private bool combatActive;
@@ -66,12 +65,15 @@ namespace Week14.Challenge
 
         private void Update()
         {
-            if (!combatActive)
+            if (!combatActive || currentBoss == null)
             {
                 return;
             }
 
-            float elapsedSeconds = Time.time - combatStartTime;
+            // 화면에 보이는 전투 타이머(BossAI.CombatElapsedSeconds)를 그대로 판정 기준으로 쓴다.
+            // 마지막 목숨 처형 연출이 시작되면 이 값이 그 즉시 고정(FreezeCombatTimer)되므로,
+            // 챌린지 판정이 끝나는 시점과 화면 타이머가 멈추는 시점이 항상 일치한다.
+            float elapsedSeconds = currentBoss.CombatElapsedSeconds;
             for (int i = 0; i < activeRuns.Count; i++)
             {
                 activeRuns[i].Run.OnTick(elapsedSeconds);
@@ -137,7 +139,6 @@ namespace Week14.Challenge
                 return;
             }
 
-            combatStartTime = Time.time;
             hitCountThisRun = 0;
             parryCountThisRun = 0;
             combatActive = true;
