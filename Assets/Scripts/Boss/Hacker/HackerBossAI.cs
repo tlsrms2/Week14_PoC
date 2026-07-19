@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 using Week14.UI;
 
@@ -83,6 +84,11 @@ namespace Week14.Enemy
         [Tooltip("Melee, Thrust, Sweep 계열 공격의 범위 인디케이터를 표시합니다.")]
         [InspectorName("Melee / Thrust / Sweep 인디케이터 표시")]
         [SerializeField] private bool showAttackRangeIndicators = true;
+
+        [Header("BGM")]
+        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string bgmId;
 
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
@@ -214,6 +220,14 @@ namespace Week14.Enemy
             }
 
             OnIdleHackerLateUpdate();
+        }
+
+        protected override void OnCombatStarted()
+        {
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
         }
 
         protected override void OnBossDied()

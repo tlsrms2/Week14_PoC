@@ -49,6 +49,11 @@ namespace Week14.Enemy
         [Header("Assassin Walk")]
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
 
+        [Header("BGM")]
+        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string bgmId = "AssassinBgm";
+
         private const int CloneSpawnPositionAttempts = 8;
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
 
@@ -101,7 +106,10 @@ namespace Week14.Enemy
 
         protected override void OnCombatStarted()
         {
-            SoundManager.PlayBgm("AssassinBgm");
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
         }
 
         // 페이즈가 넘어가면(처형 성공으로 목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던

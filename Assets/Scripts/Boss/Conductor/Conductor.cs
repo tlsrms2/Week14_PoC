@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -25,6 +26,11 @@ namespace Week14.Enemy
         [SerializeField, InspectorName("보스 로컬 오프셋")] private Vector2 conductingCompleteEffectOffset;
         [SerializeField, InspectorName("스케일 배율"), Min(0.01f)] private float conductingCompleteEffectScale = 1f;
         [SerializeField, HideInInspector] private List<ConductorConductingPattern> conductingPatterns = new();
+
+        [Header("BGM")]
+        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string bgmId;
 
         private readonly Dictionary<Health, Minion> spawnedMinionsByHealth = new();
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
@@ -330,6 +336,14 @@ namespace Week14.Enemy
             base.OnMinionSpawned(minion);
             TrackSpawnedMinion(minion);
             TrackMinionOutline(minion);
+        }
+
+        protected override void OnCombatStarted()
+        {
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
         }
 
         protected override void OnBossDied()

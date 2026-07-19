@@ -940,7 +940,6 @@ MonoBehaviour:
   focusPositionSmoothTime: 1.5
   shakeFrequency: 34
   zoomBlendSpeed: 10
-  bossPairViewportPadding: 0.2
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11619,7 +11618,6 @@ MonoBehaviour:
   phaseTransitionWaitSeconds: 1.2
   deathAnimator: {fileID: 0}
   deathTriggerName: Die
-  playFinalDeathExplosion: 0
   finalDeathExplosionSeconds: 1.4
   finalDeathExplosionCount: 10
   finalDeathExplosionPrefab: {fileID: 507182190992537921, guid: c5d17d1b1e27e404d9c1b47fdd4191fc, type: 3}
@@ -11777,6 +11775,7 @@ MonoBehaviour:
   cloneMinSeparationDistance: 5
   cloneMinDistanceFromPlayer: 5
   walkVelocityThreshold: 0.01
+  bgmId: Boss4BGM
 --- !u!222 &8937255414088847800
 CanvasRenderer:
   m_ObjectHideFlags: 0
