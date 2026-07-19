@@ -390,7 +390,6 @@ namespace Week14.Combat
                     : executionTarget.GetComponentInParent<BossAI>();
                 if (boss != null)
                 {
-                    EnemyProjectile.DestroyAllActive();
                     if (boss.TryConsumeLife())
                     {
                         executionTarget.CompleteExecutionWithoutKill();

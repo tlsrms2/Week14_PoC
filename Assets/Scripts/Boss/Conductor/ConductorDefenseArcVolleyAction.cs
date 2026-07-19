@@ -45,18 +45,16 @@ namespace Week14.Enemy
         [SerializeField] private bool releaseDronesAfterVolley = true;
 
         [Header("Drone Shield")]
-        [SerializeField] private Color shieldColor = new(0.3f, 0.78f, 1f, 0.82f);
-        [SerializeField, Min(0.01f)] private float shieldRadius = 0.45f;
-        [SerializeField, Min(0.001f)] private float shieldLineWidth = 0.035f;
-        [SerializeField, Range(8, 64)] private int shieldSegments = 24;
+        [SerializeField] private GameObject shieldEffectPrefab;
+        [SerializeField, Range(0f, 1f)] private float shieldOpacity = 0.5f;
         [SerializeField] private int shieldSortingOrder = 72;
+        [SerializeField, Min(0f)] private float shieldFadeInSeconds = 0.15f;
+        [SerializeField, Min(0f)] private float shieldFadeOutSeconds = 0.2f;
 
         [Header("Volleys")]
         [SerializeField] private List<Volley> volleys = new() { new Volley() };
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphEffectSettings effects = new();
-
-        private static Material shieldMaterial;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -121,9 +119,16 @@ namespace Week14.Enemy
             }
         }
 
-        private List<GameObject> CreateDroneShieldVisuals(BossActionContext context, IReadOnlyList<Minion> drones)
+        private List<GameObject> CreateDroneShieldVisuals(
+            BossActionContext context,
+            IReadOnlyList<Minion> drones)
         {
             List<GameObject> visuals = new(drones.Count);
+            if (shieldEffectPrefab == null)
+            {
+                return visuals;
+            }
+
             for (int i = 0; i < drones.Count; i++)
             {
                 Minion drone = drones[i];
@@ -145,7 +150,9 @@ namespace Week14.Enemy
             return visuals;
         }
 
-        private void ClearDroneShieldVisuals(BossActionContext context, IReadOnlyList<GameObject> visuals)
+        private static void ClearDroneShieldVisuals(
+            BossActionContext context,
+            IReadOnlyList<GameObject> visuals)
         {
             if (visuals == null)
             {
@@ -158,51 +165,32 @@ namespace Week14.Enemy
                 context.UnregisterTransientVisual(shield);
                 if (shield != null)
                 {
-                    UnityEngine.Object.Destroy(shield);
+                    ConductorDroneShieldVisual visual = shield.GetComponent<ConductorDroneShieldVisual>();
+                    if (visual != null)
+                    {
+                        visual.FadeOutAndDestroy();
+                    }
+                    else
+                    {
+                        UnityEngine.Object.Destroy(shield);
+                    }
                 }
             }
         }
 
         private GameObject CreateDroneShieldVisual(Minion drone)
         {
-            GameObject shield = new("ConductorDefenseArcShield");
-            shield.transform.SetParent(drone.transform, false);
+            GameObject instance = UnityEngine.Object.Instantiate(shieldEffectPrefab, drone.transform);
+            instance.transform.localPosition = Vector3.zero;
 
-            LineRenderer line = shield.AddComponent<LineRenderer>();
-            line.useWorldSpace = false;
-            line.loop = true;
-            line.numCapVertices = 3;
-            line.numCornerVertices = 3;
-            line.material = GetShieldMaterial();
-            line.startWidth = Mathf.Max(0.001f, shieldLineWidth);
-            line.endWidth = Mathf.Max(0.001f, shieldLineWidth);
-            line.startColor = shieldColor;
-            line.endColor = shieldColor;
-            BossSorting.Apply(line);
-            line.sortingOrder = shieldSortingOrder;
-
-            int segments = Mathf.Clamp(shieldSegments, 8, 64);
-            float radius = Mathf.Max(0.01f, shieldRadius);
-            line.positionCount = segments;
-            for (int i = 0; i < segments; i++)
-            {
-                float angle = Mathf.PI * 2f * i / segments;
-                line.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius));
-            }
-
-            return shield;
-        }
-
-        private static Material GetShieldMaterial()
-        {
-            if (shieldMaterial != null)
-            {
-                return shieldMaterial;
-            }
-
-            Shader shader = Shader.Find("Sprites/Default");
-            shieldMaterial = shader != null ? new Material(shader) : null;
-            return shieldMaterial;
+            ConductorDroneShieldVisual visual = instance.GetComponent<ConductorDroneShieldVisual>();
+            visual ??= instance.AddComponent<ConductorDroneShieldVisual>();
+            visual.Initialize(
+                shieldFadeInSeconds,
+                shieldFadeOutSeconds,
+                shieldOpacity,
+                shieldSortingOrder);
+            return instance;
         }
 
         private IEnumerator ExecuteVolleys(

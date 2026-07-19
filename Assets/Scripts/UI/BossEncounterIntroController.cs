@@ -63,6 +63,12 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float startDelaySeconds = 0.15f;
         [SerializeField, Min(0f)] private float playerWalkSpeed = 3.5f;
 
+        [Header("재시작 연출")]
+        [Tooltip("씬 전환이 끝난 뒤 플레이어 이동과 전투 UI 전환까지 걸리는 재시작 연출 시간입니다.")]
+        [SerializeField, Min(0f)] private float restartSequenceSeconds = 2.5f;
+        [Tooltip("재시작 시 레터박스가 사라지고 보스 체력바가 올라오는 시간입니다.")]
+        [SerializeField, Min(0f)] private float restartCombatUiRevealSeconds = 0.35f;
+
         [Header("보스 카메라")]
         [SerializeField, Range(0f, 1f)] private float bossFocusWeight = 1f;
         [SerializeField, Range(0.5f, 0.98f)] private float bossViewportFillRatio = 0.9f;
@@ -284,8 +290,11 @@ namespace Week14.UI
                 yield return PlayBossReveal();
             }
 
-            Transform bossFocusTarget = GetBossFocusTarget();
-            yield return ReturnCameraToCombatView(bossFocusTarget);
+            if (playFullBossIntro)
+            {
+                yield return ReturnCameraToCombatView(GetBossFocusTarget());
+            }
+
             boss?.ShowBossCombatUiForIntro();
             yield return AnimateCombatUiReveal();
 
@@ -336,7 +345,9 @@ namespace Week14.UI
             SetPlayerPosition(playerBody, startPosition);
             player.Visual?.BeginCinematicMovement(walkDirection);
 
-            float duration = playerWalkSpeed > 0f ? distance / playerWalkSpeed : 0f;
+            float duration = playFullBossIntro
+                ? (playerWalkSpeed > 0f ? distance / playerWalkSpeed : 0f)
+                : Mathf.Max(0f, restartSequenceSeconds - startDelaySeconds - restartCombatUiRevealSeconds);
             if (duration > 0f)
             {
                 for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
@@ -426,7 +437,9 @@ namespace Week14.UI
 
         private IEnumerator AnimateCombatUiReveal()
         {
-            float duration = Mathf.Max(0f, combatUiRevealSeconds);
+            float duration = Mathf.Max(
+                0f,
+                playFullBossIntro ? combatUiRevealSeconds : restartCombatUiRevealSeconds);
             Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
             Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
             Vector2 combatUiHiddenPosition = bossCombatUiTargetPosition + Vector2.down * bossCombatUiEnterOffset;

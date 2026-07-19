@@ -374,6 +374,7 @@ namespace Week14.Enemy
                 CancelBossAction();
                 CancelMinionPatternAction();
                 Stop();
+                EnemyProjectile.DestroyAllActive();
             }
 
             OnExecutionLockChanged(locked);

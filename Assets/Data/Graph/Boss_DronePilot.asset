@@ -529,7 +529,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671940
     sequences: []
-    editorPosition: {x: 4645, y: -1031}
+    editorPosition: {x: 3777, y: -1027}
   - nodeId: Repeat Fire11
     nodeGuid: 9639ad38bcac4d0f84aef8369ae273eb
     nodeKind: 4
@@ -538,7 +538,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671941
     sequences: []
-    editorPosition: {x: 4923, y: -966}
+    editorPosition: {x: 4055, y: -962}
   - nodeId: Maintain Player Distance20
     nodeGuid: 0091496bde8141c8810df577111438c8
     nodeKind: 1
@@ -547,7 +547,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671942
     sequences: []
-    editorPosition: {x: 4884, y: -1114}
+    editorPosition: {x: 4016, y: -1110}
   - nodeId: Maintain Player Distance21
     nodeGuid: 5cdc430833844b59a7c7bb5815a1fbe6
     nodeKind: 1
@@ -556,7 +556,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671943
     sequences: []
-    editorPosition: {x: 4619, y: -1205}
+    editorPosition: {x: 3751, y: -1201}
   - nodeId: Formation Circle10
     nodeGuid: ee4a2b81291842fd8af031c88b42158d
     nodeKind: 4
@@ -565,7 +565,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671944
     sequences: []
-    editorPosition: {x: 5181, y: -929}
+    editorPosition: {x: 4313, y: -925}
   - nodeId: Repeat Fire12
     nodeGuid: e1a2842443234b099e29728076b42c75
     nodeKind: 4
@@ -574,7 +574,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671945
     sequences: []
-    editorPosition: {x: 5491, y: -947}
+    editorPosition: {x: 4623, y: -943}
   - nodeId: Maintain Player Distance22
     nodeGuid: b2d63a6e656f4600b2d0e54bde3cc148
     nodeKind: 1
@@ -583,7 +583,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671946
     sequences: []
-    editorPosition: {x: 5491, y: -1107}
+    editorPosition: {x: 4623, y: -1103}
   - nodeId: Maintain Player Distance23
     nodeGuid: 8f12621c4db2441fa36a688f60c8d90c
     nodeKind: 1
@@ -592,7 +592,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671947
     sequences: []
-    editorPosition: {x: 5155, y: -1103}
+    editorPosition: {x: 4287, y: -1099}
   - nodeId: Wander8
     nodeGuid: 2ba3d545414f45df8470c3266165be4c
     nodeKind: 4
@@ -601,7 +601,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671948
     sequences: []
-    editorPosition: {x: 7109, y: -1108}
+    editorPosition: {x: 6241, y: -1104}
   - nodeId: Stop Movement6
     nodeGuid: 01f1f85e7be14a57bda07f8c6b9ab1c8
     nodeKind: 1
@@ -610,7 +610,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012903
     sequences: []
-    editorPosition: {x: 7071, y: -949}
+    editorPosition: {x: 6203, y: -945}
   - nodeId: Repeat Fire13
     nodeGuid: 7278daf2f16b463c9e449c519bb7875a
     nodeKind: 4
@@ -619,7 +619,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671950
     sequences: []
-    editorPosition: {x: 6425, y: -952}
+    editorPosition: {x: 5557, y: -948}
   - nodeId: Maintain Player Distance24
     nodeGuid: 1cc25c706e4546e29ca9aedb405f80e5
     nodeKind: 1
@@ -628,7 +628,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671951
     sequences: []
-    editorPosition: {x: 6383, y: -1100}
+    editorPosition: {x: 5515, y: -1096}
   - nodeId: Formation Circle11
     nodeGuid: 8f5e2136cc6d45b2a7fe7cb99163c8bf
     nodeKind: 4
@@ -637,7 +637,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671952
     sequences: []
-    editorPosition: {x: 6674, y: -936}
+    editorPosition: {x: 5806, y: -932}
   - nodeId: Repeat Fire14
     nodeGuid: 45cbc8ff203144ef9177e13eb584216c
     nodeKind: 4
@@ -646,7 +646,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671953
     sequences: []
-    editorPosition: {x: 6905, y: -937}
+    editorPosition: {x: 6037, y: -933}
   - nodeId: Maintain Player Distance25
     nodeGuid: de67b2a421d1484695e2905985ce8048
     nodeKind: 1
@@ -655,7 +655,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671954
     sequences: []
-    editorPosition: {x: 6864, y: -1110}
+    editorPosition: {x: 5996, y: -1106}
   - nodeId: Maintain Player Distance26
     nodeGuid: 19fe991072d54c3aa744bc7e7bf10ac6
     nodeKind: 1
@@ -664,7 +664,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671955
     sequences: []
-    editorPosition: {x: 6636, y: -1106}
+    editorPosition: {x: 5768, y: -1102}
   - nodeId: Formation Circle12
     nodeGuid: dea510815d7b434181f6bdfe741295cd
     nodeKind: 4
@@ -673,7 +673,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671962
     sequences: []
-    editorPosition: {x: 6165, y: -938}
+    editorPosition: {x: 5297, y: -934}
   - nodeId: Maintain Player Distance27
     nodeGuid: 3c45ab040ab240d3aed3ef9368172e8d
     nodeKind: 1
@@ -682,7 +682,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671963
     sequences: []
-    editorPosition: {x: 6127, y: -1108}
+    editorPosition: {x: 5259, y: -1104}
   - nodeId: Orbit2
     nodeGuid: b5cf2e6309e441baa9c77bb96c97b366
     nodeKind: 4
@@ -691,7 +691,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671976
     sequences: []
-    editorPosition: {x: 4860, y: 1021}
+    editorPosition: {x: 3992, y: 1025}
   - nodeId: Repeat Fire15
     nodeGuid: e1d7d53adee24bdea9749dcb478c0bf4
     nodeKind: 4
@@ -700,7 +700,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671977
     sequences: []
-    editorPosition: {x: 4841, y: 1145}
+    editorPosition: {x: 3973, y: 1149}
   - nodeId: Maintain Player Distance28
     nodeGuid: f8eff4e1e1e04161b0657dc96a8a9486
     nodeKind: 1
@@ -709,7 +709,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671978
     sequences: []
-    editorPosition: {x: 4808, y: 1258}
+    editorPosition: {x: 3940, y: 1262}
   - nodeId: Wander9
     nodeGuid: c330f4784b6743f1907351a798017f1e
     nodeKind: 4
@@ -718,7 +718,7 @@ MonoBehaviour:
     action:
       rid: 6489939025664671980
     sequences: []
-    editorPosition: {x: 5200, y: 1017}
+    editorPosition: {x: 4332, y: 1021}
   - nodeId: Stop Movement7
     nodeGuid: 8efe93948b474fbb8e41df091892bcba
     nodeKind: 1
@@ -727,7 +727,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012906
     sequences: []
-    editorPosition: {x: 5207, y: 1160}
+    editorPosition: {x: 4339, y: 1164}
   - nodeId: Player Path Side Fire1
     nodeGuid: 9f8d096031304d948ba04bb3703b8c54
     nodeKind: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355957
     sequences: []
-    editorPosition: {x: 2672, y: 775}
+    editorPosition: {x: 1839, y: 773}
   - nodeId: Wander10
     nodeGuid: 25adb2e9705446769aab3870b54c4b6c
     nodeKind: 4
@@ -799,7 +799,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355958
     sequences: []
-    editorPosition: {x: 3231, y: 757}
+    editorPosition: {x: 2398, y: 755}
   - nodeId: Stop Movement8
     nodeGuid: 3099361750dc4b72b21af79acbf483fa
     nodeKind: 1
@@ -808,7 +808,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012900
     sequences: []
-    editorPosition: {x: 3201, y: 911}
+    editorPosition: {x: 2368, y: 909}
   - nodeId: Player Path Side Fire6
     nodeGuid: ca7bf0526ef84d3f85c40d9505aac58c
     nodeKind: 0
@@ -817,7 +817,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355960
     sequences: []
-    editorPosition: {x: 2989, y: 774}
+    editorPosition: {x: 2156, y: 772}
   - nodeId: Wander11
     nodeGuid: 43a23d0338af4a8481209b843144e3dc
     nodeKind: 4
@@ -826,7 +826,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355961
     sequences: []
-    editorPosition: {x: 4197, y: 760}
+    editorPosition: {x: 3364, y: 758}
   - nodeId: Stop Movement9
     nodeGuid: 96a7843f49574bdb9278ec96144db5f0
     nodeKind: 1
@@ -835,7 +835,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012901
     sequences: []
-    editorPosition: {x: 4200, y: 894}
+    editorPosition: {x: 3367, y: 892}
   - nodeId: Player Path Side Fire7
     nodeGuid: 8ff0b40780bb48fea70b0ddd526d3f26
     nodeKind: 0
@@ -844,7 +844,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355963
     sequences: []
-    editorPosition: {x: 3985, y: 759}
+    editorPosition: {x: 3152, y: 757}
   - nodeId: Spawn Turrets3
     nodeGuid: 21aa2420d0384ded8b1de1bd06b5dd67
     nodeKind: 0
@@ -853,7 +853,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355964
     sequences: []
-    editorPosition: {x: 3655, y: 760}
+    editorPosition: {x: 2822, y: 758}
   - nodeId: Spawn Turrets4
     nodeGuid: 7462b02bb017499fa7beef38e76b7c9a
     nodeKind: 0
@@ -862,7 +862,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355965
     sequences: []
-    editorPosition: {x: 2053, y: 777}
+    editorPosition: {x: 2003, y: 1248}
   - nodeId: Score Lane Rush4
     nodeGuid: 5852bc4a23114af7b530c5070f39448f
     nodeKind: 0
@@ -871,7 +871,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355966
     sequences: []
-    editorPosition: {x: 1888, y: 779}
+    editorPosition: {x: 1838, y: 1250}
   - nodeId: Wander12
     nodeGuid: 0687b02a47654dbda35eecdb2c36414c
     nodeKind: 4
@@ -880,7 +880,7 @@ MonoBehaviour:
     action:
       rid: 6489939039041355967
     sequences: []
-    editorPosition: {x: 2214, y: 775}
+    editorPosition: {x: 2164, y: 1246}
   - nodeId: Stop Movement10
     nodeGuid: 87925482f1f74d929acf34e84686f563
     nodeKind: 1
@@ -889,7 +889,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012902
     sequences: []
-    editorPosition: {x: 2184, y: 929}
+    editorPosition: {x: 2134, y: 1400}
   - nodeId: Orbit3
     nodeGuid: 0935e4fd03a14331990175503635228a
     nodeKind: 4
@@ -898,7 +898,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012697
     sequences: []
-    editorPosition: {x: 5972, y: -1114}
+    editorPosition: {x: 5104, y: -1110}
   - nodeId: Repeat Fire16
     nodeGuid: bed37318afff40de895bdd2b36c9557d
     nodeKind: 4
@@ -907,7 +907,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012698
     sequences: []
-    editorPosition: {x: 5953, y: -990}
+    editorPosition: {x: 5085, y: -986}
   - nodeId: Maintain Player Distance29
     nodeGuid: 222111eb1168418d8db0b33968c75f51
     nodeKind: 1
@@ -916,7 +916,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012699
     sequences: []
-    editorPosition: {x: 5915, y: -834}
+    editorPosition: {x: 5047, y: -830}
   - nodeId: Wander13
     nodeGuid: bec357e33a914061b9ba9d0968a47d5d
     nodeKind: 4
@@ -925,7 +925,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012884
     sequences: []
-    editorPosition: {x: 3824, y: 762}
+    editorPosition: {x: 2991, y: 760}
   - nodeId: Move Toward Player2
     nodeGuid: f262b2669ad04a509ac686bb98f2a9ef
     nodeKind: 1
@@ -934,7 +934,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012885
     sequences: []
-    editorPosition: {x: 3856, y: 919}
+    editorPosition: {x: 3023, y: 917}
   - nodeId: Wander14
     nodeGuid: c4691a2817fa48d2967062155eb61608
     nodeKind: 4
@@ -943,7 +943,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012886
     sequences: []
-    editorPosition: {x: 2849, y: 773}
+    editorPosition: {x: 2016, y: 771}
   - nodeId: Move Toward Player3
     nodeGuid: 0d407bda86484479b8b22d733b75ed2e
     nodeKind: 1
@@ -952,7 +952,7 @@ MonoBehaviour:
     action:
       rid: 6489939042083012887
     sequences: []
-    editorPosition: {x: 2811, y: 932}
+    editorPosition: {x: 1978, y: 930}
   - nodeId: Conducting Cue1
     nodeGuid: a818309a69c640b281a310c5c85d8b0a
     nodeKind: 0
@@ -1024,7 +1024,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703781
     sequences: []
-    editorPosition: {x: 2492, y: 779}
+    editorPosition: {x: 1659, y: 777}
   - nodeId: Conducting Cue9
     nodeGuid: b55baa77273946dc8ba23ed5b344266c
     nodeKind: 0
@@ -1033,7 +1033,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703782
     sequences: []
-    editorPosition: {x: 2829, y: 617}
+    editorPosition: {x: 1996, y: 615}
   - nodeId: Conducting Cue10
     nodeGuid: ed3e8b0209924e5cbdf1593a9e52b6b2
     nodeKind: 0
@@ -1042,7 +1042,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703783
     sequences: []
-    editorPosition: {x: 3824, y: 610}
+    editorPosition: {x: 2991, y: 608}
   - nodeId: Conducting Cue11
     nodeGuid: 5076326c98a14e7481ee7ada8c15df6a
     nodeKind: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703784
     sequences: []
-    editorPosition: {x: 3488, y: 758}
+    editorPosition: {x: 2655, y: 756}
   - nodeId: Conducting Cue12
     nodeGuid: 818cdb3c65ae4da78d33d30fbf1becd4
     nodeKind: 0
@@ -1060,7 +1060,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703785
     sequences: []
-    editorPosition: {x: 1692, y: 784}
+    editorPosition: {x: 1642, y: 1255}
   - nodeId: Conducting Cue13
     nodeGuid: 86a382294aed4564a5ae3210d8705494
     nodeKind: 0
@@ -1069,7 +1069,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703786
     sequences: []
-    editorPosition: {x: 1895, y: 625}
+    editorPosition: {x: 1845, y: 1096}
   - nodeId: Conducting Cue14
     nodeGuid: e1c519233a8b48b484e0079ba5665e4b
     nodeKind: 0
@@ -1078,7 +1078,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703787
     sequences: []
-    editorPosition: {x: 4645, y: -1393}
+    editorPosition: {x: 3777, y: -1389}
   - nodeId: Conducting Cue15
     nodeGuid: e67ca330199b4f57978ab3aeade1b366
     nodeKind: 0
@@ -1087,7 +1087,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703788
     sequences: []
-    editorPosition: {x: 5505, y: -1273}
+    editorPosition: {x: 4637, y: -1269}
   - nodeId: Conducting Cue16
     nodeGuid: 713244eee03047c8b6f866ef97c17bc9
     nodeKind: 0
@@ -1096,7 +1096,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703789
     sequences: []
-    editorPosition: {x: 5763, y: -1266}
+    editorPosition: {x: 4895, y: -1262}
   - nodeId: Conducting Cue17
     nodeGuid: 275a16d84a2c48e68b6383002e85b05e
     nodeKind: 0
@@ -1105,7 +1105,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703790
     sequences: []
-    editorPosition: {x: 6139, y: -1263}
+    editorPosition: {x: 5271, y: -1259}
   - nodeId: Conducting Cue18
     nodeGuid: a50310ccf90848dc830c45e403c7e07a
     nodeKind: 0
@@ -1114,7 +1114,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703798
     sequences: []
-    editorPosition: {x: 4630, y: 1023}
+    editorPosition: {x: 3762, y: 1027}
   - nodeId: Conducting Cue19
     nodeGuid: 3f8783e7daa94e19b94a147dc4b70fe0
     nodeKind: 0
@@ -1123,7 +1123,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703799
     sequences: []
-    editorPosition: {x: 4828, y: 879}
+    editorPosition: {x: 3960, y: 883}
   - nodeId: Conducting Cue20
     nodeGuid: b120f88b12af4af58b9e1d1d2a442525
     nodeKind: 0
@@ -1159,7 +1159,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703826
     sequences: []
-    editorPosition: {x: 2504, y: 926}
+    editorPosition: {x: 1671, y: 924}
   - nodeId: Wander18
     nodeGuid: 154080bb695444af912902a6f14025d4
     nodeKind: 4
@@ -1168,7 +1168,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703827
     sequences: []
-    editorPosition: {x: 3504, y: 894}
+    editorPosition: {x: 2671, y: 892}
   - nodeId: Wander19
     nodeGuid: e5b0a4f48ce144c191ed409148738723
     nodeKind: 4
@@ -1177,7 +1177,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703828
     sequences: []
-    editorPosition: {x: 1708, y: 917}
+    editorPosition: {x: 1658, y: 1388}
   - nodeId: Conducting Cue21
     nodeGuid: a436bd0c1a254947b33c566b3453cefd
     nodeKind: 0
@@ -1222,7 +1222,7 @@ MonoBehaviour:
     action:
       rid: 6489939082469703834
     sequences: []
-    editorPosition: {x: 4630, y: 1165}
+    editorPosition: {x: 3762, y: 1169}
   - nodeId: Defense Arc Volley1
     nodeGuid: c4377fd151e643e988984baf42cef710
     nodeKind: 0
@@ -1357,7 +1357,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861215
     sequences: []
-    editorPosition: {x: 1692, y: 1104}
+    editorPosition: {x: 1642, y: 1575}
   - nodeId: Wander26
     nodeGuid: a1aceb64feaa4f2ea74ddf8b077ce47d
     nodeKind: 4
@@ -1366,7 +1366,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861216
     sequences: []
-    editorPosition: {x: 1698, y: 1260}
+    editorPosition: {x: 1648, y: 1731}
   - nodeId: Diamond Collapse1
     nodeGuid: 5b575b383ba24ec1968f637f899133f1
     nodeKind: 0
@@ -1375,7 +1375,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861217
     sequences: []
-    editorPosition: {x: 1863, y: 1265}
+    editorPosition: {x: 1813, y: 1736}
   - nodeId: Conducting Cue27
     nodeGuid: 48d5605873184735a9feedfc19e4b744
     nodeKind: 0
@@ -1384,7 +1384,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861218
     sequences: []
-    editorPosition: {x: 1870, y: 1082}
+    editorPosition: {x: 1820, y: 1553}
   - nodeId: Wander27
     nodeGuid: fa40a9e2392b43b1aee40e38b30f357a
     nodeKind: 4
@@ -1393,7 +1393,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861220
     sequences: []
-    editorPosition: {x: 2197, y: 1251}
+    editorPosition: {x: 2147, y: 1722}
   - nodeId: Stop Movement12
     nodeGuid: 796e98086f03499b971c34b0454aae48
     nodeKind: 1
@@ -1402,7 +1402,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861221
     sequences: []
-    editorPosition: {x: 2185, y: 1416}
+    editorPosition: {x: 2135, y: 1887}
   - nodeId: Spawn Turrets5
     nodeGuid: 1a6afc69632a487598c954fafe79a3ce
     nodeKind: 0
@@ -1411,7 +1411,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861223
     sequences: []
-    editorPosition: {x: 4828, y: -37}
+    editorPosition: {x: 3960, y: -33}
   - nodeId: Player Path Side Fire8
     nodeGuid: b87a9f3f1b864243ac3262c884320406
     nodeKind: 0
@@ -1420,7 +1420,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861224
     sequences: []
-    editorPosition: {x: 5010, y: -34}
+    editorPosition: {x: 4142, y: -30}
   - nodeId: Wander28
     nodeGuid: 151946d2235541268939e70713944f5a
     nodeKind: 4
@@ -1429,7 +1429,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861225
     sequences: []
-    editorPosition: {x: 5268, y: -39}
+    editorPosition: {x: 4400, y: -35}
   - nodeId: Stop Movement13
     nodeGuid: cf4284d1ba1042df811632e9e3f4d125
     nodeKind: 1
@@ -1438,7 +1438,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861226
     sequences: []
-    editorPosition: {x: 5248, y: 94}
+    editorPosition: {x: 4380, y: 98}
   - nodeId: Conducting Cue28
     nodeGuid: 2f17c6ec45d94cfe9e3c0abe0a0d3505
     nodeKind: 0
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861230
     sequences: []
-    editorPosition: {x: 4634, y: -177}
+    editorPosition: {x: 3766, y: -173}
   - nodeId: Conducting Cue29
     nodeGuid: 08bfd7b9152b467583a70fcc08b8226f
     nodeKind: 0
@@ -1456,7 +1456,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861231
     sequences: []
-    editorPosition: {x: 4829, y: -191}
+    editorPosition: {x: 3961, y: -187}
   - nodeId: Wander29
     nodeGuid: 94488eee7bd447f28e920fa24aabcc34
     nodeKind: 4
@@ -1465,7 +1465,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861232
     sequences: []
-    editorPosition: {x: 4643, y: -56}
+    editorPosition: {x: 3775, y: -52}
   - nodeId: Player Path Side Fire9
     nodeGuid: 70b69d27545044f0b5faea8784634290
     nodeKind: 0
@@ -1474,7 +1474,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861233
     sequences: []
-    editorPosition: {x: 4819, y: -519}
+    editorPosition: {x: 3951, y: -515}
   - nodeId: Conducting Cue30
     nodeGuid: 4e5acd17fdf346189be5962716441999
     nodeKind: 0
@@ -1483,7 +1483,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861234
     sequences: []
-    editorPosition: {x: 4633, y: -666}
+    editorPosition: {x: 3765, y: -662}
   - nodeId: Wander30
     nodeGuid: 161e2323d83c4abca7262426358d6b36
     nodeKind: 4
@@ -1492,7 +1492,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861235
     sequences: []
-    editorPosition: {x: 4638, y: -526}
+    editorPosition: {x: 3770, y: -522}
   - nodeId: Score Lane Rush5
     nodeGuid: c3f1985d86824e19897001ce1bcae3ce
     nodeKind: 0
@@ -1501,7 +1501,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861236
     sequences: []
-    editorPosition: {x: 5048, y: -524}
+    editorPosition: {x: 4180, y: -520}
   - nodeId: Wander31
     nodeGuid: 760760fcc3034dc9973afcc0edcaefd6
     nodeKind: 4
@@ -1510,7 +1510,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861237
     sequences: []
-    editorPosition: {x: 5265, y: -515}
+    editorPosition: {x: 4397, y: -511}
   - nodeId: Stop Movement14
     nodeGuid: 30be5f1b42e841219dcd7578ecde0044
     nodeKind: 1
@@ -1519,7 +1519,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861238
     sequences: []
-    editorPosition: {x: 5260, y: -354}
+    editorPosition: {x: 4392, y: -350}
   - nodeId: Conducting Cue31
     nodeGuid: 4ad50a96b6294934bc082a274e260d3d
     nodeKind: 0
@@ -1528,7 +1528,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861239
     sequences: []
-    editorPosition: {x: 4833, y: -660}
+    editorPosition: {x: 3965, y: -656}
   - nodeId: Conducting Cue32
     nodeGuid: 3ad3adcdb6ba45e2a08524ce014ba556
     nodeKind: 0
@@ -1537,7 +1537,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861240
     sequences: []
-    editorPosition: {x: 4640, y: 255}
+    editorPosition: {x: 3772, y: 259}
   - nodeId: Wander32
     nodeGuid: a15fa251c7f94c11ab5740480e10d41b
     nodeKind: 4
@@ -1546,7 +1546,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861241
     sequences: []
-    editorPosition: {x: 4644, y: 428}
+    editorPosition: {x: 3776, y: 432}
   - nodeId: Conducting Cue33
     nodeGuid: 79b54804f39e4398a5e360d34197d47f
     nodeKind: 0
@@ -1555,7 +1555,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861243
     sequences: []
-    editorPosition: {x: 4816, y: 250}
+    editorPosition: {x: 3948, y: 254}
   - nodeId: Wander33
     nodeGuid: 894d2cb4ba434cb887ce430a539169a0
     nodeKind: 4
@@ -1564,7 +1564,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861245
     sequences: []
-    editorPosition: {x: 5207, y: 432}
+    editorPosition: {x: 4339, y: 436}
   - nodeId: Stop Movement15
     nodeGuid: 20af49c6085d4a98927a80796355d978
     nodeKind: 1
@@ -1573,7 +1573,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861246
     sequences: []
-    editorPosition: {x: 5195, y: 595}
+    editorPosition: {x: 4327, y: 599}
   - nodeId: Orbit4
     nodeGuid: 12237603cd224786be7f3d7470ee593e
     nodeKind: 4
@@ -1582,7 +1582,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861247
     sequences: []
-    editorPosition: {x: 5020, y: 436}
+    editorPosition: {x: 4152, y: 440}
   - nodeId: Repeat Fire18
     nodeGuid: 8e0baa4fd1fa49f5957bebfabac4c5f0
     nodeKind: 4
@@ -1591,7 +1591,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861248
     sequences: []
-    editorPosition: {x: 5001, y: 560}
+    editorPosition: {x: 4133, y: 564}
   - nodeId: Maintain Player Distance32
     nodeGuid: 6aae51ca1eda407589663064fa12b2f6
     nodeKind: 1
@@ -1600,7 +1600,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861249
     sequences: []
-    editorPosition: {x: 4949, y: 686}
+    editorPosition: {x: 4081, y: 690}
   - nodeId: Conducting Cue34
     nodeGuid: 0bb6f891c6344c9d8e38230d444cacb3
     nodeKind: 0
@@ -1681,7 +1681,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861258
     sequences: []
-    editorPosition: {x: 4801, y: 1577}
+    editorPosition: {x: 3933, y: 1581}
   - nodeId: Conducting Cue35
     nodeGuid: 091cd19d08b1460c9cbe676a660a4c25
     nodeKind: 0
@@ -1690,7 +1690,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861259
     sequences: []
-    editorPosition: {x: 4618, y: 1448}
+    editorPosition: {x: 3750, y: 1452}
   - nodeId: Wander38
     nodeGuid: 531cfc41e4814819bd03ddea435c48c7
     nodeKind: 4
@@ -1699,7 +1699,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861260
     sequences: []
-    editorPosition: {x: 4618, y: 1588}
+    editorPosition: {x: 3750, y: 1592}
   - nodeId: Formation Circle14
     nodeGuid: 8bfe94e7e2634f0ca0dae943690956f8
     nodeKind: 4
@@ -1708,7 +1708,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861261
     sequences: []
-    editorPosition: {x: 5013, y: 1760}
+    editorPosition: {x: 4145, y: 1764}
   - nodeId: Maintain Player Distance33
     nodeGuid: db89704a05724c68b7158da4530e76aa
     nodeKind: 1
@@ -1717,7 +1717,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861262
     sequences: []
-    editorPosition: {x: 5196, y: 1577}
+    editorPosition: {x: 4328, y: 1581}
   - nodeId: Maintain Player Distance34
     nodeGuid: f613164e13ec4fce9034389c135bc6c1
     nodeKind: 1
@@ -1726,7 +1726,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861263
     sequences: []
-    editorPosition: {x: 5407, y: 1580}
+    editorPosition: {x: 4539, y: 1584}
   - nodeId: Repeat Fire19
     nodeGuid: 14611716b0874cffa630bb5fb611d105
     nodeKind: 4
@@ -1735,7 +1735,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861264
     sequences: []
-    editorPosition: {x: 5240, y: 1723}
+    editorPosition: {x: 4372, y: 1727}
   - nodeId: Formation Circle15
     nodeGuid: c9322ceaa4274e3e9a3bea518c0ae40f
     nodeKind: 4
@@ -1744,7 +1744,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861265
     sequences: []
-    editorPosition: {x: 5433, y: 1754}
+    editorPosition: {x: 4565, y: 1758}
   - nodeId: Maintain Player Distance35
     nodeGuid: 2edd81f38e674160983d3d322ff91352
     nodeKind: 1
@@ -1753,7 +1753,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861266
     sequences: []
-    editorPosition: {x: 5653, y: 1571}
+    editorPosition: {x: 4785, y: 1575}
   - nodeId: Repeat Fire20
     nodeGuid: 72a4d2487bb641b292a4f78ea24a29a4
     nodeKind: 4
@@ -1762,7 +1762,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861267
     sequences: []
-    editorPosition: {x: 5693, y: 1716}
+    editorPosition: {x: 4825, y: 1720}
   - nodeId: Maintain Player Distance36
     nodeGuid: a448ca74c6514bee81a65ff9000769aa
     nodeKind: 1
@@ -1771,7 +1771,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861268
     sequences: []
-    editorPosition: {x: 5897, y: 1561}
+    editorPosition: {x: 5029, y: 1565}
   - nodeId: Formation Circle16
     nodeGuid: 1a6ecfb878b14787b0d10b6d0b01e62f
     nodeKind: 4
@@ -1780,7 +1780,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861269
     sequences: []
-    editorPosition: {x: 5935, y: 1731}
+    editorPosition: {x: 5067, y: 1735}
   - nodeId: Maintain Player Distance37
     nodeGuid: b278933146d0461795f65988f6cdccd6
     nodeKind: 1
@@ -1789,7 +1789,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861270
     sequences: []
-    editorPosition: {x: 6122, y: 1560}
+    editorPosition: {x: 5254, y: 1564}
   - nodeId: Repeat Fire21
     nodeGuid: 2410d2168edc4ac59cb9c36e4516291e
     nodeKind: 4
@@ -1798,7 +1798,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861271
     sequences: []
-    editorPosition: {x: 6163, y: 1705}
+    editorPosition: {x: 5295, y: 1709}
   - nodeId: Maintain Player Distance38
     nodeGuid: ac07893cbd2e47739cea0b4b083c5cb0
     nodeKind: 1
@@ -1807,7 +1807,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861272
     sequences: []
-    editorPosition: {x: 6366, y: 1566}
+    editorPosition: {x: 5498, y: 1570}
   - nodeId: Formation Circle17
     nodeGuid: 80b597da74974763a30994442e6a4e36
     nodeKind: 4
@@ -1816,7 +1816,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861273
     sequences: []
-    editorPosition: {x: 6404, y: 1736}
+    editorPosition: {x: 5536, y: 1740}
   - nodeId: Maintain Player Distance39
     nodeGuid: 7615b37a031a4029b2ecfa000d9698d2
     nodeKind: 1
@@ -1825,7 +1825,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861274
     sequences: []
-    editorPosition: {x: 6608, y: 1563}
+    editorPosition: {x: 5740, y: 1567}
   - nodeId: Wander39
     nodeGuid: 1bed96b6871d4168a0cb0dc455fff508
     nodeKind: 4
@@ -1834,7 +1834,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861275
     sequences: []
-    editorPosition: {x: 6835, y: 1565}
+    editorPosition: {x: 5967, y: 1569}
   - nodeId: Repeat Fire22
     nodeGuid: e6c940694e1046d08b2c55fa93c45054
     nodeKind: 4
@@ -1843,7 +1843,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861276
     sequences: []
-    editorPosition: {x: 6649, y: 1736}
+    editorPosition: {x: 5781, y: 1740}
   - nodeId: Conducting Cue36
     nodeGuid: e1760c2bdddd427e96fcc1491ffa08f1
     nodeKind: 0
@@ -1852,7 +1852,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861277
     sequences: []
-    editorPosition: {x: 4791, y: 1441}
+    editorPosition: {x: 3923, y: 1445}
   - nodeId: Maintain Player Distance40
     nodeGuid: 74e8ed9245bd4fe7b85fdbb2c7e2fa25
     nodeKind: 1
@@ -1861,7 +1861,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861278
     sequences: []
-    editorPosition: {x: 4987, y: 1586}
+    editorPosition: {x: 4119, y: 1590}
   - nodeId: Stop Movement19
     nodeGuid: 22e2e2aa106d454985fc2ddd17b05784
     nodeKind: 1
@@ -1870,7 +1870,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861280
     sequences: []
-    editorPosition: {x: 6805, y: 1718}
+    editorPosition: {x: 5937, y: 1722}
   - nodeId: Fan Blade2
     nodeGuid: b27a848d300140fe9a20e7574b2e4ffb
     nodeKind: 0
@@ -1879,7 +1879,7 @@ MonoBehaviour:
     action:
       rid: 6489939172654055501
     sequences: []
-    editorPosition: {x: 2037, y: 1256}
+    editorPosition: {x: 1987, y: 1727}
   - nodeId: Diamond Collapse2
     nodeGuid: 256ccdfb0b4a484f962c1339cde18051
     nodeKind: 0
@@ -1915,7 +1915,7 @@ MonoBehaviour:
     action:
       rid: 6489939172654055506
     sequences: []
-    editorPosition: {x: 5768, y: -1083}
+    editorPosition: {x: 4900, y: -1079}
   - nodeId: Fan Blade6
     nodeGuid: 4dbdd095492b4ee1bd2d8c14fcd2858e
     nodeKind: 0
@@ -1924,7 +1924,7 @@ MonoBehaviour:
     action:
       rid: 6489939172654055508
     sequences: []
-    editorPosition: {x: 5014, y: 1018}
+    editorPosition: {x: 4146, y: 1022}
   - nodeId: Parry Suppression Bait1
     nodeGuid: 58e96085d30f42808ebc37f093409405
     nodeKind: 0
@@ -1969,7 +1969,7 @@ MonoBehaviour:
     action:
       rid: 6489939249705517133
     sequences: []
-    editorPosition: {x: 4810, y: 433}
+    editorPosition: {x: 3942, y: 437}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -2486,7 +2486,7 @@ MonoBehaviour:
     - Wander9
     - Conducting Cue19
     - Wander22
-  - patternId: Pattern2
+  - patternId: P10
     nodeGuids:
     - aa726d3bbfd544f88ef36db7366fe1cf
     - 58e96085d30f42808ebc37f093409405
@@ -2573,7 +2573,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern2
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -2611,11 +2611,6 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern2
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
     - patternId: P1 -> P6 -> P3 -> P1
       weight: 1
       legacyCooldownSeconds: -1
@@ -2642,6 +2637,11 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P3 -> P6
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -3937,7 +3937,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: P1
+  debugForcedPatternId: P10
   references:
     version: 2
     RefIds:
@@ -10883,11 +10883,11 @@ MonoBehaviour:
         windupSeconds: 0.5
         recoverySeconds: 0.25
         releaseDronesAfterVolley: 1
-        shieldColor: {r: 0.3, g: 0.78, b: 1, a: 0.82}
-        shieldRadius: 0.45
-        shieldLineWidth: 0.035
-        shieldSegments: 24
+        shieldEffectPrefab: {fileID: 0}
+        shieldOpacity: 0.5
         shieldSortingOrder: 72
+        shieldFadeInSeconds: 0.15
+        shieldFadeOutSeconds: 0.2
         volleys:
         - projectileName: "\uC77C\uBC18\uD0C4"
           repeatCount: 3
@@ -15279,11 +15279,11 @@ MonoBehaviour:
         windupSeconds: 0.5
         recoverySeconds: 0.25
         releaseDronesAfterVolley: 1
-        shieldColor: {r: 0.3, g: 0.78, b: 1, a: 0.82}
-        shieldRadius: 0.45
-        shieldLineWidth: 0.035
-        shieldSegments: 24
+        shieldEffectPrefab: {fileID: 3024543920391411353, guid: 14094ae5319eccc4ea3c6f4d9d96b53c, type: 3}
+        shieldOpacity: 0.5
         shieldSortingOrder: 72
+        shieldFadeInSeconds: 0.15
+        shieldFadeOutSeconds: 0.2
         volleys:
         - projectileName: "\uC77C\uBC18\uD0C4"
           repeatCount: 3
@@ -15341,7 +15341,7 @@ MonoBehaviour:
         fadeSeconds: 0.1
         sortingOrder: 90
         completedEffectPrefab: {fileID: 7289365483218541331, guid: 65918c889e4ec884c8ff573eb7919b9d, type: 3}
-        completedEffectOffset: {x: 0, y: -0.32}
+        completedEffectOffset: {x: 0, y: 0}
         completedEffectScale: 1
         completedFlashColor: {r: 1, g: 1, b: 1, a: 1}
         completedFlashSeconds: 0.08
@@ -16559,8 +16559,8 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         baitDroneOffset: {x: 0, y: 0}
-        baitSpawnRemainingSeconds: 1.25
-        baitDurationSeconds: 1.25
+        baitSpawnRemainingSeconds: 2.25
+        baitDurationSeconds: 2.25
         rewardBulletCount: 4
         rewardCircleRadius: 1.5
         rewardLifetimeSeconds: 2
