@@ -2595,6 +2595,30 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 75
       objectReference: {fileID: 0}
+    - target: {fileID: 7213248953238434763, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: font
+      value: 
+      objectReference: {fileID: 11400000, guid: 170e6f3307ae3f84f849202323b1f689, type: 2}
+    - target: {fileID: 7213248953238434763, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: styles.Array.data[0].fontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213248953238434763, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: styles.Array.data[1].fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213248953238434763, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: styles.Array.data[2].fontSize
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213248953238434763, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: styles.Array.data[3].fontSize
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213248953238434763, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: styles.Array.data[4].fontSize
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7360286854126495715, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

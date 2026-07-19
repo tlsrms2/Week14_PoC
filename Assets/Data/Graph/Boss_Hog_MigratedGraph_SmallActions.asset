@@ -1889,7 +1889,7 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 1
           angleDegrees: 0
@@ -1966,7 +1966,7 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 1
           angleDegrees: 6
@@ -2426,7 +2426,7 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 0
           angleDegrees: 0
