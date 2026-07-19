@@ -38,7 +38,7 @@ MonoBehaviour:
   mouseParryMissShakeSeconds: 0.18
   mouseParryMissShakeAmplitude: 0.035
   mouseParryMissShakeFrequency: 42
-  executionRange: 8.5
+  executionRange: 999
   destroyTargetOnExecute: 1
   executionAimSeconds: 0.2
   executionShotDelaySeconds: 0.3
@@ -46,10 +46,8 @@ MonoBehaviour:
   executionFinishSeconds: 0.12
   executionCameraFocusWeight: 1
   executionCameraZoomMultiplier: 0.55
-  executionCameraSafeViewportRatio: 0.68
-  executionCameraPairPadding: 0.8
-  executionCameraMaximumZoomMultiplier: 1.6
-  executionCameraReframeTimeoutSeconds: 0.4
+  executionTeleportStartDistance: 4.5
+  executionTeleportDistance: 4.5
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
   executionFlourishDelaySeconds: 0.5
@@ -58,6 +56,7 @@ MonoBehaviour:
   finalDeathExplosionSceneNames:
   - MainScene
   - Boss_Muscle
+  finalExecutionResultPanelDelaySeconds: 1
   finalExecutionLetterboxEnterSeconds: 0.2
   finalExecutionBlackoutFadeInSeconds: 0.14
   finalExecutionBlackoutHoldSeconds: 0.8
