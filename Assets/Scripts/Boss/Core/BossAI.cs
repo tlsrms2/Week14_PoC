@@ -28,8 +28,6 @@ namespace Week14.Enemy
         [SerializeField] private Animator deathAnimator;
         private Animator[] deathAnimators;
         [SerializeField] private string deathTriggerName = "Die";
-        [Tooltip("체크 해제하면 사망 연출에서 폭발 이펙트를 재생하지 않고 곧바로 사망 애니메이션으로 넘어갑니다.")]
-        [SerializeField] private bool playFinalDeathExplosion = true;
         [SerializeField, Min(0f)] private float finalDeathExplosionSeconds = 1.4f;
         [SerializeField, Min(1)] private int finalDeathExplosionCount = 10;
         [Tooltip("지정하면 절차적 스파크/연기 이펙트 대신 이 프리팹을 각 폭발 위치에 생성합니다.")]
@@ -706,7 +704,6 @@ namespace Week14.Enemy
         }
 
         internal string DeathTriggerNameForSequence => deathTriggerName;
-        internal bool PlayFinalDeathExplosionForSequence => playFinalDeathExplosion;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
         internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;
