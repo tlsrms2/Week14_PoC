@@ -94,21 +94,21 @@ namespace Week14.Tutorial
             Hide();
         }
 
-        public void ShowLine(string speaker, string text)
+        public void ShowLine(string speaker, string text, string profileSpeaker = null)
         {
             ShowPanel();
             SetAdvancePromptBlinking(false);
             SetObjectiveStrikeLineVisible(false);
             SetObjectiveTitleVisible(false);
             SetObjectiveKeyText(string.Empty, false);
-            SetSpeaker(speaker);
+            SetSpeaker(speaker, profileSpeaker);
             SetDialogueColor(defaultDialogueColor);
             SetDialogueText(FormatDialogue(text), 0);
         }
 
-        public void ReplaceLineText(string speaker, string text)
+        public void ReplaceLineText(string speaker, string text, string profileSpeaker = null)
         {
-            SetSpeaker(speaker);
+            SetSpeaker(speaker, profileSpeaker);
             SetDialogueColor(defaultDialogueColor);
 
             int visibleCharacters = dialogueText != null ? dialogueText.maxVisibleCharacters : 0;
@@ -335,7 +335,7 @@ namespace Week14.Tutorial
             showRoutine = null;
         }
 
-        private void SetSpeaker(string speaker)
+        private void SetSpeaker(string speaker, string profileSpeaker = null)
         {
             bool hasSpeaker = !string.IsNullOrWhiteSpace(speaker);
             if (speakerRoot != null)
@@ -345,7 +345,8 @@ namespace Week14.Tutorial
 
             SetText(speakerText, hasSpeaker ? speaker : string.Empty);
 
-            Sprite profileSprite = hasSpeaker ? ResolveProfileSprite(speaker) : null;
+            string profileKey = !string.IsNullOrWhiteSpace(profileSpeaker) ? profileSpeaker : speaker;
+            Sprite profileSprite = hasSpeaker ? ResolveProfileSprite(profileKey) : null;
             if (profileImage != null)
             {
                 profileImage.sprite = profileSprite;

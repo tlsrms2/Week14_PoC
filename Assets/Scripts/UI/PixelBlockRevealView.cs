@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -311,7 +312,7 @@ namespace Week14.UI
 
                 if (!originalGraphicColors.TryGetValue(graphic, out Color originalColor))
                 {
-                    originalColor = graphic.color;
+                    originalColor = ResolveInitialOriginalColor(graphic);
                     originalGraphicColors.Add(graphic, originalColor);
                 }
 
@@ -330,6 +331,19 @@ namespace Week14.UI
 
                 contentSelectables.Add(new SelectableState(selectable, originalInteractable));
             }
+        }
+
+        private static Color ResolveInitialOriginalColor(Graphic graphic)
+        {
+            Color color = graphic.color;
+            if (graphic is TMP_Text text
+                && color.a <= InvisibleAlpha
+                && !string.IsNullOrEmpty(text.text))
+            {
+                color.a = 1f;
+            }
+
+            return color;
         }
 
         // CacheContent()는 각 Graphic의 색을 처음 본 순간에 딱 한 번만 캐시해두고 이후로는 재사용한다.

@@ -35,9 +35,25 @@ namespace Week14.UI
 
         private Coroutine playRoutine;
         private bool closeRequested;
+        private bool initialized;
+        private bool showRequested;
 
         private void Awake()
         {
+            EnsureInitialized();
+            if (!showRequested)
+            {
+                Hide();
+            }
+        }
+
+        private void EnsureInitialized()
+        {
+            if (initialized)
+            {
+                return;
+            }
+
             if (root == null)
             {
                 root = gameObject;
@@ -62,7 +78,7 @@ namespace Week14.UI
                 closeButton.onClick.AddListener(HandleCloseButtonClicked);
             }
 
-            Hide();
+            initialized = true;
         }
 
         private void OnDestroy()
@@ -99,6 +115,9 @@ namespace Week14.UI
                 return;
             }
 
+            showRequested = true;
+            EnsureInitialized();
+
             if (pointsText != null)
             {
                 pointsText.text = LoadoutSelectedSkillPanelLocalization.ResolveLocalizedFormat(localizedFormat, format, earnedPoints);
@@ -112,6 +131,8 @@ namespace Week14.UI
 
         public void Hide()
         {
+            EnsureInitialized();
+            showRequested = false;
             StopPlayRoutine();
             root.SetActive(false);
             canvasGroup.alpha = 0f;
@@ -125,6 +146,7 @@ namespace Week14.UI
             yield return Fade(1f, 0f, fadeOutSeconds);
 
             root.SetActive(false);
+            showRequested = false;
             playRoutine = null;
         }
 

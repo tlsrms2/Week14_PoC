@@ -173,6 +173,10 @@ MonoBehaviour:
     m_Key: ui.lobby.enhancement
     m_Metadata:
       m_Items: []
+  - m_Id: 6563875845234688
+    m_Key: ui.skip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
