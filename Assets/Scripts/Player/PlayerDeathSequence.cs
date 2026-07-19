@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Week14.Audio;
 using Week14.Bootstrap;
+using Week14.Skills;
 
 namespace Week14.Combat
 {
@@ -9,6 +10,8 @@ namespace Week14.Combat
     {
         public static IEnumerator Play(PlayerCombatController player = null)
         {
+            TimeSlowScreenFx.CancelImmediate();
+            TimeSlowSkillSO.CancelActiveAfterimages();
             SoundManager.StopBgm();
 
             player ??= PlayerCombatController.Active;

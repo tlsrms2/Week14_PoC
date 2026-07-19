@@ -8,6 +8,7 @@ using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Save;
+using Week14.Skills;
 using Week14.UI;
 
 namespace Week14.Enemy
@@ -654,6 +655,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            TimeSlowScreenFx.CancelImmediate();
+            TimeSlowSkillSO.CancelActiveAfterimages();
             FreezeCombatTimer();
             finalDeathSequencePlayed = true;
             SetFinalDeathSequencePlaying(true);

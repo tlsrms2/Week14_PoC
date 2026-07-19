@@ -43,9 +43,22 @@ namespace Week14.Skills
         [SerializeField, Min(0f)] private float screenTintFadeOut = 0.25f;
 
         private Coroutine afterimageRoutine;
+        private PlayerCombatController afterimageController;
         private readonly List<GameObject> activeAfterimages = new List<GameObject>();
 
+        private static TimeSlowSkillSO activeInstance;
+
         public override bool HasDelayedCooldownStart => true;
+
+        // 플레이어/보스 사망 연출처럼 화면이 깨끗해야 하는 컷씬 직전에 호출해서
+        // 진행 중인 잔상 효과를 즉시 걷어낸다.
+        public static void CancelActiveAfterimages()
+        {
+            if (activeInstance != null)
+            {
+                activeInstance.CancelAfterimagesInternal();
+            }
+        }
 
         public override void SubscribeEffectEnd(Action onEffectEnd) => EnemyTimeScale.Expired += onEffectEnd;
         public override void UnsubscribeEffectEnd(Action onEffectEnd) => EnemyTimeScale.Expired -= onEffectEnd;
@@ -63,13 +76,32 @@ namespace Week14.Skills
             PlayerCombatController controller = ResolvePlayerController(user);
             if (controller != null && afterimageDuration > 0f)
             {
-                if (afterimageRoutine != null)
+                if (afterimageRoutine != null && afterimageController != null)
                 {
-                    controller.StopCoroutine(afterimageRoutine);
+                    afterimageController.StopCoroutine(afterimageRoutine);
                 }
 
                 ClearActiveAfterimages();
+                afterimageController = controller;
+                activeInstance = this;
                 afterimageRoutine = controller.StartCoroutine(RainbowAfterimageRoutine(controller, durationSeconds));
+            }
+        }
+
+        private void CancelAfterimagesInternal()
+        {
+            if (afterimageRoutine != null && afterimageController != null)
+            {
+                afterimageController.StopCoroutine(afterimageRoutine);
+            }
+
+            afterimageRoutine = null;
+            afterimageController = null;
+            ClearActiveAfterimages();
+
+            if (activeInstance == this)
+            {
+                activeInstance = null;
             }
         }
 
@@ -106,6 +138,12 @@ namespace Week14.Skills
 
             ClearActiveAfterimages();
             afterimageRoutine = null;
+            afterimageController = null;
+
+            if (activeInstance == this)
+            {
+                activeInstance = null;
+            }
         }
 
         private void ClearActiveAfterimages()
