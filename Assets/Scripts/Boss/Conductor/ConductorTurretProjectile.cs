@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using Week14.Combat;
 using Week14.UI;
@@ -22,6 +23,12 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float muzzleOffset = 0.18f;
         [SerializeField, Min(0f)] private float muzzleFlashScale = 0.55f;
 
+        [Header("Warning Blink")]
+        [SerializeField] private TextMeshPro warningText;
+        [SerializeField] private Color warningBlinkColorA = Color.red;
+        [SerializeField] private Color warningBlinkColorB = Color.yellow;
+        [SerializeField, Min(0f)] private float warningBlinkFrequency = 2f;
+
         private Health health;
         private EnemyStatusView statusView;
         private BossAI turretOwner;
@@ -32,6 +39,7 @@ namespace Week14.Enemy
         private int firedCycles;
         private bool turretConfigured;
         private bool deployed;
+        private float warningBlinkElapsed;
 
         public bool IsAliveTurret => !IsDestroying && (health == null || !health.IsDead);
         public bool IsPlayerTargetable => deployed && IsAliveTurret;
@@ -139,6 +147,7 @@ namespace Week14.Enemy
         protected override void OnProjectileTick()
         {
             ForceZeroRotation();
+            UpdateWarningTextBlink();
             Rigidbody2D body = ProjectileBody;
             if (body != null)
             {
@@ -289,6 +298,24 @@ namespace Week14.Enemy
             }
 
             fireCooldown = turretConfigured ? firstFireDelay : float.PositiveInfinity;
+        }
+
+        private void UpdateWarningTextBlink()
+        {
+            if (warningText == null)
+            {
+                return;
+            }
+
+            if (warningBlinkFrequency <= 0f)
+            {
+                warningText.color = warningBlinkColorA;
+                return;
+            }
+
+            warningBlinkElapsed += EnemyTimeScale.DeltaTime;
+            float phase = warningBlinkElapsed * warningBlinkFrequency % 1f;
+            warningText.color = phase < 0.5f ? warningBlinkColorA : warningBlinkColorB;
         }
 
         private void ForceZeroRotation()
