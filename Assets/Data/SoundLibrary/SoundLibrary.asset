@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: SoundLibrary
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Audio.SoundLibrary
   bgmEntries:
-  - id: HogBgm
-    clip: {fileID: 8300000, guid: 3cafd06b23d732248b601961dfafb490, type: 3}
-    volume: 0.4
-    pitch: 1
   - id: TitleBgm
     clip: {fileID: 8300000, guid: bb7e58f926fb3824b9089b99bbf6024b, type: 3}
     volume: 0.4
@@ -24,6 +20,26 @@ MonoBehaviour:
   - id: LobbyBgm
     clip: {fileID: 8300000, guid: 3196e637d5ebb2b4fbad29c25de304af, type: 3}
     volume: 0.6
+    pitch: 1
+  - id: Boss1BGM
+    clip: {fileID: 8300000, guid: 9ca017abccd5a36489d1fbbda7c375e4, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Boss2BGM
+    clip: {fileID: 8300000, guid: 73892f4c725a89741b6fdeafa5d155af, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Boss3BGM
+    clip: {fileID: 8300000, guid: 603810212aa8b4448a413db77b2ad3ec, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Boss4BGM
+    clip: {fileID: 8300000, guid: e6d65e2b55dacc347841feb6b5d43111, type: 3}
+    volume: 0.4
+    pitch: 1
+  - id: Boss5BGM
+    clip: {fileID: 8300000, guid: 1682b023a7882c646af966adc118ba82, type: 3}
+    volume: 0.4
     pitch: 1
   sfxEntries:
   - id: PlayerShot
