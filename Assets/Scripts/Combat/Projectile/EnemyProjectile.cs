@@ -325,6 +325,15 @@ namespace Week14.Combat
             customTrailColorConfigured = true;
         }
 
+        private void ApplyTrailColorOverride()
+        {
+            Color? trailColorOverride = GetTrailColorOverride();
+            if (trailColorOverride.HasValue)
+            {
+                ConfigureTrailColor(trailColorOverride.Value);
+            }
+        }
+
         public void RestorePrefabTrailColor()
         {
             if (!hasPrefabTrailColors)
@@ -936,6 +945,7 @@ namespace Week14.Combat
             {
                 ProjectileVfx.ApplyVisibility(
                     projectile.gameObject, projectile.projectileColor, radius, trailSeconds, trailWidth);
+                projectile.ApplyTrailColorOverride();
                 projectile.BeginTrail();
             }
 
@@ -943,6 +953,11 @@ namespace Week14.Combat
         }
 
         protected virtual void ConfigureHoming(bool enabled, float seconds, float turnDegrees, float launchTime) { }
+
+        protected virtual Color? GetTrailColorOverride()
+        {
+            return null;
+        }
 
         protected virtual void GetHomingSpawnConfig(out bool enabled, out float seconds, out float turnDegrees)
         {

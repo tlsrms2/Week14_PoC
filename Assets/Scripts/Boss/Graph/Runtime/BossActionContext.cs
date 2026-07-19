@@ -35,6 +35,7 @@ namespace Week14.Enemy
         private int nodeExecutionVersion;
         private int conductorMinionOutlineHoldRequests;
         private int activeSnipingTelegraphCount;
+        private int parallelPatternGroupDepth;
         private bool isFacingLocked;
         private bool isMeleeAdvanceSynchronized;
         private bool hasMeleeAttackAdvanceCompleted;
@@ -66,6 +67,17 @@ namespace Week14.Enemy
         public bool IsMeleeAdvanceSynchronized => isMeleeAdvanceSynchronized;
         public bool HasMeleeAttackAdvanceCompleted => hasMeleeAttackAdvanceCompleted;
         public bool IsPatternTerminationRequested => isPatternTerminationRequested;
+        public bool IsExecutingParallelPatternGroup => parallelPatternGroupDepth > 0;
+
+        internal void BeginParallelPatternGroup()
+        {
+            parallelPatternGroupDepth++;
+        }
+
+        internal void EndParallelPatternGroup()
+        {
+            parallelPatternGroupDepth = Mathf.Max(0, parallelPatternGroupDepth - 1);
+        }
 
         public void RequestPatternTermination()
         {

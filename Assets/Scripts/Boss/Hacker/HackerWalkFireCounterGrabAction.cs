@@ -8,6 +8,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerWalkFireCounterGrabAction : BossAction, IBossActionDurationProvider
     {
+        private const string ShootAnimationTrigger = "Shoot";
+        private const string ReleaseAnimationTrigger = "Release";
         private const string WireShotAnimationTrigger = "WireShot";
         private const string GrabAnimationTrigger = "Grab";
         private const string IsWireShotActiveAnimationParameter = "IsWireShotActive";
@@ -93,41 +95,58 @@ namespace Week14.Enemy
             float nextFireAt = 0f;
             int shotCount = 0;
             Vector2 destination = context.Boss.transform.position;
-            while (elapsed < activeSeconds && !hacker.IsGunWalkCounterParryTriggered)
+            bool isReleasePending = false;
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < activeSeconds && !hacker.IsGunWalkCounterParryTriggered)
                 {
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    if (isReleasePending)
+                    {
+                        context.RestartAnimationTrigger(ReleaseAnimationTrigger);
+                        isReleasePending = false;
+                    }
+
+                    if (elapsed >= nextDestinationAt)
+                    {
+                        Vector2 playerPosition = context.GetPlayerPosition();
+                        destination = playerPosition + UnityEngine.Random.insideUnitCircle.normalized * wanderRadius;
+                        nextDestinationAt += wanderChangeSeconds;
+                    }
+
+                    Vector2 toDestination = destination - (Vector2)context.Boss.transform.position;
+                    if (toDestination.sqrMagnitude > 0.01f)
+                    {
+                        context.Boss.SetMovementVelocity(toDestination.normalized * walkSpeed);
+                    }
+                    else
+                    {
+                        context.Stop();
+                    }
+
+                    if (shotCount < maxShotCount && elapsed >= nextFireAt)
+                    {
+                        isReleasePending = FireProjectile(context);
+                        shotCount++;
+                        nextFireAt += fireInterval;
+                    }
+
+                    elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
-                    continue;
                 }
-
-                if (elapsed >= nextDestinationAt)
+            }
+            finally
+            {
+                if (isReleasePending)
                 {
-                    Vector2 playerPosition = context.GetPlayerPosition();
-                    destination = playerPosition + UnityEngine.Random.insideUnitCircle.normalized * wanderRadius;
-                    nextDestinationAt += wanderChangeSeconds;
+                    context.RestartAnimationTrigger(ReleaseAnimationTrigger);
                 }
-
-                Vector2 toDestination = destination - (Vector2)context.Boss.transform.position;
-                if (toDestination.sqrMagnitude > 0.01f)
-                {
-                    context.Boss.SetMovementVelocity(toDestination.normalized * walkSpeed);
-                }
-                else
-                {
-                    context.Stop();
-                }
-
-                if (shotCount < maxShotCount && elapsed >= nextFireAt)
-                {
-                    FireProjectile(context);
-                    shotCount++;
-                    nextFireAt += fireInterval;
-                }
-
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
             }
         }
 
@@ -173,21 +192,23 @@ namespace Week14.Enemy
             }
         }
 
-        private void FireProjectile(BossActionContext context)
+        private bool FireProjectile(BossActionContext context)
         {
             BossProjectileSettings settings = context.ResolveGraphProjectileSettings(projectileName) ?? projectile;
             if (settings?.Prefab == null)
             {
-                return;
+                return false;
             }
 
             Vector3 origin = context.GetBossChildPosition(fireOriginPath);
+            context.RestartAnimationTrigger(ShootAnimationTrigger);
             context.FireProjectile(
                 settings,
                 origin,
                 context.GetDirectionToPlayer(origin),
                 0f,
                 projectileName: projectileName);
+            return true;
         }
     }
 }

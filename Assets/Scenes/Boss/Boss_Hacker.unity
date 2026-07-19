@@ -2262,11 +2262,75 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 261457479}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: wireSettings.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: wireSettings.color.g
+      value: 0.7783019
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: wireSettings.color.r
+      value: 0.91235185
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: wireContactFlashColor.b
+      value: 0.8301887
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: wireContactFlashColor.g
+      value: 0.105731584
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: wireContactFlashColor.r
+      value: 0.5482378
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: showAttackRangeIndicators
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: wireLifetimeReductionSeconds
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectileName
+      value: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.prefab
+      value: 
+      objectReference: {fileID: 4715567172193709193, guid: 8fc0b51d83755ad46b65e70fde85328e, type: 3}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.radius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.lifetime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.bulletDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.trailSeconds
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.chargeSeconds
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: graphProjectiles.Array.data[8].projectile.trailWidthMultiplier
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 957960561935424815, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
@@ -2279,11 +2343,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.92
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.16
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2186068290515178274, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_LocalPosition.z

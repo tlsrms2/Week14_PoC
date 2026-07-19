@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
   - component: {fileID: 6470095641802324841}
-  - component: {fileID: 1117446290404557908}
+  - component: {fileID: 4715567172193709193}
   m_Layer: 7
-  m_Name: EnemyBullet_Glitch
+  m_Name: EnemyBullet_WaitNotParrying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.000000014901161, y: 0.0022179484}
   m_Radius: 0.15399449
---- !u!114 &1117446290404557908
+--- !u!114 &4715567172193709193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,32 +108,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 744419277602116065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d381440bd6704bd4db1052cded51626c, type: 3}
+  m_Script: {fileID: 11500000, guid: b551e22b408606344b232b07d5de7cbf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HackerGlitchProjectile
-  indicatorColor: {r: 0.67058825, g: 0.10980392, b: 0.10980392, a: 0.8627451}
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HackerUnparryablePhasedChargeProjectile
+  indicatorColor: {r: 0, g: 0, b: 0, a: 1}
   parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
-  trailColor: {r: 0.67058825, g: 0.10980392, b: 0.10980392, a: 0.55}
-  launchFlashSeconds: 0.08
-  initialFlightSeconds: 0.35
-  initialFlightSpeed: 6
-  initialFlightAlpha: 0
-  revealDistance: 4
-  driftSpeed: 1.2
-  driftAmplitude: 0.5
-  chargeSeconds: 2
-  rushSpeed: 11
-  glitchAlpha: 0.3
-  initialFlightSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
-  glitchApproachSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
-  chargingSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
-  rushSprite: {fileID: -401367599159864876, guid: c101bbe2b06a30d40ba800449bbb6987, type: 3}
-  chargeBlinkColor: {r: 0.67058825, g: 0.10980392, b: 0.10980392, a: 1}
-  chargeBlinkMinRate: 2
-  chargeBlinkMaxRate: 8
+  chargeAlpha: 0.3
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +289,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
+  m_Sprite: {fileID: 3510643707115514574, guid: f0dc959a392831e4cb2005683156f4f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -424,7 +407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &992607595532873848
 Transform:
   m_ObjectHideFlags: 0

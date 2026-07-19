@@ -108,6 +108,7 @@ namespace Week14.Enemy
         private Animator oneWeaponAnimator;
         private Coroutine phaseVisualSwitchRoutine;
         private bool isOneWeaponVisualActive;
+        protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
         internal virtual BossProjectileSettings ParryProjectileSettings => parryProjectileSettings ??= new BossProjectileSettings();
@@ -206,13 +207,12 @@ namespace Week14.Enemy
 
         private void LateUpdate()
         {
-            UpdateWalkState();
-            if (IsExternalActionExecuting)
+            if (UsesHackerPresentationUpdates)
             {
-                return;
+                UpdateWalkState();
+                UpdateFacingFromPlayer();
             }
 
-            UpdateFacingFromPlayer();
             OnIdleHackerLateUpdate();
         }
 
@@ -300,8 +300,6 @@ namespace Week14.Enemy
             DestroyHologram();
             base.OnDisable();
         }
-
-        protected virtual bool IsExternalActionExecuting => false;
 
         protected virtual void OnIdleHackerLateUpdate() { }
 

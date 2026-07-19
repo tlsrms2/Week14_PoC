@@ -874,7 +874,6 @@ namespace Week14.Enemy
     public sealed class HackerDashAction : BossAction, IBossActionDurationProvider, IHackerApproachRangeProvider
     {
         [SerializeField] private HackerDashDirection direction;
-        [SerializeField] private string animationTriggerName = "Dash";
         [SerializeField, Min(0f)] private float windupSeconds = 0.2f;
 
         [Header("Approach")]
@@ -916,7 +915,6 @@ namespace Week14.Enemy
             }
 
             yield return ApproachToDashDistance(context);
-            context.PlayAnimationTrigger(animationTriggerName);
             using IDisposable facingLock = context.AcquireFacingLock();
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
             try

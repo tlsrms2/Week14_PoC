@@ -117,6 +117,7 @@ MonoBehaviour:
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
+  trailColor: {r: 1, g: 0, b: 0, a: 0.55}
   defaultHomingSeconds: 10
   defaultTurnDegreesPerSecond: 540
   chargeBlinkColor: {r: 1, g: 0, b: 0, a: 1}

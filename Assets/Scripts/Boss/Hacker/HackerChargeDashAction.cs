@@ -61,53 +61,64 @@ namespace Week14.Enemy
             float directionLockTime = Mathf.Max(0f, windupSeconds - directionLockLeadSeconds);
             Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             bool isDirectionLocked = directionLockTime <= 0f;
-            while (elapsed < windupSeconds)
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < windupSeconds)
                 {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
 
-                if (!isDirectionLocked && elapsed >= directionLockTime)
-                {
-                    dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
-                    isDirectionLocked = true;
-                }
+                    if (!isDirectionLocked && elapsed >= directionLockTime)
+                    {
+                        dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
+                        isDirectionLocked = true;
+                    }
 
-                Vector2 previewDirection = isDirectionLocked
-                    ? dashDirection
-                    : context.GetDirectionToPlayer(context.Boss.transform.position);
-                if (rangeIndicator == null)
-                {
-                    rangeIndicator = HackerAttackRangeIndicator.CreateThrust(
-                        context,
+                    Vector2 previewDirection = isDirectionLocked
+                        ? dashDirection
+                        : context.GetDirectionToPlayer(context.Boss.transform.position);
+                    if (rangeIndicator == null)
+                    {
+                        rangeIndicator = HackerAttackRangeIndicator.CreateThrust(
+                            context,
+                            context.Boss.transform.position,
+                            previewDirection,
+                            dashDistance,
+                            damageRadius * 2f,
+                            ignoreVisibilitySetting: true);
+                        rangeIndicator?.SetHologramStyle(isHologram);
+                    }
+                    else
+                    {
+                        rangeIndicator.SetThrust(
+                            context.Boss.transform.position,
+                            previewDirection,
+                            dashDistance,
+                            damageRadius * 2f);
+                    }
+
+                    rangeIndicator?.SetThrustCenterFillProgress(
                         context.Boss.transform.position,
                         previewDirection,
                         dashDistance,
                         damageRadius * 2f,
-                        ignoreVisibilitySetting: true);
-                    rangeIndicator?.SetHologramStyle(isHologram);
+                        windupSeconds > 0f ? elapsed / windupSeconds : 1f);
+
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
                 }
-                else
+            }
+            finally
+            {
+                if (rangeIndicator != null)
                 {
-                    rangeIndicator.SetThrust(
-                        context.Boss.transform.position,
-                        previewDirection,
-                        dashDistance,
-                        damageRadius * 2f);
+                    rangeIndicator.gameObject.SetActive(false);
+                    HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 }
-
-                rangeIndicator?.SetThrustCenterFillProgress(
-                    context.Boss.transform.position,
-                    previewDirection,
-                    dashDistance,
-                    damageRadius * 2f,
-                    windupSeconds > 0f ? elapsed / windupSeconds : 1f);
-
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
             }
 
             if (!isDirectionLocked)
@@ -124,20 +135,6 @@ namespace Week14.Enemy
                 attackEffect,
                 context,
                 dashDirection);
-            rangeIndicator ??= HackerAttackRangeIndicator.CreateThrust(
-                context,
-                context.Boss.transform.position,
-                dashDirection,
-                dashDistance,
-                damageRadius * 2f,
-                ignoreVisibilitySetting: true);
-            rangeIndicator?.SetHologramStyle(isHologram);
-            rangeIndicator?.SetThrust(
-                context.Boss.transform.position,
-                dashDirection,
-                dashDistance,
-                damageRadius * 2f);
-            rangeIndicator?.SetFillVisible(true);
 
             HashSet<PlayerCombatController> hitPlayers = new();
             Vector2 previousPosition = context.Boss.transform.position;
@@ -177,7 +174,6 @@ namespace Week14.Enemy
                 {
                     context.SetDashing(false);
                     context.Stop();
-                    HackerAttackRangeIndicator.Destroy(rangeIndicator);
                     context.SetAnimationBool(IsChargeDashingAnimationParameter, false);
                     context.RestartAnimationTrigger(EndAnimationTrigger);
                 }

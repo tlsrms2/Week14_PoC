@@ -13,6 +13,10 @@ namespace Week14.Enemy
             Rush
         }
 
+        [Header("Trail")]
+        [SerializeField, Tooltip("글리치 투사체의 궤적 색상입니다.")]
+        private Color trailColor = new(1f, 0.82f, 0.18f, 0.55f);
+
         [SerializeField, Min(0f)] private float launchFlashSeconds = 0.08f;
         [SerializeField, Min(0.05f)] private float initialFlightSeconds = 0.35f;
         [SerializeField, Min(0f)] private float initialFlightSpeed = 6f;
@@ -44,6 +48,11 @@ namespace Week14.Enemy
         private float driftPhase;
         private Vector2 initialDirection;
         private Sprite defaultSprite;
+
+        protected override Color? GetTrailColorOverride()
+        {
+            return trailColor;
+        }
 
         protected override void OnProjectileAwake()
         {

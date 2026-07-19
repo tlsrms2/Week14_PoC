@@ -2529,7 +2529,7 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P1 -> P6 -> P1
-      weight: 99
+      weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0

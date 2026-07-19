@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035224
     sequences: []
-    editorPosition: {x: -331, y: 1172}
+    editorPosition: {x: -320, y: 2635}
   - nodeId: Melee Attack2
     nodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
     nodeKind: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035249
     sequences: []
-    editorPosition: {x: -326, y: 235}
+    editorPosition: {x: -137, y: 227}
   - nodeId: Fire Sniping Projectile2
     nodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
     nodeKind: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035251
     sequences: []
-    editorPosition: {x: 107, y: 229}
+    editorPosition: {x: 101, y: 225}
   - nodeId: Fire Sniping Projectile3
     nodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
     nodeKind: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035252
     sequences: []
-    editorPosition: {x: 108, y: 360}
+    editorPosition: {x: 102, y: 356}
   - nodeId: Fire Sniping Projectile4
     nodeGuid: d41bf5af1c2b4c358818685ad9869039
     nodeKind: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035253
     sequences: []
-    editorPosition: {x: 109, y: 513}
+    editorPosition: {x: 103, y: 508}
   - nodeId: Charge Dash1
     nodeGuid: 1ca7b96ca4084b1e92962084b773d07c
     nodeKind: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     action:
       rid: 6489939155819167825
     sequences: []
-    editorPosition: {x: -80, y: 230}
+    editorPosition: {x: -329, y: 226}
   - nodeId: Thrust2
     nodeGuid: 54f3f43e9a194d1b97c0ce0474790962
     nodeKind: 0
@@ -295,7 +295,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656613
     sequences: []
-    editorPosition: {x: 2492, y: -278}
+    editorPosition: {x: 2492, y: -279}
   - nodeId: Dash3
     nodeGuid: 2377dabdb6944e849640d24c2763f994
     nodeKind: 0
@@ -340,7 +340,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656618
     sequences: []
-    editorPosition: {x: 2510, y: 25}
+    editorPosition: {x: 2510, y: 24}
   - nodeId: Melee Attack12
     nodeGuid: 4eae4b9d1e164c48aae5c26df655582b
     nodeKind: 0
@@ -430,7 +430,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656649
     sequences: []
-    editorPosition: {x: 2921, y: 1049}
+    editorPosition: {x: 2885, y: 1064}
   - nodeId: Melee Attack17
     nodeGuid: d7684036eb884a3da2d6af04a597c993
     nodeKind: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656651
     sequences: []
-    editorPosition: {x: 2694, y: 1055}
+    editorPosition: {x: 2682, y: 1071}
   - nodeId: Fire Sequential Sweep9
     nodeGuid: 3fa4bcf2f27242ceb21a059c3242e4f2
     nodeKind: 0
@@ -457,7 +457,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656652
     sequences: []
-    editorPosition: {x: 3065, y: 1193}
+    editorPosition: {x: 3068, y: 1193}
   - nodeId: Thrust Perpendicular Fire2
     nodeGuid: 2fac6ba2a70748e996db86616f8b0a54
     nodeKind: 0
@@ -484,7 +484,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656655
     sequences: []
-    editorPosition: {x: 2689, y: 612}
+    editorPosition: {x: 2884, y: 620}
   - nodeId: Fire Sniping Projectile9
     nodeGuid: 19c8444674c84e55881604afff69c90b
     nodeKind: 0
@@ -520,7 +520,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656659
     sequences: []
-    editorPosition: {x: 2935, y: 607}
+    editorPosition: {x: 2723, y: 616}
   - nodeId: Hologram Replay5
     nodeGuid: 1acdf96beb1b4fbc817634aa2084eaa3
     nodeKind: 0
@@ -700,7 +700,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656684
     sequences: []
-    editorPosition: {x: 3019, y: 1947}
+    editorPosition: {x: 2850, y: 1946}
   - nodeId: Fire Sniping Projectile16
     nodeGuid: e00269db12464a079b12b5e578b439f0
     nodeKind: 0
@@ -709,7 +709,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656687
     sequences: []
-    editorPosition: {x: 3233, y: 1945}
+    editorPosition: {x: 3064, y: 1944}
   - nodeId: Fire Glitch Projectile1
     nodeGuid: 02cf59a6983047199ec72bad70866ce3
     nodeKind: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656699
     sequences: []
-    editorPosition: {x: 2686, y: 1951}
+    editorPosition: {x: 2517, y: 1950}
   - nodeId: Hologram Replay9
     nodeGuid: 40e903a780144faebb80c9111bb8e179
     nodeKind: 0
@@ -817,7 +817,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656703
     sequences: []
-    editorPosition: {x: 2850, y: 1949}
+    editorPosition: {x: 2681, y: 1949}
   - nodeId: Fire Wire1
     nodeGuid: 39e6fc463cef4dda99e8dbca6b58ee77
     nodeKind: 0
@@ -1042,7 +1042,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559014
     sequences: []
-    editorPosition: {x: 1338, y: 639}
+    editorPosition: {x: 1353, y: 645}
   - nodeId: Melee Attack28
     nodeGuid: 0df034e483cf46c7951a11d8d78a327a
     nodeKind: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559015
     sequences: []
-    editorPosition: {x: 1475, y: 642}
+    editorPosition: {x: 1539, y: 641}
   - nodeId: Fire Sequential Sweep22
     nodeGuid: fbcb225a89c04be988113e526072589a
     nodeKind: 0
@@ -1060,7 +1060,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559016
     sequences: []
-    editorPosition: {x: 1111, y: 645}
+    editorPosition: {x: 1139, y: 638}
   - nodeId: Fire Sequential Sweep23
     nodeGuid: 66e47107d6ae465e8a6e754716a163d1
     nodeKind: 0
@@ -1069,7 +1069,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559017
     sequences: []
-    editorPosition: {x: 1482, y: 783}
+    editorPosition: {x: 1546, y: 782}
   - nodeId: Thrust Perpendicular Fire4
     nodeGuid: 8b08e6bf4eb94aecba05ab989afaa918
     nodeKind: 0
@@ -1078,7 +1078,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559018
     sequences: []
-    editorPosition: {x: 1680, y: 640}
+    editorPosition: {x: 1744, y: 639}
   - nodeId: Charge Dash10
     nodeGuid: 07ce325ef8b94237933b7095ffc79cf9
     nodeKind: 0
@@ -1312,7 +1312,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559079
     sequences: []
-    editorPosition: {x: -99, y: 668}
+    editorPosition: {x: -97, y: 670}
   - nodeId: Melee Attack31
     nodeGuid: 961a4e04c785488faeb4d6f28a9132eb
     nodeKind: 0
@@ -1321,7 +1321,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559080
     sequences: []
-    editorPosition: {x: 38, y: 671}
+    editorPosition: {x: 94, y: 666}
   - nodeId: Fire Sequential Sweep29
     nodeGuid: 8a14d4bfdf2248f18cc1ac2fd584e369
     nodeKind: 0
@@ -1330,7 +1330,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559081
     sequences: []
-    editorPosition: {x: -326, y: 674}
+    editorPosition: {x: -322, y: 669}
   - nodeId: Thrust3
     nodeGuid: ecbdbd14a3a44248a27baf69d6318650
     nodeKind: 0
@@ -1339,7 +1339,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559083
     sequences: []
-    editorPosition: {x: 195, y: 675}
+    editorPosition: {x: 251, y: 670}
   - nodeId: Charge Dash15
     nodeGuid: b14e10217b5542308bc808a59e5eb754
     nodeKind: 0
@@ -1402,7 +1402,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559090
     sequences: []
-    editorPosition: {x: 32, y: 1167}
+    editorPosition: {x: -166, y: 1167}
   - nodeId: Fire Sniping Projectile25
     nodeGuid: b8297e095a59487ca9a1722fd27aad87
     nodeKind: 0
@@ -1411,7 +1411,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559093
     sequences: []
-    editorPosition: {x: 247, y: 1164}
+    editorPosition: {x: 49, y: 1164}
   - nodeId: Dash12
     nodeGuid: 3517d49b47fd437696faf9791e49c2a1
     nodeKind: 0
@@ -1420,7 +1420,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559094
     sequences: []
-    editorPosition: {x: -137, y: 1169}
+    editorPosition: {x: -335, y: 1169}
   - nodeId: Dash Sweep4
     nodeGuid: 4ef3fd409d794929a2992221bb30a03e
     nodeKind: 0
@@ -1907,15 +1907,6 @@ MonoBehaviour:
       rid: 6489939269342724396
     sequences: []
     editorPosition: {x: 3457, y: 1366}
-  - nodeId: Scatter Wire Node2
-    nodeGuid: 94deeb07e80842a69051e9920f76ea13
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939269342724397
-    sequences: []
-    editorPosition: {x: 2497, y: 1957}
   patterns:
   - patternId: P1-1
     nodeGuids:
@@ -1950,17 +1941,17 @@ MonoBehaviour:
     - Melee Attack8
   - patternId: P2-1
     nodeGuids:
-    - e1bf27c670194054b048b5aba390fc35
-    - 5712dd11553e4d23a3ac60c782a69f7f
-    - d73f6a1c02f64577b7c67c2f5553bad2
     - 3b9a161932f74a81b50a8e80ca5a07c2
     - d41bf5af1c2b4c358818685ad9869039
+    - 5712dd11553e4d23a3ac60c782a69f7f
+    - e1bf27c670194054b048b5aba390fc35
+    - d73f6a1c02f64577b7c67c2f5553bad2
     nodeIds:
-    - Fire Sequential Sweep1
-    - Dash2
-    - Fire Sniping Projectile2
     - Fire Sniping Projectile3
     - Fire Sniping Projectile4
+    - Dash2
+    - Fire Sequential Sweep1
+    - Fire Sniping Projectile2
   - patternId: P2-2
     nodeGuids:
     - 8a14d4bfdf2248f18cc1ac2fd584e369
@@ -2010,12 +2001,10 @@ MonoBehaviour:
     - Fire Sniping Projectile7
   - patternId: P4
     nodeGuids:
-    - e063fecb6a3543838e5e6525bfafb5db
     - 3517d49b47fd437696faf9791e49c2a1
     - 2666bb9f2b8b4546885a19322cad2764
     - b8297e095a59487ca9a1722fd27aad87
     nodeIds:
-    - Scatter Wire Node1
     - Dash12
     - Fire Sniping Projectile24
     - Fire Sniping Projectile25
@@ -2087,6 +2076,11 @@ MonoBehaviour:
     nodeIds:
     - Walk Fire Counter Grab1
     - Thrust2
+  - patternId: P10
+    nodeGuids:
+    - e063fecb6a3543838e5e6525bfafb5db
+    nodeIds:
+    - Scatter Wire Node1
   - patternId: U/P1-1
     nodeGuids:
     - 7b7e7dcc93584b678d1fe28ae005b613
@@ -2292,15 +2286,15 @@ MonoBehaviour:
     - 28ed86c9786e47b19f04ced1281be794
     - c7248bba8f424cea8967547c6ad0882c
     - 1acdf96beb1b4fbc817634aa2084eaa3
-    - 542d49e131d5436ab8503a54efaa7c59
     - d8cf353ec1314883a0e5eec9055597f5
+    - 542d49e131d5436ab8503a54efaa7c59
     - 19c8444674c84e55881604afff69c90b
     nodeIds:
     - Fire Sniping Projectile10
     - Fire Sniping Projectile11
     - Hologram Replay5
-    - Fire Sequential Sweep10
     - Dash5
+    - Fire Sequential Sweep10
     - Fire Sniping Projectile9
   - patternId: UU/P2-2
     nodeGuids:
@@ -2367,13 +2361,11 @@ MonoBehaviour:
     - Fire Sniping Projectile14
   - patternId: UU/P4
     nodeGuids:
-    - 94deeb07e80842a69051e9920f76ea13
     - 6145a61793164a89a063ea44ab251ce0
     - 8179ce197e5d43999a9c7131f08330a1
     - d583409f6de74721bbd5e197db9e6ed0
     - e00269db12464a079b12b5e578b439f0
     nodeIds:
-    - Scatter Wire Node2
     - Hologram Replay8
     - Dash8
     - Fire Sniping Projectile15
@@ -2448,7 +2440,7 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    phaseMaxHp: 1
+    phaseMaxHp: 100
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2524,14 +2516,14 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P9
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
-    phaseMaxHp: 1
+    phaseMaxHp: 150
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2607,7 +2599,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P9
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -2690,7 +2682,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P9
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -2780,22 +2772,6 @@ MonoBehaviour:
     toNodeGuid: 49b16033471c4f81961df300bcc3bb47
     fromNodeId: Charge Dash3
     toNodeId: Fire Sniping Projectile7
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: e1bf27c670194054b048b5aba390fc35
-    toNodeGuid: 5712dd11553e4d23a3ac60c782a69f7f
-    fromNodeId: Fire Sequential Sweep1
-    toNodeId: Dash2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 5712dd11553e4d23a3ac60c782a69f7f
-    toNodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
-    fromNodeId: Dash2
-    toNodeId: Fire Sniping Projectile2
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2896,58 +2872,10 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 974321ac6aec459fb6b98c84c6cf1cf2
-    toNodeGuid: d7684036eb884a3da2d6af04a597c993
-    fromNodeId: Dash4
-    toNodeId: Melee Attack17
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 6ff35750a3b348b194afa2ef55f71824
-    toNodeGuid: 974321ac6aec459fb6b98c84c6cf1cf2
-    fromNodeId: Fire Sequential Sweep8
-    toNodeId: Dash4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: d7684036eb884a3da2d6af04a597c993
     toNodeGuid: 2fac6ba2a70748e996db86616f8b0a54
     fromNodeId: Melee Attack17
     toNodeId: Thrust Perpendicular Fire2
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 54bfd5b45ea749879f26cf8e60b6c3ca
-    toNodeGuid: 6ff35750a3b348b194afa2ef55f71824
-    fromNodeId: Hologram Replay4
-    toNodeId: Fire Sequential Sweep8
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 542d49e131d5436ab8503a54efaa7c59
-    toNodeGuid: d8cf353ec1314883a0e5eec9055597f5
-    fromNodeId: Fire Sequential Sweep10
-    toNodeId: Dash5
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: d8cf353ec1314883a0e5eec9055597f5
-    toNodeGuid: 19c8444674c84e55881604afff69c90b
-    fromNodeId: Dash5
-    toNodeId: Fire Sniping Projectile9
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 1acdf96beb1b4fbc817634aa2084eaa3
-    toNodeGuid: 542d49e131d5436ab8503a54efaa7c59
-    fromNodeId: Hologram Replay5
-    toNodeId: Fire Sequential Sweep10
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3224,30 +3152,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: acfd6edd7b094548a1be2f07f18b3dc8
-    toNodeGuid: 0df034e483cf46c7951a11d8d78a327a
-    fromNodeId: Dash10
-    toNodeId: Melee Attack28
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: fbcb225a89c04be988113e526072589a
-    toNodeGuid: acfd6edd7b094548a1be2f07f18b3dc8
-    fromNodeId: Fire Sequential Sweep22
-    toNodeId: Dash10
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 0df034e483cf46c7951a11d8d78a327a
-    toNodeGuid: 8b08e6bf4eb94aecba05ab989afaa918
-    fromNodeId: Melee Attack28
-    toNodeId: Thrust Perpendicular Fire4
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 07ce325ef8b94237933b7095ffc79cf9
     toNodeGuid: 9ccfd79b1aa74a1a81eee4fc6f365d3e
     fromNodeId: Charge Dash10
@@ -3368,22 +3272,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: b2d4b87edf8f4870a4a9feafd6bda811
-    toNodeGuid: 961a4e04c785488faeb4d6f28a9132eb
-    fromNodeId: Dash11
-    toNodeId: Melee Attack31
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 8a14d4bfdf2248f18cc1ac2fd584e369
-    toNodeGuid: b2d4b87edf8f4870a4a9feafd6bda811
-    fromNodeId: Fire Sequential Sweep29
-    toNodeId: Dash11
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 961a4e04c785488faeb4d6f28a9132eb
     toNodeGuid: ecbdbd14a3a44248a27baf69d6318650
     fromNodeId: Melee Attack31
@@ -3420,14 +3308,6 @@ MonoBehaviour:
     toNodeGuid: c2774a17fe49443296b22c1eaf2ec934
     fromNodeId: Charge Dash16
     toNodeId: Move Toward Player3
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: 2666bb9f2b8b4546885a19322cad2764
-    toNodeGuid: b8297e095a59487ca9a1722fd27aad87
-    fromNodeId: Fire Sniping Projectile24
-    toNodeId: Fire Sniping Projectile25
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3760,18 +3640,114 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: e063fecb6a3543838e5e6525bfafb5db
-    toNodeGuid: 3517d49b47fd437696faf9791e49c2a1
-    fromNodeId: Scatter Wire Node1
-    toNodeId: Dash12
+  - fromNodeGuid: 8a14d4bfdf2248f18cc1ac2fd584e369
+    toNodeGuid: b2d4b87edf8f4870a4a9feafd6bda811
+    fromNodeId: Fire Sequential Sweep29
+    toNodeId: Dash11
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 94deeb07e80842a69051e9920f76ea13
-    toNodeGuid: 6145a61793164a89a063ea44ab251ce0
-    fromNodeId: Scatter Wire Node2
-    toNodeId: Hologram Replay8
+  - fromNodeGuid: b2d4b87edf8f4870a4a9feafd6bda811
+    toNodeGuid: 961a4e04c785488faeb4d6f28a9132eb
+    fromNodeId: Dash11
+    toNodeId: Melee Attack31
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: fbcb225a89c04be988113e526072589a
+    toNodeGuid: acfd6edd7b094548a1be2f07f18b3dc8
+    fromNodeId: Fire Sequential Sweep22
+    toNodeId: Dash10
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: acfd6edd7b094548a1be2f07f18b3dc8
+    toNodeGuid: 0df034e483cf46c7951a11d8d78a327a
+    fromNodeId: Dash10
+    toNodeId: Melee Attack28
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0df034e483cf46c7951a11d8d78a327a
+    toNodeGuid: 8b08e6bf4eb94aecba05ab989afaa918
+    fromNodeId: Melee Attack28
+    toNodeId: Thrust Perpendicular Fire4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 6ff35750a3b348b194afa2ef55f71824
+    toNodeGuid: 974321ac6aec459fb6b98c84c6cf1cf2
+    fromNodeId: Fire Sequential Sweep8
+    toNodeId: Dash4
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 54bfd5b45ea749879f26cf8e60b6c3ca
+    toNodeGuid: 6ff35750a3b348b194afa2ef55f71824
+    fromNodeId: Hologram Replay4
+    toNodeId: Fire Sequential Sweep8
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 974321ac6aec459fb6b98c84c6cf1cf2
+    toNodeGuid: d7684036eb884a3da2d6af04a597c993
+    fromNodeId: Dash4
+    toNodeId: Melee Attack17
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: d8cf353ec1314883a0e5eec9055597f5
+    toNodeGuid: 542d49e131d5436ab8503a54efaa7c59
+    fromNodeId: Dash5
+    toNodeId: Fire Sequential Sweep10
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1acdf96beb1b4fbc817634aa2084eaa3
+    toNodeGuid: d8cf353ec1314883a0e5eec9055597f5
+    fromNodeId: Hologram Replay5
+    toNodeId: Dash5
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 542d49e131d5436ab8503a54efaa7c59
+    toNodeGuid: 19c8444674c84e55881604afff69c90b
+    fromNodeId: Fire Sequential Sweep10
+    toNodeId: Fire Sniping Projectile9
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 5712dd11553e4d23a3ac60c782a69f7f
+    toNodeGuid: e1bf27c670194054b048b5aba390fc35
+    fromNodeId: Dash2
+    toNodeId: Fire Sequential Sweep1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e1bf27c670194054b048b5aba390fc35
+    toNodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
+    fromNodeId: Fire Sequential Sweep1
+    toNodeId: Fire Sniping Projectile2
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 2666bb9f2b8b4546885a19322cad2764
+    toNodeGuid: b8297e095a59487ca9a1722fd27aad87
+    fromNodeId: Fire Sniping Projectile24
+    toNodeId: Fire Sniping Projectile25
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3781,12 +3757,6 @@ MonoBehaviour:
     toNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
     fromNodeId: Fire Sniping Projectile2
     toNodeId: Fire Sniping Projectile3
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
-    toNodeGuid: d41bf5af1c2b4c358818685ad9869039
-    fromNodeId: Fire Sniping Projectile3
-    toNodeId: Fire Sniping Projectile4
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: 3510685182c9494e8eb525a22c16ebb0
@@ -4023,7 +3993,13 @@ MonoBehaviour:
     toNodeId: Fire Sequential Sweep43
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
+  - fromNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
+    toNodeGuid: d41bf5af1c2b4c358818685ad9869039
+    fromNodeId: Fire Sniping Projectile3
+    toNodeId: Fire Sniping Projectile4
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 1
   debugForcedPatternId: P9
   references:
     version: 2
@@ -4248,7 +4224,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -4391,7 +4366,6 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         launchOriginPath: 
-        animationTriggerName: ScatterWireNode
         windupSeconds: 0.35
         nodeCount: 6
         startAngleOffset: 0
@@ -5255,8 +5229,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -5353,9 +5327,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -5367,14 +5341,14 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
-        recoverySeconds: 0
+        recoverySeconds: 0.5
     - rid: 6489939136707035251
       type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5397,8 +5371,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -5468,7 +5442,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -5496,8 +5470,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -5567,7 +5541,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -5595,8 +5569,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -5666,7 +5640,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -5852,8 +5826,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -5923,7 +5897,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -6030,8 +6004,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -6101,7 +6075,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -6129,8 +6103,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -6210,7 +6184,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -6807,9 +6780,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -6823,7 +6796,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -6850,9 +6823,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -6866,7 +6839,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 1
         trackPlayerPerShot: 0
@@ -6880,7 +6853,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -6976,7 +6948,7 @@ MonoBehaviour:
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
         hologramRetreatAngleDegrees: 30
-        hologramRetreatWaitSeconds: 5
+        hologramRetreatWaitSeconds: 2
         recoverySeconds: 0.1
     - rid: 6489939186800656615
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -7114,8 +7086,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -7212,9 +7184,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -7228,7 +7200,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -7856,9 +7828,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -7872,7 +7844,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -7899,9 +7871,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -7915,7 +7887,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 1
         trackPlayerPerShot: 0
@@ -7942,9 +7914,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -7958,7 +7930,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -7972,7 +7944,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 0
-        animationTriggerName: Dash
         windupSeconds: 0.8
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -8205,9 +8176,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -8221,7 +8192,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -8248,9 +8219,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -8264,7 +8235,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -8434,9 +8405,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -8450,12 +8421,12 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 12
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
-        recoverySeconds: 0
+        recoverySeconds: 0.5
     - rid: 6489939186800656656
       type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -8478,8 +8449,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -8549,7 +8520,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -8577,8 +8548,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -8648,7 +8619,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -8676,8 +8647,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -8747,7 +8718,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -8757,7 +8728,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -8853,7 +8823,7 @@ MonoBehaviour:
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
         hologramRetreatAngleDegrees: 30
-        hologramRetreatWaitSeconds: 5
+        hologramRetreatWaitSeconds: 4
         recoverySeconds: 0.1
     - rid: 6489939186800656660
       type: {class: HackerHologramReplayAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -9233,8 +9203,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -9304,7 +9274,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -9411,8 +9381,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -9482,7 +9452,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -9510,8 +9480,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -9837,9 +9807,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -9853,7 +9823,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -9880,9 +9850,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -9896,7 +9866,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -9923,9 +9893,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -9939,7 +9909,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -9966,9 +9936,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -9982,7 +9952,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -10009,9 +9979,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -10025,7 +9995,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -10061,8 +10031,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -10132,7 +10102,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -10160,8 +10130,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -10263,7 +10233,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 3
-        animationTriggerName: FireGlitch
         windupSeconds: 0
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -10291,7 +10260,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -10387,7 +10355,7 @@ MonoBehaviour:
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
         hologramRetreatAngleDegrees: 30
-        hologramRetreatWaitSeconds: 5
+        hologramRetreatWaitSeconds: 4
         recoverySeconds: 0.1
     - rid: 6489939186800656691
       type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -10411,8 +10379,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -10514,7 +10482,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 3
-        animationTriggerName: FireGlitch
         windupSeconds: 0.2
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -10542,7 +10509,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 2
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -10662,8 +10628,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -10733,7 +10699,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -10840,8 +10806,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -10911,7 +10877,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -10933,8 +10899,7 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
-        windupSeconds: 0
+        windupSeconds: 0.5
         approachStartDistance: 99
         approachStopDistance: 1.75
         approachSpeed: 10
@@ -11029,7 +10994,7 @@ MonoBehaviour:
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
         hologramRetreatAngleDegrees: 30
-        hologramRetreatWaitSeconds: 5
+        hologramRetreatWaitSeconds: 3
         recoverySeconds: 0.1
     - rid: 6489939193110200400
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
@@ -11702,9 +11667,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -11718,7 +11683,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -11745,9 +11710,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -11761,7 +11726,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 1
         trackPlayerPerShot: 0
@@ -11771,7 +11736,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -12005,8 +11969,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -12103,9 +12067,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -12119,7 +12083,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -12743,9 +12707,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -12759,7 +12723,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -12786,9 +12750,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -12802,7 +12766,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 1
         trackPlayerPerShot: 0
@@ -12829,9 +12793,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -12845,7 +12809,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -12855,7 +12819,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 0
-        animationTriggerName: Dash
         windupSeconds: 0.8
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -13088,9 +13051,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -13104,7 +13067,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -13131,9 +13094,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -13147,7 +13110,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -13736,9 +13699,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -13752,7 +13715,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -13779,9 +13742,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -13795,7 +13758,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -14012,8 +13975,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -14083,7 +14046,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -14190,8 +14153,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -14261,7 +14224,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -14289,8 +14252,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -14387,9 +14350,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -14403,7 +14366,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -14430,9 +14393,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -14446,7 +14409,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -14473,9 +14436,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -14489,7 +14452,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -14630,7 +14593,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 4
-        animationTriggerName: FireGlitch
         windupSeconds: 0.15
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -14680,7 +14642,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 4
-        animationTriggerName: FireGlitch
         windupSeconds: 0.45
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -14943,7 +14904,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 0
-        animationTriggerName: Dash
         windupSeconds: 0.8
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -15176,9 +15136,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -15192,7 +15152,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -15776,8 +15736,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -15847,7 +15807,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -15875,8 +15835,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -15956,8 +15916,7 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
-        windupSeconds: 0
+        windupSeconds: 0.5
         approachStartDistance: 99
         approachStopDistance: 1.75
         approachSpeed: 10
@@ -16189,7 +16148,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 4
-        animationTriggerName: FireGlitch
         windupSeconds: 0.15
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -16239,7 +16197,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 4
-        animationTriggerName: FireGlitch
         windupSeconds: 0.45
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -16289,7 +16246,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 3
-        animationTriggerName: FireGlitch
         windupSeconds: 0
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -16317,7 +16273,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 1
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -16437,8 +16392,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -16540,7 +16495,6 @@ MonoBehaviour:
         spawnForwardOffset: 0
         useTimedChargeApproach: 1
         chargeApproachArrivalSeconds: 3
-        animationTriggerName: FireGlitch
         windupSeconds: 0.2
         oppositePlayerRandomHalfAngleDegrees: 65
         initialWallClearance: 3
@@ -16568,7 +16522,6 @@ MonoBehaviour:
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         direction: 2
-        animationTriggerName: Dash
         windupSeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -16688,8 +16641,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -16759,7 +16712,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -16866,8 +16819,8 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
             scale: 1
             count: 12
           smokeInterval: 0.12
@@ -16937,7 +16890,7 @@ MonoBehaviour:
         chargeConvergenceMinCycleSeconds: 0.12
         chargeConvergenceMaxCycleSeconds: 0.3
         chargeConvergenceMaxRepeatDelaySeconds: 0.22
-        aimIndicatorLength: 12
+        aimIndicatorLength: 20
         aimIndicatorDashWidth: 0.035
         aimIndicatorDashLength: 0.22
         aimIndicatorDashGap: 0.16
@@ -17199,9 +17152,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17215,7 +17168,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17242,9 +17195,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17258,7 +17211,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17285,9 +17238,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17301,7 +17254,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17328,9 +17281,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17344,7 +17297,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17371,9 +17324,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17387,7 +17340,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17414,9 +17367,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17430,7 +17383,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17457,9 +17410,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17473,7 +17426,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17500,9 +17453,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17516,7 +17469,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17543,9 +17496,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17559,7 +17512,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0
         bulletCount: 18
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
         trackPlayerPerShot: 0
@@ -17771,9 +17724,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -17787,7 +17740,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -18136,9 +18089,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -18152,7 +18105,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -18324,9 +18277,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -18340,7 +18293,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -18544,9 +18497,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -18560,7 +18513,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 8
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 120
         clockwise: 0
         trackPlayerPerShot: 0
@@ -18732,9 +18685,9 @@ MonoBehaviour:
         launchSfxId: 
         effects:
           smoke:
-            enabled: 0
-            color: {r: 1, g: 1, b: 1, a: 1}
-            scale: 1
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
@@ -18748,7 +18701,7 @@ MonoBehaviour:
             frequency: 0.12
         windupSeconds: 0.35
         bulletCount: 6
-        spawnCircleRadius: 0.4
+        spawnCircleRadius: 1
         spawnArcDegrees: 75
         clockwise: 0
         trackPlayerPerShot: 0
@@ -18848,28 +18801,3 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
-    - rid: 6489939269342724397
-      type: {class: HackerScatterWireNodeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        nodeProjectileName: "\uC640\uC774\uC5B4 \uB178\uB4DC"
-        nodeProjectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        launchOriginPath: 
-        animationTriggerName: ScatterWireNode
-        windupSeconds: 0.35
-        nodeCount: 6
-        startAngleOffset: 0
-        randomizeStartAngle: 1
-        minAngleDistanceDegrees: 25
-        fireInterval: 0.08
-        recoverySeconds: 0.25

@@ -395,9 +395,6 @@ namespace Week14.Enemy
             float hologramStartDelaySeconds = replayAction != null
                 ? replayAction.HologramStartDelaySeconds
                 : 0.01f;
-            string hologramProjectileName = replayAction != null
-                ? replayAction.HologramProjectileName
-                : string.Empty;
             BossActionContext hologramContext = new(
                 hologram,
                 hologram.Stop,
@@ -408,7 +405,7 @@ namespace Week14.Enemy
                 plan.PatternNodeKeys);
             // 3페이즈 진입 연출 중에는 리플레이가 시작되어 연출을 취소하지 않도록 한다.
             yield return hologram.WaitForSummonEntrance();
-            hologram.BeginRecordedReplay(hologramStartDelaySeconds, hologramProjectileName);
+            hologram.BeginRecordedReplay(hologramStartDelaySeconds);
             try
             {
                 List<IEnumerator> routines = new()
@@ -1399,6 +1396,7 @@ namespace Week14.Enemy
             IReadOnlyDictionary<string, BossAction> actionOverrides,
             Action<BossStateNode> onNodeCompleted = null)
         {
+            bool isParallelPatternGroup = nodes.Count(node => node?.Action != null) > 1;
             bool synchronizeMeleeAdvance = nodes.Count(node => node?.Action is HackerMeleeAttackAction) == 1
                 && nodes.Any(node => node?.Action is HackerSequentialSweepFireAction
                     || node?.Action is FireRadialEmissionAction);
@@ -1448,12 +1446,22 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (isParallelPatternGroup)
+            {
+                context.BeginParallelPatternGroup();
+            }
+
             try
             {
                 yield return RunParallelRoutines(routines);
             }
             finally
             {
+                if (isParallelPatternGroup)
+                {
+                    context.EndParallelPatternGroup();
+                }
+
                 if (synchronizeMeleeAdvance)
                 {
                     context.EndMeleeAdvanceSynchronization();
