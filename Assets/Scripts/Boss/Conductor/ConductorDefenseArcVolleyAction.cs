@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -17,11 +18,15 @@ namespace Week14.Enemy
             [SerializeField, Min(1)] private int repeatCount = 3;
             [SerializeField, Min(0f)] private float fireInterval = 0.15f;
             [SerializeField, Min(0f)] private float restSeconds = 0.25f;
+            [SerializeField, BossGraphSfxId] private string fireSfxId;
+            [SerializeField, BossGraphSfxId] private string launchSfxId;
 
             public string ProjectileName => projectileName;
             public int RepeatCount => Mathf.Max(1, repeatCount);
             public float FireInterval => Mathf.Max(0f, fireInterval);
             public float RestSeconds => Mathf.Max(0f, restSeconds);
+            public string FireSfxId => fireSfxId;
+            public string LaunchSfxId => launchSfxId;
         }
 
         [Header("Boss Movement")]
@@ -226,6 +231,11 @@ namespace Week14.Enemy
                     effects,
                     context);
                 fireSpec = fireSpec.WithFixedDirection(direction);
+                if (!string.IsNullOrWhiteSpace(volley.FireSfxId) || !string.IsNullOrWhiteSpace(volley.LaunchSfxId))
+                {
+                    fireSpec = fireSpec.WithOnFired(
+                        CreateShotSfxHandler(context, volley.FireSfxId, volley.LaunchSfxId, volley.RepeatCount));
+                }
 
                 for (int shotIndex = 0; shotIndex < volley.RepeatCount; shotIndex++)
                 {
@@ -250,6 +260,29 @@ namespace Week14.Enemy
                     yield return context.WaitSeconds(volley.RestSeconds);
                 }
             }
+        }
+
+        // 매 shotIndex 틱에 드론 4마리가 동시에 쏘더라도, 그중 처음 실제로 발사에 성공한 투사체 하나만
+        // 대표로 삼아 사운드가 한 번만 나게 한다. launchSfxId는 그 투사체의 실제 Launched 이벤트에
+        // 걸리므로, 발사 직후 파괴되더라도 소리가 나지 않는다.
+        private static Action<int, EnemyProjectile> CreateShotSfxHandler(
+            BossActionContext context,
+            string fireSfxId,
+            string launchSfxId,
+            int repeatCount)
+        {
+            bool[] handledShots = new bool[Mathf.Max(1, repeatCount)];
+            return (shotIndex, firedProjectile) =>
+            {
+                if (shotIndex < 0 || shotIndex >= handledShots.Length || handledShots[shotIndex])
+                {
+                    return;
+                }
+
+                handledShots[shotIndex] = true;
+                context.PlaySfx(fireSfxId);
+                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            };
         }
 
         private static Vector2 GetSharedPlayerDirection(BossActionContext context)

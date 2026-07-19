@@ -42,6 +42,8 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float fireInterval = 0.18f;
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphEffectSettings projectileEffects = new();
+        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string launchSfxId;
 
         [Header("Parry Bait")]
         [SerializeField, BossGraphProjectileName] private string baitProjectileName = "Default";
@@ -268,6 +270,8 @@ namespace Week14.Enemy
                 null,
                 projectileEffects,
                 context);
+            bool firedAny = false;
+            EnemyProjectile launchSfxTarget = null;
             for (int i = 0; i < drones.Count; i++)
             {
                 Minion drone = drones[i];
@@ -291,7 +295,17 @@ namespace Week14.Enemy
                 if (spawned != null)
                 {
                     droneFireSpec.PlayEffects(spawnOrigin, spawned, direction, drone.transform);
+                    firedAny = true;
+                    launchSfxTarget ??= spawned;
                 }
+            }
+
+            // 이 틱에 드론이 몇 마리 쐈든 사운드는 한 번만 재생한다.
+            // launchSfxId는 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 파괴되면 소리가 안 나게 한다.
+            if (firedAny)
+            {
+                context.PlaySfx(fireSfxId);
+                context.PlaySfxOnLaunch(launchSfxTarget, launchSfxId);
             }
         }
 

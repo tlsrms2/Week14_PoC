@@ -601,6 +601,7 @@ MonoBehaviour:
   bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
   bossNameText: {fileID: 0}
+  bossElapsedTimeText: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
@@ -732,8 +733,11 @@ MonoBehaviour:
       trailSeconds: 0.1
       trailWidthMultiplier: 3
   patternGroggyAnimator: {fileID: 2840603948551870235}
-  hackingMax: 5
-  parryDisableSeconds: 3
+  wireLifetimeReductionSeconds: 2.5
+  wireMinimumRemainingSeconds: 1
+  wireContactFlashColor: {r: 0.2, g: 0.7, b: 1, a: 1}
+  wireContactFlashSeconds: 0.18
+  wireBulletShakeIntensity: 0.4
   wireSettings:
     flightSpeed: 20
     width: 0.04
@@ -761,6 +765,10 @@ MonoBehaviour:
   facingMuzzlePoints: {fileID: 2539687821607023805}
   facingEffectPrefabPoint: {fileID: 4249823529577685000}
   walkVelocityThreshold: 0.01
+  twoWeaponVisual: {fileID: 0}
+  oneWeaponVisual: {fileID: 0}
+  phaseVisualSwitchFallbackSeconds: 1
+  showAttackRangeIndicators: 1
   drawApproachRangeGizmos: 1
 --- !u!114 &4667363922611649476
 MonoBehaviour:
@@ -1778,6 +1786,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5610621040154728607, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526906190661016772, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6526906190661016772, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
