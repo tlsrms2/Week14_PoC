@@ -79,14 +79,12 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float executionCameraFocusWeight = 1f;
         [Tooltip("처형 중 카메라 줌 배율입니다. 작을수록 더 가까이 보입니다.")]
         [SerializeField, Range(0.35f, 1f)] private float executionCameraZoomMultiplier = 0.62f;
-        [Tooltip("처형 시 플레이어와 보스가 차지할 수 있는 화면 비율입니다. 레터박스 안쪽 안전 영역을 확보합니다.")]
-        [SerializeField, Range(0.45f, 0.95f)] private float executionCameraSafeViewportRatio = 0.68f;
-        [Tooltip("처형 카메라가 플레이어와 보스 주위에 확보할 월드 공간 여백입니다.")]
-        [SerializeField, Min(0f)] private float executionCameraPairPadding = 0.8f;
-        [Tooltip("먼 거리 처형에서 허용할 최대 줌아웃 배율입니다.")]
-        [SerializeField, Range(1f, 2.5f)] private float executionCameraMaximumZoomMultiplier = 1.6f;
-        [Tooltip("먼 거리 처형을 시작하기 전 카메라가 중앙에 정착하기까지 기다릴 최대 시간입니다.")]
-        [SerializeField, Min(0f)] private float executionCameraReframeTimeoutSeconds = 0.4f;
+        [FormerlySerializedAs("executionApproachStartDistance")]
+        [Tooltip("이 거리보다 먼 보스를 처형하면 플레이어를 보스 옆으로 순간이동시킵니다.")]
+        [SerializeField, Min(0f)] private float executionTeleportStartDistance = 3f;
+        [FormerlySerializedAs("executionApproachStopDistance")]
+        [Tooltip("원거리 처형 시 보스 좌우에 배치할 플레이어의 거리입니다.")]
+        [SerializeField, Min(0f)] private float executionTeleportDistance = 1.2f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리되는 시간입니다.")]
         [SerializeField, Min(0f)] private float executionShotDimSeconds = 0.065f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리의 최대 알파값입니다.")]
@@ -168,10 +166,8 @@ namespace Week14.Combat
         public float ExecutionFinishSeconds => executionFinishSeconds;
         public float ExecutionCameraFocusWeight => executionCameraFocusWeight;
         public float ExecutionCameraZoomMultiplier => executionCameraZoomMultiplier;
-        public float ExecutionCameraSafeViewportRatio => executionCameraSafeViewportRatio;
-        public float ExecutionCameraPairPadding => executionCameraPairPadding;
-        public float ExecutionCameraMaximumZoomMultiplier => executionCameraMaximumZoomMultiplier;
-        public float ExecutionCameraReframeTimeoutSeconds => executionCameraReframeTimeoutSeconds;
+        public float ExecutionTeleportStartDistance => executionTeleportStartDistance;
+        public float ExecutionTeleportDistance => executionTeleportDistance;
         public float ExecutionShotDimSeconds => executionShotDimSeconds;
         public float ExecutionShotDimAlpha => executionShotDimAlpha;
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;

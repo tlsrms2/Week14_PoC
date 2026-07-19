@@ -210,6 +210,22 @@ namespace Week14.Bootstrap
             return true;
         }
 
+        public void EndCinematicFocusToCombatView(Transform combatFocusTarget)
+        {
+            cinematicFocusActive = false;
+            cinematicReturnToCombatViewActive = false;
+            cinematicZoomMultiplier = 1f;
+            pendingFocusTarget = null;
+            ApplyFocusTarget(combatFocusTarget);
+
+            // 복귀 코루틴에서 이미 전투 구도와 기본 줌까지 도달했으므로,
+            // 전투 시작 시점에 카메라 상태를 다시 초기화하지 않는다.
+            currentFocusWeight = focusTarget != null ? 0.5f : 0f;
+            focusWeightVelocity = 0f;
+            currentMouseLookOffset = Vector2.zero;
+            mouseLookOffsetVelocity = Vector2.zero;
+        }
+
         public void BeginCinematicReturnToCombatView(Transform combatFocusTarget)
         {
             cinematicFocusActive = false;

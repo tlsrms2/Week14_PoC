@@ -9,6 +9,8 @@ namespace Week14.Combat
     internal sealed class PlayerExecutionController
     {
         private const string FinalExecutionHeadName = "Head";
+        private const string WallLayerName = "Wall";
+        private const float TeleportColliderInset = 0.02f;
 
         private readonly PlayerCombatController.PlayerCombatContext context;
         private readonly PlayerCombatRig rig;
@@ -175,6 +177,25 @@ namespace Week14.Combat
                 lockOnController.SetLockOnTarget(targetHealth);
             }
 
+            float initialDistance = Vector2.Distance(
+                context.PlayerTransform.position,
+                executionTarget.transform.position);
+            float teleportStartDistance = Mathf.Max(
+                config.ExecutionTeleportStartDistance,
+                config.ExecutionTeleportDistance);
+            bool requiresTeleport = executionBoss != null && initialDistance > teleportStartDistance;
+            Coroutine letterboxRoutine = null;
+            if (isFinalBossExecution || requiresTeleport)
+            {
+                letterboxRoutine = context.CoroutineHost.StartCoroutine(
+                    presentation.ShowFinalExecutionLetterbox());
+            }
+
+            if (requiresTeleport)
+            {
+                TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
+            }
+
             Vector2 targetPosition = executionTarget.transform.position;
             Vector2 playerPosition = context.PlayerTransform.position;
             Vector2 standDirection = playerPosition - targetPosition;
@@ -189,29 +210,18 @@ namespace Week14.Combat
 
             presentation.UpdateExecutionFocusPoint(context.PlayerTransform.position, executionTarget.transform.position);
             CameraFollow2D activeCamera = context.CameraFollow;
-            float executionZoomMultiplier = presentation.CalculateExecutionCameraZoomMultiplier(
-                activeCamera,
-                context.PlayerTransform.position,
-                executionTarget.transform.position);
-            bool requiresCameraReframe = executionZoomMultiplier
-                > config.ExecutionCameraZoomMultiplier + 0.001f;
             activeCamera?.BeginCinematicFocus(
                 presentation.ExecutionFocusPoint != null ? presentation.ExecutionFocusPoint : executionTarget.transform,
                 config.ExecutionCameraFocusWeight,
-                executionZoomMultiplier);
-            if (requiresCameraReframe)
+                config.ExecutionCameraZoomMultiplier);
+            if (letterboxRoutine != null)
             {
-                yield return presentation.WaitForExecutionCameraReframe(activeCamera);
+                yield return letterboxRoutine;
                 if (executionTarget == null)
                 {
                     FinishExecution();
                     yield break;
                 }
-            }
-
-            if (isFinalBossExecution)
-            {
-                yield return presentation.ShowFinalExecutionLetterbox();
             }
 
             SoundManager.PlaySfx("Execute");
@@ -407,7 +417,6 @@ namespace Week14.Combat
                             CameraFollow2D finalDeathCamera = activeCamera;
                             if (isFinalBossExecution)
                             {
-                                boss.HideBossCombatUiForFinalDeath();
                                 finalDeathCamera = presentation.BeginFinalDeathCameraFocus(boss);
                             }
                             else
@@ -421,7 +430,7 @@ namespace Week14.Combat
                             yield return boss.PlayFinalDeathSequence(playFinalDeathExplosions);
                             if (isFinalBossExecution)
                             {
-                                presentation.HideFinalExecutionLetterboxImmediate();
+                                yield return presentation.HideFinalExecutionLetterbox();
                                 activeCamera?.EndCinematicFocus();
                             }
 
@@ -465,6 +474,7 @@ namespace Week14.Combat
 
             if (!executionFinished)
             {
+                yield return presentation.HideFinalExecutionLetterbox();
                 FinishExecution();
             }
         }
@@ -476,6 +486,98 @@ namespace Week14.Combat
             {
                 rig.StopBody();
             }
+        }
+
+        private void TeleportBesideBoss(BossAI boss, float distance)
+        {
+            Transform playerTransform = context.PlayerTransform;
+            Rigidbody2D body = context.Body;
+            if (boss == null || playerTransform == null)
+            {
+                return;
+            }
+
+            Vector2 originalPosition = body != null
+                ? body.position
+                : (Vector2)playerTransform.position;
+            Vector2 bossPosition = boss.transform.position;
+            float horizontalDistance = Mathf.Max(0f, distance);
+            Vector2 leftPosition = bossPosition + Vector2.left * horizontalDistance;
+            Vector2 rightPosition = bossPosition + Vector2.right * horizontalDistance;
+            bool preferLeft = (leftPosition - originalPosition).sqrMagnitude
+                <= (rightPosition - originalPosition).sqrMagnitude;
+            Vector2 preferredPosition = preferLeft ? leftPosition : rightPosition;
+            Vector2 fallbackPosition = preferLeft ? rightPosition : leftPosition;
+            Collider2D[] playerColliders = body != null
+                ? body.GetComponentsInChildren<Collider2D>(true)
+                : playerTransform.GetComponentsInChildren<Collider2D>(true);
+
+            Vector2 destination;
+            if (IsWallFreeTeleportPosition(originalPosition, preferredPosition, playerColliders))
+            {
+                destination = preferredPosition;
+            }
+            else if (IsWallFreeTeleportPosition(originalPosition, fallbackPosition, playerColliders))
+            {
+                destination = fallbackPosition;
+            }
+            else
+            {
+                return;
+            }
+
+            rig.StopBody();
+            if (body != null)
+            {
+                body.position = destination;
+            }
+            else
+            {
+                Vector3 worldPosition = playerTransform.position;
+                worldPosition.x = destination.x;
+                worldPosition.y = destination.y;
+                playerTransform.position = worldPosition;
+            }
+        }
+
+        private static bool IsWallFreeTeleportPosition(
+            Vector2 originalPosition,
+            Vector2 candidatePosition,
+            Collider2D[] playerColliders)
+        {
+            int wallLayer = LayerMask.NameToLayer(WallLayerName);
+            if (wallLayer < 0)
+            {
+                return true;
+            }
+
+            int wallMask = 1 << wallLayer;
+            Vector2 positionDelta = candidatePosition - originalPosition;
+            bool checkedCollider = false;
+            for (int i = 0; i < playerColliders.Length; i++)
+            {
+                Collider2D playerCollider = playerColliders[i];
+                if (playerCollider == null
+                    || !playerCollider.enabled
+                    || playerCollider.isTrigger
+                    || !playerCollider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                checkedCollider = true;
+                Bounds bounds = playerCollider.bounds;
+                Vector2 probeSize = new(
+                    Mathf.Max(0.01f, bounds.size.x - TeleportColliderInset),
+                    Mathf.Max(0.01f, bounds.size.y - TeleportColliderInset));
+                if (Physics2D.OverlapBox((Vector2)bounds.center + positionDelta, probeSize, 0f, wallMask) != null)
+                {
+                    return false;
+                }
+            }
+
+            return checkedCollider
+                || Physics2D.OverlapCircle(candidatePosition, 0.01f, wallMask) == null;
         }
 
         private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget)

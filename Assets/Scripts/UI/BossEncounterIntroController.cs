@@ -484,12 +484,15 @@ namespace Week14.UI
             canvasGroup.alpha = 1f;
             Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
             Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
+            Vector2 combatUiHiddenPosition = bossCombatUiTargetPosition
+                + Vector2.down * ResolveExecutionCombatUiOffset();
             float animationDuration = Mathf.Max(0f, duration);
 
             if (animationDuration <= 0f)
             {
                 SetAnchoredPosition(topLetterboxPanel, topLetterboxTargetPosition);
                 SetAnchoredPosition(bottomLetterboxPanel, bottomLetterboxTargetPosition);
+                SetAnchoredPosition(bossCombatUiRect, combatUiHiddenPosition);
                 yield break;
             }
 
@@ -502,11 +505,15 @@ namespace Week14.UI
                 SetAnchoredPosition(
                     bottomLetterboxPanel,
                     Vector2.LerpUnclamped(bottomHiddenPosition, bottomLetterboxTargetPosition, progress));
+                SetAnchoredPosition(
+                    bossCombatUiRect,
+                    Vector2.LerpUnclamped(bossCombatUiTargetPosition, combatUiHiddenPosition, progress));
                 yield return null;
             }
 
             SetAnchoredPosition(topLetterboxPanel, topLetterboxTargetPosition);
             SetAnchoredPosition(bottomLetterboxPanel, bottomLetterboxTargetPosition);
+            SetAnchoredPosition(bossCombatUiRect, combatUiHiddenPosition);
         }
 
         public IEnumerator HideExecutionLetterbox(float duration)
@@ -518,6 +525,8 @@ namespace Week14.UI
 
             Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
             Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
+            Vector2 combatUiHiddenPosition = bossCombatUiTargetPosition
+                + Vector2.down * ResolveExecutionCombatUiOffset();
             float animationDuration = Mathf.Max(0f, duration);
 
             if (animationDuration > 0f)
@@ -531,12 +540,16 @@ namespace Week14.UI
                     SetAnchoredPosition(
                         bottomLetterboxPanel,
                         Vector2.LerpUnclamped(bottomLetterboxTargetPosition, bottomHiddenPosition, progress));
+                    SetAnchoredPosition(
+                        bossCombatUiRect,
+                        Vector2.LerpUnclamped(combatUiHiddenPosition, bossCombatUiTargetPosition, progress));
                     yield return null;
                 }
             }
 
             SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
             SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
+            SetAnchoredPosition(bossCombatUiRect, bossCombatUiTargetPosition);
             RestoreExecutionLetterboxCanvasAlpha();
         }
 
@@ -551,6 +564,7 @@ namespace Week14.UI
             Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
             SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
             SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
+            SetAnchoredPosition(bossCombatUiRect, bossCombatUiTargetPosition);
             RestoreExecutionLetterboxCanvasAlpha();
         }
 
@@ -559,6 +573,13 @@ namespace Week14.UI
             ResolveCanvasGroup();
             canvasGroup.alpha = canvasAlphaBeforeExecutionLetterbox;
             executionLetterboxActive = false;
+        }
+
+        private float ResolveExecutionCombatUiOffset()
+        {
+            return topLetterboxPanel != null
+                ? Mathf.Max(0f, topLetterboxPanel.rect.height)
+                : 0f;
         }
 
         private IEnumerator AnimateLocationObjects(
