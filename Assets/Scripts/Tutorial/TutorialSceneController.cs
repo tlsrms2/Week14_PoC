@@ -696,7 +696,7 @@ namespace Week14.Tutorial
             bool revealRequested = false;
             bool canAcceptAdvance = false;
             PlayDialogueSfx(line.SfxId);
-            textDialoguePanel.ShowLine(speaker, text);
+            textDialoguePanel.ShowLine(speaker, text, line.Speaker);
             IEnumerator typing = textDialoguePanel.PlayTypewriter(
                 text,
                 () => revealRequested || currentTextDialogueRevealRequestedByLocale);
@@ -795,7 +795,8 @@ namespace Week14.Tutorial
 
             textDialoguePanel.ReplaceLineText(
                 ResolveDialogueSpeaker(currentTextDialogueLine),
-                ResolveDialogueText(currentTextDialogueLine));
+                ResolveDialogueText(currentTextDialogueLine),
+                currentTextDialogueLine.Speaker);
             currentTextDialogueRevealRequestedByLocale = true;
         }
 
