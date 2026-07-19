@@ -1448,6 +1448,14 @@ PrefabInstance:
       propertyPath: image
       value: 
       objectReference: {fileID: 34756400}
+    - target: {fileID: 2303374336768699719, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: colorOnlyRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303374336768699719, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: 'colorOnlyRenderers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 741641528}
     - target: {fileID: 2328319091128216988, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: playerHpView
       value: 
@@ -1512,6 +1520,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab45c6f913685d4387ad369371d5499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.PlayerCombatController
+--- !u!212 &741641528 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5103855550194505473, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+  m_PrefabInstance: {fileID: 741641526}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &819233377
 GameObject:
   m_ObjectHideFlags: 0
