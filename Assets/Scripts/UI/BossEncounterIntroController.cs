@@ -311,7 +311,7 @@ namespace Week14.UI
                 yield return null;
             }
 
-            cameraFollow.EndCinematicFocusToCombatView(bossFocusTarget);
+            cameraFollow.EndCinematicFocus();
             cinematicFocusActive = false;
         }
 

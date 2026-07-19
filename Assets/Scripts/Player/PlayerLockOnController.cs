@@ -1,5 +1,4 @@
 using UnityEngine;
-using Week14.Bootstrap;
 using Week14.Enemy;
 using Week14.Tutorial;
 
@@ -47,11 +46,6 @@ namespace Week14.Combat
             }
 
             context.LockOnTarget = nextTarget;
-            CameraFollow2D activeCamera = context.CameraFollow;
-            if (activeCamera != null)
-            {
-                activeCamera.SetFocusTarget(nextTarget != null ? nextTarget.transform : null);
-            }
         }
 
         private Health FindNearestLockOnTarget()
