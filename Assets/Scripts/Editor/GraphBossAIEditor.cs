@@ -638,6 +638,7 @@ public class GraphBossAIEditor : Editor
             || path == "phaseTransitionWaitSeconds"
             || path == "deathAnimator"
             || path == "deathTriggerName"
+            || path == "playFinalDeathExplosion"
             || path == "finalDeathExplosionSeconds"
             || path == "finalDeathExplosionCount"
             || path == "finalDeathExplosionPrefab"

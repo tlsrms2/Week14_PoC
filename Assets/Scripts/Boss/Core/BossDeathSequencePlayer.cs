@@ -9,7 +9,10 @@ namespace Week14.Enemy
     {
         public static IEnumerator Play(BossAI boss)
         {
-            yield return PlayFinalDeathExplosions(boss);
+            if (boss.PlayFinalDeathExplosionForSequence)
+            {
+                yield return PlayFinalDeathExplosions(boss);
+            }
 
             float delaySeconds = boss.DeathExplosionToAnimationDelaySecondsForSequence;
             if (delaySeconds > 0f)
