@@ -2226,11 +2226,6 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P2 -> P1
-      weight: 99
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 0
-      minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
     phaseMaxHp: 180

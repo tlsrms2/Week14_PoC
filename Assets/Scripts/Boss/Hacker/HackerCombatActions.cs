@@ -897,6 +897,22 @@ namespace Week14.Enemy
         [Tooltip("후퇴 대시에서 사용할 이펙트 생성 지점입니다. 비어 있으면 Dash Effect의 Spawn Point Path를 사용합니다.")]
         [SerializeField, BossGraphBossChildPath] private string retreatDashEffectSpawnPointPath;
 
+        [Header("Dash Afterimage")]
+        [Tooltip("대시 중 잔상을 생성하는 간격입니다.")]
+        [SerializeField, Min(0.01f)] private float afterimageInterval = 0.045f;
+        [Tooltip("잔상 하나가 사라지는 데 걸리는 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float afterimageDuration = 0.2f;
+        [Tooltip("대시 잔상이 순서대로 사용할 색상입니다. 비어 있으면 기본 네온 팔레트를 사용합니다.")]
+        [SerializeField] private Color[] afterimagePalette =
+        {
+            new(1f, 0.82f, 0.12f, 0.44f),
+            new(1f, 0.24f, 0.05f, 0.4f),
+            new(1f, 0.05f, 0.48f, 0.36f),
+            new(0.08f, 0.82f, 1f, 0.34f)
+        };
+        [Tooltip("홀로그램 대시 잔상에 추가로 곱할 알파 배율입니다.")]
+        [SerializeField, Range(0f, 1f)] private float hologramAfterimageAlphaMultiplier = 0.45f;
+
         [Header("Hologram")]
         [SerializeField, Range(-180f, 180f)] private float hologramRetreatAngleDegrees = 30f;
         [FormerlySerializedAs("hologramRetreatFollowDelaySeconds")]
@@ -1004,6 +1020,8 @@ namespace Week14.Enemy
                 dashDirection,
                 effectSpawnPointPath);
             float elapsed = 0f;
+            float nextAfterimageAt = 0f;
+            int afterimageColorIndex = 0;
             while (elapsed < dashSeconds)
             {
                 if (context.IsExecutionPaused)
@@ -1038,9 +1056,54 @@ namespace Week14.Enemy
 
                 context.Boss.SetMovementVelocity(dashDirection * currentSpeed);
 
+                if (elapsed >= nextAfterimageAt)
+                {
+                    SpawnAfterimage(context.Boss, afterimageColorIndex);
+                    afterimageColorIndex++;
+                    nextAfterimageAt += Mathf.Max(0.01f, afterimageInterval);
+                }
+
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
             }
+        }
+
+        private void SpawnAfterimage(BossAI boss, int colorIndex)
+        {
+            SpriteRenderer[] renderers = boss != null ? boss.BodyRenderers : null;
+            if (renderers == null || renderers.Length == 0)
+            {
+                return;
+            }
+
+            Color tint = ResolveAfterimageColor(colorIndex);
+            if (boss is HackerHologramBoss)
+            {
+                tint.a *= Mathf.Clamp01(hologramAfterimageAlphaMultiplier);
+            }
+
+            PlayerDashVfx.SpawnRollAfterimage(
+                boss,
+                renderers,
+                null,
+                Mathf.Max(0.01f, afterimageDuration),
+                tint);
+        }
+
+        private Color ResolveAfterimageColor(int colorIndex)
+        {
+            if (afterimagePalette != null && afterimagePalette.Length > 0)
+            {
+                return afterimagePalette[colorIndex % afterimagePalette.Length];
+            }
+
+            return (colorIndex % 4) switch
+            {
+                0 => new Color(1f, 0.82f, 0.12f, 0.44f),
+                1 => new Color(1f, 0.24f, 0.05f, 0.4f),
+                2 => new Color(1f, 0.05f, 0.48f, 0.36f),
+                _ => new Color(0.08f, 0.82f, 1f, 0.34f)
+            };
         }
 
         private IEnumerator ApproachToDashDistance(BossActionContext context)

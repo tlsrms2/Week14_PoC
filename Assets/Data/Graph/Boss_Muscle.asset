@@ -25,7 +25,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225195
     sequences: []
-    editorPosition: {x: -142, y: 46}
+    editorPosition: {x: -134, y: -264}
   - nodeId: Boss Dash1
     nodeGuid: 8be623fe70134e86a5718bfa00394cb7
     nodeKind: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225179
     sequences: []
-    editorPosition: {x: -142, y: -104}
+    editorPosition: {x: -133, y: -414}
   - nodeId: Boss Dash2
     nodeGuid: 185e2cafb37140f38c7e4ea79be5a1c9
     nodeKind: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     action:
       rid: 4705777849323225181
     sequences: []
-    editorPosition: {x: 263, y: -104}
+    editorPosition: {x: 271, y: -414}
   - nodeId: Maintain Player Distance1
     nodeGuid: 442b7f6c09ca4411a6b2017755639bda
     nodeKind: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917022
     sequences: []
-    editorPosition: {x: -148, y: 238}
+    editorPosition: {x: -140, y: -72}
   - nodeId: Boss Dash3
     nodeGuid: 9fe71e8bed4d44ac9c8cf8b218947399
     nodeKind: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 4705777881857917013
     sequences: []
-    editorPosition: {x: 11, y: 238}
+    editorPosition: {x: 19, y: -72}
   - nodeId: Fire Dash Formation1
     nodeGuid: 9052884a28bd4972abf00ddf436b845b
     nodeKind: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     action:
       rid: 4705777884965634125
     sequences: []
-    editorPosition: {x: 11, y: 356}
+    editorPosition: {x: 19, y: 46}
   - nodeId: Maintain Player Distance2
     nodeGuid: 6fb3d3d8db324524bf72a9beb67352f5
     nodeKind: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
     action:
       rid: 4705777894816219217
     sequences: []
-    editorPosition: {x: 85, y: -104}
+    editorPosition: {x: 93, y: -414}
   - nodeId: Wait1
     nodeGuid: dbd1b9f57dc34140b36f7939ff09a3b0
     nodeKind: 3
@@ -88,7 +88,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288588
     sequences: []
-    editorPosition: {x: -32, y: -104}
+    editorPosition: {x: -24, y: -414}
   - nodeId: Move Until Player Distance1
     nodeGuid: dd2c409e76354ed08de7552b29dfee4e
     nodeKind: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288593
     sequences: []
-    editorPosition: {x: -633, y: 559}
+    editorPosition: {x: -487, y: 330}
   - nodeId: Wait2
     nodeGuid: 5c3c6d7e9fe745a0896819b92dd417da
     nodeKind: 3
@@ -106,7 +106,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288596
     sequences: []
-    editorPosition: {x: 360, y: 580}
+    editorPosition: {x: 506, y: 351}
   - nodeId: Move Until Player Distance2
     nodeGuid: 612a6b3ea4804a36891c2ee0a4256608
     nodeKind: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288602
     sequences: []
-    editorPosition: {x: 827, y: 580}
+    editorPosition: {x: 973, y: 351}
   - nodeId: Maintain Player Distance3
     nodeGuid: f9067e3ab9cd4c118f62347c84af469f
     nodeKind: 1
@@ -124,7 +124,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288603
     sequences: []
-    editorPosition: {x: -142, y: 765}
+    editorPosition: {x: -149, y: 560}
   - nodeId: Boss Dash4
     nodeGuid: febd09203906470486d228f80fc19c01
     nodeKind: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288604
     sequences: []
-    editorPosition: {x: 19, y: 765}
+    editorPosition: {x: 12, y: 560}
   - nodeId: Boss Dash5
     nodeGuid: a6d837d55c884ba583edce60f2ae0e5f
     nodeKind: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288605
     sequences: []
-    editorPosition: {x: 424, y: 765}
+    editorPosition: {x: 417, y: 560}
   - nodeId: Maintain Player Distance4
     nodeGuid: 062ef5e90ce8471c9058edbc8d18e523
     nodeKind: 1
@@ -151,7 +151,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288619
     sequences: []
-    editorPosition: {x: 229, y: 765}
+    editorPosition: {x: 222, y: 560}
   - nodeId: Fire Dash Formation2
     nodeGuid: a1f246c7ac574f8990fc4a0ca8fb83c8
     nodeKind: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288607
     sequences: []
-    editorPosition: {x: 19, y: 920}
+    editorPosition: {x: 12, y: 715}
   - nodeId: Fire Dash Formation3
     nodeGuid: f2e6bdaa9564427d8772f2ec8da7cc27
     nodeKind: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288609
     sequences: []
-    editorPosition: {x: 425, y: 920}
+    editorPosition: {x: 418, y: 715}
   - nodeId: Boss Dash6
     nodeGuid: 25beafe770334374b83e7b18a4dee9ce
     nodeKind: 1
@@ -178,7 +178,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288620
     sequences: []
-    editorPosition: {x: 79, y: 1087}
+    editorPosition: {x: 82, y: 1011}
   - nodeId: Boss Dash7
     nodeGuid: 835d47bd52614c36bf7343bfb5ca3255
     nodeKind: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288621
     sequences: []
-    editorPosition: {x: 271, y: 1087}
+    editorPosition: {x: 274, y: 1011}
   - nodeId: Boss Dash8
     nodeGuid: 8f62d2ec9fdc4384b6871602c338b0e3
     nodeKind: 1
@@ -196,7 +196,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288622
     sequences: []
-    editorPosition: {x: 542, y: 1087}
+    editorPosition: {x: 545, y: 1011}
   - nodeId: Boss Dash9
     nodeGuid: 51e3b342ebe84b4bbc872f2cb3e94947
     nodeKind: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288623
     sequences: []
-    editorPosition: {x: 810, y: 1087}
+    editorPosition: {x: 813, y: 1011}
   - nodeId: Windup1
     nodeGuid: 9aca0817834c4c7891e79f35869aba73
     nodeKind: 3
@@ -214,7 +214,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288624
     sequences: []
-    editorPosition: {x: 1293, y: 1087}
+    editorPosition: {x: 1296, y: 1011}
   - nodeId: Move Until Player Distance3
     nodeGuid: b4288a57c12f4d029fbdd02df164a32e
     nodeKind: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
     action:
       rid: 4705777899588288627
     sequences: []
-    editorPosition: {x: -142, y: 1086}
+    editorPosition: {x: -139, y: 1010}
   - nodeId: Boss Dash10
     nodeGuid: 0c3602e20ba8464c94e96b5eadb9d12f
     nodeKind: 1
@@ -394,7 +394,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200317
     sequences: []
-    editorPosition: {x: 196, y: 238}
+    editorPosition: {x: 204, y: -72}
   - nodeId: Wait3
     nodeGuid: e7d379c95d9c4859ad3179669179dfe2
     nodeKind: 3
@@ -403,7 +403,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200318
     sequences: []
-    editorPosition: {x: -409, y: 559}
+    editorPosition: {x: -263, y: 330}
   - nodeId: Wait4
     nodeGuid: e46ce352b4d0477fbaa77c6cb6ccb343
     nodeKind: 3
@@ -412,7 +412,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200319
     sequences: []
-    editorPosition: {x: 979, y: 580}
+    editorPosition: {x: 1125, y: 351}
   - nodeId: Wait5
     nodeGuid: 8d9cd9c0e7ad4b3fbd4136ca0a559f52
     nodeKind: 3
@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824404
     sequences: []
-    editorPosition: {x: -303, y: 559}
+    editorPosition: {x: -157, y: 330}
   - nodeId: Set Parameter2
     nodeGuid: 1c806044cde744fda9762e94d5aae37e
     nodeKind: 2
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824406
     sequences: []
-    editorPosition: {x: 1081, y: 580}
+    editorPosition: {x: 1227, y: 351}
   - nodeId: Set Parameter3
     nodeGuid: b65d982cdd8b4855b2e2a3dbff79e964
     nodeKind: 2
@@ -457,7 +457,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824408
     sequences: []
-    editorPosition: {x: 511, y: 580}
+    editorPosition: {x: 657, y: 351}
   - nodeId: Set Parameter4
     nodeGuid: 28ca69fc380146dcbe570ed92ec959ad
     nodeKind: 2
@@ -466,7 +466,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824409
     sequences: []
-    editorPosition: {x: 641, y: 580}
+    editorPosition: {x: 787, y: 351}
   - nodeId: Wait7
     nodeGuid: d8e19f1aff984433b0efa0e801f90d96
     nodeKind: 3
@@ -475,7 +475,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824412
     sequences: []
-    editorPosition: {x: 1538, y: 577}
+    editorPosition: {x: 1684, y: 348}
   - nodeId: Set Parameter5
     nodeGuid: 903239b3d04049078b59a10d20bb9f95
     nodeKind: 2
@@ -484,7 +484,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824413
     sequences: []
-    editorPosition: {x: 1687, y: 577}
+    editorPosition: {x: 1833, y: 348}
   - nodeId: Set Parameter6
     nodeGuid: 8905948f06494740b377b2174b303a59
     nodeKind: 2
@@ -493,7 +493,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824414
     sequences: []
-    editorPosition: {x: 1876, y: 577}
+    editorPosition: {x: 2022, y: 348}
   - nodeId: Set Parameter7
     nodeGuid: 1d990f318ffe4ef48684d3f82217b553
     nodeKind: 2
@@ -610,7 +610,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824448
     sequences: []
-    editorPosition: {x: 1994, y: 1087}
+    editorPosition: {x: 1997, y: 1011}
   - nodeId: Wait11
     nodeGuid: d95883e37d63446a9415d90baa899a35
     nodeKind: 3
@@ -619,7 +619,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824449
     sequences: []
-    editorPosition: {x: 2158, y: 1087}
+    editorPosition: {x: 2161, y: 1011}
   - nodeId: Set Parameter16
     nodeGuid: 5028a5904c174d138dfd167230259553
     nodeKind: 2
@@ -628,7 +628,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824450
     sequences: []
-    editorPosition: {x: 2405, y: 1087}
+    editorPosition: {x: 2408, y: 1011}
   - nodeId: Set Parameter17
     nodeGuid: 25bc687a676346078ac5460530aedb72
     nodeKind: 2
@@ -637,7 +637,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824451
     sequences: []
-    editorPosition: {x: 1410, y: 1087}
+    editorPosition: {x: 1413, y: 1011}
   - nodeId: Wait12
     nodeGuid: a673207cec4143888ec2528e789b8663
     nodeKind: 3
@@ -646,7 +646,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824452
     sequences: []
-    editorPosition: {x: 1562, y: 1087}
+    editorPosition: {x: 1565, y: 1011}
   - nodeId: Set Parameter18
     nodeGuid: 13f9de00d17b47dbb79785b59d38eedf
     nodeKind: 2
@@ -655,7 +655,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824455
     sequences: []
-    editorPosition: {x: 1115, y: 1087}
+    editorPosition: {x: 1118, y: 1011}
   - nodeId: Play Sfx1
     nodeGuid: 031ec70f30a14eeebf783a3157d6d19d
     nodeKind: 3
@@ -664,7 +664,7 @@ MonoBehaviour:
     action:
       rid: 4705777988380393622
     sequences: []
-    editorPosition: {x: 1715, y: 1087}
+    editorPosition: {x: 1718, y: 1011}
   - nodeId: Wait13
     nodeGuid: 7bf735e05cfa41169d9cf9f17a8d4300
     nodeKind: 3
@@ -673,7 +673,7 @@ MonoBehaviour:
     action:
       rid: 4705777988380393626
     sequences: []
-    editorPosition: {x: 1829, y: 1087}
+    editorPosition: {x: 1832, y: 1011}
   - nodeId: Fire Radial Emission3
     nodeGuid: 3d76238ee24443ec8318b2524078453e
     nodeKind: 0
@@ -736,7 +736,7 @@ MonoBehaviour:
     action:
       rid: 4705777988380393782
     sequences: []
-    editorPosition: {x: -123, y: 2455}
+    editorPosition: {x: -181, y: 2454}
   - nodeId: Windup3
     nodeGuid: 874f33b2c9af4064ac58553679b3289c
     nodeKind: 3
@@ -1015,7 +1015,7 @@ MonoBehaviour:
     action:
       rid: 4705777988380393889
     sequences: []
-    editorPosition: {x: 250, y: 46}
+    editorPosition: {x: 258, y: -264}
   - nodeId: Maintain Player Distance6
     nodeGuid: 6f89b729f45f46e0ac0d1e5de2da26ed
     nodeKind: 1
@@ -1213,7 +1213,7 @@ MonoBehaviour:
     action:
       rid: 4705778016365314173
     sequences: []
-    editorPosition: {x: -133, y: 559}
+    editorPosition: {x: 13, y: 330}
   - nodeId: Wait31
     nodeGuid: 85ef4446e38048819bb17e8dad886054
     nodeKind: 3
@@ -1222,7 +1222,7 @@ MonoBehaviour:
     action:
       rid: 4705778016365314174
     sequences: []
-    editorPosition: {x: 1229, y: 577}
+    editorPosition: {x: 1375, y: 348}
   - nodeId: Wait32
     nodeGuid: aa65c546ef7745f5bff7615a925e4bf3
     nodeKind: 3
@@ -1258,7 +1258,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805632
     sequences: []
-    editorPosition: {x: 66, y: 495}
+    editorPosition: {x: 212, y: 266}
   - nodeId: Boss Area Damage1
     nodeGuid: 75be7b25277a42ffb1a873493373023c
     nodeKind: 0
@@ -1267,7 +1267,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805633
     sequences: []
-    editorPosition: {x: 81, y: 613}
+    editorPosition: {x: 234, y: 399}
   - nodeId: Fire Parry Suppression Bait2
     nodeGuid: b2c9128f1e90405cb0bec25180dd07ea
     nodeKind: 0
@@ -1276,7 +1276,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805671
     sequences: []
-    editorPosition: {x: 1331, y: 577}
+    editorPosition: {x: 1482, y: 235}
   - nodeId: Boss Area Damage2
     nodeGuid: e651496032cb454c95ebc494807cebe9
     nodeKind: 0
@@ -1285,7 +1285,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805672
     sequences: []
-    editorPosition: {x: 1346, y: 695}
+    editorPosition: {x: 1495, y: 353}
   - nodeId: Fire Parry Suppression Bait3
     nodeGuid: 8e019ac72b8b4b62af2d3d2841fae935
     nodeKind: 0
@@ -1312,7 +1312,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805675
     sequences: []
-    editorPosition: {x: 94, y: 2161}
+    editorPosition: {x: 94, y: 2162}
   - nodeId: Boss Area Damage4
     nodeGuid: 3a14ce5310794798950fc67903fa1d36
     nodeKind: 0
@@ -1349,6 +1349,60 @@ MonoBehaviour:
       rid: 4705778169994805679
     sequences: []
     editorPosition: {x: 1742, y: 2961}
+  - nodeId: Spawn Effect Prefab1
+    nodeGuid: b1ca4f9a40954f02a8d2cec907c3e483
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151460017
+    sequences: []
+    editorPosition: {x: 2003, y: 869}
+  - nodeId: Spawn Effect Prefab2
+    nodeGuid: 60a3f35bb1cf420fb7ff73c7ad4d7546
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151460018
+    sequences: []
+    editorPosition: {x: 1700, y: 2296}
+  - nodeId: Spawn Effect Prefab3
+    nodeGuid: c2129749f3b943b096f431fd07569ddf
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151460019
+    sequences: []
+    editorPosition: {x: -806, y: 2580}
+  - nodeId: Spawn Effect Prefab4
+    nodeGuid: 63af0553f1ff4f478a83f6c540e22ab5
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151460020
+    sequences: []
+    editorPosition: {x: 1115, y: 2585}
+  - nodeId: Spawn Effect Prefab5
+    nodeGuid: 950815f29af743a2b262b0990c048d1e
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151460021
+    sequences: []
+    editorPosition: {x: 2973, y: 2587}
+  - nodeId: Spawn Effect Prefab6
+    nodeGuid: 7b0b6635b3a040a6b251dbd439de9182
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151460022
+    sequences: []
+    editorPosition: {x: 773, y: 2937}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1446,6 +1500,7 @@ MonoBehaviour:
     - bcf3d485c22c432180fac7eb914bbd0e
     - d95883e37d63446a9415d90baa899a35
     - 5028a5904c174d138dfd167230259553
+    - b1ca4f9a40954f02a8d2cec907c3e483
     nodeIds:
     - Move Until Player Distance3
     - Boss Dash6
@@ -1461,6 +1516,7 @@ MonoBehaviour:
     - Fire Radial Emission2
     - Wait11
     - Set Parameter16
+    - Spawn Effect Prefab1
   - patternId: Pattern6
     nodeGuids:
     - 45b3ee192e41440f9f4eb924fc903862
@@ -1541,6 +1597,7 @@ MonoBehaviour:
     - 85f8a72636a54a7b995878ccb89bd82e
     - 5bff9151eda945c296ae94176c48b58d
     - 3a14ce5310794798950fc67903fa1d36
+    - 60a3f35bb1cf420fb7ff73c7ad4d7546
     nodeIds:
     - Move Until Player Distance6
     - Wait6
@@ -1562,6 +1619,7 @@ MonoBehaviour:
     - Set Parameter14
     - Fire Projectile Burst6
     - Boss Area Damage4
+    - Spawn Effect Prefab2
   - patternId: Pattern9
     nodeGuids:
     - b2df2bbc03a043a3ba39466025185ad0
@@ -1597,6 +1655,9 @@ MonoBehaviour:
     - 5f1b513d4eca4d418162596d469680dc
     - ed1d12b1f4b0470391f9a093bccb0379
     - 3ec12c6321a84e67acfaf764ac970f11
+    - c2129749f3b943b096f431fd07569ddf
+    - 63af0553f1ff4f478a83f6c540e22ab5
+    - 950815f29af743a2b262b0990c048d1e
     nodeIds:
     - Fire Projectile Burst7
     - Fire Projectile Burst8
@@ -1631,6 +1692,9 @@ MonoBehaviour:
     - Fire Radial Emission5
     - Wait19
     - Set Parameter22
+    - Spawn Effect Prefab3
+    - Spawn Effect Prefab4
+    - Spawn Effect Prefab5
   - patternId: Pattern10
     nodeGuids:
     - d31aba8d12e54d74b0998800a36c5829
@@ -1654,6 +1718,7 @@ MonoBehaviour:
     - 34e93466cddd4adfbedcfc5a1f11c116
     - 4955dd54d82f4b66ada39b4f8e6a106f
     - a6cdac05368149fe9ff1fd119fdbbf96
+    - 7b0b6635b3a040a6b251dbd439de9182
     nodeIds:
     - Set Parameter30
     - Windup6
@@ -1676,6 +1741,7 @@ MonoBehaviour:
     - Set Parameter33
     - Fire Dash Formation8
     - Boss Area Damage5
+    - Spawn Effect Prefab6
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -2816,8 +2882,44 @@ MonoBehaviour:
     toNodeId: Boss Area Damage5
     laneIndex: 0
     targetLaneIndex: 0
+  - fromNodeGuid: b1ca4f9a40954f02a8d2cec907c3e483
+    toNodeGuid: bcf3d485c22c432180fac7eb914bbd0e
+    fromNodeId: Spawn Effect Prefab1
+    toNodeId: Fire Radial Emission2
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 3d76238ee24443ec8318b2524078453e
+    toNodeGuid: 60a3f35bb1cf420fb7ff73c7ad4d7546
+    fromNodeId: Fire Radial Emission3
+    toNodeId: Spawn Effect Prefab2
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 56ec7cfe1f9b44e69bcd612efa8974a5
+    toNodeGuid: c2129749f3b943b096f431fd07569ddf
+    fromNodeId: Fire Radial Emission6
+    toNodeId: Spawn Effect Prefab3
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 28d59dba1e6549a99df166bea52a9b1b
+    toNodeGuid: 63af0553f1ff4f478a83f6c540e22ab5
+    fromNodeId: Fire Radial Emission4
+    toNodeId: Spawn Effect Prefab4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 5f1b513d4eca4d418162596d469680dc
+    toNodeGuid: 950815f29af743a2b262b0990c048d1e
+    fromNodeId: Fire Radial Emission5
+    toNodeId: Spawn Effect Prefab5
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 1cb3fdd9733949d2a8c05b70a84636a1
+    toNodeGuid: 7b0b6635b3a040a6b251dbd439de9182
+    fromNodeId: Fire Radial Emission7
+    toNodeId: Spawn Effect Prefab6
+    laneIndex: 0
+    targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern3
+  debugForcedPatternId: Pattern1
   references:
     version: 2
     RefIds:
@@ -2875,15 +2977,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777849323225181
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -2938,15 +3039,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777849323225195
       type: {class: FireProjectileBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3051,15 +3151,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777881857917022
       type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3359,15 +3458,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777899588288605
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3422,15 +3520,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777899588288607
       type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3662,15 +3759,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777899588288621
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3725,15 +3821,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777899588288622
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3788,15 +3883,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777899588288623
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3851,15 +3945,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777899588288624
       type: {class: WindupAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3975,15 +4068,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777917832200268
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4038,15 +4130,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777917832200269
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4101,15 +4192,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777917832200270
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4164,15 +4254,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777917832200273
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4526,15 +4615,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777917832200293
       type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4766,15 +4854,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777917832200309
       type: {class: FireProjectileBurstAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5345,15 +5432,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777988380393782
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5623,15 +5709,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777988380393858
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6056,15 +6141,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777988380393896
       type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6462,15 +6546,14 @@ MonoBehaviour:
         dashSfxId: BossBomb
         chargeTriggerName: Charge
         chargeBoolName: isCharge
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
     - rid: 4705777988380393964
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6618,6 +6701,8 @@ MonoBehaviour:
         impactEventTimeoutSeconds: 2
         windupSfxId: 
         explosionSfxId: 
+        explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        explosionEffectScale: 1
     - rid: 4705778169994805671
       type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6680,6 +6765,8 @@ MonoBehaviour:
         impactEventTimeoutSeconds: 2
         windupSfxId: 
         explosionSfxId: 
+        explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        explosionEffectScale: 1
     - rid: 4705778169994805673
       type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6742,6 +6829,8 @@ MonoBehaviour:
         impactEventTimeoutSeconds: 2
         windupSfxId: 
         explosionSfxId: 
+        explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        explosionEffectScale: 1
     - rid: 4705778169994805675
       type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6804,6 +6893,8 @@ MonoBehaviour:
         impactEventTimeoutSeconds: 2
         windupSfxId: 
         explosionSfxId: 
+        explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        explosionEffectScale: 1
     - rid: 4705778169994805677
       type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6866,6 +6957,8 @@ MonoBehaviour:
         impactEventTimeoutSeconds: 2
         windupSfxId: 
         explosionSfxId: 
+        explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        explosionEffectScale: 1
     - rid: 4705778169994805679
       type: {class: MoveUntilPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6899,3 +6992,63 @@ MonoBehaviour:
         timeoutSeconds: 0
         stopWhenFinished: 1
         spawnAfterimages: 1
+    - rid: 6489939300151460017
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        spawnPointPath: Boss-Muscle Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 0.4
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939300151460018
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        spawnPointPath: Boss-Muscle Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 0.4
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939300151460019
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        spawnPointPath: Boss-Muscle Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 0.4
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939300151460020
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        spawnPointPath: Boss-Muscle Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 0.4
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939300151460021
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        spawnPointPath: Boss-Muscle Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 0.4
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939300151460022
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
+        spawnPointPath: Boss-Muscle Visual
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 0.4
+        followMode: 0
+        followRotation: 1

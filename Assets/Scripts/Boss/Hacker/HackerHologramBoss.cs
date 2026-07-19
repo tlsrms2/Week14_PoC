@@ -18,7 +18,7 @@ namespace Week14.Enemy
         private const float SummonReturnSeconds = 0.55f;
         private const float ReplayWallSkin = 0.02f;
         private const float ReplayWallProbeRadius = 0.22f;
-        private static readonly Color HologramTint = new(0.3f, 0.85f, 1f, 0.65f);
+        private static readonly Color HologramTint = new(0.3f, 0.85f, 1f, 0.58f);
 
         private HackerBossAI sourceBoss;
         private bool isHologramReplayRunning;

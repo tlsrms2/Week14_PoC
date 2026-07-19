@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -34,25 +35,24 @@ namespace Week14.Enemy
         [SerializeField] private string chargeBoolName = "isCharge";
 
         [Header("Trajectory VFX")]
-        [Tooltip("궤적 표시에 사용할 스프라이트입니다. 비워두면 궤적 VFX를 표시하지 않습니다.")]
-        [SerializeField] private Sprite trajectorySprite;
-        [SerializeField, Min(0.01f)] private float trajectoryWidth = 0.3f;
-        [Tooltip("배경(전체 사거리) 폭 방향 그라데이션의 중심선(밝은 쪽) 색입니다.")]
-        [SerializeField] private Color trajectoryBackgroundInnerColor = new Color(1f, 1f, 1f, 0.05f);
-        [Tooltip("배경(전체 사거리) 폭 방향 그라데이션의 좌우 가장자리(어두운 쪽) 색입니다.")]
-        [SerializeField] private Color trajectoryBackgroundColor = new Color(1f, 1f, 1f, 0.15f);
-        [Tooltip("Fill(진행률) 폭 방향 그라데이션의 중심선(밝은 쪽) 색입니다.")]
-        [SerializeField] private Color trajectoryFillInnerColor = new Color(1f, 0.4f, 0.1f, 0.15f);
-        [Tooltip("Fill(진행률) 폭 방향 그라데이션의 좌우 가장자리(어두운 쪽) 색입니다.")]
-        [SerializeField] private Color trajectoryFillColor = new Color(1f, 0.4f, 0.1f, 0.6f);
-        [Tooltip("폭 방향 그라데이션에서 중심부가 얼마나 넓게 밝게 유지되다가 가장자리에서 급격히 어두워질지 정하는 지수입니다. " +
-            "1이면 중심에서 가장자리까지 균일한 선형 변화, 값이 클수록 중심부가 더 넓고 평평하게 밝게 유지되다가 가장자리 근처에서만 급격히 어두워집니다.")]
-        [SerializeField, Min(1f)] private float trajectoryGradientFalloffPower = 3f;
-        [Tooltip("스프라이트 렌더러 Sorting Order입니다.")]
-        [SerializeField] private int trajectorySortingOrder = 5;
-        [Tooltip("실제 이동 거리(ComputeDashDistance)에 이 값만큼 더해서 인디케이터만 더 길게 표시합니다. " +
-            "실제 대쉬 이동 거리에는 영향을 주지 않는 순수 표시용 여유값입니다.")]
-        [SerializeField, Min(0f)] private float trajectoryExtraLength = 0f;
+        [Tooltip("경로를 이어 붙일 정사각형 화살표 인디케이터 프리팹입니다. 프리팹의 Animator와 Sorting 설정을 그대로 사용합니다.")]
+        [SerializeField] private GameObject trajectoryIndicatorPrefab;
+        [Tooltip("인디케이터 한 칸이 차지할 경로 길이입니다. 0이면 프리팹 SpriteRenderer의 가로 크기를 자동으로 사용합니다.")]
+        [SerializeField, Min(0f)] private float trajectoryTileSpacing;
+        [Tooltip("프리팹 화살표가 오른쪽을 향하지 않을 때 보정할 Z축 회전값입니다.")]
+        [SerializeField] private float trajectoryTileRotationOffset;
+        [Tooltip("대기 시작 시 인디케이터 색입니다.")]
+        [SerializeField] private Color trajectoryReadyColor = Color.white;
+        [Tooltip("대기가 끝났을 때 인디케이터 색입니다.")]
+        [SerializeField] private Color trajectoryChargedColor = Color.red;
+
+        [Header("Dash Dust VFX")]
+        [Tooltip("실제 대쉬가 시작될 때 보스 뒤에 한 번 생성할 먼지 이펙트 프리팹입니다. 오른쪽 대쉬 방향을 기준으로 제작된 프리팹을 사용합니다.")]
+        [SerializeField] private GameObject dashDustEffectPrefab;
+        [Tooltip("Boss Graph Editor 하이어러키에서 먼지 생성 위치를 드래그해 지정합니다.")]
+        [SerializeField, BossGraphBossChildPath] private string dashDustSpawnPointPath;
+        [Tooltip("먼지 이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float dashDustEffectScale = 1f;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -70,10 +70,11 @@ namespace Week14.Enemy
             float nextSmokeAt = Time.time;
             Vector2 dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
 
-            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(ComputeDashDistance() + trajectoryExtraLength);
+            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(ComputeDashDistance());
             if (trajectoryVfx != null)
             {
                 context.RegisterTransientVisual(trajectoryVfx.gameObject);
+                trajectoryVfx.UpdateVfx(context.OriginPosition, dashDirection, 0f);
             }
 
             // 추적 페이즈
@@ -95,8 +96,8 @@ namespace Week14.Enemy
                         : targetDirection;
                 }
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
-                trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
                 elapsed += EnemyTimeScale.DeltaTime;
+                trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
                 yield return null;
             }
 
@@ -113,14 +114,15 @@ namespace Week14.Enemy
 
                 context.Stop();
                 context.PlaySmokeIfDue(ref nextSmokeAt, windupEffects, context.OriginPosition);
-                trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
                 elapsed += EnemyTimeScale.DeltaTime;
+                trajectoryVfx?.UpdateVfx(context.OriginPosition, dashDirection, elapsed / windupSeconds);
                 yield return null;
             }
 
             if (trajectoryVfx != null)
             {
                 context.UnregisterTransientVisual(trajectoryVfx.gameObject);
+                trajectoryVfx.gameObject.SetActive(false);
                 UnityEngine.Object.Destroy(trajectoryVfx.gameObject);
             }
 
@@ -128,6 +130,7 @@ namespace Week14.Enemy
             context.SetAnimationBool(chargeBoolName, true);
             context.SetDashing(true);
             context.PlaySfx(dashSfxId);
+            PlayDashDustEffect(context, dashDirection);
             elapsed = 0f;
             while (elapsed < dashDuration)
             {
@@ -161,21 +164,41 @@ namespace Week14.Enemy
 
         private BossDashTrajectoryVfx SpawnTrajectoryVfx(float indicatorLength)
         {
-            if (trajectorySprite == null)
+            if (trajectoryIndicatorPrefab == null)
             {
                 return null;
             }
 
             return BossDashTrajectoryVfx.Spawn(
-                trajectorySprite,
+                trajectoryIndicatorPrefab,
                 indicatorLength,
-                trajectoryWidth,
-                trajectoryBackgroundInnerColor,
-                trajectoryBackgroundColor,
-                trajectoryFillInnerColor,
-                trajectoryFillColor,
-                trajectorySortingOrder,
-                trajectoryGradientFalloffPower);
+                trajectoryTileSpacing,
+                trajectoryTileRotationOffset,
+                trajectoryReadyColor,
+                trajectoryChargedColor);
+        }
+
+        private void PlayDashDustEffect(BossActionContext context, Vector2 dashDirection)
+        {
+            if (context == null || dashDustEffectPrefab == null)
+            {
+                return;
+            }
+
+            Transform spawnPoint = context.GetBossChildTransform(dashDustSpawnPointPath);
+            if (spawnPoint == null)
+            {
+                return;
+            }
+
+            float yRotation = dashDirection.x < 0f ? 180f : 0f;
+            ProjectileVfx.PlayPrefab(
+                dashDustEffectPrefab,
+                spawnPoint.position,
+                Quaternion.Euler(0f, yRotation, 0f),
+                null,
+                Mathf.Max(0.01f, dashDustEffectScale),
+                false);
         }
 
         // speedCurve가 등속(1)이 아니면 dashSpeed * dashDuration은 실제 이동 거리와 다르므로,

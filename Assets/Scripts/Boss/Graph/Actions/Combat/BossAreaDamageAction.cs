@@ -43,6 +43,12 @@ namespace Week14.Enemy
         [SerializeField, BossGraphSfxId] private string windupSfxId;
         [SerializeField, BossGraphSfxId] private string explosionSfxId;
 
+        [Header("폭발 이펙트")]
+        [Tooltip("범위 피해가 발동하는 순간 폭발 중심에 생성할 일회성 프리팹입니다.")]
+        [SerializeField] private GameObject explosionEffectPrefab;
+        [Tooltip("폭발 이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float explosionEffectScale = 1f;
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss == null)
@@ -92,6 +98,7 @@ namespace Week14.Enemy
             }
 
             context.PlaySfx(explosionSfxId);
+            PlayExplosionEffect(explosionCenter);
 
             if (explosionDamage <= 0)
             {
@@ -111,6 +118,22 @@ namespace Week14.Enemy
                 player.ReceiveAttack(explosionDamage, explosionCenter, hitDirection);
                 break;
             }
+        }
+
+        private void PlayExplosionEffect(Vector3 explosionCenter)
+        {
+            if (explosionEffectPrefab == null)
+            {
+                return;
+            }
+
+            ProjectileVfx.PlayPrefab(
+                explosionEffectPrefab,
+                explosionCenter,
+                Quaternion.identity,
+                null,
+                Mathf.Max(0.01f, explosionEffectScale),
+                false);
         }
     }
 }

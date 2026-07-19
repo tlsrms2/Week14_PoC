@@ -4318,6 +4318,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -6292,6 +6300,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -6961,6 +6977,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 2
         recoverySeconds: 0.1
@@ -8054,6 +8078,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -8844,6 +8876,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 4
         recoverySeconds: 0.1
@@ -10386,6 +10426,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 4
         recoverySeconds: 0.1
@@ -10637,6 +10685,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: 
         retreatDashEffectSpawnPointPath: 
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 0.5
         recoverySeconds: 0
@@ -11031,6 +11087,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 3
         recoverySeconds: 0.1
@@ -11868,6 +11932,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -12953,6 +13025,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -15044,6 +15124,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -16060,6 +16148,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -16417,6 +16513,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Approach
         retreatDashEffectSpawnPointPath: EffectPrefabPoint/DashDust/Retreat
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
@@ -16668,6 +16772,14 @@ MonoBehaviour:
           followRotation: 1
         approachDashEffectSpawnPointPath: 
         retreatDashEffectSpawnPointPath: 
+        afterimageInterval: 0.045
+        afterimageDuration: 0.2
+        afterimagePalette:
+        - {r: 1, g: 0.82, b: 0.12, a: 0.44}
+        - {r: 1, g: 0.24, b: 0.05, a: 0.4}
+        - {r: 1, g: 0.05, b: 0.48, a: 0.36}
+        - {r: 0.08, g: 0.82, b: 1, a: 0.34}
+        hologramAfterimageAlphaMultiplier: 0.45
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 0.5
         recoverySeconds: 0

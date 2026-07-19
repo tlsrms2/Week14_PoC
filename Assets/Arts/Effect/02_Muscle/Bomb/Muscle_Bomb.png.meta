@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: ce84135e65eba77448e2e8a72356a1fe
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6040376459293026219
+    second: Muscle_Bomb_0
+  - first:
+      213: -8069510228115484063
+    second: Muscle_Bomb_1
+  - first:
+      213: 135443658177577355
+    second: Muscle_Bomb_2
+  - first:
+      213: -7966441169176647031
+    second: Muscle_Bomb_3
+  - first:
+      213: 3470211826757088062
+    second: Muscle_Bomb_4
+  - first:
+      213: -6154609551403752397
+    second: Muscle_Bomb_5
+  - first:
+      213: -4392354168841855975
+    second: Muscle_Bomb_6
+  - first:
+      213: -8638736212423271492
+    second: Muscle_Bomb_7
+  - first:
+      213: 2448791264168449109
+    second: Muscle_Bomb_8
+  - first:
+      213: 2795817310374046850
+    second: Muscle_Bomb_9
+  - first:
+      213: 2756247176790346821
+    second: Muscle_Bomb_10
+  - first:
+      213: -1349649050761430914
+    second: Muscle_Bomb_11
+  - first:
+      213: -8855525494944532377
+    second: Muscle_Bomb_12
+  - first:
+      213: -714530941580522529
+    second: Muscle_Bomb_13
+  - first:
+      213: -3137502123859548995
+    second: Muscle_Bomb_14
+  - first:
+      213: -4424685304638597253
+    second: Muscle_Bomb_15
+  - first:
+      213: -2391890870307398430
+    second: Muscle_Bomb_16
+  - first:
+      213: 2431295572419359580
+    second: Muscle_Bomb_17
+  - first:
+      213: -6373740264494202134
+    second: Muscle_Bomb_18
+  - first:
+      213: -8800141378637043484
+    second: Muscle_Bomb_19
+  - first:
+      213: 6949846656271486577
+    second: Muscle_Bomb_20
+  - first:
+      213: -3012579232599169993
+    second: Muscle_Bomb_21
+  - first:
+      213: -8363897895205351207
+    second: Muscle_Bomb_22
+  - first:
+      213: -2193144419079860851
+    second: Muscle_Bomb_23
+  - first:
+      213: 8050173931761276544
+    second: Muscle_Bomb_24
+  - first:
+      213: 3759504600832179344
+    second: Muscle_Bomb_25
+  - first:
+      213: -7850777504748895570
+    second: Muscle_Bomb_26
+  - first:
+      213: -918828006588931244
+    second: Muscle_Bomb_27
+  - first:
+      213: -3057436106979495683
+    second: Muscle_Bomb_28
+  - first:
+      213: -3730320579039320537
+    second: Muscle_Bomb_29
+  - first:
+      213: 5125641795377333400
+    second: Muscle_Bomb_30
+  - first:
+      213: 4980971878117553476
+    second: Muscle_Bomb_31
+  - first:
+      213: -7361404347625843796
+    second: Muscle_Bomb_32
+  - first:
+      213: -5569556427906379923
+    second: Muscle_Bomb_33
+  - first:
+      213: 3069634945229246241
+    second: Muscle_Bomb_34
+  - first:
+      213: -5699021163007348626
+    second: Muscle_Bomb_35
+  - first:
+      213: 9053150182000229895
+    second: Muscle_Bomb_36
+  - first:
+      213: 6796074679098083713
+    second: Muscle_Bomb_37
+  - first:
+      213: -5069698455863567043
+    second: Muscle_Bomb_38
+  - first:
+      213: 51071806096642607
+    second: Muscle_Bomb_39
+  - first:
+      213: 3837119781433387837
+    second: Muscle_Bomb_40
+  - first:
+      213: 3821815537177337520
+    second: Muscle_Bomb_41
+  - first:
+      213: -8938993148888813922
+    second: Muscle_Bomb_42
+  - first:
+      213: 6155026633916458419
+    second: Muscle_Bomb_43
+  - first:
+      213: -9036713765890386828
+    second: Muscle_Bomb_44
+  - first:
+      213: 2381500967560025753
+    second: Muscle_Bomb_45
+  - first:
+      213: 4644730943002918790
+    second: Muscle_Bomb_46
+  - first:
+      213: 5720175935783222608
+    second: Muscle_Bomb_47
+  - first:
+      213: 8457511599426966920
+    second: Muscle_Bomb_48
+  - first:
+      213: -968369298601773189
+    second: Muscle_Bomb_49
+  - first:
+      213: 9022404058621059032
+    second: Muscle_Bomb_50
+  - first:
+      213: -6367592187751694420
+    second: Muscle_Bomb_51
+  - first:
+      213: -7647167038403846725
+    second: Muscle_Bomb_52
+  - first:
+      213: 7131764950173081786
+    second: Muscle_Bomb_53
+  - first:
+      213: -1681488354585935232
+    second: Muscle_Bomb_54
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Muscle_Bomb_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55815321d954c2ca0800000000000000
+      internalID: -6040376459293026219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1629bcd9337530090800000000000000
+      internalID: -8069510228115484063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_2
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8101cc1a4131e100800000000000000
+      internalID: 135443658177577355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_3
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98aad23f6f3817190800000000000000
+      internalID: -7966441169176647031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_4
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e33373d354ba82030800000000000000
+      internalID: 3470211826757088062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_5
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3346a55b83f669aa0800000000000000
+      internalID: -6154609551403752397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_6
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91c9976b7293b03c0800000000000000
+      internalID: -4392354168841855975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muscle_Bomb_7
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbb153e4f2b0d1880800000000000000
+      internalID: -8638736212423271492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: e91d82fadb01b8d45b9cf1c326de3c9c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":96.0,"y":96.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Muscle_Bomb_0: -6040376459293026219
+      Muscle_Bomb_1: -8069510228115484063
+      Muscle_Bomb_2: 135443658177577355
+      Muscle_Bomb_3: -7966441169176647031
+      Muscle_Bomb_4: 3470211826757088062
+      Muscle_Bomb_5: -6154609551403752397
+      Muscle_Bomb_6: -4392354168841855975
+      Muscle_Bomb_7: -8638736212423271492
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
