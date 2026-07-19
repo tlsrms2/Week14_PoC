@@ -417,7 +417,9 @@ namespace Week14.Combat
                                 finalDeathCamera = presentation.BeginFinalDeathCameraFocus(boss);
                             }
 
-                            yield return boss.PlayFinalDeathSequence();
+                            bool playFinalDeathExplosions = config.ShouldPlayFinalDeathExplosionsInScene(
+                                boss.gameObject.scene.name);
+                            yield return boss.PlayFinalDeathSequence(playFinalDeathExplosions);
                             if (isFinalBossExecution)
                             {
                                 presentation.HideFinalExecutionLetterboxImmediate();

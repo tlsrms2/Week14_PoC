@@ -7,14 +7,17 @@ namespace Week14.Enemy
 {
     internal static class BossDeathSequencePlayer
     {
-        public static IEnumerator Play(BossAI boss)
+        public static IEnumerator Play(BossAI boss, bool playFinalDeathExplosions)
         {
-            yield return PlayFinalDeathExplosions(boss);
-
-            float delaySeconds = boss.DeathExplosionToAnimationDelaySecondsForSequence;
-            if (delaySeconds > 0f)
+            if (playFinalDeathExplosions)
             {
-                yield return new WaitForSeconds(delaySeconds);
+                yield return PlayFinalDeathExplosions(boss);
+
+                float delaySeconds = boss.DeathExplosionToAnimationDelaySecondsForSequence;
+                if (delaySeconds > 0f)
+                {
+                    yield return new WaitForSeconds(delaySeconds);
+                }
             }
 
             yield return PlayDeathAnimation(boss);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -40,6 +41,11 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float initialZeroSpeedSeconds;
         [SerializeField, Min(0.01f)] private float flightSpeedCurveSeconds = 1f;
         [SerializeField] private AnimationCurve flightSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
+        [Header("Facing")]
+        [FormerlySerializedAs("facingSeconds")]
+        [SerializeField, Min(0f)] private float preChargeFacingSeconds = 0.1f;
+        [SerializeField, Min(0f)] private float postFireFacingSeconds = 0.3f;
 
         [Header("Charge")]
         [SerializeField, Min(0f)] private float windupSeconds = 0.8f;
@@ -84,6 +90,17 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            yield return HackerMeleeAttackAction.Wait(context, preChargeFacingSeconds);
+            using (context.AcquireFacingLock())
+            {
+                yield return ExecuteFacingLocked(context, firePoint);
+            }
+
+            yield return HackerMeleeAttackAction.Wait(context, postFireFacingSeconds);
+        }
+
+        private IEnumerator ExecuteFacingLocked(BossActionContext context, Transform firePoint)
+        {
             context.BeginSnipingTelegraph(ShootAnimationTrigger, HoldTelegraphAnimationParameter);
             if (windupSeconds > 0f)
             {
@@ -196,7 +213,9 @@ namespace Week14.Enemy
 
         public bool TryGetDurationSeconds(out float seconds)
         {
-            seconds = Mathf.Max(0f, windupSeconds);
+            seconds = Mathf.Max(0f, preChargeFacingSeconds)
+                + Mathf.Max(0f, windupSeconds)
+                + Mathf.Max(0f, postFireFacingSeconds);
             return true;
         }
 

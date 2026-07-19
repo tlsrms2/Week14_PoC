@@ -99,6 +99,8 @@ namespace Week14.Combat
         [SerializeField, Min(0.01f)] private float executionFlourishShotInterval = 0.08f;
 
         [Header("Final Execution Presentation")]
+        [Tooltip("비워두면 모든 씬에서 보스 사망 폭발 연출을 재생합니다. 씬 이름을 등록하면 해당 씬에서만 재생합니다.")]
+        [SerializeField] private string[] finalDeathExplosionSceneNames = System.Array.Empty<string>();
         [SerializeField, Min(0f)] private float finalExecutionLetterboxEnterSeconds = 0.2f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeInSeconds = 0.14f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutHoldSeconds = 0.45f;
@@ -173,6 +175,32 @@ namespace Week14.Combat
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
         public int ExecutionFlourishShotCount => executionFlourishShotCount;
         public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
+
+        public bool ShouldPlayFinalDeathExplosionsInScene(string sceneName)
+        {
+            if (finalDeathExplosionSceneNames == null || finalDeathExplosionSceneNames.Length == 0)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(sceneName))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < finalDeathExplosionSceneNames.Length; i++)
+            {
+                string configuredSceneName = finalDeathExplosionSceneNames[i];
+                if (!string.IsNullOrWhiteSpace(configuredSceneName)
+                    && string.Equals(configuredSceneName.Trim(), sceneName, System.StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public float FinalExecutionLetterboxEnterSeconds => finalExecutionLetterboxEnterSeconds;
         public float FinalExecutionBlackoutFadeInSeconds => finalExecutionBlackoutFadeInSeconds;
         public float FinalExecutionBlackoutHoldSeconds => finalExecutionBlackoutHoldSeconds;
