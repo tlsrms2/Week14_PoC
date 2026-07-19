@@ -587,7 +587,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MinionConductorFormationLineVolleyAction))
         {
-            return "Conductor 전용 액션입니다. 미니언을 일렬 배치한 뒤 플레이어 방향 실선 인디케이터를 그리고, Volley 설정에 따라 해당 선 방향으로 투사체를 발사합니다.";
+            return "Conductor 전용 액션입니다. Stage 1의 남/북 Staff 교차 사격 후 Stage 2의 서쪽 Staff 중앙 사격까지 실행합니다.";
         }
 
         if (actionType == typeof(MinionConductorFanBladeAction))

@@ -314,29 +314,48 @@ namespace Week14.Enemy
 
         private IEnumerator MoveBossToTarget(BossActionContext context)
         {
-            float elapsed = 0f;
-            float arrivalDistanceSquared = arrivalDistance * arrivalDistance;
-            while (elapsed < moveTimeoutSeconds)
+            BossAI boss = context?.Boss;
+            if (boss == null || boss.Body == null)
             {
-                if (context.IsExecutionPaused)
-                {
-                    context.Stop();
-                    yield return null;
-                    continue;
-                }
-
-                Vector2 offset = targetPosition - (Vector2)context.Boss.transform.position;
-                if (offset.sqrMagnitude <= arrivalDistanceSquared)
-                {
-                    break;
-                }
-
-                context.Boss.SetMovementVelocity(offset.normalized * moveSpeed);
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
+                yield break;
             }
 
-            context.Stop();
+            float elapsed = 0f;
+            float safeArrivalDistance = Mathf.Max(0.01f, arrivalDistance);
+            float arrivalDistanceSquared = safeArrivalDistance * safeArrivalDistance;
+            float safeMoveSpeed = Mathf.Max(0.01f, moveSpeed);
+            float safeMoveTimeoutSeconds = Mathf.Max(0.01f, moveTimeoutSeconds);
+
+            try
+            {
+                while (elapsed < safeMoveTimeoutSeconds)
+                {
+                    if (context.IsExecutionPaused)
+                    {
+                        boss.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    Vector2 offset = targetPosition - boss.Body.position;
+                    if (offset.sqrMagnitude <= arrivalDistanceSquared)
+                    {
+                        break;
+                    }
+
+                    if (!boss.TryMovePatternTowards(targetPosition, safeMoveSpeed))
+                    {
+                        break;
+                    }
+
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                boss.Stop();
+            }
         }
 
         private static List<Minion> GetDrones(IReadOnlyList<Minion> source)

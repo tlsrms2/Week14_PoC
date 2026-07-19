@@ -1462,6 +1462,7 @@ namespace Week14.Enemy
                 }
 
                 ReleaseEntryHandlers(entry, entry.Projectile);
+                entry.Projectile = null;
                 entry.Completed = true;
                 Refresh();
             }
@@ -1487,6 +1488,7 @@ namespace Week14.Enemy
                 }
 
                 ReleaseEntryHandlers(entry, projectile);
+                entry.Projectile = null;
                 entry.Completed = true;
                 Refresh();
             }
@@ -1545,7 +1547,7 @@ namespace Week14.Enemy
             {
                 for (int i = 0; i < entries.Count; i++)
                 {
-                    if (entries[i].Projectile != null)
+                    if (!entries[i].Completed && entries[i].Projectile != null)
                     {
                         SetInterceptable(entries[i].Projectile, false);
                     }
