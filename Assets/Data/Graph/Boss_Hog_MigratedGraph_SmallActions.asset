@@ -1301,7 +1301,7 @@ MonoBehaviour:
     toNodeId: Spawn Effect Prefab8
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
+  debugForceSinglePattern: 1
   debugForcedPatternId: Pattern6
   references:
     version: 2
@@ -1930,7 +1930,7 @@ MonoBehaviour:
           fallbackSpacing: 0.18
         aim:
           mode: 1
-          angleDegrees: 0
+          angleDegrees: 6
         windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
@@ -2084,7 +2084,7 @@ MonoBehaviour:
           fallbackSpacing: 0.18
         aim:
           mode: 1
-          angleDegrees: 0
+          angleDegrees: 6
         windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
