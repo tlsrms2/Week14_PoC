@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using Week14.Challenge;
 using Week14.Save;
@@ -102,12 +103,36 @@ namespace Week14.UI
                 return;
             }
 
+            SyncStaticTextColorsTo(revealView);
+
             for (int i = 0; i < slots.Length; i++)
             {
                 if (slots[i] != null)
                 {
                     slots[i].SyncColorsTo(revealView);
                 }
+            }
+        }
+
+        private void SyncStaticTextColorsTo(PixelBlockRevealView revealView)
+        {
+            TMP_Text[] texts = GetComponentsInChildren<TMP_Text>(true);
+            for (int i = 0; i < texts.Length; i++)
+            {
+                TMP_Text text = texts[i];
+                if (text == null)
+                {
+                    continue;
+                }
+
+                Color color = text.color;
+                if (color.a <= 0f && !string.IsNullOrEmpty(text.text))
+                {
+                    color.a = 1f;
+                    text.color = color;
+                }
+
+                revealView.SetOriginalColor(text, color);
             }
         }
 

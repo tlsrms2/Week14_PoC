@@ -22,7 +22,9 @@ namespace Week14.UI
         private ChallengeDefinitionSO boundDefinition;
         private LocalizedString.ChangeHandler changeHandler;
         private Color originalDescriptionColor;
+        private Color originalCompletionColor = Color.white;
         private bool originalDescriptionColorCached;
+        private bool originalCompletionColorCached;
 
         // PixelBlockRevealView가 자기 연출 도중에 이 Graphic들의 실제 color(알파 포함)를 직접 건드리기
         // 때문에, SyncColorsTo 시점에 descriptionText.color 등을 "그대로 읽어서" 넘기면 이미 연출이
@@ -31,11 +33,11 @@ namespace Week14.UI
         private Color lastIntendedDescriptionColor;
         private Color lastIntendedProgressColor;
         private Color lastIntendedSweepColor;
+        private Color lastIntendedCompletionColor = Color.white;
 
         private void Awake()
         {
-            changeHandler = SetDescriptionText;
-            CacheOriginalDescriptionColor();
+            EnsureInitialized();
         }
 
         private void OnDisable()
@@ -45,6 +47,7 @@ namespace Week14.UI
 
         public void Show(ChallengeDefinitionSO definition, string bossId, Sprite completedSprite, Sprite incompleteSprite, Color clearedTextColor)
         {
+            EnsureInitialized();
             CacheOriginalDescriptionColor();
             SetSweepWidth(0f);
             SetDescriptionText(definition.Description);
@@ -64,6 +67,7 @@ namespace Week14.UI
         // 판정 색·아이콘·최신 진행도는 PlayRevealCoroutine에서 스윕이 다 지나간 뒤 적용됩니다.
         public void Prime(ChallengeDefinitionSO definition, string bossId, Sprite incompleteSprite, Color defaultColor)
         {
+            EnsureInitialized();
             Unbind();
             CacheOriginalDescriptionColor();
             SetDescriptionText(definition.Description);
@@ -117,12 +121,14 @@ namespace Week14.UI
 
             if (completionImage != null)
             {
+                revealView.SetOriginalColor(completionImage, lastIntendedCompletionColor);
                 revealView.SyncRevealTiming(descriptionText, completionImage);
             }
         }
 
         public void Clear()
         {
+            EnsureInitialized();
             Unbind();
             CacheOriginalDescriptionColor();
             SetDescriptionColor(originalDescriptionColor);
@@ -194,6 +200,19 @@ namespace Week14.UI
                 originalDescriptionColor = descriptionText.color;
                 originalDescriptionColorCached = true;
             }
+
+            if (completionImage != null && !originalCompletionColorCached)
+            {
+                originalCompletionColor = completionImage.color;
+                lastIntendedCompletionColor = originalCompletionColor;
+                originalCompletionColorCached = true;
+            }
+        }
+
+        private void EnsureInitialized()
+        {
+            changeHandler ??= SetDescriptionText;
+            CacheOriginalDescriptionColor();
         }
 
         private void BindLocalizedDescription(ChallengeDefinitionSO definition)
@@ -203,6 +222,7 @@ namespace Week14.UI
                 return;
             }
 
+            EnsureInitialized();
             boundDefinition = definition;
             definition.LocalizedDescription.StringChanged += changeHandler;
             definition.LocalizedDescription.RefreshString();
@@ -260,6 +280,8 @@ namespace Week14.UI
                 return;
             }
 
+            lastIntendedCompletionColor = originalCompletionColorCached ? originalCompletionColor : completionImage.color;
+            completionImage.color = lastIntendedCompletionColor;
             completionImage.sprite = sprite;
             completionImage.enabled = sprite != null;
         }
