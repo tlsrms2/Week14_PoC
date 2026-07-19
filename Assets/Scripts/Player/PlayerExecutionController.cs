@@ -417,16 +417,21 @@ namespace Week14.Combat
                                 finalDeathCamera = presentation.BeginFinalDeathCameraFocus(boss);
                             }
 
-                            yield return boss.PlayFinalDeathSequence();
+                            bool playFinalDeathExplosions = config.ShouldPlayFinalDeathExplosionsInScene(
+                                boss.gameObject.scene.name);
+                            yield return boss.PlayFinalDeathSequence(playFinalDeathExplosions);
                             if (isFinalBossExecution)
                             {
                                 presentation.HideFinalExecutionLetterboxImmediate();
                                 activeCamera?.EndCinematicFocus();
                             }
 
-                            if (!isFinalBossExecution && context.VictoryPanelDelaySeconds > 0f)
+                            float resultPanelDelaySeconds = Mathf.Max(
+                                0f,
+                                config.FinalExecutionResultPanelDelaySeconds);
+                            if (resultPanelDelaySeconds > 0f)
                             {
-                                yield return new WaitForSeconds(context.VictoryPanelDelaySeconds);
+                                yield return new WaitForSeconds(resultPanelDelaySeconds);
                             }
 
                             if (executionTarget != null)

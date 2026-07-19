@@ -644,7 +644,7 @@ namespace Week14.Enemy
             frozenCombatElapsedSeconds ??= CombatElapsedSeconds;
         }
 
-        public IEnumerator PlayFinalDeathSequence()
+        public IEnumerator PlayFinalDeathSequence(bool playFinalDeathExplosions)
         {
             if (finalDeathSequencePlayed)
             {
@@ -662,7 +662,7 @@ namespace Week14.Enemy
                 Stop();
                 projectileTracker.DestroyAll();
 
-                yield return BossDeathSequencePlayer.Play(this);
+                yield return BossDeathSequencePlayer.Play(this, playFinalDeathExplosions);
             }
             finally
             {

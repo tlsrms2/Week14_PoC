@@ -55,6 +55,9 @@ MonoBehaviour:
   executionFlourishDelaySeconds: 0.5
   executionFlourishShotCount: 3
   executionFlourishShotInterval: 0.1
+  finalDeathExplosionSceneNames:
+  - MainScene
+  - Boss_Muscle
   finalExecutionLetterboxEnterSeconds: 0.2
   finalExecutionBlackoutFadeInSeconds: 0.14
   finalExecutionBlackoutHoldSeconds: 0.8
