@@ -437,7 +437,7 @@ namespace Week14.Combat
                             if (executionTarget != null)
                             {
                                 executionTarget.CompleteExecution(context.Owner, false);
-                                executionTarget.DestroyExecutedTarget();
+                                // 결과 패널 뒤에서 보스 사망 애니메이션의 마지막 프레임을 유지한다.
                             }
 
                             if (!isFinalBossExecution)

@@ -1020,6 +1020,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5261254130208838959, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
   m_PrefabInstance: {fileID: 1505174551}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &587503851 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1439762795281594414, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+  m_PrefabInstance: {fileID: 1505174551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &591869942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2566,6 +2571,10 @@ PrefabInstance:
       propertyPath: bossLivesView
       value: 
       objectReference: {fileID: 1521775367}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: deathAnimator
+      value: 
+      objectReference: {fileID: 587503851}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: oneWeaponVisual
       value: 

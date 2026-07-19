@@ -58,21 +58,21 @@ namespace Week14.Enemy
             }
         }
 
-        // 애니메이터가 여러 개(예: Assassin)면 트리거는 전부에 보내지만, 타이밍(전환/재생 길이) 판정은
-        // 전부 같은 명령을 받아 서로 동기화돼 있다고 가정하고 첫 번째(primary) 애니메이터 기준으로만 잰다.
+        // 활성 애니메이터가 여러 개면 트리거는 전부에 보내고, 타이밍은 첫 번째 유효 애니메이터로 잰다.
+        // Hacker처럼 페이즈 비주얼을 교체하는 보스는 계층상 첫 Animator가 비활성 상태일 수 있다.
         private static IEnumerator PlayDeathAnimation(BossAI boss)
         {
             Animator[] animators = boss.DeathAnimatorsForSequence;
-            Animator primary = animators.Length > 0 ? animators[0] : null;
             string triggerName = boss.DeathTriggerNameForSequence;
-            if (primary == null || !primary.isActiveAndEnabled || string.IsNullOrWhiteSpace(triggerName))
+            if (animators == null || string.IsNullOrWhiteSpace(triggerName))
             {
                 yield return WaitDeathAnimationFallback(boss);
                 yield break;
             }
 
             int triggerHash = Animator.StringToHash(triggerName);
-            if (!HasAnimatorTrigger(primary, triggerHash))
+            Animator primary = FindPrimaryDeathAnimator(animators, triggerHash);
+            if (primary == null)
             {
                 yield return WaitDeathAnimationFallback(boss);
                 yield break;
@@ -123,11 +123,49 @@ namespace Week14.Enemy
                     state = primary.GetCurrentAnimatorStateInfo(0);
                     if (!state.loop && state.normalizedTime >= 1f)
                     {
+                        HoldDeathAnimationFinalFrame(animators, triggerHash);
                         yield break;
                     }
                 }
 
                 yield return null;
+            }
+
+            HoldDeathAnimationFinalFrame(animators, triggerHash);
+        }
+
+        private static Animator FindPrimaryDeathAnimator(Animator[] animators, int triggerHash)
+        {
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                if (animator != null
+                    && animator.isActiveAndEnabled
+                    && HasAnimatorTrigger(animator, triggerHash))
+                {
+                    return animator;
+                }
+            }
+
+            return null;
+        }
+
+        private static void HoldDeathAnimationFinalFrame(Animator[] animators, int triggerHash)
+        {
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                if (animator == null
+                    || !animator.isActiveAndEnabled
+                    || !HasAnimatorTrigger(animator, triggerHash))
+                {
+                    continue;
+                }
+
+                AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+                animator.Play(state.fullPathHash, 0, 1f);
+                animator.Update(0f);
+                animator.speed = 0f;
             }
         }
 

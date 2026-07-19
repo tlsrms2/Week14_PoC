@@ -375,7 +375,11 @@ namespace Week14.Enemy
                 CancelMinionPatternAction();
                 Stop();
             }
+
+            OnExecutionLockChanged(locked);
         }
+
+        protected virtual void OnExecutionLockChanged(bool locked) { }
 
         public virtual bool ReceivePlayerHit(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor)
         {
