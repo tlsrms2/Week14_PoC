@@ -426,9 +426,12 @@ namespace Week14.Combat
                                 activeCamera?.EndCinematicFocus();
                             }
 
-                            if (!isFinalBossExecution && context.VictoryPanelDelaySeconds > 0f)
+                            float resultPanelDelaySeconds = Mathf.Max(
+                                0f,
+                                config.FinalExecutionResultPanelDelaySeconds);
+                            if (resultPanelDelaySeconds > 0f)
                             {
-                                yield return new WaitForSeconds(context.VictoryPanelDelaySeconds);
+                                yield return new WaitForSeconds(resultPanelDelaySeconds);
                             }
 
                             if (executionTarget != null)

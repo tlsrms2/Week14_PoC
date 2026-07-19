@@ -101,6 +101,8 @@ namespace Week14.Combat
         [Header("Final Execution Presentation")]
         [Tooltip("비워두면 모든 씬에서 보스 사망 폭발 연출을 재생합니다. 씬 이름을 등록하면 해당 씬에서만 재생합니다.")]
         [SerializeField] private string[] finalDeathExplosionSceneNames = System.Array.Empty<string>();
+        [Tooltip("보스 사망 애니메이션이 끝난 뒤 게임 결과 패널을 표시하기까지의 대기 시간입니다.")]
+        [SerializeField, Min(0f)] private float finalExecutionResultPanelDelaySeconds = 1f;
         [SerializeField, Min(0f)] private float finalExecutionLetterboxEnterSeconds = 0.2f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeInSeconds = 0.14f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutHoldSeconds = 0.45f;
@@ -175,6 +177,7 @@ namespace Week14.Combat
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
         public int ExecutionFlourishShotCount => executionFlourishShotCount;
         public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
+        public float FinalExecutionResultPanelDelaySeconds => finalExecutionResultPanelDelaySeconds;
 
         public bool ShouldPlayFinalDeathExplosionsInScene(string sceneName)
         {
