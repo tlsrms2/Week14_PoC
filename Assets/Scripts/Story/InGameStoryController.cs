@@ -373,7 +373,7 @@ namespace Week14.Story
 
             string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
             string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
-            dialoguePanel.ShowLine(speaker, text);
+            dialoguePanel.ShowLine(speaker, text, line.Speaker);
 
             IEnumerator typing = dialoguePanel.PlayTypewriter(
                 text,

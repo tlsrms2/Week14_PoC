@@ -135,6 +135,7 @@ namespace Week14.Enemy
         private float combatStartedAt;
         private float? frozenCombatElapsedSeconds;
         private int combatStartLockCount;
+        private bool latestClearTimeWasNewRecord;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -184,6 +185,7 @@ namespace Week14.Enemy
         public bool IsCombatStarted => PhaseController.IsCombatStarted;
         public float CombatElapsedSeconds => frozenCombatElapsedSeconds
             ?? (combatStartedCounted ? Mathf.Max(0f, Time.time - combatStartedAt) : 0f);
+        public bool LatestClearTimeWasNewRecord => latestClearTimeWasNewRecord;
         public event Action<int, int> LivesChanged;
         public static event Action<BossAI> CombatStarted;
         public static event Action<BossAI> Defeated;
@@ -737,6 +739,7 @@ namespace Week14.Enemy
 
             combatStartedAt = Time.time;
             frozenCombatElapsedSeconds = null;
+            latestClearTimeWasNewRecord = false;
             OnCombatStarted();
             CombatStarted?.Invoke(this);
         }
@@ -1309,7 +1312,7 @@ namespace Week14.Enemy
             }
 
             GameSaveManager.ClearBoss(bossData.Id);
-            GameSaveManager.TrySetBestClearTime(bossData.Id, CombatElapsedSeconds);
+            latestClearTimeWasNewRecord = GameSaveManager.TrySetBestClearTime(bossData.Id, CombatElapsedSeconds);
 
             IReadOnlyList<string> unlocksBossIds = bossData.UnlocksBossIds;
             for (int i = 0; i < unlocksBossIds.Count; i++)

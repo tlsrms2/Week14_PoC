@@ -14,6 +14,8 @@ namespace Week14.UI
 {
     public sealed class GameResultView : MonoBehaviour
     {
+        private const string NewRecordPrefix = "<color=#FFD83D>NEW! </color>";
+
         [Header("Game Over")]
         [SerializeField] private GameObject gameOverRoot;
         [SerializeField] private Button restartButton;
@@ -259,14 +261,23 @@ namespace Week14.UI
             return FindFirstObjectByType<BossAI>();
         }
 
-        private static void SetElapsedTimeText(TMP_Text text, BossAI boss)
+        private static void SetElapsedTimeText(TMP_Text text, BossAI boss, bool showNewRecordPrefix = false)
         {
             if (text == null)
             {
                 return;
             }
 
-            text.text = boss != null ? BossAI.FormatCombatTime(boss.CombatElapsedSeconds) : "--:--:--";
+            if (boss == null)
+            {
+                text.text = "--:--:--";
+                return;
+            }
+
+            string formattedTime = BossAI.FormatCombatTime(boss.CombatElapsedSeconds);
+            text.text = showNewRecordPrefix && boss.LatestClearTimeWasNewRecord
+                ? NewRecordPrefix + formattedTime
+                : formattedTime;
         }
 
         private void ShowVictory(BossAI boss)
@@ -280,7 +291,7 @@ namespace Week14.UI
             HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget);
             SyncChallengeReveal(victoryChallengePanel, targetRoot);
-            SetElapsedTimeText(victoryElapsedTimeText, boss);
+            SetElapsedTimeText(victoryElapsedTimeText, boss, true);
 
             RefreshVictorySummary(boss);
         }
