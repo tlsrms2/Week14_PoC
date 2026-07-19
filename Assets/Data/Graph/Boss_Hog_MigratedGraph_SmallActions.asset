@@ -611,6 +611,24 @@ MonoBehaviour:
       rid: 6489939233575534683
     sequences: []
     editorPosition: {x: 1336, y: 597}
+  - nodeId: Spawn Effect Prefab9
+    nodeGuid: b3267e1356a14f91a6e2256a8fbcc2d0
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151459944
+    sequences: []
+    editorPosition: {x: -828, y: 470}
+  - nodeId: Wait12
+    nodeGuid: 1f2ccd78ca974455b2c45482d5c05d48
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939300151459947
+    sequences: []
+    editorPosition: {x: -586, y: 470}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -691,6 +709,10 @@ MonoBehaviour:
     - Aim Boss Child At Player3
   - patternId: Pattern6
     nodeGuids:
+    - 1e1931573edb41f68af2bb9dd49428f6
+    - 632212625b664b38b7d57c9920eeec3a
+    - b3267e1356a14f91a6e2256a8fbcc2d0
+    - 1f2ccd78ca974455b2c45482d5c05d48
     - 3522aa54567742e8b4cf7d6b8729de9b
     - ce4123afab7d4dd1a1006edc046127ae
     - 95e98c45d91f40ebaa39891809eb0608
@@ -711,9 +733,11 @@ MonoBehaviour:
     - 3600947d532846f994de2a6e69474b44
     - 35be3ef8c8d943e58a6387d109e9d4ea
     - 012e402336f44732aa1ece9020f26813
-    - 1e1931573edb41f68af2bb9dd49428f6
-    - 632212625b664b38b7d57c9920eeec3a
     nodeIds:
+    - Spawn Effect Prefab7
+    - Spawn Effect Prefab8
+    - Spawn Effect Prefab9
+    - Wait12
     - Fire Parry Suppression Bait1
     - Move Body Root7
     - Move Body Root8
@@ -734,8 +758,6 @@ MonoBehaviour:
     - Move Body Root15
     - Move Body Root16
     - Fire Radial Emission9
-    - Spawn Effect Prefab7
-    - Spawn Effect Prefab8
   - patternId: Pattern7
     nodeGuids:
     - f0e7fffb17a84ecbb13e3a2b7c7b6c6e
@@ -1248,6 +1270,22 @@ MonoBehaviour:
     toNodeGuid: ce4123afab7d4dd1a1006edc046127ae
     fromNodeId: Fire Parry Suppression Bait1
     toNodeId: Move Body Root7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1f2ccd78ca974455b2c45482d5c05d48
+    toNodeGuid: 3522aa54567742e8b4cf7d6b8729de9b
+    fromNodeId: Wait12
+    toNodeId: Fire Parry Suppression Bait1
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b3267e1356a14f91a6e2256a8fbcc2d0
+    toNodeGuid: 1f2ccd78ca974455b2c45482d5c05d48
+    fromNodeId: Spawn Effect Prefab9
+    toNodeId: Wait12
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2383,7 +2421,7 @@ MonoBehaviour:
           trailWidthMultiplier: 3
         origin:
           mode: 1
-          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_4
+          bossChildPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
@@ -2794,6 +2832,20 @@ MonoBehaviour:
         scale: 3
         followMode: 0
         followRotation: 1
+    - rid: 6489939300151459944
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0.15}
+        delaySeconds: 0
+        scale: 5
+        followMode: 1
+        followRotation: 1
+    - rid: 6489939300151459947
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.8
 --- !u!114 &7712345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
