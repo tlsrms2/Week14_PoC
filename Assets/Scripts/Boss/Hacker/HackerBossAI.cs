@@ -225,6 +225,15 @@ namespace Week14.Enemy
             base.OnBossDied();
         }
 
+        protected override void OnExecutionLockChanged(bool locked)
+        {
+            base.OnExecutionLockChanged(locked);
+            if (locked && CurrentLives <= 1)
+            {
+                DestroyHologram();
+            }
+        }
+
         protected override void OnHpEmptyBegan()
         {
             PlayGroggyStunVisual();
