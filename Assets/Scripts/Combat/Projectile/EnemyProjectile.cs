@@ -95,6 +95,8 @@ namespace Week14.Combat
         private float radialSplitAt;
         private float radialSplitSfxLeadSeconds;
         private bool radialSplitImminentFired;
+        private EnemyProjectile radialSplitPrefabOverride;
+        private float radialSplitBaseRadiusOverride;
         private float splitSpeedMultiplier = 1f;
         private float splitRadiusMultiplier = 0.6f;
         private float splitLifetimeMultiplier = 0.85f;
@@ -789,7 +791,9 @@ namespace Week14.Combat
             float delaySeconds,
             float speedMultiplier,
             float radiusMultiplier,
-            float lifetimeMultiplier)
+            float lifetimeMultiplier,
+            EnemyProjectile splitProjectilePrefab = null,
+            float splitProjectileBaseRadius = 0f)
         {
             splitRadiallyOnLaunch = bulletCount > 0;
             radialSplitBulletCount = Mathf.Max(1, bulletCount);
@@ -799,6 +803,8 @@ namespace Week14.Combat
             splitSpeedMultiplier = Mathf.Max(0.01f, speedMultiplier);
             splitRadiusMultiplier = Mathf.Clamp(radiusMultiplier, 0.05f, 1f);
             splitLifetimeMultiplier = Mathf.Clamp(lifetimeMultiplier, 0.05f, 1f);
+            radialSplitPrefabOverride = splitProjectilePrefab;
+            radialSplitBaseRadiusOverride = Mathf.Max(0f, splitProjectileBaseRadius);
             RefreshPathIndicator();
 
             if (splitRadiallyOnLaunch && launched && radialSplitDelaySeconds <= 0f && !resolved && !isDestroying)

@@ -56,6 +56,11 @@ public class GraphBossAIEditor : Editor
         "displayName"
     };
 
+    private static readonly HashSet<string> AudioFields = new()
+    {
+        "bgmId"
+    };
+
     private static readonly HashSet<string> LegacyColorFields = new()
     {
         "normalColor",
@@ -196,6 +201,7 @@ public class GraphBossAIEditor : Editor
         DrawPropertiesBox("Boss References", "effectData", "colorSettings");
         DrawPropertiesBox("Scene References", "bodyRoot", "body", "statusView", "obstacleMask", "lockOnIndicator", "executionIndicator");
         DrawPropertiesBox("Boss Name", "displayName");
+        DrawPropertiesBox("BGM", "bgmId");
         DrawPropertiesBox("Boss Combat UI", "bossCombatUiRoot", "bossHpBarView", "bossLivesView", "bossNameText");
         DrawPropertiesBox("Hit Flash", "hitFlashColor", "hitFlashSeconds");
     }
@@ -610,6 +616,7 @@ public class GraphBossAIEditor : Editor
             || ReferenceFields.Contains(property.name)
             || CombatEffectFields.Contains(property.name)
             || MetaFields.Contains(property.name)
+            || AudioFields.Contains(property.name)
             || LegacyColorFields.Contains(property.name)
             || !IsBossBaseProperty(property);
     }
@@ -622,6 +629,7 @@ public class GraphBossAIEditor : Editor
             || ReferenceFields.Contains(property.name)
             || CombatEffectFields.Contains(property.name)
             || MetaFields.Contains(property.name)
+            || AudioFields.Contains(property.name)
             || LegacyColorFields.Contains(property.name)
             || IsBossBaseProperty(property);
     }

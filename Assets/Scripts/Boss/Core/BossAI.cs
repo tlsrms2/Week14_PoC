@@ -8,6 +8,7 @@ using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Save;
+using Week14.Skills;
 using Week14.UI;
 
 namespace Week14.Enemy
@@ -526,8 +527,18 @@ namespace Week14.Enemy
 
             for (int i = 0; i < bossColliders.Length; i++)
             {
+                if (bossColliders[i] == null)
+                {
+                    continue;
+                }
+
                 for (int j = 0; j < targetPlayerColliders.Length; j++)
                 {
+                    if (targetPlayerColliders[j] == null)
+                    {
+                        continue;
+                    }
+
                     Physics2D.IgnoreCollision(bossColliders[i], targetPlayerColliders[j], ignore);
                 }
             }
@@ -560,9 +571,15 @@ namespace Week14.Enemy
             for (int i = 0; i < bossColliders.Length; i++)
             {
                 Collider2D bossCollider = bossColliders[i];
+                if (bossCollider == null)
+                {
+                    continue;
+                }
+
                 for (int j = 0; j < targetPlayerColliders.Length; j++)
                 {
-                    if (!Physics2D.Distance(bossCollider, targetPlayerColliders[j]).isOverlapped)
+                    if (targetPlayerColliders[j] == null
+                        || !Physics2D.Distance(bossCollider, targetPlayerColliders[j]).isOverlapped)
                     {
                         continue;
                     }
@@ -654,6 +671,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            TimeSlowScreenFx.CancelImmediate();
+            TimeSlowSkillSO.CancelActiveAfterimages();
             FreezeCombatTimer();
             finalDeathSequencePlayed = true;
             SetFinalDeathSequencePlaying(true);

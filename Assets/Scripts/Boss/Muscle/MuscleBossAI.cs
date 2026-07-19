@@ -12,6 +12,11 @@ namespace Week14.Enemy
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
 
+        [Header("BGM")]
+        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string bgmId = "MuscleBgm";
+
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
@@ -26,7 +31,10 @@ namespace Week14.Enemy
 
         protected override void OnCombatStarted()
         {
-            SoundManager.PlayBgm("MuscleBgm");
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
         }
 
         protected override void OnHpEmptyBegan()

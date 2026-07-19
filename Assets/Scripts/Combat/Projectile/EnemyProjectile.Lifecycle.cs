@@ -86,6 +86,8 @@ namespace Week14.Combat
             radialSplitStartAngleDegrees = 0f;
             radialSplitDelaySeconds = 0f;
             radialSplitAt = 0f;
+            radialSplitPrefabOverride = null;
+            radialSplitBaseRadiusOverride = 0f;
             suppressPathIndicator = nextSuppressPathIndicator;
             delayPathIndicatorUntilLaunch = false;
             preserveLaunchDirectionOnLaunch = false;

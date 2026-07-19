@@ -54,7 +54,7 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: -696094776, guid: 85c8d57a369036648b15c8157402d654, type: 3}
   deathImage: {fileID: -1415769947, guid: 856508d74be4a2146b5035c9d97cd7f8, type: 3}
-  panelIcon: {fileID: 21300000, guid: 97bfeec2fd29c144cb6baefd29866d15, type: 3}
+  panelIcon: {fileID: 21300000, guid: 1f5f477f166b65a4ba45d4ddf001c6a9, type: 3}
   sceneName: Boss_Hacker
   introWalkStartPosition: {x: 0.13, y: -1.4}
   introWalkEndPosition: {x: 0.13, y: 0.5}

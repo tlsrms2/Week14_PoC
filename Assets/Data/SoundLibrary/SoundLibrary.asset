@@ -41,6 +41,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 1682b023a7882c646af966adc118ba82, type: 3}
     volume: 0.4
     pitch: 1
+  - id: CutSceneBGM
+    clip: {fileID: 8300000, guid: c99187ebddbd1214ab8dd218e6caa78a, type: 3}
+    volume: 0.4
+    pitch: 1
   sfxEntries:
   - id: PlayerShot
     clip: {fileID: 8300000, guid: 5b7bfe1023f81c2429be1d8741f1ac2e, type: 3}

@@ -10,6 +10,11 @@ namespace Week14.Enemy
 
         [SerializeField] private Animator groggyAnimator;
 
+        [Header("BGM")]
+        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string bgmId = "HogBgm";
+
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
             ? EffectData.HogMuzzleFlashVfxPrefab
             : null;
@@ -17,7 +22,10 @@ namespace Week14.Enemy
 
         protected override void OnCombatStarted()
         {
-            SoundManager.PlayBgm("HogBgm");
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
         }
 
         protected override void OnHpEmptyBegan()

@@ -11,8 +11,6 @@ namespace Week14.Enemy
     [AddComponentMenu("Week14/Boss/Arsonist Boss")]
     public sealed class ArsonistBossAI : GraphBossAI
     {
-        private const string BgmId = "ArsonistBgm";
-
         [SerializeField, Min(0.05f)] private float ignitedOilDuration = 3.5f;
         [SerializeField, Min(0.05f)] private float oilConnectionRadius = 0.95f;
         [SerializeField, Min(0.01f)] private float oilIgnitionSpreadInterval = 0.06f;
@@ -20,6 +18,11 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int fireDamage = 1;
         [SerializeField, Min(0.05f)] private float fireDamageInterval = 0.45f;
         [SerializeField] private List<ArsonistSprinklerProjectile> sprinklers = new();
+
+        [Header("BGM")]
+        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string bgmId = "ArsonistBgm";
 
         private readonly List<ArsonistOilPatch> oilPatches = new();
         private readonly List<ArsonistFireArea> fireAreas = new();
@@ -36,7 +39,10 @@ namespace Week14.Enemy
         protected override void OnCombatStarted()
         {
             ResetSprinklersForCombat();
-            SoundManager.PlayBgm(BgmId);
+            if (!string.IsNullOrWhiteSpace(bgmId))
+            {
+                SoundManager.PlayBgm(bgmId);
+            }
         }
 
         protected override void OnBossDied()

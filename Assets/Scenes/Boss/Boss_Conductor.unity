@@ -2719,6 +2719,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
+      propertyPath: bgmId
+      value: Boss3BGM
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossNameText
       value: 
       objectReference: {fileID: 1023516957}

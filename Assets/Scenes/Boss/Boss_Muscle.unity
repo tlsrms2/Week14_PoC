@@ -6190,6 +6190,7 @@ MonoBehaviour:
   patternGroggyAnimator: {fileID: 0}
   walkAnimator: {fileID: 0}
   walkVelocityThreshold: 0.01
+  bgmId: Boss2BGM
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

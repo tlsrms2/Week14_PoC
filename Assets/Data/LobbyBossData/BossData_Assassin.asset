@@ -64,7 +64,7 @@ MonoBehaviour:
   unlocksPassiveSkillIds:
   - PAS_005
   unlocksWeaponIds:
-  - GUN_005
+  - GUN_006
   requiredDistinctBossKills: 2
   isFinalBoss: 0
   references:

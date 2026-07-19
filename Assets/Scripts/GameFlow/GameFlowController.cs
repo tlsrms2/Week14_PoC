@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Cutscene;
 using Week14.Save;
@@ -84,6 +85,7 @@ namespace Week14.GameFlow
 
         public static void RestartCurrentScene()
         {
+            SoundManager.StopBgm();
             bossRestartEntryPending = true;
             if (TryGetExistingInstance() is GameFlowController controller)
             {

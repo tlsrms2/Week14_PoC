@@ -94,6 +94,8 @@ namespace Week14.Enemy
         [SerializeField, Range(0.05f, 1f)] private float splitLifetimeMultiplier = 0.85f;
         [SerializeField, Min(0f)] private float splitSfxLeadSeconds = 0.15f;
         [SerializeField, BossGraphSfxId] private string splitImminentSfxId;
+        [Tooltip("비워두면 분열 전 투사체와 같은 프리팹으로 분열합니다. 지정하면 여기 등록된 프리팹으로 분열합니다.")]
+        [SerializeField, BossGraphProjectileName] private string splitProjectileName;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -103,13 +105,19 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            BossProjectileSettings splitSettings = string.IsNullOrWhiteSpace(splitProjectileName)
+                ? null
+                : context.ResolveGraphProjectileSettings(splitProjectileName);
+
             projectile.ConfigureRadialSplitOnLaunch(
                 radialSplitBulletCount,
                 radialSplitStartAngleOffset,
                 splitDelaySeconds,
                 splitSpeedMultiplier,
                 splitRadiusMultiplier,
-                splitLifetimeMultiplier);
+                splitLifetimeMultiplier,
+                splitSettings?.Prefab,
+                splitSettings != null ? splitSettings.Radius : 0f);
             projectile.ConfigureRadialSplitSfxLead(splitSfxLeadSeconds);
             context.PlaySfxOnRadialSplitImminent(projectile, splitImminentSfxId);
         }

@@ -205,7 +205,7 @@ MonoBehaviour:
     action:
       rid: 2634811931892908221
     sequences: []
-    editorPosition: {x: 951, y: 465}
+    editorPosition: {x: 942, y: 459}
   - nodeId: Wait4
     nodeGuid: 8c27086e8f584597a5bc7125fced5d11
     nodeKind: 3
@@ -1340,7 +1340,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern6
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -1515,6 +1515,7 @@ MonoBehaviour:
         splitLifetimeMultiplier: 1
         splitSfxLeadSeconds: 0.15
         splitImminentSfxId: BossBomb
+        splitProjectileName: "\uC77C\uBC18\uD0C4"
     - rid: 2634811931892908201
       type: {class: WaitProjectileChargeEndAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -1968,7 +1969,7 @@ MonoBehaviour:
           fallbackSpacing: 0.18
         aim:
           mode: 1
-          angleDegrees: 0
+          angleDegrees: 6
         windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
@@ -2122,7 +2123,7 @@ MonoBehaviour:
           fallbackSpacing: 0.18
         aim:
           mode: 1
-          angleDegrees: 0
+          angleDegrees: 6
         windupSeconds: 0
         fireSfxId: 
         launchSfxId: 
@@ -2709,7 +2710,7 @@ MonoBehaviour:
       type: {class: SpawnChargedProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         handleKey: HogPattern3
-        projectileName: "\uC77C\uBC18\uD0C4"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1

@@ -11697,6 +11697,7 @@ MonoBehaviour:
   cloneMinSeparationDistance: 5
   cloneMinDistanceFromPlayer: 5
   walkVelocityThreshold: 0.01
+  bgmId: Boss4BGM
 --- !u!222 &8937255414088847800
 CanvasRenderer:
   m_ObjectHideFlags: 0
