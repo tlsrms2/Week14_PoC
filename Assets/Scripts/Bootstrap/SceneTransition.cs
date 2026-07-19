@@ -33,6 +33,10 @@ namespace Week14.Bootstrap
         private RectTransform blockRoot;
         private Coroutine loadRoutine;
         private Coroutine coverRevealRoutine;
+        private bool isRevealing;
+        private bool coveredEntryPrepared;
+        private bool entryRevealGateRequested;
+        private bool entryRevealReady;
         private int builtColumns;
         private int builtRows;
         private Vector2 builtScreenSize;
@@ -40,6 +44,60 @@ namespace Week14.Bootstrap
         public static SceneTransition Instance => instance;
         public static bool IsTransitioning => instance != null
             && (instance.loadRoutine != null || instance.coverRevealRoutine != null);
+
+        public static void PrepareCoveredEntry()
+        {
+            SceneTransition transition = GetExistingInstance();
+            if (transition == null
+                || transition.coverRevealRoutine != null)
+            {
+                return;
+            }
+
+            if (!transition.entryRevealGateRequested)
+            {
+                transition.entryRevealReady = false;
+            }
+
+            transition.entryRevealGateRequested = true;
+            if (transition.loadRoutine != null)
+            {
+                return;
+            }
+
+            transition.EnsureOverlay();
+            transition.SetOverlayVisible(true);
+            transition.SetBlocksToState(true);
+            transition.coveredEntryPrepared = true;
+        }
+
+        public static IEnumerator BeginEntryReveal()
+        {
+            SceneTransition transition = GetExistingInstance();
+            if (transition == null)
+            {
+                yield break;
+            }
+
+            transition.entryRevealReady = true;
+
+            while (transition.loadRoutine != null && !transition.isRevealing)
+            {
+                yield return null;
+            }
+
+            if (transition.isRevealing)
+            {
+                yield break;
+            }
+
+            if (!transition.coveredEntryPrepared)
+            {
+                PrepareCoveredEntry();
+            }
+
+            transition.BeginPreparedEntryReveal();
+        }
 
         private void Awake()
         {
@@ -128,6 +186,10 @@ namespace Week14.Bootstrap
             }
 
             transition.SetOverlayVisible(false);
+            transition.coveredEntryPrepared = false;
+            transition.isRevealing = false;
+            transition.entryRevealGateRequested = false;
+            transition.entryRevealReady = false;
         }
 
         public static IEnumerator PlayCoverReveal(Action onCovered = null)
@@ -174,6 +236,13 @@ namespace Week14.Bootstrap
             }
 
             instance = FindFirstObjectByType<SceneTransition>();
+            if (instance == null)
+            {
+                // 어떤 씬에서 시작하더라도 씬 전환 연출을 보장합니다.
+                GameObject transitionObject = new(nameof(SceneTransition));
+                instance = transitionObject.AddComponent<SceneTransition>();
+            }
+
             return instance;
         }
 
@@ -189,6 +258,10 @@ namespace Week14.Bootstrap
 
         private IEnumerator LoadSceneRoutine(Func<AsyncOperation> loadOperationFactory, bool startCovered, bool leaveCovered)
         {
+            coveredEntryPrepared = false;
+            isRevealing = false;
+            entryRevealGateRequested = false;
+            entryRevealReady = false;
             PlayTransitionSfx();
             EnsureOverlay();
             SetOverlayVisible(true);
@@ -212,6 +285,7 @@ namespace Week14.Bootstrap
             {
                 Debug.LogException(exception);
                 SetOverlayVisible(false);
+                isRevealing = false;
                 loadRoutine = null;
                 yield break;
             }
@@ -227,18 +301,60 @@ namespace Week14.Bootstrap
 
             if (leaveCovered)
             {
+                coveredEntryPrepared = true;
                 loadRoutine = null;
                 yield break;
             }
 
+            while (entryRevealGateRequested && !entryRevealReady)
+            {
+                yield return null;
+            }
+
+            isRevealing = true;
             yield return AnimateBlocks(false, revealDuration);
+            isRevealing = false;
+            entryRevealGateRequested = false;
+            entryRevealReady = false;
 
             SetOverlayVisible(false);
             loadRoutine = null;
         }
 
+        private void BeginPreparedEntryReveal()
+        {
+            if (loadRoutine != null || coverRevealRoutine != null || !coveredEntryPrepared)
+            {
+                return;
+            }
+
+            coverRevealRoutine = StartCoroutine(PreparedEntryRevealRoutine());
+        }
+
+        private IEnumerator PreparedEntryRevealRoutine()
+        {
+            PlayTransitionSfx();
+            EnsureOverlay();
+            SetOverlayVisible(true);
+            SetBlocksToState(true);
+
+            isRevealing = true;
+            yield return AnimateBlocks(false, revealDuration);
+            isRevealing = false;
+            coveredEntryPrepared = false;
+            entryRevealGateRequested = false;
+            entryRevealReady = false;
+
+            SetOverlayVisible(false);
+            coverRevealRoutine = null;
+        }
+
         private IEnumerator CoverRevealRoutine(Action onCovered, Action onCompleted)
         {
+            coveredEntryPrepared = false;
+            isRevealing = false;
+            entryRevealGateRequested = false;
+            entryRevealReady = false;
             PlayTransitionSfx();
             EnsureOverlay();
             SetOverlayVisible(true);
@@ -257,7 +373,12 @@ namespace Week14.Bootstrap
             EnsureOverlay();
             SetBlocksToState(true);
             yield return WaitUnscaled(holdDuration);
+            isRevealing = true;
             yield return AnimateBlocks(false, revealDuration);
+            isRevealing = false;
+            coveredEntryPrepared = false;
+            entryRevealGateRequested = false;
+            entryRevealReady = false;
 
             SetOverlayVisible(false);
             coverRevealRoutine = null;

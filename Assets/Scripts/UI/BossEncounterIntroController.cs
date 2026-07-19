@@ -59,7 +59,6 @@ namespace Week14.UI
 
         [Header("재생")]
         [SerializeField] private bool playOnStart = true;
-        [SerializeField] private bool waitForSceneTransition = true;
         [SerializeField, Min(0f)] private float startDelaySeconds = 0.15f;
         [SerializeField, Min(0f)] private float playerWalkSpeed = 3.5f;
 
@@ -173,6 +172,12 @@ namespace Week14.UI
         private void Awake()
         {
             ResolveReferences();
+            if (playOnStart && boss != null)
+            {
+                // 첫 프레임이 그려지기 전에 화면을 덮어 보스 씬 노출을 막습니다.
+                SceneTransition.PrepareCoveredEntry();
+            }
+
             ResolveCanvasGroup();
             CacheTargetPositions();
             CacheTransitionTargetPositions();
@@ -187,6 +192,12 @@ namespace Week14.UI
         {
             if (playOnStart)
             {
+                ResolveReferences();
+                if (boss != null)
+                {
+                    SceneTransition.PrepareCoveredEntry();
+                }
+
                 Play();
             }
         }
@@ -254,14 +265,6 @@ namespace Week14.UI
 
         private IEnumerator PlayRoutine()
         {
-            if (waitForSceneTransition)
-            {
-                while (SceneTransition.IsTransitioning)
-                {
-                    yield return null;
-                }
-            }
-
             // startDelay가 0이어도 모든 씬 오브젝트의 Start가 끝난 뒤 연출을 진행한다.
             yield return null;
             yield return WaitUnscaled(startDelaySeconds);
@@ -271,6 +274,17 @@ namespace Week14.UI
             ResolveCanvasGroup();
             BindBossData();
             PreparePresentation();
+
+            // 화면이 덮인 상태에서 UI 레이아웃과 첫 프레임을 확정합니다.
+            Canvas.ForceUpdateCanvases();
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+
+            if (boss != null)
+            {
+                // 준비가 끝난 뒤 전환 리빌과 보스 인트로를 함께 시작합니다.
+                yield return SceneTransition.BeginEntryReveal();
+            }
 
             if (playFullBossIntro)
             {
