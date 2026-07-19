@@ -8,6 +8,8 @@ namespace Week14.Enemy
     [Serializable]
     public sealed class HackerWalkFireCounterGrabAction : BossAction, IBossActionDurationProvider
     {
+        private const string ShootAnimationTrigger = "Shoot";
+        private const string ReleaseAnimationTrigger = "Release";
         private const string WireShotAnimationTrigger = "WireShot";
         private const string GrabAnimationTrigger = "Grab";
         private const string IsWireShotActiveAnimationParameter = "IsWireShotActive";
@@ -17,7 +19,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField, BossGraphBossChildPath] private string fireOriginPath;
-        [SerializeField] private string walkFireTriggerName = "WalkFire";
         [SerializeField, Min(0f)] private float windupSeconds = 0.25f;
         [SerializeField, Min(0.1f)] private float activeSeconds = 3f;
         [SerializeField, Min(0f)] private float walkSpeed = 2.5f;
@@ -30,7 +31,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string wireOriginPath;
         [SerializeField, Min(0.01f)] private float wireTravelSeconds = 0.12f;
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
 
         [Header("Recovery")]
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
@@ -42,13 +42,17 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(walkFireTriggerName);
-            yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
-
-            hacker.BeginGunWalkCounterParry();
             try
             {
+                yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
+
+                hacker.BeginGunWalkCounterParry();
                 yield return WalkAndFire(context, hacker);
+                context.Stop();
+
+                Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+                hacker.FaceHorizontalDirection(facingDirection.x);
+                using IDisposable facingLock = context.AcquireFacingLock();
                 if (hacker.IsGunWalkCounterParryTriggered)
                 {
                     yield return CounterGrab(context, hacker);
@@ -57,14 +61,21 @@ namespace Week14.Enemy
                 {
                     context.RequestPatternTermination();
                 }
+
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
+                hacker.EndGunWalkCounterParry();
+                context.Stop();
+                yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
             }
             finally
             {
+                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
                 hacker.EndGunWalkCounterParry();
                 context.Stop();
             }
 
-            yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
 
         public bool TryGetDurationSeconds(out float seconds)
@@ -84,41 +95,58 @@ namespace Week14.Enemy
             float nextFireAt = 0f;
             int shotCount = 0;
             Vector2 destination = context.Boss.transform.position;
-            while (elapsed < activeSeconds && !hacker.IsGunWalkCounterParryTriggered)
+            bool isReleasePending = false;
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < activeSeconds && !hacker.IsGunWalkCounterParryTriggered)
                 {
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    if (isReleasePending)
+                    {
+                        context.RestartAnimationTrigger(ReleaseAnimationTrigger);
+                        isReleasePending = false;
+                    }
+
+                    if (elapsed >= nextDestinationAt)
+                    {
+                        Vector2 playerPosition = context.GetPlayerPosition();
+                        destination = playerPosition + UnityEngine.Random.insideUnitCircle.normalized * wanderRadius;
+                        nextDestinationAt += wanderChangeSeconds;
+                    }
+
+                    Vector2 toDestination = destination - (Vector2)context.Boss.transform.position;
+                    if (toDestination.sqrMagnitude > 0.01f)
+                    {
+                        context.Boss.SetMovementVelocity(toDestination.normalized * walkSpeed);
+                    }
+                    else
+                    {
+                        context.Stop();
+                    }
+
+                    if (shotCount < maxShotCount && elapsed >= nextFireAt)
+                    {
+                        isReleasePending = FireProjectile(context);
+                        shotCount++;
+                        nextFireAt += fireInterval;
+                    }
+
+                    elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
-                    continue;
                 }
-
-                if (elapsed >= nextDestinationAt)
+            }
+            finally
+            {
+                if (isReleasePending)
                 {
-                    Vector2 playerPosition = context.GetPlayerPosition();
-                    destination = playerPosition + UnityEngine.Random.insideUnitCircle.normalized * wanderRadius;
-                    nextDestinationAt += wanderChangeSeconds;
+                    context.RestartAnimationTrigger(ReleaseAnimationTrigger);
                 }
-
-                Vector2 toDestination = destination - (Vector2)context.Boss.transform.position;
-                if (toDestination.sqrMagnitude > 0.01f)
-                {
-                    context.Boss.SetMovementVelocity(toDestination.normalized * walkSpeed);
-                }
-                else
-                {
-                    context.Stop();
-                }
-
-                if (shotCount < maxShotCount && elapsed >= nextFireAt)
-                {
-                    FireProjectile(context);
-                    shotCount++;
-                    nextFireAt += fireInterval;
-                }
-
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
             }
         }
 
@@ -140,7 +168,6 @@ namespace Week14.Enemy
                 player,
                 wireTravelSeconds,
                 grabSeconds,
-                hackingPerHit,
                 wireSettings.PullSpeed,
                 wireSettings.PullStopDistance,
                 wireSettings.Width,
@@ -165,21 +192,23 @@ namespace Week14.Enemy
             }
         }
 
-        private void FireProjectile(BossActionContext context)
+        private bool FireProjectile(BossActionContext context)
         {
             BossProjectileSettings settings = context.ResolveGraphProjectileSettings(projectileName) ?? projectile;
             if (settings?.Prefab == null)
             {
-                return;
+                return false;
             }
 
             Vector3 origin = context.GetBossChildPosition(fireOriginPath);
+            context.RestartAnimationTrigger(ShootAnimationTrigger);
             context.FireProjectile(
                 settings,
                 origin,
                 context.GetDirectionToPlayer(origin),
                 0f,
                 projectileName: projectileName);
+            return true;
         }
     }
 }

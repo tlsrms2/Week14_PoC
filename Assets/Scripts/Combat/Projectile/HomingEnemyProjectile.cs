@@ -8,6 +8,10 @@ namespace Week14.Combat
     [AddComponentMenu("Week14/Combat/Homing Enemy Projectile")]
     public class HomingEnemyProjectile : EnemyProjectile, IHomingEnemyProjectile
     {
+        [Header("Trail")]
+        [SerializeField, Tooltip("유도 투사체의 궤적 색상입니다.")]
+        private Color trailColor = new(1f, 0.82f, 0.18f, 0.55f);
+
         [SerializeField, Min(0.01f), Tooltip("호밍이 유지되는 기본 시간입니다.")]
         private float defaultHomingSeconds = 10f;
         [SerializeField, Min(0.01f), Tooltip("초당 회전 가능한 기본 각도입니다.")]
@@ -39,6 +43,11 @@ namespace Week14.Combat
         private Sprite fallbackSprite;
 
         protected override bool IsHomingProjectile => homingActive;
+
+        protected override Color? GetTrailColorOverride()
+        {
+            return trailColor;
+        }
 
         protected override void OnProjectileAwake()
         {

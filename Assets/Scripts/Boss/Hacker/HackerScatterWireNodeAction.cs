@@ -12,15 +12,12 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string nodeProjectileName = "WireNode";
         [SerializeField, HideInInspector] private BossProjectileSettings nodeProjectile = new();
         [SerializeField, BossGraphBossChildPath] private string launchOriginPath;
-        [SerializeField] private string animationTriggerName = "ScatterWireNode";
         [SerializeField, Min(0f)] private float windupSeconds = 0.35f;
         [SerializeField, Min(1)] private int nodeCount = 6;
         [SerializeField] private float startAngleOffset;
         [SerializeField] private bool randomizeStartAngle;
         [SerializeField, Min(0f)] private float minAngleDistanceDegrees = 25f;
         [SerializeField, Min(0f)] private float fireInterval = 0.08f;
-        [SerializeField, Min(1)] private int hackingPerHit = 1;
-        [SerializeField, Min(0f)] private float attachedNodeLifetimeSeconds = 10f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
         public override IEnumerator Execute(BossActionContext context)
@@ -36,7 +33,13 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(animationTriggerName);
+            if (context.Boss is HackerBossAI hacker)
+            {
+                Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+                hacker.FaceHorizontalDirection(facingDirection.x);
+            }
+
+            using IDisposable facingLock = context.AcquireFacingLock();
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             Vector3 origin = context.GetBossChildPosition(launchOriginPath);
@@ -59,8 +62,7 @@ namespace Week14.Enemy
                 EnemyProjectile projectile = context.FireProjectile(settings, origin, direction, 0f, projectileName: nodeProjectileName);
                 if (projectile is HackerWireNodeProjectile wireNode)
                 {
-                    wireNode.ConfigureWireHacking(context.Boss as HackerBossAI, hackingPerHit);
-                    wireNode.ConfigureAttachedLifetime(attachedNodeLifetimeSeconds);
+                    wireNode.ConfigureWireOwner(context.Boss as HackerBossAI);
                 }
 
                 if (i < count - 1)

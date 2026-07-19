@@ -41,18 +41,23 @@ namespace Week14.Enemy
         private readonly List<SpriteReplayBinding> spriteReplayBindings = new();
         private readonly HashSet<SpriteRenderer> excludedReplayRenderers = new();
 
+        protected override bool UsesHackerPresentationUpdates => false;
+
         protected override void Awake()
         {
             base.Awake();
 
             // 홀로그램 프리팹/씬 인스턴스는 초기화 전 첫 프레임부터 숨긴다.
             // Instantiate 직후 Initialize가 호출될 때만 다시 활성화된다.
-            gameObject.SetActive(false);
+            if (sourceBoss == null)
+            {
+                gameObject.SetActive(false);
+            }
         }
 
-        protected override bool CanStartGraphPattern()
+        protected override void OnEnable()
         {
-            return false;
+            // 홀로그램은 전투 개체가 아니므로 체력 이벤트와 보스 UI를 연결하지 않는다.
         }
 
         internal void Initialize(HackerBossAI source)
@@ -76,7 +81,6 @@ namespace Week14.Enemy
                 return;
             }
 
-            BuildReplayBindings();
             Stop();
             transform.position = GetRestPosition();
             replayDelaySeconds = Mathf.Max(0.01f, delaySeconds);
@@ -142,6 +146,7 @@ namespace Week14.Enemy
 
         internal void CancelRecordedReplay()
         {
+            ClearPatternSpawnedWeapons();
             isHologramReplayRunning = false;
             isRecordingReplay = false;
             isReplayPlaybackComplete = true;
@@ -260,12 +265,12 @@ namespace Week14.Enemy
             DisableReplayWeaponPhysics(replayWeaponObject);
             ApplyHologramTint(replayWeaponObject);
             replayWeapon = replayWeaponObject.GetComponent<HackerThrownWeapon>();
-            if (replayWeapon == null)
-            {
-                replayWeapon = replayWeaponObject.AddComponent<HackerThrownWeapon>();
-            }
+            return replayWeapon != null;
+        }
 
-            return true;
+        internal void ApplyHologramStyle(GameObject target)
+        {
+            ApplyHologramTint(target);
         }
 
         public override float DistanceToPlayer()
@@ -310,8 +315,12 @@ namespace Week14.Enemy
             float radiusOverride,
             bool suppressHoming)
         {
-            return sourceBoss != null
-                ? sourceBoss.FireGraphProjectile(
+            if (sourceBoss == null)
+            {
+                return null;
+            }
+
+            return sourceBoss.FireGraphProjectile(
                     settings,
                     origin,
                     direction,
@@ -320,8 +329,7 @@ namespace Week14.Enemy
                     aimAtPlayerOnLaunchOverride,
                     chargeSecondsOverride,
                     radiusOverride,
-                    suppressHoming)
-                : null;
+                    suppressHoming);
         }
 
         internal override HackerWireSettings WireSettings => sourceBoss != null
@@ -332,15 +340,19 @@ namespace Week14.Enemy
             ? sourceBoss.ParryProjectileSettings
             : base.ParryProjectileSettings;
 
-        internal override void ApplyHacking(PlayerCombatController player, int hackingPerHit)
+        internal override bool ShowsAttackRangeIndicators => sourceBoss != null
+            ? sourceBoss.ShowsAttackRangeIndicators
+            : base.ShowsAttackRangeIndicators;
+
+        internal override void ApplyWireLifetimePenalty(PlayerCombatController player)
         {
             if (sourceBoss != null)
             {
-                sourceBoss.ApplyHacking(player, hackingPerHit);
+                sourceBoss.ApplyWireLifetimePenalty(player);
                 return;
             }
 
-            base.ApplyHacking(player, hackingPerHit);
+            base.ApplyWireLifetimePenalty(player);
         }
 
         public override bool ReceivePlayerHit(
@@ -362,19 +374,16 @@ namespace Week14.Enemy
 
         protected override void Start()
         {
-            // 씬이나 보스 프리팹에 남아 있는 홀로그램은 초기화 전에는 표시하지 않는다.
-            // 런타임 생성본은 Instantiate 직후 Initialize가 먼저 호출되므로 여기에 걸리지 않는다.
+            // Initialize되지 않은 씬 잔존 인스턴스는 비활성 상태를 유지한다.
             if (sourceBoss == null)
             {
                 gameObject.SetActive(false);
-                return;
             }
+        }
 
-            base.Start();
-            StripGameplayComponents();
-            BuildReplayBindings();
-            ApplyHologramTint();
-            DisableHologramAnimators();
+        protected override void Update()
+        {
+            // 홀로그램의 위치와 포즈는 OnIdleHackerLateUpdate에서 기록 프레임으로만 갱신한다.
         }
 
         protected override void OnIdleHackerLateUpdate()
@@ -402,7 +411,6 @@ namespace Week14.Enemy
         {
             StopSummonEntrance();
             CancelRecordedReplay();
-            base.OnDisable();
         }
 
         private IEnumerator PlaySummonEntranceRoutine()
@@ -851,6 +859,7 @@ namespace Week14.Enemy
 
             HackerThrownWeaponType[] types =
             {
+                HackerThrownWeaponType.ThrowingWeapon,
                 HackerThrownWeaponType.Bayonet,
                 HackerThrownWeaponType.Gun,
                 HackerThrownWeaponType.Sword
@@ -967,6 +976,14 @@ namespace Week14.Enemy
                 }
             }
 
+            Rigidbody2D[] bodies = GetComponentsInChildren<Rigidbody2D>(true);
+            for (int i = 0; i < bodies.Length; i++)
+            {
+                if (bodies[i] != null)
+                {
+                    bodies[i].simulated = false;
+                }
+            }
         }
 
         private void DisableAndDestroyComponents<T>() where T : Component
@@ -975,7 +992,7 @@ namespace Week14.Enemy
             for (int i = 0; i < components.Length; i++)
             {
                 T component = components[i];
-                if (component == null || component == this)
+                if (component == null)
                 {
                     continue;
                 }

@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Combat;
+using Week14.UI;
 
 namespace Week14.Enemy
 {
@@ -34,15 +36,22 @@ namespace Week14.Enemy
     public class HackerBossAI : GraphBossAI
     {
         private const string TurretLayerName = "Turret";
+        private const string IsWalkAnimationParameter = "isWalk";
+        private const string TwoWeaponVisualName = "boss-05-2weapon";
+        private const string OneWeaponVisualName = "boss-05-1weapon";
+        private const string TwoWeaponStunEndStateName = "Anim-Hacker-2w-stun-end";
 
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
             ? EffectData.HackerMuzzleFlashVfxPrefab
             : null;
         protected override bool RotatesBodyToPlayer => false;
 
-        [Header("Hacking")]
-        [SerializeField, Min(1)] private int hackingMax = 5;
-        [SerializeField, Min(0.1f)] private float parryDisableSeconds = 3f;
+        [Header("Wire Bullet Lifetime Penalty")]
+        [SerializeField, Min(0f)] private float wireLifetimeReductionSeconds = 2.5f;
+        [SerializeField, Min(0f)] private float wireMinimumRemainingSeconds = 1f;
+        [SerializeField] private Color wireContactFlashColor = new(0.2f, 0.7f, 1f, 1f);
+        [SerializeField, Min(0f)] private float wireContactFlashSeconds = 0.18f;
+        [SerializeField, Range(0f, 1f)] private float wireBulletShakeIntensity = 0.4f;
 
         [Header("Wire Settings")]
         [SerializeField] private HackerWireSettings wireSettings = new();
@@ -62,6 +71,19 @@ namespace Week14.Enemy
         [SerializeField] private Transform facingMuzzlePoints;
         [SerializeField] private Transform facingEffectPrefabPoint;
 
+        [Header("Animation")]
+        [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+
+        [Header("Phase Visuals")]
+        [SerializeField] private GameObject twoWeaponVisual;
+        [SerializeField] private GameObject oneWeaponVisual;
+        [SerializeField, Min(0.1f)] private float phaseVisualSwitchFallbackSeconds = 1f;
+
+        [Header("Attack Indicators")]
+        [Tooltip("Melee, Thrust, Sweep 계열 공격의 범위 인디케이터를 표시합니다.")]
+        [InspectorName("Melee / Thrust / Sweep 인디케이터 표시")]
+        [SerializeField] private bool showAttackRangeIndicators = true;
+
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
 
@@ -74,15 +96,23 @@ namespace Week14.Enemy
         private bool facingTargetsResolved;
         private bool hasFacingBaseLocalRotations;
         private bool isFacingLeft = true;
+        private bool hasAppliedWalkState;
+        private bool lastIsWalking;
         private float lastSlamAt = float.NegativeInfinity;
         private bool gunWalkCounterParryArmed;
         private bool gunWalkCounterParryTriggered;
         private bool isHologramSummonUnlocked;
         private HackerFireWireResult lastFireWireResult;
         private HackerHologramBoss hologram;
+        private Animator twoWeaponAnimator;
+        private Animator oneWeaponAnimator;
+        private Coroutine phaseVisualSwitchRoutine;
+        private bool isOneWeaponVisualActive;
+        protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
         internal virtual BossProjectileSettings ParryProjectileSettings => parryProjectileSettings ??= new BossProjectileSettings();
+        internal virtual bool ShowsAttackRangeIndicators => showAttackRangeIndicators;
 
         internal bool IsFacingLeft => isFacingLeft;
         internal HackerFireWireResult LastFireWireResult => lastFireWireResult;
@@ -99,13 +129,19 @@ namespace Week14.Enemy
             return consecutive;
         }
 
-        internal virtual void ApplyHacking(PlayerCombatController player, int hackingPerHit)
+        internal virtual void ApplyWireLifetimePenalty(PlayerCombatController player)
         {
-            HackerPlayerHackStatus.Apply(
-                player,
-                Mathf.Max(1, hackingPerHit),
-                Mathf.Max(1, hackingMax),
-                Mathf.Max(0.1f, parryDisableSeconds));
+            if (player == null)
+            {
+                return;
+            }
+
+            PlayerHP.ShortenCurrentBulletLifetimes(
+                player.Bullets,
+                Mathf.Max(0f, wireLifetimeReductionSeconds),
+                Mathf.Max(0f, wireMinimumRemainingSeconds));
+            PlayerHP.PlayBulletShake(player.Bullets, wireBulletShakeIntensity);
+            player.FlashBodyColor(wireContactFlashColor, wireContactFlashSeconds);
         }
 
         internal void BeginGunWalkCounterParry()
@@ -162,6 +198,8 @@ namespace Week14.Enemy
         protected override void Start()
         {
             base.Start();
+            ResolvePhaseVisuals();
+            ApplyPhaseVisual(CurrentPhaseNumber >= 2, true);
             IgnorePlayerPhysicsCollisions();
             IgnoreTurretLayerCollisions();
             UpdateFacingFromPlayer();
@@ -169,17 +207,19 @@ namespace Week14.Enemy
 
         private void LateUpdate()
         {
-            if (IsExternalActionExecuting)
+            if (UsesHackerPresentationUpdates)
             {
-                return;
+                UpdateWalkState();
+                UpdateFacingFromPlayer();
             }
 
-            UpdateFacingFromPlayer();
             OnIdleHackerLateUpdate();
         }
 
         protected override void OnBossDied()
         {
+            ApplyWalkState(false, true);
+            HackerWireNodeProjectile.ClearAttachedNodes(this);
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnBossDied();
@@ -187,19 +227,28 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
+            PlayGroggyStunVisual();
             base.OnHpEmptyBegan();
             DestroyActiveProjectiles();
             ClearRuntimeCombatEffects();
             ClearSpawnedWeapons();
         }
 
+        protected override void OnHpEmptyRecovered()
+        {
+            PlayGroggyEndStunVisual();
+            if (CurrentPhaseNumber == 2 && !isOneWeaponVisualActive)
+            {
+                BeginOneWeaponVisualSwitch();
+            }
+
+            base.OnHpEmptyRecovered();
+        }
+
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
-            if (this is not HackerHologramBoss)
-            {
-                HackerPlayerHackStatus.Clear(PlayerCombatController.Active);
-            }
+            HackerWireNodeProjectile.ClearAttachedNodes(this);
 
             int hologramStartPhase = Mathf.Max(1, hologramStartPhaseNumber);
             if (phaseNumber < hologramStartPhase)
@@ -239,15 +288,151 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            if (phaseVisualSwitchRoutine != null)
+            {
+                StopCoroutine(phaseVisualSwitchRoutine);
+                phaseVisualSwitchRoutine = null;
+            }
+
+            ApplyWalkState(false, true);
             EndGunWalkCounterParry();
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnDisable();
         }
 
-        protected virtual bool IsExternalActionExecuting => false;
-
         protected virtual void OnIdleHackerLateUpdate() { }
+
+        private void BeginOneWeaponVisualSwitch()
+        {
+            ResolvePhaseVisuals();
+            if (twoWeaponVisual == null || oneWeaponVisual == null || twoWeaponAnimator == null)
+            {
+                ApplyPhaseVisual(true, true);
+                return;
+            }
+
+            if (phaseVisualSwitchRoutine != null)
+            {
+                StopCoroutine(phaseVisualSwitchRoutine);
+            }
+
+            phaseVisualSwitchRoutine = StartCoroutine(SwitchToOneWeaponAfterStunEnd());
+        }
+
+        private IEnumerator SwitchToOneWeaponAfterStunEnd()
+        {
+            int stunEndStateHash = Animator.StringToHash(TwoWeaponStunEndStateName);
+            float timeoutSeconds = ResolveTwoWeaponStunEndTimeout();
+            float elapsed = 0f;
+            bool enteredStunEnd = false;
+
+            yield return null;
+            while (elapsed < timeoutSeconds && twoWeaponAnimator != null && twoWeaponAnimator.isActiveAndEnabled)
+            {
+                bool isTransitioning = twoWeaponAnimator.IsInTransition(0);
+                AnimatorStateInfo currentState = twoWeaponAnimator.GetCurrentAnimatorStateInfo(0);
+                bool isCurrentStunEnd = currentState.shortNameHash == stunEndStateHash;
+                bool isNextStunEnd = isTransitioning
+                    && twoWeaponAnimator.GetNextAnimatorStateInfo(0).shortNameHash == stunEndStateHash;
+
+                if (!enteredStunEnd)
+                {
+                    enteredStunEnd = isCurrentStunEnd || isNextStunEnd;
+                }
+                else if (!isCurrentStunEnd && !isNextStunEnd)
+                {
+                    break;
+                }
+                else if (isCurrentStunEnd && currentState.normalizedTime >= 1f && !isTransitioning)
+                {
+                    break;
+                }
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            ApplyPhaseVisual(true, true);
+            phaseVisualSwitchRoutine = null;
+        }
+
+        private float ResolveTwoWeaponStunEndTimeout()
+        {
+            float fallback = Mathf.Max(0.1f, phaseVisualSwitchFallbackSeconds);
+            RuntimeAnimatorController controller = twoWeaponAnimator != null
+                ? twoWeaponAnimator.runtimeAnimatorController
+                : null;
+            if (controller == null)
+            {
+                return fallback;
+            }
+
+            AnimationClip[] clips = controller.animationClips;
+            for (int i = 0; i < clips.Length; i++)
+            {
+                AnimationClip clip = clips[i];
+                if (clip != null && clip.name == TwoWeaponStunEndStateName)
+                {
+                    return Mathf.Max(fallback, clip.length + 0.25f);
+                }
+            }
+
+            return fallback;
+        }
+
+        private void ResolvePhaseVisuals()
+        {
+            if (twoWeaponVisual == null)
+            {
+                Transform found = FindDescendant(TwoWeaponVisualName);
+                twoWeaponVisual = found != null ? found.gameObject : null;
+            }
+
+            if (oneWeaponVisual == null)
+            {
+                Transform found = FindDescendant(OneWeaponVisualName);
+                oneWeaponVisual = found != null ? found.gameObject : null;
+            }
+
+            if (twoWeaponAnimator == null && twoWeaponVisual != null)
+            {
+                twoWeaponAnimator = twoWeaponVisual.GetComponent<Animator>();
+            }
+
+            if (oneWeaponAnimator == null && oneWeaponVisual != null)
+            {
+                oneWeaponAnimator = oneWeaponVisual.GetComponent<Animator>();
+            }
+        }
+
+        private void ApplyPhaseVisual(bool useOneWeapon, bool resetAnimator)
+        {
+            ResolvePhaseVisuals();
+            GameObject activeVisual = useOneWeapon ? oneWeaponVisual : twoWeaponVisual;
+            GameObject inactiveVisual = useOneWeapon ? twoWeaponVisual : oneWeaponVisual;
+            Animator activeAnimator = useOneWeapon ? oneWeaponAnimator : twoWeaponAnimator;
+
+            if (activeVisual != null)
+            {
+                activeVisual.SetActive(true);
+            }
+
+            if (resetAnimator && activeAnimator != null)
+            {
+                activeAnimator.Rebind();
+                activeAnimator.Update(0f);
+            }
+
+            if (inactiveVisual != null)
+            {
+                inactiveVisual.SetActive(false);
+            }
+
+            SetPatternGroggyAnimator(activeAnimator);
+            isOneWeaponVisualActive = useOneWeapon;
+            hasAppliedWalkState = false;
+        }
 
         protected override bool CanStartGraphPattern()
         {
@@ -331,9 +516,30 @@ namespace Week14.Enemy
             FaceHorizontalDirection(horizontalOffset);
         }
 
+        private void UpdateWalkState()
+        {
+            float threshold = Mathf.Max(0f, walkVelocityThreshold);
+            bool isWalking = Body != null
+                && Body.linearVelocity.sqrMagnitude > threshold * threshold;
+            ApplyWalkState(isWalking, false);
+        }
+
+        private void ApplyWalkState(bool isWalking, bool force)
+        {
+            if (!force && hasAppliedWalkState && lastIsWalking == isWalking)
+            {
+                return;
+            }
+
+            GraphContext?.SetAnimationBool(IsWalkAnimationParameter, isWalking);
+            lastIsWalking = isWalking;
+            hasAppliedWalkState = true;
+        }
+
         internal void FaceHorizontalDirection(float horizontalDirection)
         {
-            if (Mathf.Abs(horizontalDirection) <= 0.0001f)
+            if (GraphContext?.IsFacingLocked == true
+                || Mathf.Abs(horizontalDirection) <= 0.0001f)
             {
                 return;
             }
@@ -474,7 +680,6 @@ namespace Week14.Enemy
             DestroyRuntimeObjects<HackerSpiderWebCellIndicator>();
             DestroyRuntimeObjects<HackerSpiderWebCellExplosionVisual>();
             DestroyRuntimeObjects<HackerWire>();
-            DestroyRuntimeObjects<HackerWireNodeLinkVisual>();
         }
 
         private static void DestroyRuntimeObjects<T>() where T : Component

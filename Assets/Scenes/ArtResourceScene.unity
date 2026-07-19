@@ -4138,6 +4138,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3507225797715308137, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5610621040154728607, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8949171339126285479, guid: 1e3f66e98ff160b4baf5adbb2b1c11ac, type: 3}
       propertyPath: m_Name
       value: Boss-Hacker Visual

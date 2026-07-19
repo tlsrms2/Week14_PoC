@@ -111,11 +111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d381440bd6704bd4db1052cded51626c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HackerGlitchProjectile
-  indicatorColor: {r: 0, g: 0, b: 1, a: 0.8627451}
+  indicatorColor: {r: 0.67058825, g: 0.10980392, b: 0.10980392, a: 0.8627451}
   parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
+  trailColor: {r: 0.67058825, g: 0.10980392, b: 0.10980392, a: 0.55}
   launchFlashSeconds: 0.08
   initialFlightSeconds: 0.35
   initialFlightSpeed: 6
@@ -130,7 +131,7 @@ MonoBehaviour:
   glitchApproachSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
   chargingSprite: {fileID: 2542025707991896236, guid: 0ab07f7ec63542d4191f3185205421e4, type: 3}
   rushSprite: {fileID: -401367599159864876, guid: c101bbe2b06a30d40ba800449bbb6987, type: 3}
-  chargeBlinkColor: {r: 0, g: 0, b: 1, a: 1}
+  chargeBlinkColor: {r: 0.67058825, g: 0.10980392, b: 0.10980392, a: 1}
   chargeBlinkMinRate: 2
   chargeBlinkMaxRate: 8
 --- !u!1 &895001679937465001

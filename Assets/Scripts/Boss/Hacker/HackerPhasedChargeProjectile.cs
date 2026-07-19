@@ -4,7 +4,7 @@ using Week14.Combat;
 namespace Week14.Enemy
 {
     [AddComponentMenu("Week14/Boss/Hacker Phased Charge Projectile")]
-    public sealed class HackerPhasedChargeProjectile : EnemyProjectile
+    public class HackerPhasedChargeProjectile : EnemyProjectile
     {
         [SerializeField, Range(0f, 1f)] private float chargeAlpha = 0.3f;
 

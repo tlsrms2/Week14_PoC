@@ -172,6 +172,12 @@ namespace Week14.Enemy
             SetGroggyAnimatorBool(IsStunParameter, false);
         }
 
+        protected void SetPatternGroggyAnimator(Animator animator)
+        {
+            patternGroggyAnimator = animator;
+            groggyAnimators = null;
+        }
+
         private void SetGroggyAnimatorTrigger(int parameter)
         {
             Animator[] targets = GetGroggyAnimators();

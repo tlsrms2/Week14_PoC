@@ -22,7 +22,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float chargeApproachArrivalSeconds = 1.5f;
 
         [Header("Launch")]
-        [SerializeField] private string animationTriggerName = "FireGlitch";
         [SerializeField, Min(0f)] private float windupSeconds = 0.3f;
         [FormerlySerializedAs("upwardRandomHalfAngleDegrees")]
         [SerializeField, Range(0f, 180f)] private float oppositePlayerRandomHalfAngleDegrees = 65f;
@@ -48,7 +47,13 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlayAnimationTrigger(animationTriggerName);
+            if (context.Boss is HackerBossAI hacker)
+            {
+                Vector2 facingDirection = context.GetDirectionToPlayer(hacker.transform.position);
+                hacker.FaceHorizontalDirection(facingDirection.x);
+            }
+
+            using IDisposable facingLock = context.AcquireFacingLock();
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             BossGraphProjectileOriginSpec originSpec = origin ?? new BossGraphProjectileOriginSpec();

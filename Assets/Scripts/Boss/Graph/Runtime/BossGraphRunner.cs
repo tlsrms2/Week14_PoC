@@ -391,7 +391,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            float hologramStartDelaySeconds = plan.ReplayNode.Action is HackerHologramReplayAction replayAction
+            HackerHologramReplayAction replayAction = plan.ReplayNode.Action as HackerHologramReplayAction;
+            float hologramStartDelaySeconds = replayAction != null
                 ? replayAction.HologramStartDelaySeconds
                 : 0.01f;
             BossActionContext hologramContext = new(
@@ -1395,6 +1396,7 @@ namespace Week14.Enemy
             IReadOnlyDictionary<string, BossAction> actionOverrides,
             Action<BossStateNode> onNodeCompleted = null)
         {
+            bool isParallelPatternGroup = nodes.Count(node => node?.Action != null) > 1;
             bool synchronizeMeleeAdvance = nodes.Count(node => node?.Action is HackerMeleeAttackAction) == 1
                 && nodes.Any(node => node?.Action is HackerSequentialSweepFireAction
                     || node?.Action is FireRadialEmissionAction);
@@ -1444,12 +1446,22 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (isParallelPatternGroup)
+            {
+                context.BeginParallelPatternGroup();
+            }
+
             try
             {
                 yield return RunParallelRoutines(routines);
             }
             finally
             {
+                if (isParallelPatternGroup)
+                {
+                    context.EndParallelPatternGroup();
+                }
+
                 if (synchronizeMeleeAdvance)
                 {
                     context.EndMeleeAdvanceSynchronization();

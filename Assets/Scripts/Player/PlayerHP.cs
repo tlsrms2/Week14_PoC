@@ -683,6 +683,7 @@ namespace Week14.UI
         private bool hasBaseRotationRootTransform;
         private float hitShakeStartedAt;
         private float hitShakeEndsAt;
+        private float hitShakeIntensity = 1f;
         private readonly List<float> bulletLoadedTimes = new(VisibleSlotCount);
         private static readonly List<PlayerHP> instances = new();
         private static int bulletTimeoutLockCount;
@@ -795,6 +796,43 @@ namespace Week14.UI
             StartCurrentBulletTimersForAll();
         }
 
+        public static void ShortenCurrentBulletLifetimes(
+            BulletGauge bulletGauge,
+            float reductionSeconds,
+            float minimumRemainingSeconds)
+        {
+            if (bulletGauge == null || reductionSeconds <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < instances.Count; i++)
+            {
+                PlayerHP instance = instances[i];
+                if (instance != null && instance.target == bulletGauge)
+                {
+                    instance.ShortenCurrentBulletLifetimes(reductionSeconds, minimumRemainingSeconds);
+                }
+            }
+        }
+
+        public static void PlayBulletShake(BulletGauge bulletGauge, float intensity)
+        {
+            if (bulletGauge == null || intensity <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < instances.Count; i++)
+            {
+                PlayerHP instance = instances[i];
+                if (instance != null && instance.target == bulletGauge)
+                {
+                    instance.PlayHitShake(intensity);
+                }
+            }
+        }
+
         private void RegisterInstance()
         {
             if (!instances.Contains(this))
@@ -823,6 +861,53 @@ namespace Week14.UI
         {
             int current = target != null ? Mathf.Max(0, target.CurrentBullets) : 0;
             ResetBulletTimers(current, true, Time.time);
+            UpdateTimeoutVisuals();
+        }
+
+        private void ShortenCurrentBulletLifetimes(float reductionSeconds, float minimumRemainingSeconds)
+        {
+            if (AreBulletTimeoutsLocked || target == null || bulletLifetimeSeconds <= 0f)
+            {
+                return;
+            }
+
+            int current = Mathf.Max(0, target.CurrentBullets);
+            if (bulletLoadedTimes.Count != current)
+            {
+                SyncBulletTimers(current, target.LastChangeSource);
+            }
+
+            float now = Time.time;
+            float minimumRemaining = Mathf.Clamp(minimumRemainingSeconds, 0f, bulletLifetimeSeconds);
+            int frozenIndex = isNewestBulletFrozen ? bulletLoadedTimes.Count - 1 : -1;
+            for (int i = 0; i < bulletLoadedTimes.Count; i++)
+            {
+                if (!IsTimedBullet(i))
+                {
+                    continue;
+                }
+
+                float age = i == frozenIndex
+                    ? frozenNewestBulletAge
+                    : Mathf.Max(0f, now - bulletLoadedTimes[i]);
+                float remaining = Mathf.Max(0f, bulletLifetimeSeconds - age);
+                if (remaining <= minimumRemaining)
+                {
+                    continue;
+                }
+
+                float shortenedRemaining = Mathf.Max(minimumRemaining, remaining - reductionSeconds);
+                float shortenedAge = bulletLifetimeSeconds - shortenedRemaining;
+                if (i == frozenIndex)
+                {
+                    frozenNewestBulletAge = shortenedAge;
+                }
+                else
+                {
+                    bulletLoadedTimes[i] = now - shortenedAge;
+                }
+            }
+
             UpdateTimeoutVisuals();
         }
 
@@ -1370,12 +1455,13 @@ namespace Week14.UI
             rotationRoot.anchoredPosition = nextPosition;
         }
 
-        private void PlayHitShake()
+        private void PlayHitShake(float intensity = 1f)
         {
             CacheRotationRoot();
             float now = Time.unscaledTime;
             hitShakeStartedAt = now;
             hitShakeEndsAt = now + hitShakeSeconds;
+            hitShakeIntensity = Mathf.Max(0f, intensity);
         }
 
         private void ApplyHitShakeOffset()
@@ -1401,7 +1487,7 @@ namespace Week14.UI
             float normalized = Mathf.Clamp01(elapsed / hitShakeSeconds);
             float damping = 1f - normalized;
             float wave = Mathf.Sin(elapsed * hitShakeFrequency);
-            return hitShakeRotationDegrees * damping * wave;
+            return hitShakeRotationDegrees * hitShakeIntensity * damping * wave;
         }
 
         private float GetHitShakeScaleMultiplier(float now)
@@ -1414,7 +1500,7 @@ namespace Week14.UI
             float elapsed = Mathf.Max(0f, now - hitShakeStartedAt);
             float normalized = Mathf.Clamp01(elapsed / hitShakeSeconds);
             float pulse = Mathf.Sin(normalized * Mathf.PI);
-            return 1f + pulse * hitShakeScaleAmount;
+            return 1f + pulse * hitShakeScaleAmount * hitShakeIntensity;
         }
 
         private float GetRecoverySeconds(BulletChangeSource source)

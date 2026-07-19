@@ -64,6 +64,13 @@ namespace Week14.Enemy
 
         private static bool TryGetTurretWeapon(HackerBossAI hacker, out HackerThrownWeapon weapon)
         {
+            if (hacker.TryGetGroundedWeapon(HackerThrownWeaponType.ThrowingWeapon, out weapon)
+                && weapon != null
+                && weapon.IsGrounded)
+            {
+                return true;
+            }
+
             if (hacker.TryGetGroundedWeapon(HackerThrownWeaponType.Gun, out weapon)
                 && weapon != null
                 && weapon.IsGrounded)

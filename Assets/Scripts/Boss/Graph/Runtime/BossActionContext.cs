@@ -29,11 +29,14 @@ namespace Week14.Enemy
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private readonly List<GameObject> transientVisuals = new();
+        private readonly HashSet<object> facingLockOwners = new();
         private string currentNodeId;
         private int activeNodeExecutionCount;
         private int nodeExecutionVersion;
         private int conductorMinionOutlineHoldRequests;
         private int activeSnipingTelegraphCount;
+        private int parallelPatternGroupDepth;
+        private bool isFacingLocked;
         private bool isMeleeAdvanceSynchronized;
         private bool hasMeleeAttackAdvanceCompleted;
         private bool isPatternTerminationRequested;
@@ -60,10 +63,21 @@ namespace Week14.Enemy
         public int NodeExecutionVersion => nodeExecutionVersion;
         public bool IsExecutionPaused => isExecutionPaused?.Invoke() == true;
         public bool IsDashing { get; private set; }
-        public bool IsFacingLocked { get; private set; }
+        public bool IsFacingLocked => isFacingLocked || facingLockOwners.Count > 0;
         public bool IsMeleeAdvanceSynchronized => isMeleeAdvanceSynchronized;
         public bool HasMeleeAttackAdvanceCompleted => hasMeleeAttackAdvanceCompleted;
         public bool IsPatternTerminationRequested => isPatternTerminationRequested;
+        public bool IsExecutingParallelPatternGroup => parallelPatternGroupDepth > 0;
+
+        internal void BeginParallelPatternGroup()
+        {
+            parallelPatternGroupDepth++;
+        }
+
+        internal void EndParallelPatternGroup()
+        {
+            parallelPatternGroupDepth = Mathf.Max(0, parallelPatternGroupDepth - 1);
+        }
 
         public void RequestPatternTermination()
         {
@@ -83,8 +97,33 @@ namespace Week14.Enemy
 
         public void SetFacingLocked(bool locked)
         {
-            IsFacingLocked = locked;
+            isFacingLocked = locked;
         }
+
+        public void SetFacingLocked(object owner, bool locked)
+        {
+            if (owner == null)
+            {
+                return;
+            }
+
+            if (locked)
+            {
+                facingLockOwners.Add(owner);
+            }
+            else
+            {
+                facingLockOwners.Remove(owner);
+            }
+        }
+
+        public IDisposable AcquireFacingLock()
+        {
+            object owner = new();
+            SetFacingLocked(owner, true);
+            return new FacingLockLease(this, owner);
+        }
+
         public Vector3 OriginPosition
         {
             get
@@ -95,6 +134,25 @@ namespace Week14.Enemy
                 }
 
                 return Boss.BodyRoot != null ? Boss.BodyRoot.position : Boss.transform.position;
+            }
+        }
+
+        private sealed class FacingLockLease : IDisposable
+        {
+            private BossActionContext context;
+            private object owner;
+
+            internal FacingLockLease(BossActionContext context, object owner)
+            {
+                this.context = context;
+                this.owner = owner;
+            }
+
+            public void Dispose()
+            {
+                context?.SetFacingLocked(owner, false);
+                context = null;
+                owner = null;
             }
         }
 
@@ -1058,9 +1116,21 @@ namespace Week14.Enemy
                 return animators;
             }
 
-            animators = Boss.BodyRoot != null
+            Animator[] discoveredAnimators = Boss.BodyRoot != null
                 ? Boss.BodyRoot.GetComponentsInChildren<Animator>(true)
                 : Boss.GetComponentsInChildren<Animator>(true);
+            List<Animator> activeAnimators = new(discoveredAnimators.Length);
+            for (int i = 0; i < discoveredAnimators.Length; i++)
+            {
+                Animator animator = discoveredAnimators[i];
+                if (animator != null
+                    && (Boss is not HackerBossAI || animator.gameObject.activeInHierarchy))
+                {
+                    activeAnimators.Add(animator);
+                }
+            }
+
+            animators = activeAnimators.ToArray();
             return animators;
         }
 
