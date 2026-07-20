@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Challenge;
+using Week14.Combat;
+using Week14.Enemy;
 using Week14.Skills;
 using Week14.Story;
 using Week14.UI;
@@ -27,16 +29,32 @@ namespace Week14.Save
         [SerializeField] private ChallengeDatabaseSO challengeDatabase;
 
         [Header("핫키")]
+        [Tooltip("플레이 중 이 키를 누르면 전체 세이브를 초기화합니다.")]
+        [SerializeField] private bool enableResetEverythingHotkey = true;
         [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스/패시브/총기를 즉시 해금합니다.")]
         [SerializeField] private bool enableUnlockAllHotkey = true;
-        [Tooltip("플레이 중 이 키를 누르면 모든 스킬/보스/패시브/총기 해금을 되돌립니다.")]
-        [SerializeField] private bool enableLockAllHotkey = true;
+        [Tooltip("플레이 중 이 키를 누르면 모든 챌린지를 완료 처리합니다.")]
+        [SerializeField] private bool enableCompleteAllChallengesHotkey = true;
+        [Tooltip("플레이 중 이 키를 누르면 모든 챌린지 진행 상태(완료 + 카운터)를 초기화합니다.")]
+        [SerializeField] private bool enableResetAllChallengesHotkey = true;
+        [Tooltip("플레이 중 이 키를 누르면 챌린지 포인트를 debugPointsToGrant만큼 지급합니다.")]
+        [SerializeField] private bool enableGrantChallengePointsHotkey = true;
+        [Tooltip("플레이 중 이 키를 누르면 현재 씬의 보스 체력을 1로 만듭니다.")]
+        [SerializeField] private bool enableSetBossHpToOneHotkey = true;
 #if ENABLE_INPUT_SYSTEM
-        [SerializeField] private Key unlockAllHotkey = Key.F9;
-        [SerializeField] private Key lockAllHotkey = Key.F10;
+        [SerializeField] private Key resetEverythingHotkey = Key.F1;
+        [SerializeField] private Key unlockAllHotkey = Key.F2;
+        [SerializeField] private Key completeAllChallengesHotkey = Key.F3;
+        [SerializeField] private Key resetAllChallengesHotkey = Key.F4;
+        [SerializeField] private Key grantChallengePointsHotkey = Key.F5;
+        [SerializeField] private Key setBossHpToOneHotkey = Key.F6;
 #else
-        [SerializeField] private KeyCode unlockAllHotkey = KeyCode.F9;
-        [SerializeField] private KeyCode lockAllHotkey = KeyCode.F10;
+        [SerializeField] private KeyCode resetEverythingHotkey = KeyCode.F1;
+        [SerializeField] private KeyCode unlockAllHotkey = KeyCode.F2;
+        [SerializeField] private KeyCode completeAllChallengesHotkey = KeyCode.F3;
+        [SerializeField] private KeyCode resetAllChallengesHotkey = KeyCode.F4;
+        [SerializeField] private KeyCode grantChallengePointsHotkey = KeyCode.F5;
+        [SerializeField] private KeyCode setBossHpToOneHotkey = KeyCode.F6;
 #endif
 
         [Header("개별 대상 (선택 스킬/보스/총기/챌린지 기능이 사용)")]
@@ -69,16 +87,53 @@ namespace Week14.Save
         [SerializeField] private bool finalBossAftermathSeen;
         [SerializeField] private bool epilogueSeen;
 
+        private static DevUnlockTools instance;
+
+        // 씬을 넘어가도 살아남는 싱글턴입니다. 이미 살아있는 인스턴스가 있으면 자기 자신을 파괴해서,
+        // 다음 씬에 원래부터 배치돼 있던 DevUnlockTools와 중복되어 핫키가 두 번씩 실행되는 것을 막습니다.
+        private void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            instance = this;
+            transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+        }
+
         private void Update()
         {
+            if (enableResetEverythingHotkey && WasHotkeyPressed(resetEverythingHotkey))
+            {
+                ResetEverything();
+            }
+
             if (enableUnlockAllHotkey && WasHotkeyPressed(unlockAllHotkey))
             {
                 UnlockAll();
             }
 
-            if (enableLockAllHotkey && WasHotkeyPressed(lockAllHotkey))
+            if (enableCompleteAllChallengesHotkey && WasHotkeyPressed(completeAllChallengesHotkey))
             {
-                LockAll();
+                CompleteAllChallenges();
+            }
+
+            if (enableResetAllChallengesHotkey && WasHotkeyPressed(resetAllChallengesHotkey))
+            {
+                ResetAllChallengeProgress();
+            }
+
+            if (enableGrantChallengePointsHotkey && WasHotkeyPressed(grantChallengePointsHotkey))
+            {
+                GrantDebugChallengePoints();
+            }
+
+            if (enableSetBossHpToOneHotkey && WasHotkeyPressed(setBossHpToOneHotkey))
+            {
+                SetCurrentBossHpToOne();
             }
         }
 
@@ -117,7 +172,9 @@ namespace Week14.Save
             UnlockAllPassiveSkills();
             UnlockAllBosses();
             UnlockAllWeapons();
-            Debug.Log("[DevUnlockTools] 모든 스킬/패시브/보스/총기를 해금했습니다.");
+            GameSaveManager.SetTutorialCompleted(true);
+            PullStoryTogglesFromSave();
+            Debug.Log("[DevUnlockTools] 모든 스킬/패시브/보스/총기를 해금하고 튜토리얼을 스킵 처리했습니다.");
         }
 
         [ContextMenu("전체 해금 되돌리기 (스킬 + 패시브 + 보스 + 총기)")]
@@ -367,6 +424,8 @@ namespace Week14.Save
                     GameSaveManager.UnlockBoss(boss.Id);
                 }
             }
+
+            RefreshBossUi();
         }
 
         [ContextMenu("보스 전체 해금 되돌리기")]
@@ -382,6 +441,7 @@ namespace Week14.Save
             }
 
             GameSaveManager.UnlockDefaultBoss();
+            RefreshBossUi();
         }
 
         [ContextMenu("총기 전체 해금")]
@@ -480,6 +540,7 @@ namespace Week14.Save
             }
 
             GameSaveManager.UnlockBoss(targetBoss.Id);
+            RefreshBossUi();
         }
 
         [ContextMenu("선택 보스 해금 되돌리기")]
@@ -493,6 +554,7 @@ namespace Week14.Save
 
             GameSaveManager.LockBoss(targetBoss.Id);
             GameSaveManager.UnclearBoss(targetBoss.Id);
+            RefreshBossUi();
         }
 
         [ContextMenu("선택 총기 해금")]
@@ -533,6 +595,8 @@ namespace Week14.Save
                     GameSaveManager.ClearBoss(boss.Id);
                 }
             }
+
+            RefreshBossUi();
         }
 
         [ContextMenu("보스 클리어/전체 클리어 되돌리기")]
@@ -545,6 +609,8 @@ namespace Week14.Save
                     GameSaveManager.UnclearBoss(boss.Id);
                 }
             }
+
+            RefreshBossUi();
         }
 
         [ContextMenu("보스 클리어/전체 최고기록 초기화")]
@@ -563,6 +629,7 @@ namespace Week14.Save
             }
 
             GameSaveManager.ClearBoss(targetBoss.Id);
+            RefreshBossUi();
         }
 
         [ContextMenu("보스 클리어/선택 보스 클리어 되돌리기")]
@@ -575,6 +642,7 @@ namespace Week14.Save
             }
 
             GameSaveManager.UnclearBoss(targetBoss.Id);
+            RefreshBossUi();
         }
 
         [ContextMenu("보스 클리어/선택 보스 최고기록 초기화")]
@@ -587,6 +655,54 @@ namespace Week14.Save
             }
 
             GameSaveManager.ResetBossClearTime(targetBoss.Id);
+        }
+
+        // ---------------------------------------------------------------
+        // 보스 체력 (디버그, 세이브와 무관 - 현재 플레이 중인 씬의 보스 인스턴스에만 적용)
+        // ---------------------------------------------------------------
+
+        [ContextMenu("현재 씬 보스 체력 1로 설정")]
+        public void SetCurrentBossHpToOne()
+        {
+            BossAI boss = FindRealBossInScene();
+            if (boss == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] 씬에서 BossAI를 찾지 못했습니다.");
+                return;
+            }
+
+            BulletGauge hpGauge = boss.HpGauge;
+            if (hpGauge == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] 보스의 HpGauge를 찾지 못했습니다.");
+                return;
+            }
+
+            int amountToSpend = hpGauge.CurrentBullets - 1;
+            if (amountToSpend > 0)
+            {
+                hpGauge.TrySpend(amountToSpend, BulletChangeSource.Generic);
+            }
+
+            Debug.Log($"[DevUnlockTools] 보스 체력을 1로 설정했습니다. (현재 {hpGauge.CurrentBullets}/{hpGauge.MaxBullets})");
+        }
+
+        // 해커 보스 3페이즈에서 소환되는 분신(HackerHologramBoss)도 BossAI를 상속하기 때문에, 그 시점부터는
+        // 씬에 BossAI가 두 개 동시에 존재한다. FindFirstObjectByType<BossAI>()는 이럴 때 어느 쪽을 돌려줄지
+        // 보장이 없어서 분신을 잡으면 진짜 보스가 아니라 UI에 안 묶인 분신의 체력 게이지를 조작하게 된다.
+        // 그래서 후보들을 모아 분신 타입을 명시적으로 걸러내고 진짜 보스만 돌려준다.
+        private static BossAI FindRealBossInScene()
+        {
+            BossAI[] candidates = FindObjectsByType<BossAI>(FindObjectsSortMode.None);
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                if (candidates[i] is not HackerHologramBoss)
+                {
+                    return candidates[i];
+                }
+            }
+
+            return null;
         }
 
         // ---------------------------------------------------------------
@@ -818,6 +934,24 @@ namespace Week14.Save
         // ---------------------------------------------------------------
         // 내부 헬퍼
         // ---------------------------------------------------------------
+
+        // 잠긴 BossSlot/BossImage는 자기 자신을 SetActive(false)로 꺼버려서 OnEnable이 다시 돌 일이 없고,
+        // GameSaveManager의 보스 해금/클리어 세터는 UI에 알림을 주지 않는다. 그래서 씬 리로드 없이 즉시
+        // 반영하려면 디버그 툴이 씬에 있는(비활성 포함) 모든 슬롯을 직접 찾아 Refresh()를 호출해야 한다.
+        private static void RefreshBossUi()
+        {
+            BossSlot[] slots = FindObjectsByType<BossSlot>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < slots.Length; i++)
+            {
+                slots[i].Refresh();
+            }
+
+            BossImage[] images = FindObjectsByType<BossImage>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < images.Length; i++)
+            {
+                images[i].Refresh();
+            }
+        }
 
         private static bool IsStorySeen(StoryEpisodeId episodeId)
         {

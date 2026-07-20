@@ -88,6 +88,31 @@ namespace Week14.UI
             HandleHoveredBossChanged(BossHoverHighlight.CurrentHoveredBossId);
         }
 
+        // 씬 리로드 없이 해금/클리어 상태 변화를 즉시 반영하고 싶을 때(예: 디버그 툴) 외부에서 호출합니다.
+        // 잠긴 슬롯은 자기 자신을 SetActive(false)로 꺼버려서 OnEnable이 다시 돌 일이 없기 때문에 필요합니다.
+        public void Refresh()
+        {
+            bool unlocked = bossData != null && bossData.IsUnlocked();
+            if (!unlocked)
+            {
+                if (gameObject.activeSelf)
+                {
+                    gameObject.SetActive(false);
+                }
+
+                return;
+            }
+
+            if (!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true); // OnEnable()이 나머지 초기화를 처리합니다.
+                return;
+            }
+
+            RefreshStatusLabel();
+            RefreshNameText();
+        }
+
         private void OnDisable()
         {
             BossHoverHighlight.HoveredBossIdChanged -= HandleHoveredBossChanged;

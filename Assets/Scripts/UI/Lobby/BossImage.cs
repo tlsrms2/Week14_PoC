@@ -37,7 +37,17 @@ namespace Week14.UI
         {
             if (bossData == null || !bossData.IsUnlocked())
             {
-                gameObject.SetActive(false);
+                if (gameObject.activeSelf)
+                {
+                    gameObject.SetActive(false);
+                }
+
+                return;
+            }
+
+            if (!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true); // OnEnable()이 Refresh()를 다시 호출해 나머지를 처리합니다.
                 return;
             }
 

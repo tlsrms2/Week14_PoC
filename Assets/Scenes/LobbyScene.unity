@@ -7452,81 +7452,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!1 &702327665
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 702327667}
-  - component: {fileID: 702327666}
-  m_Layer: 0
-  m_Name: DevUnlockTools
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &702327666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702327665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c558e968b937fb74cb854d6061b84ed3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Save.DevUnlockTools
-  skillDatabase: {fileID: 11400000, guid: 4146a7bc01c0e54418e4675f71b8193a, type: 2}
-  passiveSkillDatabase: {fileID: 11400000, guid: 5214144e9b21f6a41b46f965c3ba362f, type: 2}
-  bosses:
-  - {fileID: 11400000, guid: 475d365b249f11b458f37ce4ebfd9313, type: 2}
-  - {fileID: 11400000, guid: 8e8f60b198306e144a02d1bc421a7bac, type: 2}
-  - {fileID: 11400000, guid: 58de5f39ae1d9d848a8af5e69b351da3, type: 2}
-  - {fileID: 11400000, guid: f1a36b78306f49f4d8ed682a59847e47, type: 2}
-  - {fileID: 11400000, guid: cff2e484394f3804f8bdf8ffd818c612, type: 2}
-  weaponDatabase: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
-  challengeDatabase: {fileID: 11400000, guid: 7a82053fefc42cd49941756c8089c426, type: 2}
-  enableUnlockAllHotkey: 1
-  enableLockAllHotkey: 1
-  unlockAllHotkey: 102
-  lockAllHotkey: 103
-  targetSkill: {fileID: 0}
-  targetPassiveSkill: {fileID: 0}
-  targetBoss: {fileID: 0}
-  targetWeapon: {fileID: 0}
-  targetChallenge: {fileID: 0}
-  debugPointsToGrant: 100
-  debugPointsToSet: 0
-  prologueSeen: 1
-  tutorialCompleted: 1
-  pastSeen: 1
-  act1Seen: 1
-  lobbyTutorialBossSeen: 1
-  lobbyTutorialSkillSeen: 1
-  act2Seen: 0
-  act3Seen: 0
-  finalBossAftermathSeen: 0
-  epilogueSeen: 0
---- !u!4 &702327667
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702327665}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 820.9696, y: 611.36053, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &710911383
 GameObject:
   m_ObjectHideFlags: 0
@@ -18442,6 +18367,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7583865313150525774}
   m_CullTransparentMesh: 1
+--- !u!1001 &4327888953486208912
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 820.9696
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 611.36053
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858113056264766149, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095346315536496417, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
+      propertyPath: m_Name
+      value: DevUnlockTools
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2ebd7b115c12e4447b68c7f8284549c6, type: 3}
 --- !u!224 &4498277423988245269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18734,7 +18716,7 @@ SceneRoots:
   - {fileID: 2010789227430210255}
   - {fileID: 757410853}
   - {fileID: 1626476258}
-  - {fileID: 702327667}
+  - {fileID: 4327888953486208912}
   - {fileID: 135393372}
   - {fileID: 295645213}
   - {fileID: 5711451}
