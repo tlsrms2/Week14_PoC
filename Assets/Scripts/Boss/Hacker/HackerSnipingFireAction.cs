@@ -90,6 +90,12 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            if (context.Boss is HackerHologramBoss hologram
+                && TryGetDurationSeconds(out float replayPositionLockSeconds))
+            {
+                hologram.LockRecordedPosition(replayPositionLockSeconds);
+            }
+
             yield return HackerMeleeAttackAction.Wait(context, preChargeFacingSeconds);
             using (context.AcquireFacingLock())
             {
@@ -104,11 +110,6 @@ namespace Week14.Enemy
             context.BeginSnipingTelegraph(ShootAnimationTrigger, HoldTelegraphAnimationParameter);
             if (windupSeconds > 0f)
             {
-                if (context.Boss is HackerHologramBoss hologram)
-                {
-                    hologram.FreezeRecordedPose(windupSeconds);
-                }
-
                 HackerSnipingChargeIndicator chargeIndicator = HackerSnipingChargeIndicator.Create(
                     firePoint,
                     firePoint.position,

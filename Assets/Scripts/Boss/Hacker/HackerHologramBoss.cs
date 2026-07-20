@@ -16,7 +16,6 @@ namespace Week14.Enemy
         private const float SummonOutSeconds = 0.45f;
         private const float SummonSideHoldSeconds = 0.35f;
         private const float SummonReturnSeconds = 0.55f;
-        private const float ReplayWallSkin = 0.02f;
         private const float ReplayWallProbeRadius = 0.22f;
         private static readonly Color HologramTint = new(0.3f, 0.85f, 1f, 0.58f);
 
@@ -27,14 +26,19 @@ namespace Week14.Enemy
         private bool isReturningToOwner;
         private bool isPlayingSummonEntrance;
         private bool hasRecordedPlayerPosition;
+        private bool hasReplayPositionArcPivot;
         private float replayDelaySeconds;
         private float replayClock;
         private float replayCaptureTime;
         private float replayPositionFollowPauseSeconds;
-        private float replayPoseFreezeSeconds;
+        private float replayPositionLockSeconds;
         private float replayPositionArcOffsetDegrees;
+        private float replayPositionArcDirectionSign = 1f;
         private Coroutine summonEntranceCoroutine;
         private Vector2 recordedPlayerPosition;
+        private Vector2 replayPositionArcPivot;
+        private Collider2D[] replayMovementColliders = new Collider2D[0];
+        private Rigidbody2D replayMovementBody;
         private readonly Queue<RecordedReplayFrame> replayFrames = new();
         private readonly Queue<RecordedReplayActionGroup> replayActionGroups = new();
         private readonly List<TransformReplayBinding> transformReplayBindings = new();
@@ -82,13 +86,15 @@ namespace Week14.Enemy
             }
 
             Stop();
-            transform.position = GetRestPosition();
+            SetReplayRootPosition(GetRestPosition());
             replayDelaySeconds = Mathf.Max(0.01f, delaySeconds);
             replayClock = 0f;
             replayCaptureTime = 0f;
             replayPositionFollowPauseSeconds = 0f;
-            replayPoseFreezeSeconds = 0f;
+            replayPositionLockSeconds = 0f;
             replayPositionArcOffsetDegrees = 0f;
+            replayPositionArcDirectionSign = 1f;
+            hasReplayPositionArcPivot = false;
             isHologramReplayRunning = true;
             isRecordingReplay = true;
             isReplayPlaybackComplete = false;
@@ -105,7 +111,7 @@ namespace Week14.Enemy
                 return;
             }
 
-            transform.position = GetRestPosition();
+            SetReplayRootPosition(GetRestPosition());
             ApplyCurrentSourcePose();
             isPlayingSummonEntrance = true;
             summonEntranceCoroutine = StartCoroutine(PlaySummonEntranceRoutine());
@@ -155,8 +161,10 @@ namespace Week14.Enemy
             replayClock = 0f;
             replayCaptureTime = 0f;
             replayPositionFollowPauseSeconds = 0f;
-            replayPoseFreezeSeconds = 0f;
+            replayPositionLockSeconds = 0f;
             replayPositionArcOffsetDegrees = 0f;
+            replayPositionArcDirectionSign = 1f;
+            hasReplayPositionArcPivot = false;
             replayFrames.Clear();
             replayActionGroups.Clear();
         }
@@ -224,14 +232,15 @@ namespace Week14.Enemy
                     }
 
                     float progress = Mathf.Clamp01(elapsed / ReturnSeconds);
-                    transform.position = Vector3.Lerp(startPosition, GetRestPosition(), progress);
+                    SetReplayRootPosition(ClampReplayPosition(
+                        Vector3.Lerp(startPosition, GetRestPosition(), progress)));
                     elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
                 }
 
                 if (sourceBoss != null)
                 {
-                    transform.position = GetRestPosition();
+                    SetReplayRootPosition(GetRestPosition());
                 }
             }
             finally
@@ -292,16 +301,32 @@ namespace Week14.Enemy
                 Mathf.Max(0f, seconds));
         }
 
-        internal void FreezeRecordedPose(float seconds)
+        internal void LockRecordedPosition(float seconds)
         {
-            replayPoseFreezeSeconds = Mathf.Max(
-                replayPoseFreezeSeconds,
+            replayPositionLockSeconds = Mathf.Max(
+                replayPositionLockSeconds,
                 Mathf.Max(0f, seconds));
         }
 
         internal void SetReplayPositionArcOffset(float degrees)
         {
-            replayPositionArcOffsetDegrees = degrees;
+            bool startsNewArc = Mathf.Approximately(degrees, 0f)
+                && !Mathf.Approximately(replayPositionArcOffsetDegrees, 0f);
+            if (startsNewArc)
+            {
+                hasReplayPositionArcPivot = false;
+            }
+
+            if (!hasReplayPositionArcPivot && hasRecordedPlayerPosition)
+            {
+                replayPositionArcPivot = recordedPlayerPosition;
+                hasReplayPositionArcPivot = true;
+                Vector2 fromPivot = (Vector2)transform.position - replayPositionArcPivot;
+                // 좌우 어느 쪽에서 시작해도 두 회전 후보 중 월드 아래쪽 궤적을 선택한다.
+                replayPositionArcDirectionSign = fromPivot.x >= 0f ? -1f : 1f;
+            }
+
+            replayPositionArcOffsetDegrees = Mathf.Abs(degrees) * replayPositionArcDirectionSign;
         }
 
         internal EnemyProjectile FireReplayProjectile(
@@ -402,7 +427,7 @@ namespace Week14.Enemy
 
             if (!isReturningToOwner && sourceBoss != null)
             {
-                transform.position = GetRestPosition();
+                SetReplayRootPosition(GetRestPosition());
                 ApplyCurrentSourcePose();
             }
         }
@@ -423,7 +448,7 @@ namespace Week14.Enemy
                 yield return MoveAlongSummonOffset(0f, 1f, SummonOutSeconds);
                 yield return WaitSummonSeconds(SummonSideHoldSeconds);
                 yield return MoveAlongSummonOffset(1f, 0f, SummonReturnSeconds);
-                transform.position = GetRestPosition();
+                SetReplayRootPosition(GetRestPosition());
             }
             finally
             {
@@ -445,8 +470,8 @@ namespace Week14.Enemy
                 }
 
                 float progress = Mathf.SmoothStep(0f, 1f, elapsed / duration);
-                transform.position = GetRestPosition()
-                    + GetSummonSideOffset() * Mathf.Lerp(from, to, progress);
+                SetReplayRootPosition(ClampReplayPosition(
+                    GetRestPosition() + GetSummonSideOffset() * Mathf.Lerp(from, to, progress)));
                 ApplyCurrentSourcePose();
                 elapsed += EnemyTimeScale.DeltaTime;
                 yield return null;
@@ -534,12 +559,12 @@ namespace Week14.Enemy
                 return;
             }
 
-            bool freezePose = replayPoseFreezeSeconds > 0f;
-            if (freezePose)
+            bool lockRootPosition = replayPositionLockSeconds > 0f;
+            if (lockRootPosition)
             {
-                replayPoseFreezeSeconds = Mathf.Max(
+                replayPositionLockSeconds = Mathf.Max(
                     0f,
-                    replayPoseFreezeSeconds - deltaTime);
+                    replayPositionLockSeconds - deltaTime);
             }
 
             replayClock += deltaTime;
@@ -548,14 +573,7 @@ namespace Week14.Enemy
             while (replayFrames.Count > 0 && replayFrames.Peek().Time <= playbackTime + 0.0001f)
             {
                 RecordedReplayFrame frame = replayFrames.Dequeue();
-                if (freezePose)
-                {
-                    ApplyRecordedPlayerPosition(frame);
-                }
-                else
-                {
-                    ApplyRecordedReplayFrame(frame);
-                }
+                ApplyRecordedReplayFrame(frame, lockRootPosition);
             }
 
             if (!isRecordingReplay && replayFrames.Count == 0)
@@ -653,9 +671,13 @@ namespace Week14.Enemy
                 spriteStates);
         }
 
-        private void ApplyRecordedReplayFrame(RecordedReplayFrame frame)
+        private void ApplyRecordedReplayFrame(RecordedReplayFrame frame, bool lockRootPosition)
         {
-            transform.position = ClampReplayPosition(GetArcOffsetPosition(frame));
+            if (!lockRootPosition)
+            {
+                SetReplayRootPosition(ClampReplayPosition(GetArcOffsetPosition(frame)));
+            }
+
             transform.rotation = frame.RootRotation;
             transform.localScale = frame.RootLocalScale;
             ApplyRecordedPlayerPosition(frame);
@@ -670,7 +692,10 @@ namespace Week14.Enemy
                 return frame.RootPosition;
             }
 
-            Vector2 fromPlayer = (Vector2)frame.RootPosition - frame.PlayerPosition;
+            Vector2 arcPivot = hasReplayPositionArcPivot
+                ? replayPositionArcPivot
+                : frame.PlayerPosition;
+            Vector2 fromPlayer = (Vector2)frame.RootPosition - arcPivot;
             if (fromPlayer.sqrMagnitude <= 0.0001f)
             {
                 return frame.RootPosition;
@@ -682,7 +707,7 @@ namespace Week14.Enemy
             Vector2 rotatedOffset = new(
                 fromPlayer.x * cosine - fromPlayer.y * sine,
                 fromPlayer.x * sine + fromPlayer.y * cosine);
-            Vector2 position = frame.PlayerPosition + rotatedOffset;
+            Vector2 position = arcPivot + rotatedOffset;
             return new Vector3(position.x, position.y, frame.RootPosition.z);
         }
 
@@ -694,28 +719,23 @@ namespace Week14.Enemy
             }
 
             Vector2 currentPosition = transform.position;
-            Vector2 displacement = (Vector2)targetPosition - currentPosition;
-            float distance = displacement.magnitude;
-            if (distance <= 0.0001f)
-            {
-                return targetPosition;
-            }
-
-            int obstacleMask = sourceBoss.ObstacleMask.value | LayerMask.GetMask("Wall");
-            RaycastHit2D hit = Physics2D.CircleCast(
+            Vector2 clampedPosition = GroundMovementConstraint.ClampPointMovement(
                 currentPosition,
+                targetPosition,
                 ReplayWallProbeRadius,
-                displacement / distance,
-                distance,
-                obstacleMask);
-            if (hit.collider == null)
+                sourceBoss.ObstacleMask.value,
+                replayMovementColliders);
+            return new Vector3(clampedPosition.x, clampedPosition.y, targetPosition.z);
+        }
+
+        private void SetReplayRootPosition(Vector3 position)
+        {
+            if (replayMovementBody != null)
             {
-                return targetPosition;
+                replayMovementBody.position = position;
             }
 
-            float clampedDistance = Mathf.Max(0f, hit.distance - ReplayWallSkin);
-            Vector2 clampedPosition = currentPosition + displacement.normalized * clampedDistance;
-            return new Vector3(clampedPosition.x, clampedPosition.y, targetPosition.z);
+            transform.position = position;
         }
 
         private void ApplyRecordedPlayerPosition(RecordedReplayFrame frame)
@@ -967,22 +987,56 @@ namespace Week14.Enemy
             DisableAndDestroyComponents<ExecutionTarget>();
 
             Collider2D[] colliders = GetComponentsInChildren<Collider2D>(true);
+            List<Collider2D> movementColliders = new();
+            int environmentMask = LayerMask.GetMask("Wall") | (sourceBoss?.ObstacleMask.value ?? 0);
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (colliders[i] != null)
+                Collider2D collider = colliders[i];
+                if (collider == null)
                 {
-                    colliders[i].enabled = false;
-                    Destroy(colliders[i]);
+                    continue;
                 }
+
+                if (collider.transform == transform)
+                {
+                    collider.enabled = true;
+                    collider.isTrigger = false;
+                    collider.includeLayers = environmentMask;
+                    collider.excludeLayers = ~environmentMask;
+                    movementColliders.Add(collider);
+
+                    continue;
+                }
+
+                collider.enabled = false;
+                Destroy(collider);
             }
+
+            replayMovementColliders = movementColliders.ToArray();
+            replayMovementBody = GetComponent<Rigidbody2D>();
 
             Rigidbody2D[] bodies = GetComponentsInChildren<Rigidbody2D>(true);
             for (int i = 0; i < bodies.Length; i++)
             {
-                if (bodies[i] != null)
+                Rigidbody2D targetBody = bodies[i];
+                if (targetBody == null)
                 {
-                    bodies[i].simulated = false;
+                    continue;
                 }
+
+                if (targetBody == replayMovementBody && replayMovementColliders.Length > 0)
+                {
+                    targetBody.linearVelocity = Vector2.zero;
+                    targetBody.angularVelocity = 0f;
+                    targetBody.gravityScale = 0f;
+                    targetBody.bodyType = RigidbodyType2D.Kinematic;
+                    targetBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    targetBody.useFullKinematicContacts = true;
+                    targetBody.simulated = true;
+                    continue;
+                }
+
+                targetBody.simulated = false;
             }
         }
 

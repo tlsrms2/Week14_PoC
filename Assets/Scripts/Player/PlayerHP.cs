@@ -21,6 +21,29 @@ namespace Week14.UI
             ExpireShift
         }
 
+        private readonly struct WirePenaltyFeedback
+        {
+            public WirePenaltyFeedback(float startedAt, float duration)
+            {
+                StartedAt = startedAt;
+                Duration = duration;
+            }
+
+            private float StartedAt { get; }
+            private float Duration { get; }
+
+            public float GetWhiteBlend(float now)
+            {
+                if (Duration <= 0f)
+                {
+                    return 0f;
+                }
+
+                float normalized = Mathf.Clamp01((now - StartedAt) / Duration);
+                return normalized >= 1f ? 0f : 1f - Mathf.SmoothStep(0f, 1f, normalized);
+            }
+        }
+
         [Serializable]
         private sealed class HpSlot
         {
@@ -289,10 +312,18 @@ namespace Week14.UI
                 timeoutFillSpriteOverride = sprite;
             }
 
-            public void SetTimeoutVisual(bool usable, bool recovered, float fillAmount, Color fillColor, float iconAlpha)
+            public void SetTimeoutVisual(
+                bool usable,
+                bool recovered,
+                float fillAmount,
+                Color fillColor,
+                float iconAlpha,
+                float wirePenaltyWhiteBlend)
             {
                 lastTimeoutFillAmount = Mathf.Clamp01(fillAmount);
                 lastTimeoutFillColor = fillColor;
+                float whiteBlend = Mathf.Clamp01(wirePenaltyWhiteBlend);
+                Color visualFillColor = Color.Lerp(fillColor, Color.white, whiteBlend);
 
                 bool showFill = usable && recovered && lastTimeoutFillAmount > 0f;
                 if (showFill)
@@ -300,10 +331,20 @@ namespace Week14.UI
                     EnsureTimeoutFillImage();
                 }
 
-                ApplyTimeoutFill(timeoutFillImage, bodyImage, showFill, lastTimeoutFillAmount, fillColor, timeoutFillSpriteOverride);
+                ApplyTimeoutFill(timeoutFillImage, bodyImage, showFill, lastTimeoutFillAmount, visualFillColor, timeoutFillSpriteOverride);
                 float alpha = usable && recovered ? Mathf.Clamp01(iconAlpha) : 0f;
-                SetImageAlpha(bodyImage, alpha);
-                SetImageAlpha(timeoutFillImage, showFill ? alpha * fillColor.a : 0f);
+                ApplyWirePenaltyColor(usable, recovered, alpha, whiteBlend);
+                SetImageAlpha(timeoutFillImage, showFill ? alpha * visualFillColor.a : 0f);
+            }
+
+            private void ApplyWirePenaltyColor(bool usable, bool recovered, float alpha, float whiteBlend)
+            {
+                Color baseColor = effectKind == EffectKind.None
+                    ? GetBodyColor(usable, recovered)
+                    : GetColor(bodyImage, GetBodyColor(usable, recovered));
+                baseColor.a = alpha;
+                Color white = new(1f, 1f, 1f, alpha);
+                ApplyColor(bodyImage, Color.Lerp(baseColor, white, whiteBlend));
             }
 
             private void EnsureTimeoutFillImage()
@@ -657,6 +698,10 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float hitShakeRotationDegrees = 12f;
         [SerializeField, Min(0f)] private float hitShakeScaleAmount = 0.15f;
         [SerializeField, Min(0f)] private float hitShakeFrequency = 40f;
+        [Header("Wire Penalty Feedback")]
+        [SerializeField, Min(0f)] private float wirePenaltyShakeDistance = 3f;
+        [SerializeField, Min(0f)] private float wirePenaltyShakeRotationDegrees = 1.5f;
+        [SerializeField, Min(0f)] private float wirePenaltyShakeFrequency = 45f;
         [Header("Bullet Timeout")]
         [SerializeField, Min(0.01f)] private float bulletLifetimeSeconds = 10f;
         [SerializeField, Range(0.01f, 1f)] private float timeoutGaugeFullRatio = 0.8f;
@@ -685,6 +730,7 @@ namespace Week14.UI
         private float hitShakeEndsAt;
         private float hitShakeIntensity = 1f;
         private readonly List<float> bulletLoadedTimes = new(VisibleSlotCount);
+        private readonly List<WirePenaltyFeedback> bulletWirePenaltyFeedbacks = new(VisibleSlotCount);
         private static readonly List<PlayerHP> instances = new();
         private static int bulletTimeoutLockCount;
         private int pendingExpiredBulletIndex = -1;
@@ -692,6 +738,9 @@ namespace Week14.UI
         private bool isNewestBulletFrozen;
         private float frozenNewestBulletAge;
         private bool preserveBulletTimersOnNextEnable;
+        private float wirePenaltyShakeStartedAt;
+        private float wirePenaltyShakeEndsAt;
+        private float wirePenaltyShakeIntensity;
 
         public static bool AreBulletTimeoutsLocked => bulletTimeoutLockCount > 0;
 
@@ -725,6 +774,8 @@ namespace Week14.UI
         {
             Unsubscribe();
             instances.Remove(this);
+            bulletWirePenaltyFeedbacks.Clear();
+            wirePenaltyShakeEndsAt = 0f;
         }
 
         private void Update()
@@ -796,10 +847,13 @@ namespace Week14.UI
             StartCurrentBulletTimersForAll();
         }
 
-        public static void ShortenCurrentBulletLifetimes(
+        public static void ApplyWireLifetimePenalty(
             BulletGauge bulletGauge,
             float reductionSeconds,
-            float minimumRemainingSeconds)
+            float minimumRemainingSeconds,
+            float whiteFadeSeconds,
+            float protectedFlashSeconds,
+            float shakeIntensity)
         {
             if (bulletGauge == null || reductionSeconds <= 0f)
             {
@@ -811,24 +865,12 @@ namespace Week14.UI
                 PlayerHP instance = instances[i];
                 if (instance != null && instance.target == bulletGauge)
                 {
-                    instance.ShortenCurrentBulletLifetimes(reductionSeconds, minimumRemainingSeconds);
-                }
-            }
-        }
-
-        public static void PlayBulletShake(BulletGauge bulletGauge, float intensity)
-        {
-            if (bulletGauge == null || intensity <= 0f)
-            {
-                return;
-            }
-
-            for (int i = 0; i < instances.Count; i++)
-            {
-                PlayerHP instance = instances[i];
-                if (instance != null && instance.target == bulletGauge)
-                {
-                    instance.PlayHitShake(intensity);
+                    instance.ApplyWireLifetimePenalty(
+                        reductionSeconds,
+                        minimumRemainingSeconds,
+                        whiteFadeSeconds,
+                        protectedFlashSeconds,
+                        shakeIntensity);
                 }
             }
         }
@@ -864,9 +906,14 @@ namespace Week14.UI
             UpdateTimeoutVisuals();
         }
 
-        private void ShortenCurrentBulletLifetimes(float reductionSeconds, float minimumRemainingSeconds)
+        private void ApplyWireLifetimePenalty(
+            float reductionSeconds,
+            float minimumRemainingSeconds,
+            float whiteFadeSeconds,
+            float protectedFlashSeconds,
+            float shakeIntensity)
         {
-            if (AreBulletTimeoutsLocked || target == null || bulletLifetimeSeconds <= 0f)
+            if (target == null || bulletLifetimeSeconds <= 0f)
             {
                 return;
             }
@@ -878,37 +925,64 @@ namespace Week14.UI
             }
 
             float now = Time.time;
+            float feedbackNow = Time.unscaledTime;
             float minimumRemaining = Mathf.Clamp(minimumRemainingSeconds, 0f, bulletLifetimeSeconds);
+            float affectedDuration = Mathf.Max(0.01f, whiteFadeSeconds);
+            float protectedDuration = Mathf.Max(0.01f, protectedFlashSeconds);
             int frozenIndex = isNewestBulletFrozen ? bulletLoadedTimes.Count - 1 : -1;
+            SyncWirePenaltyFeedbackCount(bulletLoadedTimes.Count);
+            bool shortenedAny = false;
             for (int i = 0; i < bulletLoadedTimes.Count; i++)
             {
-                if (!IsTimedBullet(i))
+                bool shortened = false;
+                if (!AreBulletTimeoutsLocked && IsTimedBullet(i))
                 {
-                    continue;
+                    float age = i == frozenIndex
+                        ? frozenNewestBulletAge
+                        : Mathf.Max(0f, now - bulletLoadedTimes[i]);
+                    float remaining = Mathf.Max(0f, bulletLifetimeSeconds - age);
+                    if (remaining > minimumRemaining)
+                    {
+                        float shortenedRemaining = Mathf.Max(minimumRemaining, remaining - reductionSeconds);
+                        float shortenedAge = bulletLifetimeSeconds - shortenedRemaining;
+                        if (i == frozenIndex)
+                        {
+                            frozenNewestBulletAge = shortenedAge;
+                        }
+                        else
+                        {
+                            bulletLoadedTimes[i] = now - shortenedAge;
+                        }
+
+                        shortened = true;
+                        shortenedAny = true;
+                    }
                 }
 
-                float age = i == frozenIndex
-                    ? frozenNewestBulletAge
-                    : Mathf.Max(0f, now - bulletLoadedTimes[i]);
-                float remaining = Mathf.Max(0f, bulletLifetimeSeconds - age);
-                if (remaining <= minimumRemaining)
-                {
-                    continue;
-                }
+                float feedbackDuration = shortened ? affectedDuration : protectedDuration;
+                bulletWirePenaltyFeedbacks[i] = new WirePenaltyFeedback(feedbackNow, feedbackDuration);
+            }
 
-                float shortenedRemaining = Mathf.Max(minimumRemaining, remaining - reductionSeconds);
-                float shortenedAge = bulletLifetimeSeconds - shortenedRemaining;
-                if (i == frozenIndex)
-                {
-                    frozenNewestBulletAge = shortenedAge;
-                }
-                else
-                {
-                    bulletLoadedTimes[i] = now - shortenedAge;
-                }
+            if (bulletLoadedTimes.Count > 0)
+            {
+                BeginWirePenaltyShake(shortenedAny ? affectedDuration : protectedDuration, shakeIntensity);
             }
 
             UpdateTimeoutVisuals();
+        }
+
+        private void SyncWirePenaltyFeedbackCount(int count)
+        {
+            int targetCount = Mathf.Max(0, count);
+            while (bulletWirePenaltyFeedbacks.Count > targetCount)
+            {
+                bulletWirePenaltyFeedbacks.RemoveAt(bulletWirePenaltyFeedbacks.Count - 1);
+            }
+
+            while (bulletWirePenaltyFeedbacks.Count < targetCount)
+            {
+                bulletWirePenaltyFeedbacks.Add(default);
+            }
         }
 
         private float ComputeNewestBulletAge()
@@ -1201,6 +1275,8 @@ namespace Week14.UI
                 return;
             }
 
+            SyncWirePenaltyFeedbackCount(bulletLoadedTimes.Count);
+
             while (bulletLoadedTimes.Count > targetCount)
             {
                 int removeIndex = bulletLoadedTimes.Count - 1;
@@ -1212,12 +1288,14 @@ namespace Week14.UI
                 }
 
                 bulletLoadedTimes.RemoveAt(removeIndex);
+                bulletWirePenaltyFeedbacks.RemoveAt(removeIndex);
             }
 
             float loadedAt = GetLoadedAtForRecoverySource(source, now);
             while (bulletLoadedTimes.Count < targetCount)
             {
                 bulletLoadedTimes.Add(loadedAt);
+                bulletWirePenaltyFeedbacks.Add(default);
             }
         }
 
@@ -1245,10 +1323,12 @@ namespace Week14.UI
         private void ResetBulletTimers(int count, bool timed, float loadedAt)
         {
             bulletLoadedTimes.Clear();
+            bulletWirePenaltyFeedbacks.Clear();
             float value = timed ? loadedAt : UntimedBulletLoadedAt;
             for (int i = 0; i < count; i++)
             {
                 bulletLoadedTimes.Add(value);
+                bulletWirePenaltyFeedbacks.Add(default);
             }
         }
 
@@ -1332,7 +1412,16 @@ namespace Week14.UI
                 float age = !timed ? 0f : frozen ? frozenNewestBulletAge : Mathf.Max(0f, now - bulletLoadedTimes[bulletIndex]);
                 float fillAmount = GetTimeoutFillAmount(age);
                 float iconAlpha = timed && !frozen && IsInTimeoutWarning(age) ? GetWarningBlinkAlpha() : 1f;
-                slot.SetTimeoutVisual(usable, recovered, fillAmount, timeoutGaugeColor, iconAlpha);
+                float wirePenaltyWhiteBlend = recovered && bulletIndex < bulletWirePenaltyFeedbacks.Count
+                    ? bulletWirePenaltyFeedbacks[bulletIndex].GetWhiteBlend(Time.unscaledTime)
+                    : 0f;
+                slot.SetTimeoutVisual(
+                    usable,
+                    recovered,
+                    fillAmount,
+                    timeoutGaugeColor,
+                    iconAlpha,
+                    wirePenaltyWhiteBlend);
             }
         }
 
@@ -1452,6 +1541,7 @@ namespace Week14.UI
                 nextPosition.x = leftMouseRotationRootPosX;
             }
 
+            nextPosition += GetWirePenaltyShakeOffset(Time.unscaledTime);
             rotationRoot.anchoredPosition = nextPosition;
         }
 
@@ -1472,8 +1562,57 @@ namespace Week14.UI
             }
 
             float now = Time.unscaledTime;
-            rotationRoot.localRotation = baseRotationRootLocalRotation * Quaternion.Euler(0f, 0f, GetHitShakeRotationDegrees(now));
+            float rotationDegrees = GetHitShakeRotationDegrees(now) + GetWirePenaltyShakeRotationDegrees(now);
+            rotationRoot.localRotation = baseRotationRootLocalRotation * Quaternion.Euler(0f, 0f, rotationDegrees);
             rotationRoot.localScale = baseRotationRootLocalScale * GetHitShakeScaleMultiplier(now);
+        }
+
+        private void BeginWirePenaltyShake(float seconds, float intensity)
+        {
+            CacheRotationRoot();
+            wirePenaltyShakeStartedAt = Time.unscaledTime;
+            wirePenaltyShakeEndsAt = wirePenaltyShakeStartedAt + Mathf.Max(0.01f, seconds);
+            wirePenaltyShakeIntensity = Mathf.Max(0f, intensity);
+        }
+
+        private Vector2 GetWirePenaltyShakeOffset(float now)
+        {
+            float strength = GetWirePenaltyShakeStrength(now);
+            if (strength <= 0f || wirePenaltyShakeDistance <= 0f)
+            {
+                return Vector2.zero;
+            }
+
+            float elapsed = Mathf.Max(0f, now - wirePenaltyShakeStartedAt);
+            float phase = elapsed * wirePenaltyShakeFrequency;
+            return new Vector2(Mathf.Sin(phase), Mathf.Sin(phase * 1.37f + 1.7f))
+                * (wirePenaltyShakeDistance * strength);
+        }
+
+        private float GetWirePenaltyShakeRotationDegrees(float now)
+        {
+            float strength = GetWirePenaltyShakeStrength(now);
+            if (strength <= 0f || wirePenaltyShakeRotationDegrees <= 0f)
+            {
+                return 0f;
+            }
+
+            float elapsed = Mathf.Max(0f, now - wirePenaltyShakeStartedAt);
+            return Mathf.Sin(elapsed * wirePenaltyShakeFrequency * 1.21f)
+                * wirePenaltyShakeRotationDegrees
+                * strength;
+        }
+
+        private float GetWirePenaltyShakeStrength(float now)
+        {
+            float duration = wirePenaltyShakeEndsAt - wirePenaltyShakeStartedAt;
+            if (now >= wirePenaltyShakeEndsAt || duration <= 0f)
+            {
+                return 0f;
+            }
+
+            float normalized = Mathf.Clamp01((now - wirePenaltyShakeStartedAt) / duration);
+            return wirePenaltyShakeIntensity * (1f - Mathf.SmoothStep(0f, 1f, normalized));
         }
 
         private float GetHitShakeRotationDegrees(float now)

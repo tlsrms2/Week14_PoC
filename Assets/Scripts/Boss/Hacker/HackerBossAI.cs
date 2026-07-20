@@ -53,6 +53,8 @@ namespace Week14.Enemy
         [SerializeField] private Color wireContactFlashColor = new(0.2f, 0.7f, 1f, 1f);
         [SerializeField, Min(0f)] private float wireContactFlashSeconds = 0.18f;
         [SerializeField, Range(0f, 1f)] private float wireBulletShakeIntensity = 0.4f;
+        [SerializeField, Min(0.01f)] private float wireBulletWhiteFadeSeconds = 1f;
+        [SerializeField, Min(0.01f)] private float wireProtectedBulletFlashSeconds = 0.15f;
 
         [Header("Wire Settings")]
         [SerializeField] private HackerWireSettings wireSettings = new();
@@ -60,6 +62,9 @@ namespace Week14.Enemy
         [Header("Parry Bait Projectile")]
         [Tooltip("Melee, Thrust, Dash Sweep이 공통으로 사용하는 ParryBaitRewardProjectile 설정입니다.")]
         [SerializeField] private BossProjectileSettings parryProjectileSettings = new();
+        [Tooltip("Melee, Thrust, Dash Sweep 패링 성공 수만큼 패턴 종료 시 생성할 보상탄 설정입니다.")]
+        [SerializeField] private BossProjectileSettings parryRewardProjectileSettings = new();
+        [SerializeField, Min(0f)] private float parryRewardSpawnRadius = 1.5f;
 
         [Header("Hologram")]
         [SerializeField] private HackerHologramBoss hologramPrefab;
@@ -110,6 +115,7 @@ namespace Week14.Enemy
         private bool isHologramSummonUnlocked;
         private HackerFireWireResult lastFireWireResult;
         private HackerHologramBoss hologram;
+        private HackerPatternParryRewardTracker activePatternParryRewardTracker;
         private Animator twoWeaponAnimator;
         private Animator oneWeaponAnimator;
         private Coroutine phaseVisualSwitchRoutine;
@@ -142,11 +148,13 @@ namespace Week14.Enemy
                 return;
             }
 
-            PlayerHP.ShortenCurrentBulletLifetimes(
+            PlayerHP.ApplyWireLifetimePenalty(
                 player.Bullets,
                 Mathf.Max(0f, wireLifetimeReductionSeconds),
-                Mathf.Max(0f, wireMinimumRemainingSeconds));
-            PlayerHP.PlayBulletShake(player.Bullets, wireBulletShakeIntensity);
+                Mathf.Max(0f, wireMinimumRemainingSeconds),
+                Mathf.Max(0.01f, wireBulletWhiteFadeSeconds),
+                Mathf.Max(0.01f, wireProtectedBulletFlashSeconds),
+                wireBulletShakeIntensity);
             player.FlashBodyColor(wireContactFlashColor, wireContactFlashSeconds);
         }
 
@@ -250,6 +258,7 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
+            CancelPatternParryRewardTracking();
             PlayGroggyStunVisual();
             base.OnHpEmptyBegan();
             DestroyActiveProjectiles();
@@ -270,6 +279,7 @@ namespace Week14.Enemy
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
+            CancelPatternParryRewardTracking();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
             HackerWireNodeProjectile.ClearAttachedNodes(this);
 
@@ -311,6 +321,7 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            CancelPatternParryRewardTracking();
             if (phaseVisualSwitchRoutine != null)
             {
                 StopCoroutine(phaseVisualSwitchRoutine);
@@ -322,6 +333,69 @@ namespace Week14.Enemy
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnDisable();
+        }
+
+        internal void SpawnPatternParryRewards(int count)
+        {
+            if (count <= 0 || parryRewardProjectileSettings?.Prefab == null)
+            {
+                return;
+            }
+
+            Vector3 center = BodyRoot != null ? BodyRoot.position : transform.position;
+            float radius = Mathf.Max(0f, parryRewardSpawnRadius);
+            float angleStep = 360f / count;
+            for (int i = 0; i < count; i++)
+            {
+                float angleRadians = angleStep * i * Mathf.Deg2Rad;
+                Vector2 direction = new(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
+                Vector3 spawnPosition = center + (Vector3)(direction * radius);
+                EnemyProjectile reward = FireGraphProjectile(
+                    parryRewardProjectileSettings,
+                    spawnPosition,
+                    direction,
+                    0f,
+                    aimAtPlayerWhileChargingOverride: false,
+                    aimAtPlayerOnLaunchOverride: false,
+                    chargeSecondsOverride: 0f,
+                    suppressHoming: true);
+                reward?.ConfigurePlayerCollisionIgnored(true);
+                reward?.ConfigureIgnoresWalls(true);
+            }
+        }
+
+        internal HackerPatternParryRewardTracker ActivePatternParryRewardTracker =>
+            activePatternParryRewardTracker;
+
+        internal HackerPatternParryRewardTracker BeginPatternParryRewardTracking()
+        {
+            activePatternParryRewardTracker?.Complete(false);
+            activePatternParryRewardTracker = new HackerPatternParryRewardTracker();
+            return activePatternParryRewardTracker;
+        }
+
+        internal int EndPatternParryRewardTracking(
+            HackerPatternParryRewardTracker tracker,
+            bool completed)
+        {
+            if (tracker == null)
+            {
+                return 0;
+            }
+
+            int rewardCount = tracker.Complete(completed);
+            if (activePatternParryRewardTracker == tracker)
+            {
+                activePatternParryRewardTracker = null;
+            }
+
+            return rewardCount;
+        }
+
+        private void CancelPatternParryRewardTracking()
+        {
+            activePatternParryRewardTracker?.Complete(false);
+            activePatternParryRewardTracker = null;
         }
 
         protected virtual void OnIdleHackerLateUpdate() { }

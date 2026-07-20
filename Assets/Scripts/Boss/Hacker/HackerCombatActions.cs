@@ -177,7 +177,8 @@ namespace Week14.Enemy
                     parryAnchor,
                     Vector3.zero,
                     remainingWindup,
-                    remainingWindup);
+                    remainingWindup,
+                    countPatternReward: true);
 
                 float elapsed = 0f;
                 while (elapsed < remainingWindup)
@@ -678,7 +679,8 @@ namespace Week14.Enemy
                 bossTransform,
                 parryWorldOffset,
                 remainingWindup,
-                remainingWindup);
+                remainingWindup,
+                countPatternReward: true);
 
             float elapsed = 0f;
             while (elapsed < remainingWindup)
@@ -948,7 +950,8 @@ namespace Week14.Enemy
         [SerializeField, Range(0f, 1f)] private float hologramAfterimageAlphaMultiplier = 0.45f;
 
         [Header("Hologram")]
-        [SerializeField, Range(-180f, 180f)] private float hologramRetreatAngleDegrees = 30f;
+        [Tooltip("홀로그램이 본체 경로와 갈라질 때 아래쪽으로 회전할 각도입니다.")]
+        [SerializeField, Range(0f, 180f)] private float hologramRetreatAngleDegrees = 30f;
         [FormerlySerializedAs("hologramRetreatFollowDelaySeconds")]
         [Tooltip("홀로그램이 후퇴 또는 Diagonal Player 대시 후 본체의 기록 위치를 다시 따르기 전까지 대기할 시간입니다.")]
         [SerializeField, Min(0f)] private float hologramRetreatWaitSeconds = 5f;

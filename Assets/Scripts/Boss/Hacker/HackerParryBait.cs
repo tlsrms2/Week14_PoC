@@ -4,13 +4,39 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
+    internal sealed class HackerPatternParryRewardTracker
+    {
+        private bool isActive = true;
+        private int count;
+
+        internal void Register()
+        {
+            if (isActive)
+            {
+                count++;
+            }
+        }
+
+        internal int Complete(bool completed)
+        {
+            int result = isActive && completed ? count : 0;
+            isActive = false;
+            count = 0;
+            return result;
+        }
+    }
+
     internal sealed class HackerParryBait : IDisposable
     {
         private ParryBaitRewardProjectile projectile;
+        private readonly HackerPatternParryRewardTracker rewardTracker;
 
-        private HackerParryBait(ParryBaitRewardProjectile projectile)
+        private HackerParryBait(
+            ParryBaitRewardProjectile projectile,
+            HackerPatternParryRewardTracker rewardTracker)
         {
             this.projectile = projectile;
+            this.rewardTracker = rewardTracker;
             projectile.HackerParried += HandleParried;
         }
 
@@ -23,7 +49,8 @@ namespace Week14.Enemy
             Transform followTarget,
             Vector3 followWorldOffset,
             float parrySeconds,
-            float attackDelaySeconds)
+            float attackDelaySeconds,
+            bool countPatternReward = false)
         {
             if (context?.Boss == null || settings?.Prefab is not ParryBaitRewardProjectile)
             {
@@ -62,7 +89,16 @@ namespace Week14.Enemy
             {
                 bait.ConfigureParryLockOnIndicatorColor(new Color(0.04f, 0.18f, 0.75f, 1f));
             }
-            return new HackerParryBait(bait);
+
+            HackerPatternParryRewardTracker rewardTracker = null;
+            if (countPatternReward
+                && context.Boss is HackerBossAI hacker
+                && hacker is not HackerHologramBoss)
+            {
+                rewardTracker = hacker.ActivePatternParryRewardTracker;
+            }
+
+            return new HackerParryBait(bait, rewardTracker);
         }
 
         public void Dispose()
@@ -76,7 +112,13 @@ namespace Week14.Enemy
 
         private void HandleParried()
         {
+            if (WasParried)
+            {
+                return;
+            }
+
             WasParried = true;
+            rewardTracker?.Register();
         }
     }
 }

@@ -61,7 +61,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035224
     sequences: []
-    editorPosition: {x: -320, y: 2635}
+    editorPosition: {x: -320, y: 2636}
   - nodeId: Melee Attack2
     nodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
     nodeKind: 0
@@ -187,7 +187,7 @@ MonoBehaviour:
     action:
       rid: 6489939146365468752
     sequences: []
-    editorPosition: {x: 211, y: 1011}
+    editorPosition: {x: 212, y: 1011}
   - nodeId: Fire Sniping Projectile5
     nodeGuid: 47af3cd50ff44bc29dc151e3b09eadb1
     nodeKind: 0
@@ -547,7 +547,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656662
     sequences: []
-    editorPosition: {x: 2866, y: 1356}
+    editorPosition: {x: 2865, y: 1356}
   - nodeId: Throw Weapon1
     nodeGuid: cf3ac7c494f949bc8442174aa7eec43a
     nodeKind: 0
@@ -1096,7 +1096,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559020
     sequences: []
-    editorPosition: {x: 1305, y: 939}
+    editorPosition: {x: 1306, y: 939}
   - nodeId: Throw Weapon2
     nodeGuid: 100a93437d3a495caa72a5edacb1294f
     nodeKind: 0
@@ -1159,7 +1159,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559028
     sequences: []
-    editorPosition: {x: 1121, y: 1248}
+    editorPosition: {x: 1122, y: 1248}
   - nodeId: Charge Dash13
     nodeGuid: d5877fa3be9642689470cd310d2d51e2
     nodeKind: 0
@@ -2440,7 +2440,7 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    phaseMaxHp: 100
+    phaseMaxHp: 1
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2523,7 +2523,7 @@ MonoBehaviour:
       minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
-    phaseMaxHp: 150
+    phaseMaxHp: 1
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2678,7 +2678,7 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: UU/P8
-      weight: 1
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
@@ -5671,7 +5671,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.25
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -8935,8 +8935,8 @@ MonoBehaviour:
     - rid: 6489939186800656661
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
-        directionLockLeadSeconds: 0.25
+        windupSeconds: 0.65
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -9022,7 +9022,7 @@ MonoBehaviour:
     - rid: 6489939186800656662
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
+        windupSeconds: 0.65
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
         approachStartDistance: 99
@@ -9147,8 +9147,8 @@ MonoBehaviour:
     - rid: 6489939186800656664
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
-        directionLockLeadSeconds: 0.25
+        windupSeconds: 0.65
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -9234,7 +9234,7 @@ MonoBehaviour:
     - rid: 6489939186800656665
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
+        windupSeconds: 0.65
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
         approachStartDistance: 99
@@ -9422,7 +9422,7 @@ MonoBehaviour:
     - rid: 6489939186800656667
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
+        windupSeconds: 0.65
         directionLockLeadSeconds: 0.15
         recoverySeconds: 0
         approachStartDistance: 99
@@ -10889,8 +10889,8 @@ MonoBehaviour:
     - rid: 6489939186800656697
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
-        directionLockLeadSeconds: 0.25
+        windupSeconds: 0.65
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -13488,8 +13488,8 @@ MonoBehaviour:
     - rid: 6489939200651559019
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
-        directionLockLeadSeconds: 0.25
+        windupSeconds: 0.65
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -13575,7 +13575,7 @@ MonoBehaviour:
     - rid: 6489939200651559020
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
+        windupSeconds: 0.65
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0.3
         approachStartDistance: 99
@@ -14046,8 +14046,8 @@ MonoBehaviour:
     - rid: 6489939200651559028
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
-        directionLockLeadSeconds: 0.25
+        windupSeconds: 0.65
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -14133,7 +14133,7 @@ MonoBehaviour:
     - rid: 6489939200651559029
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
+        windupSeconds: 0.65
         directionLockLeadSeconds: 0.25
         recoverySeconds: 0
         approachStartDistance: 99
@@ -14321,7 +14321,7 @@ MonoBehaviour:
     - rid: 6489939200651559031
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        windupSeconds: 0.6
+        windupSeconds: 0.65
         directionLockLeadSeconds: 0.15
         recoverySeconds: 0
         approachStartDistance: 99
@@ -15561,7 +15561,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.25
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -17082,7 +17082,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.25
+        directionLockLeadSeconds: 0.4
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -18311,7 +18311,7 @@ MonoBehaviour:
         maxShotCount: 20
         fireSfxId: 
         recoverySeconds: 0
-        fireEffectPrefab: {fileID: 0}
+        fireEffectPrefab: {fileID: 1663811234227697370, guid: 62349371c78043d4da49bbe80606e3cd, type: 3}
         fireEffectRotationOffsetDegrees: 0
         fireEffectScale: 1
     - rid: 6489939269342724371
@@ -18350,8 +18350,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        flyingSprite: {fileID: 0}
-        groundedSprite: {fileID: 0}
+        flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
+        groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939269342724372
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18727,7 +18727,7 @@ MonoBehaviour:
         maxShotCount: 20
         fireSfxId: 
         recoverySeconds: 0
-        fireEffectPrefab: {fileID: 0}
+        fireEffectPrefab: {fileID: 1663811234227697370, guid: 62349371c78043d4da49bbe80606e3cd, type: 3}
         fireEffectRotationOffsetDegrees: 0
         fireEffectScale: 1
     - rid: 6489939269342724382
@@ -18766,8 +18766,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        flyingSprite: {fileID: 0}
-        groundedSprite: {fileID: 0}
+        flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
+        groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939269342724383
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -19112,7 +19112,7 @@ MonoBehaviour:
     - rid: 6489939269342724394
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1
+        durationSeconds: 1.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19142,7 +19142,7 @@ MonoBehaviour:
     - rid: 6489939269342724395
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1
+        durationSeconds: 1.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19172,7 +19172,7 @@ MonoBehaviour:
     - rid: 6489939269342724396
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1
+        durationSeconds: 1.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2

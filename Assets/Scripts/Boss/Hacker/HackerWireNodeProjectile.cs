@@ -286,13 +286,16 @@ namespace Week14.Enemy
 
         private void CreateLine()
         {
+            Color color = wireOwner != null
+                ? wireOwner.WireSettings.Color
+                : new Color(0.35f, 0.8f, 1f, 0.85f);
             line = gameObject.AddComponent<LineRenderer>();
             line.useWorldSpace = true;
             line.positionCount = 2;
             line.startWidth = 0.035f;
             line.endWidth = 0.035f;
-            line.startColor = new Color(0.35f, 0.8f, 1f, 0.85f);
-            line.endColor = new Color(0.35f, 0.8f, 1f, 0.85f);
+            line.startColor = color;
+            line.endColor = color;
             BossSorting.Apply(line);
             line.sortingOrder = 18;
             Shader shader = Shader.Find("Sprites/Default");
