@@ -6,6 +6,12 @@ namespace Week14.Combat
     [AddComponentMenu("")]
     public sealed class PlayerOnlyMovementBarrier : MonoBehaviour
     {
+        public bool IgnoresProjectileCollision { get; private set; } = true;
+
+        public void ConfigureProjectileCollisionIgnored(bool ignored)
+        {
+            IgnoresProjectileCollision = ignored;
+        }
     }
 
     public static class GroundMovementConstraint
