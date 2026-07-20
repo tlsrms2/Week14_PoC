@@ -1,3 +1,5 @@
+using Week14.Combat;
+
 namespace Week14.Challenge
 {
     public abstract class ChallengeRunState
@@ -7,7 +9,7 @@ namespace Week14.Challenge
         public virtual void OnTick(float elapsedSeconds) { }
         public virtual void OnPlayerHit(int totalHitsThisRun) { }
         public virtual void OnPhaseReached(int phaseNumber) { }
-        public virtual void OnParried(int totalParriesThisRun) { }
+        public virtual void OnParried(EnemyProjectile projectile) { }
 
         public abstract bool TryFinalize(bool victory, string challengeId);
     }

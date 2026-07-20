@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
+  m_Name: ParryBulletCountChallenge
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
+  challengeId: ParryBulletCount_6
+  description: 
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
+    m_TableEntryReference:
+      m_KeyId: 3451950613233664
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  rewardPoint: 1
+  showProgress: 1
+  minParries: 6
+  targetProjectilePrefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+  references:
+    version: 2
+    RefIds: []

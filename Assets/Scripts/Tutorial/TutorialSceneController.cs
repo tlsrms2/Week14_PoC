@@ -2026,7 +2026,7 @@ namespace Week14.Tutorial
             previousPlayerBulletCount = current;
         }
 
-        private void HandleProjectileParried()
+        private void HandleProjectileParried(EnemyProjectile _)
         {
             if (activeStep == TutorialStepId.Parry)
             {

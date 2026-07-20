@@ -153,6 +153,8 @@ namespace Week14.Combat
         public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public BossAI OwnerBoss => ownerBoss;
+        // 이 인스턴스를 생성한 원본 프리팹입니다. 특정 탄 종류만 골라 세는 챌린지(패링 카운트 등)가 비교 기준으로 사용합니다.
+        public EnemyProjectile SourcePrefab => poolPrefabSource;
         protected BulletGauge OwnerBullets => ownerBullets;
         protected Rigidbody2D ProjectileBody => body;
         protected int BulletDamage => bulletDamage;

@@ -4,6 +4,9 @@ namespace Week14.Challenge
     {
         PhaseReach,
         TimeAttack,
-        HitLimit
+        HitLimit,
+        BossClear,
+        ParryCount,
+        ParryClear
     }
 }
