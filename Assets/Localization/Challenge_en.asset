@@ -19,15 +19,15 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 500000000000
-    m_Localized: Win a battle without taking damage more than once.
+    m_Localized: Win the battle without taking damage more than once.
     m_Metadata:
       m_Items: []
   - m_Id: 502600000000
-    m_Localized: Enter Phase 2 three times.
+    m_Localized: Enter Second Phase 3 times.
     m_Metadata:
       m_Items: []
   - m_Id: 505200000000
-    m_Localized: Enter Phase 2 six times.
+    m_Localized: Enter Second Phase 6 times.
     m_Metadata:
       m_Items: []
   - m_Id: 507800000000
@@ -35,19 +35,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3440320454164480
-    m_Localized: Win the battle
+    m_Localized: Win the battle.
     m_Metadata:
       m_Items: []
   - m_Id: 3443865412796416
-    m_Localized: Intercept {0} projectiles cumulatively.
+    m_Localized: Intercept {0} projectiles.
     m_Metadata:
       m_Items: []
   - m_Id: 3448495471427584
-    m_Localized: Intercept {0} projectiles and win in a single battle.
+    m_Localized: Intercept {0} projectiles and win the battle.
     m_Metadata:
       m_Items: []
   - m_Id: 3451950613233664
-    m_Localized: Successfully perform Core Interrupt {0} times.
+    m_Localized: Successfully perform Counter {0} times.
     m_Metadata:
       m_Items: []
   references:
