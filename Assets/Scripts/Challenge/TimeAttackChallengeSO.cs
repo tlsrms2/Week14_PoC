@@ -10,6 +10,21 @@ namespace Week14.Challenge
 
         public override ChallengeType Kind => ChallengeType.TimeAttack;
 
+        // 설명 텍스트의 {0} 자리에 "MM:SS" 형식으로 꽂힙니다. targetSeconds가 바뀌어도
+        // 로컬라이징 테이블 문구를 따로 고칠 필요가 없도록 여기서 값을 만들어 넘깁니다.
+        public override object[] LocalizedDescriptionArguments => new object[] { FormattedTargetTime };
+
+        private string FormattedTargetTime
+        {
+            get
+            {
+                int totalSeconds = Mathf.Max(0, Mathf.RoundToInt(targetSeconds));
+                int minutes = totalSeconds / 60;
+                int seconds = totalSeconds % 60;
+                return $"{minutes}:{seconds:00}";
+            }
+        }
+
         public override ChallengeRunState CreateRunState()
         {
             return new RunState(targetSeconds);

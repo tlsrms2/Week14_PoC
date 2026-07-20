@@ -11,7 +11,7 @@ namespace Week14.Combat
     {
         private const int MouseParryMissesBeforePenalty = 3;
 
-        internal static event Action ProjectileParried;
+        internal static event Action<EnemyProjectile> ProjectileParried;
 
         private readonly PlayerCombatController.PlayerCombatContext context;
         private readonly PlayerAimController aimController;
@@ -90,7 +90,7 @@ namespace Week14.Combat
             int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
             SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
 
-            ProjectileParried?.Invoke();
+            ProjectileParried?.Invoke(target);
             return true;
         }
 
@@ -171,7 +171,7 @@ namespace Week14.Combat
                 }
 
                 PlayParryImpact(impactPosition, direction, false);
-                ProjectileParried?.Invoke();
+                ProjectileParried?.Invoke(target);
                 parriedCount++;
             }
 

@@ -958,6 +958,30 @@ namespace Week14.Save
             return 1;
         }
 
+        // IncrementChallengeCounter와 달리 한 번에 임의의 양(예: 이번 판에 패링한 횟수)을 더합니다.
+        public static int AddToChallengeCounter(string challengeId, int amount)
+        {
+            if (string.IsNullOrEmpty(challengeId) || amount == 0)
+            {
+                return GetChallengeCounter(challengeId);
+            }
+
+            List<ChallengeCounterEntry> counters = Data.challengeCounters;
+            for (int i = 0; i < counters.Count; i++)
+            {
+                if (counters[i].challengeId == challengeId)
+                {
+                    counters[i].count += amount;
+                    Save();
+                    return counters[i].count;
+                }
+            }
+
+            counters.Add(new ChallengeCounterEntry { challengeId = challengeId, count = amount });
+            Save();
+            return amount;
+        }
+
         // 테스트/디버그용: 모든 챌린지 누적 카운터를 지웁니다.
         public static void ResetChallengeCounters()
         {

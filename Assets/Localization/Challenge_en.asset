@@ -31,11 +31,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 507800000000
-    m_Localized: Win the battle within 1:30.
+    m_Localized: Win the battle within {0}.
     m_Metadata:
       m_Items: []
-  - m_Id: 510400000000
-    m_Localized: Win the battle within 2:00.
+  - m_Id: 3440320454164480
+    m_Localized: Win the battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3443865412796416
+    m_Localized: Intercept {0} projectiles cumulatively.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448495471427584
+    m_Localized: Intercept {0} projectiles and win in a single battle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451950613233664
+    m_Localized: Successfully perform Core Interrupt {0} times.
     m_Metadata:
       m_Items: []
   references:

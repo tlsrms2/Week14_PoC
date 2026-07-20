@@ -146,6 +146,9 @@ namespace Week14.Combat
         public event System.Action<EnemyProjectile> RadialSplit;
         public event System.Action<EnemyProjectile> RadialSplitImminent;
         public event System.Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> Destroyed;
+        // 어떤 종류의 EnemyProjectile이 파괴되든 발생하는 전역 이벤트입니다. 챌린지처럼 "보스가 소환한
+        // 특정 프리팹이 파괴될 때마다" 같은 조건을 스폰 시점을 몰라도 구독 한 번으로 감지하고 싶을 때 씁니다.
+        public static event System.Action<EnemyProjectile, EnemyProjectileDestroyReason> AnyDestroyed;
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
@@ -153,6 +156,8 @@ namespace Week14.Combat
         public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public BossAI OwnerBoss => ownerBoss;
+        // 이 인스턴스를 생성한 원본 프리팹입니다. 특정 탄 종류만 골라 세는 챌린지(패링 카운트 등)가 비교 기준으로 사용합니다.
+        public EnemyProjectile SourcePrefab => poolPrefabSource;
         protected BulletGauge OwnerBullets => ownerBullets;
         protected Rigidbody2D ProjectileBody => body;
         protected int BulletDamage => bulletDamage;

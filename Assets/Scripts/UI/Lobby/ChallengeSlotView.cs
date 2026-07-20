@@ -46,6 +46,7 @@ namespace Week14.UI
         public void Show(ChallengeDefinitionSO definition, string bossId, Sprite completedSprite, Sprite incompleteSprite, Color clearedTextColor)
         {
             EnsureInitialized();
+            Unbind();
             CacheOriginalDescriptionColor();
             SetSweepWidth(0f);
             SetDescriptionText(definition.Description);
@@ -215,6 +216,13 @@ namespace Week14.UI
 
             EnsureInitialized();
             boundDefinition = definition;
+
+            object[] arguments = definition.LocalizedDescriptionArguments;
+            if (arguments != null && arguments.Length > 0)
+            {
+                definition.LocalizedDescription.Arguments = arguments;
+            }
+
             definition.LocalizedDescription.StringChanged += changeHandler;
             definition.LocalizedDescription.RefreshString();
         }

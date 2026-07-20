@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0569304f12aa641a8cb6f85e229a2c, type: 3}
+  m_Name: ParryClearChallenge
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryClearChallengeSO
+  challengeId: ParryClear10
+  description: 
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
+    m_TableEntryReference:
+      m_KeyId: 3448495471427584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  rewardPoint: 1
+  showProgress: 0
+  minParries: 10
+  targetProjectilePrefab: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

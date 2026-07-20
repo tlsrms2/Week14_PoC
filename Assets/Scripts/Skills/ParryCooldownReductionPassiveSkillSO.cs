@@ -20,7 +20,7 @@ namespace Week14.Skills
             PlayerParryController.ProjectileParried -= HandleProjectileParried;
         }
 
-        private void HandleProjectileParried()
+        private void HandleProjectileParried(EnemyProjectile _)
         {
             SkillLoadoutManager.Instance?.ReduceCooldown(cooldownReductionSeconds);
         }

@@ -56,5 +56,8 @@ TagManager:
   - name: Boss
     uniqueID: 547352579
     locked: 0
+  - name: Panel
+    uniqueID: 2081772481
+    locked: 0
   m_RenderingLayers:
   - Default

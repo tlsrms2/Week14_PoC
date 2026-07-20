@@ -28,11 +28,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 507800000000
-    m_Key: TimeAttack_90.Desc
+    m_Key: TimeAttack.Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 510400000000
-    m_Key: TimeAttack_120.Desc
+  - m_Id: 3440320454164480
+    m_Key: BossClear.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3443865412796416
+    m_Key: ParryCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448495471427584
+    m_Key: ParryClear.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451950613233664
+    m_Key: CoreInterruptCount.Desc
     m_Metadata:
       m_Items: []
   m_Metadata:

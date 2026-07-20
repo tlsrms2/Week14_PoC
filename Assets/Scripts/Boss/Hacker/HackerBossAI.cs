@@ -214,7 +214,7 @@ namespace Week14.Enemy
             base.Start();
             ResolvePhaseVisuals();
             ApplyPhaseVisual(CurrentPhaseNumber >= 2, true);
-            IgnorePlayerPhysicsCollisions();
+            ConfigurePlayerBlockingWithoutPhysicsPush();
             IgnoreTurretLayerCollisions();
             UpdateFacingFromPlayer();
         }
@@ -564,27 +564,34 @@ namespace Week14.Enemy
             return result != null;
         }
 
-        private void IgnorePlayerPhysicsCollisions()
+        private void ConfigurePlayerBlockingWithoutPhysicsPush()
         {
-            if (Player == null)
+            if (Body == null || Player == null)
             {
                 return;
             }
 
-            Collider2D[] bossColliders = GetComponentsInChildren<Collider2D>(true);
+            Collider2D[] bossColliders = Body.GetComponentsInChildren<Collider2D>(true);
             Collider2D[] playerColliders = Player.GetComponentsInChildren<Collider2D>(true);
             for (int bossIndex = 0; bossIndex < bossColliders.Length; bossIndex++)
             {
                 Collider2D bossCollider = bossColliders[bossIndex];
-                if (bossCollider == null)
+                if (bossCollider == null
+                    || bossCollider.isTrigger
+                    || bossCollider.attachedRigidbody != Body)
                 {
                     continue;
                 }
 
+                PlayerOnlyMovementBarrier movementBarrier =
+                    bossCollider.GetComponent<PlayerOnlyMovementBarrier>()
+                    ?? bossCollider.gameObject.AddComponent<PlayerOnlyMovementBarrier>();
+                movementBarrier.ConfigureProjectileCollisionIgnored(false);
+
                 for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
                 {
                     Collider2D playerCollider = playerColliders[playerIndex];
-                    if (playerCollider != null)
+                    if (playerCollider != null && !playerCollider.isTrigger)
                     {
                         Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
                     }
