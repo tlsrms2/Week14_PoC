@@ -692,6 +692,7 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints - price);
             Data.purchasedSkillIds.Add(skillId);
             Save();
+            ItemPurchased?.Invoke();
             return true;
         }
 
@@ -735,6 +736,7 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints - price);
             Data.purchasedPassiveSkillIds.Add(skillId);
             Save();
+            ItemPurchased?.Invoke();
             return true;
         }
 
@@ -829,6 +831,7 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints - price);
             Data.purchasedWeaponIds.Add(weaponId);
             Save();
+            ItemPurchased?.Invoke();
             return true;
         }
 
@@ -997,6 +1000,8 @@ namespace Week14.Save
         public static int ChallengePoints => Data.challengePoints;
 
         public static event Action<int> ChallengePointsChanged;
+        // 총기/액티브/패시브 스킬을 챌린지 포인트로 구매(해금)하는 데 성공했을 때 발생합니다. 어떤 종류인지는 넘기지 않습니다.
+        public static event Action ItemPurchased;
 
         private static void SetChallengePoints(int value)
         {

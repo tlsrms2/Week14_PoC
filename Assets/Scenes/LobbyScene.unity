@@ -16965,13 +16965,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 338107754997006502, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1993966538}
   m_SourcePrefab: {fileID: 100100000, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
 --- !u!224 &1993966536 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8942248851828651709, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
   m_PrefabInstance: {fileID: 1993966535}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1993966537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 338107754997006502, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+  m_PrefabInstance: {fileID: 1993966535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1993966538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993966537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a9f88b67c1b18348b7d2ba28eda4564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.LoadoutPurchaseSfxPlayer
+  purchaseSfxId: UI_Equip
+  debounceSeconds: 0.05
 --- !u!1 &2032863089
 GameObject:
   m_ObjectHideFlags: 0
