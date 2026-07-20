@@ -85,7 +85,7 @@ namespace Week14.Enemy
             float innerRadius,
             float outerRadius)
         {
-            HackerAttackRangeIndicator indicator = Create(context);
+            HackerAttackRangeIndicator indicator = Create(context, ignoreVisibilitySetting: true);
             if (indicator == null)
             {
                 return null;

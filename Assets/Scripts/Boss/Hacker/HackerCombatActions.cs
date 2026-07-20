@@ -177,7 +177,8 @@ namespace Week14.Enemy
                     parryAnchor,
                     Vector3.zero,
                     remainingWindup,
-                    remainingWindup);
+                    remainingWindup,
+                    countPatternReward: true);
 
                 float elapsed = 0f;
                 while (elapsed < remainingWindup)
@@ -678,7 +679,8 @@ namespace Week14.Enemy
                 bossTransform,
                 parryWorldOffset,
                 remainingWindup,
-                remainingWindup);
+                remainingWindup,
+                countPatternReward: true);
 
             float elapsed = 0f;
             while (elapsed < remainingWindup)

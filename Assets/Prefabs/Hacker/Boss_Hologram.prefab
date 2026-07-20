@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 5967073204653944249}
   - component: {fileID: 5043737638450411694}
   - component: {fileID: 2330042592814155416}
+  - component: {fileID: -6521082092686318072}
   m_Layer: 6
   m_Name: Boss_Hologram
   m_TagString: Untagged
@@ -599,6 +600,7 @@ MonoBehaviour:
   bossHpBarView: {fileID: 0}
   bossLivesView: {fileID: 0}
   bossNameText: {fileID: 0}
+  bossElapsedTimeText: {fileID: 0}
   statusBarBackgroundColor: {r: 0, g: 0, b: 0, a: 0.55}
   hpBarColor: {r: 1, g: 0.55, b: 0.1, a: 1}
   emptyHpBarColor: {r: 1, g: 0, b: 0, a: 1}
@@ -644,6 +646,8 @@ MonoBehaviour:
   wireContactFlashColor: {r: 0.2, g: 0.7, b: 1, a: 1}
   wireContactFlashSeconds: 0.18
   wireBulletShakeIntensity: 0.4
+  wireBulletWhiteFadeSeconds: 1
+  wireProtectedBulletFlashSeconds: 0.15
   wireSettings:
     flightSpeed: 12
     width: 0.04
@@ -663,6 +667,19 @@ MonoBehaviour:
     radius: 0.12
     trailSeconds: 0.1
     trailWidthMultiplier: 3
+  parryRewardProjectileSettings:
+    prefab: {fileID: 0}
+    bulletDamage: 1
+    chargeSeconds: 0.15
+    chargeDriftSpeed: 0.25
+    aimAtPlayerWhileCharging: 1
+    aimAtPlayerOnLaunch: 0
+    speed: 7
+    lifetime: 3
+    radius: 0.12
+    trailSeconds: 0.1
+    trailWidthMultiplier: 3
+  parryRewardSpawnRadius: 1.5
   hologramPrefab: {fileID: 0}
   hologramStartPhaseNumber: 3
   facingVisual: {fileID: 0}
@@ -675,6 +692,7 @@ MonoBehaviour:
   oneWeaponVisual: {fileID: 0}
   phaseVisualSwitchFallbackSeconds: 1
   showAttackRangeIndicators: 1
+  bgmId: 
   drawApproachRangeGizmos: 1
 --- !u!114 &5967073204653944249
 MonoBehaviour:
@@ -727,6 +745,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!70 &-6521082092686318072
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8602325760818578200}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.006226084, y: 0.009636806}
+  m_Size: {x: 0.44046754, y: 0.76126367}
+  m_Direction: 0
 --- !u!1 &8882693748484313828
 GameObject:
   m_ObjectHideFlags: 0

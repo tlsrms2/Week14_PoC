@@ -55,7 +55,8 @@ namespace Week14.Enemy
                     parryAnchor,
                     Vector3.zero,
                     Mathf.Min(chargeSeconds, parryWindowSeconds),
-                    chargeSeconds);
+                    chargeSeconds,
+                    countPatternReward: true);
 
                 float elapsed = 0f;
                 while (elapsed < chargeSeconds)

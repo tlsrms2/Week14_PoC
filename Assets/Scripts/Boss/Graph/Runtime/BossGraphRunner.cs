@@ -159,6 +159,16 @@ namespace Week14.Enemy
                     continue;
                 }
 
+                HackerBossAI rewardOwner = context.Boss as HackerBossAI;
+                if (rewardOwner is HackerHologramBoss)
+                {
+                    rewardOwner = null;
+                }
+
+                HackerPatternParryRewardTracker rewardTracker =
+                    rewardOwner?.BeginPatternParryRewardTracking();
+
+                bool actionCompleted = false;
                 try
                 {
                     BossGraphRuntimeState.SetCurrentNode(graph, node.NodeId, previousRuntimeNodeId);
@@ -173,12 +183,22 @@ namespace Week14.Enemy
                         yield return sequence.Execute(context);
                     }
 
+                    // 패턴 종료 요청은 분기 실행을 정상적으로 끝내기 위한 신호다.
+                    // 액션 자체가 정상 반환했다면 이미 성공한 본체 패링 보상은 유지한다.
+                    actionCompleted = true;
                     context.Stop();
                 }
                 finally
                 {
                     context.EndNodeExecution();
                     context.ClearPatternScopedBossChildAims();
+                    if (rewardOwner != null)
+                    {
+                        int rewardCount = rewardOwner.EndPatternParryRewardTracking(
+                            rewardTracker,
+                            actionCompleted);
+                        rewardOwner.SpawnPatternParryRewards(rewardCount);
+                    }
                 }
 
                 TryApplyTransition(graph, context, node, true);
@@ -297,22 +317,39 @@ namespace Week14.Enemy
             BossActionContext context)
         {
             context?.ClearPatternTerminationRequest();
+            HackerBossAI rewardOwner = context?.Boss as HackerBossAI;
+            if (rewardOwner is HackerHologramBoss)
+            {
+                rewardOwner = null;
+            }
+
+            HackerPatternParryRewardTracker rewardTracker =
+                rewardOwner?.BeginPatternParryRewardTracking();
+            bool patternCompleted = false;
             try
             {
                 if (TryBuildHologramReplayPlan(graph, pattern, out HackerHologramReplayPlan hologramPlan))
                 {
                     yield return ExecuteHologramReplayPattern(graph, hologramPlan, context);
-                    yield break;
+                }
+                else
+                {
+                    yield return ExecutePatternNodes(graph, pattern?.NodeKeys, context, true);
                 }
 
-                yield return ExecutePatternNodes(graph, pattern?.NodeKeys, context, true);
+                // 패턴 종료 요청으로 남은 노드를 건너뛴 경우도 정상적인 패턴 종료다.
+                // 실제 코루틴 중단/취소 시에는 이 줄에 도달하지 않아 보상이 폐기된다.
+                patternCompleted = true;
             }
             finally
             {
-                if (context?.Boss is HackerBossAI hacker
-                    && context.Boss is not HackerHologramBoss)
+                if (rewardOwner != null)
                 {
-                    hacker.ClearPatternSpawnedWeapons();
+                    rewardOwner.ClearPatternSpawnedWeapons();
+                    int rewardCount = rewardOwner.EndPatternParryRewardTracking(
+                        rewardTracker,
+                        patternCompleted);
+                    rewardOwner.SpawnPatternParryRewards(rewardCount);
                 }
 
                 context?.ClearPatternTerminationRequest();
@@ -494,7 +531,8 @@ namespace Week14.Enemy
                     || hologram.HasPendingReplayActionGroups
                     || actionStacks.Count > 0)
                 {
-                    while (hologram.TryDequeueReplayActionGroup(out IReadOnlyList<string> recordedNodeIds))
+                    while (actionStacks.Count == 0
+                        && hologram.TryDequeueReplayActionGroup(out IReadOnlyList<string> recordedNodeIds))
                     {
                         List<BossStateNode> recordedGroup = ResolveRecordedHologramActionGroup(
                             graph,
