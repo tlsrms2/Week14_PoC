@@ -585,11 +585,19 @@ namespace Week14.Combat
                 Bounds bounds = probeCollider.bounds;
                 Vector2 center = (Vector2)bounds.center + delta;
                 Vector2 extents = bounds.extents;
+                Vector2 bottomLeft = center + new Vector2(-extents.x, -extents.y);
+                Vector2 bottomRight = center + new Vector2(extents.x, -extents.y);
+                Vector2 topLeft = center + new Vector2(-extents.x, extents.y);
+                Vector2 topRight = center + new Vector2(extents.x, extents.y);
                 if (IsWallAt(center, probeRadius, filter)
                     || IsWallAt(center + new Vector2(0f, -extents.y), probeRadius, filter)
                     || IsWallAt(center + new Vector2(0f, extents.y), probeRadius, filter)
                     || IsWallAt(center + new Vector2(-extents.x, 0f), probeRadius, filter)
-                    || IsWallAt(center + new Vector2(extents.x, 0f), probeRadius, filter))
+                    || IsWallAt(center + new Vector2(extents.x, 0f), probeRadius, filter)
+                    || IsWallAt(bottomLeft, probeRadius, filter)
+                    || IsWallAt(bottomRight, probeRadius, filter)
+                    || IsWallAt(topLeft, probeRadius, filter)
+                    || IsWallAt(topRight, probeRadius, filter))
                 {
                     return true;
                 }

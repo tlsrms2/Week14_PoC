@@ -33,6 +33,7 @@ namespace Week14.Enemy
         private float replayPositionFollowPauseSeconds;
         private float replayPositionLockSeconds;
         private float replayPositionArcOffsetDegrees;
+        private float replayPositionArcDirectionSign = 1f;
         private Coroutine summonEntranceCoroutine;
         private Vector2 recordedPlayerPosition;
         private Vector2 replayPositionArcPivot;
@@ -92,6 +93,7 @@ namespace Week14.Enemy
             replayPositionFollowPauseSeconds = 0f;
             replayPositionLockSeconds = 0f;
             replayPositionArcOffsetDegrees = 0f;
+            replayPositionArcDirectionSign = 1f;
             hasReplayPositionArcPivot = false;
             isHologramReplayRunning = true;
             isRecordingReplay = true;
@@ -161,6 +163,7 @@ namespace Week14.Enemy
             replayPositionFollowPauseSeconds = 0f;
             replayPositionLockSeconds = 0f;
             replayPositionArcOffsetDegrees = 0f;
+            replayPositionArcDirectionSign = 1f;
             hasReplayPositionArcPivot = false;
             replayFrames.Clear();
             replayActionGroups.Clear();
@@ -318,9 +321,12 @@ namespace Week14.Enemy
             {
                 replayPositionArcPivot = recordedPlayerPosition;
                 hasReplayPositionArcPivot = true;
+                Vector2 fromPivot = (Vector2)transform.position - replayPositionArcPivot;
+                // 좌우 어느 쪽에서 시작해도 두 회전 후보 중 월드 아래쪽 궤적을 선택한다.
+                replayPositionArcDirectionSign = fromPivot.x >= 0f ? -1f : 1f;
             }
 
-            replayPositionArcOffsetDegrees = degrees;
+            replayPositionArcOffsetDegrees = Mathf.Abs(degrees) * replayPositionArcDirectionSign;
         }
 
         internal EnemyProjectile FireReplayProjectile(
@@ -994,12 +1000,10 @@ namespace Week14.Enemy
                 if (collider.transform == transform)
                 {
                     collider.enabled = true;
+                    collider.isTrigger = false;
                     collider.includeLayers = environmentMask;
                     collider.excludeLayers = ~environmentMask;
-                    if (!collider.isTrigger)
-                    {
-                        movementColliders.Add(collider);
-                    }
+                    movementColliders.Add(collider);
 
                     continue;
                 }
