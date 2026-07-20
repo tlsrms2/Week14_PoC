@@ -90,10 +90,37 @@ namespace Week14.Enemy
             StartCoroutine(DespawnRoutine(despawnSeconds));
         }
 
+        // 패링 성공으로 강제 정리될 때처럼, 그 자리에서 바로 사라지지 않고 보스 위치로 빨려 들어가듯
+        // 이동하면서 동시에 페이드아웃한다.
+        internal void PlayGatherDespawn(Vector3 targetPosition, float seconds)
+        {
+            StartCoroutine(GatherDespawnRoutine(targetPosition, seconds));
+        }
+
         private IEnumerator DespawnRoutine(float despawnSeconds)
         {
             float startAlpha = renderers.Length > 0 && renderers[0] != null ? renderers[0].color.a : 1f;
             yield return FadeRoutine(startAlpha, 0f, despawnSeconds);
+            Destroy(gameObject);
+        }
+
+        private IEnumerator GatherDespawnRoutine(Vector3 targetPosition, float seconds)
+        {
+            float startAlpha = renderers.Length > 0 && renderers[0] != null ? renderers[0].color.a : 1f;
+            Vector3 startPosition = transform.position;
+            float duration = Mathf.Max(0.01f, seconds);
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                SetAlpha(Mathf.Lerp(startAlpha, 0f, t));
+                elapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
+            }
+
+            transform.position = targetPosition;
+            SetAlpha(0f);
             Destroy(gameObject);
         }
 

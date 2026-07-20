@@ -532,6 +532,27 @@ namespace Week14.Enemy
             activeClones.Clear();
         }
 
+        // ClearActiveClones와 정리 대상(대기열 + 발사돼 있는 분신 전부)은 동일하지만, 그 자리에서
+        // 즉시 삭제하는 대신 보스 위치로 모여들며 서서히 사라지게 한다. 패링 성공으로 분신을 정리하는
+        // 연출용(FireParrySuppressionBait 계열)이며, 그 외의 강제 정리(페이즈 전환/사망/비활성화)는
+        // 여전히 즉시 제거하는 ClearActiveClones를 그대로 쓴다.
+        internal void ClearActiveClonesGathering(float gatherSeconds)
+        {
+            cloneShooterQueue.Clear();
+
+            Vector3 gatherTarget = BodyRoot != null ? BodyRoot.position : transform.position;
+            for (int i = activeClones.Count - 1; i >= 0; i--)
+            {
+                AssassinClone clone = activeClones[i];
+                if (clone != null)
+                {
+                    clone.PlayGatherDespawn(gatherTarget, gatherSeconds);
+                }
+            }
+
+            activeClones.Clear();
+        }
+
         internal void UnregisterDagger(AssassinDagger dagger)
         {
             spawnedDaggers.Remove(dagger);

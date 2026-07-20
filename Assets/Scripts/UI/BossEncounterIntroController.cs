@@ -41,6 +41,8 @@ namespace Week14.UI
         [SerializeField] private AnimationCurve mugShotBackgroundExitCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         [Header("머그샷 복제 그림자")]
+        [Tooltip("그림자로 복제할 스프라이트를 직접 지정합니다. 비워두면 보스 하위의 모든 SpriteRenderer를 자동으로 찾아서 복제합니다.")]
+        [SerializeField] private SpriteRenderer[] bossShadowSourceOverrides = System.Array.Empty<SpriteRenderer>();
         [SerializeField] private Vector2 bossShadowWorldOffset = new(0.22f, -0.12f);
         [SerializeField] private Color bossShadowColor = new(0f, 0f, 0f, 0.55f);
         [SerializeField] private int bossShadowSortingOrderOffset = -100;
@@ -1150,17 +1152,36 @@ namespace Week14.UI
                 return;
             }
 
-            Transform sourceRoot = GetBossFocusTarget();
-            if (sourceRoot == null)
+            SpriteRenderer[] overrides = bossShadowSourceOverrides;
+            bool hasOverrides = false;
+            for (int i = 0; i < overrides.Length; i++)
             {
-                return;
+                if (overrides[i] != null)
+                {
+                    hasOverrides = true;
+                    break;
+                }
+            }
+
+            if (!hasOverrides)
+            {
+                Transform sourceRoot = GetBossFocusTarget();
+                if (sourceRoot == null)
+                {
+                    return;
+                }
+
+                bossShadowSources = sourceRoot.GetComponentsInChildren<SpriteRenderer>(true);
+            }
+            else
+            {
+                bossShadowSources = overrides;
             }
 
             GameObject shadowObject = new("MugShotBossShadow");
             bossShadowRoot = shadowObject.transform;
             bossShadowRoot.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             bossShadowRoot.localScale = Vector3.one;
-            bossShadowSources = sourceRoot.GetComponentsInChildren<SpriteRenderer>(true);
             bossShadowCopies = new SpriteRenderer[bossShadowSources.Length];
 
             for (int i = 0; i < bossShadowSources.Length; i++)
