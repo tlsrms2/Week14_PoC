@@ -177,27 +177,20 @@ namespace Week14.Combat
                 lockOnController.SetLockOnTarget(targetHealth);
             }
 
-            float initialDistance = Vector2.Distance(
-                context.PlayerTransform.position,
-                executionTarget.transform.position);
-            float teleportStartDistance = Mathf.Max(
-                config.ExecutionTeleportStartDistance,
-                config.ExecutionTeleportDistance);
-            bool requiresTeleport = executionBoss != null && initialDistance > teleportStartDistance;
             Coroutine letterboxRoutine = null;
-            if (isFinalBossExecution || requiresTeleport)
+            bool teleported = false;
+            if (executionBoss != null)
             {
                 letterboxRoutine = context.CoroutineHost.StartCoroutine(
                     presentation.ShowFinalExecutionLetterbox());
+                teleported = TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
             }
-
-            bool teleported = requiresTeleport
-                && TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
 
             Vector2 targetPosition = executionTarget.transform.position;
             Vector2 playerPosition = context.Body != null
                 ? context.Body.position
                 : (Vector2)context.PlayerTransform.position;
+            executionBoss?.FaceTowards(playerPosition);
             Vector2 standDirection = playerPosition - targetPosition;
             if (standDirection.sqrMagnitude <= 0.0001f)
             {

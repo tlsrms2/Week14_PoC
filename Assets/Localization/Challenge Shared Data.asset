@@ -44,7 +44,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3451950613233664
-    m_Key: CoreInterruptCount.Desc
+    m_Key: CounterCount.Desc
     m_Metadata:
       m_Items: []
   m_Metadata:

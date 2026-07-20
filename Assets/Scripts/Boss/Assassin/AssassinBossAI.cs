@@ -662,7 +662,16 @@ namespace Week14.Enemy
                 return;
             }
 
-            bool flip = Player.position.x > transform.position.x;
+            ApplyFacingSprites(Player.position.x > transform.position.x);
+        }
+
+        protected override void ApplyExecutionFacing(Vector2 worldPosition)
+        {
+            ApplyFacingSprites(worldPosition.x > transform.position.x);
+        }
+
+        private void ApplyFacingSprites(bool flip)
+        {
             ApplyFacing(stealthVisualTargetA, flip, facingMirrorCacheA);
             ApplyFacing(stealthVisualTargetB, flip, facingMirrorCacheB);
             ApplyFacing(stealthVisualTargetShadow, flip, facingMirrorCacheShadow);

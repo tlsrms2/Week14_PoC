@@ -399,6 +399,15 @@ namespace Week14.Enemy
             spriteRenderer.flipX = Player.position.x > transform.position.x;
         }
 
+        protected override void ApplyExecutionFacing(Vector2 worldPosition)
+        {
+            SpriteRenderer spriteRenderer = ResolveFacingSpriteRenderer();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.flipX = worldPosition.x > transform.position.x;
+            }
+        }
+
         private void UpdateWalkState()
         {
             if (Body == null)
