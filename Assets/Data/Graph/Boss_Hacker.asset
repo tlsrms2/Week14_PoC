@@ -3999,8 +3999,8 @@ MonoBehaviour:
     toNodeId: Fire Sniping Projectile4
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: P8
+  debugForceSinglePattern: 1
+  debugForcedPatternId: P5-1
   references:
     version: 2
     RefIds:
