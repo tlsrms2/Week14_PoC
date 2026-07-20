@@ -14,35 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Audio.SoundLibrary
   bgmEntries:
   - id: TitleBgm
-    clip: {fileID: 8300000, guid: bb7e58f926fb3824b9089b99bbf6024b, type: 3}
+    clip: {fileID: 8300000, guid: ea4143bc064af3d49aa782e078b97808, type: 3}
     volume: 0.4
     pitch: 1
   - id: LobbyBgm
-    clip: {fileID: 8300000, guid: 3196e637d5ebb2b4fbad29c25de304af, type: 3}
+    clip: {fileID: 8300000, guid: af39a5e8ec76c494aab1ca92d591ca0e, type: 3}
     volume: 0.6
     pitch: 1
   - id: Boss1BGM
-    clip: {fileID: 8300000, guid: 9ca017abccd5a36489d1fbbda7c375e4, type: 3}
+    clip: {fileID: 8300000, guid: 86d5f63a7d5ab7d45853a6848f603914, type: 3}
     volume: 0.4
     pitch: 1
   - id: Boss2BGM
-    clip: {fileID: 8300000, guid: 73892f4c725a89741b6fdeafa5d155af, type: 3}
+    clip: {fileID: 8300000, guid: c242407a91cb2b44f88e2a95e077a735, type: 3}
     volume: 0.4
     pitch: 1
   - id: Boss3BGM
-    clip: {fileID: 8300000, guid: 603810212aa8b4448a413db77b2ad3ec, type: 3}
+    clip: {fileID: 8300000, guid: 1f061c54f41f9e9458300848140c10fd, type: 3}
     volume: 0.4
     pitch: 1
   - id: Boss4BGM
-    clip: {fileID: 8300000, guid: e6d65e2b55dacc347841feb6b5d43111, type: 3}
+    clip: {fileID: 8300000, guid: 3074cd5c88c7e1147b70f3975ecac2cd, type: 3}
     volume: 0.4
     pitch: 1
   - id: Boss5BGM
-    clip: {fileID: 8300000, guid: 1682b023a7882c646af966adc118ba82, type: 3}
+    clip: {fileID: 8300000, guid: a0a7810644065e641841f85ab042debe, type: 3}
     volume: 0.4
     pitch: 1
   - id: CutSceneBGM
-    clip: {fileID: 8300000, guid: c99187ebddbd1214ab8dd218e6caa78a, type: 3}
+    clip: {fileID: 8300000, guid: 014aaa41c8f6a7f4192e916afc993d0f, type: 3}
     volume: 0.4
     pitch: 1
   sfxEntries:
