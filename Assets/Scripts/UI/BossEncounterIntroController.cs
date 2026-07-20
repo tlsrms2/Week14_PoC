@@ -434,6 +434,8 @@ namespace Week14.UI
 
         private IEnumerator PlayLocationIntro()
         {
+            SetLocationObjectsActive(true);
+            
             yield return AnimateLocationObjects(
                 -locationFlyOffsetX,
                 0f,
@@ -449,6 +451,24 @@ namespace Week14.UI
                 locationFlyOutSeconds,
                 locationObjectStaggerSeconds,
                 locationFlyOutCurve);
+            
+            SetLocationObjectsActive(false);
+        }
+        
+        private void SetLocationObjectsActive(bool isActive)
+        {
+            if (locationIntroFlyObjects == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < locationIntroFlyObjects.Length; i++)
+            {
+                if (locationIntroFlyObjects[i] != null)
+                {
+                    locationIntroFlyObjects[i].gameObject.SetActive(isActive);
+                }
+            }
         }
 
         private IEnumerator AnimateCombatUiReveal()
@@ -826,6 +846,7 @@ namespace Week14.UI
         private void FinishPresentation()
         {
             SetMugShotStageVisible(false);
+            SetLocationObjectsActive(false);
             bool combatUiSharesRoot = bossCombatUiRect != null
                 && canvasGroup != null
                 && bossCombatUiRect.IsChildOf(canvasGroup.transform);
