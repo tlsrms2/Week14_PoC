@@ -97,7 +97,10 @@ namespace Week14.Skills
         {
             TickCooldown(Time.deltaTime);
 
-            if (!GameModalState.BlocksGameplayInput && !IsSkillUseSuppressed && GameInput.UseSkillDown)
+            if (!GameModalState.BlocksGameplayInput
+                && !IsSkillUseSuppressed
+                && !PlayerCombatController.IsExecutionCinematicActive
+                && GameInput.UseSkillDown)
             {
                 TryUseSkill(ActiveSlot);
             }
