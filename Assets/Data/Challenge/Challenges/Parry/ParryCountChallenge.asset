@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
   m_Name: ParryCountChallenge
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
-  challengeId: ParrtCount_20
+  challengeId: ParryCount_20
   description: 
   localizedDescription:
     m_TableReference:
@@ -26,6 +26,7 @@ MonoBehaviour:
   rewardPoint: 1
   showProgress: 1
   minParries: 20
+  targetProjectilePrefab: {fileID: 0}
   references:
     version: 2
     RefIds: []

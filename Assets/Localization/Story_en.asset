@@ -884,11 +884,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1826406394068992
-    m_Localized: Core Interrupt {0}/{1}
+    m_Localized: Counter {0}/{1}
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789248
-    m_Localized: Lastly, this is core Interrupt training.
+    m_Localized: Lastly, this is Counter training.
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789249
@@ -902,7 +902,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789251
-    m_Localized: Core Interrupt
+    m_Localized: Counter
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789252
