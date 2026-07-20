@@ -1222,7 +1222,7 @@ MonoBehaviour:
     action:
       rid: 4705778016365314174
     sequences: []
-    editorPosition: {x: 1375, y: 348}
+    editorPosition: {x: 1375, y: 347}
   - nodeId: Wait32
     nodeGuid: aa65c546ef7745f5bff7615a925e4bf3
     nodeKind: 3
@@ -1249,7 +1249,7 @@ MonoBehaviour:
     action:
       rid: 4705778016365314191
     sequences: []
-    editorPosition: {x: 2082, y: 2804}
+    editorPosition: {x: 2083, y: 2804}
   - nodeId: Fire Parry Suppression Bait1
     nodeGuid: 06b817bab08646ce9bfaeaa7173f0a71
     nodeKind: 0
@@ -1403,6 +1403,51 @@ MonoBehaviour:
       rid: 6489939300151460022
     sequences: []
     editorPosition: {x: 773, y: 2937}
+  - nodeId: Spawn Effect Prefab7
+    nodeGuid: b2adeef9749549319a873525b11a10e7
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009034
+    sequences: []
+    editorPosition: {x: -10, y: 210}
+  - nodeId: Spawn Effect Prefab8
+    nodeGuid: a50e553cfe8b49b3902a0f31cbcf2e58
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009047
+    sequences: []
+    editorPosition: {x: 1298, y: 215}
+  - nodeId: Spawn Effect Prefab9
+    nodeGuid: 6e752485860a4c3a820220d41b173aff
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009048
+    sequences: []
+    editorPosition: {x: 1674, y: 1572}
+  - nodeId: Spawn Effect Prefab10
+    nodeGuid: be9160cfb3d04b83b360c81b5e188645
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009049
+    sequences: []
+    editorPosition: {x: 2078, y: 2685}
+  - nodeId: Spawn Effect Prefab11
+    nodeGuid: 504a7d56ae814243a114a3cc136b3963
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009050
+    sequences: []
+    editorPosition: {x: -83, y: 2163}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1450,6 +1495,8 @@ MonoBehaviour:
     - 8905948f06494740b377b2174b303a59
     - 75be7b25277a42ffb1a873493373023c
     - e651496032cb454c95ebc494807cebe9
+    - b2adeef9749549319a873525b11a10e7
+    - a50e553cfe8b49b3902a0f31cbcf2e58
     nodeIds:
     - Move Until Player Distance1
     - Wait3
@@ -1469,6 +1516,8 @@ MonoBehaviour:
     - Set Parameter6
     - Boss Area Damage1
     - Boss Area Damage2
+    - Spawn Effect Prefab7
+    - Spawn Effect Prefab8
   - patternId: Pattern4
     nodeGuids:
     - f9067e3ab9cd4c118f62347c84af469f
@@ -1537,6 +1586,7 @@ MonoBehaviour:
     - 2e53978eb2b0423893235d651601d4a9
     - 829650b15d2d48db996405b243c105a4
     - d5f0b04b66244ddea1839bc06c1d3b09
+    - 6e752485860a4c3a820220d41b173aff
     nodeIds:
     - Move Until Player Distance4
     - Boss Dash10
@@ -1556,6 +1606,7 @@ MonoBehaviour:
     - Fire Projectile Burst4
     - Fire Projectile Burst5
     - Boss Area Damage3
+    - Spawn Effect Prefab9
   - patternId: Pattern7
     nodeGuids:
     - de96c4c233b94f6db624c65fe92ce58f
@@ -1598,6 +1649,7 @@ MonoBehaviour:
     - 5bff9151eda945c296ae94176c48b58d
     - 3a14ce5310794798950fc67903fa1d36
     - 60a3f35bb1cf420fb7ff73c7ad4d7546
+    - 504a7d56ae814243a114a3cc136b3963
     nodeIds:
     - Move Until Player Distance6
     - Wait6
@@ -1620,6 +1672,7 @@ MonoBehaviour:
     - Fire Projectile Burst6
     - Boss Area Damage4
     - Spawn Effect Prefab2
+    - Spawn Effect Prefab11
   - patternId: Pattern9
     nodeGuids:
     - b2df2bbc03a043a3ba39466025185ad0
@@ -1719,6 +1772,7 @@ MonoBehaviour:
     - 4955dd54d82f4b66ada39b4f8e6a106f
     - a6cdac05368149fe9ff1fd119fdbbf96
     - 7b0b6635b3a040a6b251dbd439de9182
+    - be9160cfb3d04b83b360c81b5e188645
     nodeIds:
     - Set Parameter30
     - Windup6
@@ -1742,6 +1796,7 @@ MonoBehaviour:
     - Fire Dash Formation8
     - Boss Area Damage5
     - Spawn Effect Prefab6
+    - Spawn Effect Prefab10
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -2918,8 +2973,38 @@ MonoBehaviour:
     toNodeId: Spawn Effect Prefab6
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern1
+  - fromNodeGuid: b2adeef9749549319a873525b11a10e7
+    toNodeGuid: d66ca81144914574b54cfb544b48c503
+    fromNodeId: Spawn Effect Prefab7
+    toNodeId: Wait30
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: a50e553cfe8b49b3902a0f31cbcf2e58
+    toNodeGuid: 85ef4446e38048819bb17e8dad886054
+    fromNodeId: Spawn Effect Prefab8
+    toNodeId: Wait31
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: aa65c546ef7745f5bff7615a925e4bf3
+    toNodeGuid: 6e752485860a4c3a820220d41b173aff
+    fromNodeId: Wait32
+    toNodeId: Spawn Effect Prefab9
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: be9160cfb3d04b83b360c81b5e188645
+    toNodeGuid: 6048a5cd1a5e48d790ea488bbeab54db
+    fromNodeId: Spawn Effect Prefab10
+    toNodeId: Wait34
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 504a7d56ae814243a114a3cc136b3963
+    toNodeGuid: b50b4e8319e54a9fbb41e1fa571c1d4d
+    fromNodeId: Spawn Effect Prefab11
+    toNodeId: Wait33
+    laneIndex: 0
+    targetLaneIndex: 0
+  debugForceSinglePattern: 1
+  debugForcedPatternId: Pattern3
   references:
     version: 2
     RefIds:
@@ -6622,23 +6707,23 @@ MonoBehaviour:
     - rid: 4705778016365314173
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.2
+        seconds: 0.8
     - rid: 4705778016365314174
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.2
+        seconds: 0.8
     - rid: 4705778016365314189
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.2
+        seconds: 0.8
     - rid: 4705778016365314190
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.2
+        seconds: 0.8
     - rid: 4705778016365314191
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        seconds: 0.2
+        seconds: 0.8
     - rid: 4705778169994805632
       type: {class: FireParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -7051,4 +7136,54 @@ MonoBehaviour:
         delaySeconds: 0
         scale: 0.4
         followMode: 0
+        followRotation: 1
+    - rid: 6489939314815009034
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0.25}
+        delaySeconds: 0
+        scale: 5
+        followMode: 1
+        followRotation: 1
+    - rid: 6489939314815009047
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0.25}
+        delaySeconds: 0
+        scale: 5
+        followMode: 1
+        followRotation: 1
+    - rid: 6489939314815009048
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0.25}
+        delaySeconds: 0
+        scale: 5
+        followMode: 1
+        followRotation: 1
+    - rid: 6489939314815009049
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0.25}
+        delaySeconds: 0
+        scale: 5
+        followMode: 1
+        followRotation: 1
+    - rid: 6489939314815009050
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Muscle Visual/Boss/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0.25}
+        delaySeconds: 0
+        scale: 5
+        followMode: 1
         followRotation: 1

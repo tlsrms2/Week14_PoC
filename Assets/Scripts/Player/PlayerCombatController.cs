@@ -25,6 +25,7 @@ namespace Week14.Combat
         private static int leftAttackSuppressionCount;
         private static int parrySuppressionCount;
         private static int mouseParryReticleSuppressionCount;
+        private static int pointerInputSuppressionCount;
         private static int externalInvulnerabilityCount;
 
         public static event Action<PlayerCombatController> AttackReceived;
@@ -156,6 +157,7 @@ namespace Week14.Combat
         private static bool IsLeftAttackSuppressed => leftAttackSuppressionCount > 0;
         private static bool IsParrySuppressed => parrySuppressionCount > 0;
         internal static bool IsMouseParryReticleSuppressed => mouseParryReticleSuppressionCount > 0;
+        private static bool IsPointerInputSuppressed => pointerInputSuppressionCount > 0;
         private bool IsPlayerControlLocked => IsExecuting
             || BossAI.IsAnyFinalDeathSequencePlaying
             || IsWaitingForVictoryPanel;
@@ -200,6 +202,16 @@ namespace Week14.Combat
         public static void PopParrySuppression()
         {
             parrySuppressionCount = Mathf.Max(0, parrySuppressionCount - 1);
+        }
+
+        public static void PushPointerInputSuppression()
+        {
+            pointerInputSuppressionCount++;
+        }
+
+        public static void PopPointerInputSuppression()
+        {
+            pointerInputSuppressionCount = Mathf.Max(0, pointerInputSuppressionCount - 1);
         }
 
         public static void PushMouseParryReticleSuppression()
@@ -482,6 +494,21 @@ namespace Week14.Combat
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
+                return;
+            }
+
+            if (IsPointerInputSuppressed)
+            {
+                SetMouseParryReticleVisible(false);
+                SetProjectileLockOnIndicatorVisible(false);
+                SetHoveredExecutionTarget(null);
+                if (Shooter.IsCharging)
+                {
+                    Shooter.EndCharge();
+                }
+
+                UpdateBodyColor();
+                UpdateDashAutoParry();
                 return;
             }
 

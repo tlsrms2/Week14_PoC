@@ -32,6 +32,7 @@ namespace Week14.Enemy
         private float pendingGroggySeconds;
         private float groggyRemainingSeconds;
         private bool isDebugPatternControlActive;
+        private bool isQaBehaviorPaused;
 
         protected override BossGraphAsset GraphAsset => bossGraph;
         protected BossGraphAsset BossGraph => bossGraph;
@@ -40,6 +41,13 @@ namespace Week14.Enemy
         protected IReadOnlyList<BossGraphProjectileEntry> GraphProjectiles => graphProjectiles;
         public bool IsGroggy => isGroggy;
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal bool IsQaBehaviorPaused => isQaBehaviorPaused;
+        internal BossGraphAsset QaGraphAsset => GraphAsset;
+        internal string QaCurrentPatternId => graphRunner.CurrentPatternId;
+        internal string QaForcedPatternId => graphRunner.GetForcedPatternId(GraphAsset);
+#endif
+
         protected override BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
         {
             return ResolveProjectileSettings(graphProjectiles, projectileName);
@@ -47,7 +55,8 @@ namespace Week14.Enemy
 
         protected override void OnBossTick()
         {
-            if (isDebugPatternControlActive
+            if (isQaBehaviorPaused
+                || isDebugPatternControlActive
                 || patternRoutine != null
                 || GraphAsset == null
                 || !CanStartGraphPattern())
@@ -65,7 +74,17 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            isQaBehaviorPaused = false;
+            graphRunner.CancelForcedPattern();
             StopGraphPattern();
+        }
+
+        protected override void OnDisable()
+        {
+            isQaBehaviorPaused = false;
+            graphRunner.CancelForcedPattern();
+            StopGraphPattern();
+            base.OnDisable();
         }
 
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
@@ -225,10 +244,54 @@ namespace Week14.Enemy
             return new BossActionContext(
                 this,
                 Stop,
-                () => IsExecutionPaused,
+                () => IsExecutionPaused || isQaBehaviorPaused,
                 graphAsset != null ? graphAsset : GraphAsset,
                 skipApproachMovement);
         }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal bool TrySetQaBehaviorPaused(bool paused)
+        {
+            if (!isActiveAndEnabled || Health == null || Health.IsDead)
+            {
+                return false;
+            }
+
+            if (isQaBehaviorPaused == paused)
+            {
+                return true;
+            }
+
+            isQaBehaviorPaused = paused;
+            if (paused)
+            {
+                StopGraphPattern();
+                StopAllMinions();
+                Stop();
+            }
+            else
+            {
+                ResumeAllMinions();
+            }
+
+            return true;
+        }
+
+        internal bool TrySetQaForcedPattern(string patternId)
+        {
+            BossGraphAsset graph = GraphAsset;
+            return isActiveAndEnabled
+                && Health != null
+                && !Health.IsDead
+                && graph != null
+                && graphRunner.TrySetForcedPattern(graph, patternId);
+        }
+
+        internal void CancelQaForcedPattern()
+        {
+            graphRunner.CancelForcedPattern();
+        }
+#endif
 
         internal bool IsDebugPatternRunning => isDebugPatternControlActive && patternRoutine != null;
 
@@ -311,6 +374,9 @@ namespace Week14.Enemy
                 graphRunner.RestartAfterInterruption();
             }
 
+            // StopCoroutine이 액션 내부 finally를 보장하지 않으므로 대시 도중 중단돼도
+            // 플레이어 충돌 무시 상태가 남지 않게 컨텍스트 폐기 전에 직접 복구한다.
+            graphContext?.SetDashing(false);
             graphContext?.ClearPatternScopedBossChildAims();
             graphContext?.ResetBodyRootLocalOffset();
             graphContext?.ClearConductorMinionOutlineHoldRequests();

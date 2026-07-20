@@ -244,6 +244,42 @@ namespace Week14.Enemy
             pendingStealthValue = enable;
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal bool TrySetQaStealth(bool enable)
+        {
+            BossGraphAsset targetGraph = enable ? stealthGraph : base.GraphAsset;
+            if (!isActiveAndEnabled
+                || Health == null
+                || Health.IsDead
+                || targetGraph == null)
+            {
+                return false;
+            }
+
+            if (!pendingStealthChange && isStealthed == enable)
+            {
+                return true;
+            }
+
+            // QA 강제 전환은 그래프 액션 내부가 아닌 OnGUI에서 호출되므로 즉시 중단해도
+            // 코루틴 재진입 문제가 없다. 중간 패턴의 순간이동/분신/단검 상태도 함께 정리해
+            // 새 그래프가 이전 그래프의 임시 상태를 물려받지 않게 한다.
+            pendingStealthChange = false;
+            StopGraphPattern(true);
+            Stop();
+            teleportVisibilityOverrideActive = false;
+            stealthVisibilityOverrideActive = false;
+            SetHiddenFromMap(false);
+            ClearActiveClones();
+            ClearAssassinDaggers();
+            ApplyWalkState(false, true);
+
+            isStealthed = enable;
+            stealthEntryDelayRemaining = enable ? stealthEntryPatternDelaySeconds : 0f;
+            return true;
+        }
+#endif
+
         // 은신 상태(isStealthed)는 그대로 유지한 채, 시각적으로만 보스를 완전히 보이게(또는 다시
         // 반투명하게) 만든다. 그래프 패턴/쿨다운 등 게임플레이 로직에는 영향을 주지 않는다.
         internal void SetStealthVisibilityOverride(bool visible)
@@ -764,6 +800,7 @@ namespace Week14.Enemy
 
         private void ClearAssassinDaggers()
         {
+            isRecallInProgress = false;
             for (int i = spawnedDaggers.Count - 1; i >= 0; i--)
             {
                 if (spawnedDaggers[i] != null)

@@ -9,10 +9,6 @@ namespace Week14.Enemy
     public sealed class HackerSequentialSweepFireAction : BossAction, IBossActionDurationProvider
     {
         private const string ScatterAnimationTrigger = "Scatter";
-        private const string NormalProjectileName = "일반탄";
-        private const string UnparryableProjectileName = "패링불가탄";
-        private const string WaitingNormalProjectileName = "일반탄_대기";
-        private const string WaitingUnparryableProjectileName = "패링불가탄_대기";
 
         [Header("Projectile")]
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
@@ -40,23 +36,15 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            string sourceProjectileName = projectileName?.Trim() ?? string.Empty;
-            string resolvedProjectileName = ResolveProjectileName(context, sourceProjectileName);
+            string resolvedProjectileName = projectileName?.Trim() ?? string.Empty;
             BossProjectileSettings settings = context.ResolveGraphProjectileSettings(resolvedProjectileName);
-            if (settings == null && resolvedProjectileName == sourceProjectileName)
+            if (settings == null)
             {
                 settings = projectile;
             }
 
             if (settings?.Prefab == null)
             {
-                if (resolvedProjectileName != sourceProjectileName)
-                {
-                    Debug.LogWarning(
-                        $"{nameof(HackerSequentialSweepFireAction)}: 홀로그램용 투사체 '{resolvedProjectileName}' 설정을 찾을 수 없습니다.",
-                        context.Boss);
-                }
-
                 yield break;
             }
 
@@ -149,21 +137,6 @@ namespace Week14.Enemy
         {
             Vector2 direction = context.GetDirectionToPlayer(origin);
             return direction.sqrMagnitude > 0.0001f ? direction : Vector2.left;
-        }
-
-        private static string ResolveProjectileName(BossActionContext context, string sourceProjectileName)
-        {
-            if (context?.Boss is not HackerHologramBoss)
-            {
-                return sourceProjectileName;
-            }
-
-            return sourceProjectileName switch
-            {
-                NormalProjectileName => UnparryableProjectileName,
-                WaitingNormalProjectileName => WaitingUnparryableProjectileName,
-                _ => sourceProjectileName
-            };
         }
 
         private static IEnumerator WaitForMeleeAttackAdvanceCompletion(BossActionContext context)

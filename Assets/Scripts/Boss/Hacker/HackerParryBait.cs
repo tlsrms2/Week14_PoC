@@ -4,6 +4,40 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
+    [Serializable]
+    internal sealed class HackerParrySpawnEffectSettings
+    {
+        internal const float LeadSeconds = 0.4f;
+        private const float PlaybackSpeed = 2f;
+
+        [Tooltip("Parry 탄 생성 0.4초 전에 재생할 이펙트 프리팹입니다.")]
+        [SerializeField] private GameObject effectPrefab;
+        [Tooltip("Parry 탄 생성 위치를 기준으로 적용할 월드 X/Y 오프셋입니다.")]
+        [SerializeField] private Vector2 positionOffset;
+        [Tooltip("이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float scale = 1f;
+
+        internal float LeadDurationSeconds => effectPrefab != null ? LeadSeconds : 0f;
+
+        internal bool Play(Vector3 projectilePosition)
+        {
+            if (effectPrefab == null)
+            {
+                return false;
+            }
+
+            ProjectileVfx.PlayPrefab(
+                effectPrefab,
+                projectilePosition + (Vector3)positionOffset,
+                Quaternion.identity,
+                null,
+                Mathf.Max(0.01f, scale),
+                false,
+                PlaybackSpeed);
+            return true;
+        }
+    }
+
     internal sealed class HackerPatternParryRewardTracker
     {
         private bool isActive = true;

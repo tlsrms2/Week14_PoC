@@ -16,6 +16,7 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.05f)] private float chargeSeconds = 0.7f;
         [SerializeField, Min(0.05f)] private float parryWindowSeconds = 0.35f;
+        [SerializeField] private HackerParrySpawnEffectSettings parrySpawnEffect = new();
 
         [Header("Dash Sweep")]
         [SerializeField] private string sweepTriggerName = "DashSweep";
@@ -48,6 +49,13 @@ namespace Week14.Enemy
                 context.RestartAnimationTrigger(chargeTriggerName);
                 bool isHologram = context.Boss is HackerHologramBoss;
                 Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
+                if (parrySpawnEffect?.Play(parryAnchor.position) == true)
+                {
+                    yield return HackerMeleeAttackAction.Wait(
+                        context,
+                        HackerParrySpawnEffectSettings.LeadSeconds);
+                }
+
                 parryBait = HackerParryBait.Spawn(
                     context,
                     (context.Boss as HackerBossAI)?.ParryProjectileSettings,
@@ -151,7 +159,10 @@ namespace Week14.Enemy
 
         public bool TryGetDurationSeconds(out float seconds)
         {
-            seconds = Mathf.Max(0.05f, chargeSeconds) + Mathf.Max(0.05f, dashSeconds) + Mathf.Max(0f, recoverySeconds);
+            seconds = Mathf.Max(0.05f, chargeSeconds)
+                + Mathf.Max(0.05f, dashSeconds)
+                + Mathf.Max(0f, recoverySeconds)
+                + (parrySpawnEffect?.LeadDurationSeconds ?? 0f);
             return true;
         }
 

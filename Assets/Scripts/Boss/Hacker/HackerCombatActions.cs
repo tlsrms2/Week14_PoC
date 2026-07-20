@@ -107,6 +107,7 @@ namespace Week14.Enemy
         [Header("Parry")]
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
+        [SerializeField] private HackerParrySpawnEffectSettings parrySpawnEffect = new();
 
         [Header("Attack Effect")]
         [SerializeField] private bool spawnEffectOnAttack;
@@ -169,6 +170,15 @@ namespace Week14.Enemy
                     rangeIndicator);
 
                 Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
+                if (parrySpawnEffect?.Play(parryAnchor.position) == true)
+                {
+                    yield return WaitWithMeleeEllipseIndicator(
+                        context,
+                        attackDirection,
+                        HackerParrySpawnEffectSettings.LeadSeconds,
+                        rangeIndicator);
+                }
+
                 float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
                 parryBait = HackerParryBait.Spawn(
                     context,
@@ -252,7 +262,8 @@ namespace Week14.Enemy
         {
             seconds = Mathf.Max(0f, windupSeconds)
                 + Mathf.Max(0f, attackAdvanceSeconds)
-                + Mathf.Max(0f, recoverySeconds);
+                + Mathf.Max(0f, recoverySeconds)
+                + (parrySpawnEffect?.LeadDurationSeconds ?? 0f);
             return true;
         }
 
@@ -623,6 +634,7 @@ namespace Week14.Enemy
         [Header("Parry")]
         [SerializeField, BossGraphBossChildPath] private string parryAnchorPath;
         [SerializeField, Min(0.01f)] private float parryWindowSeconds = 0.36f;
+        [SerializeField] private HackerParrySpawnEffectSettings parrySpawnEffect = new();
 
         [Header("Attack Effect")]
         [SerializeField] private BossActionPrefabEffectSettings attackEffect = new();
@@ -671,6 +683,15 @@ namespace Week14.Enemy
             Transform bossTransform = context.Boss.transform;
             Vector3 parryWorldOffset = parryAnchor.position - bossTransform.position;
             parryWorldOffset.x = Mathf.Abs(parryWorldOffset.x) * Mathf.Sign(direction.x);
+            if (parrySpawnEffect?.Play(bossTransform.position + parryWorldOffset) == true)
+            {
+                yield return WaitWithThrustIndicator(
+                    context,
+                    direction,
+                    HackerParrySpawnEffectSettings.LeadSeconds,
+                    rangeIndicator);
+            }
+
             float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
             HackerParryBait parryBait = HackerParryBait.Spawn(
                 context,
@@ -739,7 +760,8 @@ namespace Week14.Enemy
         {
             seconds = Mathf.Max(0f, windupSeconds)
                 + Mathf.Max(0f, thrustAdvanceSeconds)
-                + Mathf.Max(0f, recoverySeconds);
+                + Mathf.Max(0f, recoverySeconds)
+                + (parrySpawnEffect?.LeadDurationSeconds ?? 0f);
             return true;
         }
 

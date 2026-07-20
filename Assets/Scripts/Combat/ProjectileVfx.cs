@@ -54,13 +54,15 @@ namespace Week14.Combat
             Quaternion rotation,
             Transform followTarget,
             float scale = 1f,
-            bool followRotation = true)
+            bool followRotation = true,
+            float playbackSpeed = 1f)
         {
             if (prefab == null || scale <= 0f)
             {
                 return null;
             }
 
+            float safePlaybackSpeed = Mathf.Max(0.01f, playbackSpeed);
             position.z = 0f;
             GameObject instance = Object.Instantiate(prefab, position, rotation);
             if (followTarget != null)
@@ -87,6 +89,7 @@ namespace Week14.Combat
                 main.loop = false;
                 main.simulationSpace = ParticleSystemSimulationSpace.Local;
                 main.stopAction = ParticleSystemStopAction.None;
+                main.simulationSpeed *= safePlaybackSpeed;
                 float simulationSpeed = main.simulationSpeed;
                 float particleLifetime = simulationSpeed > 0.0001f
                     ? (main.startDelay.constantMax + main.duration + main.startLifetime.constantMax)
@@ -113,6 +116,7 @@ namespace Week14.Combat
                     continue;
                 }
 
+                animator.speed *= safePlaybackSpeed;
                 float animatorSpeed = Mathf.Abs(animator.speed);
                 float animatorLifetimeSeconds = 0f;
                 if (animatorSpeed <= 0.0001f)
