@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: HitLimitChallenge0
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.HitLimitChallengeSO
   challengeId: HitLimit_0
-  description: "\uC804\uD22C\uC5D0\uC11C 1\uBC88\uC774\uC0C1 \uD53C\uD574\uB97C \uBC1B\uC9C0
-    \uC54A\uACE0 \uC2B9\uB9AC\uD558\uC138\uC694."
+  description: "1\uBC88 \uC774\uC0C1 \uD53C\uD574\uB97C \uBC1B\uC9C0 \uC54A\uACE0
+    \uC2B9\uB9AC\uD558\uC138\uC694."
   localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b

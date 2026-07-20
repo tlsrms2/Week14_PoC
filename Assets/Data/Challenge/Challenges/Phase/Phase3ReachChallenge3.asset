@@ -9,24 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
-  m_Name: ParryCountChallenge
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
-  challengeId: ParryCount_100
-  description: 
+  m_Script: {fileID: 11500000, guid: 34a1a409f0895c443924e93003f84a92, type: 3}
+  m_Name: Phase3ReachChallenge3
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.PhaseReachChallengeSO
+  challengeId: Phase3Reach_3
+  description: "\uD398\uC774\uC988 3\uC5D0 3\uBC88 \uC9C4\uC785\uD558\uC138\uC694."
   localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
     m_TableEntryReference:
-      m_KeyId: 3443865412796416
+      m_KeyId: 3527906837585920
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   rewardPoint: 1
   showProgress: 1
-  minParries: 100
-  targetProjectilePrefabs: []
+  targetPhaseNumber: 3
+  requiredReachCount: 3
   references:
     version: 2
     RefIds: []

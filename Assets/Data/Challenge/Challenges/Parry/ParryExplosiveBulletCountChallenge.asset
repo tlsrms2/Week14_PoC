@@ -10,23 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
-  m_Name: ParryCountChallenge
+  m_Name: ParryExplosiveBulletCountChallenge
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
-  challengeId: ParryCount_100
+  challengeId: ParryExplosiveBulletCount_50
   description: 
   localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
     m_TableEntryReference:
-      m_KeyId: 3443865412796416
+      m_KeyId: 3521787301912576
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   rewardPoint: 1
   showProgress: 1
-  minParries: 100
-  targetProjectilePrefabs: []
+  minParries: 50
+  targetProjectilePrefabs:
+  - {fileID: 1636386283175442648, guid: e13a092842a8017469e895cdff590d97, type: 3}
   references:
     version: 2
     RefIds: []

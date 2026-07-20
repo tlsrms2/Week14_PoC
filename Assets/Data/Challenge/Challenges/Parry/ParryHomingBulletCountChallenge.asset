@@ -10,23 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
-  m_Name: ParryCountChallenge
+  m_Name: ParryHomingBulletCountChallenge
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
-  challengeId: ParryCount_100
+  challengeId: ParryHomingBulletCount_30
   description: 
   localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
     m_TableEntryReference:
-      m_KeyId: 3443865412796416
+      m_KeyId: 3519743778283520
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   rewardPoint: 1
   showProgress: 1
-  minParries: 100
-  targetProjectilePrefabs: []
+  minParries: 30
+  targetProjectilePrefabs:
+  - {fileID: -8187778193616843994, guid: e9b01b966b9135f4b9a448f254ca3ea1, type: 3}
+  - {fileID: 5357817955291268167, guid: e25037cb3c3f0a64b9bb1ed45dbc5b9e, type: 3}
   references:
     version: 2
     RefIds: []

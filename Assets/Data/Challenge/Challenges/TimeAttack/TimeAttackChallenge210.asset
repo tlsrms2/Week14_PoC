@@ -9,24 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
-  m_Name: ParryBulletCountChallenge
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
-  challengeId: CounterCount_6
-  description: 
+  m_Script: {fileID: 11500000, guid: 633bd6d689286ab4da38df9566a8f4a2, type: 3}
+  m_Name: TimeAttackChallenge210
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.TimeAttackChallengeSO
+  challengeId: TimeAttack_210
+  description: "\uC804\uD22C\uC5D0\uC11C 3:30 \uB0B4\uC5D0 \uC2B9\uB9AC\uD558\uC138\uC694."
   localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
     m_TableEntryReference:
-      m_KeyId: 3451950613233664
+      m_KeyId: 507800000000
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   rewardPoint: 1
-  showProgress: 1
-  minParries: 6
-  targetProjectilePrefab: {fileID: 4145516694036420089, guid: dd60db993c1999b4fac20ca01ab9eeaf, type: 3}
+  showProgress: 0
+  targetSeconds: 210
   references:
     version: 2
     RefIds: []
