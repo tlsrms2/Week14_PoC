@@ -857,6 +857,23 @@ namespace Week14.Enemy
             return bodyRoot != null ? (Vector2)bodyRoot.right : Vector2.right;
         }
 
+        public void FaceTowards(Vector2 worldPosition)
+        {
+            ApplyExecutionFacing(worldPosition);
+        }
+
+        protected virtual void ApplyExecutionFacing(Vector2 worldPosition)
+        {
+            if (!RotatesBodyToPlayer)
+            {
+                return;
+            }
+
+            Transform facingRoot = bodyRoot != null ? bodyRoot : transform;
+            Vector2 horizontalDirection = new(worldPosition.x - transform.position.x, 0f);
+            RotateRight(facingRoot, horizontalDirection);
+        }
+
         protected virtual void OnBossStarted() { }
         protected virtual void OnCombatStarted() { }
         protected virtual void OnBossPhaseChanged(int phaseIndex, int phaseNumber) { }

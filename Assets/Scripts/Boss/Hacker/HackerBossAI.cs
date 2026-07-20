@@ -635,7 +635,17 @@ namespace Week14.Enemy
 
         internal void FaceHorizontalDirection(float horizontalDirection)
         {
-            if (GraphContext?.IsFacingLocked == true
+            ApplyHorizontalFacing(horizontalDirection, false);
+        }
+
+        protected override void ApplyExecutionFacing(Vector2 worldPosition)
+        {
+            ApplyHorizontalFacing(worldPosition.x - transform.position.x, true);
+        }
+
+        private void ApplyHorizontalFacing(float horizontalDirection, bool ignoreFacingLock)
+        {
+            if ((!ignoreFacingLock && GraphContext?.IsFacingLocked == true)
                 || Mathf.Abs(horizontalDirection) <= 0.0001f)
             {
                 return;

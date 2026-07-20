@@ -79,11 +79,8 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float executionCameraFocusWeight = 1f;
         [Tooltip("처형 중 카메라 줌 배율입니다. 작을수록 더 가까이 보입니다.")]
         [SerializeField, Range(0.35f, 1f)] private float executionCameraZoomMultiplier = 0.62f;
-        [FormerlySerializedAs("executionApproachStartDistance")]
-        [Tooltip("이 거리보다 먼 보스를 처형하면 플레이어를 보스 옆으로 순간이동시킵니다.")]
-        [SerializeField, Min(0f)] private float executionTeleportStartDistance = 3f;
         [FormerlySerializedAs("executionApproachStopDistance")]
-        [Tooltip("원거리 처형 시 보스 좌우에 배치할 플레이어의 거리입니다.")]
+        [Tooltip("처형 시 보스 좌우에 배치할 플레이어의 수평 거리입니다.")]
         [SerializeField, Min(0f)] private float executionTeleportDistance = 1.2f;
         [Tooltip("처형 발사 순간 화면 어둡게 처리되는 시간입니다.")]
         [SerializeField, Min(0f)] private float executionShotDimSeconds = 0.065f;
@@ -166,7 +163,6 @@ namespace Week14.Combat
         public float ExecutionFinishSeconds => executionFinishSeconds;
         public float ExecutionCameraFocusWeight => executionCameraFocusWeight;
         public float ExecutionCameraZoomMultiplier => executionCameraZoomMultiplier;
-        public float ExecutionTeleportStartDistance => executionTeleportStartDistance;
         public float ExecutionTeleportDistance => executionTeleportDistance;
         public float ExecutionShotDimSeconds => executionShotDimSeconds;
         public float ExecutionShotDimAlpha => executionShotDimAlpha;

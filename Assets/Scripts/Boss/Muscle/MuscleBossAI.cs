@@ -73,7 +73,20 @@ namespace Week14.Enemy
                 return;
             }
 
-            bool flip = Player.position.x > transform.position.x;
+            ApplyFacingSprite(spriteRenderer, Player.position.x > transform.position.x);
+        }
+
+        protected override void ApplyExecutionFacing(Vector2 worldPosition)
+        {
+            SpriteRenderer spriteRenderer = ResolveFacingSpriteRenderer();
+            if (spriteRenderer != null)
+            {
+                ApplyFacingSprite(spriteRenderer, worldPosition.x > transform.position.x);
+            }
+        }
+
+        private void ApplyFacingSprite(SpriteRenderer spriteRenderer, bool flip)
+        {
             spriteRenderer.flipX = flip;
             ApplyFacingMirrorToChildren(spriteRenderer.transform, flip);
         }
