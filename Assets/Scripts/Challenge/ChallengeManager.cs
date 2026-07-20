@@ -48,6 +48,7 @@ namespace Week14.Challenge
             BossAI.Defeated += HandleVictory;
             PlayerDamageReceiver.PlayerHitByEnemy += HandlePlayerHit;
             PlayerParryController.ProjectileParried += HandleParried;
+            EnemyProjectile.AnyDestroyed += HandleProjectileDestroyed;
             TrySubscribePlayer();
         }
 
@@ -58,6 +59,7 @@ namespace Week14.Challenge
             BossAI.Defeated -= HandleVictory;
             PlayerDamageReceiver.PlayerHitByEnemy -= HandlePlayerHit;
             PlayerParryController.ProjectileParried -= HandleParried;
+            EnemyProjectile.AnyDestroyed -= HandleProjectileDestroyed;
             UnsubscribeBoss();
             UnsubscribePlayer();
         }
@@ -195,6 +197,21 @@ namespace Week14.Challenge
             for (int i = 0; i < activeRuns.Count; i++)
             {
                 activeRuns[i].Run.OnParried(projectile);
+            }
+        }
+
+        // 사유가 Intercepted(플레이어의 공격으로 파괴됨)인 경우만 전달합니다. Expired(수명 만료)나
+        // OwnerDestroyed(보스가 강제 정리)는 플레이어가 파괴한 게 아니므로 챌린지에 넘기지 않습니다.
+        private void HandleProjectileDestroyed(EnemyProjectile projectile, EnemyProjectileDestroyReason reason)
+        {
+            if (!combatActive || reason != EnemyProjectileDestroyReason.Intercepted)
+            {
+                return;
+            }
+
+            for (int i = 0; i < activeRuns.Count; i++)
+            {
+                activeRuns[i].Run.OnObjectDestroyed(projectile);
             }
         }
 

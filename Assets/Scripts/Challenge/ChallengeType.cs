@@ -7,6 +7,7 @@ namespace Week14.Challenge
         HitLimit,
         BossClear,
         ParryCount,
-        ParryClear
+        ParryClear,
+        DestroyObjectCount
     }
 }

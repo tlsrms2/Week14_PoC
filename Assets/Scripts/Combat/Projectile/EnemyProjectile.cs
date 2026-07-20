@@ -146,6 +146,9 @@ namespace Week14.Combat
         public event System.Action<EnemyProjectile> RadialSplit;
         public event System.Action<EnemyProjectile> RadialSplitImminent;
         public event System.Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> Destroyed;
+        // 어떤 종류의 EnemyProjectile이 파괴되든 발생하는 전역 이벤트입니다. 챌린지처럼 "보스가 소환한
+        // 특정 프리팹이 파괴될 때마다" 같은 조건을 스폰 시점을 몰라도 구독 한 번으로 감지하고 싶을 때 씁니다.
+        public static event System.Action<EnemyProjectile, EnemyProjectileDestroyReason> AnyDestroyed;
 
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;

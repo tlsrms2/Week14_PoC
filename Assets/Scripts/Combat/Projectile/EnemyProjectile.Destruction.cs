@@ -74,6 +74,7 @@ namespace Week14.Combat
             Vector3 destroyPosition = transform.position;
             OnProjectileDestroying(reason, destroyPosition);
             Destroyed?.Invoke(this, reason, destroyPosition);
+            AnyDestroyed?.Invoke(this, reason);
             UnregisterInterceptGroup();
             activeProjectiles.Remove(this);
             ReleaseOwnerProjectileSlot();
