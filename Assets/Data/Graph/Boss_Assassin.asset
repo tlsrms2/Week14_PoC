@@ -3557,15 +3557,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778169994805735
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3949,15 +3948,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778196242497744
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4019,15 +4017,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778196242497746
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4659,15 +4656,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803209
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4818,15 +4814,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803238
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5187,15 +5182,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803310
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5464,15 +5458,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803323
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

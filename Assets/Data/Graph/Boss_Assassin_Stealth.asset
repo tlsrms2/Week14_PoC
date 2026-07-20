@@ -179,15 +179,6 @@ MonoBehaviour:
       rid: 4705778196242497740
     sequences: []
     editorPosition: {x: 3892, y: 143}
-  - nodeId: Wait3
-    nodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
-    nodeKind: 3
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 4705778196242497742
-    sequences: []
-    editorPosition: {x: 2667, y: 162}
   - nodeId: Boss Dash2
     nodeGuid: 0028fc57a02746d0b5b54d3438b7874e
     nodeKind: 1
@@ -287,7 +278,7 @@ MonoBehaviour:
       rid: 4705778196242497836
     sequences: []
     editorPosition: {x: 1879, y: 808}
-  - nodeId: Wait4
+  - nodeId: Wait3
     nodeGuid: 4859625f935f477bb11f9e5e1beb595f
     nodeKind: 3
     phaseIndex: 0
@@ -358,7 +349,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803230
     sequences: []
-    editorPosition: {x: -1238, y: 624}
+    editorPosition: {x: -1234, y: 624}
   - nodeId: Fire Next Clone Shooter6
     nodeGuid: 4ea16c64fa504678a8df9584087fd191
     nodeKind: 0
@@ -449,7 +440,7 @@ MonoBehaviour:
       rid: 4705778205525803266
     sequences: []
     editorPosition: {x: 2820, y: 306}
-  - nodeId: Wait5
+  - nodeId: Wait4
     nodeGuid: 0a60910a04564966b5f9ae0ea5a18062
     nodeKind: 3
     phaseIndex: 0
@@ -566,7 +557,7 @@ MonoBehaviour:
       rid: 4705778205525803324
     sequences: []
     editorPosition: {x: 3134, y: 1151}
-  - nodeId: Wait6
+  - nodeId: Wait5
     nodeGuid: 49f218bffdde463ab79283b87b90536c
     nodeKind: 3
     phaseIndex: 0
@@ -602,7 +593,7 @@ MonoBehaviour:
       rid: 4705778220989677569
     sequences: []
     editorPosition: {x: -1466, y: -96}
-  - nodeId: Wait7
+  - nodeId: Wait6
     nodeGuid: 294b13cb85c0438280b8eb5f1b54f908
     nodeKind: 3
     phaseIndex: 0
@@ -638,7 +629,7 @@ MonoBehaviour:
       rid: 4705778220989677575
     sequences: []
     editorPosition: {x: 272, y: -96}
-  - nodeId: Wait8
+  - nodeId: Wait7
     nodeGuid: 6b3a5ff56fd447d0853a424af5455033
     nodeKind: 3
     phaseIndex: 0
@@ -647,7 +638,7 @@ MonoBehaviour:
       rid: 4705778220989677660
     sequences: []
     editorPosition: {x: -298, y: -96}
-  - nodeId: Wait9
+  - nodeId: Wait8
     nodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
     nodeKind: 3
     phaseIndex: 0
@@ -674,7 +665,7 @@ MonoBehaviour:
       rid: 4705778220989677702
     sequences: []
     editorPosition: {x: -1037, y: 629}
-  - nodeId: Wait10
+  - nodeId: Wait9
     nodeGuid: 05d8730dad6e40a3bc85ddb257df2f33
     nodeKind: 3
     phaseIndex: 0
@@ -692,7 +683,7 @@ MonoBehaviour:
       rid: 4705778220989677704
     sequences: []
     editorPosition: {x: -756, y: 629}
-  - nodeId: Wait11
+  - nodeId: Wait10
     nodeGuid: d9b74fedfcf74fd69d8c3b0a870fe576
     nodeKind: 3
     phaseIndex: 0
@@ -710,7 +701,7 @@ MonoBehaviour:
       rid: 4705778220989677706
     sequences: []
     editorPosition: {x: 103, y: 604}
-  - nodeId: Wait12
+  - nodeId: Wait11
     nodeGuid: 473b36e8d7d744ecaf2ec052c982080c
     nodeKind: 3
     phaseIndex: 0
@@ -728,7 +719,7 @@ MonoBehaviour:
       rid: 4705778220989677708
     sequences: []
     editorPosition: {x: 367, y: 604}
-  - nodeId: Wait13
+  - nodeId: Wait12
     nodeGuid: 13c401bafe89441b93b8b7b034bf6da2
     nodeKind: 3
     phaseIndex: 0
@@ -746,7 +737,7 @@ MonoBehaviour:
       rid: 4705778220989677710
     sequences: []
     editorPosition: {x: -1167, y: 1160}
-  - nodeId: Wait14
+  - nodeId: Wait13
     nodeGuid: f30b329ff1c242cdaddabca11aed5862
     nodeKind: 3
     phaseIndex: 0
@@ -764,7 +755,7 @@ MonoBehaviour:
       rid: 4705778220989677712
     sequences: []
     editorPosition: {x: -886, y: 1160}
-  - nodeId: Wait15
+  - nodeId: Wait14
     nodeGuid: 2d08ebed0aa145c790f005a7d01a4aeb
     nodeKind: 3
     phaseIndex: 0
@@ -782,7 +773,7 @@ MonoBehaviour:
       rid: 4705778220989677714
     sequences: []
     editorPosition: {x: -3, y: 1151}
-  - nodeId: Wait16
+  - nodeId: Wait15
     nodeGuid: be5bce643c7640cfaed4cb9e8df7e567
     nodeKind: 3
     phaseIndex: 0
@@ -818,7 +809,7 @@ MonoBehaviour:
       rid: 4705778220989677764
     sequences: []
     editorPosition: {x: -468, y: 987}
-  - nodeId: Wait17
+  - nodeId: Wait16
     nodeGuid: 1a80f26239f844ada83559df1c630453
     nodeKind: 3
     phaseIndex: 0
@@ -827,7 +818,7 @@ MonoBehaviour:
       rid: 4705778220989677766
     sequences: []
     editorPosition: {x: -1051, y: 972}
-  - nodeId: Wait18
+  - nodeId: Wait17
     nodeGuid: c45e52f3470b4d8db22995d93600a74e
     nodeKind: 3
     phaseIndex: 0
@@ -845,7 +836,7 @@ MonoBehaviour:
       rid: 4705778220989677772
     sequences: []
     editorPosition: {x: 1106, y: -42}
-  - nodeId: Wait19
+  - nodeId: Wait18
     nodeGuid: 56b02b106f0f43989277745290bdb7d3
     nodeKind: 3
     phaseIndex: 0
@@ -872,7 +863,7 @@ MonoBehaviour:
       rid: 4705778220989677782
     sequences: []
     editorPosition: {x: 2379, y: -176}
-  - nodeId: Wait20
+  - nodeId: Wait19
     nodeGuid: 439e431899484f6d92c81e29d3d27172
     nodeKind: 3
     phaseIndex: 0
@@ -890,7 +881,7 @@ MonoBehaviour:
       rid: 4705778220989677792
     sequences: []
     editorPosition: {x: 1843, y: 169}
-  - nodeId: Wait21
+  - nodeId: Wait20
     nodeGuid: ee696814c0eb48ae985bd8be196bc59b
     nodeKind: 3
     phaseIndex: 0
@@ -908,7 +899,7 @@ MonoBehaviour:
       rid: 4705778220989677794
     sequences: []
     editorPosition: {x: 2111, y: 171}
-  - nodeId: Wait22
+  - nodeId: Wait21
     nodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
     nodeKind: 3
     phaseIndex: 0
@@ -926,7 +917,7 @@ MonoBehaviour:
       rid: 4705778220989677796
     sequences: []
     editorPosition: {x: 3203, y: 141}
-  - nodeId: Wait23
+  - nodeId: Wait22
     nodeGuid: 942a22e5067b4e71b8352dbea6ae5f1d
     nodeKind: 3
     phaseIndex: 0
@@ -944,7 +935,7 @@ MonoBehaviour:
       rid: 4705778220989677798
     sequences: []
     editorPosition: {x: 3484, y: 141}
-  - nodeId: Wait24
+  - nodeId: Wait23
     nodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
     nodeKind: 3
     phaseIndex: 0
@@ -953,7 +944,7 @@ MonoBehaviour:
       rid: 4705778220989677799
     sequences: []
     editorPosition: {x: 3767, y: 143}
-  - nodeId: Wait25
+  - nodeId: Wait24
     nodeGuid: 3c6b18903d864d60b5e01a5b7e969fe9
     nodeKind: 3
     phaseIndex: 0
@@ -962,7 +953,7 @@ MonoBehaviour:
       rid: 4705778220989677804
     sequences: []
     editorPosition: {x: 1763, y: 298}
-  - nodeId: Wait26
+  - nodeId: Wait25
     nodeGuid: fba6ab0c80254b93b6a0c564fe97b7eb
     nodeKind: 3
     phaseIndex: 0
@@ -980,7 +971,7 @@ MonoBehaviour:
       rid: 4705778220989677806
     sequences: []
     editorPosition: {x: 2176, y: 505}
-  - nodeId: Wait27
+  - nodeId: Wait26
     nodeGuid: 91d6897d3c3843a0bcab936d19f07dec
     nodeKind: 3
     phaseIndex: 0
@@ -998,7 +989,7 @@ MonoBehaviour:
       rid: 4705778220989677808
     sequences: []
     editorPosition: {x: 1741, y: 966}
-  - nodeId: Wait28
+  - nodeId: Wait27
     nodeGuid: 6b5c2148b4624c8f8fdabcd0d8a3afc5
     nodeKind: 3
     phaseIndex: 0
@@ -1079,7 +1070,7 @@ MonoBehaviour:
       rid: 4705778240567902322
     sequences: []
     editorPosition: {x: -110, y: 757}
-  - nodeId: Wait29
+  - nodeId: Wait28
     nodeGuid: d001d2e8326e463bb0ec6135ee2d1a20
     nodeKind: 3
     phaseIndex: 0
@@ -1106,7 +1097,7 @@ MonoBehaviour:
       rid: 4705778240567902335
     sequences: []
     editorPosition: {x: 470, y: 396}
-  - nodeId: Wait30
+  - nodeId: Wait29
     nodeGuid: 5bc594fbd88147cb80b5aa2331a11393
     nodeKind: 3
     phaseIndex: 0
@@ -1160,7 +1151,7 @@ MonoBehaviour:
       rid: 4705778240567902359
     sequences: []
     editorPosition: {x: 2554, y: -255}
-  - nodeId: Wait31
+  - nodeId: Wait30
     nodeGuid: fcd91604509c4fe0905deefb00253b97
     nodeKind: 3
     phaseIndex: 0
@@ -1204,7 +1195,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902369
     sequences: []
-    editorPosition: {x: 2685, y: 287}
+    editorPosition: {x: 2681, y: 162}
   - nodeId: Play Sfx19
     nodeGuid: 66a5eb049270413d8dbbc2b6ae09b1ad
     nodeKind: 3
@@ -1223,7 +1214,7 @@ MonoBehaviour:
       rid: 4705778240567902374
     sequences: []
     editorPosition: {x: 1447, y: 633}
-  - nodeId: Wait32
+  - nodeId: Wait31
     nodeGuid: c80ab285620740ea9d43d63325112c62
     nodeKind: 3
     phaseIndex: 0
@@ -1250,7 +1241,7 @@ MonoBehaviour:
       rid: 4705778240567902377
     sequences: []
     editorPosition: {x: 2338, y: 505}
-  - nodeId: Wait33
+  - nodeId: Wait32
     nodeGuid: 9c279bc977824732aed1953c7632e9f6
     nodeKind: 3
     phaseIndex: 0
@@ -1322,7 +1313,7 @@ MonoBehaviour:
       rid: 4705778240567902391
     sequences: []
     editorPosition: {x: -963, y: 1472}
-  - nodeId: Wait34
+  - nodeId: Wait33
     nodeGuid: f14a508387c545e8bf9127492fe1d12e
     nodeKind: 3
     phaseIndex: 0
@@ -1393,7 +1384,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902399
     sequences: []
-    editorPosition: {x: 1319, y: 1369}
+    editorPosition: {x: 1317, y: 1369}
   - nodeId: Spawn Clone Shooters10
     nodeGuid: cd2e8d40b021408e8e53796b3e4bebd7
     nodeKind: 0
@@ -1421,7 +1412,7 @@ MonoBehaviour:
       rid: 4705778240567902402
     sequences: []
     editorPosition: {x: 1770, y: 1369}
-  - nodeId: Wait35
+  - nodeId: Wait34
     nodeGuid: 843c1cd32efe445a8dd941ab503c39ea
     nodeKind: 3
     phaseIndex: 0
@@ -1557,13 +1548,13 @@ MonoBehaviour:
     nodeIds:
     - Set Parameter1
     - Set Parameter2
-    - Wait7
+    - Wait6
     - Set Parameter3
     - Play Sfx1
-    - Wait9
+    - Wait8
     - Fire Radial Emission1
     - Random Direction Move1
-    - Wait8
+    - Wait7
     - Set Parameter4
     - Play Sfx2
     - Fire Radial Emission2
@@ -1581,7 +1572,7 @@ MonoBehaviour:
     - Spawn Clone Shooters1
     - Wait1
     - Play Sfx3
-    - Wait29
+    - Wait28
     - Play Sfx8
     - Fire Next Clone Shooter1
     - Fire Next Clone Shooter2
@@ -1634,18 +1625,18 @@ MonoBehaviour:
     - Fire Radial Emission7
     - Spawn Clone Shooters5
     - Set Parameter7
-    - Wait10
+    - Wait9
     - Set Parameter8
     - Play Sfx5
-    - Wait11
+    - Wait10
     - Random Direction Move2
     - Play Sfx7
     - Fire Next Clone Shooter6
     - Set Parameter9
-    - Wait12
+    - Wait11
     - Set Parameter10
     - Play Sfx6
-    - Wait13
+    - Wait12
     - Random Direction Move3
   - patternId: Pattern5
     nodeGuids:
@@ -1677,21 +1668,21 @@ MonoBehaviour:
     - Spawn Clone Shooters6
     - Teleport Around Player5
     - Boss Dash5
-    - Wait17
+    - Wait16
     - Set Parameter11
-    - Wait14
+    - Wait13
     - Set Parameter12
     - Play Sfx11
-    - Wait15
+    - Wait14
     - Random Direction Move8
     - Teleport Around Player1
     - Boss Dash1
-    - Wait18
+    - Wait17
     - Set Parameter13
-    - Wait16
+    - Wait15
     - Set Parameter14
     - Play Sfx10
-    - Wait30
+    - Wait29
     - Random Direction Move6
     - Fire Next Clone Shooter7
     - Fire Radial Emission10
@@ -1716,17 +1707,17 @@ MonoBehaviour:
     nodeIds:
     - Fire Next Clone Shooter4
     - Set Parameter16
-    - Wait19
+    - Wait18
     - Set Parameter17
     - Play Sfx13
-    - Wait20
+    - Wait19
     - Fire Radial Emission4
     - Spawn Clone Shooters3
     - Wait2
     - Teleport Around Player6
     - Set Parameter18
     - Play Sfx14
-    - Wait31
+    - Wait30
     - Play Sfx15
     - Fire Radial Emission5
   - patternId: Pattern8
@@ -1745,7 +1736,6 @@ MonoBehaviour:
     - 26460d55045a41c8a4a4105be360aa77
     - bb9ac855b04c4bfeb708de73d8eb4494
     - e0a0bdfa969646debd70a5d1d703f7d7
-    - fc5fdd5d802d4c6c9fdd1ac624a6928b
     - 50aa19b5609a43a6b92b87c9d2bc1e18
     - 556f75cfe7cf4191881f8ac838aa57ea
     - bc6c56811b3948ec8df667622a94013e
@@ -1762,27 +1752,26 @@ MonoBehaviour:
     - Fire Radial Emission8
     - Fire Radial Emission9
     - Spawn Clone Shooters7
-    - Wait5
+    - Wait4
     - Play Sfx16
     - Teleport Around Player2
     - Boss Dash2
-    - Wait25
+    - Wait24
     - Set Parameter19
-    - Wait21
+    - Wait20
     - Set Parameter20
     - Play Sfx17
-    - Wait22
+    - Wait21
     - Random Direction Move4
-    - Wait3
     - Play Sfx18
     - Teleport Around Player3
     - Boss Dash3
-    - Wait26
+    - Wait25
     - Set Parameter21
-    - Wait23
+    - Wait22
     - Set Parameter22
     - Play Sfx19
-    - Wait24
+    - Wait23
     - Random Direction Move5
     - Fire Next Clone Shooter8
     - Fire Next Clone Shooter9
@@ -1803,13 +1792,13 @@ MonoBehaviour:
     - ced2d50e9b2d4cd4b2b34e09eebe70d5
     nodeIds:
     - Spawn Clone Shooters2
-    - Wait4
+    - Wait3
     - Teleport Around Player7
     - Play Sfx20
-    - Wait32
+    - Wait31
     - Play Sfx21
     - Boss Dash6
-    - Wait27
+    - Wait26
     - Set Parameter23
     - Play Sfx22
     - Fire Radial Emission11
@@ -1835,12 +1824,12 @@ MonoBehaviour:
     nodeIds:
     - Fire Radial Emission12
     - Spawn Clone Shooters8
-    - Wait6
+    - Wait5
     - Set Parameter24
-    - Wait28
+    - Wait27
     - Set Parameter25
     - Play Sfx23
-    - Wait33
+    - Wait32
     - Random Direction Move7
     - Play Sfx24
     - Fire Next Clone Shooter11
@@ -1864,7 +1853,7 @@ MonoBehaviour:
     - 3d98385c909c44e9b7a065790bd70a00
     nodeIds:
     - Set Stealth Visibility1
-    - Wait34
+    - Wait33
     - Spawn Clone Shooters9
     - Teleport Around Player9
     - Boss Dash8
@@ -1895,7 +1884,7 @@ MonoBehaviour:
     - 0db2534dd84644d78faae1534c348812
     nodeIds:
     - Set Stealth Visibility2
-    - Wait35
+    - Wait34
     - Spawn Clone Shooters10
     - Teleport Around Player10
     - Boss Dash9
@@ -2007,14 +1996,6 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
-    toNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
-    fromNodeId: Random Direction Move4
-    toNodeId: Wait3
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
   - fromNodeGuid: 9eb33f61ee294914a1c84f80b113e908
     toNodeGuid: 0028fc57a02746d0b5b54d3438b7874e
     fromNodeId: Teleport Around Player2
@@ -2034,7 +2015,7 @@ MonoBehaviour:
   - fromNodeGuid: e16e831d809842c88df2ba6972fdb979
     toNodeGuid: 4859625f935f477bb11f9e5e1beb595f
     fromNodeId: Spawn Clone Shooters2
-    toNodeId: Wait4
+    toNodeId: Wait3
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2074,7 +2055,7 @@ MonoBehaviour:
   - fromNodeGuid: 469714931ccf4ec0a60acf4e4592e6d3
     toNodeGuid: 0a60910a04564966b5f9ae0ea5a18062
     fromNodeId: Spawn Clone Shooters7
-    toNodeId: Wait5
+    toNodeId: Wait4
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2105,7 +2086,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 4859625f935f477bb11f9e5e1beb595f
     toNodeGuid: 076c1d2d1d6a43048be132b77abfcdb8
-    fromNodeId: Wait4
+    fromNodeId: Wait3
     toNodeId: Teleport Around Player7
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2122,7 +2103,7 @@ MonoBehaviour:
   - fromNodeGuid: 6cf6f48ba392469e87b07b5a387ed7d4
     toNodeGuid: 49f218bffdde463ab79283b87b90536c
     fromNodeId: Spawn Clone Shooters8
-    toNodeId: Wait6
+    toNodeId: Wait5
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2138,14 +2119,14 @@ MonoBehaviour:
   - fromNodeGuid: 59a0ab3255084af888ee6b54a82616c5
     toNodeGuid: 294b13cb85c0438280b8eb5f1b54f908
     fromNodeId: Set Parameter2
-    toNodeId: Wait7
+    toNodeId: Wait6
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 294b13cb85c0438280b8eb5f1b54f908
     toNodeGuid: b13dd0e1f6654c5a881a201dbf849f4f
-    fromNodeId: Wait7
+    fromNodeId: Wait6
     toNodeId: Set Parameter3
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2162,14 +2143,14 @@ MonoBehaviour:
   - fromNodeGuid: c6500d9e684e40fa835ec49902598fa7
     toNodeGuid: 6b3a5ff56fd447d0853a424af5455033
     fromNodeId: Random Direction Move1
-    toNodeId: Wait8
+    toNodeId: Wait7
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6b3a5ff56fd447d0853a424af5455033
     toNodeGuid: d5c27fdd844e4b659771181a2da2b2cf
-    fromNodeId: Wait8
+    fromNodeId: Wait7
     toNodeId: Set Parameter4
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2194,14 +2175,14 @@ MonoBehaviour:
   - fromNodeGuid: 75e761590e2c40a3ae5ab5cb8d58b5ee
     toNodeGuid: 05d8730dad6e40a3bc85ddb257df2f33
     fromNodeId: Set Parameter7
-    toNodeId: Wait10
+    toNodeId: Wait9
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 05d8730dad6e40a3bc85ddb257df2f33
     toNodeGuid: 9336e5bd807b4e6e8f65c082e8a8554a
-    fromNodeId: Wait10
+    fromNodeId: Wait9
     toNodeId: Set Parameter8
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2217,7 +2198,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: d9b74fedfcf74fd69d8c3b0a870fe576
     toNodeGuid: e4c422895b4e423a9e3ec6a061344ecc
-    fromNodeId: Wait11
+    fromNodeId: Wait10
     toNodeId: Random Direction Move2
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2226,14 +2207,14 @@ MonoBehaviour:
   - fromNodeGuid: 5c09dcc6b48349f7b915aa46abeb565c
     toNodeGuid: 473b36e8d7d744ecaf2ec052c982080c
     fromNodeId: Set Parameter9
-    toNodeId: Wait12
+    toNodeId: Wait11
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 473b36e8d7d744ecaf2ec052c982080c
     toNodeGuid: e5a414a257274353a3bb60ae761eff25
-    fromNodeId: Wait12
+    fromNodeId: Wait11
     toNodeId: Set Parameter10
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2249,7 +2230,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 13c401bafe89441b93b8b7b034bf6da2
     toNodeGuid: e445d7e2c6e74803bf80213b313e6150
-    fromNodeId: Wait13
+    fromNodeId: Wait12
     toNodeId: Random Direction Move3
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2258,14 +2239,14 @@ MonoBehaviour:
   - fromNodeGuid: 224519a5d5974501a066ce22f19a9f84
     toNodeGuid: f30b329ff1c242cdaddabca11aed5862
     fromNodeId: Set Parameter11
-    toNodeId: Wait14
+    toNodeId: Wait13
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f30b329ff1c242cdaddabca11aed5862
     toNodeGuid: 7b4fdbd19edc4bbcb519561843bc7a8b
-    fromNodeId: Wait14
+    fromNodeId: Wait13
     toNodeId: Set Parameter12
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2274,14 +2255,14 @@ MonoBehaviour:
   - fromNodeGuid: f8e30e070fe9489cad975dc68333d69a
     toNodeGuid: be5bce643c7640cfaed4cb9e8df7e567
     fromNodeId: Set Parameter13
-    toNodeId: Wait16
+    toNodeId: Wait15
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: be5bce643c7640cfaed4cb9e8df7e567
     toNodeGuid: a1e0ed753c944fd5b9458c3edb065509
-    fromNodeId: Wait16
+    fromNodeId: Wait15
     toNodeId: Set Parameter14
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2305,7 +2286,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 2d08ebed0aa145c790f005a7d01a4aeb
     toNodeGuid: 258dd1534d574b9896e447234905ef2b
-    fromNodeId: Wait15
+    fromNodeId: Wait14
     toNodeId: Random Direction Move8
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2322,14 +2303,14 @@ MonoBehaviour:
   - fromNodeGuid: a86867c6962e45bba2903c8ff35e7e07
     toNodeGuid: 1a80f26239f844ada83559df1c630453
     fromNodeId: Boss Dash5
-    toNodeId: Wait17
+    toNodeId: Wait16
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 1a80f26239f844ada83559df1c630453
     toNodeGuid: 224519a5d5974501a066ce22f19a9f84
-    fromNodeId: Wait17
+    fromNodeId: Wait16
     toNodeId: Set Parameter11
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2338,14 +2319,14 @@ MonoBehaviour:
   - fromNodeGuid: fece3e3ab912475bb4d3caf1990430fc
     toNodeGuid: c45e52f3470b4d8db22995d93600a74e
     fromNodeId: Boss Dash1
-    toNodeId: Wait18
+    toNodeId: Wait17
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c45e52f3470b4d8db22995d93600a74e
     toNodeGuid: f8e30e070fe9489cad975dc68333d69a
-    fromNodeId: Wait18
+    fromNodeId: Wait17
     toNodeId: Set Parameter13
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2354,14 +2335,14 @@ MonoBehaviour:
   - fromNodeGuid: b3ced54591844824847eb5f919753168
     toNodeGuid: 56b02b106f0f43989277745290bdb7d3
     fromNodeId: Set Parameter16
-    toNodeId: Wait19
+    toNodeId: Wait18
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 56b02b106f0f43989277745290bdb7d3
     toNodeGuid: fac4351d2ad44ecb818324de24e66acf
-    fromNodeId: Wait19
+    fromNodeId: Wait18
     toNodeId: Set Parameter17
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2377,7 +2358,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 439e431899484f6d92c81e29d3d27172
     toNodeGuid: d613670f5b7441a383a01e457037682a
-    fromNodeId: Wait20
+    fromNodeId: Wait19
     toNodeId: Fire Radial Emission4
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2386,14 +2367,14 @@ MonoBehaviour:
   - fromNodeGuid: 4cfd64f751c04130acd3bd0efd48dd6c
     toNodeGuid: ee696814c0eb48ae985bd8be196bc59b
     fromNodeId: Set Parameter19
-    toNodeId: Wait21
+    toNodeId: Wait20
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: ee696814c0eb48ae985bd8be196bc59b
     toNodeGuid: ba21a2c8ac56423abc54ba7f6edbdaa4
-    fromNodeId: Wait21
+    fromNodeId: Wait20
     toNodeId: Set Parameter20
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2401,7 +2382,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
     toNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
-    fromNodeId: Wait22
+    fromNodeId: Wait21
     toNodeId: Random Direction Move4
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2410,14 +2391,14 @@ MonoBehaviour:
   - fromNodeGuid: 8db8f961d925431f8dfe3e9109d8ad1d
     toNodeGuid: 942a22e5067b4e71b8352dbea6ae5f1d
     fromNodeId: Set Parameter21
-    toNodeId: Wait23
+    toNodeId: Wait22
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 942a22e5067b4e71b8352dbea6ae5f1d
     toNodeGuid: 674fc8cae670441ca134fea892d59ed6
-    fromNodeId: Wait23
+    fromNodeId: Wait22
     toNodeId: Set Parameter22
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2425,7 +2406,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
     toNodeGuid: a599ca8b9f1545dc82074d03da2bf8c6
-    fromNodeId: Wait24
+    fromNodeId: Wait23
     toNodeId: Random Direction Move5
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2434,14 +2415,14 @@ MonoBehaviour:
   - fromNodeGuid: 0028fc57a02746d0b5b54d3438b7874e
     toNodeGuid: 3c6b18903d864d60b5e01a5b7e969fe9
     fromNodeId: Boss Dash2
-    toNodeId: Wait25
+    toNodeId: Wait24
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 3c6b18903d864d60b5e01a5b7e969fe9
     toNodeGuid: 4cfd64f751c04130acd3bd0efd48dd6c
-    fromNodeId: Wait25
+    fromNodeId: Wait24
     toNodeId: Set Parameter19
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2450,14 +2431,14 @@ MonoBehaviour:
   - fromNodeGuid: bc6c56811b3948ec8df667622a94013e
     toNodeGuid: fba6ab0c80254b93b6a0c564fe97b7eb
     fromNodeId: Boss Dash3
-    toNodeId: Wait26
+    toNodeId: Wait25
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: fba6ab0c80254b93b6a0c564fe97b7eb
     toNodeGuid: 8db8f961d925431f8dfe3e9109d8ad1d
-    fromNodeId: Wait26
+    fromNodeId: Wait25
     toNodeId: Set Parameter21
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2466,14 +2447,14 @@ MonoBehaviour:
   - fromNodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
     toNodeGuid: 91d6897d3c3843a0bcab936d19f07dec
     fromNodeId: Boss Dash6
-    toNodeId: Wait27
+    toNodeId: Wait26
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 91d6897d3c3843a0bcab936d19f07dec
     toNodeGuid: 9eb3b506c3544a92bfccd4162463d7cd
-    fromNodeId: Wait27
+    fromNodeId: Wait26
     toNodeId: Set Parameter23
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2482,14 +2463,14 @@ MonoBehaviour:
   - fromNodeGuid: 3f1a11853aeb4d85ad9beebda338a346
     toNodeGuid: 6b5c2148b4624c8f8fdabcd0d8a3afc5
     fromNodeId: Set Parameter24
-    toNodeId: Wait28
+    toNodeId: Wait27
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 6b5c2148b4624c8f8fdabcd0d8a3afc5
     toNodeGuid: 7c7e5549faa1485dba667101ef86d596
-    fromNodeId: Wait28
+    fromNodeId: Wait27
     toNodeId: Set Parameter25
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2497,7 +2478,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 49f218bffdde463ab79283b87b90536c
     toNodeGuid: 3f1a11853aeb4d85ad9beebda338a346
-    fromNodeId: Wait6
+    fromNodeId: Wait5
     toNodeId: Set Parameter24
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2522,14 +2503,14 @@ MonoBehaviour:
   - fromNodeGuid: 6b7dc8ec32f848458dd64194c7c59b9f
     toNodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
     fromNodeId: Play Sfx1
-    toNodeId: Wait9
+    toNodeId: Wait8
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 80d2b02fee3c4fc0a36bd6d205fe8f25
     toNodeGuid: 5a0d5ecf578a4e80b2d8d4b13a44aaea
-    fromNodeId: Wait9
+    fromNodeId: Wait8
     toNodeId: Fire Radial Emission1
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2578,7 +2559,7 @@ MonoBehaviour:
   - fromNodeGuid: 31a61404546748a3a29f10cf729b3ae6
     toNodeGuid: d9b74fedfcf74fd69d8c3b0a870fe576
     fromNodeId: Play Sfx5
-    toNodeId: Wait11
+    toNodeId: Wait10
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2594,7 +2575,7 @@ MonoBehaviour:
   - fromNodeGuid: eb43833270e946fea21a80ebbabaf985
     toNodeGuid: 13c401bafe89441b93b8b7b034bf6da2
     fromNodeId: Play Sfx6
-    toNodeId: Wait13
+    toNodeId: Wait12
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2610,14 +2591,14 @@ MonoBehaviour:
   - fromNodeGuid: dd4bedbe1714431b9aee5dd5128a7b4e
     toNodeGuid: d001d2e8326e463bb0ec6135ee2d1a20
     fromNodeId: Play Sfx3
-    toNodeId: Wait29
+    toNodeId: Wait28
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: d001d2e8326e463bb0ec6135ee2d1a20
     toNodeGuid: edb9ca5042e34e2892508f947c112800
-    fromNodeId: Wait29
+    fromNodeId: Wait28
     toNodeId: Play Sfx8
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2658,7 +2639,7 @@ MonoBehaviour:
   - fromNodeGuid: 1700484e714b45afaa623bfcf961c5f5
     toNodeGuid: 5bc594fbd88147cb80b5aa2331a11393
     fromNodeId: Play Sfx10
-    toNodeId: Wait30
+    toNodeId: Wait29
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2673,7 +2654,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 5bc594fbd88147cb80b5aa2331a11393
     toNodeGuid: 91d293a100144f99a5f89ef11ee030dc
-    fromNodeId: Wait30
+    fromNodeId: Wait29
     toNodeId: Random Direction Move6
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2690,7 +2671,7 @@ MonoBehaviour:
   - fromNodeGuid: e5414f874eaa46819e2c41006161869b
     toNodeGuid: 2d08ebed0aa145c790f005a7d01a4aeb
     fromNodeId: Play Sfx11
-    toNodeId: Wait15
+    toNodeId: Wait14
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2706,14 +2687,14 @@ MonoBehaviour:
   - fromNodeGuid: 2c1b9f16eb954c95aca62459c0b0f752
     toNodeGuid: fcd91604509c4fe0905deefb00253b97
     fromNodeId: Play Sfx14
-    toNodeId: Wait31
+    toNodeId: Wait30
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: fcd91604509c4fe0905deefb00253b97
     toNodeGuid: 0545a75d609c4b77adc725be03eef478
-    fromNodeId: Wait31
+    fromNodeId: Wait30
     toNodeId: Play Sfx15
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2738,14 +2719,14 @@ MonoBehaviour:
   - fromNodeGuid: 6bb3cce2e66549e098973a27a54e3589
     toNodeGuid: 439e431899484f6d92c81e29d3d27172
     fromNodeId: Play Sfx13
-    toNodeId: Wait20
+    toNodeId: Wait19
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 0a60910a04564966b5f9ae0ea5a18062
     toNodeGuid: 0c12c92be39546e2b33f02e9a93dae44
-    fromNodeId: Wait5
+    fromNodeId: Wait4
     toNodeId: Play Sfx16
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2770,15 +2751,7 @@ MonoBehaviour:
   - fromNodeGuid: 26460d55045a41c8a4a4105be360aa77
     toNodeGuid: bb9ac855b04c4bfeb708de73d8eb4494
     fromNodeId: Play Sfx17
-    toNodeId: Wait22
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: fc5fdd5d802d4c6c9fdd1ac624a6928b
-    toNodeGuid: 50aa19b5609a43a6b92b87c9d2bc1e18
-    fromNodeId: Wait3
-    toNodeId: Play Sfx18
+    toNodeId: Wait21
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2802,7 +2775,7 @@ MonoBehaviour:
   - fromNodeGuid: 66a5eb049270413d8dbbc2b6ae09b1ad
     toNodeGuid: e0e8503fa8ad44e4a363b90a593f3f77
     fromNodeId: Play Sfx19
-    toNodeId: Wait24
+    toNodeId: Wait23
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2810,14 +2783,14 @@ MonoBehaviour:
   - fromNodeGuid: 66de0f9f3f3145da827f6975b3eb6799
     toNodeGuid: c80ab285620740ea9d43d63325112c62
     fromNodeId: Play Sfx20
-    toNodeId: Wait32
+    toNodeId: Wait31
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: c80ab285620740ea9d43d63325112c62
     toNodeGuid: 992202487a7945a89bef3981a4dd26a4
-    fromNodeId: Wait32
+    fromNodeId: Wait31
     toNodeId: Play Sfx21
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2858,7 +2831,7 @@ MonoBehaviour:
   - fromNodeGuid: 476c9648aa0545e189de78a63340e725
     toNodeGuid: 9c279bc977824732aed1953c7632e9f6
     fromNodeId: Play Sfx23
-    toNodeId: Wait33
+    toNodeId: Wait32
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -2873,7 +2846,7 @@ MonoBehaviour:
     phaseIndex: 0
   - fromNodeGuid: 9c279bc977824732aed1953c7632e9f6
     toNodeGuid: d639ec7c51254416abe5caa058e43aa3
-    fromNodeId: Wait33
+    fromNodeId: Wait32
     toNodeId: Random Direction Move7
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2930,14 +2903,14 @@ MonoBehaviour:
   - fromNodeGuid: 895ce312ce4b4a6dbaf40f992e9aa798
     toNodeGuid: f14a508387c545e8bf9127492fe1d12e
     fromNodeId: Set Stealth Visibility1
-    toNodeId: Wait34
+    toNodeId: Wait33
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: f14a508387c545e8bf9127492fe1d12e
     toNodeGuid: 106fb095d27344a78756daee78137732
-    fromNodeId: Wait34
+    fromNodeId: Wait33
     toNodeId: Spawn Clone Shooters9
     fromOutputPortIndex: 0
     conditionType: 0
@@ -2978,14 +2951,14 @@ MonoBehaviour:
   - fromNodeGuid: ff555fa901c04ee68e33a375518eb050
     toNodeGuid: 843c1cd32efe445a8dd941ab503c39ea
     fromNodeId: Set Stealth Visibility2
-    toNodeId: Wait35
+    toNodeId: Wait34
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: 843c1cd32efe445a8dd941ab503c39ea
     toNodeGuid: cd2e8d40b021408e8e53796b3e4bebd7
-    fromNodeId: Wait35
+    fromNodeId: Wait34
     toNodeId: Spawn Clone Shooters10
     fromOutputPortIndex: 0
     conditionType: 0
@@ -3035,6 +3008,14 @@ MonoBehaviour:
     toNodeGuid: a337dc7cc14a4b9389122a3663fc84c1
     fromNodeId: Fire Parry Suppression Bait2
     toNodeId: Fire Next Clone Shooter (Atk2)6
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e0a0bdfa969646debd70a5d1d703f7d7
+    toNodeGuid: 50aa19b5609a43a6b92b87c9d2bc1e18
+    fromNodeId: Random Direction Move4
+    toNodeId: Play Sfx18
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -3373,7 +3354,7 @@ MonoBehaviour:
       data:
         cloneCount: 1
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 1
         teleportHiddenSeconds: 0.4
     - rid: 4705778150679249238
@@ -3619,15 +3600,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778169994805735
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3890,10 +3870,6 @@ MonoBehaviour:
         requireGroundDestination: 1
         groundProbeRadius: 0.2
         groundRetryAttempts: 8
-    - rid: 4705778196242497742
-      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
     - rid: 4705778196242497743
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3948,15 +3924,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778196242497744
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4018,15 +3993,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778196242497746
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4319,7 +4293,7 @@ MonoBehaviour:
       data:
         cloneCount: 2
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778196242497836
@@ -4375,7 +4349,7 @@ MonoBehaviour:
       data:
         cloneCount: 1
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778196242497894
@@ -4427,7 +4401,7 @@ MonoBehaviour:
       data:
         cloneCount: 1
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778205525803202
@@ -4491,15 +4465,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803209
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4549,7 +4522,7 @@ MonoBehaviour:
       data:
         cloneCount: 1
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778205525803231
@@ -4650,15 +4623,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803238
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4671,7 +4643,7 @@ MonoBehaviour:
       data:
         cloneCount: 1
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778205525803241
@@ -4819,7 +4791,7 @@ MonoBehaviour:
       data:
         cloneCount: 2
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778205525803265
@@ -5019,15 +4991,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803310
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5195,7 +5166,7 @@ MonoBehaviour:
       data:
         cloneCount: 2
         cloneIntroSeconds: 0.4
-        cloneTargetAlpha: 30
+        cloneTargetAlpha: 100
         includeBossPosition: 0
         teleportHiddenSeconds: 0.4
     - rid: 4705778205525803321
@@ -5296,15 +5267,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778205525803323
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5930,15 +5900,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778240567902391
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6283,15 +6252,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778240567902402
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6630,15 +6598,14 @@ MonoBehaviour:
         dashSfxId: AssassinDash
         chargeTriggerName: DoStep
         chargeBoolName: isAtk3
-        trajectorySprite: {fileID: 21300000, guid: 43ae71b543aabb14b886671a0eba7689, type: 3}
-        trajectoryWidth: 1.5
-        trajectoryBackgroundInnerColor: {r: 1, g: 1, b: 1, a: 0.05}
-        trajectoryBackgroundColor: {r: 1, g: 1, b: 1, a: 0.15}
-        trajectoryFillInnerColor: {r: 1, g: 0.4, b: 0.1, a: 0.15}
-        trajectoryFillColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
-        trajectoryGradientFalloffPower: 3
-        trajectorySortingOrder: -1
-        trajectoryExtraLength: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 0}
+        dashDustSpawnPointPath: 
+        dashDustEffectScale: 1
     - rid: 4705778240567902414
       type: {class: AssassinFireNextCloneShooterAtk2Action, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

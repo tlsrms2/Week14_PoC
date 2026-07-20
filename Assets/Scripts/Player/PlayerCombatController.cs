@@ -78,6 +78,7 @@ namespace Week14.Combat
         private int deathPreventionChargesRemaining;
         private float deathPreventionClearRadius;
         private float deathPreventionInvulnerabilitySeconds;
+        private GameObject deathPreventionBlankVfxPrefab;
         private bool nextAttackDamageMultiplierArmed;
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
@@ -664,16 +665,18 @@ namespace Week14.Combat
         }
 
         // charges는 씬(재도전)마다 ApplyPassive로 다시 채워집니다(누적되지 않고 항상 이 값으로 수렴).
-        public void ConfigureDeathPrevention(int charges, float clearRadius, float invulnerabilitySeconds)
+        public void ConfigureDeathPrevention(int charges, float clearRadius, float invulnerabilitySeconds, GameObject blankVfxPrefab)
         {
             deathPreventionChargesRemaining = Mathf.Max(0, charges);
             deathPreventionClearRadius = Mathf.Max(0f, clearRadius);
             deathPreventionInvulnerabilitySeconds = Mathf.Max(0f, invulnerabilitySeconds);
+            deathPreventionBlankVfxPrefab = blankVfxPrefab;
         }
 
         public void ClearDeathPrevention()
         {
             deathPreventionChargesRemaining = 0;
+            deathPreventionBlankVfxPrefab = null;
         }
 
         // 사망 판정을 대체할 수 있으면 소모하고 true를 반환합니다. PlayerDamageReceiver가
@@ -690,6 +693,7 @@ namespace Week14.Combat
             if (deathPreventionClearRadius > 0f)
             {
                 ParryController.AutoParryProjectilesNear(position, deathPreventionClearRadius);
+                PlayBlankVfx(deathPreventionBlankVfxPrefab, position);
             }
 
             if (deathPreventionInvulnerabilitySeconds > 0f)
@@ -788,11 +792,11 @@ namespace Week14.Combat
 
             if (Bullets != null)
             {
-                Bullets.Restore(Bullets.MaxBullets, BulletChangeSource.Generic);
+                Bullets.Restore(Bullets.MaxBullets, BulletChangeSource.Parry);
             }
 
             Vector3 clearCenter = Context.CombatCenterOrigin.position;
-            PlayInvulnerableAmmoRefillBlankVfx(clearCenter);
+            PlayBlankVfx(invulnerableAmmoRefillBlankVfxPrefab, clearCenter);
 
             if (invulnerableAmmoRefillParryClearRadius > 0f)
             {
@@ -911,14 +915,14 @@ namespace Week14.Combat
             }
         }
 
-        private void PlayInvulnerableAmmoRefillBlankVfx(Vector3 position)
+        private void PlayBlankVfx(GameObject blankVfxPrefab, Vector3 position)
         {
-            if (invulnerableAmmoRefillBlankVfxPrefab == null)
+            if (blankVfxPrefab == null)
             {
                 return;
             }
 
-            GameObject instance = Instantiate(invulnerableAmmoRefillBlankVfxPrefab, position, Quaternion.identity);
+            GameObject instance = Instantiate(blankVfxPrefab, position, Quaternion.identity);
             ParticleSystemRenderer[] renderers = instance.GetComponentsInChildren<ParticleSystemRenderer>(true);
             for (int i = 0; i < renderers.Length; i++)
             {
