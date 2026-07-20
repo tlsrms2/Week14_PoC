@@ -512,8 +512,8 @@ namespace Week14.Enemy
             body.angularVelocity = 0f;
         }
 
-        // 대쉬 중에는 벽 충돌은 유지한 채 플레이어와의 물리 충돌(밀림)만 끈다.
-        // 이미 항상 플레이어와의 충돌을 무시하는 보스(SuppressesBodyContactDamage)는 건드리지 않는다.
+        // 대쉬 중에는 벽 충돌은 유지한 채 일반 보스와 플레이어의 물리 충돌만 끈다.
+        // 접촉 피해를 사용하지 않는 보스는 플레이어를 막는 물리 충돌을 계속 유지한다.
         internal void SetIgnorePlayerCollision(bool ignore)
         {
             if (SuppressesBodyContactDamage || isIgnoringPlayerCollision == ignore)
