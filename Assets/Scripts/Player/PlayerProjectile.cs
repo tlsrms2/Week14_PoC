@@ -206,6 +206,11 @@ namespace Week14.Combat
                 return false;
             }
 
+            if (other.GetComponentInParent<HackerHologramBoss>() != null)
+            {
+                return false;
+            }
+
             Minion minion = other.GetComponentInParent<Minion>();
             if (minion != null)
             {

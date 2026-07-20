@@ -24,6 +24,7 @@ public class CursorController : MonoBehaviour
 
     private static int forceCustomCursorVisibleCount;
     private static int forceCursorHiddenCount;
+    private static int forceSystemCursorVisibleCount;
 
     // 설명 패널(ShowExplanation)이 열려 있는 동안에만 forceCursorHiddenCount(보스 인트로 등)를 이기도록
     // 하는 전용 카운터. 대화창 진행 입력 등 다른 forceCustomCursorVisibleCount 사용처는 여전히
@@ -32,7 +33,22 @@ public class CursorController : MonoBehaviour
 
     private static bool IsHiddenLocked => forceCursorHiddenCount > 0 && explanationHiddenOverrideCount <= 0;
 
-    public static bool IsForceVisible => forceCustomCursorVisibleCount > 0 && !IsHiddenLocked;
+    private static bool IsSystemCursorForcedVisible => forceSystemCursorVisibleCount > 0;
+
+    public static bool IsForceVisible => IsSystemCursorForcedVisible
+        || (forceCustomCursorVisibleCount > 0 && !IsHiddenLocked);
+
+    public static void PushForceSystemCursorVisible()
+    {
+        forceSystemCursorVisibleCount++;
+        instance?.SetCustomCursorVisible(false, false);
+        ApplyOsCursorVisible(true);
+    }
+
+    public static void PopForceSystemCursorVisible()
+    {
+        forceSystemCursorVisibleCount = Mathf.Max(0, forceSystemCursorVisibleCount - 1);
+    }
 
     public static void PushForceCustomCursorVisible()
     {
@@ -114,6 +130,13 @@ public class CursorController : MonoBehaviour
 
     private void Update()
     {
+        if (IsSystemCursorForcedVisible)
+        {
+            SetCustomCursorVisible(false, false);
+            ApplyOsCursorVisible(true);
+            return;
+        }
+
         if (IsHiddenLocked)
         {
             SetCustomCursorVisible(false, false);
@@ -154,6 +177,13 @@ public class CursorController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (IsSystemCursorForcedVisible)
+        {
+            SetCustomCursorVisible(false, false);
+            ApplyOsCursorVisible(true);
+            return;
+        }
+
         if (customCursorVisible)
         {
             ApplyOsCursorVisible(false);
