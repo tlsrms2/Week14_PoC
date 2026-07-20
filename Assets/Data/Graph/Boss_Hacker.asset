@@ -2440,7 +2440,7 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    phaseMaxHp: 1
+    phaseMaxHp: 100
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2523,7 +2523,7 @@ MonoBehaviour:
       minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
-    phaseMaxHp: 1
+    phaseMaxHp: 150
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2678,7 +2678,7 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: UU/P8
-      weight: 99
+      weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
