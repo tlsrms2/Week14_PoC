@@ -75,6 +75,14 @@ MonoBehaviour:
     m_Key: Phase3Reach_3.Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 3530476930564096
+    m_Key: DestoryTurret.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3533872441950208
+    m_Key: PerfectParry.Desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

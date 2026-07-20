@@ -9,25 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e37e0fd021202347be6852c40d2edce, type: 3}
-  m_Name: DestroyObjectCountChallenge
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.DestroyObjectCountChallengeSO
-  challengeId: DestroyTurret
+  m_Script: {fileID: 11500000, guid: 6df331edcaae3e740919c9077f008081, type: 3}
+  m_Name: PerfectParryChallenge
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.PerfectParryChallengeSO
+  challengeId: PerfectParry
   description: 
   localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
     m_TableEntryReference:
-      m_KeyId: 3530476930564096
+      m_KeyId: 3533872441950208
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   rewardPoint: 1
-  showProgress: 1
-  minDestructions: 8
-  targetPrefabs:
-  - {fileID: 6081087140780133099, guid: 52a16c28763a74e4080de055a4949008, type: 3}
+  showProgress: 0
+  maxAllowedMisses: 0
   references:
     version: 2
     RefIds: []

@@ -49,6 +49,7 @@ namespace Week14.Challenge
             PlayerDamageReceiver.PlayerHitByEnemy += HandlePlayerHit;
             PlayerParryController.ProjectileParried += HandleParried;
             EnemyProjectile.AnyDestroyed += HandleProjectileDestroyed;
+            ParryBaitRewardProjectile.AnyParryFailed += HandleParryFailed;
             TrySubscribePlayer();
         }
 
@@ -60,6 +61,7 @@ namespace Week14.Challenge
             PlayerDamageReceiver.PlayerHitByEnemy -= HandlePlayerHit;
             PlayerParryController.ProjectileParried -= HandleParried;
             EnemyProjectile.AnyDestroyed -= HandleProjectileDestroyed;
+            ParryBaitRewardProjectile.AnyParryFailed -= HandleParryFailed;
             UnsubscribeBoss();
             UnsubscribePlayer();
         }
@@ -212,6 +214,19 @@ namespace Week14.Challenge
             for (int i = 0; i < activeRuns.Count; i++)
             {
                 activeRuns[i].Run.OnObjectDestroyed(projectile);
+            }
+        }
+
+        private void HandleParryFailed(ParryBaitRewardProjectile bait)
+        {
+            if (!combatActive)
+            {
+                return;
+            }
+
+            for (int i = 0; i < activeRuns.Count; i++)
+            {
+                activeRuns[i].Run.OnParryFailed(bait);
             }
         }
 

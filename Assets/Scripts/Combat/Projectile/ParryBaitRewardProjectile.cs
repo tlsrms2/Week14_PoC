@@ -24,6 +24,10 @@ namespace Week14.Combat
         private MaterialPropertyBlock chargeGaugePropertyBlock;
         private bool hackerResilientMode;
         private bool hackerWasParried;
+        // 해커 저항 모드는 "진짜 시간 초과로 놓침"과 "보스 처형/사망 등 외부 강제 정리"가 둘 다
+        // DestroyFromOwner()(reason = OwnerDestroyed)를 거쳐서 reason만으로는 구분이 안 된다.
+        // 그래서 TickHackerResilientMode에서 시간 초과가 실제로 발생한 순간에만 이 플래그를 켠다.
+        private bool hackerParryWindowExpired;
         private float hackerParryDuration;
         private float hackerParryEndsAt;
         private float hackerAttackAt;
@@ -32,10 +36,15 @@ namespace Week14.Combat
 
         internal event Action HackerParried;
 
+        // 이 미끼가 패링당하지 못하고 사라졌을 때(수명 만료 등) 발생하는 전역 이벤트입니다. 챌린지처럼
+        // "이 미끼를 놓치면 실패" 같은 조건을 스폰 시점을 몰라도 구독 한 번으로 감지하고 싶을 때 씁니다.
+        internal static event Action<ParryBaitRewardProjectile> AnyParryFailed;
+
         protected override void OnProjectileInitialized()
         {
             hackerResilientMode = false;
             hackerWasParried = false;
+            hackerParryWindowExpired = false;
             hackerFollowTarget = null;
             rewardCountOverride = null;
             rewardRadiusOverride = null;
@@ -59,6 +68,7 @@ namespace Week14.Combat
         {
             hackerResilientMode = true;
             hackerWasParried = false;
+            hackerParryWindowExpired = false;
             hackerParryDuration = Mathf.Max(0.01f, parrySeconds);
             hackerParryEndsAt = Time.time + hackerParryDuration;
             hackerAttackAt = Time.time + Mathf.Max(hackerParryDuration, attackDelaySeconds);
@@ -123,9 +133,26 @@ namespace Week14.Combat
 
         protected override void OnProjectileDestroying(EnemyProjectileDestroyReason reason, Vector3 position)
         {
-            if (!hackerResilientMode && reason == EnemyProjectileDestroyReason.Intercepted)
+            bool wasParried = hackerResilientMode
+                ? hackerWasParried
+                : reason == EnemyProjectileDestroyReason.Intercepted;
+
+            if (!hackerResilientMode && wasParried)
             {
                 FireRewardCircle(position);
+            }
+
+            // 처형 시작(SetExecutionLocked) 등 보스 쪽 강제 정리는 EnemyProjectile.DestroyFromOwner()를
+            // 거치면서 hackerResilientMode 여부와 상관없이 항상 OwnerDestroyed로 나온다. 플레이어가
+            // 정말로 놓친 경우만 실패로 잡아야 하므로, 일반 모드는 자연 수명 만료(Expired)일 때만,
+            // 해커 저항 모드는 TickHackerResilientMode에서 실제로 시간 초과가 발생했을 때만 실패로 친다.
+            bool genuinelyFailedToParry = hackerResilientMode
+                ? !wasParried && hackerParryWindowExpired
+                : reason == EnemyProjectileDestroyReason.Expired;
+
+            if (genuinelyFailedToParry)
+            {
+                AnyParryFailed?.Invoke(this);
             }
 
             HackerParried = null;
@@ -159,6 +186,7 @@ namespace Week14.Combat
                 SetChargeGaugeFill(remainingRatio);
                 if (Time.time >= hackerParryEndsAt)
                 {
+                    hackerParryWindowExpired = true;
                     DestroyFromOwner();
                 }
 

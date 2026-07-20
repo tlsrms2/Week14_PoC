@@ -78,6 +78,14 @@ MonoBehaviour:
     m_Localized: Enter Third Phase 3 times.
     m_Metadata:
       m_Items: []
+  - m_Id: 3530476930564096
+    m_Localized: Destroy 8 Flat Turrets.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3533872441950208
+    m_Localized: Win the battle without missing a single counter.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

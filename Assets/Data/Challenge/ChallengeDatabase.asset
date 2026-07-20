@@ -42,7 +42,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e6996707079055f429f8858d8451405d, type: 2}
     - {fileID: 11400000, guid: 8602f4a5d1864034d9db6a616c2fec7a, type: 2}
     - {fileID: 11400000, guid: 8e6c9bdccbeb8da4b904a241d633db44, type: 2}
-    - {fileID: 0}
+    - {fileID: 11400000, guid: ea4295a65deca514fa69336d5bdf8b41, type: 2}
   - boss: {fileID: 11400000, guid: f1a36b78306f49f4d8ed682a59847e47, type: 2}
     challenges:
     - {fileID: 11400000, guid: bd350734afce4c54a8b4a824410bb506, type: 2}
@@ -59,7 +59,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c77239b5996067f41bbc44585ffabb8b, type: 2}
     - {fileID: 11400000, guid: 12cf1401f146f0844996365b4d04d1bd, type: 2}
     - {fileID: 11400000, guid: 98f0dbf6cea668342b36e4ee9c4b2b78, type: 2}
-    - {fileID: 0}
+    - {fileID: 11400000, guid: 45ab5ab2b3d9ada40881559ba2f79c3a, type: 2}
     - {fileID: 11400000, guid: e6996707079055f429f8858d8451405d, type: 2}
     - {fileID: 11400000, guid: 578c5cbf0a3145049b3413c7eeee92b8, type: 2}
     - {fileID: 11400000, guid: 57cbeeddf8eeec8458d4d4b0801a9f59, type: 2}

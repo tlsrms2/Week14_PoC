@@ -8,6 +8,7 @@ namespace Week14.Challenge
         BossClear,
         ParryCount,
         ParryClear,
-        DestroyObjectCount
+        DestroyObjectCount,
+        PerfectParry
     }
 }
