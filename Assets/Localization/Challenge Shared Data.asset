@@ -47,6 +47,34 @@ MonoBehaviour:
     m_Key: CounterCount.Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 3519743778283520
+    m_Key: ParryHomingBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521113910599680
+    m_Key: ParryNoteBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521787301912576
+    m_Key: ParryExplosiveBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3522615781810176
+    m_Key: ParryWireBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3524778109100032
+    m_Key: HitLimit_1.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3525347422953472
+    m_Key: HitLimit_2.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3527906837585920
+    m_Key: Phase3Reach_3.Desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
