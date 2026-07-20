@@ -49,6 +49,13 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string baitProjectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings baitProjectile = new();
         [SerializeField] private Vector2 baitDroneOffset = new(0f, 0.5f);
+        [SerializeField] private GameObject baitSpawnEffectPrefab;
+        [Tooltip("위쪽 두 드론은 입력값을 그대로 사용하고, 아래쪽 두 드론은 X/Y 부호를 모두 반전합니다.")]
+        [SerializeField] private Vector2 baitSpawnEffectOffset = new(0f, 0.5f);
+        [Tooltip("이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float baitSpawnEffectScale = 1f;
+        [Tooltip("패링 미끼 투사체 생성 전에 드론 자식으로 이펙트를 유지할 시간입니다.")]
+        [SerializeField, Min(0f)] private float baitSpawnEffectLeadSeconds = 0.8f;
         [Tooltip("전체 오비트 종료 전 이 시간만 남았을 때 패링 억제탄을 생성합니다.")]
         [SerializeField, Min(0.01f)] private float baitSpawnRemainingSeconds = 1.5f;
         [SerializeField, Min(0.1f)] private float baitDurationSeconds = 2f;
@@ -96,6 +103,7 @@ namespace Week14.Enemy
             bool baitParried = false;
             EnemyProjectile baitProjectileInstance = null;
             Minion baitDrone = null;
+            GameObject baitSpawnEffectInstance = null;
             Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> baitDestroyedHandler = null;
             try
             {
@@ -108,6 +116,10 @@ namespace Week14.Enemy
                     ? baitSpawnRemainingSeconds
                     : Mathf.Min(1.5f, safeClosingSeconds * 0.5f);
                 float baitSpawnTime = Mathf.Max(0f, safeClosingSeconds - safeBaitSpawnRemainingSeconds);
+                float baitSpawnEffectTime = Mathf.Max(
+                    0f,
+                    baitSpawnTime - Mathf.Max(0f, baitSpawnEffectLeadSeconds));
+                bool baitSpawnEffectSpawned = false;
                 bool baitSpawned = false;
                 while (elapsed < safeClosingSeconds)
                 {
@@ -118,10 +130,18 @@ namespace Week14.Enemy
                         continue;
                     }
 
+                    if (!baitSpawnEffectSpawned && elapsed >= baitSpawnEffectTime)
+                    {
+                        baitSpawnEffectSpawned = true;
+                        baitDrone = GetRandomDrone(drones);
+                        baitSpawnEffectInstance = SpawnBaitEffect(context, baitDrone);
+                    }
+
                     if (!baitSpawned && elapsed >= baitSpawnTime)
                     {
                         baitSpawned = true;
-                        baitDrone = GetRandomDrone(drones);
+                        baitDrone ??= GetRandomDrone(drones);
+                        ClearBaitSpawnEffect(context, ref baitSpawnEffectInstance);
                         baitProjectileInstance = SpawnBait(context, baitDrone);
                         if (baitProjectileInstance != null)
                         {
@@ -178,8 +198,41 @@ namespace Week14.Enemy
                     baitProjectileInstance.Destroyed -= baitDestroyedHandler;
                 }
 
+                ClearBaitSpawnEffect(context, ref baitSpawnEffectInstance);
                 ResumeDrones(drones);
             }
+        }
+
+        private GameObject SpawnBaitEffect(BossActionContext context, Minion drone)
+        {
+            if (baitSpawnEffectPrefab == null || drone == null)
+            {
+                return null;
+            }
+
+            GameObject instance = UnityEngine.Object.Instantiate(baitSpawnEffectPrefab, drone.transform);
+            Vector2 effectOffset = baitSpawnEffectOffset;
+            if (drone.transform.position.y < formationCenter.y)
+            {
+                effectOffset = -effectOffset;
+            }
+
+            instance.transform.position = drone.transform.position + (Vector3)effectOffset;
+            instance.transform.localScale *= Mathf.Max(0.01f, baitSpawnEffectScale);
+            context.RegisterTransientVisual(instance);
+            return instance;
+        }
+
+        private static void ClearBaitSpawnEffect(BossActionContext context, ref GameObject instance)
+        {
+            if (instance == null)
+            {
+                return;
+            }
+
+            context.UnregisterTransientVisual(instance);
+            UnityEngine.Object.Destroy(instance);
+            instance = null;
         }
 
         private EnemyProjectile SpawnBait(BossActionContext context, Minion drone)

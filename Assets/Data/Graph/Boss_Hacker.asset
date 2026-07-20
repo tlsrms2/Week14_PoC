@@ -25,7 +25,7 @@ MonoBehaviour:
     action:
       rid: 6489939132983541835
     sequences: []
-    editorPosition: {x: -361, y: -277}
+    editorPosition: {x: -362, y: -277}
   - nodeId: Thrust1
     nodeGuid: f6c6427ae6a045ef95a7913d38a62735
     nodeKind: 0
@@ -1033,7 +1033,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559012
     sequences: []
-    editorPosition: {x: 1509, y: 484}
+    editorPosition: {x: 1510, y: 484}
   - nodeId: Dash10
     nodeGuid: acfd6edd7b094548a1be2f07f18b3dc8
     nodeKind: 0
@@ -1132,7 +1132,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559024
     sequences: []
-    editorPosition: {x: 1111, y: 1082}
+    editorPosition: {x: 1111, y: 1083}
   - nodeId: Fire Sequential Sweep25
     nodeGuid: 79d96cae82f6420883ed88083278b7c8
     nodeKind: 0
@@ -1573,7 +1573,7 @@ MonoBehaviour:
     action:
       rid: 6489939224946016331
     sequences: []
-    editorPosition: {x: 3474, y: 435}
+    editorPosition: {x: 3454, y: 437}
   - nodeId: Fire Sequential Sweep31
     nodeGuid: 4fb792b6f6fc4389b310e1bc9c5316e5
     nodeKind: 0
@@ -4000,7 +4000,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: P5-1
+  debugForcedPatternId: P1-1
   references:
     version: 2
     RefIds:
@@ -4102,6 +4102,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4204,6 +4208,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -4493,6 +4501,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4607,6 +4619,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4721,6 +4737,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4844,6 +4864,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -4958,6 +4982,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -5081,6 +5109,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Lift
@@ -5204,6 +5236,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -6429,6 +6465,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -6543,6 +6583,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -6645,6 +6689,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -6805,6 +6853,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -6824,7 +6876,7 @@ MonoBehaviour:
     - rid: 6489939186800656589
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6859,7 +6911,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -6867,7 +6919,7 @@ MonoBehaviour:
     - rid: 6489939186800656590
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6902,7 +6954,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 1
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -7121,6 +7173,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7241,7 +7297,7 @@ MonoBehaviour:
     - rid: 6489939186800656617
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7276,7 +7332,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -7383,6 +7439,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7506,6 +7566,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7620,6 +7684,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -7743,6 +7811,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Lift
@@ -7866,6 +7938,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -7885,7 +7961,7 @@ MonoBehaviour:
     - rid: 6489939186800656624
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7920,7 +7996,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -7928,7 +8004,7 @@ MonoBehaviour:
     - rid: 6489939186800656625
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7963,7 +8039,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 1
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -7971,7 +8047,7 @@ MonoBehaviour:
     - rid: 6489939186800656626
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -8006,7 +8082,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -8225,6 +8301,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -8287,7 +8367,7 @@ MonoBehaviour:
     - rid: 6489939186800656652
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -8322,7 +8402,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -8413,6 +8493,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -9921,6 +10005,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -9940,7 +10028,7 @@ MonoBehaviour:
     - rid: 6489939186800656672
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -9983,7 +10071,7 @@ MonoBehaviour:
     - rid: 6489939186800656673
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -10026,7 +10114,7 @@ MonoBehaviour:
     - rid: 6489939186800656675
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -10069,7 +10157,7 @@ MonoBehaviour:
     - rid: 6489939186800656676
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -10112,7 +10200,7 @@ MonoBehaviour:
     - rid: 6489939186800656677
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -11264,6 +11352,10 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -11421,6 +11513,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -11574,6 +11670,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -11676,6 +11776,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -11836,6 +11940,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -11855,7 +11963,7 @@ MonoBehaviour:
     - rid: 6489939200651558994
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -11890,7 +11998,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -11898,7 +12006,7 @@ MonoBehaviour:
     - rid: 6489939200651558995
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -11933,7 +12041,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 1
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -12148,6 +12256,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12268,7 +12380,7 @@ MonoBehaviour:
     - rid: 6489939200651559004
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -12303,7 +12415,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -12406,6 +12518,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12529,6 +12645,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 7422649835570811031, guid: f099f566e4f51284ab0ef7d6029ba51e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12643,6 +12763,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -12766,6 +12890,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Down->Up Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 9101881328700450264, guid: a241c044199640b4786ca9bb808bf374, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Lift
@@ -12889,6 +13017,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -12908,7 +13040,7 @@ MonoBehaviour:
     - rid: 6489939200651559010
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -12943,7 +13075,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -12951,7 +13083,7 @@ MonoBehaviour:
     - rid: 6489939200651559011
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -12986,7 +13118,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 1
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -12994,7 +13126,7 @@ MonoBehaviour:
     - rid: 6489939200651559012
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -13029,7 +13161,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -13244,6 +13376,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -13306,7 +13442,7 @@ MonoBehaviour:
     - rid: 6489939200651559017
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -13341,7 +13477,7 @@ MonoBehaviour:
         windupSeconds: 0
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -13432,6 +13568,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.8
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -13910,6 +14050,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -13929,7 +14073,7 @@ MonoBehaviour:
     - rid: 6489939200651559024
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -13972,7 +14116,7 @@ MonoBehaviour:
     - rid: 6489939200651559025
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -14610,7 +14754,7 @@ MonoBehaviour:
     - rid: 6489939200651559034
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -14653,7 +14797,7 @@ MonoBehaviour:
     - rid: 6489939200651559035
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -14696,7 +14840,7 @@ MonoBehaviour:
     - rid: 6489939200651559036
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -14743,6 +14887,10 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         chargeSeconds: 1
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -15013,6 +15161,10 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -15170,6 +15322,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -15396,6 +15552,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -15541,6 +15701,10 @@ MonoBehaviour:
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         attackEffect:
           enabled: 1
           effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
@@ -15982,6 +16146,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -16350,6 +16518,10 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Down->Up Point
         chargeSeconds: 1
         parryWindowSeconds: 0.8
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -17332,6 +17504,10 @@ MonoBehaviour:
         parryAnchorPath: ParryingPoint/Up->Down Point
         chargeSeconds: 1
         parryWindowSeconds: 0.7
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         sweepTriggerName: DashSweep
         dashSeconds: 0.35
         dashSpeed: 20
@@ -17489,6 +17665,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/Slam
@@ -18257,6 +18437,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -18630,6 +18814,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -18649,7 +18837,7 @@ MonoBehaviour:
     - rid: 6489939269342724378
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -18684,7 +18872,7 @@ MonoBehaviour:
         windupSeconds: 0.35
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02
@@ -19046,6 +19234,10 @@ MonoBehaviour:
         attackAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: ParryingPoint/Up->Down Point
         parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
         spawnEffectOnAttack: 1
         attackEffectPrefab: {fileID: 842899526482725367, guid: 3367d194341ae114d808dda767b69d7c, type: 3}
         attackEffectSpawnPointPath: EffectPrefabPoint/CutTTB
@@ -19065,7 +19257,7 @@ MonoBehaviour:
     - rid: 6489939269342724387
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -19100,7 +19292,7 @@ MonoBehaviour:
         windupSeconds: 0.35
         bulletCount: 6
         spawnCircleRadius: 1
-        spawnArcDegrees: 75
+        spawnArcDegrees: 60
         clockwise: 0
         trackPlayerPerShot: 0
         fireInterval: 0.02

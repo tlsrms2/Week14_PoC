@@ -3363,7 +3363,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: UP5
+  debugForcedPatternId: P10
   references:
     version: 2
     RefIds:
@@ -13881,7 +13881,7 @@ MonoBehaviour:
       type: {class: ConductorParrySuppressionBaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         bossTargetPosition: {x: 6, y: -1.5}
-        bossMoveSpeed: 9
+        bossMoveSpeed: 6
         bossArrivalDistance: 0.05
         bossMoveTimeoutSeconds: 5
         bossMoveStallSeconds: 0.2
@@ -13932,8 +13932,12 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         baitDroneOffset: {x: 0, y: 0}
-        baitSpawnRemainingSeconds: 2.25
-        baitDurationSeconds: 2.25
+        baitSpawnEffectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        baitSpawnEffectOffset: {x: 0.5, y: 0}
+        baitSpawnEffectScale: 5
+        baitSpawnEffectLeadSeconds: 0.8
+        baitSpawnRemainingSeconds: 1.8
+        baitDurationSeconds: 1.8
         rewardBulletCount: 4
         rewardCircleRadius: 1.5
         rewardLifetimeSeconds: 2

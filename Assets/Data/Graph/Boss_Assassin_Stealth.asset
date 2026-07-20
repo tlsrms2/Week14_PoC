@@ -1285,7 +1285,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902388
     sequences: []
-    editorPosition: {x: -1414, y: 1472}
+    editorPosition: {x: -1628, y: 1471}
   - nodeId: Spawn Clone Shooters9
     nodeGuid: 106fb095d27344a78756daee78137732
     nodeKind: 0
@@ -1294,7 +1294,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902389
     sequences: []
-    editorPosition: {x: -1147, y: 1472}
+    editorPosition: {x: -1361, y: 1471}
   - nodeId: Boss Dash8
     nodeGuid: 6d7e36ffb5b7446ab228b551a31fe18c
     nodeKind: 1
@@ -1303,7 +1303,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902390
     sequences: []
-    editorPosition: {x: -779, y: 1472}
+    editorPosition: {x: -973, y: 1469}
   - nodeId: Teleport Around Player9
     nodeGuid: d1b48d0dd6154938bf0ab6723078ae53
     nodeKind: 0
@@ -1312,7 +1312,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902391
     sequences: []
-    editorPosition: {x: -963, y: 1472}
+    editorPosition: {x: -1177, y: 1471}
   - nodeId: Wait33
     nodeGuid: f14a508387c545e8bf9127492fe1d12e
     nodeKind: 3
@@ -1321,7 +1321,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902392
     sequences: []
-    editorPosition: {x: -1249, y: 1472}
+    editorPosition: {x: -1463, y: 1471}
   - nodeId: Fire Parry Suppression Bait1
     nodeGuid: 6fef2238d8a0438e9af2094c068fd815
     nodeKind: 0
@@ -1529,6 +1529,24 @@ MonoBehaviour:
       rid: 4705778240567902416
     sequences: []
     editorPosition: {x: 2086, y: 1369}
+  - nodeId: Spawn Effect Prefab1
+    nodeGuid: 152ff120ee284c9ea8c8b0601d8cfd3e
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009069
+    sequences: []
+    editorPosition: {x: -969, y: 1346}
+  - nodeId: Spawn Effect Prefab2
+    nodeGuid: d014affc5c4842c9ab3adeb5b497e77f
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939314815009078
+    sequences: []
+    editorPosition: {x: 2346, y: 1507}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -1851,6 +1869,7 @@ MonoBehaviour:
     - 29115f1cd0974eea8bd40bed7b578144
     - 4d9d557ed37c439b9d7a4324cf99d934
     - 3d98385c909c44e9b7a065790bd70a00
+    - 152ff120ee284c9ea8c8b0601d8cfd3e
     nodeIds:
     - Set Stealth Visibility1
     - Wait33
@@ -1864,6 +1883,7 @@ MonoBehaviour:
     - Fire Next Clone Shooter (Atk2)4
     - Fire Next Clone Shooter (Atk2)5
     - Exit Stealth1
+    - Spawn Effect Prefab1
   - patternId: Pattern11
     nodeGuids:
     - ff555fa901c04ee68e33a375518eb050
@@ -1882,6 +1902,7 @@ MonoBehaviour:
     - aaccfdad45044678abe793620b183f06
     - 3a99ba03d6d6404487e27e2e2703d377
     - 0db2534dd84644d78faae1534c348812
+    - d014affc5c4842c9ab3adeb5b497e77f
     nodeIds:
     - Set Stealth Visibility2
     - Wait34
@@ -1899,6 +1920,7 @@ MonoBehaviour:
     - Exit Stealth2
     - Fire Next Clone Shooter (Atk2)11
     - Fire Next Clone Shooter (Atk2)12
+    - Spawn Effect Prefab2
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -3187,6 +3209,18 @@ MonoBehaviour:
     toNodeGuid: 0db2534dd84644d78faae1534c348812
     fromNodeId: Teleport Around Player11
     toNodeId: Fire Next Clone Shooter (Atk2)12
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 152ff120ee284c9ea8c8b0601d8cfd3e
+    toNodeGuid: 6d7e36ffb5b7446ab228b551a31fe18c
+    fromNodeId: Spawn Effect Prefab1
+    toNodeId: Boss Dash8
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 0d5f0d03d04c4a4683db4db53efc483a
+    toNodeGuid: d014affc5c4842c9ab3adeb5b497e77f
+    fromNodeId: Boss Dash10
+    toNodeId: Spawn Effect Prefab2
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -5949,6 +5983,7 @@ MonoBehaviour:
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
+        cloneGatherDespawnSeconds: 0.35
         spawnSfxId: 
         effects:
           smoke:
@@ -6301,6 +6336,7 @@ MonoBehaviour:
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
+        cloneGatherDespawnSeconds: 0.35
         spawnSfxId: 
         effects:
           smoke:
@@ -6701,3 +6737,23 @@ MonoBehaviour:
         vanishSeconds: 0.5
         hiddenSeconds: 1
         reappearSeconds: 0.01
+    - rid: 6489939314815009069
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Assassin Visual
+        positionOffset: {x: 0, y: 0.18}
+        delaySeconds: 0.225
+        scale: 5
+        followMode: 1
+        followRotation: 1
+    - rid: 6489939314815009078
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+        spawnPointPath: Boss-Assassin Visual
+        positionOffset: {x: 0, y: 0.18}
+        delaySeconds: 0.225
+        scale: 5
+        followMode: 1
+        followRotation: 1
