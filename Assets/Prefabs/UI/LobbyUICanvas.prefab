@@ -7708,7 +7708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<sprite name=\"icon_point\"> \uD544\uC694 \uD3EC\uC778\uD2B8: 0"
+  m_text: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uD544\uC694 \uD3EC\uC778\uD2B8: 0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6d197c6221a5fc74099129e018d2d3fd, type: 2}
   m_sharedMaterial: {fileID: -715141778913414187, guid: 6d197c6221a5fc74099129e018d2d3fd, type: 2}
@@ -9341,7 +9341,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<sprite name=\"icon_point\" color=#00FFFF> \uAC15\uD654 \uD3EC\uC778\uD2B8:
+  m_text: "<sprite=\"Icon-point-64x\" name=\"icon_point\" color=#00FFFF> \uAC15\uD654 \uD3EC\uC778\uD2B8:
     0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
