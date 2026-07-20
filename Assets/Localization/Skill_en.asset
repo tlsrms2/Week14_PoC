@@ -50,7 +50,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 355098637312
-    m_Localized: Absorbs surrounding barrages for 2 seconds to recover ammo.
+    m_Localized: Absorbs surrounding projectiles for 2 seconds to recover ammo.
     m_Metadata:
       m_Items: []
   - m_Id: 357698637312
