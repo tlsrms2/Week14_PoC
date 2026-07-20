@@ -22,9 +22,7 @@ namespace Week14.UI
         private ChallengeDefinitionSO boundDefinition;
         private LocalizedString.ChangeHandler changeHandler;
         private Color originalDescriptionColor;
-        private Color originalCompletionColor = Color.white;
         private bool originalDescriptionColorCached;
-        private bool originalCompletionColorCached;
 
         // PixelBlockRevealView가 자기 연출 도중에 이 Graphic들의 실제 color(알파 포함)를 직접 건드리기
         // 때문에, SyncColorsTo 시점에 descriptionText.color 등을 "그대로 읽어서" 넘기면 이미 연출이
@@ -58,7 +56,7 @@ namespace Week14.UI
             SetDescriptionColor(descriptionColor);
             SetSweepColor(descriptionColor);
             SetProgressColor(descriptionColor);
-            SetCompletionSprite(completed ? completedSprite : incompleteSprite);
+            SetCompletionSprite(completed ? completedSprite : incompleteSprite, descriptionColor);
 
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
         }
@@ -75,7 +73,7 @@ namespace Week14.UI
             SetDescriptionColor(defaultColor);
             SetSweepColor(defaultColor);
             SetProgressColor(defaultColor);
-            SetCompletionSprite(incompleteSprite);
+            SetCompletionSprite(incompleteSprite, defaultColor);
             SetSweepWidth(0f);
 
             if (definition.ShowProgress)
@@ -135,7 +133,7 @@ namespace Week14.UI
             SetSweepColor(originalDescriptionColor);
             SetProgressColor(originalDescriptionColor);
             SetDescriptionText(string.Empty);
-            SetCompletionSprite(null);
+            SetCompletionSprite(null, originalDescriptionColor);
             SetProgressText(string.Empty);
             SetSweepWidth(0f);
         }
@@ -163,7 +161,7 @@ namespace Week14.UI
 
             SetDescriptionColor(resultColor);
             SetProgressColor(resultColor);
-            SetCompletionSprite(completed ? completedSprite : incompleteSprite);
+            SetCompletionSprite(completed ? completedSprite : incompleteSprite, resultColor);
             SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
 
             yield return AnimateSweepWidth(sweepWidth, 0f, shrinkSeconds);
@@ -199,13 +197,6 @@ namespace Week14.UI
             {
                 originalDescriptionColor = descriptionText.color;
                 originalDescriptionColorCached = true;
-            }
-
-            if (completionImage != null && !originalCompletionColorCached)
-            {
-                originalCompletionColor = completionImage.color;
-                lastIntendedCompletionColor = originalCompletionColor;
-                originalCompletionColorCached = true;
             }
         }
 
@@ -273,15 +264,15 @@ namespace Week14.UI
             }
         }
 
-        private void SetCompletionSprite(Sprite sprite)
+        private void SetCompletionSprite(Sprite sprite, Color color)
         {
             if (completionImage == null)
             {
                 return;
             }
 
-            lastIntendedCompletionColor = originalCompletionColorCached ? originalCompletionColor : completionImage.color;
-            completionImage.color = lastIntendedCompletionColor;
+            lastIntendedCompletionColor = color;
+            completionImage.color = color;
             completionImage.sprite = sprite;
             completionImage.enabled = sprite != null;
         }
