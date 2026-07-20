@@ -12,10 +12,13 @@ namespace Week14.Skills
         [SerializeField, Min(0f)] private float clearRadius = 3f;
         [Tooltip("사망을 막은 직후 부여할 무적 시간(초)입니다. 0이면 무적을 주지 않습니다.")]
         [SerializeField, Min(0f)] private float invulnerabilitySeconds = 1f;
+        [Header("VFX")]
+        [Tooltip("사망을 막으며 주변 탄막을 제거했을 때 재생할 이펙트 프리팹입니다. 비워두면 표시하지 않습니다.")]
+        [SerializeField] private GameObject blankVfxPrefab;
 
         public override void ApplyPassive(GameObject player)
         {
-            ResolvePlayerController(player)?.ConfigureDeathPrevention(charges, clearRadius, invulnerabilitySeconds);
+            ResolvePlayerController(player)?.ConfigureDeathPrevention(charges, clearRadius, invulnerabilitySeconds, blankVfxPrefab);
         }
 
         public override void RemovePassive(GameObject player)

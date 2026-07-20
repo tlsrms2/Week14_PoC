@@ -44,9 +44,15 @@ namespace Week14.UI
         private bool resultOpen;
         private Selectable pendingFocusTarget;
         private bool victoryIsFinalBoss;
+        private BossAI cachedBoss;
 
         private void Awake()
         {
+            // 씬 로드 직후, 3페이즈 진입 시 생성되는 Hacker 홀로그램(BossAI 서브클래스) 같은 보조
+            // BossAI 인스턴스가 아직 없을 때 한 번만 찾아서 캐싱한다. FindCurrentBoss()를 매번
+            // 다시 호출하면 씬에 BossAI가 2개 이상일 때 어느 걸 돌려줄지 순서 보장이 없어서,
+            // 홀로그램(BossData가 비어있음)을 잘못 집어 챌린지 패널이 빈 채로 뜨는 문제가 있었다.
+            cachedBoss = FindFirstObjectByType<BossAI>();
             CacheSceneReferences();
             BindButtons();
             SetResultVisible(false);
@@ -256,9 +262,9 @@ namespace Week14.UI
             }
         }
 
-        private static BossAI FindCurrentBoss()
+        private BossAI FindCurrentBoss()
         {
-            return FindFirstObjectByType<BossAI>();
+            return cachedBoss;
         }
 
         private static void SetElapsedTimeText(TMP_Text text, BossAI boss, bool showNewRecordPrefix = false)
