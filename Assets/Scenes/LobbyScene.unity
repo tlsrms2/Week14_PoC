@@ -17579,6 +17579,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6382410701673459167, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: equipSfxId
+      value: Gun_Equip
+      objectReference: {fileID: 0}
     - target: {fileID: 6500270917010895826, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

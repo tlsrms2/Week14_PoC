@@ -152,5 +152,5 @@ MonoBehaviour:
     pitch: 1
   - id: UI_Equip
     clip: {fileID: 8300000, guid: 948410a506001e247bb8073a9ed9107f, type: 3}
-    volume: 1
+    volume: 0.7
     pitch: 1

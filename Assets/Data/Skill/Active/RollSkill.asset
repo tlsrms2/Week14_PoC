@@ -35,7 +35,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  cooldownSeconds: 8
+  cooldownSeconds: 5
   price: 0
   rollDistance: 3
   rollDuration: 0.3

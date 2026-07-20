@@ -35,9 +35,9 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  cooldownSeconds: 30
+  cooldownSeconds: 20
   price: 2
-  slowMultiplier: 0.2
+  slowMultiplier: 0.1
   durationSeconds: 3
   sfxId: 
   afterimageInterval: 0.08

@@ -35,7 +35,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  cooldownSeconds: 30
+  cooldownSeconds: 20
   price: 2
   durationSeconds: 2
   absorbRadius: 5
