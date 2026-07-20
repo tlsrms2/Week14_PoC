@@ -10,11 +10,12 @@ namespace Week14.Save
 {
     public static class GameSaveManager
     {
+        private const string SaveFolderName = "Saves";
         private const string SaveFileName = "game_data.json";
         private const string ConfigResourcePath = "GameSaveConfig";
         private const string FallbackFirstBossId = "1";
 
-        private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+        private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFolderName, SaveFileName);
 
         private static GameSaveConfigSO cachedConfig;
         private static bool configLoadAttempted;
@@ -1055,15 +1056,18 @@ namespace Week14.Save
 
         public static void Save()
         {
-            string tempPath = SavePath + ".tmp";
+            string savePath = SavePath;
+            Directory.CreateDirectory(Path.GetDirectoryName(savePath));
+
+            string tempPath = savePath + ".tmp";
             File.WriteAllText(tempPath, JsonUtility.ToJson(Data, true));
 
-            if (File.Exists(SavePath))
+            if (File.Exists(savePath))
             {
-                File.Delete(SavePath);
+                File.Delete(savePath);
             }
 
-            File.Move(tempPath, SavePath);
+            File.Move(tempPath, savePath);
         }
     }
 }
