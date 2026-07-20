@@ -225,6 +225,22 @@ namespace Week14.Skills
             return true;
         }
 
+        // 세이브 파일이 외부(디버그 툴의 전체 초기화 등)에서 바뀌었을 때, Awake에서만 캐시해두는
+        // 장착 상태를 다시 읽어옵니다.
+        public void ReloadFromSave()
+        {
+            LoadEquippedSkills();
+            EquipDefaultSkillIfNeeded();
+            EquipDefaultTestSkillIfNeeded();
+
+            foreach (SkillSlot slot in Enum.GetValues(typeof(SkillSlot)))
+            {
+                SkillEquipped?.Invoke(slot, GetEquippedSkill(slot));
+            }
+
+            ResetCooldown();
+        }
+
         public void ResetActiveCooldown()
         {
             ResetCooldown();

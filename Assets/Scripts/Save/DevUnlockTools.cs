@@ -157,8 +157,11 @@ namespace Week14.Save
         public void ResetEverything()
         {
             GameSaveManager.ResetEverything();
+            WeaponLoadoutManager.Instance?.ReloadFromSave();
+            SkillLoadoutManager.Instance?.ReloadFromSave();
+            PassiveSkillLoadoutManager.Instance?.ReloadFromSave();
             PullStoryTogglesFromSave();
-            Debug.Log("[DevUnlockTools] 세이브 데이터를 전부 초기화했습니다(기본 해금 상태로 복귀).");
+            Debug.Log("[DevUnlockTools] 세이브 데이터를 전부 초기화했습니다(기본 해금 상태 + 기본 장착 상태로 복귀).");
         }
 
         // ---------------------------------------------------------------

@@ -150,6 +150,27 @@ namespace Week14.Skills
             ApplyAllEquippedPassives();
         }
 
+        // 세이브 파일이 외부(디버그 툴의 전체 초기화 등)에서 바뀌었을 때, Awake에서만 캐시해두는
+        // 장착 상태를 다시 읽어옵니다. 기존 패시브 효과를 먼저 제거해야 새로 장착되는 기본 패시브
+        // 효과와 중첩되지 않습니다.
+        public void ReloadFromSave()
+        {
+            GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
+            foreach (BasePassiveSkillSO skill in equippedSkills.Values)
+            {
+                skill?.RemovePassive(playerObject);
+            }
+
+            LoadEquippedSkills();
+            EquipDefaultPassiveSkillIfNeeded();
+            ApplyAllEquippedPassives();
+
+            foreach (PassiveSkillSlot slot in Enum.GetValues(typeof(PassiveSkillSlot)))
+            {
+                SkillEquipped?.Invoke(slot, GetEquippedSkill(slot));
+            }
+        }
+
         private void ApplyAllEquippedPassives()
         {
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;

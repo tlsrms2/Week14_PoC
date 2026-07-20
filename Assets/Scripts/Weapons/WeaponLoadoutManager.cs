@@ -111,6 +111,24 @@ namespace Week14.Weapons
             WeaponChanged?.Invoke(null);
         }
 
+        // 세이브 파일이 외부(디버그 툴의 전체 초기화 등)에서 바뀌었을 때, Awake에서만 캐시해두는
+        // 장착 상태를 다시 읽어옵니다.
+        public void ReloadFromSave()
+        {
+            GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
+            currentWeapon?.RemoveWeaponTrait(playerObject);
+
+            LoadEquippedWeapon();
+            if (currentWeapon == null)
+            {
+                currentWeapon = defaultWeapon;
+            }
+
+            currentWeapon?.ApplyWeaponTrait(playerObject);
+            ApplyAmmoConfig(currentWeapon);
+            WeaponChanged?.Invoke(currentWeapon);
+        }
+
         public int GetDamageForCurrentAmmo(int ammo)
         {
             return currentWeapon != null ? currentWeapon.GetDamageForAmmo(ammo) : 0;
