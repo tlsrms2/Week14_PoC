@@ -1447,7 +1447,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559097
     sequences: []
-    editorPosition: {x: -336, y: 1323}
+    editorPosition: {x: -337, y: 1319}
   - nodeId: Fire Glitch Projectile6
     nodeGuid: 4ba71e808d984c31b87436bddb892b93
     nodeKind: 0
@@ -1690,7 +1690,7 @@ MonoBehaviour:
     action:
       rid: 6489939249705517354
     sequences: []
-    editorPosition: {x: -314, y: 2321}
+    editorPosition: {x: -313, y: 2320}
   - nodeId: Weapon Wire Orbit4
     nodeGuid: 726667b314c94e64badc48432e114526
     nodeKind: 0
@@ -4000,7 +4000,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: P1-2
+  debugForcedPatternId: P8
   references:
     version: 2
     RefIds:
@@ -4308,6 +4308,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -4381,6 +4384,8 @@ MonoBehaviour:
         minAngleDistanceDegrees: 25
         fireInterval: 0.08
         recoverySeconds: 0.25
+        flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
+        attachedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939136707035227
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5731,6 +5736,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -5810,6 +5823,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -5990,6 +6011,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -6290,6 +6319,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -6816,9 +6848,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -6859,9 +6891,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -6967,6 +6999,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -7230,9 +7265,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7874,9 +7909,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7917,9 +7952,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -7960,9 +7995,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8068,6 +8103,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -8230,9 +8268,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8273,9 +8311,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8459,9 +8497,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -8866,6 +8904,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -8960,6 +9001,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -9039,6 +9088,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -9085,6 +9142,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        flyingSprite: {fileID: 0}
+        groundedSprite: {fileID: 0}
     - rid: 6489939186800656664
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -9154,6 +9213,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -9233,6 +9300,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -9413,6 +9488,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -9881,9 +9964,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9924,9 +10007,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -9967,9 +10050,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10010,9 +10093,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10053,9 +10136,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -10416,6 +10499,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -10675,6 +10761,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 1.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -10866,6 +10955,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -11077,6 +11174,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -11111,6 +11211,10 @@ MonoBehaviour:
         fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
         bossFlightSpeed: 25
         maxBossFlightSeconds: 1.5
         wallArrivalDistance: 0.45
@@ -11193,8 +11297,8 @@ MonoBehaviour:
         recoverySeconds: 0
         attackEffect:
           enabled: 1
-          effectPrefab: {fileID: 6123185058458268927, guid: f6c12ff604c944a4cbf28fa8ab2b6905, type: 3}
-          spawnPointPath: EffectPrefabPoint/Sweep
+          effectPrefab: {fileID: 5739915608494964311, guid: 576074dacf19e854c968577b9c88aea2, type: 3}
+          spawnPointPath: EffectPrefabPoint/OrbitSweep
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
@@ -11775,9 +11879,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11818,9 +11922,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -11922,6 +12026,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -12185,9 +12292,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12825,9 +12932,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12868,9 +12975,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -12911,9 +13018,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13015,6 +13122,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -13177,9 +13287,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13220,9 +13330,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13444,6 +13554,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -13523,6 +13641,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -13569,6 +13695,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        flyingSprite: {fileID: 0}
+        groundedSprite: {fileID: 0}
     - rid: 6489939200651559022
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -13825,9 +13953,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13868,9 +13996,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -13984,6 +14112,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -14063,6 +14199,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -14243,6 +14387,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -14482,9 +14634,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14525,9 +14677,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14568,9 +14720,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -14623,9 +14775,9 @@ MonoBehaviour:
         damage: 1
         recoverySeconds: 0
         attackEffect:
-          enabled: 0
-          effectPrefab: {fileID: 0}
-          spawnPointPath: 
+          enabled: 1
+          effectPrefab: {fileID: 5739915608494964311, guid: 576074dacf19e854c968577b9c88aea2, type: 3}
+          spawnPointPath: EffectPrefabPoint/OrbitSweep
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
@@ -14651,6 +14803,10 @@ MonoBehaviour:
         fireCount: 1
         repeatIntervalSeconds: 0.15
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
         bossFlightSpeed: 25
         maxBossFlightSeconds: 1.5
         wallArrivalDistance: 0.45
@@ -14804,6 +14960,10 @@ MonoBehaviour:
         fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
         bossFlightSpeed: 25
         maxBossFlightSeconds: 1.5
         wallArrivalDistance: 0.45
@@ -14886,8 +15046,8 @@ MonoBehaviour:
         recoverySeconds: 0
         attackEffect:
           enabled: 1
-          effectPrefab: {fileID: 6123185058458268927, guid: f6c12ff604c944a4cbf28fa8ab2b6905, type: 3}
-          spawnPointPath: EffectPrefabPoint/Sweep
+          effectPrefab: {fileID: 5739915608494964311, guid: 576074dacf19e854c968577b9c88aea2, type: 3}
+          spawnPointPath: EffectPrefabPoint/OrbitSweep
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
@@ -15114,6 +15274,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -15276,9 +15439,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -15463,6 +15626,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -15542,6 +15713,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -15588,6 +15767,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        flyingSprite: {fileID: 0}
+        groundedSprite: {fileID: 0}
     - rid: 6489939200651559087
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16138,6 +16319,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -16226,6 +16410,10 @@ MonoBehaviour:
         fireCount: 1
         repeatIntervalSeconds: 0.15
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
         bossFlightSpeed: 25
         maxBossFlightSeconds: 1.5
         wallArrivalDistance: 0.45
@@ -16503,6 +16691,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 1
           effectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
@@ -16762,6 +16953,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 1.15
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
         dashEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -16953,6 +17147,14 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
+        dashEffectScale: 1
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
         attackEffect:
           enabled: 0
           effectPrefab: {fileID: 0}
@@ -17077,6 +17279,10 @@ MonoBehaviour:
         fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
         bossFlightSpeed: 25
         maxBossFlightSeconds: 1.5
         wallArrivalDistance: 0.45
@@ -17159,8 +17365,8 @@ MonoBehaviour:
         recoverySeconds: 0
         attackEffect:
           enabled: 1
-          effectPrefab: {fileID: 6123185058458268927, guid: f6c12ff604c944a4cbf28fa8ab2b6905, type: 3}
-          spawnPointPath: EffectPrefabPoint/Sweep
+          effectPrefab: {fileID: 5739915608494964311, guid: 576074dacf19e854c968577b9c88aea2, type: 3}
+          spawnPointPath: EffectPrefabPoint/OrbitSweep
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
@@ -17326,9 +17532,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17369,9 +17575,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17412,9 +17618,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17455,9 +17661,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17498,9 +17704,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17541,9 +17747,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17584,9 +17790,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17627,9 +17833,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17670,9 +17876,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -17704,6 +17910,9 @@ MonoBehaviour:
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
     - rid: 6489939249705517353
       type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -17729,6 +17938,9 @@ MonoBehaviour:
         maxShotCount: 20
         fireSfxId: 
         recoverySeconds: 0
+        fireEffectPrefab: {fileID: 1663811234227697370, guid: 62349371c78043d4da49bbe80606e3cd, type: 3}
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
     - rid: 6489939249705517354
       type: {class: HackerWeaponThrowAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -17765,6 +17977,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
+        groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939249705517355
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -17898,9 +18112,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -18069,6 +18283,9 @@ MonoBehaviour:
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
     - rid: 6489939269342724370
       type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18094,6 +18311,9 @@ MonoBehaviour:
         maxShotCount: 20
         fireSfxId: 
         recoverySeconds: 0
+        fireEffectPrefab: {fileID: 0}
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
     - rid: 6489939269342724371
       type: {class: HackerWeaponThrowAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18130,6 +18350,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        flyingSprite: {fileID: 0}
+        groundedSprite: {fileID: 0}
     - rid: 6489939269342724372
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18263,9 +18485,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -18451,9 +18673,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -18477,6 +18699,9 @@ MonoBehaviour:
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
         recoverySeconds: 0.2
+        fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
     - rid: 6489939269342724381
       type: {class: HackerGroundGunTurretAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18502,6 +18727,9 @@ MonoBehaviour:
         maxShotCount: 20
         fireSfxId: 
         recoverySeconds: 0
+        fireEffectPrefab: {fileID: 0}
+        fireEffectRotationOffsetDegrees: 0
+        fireEffectScale: 1
     - rid: 6489939269342724382
       type: {class: HackerWeaponThrowAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18538,6 +18766,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        flyingSprite: {fileID: 0}
+        groundedSprite: {fileID: 0}
     - rid: 6489939269342724383
       type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18671,9 +18901,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14
@@ -18859,9 +19089,9 @@ MonoBehaviour:
             count: 12
           smokeInterval: 0.12
           muzzleFlash:
-            enabled: 0
-            prefab: {fileID: 0}
-            scale: 1
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
           cameraShake:
             enabled: 0
             seconds: 0.14

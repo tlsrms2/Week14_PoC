@@ -35,11 +35,39 @@ namespace Week14.Enemy
                 return null;
             }
 
-            float worldYRotation = dashDirection.x > 0.0001f ? 0f : 180f;
+            float worldYRotation = dashDirection.x < 0f ? 180f : 0f;
             return effect.PlayAtWorldYRotation(
                 context,
                 spawnPointPathOverride,
                 worldYRotation);
+        }
+
+        internal static void PlayPrefab(
+            GameObject prefab,
+            BossActionContext context,
+            string spawnPointPath,
+            float scale,
+            Vector2 dashDirection)
+        {
+            if (prefab == null || context == null)
+            {
+                return;
+            }
+
+            Transform spawnPoint = context.GetBossChildTransform(spawnPointPath);
+            if (spawnPoint == null)
+            {
+                return;
+            }
+
+            float worldYRotation = dashDirection.x < 0f ? 180f : 0f;
+            ProjectileVfx.PlayPrefab(
+                prefab,
+                spawnPoint.position,
+                Quaternion.Euler(0f, worldYRotation, 0f),
+                null,
+                Mathf.Max(0.01f, scale),
+                false);
         }
     }
 
@@ -891,11 +919,17 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float diagonalIntervalSeconds = 0.15f;
 
         [Header("Dash Effect")]
-        [SerializeField] private BossActionPrefabEffectSettings dashEffect = new();
-        [Tooltip("접근 및 Diagonal Player 대시에서 사용할 이펙트 생성 지점입니다. 비어 있으면 Dash Effect의 Spawn Point Path를 사용합니다.")]
-        [SerializeField, BossGraphBossChildPath] private string approachDashEffectSpawnPointPath;
-        [Tooltip("후퇴 대시에서 사용할 이펙트 생성 지점입니다. 비어 있으면 Dash Effect의 Spawn Point Path를 사용합니다.")]
-        [SerializeField, BossGraphBossChildPath] private string retreatDashEffectSpawnPointPath;
+        [Tooltip("실제 대시가 시작될 때 보스 뒤에 한 번 생성할 이펙트 프리팹입니다. 오른쪽 대시 방향을 기준으로 제작된 프리팹을 사용합니다.")]
+        [SerializeField] private GameObject dashEffectPrefab;
+        [Tooltip("Boss Graph Editor 하이어러키에서 이펙트 생성 위치를 드래그해 지정합니다.")]
+        [SerializeField, BossGraphBossChildPath] private string dashEffectSpawnPointPath;
+        [Tooltip("대시 이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float dashEffectScale = 1f;
+
+        // 기존 그래프 에셋의 설정 유실을 막기 위한 런타임 폴백이다.
+        [SerializeField, HideInInspector] private BossActionPrefabEffectSettings dashEffect = new();
+        [SerializeField, HideInInspector] private string approachDashEffectSpawnPointPath;
+        [SerializeField, HideInInspector] private string retreatDashEffectSpawnPointPath;
 
         [Header("Dash Afterimage")]
         [Tooltip("대시 중 잔상을 생성하는 간격입니다.")]
@@ -1011,14 +1045,7 @@ namespace Week14.Enemy
             }
 
             dashDirection = dashDirection.sqrMagnitude > 0.0001f ? dashDirection.normalized : Vector2.right;
-            string effectSpawnPointPath = direction == HackerDashDirection.Retreat
-                ? retreatDashEffectSpawnPointPath
-                : approachDashEffectSpawnPointPath;
-            HackerDashEffect.Play(
-                dashEffect,
-                context,
-                dashDirection,
-                effectSpawnPointPath);
+            PlayDashEffect(context, dashDirection);
             float elapsed = 0f;
             float nextAfterimageAt = 0f;
             int afterimageColorIndex = 0;
@@ -1068,9 +1095,32 @@ namespace Week14.Enemy
             }
         }
 
+        private void PlayDashEffect(BossActionContext context, Vector2 dashDirection)
+        {
+            if (dashEffectPrefab != null)
+            {
+                HackerDashEffect.PlayPrefab(
+                    dashEffectPrefab,
+                    context,
+                    dashEffectSpawnPointPath,
+                    dashEffectScale,
+                    dashDirection);
+                return;
+            }
+
+            string legacySpawnPointPath = direction == HackerDashDirection.Retreat
+                ? retreatDashEffectSpawnPointPath
+                : approachDashEffectSpawnPointPath;
+            HackerDashEffect.Play(
+                dashEffect,
+                context,
+                dashDirection,
+                legacySpawnPointPath);
+        }
+
         private void SpawnAfterimage(BossAI boss, int colorIndex)
         {
-            SpriteRenderer[] renderers = boss != null ? boss.BodyRenderers : null;
+            SpriteRenderer[] renderers = GetAfterimageRenderers(boss);
             if (renderers == null || renderers.Length == 0)
             {
                 return;
@@ -1088,6 +1138,50 @@ namespace Week14.Enemy
                 null,
                 Mathf.Max(0.01f, afterimageDuration),
                 tint);
+        }
+
+        private static SpriteRenderer[] GetAfterimageRenderers(BossAI boss)
+        {
+            SpriteRenderer[] sourceRenderers = boss != null ? boss.BodyRenderers : null;
+            if (sourceRenderers == null || sourceRenderers.Length == 0)
+            {
+                return sourceRenderers;
+            }
+
+            int includedCount = 0;
+            for (int i = 0; i < sourceRenderers.Length; i++)
+            {
+                if (!IsExecutionIndicatorRenderer(sourceRenderers[i]))
+                {
+                    includedCount++;
+                }
+            }
+
+            if (includedCount == sourceRenderers.Length)
+            {
+                return sourceRenderers;
+            }
+
+            SpriteRenderer[] filteredRenderers = new SpriteRenderer[includedCount];
+            int targetIndex = 0;
+            for (int i = 0; i < sourceRenderers.Length; i++)
+            {
+                SpriteRenderer renderer = sourceRenderers[i];
+                if (IsExecutionIndicatorRenderer(renderer))
+                {
+                    continue;
+                }
+
+                filteredRenderers[targetIndex++] = renderer;
+            }
+
+            return filteredRenderers;
+        }
+
+        private static bool IsExecutionIndicatorRenderer(SpriteRenderer renderer)
+        {
+            return renderer != null
+                && renderer.name.StartsWith("ExecutionIndicator_Click", StringComparison.Ordinal);
         }
 
         private Color ResolveAfterimageColor(int colorIndex)

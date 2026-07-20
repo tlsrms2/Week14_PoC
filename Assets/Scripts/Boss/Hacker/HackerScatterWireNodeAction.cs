@@ -20,6 +20,12 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float fireInterval = 0.08f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
+        [Header("Node Sprite")]
+        [Tooltip("노드가 벽에 완전히 붙기 전까지 사용할 스프라이트입니다. 비어 있으면 투사체 프리팹 원본을 사용합니다.")]
+        [SerializeField] private Sprite flyingSprite;
+        [Tooltip("노드가 벽에 완전히 붙은 뒤 사용할 스프라이트입니다. 비어 있으면 투사체 프리팹 원본을 사용합니다.")]
+        [SerializeField] private Sprite attachedSprite;
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss == null)
@@ -63,6 +69,7 @@ namespace Week14.Enemy
                 if (projectile is HackerWireNodeProjectile wireNode)
                 {
                     wireNode.ConfigureWireOwner(context.Boss as HackerBossAI);
+                    wireNode.ConfigureSprites(flyingSprite, attachedSprite);
                 }
 
                 if (i < count - 1)

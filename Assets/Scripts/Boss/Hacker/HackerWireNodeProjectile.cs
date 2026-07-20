@@ -11,6 +11,9 @@ namespace Week14.Enemy
         private bool isAttached;
         private int wallLayer = -1;
         private HackerBossAI wireOwner;
+        private Sprite originalSprite;
+        private Sprite flyingSprite;
+        private Sprite attachedSprite;
 
         public bool IsAttached => isAttached;
         internal HackerBossAI WireOwner => wireOwner ?? OwnerBoss as HackerBossAI;
@@ -18,6 +21,7 @@ namespace Week14.Enemy
         protected override void OnProjectileAwake()
         {
             wallLayer = LayerMask.NameToLayer("Wall");
+            originalSprite = GetProjectileSprite();
             ConfigureInterceptable(true);
         }
 
@@ -25,6 +29,9 @@ namespace Week14.Enemy
         {
             isAttached = false;
             wireOwner = OwnerBoss as HackerBossAI;
+            flyingSprite = null;
+            attachedSprite = null;
+            ApplyNodeSprite(null);
             ConfigurePlayerCollisionIgnored(true);
             ConfigureInterceptable(true);
         }
@@ -44,6 +51,13 @@ namespace Week14.Enemy
             wireOwner = nextOwner ?? OwnerBoss as HackerBossAI;
         }
 
+        internal void ConfigureSprites(Sprite nextFlyingSprite, Sprite nextAttachedSprite)
+        {
+            flyingSprite = nextFlyingSprite;
+            attachedSprite = nextAttachedSprite;
+            ApplyNodeSprite(flyingSprite);
+        }
+
         protected override void OnTriggerEnter2D(Collider2D other)
         {
             if (!isAttached && IsWallCollider(other))
@@ -61,6 +75,7 @@ namespace Week14.Enemy
         protected override void OnProjectileReturnedToPool()
         {
             isAttached = false;
+            ApplyNodeSprite(null);
             UnregisterNode(this);
             base.OnProjectileReturnedToPool();
         }
@@ -68,6 +83,7 @@ namespace Week14.Enemy
         private void AttachToWall()
         {
             isAttached = true;
+            ApplyNodeSprite(attachedSprite);
             CancelInterceptReservation();
             ConfigureInterceptable(false);
             ConfigureExternalMotionDriven(true);
@@ -79,6 +95,11 @@ namespace Week14.Enemy
             }
 
             RegisterNode(this);
+        }
+
+        private void ApplyNodeSprite(Sprite sprite)
+        {
+            ApplyProjectileSprite(sprite != null ? sprite : originalSprite);
         }
 
         private static void RegisterNode(HackerWireNodeProjectile node)

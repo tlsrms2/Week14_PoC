@@ -21,6 +21,13 @@ namespace Week14.Enemy
         [SerializeField, BossGraphSfxId] private string fireSfxId;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
+        [Header("Fire Effect")]
+        [Tooltip("투사체가 발사될 때 Muzzle 위치에 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
+        [SerializeField] private GameObject fireEffectPrefab;
+        [Tooltip("프리팹의 기본 방향을 보정할 Z축 회전값입니다.")]
+        [SerializeField] private float fireEffectRotationOffsetDegrees;
+        [SerializeField, Min(0.01f)] private float fireEffectScale = 1f;
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss is not HackerBossAI hacker
@@ -51,6 +58,9 @@ namespace Week14.Enemy
                 activeSeconds,
                 fireInterval,
                 maxShotCount,
+                fireEffectPrefab,
+                fireEffectRotationOffsetDegrees,
+                fireEffectScale,
                 fireSfxId);
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }

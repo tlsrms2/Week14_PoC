@@ -2567,6 +2567,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2292473056117916250, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292473056117916250, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292473056117916250, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292473056117916250, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2958469296149594014, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: m_Name
       value: Boss_Hacker
@@ -2656,7 +2672,9 @@ PrefabInstance:
       value: 547352579
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3498326903379988984, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+    - {fileID: 4379425008607352463, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4249823529577685000, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       insertIndex: -1
@@ -2664,6 +2682,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4249823529577685000, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2056698147}
+    - targetCorrespondingSourceObject: {fileID: 4249823529577685000, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1991524241}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
 --- !u!114 &1505174552 stripped
@@ -3395,6 +3416,37 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.37200773, y: 0.18459165}
   m_EdgeRadius: 0
+--- !u!1 &1991524240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1991524241}
+  m_Layer: 6
+  m_Name: FireWire
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1991524241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991524240}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.336, y: 0.119, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1630168938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2053775493
 PrefabInstance:
   m_ObjectHideFlags: 0

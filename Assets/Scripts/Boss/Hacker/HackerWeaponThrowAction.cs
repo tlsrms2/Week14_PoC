@@ -21,6 +21,12 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float landingSideOffset;
         [SerializeField] private AnimationCurve flightSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+        [Header("Weapon Sprite")]
+        [Tooltip("무기가 땅에 완전히 떨어지기 전까지 사용할 스프라이트입니다. 비어 있으면 프리팹 원본을 사용합니다.")]
+        [SerializeField] private Sprite flyingSprite;
+        [Tooltip("무기가 땅에 완전히 떨어진 뒤 사용할 스프라이트입니다. 비어 있으면 프리팹 원본을 사용합니다.")]
+        [SerializeField] private Sprite groundedSprite;
+
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context?.Boss is not HackerBossAI hacker)
@@ -84,7 +90,9 @@ namespace Week14.Enemy
                 landingPosition,
                 flightSeconds,
                 flightSpeedCurve,
-                equippedWeapon);
+                equippedWeapon,
+                flyingSprite,
+                groundedSprite);
             yield return HackerMeleeAttackAction.Wait(context, flightSeconds);
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }

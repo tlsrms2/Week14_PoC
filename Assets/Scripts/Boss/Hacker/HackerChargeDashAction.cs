@@ -32,6 +32,26 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float dashSpeed = 15f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 0.7f, 1f, 1f);
 
+        [Header("Dash Effect")]
+        [Tooltip("실제 차지 대시가 시작될 때 보스 뒤에 한 번 생성할 이펙트 프리팹입니다. 오른쪽 대시 방향을 기준으로 제작된 프리팹을 사용합니다.")]
+        [SerializeField] private GameObject dashEffectPrefab;
+        [Tooltip("Boss Graph Editor 하이어러키에서 이펙트 생성 위치를 드래그해 지정합니다.")]
+        [SerializeField, BossGraphBossChildPath] private string dashEffectSpawnPointPath;
+        [Tooltip("대시 이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float dashEffectScale = 1f;
+
+        [Header("Trajectory VFX")]
+        [Tooltip("경로를 이어 붙일 정사각형 화살표 인디케이터 프리팹입니다. 프리팹의 Animator와 Sorting 설정을 그대로 사용합니다.")]
+        [SerializeField] private GameObject trajectoryIndicatorPrefab;
+        [Tooltip("인디케이터 한 칸이 차지할 경로 길이입니다. 0이면 프리팹 SpriteRenderer의 가로 크기를 자동으로 사용합니다.")]
+        [SerializeField, Min(0f)] private float trajectoryTileSpacing;
+        [Tooltip("프리팹 화살표가 오른쪽을 향하지 않을 때 보정할 Z축 회전값입니다.")]
+        [SerializeField] private float trajectoryTileRotationOffset;
+        [Tooltip("대기 시작 시 인디케이터 색입니다.")]
+        [SerializeField] private Color trajectoryReadyColor = Color.white;
+        [Tooltip("대기가 끝났을 때 인디케이터 색입니다.")]
+        [SerializeField] private Color trajectoryChargedColor = Color.red;
+
         [Header("Attack Effect")]
         [Tooltip("Release 애니메이션과 돌진 공격이 시작될 때 1회 생성되는 공격 이펙트입니다.")]
         [FormerlySerializedAs("dashEffect")]
@@ -54,13 +74,18 @@ namespace Week14.Enemy
             yield return ApproachToDashDistance(context);
             context.PlayAnimationTrigger(ChargeAnimationTrigger);
 
-            HackerAttackRangeIndicator rangeIndicator = null;
-            bool isHologram = context.Boss is HackerHologramBoss;
             float dashDistance = GetDashDistance();
             float elapsed = 0f;
             float directionLockTime = Mathf.Max(0f, windupSeconds - directionLockLeadSeconds);
             Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             bool isDirectionLocked = directionLockTime <= 0f;
+            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(dashDistance);
+            if (trajectoryVfx != null)
+            {
+                context.RegisterTransientVisual(trajectoryVfx.gameObject);
+                trajectoryVfx.UpdateVfx(context.Boss.transform.position, dashDirection, 0f);
+            }
+
             try
             {
                 while (elapsed < windupSeconds)
@@ -81,43 +106,21 @@ namespace Week14.Enemy
                     Vector2 previewDirection = isDirectionLocked
                         ? dashDirection
                         : context.GetDirectionToPlayer(context.Boss.transform.position);
-                    if (rangeIndicator == null)
-                    {
-                        rangeIndicator = HackerAttackRangeIndicator.CreateThrust(
-                            context,
-                            context.Boss.transform.position,
-                            previewDirection,
-                            dashDistance,
-                            damageRadius * 2f,
-                            ignoreVisibilitySetting: true);
-                        rangeIndicator?.SetHologramStyle(isHologram);
-                    }
-                    else
-                    {
-                        rangeIndicator.SetThrust(
-                            context.Boss.transform.position,
-                            previewDirection,
-                            dashDistance,
-                            damageRadius * 2f);
-                    }
-
-                    rangeIndicator?.SetThrustCenterFillProgress(
+                    elapsed += EnemyTimeScale.DeltaTime;
+                    trajectoryVfx?.UpdateVfx(
                         context.Boss.transform.position,
                         previewDirection,
-                        dashDistance,
-                        damageRadius * 2f,
                         windupSeconds > 0f ? elapsed / windupSeconds : 1f);
-
-                    elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
                 }
             }
             finally
             {
-                if (rangeIndicator != null)
+                if (trajectoryVfx != null)
                 {
-                    rangeIndicator.gameObject.SetActive(false);
-                    HackerAttackRangeIndicator.Destroy(rangeIndicator);
+                    context.UnregisterTransientVisual(trajectoryVfx.gameObject);
+                    trajectoryVfx.gameObject.SetActive(false);
+                    UnityEngine.Object.Destroy(trajectoryVfx.gameObject);
                 }
             }
 
@@ -131,6 +134,12 @@ namespace Week14.Enemy
             object facingLockOwner = new();
             context.SetFacingLocked(facingLockOwner, true);
             context.SetDashing(true);
+            HackerDashEffect.PlayPrefab(
+                dashEffectPrefab,
+                context,
+                dashEffectSpawnPointPath,
+                dashEffectScale,
+                dashDirection);
             GameObject attackEffectInstance = HackerDashEffect.Play(
                 attackEffect,
                 context,
@@ -245,6 +254,22 @@ namespace Week14.Enemy
             }
 
             return dashSpeed * dashSeconds * multiplierSum / sampleCount;
+        }
+
+        private BossDashTrajectoryVfx SpawnTrajectoryVfx(float indicatorLength)
+        {
+            if (trajectoryIndicatorPrefab == null)
+            {
+                return null;
+            }
+
+            return BossDashTrajectoryVfx.Spawn(
+                trajectoryIndicatorPrefab,
+                indicatorLength,
+                trajectoryTileSpacing,
+                trajectoryTileRotationOffset,
+                trajectoryReadyColor,
+                trajectoryChargedColor);
         }
 
         private void ApplyPathDamage(

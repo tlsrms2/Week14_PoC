@@ -33,8 +33,18 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float playerWallSearchRadius = 5f;
         [SerializeField, Min(0f)] private float minimumWallDistance = 2f;
         [SerializeField, Min(1)] private int fireCount = 1;
+        [Tooltip("다음 와이어는 이전 와이어가 실제 생성된 시점으로부터 이 시간 이상 지난 뒤 발사됩니다.")]
         [SerializeField, Min(0f)] private float repeatIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
+
+        [Header("Fire Effect")]
+        [Tooltip("와이어를 발사할 때 한 번 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
+        [SerializeField] private GameObject fireEffectPrefab;
+        [Tooltip("Boss Graph Editor 하이어러키에서 이펙트 생성 위치를 드래그해 지정합니다.")]
+        [SerializeField, BossGraphBossChildPath] private string fireEffectSpawnPointPath;
+        [Tooltip("프리팹의 기본 방향을 보정할 Z축 회전값입니다.")]
+        [SerializeField] private float fireEffectRotationOffsetDegrees;
+        [SerializeField, Min(0.01f)] private float fireEffectScale = 1f;
 
         [Header("Wall Flight")]
         [SerializeField, Min(0.01f)] private float bossFlightSpeed = 14f;
@@ -81,75 +91,94 @@ namespace Week14.Enemy
                         break;
                     }
 
-                    HackerWireResolution? resolution = null;
-                    Vector3 wallPosition = default;
-                    Vector2 wallNormal = default;
-                    Action<HackerWireResolution> handleResolution = result =>
+                    ShotIntervalTimer intervalTimer = null;
+                    Coroutine intervalCoroutine = null;
+                    if (shotIndex < count - 1)
                     {
-                        resolution = result;
-                        if (result == HackerWireResolution.WallAttached)
-                        {
-                            wallPosition = wire.Position;
-                            wallNormal = wire.WallNormal;
-                        }
-                    };
-                    wire.Resolved += handleResolution;
+                        intervalTimer = new ShotIntervalTimer(repeatIntervalSeconds);
+                        intervalCoroutine = context.Boss.StartCoroutine(
+                            CountDownShotInterval(context, intervalTimer));
+                    }
 
                     try
                     {
-                        float elapsed = 0f;
-                        while (elapsed < maxFlightSeconds && !resolution.HasValue)
+                        HackerWireResolution? resolution = null;
+                        Vector3 wallPosition = default;
+                        Vector2 wallNormal = default;
+                        Action<HackerWireResolution> handleResolution = result =>
                         {
-                            if (context.IsExecutionPaused)
+                            resolution = result;
+                            if (result == HackerWireResolution.WallAttached)
                             {
-                                context.Stop();
+                                wallPosition = wire.Position;
+                                wallNormal = wire.WallNormal;
+                            }
+                        };
+                        wire.Resolved += handleResolution;
+
+                        try
+                        {
+                            float elapsed = 0f;
+                            while (elapsed < maxFlightSeconds && !resolution.HasValue)
+                            {
+                                if (context.IsExecutionPaused)
+                                {
+                                    context.Stop();
+                                    yield return null;
+                                    continue;
+                                }
+
+                                elapsed += EnemyTimeScale.DeltaTime;
                                 yield return null;
-                                continue;
                             }
 
-                            elapsed += EnemyTimeScale.DeltaTime;
-                            yield return null;
+                            if (resolution == HackerWireResolution.WallAttached)
+                            {
+                                yield return FlyBossToWall(context, wallPosition, wallNormal);
+                            }
+                            else if (resolution == HackerWireResolution.PlayerGrabbed)
+                            {
+                                playerGrabbed = true;
+                                context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                                context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
+                                context.RestartAnimationTrigger(GrabAnimationTrigger);
+                                yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
+                            }
+                        }
+                        finally
+                        {
+                            context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
+                            context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
+                            if (wire != null)
+                            {
+                                wire.Resolved -= handleResolution;
+                                if (resolution == HackerWireResolution.WallAttached)
+                                {
+                                    wire.RemoveImmediate();
+                                }
+                                else
+                                {
+                                    wire.BeginDissolve();
+                                }
+                            }
                         }
 
-                        if (resolution == HackerWireResolution.WallAttached)
+                        if (playerGrabbed)
                         {
-                            yield return FlyBossToWall(context, wallPosition, wallNormal);
+                            break;
                         }
-                        else if (resolution == HackerWireResolution.PlayerGrabbed)
+
+                        if (intervalTimer != null)
                         {
-                            playerGrabbed = true;
-                            context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
-                            context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
-                            context.RestartAnimationTrigger(GrabAnimationTrigger);
-                            yield return HackerMeleeAttackAction.Wait(context, grabSeconds);
+                            yield return WaitForShotInterval(context, intervalTimer);
                         }
                     }
                     finally
                     {
-                        context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
-                        context.SetAnimationBool(IsWireGrabbingAnimationParameter, false);
-                        if (wire != null)
+                        if (intervalCoroutine != null && context.Boss != null)
                         {
-                            wire.Resolved -= handleResolution;
-                            if (resolution == HackerWireResolution.WallAttached)
-                            {
-                                wire.RemoveImmediate();
-                            }
-                            else
-                            {
-                                wire.BeginDissolve();
-                            }
+                            context.Boss.StopCoroutine(intervalCoroutine);
                         }
-                    }
-
-                    if (playerGrabbed)
-                    {
-                        break;
-                    }
-
-                    if (shotIndex < count - 1)
-                    {
-                        yield return HackerMeleeAttackAction.Wait(context, repeatIntervalSeconds);
                     }
                 }
 
@@ -171,10 +200,40 @@ namespace Week14.Enemy
             float shotSeconds = Mathf.Max(0.05f, maxFlightSeconds)
                 + Mathf.Max(Mathf.Max(0.05f, maxBossFlightSeconds), Mathf.Max(0.05f, grabSeconds));
             seconds = Mathf.Max(0f, windupSeconds)
-                + shotSeconds * count
-                + Mathf.Max(0f, repeatIntervalSeconds) * Mathf.Max(0, count - 1)
+                + shotSeconds
+                + Mathf.Max(shotSeconds, Mathf.Max(0f, repeatIntervalSeconds)) * Mathf.Max(0, count - 1)
                 + Mathf.Max(0f, recoverySeconds);
             return true;
+        }
+
+        private static IEnumerator CountDownShotInterval(
+            BossActionContext context,
+            ShotIntervalTimer timer)
+        {
+            while (timer.RemainingSeconds > 0f)
+            {
+                if (!context.IsExecutionPaused)
+                {
+                    timer.RemainingSeconds -= EnemyTimeScale.DeltaTime;
+                }
+
+                yield return null;
+            }
+        }
+
+        private static IEnumerator WaitForShotInterval(
+            BossActionContext context,
+            ShotIntervalTimer timer)
+        {
+            while (timer.RemainingSeconds > 0f)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                }
+
+                yield return null;
+            }
         }
 
         private bool TryCreateWire(BossActionContext context, HackerBossAI hacker, out HackerWire wire)
@@ -189,12 +248,14 @@ namespace Week14.Enemy
 
             Vector3 origin = launchOrigin.position;
             HackerWireSettings wireSettings = hacker.WireSettings;
+            Vector2 fireDirection;
             if (targetMode == HackerFireWireTargetMode.Player)
             {
+                fireDirection = context.GetDirectionToPlayer(origin);
                 wire = HackerWire.CreateGrab(
                     hacker,
                     launchOrigin,
-                    context.GetDirectionToPlayer(origin),
+                    fireDirection,
                     wireSettings.FlightSpeed,
                     maxFlightSeconds,
                     grabSeconds,
@@ -206,25 +267,39 @@ namespace Week14.Enemy
                     wireSettings.Width,
                     wireSettings.HitRadius,
                     wireSettings.Color);
-                return wire != null;
+            }
+            else
+            {
+                if (!TryGetPlayerNearbyWallAimPoint(origin, out Vector2 wallAimPoint))
+                {
+                    return false;
+                }
+
+                fireDirection = wallAimPoint - (Vector2)origin;
+                wire = HackerWire.CreatePersistentWallWire(
+                    hacker,
+                    launchOrigin,
+                    fireDirection,
+                    wireSettings.FlightSpeed,
+                    maxFlightSeconds,
+                    float.PositiveInfinity,
+                    wireSettings.Width,
+                    wireSettings.HitRadius,
+                    wireSettings.Color);
             }
 
-            if (!TryGetPlayerNearbyWallAimPoint(origin, out Vector2 wallAimPoint))
+            if (wire == null)
             {
                 return false;
             }
 
-            wire = HackerWire.CreatePersistentWallWire(
-                hacker,
-                launchOrigin,
-                wallAimPoint - (Vector2)origin,
-                wireSettings.FlightSpeed,
-                maxFlightSeconds,
-                float.PositiveInfinity,
-                wireSettings.Width,
-                wireSettings.HitRadius,
-                wireSettings.Color);
-            return wire != null;
+            HackerWireFireVfx.Play(
+                fireEffectPrefab,
+                context.GetBossChildTransform(fireEffectSpawnPointPath),
+                fireDirection,
+                fireEffectRotationOffsetDegrees,
+                fireEffectScale);
+            return true;
         }
 
         private bool TryGetPlayerNearbyWallAimPoint(Vector2 origin, out Vector2 wallAimPoint)
@@ -425,6 +500,16 @@ namespace Week14.Enemy
             return curve != null && curve.length > 0
                 ? Mathf.Max(0f, curve.Evaluate(progress))
                 : 1f;
+        }
+
+        private sealed class ShotIntervalTimer
+        {
+            internal ShotIntervalTimer(float seconds)
+            {
+                RemainingSeconds = Mathf.Max(0f, seconds);
+            }
+
+            internal float RemainingSeconds { get; set; }
         }
     }
 }

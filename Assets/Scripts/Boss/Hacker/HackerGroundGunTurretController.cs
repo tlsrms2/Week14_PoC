@@ -15,6 +15,9 @@ namespace Week14.Enemy
         private float activeSeconds;
         private float fireInterval;
         private int maxShotCount;
+        private GameObject fireEffectPrefab;
+        private float fireEffectRotationOffsetDegrees;
+        private float fireEffectScale;
         private string fireSfxId;
         private float elapsed;
         private float nextFireAt;
@@ -30,6 +33,9 @@ namespace Week14.Enemy
             float nextActiveSeconds,
             float nextFireInterval,
             int nextMaxShotCount,
+            GameObject nextFireEffectPrefab,
+            float nextFireEffectRotationOffsetDegrees,
+            float nextFireEffectScale,
             string nextFireSfxId)
         {
             context = nextContext;
@@ -42,6 +48,9 @@ namespace Week14.Enemy
             activeSeconds = Mathf.Max(0.05f, nextActiveSeconds);
             fireInterval = Mathf.Max(0.01f, nextFireInterval);
             maxShotCount = Mathf.Max(1, nextMaxShotCount);
+            fireEffectPrefab = nextFireEffectPrefab;
+            fireEffectRotationOffsetDegrees = nextFireEffectRotationOffsetDegrees;
+            fireEffectScale = Mathf.Max(0.01f, nextFireEffectScale);
             fireSfxId = nextFireSfxId;
             elapsed = 0f;
             nextFireAt = 0f;
@@ -80,20 +89,17 @@ namespace Week14.Enemy
 
         private void FireShot()
         {
+            if (rotateTowardPlayer || weapon.IsGrounded)
+            {
+                weapon.FacePlayer();
+            }
+
             Transform muzzle = weapon.GetChildTransform(muzzleChildPath) ?? weapon.transform;
             Vector3 origin = muzzle.position + muzzle.TransformVector(muzzleLocalOffset);
             Vector2 direction = context.GetDirectionToPlayer(origin);
             if (direction.sqrMagnitude <= 0.0001f)
             {
                 return;
-            }
-
-            if (rotateTowardPlayer)
-            {
-                weapon.transform.right = context.GetDirectionToPlayer(weapon.transform.position);
-                muzzle = weapon.GetChildTransform(muzzleChildPath) ?? weapon.transform;
-                origin = muzzle.position + muzzle.TransformVector(muzzleLocalOffset);
-                direction = context.GetDirectionToPlayer(origin);
             }
 
             BossProjectileSettings settings = context.ResolveGraphProjectileSettings(projectileName) ?? projectileFallback;
@@ -108,6 +114,19 @@ namespace Week14.Enemy
                 direction,
                 0f,
                 projectileName: projectileName);
+            if (firedProjectile != null)
+            {
+                float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg
+                    + fireEffectRotationOffsetDegrees;
+                ProjectileVfx.PlayPrefab(
+                    fireEffectPrefab,
+                    origin,
+                    Quaternion.Euler(0f, 0f, angleDegrees),
+                    null,
+                    fireEffectScale,
+                    false);
+            }
+
             IgnoreWeaponCollisions(firedProjectile);
             context.PlaySfx(fireSfxId);
         }

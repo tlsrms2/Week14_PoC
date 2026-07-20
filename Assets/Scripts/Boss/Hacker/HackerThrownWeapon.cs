@@ -31,6 +31,10 @@ namespace Week14.Enemy
         private float recallRotationDegrees;
         private bool isRecalling;
         private bool isOrbiting;
+        private SpriteRenderer weaponRenderer;
+        private Sprite originalSprite;
+        private Sprite flyingSprite;
+        private Sprite groundedSprite;
 
         public HackerThrownWeaponType WeaponType { get; private set; }
         public bool IsGrounded => !isThrown && !isRecalling && !isOrbiting;
@@ -74,7 +78,9 @@ namespace Week14.Enemy
             Vector3 nextLandingPosition,
             float nextTravelSeconds,
             AnimationCurve nextTravelSpeedCurve,
-            Transform nextEquippedWeapon)
+            Transform nextEquippedWeapon,
+            Sprite nextFlyingSprite,
+            Sprite nextGroundedSprite)
         {
             owner = nextOwner;
             WeaponType = nextWeaponType;
@@ -87,6 +93,10 @@ namespace Week14.Enemy
             isRecalling = false;
             isOrbiting = false;
             equippedWeapon = nextEquippedWeapon;
+            CacheWeaponRenderer();
+            flyingSprite = nextFlyingSprite;
+            groundedSprite = nextGroundedSprite;
+            ApplyWeaponSprite(flyingSprite);
             MatchEquippedWeaponWorldScale();
             restoreEquippedWeapon = equippedWeapon != null && equippedWeapon.gameObject.activeSelf;
             if (restoreEquippedWeapon)
@@ -157,6 +167,11 @@ namespace Week14.Enemy
 
             if (!isThrown)
             {
+                if (IsGrounded)
+                {
+                    FacePlayer();
+                }
+
                 return;
             }
 
@@ -166,8 +181,25 @@ namespace Week14.Enemy
             transform.position = Vector3.Lerp(startPosition, landingPosition, progress);
             if (normalizedTime >= 1f)
             {
+                transform.position = landingPosition;
                 isThrown = false;
+                ApplyWeaponSprite(groundedSprite);
                 owner?.RegisterGroundedWeapon(this);
+                FacePlayer();
+            }
+        }
+
+        internal void FacePlayer()
+        {
+            if (owner?.Player == null)
+            {
+                return;
+            }
+
+            Vector2 direction = (Vector2)owner.Player.position - (Vector2)transform.position;
+            if (direction.sqrMagnitude > 0.0001f)
+            {
+                transform.up = direction.normalized;
             }
         }
 
@@ -220,6 +252,28 @@ namespace Week14.Enemy
             }
 
             restoreEquippedWeapon = false;
+        }
+
+        private void CacheWeaponRenderer()
+        {
+            if (weaponRenderer == null)
+            {
+                weaponRenderer = FindPrimarySpriteRenderer(transform);
+            }
+
+            if (weaponRenderer != null && originalSprite == null)
+            {
+                originalSprite = weaponRenderer.sprite;
+            }
+        }
+
+        private void ApplyWeaponSprite(Sprite sprite)
+        {
+            CacheWeaponRenderer();
+            if (weaponRenderer != null)
+            {
+                weaponRenderer.sprite = sprite != null ? sprite : originalSprite;
+            }
         }
 
         private void MatchEquippedWeaponWorldScale()
