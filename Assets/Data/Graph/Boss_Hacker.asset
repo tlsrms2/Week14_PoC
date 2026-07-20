@@ -1627,7 +1627,7 @@ MonoBehaviour:
     action:
       rid: 6489939224946016337
     sequences: []
-    editorPosition: {x: 1650, y: 1687}
+    editorPosition: {x: 1651, y: 1686}
   - nodeId: Fire Sequential Sweep37
     nodeGuid: e081deb2740c45ad9191fafec2df238a
     nodeKind: 0
@@ -4000,7 +4000,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 1
-  debugForcedPatternId: P1-1
+  debugForcedPatternId: U/P5-1
   references:
     version: 2
     RefIds:
@@ -4385,6 +4385,7 @@ MonoBehaviour:
           trailSeconds: 0.1
           trailWidthMultiplier: 3
         launchOriginPath: 
+        animationTriggerName: Throw
         windupSeconds: 0.35
         nodeCount: 6
         startAngleOffset: 0

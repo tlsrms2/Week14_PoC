@@ -28,6 +28,12 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float rushSpeed = 11f;
         [SerializeField, Range(0f, 1f)] private float glitchAlpha = 0.3f;
 
+        [Header("Charge Gauge")]
+        [SerializeField, Tooltip("대기 및 차징 진행도를 표시할 원형 게이지 스프라이트 렌더러입니다.")]
+        private SpriteRenderer chargeGaugeRenderer;
+        [SerializeField, Min(0.05f), Tooltip("Timed Charge Approach를 사용하지 않을 때 게이지가 차오르는 시간입니다.")]
+        private float defaultWaitingGaugeFillSeconds = 1.5f;
+
         [Header("Stage Sprites")]
         [SerializeField] private Sprite initialFlightSprite;
         [SerializeField] private Sprite glitchApproachSprite;
@@ -39,8 +45,11 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float chargeBlinkMinRate = 3f;
         [SerializeField, Min(0.01f)] private float chargeBlinkMaxRate = 10f;
 
+        private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
+
         private SpriteRenderer[] spriteRenderers;
         private Color[] baseColors;
+        private MaterialPropertyBlock chargeGaugePropertyBlock;
         private GlitchState state;
         private float stateStartedAt;
         private float launchedAt;
@@ -73,6 +82,8 @@ namespace Week14.Enemy
             initialDirection = IncomingDirection.sqrMagnitude > 0.0001f ? IncomingDirection.normalized : Vector2.up;
             ApplyStageSprite(initialFlightSprite);
             SetVisualAlpha(1f);
+            SetChargeGaugeVisible(true);
+            SetChargeGaugeFill(0f);
             ConfigureExternalMotionDriven(true);
         }
 
@@ -80,6 +91,8 @@ namespace Week14.Enemy
         {
             launchedAt = Time.time;
             ConfigureInterceptable(false);
+            SetChargeGaugeVisible(true);
+            SetChargeGaugeFill(0f);
         }
 
         internal void ConfigureTimedChargeApproach(float arrivalSeconds)
@@ -98,6 +111,7 @@ namespace Week14.Enemy
             switch (state)
             {
                 case GlitchState.InitialFlight:
+                    TickWaitingChargeGauge();
                     TickInitialFlight();
                     if (Time.time - stateStartedAt >= initialFlightSeconds)
                     {
@@ -113,6 +127,7 @@ namespace Week14.Enemy
                     break;
 
                 case GlitchState.GlitchApproach:
+                    TickWaitingChargeGauge();
                     FloatToward(player.transform.position);
                     if (ShouldStartCharging(player))
                     {
@@ -121,9 +136,12 @@ namespace Week14.Enemy
                     break;
 
                 case GlitchState.Charging:
+                    TickChargingGauge();
                     TickChargeBlink();
                     if (Time.time - stateStartedAt >= chargeSeconds)
                     {
+                        SetChargeGaugeFill(0f);
+                        SetChargeGaugeVisible(false);
                         state = GlitchState.Rush;
                         ApplyStageSprite(rushSprite);
                         SetVisualAlpha(1f);
@@ -163,7 +181,25 @@ namespace Week14.Enemy
             stateStartedAt = Time.time;
             ApplyStageSprite(chargingSprite);
             SetVisualAlpha(1f);
+            SetChargeGaugeVisible(true);
+            SetChargeGaugeFill(1f);
             ConfigureInterceptable(true);
+        }
+
+        private void TickWaitingChargeGauge()
+        {
+            float fillSeconds = chargeApproachArrivalSeconds >= 0f
+                ? Mathf.Max(0.05f, chargeApproachArrivalSeconds)
+                : Mathf.Max(0.05f, defaultWaitingGaugeFillSeconds);
+            float progress = Mathf.Clamp01((Time.time - launchedAt) / fillSeconds);
+            SetChargeGaugeFill(progress);
+        }
+
+        private void TickChargingGauge()
+        {
+            float progress = Mathf.Clamp01(
+                (Time.time - stateStartedAt) / Mathf.Max(0.05f, chargeSeconds));
+            SetChargeGaugeFill(1f - progress);
         }
 
         private void FloatToward(Vector3 targetPosition)
@@ -271,7 +307,7 @@ namespace Week14.Enemy
             for (int i = 0; i < spriteRenderers.Length; i++)
             {
                 SpriteRenderer renderer = spriteRenderers[i];
-                if (renderer == null)
+                if (renderer == null || renderer == chargeGaugeRenderer)
                 {
                     continue;
                 }
@@ -300,7 +336,7 @@ namespace Week14.Enemy
             for (int i = 0; i < spriteRenderers.Length; i++)
             {
                 SpriteRenderer renderer = spriteRenderers[i];
-                if (renderer != null)
+                if (renderer != null && renderer != chargeGaugeRenderer)
                 {
                     Color color = baseColors != null && i < baseColors.Length
                         ? baseColors[i]
@@ -310,6 +346,27 @@ namespace Week14.Enemy
                     renderer.enabled = clampedAlpha > 0f;
                 }
             }
+        }
+
+        private void SetChargeGaugeVisible(bool visible)
+        {
+            if (chargeGaugeRenderer != null)
+            {
+                chargeGaugeRenderer.enabled = visible;
+            }
+        }
+
+        private void SetChargeGaugeFill(float fillRatio)
+        {
+            if (chargeGaugeRenderer == null)
+            {
+                return;
+            }
+
+            chargeGaugePropertyBlock ??= new MaterialPropertyBlock();
+            chargeGaugeRenderer.GetPropertyBlock(chargeGaugePropertyBlock);
+            chargeGaugePropertyBlock.SetFloat(FillAmountId, Mathf.Clamp01(fillRatio));
+            chargeGaugeRenderer.SetPropertyBlock(chargeGaugePropertyBlock);
         }
     }
 }

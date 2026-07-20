@@ -12,6 +12,7 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string nodeProjectileName = "WireNode";
         [SerializeField, HideInInspector] private BossProjectileSettings nodeProjectile = new();
         [SerializeField, BossGraphBossChildPath] private string launchOriginPath;
+        [SerializeField] private string animationTriggerName = "Throw";
         [SerializeField, Min(0f)] private float windupSeconds = 0.35f;
         [SerializeField, Min(1)] private int nodeCount = 6;
         [SerializeField] private float startAngleOffset;
@@ -45,6 +46,7 @@ namespace Week14.Enemy
                 hacker.FaceHorizontalDirection(facingDirection.x);
             }
 
+            context.RestartAnimationTrigger(animationTriggerName);
             using IDisposable facingLock = context.AcquireFacingLock();
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
