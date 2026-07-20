@@ -36,15 +36,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3443865412796416
-    m_Key: ParryCount
+    m_Key: ParryCount.Desc
     m_Metadata:
       m_Items: []
   - m_Id: 3448495471427584
-    m_Key: ParryClear
+    m_Key: ParryClear.Desc
     m_Metadata:
       m_Items: []
   - m_Id: 3451950613233664
-    m_Key: ParryBulletCount
+    m_Key: CoreInterruptCount.Desc
     m_Metadata:
       m_Items: []
   m_Metadata:

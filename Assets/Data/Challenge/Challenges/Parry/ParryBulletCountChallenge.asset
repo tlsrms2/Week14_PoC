@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04990699fe5ed14dab5ac96cd17d6b2, type: 3}
   m_Name: ParryBulletCountChallenge
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Challenge.ParryCountChallengeSO
-  challengeId: ParryBulletCount_6
+  challengeId: CoreInterruptCount_6
   description: 
   localizedDescription:
     m_TableReference:
