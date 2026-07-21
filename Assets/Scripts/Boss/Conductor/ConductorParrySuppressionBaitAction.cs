@@ -90,16 +90,11 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            Conductor.ConductingAnimationLease conductingAnimation =
+                (context.Boss as Conductor)?.CreateConductingAnimationLease();
             yield return MoveBossToTarget(context);
 
             float safeRowHalfHeight = GetSafeRowHalfHeight();
-            SnapDronesToColumns(
-                drones,
-                formationCenter,
-                initialSquareHalfExtent,
-                safeRowHalfHeight);
-            yield return null;
-            CommandClosingColumns(drones);
             bool baitParried = false;
             EnemyProjectile baitProjectileInstance = null;
             Minion baitDrone = null;
@@ -107,6 +102,15 @@ namespace Week14.Enemy
             Action<EnemyProjectile, EnemyProjectileDestroyReason, Vector3> baitDestroyedHandler = null;
             try
             {
+                conductingAnimation?.Begin();
+                SnapDronesToColumns(
+                    drones,
+                    formationCenter,
+                    initialSquareHalfExtent,
+                    safeRowHalfHeight);
+                yield return null;
+                CommandClosingColumns(drones);
+
                 float elapsed = 0f;
                 float nextFireAt = 0f;
                 int volleyIndex = 0;
@@ -200,6 +204,7 @@ namespace Week14.Enemy
 
                 ClearBaitSpawnEffect(context, ref baitSpawnEffectInstance);
                 ResumeDrones(drones);
+                conductingAnimation?.Dispose();
             }
         }
 

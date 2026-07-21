@@ -1060,7 +1060,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861205
     sequences: []
-    editorPosition: {x: 1022, y: 126}
+    editorPosition: {x: 1022, y: 125}
   - nodeId: Wander24
     nodeGuid: f46399a8fb664ff390e199441128e619
     nodeKind: 4
@@ -1730,12 +1730,12 @@ MonoBehaviour:
     - Maintain Player Distance2
     - Wander20
     - Stop Movement16
-  - patternId: P2
+  - patternId: BP2
     nodeGuids:
     - c4377fd151e643e988984baf42cef710
     nodeIds:
     - Defense Arc Volley1
-  - patternId: P3
+  - patternId: BP3
     nodeGuids:
     - 3962ebd6f81c4815babe6d8c51de40eb
     - de91b3605e7e4c119104d701bb5fbd53
@@ -1744,27 +1744,27 @@ MonoBehaviour:
     - Orbit1
     - Repeat Fire2
     - Maintain Player Distance3
-  - patternId: P4-1
+  - patternId: BP4-1
     nodeGuids:
     - 9f8d096031304d948ba04bb3703b8c54
     nodeIds:
     - Player Path Side Fire1
-  - patternId: P4-2
+  - patternId: BP4-2
     nodeGuids:
     - ffc3a09733c24cbe9337b471a5dbde3b
     nodeIds:
     - Player Path Side Fire5
-  - patternId: UP4
+  - patternId: BUP4
     nodeGuids:
     - 30e348fa7c89430697fa9620add6a96e
     nodeIds:
     - Player Path Side Fire2
-  - patternId: P5
+  - patternId: BP5
     nodeGuids:
     - 22fbfc6df9d2463695f9b912df0271fc
     nodeIds:
     - Score Lane Rush1
-  - patternId: UP5
+  - patternId: Opening
     nodeGuids:
     - e1ca23ac8a334f3e90f2485522f64161
     - b595b783fb1c45ad87b79e162602a2d9
@@ -1777,12 +1777,12 @@ MonoBehaviour:
     - Wander36
     - Wander21
     - Stop Movement17
-  - patternId: P6
+  - patternId: BP6
     nodeGuids:
     - d8117b09f5484cae84ce7f800b2892f0
     nodeIds:
     - Fan Blade1
-  - patternId: P7
+  - patternId: Signiture
     nodeGuids:
     - 0bb6f891c6344c9d8e38230d444cacb3
     - 339b5728011740d0b5cfe451f91ff3b2
@@ -1795,17 +1795,17 @@ MonoBehaviour:
     - Wander37
     - Wander34
     - Stop Movement18
-  - patternId: P8
+  - patternId: BP8
     nodeGuids:
     - a76aeb58e3534ecfba5a4e4fc121b577
     nodeIds:
     - Spawn Turrets1
-  - patternId: P9
+  - patternId: BP9
     nodeGuids:
     - 256ccdfb0b4a484f962c1339cde18051
     nodeIds:
     - Diamond Collapse1
-  - patternId: P1 -> P6
+  - patternId: P2
     nodeGuids:
     - cb9287a2d3e6462098e254bf5b55db88
     - 9e2cbadc567b463f92f73f7ac7012d5e
@@ -1834,7 +1834,7 @@ MonoBehaviour:
     - Stop Movement2
     - Conducting Cue1
     - Conducting Cue2
-  - patternId: P4-1 -> P5
+  - patternId: P3
     nodeGuids:
     - b561d67ae0964bf6b474f325fac990bd
     - 5267130b3438486087eb70e7d079dcf4
@@ -1851,7 +1851,7 @@ MonoBehaviour:
     - Player Path Side Fire3
     - Score Lane Rush2
     - Wander6
-  - patternId: P4-2 -> P5
+  - patternId: P4
     nodeGuids:
     - ba54c54edf10492295f65ba8d3663a6e
     - 1d636d253c064334876caa9c2aa5d659
@@ -1868,7 +1868,7 @@ MonoBehaviour:
     - Player Path Side Fire4
     - Score Lane Rush3
     - Wander7
-  - patternId: "P6 -> P1(\uC720\uB3C4) 1\uD68C"
+  - patternId: P5
     nodeGuids:
     - 3e6682cc5e0d411d8ae20f428d80c8c4
     - 2efbe6541fd146208648ef69cd749c35
@@ -1891,7 +1891,7 @@ MonoBehaviour:
     - Wander23
     - Fan Blade3
     - Maintain Player Distance12
-  - patternId: "P9 -> P1(\uC720\uB3C4) 1\uD68C"
+  - patternId: P6
     nodeGuids:
     - 6298c20af34341ce87b774bbb858785b
     - f46399a8fb664ff390e199441128e619
@@ -1914,7 +1914,7 @@ MonoBehaviour:
     - Formation Circle8
     - Repeat Fire11
     - Conducting Cue23
-  - patternId: P5 -> P8
+  - patternId: P7
     nodeGuids:
     - 87925482f1f74d929acf34e84686f563
     - 818cdb3c65ae4da78d33d30fbf1becd4
@@ -1931,7 +1931,7 @@ MonoBehaviour:
     - Wander12
     - Conducting Cue12
     - Wander19
-  - patternId: P8 -> P4-1
+  - patternId: P8
     nodeGuids:
     - 3099361750dc4b72b21af79acbf483fa
     - 0d407bda86484479b8b22d733b75ed2e
@@ -1952,7 +1952,7 @@ MonoBehaviour:
     - Wander10
     - Conducting Cue8
     - Wander17
-  - patternId: P8 -> P4-2
+  - patternId: P9
     nodeGuids:
     - 96a7843f49574bdb9278ec96144db5f0
     - f262b2669ad04a509ac686bb98f2a9ef
@@ -1973,7 +1973,16 @@ MonoBehaviour:
     - Player Path Side Fire7
     - Wander11
     - Wander18
-  - patternId: P9 -> P6
+  - patternId: P10
+    nodeGuids:
+    - aa726d3bbfd544f88ef36db7366fe1cf
+    - 58e96085d30f42808ebc37f093409405
+    - 9ab5e7849219404da6ddd9137351a6c7
+    nodeIds:
+    - Conducting Cue35
+    - Parry Suppression Bait1
+    - Wander40
+  - patternId: P11
     nodeGuids:
     - 9bdbdca230d7435588ee5da629586e59
     - a1aceb64feaa4f2ea74ddf8b077ce47d
@@ -1990,7 +1999,7 @@ MonoBehaviour:
     - Wander27
     - Conducting Cue25
     - Stop Movement12
-  - patternId: P1 -> P6 -> P3
+  - patternId: P12
     nodeGuids:
     - 1a95f1d664504d2ca9fb220f013b4b76
     - 0091496bde8141c8810df577111438c8
@@ -2027,7 +2036,7 @@ MonoBehaviour:
     - Conducting Cue13
     - Conducting Cue14
     - Conducting Cue15
-  - patternId: UP4 -> P5
+  - patternId: P13
     nodeGuids:
     - 4e5acd17fdf346189be5962716441999
     - 161e2323d83c4abca7262426358d6b36
@@ -2044,7 +2053,7 @@ MonoBehaviour:
     - Wander31
     - Stop Movement14
     - Conducting Cue29
-  - patternId: P8 -> UP4
+  - patternId: P14
     nodeGuids:
     - cf4284d1ba1042df811632e9e3f4d125
     - 2f17c6ec45d94cfe9e3c0abe0a0d3505
@@ -2061,7 +2070,7 @@ MonoBehaviour:
     - Spawn Turrets5
     - Player Path Side Fire8
     - Wander28
-  - patternId: P9 -> P3
+  - patternId: P15
     nodeGuids:
     - 3ad3adcdb6ba45e2a08524ce014ba556
     - a15fa251c7f94c11ab5740480e10d41b
@@ -2082,7 +2091,7 @@ MonoBehaviour:
     - Stop Movement15
     - Repeat Fire12
     - Maintain Player Distance21
-  - patternId: P2 -> P1
+  - patternId: P16
     nodeGuids:
     - 091cd19d08b1460c9cbe676a660a4c25
     - 531cfc41e4814819bd03ddea435c48c7
@@ -2113,7 +2122,7 @@ MonoBehaviour:
     - Repeat Fire14
     - Conducting Cue34
     - Stop Movement19
-  - patternId: P3 -> P6
+  - patternId: P17
     nodeGuids:
     - e1d7d53adee24bdea9749dcb478c0bf4
     - f8eff4e1e1e04161b0657dc96a8a9486
@@ -2134,33 +2143,24 @@ MonoBehaviour:
     - Wander9
     - Conducting Cue17
     - Wander22
-  - patternId: P10
-    nodeGuids:
-    - aa726d3bbfd544f88ef36db7366fe1cf
-    - 58e96085d30f42808ebc37f093409405
-    - 9ab5e7849219404da6ddd9137351a6c7
-    nodeIds:
-    - Conducting Cue35
-    - Parry Suppression Bait1
-    - Wander40
   defaultPatternIds:
   - "\uD328\uD134 \uC0AC\uC774"
   - P1
-  - P2
-  - P3
-  - P4-1
-  - P4-2
-  - UP4
-  - P5
-  - UP5
-  - P6
-  - P7
-  - P8
-  - P9
+  - BP2
+  - BP3
+  - BP4-1
+  - BP4-2
+  - BUP4
+  - BP5
+  - Opening
+  - BP6
+  - Signiture
+  - BP8
+  - BP9
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    phaseMaxHp: 100
+    phaseMaxHp: 120
     patternIntervalSeconds: 0
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2176,52 +2176,52 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P1 -> P6
+    - patternId: P2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P4-1 -> P5
+    - patternId: P3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P4-2 -> P5
+    - patternId: P4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: "P6 -> P1(\uC720\uB3C4) 1\uD68C"
+    - patternId: P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: "P9 -> P1(\uC720\uB3C4) 1\uD68C"
+    - patternId: P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P5 -> P8
+    - patternId: P7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P8 -> P4-1
+    - patternId: P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P8 -> P4-2
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: P9 -> P6
+    - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P10
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P11
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -2234,8 +2234,8 @@ MonoBehaviour:
     initialPatternDelaySeconds: 0
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 1
-    openingPatternId: UP5
-    signaturePatternId: P7
+    openingPatternId: Opening
+    signaturePatternId: Signiture
     signaturePatternHpPercent: 70
     forcedPatternId: 
     patterns:
@@ -2244,52 +2244,52 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: "P6 -> P1(\uC720\uB3C4) 1\uD68C"
+    - patternId: P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: "P9 -> P1(\uC720\uB3C4) 1\uD68C"
+    - patternId: P6
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P5 -> P8
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: P1 -> P6 -> P3
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: UP4 -> P5
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: P2 -> P1
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: P8 -> UP4
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: P9 -> P3
-      weight: 1
-      legacyCooldownSeconds: -1
-      cooldownPatternCount: 3
-      minPatternsPlayed: 0
-    - patternId: P3 -> P6
+    - patternId: P7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P10
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P12
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P13
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P14
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P15
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P16
+      weight: 1
+      legacyCooldownSeconds: -1
+      cooldownPatternCount: 3
+      minPatternsPlayed: 0
+    - patternId: P17
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -7453,6 +7453,8 @@ MonoBehaviour:
       data:
         mode: 0
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -7506,6 +7508,8 @@ MonoBehaviour:
       data:
         mode: 1
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -7559,6 +7563,8 @@ MonoBehaviour:
       data:
         mode: 0
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -7612,6 +7618,8 @@ MonoBehaviour:
       data:
         mode: 1
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -7665,6 +7673,8 @@ MonoBehaviour:
       data:
         mode: 2
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -7794,6 +7804,8 @@ MonoBehaviour:
       data:
         mode: 0
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -7855,6 +7867,8 @@ MonoBehaviour:
       data:
         mode: 1
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -11383,6 +11397,8 @@ MonoBehaviour:
       data:
         mode: 2
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1
@@ -11503,6 +11519,8 @@ MonoBehaviour:
       data:
         mode: 2
         distanceFromPlayer: 10
+        minPathCenterOffset: 1
+        maxPathCenterOffset: 2
         moveToStartSeconds: 0.6
         moveSeconds: 3
         waitForPlayerPathDuration: 1

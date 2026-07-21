@@ -35,9 +35,10 @@ namespace Week14.Enemy
         private BossGraphPatternEntry inFlightPatternEntry;
         private bool inFlightRegistered = true;
         private string currentPatternId;
-        // QA 반복 고정은 페이즈 런타임 히스토리가 아니라 조작자가 건 오버라이드다.
-        // 같은 그래프의 페이즈 전환에는 유지하고, 활성 그래프 인스턴스가 바뀌면 자동 해제한다.
+        // QA 반복 고정은 현재 활성 그래프와 페이즈에만 유효하다. 그래프 또는 페이즈가
+        // 바뀌면 이전 구성의 패턴이 새 구성으로 넘어가지 않도록 자동 해제한다.
         private BossGraphAsset forcedPatternGraph;
+        private int forcedPatternPhaseIndex = -1;
         private string forcedPatternId;
 
         public string CurrentPatternId => currentPatternId;
@@ -75,7 +76,7 @@ namespace Week14.Enemy
             currentPatternId = null;
         }
 
-        public bool TrySetForcedPattern(BossGraphAsset graph, string patternId)
+        public bool TrySetForcedPattern(BossGraphAsset graph, int phaseIndex, string patternId)
         {
             BossGraphPattern pattern = graph != null ? graph.GetPattern(patternId) : null;
             if (pattern?.NodeKeys == null || pattern.NodeKeys.Count == 0)
@@ -84,13 +85,14 @@ namespace Week14.Enemy
             }
 
             forcedPatternGraph = graph;
+            forcedPatternPhaseIndex = phaseIndex;
             forcedPatternId = pattern.PatternId;
             return true;
         }
 
-        public string GetForcedPatternId(BossGraphAsset graph)
+        public string GetForcedPatternId(BossGraphAsset graph, int phaseIndex)
         {
-            return TryResolveForcedPattern(graph, out BossGraphPattern pattern)
+            return TryResolveForcedPattern(graph, phaseIndex, out BossGraphPattern pattern)
                 ? pattern.PatternId
                 : null;
         }
@@ -98,6 +100,7 @@ namespace Week14.Enemy
         public void CancelForcedPattern()
         {
             forcedPatternGraph = null;
+            forcedPatternPhaseIndex = -1;
             forcedPatternId = null;
         }
 
@@ -171,7 +174,10 @@ namespace Week14.Enemy
             int immediateTransitionCount = 0;
             while (true)
             {
-                if (TryResolveForcedPattern(graph, out BossGraphPattern forcedPattern))
+                if (TryResolveForcedPattern(
+                        graph,
+                        context.Boss.CurrentPhaseIndex,
+                        out BossGraphPattern forcedPattern))
                 {
                     currentPatternId = forcedPattern.PatternId;
                     yield return ExecutePattern(graph, forcedPattern, context);
@@ -255,7 +261,10 @@ namespace Week14.Enemy
         {
             while (true)
             {
-                BossGraphPattern pattern = TryResolveForcedPattern(graph, out BossGraphPattern forcedPattern)
+                BossGraphPattern pattern = TryResolveForcedPattern(
+                        graph,
+                        context.Boss.CurrentPhaseIndex,
+                        out BossGraphPattern forcedPattern)
                     ? forcedPattern
                     : graph.GetPattern(graph.DebugForcedPatternId);
                 IReadOnlyList<string> nodeKeys = pattern?.NodeKeys;
@@ -353,7 +362,7 @@ namespace Week14.Enemy
                 RegisterInFlightPatternIfNeeded();
                 context.Stop();
                 // QA 반복 고정 중에는 선택 패턴 외의 시그니처 패턴도 끼워 넣지 않는다.
-                if (!TryResolveForcedPattern(graph, out _)
+                if (!TryResolveForcedPattern(graph, phase.PhaseIndex, out _)
                     && TryGetPendingSignaturePattern(graph, phase, context, out BossGraphPattern signaturePattern))
                 {
                     signaturePatternsPlayed.Add(phase.PhaseIndex);
@@ -2572,7 +2581,7 @@ namespace Week14.Enemy
                 return null;
             }
 
-            if (TryResolveForcedPattern(graph, out BossGraphPattern forcedPattern))
+            if (TryResolveForcedPattern(graph, phase.PhaseIndex, out BossGraphPattern forcedPattern))
             {
                 patternEntry = FindPatternEntry(phase, forcedPattern.PatternId);
                 return forcedPattern;
@@ -2596,9 +2605,12 @@ namespace Week14.Enemy
             return graph.GetPattern(patternEntry?.PatternId);
         }
 
-        private bool TryResolveForcedPattern(BossGraphAsset graph, out BossGraphPattern pattern)
+        private bool TryResolveForcedPattern(
+            BossGraphAsset graph,
+            int phaseIndex,
+            out BossGraphPattern pattern)
         {
-            if (forcedPatternGraph != graph)
+            if (forcedPatternGraph != graph || forcedPatternPhaseIndex != phaseIndex)
             {
                 CancelForcedPattern();
                 pattern = null;

@@ -131,8 +131,11 @@ namespace Week14.Enemy
             }
 
             ConductorScoreLaneRushIndicatorVisual staffIndicator = null;
+            Conductor.ConductingAnimationLease conductingAnimation =
+                (context.Boss as Conductor)?.CreateConductingAnimationLease();
+            Action onBossMoveCompleted = conductingAnimation != null ? conductingAnimation.Begin : null;
             Coroutine bossMoveRoutine = repositionBossAtPatternStart
-                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context))
+                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context, onBossMoveCompleted))
                 : null;
             ConductorPatternCameraFocus cameraFocus = ConductorPatternCameraFocus.Start(
                 context,
@@ -140,6 +143,11 @@ namespace Week14.Enemy
                 cameraFocusWorldCenter);
             try
             {
+                if (!repositionBossAtPatternStart)
+                {
+                    conductingAnimation?.Begin();
+                }
+
                 activeNorthSouthStaffDistance = GetInitialNorthSouthStaffDistance();
                 SetFormationFacingOverride(minions, Vector2.left);
                 CommandStaffCreationWander(
@@ -180,6 +188,7 @@ namespace Week14.Enemy
                 ClearFormationFacingOverride(minions);
                 activeNorthSouthStaffDistance = 0f;
                 activeWestStaffDistance = 0f;
+                conductingAnimation?.Dispose();
             }
         }
 
@@ -195,7 +204,7 @@ namespace Week14.Enemy
                 + GetWestStaffVolleySeconds();
         }
 
-        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
+        private IEnumerator MoveBossToTargetPosition(BossActionContext context, Action onCompleted = null)
         {
             if (!repositionBossAtPatternStart || context?.Boss == null || context.Boss.Body == null)
             {
@@ -229,6 +238,8 @@ namespace Week14.Enemy
             {
                 context?.Boss?.Stop();
             }
+
+            onCompleted?.Invoke();
         }
 
         private float EstimateBossRepositionSeconds(BossActionContext context)

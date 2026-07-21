@@ -93,7 +93,11 @@ namespace Week14.Enemy
             }
 
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
-            Coroutine bossMoveRoutine = context.Boss.StartCoroutine(MoveBossToTargetPosition(context));
+            Conductor.ConductingAnimationLease conductingAnimation =
+                (context.Boss as Conductor)?.CreateConductingAnimationLease();
+            Action onBossMoveCompleted = conductingAnimation != null ? conductingAnimation.Begin : null;
+            Coroutine bossMoveRoutine = context.Boss.StartCoroutine(
+                MoveBossToTargetPosition(context, onBossMoveCompleted));
             ConductorPatternCameraFocus cameraFocus = ConductorPatternCameraFocus.Start(
                 context,
                 cameraFocusDelaySeconds,
@@ -124,6 +128,7 @@ namespace Week14.Enemy
                 context?.Stop();
                 ClearActiveLaneIndicators();
                 ClearTrackedProjectiles();
+                conductingAnimation?.Dispose();
             }
         }
 

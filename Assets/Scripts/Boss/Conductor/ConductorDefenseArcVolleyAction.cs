@@ -75,10 +75,13 @@ namespace Week14.Enemy
 
             BeginDroneProjectileBlocking(drones);
             List<GameObject> shieldVisuals = CreateDroneShieldVisuals(context, drones);
+            Conductor.ConductingAnimationLease conductingAnimation =
+                (context.Boss as Conductor)?.CreateConductingAnimationLease();
             try
             {
                 CommandDefenseArc(drones);
                 yield return MoveBossToTarget(context);
+                conductingAnimation?.Begin();
                 yield return context.WaitSeconds(formationHoldSeconds);
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
 
@@ -100,6 +103,7 @@ namespace Week14.Enemy
             {
                 EndDroneProjectileBlocking(drones);
                 ClearDroneShieldVisuals(context, shieldVisuals);
+                conductingAnimation?.Dispose();
             }
         }
 

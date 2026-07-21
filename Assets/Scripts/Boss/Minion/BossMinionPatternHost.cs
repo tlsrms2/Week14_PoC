@@ -223,7 +223,8 @@ namespace Week14.Enemy
             float duration = 0f;
             int activeCount = CountActiveMinions(minions);
             float orbitBaseAngle = GetOrbitBaseAngle(minions);
-            Vector2 playerPathCenter = MinionTarget != null ? MinionTarget.position : transform.position;
+            Vector2 playerPathCenter = (Vector2)(MinionTarget != null ? MinionTarget.position : transform.position)
+                + resolvedRequest.PlayerPathCenterOffset;
             int commandIndex = 0;
             for (int i = 0; i < minions.Count; i++)
             {

@@ -391,7 +391,8 @@ namespace Week14.Enemy
             MinionGraphProjectileFireSpec fireSpec,
             bool resumeIdle,
             MinionGraphPlayerPathMode playerPathMode = MinionGraphPlayerPathMode.HorizontalVertical,
-            bool orbitUseStartPlayerPosition = false)
+            bool orbitUseStartPlayerPosition = false,
+            Vector2 playerPathCenterOffset = default)
         {
             Mode = mode;
             Projectile = projectile;
@@ -427,6 +428,7 @@ namespace Week14.Enemy
             ResumeIdle = resumeIdle;
             PlayerPathMode = playerPathMode;
             OrbitUseStartPlayerPosition = orbitUseStartPlayerPosition;
+            PlayerPathCenterOffset = playerPathCenterOffset;
         }
 
         public MinionGraphCommandMode Mode { get; }
@@ -463,6 +465,7 @@ namespace Week14.Enemy
         public bool ResumeIdle { get; }
         public MinionGraphPlayerPathMode PlayerPathMode { get; }
         public bool OrbitUseStartPlayerPosition { get; }
+        public Vector2 PlayerPathCenterOffset { get; }
 
         public MinionGraphCommandRequest WithFireSpec(MinionGraphProjectileFireSpec fireSpec)
         {
@@ -500,7 +503,8 @@ namespace Week14.Enemy
                 fireSpec,
                 ResumeIdle,
                 PlayerPathMode,
-                OrbitUseStartPlayerPosition);
+                OrbitUseStartPlayerPosition,
+                PlayerPathCenterOffset);
         }
 
         public static MinionGraphCommandRequest RepeatFire(
@@ -883,7 +887,8 @@ namespace Week14.Enemy
             MinionGraphPlayerPathMode mode,
             float distanceFromPlayer,
             float moveToStartSeconds,
-            float moveSeconds)
+            float moveSeconds,
+            Vector2 centerOffset = default)
         {
             return new MinionGraphCommandRequest(
                 MinionGraphCommandMode.PlayerPath,
@@ -918,7 +923,8 @@ namespace Week14.Enemy
                 moveSeconds,
                 default,
                 true,
-                mode);
+                mode,
+                playerPathCenterOffset: centerOffset);
         }
     }
 
