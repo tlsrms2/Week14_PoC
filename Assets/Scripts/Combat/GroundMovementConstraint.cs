@@ -324,6 +324,122 @@ namespace Week14.Combat
             RemoveVelocityInDirection(body, -displacement);
         }
 
+        public static bool TryPushPlayerOutOfMovingBounds(
+            Transform player,
+            Bounds movingBounds,
+            Vector2 movingDirection,
+            float padding)
+        {
+            if (player == null
+                || !TryGetBodyAndColliders(player, out Rigidbody2D body, out Collider2D[] colliders)
+                || !TryGetBounds(colliders, out Bounds playerBounds)
+                || !Overlaps2D(playerBounds, movingBounds))
+            {
+                return true;
+            }
+
+            Vector2 current = body.position;
+            Vector2 centerOffset = (Vector2)playerBounds.center - current;
+            Vector2 extents = playerBounds.extents;
+            float safePadding = Mathf.Max(0f, padding);
+            Vector2 positiveX = new(
+                movingBounds.max.x + extents.x + safePadding - centerOffset.x,
+                current.y);
+            Vector2 negativeX = new(
+                movingBounds.min.x - extents.x - safePadding - centerOffset.x,
+                current.y);
+            Vector2 positiveY = new(
+                current.x,
+                movingBounds.max.y + extents.y + safePadding - centerOffset.y);
+            Vector2 negativeY = new(
+                current.x,
+                movingBounds.min.y - extents.y - safePadding - centerOffset.y);
+
+            if (Mathf.Abs(movingDirection.x) >= Mathf.Abs(movingDirection.y))
+            {
+                Vector2 forward = movingDirection.x >= 0f ? positiveX : negativeX;
+                if (TryPushBodyToCandidate(body, colliders, playerBounds, movingBounds, forward))
+                {
+                    return true;
+                }
+
+                return TryPushNearestSide(
+                    body,
+                    colliders,
+                    playerBounds,
+                    movingBounds,
+                    positiveY,
+                    negativeY);
+            }
+
+            Vector2 verticalForward = movingDirection.y >= 0f ? positiveY : negativeY;
+            if (TryPushBodyToCandidate(body, colliders, playerBounds, movingBounds, verticalForward))
+            {
+                return true;
+            }
+
+            return TryPushNearestSide(
+                body,
+                colliders,
+                playerBounds,
+                movingBounds,
+                positiveX,
+                negativeX);
+        }
+
+        private static bool TryPushNearestSide(
+            Rigidbody2D body,
+            Collider2D[] colliders,
+            Bounds bodyBounds,
+            Bounds obstacleBounds,
+            Vector2 first,
+            Vector2 second)
+        {
+            Vector2 current = body.position;
+            if ((second - current).sqrMagnitude < (first - current).sqrMagnitude)
+            {
+                (first, second) = (second, first);
+            }
+
+            return TryPushBodyToCandidate(body, colliders, bodyBounds, obstacleBounds, first)
+                || TryPushBodyToCandidate(body, colliders, bodyBounds, obstacleBounds, second);
+        }
+
+        private static bool TryPushBodyToCandidate(
+            Rigidbody2D body,
+            Collider2D[] colliders,
+            Bounds bodyBounds,
+            Bounds obstacleBounds,
+            Vector2 candidate)
+        {
+            Vector2 current = body.position;
+            Vector2 resolved = ClampPointMovement(
+                current,
+                candidate,
+                MinProbeRadius,
+                0,
+                colliders);
+            Bounds resolvedBounds = bodyBounds;
+            resolvedBounds.center += (Vector3)(resolved - current);
+            if (Overlaps2D(resolvedBounds, obstacleBounds))
+            {
+                return false;
+            }
+
+            body.position = resolved;
+            body.linearVelocity = Vector2.zero;
+            Physics2D.SyncTransforms();
+            return true;
+        }
+
+        private static bool Overlaps2D(Bounds first, Bounds second)
+        {
+            return first.min.x < second.max.x
+                && first.max.x > second.min.x
+                && first.min.y < second.max.y
+                && first.max.y > second.min.y;
+        }
+
         public static Vector2 ClampStep(Vector2 current, Vector2 target)
         {
             return ClampStep(current, target, null);
