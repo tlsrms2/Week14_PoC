@@ -1548,7 +1548,7 @@ MonoBehaviour:
     sequences: []
     editorPosition: {x: 2346, y: 1507}
   patterns:
-  - patternId: Pattern1
+  - patternId: P1
     nodeGuids:
     - da4f1dacc58a4d50905c562ccb077bf9
     - 59a0ab3255084af888ee6b54a82616c5
@@ -1577,7 +1577,7 @@ MonoBehaviour:
     - Play Sfx2
     - Fire Radial Emission2
     - Set Parameter5
-  - patternId: Pattern2
+  - patternId: P2
     nodeGuids:
     - dfa298a4204c49e089cad7110b65e1fe
     - 3e9c9bad0ed3460e92357fbd306d028d
@@ -1594,7 +1594,7 @@ MonoBehaviour:
     - Play Sfx8
     - Fire Next Clone Shooter1
     - Fire Next Clone Shooter2
-  - patternId: Pattern3
+  - patternId: P3
     nodeGuids:
     - dc684a5283b943d0830142e6998cd60f
     - fe2d4dc1cb74423986afc58a605c3fdf
@@ -1619,7 +1619,7 @@ MonoBehaviour:
     - Fire Radial Emission13
     - Spawn Clone Shooters4
     - Fire Next Clone Shooter5
-  - patternId: Pattern4
+  - patternId: P4
     nodeGuids:
     - cadb200c2ec04400ba86ad4aba1474fd
     - b0b673b9b2014e7087edeb59966cfcd8
@@ -1656,7 +1656,7 @@ MonoBehaviour:
     - Play Sfx6
     - Wait12
     - Random Direction Move3
-  - patternId: Pattern5
+  - patternId: P5
     nodeGuids:
     - cbbfb4ab43fd4ef1afc58e8583458ad3
     - eab47427394e4b25aa939f7131488614
@@ -1705,7 +1705,36 @@ MonoBehaviour:
     - Fire Next Clone Shooter7
     - Fire Radial Emission10
     - Play Sfx12
-  - patternId: Pattern7
+  - patternId: S_P6
+    nodeGuids:
+    - 895ce312ce4b4a6dbaf40f992e9aa798
+    - f14a508387c545e8bf9127492fe1d12e
+    - 106fb095d27344a78756daee78137732
+    - d1b48d0dd6154938bf0ab6723078ae53
+    - 6d7e36ffb5b7446ab228b551a31fe18c
+    - 6fef2238d8a0438e9af2094c068fd815
+    - 4e896e0920e14496b505c49a6e9b6832
+    - e3b27012b16a4737848fb7bcfb78b562
+    - 4244fcac6dcd4ca49809e5edcc3c201f
+    - 29115f1cd0974eea8bd40bed7b578144
+    - 4d9d557ed37c439b9d7a4324cf99d934
+    - 3d98385c909c44e9b7a065790bd70a00
+    - 152ff120ee284c9ea8c8b0601d8cfd3e
+    nodeIds:
+    - Set Stealth Visibility1
+    - Wait33
+    - Spawn Clone Shooters9
+    - Teleport Around Player9
+    - Boss Dash8
+    - Fire Parry Suppression Bait1
+    - Fire Next Clone Shooter (Atk2)1
+    - Fire Next Clone Shooter (Atk2)2
+    - Fire Next Clone Shooter (Atk2)3
+    - Fire Next Clone Shooter (Atk2)4
+    - Fire Next Clone Shooter (Atk2)5
+    - Exit Stealth1
+    - Spawn Effect Prefab1
+  - patternId: P7
     nodeGuids:
     - d49eb5d08ec1433eb6c72b5367b84cf4
     - b3ced54591844824847eb5f919753168
@@ -1738,7 +1767,7 @@ MonoBehaviour:
     - Wait30
     - Play Sfx15
     - Fire Radial Emission5
-  - patternId: Pattern8
+  - patternId: P8
     nodeGuids:
     - 46a85fd3cd58483482fb8a0c6979f628
     - 5eb28bbcc0704629a6d3b15db9279d4b
@@ -1793,7 +1822,7 @@ MonoBehaviour:
     - Random Direction Move5
     - Fire Next Clone Shooter8
     - Fire Next Clone Shooter9
-  - patternId: Pattern9
+  - patternId: P9
     nodeGuids:
     - e16e831d809842c88df2ba6972fdb979
     - 4859625f935f477bb11f9e5e1beb595f
@@ -1822,7 +1851,7 @@ MonoBehaviour:
     - Fire Radial Emission11
     - Fire Next Clone Shooter3
     - Fire Next Clone Shooter10
-  - patternId: Pattern10
+  - patternId: P10
     nodeGuids:
     - 209ac40892174b85b4f88bb5a64757c5
     - 6cf6f48ba392469e87b07b5a387ed7d4
@@ -1855,36 +1884,7 @@ MonoBehaviour:
     - Play Sfx25
     - Boss Dash7
     - Fire Next Clone Shooter12
-  - patternId: Pattern6
-    nodeGuids:
-    - 895ce312ce4b4a6dbaf40f992e9aa798
-    - f14a508387c545e8bf9127492fe1d12e
-    - 106fb095d27344a78756daee78137732
-    - d1b48d0dd6154938bf0ab6723078ae53
-    - 6d7e36ffb5b7446ab228b551a31fe18c
-    - 6fef2238d8a0438e9af2094c068fd815
-    - 4e896e0920e14496b505c49a6e9b6832
-    - e3b27012b16a4737848fb7bcfb78b562
-    - 4244fcac6dcd4ca49809e5edcc3c201f
-    - 29115f1cd0974eea8bd40bed7b578144
-    - 4d9d557ed37c439b9d7a4324cf99d934
-    - 3d98385c909c44e9b7a065790bd70a00
-    - 152ff120ee284c9ea8c8b0601d8cfd3e
-    nodeIds:
-    - Set Stealth Visibility1
-    - Wait33
-    - Spawn Clone Shooters9
-    - Teleport Around Player9
-    - Boss Dash8
-    - Fire Parry Suppression Bait1
-    - Fire Next Clone Shooter (Atk2)1
-    - Fire Next Clone Shooter (Atk2)2
-    - Fire Next Clone Shooter (Atk2)3
-    - Fire Next Clone Shooter (Atk2)4
-    - Fire Next Clone Shooter (Atk2)5
-    - Exit Stealth1
-    - Spawn Effect Prefab1
-  - patternId: Pattern11
+  - patternId: S_P11
     nodeGuids:
     - ff555fa901c04ee68e33a375518eb050
     - 843c1cd32efe445a8dd941ab503c39ea
@@ -1936,32 +1936,32 @@ MonoBehaviour:
     signaturePatternHpPercent: 50
     forcedPatternId: 
     patterns:
-    - patternId: Pattern1
+    - patternId: P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 5
       minPatternsPlayed: 0
-    - patternId: Pattern2
+    - patternId: P2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern3
+    - patternId: P3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 5
       minPatternsPlayed: 0
-    - patternId: Pattern4
+    - patternId: P4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern5
+    - patternId: P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern6
+    - patternId: S_P6
       weight: 5
       legacyCooldownSeconds: -1
       cooldownPatternCount: 0
@@ -1979,32 +1979,32 @@ MonoBehaviour:
     signaturePatternHpPercent: 50
     forcedPatternId: 
     patterns:
-    - patternId: Pattern3
+    - patternId: P3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 5
       minPatternsPlayed: 0
-    - patternId: Pattern7
+    - patternId: P7
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern8
+    - patternId: P8
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern9
+    - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern10
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern11
+    - patternId: S_P11
       weight: 5
       legacyCooldownSeconds: -1
       cooldownPatternCount: 0
@@ -3224,7 +3224,7 @@ MonoBehaviour:
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
-  debugForcedPatternId: Pattern11
+  debugForcedPatternId: S_P11
   references:
     version: 2
     RefIds:
