@@ -120,6 +120,9 @@ namespace Week14.Enemy
         private Animator oneWeaponAnimator;
         private Coroutine phaseVisualSwitchRoutine;
         private bool isOneWeaponVisualActive;
+        private Collider2D[] playerBlockingBossColliders = new Collider2D[0];
+        private Vector2 previousPlayerBlockingPosition;
+        private bool hasPreviousPlayerBlockingPosition;
         protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
@@ -214,7 +217,10 @@ namespace Week14.Enemy
             base.Start();
             ResolvePhaseVisuals();
             ApplyPhaseVisual(CurrentPhaseNumber >= 2, true);
-            ConfigurePlayerBlockingWithoutPhysicsPush();
+            if (UsesHackerPresentationUpdates)
+            {
+                ConfigurePlayerBlockingWithoutPhysicsPush();
+            }
             IgnoreTurretLayerCollisions();
             UpdateFacingFromPlayer();
         }
@@ -223,6 +229,7 @@ namespace Week14.Enemy
         {
             if (UsesHackerPresentationUpdates)
             {
+                ResolvePlayerBlockingFromBossMovement();
                 UpdateWalkState();
                 UpdateFacingFromPlayer();
             }
@@ -573,6 +580,7 @@ namespace Week14.Enemy
 
             Collider2D[] bossColliders = Body.GetComponentsInChildren<Collider2D>(true);
             Collider2D[] playerColliders = Player.GetComponentsInChildren<Collider2D>(true);
+            List<Collider2D> movementColliders = new();
             for (int bossIndex = 0; bossIndex < bossColliders.Length; bossIndex++)
             {
                 Collider2D bossCollider = bossColliders[bossIndex];
@@ -587,6 +595,7 @@ namespace Week14.Enemy
                     bossCollider.GetComponent<PlayerOnlyMovementBarrier>()
                     ?? bossCollider.gameObject.AddComponent<PlayerOnlyMovementBarrier>();
                 movementBarrier.ConfigureProjectileCollisionIgnored(false);
+                movementColliders.Add(bossCollider);
 
                 for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
                 {
@@ -597,6 +606,65 @@ namespace Week14.Enemy
                     }
                 }
             }
+
+            playerBlockingBossColliders = movementColliders.ToArray();
+            previousPlayerBlockingPosition = Body.position;
+            hasPreviousPlayerBlockingPosition = true;
+        }
+
+        private void ResolvePlayerBlockingFromBossMovement()
+        {
+            if (Body == null || Player == null || playerBlockingBossColliders.Length == 0)
+            {
+                return;
+            }
+
+            Vector2 current = Body.position;
+            if (!hasPreviousPlayerBlockingPosition)
+            {
+                previousPlayerBlockingPosition = current;
+                hasPreviousPlayerBlockingPosition = true;
+                return;
+            }
+
+            Vector2 displacement = current - previousPlayerBlockingPosition;
+            if (displacement.sqrMagnitude <= 0.000001f)
+            {
+                return;
+            }
+
+            Physics2D.SyncTransforms();
+            for (int i = 0; i < playerBlockingBossColliders.Length; i++)
+            {
+                Collider2D bossCollider = playerBlockingBossColliders[i];
+                if (bossCollider == null
+                    || !bossCollider.enabled
+                    || !bossCollider.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (GroundMovementConstraint.TryPushPlayerOutOfMovingBounds(
+                        Player,
+                        bossCollider.bounds,
+                        displacement,
+                        0.02f))
+                {
+                    continue;
+                }
+
+                Body.position = previousPlayerBlockingPosition;
+                Body.linearVelocity = Vector2.zero;
+                transform.position = new Vector3(
+                    previousPlayerBlockingPosition.x,
+                    previousPlayerBlockingPosition.y,
+                    transform.position.z);
+                Physics2D.SyncTransforms();
+                current = previousPlayerBlockingPosition;
+                break;
+            }
+
+            previousPlayerBlockingPosition = current;
         }
 
         private void UpdateFacingFromPlayer()
