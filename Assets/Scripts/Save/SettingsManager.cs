@@ -31,6 +31,9 @@ namespace Week14.Save
         public static bool BgmMuted => Data.bgmMuted;
         public static bool SfxMuted => Data.sfxMuted;
         public static string LanguageCode => string.IsNullOrWhiteSpace(Data.languageCode) ? DefaultLanguageCode : Data.languageCode;
+        public static int ResolutionWidth => Data.resolutionWidth;
+        public static int ResolutionHeight => Data.resolutionHeight;
+        public static FullScreenMode? FullScreenModeValue => Data.fullScreenMode < 0 ? (FullScreenMode?)null : (FullScreenMode)Data.fullScreenMode;
 
         public static void SetBgmVolume(float volume)
         {
@@ -59,6 +62,19 @@ namespace Week14.Save
         public static void SetLanguageCode(string languageCode)
         {
             Data.languageCode = string.IsNullOrWhiteSpace(languageCode) ? DefaultLanguageCode : languageCode;
+            Save();
+        }
+
+        public static void SetResolution(int width, int height)
+        {
+            Data.resolutionWidth = width;
+            Data.resolutionHeight = height;
+            Save();
+        }
+
+        public static void SetFullScreenMode(FullScreenMode mode)
+        {
+            Data.fullScreenMode = (int)mode;
             Save();
         }
 

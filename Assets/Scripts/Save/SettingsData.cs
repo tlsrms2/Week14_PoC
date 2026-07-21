@@ -10,5 +10,8 @@ namespace Week14.Save
         public bool bgmMuted;
         public bool sfxMuted;
         public string languageCode = "ko-KR";
+        public int resolutionWidth;
+        public int resolutionHeight;
+        public int fullScreenMode = -1;
     }
 }
