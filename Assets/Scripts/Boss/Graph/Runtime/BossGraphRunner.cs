@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Week14.Analytics;
 using Random = UnityEngine.Random;
 
 namespace Week14.Enemy
@@ -33,6 +34,8 @@ namespace Week14.Enemy
         // 를 직접 호출한다(try/finally + Dispose 전파에 기대지 않는다).
         private BossGraphPhase inFlightPhase;
         private BossGraphPatternEntry inFlightPatternEntry;
+        private string inFlightPatternId;
+        private int inFlightPhaseNumber;
         private bool inFlightRegistered = true;
         private string currentPatternId;
         // QA 반복 고정은 현재 활성 그래프와 페이즈에만 유효하다. 그래프 또는 페이즈가
@@ -352,23 +355,31 @@ namespace Week14.Enemy
                 // "지금 이 패턴이 실행 중"이라는 걸 필드에 기록해두고, 정상 완료 시엔 바로 아래에서,
                 // 그로기 등으로 캔슬될 때는 StopGraphPattern이 코루틴을 끊기 직전에 직접
                 // RegisterInFlightPatternIfNeeded()를 호출해 등록한다.
-                inFlightPhase = phase;
-                inFlightPatternEntry = patternEntry;
-                inFlightRegistered = false;
+                BeginInFlightPattern(
+                    phase,
+                    patternEntry,
+                    pattern.PatternId,
+                    context.Boss.CurrentPhaseNumber);
 
                 currentPatternId = pattern.PatternId;
                 yield return ExecutePattern(graph, pattern, context);
                 currentPatternId = null;
-                RegisterInFlightPatternIfNeeded();
+                RegisterInFlightPatternIfNeeded(true);
                 context.Stop();
                 // QA 반복 고정 중에는 선택 패턴 외의 시그니처 패턴도 끼워 넣지 않는다.
                 if (!TryResolveForcedPattern(graph, phase.PhaseIndex, out _)
                     && TryGetPendingSignaturePattern(graph, phase, context, out BossGraphPattern signaturePattern))
                 {
                     signaturePatternsPlayed.Add(phase.PhaseIndex);
+                    BeginInFlightPattern(
+                        phase,
+                        null,
+                        signaturePattern.PatternId,
+                        context.Boss.CurrentPhaseNumber);
                     currentPatternId = signaturePattern.PatternId;
                     yield return ExecutePattern(graph, signaturePattern, context);
                     currentPatternId = null;
+                    RegisterInFlightPatternIfNeeded(true);
                     context.Stop();
                 }
 
@@ -2785,9 +2796,28 @@ namespace Week14.Enemy
             return null;
         }
 
+        private void BeginInFlightPattern(
+            BossGraphPhase phase,
+            BossGraphPatternEntry entry,
+            string patternId,
+            int phaseNumber)
+        {
+            if (!inFlightRegistered)
+            {
+                RegisterInFlightPatternIfNeeded();
+            }
+
+            inFlightPhase = phase;
+            inFlightPatternEntry = entry;
+            inFlightPatternId = patternId;
+            inFlightPhaseNumber = phaseNumber;
+            inFlightRegistered = false;
+            AnalyticsManager.BeginBossPattern(patternId, phaseNumber);
+        }
+
         // RunPhasePatternLoop가 정상적으로 패턴을 끝냈을 때, 그리고 GraphBossAI.StopGraphPattern이
         // 실행 중이던 패턴을 캔슬하기 직전에 각각 호출한다. 한쪽에서 이미 등록했으면 아무 것도 안 한다.
-        public void RegisterInFlightPatternIfNeeded()
+        public void RegisterInFlightPatternIfNeeded(bool completed = false)
         {
             if (inFlightRegistered)
             {
@@ -2795,7 +2825,12 @@ namespace Week14.Enemy
             }
 
             inFlightRegistered = true;
+            AnalyticsManager.EndBossPattern(inFlightPatternId, inFlightPhaseNumber, completed);
             RegisterCompletedPattern(inFlightPhase, inFlightPatternEntry);
+            inFlightPhase = null;
+            inFlightPatternEntry = null;
+            inFlightPatternId = null;
+            inFlightPhaseNumber = 0;
         }
 
         private void RegisterCompletedPattern(BossGraphPhase phase, BossGraphPatternEntry entry)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Week14.Analytics;
 using Week14.Combat;
 using Week14.Enemy;
 using Week14.Save;
@@ -85,6 +86,11 @@ namespace Week14.Challenge
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (combatActive)
+            {
+                EvaluateAndSave(victory: false, combatResult: "quit");
+            }
+
             UnsubscribeBoss();
             currentBoss = FindFirstObjectByType<BossAI>();
             if (currentBoss != null)
@@ -251,15 +257,15 @@ namespace Week14.Challenge
                 return;
             }
 
-            EvaluateAndSave(victory: true);
+            EvaluateAndSave(victory: true, combatResult: "clear");
         }
 
         private void HandleDefeat(Health _)
         {
-            EvaluateAndSave(victory: false);
+            EvaluateAndSave(victory: false, combatResult: "death");
         }
 
-        private void EvaluateAndSave(bool victory)
+        private void EvaluateAndSave(bool victory, string combatResult)
         {
             if (!combatActive)
             {
@@ -272,15 +278,57 @@ namespace Week14.Challenge
                 ChallengeDefinitionSO definition = activeRuns[i].Definition;
                 ChallengeRunState run = activeRuns[i].Run;
                 string saveKey = GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId);
-                if (run.TryFinalize(victory, saveKey))
+                bool achieved = run.TryFinalize(victory, saveKey);
+                AnalyticsManager.RecordBossChallengeResult(
+                    currentBossId,
+                    definition.ChallengeId,
+                    ToAnalyticsChallengeType(definition.Kind),
+                    achieved,
+                    false,
+                    combatResult);
+
+                if (achieved)
                 {
                     GameSaveManager.CompleteChallenge(saveKey, definition.RewardPoint);
                     LastRunEarnedPoints += definition.RewardPoint;
                 }
             }
 
+            foreach (ChallengeDefinitionSO definition in database.ForBoss(currentBossId))
+            {
+                string saveKey = GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId);
+                if (!alreadyCompletedBeforeRun.Contains(saveKey))
+                {
+                    continue;
+                }
+
+                AnalyticsManager.RecordBossChallengeResult(
+                    currentBossId,
+                    definition.ChallengeId,
+                    ToAnalyticsChallengeType(definition.Kind),
+                    false,
+                    true,
+                    combatResult);
+            }
+
             activeRuns.Clear();
             combatActive = false;
+        }
+
+        private static string ToAnalyticsChallengeType(ChallengeType type)
+        {
+            return type switch
+            {
+                ChallengeType.PhaseReach => "phase_reach",
+                ChallengeType.TimeAttack => "time_attack",
+                ChallengeType.HitLimit => "hit_limit",
+                ChallengeType.BossClear => "boss_clear",
+                ChallengeType.ParryCount => "parry_count",
+                ChallengeType.ParryClear => "parry_clear",
+                ChallengeType.DestroyObjectCount => "destroy_object_count",
+                ChallengeType.PerfectParry => "perfect_parry",
+                _ => type.ToString().ToLowerInvariant()
+            };
         }
     }
 }
