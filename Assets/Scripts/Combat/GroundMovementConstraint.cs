@@ -7,10 +7,16 @@ namespace Week14.Combat
     public sealed class PlayerOnlyMovementBarrier : MonoBehaviour
     {
         public bool IgnoresProjectileCollision { get; private set; } = true;
+        public bool BlocksPlayerMovement { get; private set; } = true;
 
         public void ConfigureProjectileCollisionIgnored(bool ignored)
         {
             IgnoresProjectileCollision = ignored;
+        }
+
+        public void ConfigurePlayerMovementBlocked(bool blocked)
+        {
+            BlocksPlayerMovement = blocked;
         }
     }
 
@@ -282,7 +288,10 @@ namespace Week14.Combat
             for (int i = 0; i < hitCount; i++)
             {
                 RaycastHit2D hit = playerBarrierCastHits[i];
-                if (hit.collider == null || hit.collider.GetComponent<PlayerOnlyMovementBarrier>() == null)
+                PlayerOnlyMovementBarrier barrier = hit.collider != null
+                    ? hit.collider.GetComponent<PlayerOnlyMovementBarrier>()
+                    : null;
+                if (barrier == null || !barrier.BlocksPlayerMovement)
                 {
                     continue;
                 }

@@ -516,6 +516,7 @@ namespace Week14.Enemy
         // 접촉 피해를 사용하지 않는 보스는 플레이어를 막는 물리 충돌을 계속 유지한다.
         internal void SetIgnorePlayerCollision(bool ignore)
         {
+            OnPlayerCollisionIgnoreChanged(ignore);
             if (SuppressesBodyContactDamage || isIgnoringPlayerCollision == ignore)
             {
                 return;
@@ -547,6 +548,10 @@ namespace Week14.Enemy
             }
 
             isIgnoringPlayerCollision = ignore;
+        }
+
+        protected virtual void OnPlayerCollisionIgnoreChanged(bool ignore)
+        {
         }
 
         // 물리 충돌을 꺼둔 상태에서는 OnCollisionEnter2D가 발생하지 않으므로,

@@ -121,8 +121,12 @@ namespace Week14.Enemy
         private Coroutine phaseVisualSwitchRoutine;
         private bool isOneWeaponVisualActive;
         private Collider2D[] playerBlockingBossColliders = new Collider2D[0];
+        private Collider2D[] playerBlockingPlayerColliders = new Collider2D[0];
+        private PlayerOnlyMovementBarrier[] playerMovementBarriers = new PlayerOnlyMovementBarrier[0];
         private Vector2 previousPlayerBlockingPosition;
         private bool hasPreviousPlayerBlockingPosition;
+        private bool isPlayerBlockingSuppressed;
+        private bool isPlayerBlockingResumePending;
         protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
@@ -229,7 +233,7 @@ namespace Week14.Enemy
         {
             if (UsesHackerPresentationUpdates)
             {
-                ResolvePlayerBlockingFromBossMovement();
+                TickPlayerBlocking();
                 UpdateWalkState();
                 UpdateFacingFromPlayer();
             }
@@ -340,6 +344,31 @@ namespace Week14.Enemy
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnDisable();
+        }
+
+        protected override void OnPlayerCollisionIgnoreChanged(bool ignore)
+        {
+            if (!UsesHackerPresentationUpdates || isPlayerBlockingSuppressed == ignore)
+            {
+                if (!ignore && isPlayerBlockingResumePending)
+                {
+                    TryResumePlayerBlocking();
+                }
+
+                return;
+            }
+
+            isPlayerBlockingSuppressed = ignore;
+            if (ignore)
+            {
+                isPlayerBlockingResumePending = false;
+                SetPlayerMovementBarriersBlocked(false);
+                RecordPlayerBlockingPosition();
+                return;
+            }
+
+            isPlayerBlockingResumePending = true;
+            TryResumePlayerBlocking();
         }
 
         internal void SpawnPatternParryRewards(int count)
@@ -581,6 +610,17 @@ namespace Week14.Enemy
             Collider2D[] bossColliders = Body.GetComponentsInChildren<Collider2D>(true);
             Collider2D[] playerColliders = Player.GetComponentsInChildren<Collider2D>(true);
             List<Collider2D> movementColliders = new();
+            List<Collider2D> movementPlayerColliders = new();
+            List<PlayerOnlyMovementBarrier> movementBarriers = new();
+            for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
+            {
+                Collider2D playerCollider = playerColliders[playerIndex];
+                if (playerCollider != null && !playerCollider.isTrigger)
+                {
+                    movementPlayerColliders.Add(playerCollider);
+                }
+            }
+
             for (int bossIndex = 0; bossIndex < bossColliders.Length; bossIndex++)
             {
                 Collider2D bossCollider = bossColliders[bossIndex];
@@ -595,7 +635,10 @@ namespace Week14.Enemy
                     bossCollider.GetComponent<PlayerOnlyMovementBarrier>()
                     ?? bossCollider.gameObject.AddComponent<PlayerOnlyMovementBarrier>();
                 movementBarrier.ConfigureProjectileCollisionIgnored(false);
+                movementBarrier.ConfigurePlayerMovementBlocked(
+                    !isPlayerBlockingSuppressed && !isPlayerBlockingResumePending);
                 movementColliders.Add(bossCollider);
+                movementBarriers.Add(movementBarrier);
 
                 for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
                 {
@@ -608,6 +651,144 @@ namespace Week14.Enemy
             }
 
             playerBlockingBossColliders = movementColliders.ToArray();
+            playerBlockingPlayerColliders = movementPlayerColliders.ToArray();
+            playerMovementBarriers = movementBarriers.ToArray();
+            RecordPlayerBlockingPosition();
+        }
+
+        private void TickPlayerBlocking()
+        {
+            if (isPlayerBlockingSuppressed)
+            {
+                RecordPlayerBlockingPosition();
+                return;
+            }
+
+            if (isPlayerBlockingResumePending && !TryResumePlayerBlocking())
+            {
+                RecordPlayerBlockingPosition();
+                return;
+            }
+
+            ResolvePlayerBlockingFromBossMovement();
+        }
+
+        private bool TryResumePlayerBlocking()
+        {
+            if (!isPlayerBlockingResumePending)
+            {
+                return true;
+            }
+
+            if (Body == null || Player == null)
+            {
+                isPlayerBlockingResumePending = false;
+                SetPlayerMovementBarriersBlocked(true);
+                return true;
+            }
+
+            Physics2D.SyncTransforms();
+            Vector2 separationDirection = (Vector2)Player.position - Body.position;
+            if (separationDirection.sqrMagnitude <= 0.0001f)
+            {
+                separationDirection = hasPreviousPlayerBlockingPosition
+                    ? Body.position - previousPlayerBlockingPosition
+                    : Vector2.right;
+            }
+
+            if (separationDirection.sqrMagnitude <= 0.0001f)
+            {
+                separationDirection = Vector2.right;
+            }
+
+            for (int i = 0; i < playerBlockingBossColliders.Length; i++)
+            {
+                Collider2D bossCollider = playerBlockingBossColliders[i];
+                if (!IsUsablePhysicsCollider(bossCollider)
+                    || !IsPlayerOverlapping(bossCollider))
+                {
+                    continue;
+                }
+
+                if (!GroundMovementConstraint.TryPushPlayerOutOfMovingBounds(
+                        Player,
+                        bossCollider.bounds,
+                        separationDirection,
+                        0.02f))
+                {
+                    SetPlayerMovementBarriersBlocked(false);
+                    return false;
+                }
+
+                Physics2D.SyncTransforms();
+                separationDirection = (Vector2)Player.position - Body.position;
+            }
+
+            if (IsPlayerOverlappingBoss())
+            {
+                SetPlayerMovementBarriersBlocked(false);
+                return false;
+            }
+
+            isPlayerBlockingResumePending = false;
+            SetPlayerMovementBarriersBlocked(true);
+            RecordPlayerBlockingPosition();
+            return true;
+        }
+
+        private bool IsPlayerOverlappingBoss()
+        {
+            for (int i = 0; i < playerBlockingBossColliders.Length; i++)
+            {
+                if (IsUsablePhysicsCollider(playerBlockingBossColliders[i])
+                    && IsPlayerOverlapping(playerBlockingBossColliders[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsPlayerOverlapping(Collider2D bossCollider)
+        {
+            for (int i = 0; i < playerBlockingPlayerColliders.Length; i++)
+            {
+                Collider2D playerCollider = playerBlockingPlayerColliders[i];
+                if (IsUsablePhysicsCollider(playerCollider)
+                    && Physics2D.Distance(bossCollider, playerCollider).isOverlapped)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsUsablePhysicsCollider(Collider2D collider)
+        {
+            return collider != null
+                && collider.enabled
+                && !collider.isTrigger
+                && collider.gameObject.activeInHierarchy;
+        }
+
+        private void SetPlayerMovementBarriersBlocked(bool blocked)
+        {
+            for (int i = 0; i < playerMovementBarriers.Length; i++)
+            {
+                playerMovementBarriers[i]?.ConfigurePlayerMovementBlocked(blocked);
+            }
+        }
+
+        private void RecordPlayerBlockingPosition()
+        {
+            if (Body == null)
+            {
+                hasPreviousPlayerBlockingPosition = false;
+                return;
+            }
+
             previousPlayerBlockingPosition = Body.position;
             hasPreviousPlayerBlockingPosition = true;
         }

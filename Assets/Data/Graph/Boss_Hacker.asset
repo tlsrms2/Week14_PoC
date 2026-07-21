@@ -439,7 +439,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656652
     sequences: []
-    editorPosition: {x: 3068, y: 1193}
+    editorPosition: {x: 3069, y: 1193}
   - nodeId: Thrust Perpendicular Fire2
     nodeGuid: 2fac6ba2a70748e996db86616f8b0a54
     nodeKind: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656663
     sequences: []
-    editorPosition: {x: 3293, y: 1362}
+    editorPosition: {x: 3290, y: 1367}
   - nodeId: Charge Dash6
     nodeGuid: 05c7700b90f54dcdab4799020a1d5212
     nodeKind: 0
@@ -1015,7 +1015,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559012
     sequences: []
-    editorPosition: {x: 1510, y: 484}
+    editorPosition: {x: 1512, y: 485}
   - nodeId: Dash10
     nodeGuid: acfd6edd7b094548a1be2f07f18b3dc8
     nodeKind: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559017
     sequences: []
-    editorPosition: {x: 1546, y: 782}
+    editorPosition: {x: 1546, y: 783}
   - nodeId: Thrust Perpendicular Fire4
     nodeGuid: 8b08e6bf4eb94aecba05ab989afaa918
     nodeKind: 0
@@ -1141,7 +1141,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559028
     sequences: []
-    editorPosition: {x: 1122, y: 1248}
+    editorPosition: {x: 1122, y: 1247}
   - nodeId: Charge Dash13
     nodeGuid: d5877fa3be9642689470cd310d2d51e2
     nodeKind: 0
@@ -1564,7 +1564,7 @@ MonoBehaviour:
     action:
       rid: 6489939224946016332
     sequences: []
-    editorPosition: {x: 3920, y: 1494}
+    editorPosition: {x: 3921, y: 1494}
   - nodeId: Fire Sequential Sweep32
     nodeGuid: f5919e8c27034ef99af3306a3c8110c0
     nodeKind: 0
@@ -1591,7 +1591,7 @@ MonoBehaviour:
     action:
       rid: 6489939224946016335
     sequences: []
-    editorPosition: {x: 1490, y: 1980}
+    editorPosition: {x: 1491, y: 1980}
   - nodeId: Fire Sequential Sweep35
     nodeGuid: 3dd1971f19454608987bdc08e43d13ed
     nodeKind: 0
@@ -5647,7 +5647,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -8854,7 +8854,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -9066,7 +9066,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -10812,7 +10812,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -13463,7 +13463,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -14025,7 +14025,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -15559,7 +15559,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -17088,7 +17088,7 @@ MonoBehaviour:
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.65
-        directionLockLeadSeconds: 0.4
+        directionLockLeadSeconds: 0.65
         recoverySeconds: 0.3
         approachStartDistance: 99
         approachStopDistance: 1.75
@@ -17555,7 +17555,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17598,7 +17598,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17608,7 +17608,7 @@ MonoBehaviour:
     - rid: 6489939224946016333
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -17641,7 +17641,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17651,7 +17651,7 @@ MonoBehaviour:
     - rid: 6489939224946016334
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -17684,7 +17684,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17727,7 +17727,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17737,7 +17737,7 @@ MonoBehaviour:
     - rid: 6489939224946016336
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -17770,7 +17770,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17780,7 +17780,7 @@ MonoBehaviour:
     - rid: 6489939224946016337
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -17813,7 +17813,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17856,7 +17856,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
@@ -17899,7 +17899,7 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         windupSeconds: 0
-        bulletCount: 18
+        bulletCount: 14
         spawnCircleRadius: 1
         spawnArcDegrees: 360
         clockwise: 0
