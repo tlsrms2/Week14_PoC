@@ -1331,7 +1331,7 @@ MonoBehaviour:
       rid: 6489939200651559081
     sequences: []
     editorPosition: {x: -322, y: 669}
-  - nodeId: Thrust3
+  - nodeId: Thrust2
     nodeGuid: ecbdbd14a3a44248a27baf69d6318650
     nodeKind: 0
     phaseIndex: 0
@@ -1962,7 +1962,7 @@ MonoBehaviour:
     - Fire Sequential Sweep29
     - Dash11
     - Melee Attack31
-    - Thrust3
+    - Thrust2
   - patternId: P3-1
     nodeGuids:
     - b14e10217b5542308bc808a59e5eb754
@@ -3275,7 +3275,7 @@ MonoBehaviour:
   - fromNodeGuid: 961a4e04c785488faeb4d6f28a9132eb
     toNodeGuid: ecbdbd14a3a44248a27baf69d6318650
     fromNodeId: Melee Attack31
-    toNodeId: Thrust3
+    toNodeId: Thrust2
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
