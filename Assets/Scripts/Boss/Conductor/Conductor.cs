@@ -10,6 +10,8 @@ namespace Week14.Enemy
     public sealed class Conductor : GraphBossAI, IMinionPlayerHitHandler, IMinionMovementPathIndicatorOwner
     {
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
+        private static readonly int CommandParameter = Animator.StringToHash("Command");
+        private static readonly int EndCommandParameter = Animator.StringToHash("EndCommand");
         private static readonly int StunParameter = Animator.StringToHash("Stun");
         private static readonly int EndStunParameter = Animator.StringToHash("EndStun");
         private const string FacingSpriteRendererName = "Conductor-side-Idle-x64_0";
@@ -37,6 +39,7 @@ namespace Week14.Enemy
         private readonly Dictionary<Minion, Coroutine> outlineFlashRoutines = new();
         private readonly Dictionary<Minion, MovementPathIndicatorState> movementPathIndicators = new();
         private int minionOutlineVisibleLocks;
+        private int conductingAnimationLocks;
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
@@ -196,6 +199,7 @@ namespace Week14.Enemy
             context?.RegisterTransientVisual(visualObject);
 
             bool releaseMinionOutlineOnCueEnd = false;
+            BeginConductingAnimation();
             try
             {
                 IReadOnlyList<ConductorConductingStroke> strokes = pattern.Strokes;
@@ -260,6 +264,8 @@ namespace Week14.Enemy
             }
             finally
             {
+                EndConductingAnimation();
+
                 if (releaseMinionOutlineOnCueEnd)
                 {
                     EndMinionOutlinePatternVisibility();
@@ -348,6 +354,7 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            ClearConductingAnimation();
             ApplyWalkState(false, true);
             UntrackAllSpawnedMinions();
             base.OnBossDied();
@@ -365,6 +372,7 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            ClearConductingAnimation();
             ApplyWalkState(false, true);
             UntrackAllSpawnedMinions();
             base.OnDisable();
@@ -448,6 +456,55 @@ namespace Week14.Enemy
             }
 
             targetAnimator.SetTrigger(parameter);
+        }
+
+        internal ConductingAnimationLease CreateConductingAnimationLease()
+        {
+            return new ConductingAnimationLease(this);
+        }
+
+        private void BeginConductingAnimation()
+        {
+            conductingAnimationLocks++;
+            if (conductingAnimationLocks == 1)
+            {
+                SetExclusiveAnimatorTrigger(EndCommandParameter, CommandParameter);
+            }
+        }
+
+        private void EndConductingAnimation()
+        {
+            if (conductingAnimationLocks <= 0)
+            {
+                return;
+            }
+
+            conductingAnimationLocks--;
+            if (conductingAnimationLocks == 0)
+            {
+                SetExclusiveAnimatorTrigger(CommandParameter, EndCommandParameter);
+            }
+        }
+
+        private void ClearConductingAnimation()
+        {
+            conductingAnimationLocks = 0;
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator != null)
+            {
+                targetAnimator.ResetTrigger(CommandParameter);
+                targetAnimator.ResetTrigger(EndCommandParameter);
+            }
+        }
+
+        private void SetExclusiveAnimatorTrigger(int parameterToReset, int parameterToSet)
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator != null)
+            {
+                targetAnimator.ResetTrigger(parameterToReset);
+                targetAnimator.SetTrigger(parameterToSet);
+            }
         }
 
         private Animator ResolveWalkAnimator()
@@ -1056,6 +1113,39 @@ namespace Week14.Enemy
                 }
 
                 return;
+            }
+        }
+
+        internal sealed class ConductingAnimationLease : IDisposable
+        {
+            private Conductor owner;
+            private bool active;
+
+            internal ConductingAnimationLease(Conductor owner)
+            {
+                this.owner = owner;
+            }
+
+            internal void Begin()
+            {
+                if (active || owner == null)
+                {
+                    return;
+                }
+
+                owner.BeginConductingAnimation();
+                active = true;
+            }
+
+            public void Dispose()
+            {
+                if (active && owner != null)
+                {
+                    owner.EndConductingAnimation();
+                }
+
+                active = false;
+                owner = null;
             }
         }
 

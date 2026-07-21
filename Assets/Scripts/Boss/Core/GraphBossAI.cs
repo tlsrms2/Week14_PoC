@@ -45,7 +45,7 @@ namespace Week14.Enemy
         internal bool IsQaBehaviorPaused => isQaBehaviorPaused;
         internal BossGraphAsset QaGraphAsset => GraphAsset;
         internal string QaCurrentPatternId => graphRunner.CurrentPatternId;
-        internal string QaForcedPatternId => graphRunner.GetForcedPatternId(GraphAsset);
+        internal string QaForcedPatternId => graphRunner.GetForcedPatternId(GraphAsset, CurrentPhaseIndex);
 #endif
 
         protected override BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)
@@ -284,7 +284,7 @@ namespace Week14.Enemy
                 && Health != null
                 && !Health.IsDead
                 && graph != null
-                && graphRunner.TrySetForcedPattern(graph, patternId);
+                && graphRunner.TrySetForcedPattern(graph, CurrentPhaseIndex, patternId);
         }
 
         internal void CancelQaForcedPattern()

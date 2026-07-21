@@ -275,7 +275,11 @@ namespace Week14.Enemy
             }
 
             Vector2 patternStartPlayerPosition = ResolvePatternCenter(context);
-            Coroutine bossMoveRoutine = context.Boss.StartCoroutine(MoveBossToTargetPosition(context));
+            Conductor.ConductingAnimationLease conductingAnimation =
+                (context.Boss as Conductor)?.CreateConductingAnimationLease();
+            Action onBossMoveCompleted = conductingAnimation != null ? conductingAnimation.Begin : null;
+            Coroutine bossMoveRoutine = context.Boss.StartCoroutine(
+                MoveBossToTargetPosition(context, onBossMoveCompleted));
             try
             {
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, WindupSeconds);
@@ -299,10 +303,11 @@ namespace Week14.Enemy
 
                 context?.Stop();
                 ClearActiveStandardLaneIndicators();
+                conductingAnimation?.Dispose();
             }
         }
 
-        protected IEnumerator MoveBossToTargetPosition(BossActionContext context)
+        protected IEnumerator MoveBossToTargetPosition(BossActionContext context, Action onCompleted = null)
         {
             if (context?.Boss == null || context.Boss.Body == null)
             {
@@ -330,6 +335,7 @@ namespace Week14.Enemy
             }
 
             context.Boss.Stop();
+            onCompleted?.Invoke();
         }
 
         protected float EstimateBossTargetMoveSeconds(BossActionContext context)

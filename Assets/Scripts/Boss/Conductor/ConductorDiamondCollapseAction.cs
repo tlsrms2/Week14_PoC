@@ -124,11 +124,19 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            Conductor.ConductingAnimationLease conductingAnimation =
+                (context.Boss as Conductor)?.CreateConductingAnimationLease();
+            Action onBossMoveCompleted = conductingAnimation != null ? conductingAnimation.Begin : null;
             Coroutine bossMoveRoutine = repositionBossAtPatternStart && context?.Boss != null
-                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context))
+                ? context.Boss.StartCoroutine(MoveBossToTargetPosition(context, onBossMoveCompleted))
                 : null;
             try
             {
+                if (!repositionBossAtPatternStart)
+                {
+                    conductingAnimation?.Begin();
+                }
+
                 CommandPreludeWander(drones, windupSeconds);
                 yield return MinionGraphCommandRunner.WaitWindupIfNeeded(context, windupSeconds);
 
@@ -175,6 +183,7 @@ namespace Week14.Enemy
                 }
 
                 executionFinished = true;
+                conductingAnimation?.Dispose();
             }
         }
 
@@ -576,7 +585,7 @@ namespace Week14.Enemy
             }
         }
 
-        private IEnumerator MoveBossToTargetPosition(BossActionContext context)
+        private IEnumerator MoveBossToTargetPosition(BossActionContext context, Action onCompleted = null)
         {
             if (!repositionBossAtPatternStart || context?.Boss == null || context.Boss.Body == null)
             {
@@ -604,6 +613,7 @@ namespace Week14.Enemy
             }
 
             context.Boss.Stop();
+            onCompleted?.Invoke();
         }
 
         private IEnumerator FireStage(

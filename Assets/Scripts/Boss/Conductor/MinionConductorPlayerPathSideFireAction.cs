@@ -21,6 +21,8 @@ namespace Week14.Enemy
         [Header("Player Path")]
         [SerializeField] private ConductorPlayerPathSideFireMode mode;
         [SerializeField, Min(0.1f)] private float distanceFromPlayer = 2.8f;
+        [SerializeField, Min(0f)] private float minPathCenterOffset = 1f;
+        [SerializeField, Min(0f)] private float maxPathCenterOffset = 2f;
         [SerializeField, Min(0f)] private float moveToStartSeconds = 0.6f;
         [SerializeField, Min(0.05f)] private float moveSeconds = 2f;
         [SerializeField] private bool waitForPlayerPathDuration = true;
@@ -83,12 +85,14 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            Vector2 pathCenterOffset = ResolveRandomPathCenterOffset();
             yield return ExecutePathSideFireStep(
                 context,
                 host,
                 projectile,
                 ResolveFirstPathMode(mode),
-                mode == ConductorPlayerPathSideFireMode.HorizontalVerticalThenDiagonal);
+                mode == ConductorPlayerPathSideFireMode.HorizontalVerticalThenDiagonal,
+                pathCenterOffset);
 
             if (mode == ConductorPlayerPathSideFireMode.HorizontalVerticalThenDiagonal)
             {
@@ -97,7 +101,8 @@ namespace Week14.Enemy
                     host,
                     projectile,
                     MinionGraphPlayerPathMode.Diagonal,
-                    false);
+                    false,
+                    pathCenterOffset);
             }
         }
 
@@ -106,9 +111,10 @@ namespace Week14.Enemy
             IMinionPatternHost host,
             BossProjectileSettings projectile,
             MinionGraphPlayerPathMode pathMode,
-            bool forceWaitForStepCompletion)
+            bool forceWaitForStepCompletion,
+            Vector2 pathCenterOffset)
         {
-            Vector2 pathCenter = ResolvePathCenter(context);
+            Vector2 pathCenter = ResolvePathCenter(context) + pathCenterOffset;
             List<PrecastIndicatorTiming> indicatorTimings = new();
             ConductorScoreLaneRushIndicatorVisual gridIndicator =
                 CreatePrecastGridIndicator(context, host, projectile, pathCenter, pathMode, indicatorTimings);
@@ -117,7 +123,8 @@ namespace Week14.Enemy
                 pathMode,
                 distanceFromPlayer,
                 moveToStartSeconds,
-                moveSeconds);
+                moveSeconds,
+                pathCenterOffset);
             float pathDuration = host.CommandMinions(pathRequest);
             float fireStartDelay = GetFireStartDelaySeconds();
             yield return WaitSecondsIfNeeded(context, fireStartDelay);
@@ -430,6 +437,20 @@ namespace Week14.Enemy
             return context != null && context.Boss != null
                 ? context.Boss.transform.position
                 : Vector2.zero;
+        }
+
+        private Vector2 ResolveRandomPathCenterOffset()
+        {
+            float maxDistance = Mathf.Max(0f, maxPathCenterOffset);
+            float minDistance = Mathf.Clamp(minPathCenterOffset, 0f, maxDistance);
+            if (maxDistance <= 0f)
+            {
+                return Vector2.zero;
+            }
+
+            float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
+            float distance = UnityEngine.Random.Range(minDistance, maxDistance);
+            return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
         }
 
         private static MinionGraphPlayerPathMode ResolveFirstPathMode(ConductorPlayerPathSideFireMode actionMode)

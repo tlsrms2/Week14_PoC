@@ -582,7 +582,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(MinionConductorPlayerPathSideFireAction))
         {
-            return "Conductor 전용 액션입니다. Player Path와 Side Fire를 순서대로 실행하고, 예상 탄 경로를 격자 인디케이터로 미리 표시합니다.";
+            return "Conductor 전용 액션입니다. 플레이어 주변의 무작위 중심에서 Player Path와 Side Fire를 실행하고, 예상 탄 경로를 격자 인디케이터로 미리 표시합니다.";
         }
 
         if (actionType == typeof(MinionConductorFormationLineVolleyAction))

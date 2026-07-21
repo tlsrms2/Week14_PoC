@@ -18,6 +18,8 @@ namespace Week14.Enemy
         private const int PatternColumnCount = 2;
 
         private readonly List<GraphBossAI> bosses = new();
+        private readonly List<BossGraphPattern> phasePatterns = new();
+        private readonly HashSet<string> phasePatternIds = new();
         private GraphBossAI selectedBoss;
         private Vector2 patternScrollPosition;
         private float nextRefreshAt;
@@ -188,31 +190,102 @@ namespace Week14.Enemy
                 return;
             }
 
-            patternScrollPosition = GUILayout.BeginScrollView(patternScrollPosition);
-            IReadOnlyList<BossGraphPattern> patterns = graph.Patterns;
-            int drawnPatternCount = 0;
-            for (int i = 0; i < patterns.Count; i++)
+            BossGraphPhase phase = graph.GetPhase(selectedBoss.CurrentPhaseIndex);
+            if (phase == null)
             {
-                BossGraphPattern pattern = patterns[i];
-                if (pattern?.NodeKeys == null
-                    || pattern.NodeKeys.Count == 0
-                    || string.IsNullOrWhiteSpace(pattern.PatternId))
+                GUILayout.Label("현재 페이즈 설정이 없습니다.");
+                return;
+            }
+
+            patternScrollPosition = GUILayout.BeginScrollView(patternScrollPosition);
+            DrawSpecialPatterns(graph, phase);
+            CollectPhasePatterns(graph, phase);
+            GUILayout.Label("현재 페이즈 일반 패턴");
+            if (phasePatterns.Count == 0)
+            {
+                GUILayout.Label("등록된 일반 패턴이 없습니다.");
+            }
+            else
+            {
+                DrawPatternGrid(phasePatterns);
+            }
+
+            GUILayout.EndScrollView();
+        }
+
+        private void DrawSpecialPatterns(BossGraphAsset graph, BossGraphPhase phase)
+        {
+            bool hasOpening = !string.IsNullOrWhiteSpace(phase.OpeningPatternId);
+            bool hasSignature = !string.IsNullOrWhiteSpace(phase.SignaturePatternId);
+            if (!hasOpening && !hasSignature)
+            {
+                return;
+            }
+
+            GUILayout.Label("오프닝 / 시그니처 패턴");
+            GUILayout.BeginHorizontal();
+            DrawSpecialPatternSlot(graph, "오프닝", phase.OpeningPatternId);
+            DrawSpecialPatternSlot(graph, "시그니처", phase.SignaturePatternId);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(6f);
+        }
+
+        private void DrawSpecialPatternSlot(BossGraphAsset graph, string role, string patternId)
+        {
+            if (string.IsNullOrWhiteSpace(patternId))
+            {
+                GUILayout.Label(string.Empty, GUILayout.Height(42f), GUILayout.ExpandWidth(true));
+                return;
+            }
+
+            BossGraphPattern pattern = GetRunnablePattern(graph, patternId);
+            bool wasEnabled = GUI.enabled;
+            GUI.enabled = pattern != null;
+            DrawPatternButton(pattern, $"{role}\n{patternId}", 42f);
+            GUI.enabled = wasEnabled;
+        }
+
+        private void CollectPhasePatterns(BossGraphAsset graph, BossGraphPhase phase)
+        {
+            phasePatterns.Clear();
+            phasePatternIds.Clear();
+            IReadOnlyList<BossGraphPatternEntry> entries = phase.Patterns;
+            if (entries == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < entries.Count; i++)
+            {
+                string patternId = entries[i]?.PatternId;
+                if (string.IsNullOrWhiteSpace(patternId)
+                    || patternId == phase.OpeningPatternId
+                    || patternId == phase.SignaturePatternId
+                    || !phasePatternIds.Add(patternId))
                 {
                     continue;
                 }
 
+                BossGraphPattern pattern = GetRunnablePattern(graph, patternId);
+                if (pattern != null)
+                {
+                    phasePatterns.Add(pattern);
+                }
+            }
+        }
+
+        private void DrawPatternGrid(IReadOnlyList<BossGraphPattern> patterns)
+        {
+            int drawnPatternCount = 0;
+            for (int i = 0; i < patterns.Count; i++)
+            {
+                BossGraphPattern pattern = patterns[i];
                 if (drawnPatternCount % PatternColumnCount == 0)
                 {
                     GUILayout.BeginHorizontal();
                 }
 
-                if (GUILayout.Button(pattern.PatternId, GUILayout.Height(27f)))
-                {
-                    bool forced = selectedBoss.TrySetQaForcedPattern(pattern.PatternId);
-                    statusMessage = forced
-                        ? $"'{pattern.PatternId}' 반복 실행을 고정했습니다."
-                        : $"'{pattern.PatternId}' 반복 고정에 실패했습니다.";
-                }
+                DrawPatternButton(pattern, pattern.PatternId, 27f);
 
                 drawnPatternCount++;
                 if (drawnPatternCount % PatternColumnCount == 0)
@@ -226,8 +299,27 @@ namespace Week14.Enemy
                 GUILayout.Label(string.Empty, GUILayout.Height(27f), GUILayout.ExpandWidth(true));
                 GUILayout.EndHorizontal();
             }
+        }
 
-            GUILayout.EndScrollView();
+        private void DrawPatternButton(BossGraphPattern pattern, string label, float height)
+        {
+            if (!GUILayout.Button(label, GUILayout.Height(height)) || pattern == null)
+            {
+                return;
+            }
+
+            bool forced = selectedBoss.TrySetQaForcedPattern(pattern.PatternId);
+            statusMessage = forced
+                ? $"'{pattern.PatternId}' 반복 실행을 고정했습니다."
+                : $"'{pattern.PatternId}' 반복 고정에 실패했습니다.";
+        }
+
+        private static BossGraphPattern GetRunnablePattern(BossGraphAsset graph, string patternId)
+        {
+            BossGraphPattern pattern = graph != null ? graph.GetPattern(patternId) : null;
+            return pattern?.NodeKeys != null && pattern.NodeKeys.Count > 0
+                ? pattern
+                : null;
         }
 
         private void DrawBossSpecificControls()
