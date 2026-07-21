@@ -44,15 +44,6 @@ MonoBehaviour:
       rid: 6489939136707035214
     sequences: []
     editorPosition: {x: -164, y: -113}
-  - nodeId: Walk Fire Counter Grab1
-    nodeGuid: ee00f76111a843be8a68558c7a1e6cf8
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939136707035222
-    sequences: []
-    editorPosition: {x: -311, y: 2482}
   - nodeId: Scatter Wire Node1
     nodeGuid: e063fecb6a3543838e5e6525bfafb5db
     nodeKind: 0
@@ -61,7 +52,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035224
     sequences: []
-    editorPosition: {x: -320, y: 2636}
+    editorPosition: {x: -304, y: 2484}
   - nodeId: Melee Attack2
     nodeGuid: a4bb741acbc241fd8dbe46986e3fdc9c
     nodeKind: 0
@@ -233,15 +224,6 @@ MonoBehaviour:
       rid: 6489939155819167825
     sequences: []
     editorPosition: {x: -329, y: 226}
-  - nodeId: Thrust2
-    nodeGuid: 54f3f43e9a194d1b97c0ce0474790962
-    nodeKind: 0
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939156826587213
-    sequences: []
-    editorPosition: {x: -101, y: 2479}
   - nodeId: Melee Attack9
     nodeGuid: 3510685182c9494e8eb525a22c16ebb0
     nodeKind: 0
@@ -2071,13 +2053,6 @@ MonoBehaviour:
     - Fire Sequential Sweep39
   - patternId: P9
     nodeGuids:
-    - ee00f76111a843be8a68558c7a1e6cf8
-    - 54f3f43e9a194d1b97c0ce0474790962
-    nodeIds:
-    - Walk Fire Counter Grab1
-    - Thrust2
-  - patternId: P10
-    nodeGuids:
     - e063fecb6a3543838e5e6525bfafb5db
     nodeIds:
     - Scatter Wire Node1
@@ -2440,7 +2415,7 @@ MonoBehaviour:
   phases:
   - phaseIndex: 0
     selectionMode: 3
-    phaseMaxHp: 1
+    phaseMaxHp: 100
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2516,14 +2491,14 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P10
+    - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
   - phaseIndex: 1
     selectionMode: 3
-    phaseMaxHp: 1
+    phaseMaxHp: 150
     patternIntervalSeconds: 2
     intervalMoveSpeed: 0
     initialPatternDelaySeconds: 0
@@ -2599,7 +2574,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P10
+    - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -2682,7 +2657,7 @@ MonoBehaviour:
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: P10
+    - patternId: P9
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -2772,14 +2747,6 @@ MonoBehaviour:
     toNodeGuid: 49b16033471c4f81961df300bcc3bb47
     fromNodeId: Charge Dash3
     toNodeId: Fire Sniping Projectile7
-    fromOutputPortIndex: 0
-    conditionType: 0
-    threshold: 0
-    phaseIndex: 0
-  - fromNodeGuid: ee00f76111a843be8a68558c7a1e6cf8
-    toNodeGuid: 54f3f43e9a194d1b97c0ce0474790962
-    fromNodeId: Walk Fire Counter Grab1
-    toNodeId: Thrust2
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
@@ -4340,34 +4307,6 @@ MonoBehaviour:
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
-    - rid: 6489939136707035222
-      type: {class: HackerWalkFireCounterGrabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        projectileName: "\uC77C\uBC18\uD0C4"
-        projectile:
-          prefab: {fileID: 0}
-          bulletDamage: 1
-          chargeSeconds: 0.15
-          chargeDriftSpeed: 0.25
-          aimAtPlayerWhileCharging: 1
-          aimAtPlayerOnLaunch: 0
-          speed: 7
-          lifetime: 3
-          radius: 0.12
-          trailSeconds: 0.1
-          trailWidthMultiplier: 3
-        fireOriginPath: MuzzlePoints/SnipingPoint
-        windupSeconds: 0.25
-        activeSeconds: 5
-        walkSpeed: 1
-        wanderRadius: 3.5
-        wanderChangeSeconds: 0.8
-        fireInterval: 1
-        maxShotCount: 8
-        wireOriginPath: MuzzlePoints/WirePoint
-        wireTravelSeconds: 0.12
-        grabSeconds: 0.65
-        recoverySeconds: 0.25
     - rid: 6489939136707035224
       type: {class: HackerScatterWireNodeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -6380,112 +6319,6 @@ MonoBehaviour:
         hologramRetreatAngleDegrees: 30
         hologramRetreatWaitSeconds: 5
         recoverySeconds: 0.1
-    - rid: 6489939156826587213
-      type: {class: HackerThrustAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        animationTriggerName: Thrust
-        windupSeconds: 0.8
-        recoverySeconds: 0.3
-        length: 6
-        width: 4
-        damage: 1
-        knockbackSpeed: 20
-        knockbackStaggerSeconds: 0.25
-        approachStartDistance: 3
-        approachStopDistance: 2
-        approachSpeed: 15
-        maxApproachSeconds: 3
-        approachSpeedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0.45
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        thrustAdvanceSeconds: 0.3
-        thrustAdvanceSpeed: 18
-        thrustAdvanceSpeedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.32031465
-            value: 0.8879508
-            inSlope: -1.2414455
-            outSlope: -1.2414455
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.09207561
-          - serializedVersion: 3
-            time: 0.37598354
-            value: 0.7516985
-            inSlope: -0.30872184
-            outSlope: -0.30872184
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.18538754
-          - serializedVersion: 3
-            time: 1
-            value: 0.7
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        thrustAdvanceTrackingAngleDegrees: 75
-        parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
-        parryWindowSeconds: 0.7
-        parrySpawnEffect:
-          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
-          positionOffset: {x: 0, y: 0.15}
-          scale: 5
-        attackEffect:
-          enabled: 1
-          effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
-          spawnPointPath: EffectPrefabPoint/Thrust
-          positionOffset: {x: 0, y: 0}
-          scale: 1
-          followMode: 1
-          followRotation: 1
-        parriedEffect:
-          enabled: 1
-          effectPrefab: {fileID: 6793697235893187851, guid: 5672310a4d9871f4cbd6a12348a1525a, type: 3}
-          spawnPointPath: EffectPrefabPoint/Thrust
-          positionOffset: {x: 0, y: 0}
-          scale: 1
-          followMode: 1
-          followRotation: 1
     - rid: 6489939186800656586
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

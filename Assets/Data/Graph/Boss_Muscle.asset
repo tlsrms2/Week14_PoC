@@ -1449,7 +1449,7 @@ MonoBehaviour:
     sequences: []
     editorPosition: {x: -83, y: 2163}
   patterns:
-  - patternId: Pattern1
+  - patternId: P1
     nodeGuids:
     - 1b40313f298d441c9ee0c7c00c91b3a6
     - 8be623fe70134e86a5718bfa00394cb7
@@ -1464,7 +1464,7 @@ MonoBehaviour:
     - Maintain Player Distance2
     - Boss Dash2
     - Fire Projectile Burst9
-  - patternId: Pattern2
+  - patternId: P2
     nodeGuids:
     - 442b7f6c09ca4411a6b2017755639bda
     - 9fe71e8bed4d44ac9c8cf8b218947399
@@ -1475,7 +1475,7 @@ MonoBehaviour:
     - Boss Dash3
     - Fire Radial Emission1
     - Fire Dash Formation1
-  - patternId: Pattern3
+  - patternId: P3
     nodeGuids:
     - dd2c409e76354ed08de7552b29dfee4e
     - e7d379c95d9c4859ad3179669179dfe2
@@ -1518,7 +1518,7 @@ MonoBehaviour:
     - Boss Area Damage2
     - Spawn Effect Prefab7
     - Spawn Effect Prefab8
-  - patternId: Pattern4
+  - patternId: P4
     nodeGuids:
     - f9067e3ab9cd4c118f62347c84af469f
     - febd09203906470486d228f80fc19c01
@@ -1533,7 +1533,7 @@ MonoBehaviour:
     - Boss Dash5
     - Fire Dash Formation2
     - Fire Dash Formation3
-  - patternId: Pattern5
+  - patternId: P5
     nodeGuids:
     - b4288a57c12f4d029fbdd02df164a32e
     - 25beafe770334374b83e7b18a4dee9ce
@@ -1566,7 +1566,7 @@ MonoBehaviour:
     - Wait11
     - Set Parameter16
     - Spawn Effect Prefab1
-  - patternId: Pattern6
+  - patternId: P6
     nodeGuids:
     - 45b3ee192e41440f9f4eb924fc903862
     - 0c3602e20ba8464c94e96b5eadb9d12f
@@ -1607,7 +1607,7 @@ MonoBehaviour:
     - Fire Projectile Burst5
     - Boss Area Damage3
     - Spawn Effect Prefab9
-  - patternId: Pattern7
+  - patternId: P7
     nodeGuids:
     - de96c4c233b94f6db624c65fe92ce58f
     - 8fa5d3d3d7e147a29b6787231ed2ab6a
@@ -1626,7 +1626,7 @@ MonoBehaviour:
     - Fire Dash Formation5
     - Fire Dash Formation6
     - Fire Dash Formation7
-  - patternId: Pattern8
+  - patternId: P8
     nodeGuids:
     - c6a7a186d7d4496487c3e3dea28eefa7
     - 3ab2497c3b984870834e7e4e1012795a
@@ -1673,7 +1673,7 @@ MonoBehaviour:
     - Boss Area Damage4
     - Spawn Effect Prefab2
     - Spawn Effect Prefab11
-  - patternId: Pattern9
+  - patternId: P9
     nodeGuids:
     - b2df2bbc03a043a3ba39466025185ad0
     - 194c63584bf54eb18d5d817d74beba9d
@@ -1748,7 +1748,7 @@ MonoBehaviour:
     - Spawn Effect Prefab3
     - Spawn Effect Prefab4
     - Spawn Effect Prefab5
-  - patternId: Pattern10
+  - patternId: P10
     nodeGuids:
     - d31aba8d12e54d74b0998800a36c5829
     - 217c9078916e40b0baae155c973f98ce
@@ -1807,32 +1807,32 @@ MonoBehaviour:
     initialPatternDelaySeconds: 1
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
-    openingPatternId: Pattern1
+    openingPatternId: P1
     signaturePatternId: 
     signaturePatternHpPercent: 50
     forcedPatternId: 
     patterns:
-    - patternId: Pattern1
+    - patternId: P1
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern2
+    - patternId: P2
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern3
+    - patternId: P3
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern4
+    - patternId: P4
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern5
+    - patternId: P5
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -1845,32 +1845,32 @@ MonoBehaviour:
     initialPatternDelaySeconds: 1
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
-    openingPatternId: Pattern6
+    openingPatternId: P6
     signaturePatternId: 
     signaturePatternHpPercent: 50
     forcedPatternId: 
     patterns:
-    - patternId: Pattern6
+    - patternId: P6
       weight: 2
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern7
+    - patternId: P7
       weight: 2
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern8
+    - patternId: P8
       weight: 2
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern9
+    - patternId: P9
       weight: 2
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
       minPatternsPlayed: 0
-    - patternId: Pattern10
+    - patternId: P10
       weight: 1
       legacyCooldownSeconds: -1
       cooldownPatternCount: 3
@@ -3003,8 +3003,8 @@ MonoBehaviour:
     toNodeId: Wait33
     laneIndex: 0
     targetLaneIndex: 0
-  debugForceSinglePattern: 1
-  debugForcedPatternId: Pattern3
+  debugForceSinglePattern: 0
+  debugForcedPatternId: P3
   references:
     version: 2
     RefIds:
