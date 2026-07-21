@@ -128,7 +128,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Enhancement Points: {0}'
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Enhancement Points:
+      {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
@@ -136,7 +137,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
-    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Points returned upon refund: {0}'
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Points returned upon
+      refund: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3663321485377536
@@ -177,6 +179,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6563875845234688
     m_Localized: Press <sprite name="icon_escape"> to skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7302183986233344
+    m_Localized: FullScreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7305159874281472
+    m_Localized: Resolution
     m_Metadata:
       m_Items: []
   references:

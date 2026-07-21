@@ -177,6 +177,14 @@ MonoBehaviour:
     m_Key: ui.skip
     m_Metadata:
       m_Items: []
+  - m_Id: 7302183986233344
+    m_Key: FullScreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7305159874281472
+    m_Key: Resolution
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
