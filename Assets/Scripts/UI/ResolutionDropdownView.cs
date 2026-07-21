@@ -78,8 +78,6 @@ namespace Week14.UI
             resolutionDropdown.AddOptions(options);
             resolutionDropdown.SetValueWithoutNotify(Mathf.Max(selectedIndex, 0));
             resolutionDropdown.RefreshShownValue();
-
-            Debug.Log($"[ResolutionDropdownView] 지원 해상도 {options.Count}개: {string.Join(", ", options)}");
         }
 
         private int FindIndex(int width, int height)
