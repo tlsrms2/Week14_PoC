@@ -521,6 +521,7 @@ namespace Week14.Combat
             UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
             RotateToAim();
+            Shooter.UpdateBaseballBatDisplay();
             UpdateMouseParryRangeRecovery();
             bool isParrySuppressed = IsParrySuppressed;
             UpdateMouseParryReticle();

@@ -110,6 +110,13 @@ public sealed class BaseballBatWeaponSOEditor : Editor
         EditorGUILayout.LabelField("실제 범위 표시", EditorStyles.boldLabel);
         DrawRelative(settings, "rangeIndicatorColor");
         DrawRelative(settings, "previewRangeColor");
+        EditorGUILayout.Space(4f);
+        EditorGUILayout.LabelField("배트 표시 스프라이트(대기/차징/스윙)", EditorStyles.boldLabel);
+        DrawRelative(settings, "displayOffsetDistance");
+        DrawRelative(settings, "displayWindUpDegrees");
+        DrawRelative(settings, "displaySpriteRotationOffsetDegrees");
+        DrawRelative(settings, "displayScale");
+        DrawRelative(settings, "displaySortingOrder");
     }
 
     private void DrawTimingTab()
