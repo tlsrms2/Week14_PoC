@@ -37,7 +37,23 @@ namespace Week14.Weapons
         [SerializeField] private Color rangeIndicatorColor = new Color(1f, 0.55f, 0.1f, 0.6f);
         [Tooltip("공격 버튼을 누르고 있는 동안 표시되는 차징 범위 색상입니다.")]
         [SerializeField] private Color previewRangeColor = new Color(1f, 0.75f, 0.2f, 0.35f);
+        [Tooltip("차징하지 않을 때 배트 표시 스프라이트가 플레이어(앵커)로부터 떨어져 있을 거리입니다.")]
+        [SerializeField, Min(0f)] private float displayOffsetDistance = 0.8f;
+        [Tooltip("차징 시 조준 방향 기준으로 와인드업(Z축 반대 방향) 회전할 최대 각도(도)입니다. " +
+            "차징 진행도(0~1)에 비례해 0에서 이 값까지 서서히 회전하고, 공격 시엔 반대 부호(+)까지 스윙합니다.")]
+        [SerializeField] private float displayWindUpDegrees = 30f;
+        [Tooltip("배트 표시 스프라이트의 아트 방향과 실제 조준 방향을 맞추기 위한 회전 보정값(도)입니다.")]
+        [SerializeField] private float displaySpriteRotationOffsetDegrees;
+        [Tooltip("배트 표시 스프라이트의 Local Scale입니다. 스프라이트 원본 크기가 게임 월드 크기와 안 맞을 때 조정하세요.")]
+        [SerializeField] private Vector3 displayScale = Vector3.one;
+        [Tooltip("배트 표시 스프라이트의 Sorting Order입니다.")]
+        [SerializeField] private int displaySortingOrder = 69;
 
+        public float DisplayOffsetDistance => displayOffsetDistance;
+        public float DisplayWindUpDegrees => displayWindUpDegrees;
+        public float DisplaySpriteRotationOffsetDegrees => displaySpriteRotationOffsetDegrees;
+        public Vector3 DisplayScale => displayScale;
+        public int DisplaySortingOrder => displaySortingOrder;
         public float RotationOffsetDegrees => rotationOffsetDegrees;
         public float PlaybackSpeed => playbackSpeed;
         public float AttackHitDelaySeconds => attackHitDelaySeconds;
@@ -89,6 +105,7 @@ namespace Week14.Weapons
             playbackSpeed = Mathf.Max(0.01f, playbackSpeed);
             attackHitDelaySeconds = Mathf.Max(0f, attackHitDelaySeconds);
             rangeIndicatorSeconds = Mathf.Max(0.01f, rangeIndicatorSeconds);
+            displayOffsetDistance = Mathf.Max(0f, displayOffsetDistance);
         }
     }
 
@@ -129,6 +146,7 @@ namespace Week14.Weapons
             }
 
             shooter.PreviewBaseballBatRange(GetAttackRange(GetCharge01(0f)), VfxSettings.PreviewRangeColor);
+            shooter.UpdateBaseballBatWindUp(GetCharge01(0f), VfxSettings, InGameSprite);
         }
 
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)
@@ -143,6 +161,7 @@ namespace Week14.Weapons
             shooter.PreviewBaseballBatRange(
                 GetAttackRange(GetCharge01(chargeTime)),
                 VfxSettings.PreviewRangeColor);
+            shooter.UpdateBaseballBatWindUp(GetCharge01(chargeTime), VfxSettings, InGameSprite);
         }
 
         public override void ReleaseAttack(PlayerShooter shooter, float chargeTime)
@@ -159,6 +178,7 @@ namespace Week14.Weapons
                     VfxSettings,
                     charge01,
                     swingSfxId);
+                shooter.StartBaseballBatSwingThrough(charge01, VfxSettings, InGameSprite, VfxSettings.AttackHitDelaySeconds);
             }
         }
 

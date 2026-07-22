@@ -17,6 +17,12 @@ namespace Week14.Combat
         private bool hasShownChargeLaser;
         private float nextBayonetAttackTime;
         private BaseballBatRangePreviewVfx baseballBatRangePreview;
+        private BaseballBatDisplayVfx baseballBatDisplayVfx;
+        private bool baseballBatSwinging;
+        private float baseballBatSwingElapsed;
+        private float baseballBatSwingDuration;
+        private float baseballBatSwingStartDegrees;
+        private float baseballBatSwingEndDegrees;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -112,6 +118,111 @@ namespace Week14.Combat
 
             Object.Destroy(baseballBatRangePreview.gameObject);
             baseballBatRangePreview = null;
+        }
+
+        // 차징 중(-N까지 서서히 회전)에 매 홀드 프레임마다 BaseballBatWeaponSO.HoldAttack에서 호출됩니다.
+        public void UpdateBaseballBatWindUp(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite)
+        {
+            if (vfxSettings == null)
+            {
+                return;
+            }
+
+            baseballBatSwinging = false;
+            float rotation = Mathf.Lerp(0f, -vfxSettings.DisplayWindUpDegrees, Mathf.Clamp01(charge01));
+            ApplyBaseballBatDisplayPose(vfxSettings, sprite, rotation);
+        }
+
+        // 공격이 나가는 순간 -N(와인드업 종료 각도)에서 +N까지 스윙하는 타이머를 시작합니다.
+        // 실제 진행은 매 프레임 UpdateBaseballBatDisplay에서 처리됩니다.
+        public void StartBaseballBatSwingThrough(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite, float durationSeconds)
+        {
+            if (vfxSettings == null)
+            {
+                return;
+            }
+
+            float clamped01 = Mathf.Clamp01(charge01);
+            baseballBatSwingStartDegrees = Mathf.Lerp(0f, -vfxSettings.DisplayWindUpDegrees, clamped01);
+            baseballBatSwingEndDegrees = Mathf.Lerp(0f, vfxSettings.DisplayWindUpDegrees, clamped01);
+            baseballBatSwingElapsed = 0f;
+            baseballBatSwingDuration = Mathf.Max(0.01f, durationSeconds);
+            baseballBatSwinging = true;
+        }
+
+        // 매 프레임(차징 여부와 무관하게) 호출됩니다. 차징 중일 때는 UpdateBaseballBatWindUp이 이미
+        // 포즈를 갱신하므로 여기서는 건드리지 않고, 스윙 스루 진행 또는 조준 방향을 향하는 대기 포즈만 처리합니다.
+        public void UpdateBaseballBatDisplay()
+        {
+            BaseballBatWeaponSO bat = WeaponLoadoutManager.Instance?.CurrentWeapon as BaseballBatWeaponSO;
+            if (bat == null)
+            {
+                HideBaseballBatDisplay();
+                return;
+            }
+
+            if (isCharging)
+            {
+                return;
+            }
+
+            BaseballBatVfxSettings vfxSettings = bat.VfxSettings;
+            if (baseballBatSwinging)
+            {
+                baseballBatSwingElapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(baseballBatSwingElapsed / baseballBatSwingDuration);
+                float rotation = Mathf.Lerp(baseballBatSwingStartDegrees, baseballBatSwingEndDegrees, t);
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, rotation);
+                if (t >= 1f)
+                {
+                    baseballBatSwinging = false;
+                }
+
+                return;
+            }
+
+            ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, 0f);
+        }
+
+        private void ApplyBaseballBatDisplayPose(BaseballBatVfxSettings vfxSettings, Sprite sprite, float extraRotationDegrees)
+        {
+            if (vfxSettings == null || context.BaseballBatVfxAnchor == null)
+            {
+                return;
+            }
+
+            if (baseballBatDisplayVfx == null)
+            {
+                GameObject displayObject = new GameObject("BaseballBatDisplayVfx");
+                displayObject.transform.SetParent(context.BaseballBatVfxAnchor, false);
+                baseballBatDisplayVfx = displayObject.AddComponent<BaseballBatDisplayVfx>();
+                baseballBatDisplayVfx.Initialize(sprite, vfxSettings.DisplaySortingOrder, vfxSettings.DisplayScale);
+            }
+            else
+            {
+                baseballBatDisplayVfx.SetSprite(sprite);
+            }
+
+            Vector3 origin = context.BaseballBatVfxAnchor.position;
+            Vector2 direction = aimController.GetAimDirection(context.BaseballBatVfxAnchor);
+            baseballBatDisplayVfx.SetPose(
+                origin,
+                direction,
+                vfxSettings.DisplayOffsetDistance,
+                extraRotationDegrees,
+                vfxSettings.DisplaySpriteRotationOffsetDegrees);
+        }
+
+        private void HideBaseballBatDisplay()
+        {
+            baseballBatSwinging = false;
+            if (baseballBatDisplayVfx == null)
+            {
+                return;
+            }
+
+            Object.Destroy(baseballBatDisplayVfx.gameObject);
+            baseballBatDisplayVfx = null;
         }
 
         public bool TrySpendOneBullet()
