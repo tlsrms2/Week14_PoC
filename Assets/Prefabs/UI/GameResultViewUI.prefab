@@ -449,6 +449,7 @@ MonoBehaviour:
   gameOverElapsedTimeText: {fileID: 5407910939751414209}
   gameOverLobbyButton: {fileID: 7456181186702852534}
   victoryRoot: {fileID: 3476607205703203748}
+  victoryRestartButton: {fileID: 1612125436998999180}
   victoryLobbyButton: {fileID: 8206017245682517954}
   victoryChallengePanel: {fileID: 2102367215806449985}
   victoryElapsedTimeText: {fileID: 6524034115857296368}

@@ -122,6 +122,7 @@ namespace Week14.UI
         [ContextMenu("Show Immediate")]
         public void ShowImmediate()
         {
+            StopRevealRoutine();
             CacheTarget();
             BuildCells();
             CacheContent();
@@ -131,6 +132,7 @@ namespace Week14.UI
         [ContextMenu("Hide Immediate")]
         public void HideImmediate()
         {
+            StopRevealRoutine();
             CacheTarget();
             BuildCells();
             CacheContent();
@@ -139,13 +141,21 @@ namespace Week14.UI
 
         private void PlayFromTo(float from, float to, float duration, Action onComplete)
         {
-            if (revealRoutine != null)
-            {
-                StopCoroutine(revealRoutine);
-            }
+            StopRevealRoutine();
 
             activeRevealDuration = Mathf.Max(0.0001f, duration);
             revealRoutine = StartCoroutine(PlayRoutine(from, to, activeRevealDuration, onComplete));
+        }
+
+        private void StopRevealRoutine()
+        {
+            if (revealRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(revealRoutine);
+            revealRoutine = null;
         }
 
         private IEnumerator PlayRoutine(float from, float to, float duration, Action onComplete)

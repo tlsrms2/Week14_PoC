@@ -160,12 +160,47 @@ namespace Week14.UI
 
             yield return AnimateSweepWidth(0f, sweepWidth, growSeconds);
 
-            SetDescriptionColor(resultColor);
-            SetProgressColor(resultColor);
-            SetCompletionSprite(completed ? completedSprite : incompleteSprite, resultColor);
-            SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
+            ApplyRevealResultPresentation(
+                definition,
+                bossId,
+                completed ? completedSprite : incompleteSprite,
+                resultColor);
 
             yield return AnimateSweepWidth(sweepWidth, 0f, shrinkSeconds);
+        }
+
+        // 결과 화면 공개 연출을 건너뛸 때 스윕 없이 최종 판정 상태를 즉시 표시합니다.
+        public void ShowRevealResultImmediate(
+            ChallengeDefinitionSO definition,
+            string bossId,
+            Sprite completedSprite,
+            Sprite incompleteSprite,
+            Color clearedTextColor,
+            Color notClearedTextColor)
+        {
+            string saveKey = GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId);
+            bool completed = GameSaveManager.IsChallengeCompleted(saveKey);
+            Color resultColor = completed ? clearedTextColor : notClearedTextColor;
+
+            SetSweepColor(resultColor);
+            ApplyRevealResultPresentation(
+                definition,
+                bossId,
+                completed ? completedSprite : incompleteSprite,
+                resultColor);
+            SetSweepWidth(0f);
+        }
+
+        private void ApplyRevealResultPresentation(
+            ChallengeDefinitionSO definition,
+            string bossId,
+            Sprite completionSprite,
+            Color resultColor)
+        {
+            SetDescriptionColor(resultColor);
+            SetProgressColor(resultColor);
+            SetCompletionSprite(completionSprite, resultColor);
+            SetProgressText(definition.ShowProgress ? $"({definition.GetCurrentProgress(bossId)}/{definition.MaxProgress})" : string.Empty);
         }
 
         private IEnumerator AnimateSweepWidth(float from, float to, float seconds)
