@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
@@ -118,7 +117,10 @@ namespace Week14.Enemy
         private HackerPatternParryRewardTracker activePatternParryRewardTracker;
         private Animator twoWeaponAnimator;
         private Animator oneWeaponAnimator;
-        private Coroutine phaseVisualSwitchRoutine;
+        private bool isPhaseVisualSwitchPending;
+        private bool hasEnteredTwoWeaponStunEnd;
+        private float phaseVisualSwitchElapsedSeconds;
+        private float phaseVisualSwitchTimeoutSeconds;
         private bool isOneWeaponVisualActive;
         private Collider2D[] playerBlockingBossColliders = new Collider2D[0];
         private Collider2D[] playerBlockingPlayerColliders = new Collider2D[0];
@@ -238,6 +240,7 @@ namespace Week14.Enemy
                 UpdateFacingFromPlayer();
             }
 
+            TickOneWeaponVisualSwitch();
             OnIdleHackerLateUpdate();
         }
 
@@ -333,11 +336,7 @@ namespace Week14.Enemy
         protected override void OnDisable()
         {
             CancelPatternParryRewardTracking();
-            if (phaseVisualSwitchRoutine != null)
-            {
-                StopCoroutine(phaseVisualSwitchRoutine);
-                phaseVisualSwitchRoutine = null;
-            }
+            CancelOneWeaponVisualSwitch();
 
             ApplyWalkState(false, true);
             EndGunWalkCounterParry();
@@ -438,6 +437,7 @@ namespace Week14.Enemy
 
         private void BeginOneWeaponVisualSwitch()
         {
+            CancelOneWeaponVisualSwitch();
             ResolvePhaseVisuals();
             if (twoWeaponVisual == null || oneWeaponVisual == null || twoWeaponAnimator == null)
             {
@@ -445,49 +445,64 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (phaseVisualSwitchRoutine != null)
-            {
-                StopCoroutine(phaseVisualSwitchRoutine);
-            }
-
-            phaseVisualSwitchRoutine = StartCoroutine(SwitchToOneWeaponAfterStunEnd());
+            isPhaseVisualSwitchPending = true;
+            phaseVisualSwitchTimeoutSeconds = ResolveTwoWeaponStunEndTimeout();
         }
 
-        private IEnumerator SwitchToOneWeaponAfterStunEnd()
+        // Animator는 Update 이후 렌더링 전에 상태와 스프라이트를 평가합니다. 코루틴에서 다음 프레임에
+        // 상태 이탈을 확인하면 2w Idle이 이미 한 번 그려질 수 있으므로, Animator 평가가 끝난
+        // LateUpdate에서 stun-end 종료를 확인하고 같은 프레임 렌더링 전에 비주얼을 교체합니다.
+        private void TickOneWeaponVisualSwitch()
         {
-            int stunEndStateHash = Animator.StringToHash(TwoWeaponStunEndStateName);
-            float timeoutSeconds = ResolveTwoWeaponStunEndTimeout();
-            float elapsed = 0f;
-            bool enteredStunEnd = false;
-
-            yield return null;
-            while (elapsed < timeoutSeconds && twoWeaponAnimator != null && twoWeaponAnimator.isActiveAndEnabled)
+            if (!isPhaseVisualSwitchPending)
             {
-                bool isTransitioning = twoWeaponAnimator.IsInTransition(0);
-                AnimatorStateInfo currentState = twoWeaponAnimator.GetCurrentAnimatorStateInfo(0);
-                bool isCurrentStunEnd = currentState.shortNameHash == stunEndStateHash;
-                bool isNextStunEnd = isTransitioning
-                    && twoWeaponAnimator.GetNextAnimatorStateInfo(0).shortNameHash == stunEndStateHash;
-
-                if (!enteredStunEnd)
-                {
-                    enteredStunEnd = isCurrentStunEnd || isNextStunEnd;
-                }
-                else if (!isCurrentStunEnd && !isNextStunEnd)
-                {
-                    break;
-                }
-                else if (isCurrentStunEnd && currentState.normalizedTime >= 1f && !isTransitioning)
-                {
-                    break;
-                }
-
-                elapsed += Time.deltaTime;
-                yield return null;
+                return;
             }
 
+            if (twoWeaponAnimator == null || !twoWeaponAnimator.isActiveAndEnabled)
+            {
+                CompleteOneWeaponVisualSwitch();
+                return;
+            }
+
+            int stunEndStateHash = Animator.StringToHash(TwoWeaponStunEndStateName);
+            bool isTransitioning = twoWeaponAnimator.IsInTransition(0);
+            AnimatorStateInfo currentState = twoWeaponAnimator.GetCurrentAnimatorStateInfo(0);
+            bool isCurrentStunEnd = currentState.shortNameHash == stunEndStateHash;
+            bool isNextStunEnd = isTransitioning
+                && twoWeaponAnimator.GetNextAnimatorStateInfo(0).shortNameHash == stunEndStateHash;
+
+            if (!hasEnteredTwoWeaponStunEnd)
+            {
+                hasEnteredTwoWeaponStunEnd = isCurrentStunEnd || isNextStunEnd;
+            }
+            else if ((!isCurrentStunEnd && !isNextStunEnd)
+                || (isCurrentStunEnd && currentState.normalizedTime >= 1f)
+                || (isCurrentStunEnd && isTransitioning && !isNextStunEnd))
+            {
+                CompleteOneWeaponVisualSwitch();
+                return;
+            }
+
+            phaseVisualSwitchElapsedSeconds += Time.deltaTime;
+            if (phaseVisualSwitchElapsedSeconds >= phaseVisualSwitchTimeoutSeconds)
+            {
+                CompleteOneWeaponVisualSwitch();
+            }
+        }
+
+        private void CompleteOneWeaponVisualSwitch()
+        {
+            CancelOneWeaponVisualSwitch();
             ApplyPhaseVisual(true, true);
-            phaseVisualSwitchRoutine = null;
+        }
+
+        private void CancelOneWeaponVisualSwitch()
+        {
+            isPhaseVisualSwitchPending = false;
+            hasEnteredTwoWeaponStunEnd = false;
+            phaseVisualSwitchElapsedSeconds = 0f;
+            phaseVisualSwitchTimeoutSeconds = 0f;
         }
 
         private float ResolveTwoWeaponStunEndTimeout()
