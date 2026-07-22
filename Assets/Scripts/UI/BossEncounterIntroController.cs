@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Enemy;
@@ -116,6 +117,9 @@ namespace Week14.UI
         [Tooltip("배경 진입 후 머그샷 타이밍 구간에 켜둘 전용 Light2D입니다. 밝기는 Light2D의 Intensity에서 설정합니다.")]
         [FormerlySerializedAs("shutterLight")]
         [SerializeField] private Light2D mugShotLight;
+        [Tooltip("머그샷 조명·그림자가 켜지는 순간 재생할 SoundLibrary SFX ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string mugShotLightingSfxId;
 
         [Header("머그샷 타이밍")]
         [Tooltip("배경 진입이 끝난 뒤 Info가 올라오기까지의 텀입니다.")]
@@ -413,6 +417,10 @@ namespace Week14.UI
                 bossInfoEnterCurve);
             yield return WaitUnscaled(infoToLightDelaySeconds);
             SetMugShotLighting(true);
+            if (!string.IsNullOrEmpty(mugShotLightingSfxId))
+            {
+                SoundManager.PlaySfx(mugShotLightingSfxId);
+            }
             SetBossAnimationFrozen(true);
             yield return WaitUnscaled(infoHoldSeconds);
             SetBossAnimationFrozen(false);
