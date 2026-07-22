@@ -31,6 +31,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float dashSeconds = 0.5f;
         [SerializeField, Min(0f)] private float dashSpeed = 15f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 0.7f, 1f, 1f);
+        [SerializeField, BossGraphSfxId] private string chargeDashSfxId = HackerSfxIds.ChargeDash;
 
         [Header("Dash Effect")]
         [Tooltip("실제 차지 대시가 시작될 때 보스 뒤에 한 번 생성할 이펙트 프리팹입니다. 오른쪽 대시 방향을 기준으로 제작된 프리팹을 사용합니다.")]
@@ -134,6 +135,7 @@ namespace Week14.Enemy
 
             context.SetAnimationBool(IsChargeDashingAnimationParameter, true);
             context.RestartAnimationTrigger(ReleaseAnimationTrigger);
+            context.PlaySfx(HackerSfxIds.Resolve(chargeDashSfxId, HackerSfxIds.ChargeDash));
             object facingLockOwner = new();
             context.SetFacingLocked(facingLockOwner, true);
             context.SetDashing(true);

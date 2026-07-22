@@ -98,7 +98,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: bde5655eab502e148a43a2de46b7df95, type: 3}
     volume: 0.7
     pitch: 1
-  - id: Dash
+  - id: PlayerDash
     clip: {fileID: 8300000, guid: 10be5807a51c2874abd9ce36e582809f, type: 3}
     volume: 0.8
     pitch: 1.2
@@ -181,4 +181,60 @@ MonoBehaviour:
   - id: Whip
     clip: {fileID: 8300000, guid: 849798c7b9a924a4fbaf11e2e181b2f1, type: 3}
     volume: 2
+    pitch: 1
+  - id: BigSlash
+    clip: {fileID: 8300000, guid: 005cf8fd534c9f04bbd4b590d756d0ad, type: 3}
+    volume: 1
+    pitch: 1
+  - id: Slash
+    clip: {fileID: 8300000, guid: 7d9e39932383a0a459bf575d3b617fe3, type: 3}
+    volume: 1
+    pitch: 1
+  - id: MissSlash
+    clip: {fileID: 8300000, guid: 5a384cd5f7449c2459fadf42c8359bf4, type: 3}
+    volume: 1
+    pitch: 1
+  - id: Dash
+    clip: {fileID: 8300000, guid: e47d6be3fcbabe146b8ba621a8966220, type: 3}
+    volume: 1
+    pitch: 1
+  - id: ChargeDash
+    clip: {fileID: 8300000, guid: 527e2838ea3fc764792690369505a791, type: 3}
+    volume: 1
+    pitch: 1
+  - id: OrbitSweep
+    clip: {fileID: 8300000, guid: b36c5f243dc87ed41b43003d605825fc, type: 3}
+    volume: 1
+    pitch: 1
+  - id: FireWire
+    clip: {fileID: 8300000, guid: cd7727fa3d05a09489e59ff7b3778f4a, type: 3}
+    volume: 1
+    pitch: 1
+  - id: WireFlight
+    clip: {fileID: 8300000, guid: 372bbf794cb99ee489f13825ee5c88be, type: 3}
+    volume: 1
+    pitch: 1
+  - id: Wire
+    clip: {fileID: 8300000, guid: d1e2a2a8fff5147478f2c998154b99e4, type: 3}
+    volume: 1
+    pitch: 1
+  - id: Hologram
+    clip: {fileID: 8300000, guid: 094a64ae09d4a9f4e9cbe047a4aabc1d, type: 3}
+    volume: 1
+    pitch: 1
+  - id: GunCharge
+    clip: {fileID: 8300000, guid: 2c2c2f1015e90f14189df5f6e432af48, type: 3}
+    volume: 1
+    pitch: 1
+  - id: BeforeAttack
+    clip: {fileID: 8300000, guid: c7c59280ff91ae14fb56d1854f199370, type: 3}
+    volume: 1
+    pitch: 1
+  - id: SnipierShot
+    clip: {fileID: 8300000, guid: 653df1d37fa65444d8631ba96e85f250, type: 3}
+    volume: 0.55
+    pitch: 1
+  - id: PutTurret
+    clip: {fileID: 8300000, guid: 8059f242bee03e44d979cc899092d6b0, type: 3}
+    volume: 0.5
     pitch: 1

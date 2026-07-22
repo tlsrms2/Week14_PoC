@@ -37,6 +37,11 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float repeatIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
+        [Header("SFX")]
+        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.FireWire;
+        [SerializeField, BossGraphSfxId] private string flightSfxId = HackerSfxIds.WireFlight;
+        [SerializeField, BossGraphSfxId] private string grabSfxId = HackerSfxIds.Wire;
+
         [Header("Fire Effect")]
         [Tooltip("와이어를 발사할 때 한 번 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
         [SerializeField] private GameObject fireEffectPrefab;
@@ -91,6 +96,8 @@ namespace Week14.Enemy
                         break;
                     }
 
+                    context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.FireWire));
+
                     ShotIntervalTimer intervalTimer = null;
                     Coroutine intervalCoroutine = null;
                     if (shotIndex < count - 1)
@@ -138,6 +145,7 @@ namespace Week14.Enemy
                             }
                             else if (resolution == HackerWireResolution.PlayerGrabbed)
                             {
+                                context.PlaySfx(HackerSfxIds.Resolve(grabSfxId, HackerSfxIds.Wire));
                                 playerGrabbed = true;
                                 context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
                                 context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
@@ -373,6 +381,15 @@ namespace Week14.Enemy
             }
 
             Vector2 arrivalPosition = ResolveWallArrivalPosition(context.Boss, wallPosition, wallNormal);
+            Vector2 bossPosition = context.Boss.Body != null
+                ? context.Boss.Body.position
+                : (Vector2)context.Boss.transform.position;
+            if (Vector2.Distance(bossPosition, arrivalPosition) <= WallArrivalTolerance)
+            {
+                yield break;
+            }
+
+            context.PlaySfx(HackerSfxIds.Resolve(flightSfxId, HackerSfxIds.WireFlight));
             context.SetFacingLocked(true);
             context.SetDashing(true);
             float elapsed = 0f;

@@ -15,7 +15,7 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField, Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")]
         private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
@@ -110,7 +110,7 @@ namespace Week14.Enemy
                     projectileName: resolvedProjectileName);
                 if (firedProjectile != null)
                 {
-                    context.PlaySfx(fireSfxId);
+                    context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.BossNormalShot));
                     context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
                     context.PlayOriginBurst(effects, origin);
                     context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, spawnDirection);

@@ -214,7 +214,7 @@ MonoBehaviour:
     action:
       rid: 6489939146365468756
     sequences: []
-    editorPosition: {x: 821, y: 1004}
+    editorPosition: {x: 822, y: 1004}
   - nodeId: Dash2
     nodeGuid: 5712dd11553e4d23a3ac60c782a69f7f
     nodeKind: 0

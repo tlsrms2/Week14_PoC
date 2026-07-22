@@ -68,6 +68,7 @@ namespace Week14.Enemy
         [Header("Hologram")]
         [SerializeField] private HackerHologramBoss hologramPrefab;
         [SerializeField, Min(1)] private int hologramStartPhaseNumber = 3;
+        [SerializeField, BossGraphSfxId] private string hologramSfxId = HackerSfxIds.Hologram;
 
         [Header("Facing")]
         [SerializeField] private Transform facingVisual;
@@ -308,7 +309,10 @@ namespace Week14.Enemy
             {
                 // 홀로그램 리플레이 노드가 먼저 실행되어도 3페이즈 전에는 생성하지 않는다.
                 isHologramSummonUnlocked = true;
-                TryEnsureHologram(playSummonEntrance: true);
+                if (TryEnsureHologram(playSummonEntrance: true))
+                {
+                    SoundManager.PlaySfx(HackerSfxIds.Resolve(hologramSfxId, HackerSfxIds.Hologram));
+                }
             }
         }
 

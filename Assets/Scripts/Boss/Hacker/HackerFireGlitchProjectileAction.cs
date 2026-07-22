@@ -28,7 +28,7 @@ namespace Week14.Enemy
         [Header("Wall Avoidance")]
         [SerializeField, Min(0f)] private float initialWallClearance = 3f;
         [SerializeField, Min(1)] private int launchDirectionSamples = 8;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
@@ -90,7 +90,7 @@ namespace Week14.Enemy
                 glitchProjectile.ConfigureTimedChargeApproach(
                     useTimedChargeApproach ? chargeApproachArrivalSeconds : -1f);
             }
-            context.PlaySfx(fireSfxId);
+            context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.BossNormalShot));
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);

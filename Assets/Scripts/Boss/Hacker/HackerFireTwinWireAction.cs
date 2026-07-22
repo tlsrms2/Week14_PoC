@@ -14,6 +14,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 1f;
         [SerializeField, Min(0.05f)] private float wallAttachedSeconds = 4f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
+        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.FireWire;
 
         [Header("Fire Effect")]
         [Tooltip("각 와이어가 생성될 때 같은 위치에 한 번 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
@@ -38,8 +39,13 @@ namespace Week14.Enemy
 
             launchOrigin = context.GetBossChildTransform(launchOriginPath) ?? hacker.transform;
             float halfAngle = wireAngleDegrees * 0.5f;
-            FireWire(hacker, launchOrigin, Rotate(targetDirection, halfAngle));
-            FireWire(hacker, launchOrigin, Rotate(targetDirection, -halfAngle));
+            bool firedWire = FireWire(hacker, launchOrigin, Rotate(targetDirection, halfAngle));
+            firedWire |= FireWire(hacker, launchOrigin, Rotate(targetDirection, -halfAngle));
+            if (firedWire)
+            {
+                context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.FireWire));
+            }
+
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
 
@@ -49,7 +55,7 @@ namespace Week14.Enemy
             return true;
         }
 
-        private void FireWire(HackerBossAI hacker, Transform launchOrigin, Vector2 direction)
+        private bool FireWire(HackerBossAI hacker, Transform launchOrigin, Vector2 direction)
         {
             HackerWireSettings wireSettings = hacker.WireSettings;
             HackerWire wire = HackerWire.CreatePersistentWallWire(
@@ -65,7 +71,7 @@ namespace Week14.Enemy
                 dissolveOnPlayerTouch: true);
             if (wire == null)
             {
-                return;
+                return false;
             }
 
             HackerWireFireVfx.Play(
@@ -74,6 +80,7 @@ namespace Week14.Enemy
                 direction,
                 fireEffectRotationOffsetDegrees,
                 fireEffectScale);
+            return true;
         }
 
         private static Vector2 Rotate(Vector2 direction, float degrees)

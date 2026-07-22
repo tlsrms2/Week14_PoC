@@ -20,6 +20,7 @@ namespace Week14.Enemy
 
         [Header("Dash Sweep")]
         [SerializeField] private string sweepTriggerName = "DashSweep";
+        [SerializeField, BossGraphSfxId] private string sweepSfxId = HackerSfxIds.OrbitSweep;
         [SerializeField, Min(0.05f)] private float dashSeconds = 0.35f;
         [SerializeField, Min(0f)] private float dashSpeed = 13f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.7f);
@@ -108,6 +109,7 @@ namespace Week14.Enemy
                 }
 
                 context.RestartAnimationTrigger(sweepTriggerName);
+                context.PlaySfx(HackerSfxIds.Resolve(sweepSfxId, HackerSfxIds.OrbitSweep));
                 attackEffect?.Play(context);
                 Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
                 using IDisposable facingLock = context.AcquireFacingLock();
