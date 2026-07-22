@@ -4,6 +4,94 @@ using Week14.Enemy;
 
 namespace Week14.Weapons
 {
+    [System.Serializable]
+    public sealed class BaseballBatVfxSettings
+    {
+        [Tooltip("차징이 50% 미만일 때 재생할 기본 이펙트 프리팹입니다.")]
+        [SerializeField] private GameObject swingVfxPrefab;
+        [Tooltip("차징이 50% 이상 100% 미만일 때 재생할 이펙트 프리팹입니다. 비워두면 기본 프리팹을 사용합니다.")]
+        [SerializeField] private GameObject halfChargeSwingVfxPrefab;
+        [Tooltip("차징이 100%일 때 재생할 이펙트 프리팹입니다. 비워두면 50% 이상 프리팹을 사용합니다.")]
+        [SerializeField] private GameObject fullChargeSwingVfxPrefab;
+        [Tooltip("오른쪽(+X)으로 휘두를 때의 앵커 기준 로컬 오프셋입니다. 실제 휘두르는 방향에 맞춰 자동 회전됩니다.")]
+        [SerializeField] private Vector2 rightFacingLocalOffset;
+        [Tooltip("최대 차징일 때 적용할 오른쪽 기준 X 오프셋입니다. 기본 X 오프셋에서 이 값까지 차징 비율로 증가합니다.")]
+        [SerializeField] private float maxRightFacingXOffset;
+        [Tooltip("조준 방향에 더할 이펙트 로컬 회전 보정값(도)입니다.")]
+        [SerializeField] private float rotationOffsetDegrees;
+        [Tooltip("기준 공격 범위에서 사용할 이펙트 로컬 스케일입니다.")]
+        [SerializeField] private Vector3 localScale = Vector3.one;
+        [Tooltip("실제 공격 범위에 비례해 이펙트 스케일을 변경합니다.")]
+        [SerializeField] private bool scaleWithAttackRange = true;
+        [Tooltip("위 Local Scale이 그대로 적용되는 기준 공격 범위입니다.")]
+        [SerializeField, Min(0.01f)] private float referenceAttackRange = 3f;
+        [Tooltip("이펙트 프리팹에 포함된 모든 Renderer의 Sorting Order입니다.")]
+        [SerializeField] private int sortingOrder = 69;
+        [Tooltip("이펙트 애니메이션 재생 배속입니다. 1이면 원본 속도입니다.")]
+        [SerializeField, Min(0.01f)] private float playbackSpeed = 1f;
+        [Tooltip("이펙트가 시작된 뒤 실제 반사 판정이 발생할 때까지의 시간(초)입니다.")]
+        [SerializeField, Min(0f)] private float attackHitDelaySeconds = 0.333f;
+        [Tooltip("공격 순간 실제 반원 판정 범위를 표시할 시간(초)입니다.")]
+        [SerializeField, Min(0.01f)] private float rangeIndicatorSeconds = 0.75f;
+        [Tooltip("공격 순간 표시되는 실제 반원 판정 범위의 색상입니다.")]
+        [SerializeField] private Color rangeIndicatorColor = new Color(1f, 0.55f, 0.1f, 0.6f);
+        [Tooltip("공격 버튼을 누르고 있는 동안 표시되는 차징 범위 색상입니다.")]
+        [SerializeField] private Color previewRangeColor = new Color(1f, 0.75f, 0.2f, 0.35f);
+
+        public float RotationOffsetDegrees => rotationOffsetDegrees;
+        public float PlaybackSpeed => playbackSpeed;
+        public float AttackHitDelaySeconds => attackHitDelaySeconds;
+        public float RangeIndicatorSeconds => rangeIndicatorSeconds;
+        public Color RangeIndicatorColor => rangeIndicatorColor;
+        public Color PreviewRangeColor => previewRangeColor;
+        public int SortingOrder => sortingOrder;
+
+        public Vector2 GetRightFacingLocalOffset(float charge01)
+        {
+            float xOffset = Mathf.Lerp(
+                rightFacingLocalOffset.x,
+                maxRightFacingXOffset,
+                Mathf.Clamp01(charge01));
+            return new Vector2(xOffset, rightFacingLocalOffset.y);
+        }
+
+        public GameObject ResolveSwingVfxPrefab(float charge01)
+        {
+            float clampedCharge01 = Mathf.Clamp01(charge01);
+            if (clampedCharge01 >= 1f && fullChargeSwingVfxPrefab != null)
+            {
+                return fullChargeSwingVfxPrefab;
+            }
+
+            if (clampedCharge01 >= 0.5f && halfChargeSwingVfxPrefab != null)
+            {
+                return halfChargeSwingVfxPrefab;
+            }
+
+            return swingVfxPrefab;
+        }
+
+        public Vector3 GetLocalScale(float attackRange)
+        {
+            return localScale * GetAttackRangeScale(attackRange);
+        }
+
+        private float GetAttackRangeScale(float attackRange)
+        {
+            return scaleWithAttackRange
+                ? Mathf.Max(0f, attackRange) / Mathf.Max(0.01f, referenceAttackRange)
+                : 1f;
+        }
+
+        internal void Validate()
+        {
+            referenceAttackRange = Mathf.Max(0.01f, referenceAttackRange);
+            playbackSpeed = Mathf.Max(0.01f, playbackSpeed);
+            attackHitDelaySeconds = Mathf.Max(0f, attackHitDelaySeconds);
+            rangeIndicatorSeconds = Mathf.Max(0.01f, rangeIndicatorSeconds);
+        }
+    }
+
     [CreateAssetMenu(menuName = "Week14/Weapons/Baseball Bat", fileName = "BaseballBatWeapon")]
     public sealed class BaseballBatWeaponSO : BaseWeaponSO
     {
@@ -19,12 +107,7 @@ namespace Week14.Weapons
         [SerializeField, Min(0)] private int reflectedDamage = 3;
         [Tooltip("반사된 적탄의 고정 이동 속도입니다. 반사 전 탄막 속도와 무관하게 이 값으로 덮어씁니다.")]
         [SerializeField, Min(0.01f)] private float reflectedProjectileSpeed = 8f;
-        [Tooltip("휘두르는 순간 반원 공격범위를 짧게 보여주는 플래시 색상입니다.")]
-        [SerializeField] private Color rangeFlashColor = new Color(1f, 0.55f, 0.1f, 0.6f);
-        [Tooltip("공격 버튼을 누르고 있는 동안 보여줄 차징 범위 미리보기 색상입니다.")]
-        [SerializeField] private Color previewRangeColor = new Color(1f, 0.75f, 0.2f, 0.35f);
-        [Tooltip("범위 플래시가 사라지는 데 걸리는 시간(초)입니다.")]
-        [SerializeField, Min(0.01f)] private float rangeFlashSeconds = 0.1f;
+        [SerializeField] private BaseballBatVfxSettings vfxSettings = new BaseballBatVfxSettings();
         [Tooltip("휘두를 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [SerializeField] private string swingSfxId = string.Empty;
@@ -32,10 +115,9 @@ namespace Week14.Weapons
         [SerializeField, Min(0f)] private float moveSpeedMultiplier = 1.5f;
 
         public float MaxAttackRange => maxAttackRange;
-        public Color RangeFlashColor => rangeFlashColor;
-        public float RangeFlashSeconds => rangeFlashSeconds;
         public float ReflectedProjectileSpeed => reflectedProjectileSpeed;
         public float MoveSpeedMultiplier => moveSpeedMultiplier;
+        public BaseballBatVfxSettings VfxSettings => vfxSettings ??= new BaseballBatVfxSettings();
 
         public override void BeginAttack(PlayerShooter shooter)
         {
@@ -46,7 +128,7 @@ namespace Week14.Weapons
                 return;
             }
 
-            shooter.PreviewBaseballBatRange(GetAttackRange(0f), previewRangeColor);
+            shooter.PreviewBaseballBatRange(GetAttackRange(GetCharge01(0f)), VfxSettings.PreviewRangeColor);
         }
 
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)
@@ -58,7 +140,9 @@ namespace Week14.Weapons
                 return;
             }
 
-            shooter.PreviewBaseballBatRange(GetAttackRange(chargeTime), previewRangeColor);
+            shooter.PreviewBaseballBatRange(
+                GetAttackRange(GetCharge01(chargeTime)),
+                VfxSettings.PreviewRangeColor);
         }
 
         public override void ReleaseAttack(PlayerShooter shooter, float chargeTime)
@@ -66,13 +150,14 @@ namespace Week14.Weapons
             shooter.HideBaseballBatRangePreview();
             if (shooter.TryConsumeBayonetCooldown(attackCooldownSeconds))
             {
-                float attackRange = GetAttackRange(chargeTime);
+                float charge01 = GetCharge01(chargeTime);
+                float attackRange = GetAttackRange(charge01);
                 shooter.SwingBaseballBat(
                     reflectedDamage,
                     attackRange,
                     reflectedProjectileSpeed,
-                    rangeFlashColor,
-                    rangeFlashSeconds,
+                    VfxSettings,
+                    charge01,
                     swingSfxId);
             }
         }
@@ -87,9 +172,20 @@ namespace Week14.Weapons
             player?.GetComponent<PlayerCombatController>()?.SetWeaponMoveSpeedMultiplier(1f);
         }
 
-        private float GetAttackRange(float chargeTime)
+        public float GetCharge01FromRange(float attackRange)
         {
-            float charge01 = maxChargeSeconds > 0f ? Mathf.Clamp01(chargeTime / maxChargeSeconds) : 1f;
+            return Mathf.Approximately(minAttackRange, maxAttackRange)
+                ? 1f
+                : Mathf.InverseLerp(minAttackRange, maxAttackRange, attackRange);
+        }
+
+        private float GetCharge01(float chargeTime)
+        {
+            return maxChargeSeconds > 0f ? Mathf.Clamp01(chargeTime / maxChargeSeconds) : 1f;
+        }
+
+        private float GetAttackRange(float charge01)
+        {
             return Mathf.Lerp(minAttackRange, maxAttackRange, charge01);
         }
 
@@ -99,6 +195,8 @@ namespace Week14.Weapons
             maxAttackRange = Mathf.Max(minAttackRange, maxAttackRange);
             maxChargeSeconds = Mathf.Max(0.01f, maxChargeSeconds);
             moveSpeedMultiplier = Mathf.Max(0f, moveSpeedMultiplier);
+            vfxSettings ??= new BaseballBatVfxSettings();
+            vfxSettings.Validate();
         }
     }
 }

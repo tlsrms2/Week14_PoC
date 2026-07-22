@@ -171,6 +171,56 @@ namespace Week14.Combat
             return instance;
         }
 
+        public static GameObject PlayAnchoredPrefab(
+            GameObject prefab,
+            Transform spawnParent,
+            Vector2 direction,
+            Vector2 rightFacingLocalOffset,
+            float rotationOffsetDegrees,
+            Vector3 localScale,
+            float playbackSpeed = 1f,
+            int sortingOrder = 0)
+        {
+            if (prefab == null || spawnParent == null)
+            {
+                return null;
+            }
+
+            GameObject instance = PlayPrefab(
+                prefab,
+                spawnParent.position,
+                Quaternion.identity,
+                null,
+                1f,
+                true,
+                playbackSpeed);
+            if (instance == null)
+            {
+                return null;
+            }
+
+            instance.transform.SetParent(spawnParent, false);
+            Vector2 worldForward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            Vector3 localForward3 = spawnParent.InverseTransformDirection(worldForward);
+            Vector2 localForward = new Vector2(localForward3.x, localForward3.y).normalized;
+            float localAngle = Mathf.Atan2(localForward.y, localForward.x) * Mathf.Rad2Deg;
+            Quaternion directionRotation = Quaternion.Euler(0f, 0f, localAngle);
+            instance.transform.localPosition = directionRotation * rightFacingLocalOffset;
+            instance.transform.localRotation = Quaternion.Euler(0f, 0f, localAngle + rotationOffsetDegrees);
+            instance.transform.localScale = localScale;
+
+            Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null)
+                {
+                    renderers[i].sortingOrder = sortingOrder;
+                }
+            }
+
+            return instance;
+        }
+
         public static GameObject PlayShotLine(
             Vector3 start,
             Vector3 end,

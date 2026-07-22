@@ -37,6 +37,8 @@ namespace Week14.Combat
         [SerializeField] private Transform leftGunOrigin;
         [SerializeField] private Transform leftGunFireOrigin;
         [SerializeField] private Transform rightGunFireOrigin;
+        [SerializeField, Tooltip("야구배트 이펙트가 자식으로 생성될 위치입니다. 플레이어 프리팹의 앵커 Transform을 연결합니다.")]
+        private Transform baseballBatVfxAnchor;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private ExecutionImageEffect executionImage;
@@ -278,6 +280,9 @@ namespace Week14.Combat
                 get => controller.rightGunFireOrigin;
                 internal set => controller.rightGunFireOrigin = value;
             }
+            public Transform BaseballBatVfxAnchor => controller.baseballBatVfxAnchor != null
+                ? controller.baseballBatVfxAnchor
+                : CombatCenterOrigin;
             public LayerMask EnemyMask => controller.enemyMask;
             public Rigidbody2D Body => controller.body;
             public Health Health => controller.health;

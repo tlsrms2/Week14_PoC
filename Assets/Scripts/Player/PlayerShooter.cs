@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
@@ -249,8 +250,8 @@ namespace Week14.Combat
             int reflectedDamage,
             float range,
             float reflectedSpeed,
-            Color rangeFlashColor,
-            float rangeFlashSeconds,
+            BaseballBatVfxSettings vfxSettings,
+            float charge01,
             string swingSfxId)
         {
             if (range <= 0f)
@@ -258,17 +259,69 @@ namespace Week14.Combat
                 return;
             }
 
-            Vector2 origin = context.CombatCenterOrigin.position;
             Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
+            if (vfxSettings != null)
+            {
+                ProjectileVfx.PlayAnchoredPrefab(
+                    vfxSettings.ResolveSwingVfxPrefab(charge01),
+                    context.BaseballBatVfxAnchor,
+                    direction,
+                    vfxSettings.GetRightFacingLocalOffset(charge01),
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.GetLocalScale(range),
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
 
-            ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
-            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
-            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
+                Vector2 indicatorOrigin = context.CombatCenterOrigin.position;
+                ProjectileVfx.PlaySemicircleFlash(
+                    indicatorOrigin,
+                    direction,
+                    range,
+                    vfxSettings.RangeIndicatorColor,
+                    vfxSettings.RangeIndicatorSeconds);
+            }
+
+            float hitDelaySeconds = vfxSettings != null ? vfxSettings.AttackHitDelaySeconds : 0f;
+            if (hitDelaySeconds <= 0f)
+            {
+                ResolveBaseballBatHit(direction, range, reflectedDamage, reflectedSpeed);
+            }
+            else
+            {
+                context.CoroutineHost.StartCoroutine(ResolveBaseballBatHitAfterDelay(
+                    hitDelaySeconds,
+                    direction,
+                    range,
+                    reflectedDamage,
+                    reflectedSpeed));
+            }
 
             if (!string.IsNullOrEmpty(swingSfxId))
             {
                 SoundManager.PlaySfx(swingSfxId);
             }
+        }
+
+        private IEnumerator ResolveBaseballBatHitAfterDelay(
+            float delaySeconds,
+            Vector2 direction,
+            float range,
+            int reflectedDamage,
+            float reflectedSpeed)
+        {
+            yield return new WaitForSeconds(delaySeconds);
+            ResolveBaseballBatHit(direction, range, reflectedDamage, reflectedSpeed);
+        }
+
+        private void ResolveBaseballBatHit(
+            Vector2 direction,
+            float range,
+            int reflectedDamage,
+            float reflectedSpeed)
+        {
+            Vector2 origin = context.CombatCenterOrigin.position;
+            ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
+            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
         }
 
         private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)

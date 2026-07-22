@@ -132,7 +132,14 @@ namespace Week14.Skills
                 float speed = attackInfo.ReflectedProjectileSpeed > 0f
                     ? attackInfo.ReflectedProjectileSpeed
                     : baseballBat.ReflectedProjectileSpeed;
-                SwingCloneBaseballBat(origin, direction, range, cloneDamage, speed, baseballBat.RangeFlashColor, baseballBat.RangeFlashSeconds);
+                SwingCloneBaseballBat(
+                    origin,
+                    direction,
+                    range,
+                    cloneDamage,
+                    speed,
+                    baseballBat.VfxSettings,
+                    baseballBat.GetCharge01FromRange(range));
                 return;
             }
 
@@ -225,8 +232,8 @@ namespace Week14.Skills
             float range,
             int damage,
             float reflectedSpeed,
-            Color flashColor,
-            float flashSeconds)
+            BaseballBatVfxSettings vfxSettings,
+            float charge01)
         {
             if (range <= 0f)
             {
@@ -234,7 +241,24 @@ namespace Week14.Skills
             }
 
             ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
-            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, flashColor, flashSeconds);
+            if (vfxSettings != null)
+            {
+                ProjectileVfx.PlayAnchoredPrefab(
+                    vfxSettings.ResolveSwingVfxPrefab(charge01),
+                    cloneVisualRoot.transform,
+                    direction,
+                    vfxSettings.GetRightFacingLocalOffset(charge01),
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.GetLocalScale(range),
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+                ProjectileVfx.PlaySemicircleFlash(
+                    origin,
+                    direction,
+                    range,
+                    vfxSettings.RangeIndicatorColor,
+                    vfxSettings.RangeIndicatorSeconds);
+            }
         }
 
         private BossAI ResolveTargetBoss()

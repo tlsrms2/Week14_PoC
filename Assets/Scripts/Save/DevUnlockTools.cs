@@ -109,18 +109,11 @@ namespace Week14.Save
             DontDestroyOnLoad(gameObject);
         }
 
-        // 치트 모드가 켜진 채로 이 오브젝트/컴포넌트가 사라지면(씬 정리, 나중에 이 스크립트를 통째로
-        // 지우는 경우 등) PlayerHP의 잠금 카운터가 영원히 눌린 채로 남아서 탄 유통기한 기능이 게임
-        // 전체에서 고장난다. 그런 일이 없도록 여기서 반드시 짝을 맞춰 되돌린다.
+        // 치트 모드가 켜진 채로 이 오브젝트/컴포넌트가 사라져도 잠금과 무적 카운터가 남지 않도록
+        // 활성화할 때 획득한 상태를 반드시 한곳에서 짝을 맞춰 해제한다.
         private void OnDisable()
         {
-            if (!godModeActive)
-            {
-                return;
-            }
-
-            godModeActive = false;
-            PlayerHP.PopBulletTimeoutLock(startCurrentBulletTimers: true);
+            SetGodModeActive(false);
         }
 
         private void Update()
@@ -738,28 +731,41 @@ namespace Week14.Save
         }
 
         // ---------------------------------------------------------------
-        // 치트 모드 (총알 무한 + 탄 유통기한 없음 + 스킬 쿨타임 없음, 세이브와 무관)
+        // 치트 모드 (무적 + 총알 무한 + 탄 유통기한 없음 + 스킬 쿨타임 없음, 세이브와 무관)
         // ---------------------------------------------------------------
 
-        [ContextMenu("치트 모드 토글 (총알 무한 + 탄 유통기한 없음 + 스킬 쿨타임 없음)")]
+        [ContextMenu("치트 모드 토글 (무적 + 총알 무한 + 탄 유통기한 없음 + 스킬 쿨타임 없음)")]
         public void ToggleGodMode()
         {
-            godModeActive = !godModeActive;
+            SetGodModeActive(!godModeActive);
+
+            Debug.Log($"[DevUnlockTools] 치트 모드: {(godModeActive ? "ON" : "OFF")} (무적 / 총알 무한 / 탄 유통기한 없음 / 스킬 쿨타임 없음)");
+        }
+
+        private void SetGodModeActive(bool active)
+        {
+            if (godModeActive == active)
+            {
+                return;
+            }
+
+            godModeActive = active;
 
             if (godModeActive)
             {
                 PlayerHP.PushBulletTimeoutLock();
+                PlayerCombatController.PushExternalInvulnerability();
+                TickGodMode();
             }
             else
             {
                 PlayerHP.PopBulletTimeoutLock(startCurrentBulletTimers: true);
+                PlayerCombatController.PopExternalInvulnerability();
             }
-
-            Debug.Log($"[DevUnlockTools] 치트 모드: {(godModeActive ? "ON" : "OFF")} (총알 무한 / 탄 유통기한 없음 / 스킬 쿨타임 없음)");
         }
 
         // 매 프레임 총알 게이지를 최대치로 채우고 액티브 스킬 쿨타임을 강제로 0으로 만든다.
-        // 총알 게이지는 플레이어 체력이기도 해서(BaseWeaponSO 주석 참고), 이걸로 사실상 무적도 겸한다.
+        // 무적 처리는 별도의 외부 무적 카운터가 담당하므로, 총알이 0인 순간 피격돼도 사망하지 않는다.
         private static void TickGodMode()
         {
             BulletGauge bullets = PlayerCombatController.Active != null ? PlayerCombatController.Active.Bullets : null;
