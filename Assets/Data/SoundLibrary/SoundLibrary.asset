@@ -154,3 +154,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 948410a506001e247bb8073a9ed9107f, type: 3}
     volume: 0.7
     pitch: 1
+  - id: SpotLight
+    clip: {fileID: 8300000, guid: 26b64871a74f5d94f9b095fef935d191, type: 3}
+    volume: 0.7
+    pitch: 1
