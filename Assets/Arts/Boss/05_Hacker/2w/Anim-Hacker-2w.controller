@@ -336,7 +336,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anim-Hacker-2w-throw
+  m_Name: 2w-throw
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

@@ -60,6 +60,11 @@ namespace Week14.Enemy
             }
 
             using IDisposable facingLock = context.AcquireFacingLock();
+            if (!context.IsExecutingParallelPatternGroup)
+            {
+                context.PlayAnimationTrigger(ScatterAnimationTrigger);
+            }
+
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             int count = Mathf.Max(1, bulletCount);
@@ -92,10 +97,6 @@ namespace Week14.Enemy
                     : lockedPlayerDirection;
                 Vector2 spawnDirection = Rotate(playerDirection, sweepOffset);
                 Vector3 origin = context.Boss.transform.position + (Vector3)(spawnDirection * spawnCircleRadius);
-                if (index == 0 && !context.IsExecutingParallelPatternGroup)
-                {
-                    context.PlayAnimationTrigger(ScatterAnimationTrigger);
-                }
 
                 EnemyProjectile firedProjectile = context.FireProjectile(
                     settings,

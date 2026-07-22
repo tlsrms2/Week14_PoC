@@ -1690,7 +1690,7 @@ MonoBehaviour:
     action:
       rid: 6489939249705517356
     sequences: []
-    editorPosition: {x: 772, y: 2331}
+    editorPosition: {x: 772, y: 2332}
   - nodeId: Move Toward Player4
     nodeGuid: 18a1642f6084453bb9796757f855fe48
     nodeKind: 1
@@ -5332,7 +5332,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -8190,7 +8190,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -8423,7 +8423,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 12
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -13265,7 +13265,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -15441,7 +15441,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -18134,7 +18134,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -18511,7 +18511,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
@@ -18931,7 +18931,7 @@ MonoBehaviour:
             seconds: 0.14
             distance: 0.22
             frequency: 0.12
-        windupSeconds: 0.35
+        windupSeconds: 0.3
         bulletCount: 8
         spawnCircleRadius: 1
         spawnArcDegrees: 120
