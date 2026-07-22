@@ -75,7 +75,18 @@ namespace Week14.Input
             {
 #if ENABLE_INPUT_SYSTEM
                 Pointer pointer = GetActivePointer();
-                return pointer != null ? pointer.position.ReadValue() : Vector2.zero;
+                if (pointer == null)
+                {
+                    return Vector2.zero;
+                }
+
+                Vector2 rawPosition = pointer.position.ReadValue();
+                Camera mainCamera = Camera.main;
+                // 카메라 rect가 화면 전체를 덮지 않을 때(레터박스/필러박스), Camera.ScreenToWorldPoint는
+                // 좌표를 카메라 자신의 pixelRect 기준으로 해석하므로 원점을 빼서 맞춰준다.
+                return mainCamera != null
+                    ? rawPosition - new Vector2(mainCamera.pixelRect.x, mainCamera.pixelRect.y)
+                    : rawPosition;
 #else
                 return Vector2.zero;
 #endif

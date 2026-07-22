@@ -301,7 +301,19 @@ namespace Week14.Enemy
             stateMachine ??= new BossStateMachine(this);
             stateMachine.Tick();
             TickDashContactForState();
+            ApplyCombatTimerSlowCorrection();
             RefreshElapsedTimeText();
+        }
+
+        // CombatElapsedSeconds는 Time.time - combatStartedAt으로 계산되는 절대 시각 기반 타이머라
+        // EnemyTimeScale의 영향을 받지 않는다. 슬로우 배율만큼 못 흐른 시간을 시작 시각에 계속
+        // 더해 밀어내면(DeltaTimeDebt), 경과시간 자체가 슬로우 배율에 맞춰 천천히 늘어난다.
+        private void ApplyCombatTimerSlowCorrection()
+        {
+            if (combatStartedCounted && frozenCombatElapsedSeconds == null)
+            {
+                combatStartedAt += EnemyTimeScale.DeltaTimeDebt;
+            }
         }
 
         public static string FormatCombatTime(float seconds)

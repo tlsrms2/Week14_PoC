@@ -434,7 +434,9 @@ namespace Week14.Bootstrap
                 && mouseLookMaxOffset > 0f)
             {
                 Vector2 screenPosition = GameInput.MouseScreenPosition;
-                Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+                Vector2 screenSize = controlledCamera != null
+                    ? new Vector2(controlledCamera.pixelWidth, controlledCamera.pixelHeight)
+                    : new Vector2(Screen.width, Screen.height);
                 if (screenSize.x > 0f && screenSize.y > 0f)
                 {
                     Vector2 normalized = new Vector2(
