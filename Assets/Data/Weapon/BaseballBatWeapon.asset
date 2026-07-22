@@ -99,7 +99,9 @@ MonoBehaviour:
     displaySpriteRotationOffsetDegrees: -137
     displayScale: {x: 4, y: 4, z: 4}
     displaySortingOrder: 69
-  swingSfxId: 
+  chargingSfxId: BaseballBatCharging
+  chargingSfxStartSeconds: 0.5
+  reflectionSuccessSfxId: BaseballBatSwing
   moveSpeedMultiplier: 1.5
   references:
     version: 2

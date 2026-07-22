@@ -65,6 +65,14 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float startDelaySeconds = 0.15f;
         [SerializeField, Min(0f)] private float playerWalkSpeed = 3.5f;
 
+        [Header("Sound")]
+        [Tooltip("플레이어가 인트로 위치로 걸어가는 동안 반복 재생할 SoundLibrary SFX ID입니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string playerWalkSfxId = "Walk";
+        [Tooltip("머그샷 배경이 등장할 때 재생할 SoundLibrary SFX ID입니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string mugShotBackgroundSfxId = "Whip";
+
         [Header("재시작 연출")]
         [Tooltip("씬 전환이 끝난 뒤 플레이어 이동과 전투 UI 전환까지 걸리는 재시작 연출 시간입니다.")]
         [SerializeField, Min(0f)] private float restartSequenceSeconds = 2.5f;
@@ -156,6 +164,7 @@ namespace Week14.UI
         private Vector2 bossCombatUiTargetPosition;
         private Coroutine playRoutine;
         private Coroutine locationIntroRoutine;
+        private SoundManager.SfxPlaybackHandle playerWalkSfxHandle;
         private BossData localizedBossData;
         private LocalizedString boundLocationLocalizedString;
         private bool introControlAcquired;
@@ -222,6 +231,7 @@ namespace Week14.UI
                 locationIntroRoutine = null;
             }
 
+            StopPlayerWalkSfx();
             EndPlayerCinematicMovement();
             SetBossAnimationFrozen(false);
             HideExecutionLetterboxImmediate();
@@ -260,6 +270,7 @@ namespace Week14.UI
                 locationIntroRoutine = null;
             }
 
+            StopPlayerWalkSfx();
             SetBossAnimationFrozen(false);
 
             locationName = nextLocationName ?? string.Empty;
@@ -370,6 +381,7 @@ namespace Week14.UI
                 : Mathf.Max(0f, restartSequenceSeconds - startDelaySeconds - restartCombatUiRevealSeconds);
             if (duration > 0f)
             {
+                StartPlayerWalkSfx();
                 for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
                 {
                     float progress = Mathf.Clamp01(elapsed / duration);
@@ -380,6 +392,22 @@ namespace Week14.UI
 
             SetPlayerPosition(playerBody, endPosition);
             EndPlayerCinematicMovement();
+            StopPlayerWalkSfx();
+        }
+
+        private void StartPlayerWalkSfx()
+        {
+            StopPlayerWalkSfx();
+            if (!string.IsNullOrEmpty(playerWalkSfxId))
+            {
+                playerWalkSfxHandle = SoundManager.PlayLoopingSfx(playerWalkSfxId);
+            }
+        }
+
+        private void StopPlayerWalkSfx()
+        {
+            SoundManager.StopSfx(playerWalkSfxHandle);
+            playerWalkSfxHandle = null;
         }
 
         private IEnumerator PlayBossReveal()
@@ -403,6 +431,11 @@ namespace Week14.UI
             }
 
             SetMugShotStageVisible(true);
+            if (!string.IsNullOrEmpty(mugShotBackgroundSfxId))
+            {
+                SoundManager.PlaySfx(mugShotBackgroundSfxId);
+            }
+
             FitMugShotBackgroundToCameraViewport();
             yield return AnimateMugShotBackground(
                 -mugShotBackgroundTravelOffsetX,

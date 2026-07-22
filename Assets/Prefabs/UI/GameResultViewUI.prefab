@@ -1722,6 +1722,7 @@ MonoBehaviour:
   fadeInSeconds: 0.25
   holdSeconds: 0
   fadeOutSeconds: 0.15
+  getPointSfxId: GetPoint
   closeButton: {fileID: 3070270527405820098}
   closeHintText: {fileID: 6581070073543348572}
   localizedCloseHintText:

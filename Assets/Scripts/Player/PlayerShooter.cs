@@ -15,6 +15,7 @@ namespace Week14.Combat
         private float chargeTime;
         private bool isCharging;
         private bool hasShownChargeLaser;
+        private bool hasPlayedBaseballBatChargingSfx;
         private float nextBayonetAttackTime;
         private BaseballBatRangePreviewVfx baseballBatRangePreview;
         private BaseballBatDisplayVfx baseballBatDisplayVfx;
@@ -41,6 +42,7 @@ namespace Week14.Combat
             chargeTime = 0f;
             isCharging = true;
             hasShownChargeLaser = false;
+            hasPlayedBaseballBatChargingSfx = false;
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
         }
@@ -63,6 +65,7 @@ namespace Week14.Combat
             isCharging = false;
             chargeTime = 0f;
             hasShownChargeLaser = false;
+            hasPlayedBaseballBatChargingSfx = false;
         }
 
         // 홀드가 일정 시간(첫 등장 딜레이) 이상 지속됐을 때 딱 한 번만 레이저 연출을 켭니다.
@@ -87,6 +90,18 @@ namespace Week14.Combat
             isCharging = false;
             chargeTime = 0f;
             hasShownChargeLaser = false;
+            hasPlayedBaseballBatChargingSfx = false;
+        }
+
+        public void PlayBaseballBatChargingSfxOnce(string sfxId)
+        {
+            if (hasPlayedBaseballBatChargingSfx || string.IsNullOrEmpty(sfxId))
+            {
+                return;
+            }
+
+            hasPlayedBaseballBatChargingSfx = true;
+            SoundManager.PlaySfx(sfxId);
         }
 
         public void PreviewBaseballBatRange(float range, Color color)
@@ -331,6 +346,7 @@ namespace Week14.Combat
         public void ResetChargeTime()
         {
             chargeTime = 0f;
+            hasPlayedBaseballBatChargingSfx = false;
         }
 
         // 근접 반원 공격(총검): 조준 방향(락온 중이면 GetAimDirection이 알아서 보스 방향을 반환) 기준
@@ -363,7 +379,7 @@ namespace Week14.Combat
             float reflectedSpeed,
             BaseballBatVfxSettings vfxSettings,
             float charge01,
-            string swingSfxId)
+            string reflectionSuccessSfxId)
         {
             if (range <= 0f)
             {
@@ -395,7 +411,12 @@ namespace Week14.Combat
             float hitDelaySeconds = vfxSettings != null ? vfxSettings.AttackHitDelaySeconds : 0f;
             if (hitDelaySeconds <= 0f)
             {
-                ResolveBaseballBatHit(direction, range, reflectedDamage, reflectedSpeed);
+                ResolveBaseballBatHit(
+                    direction,
+                    range,
+                    reflectedDamage,
+                    reflectedSpeed,
+                    reflectionSuccessSfxId);
             }
             else
             {
@@ -404,12 +425,8 @@ namespace Week14.Combat
                     direction,
                     range,
                     reflectedDamage,
-                    reflectedSpeed));
-            }
-
-            if (!string.IsNullOrEmpty(swingSfxId))
-            {
-                SoundManager.PlaySfx(swingSfxId);
+                    reflectedSpeed,
+                    reflectionSuccessSfxId));
             }
         }
 
@@ -418,30 +435,53 @@ namespace Week14.Combat
             Vector2 direction,
             float range,
             int reflectedDamage,
-            float reflectedSpeed)
+            float reflectedSpeed,
+            string reflectionSuccessSfxId)
         {
             yield return new WaitForSeconds(delaySeconds);
-            ResolveBaseballBatHit(direction, range, reflectedDamage, reflectedSpeed);
+            ResolveBaseballBatHit(
+                direction,
+                range,
+                reflectedDamage,
+                reflectedSpeed,
+                reflectionSuccessSfxId);
         }
 
         private void ResolveBaseballBatHit(
             Vector2 direction,
             float range,
             int reflectedDamage,
-            float reflectedSpeed)
+            float reflectedSpeed,
+            string reflectionSuccessSfxId)
         {
             Vector2 origin = context.CombatCenterOrigin.position;
-            DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
-            ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
+            bool destroyedAnyTurret = DestroyDeployedConductorTurretsInSemicircle(
+                origin,
+                direction,
+                range);
+            bool reflectedAnyProjectile = ReflectProjectilesInSemicircle(
+                origin,
+                direction,
+                range,
+                reflectedDamage,
+                reflectedSpeed);
+
+            if ((destroyedAnyTurret || reflectedAnyProjectile)
+                && !string.IsNullOrEmpty(reflectionSuccessSfxId))
+            {
+                SoundManager.PlaySfx(reflectionSuccessSfxId);
+            }
+
             context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
         }
 
-        private static void DestroyDeployedConductorTurretsInSemicircle(
+        private static bool DestroyDeployedConductorTurretsInSemicircle(
             Vector2 origin,
             Vector2 direction,
             float range)
         {
             IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            bool destroyedAnyTurret = false;
 
             // 파괴 시 활성 투사체 목록에서 빠지므로 인덱스가 밀리지 않도록 뒤에서부터 순회합니다.
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
@@ -453,8 +493,13 @@ namespace Week14.Combat
                     continue;
                 }
 
-                turret.TryDestroyByBaseballBat(turret.transform.position, direction);
+                if (turret.TryDestroyByBaseballBat(turret.transform.position, direction))
+                {
+                    destroyedAnyTurret = true;
+                }
             }
+
+            return destroyedAnyTurret;
         }
 
         private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
@@ -489,7 +534,7 @@ namespace Week14.Combat
             }
         }
 
-        private void ReflectProjectilesInSemicircle(
+        private bool ReflectProjectilesInSemicircle(
             Vector2 origin,
             Vector2 direction,
             float range,
@@ -497,6 +542,7 @@ namespace Week14.Combat
             float reflectedSpeed)
         {
             IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            bool reflectedAnyProjectile = false;
 
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
@@ -513,6 +559,7 @@ namespace Week14.Combat
 
                 if (projectile.TryReflectTowardOwnerBoss(reflectedSpeed, reflectedDamage, out _))
                 {
+                    reflectedAnyProjectile = true;
                     PlayerDashVfx.PlayProjectileAbsorb(
                         context.CoroutineHost,
                         projectile,
@@ -521,6 +568,8 @@ namespace Week14.Combat
                         new Color(1f, 0.65f, 0.25f, 0.85f));
                 }
             }
+
+            return reflectedAnyProjectile;
         }
 
         private void DamageEnemiesInSemicircle(Vector2 origin, Vector2 direction, float range, int damage)

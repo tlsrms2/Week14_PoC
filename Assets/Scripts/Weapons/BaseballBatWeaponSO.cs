@@ -125,9 +125,17 @@ namespace Week14.Weapons
         [Tooltip("반사된 적탄의 고정 이동 속도입니다. 반사 전 탄막 속도와 무관하게 이 값으로 덮어씁니다.")]
         [SerializeField, Min(0.01f)] private float reflectedProjectileSpeed = 8f;
         [SerializeField] private BaseballBatVfxSettings vfxSettings = new BaseballBatVfxSettings();
-        [Tooltip("휘두를 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+
+        [Header("Sound")]
+        [Tooltip("야구 배트 차지를 시작할 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
-        [SerializeField] private string swingSfxId = string.Empty;
+        [SerializeField] private string chargingSfxId = "BaseballBatCharging";
+        [Tooltip("차징 SFX를 한 번 재생하기까지 필요한 홀드 시간(초)입니다.")]
+        [SerializeField, Min(0f)] private float chargingSfxStartSeconds = 0.5f;
+        [Tooltip("야구 배트로 투사체 반사에 성공했을 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string reflectionSuccessSfxId = "BaseballBatSwing";
+
         [Tooltip("야구 배트를 장착했을 때 적용할 이동 속도 배율입니다. 1.5 = 50% 증가.")]
         [SerializeField, Min(0f)] private float moveSpeedMultiplier = 1.5f;
 
@@ -158,6 +166,11 @@ namespace Week14.Weapons
                 return;
             }
 
+            if (chargeTime >= chargingSfxStartSeconds)
+            {
+                shooter.PlayBaseballBatChargingSfxOnce(chargingSfxId);
+            }
+
             shooter.PreviewBaseballBatRange(
                 GetAttackRange(GetCharge01(chargeTime)),
                 VfxSettings.PreviewRangeColor);
@@ -177,7 +190,7 @@ namespace Week14.Weapons
                     reflectedProjectileSpeed,
                     VfxSettings,
                     charge01,
-                    swingSfxId);
+                    reflectionSuccessSfxId);
                 shooter.StartBaseballBatSwingThrough(charge01, VfxSettings, InGameSprite, VfxSettings.AttackHitDelaySeconds);
             }
         }
@@ -214,6 +227,7 @@ namespace Week14.Weapons
             base.OnValidate();
             maxAttackRange = Mathf.Max(minAttackRange, maxAttackRange);
             maxChargeSeconds = Mathf.Max(0.01f, maxChargeSeconds);
+            chargingSfxStartSeconds = Mathf.Max(0f, chargingSfxStartSeconds);
             moveSpeedMultiplier = Mathf.Max(0f, moveSpeedMultiplier);
             vfxSettings ??= new BaseballBatVfxSettings();
             vfxSettings.Validate();
