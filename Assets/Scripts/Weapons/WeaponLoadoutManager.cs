@@ -150,6 +150,9 @@ namespace Week14.Weapons
             GameObject playerObject = PlayerCombatController.Active != null ? PlayerCombatController.Active.gameObject : null;
             currentWeapon?.ApplyWeaponTrait(playerObject);
             ApplyAmmoConfig(currentWeapon);
+            // 새 씬에서 막 생성된 PlayerVisualRig 등은 이 시점에 막 구독을 걸었을 뿐 아직 한 번도
+            // 현재 장착 무기를 통보받지 못했으므로, 씬 로드마다 다시 알려줘야 왼팔 비주얼 등이 동기화됩니다.
+            WeaponChanged?.Invoke(currentWeapon);
         }
 
         private void LoadEquippedWeapon()

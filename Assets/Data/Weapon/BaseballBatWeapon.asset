@@ -38,7 +38,7 @@ MonoBehaviour:
   price: 4
   inGameSprite: {fileID: 21300000, guid: 6187ad3bd064dba4d8077e6df39f9103, type: 3}
   projectilePrefab: {fileID: 0}
-  leftArmController: {fileID: 9100000, guid: b4e9d4969d58fbd46a6aedebda815ccd, type: 2}
+  leftArmController: {fileID: 0}
   maxAmmo: 0
   parryingRange: 1
   damagePerAmmoStep: 
@@ -95,10 +95,15 @@ MonoBehaviour:
     rangeIndicatorColor: {r: 1, g: 0.55, b: 0.1, a: 0}
     previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0}
     displayOffsetDistance: 0.8
-    displayWindUpDegrees: 90
+    displayWindUpDegrees: -100
+    windUpSnapSeconds: 0.08
     displaySpriteRotationOffsetDegrees: -137
     displayScale: {x: 4, y: 4, z: 4}
+    maxChargeScale: {x: 6, y: 6, z: 6}
     displaySortingOrder: 69
+    displayColorDefault: {r: 1, g: 1, b: 1, a: 1}
+    displayColorHalfCharge: {r: 1, g: 0.6327303, b: 0, a: 1}
+    displayColorFullCharge: {r: 1, g: 0, b: 0, a: 1}
   swingSfxId: 
   moveSpeedMultiplier: 1.5
   references:
