@@ -77,6 +77,55 @@ namespace Week14.Combat
                 null);
         }
 
+        internal static bool IsColliderFootprintGrounded(
+            Vector2 current,
+            Vector2 target,
+            Collider2D[] probeColliders,
+            float inset)
+        {
+            int groundMask = GetGroundMask();
+            if (groundMask == 0)
+            {
+                return false;
+            }
+
+            Vector2 delta = target - current;
+            float safeInset = Mathf.Max(0f, inset);
+            bool checkedCollider = false;
+            if (probeColliders != null)
+            {
+                for (int i = 0; i < probeColliders.Length; i++)
+                {
+                    Collider2D probeCollider = probeColliders[i];
+                    if (probeCollider == null
+                        || probeCollider.isTrigger
+                        || !probeCollider.enabled
+                        || !probeCollider.gameObject.activeInHierarchy)
+                    {
+                        continue;
+                    }
+
+                    checkedCollider = true;
+                    Bounds bounds = probeCollider.bounds;
+                    Vector2 center = (Vector2)bounds.center + delta;
+                    Vector2 extents = new(
+                        Mathf.Max(0f, bounds.extents.x - safeInset),
+                        Mathf.Max(0f, bounds.extents.y - safeInset));
+                    if (!IsGroundedAt(center, MinProbeRadius, groundMask)
+                        || !IsGroundedAt(center + Vector2.left * extents.x, MinProbeRadius, groundMask)
+                        || !IsGroundedAt(center + Vector2.right * extents.x, MinProbeRadius, groundMask)
+                        || !IsGroundedAt(center + Vector2.down * extents.y, MinProbeRadius, groundMask)
+                        || !IsGroundedAt(center + Vector2.up * extents.y, MinProbeRadius, groundMask))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return checkedCollider
+                || IsGroundedAt(target, MinProbeRadius, groundMask);
+        }
+
         public static Vector2 ClampPointMovement(
             Vector2 current,
             Vector2 target,

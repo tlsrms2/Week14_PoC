@@ -11,9 +11,9 @@ namespace Week14.Combat
         private const string FinalExecutionHeadName = "Head";
         private const string WallLayerName = "Wall";
         private const float TeleportColliderInset = 0.02f;
-        private const float TeleportWallFallbackMinStep = 0.25f;
-        private const float TeleportWallFallbackColliderHeightRatio = 0.5f;
-        private const int TeleportWallFallbackMaxSteps = 8;
+        private const float TeleportFallbackMinStep = 0.25f;
+        private const float TeleportFallbackColliderHeightRatio = 0.5f;
+        private const int TeleportFallbackMaxSteps = 8;
 
         private readonly PlayerCombatController.PlayerCombatContext context;
         private readonly PlayerCombatRig rig;
@@ -546,13 +546,13 @@ namespace Week14.Combat
             Collider2D[] playerColliders,
             out Vector2 destination)
         {
-            if (IsWallFreeTeleportPosition(originalPosition, preferredPosition, playerColliders))
+            if (IsSafeTeleportPosition(originalPosition, preferredPosition, playerColliders))
             {
                 destination = preferredPosition;
                 return true;
             }
 
-            if (TryFindWallFreeTeleportPositionBelow(
+            if (TryFindSafeTeleportPositionBelow(
                     originalPosition,
                     preferredPosition,
                     playerColliders,
@@ -561,30 +561,30 @@ namespace Week14.Combat
                 return true;
             }
 
-            if (IsWallFreeTeleportPosition(originalPosition, fallbackPosition, playerColliders))
+            if (IsSafeTeleportPosition(originalPosition, fallbackPosition, playerColliders))
             {
                 destination = fallbackPosition;
                 return true;
             }
 
-            return TryFindWallFreeTeleportPositionBelow(
+            return TryFindSafeTeleportPositionBelow(
                 originalPosition,
                 fallbackPosition,
                 playerColliders,
                 out destination);
         }
 
-        private static bool TryFindWallFreeTeleportPositionBelow(
+        private static bool TryFindSafeTeleportPositionBelow(
             Vector2 originalPosition,
             Vector2 blockedPosition,
             Collider2D[] playerColliders,
             out Vector2 destination)
         {
-            float stepDistance = GetTeleportWallFallbackStep(playerColliders);
-            for (int step = 1; step <= TeleportWallFallbackMaxSteps; step++)
+            float stepDistance = GetTeleportFallbackStep(playerColliders);
+            for (int step = 1; step <= TeleportFallbackMaxSteps; step++)
             {
                 Vector2 candidate = blockedPosition + Vector2.down * (stepDistance * step);
-                if (IsWallFreeTeleportPosition(originalPosition, candidate, playerColliders))
+                if (IsSafeTeleportPosition(originalPosition, candidate, playerColliders))
                 {
                     destination = candidate;
                     return true;
@@ -595,7 +595,7 @@ namespace Week14.Combat
             return false;
         }
 
-        private static float GetTeleportWallFallbackStep(Collider2D[] playerColliders)
+        private static float GetTeleportFallbackStep(Collider2D[] playerColliders)
         {
             float maxColliderHeight = 0f;
             for (int i = 0; i < playerColliders.Length; i++)
@@ -608,8 +608,21 @@ namespace Week14.Combat
             }
 
             return Mathf.Max(
-                TeleportWallFallbackMinStep,
-                maxColliderHeight * TeleportWallFallbackColliderHeightRatio);
+                TeleportFallbackMinStep,
+                maxColliderHeight * TeleportFallbackColliderHeightRatio);
+        }
+
+        private static bool IsSafeTeleportPosition(
+            Vector2 originalPosition,
+            Vector2 candidatePosition,
+            Collider2D[] playerColliders)
+        {
+            return IsWallFreeTeleportPosition(originalPosition, candidatePosition, playerColliders)
+                && GroundMovementConstraint.IsColliderFootprintGrounded(
+                    originalPosition,
+                    candidatePosition,
+                    playerColliders,
+                    TeleportColliderInset);
         }
 
         private static bool IsWallFreeTeleportPosition(
