@@ -18,11 +18,19 @@ namespace Week14.Combat
         private float nextBayonetAttackTime;
         private BaseballBatRangePreviewVfx baseballBatRangePreview;
         private BaseballBatDisplayVfx baseballBatDisplayVfx;
+        private float baseballBatCurrentRotationDegrees;
+        private Vector3 baseballBatCurrentScale = Vector3.one;
+        private Color baseballBatCurrentColor = Color.white;
+        private bool baseballBatWindingUp;
+        private float baseballBatWindUpElapsed;
+        private float baseballBatWindUpDuration;
+        private float baseballBatWindUpStartDegrees;
         private bool baseballBatSwinging;
         private float baseballBatSwingElapsed;
         private float baseballBatSwingDuration;
         private float baseballBatSwingStartDegrees;
-        private float baseballBatSwingEndDegrees;
+        private Vector3 baseballBatSwingStartScale;
+        private Color baseballBatSwingColor = Color.white;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -120,8 +128,10 @@ namespace Week14.Combat
             baseballBatRangePreview = null;
         }
 
-        // 차징 중(-N까지 서서히 회전)에 매 홀드 프레임마다 BaseballBatWeaponSO.HoldAttack에서 호출됩니다.
-        public void UpdateBaseballBatWindUp(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite)
+        // 차징이 시작되는 순간(BeginAttack) 호출됩니다. 현재 각도(보통 idle 0도)에서 -N까지
+        // WindUpSnapSeconds 동안 빠르게 회전하는 스냅 트윈을 시작합니다. 실제 진행은
+        // UpdateBaseballBatCharging이 매 홀드 프레임마다 처리합니다.
+        public void BeginBaseballBatWindUp(BaseballBatVfxSettings vfxSettings)
         {
             if (vfxSettings == null)
             {
@@ -129,28 +139,61 @@ namespace Week14.Combat
             }
 
             baseballBatSwinging = false;
-            float rotation = Mathf.Lerp(0f, -vfxSettings.DisplayWindUpDegrees, Mathf.Clamp01(charge01));
-            ApplyBaseballBatDisplayPose(vfxSettings, sprite, rotation);
+            baseballBatWindingUp = true;
+            baseballBatWindUpElapsed = 0f;
+            baseballBatWindUpStartDegrees = baseballBatCurrentRotationDegrees;
+            baseballBatWindUpDuration = Mathf.Max(0.01f, vfxSettings.WindUpSnapSeconds);
         }
 
-        // 공격이 나가는 순간 -N(와인드업 종료 각도)에서 +N까지 스윙하는 타이머를 시작합니다.
-        // 실제 진행은 매 프레임 UpdateBaseballBatDisplay에서 처리됩니다.
-        public void StartBaseballBatSwingThrough(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite, float durationSeconds)
+        // 차징 중(HoldAttack)에 매 프레임 호출됩니다. 와인드업 스냅이 아직 진행 중이면 그걸 마무리하고,
+        // 끝난 뒤에는 회전을 -N에 고정한 채 차징 진행도(0~1)에 비례해서 크기만 커집니다.
+        public void UpdateBaseballBatCharging(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite)
         {
             if (vfxSettings == null)
             {
                 return;
             }
 
-            float clamped01 = Mathf.Clamp01(charge01);
-            baseballBatSwingStartDegrees = Mathf.Lerp(0f, -vfxSettings.DisplayWindUpDegrees, clamped01);
-            baseballBatSwingEndDegrees = Mathf.Lerp(0f, vfxSettings.DisplayWindUpDegrees, clamped01);
-            baseballBatSwingElapsed = 0f;
-            baseballBatSwingDuration = Mathf.Max(0.01f, durationSeconds);
-            baseballBatSwinging = true;
+            if (baseballBatWindingUp)
+            {
+                baseballBatWindUpElapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(baseballBatWindUpElapsed / baseballBatWindUpDuration);
+                baseballBatCurrentRotationDegrees = Mathf.Lerp(baseballBatWindUpStartDegrees, -vfxSettings.DisplayWindUpDegrees, t);
+                if (t >= 1f)
+                {
+                    baseballBatWindingUp = false;
+                }
+            }
+            else
+            {
+                baseballBatCurrentRotationDegrees = -vfxSettings.DisplayWindUpDegrees;
+            }
+
+            Vector3 scale = Vector3.Lerp(vfxSettings.DisplayScale, vfxSettings.MaxChargeScale, Mathf.Clamp01(charge01));
+            Color color = vfxSettings.ResolveDisplayColor(charge01);
+            ApplyBaseballBatDisplayPose(vfxSettings, sprite, baseballBatCurrentRotationDegrees, scale, color);
         }
 
-        // 매 프레임(차징 여부와 무관하게) 호출됩니다. 차징 중일 때는 UpdateBaseballBatWindUp이 이미
+        // 공격이 실제로 나가는 순간(ReleaseAttack) 호출됩니다. 현재 각도(보통 -N)에서 +N까지
+        // durationSeconds 동안 빠르게 스윙하고, 동시에 크기를 기본 Display Scale로 되돌립니다.
+        // 실제 진행은 매 프레임 UpdateBaseballBatDisplay에서 처리됩니다.
+        public void StartBaseballBatSwingThrough(BaseballBatVfxSettings vfxSettings, float durationSeconds)
+        {
+            if (vfxSettings == null)
+            {
+                return;
+            }
+
+            baseballBatWindingUp = false;
+            baseballBatSwinging = true;
+            baseballBatSwingElapsed = 0f;
+            baseballBatSwingDuration = Mathf.Max(0.01f, durationSeconds);
+            baseballBatSwingStartDegrees = baseballBatCurrentRotationDegrees;
+            baseballBatSwingStartScale = baseballBatCurrentScale;
+            baseballBatSwingColor = baseballBatCurrentColor;
+        }
+
+        // 매 프레임(차징 여부와 무관하게) 호출됩니다. 차징 중일 때는 UpdateBaseballBatCharging이 이미
         // 포즈를 갱신하므로 여기서는 건드리지 않고, 스윙 스루 진행 또는 조준 방향을 향하는 대기 포즈만 처리합니다.
         public void UpdateBaseballBatDisplay()
         {
@@ -171,8 +214,9 @@ namespace Week14.Combat
             {
                 baseballBatSwingElapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(baseballBatSwingElapsed / baseballBatSwingDuration);
-                float rotation = Mathf.Lerp(baseballBatSwingStartDegrees, baseballBatSwingEndDegrees, t);
-                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, rotation);
+                float rotation = Mathf.Lerp(baseballBatSwingStartDegrees, vfxSettings.DisplayWindUpDegrees, t);
+                Vector3 scale = Vector3.Lerp(baseballBatSwingStartScale, vfxSettings.DisplayScale, t);
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, rotation, scale, baseballBatSwingColor);
                 if (t >= 1f)
                 {
                     baseballBatSwinging = false;
@@ -181,10 +225,10 @@ namespace Week14.Combat
                 return;
             }
 
-            ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, 0f);
+            ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, 0f, vfxSettings.DisplayScale, vfxSettings.ResolveDisplayColor(0f));
         }
 
-        private void ApplyBaseballBatDisplayPose(BaseballBatVfxSettings vfxSettings, Sprite sprite, float extraRotationDegrees)
+        private void ApplyBaseballBatDisplayPose(BaseballBatVfxSettings vfxSettings, Sprite sprite, float rotationDegrees, Vector3 scale, Color color)
         {
             if (vfxSettings == null || context.BaseballBatVfxAnchor == null)
             {
@@ -196,12 +240,18 @@ namespace Week14.Combat
                 GameObject displayObject = new GameObject("BaseballBatDisplayVfx");
                 displayObject.transform.SetParent(context.BaseballBatVfxAnchor, false);
                 baseballBatDisplayVfx = displayObject.AddComponent<BaseballBatDisplayVfx>();
-                baseballBatDisplayVfx.Initialize(sprite, vfxSettings.DisplaySortingOrder, vfxSettings.DisplayScale);
+                baseballBatDisplayVfx.Initialize(sprite, vfxSettings.DisplaySortingOrder, scale, color);
             }
             else
             {
                 baseballBatDisplayVfx.SetSprite(sprite);
+                baseballBatDisplayVfx.SetScale(scale);
+                baseballBatDisplayVfx.SetColor(color);
             }
+
+            baseballBatCurrentRotationDegrees = rotationDegrees;
+            baseballBatCurrentScale = scale;
+            baseballBatCurrentColor = color;
 
             Vector3 origin = context.BaseballBatVfxAnchor.position;
             Vector2 direction = aimController.GetAimDirection(context.BaseballBatVfxAnchor);
@@ -209,13 +259,15 @@ namespace Week14.Combat
                 origin,
                 direction,
                 vfxSettings.DisplayOffsetDistance,
-                extraRotationDegrees,
+                rotationDegrees,
                 vfxSettings.DisplaySpriteRotationOffsetDegrees);
         }
 
         private void HideBaseballBatDisplay()
         {
+            baseballBatWindingUp = false;
             baseballBatSwinging = false;
+            baseballBatCurrentRotationDegrees = 0f;
             if (baseballBatDisplayVfx == null)
             {
                 return;
