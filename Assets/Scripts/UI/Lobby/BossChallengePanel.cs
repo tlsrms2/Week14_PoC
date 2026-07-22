@@ -40,6 +40,9 @@ namespace Week14.UI
         public event Action RevealCompleted;
 
         private Coroutine revealRoutine;
+        private BossData activeRevealBossData;
+
+        public bool IsRevealPlaying => revealRoutine != null && activeRevealBossData != null;
 
         public void Show(BossData bossData)
         {
@@ -149,7 +152,23 @@ namespace Week14.UI
                 return;
             }
 
+            activeRevealBossData = bossData;
             revealRoutine = StartCoroutine(PlayRevealRoutine(bossData));
+        }
+
+        // 진행 중인 슬롯별 공개 연출을 중단하고 모든 슬롯의 최종 판정 상태를 한 번에 표시합니다.
+        // 완료 이벤트는 일반 연출이 끝났을 때와 동일하게 한 번만 발생합니다.
+        public void CompleteRevealImmediately()
+        {
+            if (!IsRevealPlaying)
+            {
+                return;
+            }
+
+            BossData bossData = activeRevealBossData;
+            StopRevealRoutine();
+            ShowRevealResultsImmediate(bossData);
+            RevealCompleted?.Invoke();
         }
 
         public void Hide()
@@ -232,7 +251,42 @@ namespace Week14.UI
             }
 
             revealRoutine = null;
+            activeRevealBossData = null;
             RevealCompleted?.Invoke();
+        }
+
+        private void ShowRevealResultsImmediate(BossData bossData)
+        {
+            string bossId = bossData.Id;
+            int index = 0;
+            foreach (ChallengeDefinitionSO definition in database.ForBoss(bossId))
+            {
+                if (index >= slots.Length)
+                {
+                    break;
+                }
+
+                if (slots[index] != null)
+                {
+                    slots[index].ShowRevealResultImmediate(
+                        definition,
+                        bossId,
+                        completedSprite,
+                        incompleteSprite,
+                        clearedTextColor,
+                        notClearedTextColor);
+                }
+
+                index++;
+            }
+
+            for (; index < slots.Length; index++)
+            {
+                if (slots[index] != null)
+                {
+                    slots[index].Clear();
+                }
+            }
         }
 
         private static bool IsAlreadyClearedBeforeRun(string bossId, string challengeId)
@@ -248,6 +302,8 @@ namespace Week14.UI
                 StopCoroutine(revealRoutine);
                 revealRoutine = null;
             }
+
+            activeRevealBossData = null;
         }
 
         private void ClearAll()

@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Week14.Challenge;
@@ -27,6 +28,7 @@ namespace Week14.UI
 
         [Header("Victory")]
         [SerializeField] private GameObject victoryRoot;
+        [SerializeField] private Button victoryRestartButton;
         [SerializeField] private Button victoryLobbyButton;
         [SerializeField] private BossChallengePanel victoryChallengePanel;
         [SerializeField] private TMP_Text victoryElapsedTimeText;
@@ -45,6 +47,10 @@ namespace Week14.UI
         private Selectable pendingFocusTarget;
         private bool victoryIsFinalBoss;
         private BossAI cachedBoss;
+        private int resultOpenedFrame = -1;
+        private GameObject activeResultRoot;
+        private BossChallengePanel activeChallengePanel;
+        private Coroutine buttonInputGateRoutine;
 
         private void Awake()
         {
@@ -94,6 +100,10 @@ namespace Week14.UI
                 UnfreezeGame();
             }
 
+            StopButtonInputGate();
+            SetActiveResultButtonsInteractable(true);
+            activeResultRoot = null;
+            activeChallengePanel = null;
             resultOpen = false;
             RefreshInputBlock();
         }
@@ -101,6 +111,7 @@ namespace Week14.UI
         private void Update()
         {
             TrySubscribePlayer();
+            TrySkipChallengeReveal();
         }
 
         public void RestartScene()
@@ -120,6 +131,7 @@ namespace Week14.UI
             restartButton ??= FindComponent<Button>("RestartButton");
             gameOverLobbyButton ??= FindComponentIn<Button>(gameOverRoot, "LobbyButton")
                 ?? FindComponent<Button>("GameOverLobbyButton");
+            victoryRestartButton ??= FindComponentIn<Button>(victoryRoot, "RestartButton");
             victoryLobbyButton ??= FindComponentIn<Button>(victoryRoot, "LobbyButton")
                 ?? FindComponent<Button>("VictoryLobbyButton");
         }
@@ -128,6 +140,7 @@ namespace Week14.UI
         {
             restartButton?.onClick.AddListener(RestartScene);
             gameOverLobbyButton?.onClick.AddListener(ReturnToLobby);
+            victoryRestartButton?.onClick.AddListener(RestartScene);
             victoryLobbyButton?.onClick.AddListener(HandleVictoryLobbyButtonClicked);
         }
 
@@ -248,7 +261,7 @@ namespace Week14.UI
             gameOverChallengePanel?.PrepareReveal(bossData);
 
             HideResultButtonsFor(gameOverRoot);
-            ShowResult(gameOverRoot, restartButton);
+            ShowResult(gameOverRoot, restartButton, gameOverChallengePanel);
             SyncChallengeReveal(gameOverChallengePanel, gameOverRoot);
             SetElapsedTimeText(gameOverElapsedTimeText, boss);
 
@@ -293,9 +306,13 @@ namespace Week14.UI
             GameObject targetRoot = victoryRoot != null ? victoryRoot : gameOverRoot;
             victoryChallengePanel?.PrepareReveal(bossData);
 
-            Selectable focusTarget = victoryLobbyButton != null ? victoryLobbyButton : gameOverLobbyButton;
+            Selectable focusTarget = victoryRestartButton != null
+                ? victoryRestartButton
+                : victoryLobbyButton != null
+                    ? victoryLobbyButton
+                    : gameOverLobbyButton;
             HideResultButtonsFor(targetRoot);
-            ShowResult(targetRoot, focusTarget);
+            ShowResult(targetRoot, focusTarget, victoryChallengePanel);
             SyncChallengeReveal(victoryChallengePanel, targetRoot);
             SetElapsedTimeText(victoryElapsedTimeText, boss, true);
 
@@ -333,8 +350,13 @@ namespace Week14.UI
             }
         }
 
-        private void ShowResult(GameObject targetRoot, Selectable focusTarget)
+        private void ShowResult(
+            GameObject targetRoot,
+            Selectable focusTarget,
+            BossChallengePanel challengePanel)
         {
+            activeResultRoot = targetRoot;
+            activeChallengePanel = challengePanel;
             pendingFocusTarget = focusTarget;
             SetResultVisible(true, targetRoot);
         }
@@ -348,7 +370,7 @@ namespace Week14.UI
 
             if (targetRoot == victoryRoot)
             {
-                SetButtonsActive(false, victoryLobbyButton);
+                SetButtonsActive(false, victoryRestartButton, victoryLobbyButton);
             }
         }
 
@@ -362,7 +384,7 @@ namespace Week14.UI
 
             if (victoryRoot != null && victoryRoot.activeSelf)
             {
-                SetButtonsActive(true, victoryLobbyButton);
+                SetButtonsActive(true, victoryRestartButton, victoryLobbyButton);
             }
 
             FocusSelectable(pendingFocusTarget);
@@ -408,15 +430,116 @@ namespace Week14.UI
 
             if (visible)
             {
+                resultOpenedFrame = Time.frameCount;
                 FreezeGame();
             }
             else
             {
+                StopButtonInputGate();
+                SetActiveResultButtonsInteractable(true);
+                activeResultRoot = null;
+                activeChallengePanel = null;
                 pendingFocusTarget = null;
+                resultOpenedFrame = -1;
                 UnfreezeGame();
             }
 
             RefreshInputBlock();
+        }
+
+        private void TrySkipChallengeReveal()
+        {
+            // 보스를 쓰러뜨린 공격 클릭이 같은 프레임에 결과 연출까지 건너뛰지 않도록 다음 프레임부터 받습니다.
+            if (!resultOpen || Time.frameCount <= resultOpenedFrame || !WasLeftClickPressedThisFrame())
+            {
+                return;
+            }
+
+            if (activeChallengePanel == null || !activeChallengePanel.IsRevealPlaying)
+            {
+                return;
+            }
+
+            activeChallengePanel.CompleteRevealImmediately();
+            SyncChallengeReveal(activeChallengePanel, activeResultRoot);
+            ShowPixelRevealsImmediate(activeResultRoot);
+            GateResultButtonsUntilClickReleased();
+        }
+
+        private static bool WasLeftClickPressedThisFrame()
+        {
+            return Mouse.current?.leftButton.wasPressedThisFrame == true;
+        }
+
+        private static void ShowPixelRevealsImmediate(GameObject root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            PixelBlockRevealView[] revealViews = root.GetComponentsInChildren<PixelBlockRevealView>(true);
+            for (int i = 0; i < revealViews.Length; i++)
+            {
+                revealViews[i].ShowImmediate();
+            }
+        }
+
+        private void GateResultButtonsUntilClickReleased()
+        {
+            StopButtonInputGate();
+            SetActiveResultButtonsInteractable(false);
+            buttonInputGateRoutine = StartCoroutine(EnableResultButtonsAfterClickReleased());
+        }
+
+        private IEnumerator EnableResultButtonsAfterClickReleased()
+        {
+            // 현재 스킵 클릭의 PointerDown/PointerUp이 방금 나타난 버튼 클릭으로 이어지지 않게
+            // 최소 한 프레임을 넘기고, 버튼을 뗀 뒤에 상호작용을 허용합니다.
+            do
+            {
+                yield return null;
+            }
+            while (Mouse.current?.leftButton.isPressed == true);
+
+            SetActiveResultButtonsInteractable(true);
+            buttonInputGateRoutine = null;
+        }
+
+        private void StopButtonInputGate()
+        {
+            if (buttonInputGateRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(buttonInputGateRoutine);
+            buttonInputGateRoutine = null;
+        }
+
+        private void SetActiveResultButtonsInteractable(bool interactable)
+        {
+            if (activeResultRoot != null && activeResultRoot == victoryRoot)
+            {
+                SetButtonsInteractable(interactable, victoryRestartButton, victoryLobbyButton);
+                return;
+            }
+
+            if (activeResultRoot != null && activeResultRoot == gameOverRoot)
+            {
+                SetButtonsInteractable(interactable, restartButton, gameOverLobbyButton);
+            }
+        }
+
+        private static void SetButtonsInteractable(bool interactable, params Button[] buttons)
+        {
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    buttons[i].interactable = interactable;
+                }
+            }
         }
 
         private static void SetRootVisible(GameObject root, bool visible)

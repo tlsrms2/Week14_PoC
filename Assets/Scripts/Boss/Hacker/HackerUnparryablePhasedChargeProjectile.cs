@@ -5,6 +5,8 @@ namespace Week14.Enemy
     [AddComponentMenu("Week14/Boss/Hacker Unparryable Phased Charge Projectile")]
     public sealed class HackerUnparryablePhasedChargeProjectile : HackerPhasedChargeProjectile
     {
+        protected override bool AllowsReflectionWhenInterceptDisabled => true;
+
         protected override void OnProjectileAwake()
         {
             base.OnProjectileAwake();
