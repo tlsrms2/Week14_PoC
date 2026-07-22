@@ -365,12 +365,16 @@ namespace Week14.Save
             SetPrologueSeen(seen);
         }
 
+        // 도전과제 연동용: 튜토리얼을 최초로 완료한 순간에만 발생합니다.
+        public static event Action TutorialCompleted;
+
         public static void MarkTutorialCompleted()
         {
             if (!Data.hasCompletedTutorial)
             {
                 Data.hasCompletedTutorial = true;
                 Save();
+                TutorialCompleted?.Invoke();
             }
 
             UnlockDefaultBoss();
@@ -692,7 +696,10 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints - price);
             Data.purchasedSkillIds.Add(skillId);
             Save();
-            ItemPurchased?.Invoke();
+            if (price > 0)
+            {
+                ItemPurchased?.Invoke();
+            }
             return true;
         }
 
@@ -736,7 +743,10 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints - price);
             Data.purchasedPassiveSkillIds.Add(skillId);
             Save();
-            ItemPurchased?.Invoke();
+            if (price > 0)
+            {
+                ItemPurchased?.Invoke();
+            }
             return true;
         }
 
@@ -831,7 +841,10 @@ namespace Week14.Save
             SetChallengePoints(Data.challengePoints - price);
             Data.purchasedWeaponIds.Add(weaponId);
             Save();
-            ItemPurchased?.Invoke();
+            if (price > 0)
+            {
+                ItemPurchased?.Invoke();
+            }
             return true;
         }
 
@@ -867,6 +880,34 @@ namespace Week14.Save
         public static bool IsChallengeCompleted(string challengeId)
         {
             return !string.IsNullOrEmpty(challengeId) && Data.completedChallengeIds.Contains(challengeId);
+        }
+
+        // 도전과제 연동용: 총기/액티브 스킬/패시브 스킬(=모듈)을 합쳐서 지금까지 구매한 총 개수입니다.
+        public static int GetPurchasedModuleCount()
+        {
+            return Data.purchasedSkillIds.Count + Data.purchasedPassiveSkillIds.Count + Data.purchasedWeaponIds.Count;
+        }
+
+        // 도전과제 연동용: 해당 보스의 챌린지 중 지금까지 완료한 개수입니다. CompleteChallenge가 호출될 때마다 자동으로 늘어납니다.
+        public static int GetCompletedChallengeCount(string bossId)
+        {
+            if (string.IsNullOrEmpty(bossId))
+            {
+                return 0;
+            }
+
+            string prefix = bossId + ":";
+            List<string> completed = Data.completedChallengeIds;
+            int count = 0;
+            for (int i = 0; i < completed.Count; i++)
+            {
+                if (completed[i].StartsWith(prefix))
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         public static void CompleteChallenge(string challengeId, int rewardPoint)

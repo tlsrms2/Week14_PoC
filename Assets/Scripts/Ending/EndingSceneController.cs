@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Week14.Cutscene;
 using Week14.GameFlow;
@@ -81,11 +82,15 @@ namespace Week14.Ending
             SetPanel(creditsRoot, false);
         }
 
+        // 도전과제 연동용: 엔딩 크레딧 스크롤이 표시되는 시점에 발생합니다.
+        public static event Action CreditsShown;
+
         private void ShowCredits()
         {
             state = EndingState.Credits;
             SetPanel(thanksToRoot, false);
             SetPanel(creditsRoot, true);
+            CreditsShown?.Invoke();
         }
 
         private void Advance()

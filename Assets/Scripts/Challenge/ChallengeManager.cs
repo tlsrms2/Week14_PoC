@@ -20,6 +20,9 @@ namespace Week14.Challenge
         // 가장 최근 전투 종료(EvaluateAndSave) 시 새로 지급된 포인트 총합입니다. 이미 완료했던 챌린지는 포함하지 않습니다.
         public int LastRunEarnedPoints { get; private set; }
 
+        // 챌린지가 하나 완료 확정될 때마다 발생합니다(이미 완료된 챌린지 재완료는 제외). Steam 업적 연동 등 외부 구독자를 위한 이벤트입니다.
+        public static event System.Action<string> ChallengeCompleted;
+
         private readonly List<(ChallengeDefinitionSO Definition, ChallengeRunState Run)> activeRuns = new();
         private readonly HashSet<string> alreadyCompletedBeforeRun = new();
         private readonly Dictionary<string, int> progressBeforeRun = new();
@@ -291,6 +294,7 @@ namespace Week14.Challenge
                 {
                     GameSaveManager.CompleteChallenge(saveKey, definition.RewardPoint);
                     LastRunEarnedPoints += definition.RewardPoint;
+                    ChallengeCompleted?.Invoke(currentBossId);
                 }
             }
 
