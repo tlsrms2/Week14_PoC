@@ -10147,7 +10147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &645838571
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21939,6 +21939,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.ResolutionDropdownView
   resolutionDropdown: {fileID: 1346912134}
   fullscreenToggle: {fileID: 1560032149}
+  fixedResolutions:
+  - {x: 1280, y: 720}
+  - {x: 1920, y: 1080}
+  - {x: 2560, y: 1440}
+  - {x: 3840, y: 2160}
+  - {x: 1280, y: 800}
+  - {x: 1680, y: 1050}
+  - {x: 1920, y: 1200}
+  - {x: 2560, y: 1600}
 --- !u!114 &1346912134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34940,7 +34949,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1601ee9cdcdb18f4fb6f1ee5f24c53a9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10a7489180a2c2547b1028b352b1a291, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -244,13 +244,33 @@ namespace Week14.Skills
             ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
             if (vfxSettings != null)
             {
+                // PlayAnchoredPrefab은 spawnParent(cloneVisualRoot)의 lossyScale을 그대로 곱해서 적용합니다.
+                // cloneVisualRoot는 플레이어 몸통 스케일을 복제해서 쓰기 때문에 스케일이 1이 아니고,
+                // 실제 배트 스윙이 붙는 BaseballBatVfxAnchor도 (그 조상 오브젝트 스케일 때문에) 1이 아닙니다.
+                // 두 앵커의 실제 런타임 lossyScale 비율만큼 미리 보정해야 실제 스윙과 같은 월드 크기로 나옵니다.
+                Transform realAnchor = owner != null ? owner.Context.BaseballBatVfxAnchor : null;
+                Vector3 realAnchorScale = realAnchor != null ? realAnchor.lossyScale : Vector3.one;
+                Vector3 cloneParentScale = cloneVisualRoot.transform.lossyScale;
+                Vector3 scaleRatio = new Vector3(
+                    GetSafeScaleRatio(realAnchorScale.x, cloneParentScale.x),
+                    GetSafeScaleRatio(realAnchorScale.y, cloneParentScale.y),
+                    GetSafeScaleRatio(realAnchorScale.z, cloneParentScale.z));
+
+                Vector2 rawOffset = vfxSettings.GetRightFacingLocalOffset(charge01);
+                Vector2 compensatedOffset = new Vector2(
+                    rawOffset.x * scaleRatio.x,
+                    rawOffset.y * scaleRatio.y);
+
+                Vector3 rawScale = vfxSettings.GetLocalScale(range);
+                Vector3 compensatedScale = Vector3.Scale(rawScale, scaleRatio);
+
                 ProjectileVfx.PlayAnchoredPrefab(
                     vfxSettings.ResolveSwingVfxPrefab(charge01),
                     cloneVisualRoot.transform,
                     direction,
-                    vfxSettings.GetRightFacingLocalOffset(charge01),
+                    compensatedOffset,
                     vfxSettings.RotationOffsetDegrees,
-                    vfxSettings.GetLocalScale(range),
+                    compensatedScale,
                     vfxSettings.PlaybackSpeed,
                     vfxSettings.SortingOrder);
                 ProjectileVfx.PlaySemicircleFlash(
@@ -260,6 +280,14 @@ namespace Week14.Skills
                     vfxSettings.RangeIndicatorColor,
                     vfxSettings.RangeIndicatorSeconds);
             }
+        }
+
+        // targetScale/parentScale 둘 다 부호(좌우 반전)는 무시하고 크기 비율만 계산합니다.
+        // 반전에 따른 회전 보정은 PlayAnchoredPrefab의 InverseTransformDirection이 이미 처리합니다.
+        private static float GetSafeScaleRatio(float targetScale, float parentScale)
+        {
+            float safeParentScale = Mathf.Max(0.0001f, Mathf.Abs(parentScale));
+            return Mathf.Abs(targetScale) / safeParentScale;
         }
 
         private BossAI ResolveTargetBoss()

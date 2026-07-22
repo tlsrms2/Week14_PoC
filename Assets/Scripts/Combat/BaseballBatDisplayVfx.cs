@@ -6,11 +6,12 @@ namespace Week14.Combat
     {
         private SpriteRenderer spriteRenderer;
 
-        public void Initialize(Sprite sprite, int sortingOrder, Vector3 scale)
+        public void Initialize(Sprite sprite, int sortingOrder, Vector3 scale, Color color)
         {
             spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = sprite;
             spriteRenderer.sortingOrder = sortingOrder;
+            spriteRenderer.color = color;
             transform.localScale = scale;
         }
 
@@ -19,6 +20,19 @@ namespace Week14.Combat
             if (spriteRenderer != null)
             {
                 spriteRenderer.sprite = sprite;
+            }
+        }
+
+        public void SetScale(Vector3 scale)
+        {
+            transform.localScale = scale;
+        }
+
+        public void SetColor(Color color)
+        {
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = color;
             }
         }
 
