@@ -77,7 +77,7 @@ MonoBehaviour:
   maxAttackRange: 3
   maxChargeSeconds: 2
   reflectedDamage: 3
-  reflectedProjectileSpeed: 8
+  reflectedProjectileSpeed: 16
   vfxSettings:
     swingVfxPrefab: {fileID: 6854184655998648417, guid: 87e71eb9a8d402140820a1d43a0aa1db, type: 3}
     halfChargeSwingVfxPrefab: {fileID: 6363651038449797208, guid: eb9dc1b3379755b47a54eef522c6721a, type: 3}
