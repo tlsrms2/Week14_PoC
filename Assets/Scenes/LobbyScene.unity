@@ -8992,6 +8992,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.UI.ResolutionDropdownView
   resolutionDropdown: {fileID: 870628261}
   fullscreenToggle: {fileID: 2115305098}
+  fixedResolutions:
+  - {x: 1280, y: 720}
+  - {x: 1920, y: 1080}
+  - {x: 2560, y: 1440}
+  - {x: 3840, y: 2160}
+  - {x: 1280, y: 800}
+  - {x: 1680, y: 1050}
+  - {x: 1920, y: 1200}
+  - {x: 2560, y: 1600}
 --- !u!114 &870628261
 MonoBehaviour:
   m_ObjectHideFlags: 0
