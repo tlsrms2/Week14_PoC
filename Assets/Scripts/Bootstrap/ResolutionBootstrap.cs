@@ -16,8 +16,9 @@ namespace Week14.Bootstrap
 
             if (width > 0 && height > 0)
             {
-                FullScreenMode mode = FullScreenModeResolver.Resolve(width, height, requestedMode);
-                Screen.SetResolution(width, height, mode);
+                (int effectiveWidth, int effectiveHeight) = FullScreenModeResolver.GetEffectiveScreenResolution(width, height, requestedMode);
+                FullScreenMode mode = FullScreenModeResolver.Resolve(effectiveWidth, effectiveHeight, requestedMode);
+                Screen.SetResolution(effectiveWidth, effectiveHeight, mode);
             }
             else if (SettingsManager.FullScreenModeValue.HasValue)
             {
