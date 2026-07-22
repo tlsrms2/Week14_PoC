@@ -153,6 +153,11 @@ namespace Week14.Combat
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
+        public bool CanBeReflected => !resolved
+            && !isDestroying
+            && !reflectedByPlayer
+            && !interceptPending
+            && (canBeIntercepted || AllowsReflectionWhenInterceptDisabled);
         public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public BossAI OwnerBoss => ownerBoss;
@@ -176,6 +181,7 @@ namespace Week14.Combat
         protected bool WillSplitRadiallyOnLaunch => splitRadiallyOnLaunch && radialSplitBulletCount > 0;
         protected virtual bool UsesProjectileVisibility => true;
         protected virtual bool ShowsPathIndicator => true;
+        protected virtual bool AllowsReflectionWhenInterceptDisabled => false;
         protected Vector2 FlightDirection
         {
             get => flightDirection;
@@ -593,7 +599,7 @@ namespace Week14.Combat
         public bool TryReflectTowardOwnerBoss(float speed, int damage, out BossAI targetBoss)
         {
             targetBoss = ResolveReflectionTargetBoss();
-            if (!CanReceiveInterceptShot() || targetBoss == null)
+            if (!CanBeReflected || targetBoss == null)
             {
                 return false;
             }
@@ -616,6 +622,7 @@ namespace Week14.Combat
             SetChargeVfxVisible(false);
             SetPathIndicatorVisible(false);
             SetParryLockOnIndicatorVisible(false);
+            OnProjectileReflected();
             RefreshReflectedDirection();
             RefreshRuntimeVelocity();
             return true;

@@ -240,6 +240,7 @@ namespace Week14.Skills
                 return;
             }
 
+            DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
             ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
             if (vfxSettings != null)
             {
@@ -740,7 +741,7 @@ namespace Week14.Skills
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
                 EnemyProjectile projectile = activeProjectiles[i];
-                if (projectile == null || !projectile.CanBeIntercepted || !OverlapsSemicircle(projectile, origin, direction, range))
+                if (projectile == null || !projectile.CanBeReflected || !OverlapsSemicircle(projectile, origin, direction, range))
                 {
                     continue;
                 }
@@ -754,6 +755,25 @@ namespace Week14.Skills
                         0.12f,
                         new Color(1f, 0.65f, 0.25f, 0.85f));
                 }
+            }
+        }
+
+        private static void DestroyDeployedConductorTurretsInSemicircle(
+            Vector2 origin,
+            Vector2 direction,
+            float range)
+        {
+            var activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                if (activeProjectiles[i] is not ConductorTurretProjectile turret
+                    || !turret.IsPlayerTargetable
+                    || !OverlapsSemicircle(turret, origin, direction, range))
+                {
+                    continue;
+                }
+
+                turret.TryDestroyByBaseballBat(turret.transform.position, direction);
             }
         }
 

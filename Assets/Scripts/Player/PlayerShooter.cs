@@ -320,8 +320,30 @@ namespace Week14.Combat
             float reflectedSpeed)
         {
             Vector2 origin = context.CombatCenterOrigin.position;
+            DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
             ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
             context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
+        }
+
+        private static void DestroyDeployedConductorTurretsInSemicircle(
+            Vector2 origin,
+            Vector2 direction,
+            float range)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+
+            // 파괴 시 활성 투사체 목록에서 빠지므로 인덱스가 밀리지 않도록 뒤에서부터 순회합니다.
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                if (activeProjectiles[i] is not ConductorTurretProjectile turret
+                    || !turret.IsPlayerTargetable
+                    || !OverlapsSemicircle(turret, origin, direction, range))
+                {
+                    continue;
+                }
+
+                turret.TryDestroyByBaseballBat(turret.transform.position, direction);
+            }
         }
 
         private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
@@ -368,7 +390,7 @@ namespace Week14.Combat
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
                 EnemyProjectile projectile = activeProjectiles[i];
-                if (projectile == null || !projectile.CanBeIntercepted)
+                if (projectile == null || !projectile.CanBeReflected)
                 {
                     continue;
                 }
