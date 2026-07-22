@@ -80,10 +80,10 @@ MonoBehaviour:
   reflectedProjectileSpeed: 8
   vfxSettings:
     swingVfxPrefab: {fileID: 6854184655998648417, guid: 87e71eb9a8d402140820a1d43a0aa1db, type: 3}
-    halfChargeSwingVfxPrefab: {fileID: 0}
-    fullChargeSwingVfxPrefab: {fileID: 0}
+    halfChargeSwingVfxPrefab: {fileID: 6363651038449797208, guid: eb9dc1b3379755b47a54eef522c6721a, type: 3}
+    fullChargeSwingVfxPrefab: {fileID: 4548737849335725777, guid: 58c67ea5460ce064d811974c3d017e1a, type: 3}
     rightFacingLocalOffset: {x: 1.8, y: 0}
-    maxRightFacingXOffset: 1.8
+    maxRightFacingXOffset: 3.2
     rotationOffsetDegrees: 0
     localScale: {x: 13.03781, y: 18, z: 13.03781}
     scaleWithAttackRange: 1
@@ -92,8 +92,8 @@ MonoBehaviour:
     playbackSpeed: 2
     attackHitDelaySeconds: 0.0165
     rangeIndicatorSeconds: 0.0165
-    rangeIndicatorColor: {r: 1, g: 0.55, b: 0.1, a: 0.6}
-    previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0.35}
+    rangeIndicatorColor: {r: 1, g: 0.55, b: 0.1, a: 0}
+    previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0}
   swingSfxId: 
   moveSpeedMultiplier: 1.5
   references:
