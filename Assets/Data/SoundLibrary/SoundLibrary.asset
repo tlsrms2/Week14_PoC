@@ -30,7 +30,7 @@ MonoBehaviour:
     volume: 0.4
     pitch: 1
   - id: Boss3BGM
-    clip: {fileID: 8300000, guid: 1f061c54f41f9e9458300848140c10fd, type: 3}
+    clip: {fileID: 8300000, guid: a0a7810644065e641841f85ab042debe, type: 3}
     volume: 0.4
     pitch: 1
   - id: Boss4BGM
@@ -38,8 +38,8 @@ MonoBehaviour:
     volume: 0.4
     pitch: 1
   - id: Boss5BGM
-    clip: {fileID: 8300000, guid: a0a7810644065e641841f85ab042debe, type: 3}
-    volume: 0.4
+    clip: {fileID: 8300000, guid: 3352307de28ce974282942f05310a98c, type: 3}
+    volume: 1.35
     pitch: 1
   - id: CutSceneBGM
     clip: {fileID: 8300000, guid: 014aaa41c8f6a7f4192e916afc993d0f, type: 3}
@@ -160,15 +160,15 @@ MonoBehaviour:
     pitch: 1
   - id: BaseballBatSwing
     clip: {fileID: 8300000, guid: 7f9e5a9a1a09e674f866efd0d002cb8e, type: 3}
-    volume: 1
+    volume: 1.1
     pitch: 1
   - id: BaseballBatCharging
     clip: {fileID: 8300000, guid: 6bc8287c02110374aa2182ef94c94ece, type: 3}
-    volume: 0.7
+    volume: 1
     pitch: 1
   - id: Walk
     clip: {fileID: 8300000, guid: 4664f03676e77ab45821dadb8553ff1d, type: 3}
-    volume: 0.7
+    volume: 2
     pitch: 1
   - id: ChallengeResult
     clip: {fileID: 8300000, guid: 4e6214f295a89bf4591a03f5db074a94, type: 3}
@@ -176,9 +176,9 @@ MonoBehaviour:
     pitch: 1
   - id: GetPoint
     clip: {fileID: 8300000, guid: 47df500798bc6a34ca64849aea968e72, type: 3}
-    volume: 0.7
+    volume: 2
     pitch: 1
   - id: Whip
     clip: {fileID: 8300000, guid: 849798c7b9a924a4fbaf11e2e181b2f1, type: 3}
-    volume: 0.7
+    volume: 2
     pitch: 1
