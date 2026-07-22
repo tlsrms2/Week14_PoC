@@ -80,6 +80,9 @@ namespace Week14.Enemy
             Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             bool isDirectionLocked = directionLockTime <= 0f;
             BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(dashDistance);
+            BossDashAttackArea attackArea = trajectoryVfx != null
+                ? trajectoryVfx.AttackArea
+                : default;
             if (trajectoryVfx != null)
             {
                 context.RegisterTransientVisual(trajectoryVfx.gameObject);
@@ -134,6 +137,7 @@ namespace Week14.Enemy
             object facingLockOwner = new();
             context.SetFacingLocked(facingLockOwner, true);
             context.SetDashing(true);
+            context.SetAutomaticDashContactDamageSuppressed(attackArea.IsValid);
             HackerDashEffect.PlayPrefab(
                 dashEffectPrefab,
                 context,
@@ -146,7 +150,9 @@ namespace Week14.Enemy
                 dashDirection);
 
             HashSet<PlayerCombatController> hitPlayers = new();
+            Vector2 attackOrigin = context.Boss.transform.position;
             Vector2 previousPosition = context.Boss.transform.position;
+            float previousAttackDistance = 0f;
             elapsed = 0f;
             try
             {
@@ -161,23 +167,53 @@ namespace Week14.Enemy
                             continue;
                         }
 
-                        Vector2 currentPosition = context.Boss.transform.position;
-                        ApplyPathDamage(context, previousPosition, currentPosition, dashDirection, hitPlayers);
-                        previousPosition = currentPosition;
-
                         float progress = Mathf.Clamp01(elapsed / dashSeconds);
                         float speedMultiplier = EvaluateSpeedCurve(dashSpeedCurve, progress);
                         context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
-                        elapsed += EnemyTimeScale.DeltaTime;
+
+                        float nextElapsed = Mathf.Min(dashSeconds, elapsed + EnemyTimeScale.DeltaTime);
+                        if (attackArea.IsValid)
+                        {
+                            float nextAttackDistance = BossDashMotion.GetDistanceAtProgress(
+                                dashSpeed,
+                                dashSeconds,
+                                dashSpeedCurve,
+                                nextElapsed / dashSeconds);
+                            ApplyIndicatorAreaDamage(
+                                context,
+                                attackArea,
+                                attackOrigin,
+                                dashDirection,
+                                previousAttackDistance,
+                                nextAttackDistance,
+                                hitPlayers);
+                            previousAttackDistance = nextAttackDistance;
+                        }
+                        else
+                        {
+                            Vector2 currentPosition = context.Boss.transform.position;
+                            ApplyLegacyPathDamage(
+                                context,
+                                previousPosition,
+                                currentPosition,
+                                dashDirection,
+                                hitPlayers);
+                            previousPosition = currentPosition;
+                        }
+
+                        elapsed = nextElapsed;
                         yield return null;
                     }
 
-                    ApplyPathDamage(
-                        context,
-                        previousPosition,
-                        context.Boss.transform.position,
-                        dashDirection,
-                        hitPlayers);
+                    if (!attackArea.IsValid)
+                    {
+                        ApplyLegacyPathDamage(
+                            context,
+                            previousPosition,
+                            context.Boss.transform.position,
+                            dashDirection,
+                            hitPlayers);
+                    }
                 }
                 finally
                 {
@@ -245,15 +281,7 @@ namespace Week14.Enemy
 
         private float GetDashDistance()
         {
-            const int sampleCount = 24;
-            float multiplierSum = 0f;
-            for (int i = 0; i < sampleCount; i++)
-            {
-                float progress = (i + 0.5f) / sampleCount;
-                multiplierSum += EvaluateSpeedCurve(dashSpeedCurve, progress);
-            }
-
-            return dashSpeed * dashSeconds * multiplierSum / sampleCount;
+            return BossDashMotion.GetDistance(dashSpeed, dashSeconds, dashSpeedCurve);
         }
 
         private BossDashTrajectoryVfx SpawnTrajectoryVfx(float indicatorLength)
@@ -272,7 +300,49 @@ namespace Week14.Enemy
                 trajectoryChargedColor);
         }
 
-        private void ApplyPathDamage(
+        private void ApplyIndicatorAreaDamage(
+            BossActionContext context,
+            BossDashAttackArea attackArea,
+            Vector2 origin,
+            Vector2 direction,
+            float fromDistance,
+            float toDistance,
+            HashSet<PlayerCombatController> hitPlayers)
+        {
+            if (!attackArea.TryGetSegmentBox(
+                    origin,
+                    direction,
+                    fromDistance,
+                    toDistance,
+                    out Vector2 center,
+                    out Vector2 size,
+                    out float angle))
+            {
+                return;
+            }
+
+            ApplyBoxDamage(center, size, angle, direction, hitPlayers);
+        }
+
+        private void ApplyBoxDamage(
+            Vector2 center,
+            Vector2 size,
+            float angle,
+            Vector2 direction,
+            HashSet<PlayerCombatController> hitPlayers)
+        {
+            Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, angle);
+            for (int i = 0; i < hits.Length; i++)
+            {
+                PlayerCombatController player = hits[i].GetComponentInParent<PlayerCombatController>();
+                if (player != null && hitPlayers.Add(player))
+                {
+                    player.ReceiveAttack(damage, center, direction);
+                }
+            }
+        }
+
+        private void ApplyLegacyPathDamage(
             BossActionContext context,
             Vector2 start,
             Vector2 end,

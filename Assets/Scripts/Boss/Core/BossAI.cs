@@ -110,6 +110,7 @@ namespace Week14.Enemy
         private Collider2D[] physicsColliders;
         private Collider2D[] playerPhysicsColliders;
         private bool isIgnoringPlayerCollision;
+        private bool isAutomaticDashContactDamageSuppressed;
         private MaterialPropertyBlock hitFlashPropertyBlock;
         private Transform player;
         private bool isExecutionLocked;
@@ -558,7 +559,11 @@ namespace Week14.Enemy
         // 대쉬 중에는 겹침 여부를 직접 검사해 기존 접촉 피해 로직을 그대로 호출해준다.
         private void TickDashContactForState()
         {
-            if (!IsDashing || player == null || health == null || health.IsDead)
+            if (!IsDashing
+                || isAutomaticDashContactDamageSuppressed
+                || player == null
+                || health == null
+                || health.IsDead)
             {
                 return;
             }
@@ -595,6 +600,66 @@ namespace Week14.Enemy
                     playerController.TryReceiveEnemyBodyContact(bossCollider, bossCollider.ClosestPoint(player.position));
                     return;
                 }
+            }
+        }
+
+        internal void SetAutomaticDashContactDamageSuppressed(bool suppressed)
+        {
+            isAutomaticDashContactDamageSuppressed = suppressed;
+        }
+
+        internal void ApplyDashContactDamageInBox(Vector2 center, Vector2 size, float angle)
+        {
+            if (!IsDashing
+                || player == null
+                || health == null
+                || health.IsDead
+                || size.x <= 0.0001f
+                || size.y <= 0.0001f)
+            {
+                return;
+            }
+
+            Collider2D[] bossColliders = GetPhysicsColliders();
+            if (bossColliders.Length == 0)
+            {
+                return;
+            }
+
+            Collider2D sourceCollider = null;
+            for (int i = 0; i < bossColliders.Length; i++)
+            {
+                if (bossColliders[i] != null)
+                {
+                    sourceCollider = bossColliders[i];
+                    break;
+                }
+            }
+
+            if (sourceCollider == null)
+            {
+                return;
+            }
+
+            PlayerCombatController targetPlayer = player.GetComponent<PlayerCombatController>();
+            if (targetPlayer == null)
+            {
+                return;
+            }
+
+            Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, angle);
+            for (int i = 0; i < hits.Length; i++)
+            {
+                PlayerCombatController hitPlayer = hits[i] != null
+                    ? hits[i].GetComponentInParent<PlayerCombatController>()
+                    : null;
+                if (hitPlayer != targetPlayer)
+                {
+                    continue;
+                }
+
+                targetPlayer.TryReceiveEnemyBodyContact(sourceCollider, center);
+                return;
             }
         }
 

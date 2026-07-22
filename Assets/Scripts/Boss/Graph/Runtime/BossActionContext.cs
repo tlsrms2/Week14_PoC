@@ -92,7 +92,17 @@ namespace Week14.Enemy
         public void SetDashing(bool dashing)
         {
             IsDashing = dashing;
+            if (!dashing)
+            {
+                Boss?.SetAutomaticDashContactDamageSuppressed(false);
+            }
+
             Boss?.SetIgnorePlayerCollision(dashing);
+        }
+
+        public void SetAutomaticDashContactDamageSuppressed(bool suppressed)
+        {
+            Boss?.SetAutomaticDashContactDamageSuppressed(suppressed);
         }
 
         public void SetFacingLocked(bool locked)
