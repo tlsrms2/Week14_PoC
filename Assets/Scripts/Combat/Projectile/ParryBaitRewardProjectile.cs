@@ -36,6 +36,11 @@ namespace Week14.Combat
 
         internal event Action HackerParried;
 
+        // 이 미끼는 요격(패링)만 성립해야 하고, 야구방망이가 "보스 쪽으로 반사"해버리면 억제/보상 판정이
+        // 전부 Intercepted reason에 걸려 있어서 무효가 됩니다. 항상 요격 경로(TryDestroyByInterceptShot)로만
+        // 처리되도록 반사 대상에서 제외합니다.
+        protected override bool PreventsReflectionWhileInterceptable => true;
+
         // 이 미끼가 패링당하지 못하고 사라졌을 때(수명 만료 등) 발생하는 전역 이벤트입니다. 챌린지처럼
         // "이 미끼를 놓치면 실패" 같은 조건을 스폰 시점을 몰라도 구독 한 번으로 감지하고 싶을 때 씁니다.
         internal static event Action<ParryBaitRewardProjectile> AnyParryFailed;

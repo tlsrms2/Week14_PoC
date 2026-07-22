@@ -485,7 +485,39 @@ namespace Week14.Combat
             Vector2 origin = context.CombatCenterOrigin.position;
             DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
             ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
+            InterceptNonReflectableProjectilesInSemicircle(origin, direction, range);
             context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
+        }
+
+        // 반사는 안 되지만 요격은 되는 투사체(패링 미끼 등)를 위한 처리입니다. ReflectProjectilesInSemicircle이
+        // 먼저 반사 가능한 것들을 다 처리한 뒤라서, 여기 남아있는 CanBeIntercepted 대상은 반사되지 않은 것들뿐입니다.
+        // TryDestroyByInterceptShot을 직접 부르지 않고 PlayerParryController의 즉시 패링 통로(TryParryProjectileForMelee)를
+        // 태워서, 마우스 패링과 똑같이 패링 성공 이벤트/챌린지 집계/보스 패턴 억제가 걸리게 합니다.
+        private void InterceptNonReflectableProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile == null || !projectile.CanBeIntercepted)
+                {
+                    continue;
+                }
+
+                if (!OverlapsSemicircle(projectile, origin, direction, range))
+                {
+                    continue;
+                }
+
+                PlayerDashVfx.PlayProjectileAbsorb(
+                    context.CoroutineHost,
+                    projectile,
+                    origin,
+                    0.16f,
+                    new Color(0.9f, 0.9f, 1f, 0.85f));
+                context.Owner.TryParryProjectileForMelee(projectile);
+            }
         }
 
         private static void DestroyDeployedConductorTurretsInSemicircle(
