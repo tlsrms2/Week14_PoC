@@ -72,7 +72,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  laserSpeed: 60
+  laserSpeed: 35
   laserLifetimeSeconds: 0.4
   beamVisualSeconds: 0.12
   beamWidth: 0.08

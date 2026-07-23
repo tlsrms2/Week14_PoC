@@ -1086,6 +1086,8 @@ MonoBehaviour:
   playOnStart: 1
   startDelaySeconds: 0.15
   playerWalkSpeed: 3.5
+  playerWalkSfxId: Walk
+  mugShotBackgroundSfxId: Whip
   restartSequenceSeconds: 2.5
   restartCombatUiRevealSeconds: 0.35
   bossFocusWeight: 1
@@ -1200,6 +1202,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   mugShotLight: {fileID: 0}
+  mugShotLightingSfxId: 
   backgroundToInfoDelaySeconds: 0.15
   infoToLightDelaySeconds: 0.1
   infoHoldSeconds: 0.8
@@ -9265,6 +9268,10 @@ MonoBehaviour:
     radius: 0.12
     trailSeconds: 0.1
     trailWidthMultiplier: 3
+  suppressionBaitSpawnEffectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+  suppressionBaitSpawnEffectOffset: {x: 0, y: 0.6}
+  suppressionBaitSpawnEffectScale: 5
+  suppressionBaitSpawnEffectLeadSeconds: 0.8
   suppressionRewardBulletCount: 3
   suppressionRewardCircleRadius: 1
   suppressionRewardLifetime: 2

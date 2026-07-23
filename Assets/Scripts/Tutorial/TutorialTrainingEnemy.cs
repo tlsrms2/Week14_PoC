@@ -59,6 +59,14 @@ namespace Week14.Tutorial
         [SerializeField, Min(0f)] private float dodgeFireDelaySeconds = 0.65f;
         [Tooltip("패턴 억제 연습 단계에서 발사할 미끼탄 프리팹입니다. ParryBullet_Basic(ParryBaitRewardProjectile)을 지정하세요.")]
         [SerializeField] private BossProjectileSettings suppressionBaitProjectile = new();
+        [Tooltip("억제탄 생성 전에 재생할 예고 이펙트 프리팹입니다.")]
+        [SerializeField] private GameObject suppressionBaitSpawnEffectPrefab;
+        [Tooltip("억제탄 생성 위치를 기준으로 예고 이펙트에 적용할 월드 X/Y 오프셋입니다.")]
+        [SerializeField] private Vector2 suppressionBaitSpawnEffectOffset;
+        [Tooltip("예고 이펙트 프리팹 원본 스케일에 곱할 배율입니다.")]
+        [SerializeField, Min(0.01f)] private float suppressionBaitSpawnEffectScale = 1f;
+        [Tooltip("예고 이펙트를 생성한 뒤 억제탄을 발사하기까지의 대기 시간(초)입니다.")]
+        [SerializeField, Min(0f)] private float suppressionBaitSpawnEffectLeadSeconds = 0.8f;
         [Tooltip("패링 성공 시 사방으로 뿌릴 보상탄 개수입니다. 프리팹 기본값을 덮어씁니다.")]
         [SerializeField, Min(1)] private int suppressionRewardBulletCount = 3;
         [Tooltip("보상탄이 배치될 원의 반지름입니다.")]
@@ -108,6 +116,7 @@ namespace Week14.Tutorial
         private int duelPatternIndex;
         private int duelBurstShotsRemaining;
         private Coroutine suppressionRoutine;
+        private GameObject activeSuppressionBaitSpawnEffect;
         private ParryBaitRewardProjectile activeSuppressionBait;
         private bool suppressionBaitResolved;
         private bool suppressionBaitParried;
@@ -468,7 +477,7 @@ namespace Week14.Tutorial
 
         private IEnumerator RunDuelSuppressionBait()
         {
-            FireSuppressionBait();
+            yield return PlaySuppressionBaitSpawnEffectAndFire();
 
             if (activeSuppressionBait != null)
             {
@@ -541,6 +550,7 @@ namespace Week14.Tutorial
             }
 
             ClearActiveSuppressionBait();
+            ClearSuppressionBaitSpawnEffect();
         }
 
         private void ClearActiveSuppressionBait()
@@ -566,7 +576,7 @@ namespace Week14.Tutorial
                     continue;
                 }
 
-                FireSuppressionBait();
+                yield return PlaySuppressionBaitSpawnEffectAndFire();
                 if (activeSuppressionBait == null)
                 {
                     yield return null;
@@ -591,6 +601,48 @@ namespace Week14.Tutorial
             }
 
             suppressionRoutine = null;
+        }
+
+        private IEnumerator PlaySuppressionBaitSpawnEffectAndFire()
+        {
+            ClearSuppressionBaitSpawnEffect();
+
+            if (suppressionBaitSpawnEffectPrefab != null)
+            {
+                Transform effectOrigin = projectileOrigin != null ? projectileOrigin : transform;
+                Vector3 effectPosition = effectOrigin.position + (Vector3)suppressionBaitSpawnEffectOffset;
+                activeSuppressionBaitSpawnEffect = ProjectileVfx.PlayPrefab(
+                    suppressionBaitSpawnEffectPrefab,
+                    effectPosition,
+                    Quaternion.identity,
+                    effectOrigin,
+                    scale: Mathf.Max(0.01f, suppressionBaitSpawnEffectScale),
+                    followRotation: false);
+
+                float leadSeconds = Mathf.Max(0f, suppressionBaitSpawnEffectLeadSeconds);
+                if (leadSeconds > 0f)
+                {
+                    yield return new WaitForSeconds(leadSeconds);
+                }
+
+                activeSuppressionBaitSpawnEffect = null;
+            }
+
+            if (CanAct())
+            {
+                FireSuppressionBait();
+            }
+        }
+
+        private void ClearSuppressionBaitSpawnEffect()
+        {
+            if (activeSuppressionBaitSpawnEffect == null)
+            {
+                return;
+            }
+
+            Destroy(activeSuppressionBaitSpawnEffect);
+            activeSuppressionBaitSpawnEffect = null;
         }
 
         private void FireSuppressionBait()
