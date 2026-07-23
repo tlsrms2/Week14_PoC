@@ -238,3 +238,19 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 8059f242bee03e44d979cc899092d6b0, type: 3}
     volume: 0.5
     pitch: 1
+  - id: Victory
+    clip: {fileID: 8300000, guid: 5f4f16c80b09a2a4480aac6b140242a1, type: 3}
+    volume: 0.5
+    pitch: 1
+  - id: Defeat
+    clip: {fileID: 8300000, guid: a9ffd090ba52b6c42a999c6218fef2dc, type: 3}
+    volume: 1
+    pitch: 1
+  - id: PlayerDeath
+    clip: {fileID: 8300000, guid: c92289bb2412406429c322b54aee447a, type: 3}
+    volume: 2
+    pitch: 1
+  - id: BossCollapse
+    clip: {fileID: 8300000, guid: c44a7b4e296264343bfc2bc53c4fbd6d, type: 3}
+    volume: 2
+    pitch: 1

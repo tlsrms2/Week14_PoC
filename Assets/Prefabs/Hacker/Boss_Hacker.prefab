@@ -760,6 +760,7 @@ MonoBehaviour:
   hologramPrefab: {fileID: 2776275271019330438, guid: 4ada7c0abb03bd74b8343d37c63b6fea, type: 3}
   hologramStartPhaseNumber: 3
   hologramSfxId: Hologram
+  hologramSfxDelaySeconds: 1
   facingVisual: {fileID: 417437570628517833}
   facingHand: {fileID: 3826212517247301555}
   facingParryingPoint: {fileID: 4252293946166106329}

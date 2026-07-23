@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
@@ -69,6 +70,7 @@ namespace Week14.Enemy
         [SerializeField] private HackerHologramBoss hologramPrefab;
         [SerializeField, Min(1)] private int hologramStartPhaseNumber = 3;
         [SerializeField, BossGraphSfxId] private string hologramSfxId = HackerSfxIds.Hologram;
+        [SerializeField, Min(0f)] private float hologramSfxDelaySeconds = 1f;
 
         [Header("Facing")]
         [SerializeField] private Transform facingVisual;
@@ -90,11 +92,6 @@ namespace Week14.Enemy
         [InspectorName("Melee / Thrust / Sweep 인디케이터 표시")]
         [SerializeField] private bool showAttackRangeIndicators = true;
 
-        [Header("BGM")]
-        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphBgmId]
-        [SerializeField] private string bgmId;
-
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
 
@@ -115,6 +112,7 @@ namespace Week14.Enemy
         private bool isHologramSummonUnlocked;
         private HackerFireWireResult lastFireWireResult;
         private HackerHologramBoss hologram;
+        private Coroutine hologramSfxRoutine;
         private HackerPatternParryRewardTracker activePatternParryRewardTracker;
         private Animator twoWeaponAnimator;
         private Animator oneWeaponAnimator;
@@ -245,14 +243,6 @@ namespace Week14.Enemy
             OnIdleHackerLateUpdate();
         }
 
-        protected override void OnCombatStarted()
-        {
-            if (!string.IsNullOrWhiteSpace(bgmId))
-            {
-                SoundManager.PlayBgm(bgmId);
-            }
-        }
-
         protected override void OnBossDied()
         {
             ApplyWalkState(false, true);
@@ -295,6 +285,7 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             CancelPatternParryRewardTracking();
+            CancelHologramSfx();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
             HackerWireNodeProjectile.ClearAttachedNodes(this);
 
@@ -311,7 +302,7 @@ namespace Week14.Enemy
                 isHologramSummonUnlocked = true;
                 if (TryEnsureHologram(playSummonEntrance: true))
                 {
-                    SoundManager.PlaySfx(HackerSfxIds.Resolve(hologramSfxId, HackerSfxIds.Hologram));
+                    ScheduleHologramSfx();
                 }
             }
         }
@@ -1046,11 +1037,59 @@ namespace Week14.Enemy
 
         private void DestroyHologram()
         {
+            CancelHologramSfx();
             if (hologram != null)
             {
                 Destroy(hologram.gameObject);
                 hologram = null;
             }
+        }
+
+        private void ScheduleHologramSfx()
+        {
+            CancelHologramSfx();
+
+            string sfxId = HackerSfxIds.Resolve(hologramSfxId, HackerSfxIds.Hologram);
+            if (string.IsNullOrWhiteSpace(sfxId))
+            {
+                return;
+            }
+
+            float delaySeconds = Mathf.Max(0f, hologramSfxDelaySeconds);
+            if (delaySeconds <= 0f)
+            {
+                SoundManager.PlaySfx(sfxId);
+                return;
+            }
+
+            hologramSfxRoutine = StartCoroutine(PlayHologramSfxAfterDelay(sfxId, delaySeconds));
+        }
+
+        private IEnumerator PlayHologramSfxAfterDelay(string sfxId, float delaySeconds)
+        {
+            for (float elapsed = 0f; elapsed < delaySeconds; elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
+            }
+
+            hologramSfxRoutine = null;
+            if (!isActiveAndEnabled || hologram == null || IsDeadForState)
+            {
+                yield break;
+            }
+
+            SoundManager.PlaySfx(sfxId);
+        }
+
+        private void CancelHologramSfx()
+        {
+            if (hologramSfxRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(hologramSfxRoutine);
+            hologramSfxRoutine = null;
         }
 
         private static void ClearRuntimeCombatEffects()

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -19,11 +18,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float fireDamageInterval = 0.45f;
         [SerializeField] private List<ArsonistSprinklerProjectile> sprinklers = new();
 
-        [Header("BGM")]
-        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphBgmId]
-        [SerializeField] private string bgmId = "ArsonistBgm";
-
         private readonly List<ArsonistOilPatch> oilPatches = new();
         private readonly List<ArsonistFireArea> fireAreas = new();
         private readonly List<ArsonistWaterArea> waterAreas = new();
@@ -39,10 +33,6 @@ namespace Week14.Enemy
         protected override void OnCombatStarted()
         {
             ResetSprinklersForCombat();
-            if (!string.IsNullOrWhiteSpace(bgmId))
-            {
-                SoundManager.PlayBgm(bgmId);
-            }
         }
 
         protected override void OnBossDied()

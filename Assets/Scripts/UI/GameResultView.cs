@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Week14.Audio;
 using Week14.Challenge;
 using Week14.Combat;
 using Week14.Enemy;
@@ -36,6 +37,14 @@ namespace Week14.UI
         [Header("Scene")]
         [FormerlySerializedAs("titleSceneName")]
         [SerializeField] private string lobbySceneName = "LobbyScene";
+
+        [Header("Result Audio")]
+        [Tooltip("승리 결과 패널이 열릴 때 한 번 재생할 SFX입니다.")]
+        [FormerlySerializedAs("victoryBgmId")]
+        [SerializeField, BossGraphSfxId] private string victorySfxId;
+        [Tooltip("패배 결과 패널이 열릴 때 한 번 재생할 SFX입니다.")]
+        [FormerlySerializedAs("defeatBgmId")]
+        [SerializeField, BossGraphSfxId] private string defeatSfxId;
 
         [Header("Challenge Reward")]
         [Tooltip("챌린지 공개 연출이 끝난 뒤 이번 전투에서 획득한 포인트를 보여줄 팝업입니다.")]
@@ -262,6 +271,7 @@ namespace Week14.UI
 
             HideResultButtonsFor(gameOverRoot);
             ShowResult(gameOverRoot, restartButton, gameOverChallengePanel);
+            PlayResultSfx(defeatSfxId);
             SyncChallengeReveal(gameOverChallengePanel, gameOverRoot);
             SetElapsedTimeText(gameOverElapsedTimeText, boss);
 
@@ -313,10 +323,19 @@ namespace Week14.UI
                     : gameOverLobbyButton;
             HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget, victoryChallengePanel);
+            PlayResultSfx(victorySfxId);
             SyncChallengeReveal(victoryChallengePanel, targetRoot);
             SetElapsedTimeText(victoryElapsedTimeText, boss, true);
 
             RefreshVictorySummary(boss);
+        }
+
+        private static void PlayResultSfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
         }
 
         // PixelBlockRevealView.CacheContent()는 패널이 SetActive(true)될 때(OnEnable→Play())마다

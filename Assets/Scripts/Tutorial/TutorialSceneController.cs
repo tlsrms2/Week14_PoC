@@ -12,6 +12,7 @@ using UnityEngine.Video;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.Enemy;
 using Week14.Input;
 using Week14.Save;
 using Week14.Skills;
@@ -88,6 +89,11 @@ namespace Week14.Tutorial
 
         [Header("Respawn")]
         [SerializeField] private Transform firstRoomRespawnPoint;
+
+        [Header("Audio")]
+        [Tooltip("튜토리얼 진입 및 사망 후 재시작 시 재생할 BGM입니다.")]
+        [SerializeField, BossGraphBgmId] private string tutorialBgmId = "CutSceneBGM";
+        [SerializeField, Min(0f)] private float tutorialBgmFadeSeconds = 0.5f;
 
         [Header("Goals")]
         [SerializeField, Min(1)] private int attackHitGoal = 3;
@@ -266,6 +272,7 @@ namespace Week14.Tutorial
             HideExplanation();
             SetBossUiVisible(false);
             TryPushInitialMovementLock();
+            PlayTutorialBgm();
             tutorialRoutine = StartCoroutine(RunTutorial());
         }
 
@@ -2116,10 +2123,19 @@ namespace Week14.Tutorial
             {
                 RestorePlayerForRetry();
                 ConfigureInputSuppressionForStep(restartStep);
+                PlayTutorialBgm();
             });
 
             deathRoutine = null;
             tutorialRoutine = StartCoroutine(RunTutorialFrom(restartStep, false));
+        }
+
+        private void PlayTutorialBgm()
+        {
+            if (!string.IsNullOrWhiteSpace(tutorialBgmId))
+            {
+                SoundManager.PlayBgm(tutorialBgmId, Mathf.Max(0f, tutorialBgmFadeSeconds));
+            }
         }
 
         private void PushCompletionInvulnerability()

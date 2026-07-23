@@ -136,6 +136,7 @@ namespace Week14.Enemy
         private float? frozenCombatElapsedSeconds;
         private int combatStartLockCount;
         private bool latestClearTimeWasNewRecord;
+        private bool bossDeathSfxPlayed;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -749,6 +750,11 @@ namespace Week14.Enemy
             frozenCombatElapsedSeconds ??= CombatElapsedSeconds;
         }
 
+        public void PlayCombatBgmForIntro()
+        {
+            PlayConfiguredBgm();
+        }
+
         public IEnumerator PlayFinalDeathSequence(bool playFinalDeathExplosions)
         {
             if (finalDeathSequencePlayed)
@@ -761,6 +767,7 @@ namespace Week14.Enemy
             FreezeCombatTimer();
             finalDeathSequencePlayed = true;
             SetFinalDeathSequencePlaying(true);
+            PlayBossDeathSfx();
 
             try
             {
@@ -849,8 +856,30 @@ namespace Week14.Enemy
             combatStartedAt = Time.time;
             frozenCombatElapsedSeconds = null;
             latestClearTimeWasNewRecord = false;
+            PlayConfiguredBgm();
             OnCombatStarted();
             CombatStarted?.Invoke(this);
+        }
+
+        private void PlayConfiguredBgm()
+        {
+            if (bossData != null && !string.IsNullOrWhiteSpace(bossData.BgmId))
+            {
+                SoundManager.PlayBgm(bossData.BgmId, bossData.BgmFadeSeconds);
+            }
+        }
+
+        private void PlayBossDeathSfx()
+        {
+            if (bossDeathSfxPlayed
+                || bossData == null
+                || string.IsNullOrWhiteSpace(bossData.DeathSfxId))
+            {
+                return;
+            }
+
+            bossDeathSfxPlayed = true;
+            SoundManager.PlaySfx(bossData.DeathSfxId);
         }
 
         internal void OnBossPhaseChangedForController(int phaseIndex, int phaseNumber)
@@ -1419,6 +1448,7 @@ namespace Week14.Enemy
             projectileTracker.DestroyAll();
             SetBossCombatUiVisible(false);
             SoundManager.StopBgm();
+            PlayBossDeathSfx();
             if (bossLivesView != null)
             {
                 bossLivesView.gameObject.SetActive(false);

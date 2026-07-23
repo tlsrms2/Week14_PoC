@@ -56,6 +56,9 @@ MonoBehaviour:
   deathImage: {fileID: 699310964, guid: abe325e9be00ccf4bb9f9533362a2d53, type: 3}
   panelIcon: {fileID: -4020607094126543082, guid: bd0eaa36f181c724da0c1c7071855021, type: 3}
   sceneName: Boss_Conductor
+  bgmId: Boss3BGM
+  bgmFadeSeconds: 3
+  deathSfxId: BossCollapse
   introWalkStartPosition: {x: 6.15, y: -10}
   introWalkEndPosition: {x: 6.15, y: -8.1}
   unlocksBossIds: []

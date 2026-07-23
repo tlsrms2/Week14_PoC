@@ -2719,10 +2719,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
-      propertyPath: bgmId
-      value: Boss3BGM
-      objectReference: {fileID: 0}
-    - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossNameText
       value: 
       objectReference: {fileID: 1023516957}
@@ -3937,6 +3933,18 @@ PrefabInstance:
     - target: {fileID: 916228608262628890, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: defeatSfxId
+      value: Defeat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victorySfxId
+      value: Victory
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victoryRestartButton
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1610243985912707304, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_Name

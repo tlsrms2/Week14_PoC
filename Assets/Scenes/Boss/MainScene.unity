@@ -1995,10 +1995,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
-      propertyPath: bgmId
-      value: Boss1BGM
-      objectReference: {fileID: 0}
-    - target: {fileID: -3427355340198616746, guid: d53d1e5e75b7e3a4fa8a91cc18613289, type: 3}
       propertyPath: maxHp
       value: 150
       objectReference: {fileID: 0}
@@ -2477,7 +2473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.WeaponLoadoutManager
   database: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
-  defaultWeapon: {fileID: 11400000, guid: 8d6552a4fae44a34a311ea8a16e9233d, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: 78968c280a3232e478be7e46610c5bb4, type: 2}
   forceDefaultWeapon: 1
 --- !u!4 &1683135589
 Transform:
@@ -3314,6 +3310,18 @@ PrefabInstance:
     - target: {fileID: 916228608262628890, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: defeatSfxId
+      value: Defeat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victorySfxId
+      value: Victory
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victoryRestartButton
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1610243985912707304, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_Name

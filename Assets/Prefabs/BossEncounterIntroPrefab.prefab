@@ -1731,6 +1731,7 @@ MonoBehaviour:
   playerWalkSpeed: 0.5
   playerWalkSfxId: Walk
   mugShotBackgroundSfxId: Whip
+  mugShotToBossBgmDelaySeconds: 3
   restartSequenceSeconds: 2.5
   restartCombatUiRevealSeconds: 0.35
   bossFocusWeight: 1

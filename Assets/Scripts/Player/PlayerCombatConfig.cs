@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using UnityEngine.Serialization;
+using Week14.Enemy;
 
 namespace Week14.Combat
 {
@@ -115,6 +116,8 @@ namespace Week14.Combat
         [SerializeField, Range(0.35f, 1f)] private float deathCameraZoomMultiplier = 0.7f;
         [Tooltip("사망 시 카메라 줌인이 끝날 때까지 기다리는 최대 시간입니다. 줌인이 더 일찍 끝나면 그 즉시 적/투사체를 멈춥니다.")]
         [SerializeField, Min(0f)] private float deathWorldFreezeDelaySeconds = 0.3f;
+        [Tooltip("플레이어 사망 연출이 시작될 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string deathSequenceSfxId;
         [Tooltip("플레이어 사망 애니메이션 재생 시간입니다.")]
         [SerializeField, Min(0f)] private float deathAnimationSeconds = 2.1f;
 
@@ -208,6 +211,7 @@ namespace Week14.Combat
         public float DeathCameraFocusWeight => deathCameraFocusWeight;
         public float DeathCameraZoomMultiplier => deathCameraZoomMultiplier;
         public float DeathWorldFreezeDelaySeconds => deathWorldFreezeDelaySeconds;
+        public string DeathSequenceSfxId => deathSequenceSfxId;
         public float DeathAnimationSeconds => deathAnimationSeconds;
         public Color ExecutionShotColor => effectData != null ? effectData.ExecutionShotColor : Color.white;
         public Color ExecutionImpactColor => effectData != null ? effectData.ExecutionImpactColor : new Color(0.9f, 0.02f, 0.04f, 1f);

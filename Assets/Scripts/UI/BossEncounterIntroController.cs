@@ -72,6 +72,8 @@ namespace Week14.UI
         [Tooltip("머그샷 배경이 등장할 때 재생할 SoundLibrary SFX ID입니다.")]
         [BossGraphSfxId]
         [SerializeField] private string mugShotBackgroundSfxId = "Whip";
+        [Tooltip("머그샷 조명과 셔터 SFX가 재생된 뒤 보스 BGM 페이드인을 시작하기까지의 시간입니다.")]
+        [SerializeField, Min(0f)] private float mugShotToBossBgmDelaySeconds = 3f;
 
         [Header("재시작 연출")]
         [Tooltip("씬 전환이 끝난 뒤 플레이어 이동과 전투 UI 전환까지 걸리는 재시작 연출 시간입니다.")]
@@ -164,6 +166,7 @@ namespace Week14.UI
         private Vector2 bossCombatUiTargetPosition;
         private Coroutine playRoutine;
         private Coroutine locationIntroRoutine;
+        private Coroutine bossBgmDelayRoutine;
         private SoundManager.SfxPlaybackHandle playerWalkSfxHandle;
         private BossData localizedBossData;
         private LocalizedString boundLocationLocalizedString;
@@ -231,6 +234,7 @@ namespace Week14.UI
                 locationIntroRoutine = null;
             }
 
+            StopBossBgmDelayRoutine();
             StopPlayerWalkSfx();
             EndPlayerCinematicMovement();
             SetBossAnimationFrozen(false);
@@ -270,6 +274,7 @@ namespace Week14.UI
                 locationIntroRoutine = null;
             }
 
+            StopBossBgmDelayRoutine();
             StopPlayerWalkSfx();
             SetBossAnimationFrozen(false);
 
@@ -454,6 +459,7 @@ namespace Week14.UI
             {
                 SoundManager.PlaySfx(mugShotLightingSfxId);
             }
+            ScheduleBossBgmAfterMugShot();
             SetBossAnimationFrozen(true);
             yield return WaitUnscaled(infoHoldSeconds);
             SetBossAnimationFrozen(false);
@@ -471,6 +477,35 @@ namespace Week14.UI
                 mugShotBackgroundExitSeconds,
                 mugShotBackgroundExitCurve);
             SetMugShotStageVisible(false);
+        }
+
+        private void ScheduleBossBgmAfterMugShot()
+        {
+            StopBossBgmDelayRoutine();
+            if (boss == null)
+            {
+                return;
+            }
+
+            bossBgmDelayRoutine = StartCoroutine(PlayBossBgmAfterMugShotDelay());
+        }
+
+        private IEnumerator PlayBossBgmAfterMugShotDelay()
+        {
+            yield return WaitUnscaled(Mathf.Max(0f, mugShotToBossBgmDelaySeconds));
+            boss?.PlayCombatBgmForIntro();
+            bossBgmDelayRoutine = null;
+        }
+
+        private void StopBossBgmDelayRoutine()
+        {
+            if (bossBgmDelayRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(bossBgmDelayRoutine);
+            bossBgmDelayRoutine = null;
         }
 
         private IEnumerator PlayLocationIntro()
