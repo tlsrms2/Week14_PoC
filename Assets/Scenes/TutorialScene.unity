@@ -3422,6 +3422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Tutorial.TutorialSceneController
   dialogueSet: {fileID: 11400000, guid: 8fa6fd107d83b7746847394157429f37, type: 2}
+  tutorialBgmId: TutorialBGM
   textDialoguePanel: {fileID: 8100199575286773222}
   objectiveDialoguePanel: {fileID: 0}
   explanationPanelRoot: {fileID: 910100000}

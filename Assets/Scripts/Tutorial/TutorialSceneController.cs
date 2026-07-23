@@ -12,6 +12,7 @@ using UnityEngine.Video;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.Enemy;
 using Week14.Input;
 using Week14.Save;
 using Week14.Skills;
@@ -38,6 +39,11 @@ namespace Week14.Tutorial
 
         [Header("Data")]
         [SerializeField] private TutorialDialogueSetSO dialogueSet;
+
+        [Header("Audio")]
+        [Tooltip("튜토리얼 씬 진입 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string tutorialBgmId;
 
         [Header("UI")]
         [SerializeField, FormerlySerializedAs("dialoguePanel")] private TutorialDialoguePanelView textDialoguePanel;
@@ -156,6 +162,11 @@ namespace Week14.Tutorial
 
         private void Awake()
         {
+            if (!string.IsNullOrEmpty(tutorialBgmId))
+            {
+                SoundManager.PlayBgm(tutorialBgmId);
+            }
+
             ResolveDialoguePanels();
         }
 
@@ -2116,6 +2127,11 @@ namespace Week14.Tutorial
             {
                 RestorePlayerForRetry();
                 ConfigureInputSuppressionForStep(restartStep);
+
+                if (!string.IsNullOrEmpty(tutorialBgmId))
+                {
+                    SoundManager.PlayBgm(tutorialBgmId);
+                }
             });
 
             deathRoutine = null;
