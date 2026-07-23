@@ -129,11 +129,13 @@ public sealed class BaseballBatWeaponSOEditor : Editor
         SerializedProperty settings = serializedObject.FindProperty("vfxSettings");
         DrawRelative(settings, "playbackSpeed");
         DrawRelative(settings, "attackHitDelaySeconds");
+        DrawRelative(settings, "attackActiveSeconds");
         DrawRelative(settings, "rangeIndicatorSeconds");
 
         EditorGUILayout.Space(6f);
         EditorGUILayout.HelpBox(
-            "애니메이션 배속을 바꾸면 실제 타격 프레임에 맞춰 Attack Hit Delay Seconds도 함께 조정하세요.",
+            "Attack Hit Delay Seconds가 지난 뒤 Attack Active Seconds 동안 매 프레임 반사 판정을 수행합니다. " +
+            "애니메이션 배속을 바꾸면 두 시간을 함께 조정해 실제 스윙 구간에 맞추세요.",
             MessageType.Info);
     }
 

@@ -32,6 +32,7 @@ namespace Week14.Combat
         private float baseballBatSwingStartDegrees;
         private Vector3 baseballBatSwingStartScale;
         private Color baseballBatSwingColor = Color.white;
+        private Coroutine baseballBatHitRoutine;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -502,50 +503,68 @@ namespace Week14.Combat
             }
 
             float hitDelaySeconds = vfxSettings != null ? vfxSettings.AttackHitDelaySeconds : 0f;
-            if (hitDelaySeconds <= 0f)
+            float activeSeconds = vfxSettings != null ? vfxSettings.AttackActiveSeconds : 0.01f;
+            if (baseballBatHitRoutine != null)
             {
-                ResolveBaseballBatHit(
-                    direction,
-                    range,
-                    reflectedDamage,
-                    reflectedSpeed,
-                    reflectionSuccessSfxId);
+                context.CoroutineHost.StopCoroutine(baseballBatHitRoutine);
             }
-            else
-            {
-                context.CoroutineHost.StartCoroutine(ResolveBaseballBatHitAfterDelay(
+
+            baseballBatHitRoutine = context.CoroutineHost.StartCoroutine(
+                ResolveBaseballBatHitsDuringWindow(
                     hitDelaySeconds,
+                    activeSeconds,
                     direction,
                     range,
                     reflectedDamage,
                     reflectedSpeed,
                     reflectionSuccessSfxId));
-            }
         }
 
-        private IEnumerator ResolveBaseballBatHitAfterDelay(
+        private IEnumerator ResolveBaseballBatHitsDuringWindow(
             float delaySeconds,
+            float activeSeconds,
             Vector2 direction,
             float range,
             int reflectedDamage,
             float reflectedSpeed,
             string reflectionSuccessSfxId)
         {
-            yield return new WaitForSeconds(delaySeconds);
-            ResolveBaseballBatHit(
-                direction,
-                range,
-                reflectedDamage,
-                reflectedSpeed,
-                reflectionSuccessSfxId);
+            if (delaySeconds > 0f)
+            {
+                yield return new WaitForSeconds(delaySeconds);
+            }
+
+            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
+
+            float activeEndsAt = Time.time + Mathf.Max(0.01f, activeSeconds);
+            bool playedSuccessSfx = false;
+            do
+            {
+                bool hitReflectableTarget = ResolveBaseballBatHit(
+                    direction,
+                    range,
+                    reflectedDamage,
+                    reflectedSpeed);
+                if (hitReflectableTarget
+                    && !playedSuccessSfx
+                    && !string.IsNullOrEmpty(reflectionSuccessSfxId))
+                {
+                    SoundManager.PlaySfx(reflectionSuccessSfxId);
+                    playedSuccessSfx = true;
+                }
+
+                yield return null;
+            }
+            while (Time.time < activeEndsAt);
+
+            baseballBatHitRoutine = null;
         }
 
-        private void ResolveBaseballBatHit(
+        private bool ResolveBaseballBatHit(
             Vector2 direction,
             float range,
             int reflectedDamage,
-            float reflectedSpeed,
-            string reflectionSuccessSfxId)
+            float reflectedSpeed)
         {
             Vector2 origin = context.CombatCenterOrigin.position;
             bool destroyedAnyTurret = DestroyDeployedConductorTurretsInSemicircle(
@@ -560,13 +579,7 @@ namespace Week14.Combat
                 reflectedSpeed);
             InterceptNonReflectableProjectilesInSemicircle(origin, direction, range);
 
-            if ((destroyedAnyTurret || reflectedAnyProjectile)
-                && !string.IsNullOrEmpty(reflectionSuccessSfxId))
-            {
-                SoundManager.PlaySfx(reflectionSuccessSfxId);
-            }
-
-            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
+            return destroyedAnyTurret || reflectedAnyProjectile;
         }
 
         // 반사는 안 되지만 요격은 되는 투사체(패링 미끼 등)를 처리합니다. 반사 가능한 투사체를 먼저 처리했으므로

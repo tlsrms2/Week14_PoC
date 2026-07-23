@@ -91,6 +91,7 @@ MonoBehaviour:
     sortingOrder: 69
     playbackSpeed: 2
     attackHitDelaySeconds: 0.0165
+    attackActiveSeconds: 0.0366
     rangeIndicatorSeconds: 0.0165
     rangeIndicatorColor: {r: 1, g: 0.55, b: 0.1, a: 0}
     previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0}

@@ -31,6 +31,8 @@ namespace Week14.Weapons
         [SerializeField, Min(0.01f)] private float playbackSpeed = 1f;
         [Tooltip("이펙트가 시작된 뒤 실제 반사 판정이 발생할 때까지의 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float attackHitDelaySeconds = 0.333f;
+        [Tooltip("반사 판정이 시작된 뒤 판정을 유지할 시간(초)입니다. 이 시간 동안 매 프레임 새로 범위에 들어온 투사체와 터렛을 검사합니다.")]
+        [SerializeField, Min(0.01f)] private float attackActiveSeconds = 0.35f;
         [Tooltip("공격 순간 실제 반원 판정 범위를 표시할 시간(초)입니다.")]
         [SerializeField, Min(0.01f)] private float rangeIndicatorSeconds = 0.75f;
         [Tooltip("공격 순간 표시되는 실제 반원 판정 범위의 색상입니다.")]
@@ -87,6 +89,7 @@ namespace Week14.Weapons
         public float RotationOffsetDegrees => rotationOffsetDegrees;
         public float PlaybackSpeed => playbackSpeed;
         public float AttackHitDelaySeconds => attackHitDelaySeconds;
+        public float AttackActiveSeconds => attackActiveSeconds;
         public float RangeIndicatorSeconds => rangeIndicatorSeconds;
         public Color RangeIndicatorColor => rangeIndicatorColor;
         public Color PreviewRangeColor => previewRangeColor;
@@ -134,6 +137,7 @@ namespace Week14.Weapons
             referenceAttackRange = Mathf.Max(0.01f, referenceAttackRange);
             playbackSpeed = Mathf.Max(0.01f, playbackSpeed);
             attackHitDelaySeconds = Mathf.Max(0f, attackHitDelaySeconds);
+            attackActiveSeconds = Mathf.Max(0.01f, attackActiveSeconds);
             rangeIndicatorSeconds = Mathf.Max(0.01f, rangeIndicatorSeconds);
             displayOffsetDistance = Mathf.Max(0f, displayOffsetDistance);
             windUpSnapSeconds = Mathf.Max(0.01f, windUpSnapSeconds);
@@ -221,7 +225,9 @@ namespace Week14.Weapons
                     VfxSettings,
                     charge01,
                     reflectionSuccessSfxId);
-                shooter.StartBaseballBatSwingThrough(VfxSettings, VfxSettings.AttackHitDelaySeconds);
+                shooter.StartBaseballBatSwingThrough(
+                    VfxSettings,
+                    VfxSettings.AttackHitDelaySeconds + VfxSettings.AttackActiveSeconds);
             }
         }
 

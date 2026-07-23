@@ -2477,7 +2477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Weapons.WeaponLoadoutManager
   database: {fileID: 11400000, guid: c76072f5453177e4984ff86b8e49cac7, type: 2}
-  defaultWeapon: {fileID: 11400000, guid: 283322a59bb47804ab028c04e80be6cf, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: 8d6552a4fae44a34a311ea8a16e9233d, type: 2}
   forceDefaultWeapon: 1
 --- !u!4 &1683135589
 Transform:

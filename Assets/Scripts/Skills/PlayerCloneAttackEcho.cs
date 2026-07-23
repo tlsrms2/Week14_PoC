@@ -269,8 +269,6 @@ namespace Week14.Skills
                 return;
             }
 
-            DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
-            ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
             if (vfxSettings != null)
             {
                 // PlayAnchoredPrefab은 spawnParent(cloneVisualRoot)의 lossyScale을 그대로 곱해서 적용합니다.
@@ -309,6 +307,44 @@ namespace Week14.Skills
                     vfxSettings.RangeIndicatorColor,
                     vfxSettings.RangeIndicatorSeconds);
             }
+
+            float hitDelaySeconds = vfxSettings != null ? vfxSettings.AttackHitDelaySeconds : 0f;
+            float activeSeconds = vfxSettings != null ? vfxSettings.AttackActiveSeconds : 0.01f;
+            StartCoroutine(ResolveCloneBaseballBatHitsDuringWindow(
+                hitDelaySeconds,
+                activeSeconds,
+                origin,
+                direction,
+                range,
+                damage,
+                reflectedSpeed));
+        }
+
+        private IEnumerator ResolveCloneBaseballBatHitsDuringWindow(
+            float delaySeconds,
+            float activeSeconds,
+            Vector2 fallbackOrigin,
+            Vector2 direction,
+            float range,
+            int damage,
+            float reflectedSpeed)
+        {
+            if (delaySeconds > 0f)
+            {
+                yield return new WaitForSeconds(delaySeconds);
+            }
+
+            float activeEndsAt = Time.time + Mathf.Max(0.01f, activeSeconds);
+            do
+            {
+                Vector2 origin = cloneVisualRoot != null
+                    ? cloneVisualRoot.transform.position
+                    : fallbackOrigin;
+                DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
+                ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
+                yield return null;
+            }
+            while (Time.time < activeEndsAt);
         }
 
         // targetScale/parentScale 둘 다 부호(좌우 반전)는 무시하고 크기 비율만 계산합니다.
