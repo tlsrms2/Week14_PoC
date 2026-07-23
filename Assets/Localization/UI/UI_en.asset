@@ -1,0 +1,198 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 54d974a73685256428bdf277f9c3cd3b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 35762831360
+    m_Localized: GAME START
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103836385280
+    m_Localized: <sprite name="icon_option"> SETTINGS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 221037821952
+    m_Localized: EXIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7022185644032
+    m_Localized: RETURN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7504308305920
+    m_Localized: MUTE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44034297004032
+    m_Localized: MAIN MENU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44079612264448
+    m_Localized: PAUSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44213293121536
+    m_Localized: RESUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44328653258752
+    m_Localized: VISIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56983963140096
+    m_Localized: Click RETRY Button To Try Again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57536428474368
+    m_Localized: LOBBY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58052210425856
+    m_Localized: RETRY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98681342754816
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98699957075968
+    m_Localized: SFX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316185476464640
+    m_Localized: Enhancement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316405463515136
+    m_Localized: Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316497654317056
+    m_Localized: Active
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316549172953088
+    m_Localized: Passive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324277605892096
+    m_Localized: '[Active]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324359885553664
+    m_Localized: '[Passive]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324365581418496
+    m_Localized: '[Weapon]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3325868144689152
+    m_Localized: <sprite name="icon_leftclick"> Purchase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326043365933056
+    m_Localized: <sprite name="icon_leftclick"> Equip     <sprite name="icon_rightclick">
+      Refund
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326175926910976
+    m_Localized: ' '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326292574699520
+    m_Localized: ' '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326345653616640
+    m_Localized: <sprite="Icon-point-64x" name="icon_point"> Non Refundable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326669890093056
+    m_Localized: 'Cooldown: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326766715600896
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Enhancement Points:
+      {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326817575731200
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Required Points: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326845836951552
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Points returned upon
+      refund: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3663321485377536
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666520502009856
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666672696524800
+    m_Localized: Challenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737487026782208
+    m_Localized: 'Best Time: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4304213502164992
+    m_Localized: <sprite="Icon-point-64x" name="icon_point"> Enhancement Points +{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4478459079655424
+    m_Localized: target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984204011692032
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984524653649920
+    m_Localized: Enhancement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5398084768686080
+    m_Localized: <sprite name="icon_leftclick"> Equip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6563875845234688
+    m_Localized: Press <sprite name="icon_escape"> to skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7302183986233344
+    m_Localized: FullScreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7305159874281472
+    m_Localized: Resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7957354798309376
+    m_Localized: <sprite name="icon_language"> Language
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

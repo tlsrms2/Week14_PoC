@@ -63,6 +63,8 @@ namespace Week14.Enemy
             return trailColor;
         }
 
+        protected override bool IgnoresWalls => true;
+
         protected override void OnProjectileAwake()
         {
             spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);

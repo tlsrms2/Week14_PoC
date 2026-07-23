@@ -162,6 +162,11 @@ namespace Week14.Tutorial
 
         private void Awake()
         {
+            if (!string.IsNullOrEmpty(tutorialBgmId))
+            {
+                SoundManager.PlayBgm(tutorialBgmId);
+            }
+
             ResolveDialoguePanels();
         }
 

@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Challenge Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Challenge
+  m_TableCollectionNameGuidString: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b
+  m_Entries:
+  - m_Id: 500000000000
+    m_Key: HitLimit_0.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 502600000000
+    m_Key: Phase2Reach_3.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 505200000000
+    m_Key: Phase2Reach_6.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 507800000000
+    m_Key: TimeAttack.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3440320454164480
+    m_Key: BossClear.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3443865412796416
+    m_Key: ParryCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448495471427584
+    m_Key: ParryClear.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451950613233664
+    m_Key: CounterCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3519743778283520
+    m_Key: ParryHomingBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521113910599680
+    m_Key: ParryNoteBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521787301912576
+    m_Key: ParryExplosiveBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3522615781810176
+    m_Key: ParryWireBulletCount.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3524778109100032
+    m_Key: HitLimit_1.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3525347422953472
+    m_Key: HitLimit_2.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3527906837585920
+    m_Key: Phase3Reach_3.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3530476930564096
+    m_Key: DestoryTurret.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3533872441950208
+    m_Key: PerfectParry.Desc
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4705778077466099792
+  references:
+    version: 2
+    RefIds:
+    - rid: 4705778077466099792
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1783740000000

@@ -45,6 +45,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 014aaa41c8f6a7f4192e916afc993d0f, type: 3}
     volume: 0.4
     pitch: 1
+  - id: TutorialBGM
+    clip: {fileID: 8300000, guid: e50d48e9a74c6414c91feff5e2db68cb, type: 3}
+    volume: 0.4
+    pitch: 1
   sfxEntries:
   - id: PlayerShot
     clip: {fileID: 8300000, guid: 5b7bfe1023f81c2429be1d8741f1ac2e, type: 3}
