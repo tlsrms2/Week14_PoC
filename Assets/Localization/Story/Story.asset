@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
-  m_Name: Skill
+  m_Name: Story
   m_EditorClassIdentifier: Unity.Localization.Editor::UnityEditor.Localization.StringTableCollection
-  m_SharedTableData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
+  m_SharedTableData: {fileID: 11400000, guid: 8a8e32e629c410a4c97867fa550435ab, type: 2}
   m_Tables:
-  - {fileID: 11400000, guid: b84595cb3a68ab1418483c1b096c642b, type: 2}
-  - {fileID: 11400000, guid: 5ad898f07b53a16439f9d6c7f0f0078a, type: 2}
-  - {fileID: 11400000, guid: b8a3984f9f698f1468e9a16b782fb5c8, type: 2}
+  - {fileID: 11400000, guid: b2beb748e37c1244d8c49d0c1aa31695, type: 2}
+  - {fileID: 11400000, guid: 41fab3a83e1c9ca48b80dd0f8bb17b92, type: 2}
+  - {fileID: 11400000, guid: d9c002c250588db4b995fb446586a0b9, type: 2}
+  - {fileID: 11400000, guid: 64d8c7ecf7669e149a60f78f30bfa451, type: 2}
+  - {fileID: 11400000, guid: 3585db8c12c5fe942855b5a2cebfc0c5, type: 2}
   m_Extensions: []
   m_Group: String Table
   references:

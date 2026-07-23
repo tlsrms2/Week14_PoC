@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
-  m_Name: UI
+  m_Name: Boss
   m_EditorClassIdentifier: Unity.Localization.Editor::UnityEditor.Localization.StringTableCollection
-  m_SharedTableData: {fileID: 11400000, guid: 54d974a73685256428bdf277f9c3cd3b, type: 2}
+  m_SharedTableData: {fileID: 11400000, guid: b1a0083a9ae987c4c95c94f0dce7f455, type: 2}
   m_Tables:
-  - {fileID: 11400000, guid: 0905aa1f45f544d41ab8a5639cd78b5f, type: 2}
-  - {fileID: 11400000, guid: 1531750e40aa65546b260ac40f9206e5, type: 2}
-  - {fileID: 11400000, guid: c88186bab73479c4dad866b0793d9e0e, type: 2}
+  - {fileID: 11400000, guid: 255dbc71d62a1bf40b4322ea994c8f89, type: 2}
+  - {fileID: 11400000, guid: cfc3af12e13227b4199497e88aa48568, type: 2}
+  - {fileID: 11400000, guid: 9af2b1ae9e794294f94bf3334d2eb9b2, type: 2}
+  - {fileID: 11400000, guid: b7e8c4598a42964468454218c9d85eeb, type: 2}
+  - {fileID: 11400000, guid: a79032b341324cd42b0ef7a83c94ad2f, type: 2}
   m_Extensions: []
   m_Group: String Table
   references:

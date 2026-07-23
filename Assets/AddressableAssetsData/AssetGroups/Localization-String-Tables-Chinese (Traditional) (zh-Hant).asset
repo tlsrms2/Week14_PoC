@@ -10,44 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Localization-Locales
+  m_Name: Localization-String-Tables-Chinese (Traditional) (zh-Hant)
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Localization-Locales
-  m_GUID: ab2fe8d9bf81d6d4dbb69f5b285c08d3
+  m_GroupName: Localization-String-Tables-Chinese (Traditional) (zh-Hant)
+  m_GUID: 588035ef34773374096b84a4fb7a31c9
   m_SerializeEntries:
-  - m_GUID: 63d227198bf7d8041ae4d94818fcfbd6
-    m_Address: Japanese (Japan) (ja-JP)
+  - m_GUID: 19823fb789d9a7f4b86b8439cd7955d4
+    m_Address: Challenge_zh-Hant
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hant
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 89bf9db057d8273439751446160c1dd3
-    m_Address: Chinese (Simplified) (zh-Hans)
+  - m_GUID: 31d6e402bda4ee242a6dfa613d9dea4a
+    m_Address: Skill_zh-Hant
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hant
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a6f1099832d3be84a8831c6deb0e0003
-    m_Address: Chinese (Traditional) (zh-Hant)
+  - m_GUID: 3585db8c12c5fe942855b5a2cebfc0c5
+    m_Address: Story_zh-Hant
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hant
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: da7b63ffaaf7a4642ba891dff5cb2721
-    m_Address: English (en)
+  - m_GUID: a18fa2fafb10a6440915dcdd43d6499f
+    m_Address: Weapon_zh-Hant
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hant
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db6b05d712e54dd48908957601336659
-    m_Address: Korean (South Korea) (ko-KR)
+  - m_GUID: a79032b341324cd42b0ef7a83c94ad2f
+    m_Address: Boss_zh-Hant
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hant
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8a84e6fa09dac14f8aafc441fcea7f1
+    m_Address: UI_zh-Hant
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hant
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: b3c2510e269c6aa408e4e846c03ac43a, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 546d19fc2f48d3e408565b52d438fa82, type: 2}
-    - {fileID: 11400000, guid: a315ef8c3c19b9448a6921d276d17ed7, type: 2}
+    - {fileID: 11400000, guid: b460e15c6d0d60341b31c9eaacef9075, type: 2}
+    - {fileID: 11400000, guid: b889b78a26983354ba450100e5d47027, type: 2}

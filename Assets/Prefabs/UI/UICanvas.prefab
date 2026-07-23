@@ -3692,6 +3692,9 @@ MonoBehaviour:
   languageLocaleCodes:
   - ko-KR
   - en
+  - ja-JP
+  - zh-Hans
+  - zh-Hant
 --- !u!1 &7625243295146896537
 GameObject:
   m_ObjectHideFlags: 0

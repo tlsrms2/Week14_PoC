@@ -10,44 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Localization-Locales
+  m_Name: Localization-String-Tables-Chinese (Simplified) (zh-Hans)
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Localization-Locales
-  m_GUID: ab2fe8d9bf81d6d4dbb69f5b285c08d3
+  m_GroupName: Localization-String-Tables-Chinese (Simplified) (zh-Hans)
+  m_GUID: c8c91b35c6e15a54dbe94cfaf77b4bf3
   m_SerializeEntries:
-  - m_GUID: 63d227198bf7d8041ae4d94818fcfbd6
-    m_Address: Japanese (Japan) (ja-JP)
+  - m_GUID: 070002715d4433e4f833a99e70811eca
+    m_Address: Skill_zh-Hans
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hans
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 89bf9db057d8273439751446160c1dd3
-    m_Address: Chinese (Simplified) (zh-Hans)
+  - m_GUID: 64d8c7ecf7669e149a60f78f30bfa451
+    m_Address: Story_zh-Hans
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hans
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a6f1099832d3be84a8831c6deb0e0003
-    m_Address: Chinese (Traditional) (zh-Hant)
+  - m_GUID: 8162b627a64f3d04c9e72ed61212883c
+    m_Address: Challenge_zh-Hans
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hans
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: da7b63ffaaf7a4642ba891dff5cb2721
-    m_Address: English (en)
+  - m_GUID: b7e8c4598a42964468454218c9d85eeb
+    m_Address: Boss_zh-Hans
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hans
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db6b05d712e54dd48908957601336659
-    m_Address: Korean (South Korea) (ko-KR)
+  - m_GUID: e28ece837694a724db5eb60da313b4a7
+    m_Address: UI_zh-Hans
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-zh-Hans
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7d4fb2b479f9e546b3a9cd5333f5e51
+    m_Address: Weapon_zh-Hans
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hans
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: b3c2510e269c6aa408e4e846c03ac43a, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 546d19fc2f48d3e408565b52d438fa82, type: 2}
-    - {fileID: 11400000, guid: a315ef8c3c19b9448a6921d276d17ed7, type: 2}
+    - {fileID: 11400000, guid: 199fc0aeac498394ea390f2684792601, type: 2}
+    - {fileID: 11400000, guid: 8d588597dab344043952365cf7fe48cb, type: 2}

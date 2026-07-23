@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: UI_ja-JP
+  m_Name: Weapon_zh-Hans
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
   m_LocaleId:
-    m_Code: ja-JP
-  m_SharedData: {fileID: 11400000, guid: 54d974a73685256428bdf277f9c3cd3b, type: 2}
+    m_Code: zh-Hans
+  m_SharedData: {fileID: 11400000, guid: 844e39019e591984499c4858a8ec6fa8, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData: []

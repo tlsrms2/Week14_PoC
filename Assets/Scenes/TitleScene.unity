@@ -19511,6 +19511,15 @@ MonoBehaviour:
     - m_Text: <sprite name="icon_language"> English
       m_Image: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: "<sprite name=\"icon_language\"> \uC77C\uBCF8\uC5B4"
+      m_Image: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: "<sprite name=\"icon_language\"> \uC911\uAD6D\uC5B4(\uAC04\uCCB4)"
+      m_Image: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: "<sprite name=\"icon_language\"> \uC911\uAD6D\uC5B4 (\uBC88\uCCB4)"
+      m_Image: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -26090,6 +26099,22 @@ PrefabInstance:
       propertyPath: languageDropdown
       value: 
       objectReference: {fileID: 1252189273}
+    - target: {fileID: 8105808960527595297, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: languageLocaleCodes.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105808960527595297, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[2]'
+      value: ja-JP
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105808960527595297, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[3]'
+      value: zh-Hans
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105808960527595297, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[4]'
+      value: zh-Hant
+      objectReference: {fileID: 0}
     - target: {fileID: 8425426992879152449, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Value
       value: 0.362

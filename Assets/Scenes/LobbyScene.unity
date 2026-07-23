@@ -18354,6 +18354,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -75
       objectReference: {fileID: 0}
+    - target: {fileID: 2506650083701302028, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: languageLocaleCodes.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2506650083701302028, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[2]'
+      value: ja-JP
+      objectReference: {fileID: 0}
+    - target: {fileID: 2506650083701302028, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[3]'
+      value: zh-Hans
+      objectReference: {fileID: 0}
+    - target: {fileID: 2506650083701302028, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[4]'
+      value: zh-Hant
+      objectReference: {fileID: 0}
     - target: {fileID: 2610027170967482458, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -18601,6 +18617,82 @@ PrefabInstance:
     - target: {fileID: 7025259927172943028, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Text
+      value: "<sprite name=\"icon_language\"> \uC77C\uBCF8\uC5B4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Text
+      value: "<sprite name=\"icon_language\"> \uC911\uAD6D\uC5B4 (\uAC04\uCCB4)"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Text
+      value: "<sprite name=\"icon_language\"> \uC911\uAD6D\uC5B4 (\uBC88\uCCB4)"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Image
+      value: 
+      objectReference: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Image
+      value: 
+      objectReference: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Image
+      value: 
+      objectReference: {fileID: 21300000, guid: 614f70cedd238fc449cfd866e42eab94, type: 3}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7057557431067711244, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7173333945117952115, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.y
