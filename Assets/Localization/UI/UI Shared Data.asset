@@ -178,11 +178,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7302183986233344
-    m_Key: FullScreen
+    m_Key: ui.fullScreen
     m_Metadata:
       m_Items: []
   - m_Id: 7305159874281472
-    m_Key: Resolution
+    m_Key: ui.resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7957354798309376
+    m_Key: ui.language
     m_Metadata:
       m_Items: []
   m_Metadata:

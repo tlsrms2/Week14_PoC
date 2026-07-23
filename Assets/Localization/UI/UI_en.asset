@@ -189,6 +189,10 @@ MonoBehaviour:
     m_Localized: Resolution
     m_Metadata:
       m_Items: []
+  - m_Id: 7957354798309376
+    m_Localized: <sprite name="icon_language"> Language
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
