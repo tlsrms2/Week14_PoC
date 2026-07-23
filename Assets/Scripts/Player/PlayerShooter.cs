@@ -307,10 +307,19 @@ namespace Week14.Combat
             return bullets.TrySpend(bullets.CurrentBullets, BulletChangeSource.Attack);
         }
 
-        // 관통(레일건) 전용 발사. 물리 투사체를 날리는 게 아니라, 화면에 그려지는 빔 그 자체를 즉시
-        // CircleCastAll로 스윕해서 일직선상의 모든 대상에게 damage를 그대로(분할 없이) 적용합니다.
-        // ShotLine 연출이 곧 판정 범위와 일치합니다(연출과 판정이 분리돼 있지 않음).
-        public void FireLaser(int damage, float speed, float lifetime, float beamVisualSeconds, float beamWidth, Color beamColor, string fireSfxId)
+        // 관통(레일건) 전용 발사. 물리 투사체를 날리는 게 아니라 실제 사거리만큼 즉시 CircleCastAll로
+        // 스윕해서 일직선상의 모든 대상에게 damage를 그대로(분할 없이) 적용합니다. 프리팹 이펙트는
+        // 같은 사거리까지 자동으로 늘어나며, 프리팹이 없을 때만 ShotLine을 대체 연출로 사용합니다.
+        public void FireLaser(
+            int damage,
+            int spentAmmo,
+            float speed,
+            float lifetime,
+            float beamVisualSeconds,
+            float beamWidth,
+            Color beamColor,
+            RailgunVfxSettings vfxSettings,
+            string fireSfxId)
         {
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -326,11 +335,43 @@ namespace Week14.Combat
             Vector2 origin = fireOrigin.position;
 
             DamageEnemiesAlongLine(origin, direction, beamLength, config.ProjectileRadius, finalDamage);
-            context.Owner.NotifyPlayerAttackPerformed(finalDamage);
+            context.Owner.NotifyPlayerAttackPerformed(finalDamage, ammoSpent: spentAmmo);
 
             Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
-            ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
-            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 1.2f);
+            GameObject beamPrefab = vfxSettings?.ResolveBeamPrefab(spentAmmo);
+            if (beamPrefab != null)
+            {
+                ProjectileVfx.PlayAnchoredBeamPrefab(
+                    beamPrefab,
+                    fireOrigin,
+                    origin,
+                    direction,
+                    beamLength,
+                    vfxSettings.BeamLengthAxis == RailgunBeamLengthAxis.LocalY,
+                    vfxSettings.MuzzleOffset,
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+            }
+            else
+            {
+                ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
+            }
+
+            GameObject muzzleFlashPrefab = vfxSettings?.ResolveMuzzleFlashPrefab(spentAmmo);
+            float muzzleFlashScale = 1f;
+            if (muzzleFlashPrefab == null)
+            {
+                muzzleFlashPrefab = config.PlayerMuzzleFlashVfxPrefab;
+                muzzleFlashScale = 1.2f;
+            }
+
+            ProjectileVfx.PlayPrefab(
+                muzzleFlashPrefab,
+                fireOrigin.position,
+                direction,
+                fireOrigin,
+                muzzleFlashScale);
             context.Visual?.PlayShot();
             if (!string.IsNullOrEmpty(fireSfxId))
             {

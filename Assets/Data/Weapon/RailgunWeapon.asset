@@ -77,6 +77,17 @@ MonoBehaviour:
   beamVisualSeconds: 0.12
   beamWidth: 0.08
   beamColor: {r: 0.5, g: 0.9, b: 1, a: 1}
+  vfxSettings:
+    oneToTwoAmmoBeamPrefab: {fileID: 6931047726105842260, guid: ac35ddf4abb846bca2f6f32dc9e33a61, type: 3}
+    threeToFourAmmoBeamPrefab: {fileID: 6931047726105842260, guid: d1f5e270f0633164a823257a60efcd11, type: 3}
+    fiveAmmoBeamPrefab: {fileID: 6931047726105842260, guid: 74e6d3557c201cf4c8ec510233f92853, type: 3}
+    muzzleFlashPrefab: {fileID: 100538496412770034, guid: 45a3459a0a61d564e8b8cf1b18602335, type: 3}
+    fiveAmmoMuzzleFlashPrefab: {fileID: 7679067838388594500, guid: 9ae35c8c720f03148b5a3b5e9161e309, type: 3}
+    beamLengthAxis: 1
+    muzzleOffset: 0
+    rotationOffsetDegrees: 0
+    playbackSpeed: 1
+    sortingOrder: 73
   fireSfxId: 
   references:
     version: 2

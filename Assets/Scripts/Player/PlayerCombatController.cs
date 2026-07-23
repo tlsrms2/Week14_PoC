@@ -91,18 +91,25 @@ namespace Week14.Combat
 
         public readonly struct PlayerAttackEchoInfo
         {
-            public PlayerAttackEchoInfo(BaseWeaponSO weapon, int damage, float range, float reflectedProjectileSpeed)
+            public PlayerAttackEchoInfo(
+                BaseWeaponSO weapon,
+                int damage,
+                float range,
+                float reflectedProjectileSpeed,
+                int ammoSpent)
             {
                 Weapon = weapon;
                 Damage = damage;
                 Range = range;
                 ReflectedProjectileSpeed = reflectedProjectileSpeed;
+                AmmoSpent = ammoSpent;
             }
 
             public BaseWeaponSO Weapon { get; }
             public int Damage { get; }
             public float Range { get; }
             public float ReflectedProjectileSpeed { get; }
+            public int AmmoSpent { get; }
         }
 
         public event Action<PlayerAttackEchoInfo> PlayerAttackPerformed;
@@ -767,12 +774,21 @@ namespace Week14.Combat
             nextAttackDamageMultiplier = Mathf.Max(1f, multiplier);
         }
 
-        internal void NotifyPlayerAttackPerformed(int damage, float range = 0f, float reflectedProjectileSpeed = 0f)
+        internal void NotifyPlayerAttackPerformed(
+            int damage,
+            float range = 0f,
+            float reflectedProjectileSpeed = 0f,
+            int ammoSpent = 0)
         {
             if (damage > 0)
             {
                 BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
-                PlayerAttackPerformed?.Invoke(new PlayerAttackEchoInfo(weapon, damage, range, reflectedProjectileSpeed));
+                PlayerAttackPerformed?.Invoke(new PlayerAttackEchoInfo(
+                    weapon,
+                    damage,
+                    range,
+                    reflectedProjectileSpeed,
+                    ammoSpent));
             }
         }
 

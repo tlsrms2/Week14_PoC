@@ -115,7 +115,7 @@ namespace Week14.Skills
 
             if (weapon is RailgunWeaponSO railgun)
             {
-                FireCloneLaser(origin, direction, cloneDamage, railgun);
+                FireCloneLaser(origin, direction, cloneDamage, railgun, attackInfo.AmmoSpent);
                 return;
             }
 
@@ -196,7 +196,12 @@ namespace Week14.Skills
                 0.8f);
         }
 
-        private void FireCloneLaser(Vector2 origin, Vector2 direction, int damage, RailgunWeaponSO railgun)
+        private void FireCloneLaser(
+            Vector2 origin,
+            Vector2 direction,
+            int damage,
+            RailgunWeaponSO railgun,
+            int spentAmmo)
         {
             if (railgun == null || damage <= 0)
             {
@@ -206,9 +211,33 @@ namespace Week14.Skills
             float beamLength = Mathf.Max(0.1f, railgun.LaserSpeed * railgun.LaserLifetimeSeconds);
             DamageEnemiesAlongLine(origin, direction, beamLength, railgun.BeamWidth, damage);
             Vector3 beamEnd = origin + direction * beamLength;
-            ProjectileVfx.PlayShotLine(origin, beamEnd, cloneTint, railgun.BeamVisualSeconds, railgun.BeamWidth);
+            RailgunVfxSettings vfxSettings = railgun.VfxSettings;
+            GameObject beamPrefab = vfxSettings.ResolveBeamPrefab(Mathf.Max(1, spentAmmo));
+            if (beamPrefab != null)
+            {
+                ProjectileVfx.PlayAnchoredBeamPrefab(
+                    beamPrefab,
+                    cloneVisualRoot.transform,
+                    origin,
+                    direction,
+                    beamLength,
+                    vfxSettings.BeamLengthAxis == RailgunBeamLengthAxis.LocalY,
+                    vfxSettings.MuzzleOffset,
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+            }
+            else
+            {
+                ProjectileVfx.PlayShotLine(origin, beamEnd, cloneTint, railgun.BeamVisualSeconds, railgun.BeamWidth);
+            }
+
+            GameObject railgunMuzzleFlashPrefab = vfxSettings.ResolveMuzzleFlashPrefab(spentAmmo);
+            GameObject muzzleFlashPrefab = railgunMuzzleFlashPrefab != null
+                ? railgunMuzzleFlashPrefab
+                : owner.Config.PlayerMuzzleFlashVfxPrefab;
             ProjectileVfx.PlayPrefab(
-                owner.Config.PlayerMuzzleFlashVfxPrefab,
+                muzzleFlashPrefab,
                 origin,
                 direction,
                 cloneVisualRoot.transform);
