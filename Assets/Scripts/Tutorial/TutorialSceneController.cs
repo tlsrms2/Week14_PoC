@@ -17,6 +17,7 @@ using Week14.Input;
 using Week14.Save;
 using Week14.Skills;
 using Week14.GameFlow;
+using Week14.Story;
 using Week14.UI;
 
 #if ENABLE_INPUT_SYSTEM
@@ -708,7 +709,13 @@ namespace Week14.Tutorial
             bool revealRequested = false;
             bool canAcceptAdvance = false;
             PlayDialogueSfx(line.SfxId);
-            textDialoguePanel.ShowLine(speaker, text, line.Speaker);
+            textDialoguePanel.ShowLine(
+                speaker,
+                text,
+                line.Speaker,
+                line.ExpressionId,
+                line.PortraitSlot,
+                line.ClearPortraitsBeforeLine);
             IEnumerator typing = textDialoguePanel.PlayTypewriter(
                 text,
                 () => revealRequested || currentTextDialogueRevealRequestedByLocale);
@@ -808,7 +815,9 @@ namespace Week14.Tutorial
             textDialoguePanel.ReplaceLineText(
                 ResolveDialogueSpeaker(currentTextDialogueLine),
                 ResolveDialogueText(currentTextDialogueLine),
-                currentTextDialogueLine.Speaker);
+                currentTextDialogueLine.Speaker,
+                currentTextDialogueLine.ExpressionId,
+                currentTextDialogueLine.PortraitSlot);
             currentTextDialogueRevealRequestedByLocale = true;
         }
 
