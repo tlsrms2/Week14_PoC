@@ -25,13 +25,16 @@ namespace Week14.Combat
         private bool baseballBatWindingUp;
         private float baseballBatWindUpElapsed;
         private float baseballBatWindUpDuration;
-        private float baseballBatWindUpStartDegrees;
         private bool baseballBatSwinging;
         private float baseballBatSwingElapsed;
         private float baseballBatSwingDuration;
         private float baseballBatSwingStartDegrees;
         private Vector3 baseballBatSwingStartScale;
         private Color baseballBatSwingColor = Color.white;
+        private bool baseballBatHolding;
+        private float baseballBatHoldElapsed;
+        private bool baseballBatReturning;
+        private float baseballBatReturnElapsed;
         private Coroutine baseballBatHitRoutine;
 
         internal PlayerShooter(
@@ -144,8 +147,8 @@ namespace Week14.Combat
             baseballBatRangePreview = null;
         }
 
-        // 차징이 시작되는 순간(BeginAttack) 호출됩니다. 현재 각도(보통 idle 0도)에서 -N까지
-        // WindUpSnapSeconds 동안 빠르게 회전하는 스냅 트윈을 시작합니다. 실제 진행은
+        // 차징이 시작되는 순간(BeginAttack) 호출됩니다. 현재 각도(idle 0도)에서 스냅 목표 각도까지
+        // WindUpSnapSeconds 동안 빠르게 회전하는 1단계 트윈을 시작합니다. 실제 진행은
         // UpdateBaseballBatCharging이 매 홀드 프레임마다 처리합니다.
         public void BeginBaseballBatWindUp(BaseballBatVfxSettings vfxSettings)
         {
@@ -155,14 +158,16 @@ namespace Week14.Combat
             }
 
             baseballBatSwinging = false;
+            baseballBatHolding = false;
+            baseballBatReturning = false;
             baseballBatWindingUp = true;
             baseballBatWindUpElapsed = 0f;
-            baseballBatWindUpStartDegrees = baseballBatCurrentRotationDegrees;
             baseballBatWindUpDuration = Mathf.Max(0.01f, vfxSettings.WindUpSnapSeconds);
         }
 
-        // 차징 중(HoldAttack)에 매 프레임 호출됩니다. 와인드업 스냅이 아직 진행 중이면 그걸 마무리하고,
-        // 끝난 뒤에는 회전을 -N에 고정한 채 차징 진행도(0~1)에 비례해서 크기만 커집니다.
+        // 차징 중(HoldAttack)에 매 프레임 호출됩니다. 1단계(스냅)가 진행 중이면 0도에서 스냅 목표
+        // 각도까지 빠르게 회전시키고, 끝난 뒤에는 2단계로 넘어가 스냅 목표 각도에서 -N도까지
+        // 차징 진행도(0~1)에 비례해서 마저 회전합니다.
         public void UpdateBaseballBatCharging(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite)
         {
             if (vfxSettings == null)
@@ -170,29 +175,34 @@ namespace Week14.Combat
                 return;
             }
 
+            float clampedCharge01 = Mathf.Clamp01(charge01);
+            float fullTargetDegrees = -vfxSettings.DisplayWindUpDegrees;
+            float snapTargetDegrees = Mathf.Lerp(0f, fullTargetDegrees, vfxSettings.WindUpSnapRatio);
+
             if (baseballBatWindingUp)
             {
                 baseballBatWindUpElapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(baseballBatWindUpElapsed / baseballBatWindUpDuration);
-                baseballBatCurrentRotationDegrees = Mathf.Lerp(baseballBatWindUpStartDegrees, -vfxSettings.DisplayWindUpDegrees, t);
-                if (t >= 1f)
+                float snapT = Mathf.Clamp01(baseballBatWindUpElapsed / baseballBatWindUpDuration);
+                baseballBatCurrentRotationDegrees = Mathf.Lerp(0f, snapTargetDegrees, snapT);
+                if (snapT >= 1f)
                 {
                     baseballBatWindingUp = false;
                 }
             }
             else
             {
-                baseballBatCurrentRotationDegrees = -vfxSettings.DisplayWindUpDegrees;
+                baseballBatCurrentRotationDegrees = Mathf.Lerp(snapTargetDegrees, fullTargetDegrees, clampedCharge01);
             }
 
-            Vector3 scale = Vector3.Lerp(vfxSettings.DisplayScale, vfxSettings.MaxChargeScale, Mathf.Clamp01(charge01));
+            Vector3 scale = Vector3.Lerp(vfxSettings.DisplayScale, vfxSettings.MaxChargeScale, clampedCharge01);
             Color color = vfxSettings.ResolveDisplayColor(charge01);
             ApplyBaseballBatDisplayPose(vfxSettings, sprite, baseballBatCurrentRotationDegrees, scale, color);
         }
 
         // 공격이 실제로 나가는 순간(ReleaseAttack) 호출됩니다. 현재 각도(보통 -N)에서 +N까지
         // durationSeconds 동안 빠르게 스윙하고, 동시에 크기를 기본 Display Scale로 되돌립니다.
-        // 실제 진행은 매 프레임 UpdateBaseballBatDisplay에서 처리됩니다.
+        // 실제 진행은 매 프레임 UpdateBaseballBatDisplay에서 처리되며, 스윙이 끝나면 곧바로
+        // 원래 각도로 돌아가지 않고 SwingHoldSeconds 동안 유지한 뒤 SwingReturnSeconds에 걸쳐 서서히 복귀합니다.
         public void StartBaseballBatSwingThrough(BaseballBatVfxSettings vfxSettings, float durationSeconds)
         {
             if (vfxSettings == null)
@@ -202,6 +212,8 @@ namespace Week14.Combat
 
             baseballBatWindingUp = false;
             baseballBatSwinging = true;
+            baseballBatHolding = false;
+            baseballBatReturning = false;
             baseballBatSwingElapsed = 0f;
             baseballBatSwingDuration = Mathf.Max(0.01f, durationSeconds);
             baseballBatSwingStartDegrees = baseballBatCurrentRotationDegrees;
@@ -236,6 +248,37 @@ namespace Week14.Combat
                 if (t >= 1f)
                 {
                     baseballBatSwinging = false;
+                    baseballBatHolding = true;
+                    baseballBatHoldElapsed = 0f;
+                }
+
+                return;
+            }
+
+            if (baseballBatHolding)
+            {
+                baseballBatHoldElapsed += Time.deltaTime;
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, vfxSettings.DisplayWindUpDegrees, vfxSettings.DisplayScale, baseballBatSwingColor);
+                if (baseballBatHoldElapsed >= vfxSettings.SwingHoldSeconds)
+                {
+                    baseballBatHolding = false;
+                    baseballBatReturning = true;
+                    baseballBatReturnElapsed = 0f;
+                }
+
+                return;
+            }
+
+            if (baseballBatReturning)
+            {
+                baseballBatReturnElapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(baseballBatReturnElapsed / vfxSettings.SwingReturnSeconds);
+                float rotation = Mathf.Lerp(vfxSettings.DisplayWindUpDegrees, 0f, t);
+                Color color = Color.Lerp(baseballBatSwingColor, vfxSettings.ResolveDisplayColor(0f), t);
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, rotation, vfxSettings.DisplayScale, color);
+                if (t >= 1f)
+                {
+                    baseballBatReturning = false;
                 }
 
                 return;
@@ -283,6 +326,8 @@ namespace Week14.Combat
         {
             baseballBatWindingUp = false;
             baseballBatSwinging = false;
+            baseballBatHolding = false;
+            baseballBatReturning = false;
             baseballBatCurrentRotationDegrees = 0f;
             if (baseballBatDisplayVfx == null)
             {
