@@ -25,11 +25,15 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
+            // 이전 사이클에서 EndStun이 Stun 스테이트 진입 전에 소모되지 못하고 남아있으면,
+            // 이번에 Stun 스테이트에 들어가자마자 그 묵은 트리거에 바로 되튕겨 나가버린다.
+            ResetAnimatorTrigger(EndStunParameter);
             SetAnimatorTrigger(StunParameter);
         }
 
         protected override void OnHpEmptyRecovered()
         {
+            ResetAnimatorTrigger(StunParameter);
             SetAnimatorTrigger(EndStunParameter);
         }
 
@@ -164,6 +168,17 @@ namespace Week14.Enemy
             }
 
             targetAnimator.SetTrigger(parameter);
+        }
+
+        private void ResetAnimatorTrigger(int parameter)
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            targetAnimator.ResetTrigger(parameter);
         }
 
         private Animator ResolveWalkAnimator()

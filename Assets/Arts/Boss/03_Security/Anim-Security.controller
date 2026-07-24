@@ -176,9 +176,9 @@ AnimatorStateMachine:
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -3157584422963651286}
+  - {fileID: -448972002684636573}
   - {fileID: 6016610751914939192}
   - {fileID: 2569964458170904489}
-  - {fileID: -448972002684636573}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
