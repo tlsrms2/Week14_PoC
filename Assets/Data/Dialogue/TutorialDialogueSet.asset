@@ -712,7 +712,7 @@ MonoBehaviour:
       explanation:
         enabled: 1
         image: {fileID: 0}
-        video: {fileID: 32900000, guid: 45e986a759b8d294bac34517e929cb83, type: 3}
+        video: {fileID: 32900000, guid: 939695fef59eb9b4f98bacb71fdc220a, type: 3}
         loopVideo: 1
         title: "\uD53C\uACA9"
         text: " \uC801\uC758 \uACF5\uACA9\uC5D0 \uB9DE\uC73C\uBA74 \uD0C4\uD658\uD615
