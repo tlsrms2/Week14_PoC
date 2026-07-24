@@ -303,19 +303,31 @@ namespace Week14.Story
             }
 
             CacheShownPosition();
-            if (showSeconds <= 0f || slideRoot == null)
+            bool animatePortraits = HasVisiblePortraits();
+            if (animatePortraits)
+            {
+                ClearPortraitSlots(false);
+            }
+
+            float slideSeconds = showSeconds > 0f && slideRoot != null ? showSeconds : 0f;
+            float exitSeconds = Mathf.Max(slideSeconds, animatePortraits ? portraitTransitionSeconds : 0f);
+            if (exitSeconds <= 0f)
             {
                 Hide();
                 yield break;
             }
 
-            Vector2 from = slideRoot.anchoredPosition;
-            Vector2 to = shownAnchoredPosition + hiddenOffset;
-            for (float elapsed = 0f; elapsed < showSeconds; elapsed += Time.unscaledDeltaTime)
+            Vector2 from = slideRoot != null ? slideRoot.anchoredPosition : Vector2.zero;
+            Vector2 to = slideRoot != null ? shownAnchoredPosition + hiddenOffset : Vector2.zero;
+            for (float elapsed = 0f; elapsed < exitSeconds; elapsed += Time.unscaledDeltaTime)
             {
-                float t = Mathf.Clamp01(elapsed / showSeconds);
-                float eased = showCurve != null ? showCurve.Evaluate(t) : t;
-                slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
+                if (slideSeconds > 0f)
+                {
+                    float t = Mathf.Clamp01(elapsed / slideSeconds);
+                    float eased = showCurve != null ? showCurve.Evaluate(t) : t;
+                    slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
+                }
+
                 yield return null;
             }
 
@@ -501,6 +513,13 @@ namespace Week14.Story
             CachePortraitSlots();
             return useVisualNovelPortraits
                 && (IsPortraitSlotConfigured(leftPortrait) || IsPortraitSlotConfigured(rightPortrait));
+        }
+
+        private bool HasVisiblePortraits()
+        {
+            return CanUseVisualNovelPortraits()
+                && ((leftPortrait != null && leftPortrait.HasCharacter)
+                    || (rightPortrait != null && rightPortrait.HasCharacter));
         }
 
         private void UpdatePortraitStage(

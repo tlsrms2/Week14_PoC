@@ -3424,8 +3424,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Tutorial.TutorialSceneController
   dialogueSet: {fileID: 11400000, guid: 8fa6fd107d83b7746847394157429f37, type: 2}
-  textDialoguePanel: {fileID: 8100199575286773222}
-  objectiveDialoguePanel: {fileID: 0}
+  textDialoguePanel: {fileID: 5390756965971717988}
+  objectiveDialoguePanel: {fileID: 6559190949091772837}
   explanationPanelRoot: {fileID: 910100000}
   explanationPanelCanvasGroup: {fileID: 103284771}
   explanationImage: {fileID: 0}
@@ -7197,13 +7197,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aaa6badf1873248ae63326792684c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Tutorial.TutorialDialoguePanelView
-  root: {fileID: 0}
-  slideRoot: {fileID: 0}
-  speakerRoot: {fileID: 0}
-  speakerText: {fileID: 0}
+  root: {fileID: 1907947556551963157}
+  slideRoot: {fileID: 1984350756443202358}
+  speakerRoot: {fileID: 198556270763713462}
+  speakerText: {fileID: 6927054455034733711}
   objectiveTitleText: {fileID: 0}
   objectiveKeyText: {fileID: 0}
-  dialogueText: {fileID: 0}
+  dialogueText: {fileID: 8452679916642731822}
   charactersPerSecond: 45
   localizedObjectiveTitleText:
     m_TableReference:
@@ -7214,14 +7214,60 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  advancePromptImage: {fileID: 0}
+  advancePromptImage: {fileID: 4729893845336678284}
   advancePromptBlinkSeconds: 0.65
   advancePromptMinAlpha: 0.15
-  profileImage: {fileID: 0}
+  profileImage: {fileID: 3169006977823101613}
   fallbackProfileSprite: {fileID: 0}
-  speakerProfiles: []
-  hiddenOffset: {x: -520, y: 0}
-  showSeconds: 0.25
+  speakerProfiles:
+  - speaker: "\uC774\uC628"
+    expressionId: 
+    profileSprite: {fileID: 21300000, guid: e60263b013020ac4090fc736277287d9, type: 3}
+  - speaker: ERIS
+    expressionId: 
+    profileSprite: {fileID: 21300000, guid: e2fae3847cb9e734ca15a9c0b6789b06, type: 3}
+  useVisualNovelPortraits: 1
+  leftPortrait:
+    image: {fileID: 6969838647734733153}
+    rectTransform: {fileID: 7123353737419987084}
+  rightPortrait:
+    image: {fileID: 8965715870122014133}
+    rectTransform: {fileID: 82242443691479429}
+  portraitTransitionSeconds: 0.2
+  portraitTransitionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  activePortraitOffset: {x: 0, y: 0}
+  inactivePortraitOffset: {x: 0, y: -35}
+  hiddenPortraitOffset: {x: 0, y: -35}
+  leftHiddenPortraitSlideOffset: {x: -60, y: 0}
+  rightHiddenPortraitSlideOffset: {x: 60, y: 0}
+  activePortraitScale: 1
+  inactivePortraitScale: 0.95
+  inactivePortraitBrightness: 0.45
+  hiddenOffset: {x: 0, y: -800}
+  showSeconds: 0.5
   showCurve:
     serializedVersion: 2
     m_Curve:
@@ -7364,9 +7410,51 @@ MonoBehaviour:
   fallbackProfileSprite: {fileID: 0}
   speakerProfiles:
   - speaker: "\uC774\uC628"
+    expressionId: 
     profileSprite: {fileID: -4565277893826926653, guid: 87c76420dcbb7c04b89c55ee640b3fee, type: 3}
   - speaker: ERIS
+    expressionId: 
     profileSprite: {fileID: 5732655890632249384, guid: d806c0b8d48b7994390be43102d0321f, type: 3}
+  useVisualNovelPortraits: 0
+  leftPortrait:
+    image: {fileID: 0}
+    rectTransform: {fileID: 0}
+  rightPortrait:
+    image: {fileID: 0}
+    rectTransform: {fileID: 0}
+  portraitTransitionSeconds: 0.2
+  portraitTransitionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  activePortraitOffset: {x: 0, y: 0}
+  inactivePortraitOffset: {x: 0, y: -35}
+  hiddenPortraitOffset: {x: 0, y: -80}
+  leftHiddenPortraitSlideOffset: {x: -120, y: 0}
+  rightHiddenPortraitSlideOffset: {x: 120, y: 0}
+  activePortraitScale: 1
+  inactivePortraitScale: 0.92
+  inactivePortraitBrightness: 0.45
   hiddenOffset: {x: 450, y: 0}
   showSeconds: 0.5
   showCurve:
@@ -7755,24 +7843,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6120602687297760870, guid: 46ae6b10e7c500043abe9aee8c164565, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46ae6b10e7c500043abe9aee8c164565, type: 3}
---- !u!114 &8100199575286773222 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7350286183494039791, guid: 46ae6b10e7c500043abe9aee8c164565, type: 3}
-  m_PrefabInstance: {fileID: 8100199575286773221}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8aaa6badf1873248ae63326792684c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Tutorial.TutorialDialoguePanelView
 --- !u!114 &8297403586442752385
 MonoBehaviour:
   m_ObjectHideFlags: 0
