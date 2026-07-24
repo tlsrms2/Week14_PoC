@@ -7225,7 +7225,7 @@ MonoBehaviour:
     profileSprite: {fileID: 21300000, guid: e60263b013020ac4090fc736277287d9, type: 3}
   - speaker: ERIS
     expressionId: 
-    profileSprite: {fileID: 21300000, guid: e2fae3847cb9e734ca15a9c0b6789b06, type: 3}
+    profileSprite: {fileID: 21300000, guid: 334800754973dac4b8a18f9483d18c62, type: 3}
   useVisualNovelPortraits: 1
   leftPortrait:
     image: {fileID: 6969838647734733153}
@@ -7259,13 +7259,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   activePortraitOffset: {x: 0, y: 0}
-  inactivePortraitOffset: {x: 0, y: -35}
-  hiddenPortraitOffset: {x: 0, y: -35}
-  leftHiddenPortraitSlideOffset: {x: -60, y: 0}
-  rightHiddenPortraitSlideOffset: {x: 60, y: 0}
+  inactivePortraitOffset: {x: 0, y: -15}
+  hiddenPortraitOffset: {x: 0, y: -15}
+  leftHiddenPortraitSlideOffset: {x: -30, y: 0}
+  rightHiddenPortraitSlideOffset: {x: 30, y: 0}
   activePortraitScale: 1
-  inactivePortraitScale: 0.95
-  inactivePortraitBrightness: 0.45
+  inactivePortraitScale: 0.97
+  inactivePortraitBrightness: 0.35
   hiddenOffset: {x: 0, y: -800}
   showSeconds: 0.5
   showCurve:
