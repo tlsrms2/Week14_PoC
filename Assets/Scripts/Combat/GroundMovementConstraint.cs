@@ -42,25 +42,42 @@ namespace Week14.Combat
 
         public static Vector2 ClampVelocity(Rigidbody2D body, Vector2 velocity, Collider2D[] probeColliders)
         {
+            return ClampVelocity(body, velocity, probeColliders, Mathf.Max(Time.fixedDeltaTime, Time.deltaTime));
+        }
+
+        public static Vector2 ClampVelocity(
+            Rigidbody2D body,
+            Vector2 velocity,
+            float stepSeconds)
+        {
+            return ClampVelocity(body, velocity, null, stepSeconds);
+        }
+
+        public static Vector2 ClampVelocity(
+            Rigidbody2D body,
+            Vector2 velocity,
+            Collider2D[] probeColliders,
+            float stepSeconds)
+        {
             if (body == null || velocity.sqrMagnitude <= 0.0001f)
             {
                 return velocity;
             }
 
-            float stepSeconds = Mathf.Max(Time.fixedDeltaTime, Time.deltaTime);
-            if (stepSeconds <= 0f)
+            float safeStepSeconds = Mathf.Max(0f, stepSeconds);
+            if (safeStepSeconds <= 0f)
             {
                 return velocity;
             }
 
-            Vector2 wallConstrainedVelocity = ClampVelocityAgainstLayer(body, velocity, GetWallMask());
+            Vector2 wallConstrainedVelocity = ClampVelocityAgainstLayer(body, velocity, GetWallMask(), safeStepSeconds);
             Vector2 current = body.position;
             Vector2 next = ClampStep(
                 current,
-                current + wallConstrainedVelocity * stepSeconds,
+                current + wallConstrainedVelocity * safeStepSeconds,
                 DefaultProbeRadius,
                 probeColliders);
-            return (next - current) / stepSeconds;
+            return (next - current) / safeStepSeconds;
         }
 
         public static Vector2 ClampPointMovement(
@@ -75,6 +92,19 @@ namespace Week14.Combat
                 probeRadius,
                 additionalObstacleMask,
                 null);
+        }
+
+        public static Vector2 ClampPointMovement(
+            Vector2 current,
+            Vector2 target,
+            Collider2D[] probeColliders)
+        {
+            return ClampPointMovement(
+                current,
+                target,
+                DefaultProbeRadius,
+                0,
+                probeColliders);
         }
 
         internal static bool IsColliderFootprintGrounded(
@@ -253,13 +283,26 @@ namespace Week14.Combat
 
         public static Vector2 ClampVelocityAgainstLayer(Rigidbody2D body, Vector2 velocity, int layerMask)
         {
+            return ClampVelocityAgainstLayer(
+                body,
+                velocity,
+                layerMask,
+                Mathf.Max(Time.fixedDeltaTime, Time.deltaTime));
+        }
+
+        public static Vector2 ClampVelocityAgainstLayer(
+            Rigidbody2D body,
+            Vector2 velocity,
+            int layerMask,
+            float stepSeconds)
+        {
             if (body == null || velocity.sqrMagnitude <= 0.0001f || layerMask == 0)
             {
                 return velocity;
             }
 
-            float stepSeconds = Mathf.Max(Time.fixedDeltaTime, Time.deltaTime);
-            float castDistance = velocity.magnitude * Mathf.Max(0f, stepSeconds);
+            float safeStepSeconds = Mathf.Max(0f, stepSeconds);
+            float castDistance = velocity.magnitude * safeStepSeconds;
             if (castDistance <= 0f)
             {
                 return velocity;
@@ -272,7 +315,7 @@ namespace Week14.Combat
 
             int hitCount = body.Cast(velocity.normalized, filter, wallCastHits, castDistance + WallCastSkin);
             Vector2 constrainedVelocity = RemoveVelocityIntoHits(velocity, wallCastHits, hitCount);
-            float probeCastDistance = constrainedVelocity.magnitude * Mathf.Max(0f, stepSeconds);
+            float probeCastDistance = constrainedVelocity.magnitude * safeStepSeconds;
             if (probeCastDistance <= 0f)
             {
                 return constrainedVelocity;
@@ -314,13 +357,24 @@ namespace Week14.Combat
 
         public static Vector2 ClampVelocityAgainstPlayerOnlyBarriers(Rigidbody2D body, Vector2 velocity)
         {
+            return ClampVelocityAgainstPlayerOnlyBarriers(
+                body,
+                velocity,
+                Mathf.Max(Time.fixedDeltaTime, Time.deltaTime));
+        }
+
+        public static Vector2 ClampVelocityAgainstPlayerOnlyBarriers(
+            Rigidbody2D body,
+            Vector2 velocity,
+            float stepSeconds)
+        {
             if (body == null || velocity.sqrMagnitude <= 0.0001f)
             {
                 return velocity;
             }
 
-            float stepSeconds = Mathf.Max(Time.fixedDeltaTime, Time.deltaTime);
-            float castDistance = velocity.magnitude * Mathf.Max(0f, stepSeconds);
+            float safeStepSeconds = Mathf.Max(0f, stepSeconds);
+            float castDistance = velocity.magnitude * safeStepSeconds;
             if (castDistance <= 0f)
             {
                 return velocity;
