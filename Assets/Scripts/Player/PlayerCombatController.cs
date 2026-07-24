@@ -138,6 +138,7 @@ namespace Week14.Combat
         public Health Health => Context.Health;
         public BulletGauge Bullets => Context.Bullets;
         public Transform LeftGunOrigin => Context.LeftGunOrigin;
+        public Transform LeftFireOrigin => Rig.GetLeftFireOrigin();
         public bool IsReticleVisible => config != null
             && !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
