@@ -19,6 +19,9 @@ MonoBehaviour:
     text: " \uC2E0\uC6D0 \uD655\uC778 \uC911. \uCF54\uB4DC\uBA85 \uC774\uC628. \uBCF5\uADC0\uB97C
       \uD658\uC601\uD569\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -43,6 +46,9 @@ MonoBehaviour:
       \uBE4C\uB9AC\uC790\uBA74, \uC88B\uC740 \uC18C\uC2DD\uACFC \uB098\uC05C \uC18C\uC2DD\uC785\uB2C8\uB2E4.
       \uC5B4\uB290 \uCABD\uBD80\uD130 \uB4E4\uC73C\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -64,6 +70,9 @@ MonoBehaviour:
   - speaker: "\uC774\uC628"
     text: " ...\uD558\uB098\uC529 \uB9D0\uD574. \uB4E3\uACE0 \uD310\uB2E8\uD558\uC9C0."
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -88,6 +97,9 @@ MonoBehaviour:
       \uD604\uC7AC \uC704\uCE58\uC640 \uC774\uB3D9 \uD328\uD134\uC744 \uD2B9\uC815\uD560
       \uC218 \uC788\uC5C8\uC2B5\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -109,6 +121,9 @@ MonoBehaviour:
   - speaker: "\uC774\uC628"
     text: " \uB098\uC05C \uC18C\uC2DD\uC740?"
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -132,6 +147,9 @@ MonoBehaviour:
       \uC2E0\uADDC \uC784\uBB34\uAC00 1\uAC74 \uB4F1\uB85D\uB418\uC5C8\uC2B5\uB2C8\uB2E4.
       \uBC29\uBB38\uC790 \uCF54\uB4DC\uBA85 \"\uBCF4\uC2A45\"."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -153,6 +171,9 @@ MonoBehaviour:
   - speaker: ERIS
     text: " \uBC29\uBB38 \uB300\uC0C1. \uCF54\uB4DC\uBA85 \uC774\uC628, \uB2F9\uC2E0\uC785\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -176,6 +197,9 @@ MonoBehaviour:
       \"\uBCF4\uC2A45\"\uB77C\uACE0... \uD558\uD544 \uC81C\uC77C \uC131\uAC00\uC2E0
       \uC0C1\uB300\uB97C \uB370\uB824\uC624\uB2E4\uB2C8."
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -199,6 +223,9 @@ MonoBehaviour:
       \uC774\uC81C \uB0B4 \uD3B8\uC744 \uB4E4\uC5B4\uC904 \uC774\uC720\uAC00 \uC5C6\uB294\uB370,
       \uB098\uD55C\uD14C \uC54C\uB824\uC8FC\uB294 \uC774\uC720\uAC00 \uBB50\uC9C0? "
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -221,6 +248,9 @@ MonoBehaviour:
     text: " \uAC04\uB2E8\uD788 \uC124\uBA85\uD558\uC790\uBA74, \uC77C\uC885\uC758
       \uD22C\uC790\uC785\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -242,6 +272,9 @@ MonoBehaviour:
   - speaker: "\uC774\uC628"
     text: " \uD22C\uC790?"
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -264,6 +297,9 @@ MonoBehaviour:
     text: " \uC544\uC2DC\uB2E4\uC2DC\uD53C, \uC6B0\uB9AC\uB294 \uBC29\uBB38\uC744
       \uD1B5\uD574 \uC0AC\uD68C\uC758 \uADE0\uD615\uC744 \uC870\uC815\uD569\uB2C8\uB2E4. "
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -287,6 +323,9 @@ MonoBehaviour:
       \uC774\uB4E4\uC740 \uACB0\uAD6D \uD310\uB2E8\uC774 \uD750\uB824\uC9C0\uACE0
       \uBD80\uD328\uD558\uAE30 \uB9C8\uB828\uC785\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -311,6 +350,9 @@ MonoBehaviour:
       \uC774\uB4E4\uC740 \uC21C\uC218\uD558\uACE0 \uC608\uCE21 \uAC00\uB2A5\uD55C
       \uB3D9\uB825\uC774 \uB429\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -334,6 +376,9 @@ MonoBehaviour:
       \uB3D5\uB294 \uAC83\uC774 \uC0AC\uD68C \uC804\uCCB4\uC5D0\uB3C4 \uC720\uC775\uD558\uB2E4\uACE0
       \uD310\uB2E8\uB429\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -356,6 +401,9 @@ MonoBehaviour:
     text: " ...\uC774\uD574\uD588\uC5B4. \uC5B4\uB290 \uC815\uB3C4\uAE4C\uC9C0 \uC9C0\uC6D0\uD574\uC904
       \uC218 \uC788\uC9C0?"
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -379,6 +427,9 @@ MonoBehaviour:
       \"\uBCF4\uC2A45\"\uAC00 \uC624\uAE30 \uC804\uC5D0 \uBA3C\uC800 \uBC29\uBB38\uD560
       \uAC83\uC744 \uCD94\uCC9C\uD569\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -402,6 +453,9 @@ MonoBehaviour:
       \uC774\uBBF8 \uC54C\uACE0 \"\uBCF4\uC2A45\"\uC640 \uD568\uAED8 \uAE30\uB2E4\uB9AC\uACE0
       \uC788\uC744\uAC70\uC57C."
     sfxId: 
+    expressionId: 
+    portraitSlot: 1
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
@@ -425,6 +479,9 @@ MonoBehaviour:
       \uC804\uD22C \uC804\uC5D0 \uB9C8\uC9C0\uB9C9\uC73C\uB85C \uBAA8\uB4C8\uC744
       \uC810\uAC80\uD558\uC2DC\uAE38 \uAD8C\uC7A5\uB4DC\uB9BD\uB2C8\uB2E4."
     sfxId: 
+    expressionId: 
+    portraitSlot: 2
+    clearPortraitsBeforeLine: 0
     localizedSpeaker:
       m_TableReference:
         m_TableCollectionName: GUID:8a8e32e629c410a4c97867fa550435ab
