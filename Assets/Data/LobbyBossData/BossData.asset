@@ -59,7 +59,7 @@ MonoBehaviour:
   sceneName: MainScene
   bgmId: Boss1BGM
   bgmFadeSeconds: 3
-  deathSfxId: BossCollapse
+  deathSfxId: BossCollapseBoom
   introWalkStartPosition: {x: 0.13, y: -1.4}
   introWalkEndPosition: {x: 0.13, y: 0.5}
   unlocksBossIds: []

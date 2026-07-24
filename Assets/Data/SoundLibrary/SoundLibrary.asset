@@ -171,7 +171,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
   - id: Walk
-    clip: {fileID: 8300000, guid: 4664f03676e77ab45821dadb8553ff1d, type: 3}
+    clip: {fileID: 8300000, guid: f32de20478fd0ca43af36156f1f9fc0a, type: 3}
     volume: 2
     pitch: 1
   - id: ChallengeResult
@@ -255,6 +255,10 @@ MonoBehaviour:
     volume: 2
     pitch: 1
   - id: BossCollapse
-    clip: {fileID: 8300000, guid: c44a7b4e296264343bfc2bc53c4fbd6d, type: 3}
+    clip: {fileID: 8300000, guid: 69a88b36684cc8c4a9a9fd45de11b12d, type: 3}
     volume: 2
+    pitch: 1
+  - id: BossCollapseBoom
+    clip: {fileID: 8300000, guid: 83d862a1a974dcf46a3fafe880c08e73, type: 3}
+    volume: 0.8
     pitch: 1
