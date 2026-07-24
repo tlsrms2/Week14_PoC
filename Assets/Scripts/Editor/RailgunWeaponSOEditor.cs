@@ -36,7 +36,9 @@ public sealed class RailgunWeaponSOEditor : Editor
                 DrawVfxTab();
                 break;
             case 3:
-                DrawProperties("fireSfxId");
+                DrawProperties(
+                    "oneToFourAmmoFireSfxId",
+                    "fiveAmmoFireSfxId");
                 break;
         }
 

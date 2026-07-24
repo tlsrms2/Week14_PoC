@@ -3476,6 +3476,8 @@ MonoBehaviour:
   firstRoomRespawnPoint: {fileID: 950507608}
   tutorialBgmId: TutorialBGM
   tutorialBgmFadeSeconds: 0.5
+  objectiveCompleteSfxId: goal complete
+  trainingEnemyRaiseSfxId: robot rising
   attackHitGoal: 3
   hitGoal: 1
   parryGoal: 3
@@ -5470,6 +5472,8 @@ MonoBehaviour:
   duelOpeningBurstShotCount: 3
   duelMainBurstShotCount: 4
   duelSingleShotSpeedMultiplier: 1.5
+  normalAttackSfxId: BossNormalShot
+  radialAttackSfxId: Smash
   projectile:
     prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     bulletDamage: 1
@@ -6093,6 +6097,14 @@ PrefabInstance:
     - target: {fileID: 4502639645030516895, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMin.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
       objectReference: {fileID: 0}
     - target: {fileID: 5364321327869350505, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_text

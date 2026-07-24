@@ -36,6 +36,8 @@ namespace Week14.Combat
         private bool baseballBatReturning;
         private float baseballBatReturnElapsed;
         private Coroutine baseballBatHitRoutine;
+        private SoundManager.SfxPlaybackHandle baseballBatChargingSfxHandle;
+        private SoundManager.SfxPlaybackHandle sniperChargeSfxHandle;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -51,6 +53,8 @@ namespace Week14.Combat
 
         internal void BeginAttack()
         {
+            StopBaseballBatChargingSfx();
+            StopSniperChargeSfx();
             chargeTime = 0f;
             isCharging = true;
             hasShownChargeLaser = false;
@@ -71,6 +75,8 @@ namespace Week14.Combat
         {
             if (!isCharging) return;
             context.PlayerHpView?.FreezeNewestBullet(false);
+            StopBaseballBatChargingSfx();
+            StopSniperChargeSfx();
             WeaponLoadoutManager.Instance?.CurrentWeapon?.ReleaseAttack(this, chargeTime);
             context.SniperChargeLaserEffect?.EndCharge();
             HideBaseballBatRangePreview();
@@ -94,8 +100,25 @@ namespace Week14.Combat
             context.SniperChargeLaserEffect?.SetProgress(progress);
         }
 
+        public void PlaySniperChargeSfx(string sfxId)
+        {
+            StopSniperChargeSfx();
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                sniperChargeSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
+            }
+        }
+
+        private void StopSniperChargeSfx()
+        {
+            SoundManager.StopSfx(sniperChargeSfxHandle);
+            sniperChargeSfxHandle = null;
+        }
+
         public void EndCharge()
         {
+            StopBaseballBatChargingSfx();
+            StopSniperChargeSfx();
             context.PlayerHpView?.FreezeNewestBullet(false);
             context.SniperChargeLaserEffect?.EndCharge();
             HideBaseballBatRangePreview();
@@ -113,7 +136,13 @@ namespace Week14.Combat
             }
 
             hasPlayedBaseballBatChargingSfx = true;
-            SoundManager.PlaySfx(sfxId);
+            baseballBatChargingSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
+        }
+
+        private void StopBaseballBatChargingSfx()
+        {
+            SoundManager.StopSfx(baseballBatChargingSfxHandle);
+            baseballBatChargingSfxHandle = null;
         }
 
         public void PreviewBaseballBatRange(float range, Color color)
@@ -484,6 +513,7 @@ namespace Week14.Combat
 
         public void ResetChargeTime()
         {
+            StopBaseballBatChargingSfx();
             chargeTime = 0f;
             hasPlayedBaseballBatChargingSfx = false;
         }
@@ -518,7 +548,10 @@ namespace Week14.Combat
             float reflectedSpeed,
             BaseballBatVfxSettings vfxSettings,
             float charge01,
-            string reflectionSuccessSfxId)
+            string reflectionSuccessSfxId,
+            float reflectionSfxBasePitch,
+            float reflectionSfxPitchStep,
+            float reflectionSfxMaxPitch)
         {
             if (range <= 0f)
             {
@@ -562,7 +595,10 @@ namespace Week14.Combat
                     range,
                     reflectedDamage,
                     reflectedSpeed,
-                    reflectionSuccessSfxId));
+                    reflectionSuccessSfxId,
+                    reflectionSfxBasePitch,
+                    reflectionSfxPitchStep,
+                    reflectionSfxMaxPitch));
         }
 
         private IEnumerator ResolveBaseballBatHitsDuringWindow(
@@ -572,7 +608,10 @@ namespace Week14.Combat
             float range,
             int reflectedDamage,
             float reflectedSpeed,
-            string reflectionSuccessSfxId)
+            string reflectionSuccessSfxId,
+            float reflectionSfxBasePitch,
+            float reflectionSfxPitchStep,
+            float reflectionSfxMaxPitch)
         {
             if (delaySeconds > 0f)
             {
@@ -582,20 +621,28 @@ namespace Week14.Combat
             context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
 
             float activeEndsAt = Time.time + Mathf.Max(0.01f, activeSeconds);
-            bool playedSuccessSfx = false;
+            float safeBasePitch = Mathf.Clamp(reflectionSfxBasePitch, 0.1f, 3f);
+            float safePitchStep = Mathf.Max(0f, reflectionSfxPitchStep);
+            float safeMaxPitch = Mathf.Clamp(reflectionSfxMaxPitch, safeBasePitch, 3f);
+            int reflectedProjectileCount = 0;
             do
             {
-                bool hitReflectableTarget = ResolveBaseballBatHit(
+                int newlyReflectedCount = ResolveBaseballBatHit(
                     direction,
                     range,
                     reflectedDamage,
                     reflectedSpeed);
-                if (hitReflectableTarget
-                    && !playedSuccessSfx
-                    && !string.IsNullOrEmpty(reflectionSuccessSfxId))
+                for (int i = 0; i < newlyReflectedCount; i++)
                 {
-                    SoundManager.PlaySfx(reflectionSuccessSfxId);
-                    playedSuccessSfx = true;
+                    float pitch = Mathf.Min(
+                        safeMaxPitch,
+                        safeBasePitch + safePitchStep * reflectedProjectileCount);
+                    if (!string.IsNullOrEmpty(reflectionSuccessSfxId))
+                    {
+                        SoundManager.PlaySfx(reflectionSuccessSfxId, pitch);
+                    }
+
+                    reflectedProjectileCount++;
                 }
 
                 yield return null;
@@ -605,26 +652,25 @@ namespace Week14.Combat
             baseballBatHitRoutine = null;
         }
 
-        private bool ResolveBaseballBatHit(
+        private int ResolveBaseballBatHit(
             Vector2 direction,
             float range,
             int reflectedDamage,
             float reflectedSpeed)
         {
             Vector2 origin = context.CombatCenterOrigin.position;
-            bool destroyedAnyTurret = DestroyDeployedConductorTurretsInSemicircle(
+            DestroyDeployedConductorTurretsInSemicircle(
                 origin,
                 direction,
                 range);
-            bool reflectedAnyProjectile = ReflectProjectilesInSemicircle(
+            int reflectedCount = ReflectProjectilesInSemicircle(
                 origin,
                 direction,
                 range,
                 reflectedDamage,
                 reflectedSpeed);
             InterceptNonReflectableProjectilesInSemicircle(origin, direction, range);
-
-            return destroyedAnyTurret || reflectedAnyProjectile;
+            return reflectedCount;
         }
 
         // 반사는 안 되지만 요격은 되는 투사체(패링 미끼 등)를 처리합니다. 반사 가능한 투사체를 먼저 처리했으므로
@@ -716,7 +762,7 @@ namespace Week14.Combat
             }
         }
 
-        private bool ReflectProjectilesInSemicircle(
+        private int ReflectProjectilesInSemicircle(
             Vector2 origin,
             Vector2 direction,
             float range,
@@ -724,7 +770,7 @@ namespace Week14.Combat
             float reflectedSpeed)
         {
             IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
-            bool reflectedAnyProjectile = false;
+            int reflectedCount = 0;
 
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
@@ -741,7 +787,7 @@ namespace Week14.Combat
 
                 if (projectile.TryReflectTowardOwnerBoss(reflectedSpeed, reflectedDamage, out _))
                 {
-                    reflectedAnyProjectile = true;
+                    reflectedCount++;
                     PlayerDashVfx.PlayProjectileAbsorb(
                         context.CoroutineHost,
                         projectile,
@@ -751,7 +797,7 @@ namespace Week14.Combat
                 }
             }
 
-            return reflectedAnyProjectile;
+            return reflectedCount;
         }
 
         private void DamageEnemiesInSemicircle(Vector2 origin, Vector2 direction, float range, int damage)

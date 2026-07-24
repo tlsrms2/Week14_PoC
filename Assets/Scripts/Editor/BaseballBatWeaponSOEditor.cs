@@ -77,8 +77,16 @@ public sealed class BaseballBatWeaponSOEditor : Editor
             "maxChargeSeconds",
             "reflectedDamage",
             "reflectedProjectileSpeed",
-            "moveSpeedMultiplier",
-            "swingSfxId");
+            "moveSpeedMultiplier");
+
+        EditorGUILayout.Space(6f);
+        EditorGUILayout.LabelField("효과음", EditorStyles.boldLabel);
+        DrawProperties(
+            "chargingSfxId",
+            "reflectionSuccessSfxId",
+            "reflectionSfxBasePitch",
+            "reflectionSfxPitchStep",
+            "reflectionSfxMaxPitch");
     }
 
     private void DrawVfxTab()
@@ -136,9 +144,14 @@ public sealed class BaseballBatWeaponSOEditor : Editor
         DrawRelative(settings, "rangeIndicatorSeconds");
 
         EditorGUILayout.Space(6f);
+        EditorGUILayout.LabelField("효과음 타이밍", EditorStyles.boldLabel);
+        DrawProperties("chargingSfxStartSeconds");
+
+        EditorGUILayout.Space(6f);
         EditorGUILayout.HelpBox(
             "Attack Hit Delay Seconds가 지난 뒤 Attack Active Seconds 동안 매 프레임 반사 판정을 수행합니다. " +
-            "애니메이션 배속을 바꾸면 두 시간을 함께 조정해 실제 스윙 구간에 맞추세요.",
+            "애니메이션 배속을 바꾸면 두 시간을 함께 조정해 실제 스윙 구간에 맞추세요.\n" +
+            "Charging Sfx Start Seconds가 지나면 차징음이 한 번 재생되며, 공격 버튼을 놓거나 차징이 취소되면 즉시 정지합니다.",
             MessageType.Info);
     }
 

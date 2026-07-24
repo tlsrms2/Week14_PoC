@@ -16810,6 +16810,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -75
       objectReference: {fileID: 0}
+    - target: {fileID: 8982169537378690344, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982169537378690344, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
     - target: {fileID: 9007887036798819987, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

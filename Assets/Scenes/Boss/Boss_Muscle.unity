@@ -1051,6 +1051,10 @@ PrefabInstance:
       propertyPath: bossCombatUiRect
       value: 
       objectReference: {fileID: 1023516956}
+    - target: {fileID: 3375592416611051039, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
+      propertyPath: bossViewportFillRatio
+      value: 0.98
+      objectReference: {fileID: 0}
     - target: {fileID: 4005723614143604908, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -3895,6 +3899,14 @@ PrefabInstance:
     - target: {fileID: 4502639645030516895, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMin.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
       objectReference: {fileID: 0}
     - target: {fileID: 7333452412212431720, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_IsActive

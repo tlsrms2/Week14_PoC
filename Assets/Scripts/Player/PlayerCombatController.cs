@@ -418,6 +418,7 @@ namespace Week14.Combat
 #if ENABLE_INPUT_SYSTEM
             GameInput.Unbind(playerInput);
 #endif
+            CancelActiveCharge();
             externalMovementLockCount = 0;
 
             if (Active == this)
@@ -474,6 +475,7 @@ namespace Week14.Combat
 
             if (health.IsDead)
             {
+                CancelActiveCharge();
                 StopBody();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
@@ -484,6 +486,7 @@ namespace Week14.Combat
 
             if (IsExecuting)
             {
+                CancelActiveCharge();
                 StopBody();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
@@ -493,6 +496,7 @@ namespace Week14.Combat
 
             if (IsPlayerControlLocked || GameModalState.BlocksGameplayInput)
             {
+                CancelActiveCharge();
                 StopBody();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
@@ -576,6 +580,14 @@ namespace Week14.Combat
                 {
                     ApplyMouseParryMissPenalty();
                 }
+            }
+        }
+
+        private void CancelActiveCharge()
+        {
+            if (shooter?.IsCharging == true)
+            {
+                shooter.EndCharge();
             }
         }
 
